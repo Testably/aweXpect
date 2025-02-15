@@ -4,14 +4,46 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=aweXpect_aweXpect.Web&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=aweXpect_aweXpect.Web)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=aweXpect_aweXpect.Web&metric=coverage)](https://sonarcloud.io/summary/new_code?id=aweXpect_aweXpect.Web)
 
-Template for extension projects for [aweXpect](https://github.com/aweXpect/aweXpect).  
+Web extensions for [aweXpect](https://github.com/aweXpect/aweXpect).
 
-## Steps after creating a new project from this Template:
+## Content
 
-- Replace "Web" with your suffix both in file names and in contents.
-- Enable Sonarcloud analysis
-  - Create the project at [sonarcloud](https://sonarcloud.io/projects/create)
-  - Add the `SONAR_TOKEN` secret as repository secret
-- Create a "production" environment and add the `NUGET_API_KEY` secret
-- Adapt the copyright and project information in Source/Directory.Build.props
-- Adapt the README.md
+You can verify, the content of the `HttpResponseMessage`:
+
+```csharp
+HttpResponseMessage response = await httpClient.GetAsync("https://github.com/aweXpect/aweXpect");
+
+await Expect.That(response).HasContent("*aweXpect*").AsWildcard();
+```
+
+You can use the same configuration options as when [comparing strings](/docs/expectations/string#equality).
+
+## Status
+
+You can verify, that the status code of the `HttpResponseMessage`:
+
+```csharp
+HttpResponseMessage response = await httpClient.GetAsync("https://github.com/aweXpect/aweXpect");
+await Expect.That(response).HasStatusCode().Success();
+await Expect.That(response).HasStatusCode().EqualTo(HttpStatusCode.OK);
+
+response = await httpClient.PostAsync("https://github.com/aweXpect/aweXpect", new StringContent(""));
+await Expect.That(response).HasStatusCode().ClientError().Or.HasStatusCode().ServerError().Or.HasStatusCode().Redirection();
+```
+
+Great care was taken to provide as much information as possible, when a status verification failed.  
+The response could look similar to:
+> ```
+> Expected response to
+> be success (status code 2xx),
+> but it was 404 NotFound:
+>   HTTP/1.1 404 NotFound
+>     Server: GitHub.com
+>     Date: Fri, 29 Nov 2024 07:55:47 GMT
+>     Cache-Control: no-cache
+>     Referrer-Policy: origin-when-cross-origin, strict-origin-when-cross-origin
+>     X-GitHub-Request-Id: DB30:24038B:287F716:29D98BD:67497384
+>   Content is binary
+>   The originating request was:
+>     GET https://github.com/aweXpect/missing-repo HTTP 1.1
+> ```
