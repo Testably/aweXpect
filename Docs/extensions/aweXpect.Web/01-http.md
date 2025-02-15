@@ -30,9 +30,11 @@ await Expect.That(response).HasStatusCode().ClientError().Or.HasStatusCode().Ser
 Great care was taken to provide as much information as possible, when a status verification failed.  
 The response could look similar to:
 > ```
-> Expected response to
-> be success (status code 2xx),
-> but it was 404 NotFound:
+> Expected that response
+> has success status code (2xx),
+> but it was 404 NotFound
+> 
+> HTTP-Request:
 >   HTTP/1.1 404 NotFound
 >     Server: GitHub.com
 >     Date: Fri, 29 Nov 2024 07:55:47 GMT
