@@ -5,7 +5,7 @@ namespace aweXpect.Tests;
 
 public sealed partial class ThatString
 {
-	public sealed partial class IsEqualTo
+	public sealed class IsEqualTo
 	{
 		public sealed class AsJson
 		{
@@ -185,6 +185,18 @@ public sealed partial class ThatString
 						             """);
 				}
 
+				[Fact]
+				public async Task WhenSubjectAndExpectedAreNull_ShouldSucceed()
+				{
+					string? subject = null;
+					string? expected = null;
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).AsJson();
+
+					await That(Act).DoesNotThrow();
+				}
+
 				[Theory]
 				[InlineData(false)]
 				[InlineData(true)]
@@ -283,6 +295,24 @@ public sealed partial class ThatString
 						               but could not parse subject: {{errorMessage}}
 						               """);
 				}
+
+				[Fact]
+				public async Task WhenSubjectIsNull_ShouldFail()
+				{
+					string? subject = null;
+					string expected = "{}";
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected).AsJson();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is JSON equivalent to {},
+						             but it was <null>
+						             """);
+				}
+
 
 				[Theory]
 				[InlineData("{ \"foo\": 2 }", "{  \"foo\": 2  }", "integer values are supported")]

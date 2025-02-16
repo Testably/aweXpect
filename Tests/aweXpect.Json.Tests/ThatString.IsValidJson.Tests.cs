@@ -2,7 +2,7 @@
 
 public sealed partial class ThatString
 {
-	public class IsValidJson
+	public sealed class IsValidJson
 	{
 		public sealed class Tests
 		{

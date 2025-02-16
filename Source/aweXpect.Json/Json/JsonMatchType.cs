@@ -47,6 +47,7 @@ internal sealed class JsonMatchType(JsonOptions options) : IStringMatchType
 
 		if (actual == null || expected == null)
 		{
+			_deserializationError = "it was <null>";
 			return false;
 		}
 

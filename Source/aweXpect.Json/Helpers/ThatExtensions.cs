@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using aweXpect.Core;
 
 namespace aweXpect.Helpers;
 
-internal static class ExpectHelpers
+internal static class ThatExtensions
 {
+	[ExcludeFromCodeCoverage]
 	public static IThatIs<T> ThatIs<T>(this IThat<T> subject)
 	{
 		if (subject is IThatIs<T> thatIs)
