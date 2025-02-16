@@ -1,7 +1,7 @@
-# JSON
+# [aweXpect.Json](https://github.com/aweXpect/aweXpect.Json) [![Nuget](https://img.shields.io/nuget/v/aweXpect.Json)](https://www.nuget.org/packages/aweXpect.Json)
 
-Describes the possible expectations for working
-with [System.Text.Json](https://learn.microsoft.com/en-us/dotnet/api/system.text.json).
+Expectations for the `System.Text.Json` namespace.
+
 
 ## String comparison as JSON
 
