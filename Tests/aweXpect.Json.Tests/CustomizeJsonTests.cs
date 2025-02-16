@@ -1,8 +1,7 @@
 ﻿using System.Text.Json;
 using aweXpect.Customization;
-using aweXpect.Json;
 
-namespace aweXpect.Internal.Tests.Json;
+namespace aweXpect.Json.Tests;
 
 public sealed class CustomizeJsonTests
 {

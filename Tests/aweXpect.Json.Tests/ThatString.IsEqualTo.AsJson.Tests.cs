@@ -1,7 +1,6 @@
 ﻿using aweXpect.Customization;
-using aweXpect.Json;
 
-namespace aweXpect.Tests;
+namespace aweXpect.Json.Tests;
 
 public sealed partial class ThatString
 {
@@ -11,6 +10,23 @@ public sealed partial class ThatString
 		{
 			public sealed class Tests
 			{
+				[Fact]
+				public async Task ForCollections_ShouldSupportAsJson()
+				{
+					string[] subject = ["{ }", "{foo:1}", "[]"];
+					string expected = "{}";
+
+					async Task Act()
+						=> await That(subject).All().AreEqualTo(expected).AsJson();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage(""""
+						             Expected that subject
+						             is equal to "{}" as JSON for all items,
+						             but only 1 of 3 were
+						             """");
+				}
+
 				[Fact]
 				public async Task WhenContainsMoreThan10Differences_ShouldLimitListOfDifferences()
 				{

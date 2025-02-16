@@ -1,7 +1,6 @@
 ﻿using System.Text.Json;
-using aweXpect.Json;
 
-namespace aweXpect.Tests;
+namespace aweXpect.Json.Tests;
 
 public sealed partial class ThatJsonElement
 {

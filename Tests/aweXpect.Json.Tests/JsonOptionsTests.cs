@@ -1,7 +1,6 @@
 ﻿using System.Text.Json;
-using aweXpect.Json;
 
-namespace aweXpect.Core.Tests.Options;
+namespace aweXpect.Json.Tests;
 
 public class JsonOptionsTests
 {

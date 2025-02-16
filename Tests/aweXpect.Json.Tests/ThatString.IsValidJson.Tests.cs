@@ -1,4 +1,4 @@
-﻿namespace aweXpect.Tests;
+﻿namespace aweXpect.Json.Tests;
 
 public sealed partial class ThatString
 {

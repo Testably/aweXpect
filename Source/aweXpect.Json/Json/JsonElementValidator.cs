@@ -271,6 +271,11 @@ internal static class JsonElementValidator
 					Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 				foreach (KeyValuePair<string, string> differentMember in _errors)
 				{
+					if (sb.Length > 0)
+					{
+						sb.Append(" and");
+					}
+					
 					if (count++ >= maximumNumberOfCollectionItems)
 					{
 						sb.AppendLine().Append("   … (")
@@ -284,11 +289,9 @@ internal static class JsonElementValidator
 						sb.AppendLine().Append(' ');
 					}
 
-					sb.Append(' ').Append(differentMember.Key).Append(' ').Append(differentMember.Value).Append(" and");
+					sb.Append(' ').Append(differentMember.Key).Append(' ').Append(differentMember.Value);
 				}
 			}
-
-			sb.Length -= 4;
 
 			return sb.ToString();
 		}
