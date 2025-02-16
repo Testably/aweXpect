@@ -1,5 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 
 namespace aweXpect.Tests;
@@ -107,4 +106,3 @@ public sealed partial class ThatHttpResponseMessage
 		}
 	}
 }
-#endif

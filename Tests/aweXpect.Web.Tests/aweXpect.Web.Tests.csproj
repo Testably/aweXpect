@@ -4,4 +4,8 @@
 		<ProjectReference Include="..\..\Source\aweXpect.Web\aweXpect.Web.csproj"/>
 	</ItemGroup>
 
+	<ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+	  <PackageReference Include="System.Net.Http" />
+	</ItemGroup>
+
 </Project>

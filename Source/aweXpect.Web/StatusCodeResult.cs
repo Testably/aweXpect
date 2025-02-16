@@ -1,5 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-using System;
+﻿using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -142,4 +141,3 @@ public class StatusCodeResult(
 			=> expectation;
 	}
 }
-#endif

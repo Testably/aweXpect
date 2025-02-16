@@ -1,5 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
@@ -39,7 +38,11 @@ public static partial class ThatHttpResponseMessage
 					$"{it} was <null>");
 			}
 
+#if NETSTANDARD2_0
+			string message = await actual.Content.ReadAsStringAsync();
+#else
 			string message = await actual.Content.ReadAsStringAsync(cancellationToken);
+#endif
 			if (options.AreConsideredEqual(message, expected))
 			{
 				return new ConstraintResult.Success<HttpResponseMessage?>(actual, ToString());
@@ -55,4 +58,3 @@ public static partial class ThatHttpResponseMessage
 			=> $"has a string content {options.GetExpectation(expected, ExpectationGrammars.None)}";
 	}
 }
-#endif

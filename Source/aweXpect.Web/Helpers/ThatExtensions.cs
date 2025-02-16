@@ -1,11 +1,12 @@
-﻿#if NET8_0_OR_GREATER
-using System;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using aweXpect.Core;
 
 namespace aweXpect.Helpers;
 
-internal static class ExpectHelpers
+internal static class ThatExtensions
 {
+	[ExcludeFromCodeCoverage]
 	public static IThatIs<T> ThatIs<T>(this IThat<T> subject)
 	{
 		if (subject is IThatIs<T> thatIs)
@@ -21,4 +22,3 @@ internal static class ExpectHelpers
 		throw new NotSupportedException("IThat<T> must also implement IThatIs<T>");
 	}
 }
-#endif

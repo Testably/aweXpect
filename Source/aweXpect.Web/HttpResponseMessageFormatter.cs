@@ -1,5 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -59,7 +58,11 @@ internal static class HttpResponseMessageFormatter
 	{
 		if (content is StringContent or FormUrlEncodedContent)
 		{
+#if NETSTANDARD2_0
+			string stringContent = await content.ReadAsStringAsync();
+#else
 			string stringContent = await content.ReadAsStringAsync(cancellationToken);
+#endif
 			messageBuilder.AppendLine(stringContent.Indent(indentation));
 		}
 		else
@@ -84,4 +87,3 @@ internal static class HttpResponseMessageFormatter
 		}
 	}
 }
-#endif
