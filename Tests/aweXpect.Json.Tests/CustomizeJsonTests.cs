@@ -1,5 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-using System.Text.Json;
+﻿using System.Text.Json;
 using aweXpect.Customization;
 using aweXpect.Json;
 
@@ -71,4 +70,3 @@ public sealed class CustomizeJsonTests
 			.IsTrue();
 	}
 }
-#endif

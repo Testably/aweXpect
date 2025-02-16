@@ -1,5 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-using System;
+﻿using System;
 using aweXpect.Core;
 
 namespace aweXpect.Helpers;
@@ -21,4 +20,3 @@ internal static class ExpectHelpers
 		throw new NotSupportedException("IThat<T> must also implement IThatIs<T>");
 	}
 }
-#endif

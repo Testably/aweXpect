@@ -1,5 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
@@ -54,4 +53,3 @@ public static partial class ThatJsonElement
 			source);
 	}
 }
-#endif

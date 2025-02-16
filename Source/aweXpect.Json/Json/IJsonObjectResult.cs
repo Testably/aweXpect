@@ -1,5 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-using System.Text.Json;
+﻿using System.Text.Json;
 
 namespace aweXpect.Json;
 
@@ -34,4 +33,3 @@ public interface IJsonObjectResult
 		public IJsonObjectResult Properties();
 	}
 }
-#endif

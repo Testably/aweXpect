@@ -1,5 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-using System.Text.Json;
+﻿using System.Text.Json;
 using aweXpect.Json;
 
 namespace aweXpect.Tests;
@@ -44,8 +43,8 @@ public sealed partial class ThatNullableJsonElement
 					.WithMessage($"""
 					              Expected that subject
 					              matches expected,
-					              but it differed as $ was {json} instead of {Format.Formatter.Format(expected)}
-					              """);
+					              but it differed as $ was {json} instead of *
+					              """).AsWildcard();
 			}
 
 			[Theory]
@@ -359,4 +358,3 @@ public sealed partial class ThatNullableJsonElement
 		}
 	}
 }
-#endif

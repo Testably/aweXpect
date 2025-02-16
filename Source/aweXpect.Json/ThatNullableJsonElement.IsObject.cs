@@ -1,5 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-using System;
+﻿using System;
 using System.Text.Json;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
@@ -65,4 +64,3 @@ public static partial class ThatNullableJsonElement
 		}
 	}
 }
-#endif

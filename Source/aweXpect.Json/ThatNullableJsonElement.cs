@@ -1,5 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-using System.Text.Json;
+﻿using System.Text.Json;
 using aweXpect.Core.Constraints;
 using aweXpect.Json;
 
@@ -75,4 +74,3 @@ public static partial class ThatNullableJsonElement
 			=> $"is {JsonValidation.Format(expected)}";
 	}
 }
-#endif

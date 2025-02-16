@@ -1,5 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-using System;
+﻿using System;
 using aweXpect.Core;
 using aweXpect.Json;
 using aweXpect.Options;
@@ -25,5 +24,3 @@ public static class JsonExtensions
 		return (TSelf)result;
 	}
 }
-
-#endif

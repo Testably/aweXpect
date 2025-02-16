@@ -1,5 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-using System;
+﻿using System;
 using System.Text.Json;
 using aweXpect.Core;
 
@@ -32,4 +31,3 @@ public class JsonWhichResult(
 		return this;
 	}
 }
-#endif

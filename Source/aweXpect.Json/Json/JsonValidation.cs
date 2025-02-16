@@ -1,5 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -53,7 +52,14 @@ internal class JsonValidation : IJsonObjectResult,
 
 	IJsonPropertyResult<IJsonArrayResult> IJsonArrayResult.At(int index)
 	{
+#if NET8_0_OR_GREATER
 		ArgumentOutOfRangeException.ThrowIfNegative(index);
+#else
+		if (index < 0)
+		{
+			throw new ArgumentOutOfRangeException(nameof(index), "The index must be greater than or equal to 0.");
+		}
+#endif
 
 		_currentPath.Push($"[{index}]");
 		JsonElement? currentElement = _currentElements.Peek();
@@ -459,4 +465,3 @@ internal class JsonValidation : IJsonObjectResult,
 			_ => valueKind.ToString().ToLower(),
 		};
 }
-#endif

@@ -1,5 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-using aweXpect.Customization;
+﻿using aweXpect.Customization;
 using aweXpect.Json;
 
 namespace aweXpect.Tests;
@@ -306,4 +305,3 @@ public sealed partial class ThatString
 		}
 	}
 }
-#endif

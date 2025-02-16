@@ -1,5 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-namespace aweXpect.Tests;
+﻿namespace aweXpect.Tests;
 
 public sealed partial class ThatString
 {
@@ -144,4 +143,3 @@ public sealed partial class ThatString
 		}
 	}
 }
-#endif

@@ -1,5 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-using System.Text.Json;
+﻿using System.Text.Json;
 using aweXpect.Json;
 
 namespace aweXpect.Core.Tests.Options;
@@ -43,4 +42,3 @@ public class JsonOptionsTests
 		await That(result.DocumentOptions.MaxDepth).IsEqualTo(maxDepth);
 	}
 }
-#endif

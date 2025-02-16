@@ -1,5 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-using System.Text.Json;
+﻿using System.Text.Json;
 using aweXpect.Customization;
 
 namespace aweXpect.Json;
@@ -25,4 +24,3 @@ public record JsonOptions
 	/// </summary>
 	public bool IgnoreAdditionalProperties { get; init; }
 }
-#endif

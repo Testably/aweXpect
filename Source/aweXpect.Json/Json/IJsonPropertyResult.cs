@@ -1,5 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-using System;
+﻿using System;
 using System.Runtime.CompilerServices;
 
 namespace aweXpect.Json;
@@ -35,4 +34,3 @@ public interface IJsonPropertyResult<out TReturn>
 	/// </summary>
 	public TReturn AnObject(Action<IJsonObjectResult> expectation);
 }
-#endif

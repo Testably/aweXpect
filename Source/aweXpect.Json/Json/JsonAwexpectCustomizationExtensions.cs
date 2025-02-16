@@ -1,4 +1,3 @@
-#if NET8_0_OR_GREATER
 using System;
 using System.Text.Json;
 using aweXpect.Customization;
@@ -90,4 +89,3 @@ public static class JsonAwexpectCustomizationExtensions
 		};
 	}
 }
-#endif

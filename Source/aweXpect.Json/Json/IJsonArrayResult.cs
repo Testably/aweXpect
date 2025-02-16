@@ -1,5 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-using System;
+﻿using System;
 using System.Text.Json;
 
 namespace aweXpect.Json;
@@ -55,4 +54,3 @@ public interface IJsonArrayResult
 	/// </summary>
 	public interface IJsonArrayElementsResult : IJsonArrayResult;
 }
-#endif

@@ -1,5 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.Json;
 using aweXpect.Core;
 
@@ -89,4 +88,3 @@ internal sealed class JsonMatchType(JsonOptions options) : IStringMatchType
 	public string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
 		=> "";
 }
-#endif
