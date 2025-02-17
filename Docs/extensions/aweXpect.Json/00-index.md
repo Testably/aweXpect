@@ -53,6 +53,15 @@ string subject = "{\"foo\": 2}";
 await Expect.That(subject).IsValidJson().Which(j => j.Matches(new{foo = 2}));
 ```
 
+You can also use a shorthand syntax for a match comparison:
+
+```csharp
+string subject = "[{\"foo\": 2}, {\"foo\": 3}, {\"foo\": 4, \"bar\": 2}]";
+
+await Expect.That(subject).IsValidJsonMatching([ new{ foo = 2 }, new{ foo = 3 }, new{ foo = 4 } ]);
+```
+
+
 ## `JsonElement`
 
 ### Match

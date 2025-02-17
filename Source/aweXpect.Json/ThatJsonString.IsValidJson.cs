@@ -12,7 +12,7 @@ namespace aweXpect;
 /// <summary>
 ///     Json expectations on <see langword="string" /> values.
 /// </summary>
-public static class ThatJsonString
+public static partial class ThatJsonString
 {
 	/// <summary>
 	///     Verifies that the subject is a valid JSON string.

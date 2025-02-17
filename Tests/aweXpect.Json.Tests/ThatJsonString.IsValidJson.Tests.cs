@@ -1,6 +1,6 @@
 ﻿namespace aweXpect.Json.Tests;
 
-public sealed partial class ThatString
+public sealed partial class ThatJsonString
 {
 	public sealed class IsValidJson
 	{

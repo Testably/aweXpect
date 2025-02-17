@@ -105,7 +105,7 @@ public sealed partial class ThatJsonElement
 		{
 			[Theory]
 			[MemberData(nameof(MatchingArrayValues))]
-			public async Task MatchingValues_ShouldSucceed(object expected, string json)
+			public async Task MatchingValues_ShouldSucceed(string[] expected, string json)
 			{
 				JsonElement subject = FromString(json);
 
@@ -117,7 +117,7 @@ public sealed partial class ThatJsonElement
 
 			[Theory]
 			[MemberData(nameof(NotMatchingArrayValues))]
-			public async Task NotMatchingValues_ShouldFail(object expected, string json, string errorMessage)
+			public async Task NotMatchingValues_ShouldFail(string[] expected, string json, string errorMessage)
 			{
 				JsonElement subject = FromString(json);
 
@@ -193,49 +193,43 @@ public sealed partial class ThatJsonElement
 				await That(Act).DoesNotThrow();
 			}
 
-			public static TheoryData<object, string> MatchingArrayValues
+			public static TheoryData<string[], string> MatchingArrayValues
 				=> new()
 				{
 					{
-						Array.Empty<string>(), "[]"
+						[], "[]"
 					},
 					{
-						Array.Empty<int>(), "[]"
-					},
-					{
-						new[]
-						{
+						[
 							"foo", "bar",
-						},
+						],
 						"[\"foo\", \"bar\"]"
 					},
 				};
 
-			public static TheoryData<object, string, string> NotMatchingArrayValues
+			public static TheoryData<string[], string, string> NotMatchingArrayValues
 				=> new()
 				{
 					{
-						Array.Empty<string>(), "[\"foo\"]", "as $[0] had unexpected \"foo\""
+						[], "[\"foo\"]", "as $[0] had unexpected \"foo\""
 					},
 					{
-						Array.Empty<int>(), "[1, 2]", """
-						                              as
-						                                $[0] had unexpected 1 and
-						                                $[1] had unexpected 2
-						                              """
+						[], "[\"1\", \"2\"]", """
+						                      as
+						                        $[0] had unexpected "1" and
+						                        $[1] had unexpected "2"
+						                      """
 					},
 					{
-						new[]
-						{
+						[
 							"foo",
-						},
+						],
 						"[]", "as $[0] had missing \"foo\""
 					},
 					{
-						new[]
-						{
+						[
 							"bar", "foo",
-						},
+						],
 						"[\"foo\", \"bar\"]", """
 						                      as
 						                        $[0] was "foo" instead of "bar" and

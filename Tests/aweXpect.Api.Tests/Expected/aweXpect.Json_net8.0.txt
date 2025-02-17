@@ -84,6 +84,10 @@ namespace aweXpect
     public static class ThatJsonString
     {
         public static aweXpect.Results.JsonWhichResult IsValidJson(this aweXpect.Core.IThat<string?> source, System.Func<System.Text.Json.JsonDocumentOptions, System.Text.Json.JsonDocumentOptions>? options = null) { }
+        public static aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>> IsValidJsonMatching(this aweXpect.Core.IThat<string?> source, object? expected, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>> IsValidJsonMatching<T>(this aweXpect.Core.IThat<string?> source, System.Collections.Generic.IEnumerable<T> expected, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>> IsValidJsonMatchingExactly(this aweXpect.Core.IThat<string?> source, object? expected, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>> IsValidJsonMatchingExactly<T>(this aweXpect.Core.IThat<string?> source, System.Collections.Generic.IEnumerable<T> expected, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
     }
     public static class ThatNullableJsonElement
     {

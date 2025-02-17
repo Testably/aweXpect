@@ -2,7 +2,7 @@
 
 namespace aweXpect.Json.Tests;
 
-public sealed partial class ThatString
+public sealed partial class ThatJsonString
 {
 	public sealed class IsEqualTo
 	{
@@ -13,7 +13,7 @@ public sealed partial class ThatString
 				[Fact]
 				public async Task ForCollections_ShouldSupportAsJson()
 				{
-					string[] subject = ["{ }", "{foo:1}", "[]"];
+					string[] subject = ["{ }", "{foo:1}", "[]",];
 					string expected = "{}";
 
 					async Task Act()
