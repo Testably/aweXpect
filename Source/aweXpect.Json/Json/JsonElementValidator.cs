@@ -238,7 +238,7 @@ internal static class JsonElementValidator
 		if (jsonElement.ValueKind == JsonValueKind.String)
 		{
 			return includeType
-				? $"string \"{jsonElement}\""
+				? $"{GetKindName(jsonElement.ValueKind)} \"{jsonElement}\""
 				: $"\"{jsonElement}\"";
 		}
 

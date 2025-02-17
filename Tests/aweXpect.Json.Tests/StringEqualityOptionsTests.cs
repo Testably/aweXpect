@@ -21,4 +21,18 @@ public sealed class StringEqualityOptionsTests
 		await That(result).IsTrue();
 		await That(failure).IsEmpty();
 	}
+
+	[Fact]
+	public async Task WhenCallingGetExtendedFailureWithoutAreConsideredEqual_ShouldReturnEmptystring()
+	{
+		string actual = "foo";
+		string expected = "bar";
+#pragma warning disable aweXpect0001
+		IOptionsProvider<StringEqualityOptions> optionsProvider = That(actual).IsEqualTo(expected).AsJson();
+#pragma warning restore aweXpect0001
+
+		var failure = optionsProvider.Options.GetExtendedFailure("it", actual, expected);
+
+		await That(failure).IsEmpty();
+	}
 }
