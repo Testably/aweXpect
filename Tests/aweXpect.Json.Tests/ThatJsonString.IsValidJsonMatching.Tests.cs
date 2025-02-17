@@ -110,6 +110,33 @@ public sealed partial class ThatJsonString
 					              but it differed as $ was {subject} instead of "{expected}"
 					              """);
 			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				string? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(null);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches null,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNullJson_WhenMatchingAgainstNull_ShouldSucceed()
+			{
+				string? subject = "null";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(null);
+
+				await That(Act).DoesNotThrow();
+			}
 		}
 
 		public sealed class ArrayTests
