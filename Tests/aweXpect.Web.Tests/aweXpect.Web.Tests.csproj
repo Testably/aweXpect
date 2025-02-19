@@ -5,7 +5,7 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net48'">
-	  <PackageReference Include="System.Net.Http" />
+		<PackageReference Include="System.Net.Http"/>
 	</ItemGroup>
 
 </Project>
