@@ -1,5 +1,8 @@
-﻿using System.Net.Http;
+﻿using System.Net;
+using System.Net.Http;
 using aweXpect.Core;
+using aweXpect.Helpers;
+using aweXpect.Results;
 
 namespace aweXpect;
 
@@ -10,4 +13,19 @@ public static partial class ThatHttpResponseMessage
 	/// </summary>
 	public static StatusCodeResult HasStatusCode(this IThat<HttpResponseMessage?> source)
 		=> new(source, a => a.StatusCode);
+
+	/// <summary>
+	///     Verifies that the status code of the <see cref="HttpResponseMessage" /> subject
+	///     is equal to the <paramref name="expected" /> value.
+	/// </summary>
+	public static AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> HasStatusCode(
+		this IThat<HttpResponseMessage?> source,
+		HttpStatusCode? expected)
+		=> new(source.ThatIs().ExpectationBuilder.AddConstraint((it, _) =>
+			new StatusCodeResult.PropertyConstraint(
+				it,
+				expected,
+				m => m.StatusCode,
+				(a, e) => a.Equals(e),
+				$"has status code {Formatter.Format(expected)}")), source);
 }

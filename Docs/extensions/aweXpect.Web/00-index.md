@@ -24,7 +24,7 @@ You can verify, that the status code of the `HttpResponseMessage`:
 ```csharp
 HttpResponseMessage response = await httpClient.GetAsync("https://github.com/aweXpect/aweXpect");
 await Expect.That(response).HasStatusCode().Success();
-await Expect.That(response).HasStatusCode().EqualTo(HttpStatusCode.OK);
+await Expect.That(response).HasStatusCode(HttpStatusCode.OK);
 
 response = await httpClient.PostAsync("https://github.com/aweXpect/aweXpect", new StringContent(""));
 await Expect.That(response).HasStatusCode().ClientError().Or.HasStatusCode().ServerError().Or.HasStatusCode().Redirection();

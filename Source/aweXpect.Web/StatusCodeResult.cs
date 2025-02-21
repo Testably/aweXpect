@@ -110,7 +110,7 @@ public class StatusCodeResult(
 					"has an error status code (4xx or 5xx)")),
 			source);
 
-	private readonly struct PropertyConstraint(
+	internal readonly struct PropertyConstraint(
 		string it,
 		HttpStatusCode? expected,
 		Func<HttpResponseMessage, HttpStatusCode> mapper,
