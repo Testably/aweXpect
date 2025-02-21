@@ -18,8 +18,6 @@ HttpResponseMessage response = await httpClient.GetAsync("https://github.com/awe
 await Expect.That(response).HasContent("*aweXpect*").AsWildcard();
 ```
 
-You can use the same configuration options as when [comparing strings](/docs/expectations/string#equality).
-
 ## Status
 
 You can verify, that the status code of the `HttpResponseMessage`:
