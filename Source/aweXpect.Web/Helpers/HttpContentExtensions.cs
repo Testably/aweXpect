@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 
 namespace aweXpect.Helpers;
@@ -37,12 +38,12 @@ internal static class HttpContentExtensions
 		}
 	}
 
-	public static bool TryGetMediaType(this HttpContent? content, out string? contentType)
+	public static bool TryGetMediaType(this HttpContent? content, [NotNullWhen(true)] out string? contentType)
 	{
 		try
 		{
 			contentType = content?.Headers?.ContentType?.MediaType;
-			return true;
+			return contentType != null;
 		}
 		catch (Exception)
 		{

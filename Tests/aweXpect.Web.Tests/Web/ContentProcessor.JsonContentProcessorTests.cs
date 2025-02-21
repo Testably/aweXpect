@@ -16,7 +16,7 @@ public sealed partial class ContentProcessor
 		{
 			HttpResponseMessage httpResponse = new HttpResponseBuilder()
 				.WithContent("{\"my-content\":1")
-				.WithMediaType(contentType);
+				.WithContentType(contentType);
 
 			async Task Act()
 				=> await That(httpResponse).HasStatusCode().EqualTo(HttpStatusCode.Accepted);
@@ -43,7 +43,7 @@ public sealed partial class ContentProcessor
 		{
 			HttpResponseMessage httpResponse = new HttpResponseBuilder()
 				.WithContent("{\"my-content\":1}")
-				.WithMediaType(contentType);
+				.WithContentType(contentType);
 
 			async Task Act()
 				=> await That(httpResponse).HasStatusCode().EqualTo(HttpStatusCode.Accepted);

@@ -46,9 +46,9 @@ internal sealed class HttpResponseBuilder
 		return this;
 	}
 
-	public HttpResponseBuilder WithMediaType(string contentType)
+	public HttpResponseBuilder WithContentType(string mediaType)
 	{
-		_contentType = contentType;
+		_contentType = mediaType;
 		return this;
 	}
 

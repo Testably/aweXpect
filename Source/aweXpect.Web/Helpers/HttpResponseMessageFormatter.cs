@@ -71,8 +71,9 @@ internal static class HttpResponseMessageFormatter
 		httpContent.TryGetMediaType(out string? contentType);
 		httpContent.TryGetContentLength(out long contentLength);
 		messageBuilder.Append(indentation)
-			.AppendLine(
-				$"*Content ({contentType}) with length {contentLength} could not be handled by any processor!*");
+			.AppendLine(contentType == null
+				? $"*Content with length {contentLength}*"
+				: $"*Content ({contentType}) with length {contentLength}*");
 	}
 
 	private static void AppendHeaders(

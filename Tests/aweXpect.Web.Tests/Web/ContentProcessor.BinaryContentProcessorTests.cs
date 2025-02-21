@@ -11,7 +11,7 @@ public sealed partial class ContentProcessor
 		[Fact]
 		public async Task BinaryContentProcessor_Test()
 		{
-			HttpResponseMessage httpResponse = new HttpResponseBuilder().WithContent("foo").WithMediaType("text/css");
+			HttpResponseMessage httpResponse = new HttpResponseBuilder().WithContent("foo").WithContentType("text/css");
 
 			async Task Act()
 				=> await That(httpResponse).HasStatusCode().EqualTo(HttpStatusCode.Accepted);
@@ -43,7 +43,7 @@ public sealed partial class ContentProcessor
 			byte[] bytes = "foo-bar"u8.ToArray();
 			HttpResponseMessage httpResponse = new HttpResponseBuilder()
 				.WithContent(bytes)
-				.WithMediaType(contentType);
+				.WithContentType(contentType);
 
 			async Task Act()
 				=> await That(httpResponse).HasStatusCode().EqualTo(HttpStatusCode.Accepted);
