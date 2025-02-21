@@ -27,16 +27,17 @@ public sealed partial class ContentProcessor
 					=> await That(httpResponse).HasStatusCode().EqualTo(HttpStatusCode.Accepted);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that httpResponse
-					             has status code 202 Accepted,
-					             but it had status code 200 OK
+					.WithMessage($$"""
+					               Expected that httpResponse
+					               has status code 202 Accepted,
+					               but it had status code 200 OK
 
-					             HTTP-Request:
-					               HTTP/1.1 200 OK
-					               {"my-content":1}
-					               The originating request was <null>
-					             """);
+					               HTTP-Request:
+					                 HTTP/1.1 200 OK
+					                   Content-Type: {{contentType}}
+					                 {"my-content":1}
+					                 The originating request was <null>
+					               """);
 			}
 		}
 
@@ -62,6 +63,7 @@ public sealed partial class ContentProcessor
 
 				             HTTP-Request:
 				               HTTP/1.1 200 OK
+				                 Content-Type: text/css
 				               body {
 				                   background-color: powderblue;
 				               }
@@ -86,16 +88,17 @@ public sealed partial class ContentProcessor
 				=> await That(httpResponse).HasStatusCode().EqualTo(HttpStatusCode.Accepted);
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("""
-				             Expected that httpResponse
-				             has status code 202 Accepted,
-				             but it had status code 200 OK
+				.WithMessage($$"""
+				               Expected that httpResponse
+				               has status code 202 Accepted,
+				               but it had status code 200 OK
 
-				             HTTP-Request:
-				               HTTP/1.1 200 OK
-				               {"my-content":1}
-				               The originating request was <null>
-				             """);
+				               HTTP-Request:
+				                 HTTP/1.1 200 OK
+				                   Content-Type: {{contentType}}
+				                 {"my-content":1}
+				                 The originating request was <null>
+				               """);
 		}
 	}
 }

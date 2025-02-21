@@ -28,6 +28,7 @@ public sealed partial class ContentProcessor
 
 				             HTTP-Request:
 				               HTTP/1.1 200 OK
+				                 Content-Type: application/my-type
 				               *Content (application/my-type) with length 0*
 				               The originating request was <null>
 				             """);
@@ -50,6 +51,7 @@ public sealed partial class ContentProcessor
 
 				             HTTP-Request:
 				               HTTP/1.1 200 OK
+				                 Content-Type: application/my-type
 				               *Content (application/my-type) with length 0*
 				               The originating request was <null>
 				             """);

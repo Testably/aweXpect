@@ -29,9 +29,11 @@ public sealed partial class ThatHttpResponseMessage
 
 					             HTTP-Request:
 					               HTTP/1.1 400 BadRequest
+					                 Content-Type: text/plain; charset=utf-8
 					               some content
 					               The originating request was:
 					                 GET https://example.com/ HTTP 1.1
+					                   Content-Type: text/plain; charset=utf-8
 					                 request content
 					             """);
 			}
@@ -54,6 +56,7 @@ public sealed partial class ThatHttpResponseMessage
 
 					             HTTP-Request:
 					               HTTP/1.1 400 BadRequest
+					                 Content-Type: text/plain; charset=utf-8
 					               some content
 					               The originating request was <null>
 					             """);

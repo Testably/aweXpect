@@ -24,6 +24,7 @@ public sealed partial class ContentProcessor
 
 				             HTTP-Request:
 				               HTTP/1.1 200 OK
+				                 Content-Type: text/css
 				               foo
 				               The originating request was <null>
 				             """);
@@ -56,6 +57,7 @@ public sealed partial class ContentProcessor
 
 				               HTTP-Request:
 				                 HTTP/1.1 200 OK
+				                   Content-Type: {{contentType}}
 				                 *Content is binary ({{contentType}}) with length {{bytes.Length}}*
 				                 The originating request was <null>
 				               """);

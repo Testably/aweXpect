@@ -26,9 +26,10 @@ internal static class HttpResponseMessageFormatter
 			.Append(response.StatusCode)
 			.AppendLine();
 
-		IContentProcessor[]? contentProcessors = Customize.aweXpect.Web().ContentProcessors.Get();
+		IContentProcessor[] contentProcessors = Customize.aweXpect.Web().ContentProcessors.Get();
 
-		AppendHeaders(messageBuilder, response.Headers, indentation);
+		AppendHeaders(messageBuilder, response.Headers, indentation + indentation);
+		AppendHeaders(messageBuilder, response.Content.Headers, indentation + indentation);
 		await AppendContent(contentProcessors, messageBuilder, response.Content, indentation, cancellationToken);
 
 		HttpRequestMessage? request = response.RequestMessage;
@@ -44,9 +45,10 @@ internal static class HttpResponseMessageFormatter
 				.Append(request.RequestUri).Append(" HTTP ").Append(request.Version)
 				.AppendLine();
 
-			AppendHeaders(messageBuilder, request.Headers, indentation);
+			AppendHeaders(messageBuilder, request.Headers, indentation + indentation + indentation);
 			if (request.Content != null)
 			{
+				AppendHeaders(messageBuilder, request.Content.Headers, indentation + indentation + indentation);
 				await AppendContent(contentProcessors, messageBuilder, request.Content, indentation + indentation,
 					cancellationToken);
 			}
@@ -86,7 +88,7 @@ internal static class HttpResponseMessageFormatter
 		{
 			foreach (string headerValue in header.Value)
 			{
-				messageBuilder.Append(indentation).Append(indentation)
+				messageBuilder.Append(indentation)
 					.Append(header.Key).Append(": ").AppendLine(headerValue);
 			}
 		}

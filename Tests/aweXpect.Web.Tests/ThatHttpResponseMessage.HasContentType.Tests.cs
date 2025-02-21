@@ -45,6 +45,7 @@ public sealed partial class ThatHttpResponseMessage
 
 					             HTTP-Request:
 					               HTTP/1.1 200 OK
+					                 Content-Type: text/other-content-type
 					               some content
 					               The originating request was <null>
 					             """);

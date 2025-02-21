@@ -22,17 +22,18 @@ public sealed partial class ContentProcessor
 				=> await That(httpResponse).HasStatusCode().EqualTo(HttpStatusCode.Accepted);
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("""
-				             Expected that httpResponse
-				             has status code 202 Accepted,
-				             but it had status code 200 OK
+				.WithMessage($$"""
+				               Expected that httpResponse
+				               has status code 202 Accepted,
+				               but it had status code 200 OK
 
-				             HTTP-Request:
-				               HTTP/1.1 200 OK
-				               {"my-content":1
-				               *** JSON parse error: '1' is an invalid end of a number. Expected a delimiter. LineNumber: 0 | BytePositionInLine: 15. ***
-				               The originating request was <null>
-				             """);
+				               HTTP-Request:
+				                 HTTP/1.1 200 OK
+				                   Content-Type: {{contentType}}
+				                 {"my-content":1
+				                 *** JSON parse error: '1' is an invalid end of a number. Expected a delimiter. LineNumber: 0 | BytePositionInLine: 15. ***
+				                 The originating request was <null>
+				               """);
 		}
 
 		[Theory]
@@ -49,18 +50,19 @@ public sealed partial class ContentProcessor
 				=> await That(httpResponse).HasStatusCode().EqualTo(HttpStatusCode.Accepted);
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("""
-				             Expected that httpResponse
-				             has status code 202 Accepted,
-				             but it had status code 200 OK
+				.WithMessage($$"""
+				               Expected that httpResponse
+				               has status code 202 Accepted,
+				               but it had status code 200 OK
 
-				             HTTP-Request:
-				               HTTP/1.1 200 OK
-				               {
-				                 "my-content": 1
-				               }
-				               The originating request was <null>
-				             """);
+				               HTTP-Request:
+				                 HTTP/1.1 200 OK
+				                   Content-Type: {{contentType}}
+				                 {
+				                   "my-content": 1
+				                 }
+				                 The originating request was <null>
+				               """);
 		}
 	}
 }

@@ -36,6 +36,7 @@ public class CommentsTests(WebApplicationFactory<Program> factory) : IClassFixtu
 
 			             HTTP-Request:
 			               HTTP/1.1 200 OK
+			                 Content-Type: application/json; charset=utf-8
 			               [
 			                 {
 			                   "id": 1,
