@@ -8,4 +8,8 @@
 		<PackageReference Include="aweXpect.Core"/>
 	</ItemGroup>
 
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+		<PackageReference Include="System.Text.Json"/>
+	</ItemGroup>
+
 </Project>

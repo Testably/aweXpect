@@ -5,9 +5,11 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using aweXpect.Helpers;
+using aweXpect.Customization;
+using aweXpect.Web;
+using aweXpect.Web.ContentProcessors;
 
-namespace aweXpect;
+namespace aweXpect.Helpers;
 
 internal static class HttpResponseMessageFormatter
 {
@@ -24,8 +26,10 @@ internal static class HttpResponseMessageFormatter
 			.Append(response.StatusCode)
 			.AppendLine();
 
+		IContentProcessor[]? contentProcessors = Customize.aweXpect.Web().ContentProcessors.Get();
+
 		AppendHeaders(messageBuilder, response.Headers, indentation);
-		await AppendContent(messageBuilder, response.Content, indentation, cancellationToken);
+		await AppendContent(contentProcessors, messageBuilder, response.Content, indentation, cancellationToken);
 
 		HttpRequestMessage? request = response.RequestMessage;
 		if (request == null)
@@ -43,7 +47,7 @@ internal static class HttpResponseMessageFormatter
 			AppendHeaders(messageBuilder, request.Headers, indentation);
 			if (request.Content != null)
 			{
-				await AppendContent(messageBuilder, request.Content, indentation + indentation,
+				await AppendContent(contentProcessors, messageBuilder, request.Content, indentation + indentation,
 					cancellationToken);
 			}
 		}
@@ -51,24 +55,24 @@ internal static class HttpResponseMessageFormatter
 		return messageBuilder.ToString().TrimEnd();
 	}
 
-	private static async Task AppendContent(StringBuilder messageBuilder,
-		HttpContent content,
+	private static async Task AppendContent(IContentProcessor[] contentProcessors, StringBuilder messageBuilder,
+		HttpContent httpContent,
 		string indentation,
 		CancellationToken cancellationToken)
 	{
-		if (content is StringContent or FormUrlEncodedContent)
+		foreach (IContentProcessor? contentProcessor in contentProcessors)
 		{
-#if NETSTANDARD2_0
-			string stringContent = await content.ReadAsStringAsync();
-#else
-			string stringContent = await content.ReadAsStringAsync(cancellationToken);
-#endif
-			messageBuilder.AppendLine(stringContent.Indent(indentation));
+			if (await contentProcessor.AppendContentInfo(messageBuilder, httpContent, indentation, cancellationToken))
+			{
+				return;
+			}
 		}
-		else
-		{
-			messageBuilder.Append(indentation).AppendLine("Content is binary");
-		}
+
+		httpContent.TryGetMediaType(out string? contentType);
+		httpContent.TryGetContentLength(out long contentLength);
+		messageBuilder.Append(indentation)
+			.AppendLine(
+				$"*Content ({contentType}) with length {contentLength} could not be handled by any processor!*");
 	}
 
 	private static void AppendHeaders(

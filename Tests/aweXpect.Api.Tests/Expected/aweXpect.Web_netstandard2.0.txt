@@ -19,3 +19,43 @@ namespace aweXpect
         public static aweXpect.StatusCodeResult HasStatusCode(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source) { }
     }
 }
+namespace aweXpect.Web.ContentProcessors
+{
+    public class BinaryContentProcessor : aweXpect.Web.ContentProcessors.IContentProcessor
+    {
+        public BinaryContentProcessor() { }
+        public System.Threading.Tasks.Task<bool> AppendContentInfo(System.Text.StringBuilder messageBuilder, System.Net.Http.HttpContent httpContent, string indentation, System.Threading.CancellationToken cancellationToken = default) { }
+    }
+    public interface IContentProcessor
+    {
+        System.Threading.Tasks.Task<bool> AppendContentInfo(System.Text.StringBuilder messageBuilder, System.Net.Http.HttpContent httpContent, string indentation, System.Threading.CancellationToken cancellationToken = default);
+    }
+    public class JsonContentProcessor : aweXpect.Web.ContentProcessors.IContentProcessor
+    {
+        public JsonContentProcessor() { }
+        public System.Threading.Tasks.Task<bool> AppendContentInfo(System.Text.StringBuilder messageBuilder, System.Net.Http.HttpContent httpContent, string indentation, System.Threading.CancellationToken cancellationToken = default) { }
+    }
+    public class StringContentProcessor : aweXpect.Web.ContentProcessors.IContentProcessor
+    {
+        public StringContentProcessor() { }
+        public System.Threading.Tasks.Task<bool> AppendContentInfo(System.Text.StringBuilder messageBuilder, System.Net.Http.HttpContent httpContent, string indentation, System.Threading.CancellationToken cancellationToken = default) { }
+    }
+}
+namespace aweXpect.Web
+{
+    public static class WebAwexpectCustomizationExtensions
+    {
+        public static aweXpect.Web.WebAwexpectCustomizationExtensions.WebCustomization Web(this aweXpect.Customization.AwexpectCustomization awexpectCustomization) { }
+        public class WebCustomization : aweXpect.Customization.ICustomizationValueUpdater<aweXpect.Web.WebAwexpectCustomizationExtensions.WebCustomizationValue>
+        {
+            public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Web.ContentProcessors.IContentProcessor[]> ContentProcessors { get; }
+            public aweXpect.Web.WebAwexpectCustomizationExtensions.WebCustomizationValue Get() { }
+            public aweXpect.Customization.CustomizationLifetime Update(System.Func<aweXpect.Web.WebAwexpectCustomizationExtensions.WebCustomizationValue, aweXpect.Web.WebAwexpectCustomizationExtensions.WebCustomizationValue> update) { }
+        }
+        public class WebCustomizationValue : System.IEquatable<aweXpect.Web.WebAwexpectCustomizationExtensions.WebCustomizationValue>
+        {
+            public WebCustomizationValue() { }
+            public aweXpect.Web.ContentProcessors.IContentProcessor[] ContentProcessors { get; init; }
+        }
+    }
+}
