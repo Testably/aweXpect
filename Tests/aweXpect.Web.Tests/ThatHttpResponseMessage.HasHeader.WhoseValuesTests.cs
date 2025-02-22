@@ -24,7 +24,7 @@ public sealed partial class ThatHttpResponseMessage
 					.WithMessage("""
 					             Expected that subject
 					             has a `x-some-other-key` header whose values has exactly 3 items,
-					             but it did not contain the expected header and the values was <null>
+					             but it did not contain the expected header
 
 					             HTTP-Request:
 					               HTTP/1.1 200 OK
