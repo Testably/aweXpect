@@ -2,6 +2,12 @@
 [assembly: System.Runtime.Versioning.TargetFramework(".NETCoreApp,Version=v8.0", FrameworkDisplayName=".NET 8.0")]
 namespace aweXpect
 {
+    public class HasHeaderValueResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat>
+    {
+        public aweXpect.Results.AndOrResult<TType, TThat> WhoseValue(System.Action<aweXpect.Core.IThat<string?>> expectations) { }
+        public aweXpect.Results.AndOrResult<TType, TThat> WhoseValues(System.Action<aweXpect.Core.IThat<string?[]?>> expectations) { }
+        public aweXpect.Results.StringEqualityResult<TType, TThat> WithValue(string? expected) { }
+    }
     public class StatusCodeResult
     {
         public StatusCodeResult(aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, System.Func<System.Net.Http.HttpResponseMessage, System.Net.HttpStatusCode> mapper) { }
@@ -17,6 +23,7 @@ namespace aweXpect
     {
         public static aweXpect.Results.StringEqualityTypeResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasContent(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, string expected) { }
         public static aweXpect.Results.StringEqualityTypeResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasContentType(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, string expected) { }
+        public static aweXpect.HasHeaderValueResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasHeader(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, string expected) { }
         public static aweXpect.StatusCodeResult HasStatusCode(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source) { }
         public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasStatusCode(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, System.Net.HttpStatusCode? expected) { }
     }

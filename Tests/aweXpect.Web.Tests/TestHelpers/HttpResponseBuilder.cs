@@ -9,6 +9,7 @@ namespace aweXpect.Web.Tests.TestHelpers;
 internal sealed class HttpResponseBuilder
 {
 	private readonly Dictionary<string, string> _headers = new();
+	private readonly Dictionary<string, string[]> _multiHeaders = new();
 	private HttpContent? _content;
 	private string? _contentType;
 	private HttpRequestBuilder? _requestBuilder;
@@ -46,6 +47,12 @@ internal sealed class HttpResponseBuilder
 		return this;
 	}
 
+	public HttpResponseBuilder WithHeaders(string name, params string[] values)
+	{
+		_multiHeaders.Add(name, values);
+		return this;
+	}
+
 	public HttpResponseBuilder WithContentType(string mediaType)
 	{
 		_contentType = mediaType;
@@ -75,6 +82,11 @@ internal sealed class HttpResponseBuilder
 		}
 
 		foreach (KeyValuePair<string, string> header in _headers)
+		{
+			httpResponseMessage.Headers.Add(header.Key, header.Value);
+		}
+
+		foreach (KeyValuePair<string, string[]> header in _multiHeaders)
 		{
 			httpResponseMessage.Headers.Add(header.Key, header.Value);
 		}

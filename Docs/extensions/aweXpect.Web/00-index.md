@@ -2,8 +2,43 @@
 
 Expectations for `HttpClient`.
 
-
 ## `HttpResponseMessage`
+
+### Status
+
+You can verify the status code of the `HttpResponseMessage`:
+
+```csharp
+HttpResponseMessage response = await httpClient.GetAsync("https://github.com/aweXpect/aweXpect.Web");
+await Expect.That(response).HasStatusCode().Success();
+await Expect.That(response).HasStatusCode(HttpStatusCode.OK);
+
+response = await httpClient.PostAsync("https://github.com/aweXpect/aweXpect.Web", new StringContent(""));
+await Expect.That(response).HasStatusCode().ClientError().Or.HasStatusCode().ServerError().Or.HasStatusCode().Redirection();
+```
+
+### Header
+
+You can verify the headers of the `HttpResponseMessage`:
+
+```csharp
+HttpResponseMessage response = await httpClient.GetAsync("https://github.com/aweXpect/aweXpect.Web");
+
+await Expect.That(response).HasHeader("X-GitHub-Request-Id");
+await Expect.That(response).HasHeader("Cache-Control")
+    .WithValue("must-revalidate, max-age=0, private");
+```
+
+You can also add additional expectations on the header value(s):
+
+```csharp
+HttpResponseMessage response = await httpClient.GetAsync("https://github.com/aweXpect/aweXpect.Web");
+
+await Expect.That(response).HasHeader("X-GitHub-Request-Id")
+    .WhoseValue(value => value.IsNotEmpty());
+await Expect.That(response).HasHeader("Vary")
+    .WhoseValues(values => values.Contains("Turbo-Frame"));
+```
 
 ### Content
 
@@ -16,19 +51,6 @@ await Expect.That(response).HasContent("*aweXpect*").AsWildcard();
 ```
 
 You can use the same configuration options as when [comparing strings](/docs/expectations/string#equality).
-
-### Status code
-
-You can verify, that the status code of the `HttpResponseMessage`:
-
-```csharp
-HttpResponseMessage response = await httpClient.GetAsync("https://github.com/aweXpect/aweXpect");
-await Expect.That(response).HasStatusCode().Success();
-await Expect.That(response).HasStatusCode(HttpStatusCode.OK);
-
-response = await httpClient.PostAsync("https://github.com/aweXpect/aweXpect", new StringContent(""));
-await Expect.That(response).HasStatusCode().ClientError().Or.HasStatusCode().ServerError().Or.HasStatusCode().Redirection();
-```
 
 Great care was taken to provide as much information as possible, when a status verification failed.  
 The response could look similar to:
@@ -48,4 +70,3 @@ The response could look similar to:
 >   The originating request was:
 >     GET https://github.com/aweXpect/missing-repo HTTP 1.1
 > ```
-
