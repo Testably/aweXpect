@@ -14,10 +14,15 @@ namespace aweXpect.Helpers;
 internal static class HttpResponseMessageFormatter
 {
 	public static async Task<string> Format(
-		HttpResponseMessage response,
+		HttpResponseMessage? response,
 		string indentation,
 		CancellationToken cancellationToken)
 	{
+		if (response == null)
+		{
+			return "<null>";
+		}
+
 		StringBuilder messageBuilder = new();
 
 		messageBuilder.Append(indentation)

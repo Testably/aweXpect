@@ -20,6 +20,28 @@ public class CommentsTests(WebApplicationFactory<Program> factory) : IClassFixtu
 	}
 
 	[Fact]
+	public async Task GetComments_ShouldReturnExpectedBody()
+	{
+		HttpClient client = factory.CreateClient();
+
+		HttpResponseMessage response = await client.GetAsync("/comments");
+
+		await Expect.That(response).HasContent(which =>
+			which.IsValidJsonMatching([
+				new
+				{
+					author = "Valentin",
+					body = "This is my first example comment",
+				},
+				new
+				{
+					author = "Breuß",
+					body = "Another comment (my second)",
+				},
+			]));
+	}
+
+	[Fact]
 	public async Task GetComments_WhenCheckingForInvalidStatusCode_ShouldHaveCorrectFailureMessage()
 	{
 		HttpClient client = factory.CreateClient();

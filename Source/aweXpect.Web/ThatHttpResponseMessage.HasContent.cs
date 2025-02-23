@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
@@ -23,6 +24,25 @@ public static partial class ThatHttpResponseMessage
 				new HasContentConstraint(it, expected, options)),
 			source,
 			options);
+	}
+
+	/// <summary>
+	///     Verifies that the string content satisfies the <paramref name="expectations" />
+	/// </summary>
+	public static AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>>
+		HasContent(this IThat<HttpResponseMessage?> source, Action<IThat<string?>> expectations)
+	{
+		return new AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
+			source.ThatIs().ExpectationBuilder
+				.ForAsyncMember(MemberAccessor<HttpResponseMessage, Task<string?>>.FromFunc(
+						async m => await m.Content.ReadAsStringAsync(),
+						" the string content"),
+					(member, stringBuilder) => stringBuilder.Append("has a string content which "))
+				.AddContext(async httpResponse => new ConstraintResult.Context(
+					"HTTP-Request",
+					await HttpResponseMessageFormatter.Format(httpResponse, "  ", CancellationToken.None)))
+				.AddExpectations(e => expectations(new ThatSubject<string?>(e)), ExpectationGrammars.Nested),
+			source);
 	}
 
 	private readonly struct HasContentConstraint(string it, string expected, StringEqualityOptions options)
