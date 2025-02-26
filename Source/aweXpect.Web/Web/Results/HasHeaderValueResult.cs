@@ -4,7 +4,7 @@ using aweXpect.Core.Constraints;
 using aweXpect.Options;
 using aweXpect.Results;
 
-namespace aweXpect;
+namespace aweXpect.Web.Results;
 
 /// <summary>
 ///     The result on a header value.

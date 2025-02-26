@@ -3,6 +3,7 @@ using System.Net.Http;
 using aweXpect.Core;
 using aweXpect.Helpers;
 using aweXpect.Results;
+using aweXpect.Web.Results;
 
 namespace aweXpect;
 

@@ -75,3 +75,19 @@ The response could look similar to:
 >   The originating request was:
 >     GET https://github.com/aweXpect/missing-repo HTTP 1.1
 > ```
+
+### Problem Details
+
+You can verify that the content contains a valid [ProblemDetails](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.problemdetails) object:
+
+```csharp
+HttpResponseMessage response = // a call that returns a problem details object
+
+await Expect.That(response)
+    .HasProblemDetails("https://httpstatuses.com/404")
+    .WithTitle("Error: Not Found")
+    .WithStatus(404)
+    .WithInstance("93c8f977-7ff7-46ed-900f-7b6264624a31");
+```
+
+For all string values you can use the same configuration options as when [comparing strings](https://awexpect.com/docs/expectations/string#equality). 

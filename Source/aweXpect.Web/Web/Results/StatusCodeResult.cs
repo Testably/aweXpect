@@ -8,7 +8,7 @@ using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
 using aweXpect.Results;
 
-namespace aweXpect;
+namespace aweXpect.Web.Results;
 
 /// <summary>
 ///     Result for an <see langword="HttpStatusCode" /> property.

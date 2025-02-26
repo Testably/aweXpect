@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
+using aweXpect.Web.Results;
 
 namespace aweXpect;
 

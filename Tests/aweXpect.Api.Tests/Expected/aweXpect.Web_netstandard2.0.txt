@@ -2,30 +2,14 @@
 [assembly: System.Runtime.Versioning.TargetFramework(".NETStandard,Version=v2.0", FrameworkDisplayName=".NET Standard 2.0")]
 namespace aweXpect
 {
-    public class HasHeaderValueResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat>
-    {
-        public aweXpect.Results.AndOrResult<TType, TThat> WhoseValue(System.Action<aweXpect.Core.IThat<string?>> expectations) { }
-        public aweXpect.Results.AndOrResult<TType, TThat> WhoseValues(System.Action<aweXpect.Core.IThat<string?[]?>> expectations) { }
-        public aweXpect.Results.StringEqualityResult<TType, TThat> WithValue(string? expected) { }
-    }
-    public class StatusCodeResult
-    {
-        public StatusCodeResult(aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, System.Func<System.Net.Http.HttpResponseMessage, System.Net.HttpStatusCode> mapper) { }
-        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> ClientError() { }
-        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> DifferentTo(System.Net.HttpStatusCode? unexpected) { }
-        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> EqualTo(System.Net.HttpStatusCode? expected) { }
-        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> Error() { }
-        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> Redirection() { }
-        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> ServerError() { }
-        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> Success() { }
-    }
     public static class ThatHttpResponseMessage
     {
         public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasContent(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, System.Action<aweXpect.Core.IThat<string?>> expectations) { }
         public static aweXpect.Results.StringEqualityTypeResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasContent(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, string expected) { }
         public static aweXpect.Results.StringEqualityTypeResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasContentType(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, string expected) { }
-        public static aweXpect.HasHeaderValueResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasHeader(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, string expected) { }
-        public static aweXpect.StatusCodeResult HasStatusCode(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source) { }
+        public static aweXpect.Web.Results.HasHeaderValueResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasHeader(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, string expected) { }
+        public static aweXpect.Web.Results.ProblemDetailsResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>>.String HasProblemDetails(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, string? type = null) { }
+        public static aweXpect.Web.Results.StatusCodeResult HasStatusCode(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source) { }
         public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasStatusCode(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, System.Net.HttpStatusCode? expected) { }
     }
 }
@@ -49,6 +33,58 @@ namespace aweXpect.Web.ContentProcessors
     {
         public StringContentProcessor() { }
         public System.Threading.Tasks.Task<bool> AppendContentInfo(System.Text.StringBuilder messageBuilder, System.Net.Http.HttpContent httpContent, string indentation, System.Threading.CancellationToken cancellationToken = default) { }
+    }
+}
+namespace aweXpect.Web.Results
+{
+    public class HasHeaderValueResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat>
+    {
+        public aweXpect.Results.AndOrResult<TType, TThat> WhoseValue(System.Action<aweXpect.Core.IThat<string?>> expectations) { }
+        public aweXpect.Results.AndOrResult<TType, TThat> WhoseValues(System.Action<aweXpect.Core.IThat<string?[]?>> expectations) { }
+        public aweXpect.Results.StringEqualityResult<TType, TThat> WithValue(string? expected) { }
+    }
+    public class ProblemDetailsOptions
+    {
+        public ProblemDetailsOptions() { }
+        public string? Detail { get; }
+        public string? Instance { get; }
+        public int? Status { get; }
+        public string? Title { get; }
+        public bool IsDetailConsideredEqualTo(string? detail) { }
+        public bool IsInstanceConsideredEqualTo(string? instance) { }
+        public bool IsTitleConsideredEqualTo(string? title) { }
+        public override string ToString() { }
+        public aweXpect.Options.StringEqualityOptions WithDetail(string detail) { }
+        public aweXpect.Options.StringEqualityOptions WithInstance(string instance) { }
+        public void WithStatus(int status) { }
+        public aweXpect.Options.StringEqualityOptions WithTitle(string title) { }
+    }
+    public class ProblemDetailsResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>>
+    {
+        public ProblemDetailsResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Web.Results.ProblemDetailsOptions options) { }
+        public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String WithDetail(string detail) { }
+        public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String WithInstance(string instance) { }
+        public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat> WithStatus(int status) { }
+        public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String WithTitle(string title) { }
+        public class String : aweXpect.Results.StringEqualityResult<TType, TThat, aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String>
+        {
+            public String(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.StringEqualityOptions stringEqualityOptions, aweXpect.Web.Results.ProblemDetailsOptions options) { }
+            public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String WithDetail(string detail) { }
+            public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String WithInstance(string instance) { }
+            public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat> WithStatus(int status) { }
+            public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String WithTitle(string title) { }
+        }
+    }
+    public class StatusCodeResult
+    {
+        public StatusCodeResult(aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, System.Func<System.Net.Http.HttpResponseMessage, System.Net.HttpStatusCode> mapper) { }
+        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> ClientError() { }
+        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> DifferentTo(System.Net.HttpStatusCode? unexpected) { }
+        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> EqualTo(System.Net.HttpStatusCode? expected) { }
+        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> Error() { }
+        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> Redirection() { }
+        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> ServerError() { }
+        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> Success() { }
     }
 }
 namespace aweXpect.Web
