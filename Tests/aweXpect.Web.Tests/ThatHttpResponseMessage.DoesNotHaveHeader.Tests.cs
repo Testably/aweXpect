@@ -38,12 +38,11 @@ public sealed partial class ThatHttpResponseMessage
 					             does not have a `x-my-header` header,
 					             but it did contain the `x-my-header` header: ["some header"]
 
-					             HTTP-Request:
-					               HTTP/1.1 200 OK
+					             HTTP-Response:
+					               200 OK HTTP/1.1
 					                 x-my-header: some header
 					                 Content-Type: text/plain; charset=utf-8
 					               some content
-					               The originating request was <null>
 					             """);
 			}
 

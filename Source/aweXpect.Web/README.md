@@ -8,7 +8,54 @@
 
 Web extensions for [aweXpect](https://github.com/aweXpect/aweXpect).
 
-## Status
+## `HttpRequestMessage`
+
+### Header
+
+You can verify the headers of the `HttpRequestMessage`:
+
+```csharp
+HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "https://github.com/aweXpect/aweXpect.Web");
+// Add headers
+
+await Expect.That(request).HasHeader("X-GitHub-Request-Id");
+await Expect.That(request).HasHeader("Cache-Control")
+    .WithValue("must-revalidate, max-age=0, private");
+
+await Expect.That(request).DoesNotHaveHeader("X-My-Header");
+```
+
+You can also add additional expectations on the header value(s):
+
+```csharp
+HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "https://github.com/aweXpect/aweXpect.Web");
+// Add headers
+
+await Expect.That(request).HasHeader("X-GitHub-Request-Id")
+    .WhoseValue(value => value.IsNotEmpty());
+await Expect.That(request).HasHeader("Vary")
+    .WhoseValues(values => values.Contains("Turbo-Frame"));
+```
+
+### Content
+
+You can verify, the content of the `HttpRequestMessage`:
+
+```csharp
+var request = new HttpRequestMessage(HttpMethod.Post, "https://github.com/aweXpect/aweXpect.Web")
+{
+	Content = new StringContent("my aweXpect content")
+};
+
+await Expect.That(request).HasContent("*aweXpect*").AsWildcard();
+```
+
+You can use the same configuration options as
+when [comparing strings](https://awexpect.com/docs/expectations/string#equality).
+
+## `HttpResponseMessage`
+
+### Status
 
 You can verify the status code of the `HttpResponseMessage`:
 
@@ -21,8 +68,7 @@ response = await httpClient.PostAsync("https://github.com/aweXpect/aweXpect.Web"
 await Expect.That(response).HasStatusCode().ClientError().Or.HasStatusCode().ServerError().Or.HasStatusCode().Redirection();
 ```
 
-
-## Header
+### Header
 
 You can verify the headers of the `HttpResponseMessage`:
 
@@ -47,8 +93,7 @@ await Expect.That(response).HasHeader("Vary")
     .WhoseValues(values => values.Contains("Turbo-Frame"));
 ```
 
-
-## Content
+### Content
 
 You can verify, the content of the `HttpResponseMessage`:
 
@@ -58,6 +103,8 @@ HttpResponseMessage response = await httpClient.GetAsync("https://github.com/awe
 await Expect.That(response).HasContent("*aweXpect*").AsWildcard();
 ```
 
+You can use the same configuration options as
+when [comparing strings](https://awexpect.com/docs/expectations/string#equality).
 
 Great care was taken to provide as much information as possible, when a status verification failed.  
 The response could look similar to:
@@ -67,20 +114,22 @@ The response could look similar to:
 > but it was 404 NotFound
 > 
 > HTTP-Request:
->   HTTP/1.1 404 NotFound
+>   GET https://github.com/aweXpect/missing-repo HTTP/1.1
+> 
+> HTTP-Response:
+>   404 NotFound HTTP/1.1
 >     Server: GitHub.com
 >     Date: Fri, 29 Nov 2024 07:55:47 GMT
 >     Cache-Control: no-cache
 >     Referrer-Policy: origin-when-cross-origin, strict-origin-when-cross-origin
 >     X-GitHub-Request-Id: DB30:24038B:287F716:29D98BD:67497384
 >   Content is binary
->   The originating request was:
->     GET https://github.com/aweXpect/missing-repo HTTP 1.1
 > ```
 
-### Problem Details
+#### Problem Details
 
-You can verify that the content contains a valid [ProblemDetails](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.problemdetails) object:
+You can verify that the content contains a
+valid [ProblemDetails](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.problemdetails) object:
 
 ```csharp
 HttpResponseMessage response = // a call that returns a problem details object
@@ -92,4 +141,5 @@ await Expect.That(response)
     .WithInstance("93c8f977-7ff7-46ed-900f-7b6264624a31");
 ```
 
-For all string values you can use the same configuration options as when [comparing strings](https://awexpect.com/docs/expectations/string#equality). 
+For all string values you can use the same configuration options as
+when [comparing strings](https://awexpect.com/docs/expectations/string#equality). 

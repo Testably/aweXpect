@@ -31,19 +31,15 @@ public static partial class ThatHttpResponseMessage
 	/// </summary>
 	public static AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>>
 		HasContent(this IThat<HttpResponseMessage?> source, Action<IThat<string?>> expectations)
-	{
-		return new AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
+		=> new(
 			source.ThatIs().ExpectationBuilder
 				.ForAsyncMember(MemberAccessor<HttpResponseMessage, Task<string?>>.FromFunc(
 						async m => await m.Content.ReadAsStringAsync(),
 						" the string content"),
 					(member, stringBuilder) => stringBuilder.Append("has a string content which "))
-				.AddContext(async httpResponse => new ConstraintResult.Context(
-					"HTTP-Request",
-					await HttpResponseMessageFormatter.Format(httpResponse, "  ", CancellationToken.None)))
+				.AddContexts(async httpResponse => await httpResponse.GetContexts())
 				.AddExpectations(e => expectations(new ThatSubject<string?>(e)), ExpectationGrammars.Nested),
 			source);
-	}
 
 	private readonly struct HasContentConstraint(string it, string expected, StringEqualityOptions options)
 		: IAsyncConstraint<HttpResponseMessage>
@@ -68,10 +64,9 @@ public static partial class ThatHttpResponseMessage
 				return new ConstraintResult.Success<HttpResponseMessage?>(actual, ToString());
 			}
 
-			string formattedResponse =
-				await HttpResponseMessageFormatter.Format(actual, "  ", cancellationToken);
-			return new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
-				options.GetExtendedFailure(it, message, expected)).WithContext("HTTP-Request", formattedResponse);
+			return await new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
+					options.GetExtendedFailure(it, message, expected))
+				.AddContext(actual, cancellationToken);
 		}
 
 		public override string ToString()

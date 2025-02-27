@@ -43,20 +43,16 @@ public static partial class ThatHttpResponseMessage
 
 			if (!actual.Content.TryGetMediaType(out string? contentType))
 			{
-				string formattedResponse =
-					await HttpResponseMessageFormatter.Format(actual, "  ", cancellationToken);
-				return new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
-					$"{it} had no `Content-Type` header")
-					.WithContext("HTTP-Request", formattedResponse);
+				return await new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
+						$"{it} had no `Content-Type` header")
+					.AddContext(actual, cancellationToken);
 			}
 
 			if (!options.AreConsideredEqual(contentType, expected))
 			{
-				string formattedResponse =
-					await HttpResponseMessageFormatter.Format(actual, "  ", cancellationToken);
-				return new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
+				return await new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
 						options.GetExtendedFailure(it, contentType, expected))
-					.WithContext("HTTP-Request", formattedResponse);
+					.AddContext(actual, cancellationToken);
 			}
 
 			return new ConstraintResult.Success<HttpResponseMessage?>(actual, ToString());

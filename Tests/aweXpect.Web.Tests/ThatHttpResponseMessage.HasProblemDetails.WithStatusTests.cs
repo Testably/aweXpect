@@ -30,15 +30,14 @@ public sealed partial class ThatHttpResponseMessage
 					               has a ProblemDetails content with any type and status {{expectedStatus}},
 					               but it had status {{actualStatus}}
 
-					               HTTP-Request:
-					                 HTTP/1.1 200 OK
+					               HTTP-Response:
+					                 200 OK HTTP/1.1
 					                   Content-Type: text/plain; charset=utf-8
 					                   Content-Length: *
 					                 {
 					                   "type": "my-type",
 					                   "status": {{actualStatus}}
 					                 }
-					                 The originating request was <null>
 					               """).AsWildcard();
 			}
 

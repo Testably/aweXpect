@@ -26,12 +26,10 @@ public sealed partial class ThatHttpResponseMessage
 					             has a `x-some-other-key` header whose value is equal to "some header",
 					             but it did not contain the expected header
 
-					             HTTP-Request:
-					               HTTP/1.1 200 OK
+					             HTTP-Response:
+					               200 OK HTTP/1.1
 					                 x-my-header: some header
 					                 Content-Type: text/plain; charset=utf-8
-					               
-					               The originating request was <null>
 					             """);
 			}
 

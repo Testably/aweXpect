@@ -51,15 +51,14 @@ public sealed partial class ThatHttpResponseMessage
 					                 "{{expectedTitle}}"
 					                  ↑ (expected)
 
-					               HTTP-Request:
-					                 HTTP/1.1 200 OK
+					               HTTP-Response:
+					                 200 OK HTTP/1.1
 					                   Content-Type: text/plain; charset=utf-8
 					                   Content-Length: *
 					                 {
 					                   "type": "my-type",
 					                   "title": "{{actualTitle}}"
 					                 }
-					                 The originating request was <null>
 					               """).AsWildcard();
 			}
 

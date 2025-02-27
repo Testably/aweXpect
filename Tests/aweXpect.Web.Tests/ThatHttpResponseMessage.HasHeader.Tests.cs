@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Net.Http;
+﻿using System.Net.Http;
 
 namespace aweXpect.Tests;
 
@@ -25,11 +24,10 @@ public sealed partial class ThatHttpResponseMessage
 					             has a `x-my-header` header,
 					             but it did not contain the expected header
 
-					             HTTP-Request:
-					               HTTP/1.1 200 OK
+					             HTTP-Response:
+					               200 OK HTTP/1.1
 					                 Content-Type: text/plain; charset=utf-8
 					               some content
-					               The originating request was <null>
 					             """);
 			}
 

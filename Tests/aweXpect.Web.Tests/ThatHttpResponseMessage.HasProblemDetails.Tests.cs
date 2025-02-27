@@ -40,8 +40,8 @@ public sealed partial class ThatHttpResponseMessage
 					               "could-be-SOME-guid "
 					                         ↑ (expected)
 
-					             HTTP-Request:
-					               HTTP/1.1 200 OK
+					             HTTP-Response:
+					               200 OK HTTP/1.1
 					                 Content-Type: text/plain; charset=utf-8
 					                 Content-Length: *
 					               {
@@ -50,7 +50,6 @@ public sealed partial class ThatHttpResponseMessage
 					                 "status": 404,
 					                 "instance": "could-be-some-guid"
 					               }
-					               The originating request was <null>
 					             """).AsWildcard();
 			}
 
@@ -73,14 +72,13 @@ public sealed partial class ThatHttpResponseMessage
 					             has a ProblemDetails content with type "foo",
 					             but it did not match the expected format because no 'type' property existed
 
-					             HTTP-Request:
-					               HTTP/1.1 200 OK
+					             HTTP-Response:
+					               200 OK HTTP/1.1
 					                 Content-Type: text/plain; charset=utf-8
 					                 Content-Length: *
 					               {
 					                 "no-type": "foo"
 					               }
-					               The originating request was <null>
 					             """).AsWildcard();
 			}
 
@@ -141,14 +139,13 @@ public sealed partial class ThatHttpResponseMessage
 					                 "{{expectedType}}"
 					                  ↑ (expected)
 
-					               HTTP-Request:
-					                 HTTP/1.1 200 OK
+					               HTTP-Response:
+					                 200 OK HTTP/1.1
 					                   Content-Type: text/plain; charset=utf-8
 					                   Content-Length: *
 					                 {
 					                   "type": "{{actualType}}"
 					                 }
-					                 The originating request was <null>
 					               """).AsWildcard();
 			}
 

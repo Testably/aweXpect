@@ -52,11 +52,9 @@ public static partial class ThatHttpResponseMessage
 				return new ConstraintResult.Success<HttpResponseMessage?>(actual, ToString());
 			}
 
-			string formattedResponse =
-				await HttpResponseMessageFormatter.Format(actual, "  ", cancellationToken);
-			return new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
+			return await new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
 					$"{it} did not contain the expected header", FurtherProcessingStrategy.IgnoreResult)
-				.WithContext("HTTP-Request", formattedResponse);
+				.AddContext(actual, cancellationToken);
 		}
 
 		public override string ToString()
@@ -81,12 +79,10 @@ public static partial class ThatHttpResponseMessage
 				return new ConstraintResult.Success<HttpResponseMessage?>(actual, ToString());
 			}
 
-			string formattedResponse =
-				await HttpResponseMessageFormatter.Format(actual, "  ", cancellationToken);
-			return new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
+			return await new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
 					$"{it} did contain the `{unexpected}` header: {Formatter.Format(foundHeader)}",
 					FurtherProcessingStrategy.IgnoreResult)
-				.WithContext("HTTP-Request", formattedResponse);
+				.AddContext(actual, cancellationToken);
 		}
 
 		public override string ToString()

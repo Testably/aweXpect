@@ -15,7 +15,7 @@ public sealed partial class ThatHttpResponseMessage
 				HttpResponseMessage subject = ResponseBuilder
 					.WithStatusCode(HttpStatusCode.BadRequest)
 					.WithContent("some content")
-					.WithRequest(HttpMethod.Get, "https://example.com")
+					.WithRequest(HttpMethod.Get, "https://awexpect.com")
 					.WithRequestContent("request content");
 
 				async Task Act()
@@ -28,13 +28,14 @@ public sealed partial class ThatHttpResponseMessage
 					             but it had status code 400 BadRequest
 
 					             HTTP-Request:
-					               HTTP/1.1 400 BadRequest
+					               GET https://awexpect.com/ HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					               request content
+
+					             HTTP-Response:
+					               400 BadRequest HTTP/1.1
 					                 Content-Type: text/plain; charset=utf-8
 					               some content
-					               The originating request was:
-					                 GET https://example.com/ HTTP 1.1
-					                   Content-Type: text/plain; charset=utf-8
-					                 request content
 					             """);
 			}
 
@@ -54,11 +55,10 @@ public sealed partial class ThatHttpResponseMessage
 					             has status code 200 OK,
 					             but it had status code 400 BadRequest
 
-					             HTTP-Request:
-					               HTTP/1.1 400 BadRequest
+					             HTTP-Response:
+					               400 BadRequest HTTP/1.1
 					                 Content-Type: text/plain; charset=utf-8
 					               some content
-					               The originating request was <null>
 					             """);
 			}
 

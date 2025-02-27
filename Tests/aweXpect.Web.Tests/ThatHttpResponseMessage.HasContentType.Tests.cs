@@ -43,11 +43,10 @@ public sealed partial class ThatHttpResponseMessage
 					               "text/content-type"
 					                     ↑ (expected)
 
-					             HTTP-Request:
-					               HTTP/1.1 200 OK
+					             HTTP-Response:
+					               200 OK HTTP/1.1
 					                 Content-Type: text/other-content-type
 					               some content
-					               The originating request was <null>
 					             """);
 			}
 
@@ -67,10 +66,9 @@ public sealed partial class ThatHttpResponseMessage
 					             has a `Content-Type` header equal to "text/content-type",
 					             but it had no `Content-Type` header
 
-					             HTTP-Request:
-					               HTTP/1.1 200 OK
+					             HTTP-Response:
+					               200 OK HTTP/1.1
 					               *Content with length 2*
-					               The originating request was <null>
 					             """);
 			}
 

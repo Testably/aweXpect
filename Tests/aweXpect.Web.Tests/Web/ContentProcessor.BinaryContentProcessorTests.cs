@@ -22,11 +22,10 @@ public sealed partial class ContentProcessor
 				             has status code 202 Accepted,
 				             but it had status code 200 OK
 
-				             HTTP-Request:
-				               HTTP/1.1 200 OK
+				             HTTP-Response:
+				               200 OK HTTP/1.1
 				                 Content-Type: text/css
 				               foo
-				               The originating request was <null>
 				             """);
 		}
 
@@ -55,11 +54,10 @@ public sealed partial class ContentProcessor
 				               has status code 202 Accepted,
 				               but it had status code 200 OK
 
-				               HTTP-Request:
-				                 HTTP/1.1 200 OK
+				               HTTP-Response:
+				                 200 OK HTTP/1.1
 				                   Content-Type: {{contentType}}
 				                 *Content is binary ({{contentType}}) with length {{bytes.Length}}*
-				                 The originating request was <null>
 				               """);
 		}
 	}

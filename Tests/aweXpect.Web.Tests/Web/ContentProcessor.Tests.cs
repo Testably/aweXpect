@@ -26,11 +26,10 @@ public sealed partial class ContentProcessor
 				             has status code 202 Accepted,
 				             but it had status code 200 OK
 
-				             HTTP-Request:
-				               HTTP/1.1 200 OK
+				             HTTP-Response:
+				               200 OK HTTP/1.1
 				                 Content-Type: application/my-type
 				               *Content (application/my-type) with length 0*
-				               The originating request was <null>
 				             """);
 		}
 
@@ -49,11 +48,10 @@ public sealed partial class ContentProcessor
 				             has status code 202 Accepted,
 				             but it had status code 200 OK
 
-				             HTTP-Request:
-				               HTTP/1.1 200 OK
+				             HTTP-Response:
+				               200 OK HTTP/1.1
 				                 Content-Type: application/my-type
 				               *Content (application/my-type) with length 0*
-				               The originating request was <null>
 				             """);
 		}
 	}

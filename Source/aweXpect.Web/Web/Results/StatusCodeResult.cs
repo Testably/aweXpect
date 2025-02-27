@@ -131,10 +131,9 @@ public class StatusCodeResult(
 				return new ConstraintResult.Success<HttpResponseMessage>(actual, ToString());
 			}
 
-			string formattedResponse =
-				await HttpResponseMessageFormatter.Format(actual, "  ", cancellationToken);
-			return new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
-				$"{it} had status code {Formatter.Format(value)}").WithContext("HTTP-Request", formattedResponse);
+			return await new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
+					$"{it} had status code {Formatter.Format(value)}")
+				.AddContext(actual, cancellationToken);
 		}
 
 		public override string ToString()
