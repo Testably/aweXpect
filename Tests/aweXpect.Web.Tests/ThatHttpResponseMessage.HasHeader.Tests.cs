@@ -10,29 +10,6 @@ public sealed partial class ThatHttpResponseMessage
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenContentTypeHeaderIsNotSet_ShouldFail()
-			{
-				string expected = "text/content-type";
-				HttpResponseMessage subject = ResponseBuilder
-					.WithContent(new StreamContent(new MemoryStream([0x0, 0x1,])));
-
-				async Task Act()
-					=> await That(subject).HasContentType(expected);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             has a `Content-Type` header equal to "text/content-type",
-					             but it had no `Content-Type` header
-
-					             HTTP-Request:
-					               HTTP/1.1 200 OK
-					               *Content with length 2*
-					               The originating request was <null>
-					             """);
-			}
-
-			[Fact]
 			public async Task WhenHeaderDoesNotExist_ShouldFail()
 			{
 				string name = "x-my-header";

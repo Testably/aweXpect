@@ -32,6 +32,8 @@ HttpResponseMessage response = await httpClient.GetAsync("https://github.com/awe
 await Expect.That(response).HasHeader("X-GitHub-Request-Id");
 await Expect.That(response).HasHeader("Cache-Control")
     .WithValue("must-revalidate, max-age=0, private");
+
+await Expect.That(response).DoesNotHaveHeader("X-My-Header");
 ```
 
 You can also add additional expectations on the header value(s):

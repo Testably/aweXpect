@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
+using aweXpect.Results;
 using aweXpect.Web.Results;
 
 namespace aweXpect;
@@ -22,6 +23,16 @@ public static partial class ThatHttpResponseMessage
 				new HasHeaderConstraint(it, expected)),
 			source,
 			a => a.Headers.TryGetValues(expected, out IEnumerable<string>? values) ? values.ToArray() : null);
+
+	/// <summary>
+	///     Verifies that the <see cref="HttpResponseMessage" /> does not have the <paramref name="unexpected" /> header.
+	/// </summary>
+	public static AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>> DoesNotHaveHeader(
+		this IThat<HttpResponseMessage?> source,
+		string unexpected)
+		=> new(source.ThatIs().ExpectationBuilder.AddConstraint((it, grammar) =>
+				new DoesNotHaveHeaderConstraint(it, unexpected)),
+			source);
 
 	private readonly struct HasHeaderConstraint(string it, string expected)
 		: IAsyncConstraint<HttpResponseMessage>
@@ -50,5 +61,35 @@ public static partial class ThatHttpResponseMessage
 
 		public override string ToString()
 			=> $"has a `{expected}` header";
+	}
+
+	private readonly struct DoesNotHaveHeaderConstraint(string it, string unexpected)
+		: IAsyncConstraint<HttpResponseMessage>
+	{
+		public async Task<ConstraintResult> IsMetBy(
+			HttpResponseMessage? actual,
+			CancellationToken cancellationToken)
+		{
+			if (actual == null)
+			{
+				return new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
+					$"{it} was <null>", FurtherProcessingStrategy.IgnoreResult);
+			}
+
+			if (!actual.Headers.TryGetValues(unexpected, out IEnumerable<string>? foundHeader))
+			{
+				return new ConstraintResult.Success<HttpResponseMessage?>(actual, ToString());
+			}
+
+			string formattedResponse =
+				await HttpResponseMessageFormatter.Format(actual, "  ", cancellationToken);
+			return new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
+					$"{it} did contain the `{unexpected}` header: {Formatter.Format(foundHeader)}",
+					FurtherProcessingStrategy.IgnoreResult)
+				.WithContext("HTTP-Request", formattedResponse);
+		}
+
+		public override string ToString()
+			=> $"does not have a `{unexpected}` header";
 	}
 }
