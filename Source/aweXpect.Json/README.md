@@ -3,7 +3,7 @@
 [![Nuget](https://img.shields.io/nuget/v/aweXpect.Json)](https://www.nuget.org/packages/aweXpect.Json)
 [![Build](https://github.com/aweXpect/aweXpect.Json/actions/workflows/build.yml/badge.svg)](https://github.com/aweXpect/aweXpect.Json/actions/workflows/build.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=aweXpect_aweXpect.Json&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=aweXpect_aweXpect.Json)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=aweXpect_aweXpect.Json&metric=coverage)](https://sonarcloud.io/summary/new_code?id=aweXpect_aweXpect.Json)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=aweXpect_aweXpect.Json&metric=coverage)](https://sonarcloud.io/summary/overall?id=aweXpect_aweXpect.Json)
 [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2FaweXpect%2FaweXpect.Json%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/aweXpect/aweXpect.Json/main)
 
 Extensions on System.Text.Json for [aweXpect](https://github.com/aweXpect/aweXpect).
