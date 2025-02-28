@@ -9,6 +9,21 @@ public sealed partial class ThatHttpResponseMessage
 	{
 		public sealed class ErrorTests
 		{
+			[Fact]
+			public async Task WhenStatusCodeIs600_ShouldFail()
+			{
+				HttpStatusCode statusCode = (HttpStatusCode)600;
+				HttpResponseMessage subject = ResponseBuilder
+					.WithStatusCode(statusCode);
+
+				async Task Act()
+					=> await That(subject).HasStatusCode().Error();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("*has an error status code (4xx or 5xx)*")
+					.AsWildcard();
+			}
+
 			[Theory]
 			[MemberData(nameof(ClientErrorStatusCodes), MemberType = typeof(ThatHttpResponseMessage))]
 			[MemberData(nameof(ServerErrorStatusCodes), MemberType = typeof(ThatHttpResponseMessage))]

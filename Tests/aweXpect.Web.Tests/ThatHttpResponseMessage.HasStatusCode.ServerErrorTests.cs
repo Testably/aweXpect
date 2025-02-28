@@ -40,6 +40,21 @@ public sealed partial class ThatHttpResponseMessage
 			}
 
 			[Fact]
+			public async Task WhenStatusCodeIs600_ShouldFail()
+			{
+				HttpStatusCode statusCode = (HttpStatusCode)600;
+				HttpResponseMessage subject = ResponseBuilder
+					.WithStatusCode(statusCode);
+
+				async Task Act()
+					=> await That(subject).HasStatusCode().ServerError();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("*has a server error status code (5xx)*")
+					.AsWildcard();
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				HttpResponseMessage? subject = null;

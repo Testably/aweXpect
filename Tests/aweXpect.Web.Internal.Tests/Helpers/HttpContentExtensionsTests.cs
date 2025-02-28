@@ -7,6 +7,17 @@ namespace aweXpect.Web.Internal.Tests;
 public sealed class HttpContentExtensionsTests
 {
 	[Fact]
+	public async Task IsNullOrDisposed_WhenDisposed_ShouldReturnTrue()
+	{
+		HttpContent content = new StringContent("");
+		content.Dispose();
+
+		bool result = content.IsNullOrDisposed();
+
+		await That(result).IsTrue();
+	}
+
+	[Fact]
 	public async Task IsNullOrDisposed_WhenNull_ShouldReturnTrue()
 	{
 		HttpContent? content = null;

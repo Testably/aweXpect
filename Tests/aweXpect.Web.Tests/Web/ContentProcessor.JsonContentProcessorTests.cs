@@ -42,7 +42,7 @@ public sealed partial class ContentProcessor
 			string contentType)
 		{
 			HttpResponseMessage httpResponse = new HttpResponseBuilder()
-				.WithContent("{\"my-content\":1}")
+				.WithContent("{\"my-content\":1,}")
 				.WithContentType(contentType);
 
 			async Task Act()

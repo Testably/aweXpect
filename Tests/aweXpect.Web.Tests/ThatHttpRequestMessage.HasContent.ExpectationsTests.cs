@@ -50,6 +50,25 @@ public sealed partial class ThatHttpRequestMessage
 			}
 
 			[Fact]
+			public async Task WhenContentIsNull_ShouldFail()
+			{
+				HttpRequestMessage subject = new(HttpMethod.Get, "https://awexpect.com");
+
+				async Task Act()
+					=> await That(subject).HasContent(which => which.IsEmpty());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a string content which is empty,
+					             but the string content was <null>
+
+					             HTTP-Request:
+					               GET https://awexpect.com/ HTTP/1.1
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				HttpRequestMessage? subject = null;

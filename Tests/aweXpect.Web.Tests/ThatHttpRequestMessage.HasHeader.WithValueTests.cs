@@ -33,6 +33,29 @@ public sealed partial class ThatHttpRequestMessage
 			}
 
 			[Fact]
+			public async Task WhenHeaderValueIsNull_ShouldFail()
+			{
+				string name = "x-my-header";
+				string otherKey = "x-some-other-key";
+				HttpRequestMessage subject = RequestBuilder
+					.WithHeader(name, null);
+
+				async Task Act()
+					=> await That(subject).HasHeader(otherKey).WithValue("some header");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a `x-some-other-key` header whose value is equal to "some header",
+					             but it did not contain the expected header
+
+					             HTTP-Request:
+					               HEAD https://awexpect.com/ HTTP/1.1
+					                 x-my-header:
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenHeaderExistsAndValueDoesNotSatisfyTheExpectations_ShouldFail()
 			{
 				string name = "x-my-header";
