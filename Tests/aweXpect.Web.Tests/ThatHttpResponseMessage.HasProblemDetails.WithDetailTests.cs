@@ -69,12 +69,13 @@ public sealed partial class ThatHttpResponseMessage
 					.WithContent("""
 					             {
 					               "type": "my-type",
-					               "detail": "foo"
+					               "detail": "foo",
+					               "status": 200,
 					             }
 					             """);
 
 				async Task Act()
-					=> await That(subject).HasProblemDetails().WithDetail("foo");
+					=> await That(subject).HasProblemDetails().WithStatus(200).WithDetail("foo");
 
 				await That(Act).DoesNotThrow();
 			}

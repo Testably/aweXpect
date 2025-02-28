@@ -15,6 +15,11 @@ namespace aweXpect;
 
 public static partial class ThatHttpResponseMessage
 {
+	private static readonly JsonDocumentOptions _jsonDocumentOptions = new()
+	{
+		AllowTrailingCommas = true,
+	};
+
 	/// <summary>
 	///     Verifies that the string content contains a problem details response with the expected <paramref name="type" />.
 	///     <seealso href="https://datatracker.ietf.org/doc/html/rfc7807" />
@@ -37,7 +42,7 @@ public static partial class ThatHttpResponseMessage
 			source.ThatIs().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
 				.AddConstraint((expectationBuilder, it, grammar) =>
-				new HasProblemDetailsConstraint(expectationBuilder, it, type, options, typeOptions)),
+					new HasProblemDetailsConstraint(expectationBuilder, it, type, options, typeOptions)),
 			source,
 			typeOptions,
 			options);
@@ -76,7 +81,7 @@ public static partial class ThatHttpResponseMessage
 #else
 			string message = await actual.Content.ReadAsStringAsync(cancellationToken);
 #endif
-			using JsonDocument problemDetails = JsonDocument.Parse(message);
+			using JsonDocument problemDetails = JsonDocument.Parse(message, _jsonDocumentOptions);
 			List<string> failures = new();
 
 			string? type = GetPropertyOrDefault(problemDetails.RootElement, "type")?.GetString();
@@ -122,7 +127,7 @@ public static partial class ThatHttpResponseMessage
 			{
 				expectationBuilder.AddContext(actual);
 				return new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
-						string.Join($"{Environment.NewLine} and ", failures));
+					string.Join($"{Environment.NewLine} and ", failures));
 			}
 
 			return new ConstraintResult.Success<HttpResponseMessage?>(actual, ToString());

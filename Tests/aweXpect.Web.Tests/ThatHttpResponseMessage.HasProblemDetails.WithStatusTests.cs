@@ -53,7 +53,7 @@ public sealed partial class ThatHttpResponseMessage
 					             """);
 
 				async Task Act()
-					=> await That(subject).HasProblemDetails().WithStatus(500);
+					=> await That(subject).HasProblemDetails().WithStatus(500).WithStatus(500);
 
 				await That(Act).DoesNotThrow();
 			}
