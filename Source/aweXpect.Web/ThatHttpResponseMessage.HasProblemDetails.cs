@@ -34,14 +34,17 @@ public static partial class ThatHttpResponseMessage
 		StringEqualityOptions typeOptions = new();
 		ProblemDetailsOptions options = new();
 		return new ProblemDetailsResult<HttpResponseMessage, IThat<HttpResponseMessage?>>.String(
-			source.ThatIs().ExpectationBuilder.AddConstraint((it, grammar) =>
-				new HasProblemDetailsConstraint(it, type, options, typeOptions)),
+			source.ThatIs().ExpectationBuilder
+				.UpdateContexts(c => c.Close())
+				.AddConstraint((expectationBuilder, it, grammar) =>
+				new HasProblemDetailsConstraint(expectationBuilder, it, type, options, typeOptions)),
 			source,
 			typeOptions,
 			options);
 	}
 
 	private readonly struct HasProblemDetailsConstraint(
+		ExpectationBuilder expectationBuilder,
 		string it,
 		string? expectedType,
 		ProblemDetailsOptions options,
@@ -117,9 +120,9 @@ public static partial class ThatHttpResponseMessage
 
 			if (failures.Any())
 			{
-				return await new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
-						string.Join($"{Environment.NewLine} and ", failures))
-					.AddContext(actual, cancellationToken);
+				expectationBuilder.AddContext(actual);
+				return new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
+						string.Join($"{Environment.NewLine} and ", failures));
 			}
 
 			return new ConstraintResult.Success<HttpResponseMessage?>(actual, ToString());

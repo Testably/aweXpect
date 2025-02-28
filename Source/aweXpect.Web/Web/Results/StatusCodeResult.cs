@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
@@ -22,13 +20,16 @@ public class StatusCodeResult(
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> EqualTo(
 		HttpStatusCode? expected)
-		=> new(source.ThatIs().ExpectationBuilder.AddConstraint((it, _) =>
-				new PropertyConstraint(
-					it,
-					expected,
-					mapper,
-					(a, e) => a.Equals(e),
-					$"has status code {Formatter.Format(expected)}")),
+		=> new(source.ThatIs().ExpectationBuilder
+				.UpdateContexts(c => c.Close())
+				.AddConstraint((expectationBuilder, it, _) =>
+					new PropertyConstraint(
+						expectationBuilder,
+						it,
+						expected,
+						mapper,
+						(a, e) => a.Equals(e),
+						$"has status code {Formatter.Format(expected)}")),
 			source);
 
 	/// <summary>
@@ -36,88 +37,107 @@ public class StatusCodeResult(
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> DifferentTo(
 		HttpStatusCode? unexpected)
-		=> new(source.ThatIs().ExpectationBuilder.AddConstraint((it, _) =>
-				new PropertyConstraint(
-					it,
-					unexpected,
-					mapper,
-					(a, u) => !a.Equals(u),
-					$"has status code different to {Formatter.Format(unexpected)}")),
+		=> new(source.ThatIs().ExpectationBuilder
+				.UpdateContexts(c => c.Close())
+				.AddConstraint((expectationBuilder, it, _) =>
+					new PropertyConstraint(
+						expectationBuilder,
+						it,
+						unexpected,
+						mapper,
+						(a, u) => !a.Equals(u),
+						$"has status code different to {Formatter.Format(unexpected)}")),
 			source);
 
 	/// <summary>
 	///     …is a success status code (2xx).
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> Success()
-		=> new(source.ThatIs().ExpectationBuilder.AddConstraint((it, _) =>
-				new PropertyConstraint(
-					it,
-					null,
-					mapper,
-					(a, _) => (int)a is >= 200 and < 300,
-					"has a success status code (2xx)")),
+		=> new(source.ThatIs().ExpectationBuilder
+				.UpdateContexts(c => c.Close())
+				.AddConstraint((expectationBuilder, it, _) =>
+					new PropertyConstraint(
+						expectationBuilder,
+						it,
+						null,
+						mapper,
+						(a, _) => (int)a is >= 200 and < 300,
+						"has a success status code (2xx)")),
 			source);
 
 	/// <summary>
 	///     …is a redirection status code (3xx).
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> Redirection()
-		=> new(source.ThatIs().ExpectationBuilder.AddConstraint((it, _) =>
-				new PropertyConstraint(
-					it,
-					null,
-					mapper,
-					(a, _) => (int)a is >= 300 and < 400,
-					"has a redirection status code (3xx)")),
+		=> new(source.ThatIs().ExpectationBuilder
+				.UpdateContexts(c => c.Close())
+				.AddConstraint((expectationBuilder, it, _) =>
+					new PropertyConstraint(
+						expectationBuilder,
+						it,
+						null,
+						mapper,
+						(a, _) => (int)a is >= 300 and < 400,
+						"has a redirection status code (3xx)")),
 			source);
 
 	/// <summary>
 	///     …is a client error status code (4xx).
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> ClientError()
-		=> new(source.ThatIs().ExpectationBuilder.AddConstraint((it, _) =>
-				new PropertyConstraint(
-					it,
-					null,
-					mapper,
-					(a, _) => (int)a is >= 400 and < 500,
-					"has a client error status code (4xx)")),
+		=> new(source.ThatIs().ExpectationBuilder
+				.UpdateContexts(c => c.Close())
+				.AddConstraint((expectationBuilder, it, _) =>
+					new PropertyConstraint(
+						expectationBuilder,
+						it,
+						null,
+						mapper,
+						(a, _) => (int)a is >= 400 and < 500,
+						"has a client error status code (4xx)")),
 			source);
 
 	/// <summary>
 	///     …is a server error status code (5xx).
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> ServerError()
-		=> new(source.ThatIs().ExpectationBuilder.AddConstraint((it, _) =>
-				new PropertyConstraint(
-					it,
-					null,
-					mapper,
-					(a, _) => (int)a is >= 500 and < 600,
-					"has a server error status code (5xx)")),
+		=> new(source.ThatIs().ExpectationBuilder
+				.UpdateContexts(c => c.Close())
+				.AddConstraint((expectationBuilder, it, _) =>
+					new PropertyConstraint(
+						expectationBuilder,
+						it,
+						null,
+						mapper,
+						(a, _) => (int)a is >= 500 and < 600,
+						"has a server error status code (5xx)")),
 			source);
 
 	/// <summary>
 	///     …is a client or server error status code (4xx or 5xx).
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> Error()
-		=> new(source.ThatIs().ExpectationBuilder.AddConstraint((it, _) =>
-				new PropertyConstraint(
-					it,
-					null,
-					mapper,
-					(a, _) => (int)a is >= 400 and < 600,
-					"has an error status code (4xx or 5xx)")),
+		=> new(source.ThatIs().ExpectationBuilder
+				.UpdateContexts(c => c.Close())
+				.AddConstraint((expectationBuilder, it, _) =>
+					new PropertyConstraint(
+						expectationBuilder,
+						it,
+						null,
+						mapper,
+						(a, _) => (int)a is >= 400 and < 600,
+						"has an error status code (4xx or 5xx)")),
 			source);
 
 	internal readonly struct PropertyConstraint(
+		ExpectationBuilder expectationBuilder,
 		string it,
 		HttpStatusCode? expected,
 		Func<HttpResponseMessage, HttpStatusCode> mapper,
 		Func<HttpStatusCode, HttpStatusCode?, bool> condition,
-		string expectation) : IAsyncConstraint<HttpResponseMessage?>
+		string expectation) : IValueConstraint<HttpResponseMessage?>
 	{
-		public async Task<ConstraintResult> IsMetBy(HttpResponseMessage? actual, CancellationToken cancellationToken)
+		public ConstraintResult IsMetBy(HttpResponseMessage? actual)
 		{
 			if (actual == null)
 			{
@@ -131,9 +151,9 @@ public class StatusCodeResult(
 				return new ConstraintResult.Success<HttpResponseMessage>(actual, ToString());
 			}
 
-			return await new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
-					$"{it} had status code {Formatter.Format(value)}")
-				.AddContext(actual, cancellationToken);
+			expectationBuilder.AddContext(actual);
+			return new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
+				$"{it} had status code {Formatter.Format(value)}");
 		}
 
 		public override string ToString()

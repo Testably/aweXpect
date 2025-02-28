@@ -20,8 +20,10 @@ public static partial class ThatHttpResponseMessage
 	{
 		StringEqualityOptions options = new();
 		return new StringEqualityTypeResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
-			source.ThatIs().ExpectationBuilder.AddConstraint((it, grammar) =>
-				new HasContentConstraint(it, expected, options)),
+			source.ThatIs().ExpectationBuilder
+				.UpdateContexts(c => c.Close())
+				.AddConstraint((expectationBuilder, it, grammar) =>
+					new HasContentConstraint(expectationBuilder, it, expected, options)),
 			source,
 			options);
 	}
@@ -31,17 +33,28 @@ public static partial class ThatHttpResponseMessage
 	/// </summary>
 	public static AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>>
 		HasContent(this IThat<HttpResponseMessage?> source, Action<IThat<string?>> expectations)
-		=> new(
-			source.ThatIs().ExpectationBuilder
+	{
+		ExpectationBuilder expectationBuilder = source.ThatIs().ExpectationBuilder;
+		return new AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
+			expectationBuilder
+				.UpdateContexts(c => c.Close())
 				.ForAsyncMember(MemberAccessor<HttpResponseMessage, Task<string?>>.FromFunc(
-						async m => await m.Content.ReadAsStringAsync(),
+						async m =>
+						{
+							expectationBuilder.AddContext(m);
+							return await m.Content.ReadAsStringAsync();
+						},
 						" the string content"),
 					(member, stringBuilder) => stringBuilder.Append("has a string content which "))
-				.AddContexts(async httpResponse => await httpResponse.GetContexts())
 				.AddExpectations(e => expectations(new ThatSubject<string?>(e)), ExpectationGrammars.Nested),
 			source);
+	}
 
-	private readonly struct HasContentConstraint(string it, string expected, StringEqualityOptions options)
+	private readonly struct HasContentConstraint(
+		ExpectationBuilder expectationBuilder,
+		string it,
+		string expected,
+		StringEqualityOptions options)
 		: IAsyncConstraint<HttpResponseMessage>
 	{
 		public async Task<ConstraintResult> IsMetBy(
@@ -64,9 +77,9 @@ public static partial class ThatHttpResponseMessage
 				return new ConstraintResult.Success<HttpResponseMessage?>(actual, ToString());
 			}
 
-			return await new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
-					options.GetExtendedFailure(it, message, expected))
-				.AddContext(actual, cancellationToken);
+			expectationBuilder.AddContext(actual);
+			return new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
+				options.GetExtendedFailure(it, message, expected));
 		}
 
 		public override string ToString()

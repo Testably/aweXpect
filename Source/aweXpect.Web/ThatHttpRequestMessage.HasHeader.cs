@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
@@ -19,8 +17,10 @@ public static partial class ThatHttpRequestMessage
 	public static HasHeaderValueResult<HttpRequestMessage, IThat<HttpRequestMessage?>> HasHeader(
 		this IThat<HttpRequestMessage?> source,
 		string expected)
-		=> new(source.ThatIs().ExpectationBuilder.AddConstraint((it, grammar) =>
-				new HasHeaderConstraint(it, expected)),
+		=> new(source.ThatIs().ExpectationBuilder
+				.UpdateContexts(c => c.Close())
+				.AddConstraint((expectationBuilder, it, grammar) =>
+					new HasHeaderConstraint(expectationBuilder, it, expected)),
 			source,
 			a => a.Headers.TryGetValues(expected, out IEnumerable<string>? values) ? values.ToArray() : null);
 
@@ -30,16 +30,16 @@ public static partial class ThatHttpRequestMessage
 	public static AndOrResult<HttpRequestMessage, IThat<HttpRequestMessage?>> DoesNotHaveHeader(
 		this IThat<HttpRequestMessage?> source,
 		string unexpected)
-		=> new(source.ThatIs().ExpectationBuilder.AddConstraint((it, grammar) =>
-				new DoesNotHaveHeaderConstraint(it, unexpected)),
+		=> new(source.ThatIs().ExpectationBuilder
+				.UpdateContexts(c => c.Close())
+				.AddConstraint((expectationBuilder, it, grammar) =>
+					new DoesNotHaveHeaderConstraint(expectationBuilder, it, unexpected)),
 			source);
 
-	private readonly struct HasHeaderConstraint(string it, string expected)
-		: IAsyncConstraint<HttpRequestMessage>
+	private readonly struct HasHeaderConstraint(ExpectationBuilder expectationBuilder, string it, string expected)
+		: IValueConstraint<HttpRequestMessage>
 	{
-		public async Task<ConstraintResult> IsMetBy(
-			HttpRequestMessage? actual,
-			CancellationToken cancellationToken)
+		public ConstraintResult IsMetBy(HttpRequestMessage? actual)
 		{
 			if (actual == null)
 			{
@@ -52,23 +52,22 @@ public static partial class ThatHttpRequestMessage
 				return new ConstraintResult.Success<HttpRequestMessage?>(actual, ToString());
 			}
 
-			string formattedResponse =
-				await HttpResponseMessageFormatter.Format(actual, "  ", cancellationToken);
+			expectationBuilder.AddContext(actual);
 			return new ConstraintResult.Failure<HttpRequestMessage?>(actual, ToString(),
-					$"{it} did not contain the expected header", FurtherProcessingStrategy.IgnoreResult)
-				.WithContext("HTTP-Request", formattedResponse);
+				$"{it} did not contain the expected header", FurtherProcessingStrategy.IgnoreResult);
 		}
 
 		public override string ToString()
 			=> $"has a `{expected}` header";
 	}
 
-	private readonly struct DoesNotHaveHeaderConstraint(string it, string unexpected)
-		: IAsyncConstraint<HttpRequestMessage>
+	private readonly struct DoesNotHaveHeaderConstraint(
+		ExpectationBuilder expectationBuilder,
+		string it,
+		string unexpected)
+		: IValueConstraint<HttpRequestMessage>
 	{
-		public async Task<ConstraintResult> IsMetBy(
-			HttpRequestMessage? actual,
-			CancellationToken cancellationToken)
+		public ConstraintResult IsMetBy(HttpRequestMessage? actual)
 		{
 			if (actual == null)
 			{
@@ -81,12 +80,10 @@ public static partial class ThatHttpRequestMessage
 				return new ConstraintResult.Success<HttpRequestMessage?>(actual, ToString());
 			}
 
-			string formattedResponse =
-				await HttpResponseMessageFormatter.Format(actual, "  ", cancellationToken);
+			expectationBuilder.AddContext(actual);
 			return new ConstraintResult.Failure<HttpRequestMessage?>(actual, ToString(),
-					$"{it} did contain the `{unexpected}` header: {Formatter.Format(foundHeader)}",
-					FurtherProcessingStrategy.IgnoreResult)
-				.WithContext("HTTP-Request", formattedResponse);
+				$"{it} did contain the `{unexpected}` header: {Formatter.Format(foundHeader)}",
+				FurtherProcessingStrategy.IgnoreResult);
 		}
 
 		public override string ToString()

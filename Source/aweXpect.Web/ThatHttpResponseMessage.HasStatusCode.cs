@@ -22,11 +22,14 @@ public static partial class ThatHttpResponseMessage
 	public static AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> HasStatusCode(
 		this IThat<HttpResponseMessage?> source,
 		HttpStatusCode? expected)
-		=> new(source.ThatIs().ExpectationBuilder.AddConstraint((it, _) =>
-			new StatusCodeResult.PropertyConstraint(
-				it,
-				expected,
-				m => m.StatusCode,
-				(a, e) => a.Equals(e),
-				$"has status code {Formatter.Format(expected)}")), source);
+		=> new(source.ThatIs().ExpectationBuilder
+			.UpdateContexts(c => c.Close())
+			.AddConstraint((expectationBuilder, it, _) =>
+				new StatusCodeResult.PropertyConstraint(
+					expectationBuilder,
+					it,
+					expected,
+					m => m.StatusCode,
+					(a, e) => a.Equals(e),
+					$"has status code {Formatter.Format(expected)}")), source);
 }

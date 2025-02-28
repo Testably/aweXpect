@@ -1,6 +1,4 @@
 ﻿using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
@@ -24,16 +22,22 @@ public static partial class ThatHttpResponseMessage
 	{
 		StringEqualityOptions options = new();
 		return new StringEqualityTypeResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
-			source.ThatIs().ExpectationBuilder.AddConstraint((it, grammar) =>
-				new HasContentTypeConstraint(it, expected, options)),
+			source.ThatIs().ExpectationBuilder
+				.UpdateContexts(c => c.Close())
+				.AddConstraint((expectationBuilder, it, grammar) =>
+					new HasContentTypeConstraint(expectationBuilder, it, expected, options)),
 			source,
 			options);
 	}
 
-	private readonly struct HasContentTypeConstraint(string it, string expected, StringEqualityOptions options)
-		: IAsyncConstraint<HttpResponseMessage>
+	private readonly struct HasContentTypeConstraint(
+		ExpectationBuilder expectationBuilder,
+		string it,
+		string expected,
+		StringEqualityOptions options)
+		: IValueConstraint<HttpResponseMessage>
 	{
-		public async Task<ConstraintResult> IsMetBy(HttpResponseMessage? actual, CancellationToken cancellationToken)
+		public ConstraintResult IsMetBy(HttpResponseMessage? actual)
 		{
 			if (actual == null)
 			{
@@ -43,16 +47,16 @@ public static partial class ThatHttpResponseMessage
 
 			if (!actual.Content.TryGetMediaType(out string? contentType))
 			{
-				return await new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
-						$"{it} had no `Content-Type` header")
-					.AddContext(actual, cancellationToken);
+				expectationBuilder.AddContext(actual);
+				return new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
+					$"{it} had no `Content-Type` header");
 			}
 
 			if (!options.AreConsideredEqual(contentType, expected))
 			{
-				return await new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
-						options.GetExtendedFailure(it, contentType, expected))
-					.AddContext(actual, cancellationToken);
+				expectationBuilder.AddContext(actual);
+				return new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
+					options.GetExtendedFailure(it, contentType, expected));
 			}
 
 			return new ConstraintResult.Success<HttpResponseMessage?>(actual, ToString());
