@@ -67,6 +67,22 @@ public sealed partial class ThatJsonString
 						               $.foo9 had unexpected Null and
 						               $.foo10 had unexpected Null and
 						                … (2 more)
+						             
+						             Actual:
+						             {
+						               "foo1": null,
+						               "foo2": null,
+						               "foo3": null,
+						               "foo4": null,
+						               "foo5": null,
+						               "foo6": null,
+						               "foo7": null,
+						               "foo8": null,
+						               "foo9": null,
+						               "foo10": null,
+						               "foo11": null,
+						               "foo12": null,
+						             }
 						             """);
 				}
 
@@ -105,6 +121,22 @@ public sealed partial class ThatJsonString
 						               $.foo2 had unexpected Null and
 						               $.foo3 had unexpected Null and
 						                … (9 more)
+						             
+						             Actual:
+						             {
+						               "foo1": null,
+						               "foo2": null,
+						               "foo3": null,
+						               "foo4": null,
+						               "foo5": null,
+						               "foo6": null,
+						               "foo7": null,
+						               "foo8": null,
+						               "foo9": null,
+						               "foo10": null,
+						               "foo11": null,
+						               "foo12": null,
+						             }
 						             """);
 				}
 
@@ -123,10 +155,13 @@ public sealed partial class ThatJsonString
 						=> await That(subject).IsEqualTo(expected).AsJson(o => o.IgnoringAdditionalProperties());
 
 					await That(Act).Throws<XunitException>()
-						.WithMessage($"""
+						.WithMessage($$"""
 						              Expected that subject
-						              is JSON equivalent to {expected},
-						              but could not parse expected: {errorMessage}
+						              is JSON equivalent to {{expected}},
+						              but could not parse expected: {{errorMessage}}
+						              
+						              Actual:
+						              {}
 						              """);
 				}
 
@@ -147,7 +182,7 @@ public sealed partial class ThatJsonString
 						=> await That(subject).IsEqualTo(expected).AsJson();
 
 					await That(Act).Throws<XunitException>()
-						.WithMessage($"*but it differed as {message}").AsWildcard();
+						.WithMessage($"*but it differed as {message}*").AsWildcard();
 				}
 
 				[Theory]
@@ -165,7 +200,7 @@ public sealed partial class ThatJsonString
 						=> await That(subject).IsEqualTo(expected).AsJson();
 
 					await That(Act).Throws<XunitException>()
-						.WithMessage($"*but it differed as {message}").AsWildcard();
+						.WithMessage($"*but it differed as {message}*").AsWildcard();
 				}
 
 				[Fact]
@@ -198,6 +233,9 @@ public sealed partial class ThatJsonString
 						               $.bar was "baz" instead of "bart" and
 						               $.baz was missing and
 						               $.something had unexpected "else"
+						             
+						             Actual:
+						             { "foo": 1.1, "bar": "baz", "something": "else" }
 						             """);
 				}
 
@@ -239,6 +277,9 @@ public sealed partial class ThatJsonString
 						               "foo": 1
 						             },
 						             but it differed as $.bar had unexpected "xyz"
+						             
+						             Actual:
+						             { "foo": 1, "bar" : "xyz" }
 						             """);
 				}
 
@@ -262,6 +303,9 @@ public sealed partial class ThatJsonString
 						             but it differed as
 						               $[2] had missing 3 and
 						               $[3] had missing 4
+						             
+						             Actual:
+						             [1, 2]
 						             """);
 				}
 
@@ -287,6 +331,11 @@ public sealed partial class ThatJsonString
 						             but it differed as
 						               $.foo[2] had unexpected 3 and
 						               $.foo[3] had unexpected 4
+						             
+						             Actual:
+						             {
+						               "foo": [1, 2, 3, 4]
+						             }
 						             """);
 				}
 
@@ -309,6 +358,9 @@ public sealed partial class ThatJsonString
 						               Expected that subject
 						               is JSON equivalent to {},
 						               but could not parse subject: {{errorMessage}}
+						               
+						               Actual:
+						               {{subject}}
 						               """);
 				}
 

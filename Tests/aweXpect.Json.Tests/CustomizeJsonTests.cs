@@ -25,6 +25,9 @@ public sealed class CustomizeJsonTests
 				             Expected that jsonWithTrailingCommas
 				             is JSON equivalent to [1, 2],
 				             but could not parse subject: The JSON array contains a trailing comma at the end which is not supported in this mode. Change the reader options. LineNumber: 0 | BytePositionInLine: 6.
+				             
+				             Actual:
+				             [1, 2,]
 				             """);
 		}
 
