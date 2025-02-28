@@ -12,4 +12,8 @@
 		<PackageReference Include="System.Text.Json"/>
 	</ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="aweXpect.Web.Internal.Tests" PublicKey="$(PublicKey)"/>
+	</ItemGroup>
+
 </Project>

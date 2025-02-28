@@ -11,7 +11,7 @@ using aweXpect.Web.ContentProcessors;
 
 namespace aweXpect.Helpers;
 
-internal static class HttpResponseMessageFormatter
+internal static class HttpFormatter
 {
 	public static async Task<string> Format(
 		HttpRequestMessage? request,

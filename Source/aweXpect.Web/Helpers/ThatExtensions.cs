@@ -32,7 +32,7 @@ internal static class ThatExtensions
 			.Clear()
 			.Add(new ResultContext(HttpRequestContext,
 				async cancellationToken
-					=> await HttpResponseMessageFormatter.Format(request, "  ", cancellationToken)))
+					=> await HttpFormatter.Format(request, "  ", cancellationToken)))
 			.Close());
 
 	public static ExpectationBuilder AddContext(this ExpectationBuilder expectationBuilder,
@@ -45,7 +45,7 @@ internal static class ThatExtensions
 				.Clear()
 				.Add(new ResultContext(HttpResponseContext,
 					async cancellationToken
-						=> await HttpResponseMessageFormatter.Format(response, "  ", cancellationToken)))
+						=> await HttpFormatter.Format(response, "  ", cancellationToken)))
 				.Close());
 		}
 
@@ -54,10 +54,10 @@ internal static class ThatExtensions
 			.Clear()
 			.Add(new ResultContext(HttpRequestContext,
 				async cancellationToken
-					=> await HttpResponseMessageFormatter.Format(response.RequestMessage, "  ", cancellationToken)))
+					=> await HttpFormatter.Format(response.RequestMessage, "  ", cancellationToken)))
 			.Add(new ResultContext(HttpResponseContext,
 				async cancellationToken
-					=> await HttpResponseMessageFormatter.Format(response, "  ", cancellationToken)))
+					=> await HttpFormatter.Format(response, "  ", cancellationToken)))
 			.Close());
 	}
 }
