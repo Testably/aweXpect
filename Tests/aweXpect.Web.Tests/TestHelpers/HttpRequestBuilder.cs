@@ -39,6 +39,12 @@ internal class HttpRequestBuilder
 		return this;
 	}
 
+	public HttpRequestBuilder WithContent(HttpContent content)
+	{
+		_content = content;
+		return this;
+	}
+
 	public HttpRequestBuilder WithHeader(string name, string value)
 	{
 		_headers.Add(name, value);

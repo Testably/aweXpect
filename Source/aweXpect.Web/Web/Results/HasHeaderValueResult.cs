@@ -102,7 +102,7 @@ public class HasHeaderValueResult<TType, TThat>
 			if (headerValues.Length != 1)
 			{
 				return new ConstraintResult.Failure<TType?>(actual, ToString(),
-					$"the header contained {headerValues.Length} values");
+					$"the header contained {headerValues.Length} values {Formatter.Format(headerValues)}");
 			}
 
 			string? headerValue = headerValues[0];

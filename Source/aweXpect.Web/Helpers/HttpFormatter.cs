@@ -94,8 +94,7 @@ internal static class HttpFormatter
 		HttpHeaders headers,
 		string indentation)
 	{
-		foreach (KeyValuePair<string, IEnumerable<string>> header in headers
-			         .OrderBy(x => x.Key == "Content-Length"))
+		foreach (KeyValuePair<string, IEnumerable<string>> header in headers)
 		{
 			foreach (string headerValue in header.Value)
 			{

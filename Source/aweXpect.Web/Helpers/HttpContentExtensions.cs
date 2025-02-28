@@ -15,7 +15,7 @@ internal static class HttpContentExtensions
 
 		try
 		{
-			_ = content.Headers?.ContentLength;
+			_ = content.Headers.ContentLength;
 			return false;
 		}
 		catch (ObjectDisposedException)
@@ -28,7 +28,7 @@ internal static class HttpContentExtensions
 	{
 		try
 		{
-			length = content?.Headers?.ContentLength ?? 0;
+			length = content?.Headers.ContentLength ?? 0;
 			return true;
 		}
 		catch (Exception)
@@ -40,15 +40,7 @@ internal static class HttpContentExtensions
 
 	public static bool TryGetMediaType(this HttpContent? content, [NotNullWhen(true)] out string? contentType)
 	{
-		try
-		{
-			contentType = content?.Headers?.ContentType?.MediaType;
-			return contentType != null;
-		}
-		catch (Exception)
-		{
-			contentType = null;
-			return false;
-		}
+		contentType = content?.Headers.ContentType?.MediaType;
+		return contentType != null;
 	}
 }

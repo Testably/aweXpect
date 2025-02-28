@@ -9,6 +9,37 @@ public sealed partial class ThatHttpRequestMessage
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task ContentLengthHeader_ShouldBeLastHeader()
+			{
+				string expected = "other content";
+				StringContent content = new("some content");
+				content.Headers.Add("x-foo", "bar");
+				HttpRequestMessage subject = RequestBuilder
+					.WithContent(content);
+
+				async Task Act()
+					=> await That(subject).HasContent(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a string content equal to "other content",
+					             but it was "some content" which differs at index 0:
+					                ↓ (actual)
+					               "some content"
+					               "other content"
+					                ↑ (expected)
+
+					             HTTP-Request:
+					               HEAD https://awexpect.com/ HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 x-foo: bar
+					                 Content-Length: 12
+					               some content
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenContentDiffersFromExpected_ShouldFail()
 			{
 				string expected = "other content";
@@ -47,6 +78,25 @@ public sealed partial class ThatHttpRequestMessage
 					=> await That(subject).HasContent(expected);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenContentIsNull_ShouldFail()
+			{
+				HttpRequestMessage subject = new(HttpMethod.Get, "https://awexpect.com");
+
+				async Task Act()
+					=> await That(subject).HasContent("foo");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a string content equal to "foo",
+					             but it had a <null> content
+
+					             HTTP-Request:
+					               GET https://awexpect.com/ HTTP/1.1
+					             """);
 			}
 
 			[Fact]

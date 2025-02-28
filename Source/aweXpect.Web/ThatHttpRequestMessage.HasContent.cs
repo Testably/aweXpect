@@ -69,6 +69,7 @@ public static partial class ThatHttpRequestMessage
 
 			if (actual.Content is null)
 			{
+				expectationBuilder.AddContext(actual);
 				return new ConstraintResult.Failure<HttpRequestMessage?>(actual, ToString(),
 					$"{it} had a <null> content");
 			}

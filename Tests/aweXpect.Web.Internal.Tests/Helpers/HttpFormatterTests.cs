@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading;
 using aweXpect.Helpers;
 
@@ -7,7 +8,7 @@ namespace aweXpect.Web.Internal.Tests;
 public sealed class HttpFormatterTests
 {
 	[Fact]
-	public async Task Format_HttpRequestMessage_WhenNull_ShouldReturnNull()
+	public async Task Format_HttpRequestMessage_WhenNull_ShouldReturnNullString()
 	{
 		HttpRequestMessage? sut = null;
 
@@ -17,7 +18,7 @@ public sealed class HttpFormatterTests
 	}
 
 	[Fact]
-	public async Task Format_HttpResponseMessage_WhenNull_ShouldReturnNull()
+	public async Task Format_HttpResponseMessage_WhenNull_ShouldReturnNullString()
 	{
 		HttpResponseMessage? sut = null;
 

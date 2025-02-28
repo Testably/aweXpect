@@ -72,6 +72,26 @@ public sealed partial class ThatHttpResponseMessage
 			}
 
 			[Fact]
+			public async Task WhenHeaderExistsButContainsAdditionalValues_ShouldFail()
+			{
+				string name = "x-my-header";
+				string value = "some header";
+				string expectedValue = "some other header";
+				HttpResponseMessage subject = ResponseBuilder
+					.WithHeaders(name, value, "some other value");
+
+				async Task Act()
+					=> await That(subject).HasHeader(name).WithValue(expectedValue);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a `x-my-header` header whose value is equal to "some other header",
+					             but the header contained 2 values ["some header", "some other value"]
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				HttpResponseMessage? subject = null;
