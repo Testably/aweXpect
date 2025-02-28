@@ -38,7 +38,7 @@ public sealed partial class ThatHttpRequestMessage
 				string name = "x-my-header";
 				string otherKey = "x-some-other-key";
 				HttpRequestMessage subject = RequestBuilder
-					.WithHeader(name, null);
+					.WithHeader(name, null!);
 
 				async Task Act()
 					=> await That(subject).HasHeader(otherKey).WithValue("some header");

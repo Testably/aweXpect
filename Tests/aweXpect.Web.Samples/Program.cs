@@ -1,3 +1,4 @@
+using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +28,14 @@ public class Program
 		{
 			httpContext.Response.Headers["x-vendor"] = "VENDOR";
 			return store.GetComment(id);
+		});
+
+		app.MapGet("/download", () =>
+		{
+			string mimeType = "image/png";
+			string path = Path.Combine(Path.GetDirectoryName(typeof(Program).Assembly.Location)!, "data",
+				"failure.png");
+			return Results.File(path, mimeType, "failure.png");
 		});
 
 		app.Run();
