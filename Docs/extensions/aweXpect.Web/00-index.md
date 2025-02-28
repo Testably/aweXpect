@@ -4,6 +4,27 @@ Expectations for `HttpClient`.
 
 ## `HttpRequestMessage`
 
+### Method
+
+You can verify, the method of the `HttpRequestMessage`:
+
+```csharp
+var request = new HttpRequestMessage(HttpMethod.Get, "https://github.com/aweXpect/aweXpect.Web");
+
+await Expect.That(request).HasMethod(HttpMethod.Get);
+```
+
+### Request URI
+
+You can verify, the request URI of the `HttpRequestMessage`:
+
+```csharp
+var request = new HttpRequestMessage(HttpMethod.Get, "https://github.com/aweXpect/aweXpect.Web");
+
+await Expect.That(request).HasRequestUri("https://github.com/aweXpect/aweXpect.Web");
+await Expect.That(request).HasRequestUri(new Uri("https://github.com/aweXpect/aweXpect.Web"));
+```
+
 ### Header
 
 You can verify the headers of the `HttpRequestMessage`:
