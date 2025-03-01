@@ -156,7 +156,7 @@ valid [ProblemDetails](https://learn.microsoft.com/en-us/dotnet/api/microsoft.as
 HttpResponseMessage response = // a call that returns a problem details object
 
 await Expect.That(response)
-    .HasProblemDetails("https://httpstatuses.com/404")
+    .HasProblemDetailsContent("https://httpstatuses.com/404")
     .WithTitle("Error: Not Found")
     .WithStatus(404)
     .WithInstance("93c8f977-7ff7-46ed-900f-7b6264624a31");

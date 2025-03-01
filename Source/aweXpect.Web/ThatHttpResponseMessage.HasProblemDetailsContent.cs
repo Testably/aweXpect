@@ -34,7 +34,7 @@ public static partial class ThatHttpResponseMessage
 	///     When this member is not present, its value is assumed to be "about:blank".
 	/// </remarks>
 	public static ProblemDetailsResult<HttpResponseMessage, IThat<HttpResponseMessage?>>.String
-		HasProblemDetails(this IThat<HttpResponseMessage?> source, string? type = null)
+		HasProblemDetailsContent(this IThat<HttpResponseMessage?> source, string? type = null)
 	{
 		StringEqualityOptions typeOptions = new();
 		ProblemDetailsOptions options = new();

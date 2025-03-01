@@ -4,7 +4,7 @@ namespace aweXpect.Tests;
 
 public sealed partial class ThatHttpResponseMessage
 {
-	public sealed partial class HasProblemDetails
+	public sealed partial class HasProblemDetailsContent
 	{
 		public sealed class WithInstanceTests
 		{
@@ -20,7 +20,7 @@ public sealed partial class ThatHttpResponseMessage
 					             """);
 
 				async Task Act()
-					=> await That(subject).HasProblemDetails().WithInstance("BAR").IgnoringCase();
+					=> await That(subject).HasProblemDetailsContent().WithInstance("BAR").IgnoringCase();
 
 				await That(Act).DoesNotThrow();
 			}
@@ -39,7 +39,7 @@ public sealed partial class ThatHttpResponseMessage
 					               """);
 
 				async Task Act()
-					=> await That(subject).HasProblemDetails().WithInstance(expectedInstance);
+					=> await That(subject).HasProblemDetailsContent().WithInstance(expectedInstance);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($$"""
@@ -75,7 +75,7 @@ public sealed partial class ThatHttpResponseMessage
 					             """);
 
 				async Task Act()
-					=> await That(subject).HasProblemDetails().WithStatus(200).WithInstance("foo");
+					=> await That(subject).HasProblemDetailsContent().WithStatus(200).WithInstance("foo");
 
 				await That(Act).DoesNotThrow();
 			}

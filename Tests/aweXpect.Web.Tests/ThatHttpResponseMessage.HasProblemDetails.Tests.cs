@@ -4,7 +4,7 @@ namespace aweXpect.Tests;
 
 public sealed partial class ThatHttpResponseMessage
 {
-	public sealed partial class HasProblemDetails
+	public sealed partial class HasProblemDetailsContent
 	{
 		public sealed class Tests
 		{
@@ -22,7 +22,7 @@ public sealed partial class ThatHttpResponseMessage
 					             """);
 
 				async Task Act()
-					=> await That(subject).HasProblemDetails("FOO").IgnoringCase().WithTitle("BAR").WithStatus(404)
+					=> await That(subject).HasProblemDetailsContent("FOO").IgnoringCase().WithTitle("BAR").WithStatus(404)
 						.WithInstance("could-be-SOME-guid ").IgnoringTrailingWhiteSpace();
 
 				await That(Act).Throws<XunitException>()
@@ -64,7 +64,7 @@ public sealed partial class ThatHttpResponseMessage
 					             """);
 
 				async Task Act()
-					=> await That(subject).HasProblemDetails("foo");
+					=> await That(subject).HasProblemDetailsContent("foo");
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -88,7 +88,7 @@ public sealed partial class ThatHttpResponseMessage
 				HttpResponseMessage? subject = null;
 
 				async Task Act()
-					=> await That(subject).HasProblemDetails("foo");
+					=> await That(subject).HasProblemDetailsContent("foo");
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -109,7 +109,7 @@ public sealed partial class ThatHttpResponseMessage
 					             """);
 
 				async Task Act()
-					=> await That(subject).HasProblemDetails("FOO").IgnoringCase();
+					=> await That(subject).HasProblemDetailsContent("FOO").IgnoringCase();
 
 				await That(Act).DoesNotThrow();
 			}
@@ -127,7 +127,7 @@ public sealed partial class ThatHttpResponseMessage
 					               """);
 
 				async Task Act()
-					=> await That(subject).HasProblemDetails(expectedType);
+					=> await That(subject).HasProblemDetailsContent(expectedType);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($$"""
@@ -160,7 +160,7 @@ public sealed partial class ThatHttpResponseMessage
 					             """);
 
 				async Task Act()
-					=> await That(subject).HasProblemDetails("foo");
+					=> await That(subject).HasProblemDetailsContent("foo");
 
 				await That(Act).DoesNotThrow();
 			}
