@@ -81,6 +81,13 @@ namespace aweXpect
         public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> MatchesExactly(this aweXpect.Core.IThat<System.Text.Json.JsonElement> source, object? expected, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> MatchesExactly<T>(this aweXpect.Core.IThat<System.Text.Json.JsonElement> source, System.Collections.Generic.IEnumerable<T> expected, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
     }
+    public static class ThatJsonObject
+    {
+        public static aweXpect.Results.AndOrResult<object?, aweXpect.Core.IThat<object?>> IsJsonSerializable(this aweXpect.Core.IThat<object?> source, System.Func<aweXpect.Equivalency.EquivalencyOptions, aweXpect.Equivalency.EquivalencyOptions>? equivalencyOptions = null) { }
+        public static aweXpect.Results.AndOrResult<object?, aweXpect.Core.IThat<object?>> IsJsonSerializable(this aweXpect.Core.IThat<object?> source, System.Text.Json.JsonSerializerOptions serializerOptions, System.Func<aweXpect.Equivalency.EquivalencyOptions, aweXpect.Equivalency.EquivalencyOptions>? equivalencyOptions = null) { }
+        public static aweXpect.Results.AndOrResult<object?, aweXpect.Core.IThat<object?>> IsJsonSerializable<T>(this aweXpect.Core.IThat<object?> source, System.Func<aweXpect.Equivalency.EquivalencyOptions, aweXpect.Equivalency.EquivalencyOptions>? equivalencyOptions = null) { }
+        public static aweXpect.Results.AndOrResult<object?, aweXpect.Core.IThat<object?>> IsJsonSerializable<T>(this aweXpect.Core.IThat<object?> source, System.Text.Json.JsonSerializerOptions serializerOptions, System.Func<aweXpect.Equivalency.EquivalencyOptions, aweXpect.Equivalency.EquivalencyOptions>? equivalencyOptions = null) { }
+    }
     public static class ThatJsonString
     {
         public static aweXpect.Results.JsonWhichResult IsValidJson(this aweXpect.Core.IThat<string?> source, System.Func<System.Text.Json.JsonDocumentOptions, System.Text.Json.JsonDocumentOptions>? options = null) { }

@@ -8,6 +8,31 @@
 
 Extensions on System.Text.Json for [aweXpect](https://github.com/aweXpect/aweXpect).
 
+## Object serializable
+
+You can verify that an object is JSON serializable:
+
+```csharp
+MyObject subject = new();
+
+await Expect.That(subject).IsJsonSerializable();
+```
+
+This will try to serialize and deserialize the provided object and check that they are equivalent.
+
+You can provide both JSON serialization and equivalency options:
+
+```csharp
+MyObject subject = new();
+
+await Expect.That(subject).IsJsonSerializable(
+    new JsonSerializerOptions
+    {
+        IncludeFields = includeFields,
+    },
+    o => o.IgnoringMember("MyPropertyToIgnore"));
+```
+
 ## String comparison as JSON
 
 You can compare two strings for JSON equivalency:
