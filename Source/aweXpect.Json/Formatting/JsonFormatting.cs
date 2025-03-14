@@ -1,7 +1,9 @@
 ﻿using System.Text;
 using System.Text.Json;
+using aweXpect.Customization;
+using aweXpect.Json;
 
-namespace aweXpect;
+namespace aweXpect.Formatting;
 
 /// <summary>
 ///     Formatting extensions for <see cref="JsonElement" />.
@@ -21,7 +23,9 @@ public static class JsonFormatting
 			return ValueFormatter.NullString;
 		}
 
-		return JsonSerializer.Serialize(value);
+		JsonSerializerOptions serializerOptions = Customize.aweXpect.Json().DefaultJsonSerializerOptions.Get();
+		serializerOptions.WriteIndented = options?.UseLineBreaks == true;
+		return JsonSerializer.Serialize(value, serializerOptions);
 	}
 
 	/// <summary>
@@ -40,7 +44,9 @@ public static class JsonFormatting
 		}
 		else
 		{
-			stringBuilder.Append(JsonSerializer.Serialize(value));
+			JsonSerializerOptions serializerOptions = Customize.aweXpect.Json().DefaultJsonSerializerOptions.Get();
+			serializerOptions.WriteIndented = options?.UseLineBreaks == true;
+			stringBuilder.Append(JsonSerializer.Serialize(value, serializerOptions));
 		}
 	}
 }
