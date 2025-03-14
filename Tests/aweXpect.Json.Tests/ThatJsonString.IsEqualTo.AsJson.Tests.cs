@@ -67,7 +67,7 @@ public sealed partial class ThatJsonString
 						               $.foo9 had unexpected Null and
 						               $.foo10 had unexpected Null and
 						                … (2 more)
-						             
+
 						             Actual:
 						             {
 						               "foo1": null,
@@ -121,7 +121,7 @@ public sealed partial class ThatJsonString
 						               $.foo2 had unexpected Null and
 						               $.foo3 had unexpected Null and
 						                … (9 more)
-						             
+
 						             Actual:
 						             {
 						               "foo1": null,
@@ -156,13 +156,13 @@ public sealed partial class ThatJsonString
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage($$"""
-						              Expected that subject
-						              is JSON equivalent to {{expected}},
-						              but could not parse expected: {{errorMessage}}
-						              
-						              Actual:
-						              {}
-						              """);
+						               Expected that subject
+						               is JSON equivalent to {{expected}},
+						               but could not parse expected: {{errorMessage}}
+
+						               Actual:
+						               {}
+						               """);
 				}
 
 				[Theory]
@@ -233,7 +233,7 @@ public sealed partial class ThatJsonString
 						               $.bar was "baz" instead of "bart" and
 						               $.baz was missing and
 						               $.something had unexpected "else"
-						             
+
 						             Actual:
 						             { "foo": 1.1, "bar": "baz", "something": "else" }
 						             """);
@@ -277,7 +277,7 @@ public sealed partial class ThatJsonString
 						               "foo": 1
 						             },
 						             but it differed as $.bar had unexpected "xyz"
-						             
+
 						             Actual:
 						             { "foo": 1, "bar" : "xyz" }
 						             """);
@@ -303,7 +303,7 @@ public sealed partial class ThatJsonString
 						             but it differed as
 						               $[2] had missing 3 and
 						               $[3] had missing 4
-						             
+
 						             Actual:
 						             [1, 2]
 						             """);
@@ -331,7 +331,7 @@ public sealed partial class ThatJsonString
 						             but it differed as
 						               $.foo[2] had unexpected 3 and
 						               $.foo[3] had unexpected 4
-						             
+
 						             Actual:
 						             {
 						               "foo": [1, 2, 3, 4]
@@ -358,7 +358,7 @@ public sealed partial class ThatJsonString
 						               Expected that subject
 						               is JSON equivalent to {},
 						               but could not parse subject: {{errorMessage}}
-						               
+
 						               Actual:
 						               {{subject}}
 						               """);

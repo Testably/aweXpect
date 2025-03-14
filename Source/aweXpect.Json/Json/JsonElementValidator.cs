@@ -275,7 +275,7 @@ internal static class JsonElementValidator
 					{
 						sb.Append(" and");
 					}
-					
+
 					if (count++ >= maximumNumberOfCollectionItems)
 					{
 						sb.AppendLine().Append("   … (")

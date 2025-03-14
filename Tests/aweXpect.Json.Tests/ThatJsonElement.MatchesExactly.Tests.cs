@@ -138,12 +138,12 @@ public sealed partial class ThatJsonElement
 				JsonElement subject = FromString("[1, 2]");
 
 				async Task Act()
-					=> await That(subject).MatchesExactly([2, 1]);
+					=> await That(subject).MatchesExactly([2, 1,]);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             matches [2, 1] exactly,
+					             matches [2, 1,] exactly,
 					             but it differed as
 					               $[0] was 1 instead of 2 and
 					               $[1] was 2 instead of 1
@@ -156,12 +156,12 @@ public sealed partial class ThatJsonElement
 				JsonElement subject = FromString("[1, 2]");
 
 				async Task Act()
-					=> await That(subject).MatchesExactly([1, 2, 3]);
+					=> await That(subject).MatchesExactly([1, 2, 3,]);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             matches [1, 2, 3] exactly,
+					             matches [1, 2, 3,] exactly,
 					             but it differed as $[2] had missing 3
 					             """);
 			}
@@ -172,12 +172,12 @@ public sealed partial class ThatJsonElement
 				JsonElement subject = FromString("[1, 2, 3]");
 
 				async Task Act()
-					=> await That(subject).MatchesExactly([1, 2]);
+					=> await That(subject).MatchesExactly([1, 2,]);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             matches [1, 2] exactly,
+					             matches [1, 2,] exactly,
 					             but it differed as $[2] had unexpected 3
 					             """);
 			}
@@ -188,7 +188,7 @@ public sealed partial class ThatJsonElement
 				JsonElement subject = FromString("[1, 2, 3]");
 
 				async Task Act()
-					=> await That(subject).MatchesExactly([1, 2], o => o.IgnoringAdditionalProperties());
+					=> await That(subject).MatchesExactly([1, 2,], o => o.IgnoringAdditionalProperties());
 
 				await That(Act).DoesNotThrow();
 			}

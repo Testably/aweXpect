@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Text.Json;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
@@ -28,17 +29,23 @@ public static partial class ThatJsonString
 		}
 
 		return new JsonWhichResult(source.ThatIs().ExpectationBuilder.AddConstraint((it, grammar) =>
-				new IsValidJsonConstraint(it, defaultOptions)),
+				new IsValidJsonConstraint(it, grammar, defaultOptions)),
 			source, defaultOptions);
 	}
 
-	private readonly struct IsValidJsonConstraint(string it, JsonDocumentOptions options) : IValueConstraint<string?>
+	private sealed class IsValidJsonConstraint(string it, ExpectationGrammars grammars, JsonDocumentOptions options)
+		: ConstraintResult.WithNotNullValue<string?>(it, grammars),
+			IValueConstraint<string?>
 	{
+		private string? _deserializationError;
+
 		public ConstraintResult IsMetBy(string? actual)
 		{
+			Actual = actual;
 			if (actual is null)
 			{
-				return new ConstraintResult.Failure<string?>(null, ToString(), $"{it} was <null>");
+				Outcome = Outcome.Failure;
+				return this;
 			}
 
 			try
@@ -47,14 +54,28 @@ public static partial class ThatJsonString
 			}
 			catch (JsonException jsonException)
 			{
-				return new ConstraintResult.Failure<string?>(actual, ToString(),
-					$"{it} could not be parsed: {jsonException.Message}");
+				_deserializationError = jsonException.Message;
+				Outcome = Outcome.Failure;
+				return this;
 			}
 
-			return new ConstraintResult.Success<string?>(actual, ToString());
+			Outcome = Outcome.Success;
+			return this;
 		}
 
-		public override string ToString()
-			=> "is valid JSON";
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("is valid JSON");
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" could not be parsed: ").Append(_deserializationError);
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("is no valid JSON");
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+		{
+			stringBuilder.Append(It).Append(" was ");
+			Formatter.Format(stringBuilder, Actual);
+		}
 	}
 }

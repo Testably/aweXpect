@@ -1,6 +1,5 @@
 ﻿using aweXpect.Core;
 using aweXpect.Options;
-using aweXpect.Results;
 
 namespace aweXpect.Json.Tests;
 
@@ -15,8 +14,8 @@ public sealed class StringEqualityOptionsTests
 		IOptionsProvider<StringEqualityOptions> optionsProvider = That(actual).IsEqualTo(expected).AsJson();
 #pragma warning restore aweXpect0001
 
-		var result = optionsProvider.Options.AreConsideredEqual(actual, expected);
-		var failure = optionsProvider.Options.GetExtendedFailure("it", actual, expected);
+		bool result = optionsProvider.Options.AreConsideredEqual(actual, expected);
+		string failure = optionsProvider.Options.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
 		await That(result).IsTrue();
 		await That(failure).IsEmpty();
@@ -31,7 +30,7 @@ public sealed class StringEqualityOptionsTests
 		IOptionsProvider<StringEqualityOptions> optionsProvider = That(actual).IsEqualTo(expected).AsJson();
 #pragma warning restore aweXpect0001
 
-		var failure = optionsProvider.Options.GetExtendedFailure("it", actual, expected);
+		string failure = optionsProvider.Options.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
 		await That(failure).IsEmpty();
 	}

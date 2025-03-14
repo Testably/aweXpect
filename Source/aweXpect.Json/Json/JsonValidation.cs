@@ -238,7 +238,7 @@ internal class JsonValidation : IJsonObjectResult,
 	{
 		_expectationBuilder.Append(" with ").Append(_amount).Append(_amount == 1 ? " element" : " elements");
 		JsonElement? currentElement = _currentElements.Peek();
-		if (currentElement is not { ValueKind: JsonValueKind.Array })
+		if (currentElement is not { ValueKind: JsonValueKind.Array, })
 		{
 			_amount = null;
 			return this;
@@ -258,7 +258,7 @@ internal class JsonValidation : IJsonObjectResult,
 	{
 		_expectationBuilder.Append(" with ").Append(_amount).Append(_amount == 1 ? " property" : " properties");
 		JsonElement? currentElement = _currentElements.Peek();
-		if (currentElement is not { ValueKind: JsonValueKind.Object })
+		if (currentElement is not { ValueKind: JsonValueKind.Object, })
 		{
 			_amount = null;
 			return this;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Text.Json;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
@@ -17,7 +18,7 @@ public static partial class ThatJsonElement
 		this IThat<JsonElement> source)
 		=> new(
 			source.ThatIs().ExpectationBuilder.AddConstraint((it, grammar) =>
-				new IsValueKindConstraint(it, JsonValueKind.Object)),
+				new IsValueKindConstraint(it, grammar, JsonValueKind.Object)),
 			source);
 
 	/// <summary>
@@ -40,27 +41,37 @@ public static partial class ThatJsonElement
 
 		return new AndOrResult<JsonElement, IThat<JsonElement>>(
 			source.ThatIs().ExpectationBuilder.AddConstraint((it, grammar) =>
-				new IsObjectConstraint(it, expectation, jsonOptions)),
+				new IsObjectConstraint(it, grammar, expectation, jsonOptions)),
 			source);
 	}
 
-	private readonly struct IsObjectConstraint(
+	private sealed class IsObjectConstraint(
 		string it,
+		ExpectationGrammars grammars,
 		Func<IJsonObjectResult, IJsonObjectResult> expectation,
 		JsonOptions options)
-		: IValueConstraint<JsonElement>
+		: ConstraintResult.WithValue<JsonElement>(grammars),
+			IValueConstraint<JsonElement>
 	{
+		private JsonValidation? _jsonValidation;
+
 		public ConstraintResult IsMetBy(JsonElement actual)
 		{
-			JsonValidation jsonValidation = new(actual, JsonValueKind.Object, options);
-			expectation(jsonValidation);
-			if (!jsonValidation.IsMet())
-			{
-				return new ConstraintResult.Failure<JsonElement>(actual, jsonValidation.GetExpectation(),
-					jsonValidation.GetFailure(it));
-			}
+			Actual = actual;
+			_jsonValidation = new JsonValidation(actual, JsonValueKind.Object, options);
+			expectation(_jsonValidation);
 
-			return new ConstraintResult.Success<JsonElement>(actual, jsonValidation.GetExpectation());
+			Outcome = _jsonValidation.IsMet() ? Outcome.Success : Outcome.Failure;
+			return this;
 		}
+
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(_jsonValidation?.GetExpectation());
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(_jsonValidation?.GetFailure(it));
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> throw new NotImplementedException();
 	}
 }

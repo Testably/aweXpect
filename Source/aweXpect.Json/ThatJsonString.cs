@@ -1,4 +1,6 @@
-﻿using System.Text.Json;
+﻿using System.Text;
+using System.Text.Json;
+using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Json;
 
@@ -9,18 +11,24 @@ namespace aweXpect;
 /// </summary>
 public static partial class ThatJsonString
 {
-	private readonly struct MatchesJsonConstraint(
+	private sealed class MatchesJsonConstraint(
 		string it,
+		ExpectationGrammars grammars,
 		object? expected,
 		string expectedExpression,
 		JsonOptions options)
-		: IValueConstraint<string?>
+		: ConstraintResult.WithNotNullValue<string?>(it, grammars),
+			IValueConstraint<string?>
 	{
+		private JsonElementValidator.JsonComparisonResult? _comparisonResult;
+
 		public ConstraintResult IsMetBy(string? actual)
 		{
+			Actual = actual;
 			if (actual is null)
 			{
-				return new ConstraintResult.Failure<string?>(null, ToString(), $"{it} was <null>");
+				Outcome = Outcome.Failure;
+				return this;
 			}
 
 			using JsonDocument actualDocument = JsonDocument.Parse(
@@ -28,25 +36,40 @@ public static partial class ThatJsonString
 			using JsonDocument expectedDocument = JsonDocument.Parse(
 				JsonSerializer.Serialize(expected), options.DocumentOptions);
 
-			JsonElementValidator.JsonComparisonResult comparisonResult = JsonElementValidator.Compare(
+			_comparisonResult = JsonElementValidator.Compare(
 				actualDocument.RootElement,
 				expectedDocument.RootElement,
 				options);
 
-			if (comparisonResult.HasError)
-			{
-				return new ConstraintResult.Failure<string?>(actual, ToString(),
-					$"{it} differed as{comparisonResult}");
-			}
-
-			return new ConstraintResult.Success<string?>(actual, ToString());
+			Outcome = _comparisonResult.HasError ? Outcome.Failure : Outcome.Success;
+			return this;
 		}
 
-		public override string ToString()
-			=> options.IgnoreAdditionalProperties switch
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+		{
+			stringBuilder.Append("is valid JSON which matches ").Append(expectedExpression);
+			if (!options.IgnoreAdditionalProperties)
 			{
-				true => $"is valid JSON which matches {expectedExpression}",
-				false => $"is valid JSON which matches {expectedExpression} exactly",
-			};
+				stringBuilder.Append(" exactly");
+			}
+		}
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" differed as").Append(_comparisonResult);
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+		{
+			stringBuilder.Append("is no valid JSON which matches ").Append(expectedExpression);
+			if (!options.IgnoreAdditionalProperties)
+			{
+				stringBuilder.Append(" exactly");
+			}
+		}
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+		{
+			stringBuilder.Append(It).Append(" was ");
+			Formatter.Format(stringBuilder, Actual);
+		}
 	}
 }

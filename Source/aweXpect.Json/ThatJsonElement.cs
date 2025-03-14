@@ -1,4 +1,7 @@
-﻿using System.Text.Json;
+﻿using System;
+using System.Text;
+using System.Text.Json;
+using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Json;
 
@@ -9,56 +12,68 @@ namespace aweXpect;
 /// </summary>
 public static partial class ThatJsonElement
 {
-	private readonly struct MatchesConstraint(
+	private sealed class MatchesConstraint(
 		string it,
+		ExpectationGrammars grammars,
 		object? expected,
 		string expectedExpression,
 		JsonOptions options)
-		: IValueConstraint<JsonElement>
+		: ConstraintResult.WithValue<JsonElement>(grammars),
+			IValueConstraint<JsonElement>
 	{
+		private JsonElementValidator.JsonComparisonResult? _comparisonResult;
+
 		public ConstraintResult IsMetBy(JsonElement actual)
 		{
+			Actual = actual;
 			using JsonDocument expectedDocument =
 				JsonDocument.Parse(JsonSerializer.Serialize(expected), options.DocumentOptions);
 
-			JsonElementValidator.JsonComparisonResult comparisonResult = JsonElementValidator.Compare(
+			_comparisonResult = JsonElementValidator.Compare(
 				actual,
 				expectedDocument.RootElement,
 				options);
 
-			if (comparisonResult.HasError)
-			{
-				return new ConstraintResult.Failure<JsonElement>(actual, ToString(),
-					$"{it} differed as{comparisonResult}");
-			}
-
-			return new ConstraintResult.Success<JsonElement>(actual, ToString());
+			Outcome = _comparisonResult.HasError ? Outcome.Failure : Outcome.Success;
+			return this;
 		}
 
-		public override string ToString()
-			=> options.IgnoreAdditionalProperties switch
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+		{
+			stringBuilder.Append("matches ").Append(expectedExpression);
+			if (!options.IgnoreAdditionalProperties)
 			{
-				true => $"matches {expectedExpression}",
-				false => $"matches {expectedExpression} exactly",
-			};
+				stringBuilder.Append(" exactly");
+			}
+		}
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(it).Append(" differed as").Append(_comparisonResult);
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> throw new NotImplementedException();
 	}
 
 
-	private readonly struct IsValueKindConstraint(string it, JsonValueKind expected)
-		: IValueConstraint<JsonElement>
+	private sealed class IsValueKindConstraint(string it, ExpectationGrammars grammars, JsonValueKind expected)
+		: ConstraintResult.WithValue<JsonElement>(grammars),
+			IValueConstraint<JsonElement>
 	{
 		public ConstraintResult IsMetBy(JsonElement actual)
 		{
-			if (actual.ValueKind != expected)
-			{
-				return new ConstraintResult.Failure<JsonElement>(actual, ToString(),
-					$"{it} was {JsonValidation.Format(actual.ValueKind)} instead of {JsonValidation.Format(expected)}");
-			}
-
-			return new ConstraintResult.Success<JsonElement>(actual, ToString());
+			Actual = actual;
+			Outcome = actual.ValueKind == expected ? Outcome.Success : Outcome.Failure;
+			return this;
 		}
 
-		public override string ToString()
-			=> $"is {JsonValidation.Format(expected)}";
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("is ").Append(JsonValidation.Format(expected));
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(it).Append(" was ").Append(JsonValidation.Format(Actual.ValueKind))
+				.Append(" instead of ").Append(JsonValidation.Format(expected));
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> throw new NotImplementedException();
 	}
 }

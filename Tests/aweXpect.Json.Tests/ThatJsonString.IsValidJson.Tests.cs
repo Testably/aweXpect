@@ -104,12 +104,12 @@ public sealed partial class ThatJsonString
 				string? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsValidJson().Which(d => d.Matches([1, 2]));
+					=> await That(subject).IsValidJson().Which(d => d.Matches([1, 2,]));
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is valid JSON which matches [1, 2],
+					             is valid JSON which matches [1, 2,],
 					             but it was <null>
 					             """);
 			}
@@ -120,12 +120,12 @@ public sealed partial class ThatJsonString
 				string subject = "[1, 2]";
 
 				async Task Act()
-					=> await That(subject).IsValidJson().Which(d => d.Matches([1, 3]));
+					=> await That(subject).IsValidJson().Which(d => d.Matches([1, 3,]));
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is valid JSON which matches [1, 3],
+					             is valid JSON which matches [1, 3,],
 					             but it differed as $[1] was 2 instead of 3
 					             """);
 			}
@@ -136,7 +136,7 @@ public sealed partial class ThatJsonString
 				string subject = "[1, 2]";
 
 				async Task Act()
-					=> await That(subject).IsValidJson().Which(d => d.Matches([1, 2]));
+					=> await That(subject).IsValidJson().Which(d => d.Matches([1, 2,]));
 
 				await That(Act).DoesNotThrow();
 			}
