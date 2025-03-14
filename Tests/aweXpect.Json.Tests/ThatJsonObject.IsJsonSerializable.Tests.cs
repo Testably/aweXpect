@@ -1,6 +1,10 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
+// ReSharper disable UnusedMember.Local
+// ReSharper disable UnusedAutoPropertyAccessor.Local
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+
 namespace aweXpect.Json.Tests;
 
 public sealed class ThatJsonObject
@@ -330,19 +334,190 @@ public sealed class ThatJsonObject
 			}
 		}
 
-		public class PocoWithoutDefaultConstructor(int value)
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenSubjectHasAnIgnoredProperty_ShouldSucceed()
+			{
+				PocoWithIgnoredProperty subject = new()
+				{
+					Id = 2,
+					Name = "foo",
+				};
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsJsonSerializable());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectHasAnIgnoredProperty_WhenPropertyIsIgnored_ShouldFail()
+			{
+				PocoWithIgnoredProperty subject = new()
+				{
+					Id = 2,
+					Name = "foo",
+				};
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsJsonSerializable(o => o with
+					{
+						MembersToIgnore = ["Name",],
+					}));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not serializable as JSON,
+					             but it was
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectHasAPrivateConstructor_ShouldSucceed()
+			{
+				PocoWithPrivateConstructor subject = PocoWithPrivateConstructor.Create(42);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsJsonSerializable());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectHasAPrivateConstructorWithJsonConstructorAttribute_ShouldFail()
+			{
+				PocoWithPrivateConstructorWithJsonConstructorAttribute subject =
+					PocoWithPrivateConstructorWithJsonConstructorAttribute.Create(42);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsJsonSerializable());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not serializable as JSON,
+					             but it was
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectHasNoDefaultConstructor_ShouldSucceed()
+			{
+				PocoWithoutDefaultConstructor subject = new(12);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsJsonSerializable());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldSucceed()
+			{
+				object? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsJsonSerializable());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsPoco_ShouldFail()
+			{
+				SimplePocoWithPrimitiveTypes subject = new()
+				{
+					Id = 1,
+					GlobalId = Guid.NewGuid(),
+					Name = "foo",
+					DateOfBirth = DateTime.Today,
+					Height = new decimal(4.3),
+					Weight = 5.6,
+					ShoeSize = 7.8f,
+					IsActive = true,
+					Image = [8, 9, 10, 11,],
+					Category = 'a',
+				};
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsJsonSerializable());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not serializable as JSON,
+					             but it was
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenTypeDoesNotMatch_ShouldSucceed()
+			{
+				SimplePocoWithPrimitiveTypes subject = new()
+				{
+					Id = 1,
+					GlobalId = Guid.NewGuid(),
+					Name = "foo",
+					DateOfBirth = DateTime.Today,
+					Height = new decimal(4.3),
+					Weight = 5.6,
+					ShoeSize = 7.8f,
+					IsActive = true,
+					Image = [8, 9, 10, 11,],
+					Category = 'a',
+				};
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsJsonSerializable<PocoWithIgnoredProperty>());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTypeMatches_ShouldFail()
+			{
+				SimplePocoWithPrimitiveTypes subject = new()
+				{
+					Id = 1,
+					GlobalId = Guid.NewGuid(),
+					Name = "foo",
+					DateOfBirth = DateTime.Today,
+					Height = new decimal(4.3),
+					Weight = 5.6,
+					ShoeSize = 7.8f,
+					IsActive = true,
+					Image = [8, 9, 10, 11,],
+					Category = 'a',
+				};
+
+				async Task Act()
+					=> await That(subject)
+						.DoesNotComplyWith(it => it.IsJsonSerializable<SimplePocoWithPrimitiveTypes>());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not serializable as SimplePocoWithPrimitiveTypes JSON,
+					             but it was
+					             """);
+			}
+		}
+
+		private class PocoWithoutDefaultConstructor(int value)
 		{
 			public int Id { get; } = value;
 		}
 
-		public class PocoWithIgnoredProperty
+		private class PocoWithIgnoredProperty
 		{
 			public int Id { get; set; }
 
 			[JsonIgnore] public string? Name { get; set; }
 		}
 
-		public class PocoWithoutDefaultFieldConstructor(int value)
+		private class PocoWithoutDefaultFieldConstructor(int value)
 		{
 			public int Value = value;
 		}
@@ -372,7 +547,7 @@ public sealed class ThatJsonObject
 			};
 		}
 
-		public class SimplePocoWithPrimitiveTypes
+		private class SimplePocoWithPrimitiveTypes
 		{
 			public int Id { get; set; }
 

@@ -70,6 +70,11 @@ namespace aweXpect
         public static TSelf AsJson<TType, TThat, TSelf>(this aweXpect.Results.StringEqualityResult<TType, TThat, TSelf> result, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null)
             where TSelf : aweXpect.Results.StringEqualityResult<TType, TThat, TSelf> { }
     }
+    public static class JsonFormatting
+    {
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.Json.JsonElement? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, System.Text.Json.JsonElement? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+    }
     public static class ThatJsonElement
     {
         public static aweXpect.Results.AndOrResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> IsArray(this aweXpect.Core.IThat<System.Text.Json.JsonElement> source) { }

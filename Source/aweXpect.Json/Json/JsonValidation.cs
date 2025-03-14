@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using aweXpect.Core;
 
 namespace aweXpect.Json;
 
@@ -455,13 +456,18 @@ internal class JsonValidation : IJsonObjectResult,
 		return string.Join(failureSeparator, _failures);
 	}
 
-	internal static string Format(JsonValueKind valueKind)
-		=> valueKind switch
+	internal static string Format(JsonValueKind valueKind, ExpectationGrammars grammars = ExpectationGrammars.None)
+		=> (valueKind, grammars.IsNegated()) switch
 		{
-			JsonValueKind.Array => "an array",
-			JsonValueKind.Object => "an object",
-			JsonValueKind.Number => "a number",
-			JsonValueKind.String => "a string",
-			_ => valueKind.ToString().ToLower(),
+			(JsonValueKind.Array, false) => "an array",
+			(JsonValueKind.Object, false) => "an object",
+			(JsonValueKind.Number, false) => "a number",
+			(JsonValueKind.String, false) => "a string",
+			(_, false) => valueKind.ToString().ToLower(),
+			(JsonValueKind.Array, true) => "no array",
+			(JsonValueKind.Object, true) => "no object",
+			(JsonValueKind.Number, true) => "no number",
+			(JsonValueKind.String, true) => "no string",
+			(_, true) => $"not {valueKind.ToString().ToLower()}",
 		};
 }

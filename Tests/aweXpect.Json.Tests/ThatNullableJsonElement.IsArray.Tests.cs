@@ -9,6 +9,92 @@ public sealed partial class ThatNullableJsonElement
 		public sealed class Tests
 		{
 			[Theory]
+			[InlineData("[]")]
+			[InlineData("[1, 2]")]
+			public async Task WhenJsonIsAnArray_ShouldSucceed(string json)
+			{
+				JsonElement? subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).IsArray();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Theory]
+			[InlineData("{}", "an object")]
+			[InlineData("2", "a number")]
+			[InlineData("\"foo\"", "a string")]
+			public async Task WhenJsonIsNoArray_ShouldFail(string json, string kindString)
+			{
+				JsonElement? subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).IsArray();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is an array,
+					              but it was {kindString} instead of an array
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				JsonElement? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsArray();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an array,
+					             but it was <null>
+					             """);
+			}
+		}
+
+		public sealed class NegatedTests
+		{
+			[Theory]
+			[InlineData("[]")]
+			[InlineData("[1, 2]")]
+			public async Task WhenJsonIsAnArray_ShouldFail(string json)
+			{
+				JsonElement? subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsArray());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is no array,
+					             but it was
+					             """);
+			}
+
+			[Theory]
+			[InlineData("{}")]
+			[InlineData("2")]
+			[InlineData("\"foo\"")]
+			public async Task WhenJsonIsNoArray_ShouldSucceed(string json)
+			{
+				JsonElement? subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsArray());
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
+		public sealed class WithExpectationTests
+		{
+			[Theory]
 			[InlineData("{\"foo\":{}}", "an object")]
 			[InlineData("{\"foo\":2}", "a number")]
 			[InlineData("{\"foo\":\"foo\"}", "a string")]
@@ -66,38 +152,6 @@ public sealed partial class ThatNullableJsonElement
 			}
 
 			[Theory]
-			[InlineData("[]")]
-			[InlineData("[1, 2]")]
-			public async Task WhenJsonIsAnArray_ShouldSucceed(string json)
-			{
-				JsonElement? subject = FromString(json);
-
-				async Task Act()
-					=> await That(subject).IsArray();
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Theory]
-			[InlineData("{}", "an object")]
-			[InlineData("2", "a number")]
-			[InlineData("\"foo\"", "a string")]
-			public async Task WhenJsonIsNoArray_ShouldFail(string json, string kindString)
-			{
-				JsonElement? subject = FromString(json);
-
-				async Task Act()
-					=> await That(subject).IsArray();
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              is an array,
-					              but it was {kindString} instead of an array
-					              """);
-			}
-
-			[Theory]
 			[InlineData(true)]
 			[InlineData(false)]
 			public async Task WhenJsonIsNoArray_WithExpectations_ShouldConsiderIgnoreAdditionalProperties(
@@ -143,22 +197,6 @@ public sealed partial class ThatNullableJsonElement
 					              is an array and $[0] matches true,
 					              but it was {kindString} instead of an array
 					              """);
-			}
-
-			[Fact]
-			public async Task WhenSubjectIsNull_ShouldFail()
-			{
-				JsonElement? subject = null;
-
-				async Task Act()
-					=> await That(subject).IsArray();
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is an array,
-					             but it was <null>
-					             """);
 			}
 
 			[Fact]

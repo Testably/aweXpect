@@ -8,6 +8,76 @@ public sealed partial class ThatJsonElement
 	{
 		public sealed class Tests
 		{
+			[Theory]
+			[InlineData("[]")]
+			[InlineData("[1, 2]")]
+			public async Task WhenJsonIsAnArray_ShouldSucceed(string json)
+			{
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).IsArray();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Theory]
+			[InlineData("{}", "an object")]
+			[InlineData("2", "a number")]
+			[InlineData("\"foo\"", "a string")]
+			public async Task WhenJsonIsNoArray_ShouldFail(string json, string kindString)
+			{
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).IsArray();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is an array,
+					              but it was {kindString} instead of an array
+					              """);
+			}
+		}
+
+		public sealed class NegatedTests
+		{
+			[Theory]
+			[InlineData("[]")]
+			[InlineData("[1, 2]")]
+			public async Task WhenJsonIsAnArray_ShouldFail(string json)
+			{
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsArray());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is no array,
+					             but it was
+					             """);
+			}
+
+			[Theory]
+			[InlineData("{}")]
+			[InlineData("2")]
+			[InlineData("\"foo\"")]
+			public async Task WhenJsonIsNoArray_ShouldSucceed(string json)
+			{
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsArray());
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
+		public sealed class ExpectationTests
+		{
 			[Fact]
 			public async Task IsArray_ShouldBeChainable()
 			{
@@ -115,38 +185,6 @@ public sealed partial class ThatJsonElement
 					              Expected that subject
 					              is an object and $.foo is an array,
 					              but it differed as $.foo was {kindString} instead of an array
-					              """);
-			}
-
-			[Theory]
-			[InlineData("[]")]
-			[InlineData("[1, 2]")]
-			public async Task WhenJsonIsAnArray_ShouldSucceed(string json)
-			{
-				JsonElement subject = FromString(json);
-
-				async Task Act()
-					=> await That(subject).IsArray();
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Theory]
-			[InlineData("{}", "an object")]
-			[InlineData("2", "a number")]
-			[InlineData("\"foo\"", "a string")]
-			public async Task WhenJsonIsNoArray_ShouldFail(string json, string kindString)
-			{
-				JsonElement subject = FromString(json);
-
-				async Task Act()
-					=> await That(subject).IsArray();
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              is an array,
-					              but it was {kindString} instead of an array
 					              """);
 			}
 

@@ -94,6 +94,41 @@ public sealed partial class ThatNullableJsonElement
 			}
 		}
 
+		public sealed class NegatedTests
+		{
+			[Theory]
+			[InlineData("{}")]
+			[InlineData("{\"foo\": 1}")]
+			public async Task WhenJsonIsAnObject_ShouldFail(string json)
+			{
+				JsonElement? subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsObject());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is no object,
+					             but it was
+					             """);
+			}
+
+			[Theory]
+			[InlineData("[]")]
+			[InlineData("2")]
+			[InlineData("\"foo\"")]
+			public async Task WhenJsonIsNoObject_ShouldSucceed(string json)
+			{
+				JsonElement? subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsObject());
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
 		public sealed class WithTests
 		{
 			[Fact]

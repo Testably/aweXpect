@@ -101,6 +101,101 @@ public sealed partial class ThatJsonElement
 			}
 		}
 
+		public sealed class NegatedTests
+		{
+			[Theory]
+			[InlineData("true", true, true)]
+			[InlineData("true", false, false)]
+			[InlineData("false", true, false)]
+			[InlineData("false", false, true)]
+			public async Task BooleanValue_ShouldFailWhenMatching(string json, bool expected, bool isMatch)
+			{
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.MatchesExactly(expected));
+
+				await That(Act).Throws<XunitException>().OnlyIf(isMatch)
+					.WithMessage($"""
+					              Expected that subject
+					              does not match expected exactly,
+					              but it did match in {json}
+					              """);
+			}
+
+			[Theory]
+			[InlineData("42.1", 42.1, true)]
+			[InlineData("1.2", 2.1, false)]
+			public async Task DoubleValue_ShouldFailWhenMatching(string json, double expected, bool isMatch)
+			{
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.MatchesExactly(expected));
+
+				await That(Act).Throws<XunitException>().OnlyIf(isMatch)
+					.WithMessage($"""
+					              Expected that subject
+					              does not match expected exactly,
+					              but it did match in {json}
+					              """);
+			}
+
+			[Theory]
+			[InlineData("42", 42, true)]
+			[InlineData("1", 2, false)]
+			public async Task IntegerValue_ShouldFailWhenMatching(string json, int expected, bool isMatch)
+			{
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.MatchesExactly(expected));
+
+				await That(Act).Throws<XunitException>().OnlyIf(isMatch)
+					.WithMessage($"""
+					              Expected that subject
+					              does not match expected exactly,
+					              but it did match in {json}
+					              """);
+			}
+
+			[Theory]
+			[InlineData("null", true)]
+			[InlineData("{}", false)]
+			public async Task NullValue_ShouldFailWhenMatching(string json, bool isMatch)
+			{
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.MatchesExactly(null));
+
+				await That(Act).Throws<XunitException>().OnlyIf(isMatch)
+					.WithMessage($"""
+					              Expected that subject
+					              does not match null exactly,
+					              but it did match in {json}
+					              """);
+			}
+
+			[Theory]
+			[InlineData("\"foo\"", "foo", true)]
+			[InlineData("\"foo\"", "bar", false)]
+			public async Task StringValue_ShouldFailWhenMatching(string json, string expected, bool isMatch)
+			{
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.MatchesExactly(expected));
+
+				await That(Act).Throws<XunitException>().OnlyIf(isMatch)
+					.WithMessage($"""
+					              Expected that subject
+					              does not match expected exactly,
+					              but it did match in {json}
+					              """);
+			}
+		}
+
 		public sealed class ArrayTests
 		{
 			[Theory]

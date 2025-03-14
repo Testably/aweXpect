@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Text.Json;
 using aweXpect.Core;
@@ -81,23 +82,20 @@ public static class ThatJsonObject
 		ExpectationGrammars grammars,
 		JsonSerializerOptions serializerOptions,
 		EquivalencyOptions options)
-		: ConstraintResult.WithValue<T?>(grammars),
+		: ConstraintResult.WithValue<object?>(grammars),
 			IValueConstraint<object?>
 	{
-		private object? _actual;
 		private string? _deserializationError;
 		private StringBuilder? _failureBuilder;
 
 		public ConstraintResult IsMetBy(object? actual)
 		{
-			_actual = actual;
-			if (actual is not T typedSubject)
+			Actual = actual;
+			if (actual is not T)
 			{
 				Outcome = Outcome.Failure;
 				return this;
 			}
-
-			Actual = typedSubject;
 
 			object? deserializedObject;
 			try
@@ -137,11 +135,11 @@ public static class ThatJsonObject
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_actual is null)
+			if (Actual is null)
 			{
 				stringBuilder.Append(it).Append(" was <null>");
 			}
-			else if (_actual is not T)
+			else if (Actual is not T)
 			{
 				stringBuilder.Append(it).Append(" was not assignable to ");
 				Formatter.Format(stringBuilder, typeof(T));
@@ -157,6 +155,40 @@ public static class ThatJsonObject
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> throw new NotImplementedException();
+		{
+			stringBuilder.Append("is not serializable as ");
+			if (typeof(T) != typeof(object))
+			{
+				Formatter.Format(stringBuilder, typeof(T));
+				stringBuilder.Append(' ');
+			}
+
+			stringBuilder.Append("JSON");
+		}
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+		{
+			if (Actual is null)
+			{
+				stringBuilder.Append(it).Append(" was <null>");
+			}
+			else if (_failureBuilder is not null)
+			{
+				stringBuilder.Append(it).Append(" was");
+			}
+		}
+
+		/// <inheritdoc cref="ConstraintResult.TryGetValue{TValue}(out TValue)" />
+		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+		{
+			if (Actual is TValue typedValue)
+			{
+				value = typedValue;
+				return true;
+			}
+
+			value = default;
+			return typeof(TValue).IsAssignableFrom(typeof(T));
+		}
 	}
 }
