@@ -64,12 +64,18 @@ public static partial class ThatJsonElement
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(_jsonValidation?.GetExpectation());
+			=> _jsonValidation?.GetExpectation(stringBuilder, Grammars);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(_jsonValidation?.GetFailure(it));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> throw new NotImplementedException();
+			=> _jsonValidation?.GetExpectation(stringBuilder, Grammars);
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+		{
+			stringBuilder.Append(it).Append(" was in ");
+			Formatter.Format(stringBuilder, Actual, FormattingOptions.MultipleLines);
+		}
 	}
 }

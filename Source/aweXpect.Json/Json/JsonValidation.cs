@@ -14,12 +14,11 @@ internal class JsonValidation : IJsonObjectResult,
 	IJsonPropertyResult<IJsonArrayResult>,
 	IJsonPropertyResult<IJsonObjectResult>
 {
-	private const string And = " and ";
 	private readonly Stack<JsonElement?> _currentElements = new();
 	private readonly Stack<string> _currentPath = new();
 	private readonly JsonElement? _element;
 
-	private readonly StringBuilder _expectationBuilder;
+	private readonly List<Action<StringBuilder, ExpectationGrammars>> _expectationBuilder;
 
 	private readonly List<string> _failures = new();
 	private readonly JsonOptions _options;
@@ -37,7 +36,10 @@ internal class JsonValidation : IJsonObjectResult,
 		_options = options;
 		_element = element;
 		_currentElements.Push(element);
-		_expectationBuilder = new StringBuilder().Append("is an ").Append(valueKind.ToString().ToLower());
+		_expectationBuilder =
+		[
+			(sb, grammars) => sb.Append("is ").Append(Format(valueKind, grammars)),
+		];
 		_currentPath.Push(path);
 	}
 
@@ -107,8 +109,10 @@ internal class JsonValidation : IJsonObjectResult,
 
 			_currentPath.Push($"[{i}]");
 
-			_expectationBuilder.Append(And).Append(CurrentPath).Append(" matches ")
-				.Append(expectedValue == null ? "Null" : Formatter.Format(expectedValue));
+			string currentPath = CurrentPath;
+			_expectationBuilder.Add((sb, grammars) => sb.Append(And(grammars)).Append(currentPath)
+				.Append(grammars.IsNegated() ? " does not match " : " matches ")
+				.Append(expectedValue == null ? "Null" : Formatter.Format(expectedValue)));
 
 			if (currentElement != null)
 			{
@@ -159,11 +163,12 @@ internal class JsonValidation : IJsonObjectResult,
 
 			_currentPath.Push($"[{i}]");
 
-			_expectationBuilder.Append(And).Append(CurrentPath).Append(' ');
+			string currentPath = CurrentPath;
+			_expectationBuilder.Add((sb, grammars) => sb.Append(And(grammars)).Append(currentPath).Append(' '));
 
 			JsonValidation jsonValidation = new(CurrentPath, currentElement, JsonValueKind.Array, _options);
 			expectation.Invoke(jsonValidation);
-			_expectationBuilder.Append(jsonValidation.GetExpectation());
+			_expectationBuilder.Add(jsonValidation.GetExpectation);
 
 			if (currentElement != null)
 			{
@@ -210,11 +215,13 @@ internal class JsonValidation : IJsonObjectResult,
 
 			_currentPath.Push($"[{i}]");
 
-			_expectationBuilder.Append(And).Append(CurrentPath).Append(' ');
+			string currentPath = CurrentPath;
+			_expectationBuilder.Add((sb, grammars) => sb.Append(And(grammars)).Append(currentPath).Append(' '));
 
 			JsonValidation jsonValidation = new(CurrentPath, currentElement, JsonValueKind.Object, _options);
 			expectation.Invoke(jsonValidation);
-			_expectationBuilder.Append(jsonValidation.GetExpectation());
+
+			_expectationBuilder.Add(jsonValidation.GetExpectation);
 
 			if (currentElement != null)
 			{
@@ -237,7 +244,9 @@ internal class JsonValidation : IJsonObjectResult,
 
 	IJsonArrayResult IJsonArrayResult.IJsonArrayLengthResult.Elements()
 	{
-		_expectationBuilder.Append(" with ").Append(_amount).Append(_amount == 1 ? " element" : " elements");
+		int? amount = _amount;
+		_expectationBuilder.Add((sb, grammars) => sb.Append(grammars.IsNegated() ? " or not with " : " with ")
+			.Append(amount).Append(amount == 1 ? " element" : " elements"));
 		JsonElement? currentElement = _currentElements.Peek();
 		if (currentElement is not { ValueKind: JsonValueKind.Array, })
 		{
@@ -257,7 +266,9 @@ internal class JsonValidation : IJsonObjectResult,
 
 	IJsonObjectResult IJsonObjectResult.IJsonObjectLengthResult.Properties()
 	{
-		_expectationBuilder.Append(" with ").Append(_amount).Append(_amount == 1 ? " property" : " properties");
+		int? amount = _amount;
+		_expectationBuilder.Add((sb, grammars) => sb.Append(grammars.IsNegated() ? " or not with " : " with ")
+			.Append(amount).Append(amount == 1 ? " property" : " properties"));
 		JsonElement? currentElement = _currentElements.Peek();
 		if (currentElement is not { ValueKind: JsonValueKind.Object, })
 		{
@@ -313,7 +324,9 @@ internal class JsonValidation : IJsonObjectResult,
 
 	IJsonArrayResult IJsonPropertyResult<IJsonArrayResult>.Matching(object? expected, string doNotPopulateThisValue)
 	{
-		_expectationBuilder.Append(And).Append(CurrentPath).Append(" matches ").Append(doNotPopulateThisValue);
+		string currentPath = CurrentPath;
+		_expectationBuilder.Add((sb, grammars) => sb.Append(And(grammars)).Append(currentPath)
+			.Append(grammars.IsNegated() ? " does not match " : " matches ").Append(doNotPopulateThisValue));
 		JsonElement? currentElement = _currentElements.Pop();
 		if (currentElement == null)
 		{
@@ -364,7 +377,9 @@ internal class JsonValidation : IJsonObjectResult,
 
 	IJsonObjectResult IJsonPropertyResult<IJsonObjectResult>.Matching(object? expected, string doNotPopulateThisValue)
 	{
-		_expectationBuilder.Append(And).Append(CurrentPath).Append(" matches ").Append(doNotPopulateThisValue);
+		string currentPath = CurrentPath;
+		_expectationBuilder.Add((sb, grammars) => sb.Append(And(grammars)).Append(currentPath)
+			.Append(grammars.IsNegated() ? " does not match " : " matches ").Append(doNotPopulateThisValue));
 		JsonElement? currentElement = _currentElements.Pop();
 		if (currentElement == null)
 		{
@@ -389,14 +404,17 @@ internal class JsonValidation : IJsonObjectResult,
 		return this;
 	}
 
+	private static string And(ExpectationGrammars grammars) => grammars.IsNegated() ? " or " : " and ";
+
 	private JsonValidation An(JsonValueKind kind, Action<JsonValidation> expectation)
 	{
-		_expectationBuilder.Append(And).Append(CurrentPath).Append(' ');
+		string currentPath = CurrentPath;
+		_expectationBuilder.Add((sb, grammars) => sb.Append(And(grammars)).Append(currentPath).Append(' '));
 		JsonElement? currentElement = _currentElements.Pop();
 
 		JsonValidation jsonValidation = new(CurrentPath, currentElement, kind, _options);
 		expectation.Invoke(jsonValidation);
-		_expectationBuilder.Append(jsonValidation.GetExpectation());
+		_expectationBuilder.Add(jsonValidation.GetExpectation);
 
 		if (currentElement != null)
 		{
@@ -416,7 +434,9 @@ internal class JsonValidation : IJsonObjectResult,
 
 	private JsonValidation An(JsonValueKind kind)
 	{
-		_expectationBuilder.Append(And).Append(CurrentPath).Append(" is ").Append(Format(kind));
+		string currentPath = CurrentPath;
+		_expectationBuilder.Add((sb, grammars)
+			=> sb.Append(And(grammars)).Append(currentPath).Append(" is ").Append(Format(kind)));
 		JsonElement? currentElement = _currentElements.Pop();
 
 		if (currentElement != null && currentElement.Value.ValueKind != kind)
@@ -431,8 +451,13 @@ internal class JsonValidation : IJsonObjectResult,
 	public bool IsMet()
 		=> _element is not null && _element.Value.ValueKind == _valueKind && _failures.Count == 0;
 
-	public string GetExpectation()
-		=> _expectationBuilder.ToString();
+	public void GetExpectation(StringBuilder stringBuilder, ExpectationGrammars grammars)
+	{
+		foreach (Action<StringBuilder, ExpectationGrammars>? callback in _expectationBuilder)
+		{
+			callback(stringBuilder, grammars);
+		}
+	}
 
 	public string GetFailure(string it)
 	{

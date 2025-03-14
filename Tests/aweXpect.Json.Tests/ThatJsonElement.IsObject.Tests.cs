@@ -62,6 +62,34 @@ public sealed partial class ThatJsonElement
 
 		public sealed class NegatedTests
 		{
+			[Fact]
+			public async Task IsObject_ShouldBeChainable()
+			{
+				string json = """
+				              {
+				                "foo": 21,
+				                "bar": []
+				              }
+				              """;
+				JsonElement subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it
+						=> it.IsObject(o
+							=> o.With(2).Properties().And.With("foo").Matching(21).And.With("bar")
+								.AnArray(a => a.With(0).Elements())));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is no object or not with 2 properties or $.foo does not match 21 or $.bar is no array or not with 0 elements,
+					             but it was in {
+					               "foo": 21,
+					               "bar": []
+					             }
+					             """);
+			}
+
 			[Theory]
 			[InlineData("{}")]
 			[InlineData("{\"foo\": 1}")]

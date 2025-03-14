@@ -59,6 +59,28 @@ public sealed partial class ThatNullableJsonElement
 
 		public sealed class NegatedTests
 		{
+			[Fact]
+			public async Task IsArray_ShouldBeChainable()
+			{
+				string json = "[1, 2, 3]";
+				JsonElement? subject = FromString(json);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it
+						=> it.IsArray(o => o.At(0).Matching(1)).And.IsArray(o => o.At(2).Matching(3)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is no array or $[0] does not match 1 or is no array or $[2] does not match 3,
+					             but it was in [
+					               1,
+					               2,
+					               3
+					             ]
+					             """);
+			}
+
 			[Theory]
 			[InlineData("[]")]
 			[InlineData("[1, 2]")]
