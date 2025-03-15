@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
@@ -63,6 +62,9 @@ public static partial class ThatHttpRequestMessage
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> throw new NotImplementedException();
+			=> stringBuilder.Append("does not have a ").Append(expected).Append(" method");
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" had");
 	}
 }

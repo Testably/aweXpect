@@ -174,6 +174,6 @@ public class StatusCodeResult(
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> throw new NotImplementedException();
+			=> throw new NotSupportedException();
 	}
 }

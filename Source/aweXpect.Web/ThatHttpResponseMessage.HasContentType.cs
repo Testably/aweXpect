@@ -71,7 +71,8 @@ public static partial class ThatHttpResponseMessage
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has a `Content-Type` header ").Append(options.GetExpectation(expected, Grammars));
+			=> stringBuilder.Append("has a `Content-Type` header ")
+				.Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -86,6 +87,10 @@ public static partial class ThatHttpResponseMessage
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> throw new NotImplementedException();
+			=> stringBuilder.Append("does not have a `Content-Type` header ")
+				.Append(options.GetExpectation(expected, Grammars.Negate()));
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" had");
 	}
 }

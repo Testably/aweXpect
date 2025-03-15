@@ -166,5 +166,47 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Theory]
+			[InlineData("foo", "bar")]
+			[InlineData("foo", "FOO")]
+			public async Task WhenTypeDoesNotMatch_ShouldSucceed(string actualType, string expectedType)
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent($$"""
+					               {
+					                 "type": "{{actualType}}"
+					               }
+					               """);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasProblemDetailsContent(expectedType));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTypeMatches_ShouldFail()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("""
+					             {
+					               "type": "foo"
+					             }
+					             """);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasProblemDetailsContent("foo"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have a ProblemDetails content with type "foo",
+					             but it had
+					             """);
+			}
+		}
 	}
 }

@@ -142,6 +142,12 @@ public class HasHeaderValueResult<TType, TThat>
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> throw new NotImplementedException();
+		{
+			stringBuilder.Append(" whose value ");
+			stringBuilder.Append(options.GetExpectation(expected, Grammars | ExpectationGrammars.Active));
+		}
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(it).Append(" was");
 	}
 }

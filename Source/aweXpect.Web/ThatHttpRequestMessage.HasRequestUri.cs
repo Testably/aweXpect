@@ -55,6 +55,7 @@ public static partial class ThatHttpRequestMessage
 				return this;
 			}
 
+			expectationBuilder.AddContext(actual);
 			_requestUri = actual.RequestUri?.ToString();
 			if (_requestUri?.Equals(expected, StringComparison.OrdinalIgnoreCase) == true)
 			{
@@ -62,13 +63,9 @@ public static partial class ThatHttpRequestMessage
 				return this;
 			}
 
-			expectationBuilder.AddContext(actual);
 			Outcome = Outcome.Failure;
 			return this;
 		}
-
-		public override string ToString()
-			=> $"has a request URI equal to {Formatter.Format(expected)}";
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -85,6 +82,12 @@ public static partial class ThatHttpRequestMessage
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> throw new NotImplementedException();
+		{
+			stringBuilder.Append("does not have a request URI equal to ");
+			Formatter.Format(stringBuilder, expected);
+		}
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" had");
 	}
 }

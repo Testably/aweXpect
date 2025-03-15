@@ -90,5 +90,60 @@ public sealed partial class ThatHttpRequestMessage
 					             """);
 			}
 		}
+
+		public sealed class NegatedWhoseValueTests
+		{
+			[Fact]
+			public async Task WhenHeaderDoesNotExist_ShouldSucceed()
+			{
+				string name = "x-my-header";
+				string value = "some header";
+				string otherKey = "x-some-other-key";
+				HttpRequestMessage subject = RequestBuilder
+					.WithHeader(name, value);
+
+				async Task Act()
+					=> await That(subject)
+						.DoesNotComplyWith(it => it.HasHeader(otherKey).WhoseValue(v => v.IsEqualTo(value)));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenHeaderExistsAndValueDoesNotSatisfyTheExpectations_ShouldSucceed()
+			{
+				string name = "x-my-header";
+				string value = "some header";
+				string expectedValue = "some other header";
+				HttpRequestMessage subject = RequestBuilder
+					.WithHeader(name, value);
+
+				async Task Act()
+					=> await That(subject)
+						.DoesNotComplyWith(it => it.HasHeader(name).WhoseValue(v => v.IsEqualTo(expectedValue)));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenHeaderExistsAndValueSatisfiesTheExpectations_ShouldFail()
+			{
+				string name = "x-my-header";
+				string value = "some header";
+				HttpRequestMessage subject = RequestBuilder
+					.WithHeader(name, value);
+
+				async Task Act()
+					=> await That(subject)
+						.DoesNotComplyWith(it => it.HasHeader(name).WhoseValue(v => v.IsEqualTo(value)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have a `x-my-header` header whose value is equal to "some header",
+					             but it did contain the `x-my-header` header: ["some header"]
+					             """);
+			}
+		}
 	}
 }

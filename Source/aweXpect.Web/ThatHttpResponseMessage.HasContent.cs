@@ -107,6 +107,10 @@ public static partial class ThatHttpResponseMessage
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> throw new NotImplementedException();
+			=> stringBuilder.Append("does not have a string content ")
+				.Append(options.GetExpectation(expected, ExpectationGrammars.None));
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" had");
 	}
 }

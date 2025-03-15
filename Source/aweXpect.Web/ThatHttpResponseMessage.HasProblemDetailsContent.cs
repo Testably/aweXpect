@@ -160,6 +160,22 @@ public static partial class ThatHttpResponseMessage
 			=> stringBuilder.Append(string.Join($"{Environment.NewLine} and ", _failures));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> throw new NotImplementedException();
+		{
+			if (expectedType is null)
+			{
+				stringBuilder.Append("does not have a ProblemDetails content");
+			}
+			else
+			{
+				stringBuilder.Append("does not have a ProblemDetails content with type ");
+				Formatter.Format(stringBuilder, expectedType);
+				stringBuilder.Append(typeOptions);
+			}
+
+			stringBuilder.Append(options);
+		}
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" had");
 	}
 }
