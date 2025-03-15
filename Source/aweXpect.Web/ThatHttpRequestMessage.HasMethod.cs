@@ -1,4 +1,6 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
+using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
@@ -16,35 +18,51 @@ public static partial class ThatHttpRequestMessage
 		=> new(
 			source.ThatIs().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, grammar) =>
-					new HasMethodConstraint(expectationBuilder, it, expected)),
+				.AddConstraint((expectationBuilder, it, grammars) =>
+					new HasMethodConstraint(expectationBuilder, it, grammars, expected)),
 			source);
 
-	private readonly struct HasMethodConstraint(
+	private sealed class HasMethodConstraint(
 		ExpectationBuilder expectationBuilder,
 		string it,
+		ExpectationGrammars grammars,
 		HttpMethod expected)
-		: IValueConstraint<HttpRequestMessage>
+		: ConstraintResult.WithNotNullValue<HttpRequestMessage>(it, grammars),
+			IValueConstraint<HttpRequestMessage>
 	{
 		public ConstraintResult IsMetBy(HttpRequestMessage? actual)
 		{
+			Actual = actual;
 			if (actual == null)
 			{
-				return new ConstraintResult.Failure<HttpRequestMessage?>(actual, ToString(),
-					$"{it} was <null>");
+				Outcome = Outcome.Failure;
+				return this;
 			}
 
 			if (actual.Method != expected)
 			{
 				expectationBuilder.AddContext(actual);
-				return new ConstraintResult.Failure<HttpRequestMessage?>(actual, ToString(),
-					$"{it} was {actual.Method}");
+				Outcome = Outcome.Failure;
+				return this;
 			}
 
-			return new ConstraintResult.Success<HttpRequestMessage?>(actual, ToString());
+			Outcome = Outcome.Success;
+			return this;
 		}
 
 		public override string ToString()
 			=> $"has a {expected} method";
+
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("has a ").Append(expected).Append(" method");
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+		{
+			stringBuilder.Append(It).Append(" was ");
+			Formatter.Format(stringBuilder, Actual?.Method);
+		}
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> throw new NotImplementedException();
 	}
 }

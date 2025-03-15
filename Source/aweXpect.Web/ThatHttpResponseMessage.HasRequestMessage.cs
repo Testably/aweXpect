@@ -22,6 +22,6 @@ public static partial class ThatHttpResponseMessage
 					false)
 				.AddExpectations(expectationBuilder =>
 						expectations(new ThatSubject<HttpRequestMessage>(expectationBuilder)),
-					ExpectationGrammars.Nested),
+					grammars => grammars | ExpectationGrammars.Nested),
 			source);
 }

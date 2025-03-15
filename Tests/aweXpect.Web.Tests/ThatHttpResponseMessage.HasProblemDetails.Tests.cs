@@ -22,7 +22,8 @@ public sealed partial class ThatHttpResponseMessage
 					             """);
 
 				async Task Act()
-					=> await That(subject).HasProblemDetailsContent("FOO").IgnoringCase().WithTitle("BAR").WithStatus(404)
+					=> await That(subject).HasProblemDetailsContent("FOO").IgnoringCase().WithTitle("BAR")
+						.WithStatus(404)
 						.WithInstance("could-be-SOME-guid ").IgnoringTrailingWhiteSpace();
 
 				await That(Act).Throws<XunitException>()

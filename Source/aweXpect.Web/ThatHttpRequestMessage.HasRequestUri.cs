@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
@@ -18,8 +19,8 @@ public static partial class ThatHttpRequestMessage
 		=> new(
 			source.ThatIs().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, grammar) =>
-					new HasRequestUriConstraint(expectationBuilder, it, new Uri(expected).ToString())),
+				.AddConstraint((expectationBuilder, it, grammars) =>
+					new HasRequestUriConstraint(expectationBuilder, it, grammars, new Uri(expected).ToString())),
 			source);
 
 	/// <summary>
@@ -31,36 +32,59 @@ public static partial class ThatHttpRequestMessage
 		=> new(
 			source.ThatIs().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, grammar) =>
-					new HasRequestUriConstraint(expectationBuilder, it, expected.ToString())),
+				.AddConstraint((expectationBuilder, it, grammars) =>
+					new HasRequestUriConstraint(expectationBuilder, it, grammars, expected.ToString())),
 			source);
 
-	private readonly struct HasRequestUriConstraint(
+	private sealed class HasRequestUriConstraint(
 		ExpectationBuilder expectationBuilder,
 		string it,
+		ExpectationGrammars grammars,
 		string expected)
-		: IValueConstraint<HttpRequestMessage>
+		: ConstraintResult.WithNotNullValue<HttpRequestMessage>(it, grammars),
+			IValueConstraint<HttpRequestMessage>
 	{
+		private string? _requestUri;
+
 		public ConstraintResult IsMetBy(HttpRequestMessage? actual)
 		{
+			Actual = actual;
 			if (actual == null)
 			{
-				return new ConstraintResult.Failure<HttpRequestMessage?>(actual, ToString(),
-					$"{it} was <null>");
+				Outcome = Outcome.Failure;
+				return this;
 			}
 
-			string? requestUri = actual.RequestUri?.ToString();
-			if (requestUri?.Equals(expected, StringComparison.OrdinalIgnoreCase) == true)
+			_requestUri = actual.RequestUri?.ToString();
+			if (_requestUri?.Equals(expected, StringComparison.OrdinalIgnoreCase) == true)
 			{
-				return new ConstraintResult.Success<HttpRequestMessage?>(actual, ToString());
+				Outcome = Outcome.Success;
+				return this;
 			}
 
 			expectationBuilder.AddContext(actual);
-			return new ConstraintResult.Failure<HttpRequestMessage?>(actual, ToString(),
-				$"{it} was {Formatter.Format(requestUri)} which {new StringDifference(requestUri, expected)}");
+			Outcome = Outcome.Failure;
+			return this;
 		}
 
 		public override string ToString()
 			=> $"has a request URI equal to {Formatter.Format(expected)}";
+
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+		{
+			stringBuilder.Append("has a request URI equal to ");
+			Formatter.Format(stringBuilder, expected);
+		}
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+		{
+			stringBuilder.Append(It).Append(" was ");
+			Formatter.Format(stringBuilder, _requestUri);
+			stringBuilder.Append(" which ");
+			stringBuilder.Append(new StringDifference(_requestUri, expected));
+		}
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> throw new NotImplementedException();
 	}
 }

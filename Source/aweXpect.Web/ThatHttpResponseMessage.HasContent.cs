@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
@@ -22,8 +23,8 @@ public static partial class ThatHttpResponseMessage
 		return new StringEqualityTypeResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
 			source.ThatIs().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, grammar) =>
-					new HasContentConstraint(expectationBuilder, it, expected, options)),
+				.AddConstraint((expectationBuilder, it, grammars) =>
+					new HasContentConstraint(expectationBuilder, it, grammars, expected, options)),
 			source,
 			options);
 	}
@@ -45,44 +46,67 @@ public static partial class ThatHttpResponseMessage
 							return await m.Content.ReadAsStringAsync();
 						},
 						" the string content"),
-					(member, stringBuilder) => stringBuilder.Append("has a string content which "))
-				.AddExpectations(e => expectations(new ThatSubject<string?>(e)), ExpectationGrammars.Nested),
+					(_, stringBuilder) => stringBuilder.Append("has a string content which "))
+				.AddExpectations(e => expectations(new ThatSubject<string?>(e)),
+					grammars => grammars | ExpectationGrammars.Nested),
 			source);
 	}
 
-	private readonly struct HasContentConstraint(
+	private sealed class HasContentConstraint(
 		ExpectationBuilder expectationBuilder,
 		string it,
+		ExpectationGrammars grammars,
 		string expected,
 		StringEqualityOptions options)
-		: IAsyncConstraint<HttpResponseMessage>
+		: ConstraintResult.WithNotNullValue<HttpResponseMessage>(it, grammars),
+			IAsyncConstraint<HttpResponseMessage>
 	{
+		private string? _message;
+
 		public async Task<ConstraintResult> IsMetBy(
 			HttpResponseMessage? actual,
 			CancellationToken cancellationToken)
 		{
+			Actual = actual;
 			if (actual == null)
 			{
-				return new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
-					$"{it} was <null>");
+				Outcome = Outcome.Failure;
+				return this;
 			}
 
 #if NETSTANDARD2_0
-			string message = await actual.Content.ReadAsStringAsync();
+			_message = await actual.Content.ReadAsStringAsync();
 #else
-			string message = await actual.Content.ReadAsStringAsync(cancellationToken);
+			_message = await actual.Content.ReadAsStringAsync(cancellationToken);
 #endif
-			if (options.AreConsideredEqual(message, expected))
+			if (options.AreConsideredEqual(_message, expected))
 			{
-				return new ConstraintResult.Success<HttpResponseMessage?>(actual, ToString());
+				Outcome = Outcome.Success;
+				return this;
 			}
 
 			expectationBuilder.AddContext(actual);
-			return new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
-				options.GetExtendedFailure(it, message, expected));
+			Outcome = Outcome.Failure;
+			return this;
 		}
 
-		public override string ToString()
-			=> $"has a string content {options.GetExpectation(expected, ExpectationGrammars.None)}";
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("has a string content ")
+				.Append(options.GetExpectation(expected, ExpectationGrammars.None));
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+		{
+			if (Actual?.Content is null)
+			{
+				stringBuilder.Append(It).Append(" had a <null> content");
+			}
+			else
+			{
+				stringBuilder.Append(options.GetExtendedFailure(It, Grammars, _message, expected));
+			}
+		}
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> throw new NotImplementedException();
 	}
 }

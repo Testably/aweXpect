@@ -51,6 +51,7 @@ namespace aweXpect.Web.ContentProcessors
 namespace aweXpect.Web.Results
 {
     public class HasHeaderValueResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat>
+        where TType :  class
     {
         public aweXpect.Results.AndOrResult<TType, TThat> WhoseValue(System.Action<aweXpect.Core.IThat<string?>> expectations) { }
         public aweXpect.Results.AndOrResult<TType, TThat> WhoseValues(System.Action<aweXpect.Core.IThat<string?[]?>> expectations) { }

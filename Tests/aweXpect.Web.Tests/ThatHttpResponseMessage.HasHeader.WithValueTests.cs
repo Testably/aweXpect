@@ -54,6 +54,11 @@ public sealed partial class ThatHttpResponseMessage
 					               "some header"
 					               "some other header"
 					                     ↑ (expected)
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 x-my-header: some header
+					                 Content-Type: text/plain; charset=utf-8
 					             """);
 			}
 
@@ -88,6 +93,12 @@ public sealed partial class ThatHttpResponseMessage
 					             Expected that subject
 					             has a `x-my-header` header whose value is equal to "some other header",
 					             but the header contained 2 values ["some header", "some other value"]
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 x-my-header: some header
+					                 x-my-header: some other value
+					                 Content-Type: text/plain; charset=utf-8
 					             """);
 			}
 

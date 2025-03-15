@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
@@ -22,10 +23,10 @@ public class StatusCodeResult(
 		HttpStatusCode? expected)
 		=> new(source.ThatIs().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, _) =>
+				.AddConstraint((expectationBuilder, it, grammars) =>
 					new PropertyConstraint(
 						expectationBuilder,
-						it,
+						it, grammars,
 						expected,
 						mapper,
 						(a, e) => a.Equals(e),
@@ -39,10 +40,10 @@ public class StatusCodeResult(
 		HttpStatusCode? unexpected)
 		=> new(source.ThatIs().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, _) =>
+				.AddConstraint((expectationBuilder, it, grammars) =>
 					new PropertyConstraint(
 						expectationBuilder,
-						it,
+						it, grammars,
 						unexpected,
 						mapper,
 						(a, u) => !a.Equals(u),
@@ -55,10 +56,10 @@ public class StatusCodeResult(
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> Success()
 		=> new(source.ThatIs().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, _) =>
+				.AddConstraint((expectationBuilder, it, grammars) =>
 					new PropertyConstraint(
 						expectationBuilder,
-						it,
+						it, grammars,
 						null,
 						mapper,
 						(a, _) => (int)a is >= 200 and < 300,
@@ -71,10 +72,10 @@ public class StatusCodeResult(
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> Redirection()
 		=> new(source.ThatIs().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, _) =>
+				.AddConstraint((expectationBuilder, it, grammars) =>
 					new PropertyConstraint(
 						expectationBuilder,
-						it,
+						it, grammars,
 						null,
 						mapper,
 						(a, _) => (int)a is >= 300 and < 400,
@@ -87,10 +88,10 @@ public class StatusCodeResult(
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> ClientError()
 		=> new(source.ThatIs().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, _) =>
+				.AddConstraint((expectationBuilder, it, grammars) =>
 					new PropertyConstraint(
 						expectationBuilder,
-						it,
+						it, grammars,
 						null,
 						mapper,
 						(a, _) => (int)a is >= 400 and < 500,
@@ -103,10 +104,10 @@ public class StatusCodeResult(
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> ServerError()
 		=> new(source.ThatIs().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, _) =>
+				.AddConstraint((expectationBuilder, it, grammars) =>
 					new PropertyConstraint(
 						expectationBuilder,
-						it,
+						it, grammars,
 						null,
 						mapper,
 						(a, _) => (int)a is >= 500 and < 600,
@@ -119,44 +120,60 @@ public class StatusCodeResult(
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> Error()
 		=> new(source.ThatIs().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, _) =>
+				.AddConstraint((expectationBuilder, it, grammars) =>
 					new PropertyConstraint(
 						expectationBuilder,
-						it,
+						it, grammars,
 						null,
 						mapper,
 						(a, _) => (int)a is >= 400 and < 600,
 						"has an error status code (4xx or 5xx)")),
 			source);
 
-	internal readonly struct PropertyConstraint(
+	internal sealed class PropertyConstraint(
 		ExpectationBuilder expectationBuilder,
 		string it,
+		ExpectationGrammars grammars,
 		HttpStatusCode? expected,
 		Func<HttpResponseMessage, HttpStatusCode> mapper,
 		Func<HttpStatusCode, HttpStatusCode?, bool> condition,
-		string expectation) : IValueConstraint<HttpResponseMessage?>
+		string expectation)
+		: ConstraintResult.WithNotNullValue<HttpResponseMessage?>(it, grammars),
+			IValueConstraint<HttpResponseMessage?>
 	{
+		private HttpStatusCode _statusCode;
+
 		public ConstraintResult IsMetBy(HttpResponseMessage? actual)
 		{
+			Actual = actual;
 			if (actual == null)
 			{
-				return new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
-					$"{it} was <null>");
+				Outcome = Outcome.Failure;
+				return this;
 			}
 
-			HttpStatusCode value = mapper(actual);
-			if (condition(value, expected))
+			_statusCode = mapper(actual);
+			if (condition(_statusCode, expected))
 			{
-				return new ConstraintResult.Success<HttpResponseMessage>(actual, ToString());
+				Outcome = Outcome.Success;
+				return this;
 			}
 
 			expectationBuilder.AddContext(actual);
-			return new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
-				$"{it} had status code {Formatter.Format(value)}");
+			Outcome = Outcome.Failure;
+			return this;
 		}
 
-		public override string ToString()
-			=> expectation;
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(expectation);
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+		{
+			stringBuilder.Append(It).Append(" had status code ");
+			Formatter.Format(stringBuilder, _statusCode);
+		}
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> throw new NotImplementedException();
 	}
 }

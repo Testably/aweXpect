@@ -8,6 +8,37 @@ public sealed partial class ThatHttpResponseMessage
 	{
 		public sealed class WithStatusTests
 		{
+			[Fact]
+			public async Task WhenCheckingStatusDifferentlyTwice_ShouldFail()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("""
+					             {
+					               "type": "my-type",
+					               "status": 500
+					             }
+					             """);
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent().WithStatus(500).WithStatus(501);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a ProblemDetails content with any type, status 500 and status 501,
+					             but it had status 500
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: *
+					               {
+					                 "type": "my-type",
+					                 "status": 500
+					               }
+					             """).AsWildcard();
+			}
+
 			[Theory]
 			[InlineData(200, 400)]
 			[InlineData(404, 201)]
@@ -56,37 +87,6 @@ public sealed partial class ThatHttpResponseMessage
 					=> await That(subject).HasProblemDetailsContent().WithStatus(500).WithStatus(500);
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenCheckingStatusDifferentlyTwice_ShouldFail()
-			{
-				HttpResponseMessage subject = ResponseBuilder
-					.WithContent("""
-					             {
-					               "type": "my-type",
-					               "status": 500
-					             }
-					             """);
-
-				async Task Act()
-					=> await That(subject).HasProblemDetailsContent().WithStatus(500).WithStatus(501);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage($$"""
-					               Expected that subject
-					               has a ProblemDetails content with any type, status 500 and status 501,
-					               but it had status 500
-
-					               HTTP-Response:
-					                 200 OK HTTP/1.1
-					                   Content-Type: text/plain; charset=utf-8
-					                   Content-Length: *
-					                 {
-					                   "type": "my-type",
-					                   "status": 500
-					                 }
-					               """).AsWildcard();
 			}
 		}
 	}

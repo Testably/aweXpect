@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
@@ -19,8 +20,8 @@ public static partial class ThatHttpRequestMessage
 		string expected)
 		=> new(source.ThatIs().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, grammar) =>
-					new HasHeaderConstraint(expectationBuilder, it, expected)),
+				.AddConstraint((expectationBuilder, it, grammars) =>
+					new HasHeaderConstraint(expectationBuilder, it, grammars, expected)),
 			source,
 			a => a.Headers.TryGetValues(expected, out IEnumerable<string>? values) ? values.ToArray() : null);
 
@@ -32,61 +33,55 @@ public static partial class ThatHttpRequestMessage
 		string unexpected)
 		=> new(source.ThatIs().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, grammar) =>
-					new DoesNotHaveHeaderConstraint(expectationBuilder, it, unexpected)),
+				.AddConstraint((expectationBuilder, it, grammars) =>
+					new HasHeaderConstraint(expectationBuilder, it, grammars, unexpected).Invert()),
 			source);
 
-	private readonly struct HasHeaderConstraint(ExpectationBuilder expectationBuilder, string it, string expected)
-		: IValueConstraint<HttpRequestMessage>
-	{
-		public ConstraintResult IsMetBy(HttpRequestMessage? actual)
-		{
-			if (actual == null)
-			{
-				return new ConstraintResult.Failure<HttpRequestMessage?>(actual, ToString(),
-					$"{it} was <null>", FurtherProcessingStrategy.IgnoreResult);
-			}
-
-			if (actual.Headers.TryGetValues(expected, out _))
-			{
-				return new ConstraintResult.Success<HttpRequestMessage?>(actual, ToString());
-			}
-
-			expectationBuilder.AddContext(actual);
-			return new ConstraintResult.Failure<HttpRequestMessage?>(actual, ToString(),
-				$"{it} did not contain the expected header", FurtherProcessingStrategy.IgnoreResult);
-		}
-
-		public override string ToString()
-			=> $"has a `{expected}` header";
-	}
-
-	private readonly struct DoesNotHaveHeaderConstraint(
+	private sealed class HasHeaderConstraint(
 		ExpectationBuilder expectationBuilder,
 		string it,
-		string unexpected)
-		: IValueConstraint<HttpRequestMessage>
+		ExpectationGrammars grammars,
+		string expected)
+		: ConstraintResult.WithNotNullValue<HttpRequestMessage>(it, grammars),
+			IValueConstraint<HttpRequestMessage>
 	{
+		private IEnumerable<string>? _foundHeader;
+
 		public ConstraintResult IsMetBy(HttpRequestMessage? actual)
 		{
+			Actual = actual;
 			if (actual == null)
 			{
-				return new ConstraintResult.Failure<HttpRequestMessage?>(actual, ToString(),
-					$"{it} was <null>", FurtherProcessingStrategy.IgnoreResult);
-			}
-
-			if (!actual.Headers.TryGetValues(unexpected, out IEnumerable<string>? foundHeader))
-			{
-				return new ConstraintResult.Success<HttpRequestMessage?>(actual, ToString());
+				FurtherProcessingStrategy = FurtherProcessingStrategy.IgnoreResult;
+				Outcome = Outcome.Failure;
+				return this;
 			}
 
 			expectationBuilder.AddContext(actual);
-			return new ConstraintResult.Failure<HttpRequestMessage?>(actual, ToString(),
-				$"{it} did contain the `{unexpected}` header: {Formatter.Format(foundHeader)}",
-				FurtherProcessingStrategy.IgnoreResult);
+			if (actual.Headers.TryGetValues(expected, out _foundHeader))
+			{
+				Outcome = Outcome.Success;
+				return this;
+			}
+
+			FurtherProcessingStrategy = FurtherProcessingStrategy.IgnoreResult;
+			Outcome = Outcome.Failure;
+			return this;
 		}
 
-		public override string ToString()
-			=> $"does not have a `{unexpected}` header";
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("has a `").Append(expected).Append("` header");
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" did not contain the expected header");
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("does not have a `").Append(expected).Append("` header");
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+		{
+			stringBuilder.Append(It).Append(" did contain the `").Append(expected).Append("` header: ");
+			Formatter.Format(stringBuilder, _foundHeader);
+		}
 	}
 }

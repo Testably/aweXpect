@@ -1,4 +1,6 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
+using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
@@ -24,45 +26,66 @@ public static partial class ThatHttpResponseMessage
 		return new StringEqualityTypeResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
 			source.ThatIs().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, grammar) =>
-					new HasContentTypeConstraint(expectationBuilder, it, expected, options)),
+				.AddConstraint((expectationBuilder, it, grammars) =>
+					new HasContentTypeConstraint(expectationBuilder, it, grammars, expected, options)),
 			source,
 			options);
 	}
 
-	private readonly struct HasContentTypeConstraint(
+	private sealed class HasContentTypeConstraint(
 		ExpectationBuilder expectationBuilder,
 		string it,
+		ExpectationGrammars grammars,
 		string expected,
 		StringEqualityOptions options)
-		: IValueConstraint<HttpResponseMessage>
+		: ConstraintResult.WithNotNullValue<HttpResponseMessage>(it, grammars),
+			IValueConstraint<HttpResponseMessage>
 	{
+		private string? _contentType;
+
 		public ConstraintResult IsMetBy(HttpResponseMessage? actual)
 		{
+			Actual = actual;
 			if (actual == null)
 			{
-				return new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
-					$"{it} was <null>");
+				Outcome = Outcome.Failure;
+				return this;
 			}
 
-			if (!actual.Content.TryGetMediaType(out string? contentType))
+			if (!actual.Content.TryGetMediaType(out _contentType))
 			{
 				expectationBuilder.AddContext(actual);
-				return new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
-					$"{it} had no `Content-Type` header");
+				Outcome = Outcome.Failure;
+				return this;
 			}
 
-			if (!options.AreConsideredEqual(contentType, expected))
+			if (!options.AreConsideredEqual(_contentType, expected))
 			{
 				expectationBuilder.AddContext(actual);
-				return new ConstraintResult.Failure<HttpResponseMessage?>(actual, ToString(),
-					options.GetExtendedFailure(it, contentType, expected));
+				Outcome = Outcome.Failure;
+				return this;
 			}
 
-			return new ConstraintResult.Success<HttpResponseMessage?>(actual, ToString());
+			Outcome = Outcome.Success;
+			return this;
 		}
 
-		public override string ToString()
-			=> $"has a `Content-Type` header {options.GetExpectation(expected, ExpectationGrammars.None)}";
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("has a `Content-Type` header ").Append(options.GetExpectation(expected, Grammars));
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+		{
+			if (_contentType is null)
+			{
+				stringBuilder.Append(It).Append(" had no `Content-Type` header");
+			}
+			else
+			{
+				stringBuilder.Append(options.GetExtendedFailure(It, Grammars, _contentType, expected));
+			}
+		}
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> throw new NotImplementedException();
 	}
 }

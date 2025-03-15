@@ -24,10 +24,10 @@ public static partial class ThatHttpResponseMessage
 		HttpStatusCode? expected)
 		=> new(source.ThatIs().ExpectationBuilder
 			.UpdateContexts(c => c.Close())
-			.AddConstraint((expectationBuilder, it, _) =>
+			.AddConstraint((expectationBuilder, it, grammars) =>
 				new StatusCodeResult.PropertyConstraint(
 					expectationBuilder,
-					it,
+					it, grammars,
 					expected,
 					m => m.StatusCode,
 					(a, e) => a.Equals(e),
