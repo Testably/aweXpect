@@ -21,7 +21,7 @@ public static partial class ThatHttpResponseMessage
 	{
 		StringEqualityOptions options = new();
 		return new StringEqualityTypeResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
-			source.ThatIs().ExpectationBuilder
+			source.Get().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
 				.AddConstraint((expectationBuilder, it, grammars) =>
 					new HasContentConstraint(expectationBuilder, it, grammars, expected, options)),
@@ -35,7 +35,7 @@ public static partial class ThatHttpResponseMessage
 	public static AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>>
 		HasContent(this IThat<HttpResponseMessage?> source, Action<IThat<string?>> expectations)
 	{
-		ExpectationBuilder expectationBuilder = source.ThatIs().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
 			expectationBuilder
 				.UpdateContexts(c => c.Close())

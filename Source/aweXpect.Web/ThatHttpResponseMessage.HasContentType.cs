@@ -24,7 +24,7 @@ public static partial class ThatHttpResponseMessage
 	{
 		StringEqualityOptions options = new();
 		return new StringEqualityTypeResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
-			source.ThatIs().ExpectationBuilder
+			source.Get().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
 				.AddConstraint((expectationBuilder, it, grammars) =>
 					new HasContentTypeConstraint(expectationBuilder, it, grammars, expected, options)),

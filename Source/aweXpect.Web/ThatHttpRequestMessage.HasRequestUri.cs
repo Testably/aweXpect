@@ -17,7 +17,7 @@ public static partial class ThatHttpRequestMessage
 	public static AndOrResult<HttpRequestMessage, IThat<HttpRequestMessage?>>
 		HasRequestUri(this IThat<HttpRequestMessage?> source, string expected)
 		=> new(
-			source.ThatIs().ExpectationBuilder
+			source.Get().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
 				.AddConstraint((expectationBuilder, it, grammars) =>
 					new HasRequestUriConstraint(expectationBuilder, it, grammars, new Uri(expected).ToString())),
@@ -30,7 +30,7 @@ public static partial class ThatHttpRequestMessage
 	public static AndOrResult<HttpRequestMessage, IThat<HttpRequestMessage?>>
 		HasRequestUri(this IThat<HttpRequestMessage?> source, Uri expected)
 		=> new(
-			source.ThatIs().ExpectationBuilder
+			source.Get().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
 				.AddConstraint((expectationBuilder, it, grammars) =>
 					new HasRequestUriConstraint(expectationBuilder, it, grammars, expected.ToString())),

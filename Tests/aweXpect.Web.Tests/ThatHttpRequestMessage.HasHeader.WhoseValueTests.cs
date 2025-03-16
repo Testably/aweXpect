@@ -142,6 +142,10 @@ public sealed partial class ThatHttpRequestMessage
 					             Expected that subject
 					             does not have a `x-my-header` header whose value is equal to "some header",
 					             but it did contain the `x-my-header` header: ["some header"]
+					             
+					             HTTP-Request:
+					               HEAD https://awexpect.com/ HTTP/1.1
+					                 x-my-header: some header
 					             """);
 			}
 		}

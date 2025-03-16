@@ -21,7 +21,7 @@ public class StatusCodeResult(
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> EqualTo(
 		HttpStatusCode? expected)
-		=> new(source.ThatIs().ExpectationBuilder
+		=> new(source.Get().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
 				.AddConstraint((expectationBuilder, it, grammars) =>
 					new PropertyConstraint(
@@ -38,7 +38,7 @@ public class StatusCodeResult(
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> DifferentTo(
 		HttpStatusCode? unexpected)
-		=> new(source.ThatIs().ExpectationBuilder
+		=> new(source.Get().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
 				.AddConstraint((expectationBuilder, it, grammars) =>
 					new PropertyConstraint(
@@ -54,7 +54,7 @@ public class StatusCodeResult(
 	///     …is a success status code (2xx).
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> Success()
-		=> new(source.ThatIs().ExpectationBuilder
+		=> new(source.Get().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
 				.AddConstraint((expectationBuilder, it, grammars) =>
 					new PropertyConstraint(
@@ -70,7 +70,7 @@ public class StatusCodeResult(
 	///     …is a redirection status code (3xx).
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> Redirection()
-		=> new(source.ThatIs().ExpectationBuilder
+		=> new(source.Get().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
 				.AddConstraint((expectationBuilder, it, grammars) =>
 					new PropertyConstraint(
@@ -86,7 +86,7 @@ public class StatusCodeResult(
 	///     …is a client error status code (4xx).
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> ClientError()
-		=> new(source.ThatIs().ExpectationBuilder
+		=> new(source.Get().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
 				.AddConstraint((expectationBuilder, it, grammars) =>
 					new PropertyConstraint(
@@ -102,7 +102,7 @@ public class StatusCodeResult(
 	///     …is a server error status code (5xx).
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> ServerError()
-		=> new(source.ThatIs().ExpectationBuilder
+		=> new(source.Get().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
 				.AddConstraint((expectationBuilder, it, grammars) =>
 					new PropertyConstraint(
@@ -118,7 +118,7 @@ public class StatusCodeResult(
 	///     …is a client or server error status code (4xx or 5xx).
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> Error()
-		=> new(source.ThatIs().ExpectationBuilder
+		=> new(source.Get().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
 				.AddConstraint((expectationBuilder, it, grammars) =>
 					new PropertyConstraint(

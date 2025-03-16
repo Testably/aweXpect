@@ -108,6 +108,9 @@ public sealed partial class ThatHttpRequestMessage
 					             Expected that subject
 					             does not have a request URI equal to "https://awexpect.com/",
 					             but it had
+					             
+					             HTTP-Request:
+					               HEAD https://awexpect.com/ HTTP/1.1
 					             """);
 			}
 		}

@@ -22,7 +22,7 @@ public static partial class ThatHttpResponseMessage
 	public static AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> HasStatusCode(
 		this IThat<HttpResponseMessage?> source,
 		HttpStatusCode? expected)
-		=> new(source.ThatIs().ExpectationBuilder
+		=> new(source.Get().ExpectationBuilder
 			.UpdateContexts(c => c.Close())
 			.AddConstraint((expectationBuilder, it, grammars) =>
 				new StatusCodeResult.PropertyConstraint(

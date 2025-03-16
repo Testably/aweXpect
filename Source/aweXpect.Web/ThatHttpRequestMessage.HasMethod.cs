@@ -15,7 +15,7 @@ public static partial class ThatHttpRequestMessage
 	public static AndOrResult<HttpRequestMessage, IThat<HttpRequestMessage?>>
 		HasMethod(this IThat<HttpRequestMessage?> source, HttpMethod expected)
 		=> new(
-			source.ThatIs().ExpectationBuilder
+			source.Get().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
 				.AddConstraint((expectationBuilder, it, grammars) =>
 					new HasMethodConstraint(expectationBuilder, it, grammars, expected)),

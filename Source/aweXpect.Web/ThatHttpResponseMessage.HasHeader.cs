@@ -18,7 +18,7 @@ public static partial class ThatHttpResponseMessage
 	public static HasHeaderValueResult<HttpResponseMessage, IThat<HttpResponseMessage?>> HasHeader(
 		this IThat<HttpResponseMessage?> source,
 		string expected)
-		=> new(source.ThatIs().ExpectationBuilder
+		=> new(source.Get().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
 				.AddConstraint((expectationBuilder, it, grammars) =>
 					new HasHeaderConstraint(expectationBuilder, it, grammars, expected)),
@@ -31,7 +31,7 @@ public static partial class ThatHttpResponseMessage
 	public static AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>> DoesNotHaveHeader(
 		this IThat<HttpResponseMessage?> source,
 		string unexpected)
-		=> new(source.ThatIs().ExpectationBuilder
+		=> new(source.Get().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
 				.AddConstraint((expectationBuilder, it, grammars) =>
 					new HasHeaderConstraint(expectationBuilder, it, grammars, unexpected).Invert()),

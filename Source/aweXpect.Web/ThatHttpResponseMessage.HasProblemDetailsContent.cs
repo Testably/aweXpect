@@ -40,7 +40,7 @@ public static partial class ThatHttpResponseMessage
 		StringEqualityOptions typeOptions = new();
 		ProblemDetailsOptions options = new();
 		return new ProblemDetailsResult<HttpResponseMessage, IThat<HttpResponseMessage?>>.String(
-			source.ThatIs().ExpectationBuilder
+			source.Get().ExpectationBuilder
 				.UpdateContexts(c => c.Close())
 				.AddConstraint((expectationBuilder, it, grammars) =>
 					new HasProblemDetailsConstraint(expectationBuilder, it, grammars, type, options, typeOptions)),
