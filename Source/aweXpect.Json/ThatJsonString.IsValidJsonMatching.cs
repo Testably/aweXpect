@@ -32,7 +32,7 @@ public static partial class ThatJsonString
 		}
 
 		return new AndOrResult<string?, IThat<string?>>(
-			source.ThatIs().ExpectationBuilder.AddConstraint((it, grammar) =>
+			source.Get().ExpectationBuilder.AddConstraint((it, grammar) =>
 				new MatchesJsonConstraint(it, grammar, expected, doNotPopulateThisValue, defaultOptions)),
 			source);
 	}
@@ -56,7 +56,7 @@ public static partial class ThatJsonString
 		}
 
 		return new AndOrResult<string?, IThat<string?>>(
-			source.ThatIs().ExpectationBuilder.AddConstraint((it, grammar) =>
+			source.Get().ExpectationBuilder.AddConstraint((it, grammar) =>
 				new MatchesJsonConstraint(it, grammar, expected, doNotPopulateThisValue, defaultOptions)),
 			source);
 	}

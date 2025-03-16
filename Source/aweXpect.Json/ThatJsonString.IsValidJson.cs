@@ -28,7 +28,7 @@ public static partial class ThatJsonString
 			defaultOptions = options(defaultOptions);
 		}
 
-		return new JsonWhichResult(source.ThatIs().ExpectationBuilder.AddConstraint((it, grammar) =>
+		return new JsonWhichResult(source.Get().ExpectationBuilder.AddConstraint((it, grammar) =>
 				new IsValidJsonConstraint(it, grammar, defaultOptions)),
 			source, defaultOptions);
 	}

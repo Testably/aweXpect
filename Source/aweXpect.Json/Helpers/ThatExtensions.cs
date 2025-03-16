@@ -7,18 +7,13 @@ namespace aweXpect.Helpers;
 internal static class ThatExtensions
 {
 	[ExcludeFromCodeCoverage]
-	public static IThatIs<T> ThatIs<T>(this IThat<T> subject)
+	public static IExpectThat<T> Get<T>(this IThat<T> subject)
 	{
-		if (subject is IThatIs<T> thatIs)
+		if (subject is IExpectThat<T> expectThat)
 		{
-			return thatIs;
+			return expectThat;
 		}
 
-		if (subject is IThatVerb<T> thatVerb)
-		{
-			return new ThatSubject<T>(thatVerb.ExpectationBuilder);
-		}
-
-		throw new NotSupportedException("IThat<T> must also implement IThatIs<T>");
+		throw new NotSupportedException("IThat<T> must also implement IExpectThat<T>");
 	}
 }

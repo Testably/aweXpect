@@ -16,7 +16,7 @@ public static partial class ThatJsonElement
 	/// </summary>
 	public static AndOrResult<JsonElement, IThat<JsonElement>> IsArray(this IThat<JsonElement> source)
 		=> new(
-			source.ThatIs().ExpectationBuilder.AddConstraint((it, grammar) =>
+			source.Get().ExpectationBuilder.AddConstraint((it, grammar) =>
 				new IsValueKindConstraint(it, grammar, JsonValueKind.Array)),
 			source);
 
@@ -38,7 +38,7 @@ public static partial class ThatJsonElement
 		}
 
 		return new AndOrResult<JsonElement, IThat<JsonElement>>(
-			source.ThatIs().ExpectationBuilder.AddConstraint((it, grammar) =>
+			source.Get().ExpectationBuilder.AddConstraint((it, grammar) =>
 				new IsArrayConstraint(it, grammar, expectation, jsonOptions)),
 			source);
 	}
