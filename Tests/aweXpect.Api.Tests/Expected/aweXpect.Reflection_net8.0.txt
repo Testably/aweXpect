@@ -1,0 +1,9 @@
+[assembly: System.Reflection.AssemblyMetadata("RepositoryUrl", "https://github.com/aweXpect/aweXpect.Reflection.git")]
+[assembly: System.Runtime.Versioning.TargetFramework(".NETCoreApp,Version=v8.0", FrameworkDisplayName=".NET 8.0")]
+namespace aweXpect
+{
+    public static class DummyExtensions
+    {
+        public static aweXpect.Results.AndOrResult<string, aweXpect.Core.IThat<string>> IsAbsolutePath(this aweXpect.Core.IThat<string> subject) { }
+    }
+}
