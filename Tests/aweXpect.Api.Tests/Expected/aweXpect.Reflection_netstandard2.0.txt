@@ -1,9 +1,63 @@
 [assembly: System.Reflection.AssemblyMetadata("RepositoryUrl", "https://github.com/aweXpect/aweXpect.Reflection.git")]
 [assembly: System.Runtime.Versioning.TargetFramework(".NETStandard,Version=v2.0", FrameworkDisplayName=".NET Standard 2.0")]
-namespace aweXpect
+namespace aweXpect.Reflection.Extensions
 {
-    public static class DummyExtensions
+    [System.Flags]
+    public enum AccessModifiers
     {
-        public static aweXpect.Results.AndOrResult<string, aweXpect.Core.IThat<string>> IsAbsolutePath(this aweXpect.Core.IThat<string> subject) { }
+        Internal = 1,
+        Protected = 2,
+        Private = 4,
+        Public = 8,
+    }
+    public static class ConstructorInfoExtensions
+    {
+        public static bool HasAccessModifier(this System.Reflection.ConstructorInfo constructorInfo, aweXpect.Reflection.Extensions.AccessModifiers accessModifiers) { }
+        public static bool HasAttribute<TAttribute>(this System.Reflection.ConstructorInfo constructorInfo, System.Func<TAttribute, bool>? predicate = null)
+            where TAttribute : System.Attribute { }
+    }
+    public static class EventInfoExtensions
+    {
+        public static bool HasAttribute<TAttribute>(this System.Reflection.EventInfo eventInfo, System.Func<TAttribute, bool>? predicate = null, bool inherit = true)
+            where TAttribute : System.Attribute { }
+    }
+    public static class FieldInfoExtensions
+    {
+        public static bool HasAccessModifier(this System.Reflection.FieldInfo fieldInfo, aweXpect.Reflection.Extensions.AccessModifiers accessModifiers) { }
+        public static bool HasAttribute<TAttribute>(this System.Reflection.FieldInfo fieldInfo, System.Func<TAttribute, bool>? predicate = null)
+            where TAttribute : System.Attribute { }
+    }
+    public static class MethodInfoExtensions
+    {
+        public static bool HasAccessModifier(this System.Reflection.MethodInfo methodInfo, aweXpect.Reflection.Extensions.AccessModifiers accessModifiers) { }
+        public static bool HasAttribute<TAttribute>(this System.Reflection.MethodInfo methodInfo, System.Func<TAttribute, bool>? predicate = null, bool inherit = true)
+            where TAttribute : System.Attribute { }
+    }
+    public static class PropertyInfoExtensions
+    {
+        public static bool HasAttribute<TAttribute>(this System.Reflection.PropertyInfo propertyInfo, System.Func<TAttribute, bool>? predicate = null, bool inherit = true)
+            where TAttribute : System.Attribute { }
+    }
+    public static class TypeExtensions
+    {
+        public static System.Reflection.ConstructorInfo[] GetDeclaredConstructors(this System.Type type) { }
+        public static System.Reflection.FieldInfo[] GetDeclaredFields(this System.Type type) { }
+        public static System.Reflection.MethodInfo[] GetDeclaredMethods(this System.Type type) { }
+        public static bool HasAccessModifier(this System.Type type, aweXpect.Reflection.Extensions.AccessModifiers accessModifiers) { }
+        public static bool HasAttribute<TAttribute>(this System.Type type, System.Func<TAttribute, bool>? predicate = null, bool inherit = true)
+            where TAttribute : System.Attribute { }
+        public static bool Implements(this System.Type type, System.Type interfaceType, bool forceDirect = false) { }
+        public static bool InheritsFrom(this System.Type type, System.Type parentType, bool forceDirect = false) { }
+        public static bool IsEqualTo(this System.Type type, System.Type other) { }
+        public static bool IsOrInheritsFrom(this System.Type type, System.Type parentType, bool forceDirect = false) { }
+        public static bool IsStatic(this System.Type type) { }
+    }
+}
+namespace aweXpect.Reflection
+{
+    public static class ThatType
+    {
+        public static aweXpect.Results.AndOrResult<System.Type, aweXpect.Core.IThat<System.Type>> IsNotStatic(this aweXpect.Core.IThat<System.Type> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Type, aweXpect.Core.IThat<System.Type>> IsStatic(this aweXpect.Core.IThat<System.Type> subject) { }
     }
 }

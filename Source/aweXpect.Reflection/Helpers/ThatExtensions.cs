@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using aweXpect.Core;
 
-namespace aweXpect.Helpers;
+namespace aweXpect.Reflection.Helpers;
 
 internal static class ThatExtensions
 {
