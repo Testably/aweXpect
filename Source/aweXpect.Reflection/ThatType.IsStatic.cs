@@ -13,8 +13,8 @@ public static partial class ThatType
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> is static.
 	/// </summary>
-	public static AndOrResult<Type, IThat<Type>> IsStatic(
-		this IThat<Type> subject)
+	public static AndOrResult<Type?, IThat<Type?>> IsStatic(
+		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsStaticConstraint(it, grammars)),
 			subject);
@@ -22,20 +22,20 @@ public static partial class ThatType
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> is not static.
 	/// </summary>
-	public static AndOrResult<Type, IThat<Type>> IsNotStatic(
-		this IThat<Type> subject)
+	public static AndOrResult<Type?, IThat<Type?>> IsNotStatic(
+		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsStaticConstraint(it, grammars).Invert()),
 			subject);
 
 	private sealed class IsStaticConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<Type>(grammars),
-			IValueConstraint<Type>
+		: ConstraintResult.WithNotNullValue<Type?>(it, grammars),
+			IValueConstraint<Type?>
 	{
-		public ConstraintResult IsMetBy(Type actual)
+		public ConstraintResult IsMetBy(Type? actual)
 		{
 			Actual = actual;
-			Outcome = actual.IsStatic() ? Outcome.Success : Outcome.Failure;
+			Outcome = actual?.IsStatic() == true ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -43,12 +43,18 @@ public static partial class ThatType
 			=> stringBuilder.Append("is static");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(it).Append(" was not");
+		{
+			stringBuilder.Append(It).Append(" was non-static ");
+			Formatter.Format(stringBuilder, Actual);
+		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("is not static");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(it).Append(" was");
+		{
+			stringBuilder.Append(It).Append(" was static ");
+			Formatter.Format(stringBuilder, Actual);
+		}
 	}
 }

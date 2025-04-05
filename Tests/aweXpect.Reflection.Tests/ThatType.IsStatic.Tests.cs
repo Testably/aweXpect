@@ -18,7 +18,23 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             is static,
-					             but it was not
+					             but it was non-static MyInstanceType
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenTypeIsNull_ShouldFail()
+			{
+				Type? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsStatic();
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             is static,
+					             but it was <null>
 					             """);
 			}
 
