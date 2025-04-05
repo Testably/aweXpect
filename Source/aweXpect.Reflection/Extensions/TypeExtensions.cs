@@ -7,7 +7,7 @@ namespace aweXpect.Reflection.Extensions;
 /// <summary>
 ///     Extension methods for <see cref="Type" />.
 /// </summary>
-public static class TypeExtensions
+internal static class TypeExtensions
 {
 	/// <summary>
 	///     Searches for constructors in the <paramref name="type" /> that were directly declared there.
@@ -54,9 +54,9 @@ public static class TypeExtensions
 	/// </summary>
 	/// <param name="type">The <see cref="MethodInfo" /> which is checked to have the attribute.</param>
 	/// <param name="accessModifiers">
-	///     The <see cref="aweXpect.Reflection.Extensions.AccessModifiers" />.
+	///     The <see cref="AccessModifiers" />.
 	///     <para />
-	///     Supports specifying multiple <see cref="aweXpect.Reflection.Extensions.AccessModifiers" />.
+	///     Supports specifying multiple <see cref="AccessModifiers" />.
 	/// </param>
 	public static bool HasAccessModifier(
 		this Type type,

@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Source\aweXpect.Reflection\aweXpect.Reflection.csproj"/>
+	</ItemGroup>
+
+	<PropertyGroup>
+		<SignAssembly>True</SignAssembly>
+	</PropertyGroup>
+
+</Project>

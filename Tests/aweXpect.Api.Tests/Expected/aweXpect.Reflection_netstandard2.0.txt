@@ -1,6 +1,7 @@
 [assembly: System.Reflection.AssemblyMetadata("RepositoryUrl", "https://github.com/aweXpect/aweXpect.Reflection.git")]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(@"aweXpect.Reflection.Internal.Tests, PublicKey=00240000048000009400000006020000002400005253413100040000010001002ddc851a03b64bc2a64705e04ea47777e669695d8afed80f7544ff34fc699706a9f99f8385085bd675508e4c2acb917b7e1c9984da918c3fab585850a8a5b013c1d1780e1bb9e1e46656d965fc35bfc237a929c2c94e2e998d66ca44ee0a526245ef3f97dd136efe2e657b244b5f9f4a233fe656d659dddd811ba6bbed6817c1")]
 [assembly: System.Runtime.Versioning.TargetFramework(".NETStandard,Version=v2.0", FrameworkDisplayName=".NET Standard 2.0")]
-namespace aweXpect.Reflection.Extensions
+namespace aweXpect.Reflection
 {
     [System.Flags]
     public enum AccessModifiers
@@ -10,51 +11,6 @@ namespace aweXpect.Reflection.Extensions
         Private = 4,
         Public = 8,
     }
-    public static class ConstructorInfoExtensions
-    {
-        public static bool HasAccessModifier(this System.Reflection.ConstructorInfo constructorInfo, aweXpect.Reflection.Extensions.AccessModifiers accessModifiers) { }
-        public static bool HasAttribute<TAttribute>(this System.Reflection.ConstructorInfo constructorInfo, System.Func<TAttribute, bool>? predicate = null)
-            where TAttribute : System.Attribute { }
-    }
-    public static class EventInfoExtensions
-    {
-        public static bool HasAttribute<TAttribute>(this System.Reflection.EventInfo eventInfo, System.Func<TAttribute, bool>? predicate = null, bool inherit = true)
-            where TAttribute : System.Attribute { }
-    }
-    public static class FieldInfoExtensions
-    {
-        public static bool HasAccessModifier(this System.Reflection.FieldInfo fieldInfo, aweXpect.Reflection.Extensions.AccessModifiers accessModifiers) { }
-        public static bool HasAttribute<TAttribute>(this System.Reflection.FieldInfo fieldInfo, System.Func<TAttribute, bool>? predicate = null)
-            where TAttribute : System.Attribute { }
-    }
-    public static class MethodInfoExtensions
-    {
-        public static bool HasAccessModifier(this System.Reflection.MethodInfo methodInfo, aweXpect.Reflection.Extensions.AccessModifiers accessModifiers) { }
-        public static bool HasAttribute<TAttribute>(this System.Reflection.MethodInfo methodInfo, System.Func<TAttribute, bool>? predicate = null, bool inherit = true)
-            where TAttribute : System.Attribute { }
-    }
-    public static class PropertyInfoExtensions
-    {
-        public static bool HasAttribute<TAttribute>(this System.Reflection.PropertyInfo propertyInfo, System.Func<TAttribute, bool>? predicate = null, bool inherit = true)
-            where TAttribute : System.Attribute { }
-    }
-    public static class TypeExtensions
-    {
-        public static System.Reflection.ConstructorInfo[] GetDeclaredConstructors(this System.Type type) { }
-        public static System.Reflection.FieldInfo[] GetDeclaredFields(this System.Type type) { }
-        public static System.Reflection.MethodInfo[] GetDeclaredMethods(this System.Type type) { }
-        public static bool HasAccessModifier(this System.Type type, aweXpect.Reflection.Extensions.AccessModifiers accessModifiers) { }
-        public static bool HasAttribute<TAttribute>(this System.Type type, System.Func<TAttribute, bool>? predicate = null, bool inherit = true)
-            where TAttribute : System.Attribute { }
-        public static bool Implements(this System.Type type, System.Type interfaceType, bool forceDirect = false) { }
-        public static bool InheritsFrom(this System.Type type, System.Type parentType, bool forceDirect = false) { }
-        public static bool IsEqualTo(this System.Type type, System.Type other) { }
-        public static bool IsOrInheritsFrom(this System.Type type, System.Type parentType, bool forceDirect = false) { }
-        public static bool IsStatic(this System.Type type) { }
-    }
-}
-namespace aweXpect.Reflection
-{
     public static class ThatType
     {
         public static aweXpect.Results.AndOrResult<System.Type, aweXpect.Core.IThat<System.Type>> IsNotStatic(this aweXpect.Core.IThat<System.Type> subject) { }

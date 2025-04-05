@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace aweXpect.Reflection.Extensions;
+namespace aweXpect.Reflection;
 
 /// <summary>
 ///     The access modifiers.<br />

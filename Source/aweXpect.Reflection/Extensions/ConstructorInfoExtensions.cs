@@ -7,7 +7,7 @@ namespace aweXpect.Reflection.Extensions;
 /// <summary>
 ///     Extension methods for <see cref="ConstructorInfo" />.
 /// </summary>
-public static class ConstructorInfoExtensions
+internal static class ConstructorInfoExtensions
 {
 	/// <summary>
 	///     Checks if the <paramref name="constructorInfo" /> has the specified <paramref name="accessModifiers" />.

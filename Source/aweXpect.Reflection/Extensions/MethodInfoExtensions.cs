@@ -7,16 +7,16 @@ namespace aweXpect.Reflection.Extensions;
 /// <summary>
 ///     Extension methods for <see cref="MethodInfo" />.
 /// </summary>
-public static class MethodInfoExtensions
+internal static class MethodInfoExtensions
 {
 	/// <summary>
 	///     Checks if the <paramref name="methodInfo" /> has the specified <paramref name="accessModifiers" />.
 	/// </summary>
 	/// <param name="methodInfo">The <see cref="MethodInfo" /> which is checked to have the attribute.</param>
 	/// <param name="accessModifiers">
-	///     The <see cref="aweXpect.Reflection.Extensions.AccessModifiers" />.
+	///     The <see cref="AccessModifiers" />.
 	///     <para />
-	///     Supports specifying multiple <see cref="aweXpect.Reflection.Extensions.AccessModifiers" />.
+	///     Supports specifying multiple <see cref="AccessModifiers" />.
 	/// </param>
 	public static bool HasAccessModifier(
 		this MethodInfo methodInfo,

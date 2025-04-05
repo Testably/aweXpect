@@ -1,14 +1,15 @@
 ﻿using System.Reflection;
 using aweXpect.Reflection.Extensions;
 
-namespace aweXpect.Reflection.Tests.Extensions;
+namespace aweXpect.Reflection.Internal.Tests.Extensions;
 
-public sealed class EventInfoExtensionsTests
+// ReSharper disable UnusedMember.Local
+public sealed class MethodInfoExtensionsTests
 {
 	[Fact]
 	public async Task HasAttribute_WithAttribute_ShouldReturnTrue()
 	{
-		EventInfo type = typeof(TestClass).GetEvent(nameof(TestClass.Event1WithAttribute))!;
+		MethodInfo type = typeof(TestClass).GetMethod(nameof(TestClass.Method1WithAttribute))!;
 
 		bool result = type.HasAttribute<DummyAttribute>();
 
@@ -18,8 +19,8 @@ public sealed class EventInfoExtensionsTests
 	[Fact]
 	public async Task HasAttribute_WithInheritedAttribute_ShouldReturnTrue()
 	{
-		EventInfo type =
-			typeof(TestClass).GetEvent(nameof(TestClass.EventWithAttributeInBaseClass))!;
+		MethodInfo type =
+			typeof(TestClass).GetMethod(nameof(TestClass.MethodWithAttributeInBaseClass))!;
 
 		bool result = type.HasAttribute<DummyAttribute>();
 
@@ -29,7 +30,7 @@ public sealed class EventInfoExtensionsTests
 	[Fact]
 	public async Task HasAttribute_WithoutAttribute_ShouldReturnFalse()
 	{
-		EventInfo type = typeof(TestClass).GetEvent(nameof(TestClass.Event2WithoutAttribute))!;
+		MethodInfo type = typeof(TestClass).GetMethod(nameof(TestClass.Method2WithoutAttribute))!;
 
 		bool result = type.HasAttribute<DummyAttribute>();
 
@@ -39,7 +40,7 @@ public sealed class EventInfoExtensionsTests
 	[Fact]
 	public async Task HasAttribute_WithPredicate_ShouldReturnPredicateResult()
 	{
-		EventInfo type = typeof(TestClass).GetEvent(nameof(TestClass.Event1WithAttribute))!;
+		MethodInfo type = typeof(TestClass).GetMethod(nameof(TestClass.Method1WithAttribute))!;
 
 		bool result1 = type.HasAttribute<DummyAttribute>(d => d.Value == 1);
 		bool result2 = type.HasAttribute<DummyAttribute>(d => d.Value == 2);
@@ -48,7 +49,7 @@ public sealed class EventInfoExtensionsTests
 		await That(result2).IsFalse();
 	}
 
-	[AttributeUsage(AttributeTargets.Event)]
+	[AttributeUsage(AttributeTargets.Method)]
 	private class DummyAttribute : Attribute
 	{
 		public DummyAttribute(int value)
@@ -58,23 +59,24 @@ public sealed class EventInfoExtensionsTests
 
 		public int Value { get; }
 	}
-#pragma warning disable CS8618
-#pragma warning disable CS0067
-	public delegate void Dummy();
 
 	private class TestClass : TestClassBase
 	{
-		[Dummy(1)] public event Dummy Event1WithAttribute;
+		[Dummy(1)]
+		public void Method1WithAttribute()
+			=> throw new NotSupportedException();
 
-		public event Dummy Event2WithoutAttribute;
+		public void Method2WithoutAttribute()
+			=> throw new NotSupportedException();
 
-		public override event Dummy EventWithAttributeInBaseClass;
+		public override void MethodWithAttributeInBaseClass()
+			=> throw new NotSupportedException();
 	}
 
 	private class TestClassBase
 	{
-		[Dummy(1)] public virtual event Dummy EventWithAttributeInBaseClass;
+		[Dummy(1)]
+		public virtual void MethodWithAttributeInBaseClass()
+			=> throw new NotSupportedException();
 	}
-#pragma warning restore CS0067
-#pragma warning restore CS8618
 }

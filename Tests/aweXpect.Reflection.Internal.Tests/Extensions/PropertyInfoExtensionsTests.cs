@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using aweXpect.Reflection.Extensions;
 
-namespace aweXpect.Reflection.Tests.Extensions;
+namespace aweXpect.Reflection.Internal.Tests.Extensions;
 
 public sealed class PropertyInfoExtensionsTests
 {

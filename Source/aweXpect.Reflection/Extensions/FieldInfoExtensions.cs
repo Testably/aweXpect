@@ -7,16 +7,16 @@ namespace aweXpect.Reflection.Extensions;
 /// <summary>
 ///     Extension fields for <see cref="FieldInfo" />.
 /// </summary>
-public static class FieldInfoExtensions
+internal static class FieldInfoExtensions
 {
 	/// <summary>
 	///     Checks if the <paramref name="fieldInfo" /> has the specified <paramref name="accessModifiers" />.
 	/// </summary>
 	/// <param name="fieldInfo">The <see cref="FieldInfo" /> which is checked to have the attribute.</param>
 	/// <param name="accessModifiers">
-	///     The <see cref="aweXpect.Reflection.Extensions.AccessModifiers" />.
+	///     The <see cref="AccessModifiers" />.
 	///     <para />
-	///     Supports specifying multiple <see cref="aweXpect.Reflection.Extensions.AccessModifiers" />.
+	///     Supports specifying multiple <see cref="AccessModifiers" />.
 	/// </param>
 	public static bool HasAccessModifier(
 		this FieldInfo fieldInfo,

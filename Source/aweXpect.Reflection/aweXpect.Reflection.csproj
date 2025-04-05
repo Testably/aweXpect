@@ -4,4 +4,8 @@
 		<PackageReference Include="aweXpect.Core"/>
 	</ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="aweXpect.Reflection.Internal.Tests" PublicKey="$(PublicKey)"/>
+	</ItemGroup>
+
 </Project>

@@ -7,7 +7,7 @@ namespace aweXpect.Reflection.Extensions;
 /// <summary>
 ///     Extension events for <see cref="EventInfo" />.
 /// </summary>
-public static class EventInfoExtensions
+internal static class EventInfoExtensions
 {
 	/// <summary>
 	///     Checks if the <paramref name="eventInfo" /> has an attribute which satisfies the <paramref name="predicate" />.

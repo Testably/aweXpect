@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Reflection.Extensions;
 
-namespace aweXpect.Reflection.Tests.Extensions;
+namespace aweXpect.Reflection.Internal.Tests.Extensions;
 
 // ReSharper disable UnusedMember.Local
 public sealed class TypeExtensionsTests

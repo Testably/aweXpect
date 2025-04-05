@@ -7,7 +7,7 @@ namespace aweXpect.Reflection.Extensions;
 /// <summary>
 ///     Extension properties for <see cref="PropertyInfo" />.
 /// </summary>
-public static class PropertyInfoExtensions
+internal static class PropertyInfoExtensions
 {
 	/// <summary>
 	///     Checks if the <paramref name="propertyInfo" /> has an attribute which satisfies the <paramref name="predicate" />.
