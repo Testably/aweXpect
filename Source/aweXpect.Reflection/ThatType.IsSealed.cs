@@ -2,7 +2,7 @@
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Reflection.Helpers;
+using aweXpect.Reflection.Extensions;
 using aweXpect.Results;
 
 namespace aweXpect.Reflection;
@@ -12,6 +12,10 @@ public static partial class ThatType
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> is sealed.
 	/// </summary>
+	/// <remarks>
+	///     Static types are not considered sealed, even though they have <see cref="Type.IsSealed" /> set to
+	///     <see langword="true" />.
+	/// </remarks>
 	public static AndOrResult<Type?, IThat<Type?>> IsSealed(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
@@ -21,6 +25,10 @@ public static partial class ThatType
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> is not sealed.
 	/// </summary>
+	/// <remarks>
+	///     Static types are considered not sealed, even though they have <see cref="Type.IsSealed" /> set to
+	///     <see langword="true" />.
+	/// </remarks>
 	public static AndOrResult<Type?, IThat<Type?>> IsNotSealed(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
@@ -34,7 +42,7 @@ public static partial class ThatType
 		public ConstraintResult IsMetBy(Type? actual)
 		{
 			Actual = actual;
-			Outcome = actual?.IsSealed == true ? Outcome.Success : Outcome.Failure;
+			Outcome = actual?.IsReallySealed() == true ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 

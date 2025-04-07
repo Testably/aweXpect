@@ -1,7 +1,7 @@
 [assembly: System.Reflection.AssemblyMetadata("RepositoryUrl", "https://github.com/aweXpect/aweXpect.Reflection.git")]
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo(@"aweXpect.Reflection.Internal.Tests, PublicKey=00240000048000009400000006020000002400005253413100040000010001002ddc851a03b64bc2a64705e04ea47777e669695d8afed80f7544ff34fc699706a9f99f8385085bd675508e4c2acb917b7e1c9984da918c3fab585850a8a5b013c1d1780e1bb9e1e46656d965fc35bfc237a929c2c94e2e998d66ca44ee0a526245ef3f97dd136efe2e657b244b5f9f4a233fe656d659dddd811ba6bbed6817c1")]
 [assembly: System.Runtime.Versioning.TargetFramework(".NETStandard,Version=v2.0", FrameworkDisplayName=".NET Standard 2.0")]
-namespace aweXpect.Reflection
+namespace aweXpect.Reflection.Collections
 {
     [System.Flags]
     public enum AccessModifiers
@@ -10,6 +10,93 @@ namespace aweXpect.Reflection
         Protected = 2,
         Private = 4,
         Public = 8,
+        Any = 15,
+    }
+    public static class Filter
+    {
+        public static aweXpect.Reflection.Collections.IFilter<TEntity> Prefix<TEntity>(System.Func<TEntity, bool> predicate, string prefix) { }
+        public static aweXpect.Reflection.Collections.IFilter<TEntity> Suffix<TEntity>(System.Func<TEntity, bool> predicate, string suffix) { }
+    }
+    public static class Filtered
+    {
+        public class Assemblies : aweXpect.Reflection.Collections.Filtered<System.Reflection.Assembly, aweXpect.Reflection.Collections.Filtered.Assemblies>, aweXpect.Core.IDescribableSubject
+        {
+            public Assemblies(System.Collections.Generic.IEnumerable<System.Reflection.Assembly?> source, string description) { }
+            public Assemblies(System.Reflection.Assembly? source, string description) { }
+            public string GetDescription() { }
+            public aweXpect.Reflection.Collections.Filtered.Types Types() { }
+        }
+        public class Constructors : aweXpect.Reflection.Collections.Filtered<System.Reflection.ConstructorInfo, aweXpect.Reflection.Collections.Filtered.Constructors>, aweXpect.Core.IDescribableSubject
+        {
+            public string GetDescription() { }
+            public aweXpect.Reflection.Collections.Filtered.Types Types() { }
+        }
+        public class Events : aweXpect.Reflection.Collections.Filtered<System.Reflection.EventInfo, aweXpect.Reflection.Collections.Filtered.Events>, aweXpect.Core.IDescribableSubject
+        {
+            public string GetDescription() { }
+            public aweXpect.Reflection.Collections.Filtered.Types Types() { }
+        }
+        public class Fields : aweXpect.Reflection.Collections.Filtered<System.Reflection.FieldInfo, aweXpect.Reflection.Collections.Filtered.Fields>, aweXpect.Core.IDescribableSubject
+        {
+            public string GetDescription() { }
+            public aweXpect.Reflection.Collections.Filtered.Types Types() { }
+        }
+        public class Methods : aweXpect.Reflection.Collections.Filtered<System.Reflection.MethodInfo, aweXpect.Reflection.Collections.Filtered.Methods>, aweXpect.Core.IDescribableSubject
+        {
+            public string GetDescription() { }
+            public aweXpect.Reflection.Collections.Filtered.Types Types() { }
+        }
+        public class Properties : aweXpect.Reflection.Collections.Filtered<System.Reflection.PropertyInfo, aweXpect.Reflection.Collections.Filtered.Properties>, aweXpect.Core.IDescribableSubject
+        {
+            public string GetDescription() { }
+            public aweXpect.Reflection.Collections.Filtered.Types Types() { }
+        }
+        public class Types : aweXpect.Reflection.Collections.Filtered<System.Type, aweXpect.Reflection.Collections.Filtered.Types>, aweXpect.Core.IDescribableSubject
+        {
+            public aweXpect.Reflection.Collections.Filtered.Assemblies Assemblies() { }
+            public aweXpect.Reflection.Collections.Filtered.Constructors Constructors() { }
+            public aweXpect.Reflection.Collections.Filtered.Events Events() { }
+            public aweXpect.Reflection.Collections.Filtered.Fields Fields() { }
+            public string GetDescription() { }
+            public aweXpect.Reflection.Collections.Filtered.Methods Methods() { }
+            public aweXpect.Reflection.Collections.Filtered.Properties Properties() { }
+        }
+    }
+    public static class FilteredExtensions
+    {
+        public static aweXpect.Reflection.Collections.Filtered.Types AbstractTypes(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types NestedTypes(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types SealedTypes(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types StaticTypes(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichInheritFrom(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Type baseType, bool forceDirect = false) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichInheritFrom<TBaseType>(this aweXpect.Reflection.Collections.Filtered.Types @this, bool forceDirect = false) { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies WhichSatisfy(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, System.Func<System.Reflection.Assembly, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+    }
+    public abstract class Filtered<T, TFiltered> : System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable
+        where TFiltered : aweXpect.Reflection.Collections.Filtered<T, TFiltered>
+    {
+        protected Filtered(System.Collections.Generic.IEnumerable<T> source) { }
+        protected System.Collections.Generic.List<aweXpect.Reflection.Collections.IFilter<T>> Filters { get; }
+        public System.Collections.Generic.IEnumerator<T> GetEnumerator() { }
+        public TFiltered Which(aweXpect.Reflection.Collections.IFilter<T> filter) { }
+    }
+    public interface IFilter<in TEntity>
+    {
+        bool Applies(TEntity type);
+        string Describes(string text);
+    }
+}
+namespace aweXpect.Reflection
+{
+    public static class In
+    {
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies AllLoadedAssemblies() { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies Assemblies(System.Collections.Generic.IEnumerable<System.Reflection.Assembly> assemblies) { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies Assemblies(params System.Reflection.Assembly?[] assemblies) { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies AssemblyContaining(System.Type type) { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies AssemblyContaining<TType>() { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies EntryAssembly() { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies ExecutingAssembly() { }
     }
     public static class ThatType
     {
@@ -27,5 +114,18 @@ namespace aweXpect.Reflection
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsNotStatic(this aweXpect.Core.IThat<System.Type?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsSealed(this aweXpect.Core.IThat<System.Type?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsStatic(this aweXpect.Core.IThat<System.Type?> subject) { }
+    }
+    public static class ThatTypes
+    {
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type>>> AreAbstract(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type>>> AreGeneric(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type>>> AreNested(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type>>> AreNotAbstract(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type>>> AreNotGeneric(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type>>> AreNotNested(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type>>> AreNotSealed(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type>>> AreNotStatic(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type>>> AreSealed(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type>>> AreStatic(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type>> subject) { }
     }
 }

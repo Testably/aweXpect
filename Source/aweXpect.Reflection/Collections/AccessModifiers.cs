@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace aweXpect.Reflection;
+namespace aweXpect.Reflection.Collections;
 
 /// <summary>
 ///     The access modifiers.<br />
@@ -32,4 +32,9 @@ public enum AccessModifiers
 	///     <see href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/public" />
 	/// </summary>
 	Public = 8,
+
+	/// <summary>
+	///     Any access modifier.
+	/// </summary>
+	Any = Internal | Protected | Private | Public,
 }

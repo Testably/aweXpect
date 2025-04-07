@@ -3,7 +3,6 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Reflection.Extensions;
-using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 
 namespace aweXpect.Reflection;
@@ -35,7 +34,7 @@ public static partial class ThatType
 		public ConstraintResult IsMetBy(Type? actual)
 		{
 			Actual = actual;
-			Outcome = actual?.IsStatic() == true ? Outcome.Success : Outcome.Failure;
+			Outcome = actual?.IsReallyStatic() == true ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 

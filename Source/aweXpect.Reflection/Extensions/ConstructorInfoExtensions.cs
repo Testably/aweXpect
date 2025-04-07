@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using aweXpect.Reflection.Collections;
 
 namespace aweXpect.Reflection.Extensions;
 

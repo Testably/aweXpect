@@ -3,7 +3,6 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Reflection.Extensions;
-using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 
 namespace aweXpect.Reflection;
