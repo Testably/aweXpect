@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Reflection.Tests;
+﻿using Container = aweXpect.Reflection.Tests.TestHelpers.Types.Container;
+
+namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatType
 {
@@ -9,7 +11,7 @@ public sealed partial class ThatType
 			[Fact]
 			public async Task WhenTypeIsNested_ShouldFail()
 			{
-				Type subject = typeof(IsNested);
+				Type subject = typeof(Container.PublicNestedClass);
 
 				async Task Act()
 					=> await That(subject).IsNotNested();
@@ -18,14 +20,14 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             is not nested,
-					             but it was nested IsNested
+					             but it was nested PublicNestedClass
 					             """);
 			}
 
 			[Fact]
 			public async Task WhenTypeIsNotNested_ShouldSucceed()
 			{
-				Type subject = typeof(ThatType);
+				Type subject = typeof(Container);
 
 				async Task Act()
 					=> await That(subject).IsNotNested();

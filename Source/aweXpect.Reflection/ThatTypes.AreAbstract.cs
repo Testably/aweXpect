@@ -6,6 +6,7 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Reflection.Extensions;
 using aweXpect.Results;
+
 // ReSharper disable PossibleMultipleEnumeration
 
 namespace aweXpect.Reflection;
@@ -13,17 +14,25 @@ namespace aweXpect.Reflection;
 public static partial class ThatTypes
 {
 	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type"/> are abstract.
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> are abstract.
 	/// </summary>
+	/// <remarks>
+	///     Static types or interfaces are not considered abstract, even though they
+	///     have <see cref="Type.IsAbstract" /> set to <see langword="true" />.
+	/// </remarks>
 	public static AndOrResult<IEnumerable<Type>, IThat<IEnumerable<Type>>> AreAbstract(
 		this IThat<IEnumerable<Type>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new AreAbstractConstraint(it, grammars)),
 			subject);
-	
+
 	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type"/> are not abstract.
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> are not abstract.
 	/// </summary>
+	/// <remarks>
+	///     Static types or interfaces are considered not abstract, even though they
+	///     have <see cref="Type.IsAbstract" /> set to <see langword="true" />.
+	/// </remarks>
 	public static AndOrResult<IEnumerable<Type>, IThat<IEnumerable<Type>>> AreNotAbstract(
 		this IThat<IEnumerable<Type>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
@@ -37,7 +46,7 @@ public static partial class ThatTypes
 		public ConstraintResult IsMetBy(IEnumerable<Type> actual)
 		{
 			Actual = actual;
-			Outcome = actual.All(type => type.IsAbstract) ? Outcome.Success : Outcome.Failure;
+			Outcome = actual.All(type => type.IsReallyAbstract()) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -47,7 +56,7 @@ public static partial class ThatTypes
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" contained non-abstract types ");
-			Formatter.Format(stringBuilder, Actual?.Where(type => !type.IsAbstract),
+			Formatter.Format(stringBuilder, Actual?.Where(type => !type.IsReallyAbstract()),
 				FormattingOptions.Indented(indentation));
 		}
 
@@ -57,7 +66,7 @@ public static partial class ThatTypes
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained abstract types ");
-			Formatter.Format(stringBuilder, Actual?.Where(type => type.IsAbstract),
+			Formatter.Format(stringBuilder, Actual?.Where(type => type.IsReallyAbstract()),
 				FormattingOptions.Indented(indentation));
 		}
 	}
@@ -69,7 +78,7 @@ public static partial class ThatTypes
 		public ConstraintResult IsMetBy(IEnumerable<Type> actual)
 		{
 			Actual = actual;
-			Outcome = actual.All(type => !type.IsAbstract) ? Outcome.Success : Outcome.Failure;
+			Outcome = actual.All(type => !type.IsReallyAbstract()) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -79,7 +88,7 @@ public static partial class ThatTypes
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" contained abstract types ");
-			Formatter.Format(stringBuilder, Actual?.Where(type => type.IsAbstract),
+			Formatter.Format(stringBuilder, Actual?.Where(type => type.IsReallyAbstract()),
 				FormattingOptions.Indented(indentation));
 		}
 
@@ -89,7 +98,7 @@ public static partial class ThatTypes
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained non-abstract types ");
-			Formatter.Format(stringBuilder, Actual?.Where(type => !type.IsAbstract),
+			Formatter.Format(stringBuilder, Actual?.Where(type => !type.IsReallyAbstract()),
 				FormattingOptions.Indented(indentation));
 		}
 	}

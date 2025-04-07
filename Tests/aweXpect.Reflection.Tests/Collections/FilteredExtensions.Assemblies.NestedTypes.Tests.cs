@@ -37,7 +37,8 @@ public sealed partial class FilteredExtensions
 
 				[Theory]
 				[MemberData(nameof(GetAccessModifiers), MemberType = typeof(FilteredExtensions))]
-				public async Task WithAccessModifier_ShouldIncludeNestedInformationInErrorMessage(AccessModifiers accessModifier, string expectedString)
+				public async Task WithAccessModifier_ShouldIncludeNestedInformationInErrorMessage(
+					AccessModifiers accessModifier, string expectedString)
 				{
 					async Task Act()
 						=> await That(In.AllLoadedAssemblies().NestedTypes(accessModifier))
@@ -45,12 +46,12 @@ public sealed partial class FilteredExtensions
 
 					await That(Act).ThrowsException()
 						.WithMessage($"""
-						             Expected that {expectedString}nested types in all loaded assemblies
-						             are all not nested,
-						             but it contained nested types [
-						               *
-						             ]
-						             """).AsWildcard();
+						              Expected that {expectedString}nested types in all loaded assemblies
+						              are all not nested,
+						              but it contained nested types [
+						                *
+						              ]
+						              """).AsWildcard();
 				}
 			}
 		}

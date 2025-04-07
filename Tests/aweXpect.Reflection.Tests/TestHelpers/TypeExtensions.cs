@@ -1,10 +1,4 @@
-﻿using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
-using aweXpect.Reflection.Collections;
-
-namespace aweXpect.Reflection.Tests.TestHelpers;
+﻿namespace aweXpect.Reflection.Tests.TestHelpers;
 
 internal static class TypeExtensions
 {

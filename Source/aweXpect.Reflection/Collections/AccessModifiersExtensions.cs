@@ -55,10 +55,10 @@ internal static class AccessModifiersExtensions
 			modifiers.Add("internal");
 		}
 
-		#if NET8_0_OR_GREATER
+#if NET8_0_OR_GREATER
 		return string.Join(", ", modifiers[..^1]) + " or " + modifiers[^1] + " ";
-		#else
+#else
 		return string.Join(", ", modifiers.Take(modifiers.Count - 1)) + " or " + modifiers[^1] + " ";
-		#endif
+#endif
 	}
 }

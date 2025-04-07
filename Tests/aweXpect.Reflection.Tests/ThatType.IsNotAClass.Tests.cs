@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Reflection.Tests;
+﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
+
+namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatType
 {
@@ -9,7 +11,7 @@ public sealed partial class ThatType
 			[Fact]
 			public async Task WhenTypeIsAClass_ShouldFail()
 			{
-				Type subject = typeof(MyClassType);
+				Type subject = typeof(PublicClass);
 
 				async Task Act()
 					=> await That(subject).IsNotAClass();
@@ -18,15 +20,14 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             is not a class,
-					             but it was class MyClassType
+					             but it was class PublicClass
 					             """);
 			}
 
-			[Fact]
-			public async Task WhenTypeIsNotAClass_ShouldSucceed()
+			[Theory]
+			[MemberData(nameof(NonClassTypes))]
+			public async Task WhenTypeIsNotAClass_ShouldSucceed(Type subject)
 			{
-				Type subject = typeof(MyStructType);
-
 				async Task Act()
 					=> await That(subject).IsNotAClass();
 
@@ -48,6 +49,16 @@ public sealed partial class ThatType
 					             but it was <null>
 					             """);
 			}
+
+			public static TheoryData<Type> NonClassTypes()
+				=>
+				[
+					typeof(IPublicInterface),
+					typeof(PublicEnum),
+					typeof(PublicStruct),
+					typeof(PublicRecord),
+					typeof(PublicRecordStruct),
+				];
 		}
 	}
 }

@@ -37,7 +37,8 @@ public sealed partial class FilteredExtensions
 
 				[Theory]
 				[MemberData(nameof(GetAccessModifiers), MemberType = typeof(FilteredExtensions))]
-				public async Task WithAccessModifier_ShouldIncludeAbstractInformationInErrorMessage(AccessModifiers accessModifier, string expectedString)
+				public async Task WithAccessModifier_ShouldIncludeAbstractInformationInErrorMessage(
+					AccessModifiers accessModifier, string expectedString)
 				{
 					async Task Act()
 						=> await That(In.AllLoadedAssemblies().AbstractTypes(accessModifier))
@@ -45,12 +46,12 @@ public sealed partial class FilteredExtensions
 
 					await That(Act).ThrowsException()
 						.WithMessage($"""
-						             Expected that {expectedString}abstract types in all loaded assemblies
-						             are all not abstract,
-						             but it contained abstract types [
-						               *
-						             ]
-						             """).AsWildcard();
+						              Expected that {expectedString}abstract types in all loaded assemblies
+						              are all not abstract,
+						              but it contained abstract types [
+						                *
+						              ]
+						              """).AsWildcard();
 				}
 			}
 		}

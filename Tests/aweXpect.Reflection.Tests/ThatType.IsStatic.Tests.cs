@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Reflection.Tests;
+﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
+
+namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatType
 {
@@ -6,20 +8,19 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
-			public async Task WhenTypeIsNotStatic_ShouldFail()
+			[Theory]
+			[MemberData(nameof(NonStaticTypes))]
+			public async Task WhenTypeIsNotStatic_ShouldFail(Type subject)
 			{
-				Type subject = typeof(MyInstanceType);
-
 				async Task Act()
 					=> await That(subject).IsStatic();
 
 				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             is static,
-					             but it was non-static MyInstanceType
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is static,
+					              but it was non-static {subject.Name}
+					              """);
 			}
 
 			[Fact]
@@ -41,17 +42,22 @@ public sealed partial class ThatType
 			[Fact]
 			public async Task WhenTypeIsStatic_ShouldSucceed()
 			{
-				Type subject = typeof(MyStaticType);
+				Type subject = typeof(PublicStaticClass);
 
 				async Task Act()
 					=> await That(subject).IsStatic();
 
 				await That(Act).DoesNotThrow();
 			}
+
+			public static TheoryData<Type> NonStaticTypes()
+				=>
+				[
+					typeof(PublicAbstractClass),
+					typeof(PublicSealedClass),
+					typeof(Container.PublicNestedClass),
+					typeof(IPublicInterface),
+				];
 		}
-
-		private static class MyStaticType;
-
-		private class MyInstanceType;
 	}
 }

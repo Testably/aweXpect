@@ -6,6 +6,7 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Reflection.Extensions;
 using aweXpect.Results;
+
 // ReSharper disable PossibleMultipleEnumeration
 
 namespace aweXpect.Reflection;
@@ -13,17 +14,25 @@ namespace aweXpect.Reflection;
 public static partial class ThatTypes
 {
 	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type"/> are sealed.
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> are sealed.
 	/// </summary>
+	/// <remarks>
+	///     Static types are not considered sealed, even though they
+	///     have <see cref="Type.IsSealed" /> set to <see langword="true" />.
+	/// </remarks>
 	public static AndOrResult<IEnumerable<Type>, IThat<IEnumerable<Type>>> AreSealed(
 		this IThat<IEnumerable<Type>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new AreSealedConstraint(it, grammars)),
 			subject);
-	
+
 	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type"/> are not sealed.
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> are not sealed.
 	/// </summary>
+	/// <remarks>
+	///     Static types are considered not sealed, even though they
+	///     have <see cref="Type.IsSealed" /> set to <see langword="true" />.
+	/// </remarks>
 	public static AndOrResult<IEnumerable<Type>, IThat<IEnumerable<Type>>> AreNotSealed(
 		this IThat<IEnumerable<Type>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)

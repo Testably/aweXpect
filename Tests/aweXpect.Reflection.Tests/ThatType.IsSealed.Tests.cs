@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Reflection.Tests;
+﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
+
+namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatType
 {
@@ -6,20 +8,19 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
-			public async Task WhenTypeIsNotSealed_ShouldFail()
+			[Theory]
+			[MemberData(nameof(NonSealedTypes))]
+			public async Task WhenTypeIsNotSealed_ShouldFail(Type subject)
 			{
-				Type subject = typeof(MyInstanceType);
-
 				async Task Act()
 					=> await That(subject).IsSealed();
 
 				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             is sealed,
-					             but it was non-sealed MyInstanceType
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is sealed,
+					              but it was non-sealed {subject.Name}
+					              """);
 			}
 
 			[Fact]
@@ -41,17 +42,22 @@ public sealed partial class ThatType
 			[Fact]
 			public async Task WhenTypeIsSealed_ShouldSucceed()
 			{
-				Type subject = typeof(MySealedType);
+				Type subject = typeof(PublicSealedClass);
 
 				async Task Act()
 					=> await That(subject).IsSealed();
 
 				await That(Act).DoesNotThrow();
 			}
+
+			public static TheoryData<Type> NonSealedTypes()
+				=>
+				[
+					typeof(PublicAbstractClass),
+					typeof(PublicStaticClass),
+					typeof(Container.PublicNestedClass),
+					typeof(IPublicInterface),
+				];
 		}
-
-		private sealed class MySealedType;
-
-		private class MyInstanceType;
 	}
 }

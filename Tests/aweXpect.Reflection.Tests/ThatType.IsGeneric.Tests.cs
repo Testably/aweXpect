@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Reflection.Tests;
+﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
+
+namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatType
 {
@@ -9,7 +11,7 @@ public sealed partial class ThatType
 			[Fact]
 			public async Task WhenTypeIsGeneric_ShouldSucceed()
 			{
-				Type subject = typeof(MyGenericType<int>);
+				Type subject = typeof(PublicGenericClass<int>);
 
 				async Task Act()
 					=> await That(subject).IsGeneric();
@@ -20,7 +22,7 @@ public sealed partial class ThatType
 			[Fact]
 			public async Task WhenTypeIsNotGeneric_ShouldFail()
 			{
-				Type subject = typeof(MyInstanceType);
+				Type subject = typeof(PublicClass);
 
 				async Task Act()
 					=> await That(subject).IsGeneric();
@@ -29,7 +31,7 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             is generic,
-					             but it was non-generic MyInstanceType
+					             but it was non-generic PublicClass
 					             """);
 			}
 
@@ -49,9 +51,5 @@ public sealed partial class ThatType
 					             """);
 			}
 		}
-
-		private class MyGenericType<T>;
-
-		private class MyInstanceType;
 	}
 }

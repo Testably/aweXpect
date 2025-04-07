@@ -5,7 +5,7 @@ namespace aweXpect.Reflection.Tests.Collections;
 public sealed partial class FilteredExtensions
 {
 	public static TheoryData<AccessModifiers, string> GetAccessModifiers()
-		=> new TheoryData<AccessModifiers, string>()
+		=> new()
 		{
 			{
 				AccessModifiers.Any, ""
@@ -26,7 +26,8 @@ public sealed partial class FilteredExtensions
 				AccessModifiers.Public | AccessModifiers.Internal, "public or internal "
 			},
 			{
-				AccessModifiers.Public | AccessModifiers.Protected | AccessModifiers.Internal, "public, protected or internal "
+				AccessModifiers.Public | AccessModifiers.Protected | AccessModifiers.Internal,
+				"public, protected or internal "
 			},
 		};
 }

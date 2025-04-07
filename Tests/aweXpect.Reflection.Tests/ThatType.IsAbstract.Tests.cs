@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Reflection.Tests;
+﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
+
+namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatType
 {
@@ -9,7 +11,7 @@ public sealed partial class ThatType
 			[Fact]
 			public async Task WhenTypeIsAbstract_ShouldSucceed()
 			{
-				Type subject = typeof(MyAbstractType);
+				Type subject = typeof(PublicAbstractClass);
 
 				async Task Act()
 					=> await That(subject).IsAbstract();
@@ -17,20 +19,19 @@ public sealed partial class ThatType
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
-			public async Task WhenTypeIsNotAbstract_ShouldFail()
+			[Theory]
+			[MemberData(nameof(NonAbstractTypes))]
+			public async Task WhenTypeIsNotAbstract_ShouldFail(Type subject)
 			{
-				Type subject = typeof(MyInstanceType);
-
 				async Task Act()
 					=> await That(subject).IsAbstract();
 
 				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             is abstract,
-					             but it was non-abstract MyInstanceType
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is abstract,
+					              but it was non-abstract {subject.Name}
+					              """);
 			}
 
 			[Fact]
@@ -48,10 +49,15 @@ public sealed partial class ThatType
 					             but it was <null>
 					             """);
 			}
+
+			public static TheoryData<Type> NonAbstractTypes()
+				=>
+				[
+					typeof(PublicStaticClass),
+					typeof(PublicSealedClass),
+					typeof(Container.PublicNestedClass),
+					typeof(IPublicInterface),
+				];
 		}
-
-		private abstract class MyAbstractType;
-
-		private class MyInstanceType;
 	}
 }

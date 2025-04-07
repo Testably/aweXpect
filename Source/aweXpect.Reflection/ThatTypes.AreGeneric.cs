@@ -6,6 +6,7 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Reflection.Extensions;
 using aweXpect.Results;
+
 // ReSharper disable PossibleMultipleEnumeration
 
 namespace aweXpect.Reflection;
@@ -13,16 +14,16 @@ namespace aweXpect.Reflection;
 public static partial class ThatTypes
 {
 	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type"/> are generic.
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> are generic.
 	/// </summary>
 	public static AndOrResult<IEnumerable<Type>, IThat<IEnumerable<Type>>> AreGeneric(
 		this IThat<IEnumerable<Type>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new AreGenericConstraint(it, grammars)),
 			subject);
-	
+
 	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type"/> are not generic.
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> are not generic.
 	/// </summary>
 	public static AndOrResult<IEnumerable<Type>, IThat<IEnumerable<Type>>> AreNotGeneric(
 		this IThat<IEnumerable<Type>> subject)

@@ -6,6 +6,7 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Reflection.Extensions;
 using aweXpect.Results;
+
 // ReSharper disable PossibleMultipleEnumeration
 
 namespace aweXpect.Reflection;
@@ -13,16 +14,16 @@ namespace aweXpect.Reflection;
 public static partial class ThatTypes
 {
 	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type"/> are static.
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> are static.
 	/// </summary>
 	public static AndOrResult<IEnumerable<Type>, IThat<IEnumerable<Type>>> AreStatic(
 		this IThat<IEnumerable<Type>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new AreStaticConstraint(it, grammars)),
 			subject);
-	
+
 	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type"/> are not static.
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> are not static.
 	/// </summary>
 	public static AndOrResult<IEnumerable<Type>, IThat<IEnumerable<Type>>> AreNotStatic(
 		this IThat<IEnumerable<Type>> subject)

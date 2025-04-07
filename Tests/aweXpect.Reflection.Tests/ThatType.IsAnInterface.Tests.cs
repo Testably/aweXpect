@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Reflection.Tests;
+﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
+
+namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatType
 {
@@ -9,7 +11,7 @@ public sealed partial class ThatType
 			[Fact]
 			public async Task WhenTypeIsAnInterface_ShouldSucceed()
 			{
-				Type subject = typeof(MyInterfaceType);
+				Type subject = typeof(IPublicInterface);
 
 				async Task Act()
 					=> await That(subject).IsAnInterface();
@@ -18,7 +20,7 @@ public sealed partial class ThatType
 			}
 
 			[Theory]
-			[MemberData(nameof(NotInterfaceData))]
+			[MemberData(nameof(NonInterfaceType))]
 			public async Task WhenTypeIsNotAnInterface_ShouldFail(Type? subject, string name)
 			{
 				async Task Act()
@@ -48,25 +50,25 @@ public sealed partial class ThatType
 					             """);
 			}
 
-			public static TheoryData<Type?, string> NotInterfaceData() => new()
+			public static TheoryData<Type?, string> NonInterfaceType() => new()
 			{
 				{
 					null, "<null>"
 				},
 				{
-					typeof(MyStructType), "struct MyStructType"
+					typeof(PublicStruct), "struct PublicStruct"
 				},
 				{
-					typeof(MyClassType), "class MyClassType"
+					typeof(PublicClass), "class PublicClass"
 				},
 				{
-					typeof(MyEnumType), "enum MyEnumType"
+					typeof(PublicEnum), "enum PublicEnum"
 				},
 				{
-					typeof(MyRecordType), "record MyRecordType"
+					typeof(PublicRecord), "record PublicRecord"
 				},
 				{
-					typeof(MyRecordStructType), "record struct MyRecordStructType"
+					typeof(PublicRecordStruct), "record struct PublicRecordStruct"
 				},
 			};
 		}

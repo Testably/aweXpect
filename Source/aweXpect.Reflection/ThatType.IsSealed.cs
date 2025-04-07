@@ -13,8 +13,8 @@ public static partial class ThatType
 	///     Verifies that the <see cref="Type" /> is sealed.
 	/// </summary>
 	/// <remarks>
-	///     Static types are not considered sealed, even though they have <see cref="Type.IsSealed" /> set to
-	///     <see langword="true" />.
+	///     Static types are not considered sealed, even though they
+	///     have <see cref="Type.IsSealed" /> set to <see langword="true" />.
 	/// </remarks>
 	public static AndOrResult<Type?, IThat<Type?>> IsSealed(
 		this IThat<Type?> subject)
@@ -26,8 +26,8 @@ public static partial class ThatType
 	///     Verifies that the <see cref="Type" /> is not sealed.
 	/// </summary>
 	/// <remarks>
-	///     Static types are considered not sealed, even though they have <see cref="Type.IsSealed" /> set to
-	///     <see langword="true" />.
+	///     Static types are considered not sealed, even though they
+	///     have <see cref="Type.IsSealed" /> set to <see langword="true" />.
 	/// </remarks>
 	public static AndOrResult<Type?, IThat<Type?>> IsNotSealed(
 		this IThat<Type?> subject)

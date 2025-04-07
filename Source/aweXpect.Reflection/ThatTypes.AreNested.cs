@@ -6,6 +6,7 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Reflection.Extensions;
 using aweXpect.Results;
+
 // ReSharper disable PossibleMultipleEnumeration
 
 namespace aweXpect.Reflection;
@@ -13,16 +14,16 @@ namespace aweXpect.Reflection;
 public static partial class ThatTypes
 {
 	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type"/> are nested.
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> are nested.
 	/// </summary>
 	public static AndOrResult<IEnumerable<Type>, IThat<IEnumerable<Type>>> AreNested(
 		this IThat<IEnumerable<Type>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new AreNestedConstraint(it, grammars)),
 			subject);
-	
+
 	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Type"/> are not nested.
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> are not nested.
 	/// </summary>
 	public static AndOrResult<IEnumerable<Type>, IThat<IEnumerable<Type>>> AreNotNested(
 		this IThat<IEnumerable<Type>> subject)

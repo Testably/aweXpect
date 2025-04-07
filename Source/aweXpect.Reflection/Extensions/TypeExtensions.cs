@@ -278,6 +278,14 @@ internal static class TypeExtensions
 		=> type is { IsAbstract: false, IsSealed: true, IsInterface: false, };
 
 	/// <summary>
+	///     Gets a value indicating whether the <see cref="Type" /> is abstract and not sealed and not an interface.
+	/// </summary>
+	/// <param name="type">The <see cref="Type" />.</param>
+	/// <remarks>https://stackoverflow.com/a/1175901</remarks>
+	public static bool IsReallyAbstract(this Type type)
+		=> type is { IsAbstract: true, IsSealed: false, IsInterface: false, };
+
+	/// <summary>
 	///     Check if the generic types are compatible.<br />
 	///     Generic types are considered compatible, if either one or both are open generics or the generic argument types
 	///     themselves are equal.

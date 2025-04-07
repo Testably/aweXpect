@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Reflection.Tests;
+﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
+
+namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatType
 {
@@ -9,7 +11,7 @@ public sealed partial class ThatType
 			[Fact]
 			public async Task WhenTypeIsAnInterface_ShouldFail()
 			{
-				Type subject = typeof(MyInterfaceType);
+				Type subject = typeof(IPublicInterface);
 
 				async Task Act()
 					=> await That(subject).IsNotAnInterface();
@@ -18,15 +20,14 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             is not an interface,
-					             but it was interface MyInterfaceType
+					             but it was interface IPublicInterface
 					             """);
 			}
 
-			[Fact]
-			public async Task WhenTypeIsNotAnInterface_ShouldSucceed()
+			[Theory]
+			[MemberData(nameof(NonInterfaceTypes))]
+			public async Task WhenTypeIsNotAnInterface_ShouldSucceed(Type subject)
 			{
-				Type subject = typeof(MyClassType);
-
 				async Task Act()
 					=> await That(subject).IsNotAnInterface();
 
@@ -48,6 +49,16 @@ public sealed partial class ThatType
 					             but it was <null>
 					             """);
 			}
+
+			public static TheoryData<Type> NonInterfaceTypes()
+				=>
+				[
+					typeof(PublicClass),
+					typeof(PublicEnum),
+					typeof(PublicStruct),
+					typeof(PublicRecord),
+					typeof(PublicRecordStruct),
+				];
 		}
 	}
 }
