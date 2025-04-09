@@ -14,13 +14,13 @@ public static partial class Filtered;
 /// <summary>
 ///     Base class for filtered collections of <typeparamref name="T" />.
 /// </summary>
-public abstract class Filtered<T, TFiltered>(IEnumerable<T> source) : IEnumerable<T>
+public abstract class Filtered<T, TFiltered>(IEnumerable<T> source, List<IFilter<T>>? filters = null) : IEnumerable<T>
 	where TFiltered : Filtered<T, TFiltered>
 {
 	/// <summary>
 	///     The filters on the source.
 	/// </summary>
-	protected List<IFilter<T>> Filters { get; } = [];
+	protected List<IFilter<T>> Filters { get; } = filters ?? [];
 
 	/// <inheritdoc />
 	public IEnumerator<T> GetEnumerator() => source.Where(a => Filters.All(f => f.Applies(a))).GetEnumerator();

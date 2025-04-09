@@ -3,7 +3,7 @@ using aweXpect.Reflection.Collections;
 
 namespace aweXpect.Reflection.Tests.Collections;
 
-public partial class FilteredExtensions
+public sealed partial class FilteredExtensions
 {
 	public class Methods
 	{

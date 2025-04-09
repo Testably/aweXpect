@@ -12,11 +12,6 @@ namespace aweXpect.Reflection.Collections
         Public = 8,
         Any = 15,
     }
-    public static class Filter
-    {
-        public static aweXpect.Reflection.Collections.IFilter<TEntity> Prefix<TEntity>(System.Func<TEntity, bool> predicate, string prefix) { }
-        public static aweXpect.Reflection.Collections.IFilter<TEntity> Suffix<TEntity>(System.Func<TEntity, bool> predicate, string suffix) { }
-    }
     public static class Filtered
     {
         public class Assemblies : aweXpect.Reflection.Collections.Filtered<System.Reflection.Assembly, aweXpect.Reflection.Collections.Filtered.Assemblies>, aweXpect.Core.IDescribableSubject
@@ -60,6 +55,21 @@ namespace aweXpect.Reflection.Collections
             public string GetDescription() { }
             public aweXpect.Reflection.Collections.Filtered.Methods Methods() { }
             public aweXpect.Reflection.Collections.Filtered.Properties Properties() { }
+            public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Types
+            {
+                public aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResult IgnoringCase(bool ignoreCase = true) { }
+                public aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResult IgnoringLeadingWhiteSpace(bool ignoreLeadingWhiteSpace = true) { }
+                public aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResult IgnoringTrailingWhiteSpace(bool ignoreTrailingWhiteSpace = true) { }
+                public aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResult Using(System.Collections.Generic.IEqualityComparer<string> comparer) { }
+            }
+            public class StringEqualityResultType : aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResult
+            {
+                public aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResult AsPrefix() { }
+                public aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResult AsRegex() { }
+                public aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResult AsSuffix() { }
+                public aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResult AsWildcard() { }
+                public aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResult Exactly() { }
+            }
         }
     }
     public static class FilteredExtensions
@@ -79,11 +89,13 @@ namespace aweXpect.Reflection.Collections
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Collections.Filtered.Types With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
+        public static aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Types @this, string expected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResultType WithNamespace(this aweXpect.Reflection.Collections.Filtered.Types @this, string expected) { }
     }
     public abstract class Filtered<T, TFiltered> : System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable
         where TFiltered : aweXpect.Reflection.Collections.Filtered<T, TFiltered>
     {
-        protected Filtered(System.Collections.Generic.IEnumerable<T> source) { }
+        protected Filtered(System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.List<aweXpect.Reflection.Collections.IFilter<T>>? filters = null) { }
         protected System.Collections.Generic.List<aweXpect.Reflection.Collections.IFilter<T>> Filters { get; }
         public System.Collections.Generic.IEnumerator<T> GetEnumerator() { }
         public TFiltered Which(aweXpect.Reflection.Collections.IFilter<T> filter) { }
@@ -113,6 +125,8 @@ namespace aweXpect.Reflection
             where TAttribute : System.Attribute { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> Has<TAttribute>(this aweXpect.Core.IThat<System.Type?> subject, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
+        public static aweXpect.Results.StringEqualityTypeResult<System.Type?, aweXpect.Core.IThat<System.Type?>> HasName(this aweXpect.Core.IThat<System.Type?> subject, string expected) { }
+        public static aweXpect.Results.StringEqualityTypeResult<System.Type?, aweXpect.Core.IThat<System.Type?>> HasNamespace(this aweXpect.Core.IThat<System.Type?> subject, string expected) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsAClass(this aweXpect.Core.IThat<System.Type?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsAbstract(this aweXpect.Core.IThat<System.Type?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsAnInterface(this aweXpect.Core.IThat<System.Type?> subject) { }
@@ -144,5 +158,7 @@ namespace aweXpect.Reflection
             where TAttribute : System.Attribute { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type>>> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type>> subject, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
+        public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<System.Type>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type>>> HaveName(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type>> subject, string expected) { }
+        public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<System.Type>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type>>> HaveNamespace(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type>> subject, string expected) { }
     }
 }
