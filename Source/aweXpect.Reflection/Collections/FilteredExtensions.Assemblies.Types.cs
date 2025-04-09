@@ -1,21 +1,10 @@
 ﻿using System;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 using aweXpect.Reflection.Extensions;
 
 namespace aweXpect.Reflection.Collections;
 
 public static partial class FilteredExtensions
 {
-	/// <summary>
-	///     Filters the assemblies according to the <paramref name="predicate" />.
-	/// </summary>
-	public static Filtered.Assemblies WhichSatisfy(this Filtered.Assemblies assemblies,
-		Func<Assembly, bool> predicate,
-		[CallerArgumentExpression("predicate")]
-		string doNotPopulateThisValue = "")
-		=> assemblies.Which(Filter.Suffix(predicate, $" matching {doNotPopulateThisValue}"));
-
 	/// <summary>
 	///     Get all abstract types in the filtered assemblies with the given <paramref name="accessModifier" />.
 	/// </summary>

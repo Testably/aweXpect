@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace aweXpect.Reflection.Collections;
 
@@ -34,4 +36,13 @@ public abstract class Filtered<T, TFiltered>(IEnumerable<T> source) : IEnumerabl
 		Filters.Add(filter);
 		return (TFiltered)this;
 	}
+
+	/// <summary>
+	///     Filters the applicable <typeparamref name="T" /> on which the expectations should be applied
+	///     according to the <paramref name="predicate" />.
+	/// </summary>
+	public TFiltered Which(Func<T, bool> predicate,
+		[CallerArgumentExpression("predicate")]
+		string doNotPopulateThisValue = "")
+		=> Which(Filter.Suffix(predicate, $"matching {doNotPopulateThisValue} "));
 }

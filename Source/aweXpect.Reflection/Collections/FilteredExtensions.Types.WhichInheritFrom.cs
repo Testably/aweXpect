@@ -16,5 +16,5 @@ public static partial class FilteredExtensions
 	/// </summary>
 	public static Filtered.Types WhichInheritFrom(this Filtered.Types @this, Type baseType, bool forceDirect = false)
 		=> @this.Which(Filter.Suffix<Type>(type => type.InheritsFrom(baseType, forceDirect),
-			$"which inherit from {baseType.Name} "));
+			$"which inherit from {Formatter.Format(baseType)} "));
 }
