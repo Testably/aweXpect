@@ -21,7 +21,7 @@ public sealed partial class FilteredExtensions
 						typeof(Dummy).GetMethod(nameof(Dummy.MyBarMethod)),
 						typeof(DummyChild).GetMethod(nameof(DummyChild.MyBarMethod)),
 					]).InAnyOrder();
-					await That(methods.GetDescription()).IsEqualTo("methods with BarAttribute").AsPrefix();
+					await That(methods.GetDescription()).IsEqualTo("methods with FilteredExtensions.Methods.With.AttributeTests.BarAttribute").AsPrefix();
 				}
 
 				[Fact]
@@ -31,7 +31,7 @@ public sealed partial class FilteredExtensions
 						.Types().Methods().With<BarAttribute>(false);
 
 					await That(methods).HasSingle().Which.IsEqualTo(typeof(Dummy).GetMethod(nameof(Dummy.MyBarMethod)));
-					await That(methods.GetDescription()).IsEqualTo("methods with direct BarAttribute").AsPrefix();
+					await That(methods.GetDescription()).IsEqualTo("methods with direct FilteredExtensions.Methods.With.AttributeTests.BarAttribute").AsPrefix();
 				}
 
 				[Theory]
@@ -44,7 +44,7 @@ public sealed partial class FilteredExtensions
 
 					await That(methods).IsEqualTo(expectedTypes).InAnyOrder();
 					await That(methods.GetDescription())
-						.IsEqualTo("methods with FooAttribute matching foo => foo.Value == value").AsPrefix();
+						.IsEqualTo("methods with FilteredExtensions.Methods.With.AttributeTests.FooAttribute matching foo => foo.Value == value").AsPrefix();
 				}
 
 				[Fact]
@@ -56,7 +56,7 @@ public sealed partial class FilteredExtensions
 					await That(methods).HasSingle().Which
 						.IsEqualTo(typeof(Dummy).GetMethod(nameof(Dummy.MyFooMethod2)));
 					await That(methods.GetDescription())
-						.IsEqualTo("methods with direct FooAttribute matching foo => foo.Value == 2").AsPrefix();
+						.IsEqualTo("methods with direct FilteredExtensions.Methods.With.AttributeTests.FooAttribute matching foo => foo.Value == 2").AsPrefix();
 				}
 
 				[AttributeUsage(AttributeTargets.Method)]

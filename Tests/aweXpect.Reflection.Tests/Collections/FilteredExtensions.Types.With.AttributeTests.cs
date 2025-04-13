@@ -17,7 +17,7 @@ public sealed partial class FilteredExtensions
 						.Types().With<BarAttribute>();
 
 					await That(types).IsEqualTo([typeof(BarClass), typeof(BarChildClass),]).InAnyOrder();
-					await That(types.GetDescription()).IsEqualTo("types with BarAttribute").AsPrefix();
+					await That(types.GetDescription()).IsEqualTo("types with FilteredExtensions.Types.With.AttributeTests.BarAttribute").AsPrefix();
 				}
 
 				[Fact]
@@ -27,7 +27,7 @@ public sealed partial class FilteredExtensions
 						.Types().With<BarAttribute>(false);
 
 					await That(types).HasSingle().Which.IsEqualTo(typeof(BarClass));
-					await That(types.GetDescription()).IsEqualTo("types with direct BarAttribute").AsPrefix();
+					await That(types.GetDescription()).IsEqualTo("types with direct FilteredExtensions.Types.With.AttributeTests.BarAttribute").AsPrefix();
 				}
 
 				[Theory]
@@ -40,7 +40,7 @@ public sealed partial class FilteredExtensions
 
 					await That(types).IsEqualTo(expectedTypes).InAnyOrder();
 					await That(types.GetDescription())
-						.IsEqualTo("types with FooAttribute matching foo => foo.Value == value").AsPrefix();
+						.IsEqualTo("types with FilteredExtensions.Types.With.AttributeTests.FooAttribute matching foo => foo.Value == value").AsPrefix();
 				}
 
 				[Fact]
@@ -51,7 +51,7 @@ public sealed partial class FilteredExtensions
 
 					await That(types).HasSingle().Which.IsEqualTo(typeof(FooClass2));
 					await That(types.GetDescription())
-						.IsEqualTo("types with direct FooAttribute matching foo => foo.Value == 2").AsPrefix();
+						.IsEqualTo("types with direct FilteredExtensions.Types.With.AttributeTests.FooAttribute matching foo => foo.Value == 2").AsPrefix();
 				}
 
 				[AttributeUsage(AttributeTargets.Class)]

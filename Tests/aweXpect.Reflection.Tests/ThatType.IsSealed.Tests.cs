@@ -19,7 +19,7 @@ public sealed partial class ThatType
 					.WithMessage($"""
 					              Expected that subject
 					              is sealed,
-					              but it was non-sealed {subject.Name}
+					              but it was non-sealed {Formatter.Format(subject)}
 					              """);
 			}
 

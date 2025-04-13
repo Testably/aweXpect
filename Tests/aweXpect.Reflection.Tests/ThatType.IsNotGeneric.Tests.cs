@@ -20,7 +20,7 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             is not generic,
-					             but it was generic PublicGenericClass<T>
+					             but it was generic PublicGenericClass<>
 					             """);
 			}
 

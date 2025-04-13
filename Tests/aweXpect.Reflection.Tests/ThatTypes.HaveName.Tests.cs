@@ -20,7 +20,7 @@ public sealed partial class ThatTypes
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
-					             Expected that types with name start with "Some" in assembly containing type Tests
+					             Expected that types with name start with "Some" in assembly containing type ThatTypes.HaveName.Tests
 					             all have name equal to "SomeOtherClassName",
 					             but it contained not matching types [
 					               *SomeClassToTestHaveNameForTypes*

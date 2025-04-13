@@ -29,10 +29,10 @@ public sealed class Filtered
 
 					await That(Act).ThrowsException()
 						.WithMessage("""
-						             Expected that types which inherit from FooBase in assembly containing type WhichInheritFrom
+						             Expected that types which inherit from Filtered.Types.WhichInheritFrom.Tests.FooBase in assembly containing type Filtered.Types.WhichInheritFrom
 						             are all abstract,
 						             but it contained non-abstract types [
-						               FooDerived
+						               Filtered.Types.WhichInheritFrom.Tests.FooDerived
 						             ]
 						             """);
 				}

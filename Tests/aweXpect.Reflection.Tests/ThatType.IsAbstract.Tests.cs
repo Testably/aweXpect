@@ -30,7 +30,7 @@ public sealed partial class ThatType
 					.WithMessage($"""
 					              Expected that subject
 					              is abstract,
-					              but it was non-abstract {subject.Name}
+					              but it was non-abstract {Formatter.Format(subject)}
 					              """);
 			}
 

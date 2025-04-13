@@ -41,8 +41,8 @@ public sealed partial class ThatType
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has direct FooAttribute,
-					             but it did not in FooChildClass2
+					             has direct ThatType.Has.AttributeTests.FooAttribute,
+					             but it did not in ThatType.Has.AttributeTests.FooChildClass2
 					             """);
 			}
 
@@ -79,8 +79,8 @@ public sealed partial class ThatType
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has direct FooAttribute matching foo => foo.Value == 2,
-					             but it did not in FooChildClass2
+					             has direct ThatType.Has.AttributeTests.FooAttribute matching foo => foo.Value == 2,
+					             but it did not in ThatType.Has.AttributeTests.FooChildClass2
 					             """);
 			}
 
@@ -95,8 +95,8 @@ public sealed partial class ThatType
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has FooAttribute matching foo => foo.Value == 3,
-					             but it did not in FooClass2
+					             has ThatType.Has.AttributeTests.FooAttribute matching foo => foo.Value == 3,
+					             but it did not in ThatType.Has.AttributeTests.FooClass2
 					             """);
 			}
 
@@ -111,8 +111,8 @@ public sealed partial class ThatType
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has FooAttribute matching foo => foo.Value == 3,
-					             but it did not in FooChildClass2
+					             has ThatType.Has.AttributeTests.FooAttribute matching foo => foo.Value == 3,
+					             but it did not in ThatType.Has.AttributeTests.FooChildClass2
 					             """);
 			}
 
@@ -127,7 +127,7 @@ public sealed partial class ThatType
 				await That(Act).ThrowsException()
 					.WithMessage("""
 					             Expected that subject
-					             has FooAttribute,
+					             has ThatType.Has.AttributeTests.FooAttribute,
 					             but it was <null>
 					             """);
 			}

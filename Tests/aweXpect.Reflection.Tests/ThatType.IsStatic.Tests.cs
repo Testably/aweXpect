@@ -19,7 +19,7 @@ public sealed partial class ThatType
 					.WithMessage($"""
 					              Expected that subject
 					              is static,
-					              but it was non-static {subject.Name}
+					              but it was non-static {Formatter.Format(subject)}
 					              """);
 			}
 

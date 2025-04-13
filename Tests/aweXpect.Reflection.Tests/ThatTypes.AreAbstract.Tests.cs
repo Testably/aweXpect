@@ -18,7 +18,7 @@ public sealed partial class ThatTypes
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
-					             Expected that types in assembly containing type AreAbstract
+					             Expected that types in assembly containing type ThatTypes.AreAbstract
 					             are all abstract,
 					             but it contained non-abstract types [
 					               *

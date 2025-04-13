@@ -43,10 +43,10 @@ public sealed partial class ThatTypes
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
-					             Expected that types matching type => type == typeof(FooChildClass2) in assembly containing type AttributeTests
-					             all have FooAttribute,
+					             Expected that types matching type => type == typeof(FooChildClass2) in assembly containing type ThatTypes.Have.AttributeTests
+					             all have ThatTypes.Have.AttributeTests.FooAttribute,
 					             but it contained not matching types [
-					               FooChildClass2
+					               ThatTypes.Have.AttributeTests.FooChildClass2
 					             ]
 					             """);
 			}
@@ -86,10 +86,10 @@ public sealed partial class ThatTypes
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
-					             Expected that types matching type => type == typeof(FooChildClass2) in assembly containing type AttributeTests
-					             all have FooAttribute matching foo => foo.Value == 2,
+					             Expected that types matching type => type == typeof(FooChildClass2) in assembly containing type ThatTypes.Have.AttributeTests
+					             all have ThatTypes.Have.AttributeTests.FooAttribute matching foo => foo.Value == 2,
 					             but it contained not matching types [
-					               FooChildClass2
+					               ThatTypes.Have.AttributeTests.FooChildClass2
 					             ]
 					             """);
 			}
@@ -105,10 +105,10 @@ public sealed partial class ThatTypes
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
-					             Expected that types matching type => type == typeof(FooClass2) in assembly containing type AttributeTests
-					             all have direct FooAttribute matching foo => foo.Value == 3,
+					             Expected that types matching type => type == typeof(FooClass2) in assembly containing type ThatTypes.Have.AttributeTests
+					             all have direct ThatTypes.Have.AttributeTests.FooAttribute matching foo => foo.Value == 3,
 					             but it contained not matching types [
-					               FooClass2
+					               ThatTypes.Have.AttributeTests.FooClass2
 					             ]
 					             """);
 			}
@@ -124,10 +124,10 @@ public sealed partial class ThatTypes
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
-					             Expected that types matching type => type == typeof(FooChildClass2) in assembly containing type AttributeTests
-					             all have direct FooAttribute matching foo => foo.Value == 3,
+					             Expected that types matching type => type == typeof(FooChildClass2) in assembly containing type ThatTypes.Have.AttributeTests
+					             all have direct ThatTypes.Have.AttributeTests.FooAttribute matching foo => foo.Value == 3,
 					             but it contained not matching types [
-					               FooChildClass2
+					               ThatTypes.Have.AttributeTests.FooChildClass2
 					             ]
 					             """);
 			}

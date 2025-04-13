@@ -20,7 +20,7 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             is not nested,
-					             but it was nested PublicNestedClass
+					             but it was nested Container.PublicNestedClass
 					             """);
 			}
 
