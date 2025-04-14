@@ -175,7 +175,7 @@ public sealed class ThatJsonObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is serializable as PocoWithIgnoredProperty JSON,
+					             is serializable as ThatJsonObject.IsJsonSerializable.PocoWithIgnoredProperty JSON,
 					             but it was not:
 					               Property Name was <null> instead of "foo"
 					             """);
@@ -210,7 +210,7 @@ public sealed class ThatJsonObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is serializable as PocoWithPrivateConstructor JSON,
+					             is serializable as ThatJsonObject.IsJsonSerializable.PocoWithPrivateConstructor JSON,
 					             but it could not be deserialized: Deserialization of types without a parameterless constructor, a singular parameterized constructor, or a parameterized constructor annotated with 'JsonConstructorAttribute' is not supported. Type 'aweXpect.Json.Tests.ThatJsonObject+IsJsonSerializable+PocoWithPrivateConstructor'*
 					             """).AsWildcard();
 			}
@@ -238,7 +238,7 @@ public sealed class ThatJsonObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is serializable as PocoWithoutDefaultConstructor JSON,
+					             is serializable as ThatJsonObject.IsJsonSerializable.PocoWithoutDefaultConstructor JSON,
 					             but it could not be deserialized: Each parameter in the deserialization constructor on type 'aweXpect.Json.Tests.ThatJsonObject+IsJsonSerializable+PocoWithoutDefaultConstructor' must bind to an object property or field on deserialization. Each parameter name must match with a property or field on the object*
 					             """).AsWildcard();
 			}
@@ -261,7 +261,7 @@ public sealed class ThatJsonObject
 				await That(Act).Throws<XunitException>().OnlyIf(!includeFields)
 					.WithMessage("""
 					             Expected that subject
-					             is serializable as PocoWithoutDefaultFieldConstructor JSON,
+					             is serializable as ThatJsonObject.IsJsonSerializable.PocoWithoutDefaultFieldConstructor JSON,
 					             but it could not be deserialized: Each parameter in the deserialization constructor on type 'aweXpect.Json.Tests.ThatJsonObject+IsJsonSerializable+PocoWithoutDefaultFieldConstructor' must bind to an object property or field on deserialization. Each parameter name must match with a property or field on the object. Fields are only considered when 'JsonSerializerOptions.IncludeFields' is enabled*
 					             """).AsWildcard();
 			}
@@ -277,7 +277,7 @@ public sealed class ThatJsonObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is serializable as SimplePocoWithPrimitiveTypes JSON,
+					             is serializable as ThatJsonObject.IsJsonSerializable.SimplePocoWithPrimitiveTypes JSON,
 					             but it was <null>
 					             """);
 			}
@@ -305,8 +305,8 @@ public sealed class ThatJsonObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is serializable as PocoWithIgnoredProperty JSON,
-					             but it was not assignable to PocoWithIgnoredProperty
+					             is serializable as ThatJsonObject.IsJsonSerializable.PocoWithIgnoredProperty JSON,
+					             but it was not assignable to ThatJsonObject.IsJsonSerializable.PocoWithIgnoredProperty
 					             """);
 			}
 
@@ -499,7 +499,7 @@ public sealed class ThatJsonObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is not serializable as SimplePocoWithPrimitiveTypes JSON,
+					             is not serializable as ThatJsonObject.IsJsonSerializable.SimplePocoWithPrimitiveTypes JSON,
 					             but it was
 					             """);
 			}
