@@ -94,7 +94,7 @@ public static partial class Filtered
 		/// <summary>
 		///     Container for a filterable collection of <see cref="Type" />.
 		/// </summary>
-		private Types(Types inner) : base(inner, inner.Filters)
+		protected Types(Types inner) : base(inner, inner.Filters)
 		{
 			_description = inner._description;
 			_assemblies = inner._assemblies;

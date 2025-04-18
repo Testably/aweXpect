@@ -48,6 +48,7 @@ namespace aweXpect.Reflection.Collections
         }
         public class Types : aweXpect.Reflection.Collections.Filtered<System.Type, aweXpect.Reflection.Collections.Filtered.Types>, aweXpect.Core.IDescribableSubject
         {
+            protected Types(aweXpect.Reflection.Collections.Filtered.Types inner) { }
             public aweXpect.Reflection.Collections.Filtered.Assemblies Assemblies() { }
             public aweXpect.Reflection.Collections.Filtered.Constructors Constructors() { }
             public aweXpect.Reflection.Collections.Filtered.Events Events() { }
@@ -83,14 +84,22 @@ namespace aweXpect.Reflection.Collections
         public static aweXpect.Reflection.Collections.Filtered.Assemblies WhichSatisfy(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, System.Func<System.Reflection.Assembly, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Reflection.Collections.Filtered.Methods With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Methods @this, bool inherit = true)
             where TAttribute : System.Attribute { }
-        public static aweXpect.Reflection.Collections.Filtered.Types With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Types @this, bool inherit = true)
+        public static aweXpect.Reflection.Collections.FilteredExtensions.TypesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Types @this, bool inherit = true)
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Collections.Filtered.Methods With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Methods @this, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
-        public static aweXpect.Reflection.Collections.Filtered.Types With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
+        public static aweXpect.Reflection.Collections.FilteredExtensions.TypesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Types @this, string expected) { }
         public static aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResultType WithNamespace(this aweXpect.Reflection.Collections.Filtered.Types @this, string expected) { }
+        public class TypesWith : aweXpect.Reflection.Collections.Filtered.Types
+        {
+            public TypesWith(aweXpect.Reflection.Collections.Filtered.Types inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Type> filter) { }
+            public aweXpect.Reflection.Collections.FilteredExtensions.TypesWith OrWith<TAttribute>(bool inherit = true)
+                where TAttribute : System.Attribute { }
+            public aweXpect.Reflection.Collections.FilteredExtensions.TypesWith OrWith<TAttribute>(System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
+                where TAttribute : System.Attribute { }
+        }
     }
     public abstract class Filtered<T, TFiltered> : System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable
         where TFiltered : aweXpect.Reflection.Collections.Filtered<T, TFiltered>
@@ -101,9 +110,13 @@ namespace aweXpect.Reflection.Collections
         public TFiltered Which(aweXpect.Reflection.Collections.IFilter<T> filter) { }
         public TFiltered Which(System.Func<T, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
     }
+    public interface IChangeableFilter<TEntity> : aweXpect.Reflection.Collections.IFilter<TEntity>
+    {
+        void UpdateFilter(System.Func<bool, TEntity, bool> predicate, System.Func<string, string> description);
+    }
     public interface IFilter<in TEntity>
     {
-        bool Applies(TEntity type);
+        bool Applies(TEntity value);
         string Describes(string text);
     }
 }

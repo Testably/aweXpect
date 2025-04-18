@@ -8,7 +8,7 @@ public interface IFilter<in TEntity>
 	/// <summary>
 	///     Checks if the filter applies to the given <typeparamref name="TEntity" />.
 	/// </summary>
-	bool Applies(TEntity type);
+	bool Applies(TEntity value);
 
 	/// <summary>
 	///     Describes the filter around the given <paramref name="text" />.
