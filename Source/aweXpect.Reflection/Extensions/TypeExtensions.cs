@@ -89,12 +89,12 @@ internal static class TypeExtensions
 	///     Defaults to <see langword="true" />
 	/// </param>
 	public static bool HasAttribute<TAttribute>(
-		this Type type,
+		this Type? type,
 		Func<TAttribute, bool>? predicate = null,
 		bool inherit = true)
 		where TAttribute : Attribute
 	{
-		object? attribute = type.GetCustomAttributes(typeof(TAttribute), inherit)
+		object? attribute = type?.GetCustomAttributes(typeof(TAttribute), inherit)
 			.FirstOrDefault();
 		if (attribute is TAttribute attributeValue)
 		{
@@ -242,19 +242,19 @@ internal static class TypeExtensions
 		return !forceDirect && type.InheritsFrom(parentType);
 	}
 
-	public static bool IsRecordClass(this Type type)
-		=> type.GetMethod("<Clone>$", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly) is not
+	public static bool IsRecordClass(this Type? type)
+		=> type?.GetMethod("<Clone>$", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly) is not
 			   null &&
 		   type.GetProperty("EqualityContract",
 				   BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly)?
 			   .GetMethod?.HasAttribute<CompilerGeneratedAttribute>() == true;
 
 
-	public static bool IsRecordStruct(this Type type) =>
+	public static bool IsRecordStruct(this Type? type) =>
 		// As noted here: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-10.0/record-structs#open-questions
 		// recognizing record structs from metadata is an open point. The following check is based on common sense
 		// and heuristic testing, apparently giving good results but not supported by official documentation.
-		type.BaseType == typeof(ValueType) &&
+		type?.BaseType == typeof(ValueType) &&
 		type.GetMethod("PrintMembers", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly, null,
 			[typeof(StringBuilder),], null) is not null &&
 		type.GetMethod("op_Equality", BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly, null,
@@ -266,7 +266,7 @@ internal static class TypeExtensions
 	/// </summary>
 	/// <param name="type">The <see cref="Type" />.</param>
 	/// <remarks>https://stackoverflow.com/a/1175901</remarks>
-	public static bool IsReallyStatic(this Type type)
+	public static bool IsReallyStatic(this Type? type)
 		=> type is { IsAbstract: true, IsSealed: true, IsInterface: false, };
 
 	/// <summary>
@@ -274,7 +274,7 @@ internal static class TypeExtensions
 	/// </summary>
 	/// <param name="type">The <see cref="Type" />.</param>
 	/// <remarks>https://stackoverflow.com/a/1175901</remarks>
-	public static bool IsReallySealed(this Type type)
+	public static bool IsReallySealed(this Type? type)
 		=> type is { IsAbstract: false, IsSealed: true, IsInterface: false, };
 
 	/// <summary>
@@ -282,7 +282,7 @@ internal static class TypeExtensions
 	/// </summary>
 	/// <param name="type">The <see cref="Type" />.</param>
 	/// <remarks>https://stackoverflow.com/a/1175901</remarks>
-	public static bool IsReallyAbstract(this Type type)
+	public static bool IsReallyAbstract(this Type? type)
 		=> type is { IsAbstract: true, IsSealed: false, IsInterface: false, };
 
 	/// <summary>

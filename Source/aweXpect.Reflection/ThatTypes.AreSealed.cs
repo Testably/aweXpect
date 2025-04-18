@@ -20,8 +20,8 @@ public static partial class ThatTypes
 	///     Static types are not considered sealed, even though they
 	///     have <see cref="Type.IsSealed" /> set to <see langword="true" />.
 	/// </remarks>
-	public static AndOrResult<IEnumerable<Type>, IThat<IEnumerable<Type>>> AreSealed(
-		this IThat<IEnumerable<Type>> subject)
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreSealed(
+		this IThat<IEnumerable<Type?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new AreSealedConstraint(it, grammars)),
 			subject);
@@ -33,17 +33,17 @@ public static partial class ThatTypes
 	///     Static types are considered not sealed, even though they
 	///     have <see cref="Type.IsSealed" /> set to <see langword="true" />.
 	/// </remarks>
-	public static AndOrResult<IEnumerable<Type>, IThat<IEnumerable<Type>>> AreNotSealed(
-		this IThat<IEnumerable<Type>> subject)
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreNotSealed(
+		this IThat<IEnumerable<Type?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new AreNotSealedConstraint(it, grammars)),
 			subject);
 
 	private sealed class AreSealedConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<IEnumerable<Type>>(grammars),
-			IValueConstraint<IEnumerable<Type>>
+		: ConstraintResult.WithValue<IEnumerable<Type?>>(grammars),
+			IValueConstraint<IEnumerable<Type?>>
 	{
-		public ConstraintResult IsMetBy(IEnumerable<Type> actual)
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
 		{
 			Actual = actual;
 			Outcome = actual.All(type => type.IsReallySealed()) ? Outcome.Success : Outcome.Failure;

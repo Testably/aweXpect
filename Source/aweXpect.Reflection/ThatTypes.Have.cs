@@ -22,8 +22,8 @@ public static partial class ThatTypes
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
-	public static AndOrResult<IEnumerable<Type>, IThat<IEnumerable<Type>>> Have<TAttribute>(
-		this IThat<IEnumerable<Type>> subject, bool inherit = true)
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> Have<TAttribute>(
+		this IThat<IEnumerable<Type?>> subject, bool inherit = true)
 		where TAttribute : Attribute
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HaveAttributeConstraint<TAttribute>(it, grammars, inherit)),
@@ -37,8 +37,8 @@ public static partial class ThatTypes
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
-	public static AndOrResult<IEnumerable<Type>, IThat<IEnumerable<Type>>> Have<TAttribute>(
-		this IThat<IEnumerable<Type>> subject,
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> Have<TAttribute>(
+		this IThat<IEnumerable<Type?>> subject,
 		Func<TAttribute, bool>? predicate,
 		bool inherit = true,
 		[CallerArgumentExpression("predicate")]
@@ -54,11 +54,11 @@ public static partial class ThatTypes
 		bool inherit,
 		Func<TAttribute, bool>? predicate = null,
 		string predicateExpression = "")
-		: ConstraintResult.WithValue<IEnumerable<Type>>(grammars),
-			IValueConstraint<IEnumerable<Type>>
+		: ConstraintResult.WithValue<IEnumerable<Type?>>(grammars),
+			IValueConstraint<IEnumerable<Type?>>
 		where TAttribute : Attribute
 	{
-		public ConstraintResult IsMetBy(IEnumerable<Type> actual)
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
 		{
 			Actual = actual;
 			Outcome = actual.All(type => type.HasAttribute(predicate, inherit)) ? Outcome.Success : Outcome.Failure;

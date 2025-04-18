@@ -20,8 +20,8 @@ public static partial class ThatTypes
 	///     Static types or interfaces are not considered abstract, even though they
 	///     have <see cref="Type.IsAbstract" /> set to <see langword="true" />.
 	/// </remarks>
-	public static AndOrResult<IEnumerable<Type>, IThat<IEnumerable<Type>>> AreAbstract(
-		this IThat<IEnumerable<Type>> subject)
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreAbstract(
+		this IThat<IEnumerable<Type?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new AreAbstractConstraint(it, grammars)),
 			subject);
@@ -33,17 +33,17 @@ public static partial class ThatTypes
 	///     Static types or interfaces are considered not abstract, even though they
 	///     have <see cref="Type.IsAbstract" /> set to <see langword="true" />.
 	/// </remarks>
-	public static AndOrResult<IEnumerable<Type>, IThat<IEnumerable<Type>>> AreNotAbstract(
-		this IThat<IEnumerable<Type>> subject)
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreNotAbstract(
+		this IThat<IEnumerable<Type?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new AreNotAbstractConstraint(it, grammars)),
 			subject);
 
 	private sealed class AreAbstractConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<IEnumerable<Type>>(grammars),
-			IValueConstraint<IEnumerable<Type>>
+		: ConstraintResult.WithValue<IEnumerable<Type?>>(grammars),
+			IValueConstraint<IEnumerable<Type?>>
 	{
-		public ConstraintResult IsMetBy(IEnumerable<Type> actual)
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
 		{
 			Actual = actual;
 			Outcome = actual.All(type => type.IsReallyAbstract()) ? Outcome.Success : Outcome.Failure;
@@ -72,10 +72,10 @@ public static partial class ThatTypes
 	}
 
 	private sealed class AreNotAbstractConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<IEnumerable<Type>>(grammars),
-			IValueConstraint<IEnumerable<Type>>
+		: ConstraintResult.WithValue<IEnumerable<Type?>>(grammars),
+			IValueConstraint<IEnumerable<Type?>>
 	{
-		public ConstraintResult IsMetBy(IEnumerable<Type> actual)
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
 		{
 			Actual = actual;
 			Outcome = actual.All(type => !type.IsReallyAbstract()) ? Outcome.Success : Outcome.Failure;

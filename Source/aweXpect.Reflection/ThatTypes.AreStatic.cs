@@ -16,8 +16,8 @@ public static partial class ThatTypes
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> are static.
 	/// </summary>
-	public static AndOrResult<IEnumerable<Type>, IThat<IEnumerable<Type>>> AreStatic(
-		this IThat<IEnumerable<Type>> subject)
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreStatic(
+		this IThat<IEnumerable<Type?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new AreStaticConstraint(it, grammars)),
 			subject);
@@ -25,17 +25,17 @@ public static partial class ThatTypes
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> are not static.
 	/// </summary>
-	public static AndOrResult<IEnumerable<Type>, IThat<IEnumerable<Type>>> AreNotStatic(
-		this IThat<IEnumerable<Type>> subject)
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreNotStatic(
+		this IThat<IEnumerable<Type?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new AreNotStaticConstraint(it, grammars)),
 			subject);
 
 	private sealed class AreStaticConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<IEnumerable<Type>>(grammars),
-			IValueConstraint<IEnumerable<Type>>
+		: ConstraintResult.WithValue<IEnumerable<Type?>>(grammars),
+			IValueConstraint<IEnumerable<Type?>>
 	{
-		public ConstraintResult IsMetBy(IEnumerable<Type> actual)
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
 		{
 			Actual = actual;
 			Outcome = actual.All(type => type.IsReallyStatic()) ? Outcome.Success : Outcome.Failure;
@@ -64,10 +64,10 @@ public static partial class ThatTypes
 	}
 
 	private sealed class AreNotStaticConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<IEnumerable<Type>>(grammars),
-			IValueConstraint<IEnumerable<Type>>
+		: ConstraintResult.WithValue<IEnumerable<Type?>>(grammars),
+			IValueConstraint<IEnumerable<Type?>>
 	{
-		public ConstraintResult IsMetBy(IEnumerable<Type> actual)
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
 		{
 			Actual = actual;
 			Outcome = actual.All(type => !type.IsReallyStatic()) ? Outcome.Success : Outcome.Failure;

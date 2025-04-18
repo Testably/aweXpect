@@ -16,8 +16,8 @@ public static partial class ThatTypes
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> are generic.
 	/// </summary>
-	public static AndOrResult<IEnumerable<Type>, IThat<IEnumerable<Type>>> AreGeneric(
-		this IThat<IEnumerable<Type>> subject)
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreGeneric(
+		this IThat<IEnumerable<Type?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new AreGenericConstraint(it, grammars)),
 			subject);
@@ -25,20 +25,20 @@ public static partial class ThatTypes
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> are not generic.
 	/// </summary>
-	public static AndOrResult<IEnumerable<Type>, IThat<IEnumerable<Type>>> AreNotGeneric(
-		this IThat<IEnumerable<Type>> subject)
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreNotGeneric(
+		this IThat<IEnumerable<Type?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new AreNotGenericConstraint(it, grammars)),
 			subject);
 
 	private sealed class AreGenericConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<IEnumerable<Type>>(grammars),
-			IValueConstraint<IEnumerable<Type>>
+		: ConstraintResult.WithValue<IEnumerable<Type?>>(grammars),
+			IValueConstraint<IEnumerable<Type?>>
 	{
-		public ConstraintResult IsMetBy(IEnumerable<Type> actual)
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
 		{
 			Actual = actual;
-			Outcome = actual.All(type => type.IsGenericType) ? Outcome.Success : Outcome.Failure;
+			Outcome = actual.All(type => type?.IsGenericType == true) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -48,7 +48,7 @@ public static partial class ThatTypes
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" contained non-generic types ");
-			Formatter.Format(stringBuilder, Actual?.Where(type => !type.IsGenericType),
+			Formatter.Format(stringBuilder, Actual?.Where(type => type?.IsGenericType != true),
 				FormattingOptions.Indented(indentation));
 		}
 
@@ -58,19 +58,19 @@ public static partial class ThatTypes
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained generic types ");
-			Formatter.Format(stringBuilder, Actual?.Where(type => type.IsGenericType),
+			Formatter.Format(stringBuilder, Actual?.Where(type => type?.IsGenericType == true),
 				FormattingOptions.Indented(indentation));
 		}
 	}
 
 	private sealed class AreNotGenericConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<IEnumerable<Type>>(grammars),
-			IValueConstraint<IEnumerable<Type>>
+		: ConstraintResult.WithValue<IEnumerable<Type?>>(grammars),
+			IValueConstraint<IEnumerable<Type?>>
 	{
-		public ConstraintResult IsMetBy(IEnumerable<Type> actual)
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
 		{
 			Actual = actual;
-			Outcome = actual.All(type => !type.IsGenericType) ? Outcome.Success : Outcome.Failure;
+			Outcome = actual.All(type => type?.IsGenericType != true) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -80,7 +80,7 @@ public static partial class ThatTypes
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" contained generic types ");
-			Formatter.Format(stringBuilder, Actual?.Where(type => type.IsGenericType),
+			Formatter.Format(stringBuilder, Actual?.Where(type => type?.IsGenericType == true),
 				FormattingOptions.Indented(indentation));
 		}
 
@@ -90,7 +90,7 @@ public static partial class ThatTypes
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained non-generic types ");
-			Formatter.Format(stringBuilder, Actual?.Where(type => !type.IsGenericType),
+			Formatter.Format(stringBuilder, Actual?.Where(type => type?.IsGenericType != true),
 				FormattingOptions.Indented(indentation));
 		}
 	}

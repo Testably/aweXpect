@@ -16,14 +16,15 @@ public static partial class ThatTypes
 {
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> have
-	///     the <paramref name="expected"/> name.
+	///     the <paramref name="expected" /> name.
 	/// </summary>
-	public static StringEqualityTypeResult<IEnumerable<Type>, IThat<IEnumerable<Type>>> HaveName(
-		this IThat<IEnumerable<Type>> subject, string expected)
+	public static StringEqualityTypeResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> HaveName(
+		this IThat<IEnumerable<Type?>> subject, string expected)
 	{
-		var options = new StringEqualityOptions();
-		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new HaveNameConstraint(it, grammars, expected, options)),
+		StringEqualityOptions options = new();
+		return new StringEqualityTypeResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>>(subject.Get()
+				.ExpectationBuilder.AddConstraint((it, grammars)
+					=> new HaveNameConstraint(it, grammars, expected, options)),
 			subject,
 			options);
 	}
@@ -33,13 +34,15 @@ public static partial class ThatTypes
 		ExpectationGrammars grammars,
 		string expected,
 		StringEqualityOptions options)
-		: ConstraintResult.WithValue<IEnumerable<Type>>(grammars),
-			IValueConstraint<IEnumerable<Type>>
+		: ConstraintResult.WithValue<IEnumerable<Type?>>(grammars),
+			IValueConstraint<IEnumerable<Type?>>
 	{
-		public ConstraintResult IsMetBy(IEnumerable<Type> actual)
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
 		{
 			Actual = actual;
-			Outcome = actual.All(type => options.AreConsideredEqual(type.Name, expected)) ? Outcome.Success : Outcome.Failure;
+			Outcome = actual.All(type => options.AreConsideredEqual(type?.Name, expected))
+				? Outcome.Success
+				: Outcome.Failure;
 			return this;
 		}
 
@@ -49,7 +52,7 @@ public static partial class ThatTypes
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" contained not matching types ");
-			Formatter.Format(stringBuilder, Actual?.Where(type => !options.AreConsideredEqual(type.Name, expected)),
+			Formatter.Format(stringBuilder, Actual?.Where(type => !options.AreConsideredEqual(type?.Name, expected)),
 				FormattingOptions.Indented(indentation));
 		}
 
@@ -59,7 +62,7 @@ public static partial class ThatTypes
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained matching types ");
-			Formatter.Format(stringBuilder, Actual?.Where(type => options.AreConsideredEqual(type.Name, expected)),
+			Formatter.Format(stringBuilder, Actual?.Where(type => options.AreConsideredEqual(type?.Name, expected)),
 				FormattingOptions.Indented(indentation));
 		}
 	}
