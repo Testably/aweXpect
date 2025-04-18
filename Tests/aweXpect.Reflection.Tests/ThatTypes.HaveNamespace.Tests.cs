@@ -20,7 +20,7 @@ public sealed partial class ThatTypes
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
-					             Expected that types with namespace end with "ToVerifyingTheNamespaceOfIt" in assembly containing type ThatTypes.HaveNamespace.Tests
+					             Expected that types with namespace ending with "ToVerifyingTheNamespaceOfIt" in assembly containing type ThatTypes.HaveNamespace.Tests
 					             all have namespace equal to "aweXpect.Reflection",
 					             but it contained not matching types [
 					               *SomeClassToVerifyTheNamespaceOfIt*

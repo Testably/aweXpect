@@ -31,7 +31,7 @@ public sealed partial class FilteredExtensions
 
 					await That(types).HasSingle().Which.IsEqualTo(typeof(SomeClassToVerifyTheNamespaceOfIt));
 					await That(types.GetDescription())
-						.IsEqualTo("types with namespace start with \"aweXpect.Reflection.Tests.Test…\" in assembly").AsPrefix();
+						.IsEqualTo("types with namespace starting with \"aweXpect.Reflection.Tests.Test…\" in assembly").AsPrefix();
 				}
 
 				[Fact]
@@ -54,7 +54,7 @@ public sealed partial class FilteredExtensions
 
 					await That(types).HasSingle().Which.IsEqualTo(typeof(SomeClassToVerifyTheNamespaceOfIt));
 					await That(types.GetDescription())
-						.IsEqualTo("types with namespace end with \"VerifyingTheNamespaceOfIt\" in assembly").AsPrefix();
+						.IsEqualTo("types with namespace ending with \"VerifyingTheNamespaceOfIt\" in assembly").AsPrefix();
 				}
 
 				[Fact]
@@ -121,7 +121,7 @@ public sealed partial class FilteredExtensions
 				}
 
 				[Fact]
-				public async Task ShouldSupportUsingCustomComperer()
+				public async Task ShouldSupportUsingCustomComparer()
 				{
 					Reflection.Collections.Filtered.Types types = In.AssemblyContaining<FilteredExtensions>()
 						.Types().WithNamespace("AwEXpEct.REflEctIOn.TEsts.TEstHelpers.Types.ToVerifyingTheNamespaceOfIt")
