@@ -12,32 +12,34 @@ using aweXpect.Results;
 
 namespace aweXpect.Reflection;
 
-public static partial class ThatFields
+public static partial class ThatMembers
 {
 	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> have
+	///     Verifies that all items in the filtered collection of <typeparamref name="TMember"/> have
 	///     the <paramref name="expected" /> name.
 	/// </summary>
-	public static StringEqualityTypeResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>>> HaveName(
-		this IThat<IEnumerable<FieldInfo?>> subject, string expected)
+	public static StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>>> HaveName<TMember>(
+		this IThat<IEnumerable<TMember>> subject, string expected)
+		where TMember : MemberInfo?
 	{
 		StringEqualityOptions options = new();
-		return new StringEqualityTypeResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>>>(subject.Get()
+		return new StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>>>(subject.Get()
 				.ExpectationBuilder.AddConstraint((it, grammars)
-					=> new HaveNameConstraint(it, grammars, expected, options)),
+					=> new HaveNameConstraint<TMember>(it, grammars, expected, options)),
 			subject,
 			options);
 	}
 
-	private sealed class HaveNameConstraint(
+	private sealed class HaveNameConstraint<TMember>(
 		string it,
 		ExpectationGrammars grammars,
 		string expected,
 		StringEqualityOptions options)
-		: ConstraintResult.WithValue<IEnumerable<FieldInfo?>>(grammars),
-			IValueConstraint<IEnumerable<FieldInfo?>>
+		: ConstraintResult.WithValue<IEnumerable<TMember>>(grammars),
+			IValueConstraint<IEnumerable<TMember>>
+		where TMember : MemberInfo?
 	{
-		public ConstraintResult IsMetBy(IEnumerable<FieldInfo?> actual)
+		public ConstraintResult IsMetBy(IEnumerable<TMember> actual)
 		{
 			Actual = actual;
 			Outcome = actual.All(type => options.AreConsideredEqual(type?.Name, expected))

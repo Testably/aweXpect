@@ -10,31 +10,33 @@ using aweXpect.Results;
 
 namespace aweXpect.Reflection;
 
-public static partial class ThatMethod
+public static partial class ThatMember
 {
 	/// <summary>
-	///     Verifies that the <see cref="MethodInfo" /> has the <paramref name="expected" /> name.
+	///     Verifies that the <typeparamref name="TMember"/> has the <paramref name="expected" /> name.
 	/// </summary>
-	public static StringEqualityTypeResult<MethodInfo?, IThat<MethodInfo?>> HasName(
-		this IThat<MethodInfo?> subject, string expected)
+	public static StringEqualityTypeResult<TMember, IThat<TMember>> HasName<TMember>(
+		this IThat<TMember> subject, string expected)
+		where TMember : MemberInfo?
 	{
 		StringEqualityOptions options = new();
-		return new StringEqualityTypeResult<MethodInfo?, IThat<MethodInfo?>>(
+		return new StringEqualityTypeResult<TMember, IThat<TMember>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new HasNameConstraint(it, grammars, expected, options)),
+				=> new HasNameConstraint<TMember>(it, grammars, expected, options)),
 			subject,
 			options);
 	}
 
-	private sealed class HasNameConstraint(
+	private sealed class HasNameConstraint<TMember>(
 		string it,
 		ExpectationGrammars grammars,
 		string expected,
 		StringEqualityOptions options)
-		: ConstraintResult.WithNotNullValue<MethodInfo?>(it, grammars),
-			IValueConstraint<MethodInfo?>
+		: ConstraintResult.WithNotNullValue<TMember>(it, grammars),
+			IValueConstraint<TMember>
+		where TMember : MemberInfo?
 	{
-		public ConstraintResult IsMetBy(MethodInfo? actual)
+		public ConstraintResult IsMetBy(TMember actual)
 		{
 			Actual = actual;
 			Outcome = options.AreConsideredEqual(actual?.Name, expected) ? Outcome.Success : Outcome.Failure;

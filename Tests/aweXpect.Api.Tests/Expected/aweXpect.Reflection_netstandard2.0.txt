@@ -166,38 +166,24 @@ namespace aweXpect.Reflection
     {
         public static aweXpect.Results.StringEqualityTypeResult<System.Reflection.Assembly?, aweXpect.Core.IThat<System.Reflection.Assembly?>> HasName(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject, string expected) { }
     }
-    public static class ThatEvent
+    public static class ThatEvent { }
+    public static class ThatEvents { }
+    public static class ThatField { }
+    public static class ThatFields { }
+    public static class ThatMember
     {
-        public static aweXpect.Results.StringEqualityTypeResult<System.Reflection.EventInfo?, aweXpect.Core.IThat<System.Reflection.EventInfo?>> HasName(this aweXpect.Core.IThat<System.Reflection.EventInfo?> subject, string expected) { }
+        public static aweXpect.Results.StringEqualityTypeResult<TMember, aweXpect.Core.IThat<TMember>> HasName<TMember>(this aweXpect.Core.IThat<TMember> subject, string expected)
+            where TMember : System.Reflection.MemberInfo? { }
     }
-    public static class ThatEvents
+    public static class ThatMembers
     {
-        public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>>> HaveName(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>> subject, string expected) { }
+        public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> HaveName<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject, string expected)
+            where TMember : System.Reflection.MemberInfo? { }
     }
-    public static class ThatField
-    {
-        public static aweXpect.Results.StringEqualityTypeResult<System.Reflection.FieldInfo?, aweXpect.Core.IThat<System.Reflection.FieldInfo?>> HasName(this aweXpect.Core.IThat<System.Reflection.FieldInfo?> subject, string expected) { }
-    }
-    public static class ThatFields
-    {
-        public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>>> HaveName(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>> subject, string expected) { }
-    }
-    public static class ThatMethod
-    {
-        public static aweXpect.Results.StringEqualityTypeResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> HasName(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject, string expected) { }
-    }
-    public static class ThatMethods
-    {
-        public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>>> HaveName(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject, string expected) { }
-    }
-    public static class ThatProperties
-    {
-        public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>>> HaveName(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> subject, string expected) { }
-    }
-    public static class ThatProperty
-    {
-        public static aweXpect.Results.StringEqualityTypeResult<System.Reflection.PropertyInfo?, aweXpect.Core.IThat<System.Reflection.PropertyInfo?>> HasName(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject, string expected) { }
-    }
+    public static class ThatMethod { }
+    public static class ThatMethods { }
+    public static class ThatProperties { }
+    public static class ThatProperty { }
     public static class ThatType
     {
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> Has<TAttribute>(this aweXpect.Core.IThat<System.Type?> subject, bool inherit = true)
