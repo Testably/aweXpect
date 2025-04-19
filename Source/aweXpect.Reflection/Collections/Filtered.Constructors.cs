@@ -40,7 +40,7 @@ public static partial class Filtered
 
 			if (_types is not null)
 			{
-				return description + _types.GetDescription();
+				return description + "in " + _types.GetDescription();
 			}
 
 			return description;

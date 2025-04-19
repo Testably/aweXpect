@@ -16,22 +16,26 @@ public sealed partial class FilteredExtensions
 				public async Task ShouldFilterForTypesWithNamespace()
 				{
 					Reflection.Collections.Filtered.Types types = In.AssemblyContaining<FilteredExtensions>()
-						.Types().WithNamespace("aweXpect.Reflection.Tests.TestHelpers.Types.ToVerifyingTheNamespaceOfIt");
+						.Types().WithNamespace(
+							"aweXpect.Reflection.Tests.TestHelpers.Types.ToVerifyingTheNamespaceOfIt");
 
 					await That(types).HasSingle().Which.IsEqualTo(typeof(SomeClassToVerifyTheNamespaceOfIt));
 					await That(types.GetDescription())
-						.IsEqualTo("types with namespace equal to \"aweXpect.Reflection.Tests.Test…\" in assembly").AsPrefix();
+						.IsEqualTo("types with namespace equal to \"aweXpect.Reflection.Tests.Test…\" in assembly")
+						.AsPrefix();
 				}
 
 				[Fact]
 				public async Task ShouldSupportAsPrefix()
 				{
 					Reflection.Collections.Filtered.Types types = In.AssemblyContaining<FilteredExtensions>()
-						.Types().WithNamespace("aweXpect.Reflection.Tests.TestHelpers.Types.ToVerifyingTheNamespaceOf").AsPrefix();
+						.Types().WithNamespace("aweXpect.Reflection.Tests.TestHelpers.Types.ToVerifyingTheNamespaceOf")
+						.AsPrefix();
 
 					await That(types).HasSingle().Which.IsEqualTo(typeof(SomeClassToVerifyTheNamespaceOfIt));
 					await That(types.GetDescription())
-						.IsEqualTo("types with namespace starting with \"aweXpect.Reflection.Tests.Test…\" in assembly").AsPrefix();
+						.IsEqualTo("types with namespace starting with \"aweXpect.Reflection.Tests.Test…\" in assembly")
+						.AsPrefix();
 				}
 
 				[Fact]
@@ -42,7 +46,8 @@ public sealed partial class FilteredExtensions
 
 					await That(types).HasSingle().Which.IsEqualTo(typeof(SomeClassToVerifyTheNamespaceOfIt));
 					await That(types.GetDescription())
-						.IsEqualTo("types with namespace matching regex \"[a-zA-Z\\.]*VerifyingTheNamespa…\" in assembly")
+						.IsEqualTo(
+							"types with namespace matching regex \"[a-zA-Z\\.]*VerifyingTheNamespa…\" in assembly")
 						.AsPrefix();
 				}
 
@@ -54,7 +59,8 @@ public sealed partial class FilteredExtensions
 
 					await That(types).HasSingle().Which.IsEqualTo(typeof(SomeClassToVerifyTheNamespaceOfIt));
 					await That(types.GetDescription())
-						.IsEqualTo("types with namespace ending with \"VerifyingTheNamespaceOfIt\" in assembly").AsPrefix();
+						.IsEqualTo("types with namespace ending with \"VerifyingTheNamespaceOfIt\" in assembly")
+						.AsPrefix();
 				}
 
 				[Fact]
@@ -65,25 +71,29 @@ public sealed partial class FilteredExtensions
 
 					await That(types).HasSingle().Which.IsEqualTo(typeof(SomeClassToVerifyTheNamespaceOfIt));
 					await That(types.GetDescription())
-						.IsEqualTo("types with namespace matching \"*ToVerifyingTheNamespaceOf*\" in assembly").AsPrefix();
+						.IsEqualTo("types with namespace matching \"*ToVerifyingTheNamespaceOf*\" in assembly")
+						.AsPrefix();
 				}
 
 				[Fact]
 				public async Task ShouldSupportExactly()
 				{
 					Reflection.Collections.Filtered.Types types = In.AssemblyContaining<FilteredExtensions>()
-						.Types().WithNamespace("aweXpect.Reflection.Tests.TestHelpers.Types.ToVerifyingTheNamespaceOfIt").Exactly();
+						.Types().WithNamespace(
+							"aweXpect.Reflection.Tests.TestHelpers.Types.ToVerifyingTheNamespaceOfIt").Exactly();
 
 					await That(types).HasSingle().Which.IsEqualTo(typeof(SomeClassToVerifyTheNamespaceOfIt));
 					await That(types.GetDescription())
-						.IsEqualTo("types with namespace equal to \"aweXpect.Reflection.Tests.Test…\" in assembly").AsPrefix();
+						.IsEqualTo("types with namespace equal to \"aweXpect.Reflection.Tests.Test…\" in assembly")
+						.AsPrefix();
 				}
 
 				[Fact]
 				public async Task ShouldSupportIgnoringCase()
 				{
 					Reflection.Collections.Filtered.Types types = In.AssemblyContaining<FilteredExtensions>()
-						.Types().WithNamespace("aweXpect.Reflection.Tests.TestHelpers.Types.ToVerifyingTheNamespaceOfIt".ToLowerInvariant()).IgnoringCase();
+						.Types().WithNamespace("aweXpect.Reflection.Tests.TestHelpers.Types.ToVerifyingTheNamespaceOfIt"
+							.ToLowerInvariant()).IgnoringCase();
 
 					await That(types).HasSingle().Which.IsEqualTo(typeof(SomeClassToVerifyTheNamespaceOfIt));
 					await That(types.GetDescription())
@@ -96,7 +106,8 @@ public sealed partial class FilteredExtensions
 				public async Task ShouldSupportIgnoringLeadingWhiteSpace()
 				{
 					Reflection.Collections.Filtered.Types types = In.AssemblyContaining<FilteredExtensions>()
-						.Types().WithNamespace("\t aweXpect.Reflection.Tests.TestHelpers.Types.ToVerifyingTheNamespaceOfIt")
+						.Types().WithNamespace(
+							"\t aweXpect.Reflection.Tests.TestHelpers.Types.ToVerifyingTheNamespaceOfIt")
 						.IgnoringLeadingWhiteSpace();
 
 					await That(types).HasSingle().Which.IsEqualTo(typeof(SomeClassToVerifyTheNamespaceOfIt));
@@ -110,7 +121,8 @@ public sealed partial class FilteredExtensions
 				public async Task ShouldSupportIgnoringTrailingWhiteSpace()
 				{
 					Reflection.Collections.Filtered.Types types = In.AssemblyContaining<FilteredExtensions>()
-						.Types().WithNamespace("aweXpect.Reflection.Tests.TestHelpers.Types.ToVerifyingTheNamespaceOfIt\t ")
+						.Types().WithNamespace(
+							"aweXpect.Reflection.Tests.TestHelpers.Types.ToVerifyingTheNamespaceOfIt\t ")
 						.IgnoringTrailingWhiteSpace();
 
 					await That(types).HasSingle().Which.IsEqualTo(typeof(SomeClassToVerifyTheNamespaceOfIt));
@@ -124,7 +136,8 @@ public sealed partial class FilteredExtensions
 				public async Task ShouldSupportUsingCustomComparer()
 				{
 					Reflection.Collections.Filtered.Types types = In.AssemblyContaining<FilteredExtensions>()
-						.Types().WithNamespace("AwEXpEct.REflEctIOn.TEsts.TEstHelpers.Types.ToVerifyingTheNamespaceOfIt")
+						.Types().WithNamespace(
+							"AwEXpEct.REflEctIOn.TEsts.TEstHelpers.Types.ToVerifyingTheNamespaceOfIt")
 						.Using(new IgnoreCaseForVocalsComparer());
 
 					await That(types).HasSingle().Which.IsEqualTo(typeof(SomeClassToVerifyTheNamespaceOfIt));

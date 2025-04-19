@@ -52,7 +52,8 @@ public static partial class ThatAssemblies
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" contained not matching types ");
-			Formatter.Format(stringBuilder, Actual?.Where(type => !options.AreConsideredEqual(type?.GetName().Name, expected)),
+			Formatter.Format(stringBuilder,
+				Actual?.Where(type => !options.AreConsideredEqual(type?.GetName().Name, expected)),
 				FormattingOptions.Indented(indentation));
 		}
 
@@ -62,7 +63,8 @@ public static partial class ThatAssemblies
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained matching types ");
-			Formatter.Format(stringBuilder, Actual?.Where(type => options.AreConsideredEqual(type?.GetName().Name, expected)),
+			Formatter.Format(stringBuilder,
+				Actual?.Where(type => options.AreConsideredEqual(type?.GetName().Name, expected)),
 				FormattingOptions.Indented(indentation));
 		}
 	}

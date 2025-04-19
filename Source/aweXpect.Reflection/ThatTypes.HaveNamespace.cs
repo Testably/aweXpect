@@ -63,7 +63,8 @@ public static partial class ThatTypes
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained matching types ");
-			Formatter.Format(stringBuilder, Actual?.Where(type => options.AreConsideredEqual(type?.Namespace, expected)),
+			Formatter.Format(stringBuilder,
+				Actual?.Where(type => options.AreConsideredEqual(type?.Namespace, expected)),
 				FormattingOptions.Indented(indentation));
 		}
 	}
