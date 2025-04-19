@@ -29,6 +29,15 @@ public static partial class Filtered
 			_description = description;
 		}
 
+		/// <summary>
+		///     Container for a filterable collection of <see cref="MethodInfo" />.
+		/// </summary>
+		protected Methods(Methods inner) : base(inner, inner.Filters)
+		{
+			_description = inner._description;
+			_types = inner._types;
+		}
+
 		/// <inheritdoc />
 		public string GetDescription()
 		{
