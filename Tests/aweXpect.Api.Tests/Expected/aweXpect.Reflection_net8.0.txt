@@ -172,7 +172,39 @@ namespace aweXpect.Reflection
     public static class ThatFields { }
     public static class ThatMember
     {
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreInternal<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreNotInternal<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreNotPrivate<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreNotProtected<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreNotPublic<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> ArePrivate<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreProtected<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> ArePublic<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
         public static aweXpect.Results.StringEqualityTypeResult<TMember, aweXpect.Core.IThat<TMember>> HasName<TMember>(this aweXpect.Core.IThat<TMember> subject, string expected)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsInternal<TMember>(this aweXpect.Core.IThat<TMember> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsNotInternal<TMember>(this aweXpect.Core.IThat<TMember> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsNotPrivate<TMember>(this aweXpect.Core.IThat<TMember> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsNotProtected<TMember>(this aweXpect.Core.IThat<TMember> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsNotPublic<TMember>(this aweXpect.Core.IThat<TMember> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsPrivate<TMember>(this aweXpect.Core.IThat<TMember> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsProtected<TMember>(this aweXpect.Core.IThat<TMember> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsPublic<TMember>(this aweXpect.Core.IThat<TMember> subject)
             where TMember : System.Reflection.MemberInfo? { }
     }
     public static class ThatMembers
@@ -190,7 +222,6 @@ namespace aweXpect.Reflection
             where TAttribute : System.Attribute { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> Has<TAttribute>(this aweXpect.Core.IThat<System.Type?> subject, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
-        public static aweXpect.Results.StringEqualityTypeResult<System.Type?, aweXpect.Core.IThat<System.Type?>> HasName(this aweXpect.Core.IThat<System.Type?> subject, string expected) { }
         public static aweXpect.Results.StringEqualityTypeResult<System.Type?, aweXpect.Core.IThat<System.Type?>> HasNamespace(this aweXpect.Core.IThat<System.Type?> subject, string expected) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsAClass(this aweXpect.Core.IThat<System.Type?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsAbstract(this aweXpect.Core.IThat<System.Type?> subject) { }
@@ -223,7 +254,6 @@ namespace aweXpect.Reflection
             where TAttribute : System.Attribute { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
-        public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> HaveName(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, string expected) { }
         public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> HaveNamespace(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, string expected) { }
     }
 }

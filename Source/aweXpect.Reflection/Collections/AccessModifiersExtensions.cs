@@ -7,26 +7,26 @@ namespace aweXpect.Reflection.Collections;
 
 internal static class AccessModifiersExtensions
 {
-	public static string GetString(this AccessModifiers accessModifier)
+	public static string GetString(this AccessModifiers accessModifier, string suffix = "")
 	{
 		if (accessModifier == AccessModifiers.Public)
 		{
-			return "public ";
+			return "public" + suffix;
 		}
 
 		if (accessModifier == AccessModifiers.Protected)
 		{
-			return "protected ";
+			return "protected" + suffix;
 		}
 
 		if (accessModifier == AccessModifiers.Private)
 		{
-			return "private ";
+			return "private" + suffix;
 		}
 
 		if (accessModifier == AccessModifiers.Internal)
 		{
-			return "internal ";
+			return "internal" + suffix;
 		}
 
 		if (accessModifier == AccessModifiers.Any)
@@ -56,9 +56,9 @@ internal static class AccessModifiersExtensions
 		}
 
 #if NET8_0_OR_GREATER
-		return string.Join(", ", modifiers[..^1]) + " or " + modifiers[^1] + " ";
+		return string.Join(", ", modifiers[..^1]) + " or " + modifiers[^1] + suffix;
 #else
-		return string.Join(", ", modifiers.Take(modifiers.Count - 1)) + " or " + modifiers[^1] + " ";
+		return string.Join(", ", modifiers.Take(modifiers.Count - 1)) + " or " + modifiers[^1] + suffix;
 #endif
 	}
 }

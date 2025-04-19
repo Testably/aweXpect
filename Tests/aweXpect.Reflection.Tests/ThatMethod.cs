@@ -1,7 +1,16 @@
-﻿namespace aweXpect.Reflection.Tests;
+﻿using System.Reflection;
+
+namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatMethod
 {
+	private static MethodInfo? GetMethod(string methodName)
+		=> typeof(ClassWithMethods).GetMethod(methodName,
+			BindingFlags.DeclaredOnly |
+			BindingFlags.NonPublic |
+			BindingFlags.Public |
+			BindingFlags.Instance);
+	
 #pragma warning disable CA1822
 	public class ClassWithMethods
 	{

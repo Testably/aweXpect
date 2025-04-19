@@ -21,7 +21,7 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that properties in types matching t => t == typeof(T) in assembly containing type ThatProperty.ClassWithProperties
 					             all have name equal to "PublicProperty",
-					             but it contained not matching types [
+					             but it contained not matching items [
 					               *
 					             ]
 					             """).AsWildcard();

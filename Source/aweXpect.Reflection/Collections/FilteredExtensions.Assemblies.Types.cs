@@ -18,7 +18,7 @@ public static partial class FilteredExtensions
 		Func<Type, bool> predicate = type => accessModifier == AccessModifiers.Any
 			? type.IsReallyAbstract()
 			: type.IsReallyAbstract() && type.HasAccessModifier(accessModifier);
-		return assemblies.Types().Which(Filter.Prefix(predicate, $"{accessModifier.GetString()}abstract "));
+		return assemblies.Types().Which(Filter.Prefix(predicate, $"{accessModifier.GetString(" ")}abstract "));
 	}
 
 	/// <summary>
@@ -30,7 +30,7 @@ public static partial class FilteredExtensions
 		Func<Type, bool> predicate = type => accessModifier == AccessModifiers.Any
 			? type.IsNested
 			: type.IsNested && type.HasAccessModifier(accessModifier);
-		return assemblies.Types().Which(Filter.Prefix(predicate, $"{accessModifier.GetString()}nested "));
+		return assemblies.Types().Which(Filter.Prefix(predicate, $"{accessModifier.GetString(" ")}nested "));
 	}
 
 	/// <summary>
@@ -46,7 +46,7 @@ public static partial class FilteredExtensions
 		Func<Type, bool> predicate = type => accessModifier == AccessModifiers.Any
 			? type.IsReallySealed()
 			: type.IsReallySealed() && type.HasAccessModifier(accessModifier);
-		return assemblies.Types().Which(Filter.Prefix(predicate, $"{accessModifier.GetString()}sealed "));
+		return assemblies.Types().Which(Filter.Prefix(predicate, $"{accessModifier.GetString(" ")}sealed "));
 	}
 
 	/// <summary>
@@ -58,6 +58,6 @@ public static partial class FilteredExtensions
 		Func<Type, bool> predicate = type => accessModifier == AccessModifiers.Any
 			? type.IsReallyStatic()
 			: type.IsReallyStatic() && type.HasAccessModifier(accessModifier);
-		return assemblies.Types().Which(Filter.Prefix(predicate, $"{accessModifier.GetString()}static "));
+		return assemblies.Types().Which(Filter.Prefix(predicate, $"{accessModifier.GetString(" ")}static "));
 	}
 }

@@ -15,7 +15,7 @@ namespace aweXpect.Reflection;
 public static partial class ThatMembers
 {
 	/// <summary>
-	///     Verifies that all items in the filtered collection of <typeparamref name="TMember"/> have
+	///     Verifies that all items in the filtered collection of <typeparamref name="TMember" /> have
 	///     the <paramref name="expected" /> name.
 	/// </summary>
 	public static StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>>> HaveName<TMember>(
@@ -42,7 +42,7 @@ public static partial class ThatMembers
 		public ConstraintResult IsMetBy(IEnumerable<TMember> actual)
 		{
 			Actual = actual;
-			Outcome = actual.All(type => options.AreConsideredEqual(type?.Name, expected))
+			Outcome = actual.All(memberInfo => options.AreConsideredEqual(memberInfo?.Name, expected))
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -53,7 +53,7 @@ public static partial class ThatMembers
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" contained not matching types ");
+			stringBuilder.Append(it).Append(" contained not matching items ");
 			Formatter.Format(stringBuilder, Actual?.Where(type => !options.AreConsideredEqual(type?.Name, expected)),
 				FormattingOptions.Indented(indentation));
 		}
@@ -63,7 +63,7 @@ public static partial class ThatMembers
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" only contained matching types ");
+			stringBuilder.Append(it).Append(" only contained matching items ");
 			Formatter.Format(stringBuilder, Actual?.Where(type => options.AreConsideredEqual(type?.Name, expected)),
 				FormattingOptions.Indented(indentation));
 		}

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using aweXpect.Reflection.Collections;
 
 namespace aweXpect.Reflection.Extensions;
 
@@ -9,6 +10,28 @@ namespace aweXpect.Reflection.Extensions;
 /// </summary>
 internal static class PropertyInfoExtensions
 {
+	/// <summary>
+	///     Checks if the <paramref name="propertyInfo" /> has the specified <paramref name="accessModifiers" />.
+	/// </summary>
+	/// <param name="propertyInfo">The <see cref="PropertyInfo" /> which is checked to have the attribute.</param>
+	/// <param name="accessModifiers">
+	///     The <see cref="AccessModifiers" />.
+	///     <para />
+	///     Supports specifying multiple <see cref="AccessModifiers" />.
+	/// </param>
+	public static bool HasAccessModifier(
+		this PropertyInfo? propertyInfo,
+		AccessModifiers accessModifiers)
+	{
+		if (propertyInfo == null)
+		{
+			return false;
+		}
+
+		return propertyInfo.GetMethod.HasAccessModifier(accessModifiers) &&
+		       propertyInfo.SetMethod.HasAccessModifier(accessModifiers);
+	}
+
 	/// <summary>
 	///     Checks if the <paramref name="propertyInfo" /> has an attribute which satisfies the <paramref name="predicate" />.
 	/// </summary>

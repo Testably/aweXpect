@@ -21,7 +21,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods in types matching t => t == typeof(T) in assembly containing type ThatMethod.ClassWithMethods
 					             all have name equal to "PublicMethod",
-					             but it contained not matching types [
+					             but it contained not matching items [
 					               *
 					             ]
 					             """).AsWildcard();

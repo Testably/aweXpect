@@ -20,9 +20,14 @@ internal static class MethodInfoExtensions
 	///     Supports specifying multiple <see cref="AccessModifiers" />.
 	/// </param>
 	public static bool HasAccessModifier(
-		this MethodInfo methodInfo,
+		this MethodInfo? methodInfo,
 		AccessModifiers accessModifiers)
 	{
+		if (methodInfo == null)
+		{
+			return false;
+		}
+
 		if (accessModifiers.HasFlag(AccessModifiers.Internal) &&
 		    methodInfo.IsAssembly)
 		{

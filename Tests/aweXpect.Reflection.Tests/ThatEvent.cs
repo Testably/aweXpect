@@ -1,7 +1,16 @@
-﻿namespace aweXpect.Reflection.Tests;
+﻿using System.Reflection;
+
+namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatEvent
 {
+	private static EventInfo? GetEvent(string eventName)
+		=> typeof(ClassWithEvents).GetEvent(eventName,
+			BindingFlags.DeclaredOnly |
+			BindingFlags.NonPublic |
+			BindingFlags.Public |
+			BindingFlags.Instance);
+
 #pragma warning disable CS8618
 #pragma warning disable CS0067
 	public class ClassWithEvents

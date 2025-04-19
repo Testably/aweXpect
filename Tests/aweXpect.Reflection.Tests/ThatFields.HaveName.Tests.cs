@@ -21,7 +21,7 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that fields in types matching t => t == typeof(T) in assembly containing type ThatField.ClassWithFields
 					             all have name equal to "PublicField",
-					             but it contained not matching types [
+					             but it contained not matching items [
 					               *
 					             ]
 					             """).AsWildcard();

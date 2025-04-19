@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using aweXpect.Reflection.Collections;
 
 namespace aweXpect.Reflection.Extensions;
 
@@ -9,6 +10,20 @@ namespace aweXpect.Reflection.Extensions;
 /// </summary>
 internal static class EventInfoExtensions
 {
+	/// <summary>
+	///     Checks if the <paramref name="eventInfo" /> has the specified <paramref name="accessModifiers" />.
+	/// </summary>
+	/// <param name="eventInfo">The <see cref="FieldInfo" /> which is checked to have the attribute.</param>
+	/// <param name="accessModifiers">
+	///     The <see cref="AccessModifiers" />.
+	///     <para />
+	///     Supports specifying multiple <see cref="AccessModifiers" />.
+	/// </param>
+	public static bool HasAccessModifier(
+		this EventInfo? eventInfo,
+		AccessModifiers accessModifiers)
+		=> eventInfo?.AddMethod.HasAccessModifier(accessModifiers) == true;
+
 	/// <summary>
 	///     Checks if the <paramref name="eventInfo" /> has an attribute which satisfies the <paramref name="predicate" />.
 	/// </summary>

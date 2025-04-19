@@ -22,7 +22,7 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types with name starting with "Some" in assembly containing type ThatTypes.HaveName.Tests
 					             all have name equal to "SomeOtherClassName",
-					             but it contained not matching types [
+					             but it contained not matching items [
 					               *SomeClassToTestHaveNameForTypes*
 					             ]
 					             """).AsWildcard();

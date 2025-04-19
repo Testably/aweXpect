@@ -20,9 +20,14 @@ internal static class FieldInfoExtensions
 	///     Supports specifying multiple <see cref="AccessModifiers" />.
 	/// </param>
 	public static bool HasAccessModifier(
-		this FieldInfo fieldInfo,
+		this FieldInfo? fieldInfo,
 		AccessModifiers accessModifiers)
 	{
+		if (fieldInfo == null)
+		{
+			return false;
+		}
+		
 		if (accessModifiers.HasFlag(AccessModifiers.Internal) &&
 		    fieldInfo.IsAssembly)
 		{
