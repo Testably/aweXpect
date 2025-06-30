@@ -50,9 +50,7 @@ public sealed partial class ThatHttpRequestMessage
 					.WithMessage("""
 					             Expected that subject
 					             has a `x-my-header` header whose values contains "some other header" at least once,
-					             but the values contained it 0 times in [
-					               "some header"
-					             ]
+					             but the values did not contain it
 
 					             HTTP-Request:
 					               HEAD https://awexpect.com/ HTTP/1.1

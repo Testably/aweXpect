@@ -51,9 +51,7 @@ public sealed partial class ThatHttpResponseMessage
 					.WithMessage("""
 					             Expected that subject
 					             has a `x-my-header` header whose values contains "some other header" at least once,
-					             but the values contained it 0 times in [
-					               "some header"
-					             ]
+					             but the values did not contain it
 
 					             HTTP-Response:
 					               200 OK HTTP/1.1
