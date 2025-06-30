@@ -24,6 +24,19 @@ public sealed partial class ThatJsonString
 						             Expected that subject
 						             is equal to "{}" as JSON for all items,
 						             but only 1 of 3 were
+						             
+						             Not matching items:
+						             [
+						               "{foo:1}",
+						               "[]"
+						             ]
+						             
+						             Collection:
+						             [
+						               "{ }",
+						               "{foo:1}",
+						               "[]"
+						             ]
 						             """");
 				}
 
