@@ -29,7 +29,8 @@ public sealed partial class ThatTypes
 			[Fact]
 			public async Task WhenFilteringOnlyAbstractTypes_ShouldSucceed()
 			{
-				Filtered.Types subject = In.AssemblyContaining<AreAbstract>().Abstract.Types();
+				Filtered.Types subject = In.AssemblyContaining<AreAbstract>().Types()
+					.WhichSatisfy(type => type is { IsAbstract: true, IsSealed: false, IsInterface: false, });
 
 				async Task Act()
 					=> await That(subject).AreAbstract();
