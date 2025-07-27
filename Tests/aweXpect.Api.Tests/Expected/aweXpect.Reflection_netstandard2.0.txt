@@ -169,15 +169,16 @@ namespace aweXpect.Reflection.Collections
     }
     public static class Filtered
     {
-        public class Assemblies : aweXpect.Reflection.Collections.Filtered<System.Reflection.Assembly, aweXpect.Reflection.Collections.Filtered.Assemblies>, aweXpect.Core.IDescribableSubject, aweXpect.Reflection.Collections.ITypeAssemblies
+        public class Assemblies : aweXpect.Reflection.Collections.Filtered<System.Reflection.Assembly, aweXpect.Reflection.Collections.Filtered.Assemblies>, aweXpect.Core.IDescribableSubject, aweXpect.Reflection.Collections.ILimitedTypeAssemblies, aweXpect.Reflection.Collections.ILimitedTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>, aweXpect.Reflection.Collections.ITypeAssemblies
         {
             protected Assemblies(aweXpect.Reflection.Collections.Filtered.Assemblies inner) { }
             public Assemblies(System.Collections.Generic.IEnumerable<System.Reflection.Assembly?> source, string description) { }
             public Assemblies(System.Reflection.Assembly? source, string description) { }
-            public aweXpect.Reflection.Collections.ITypeAssemblies Abstract { get; }
-            public aweXpect.Reflection.Collections.Filtered.Assemblies Nested { get; }
-            public aweXpect.Reflection.Collections.ITypeAssemblies Sealed { get; }
-            public aweXpect.Reflection.Collections.ITypeAssemblies Static { get; }
+            public aweXpect.Reflection.Collections.ILimitedTypeAssemblies<aweXpect.Reflection.Collections.ILimitedTypeAssemblies> Abstract { get; }
+            public aweXpect.Reflection.Collections.ITypeAssemblies Generic { get; }
+            public aweXpect.Reflection.Collections.ITypeAssemblies Nested { get; }
+            public aweXpect.Reflection.Collections.ILimitedTypeAssemblies<aweXpect.Reflection.Collections.ILimitedTypeAssemblies> Sealed { get; }
+            public aweXpect.Reflection.Collections.ILimitedTypeAssemblies<aweXpect.Reflection.Collections.ILimitedTypeAssemblies> Static { get; }
             public aweXpect.Reflection.Collections.Filtered.Types Classes(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
             public aweXpect.Reflection.Collections.Filtered.Constructors Constructors() { }
             public aweXpect.Reflection.Collections.Filtered.Types Enums(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
@@ -275,9 +276,23 @@ namespace aweXpect.Reflection.Collections
         bool Applies(TEntity value);
         string Describes(string text);
     }
-    public interface ITypeAssemblies
+    public interface ILimitedTypeAssemblies
     {
         aweXpect.Reflection.Collections.Filtered.Types Classes(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15);
         aweXpect.Reflection.Collections.Filtered.Types Types(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15);
+    }
+    public interface ILimitedTypeAssemblies<out TLimitedTypeAssemblies> : aweXpect.Reflection.Collections.ILimitedTypeAssemblies
+        where out TLimitedTypeAssemblies : aweXpect.Reflection.Collections.ILimitedTypeAssemblies
+    {
+        TLimitedTypeAssemblies Generic { get; }
+        TLimitedTypeAssemblies Nested { get; }
+    }
+    public interface ITypeAssemblies : aweXpect.Reflection.Collections.ILimitedTypeAssemblies, aweXpect.Reflection.Collections.ILimitedTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>
+    {
+        aweXpect.Reflection.Collections.ILimitedTypeAssemblies<aweXpect.Reflection.Collections.ILimitedTypeAssemblies> Abstract { get; }
+        aweXpect.Reflection.Collections.ILimitedTypeAssemblies<aweXpect.Reflection.Collections.ILimitedTypeAssemblies> Sealed { get; }
+        aweXpect.Reflection.Collections.ILimitedTypeAssemblies<aweXpect.Reflection.Collections.ILimitedTypeAssemblies> Static { get; }
+        aweXpect.Reflection.Collections.Filtered.Types Enums(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15);
+        aweXpect.Reflection.Collections.Filtered.Types Interfaces(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15);
     }
 }

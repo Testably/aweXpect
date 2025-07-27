@@ -56,58 +56,6 @@ public static partial class Filtered
 			_description = inner._description;
 		}
 
-		/// <summary>
-		///     Filters only for abstract types.
-		/// </summary>
-		public ITypeAssemblies Abstract
-		{
-			get
-			{
-				_typeFilterDescription = "abstract " + (_typeFilterDescription ?? "");
-				_typeFilters.Add(type => type.IsReallyAbstract());
-				return this;
-			}
-		}
-
-		/// <summary>
-		///     Filters only for sealed types.
-		/// </summary>
-		public ITypeAssemblies Sealed
-		{
-			get
-			{
-				_typeFilterDescription = "sealed " + (_typeFilterDescription ?? "");
-				_typeFilters.Add(type => type.IsReallySealed());
-				return this;
-			}
-		}
-
-		/// <summary>
-		///     Filters only for static types.
-		/// </summary>
-		public ITypeAssemblies Static
-		{
-			get
-			{
-				_typeFilterDescription = "static " + (_typeFilterDescription ?? "");
-				_typeFilters.Add(type => type.IsReallyStatic());
-				return this;
-			}
-		}
-
-		/// <summary>
-		///     Filters only for nested types.
-		/// </summary>
-		public Assemblies Nested
-		{
-			get
-			{
-				_typeFilterDescription = "nested " + (_typeFilterDescription ?? "");
-				_typeFilters.Add(type => type.IsNested);
-				return this;
-			}
-		}
-
 		/// <inheritdoc />
 		public string GetDescription()
 		{
@@ -120,7 +68,62 @@ public static partial class Filtered
 			return description;
 		}
 
-		/// <inheritdoc cref="ITypeAssemblies.Types(AccessModifiers)" />
+		/// <inheritdoc cref="ITypeAssemblies.Abstract" />
+		public ILimitedTypeAssemblies<ILimitedTypeAssemblies> Abstract
+		{
+			get
+			{
+				_typeFilterDescription = "abstract " + (_typeFilterDescription ?? "");
+				_typeFilters.Add(type => type.IsReallyAbstract());
+				return this;
+			}
+		}
+
+		/// <inheritdoc cref="ITypeAssemblies.Sealed" />
+		public ILimitedTypeAssemblies<ILimitedTypeAssemblies> Sealed
+		{
+			get
+			{
+				_typeFilterDescription = "sealed " + (_typeFilterDescription ?? "");
+				_typeFilters.Add(type => type.IsReallySealed());
+				return this;
+			}
+		}
+
+		/// <inheritdoc cref="ITypeAssemblies.Static" />
+		public ILimitedTypeAssemblies<ILimitedTypeAssemblies> Static
+		{
+			get
+			{
+				_typeFilterDescription = "static " + (_typeFilterDescription ?? "");
+				_typeFilters.Add(type => type.IsReallyStatic());
+				return this;
+			}
+		}
+
+		/// <inheritdoc cref="ILimitedTypeAssemblies{ITypeAssemblies}.Generic" />
+		public ITypeAssemblies Generic
+		{
+			get
+			{
+				_typeFilterDescription = "generic " + (_typeFilterDescription ?? "");
+				_typeFilters.Add(type => type.IsGenericType);
+				return this;
+			}
+		}
+
+		/// <inheritdoc cref="ILimitedTypeAssemblies{ITypeAssemblies}.Nested" />
+		public ITypeAssemblies Nested
+		{
+			get
+			{
+				_typeFilterDescription = "nested " + (_typeFilterDescription ?? "");
+				_typeFilters.Add(type => type.IsNested);
+				return this;
+			}
+		}
+
+		/// <inheritdoc cref="ILimitedTypeAssemblies.Types(AccessModifiers)" />
 		public Types Types(AccessModifiers accessModifier = AccessModifiers.Any)
 		{
 			if (accessModifier != AccessModifiers.Any)
@@ -140,7 +143,7 @@ public static partial class Filtered
 			return new Types(this, "types ");
 		}
 
-		/// <inheritdoc cref="ITypeAssemblies.Classes(AccessModifiers)" />
+		/// <inheritdoc cref="ILimitedTypeAssemblies.Classes(AccessModifiers)" />
 		public Types Classes(AccessModifiers accessModifier = AccessModifiers.Any)
 		{
 			_typeFilters.Add(type => type.IsClass);
@@ -156,9 +159,7 @@ public static partial class Filtered
 					_typeFilterDescription ?? ""));
 		}
 
-		/// <summary>
-		///     Get all interfaces in the filtered assemblies.
-		/// </summary>
+		/// <inheritdoc cref="ITypeAssemblies.Interfaces(AccessModifiers)" />
 		public Types Interfaces(AccessModifiers accessModifier = AccessModifiers.Any)
 		{
 			_typeFilters.Add(type => type.IsInterface);
@@ -174,9 +175,7 @@ public static partial class Filtered
 					_typeFilterDescription ?? ""));
 		}
 
-		/// <summary>
-		///     Get all enums in the filtered assemblies.
-		/// </summary>
+		/// <inheritdoc cref="ITypeAssemblies.Enums(AccessModifiers)" />
 		public Types Enums(AccessModifiers accessModifier = AccessModifiers.Any)
 		{
 			_typeFilters.Add(type => type.IsEnum);
