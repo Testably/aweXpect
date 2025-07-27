@@ -5,7 +5,7 @@ using aweXpect.Reflection.Collections;
 
 namespace aweXpect.Reflection;
 
-public static partial class FilteredExtensions
+public static partial class AssemblyFilters
 {
 	/// <summary>
 	///     Filter for assemblies with the <paramref name="expected" /> name.

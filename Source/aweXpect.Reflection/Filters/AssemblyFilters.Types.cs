@@ -4,7 +4,7 @@ using aweXpect.Reflection.Helpers;
 
 namespace aweXpect.Reflection;
 
-public static partial class FilteredExtensions
+public static partial class AssemblyFilters
 {
 	/// <summary>
 	///     Get all abstract types in the filtered assemblies with the given <paramref name="accessModifier" />.

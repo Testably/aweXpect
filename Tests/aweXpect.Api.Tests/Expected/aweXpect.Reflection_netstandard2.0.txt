@@ -1,6 +1,161 @@
 [assembly: System.Reflection.AssemblyMetadata("RepositoryUrl", "https://github.com/aweXpect/aweXpect.Reflection.git")]
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo(@"aweXpect.Reflection.Internal.Tests, PublicKey=00240000048000009400000006020000002400005253413100040000010001002ddc851a03b64bc2a64705e04ea47777e669695d8afed80f7544ff34fc699706a9f99f8385085bd675508e4c2acb917b7e1c9984da918c3fab585850a8a5b013c1d1780e1bb9e1e46656d965fc35bfc237a929c2c94e2e998d66ca44ee0a526245ef3f97dd136efe2e657b244b5f9f4a233fe656d659dddd811ba6bbed6817c1")]
 [assembly: System.Runtime.Versioning.TargetFramework(".NETStandard,Version=v2.0", FrameworkDisplayName=".NET Standard 2.0")]
+namespace aweXpect.Reflection
+{
+    public static class AssemblyFilters
+    {
+        public static aweXpect.Reflection.Collections.Filtered.Types AbstractTypes(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types NestedTypes(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types SealedTypes(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types StaticTypes(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies WhichSatisfy(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, System.Func<System.Reflection.Assembly, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, string expected) { }
+    }
+    public static class In
+    {
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies AllLoadedAssemblies() { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies Assemblies(System.Collections.Generic.IEnumerable<System.Reflection.Assembly> assemblies) { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies Assemblies(params System.Reflection.Assembly?[] assemblies) { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies AssemblyContaining(System.Type type) { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies AssemblyContaining<TType>() { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies EntryAssembly() { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies ExecutingAssembly() { }
+    }
+    public static class MethodFilters
+    {
+        public static aweXpect.Reflection.MethodFilters.MethodsWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Methods @this, bool inherit = true)
+            where TAttribute : System.Attribute { }
+        public static aweXpect.Reflection.MethodFilters.MethodsWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Methods @this, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
+            where TAttribute : System.Attribute { }
+        public class MethodsWith : aweXpect.Reflection.Collections.Filtered.Methods
+        {
+            public MethodsWith(aweXpect.Reflection.Collections.Filtered.Methods inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Reflection.MethodInfo> filter) { }
+            public aweXpect.Reflection.MethodFilters.MethodsWith OrWith<TAttribute>(bool inherit = true)
+                where TAttribute : System.Attribute { }
+            public aweXpect.Reflection.MethodFilters.MethodsWith OrWith<TAttribute>(System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
+                where TAttribute : System.Attribute { }
+        }
+    }
+    public static class ThatAssemblies
+    {
+        public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>>> HaveName(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>> subject, string expected) { }
+    }
+    public static class ThatAssembly
+    {
+        public static aweXpect.Results.StringEqualityTypeResult<System.Reflection.Assembly?, aweXpect.Core.IThat<System.Reflection.Assembly?>> HasName(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject, string expected) { }
+    }
+    public static class ThatEvent { }
+    public static class ThatEvents { }
+    public static class ThatField { }
+    public static class ThatFields { }
+    public static class ThatMember
+    {
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreInternal<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreNotInternal<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreNotPrivate<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreNotProtected<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreNotPublic<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> ArePrivate<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreProtected<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> ArePublic<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.StringEqualityTypeResult<TMember, aweXpect.Core.IThat<TMember>> HasName<TMember>(this aweXpect.Core.IThat<TMember> subject, string expected)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsInternal<TMember>(this aweXpect.Core.IThat<TMember> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsNotInternal<TMember>(this aweXpect.Core.IThat<TMember> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsNotPrivate<TMember>(this aweXpect.Core.IThat<TMember> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsNotProtected<TMember>(this aweXpect.Core.IThat<TMember> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsNotPublic<TMember>(this aweXpect.Core.IThat<TMember> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsPrivate<TMember>(this aweXpect.Core.IThat<TMember> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsProtected<TMember>(this aweXpect.Core.IThat<TMember> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsPublic<TMember>(this aweXpect.Core.IThat<TMember> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+    }
+    public static class ThatMembers
+    {
+        public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> HaveName<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject, string expected)
+            where TMember : System.Reflection.MemberInfo? { }
+    }
+    public static class ThatMethod { }
+    public static class ThatMethods { }
+    public static class ThatProperties { }
+    public static class ThatProperty { }
+    public static class ThatType
+    {
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> Has<TAttribute>(this aweXpect.Core.IThat<System.Type?> subject, bool inherit = true)
+            where TAttribute : System.Attribute { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> Has<TAttribute>(this aweXpect.Core.IThat<System.Type?> subject, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
+            where TAttribute : System.Attribute { }
+        public static aweXpect.Results.StringEqualityTypeResult<System.Type?, aweXpect.Core.IThat<System.Type?>> HasNamespace(this aweXpect.Core.IThat<System.Type?> subject, string expected) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsAClass(this aweXpect.Core.IThat<System.Type?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsAbstract(this aweXpect.Core.IThat<System.Type?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsAnInterface(this aweXpect.Core.IThat<System.Type?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsGeneric(this aweXpect.Core.IThat<System.Type?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsNested(this aweXpect.Core.IThat<System.Type?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsNotAClass(this aweXpect.Core.IThat<System.Type?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsNotAbstract(this aweXpect.Core.IThat<System.Type?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsNotAnInterface(this aweXpect.Core.IThat<System.Type?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsNotGeneric(this aweXpect.Core.IThat<System.Type?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsNotNested(this aweXpect.Core.IThat<System.Type?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsNotSealed(this aweXpect.Core.IThat<System.Type?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsNotStatic(this aweXpect.Core.IThat<System.Type?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsSealed(this aweXpect.Core.IThat<System.Type?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsStatic(this aweXpect.Core.IThat<System.Type?> subject) { }
+    }
+    public static class ThatTypes
+    {
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreAbstract(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreGeneric(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreNested(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreNotAbstract(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreNotGeneric(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreNotNested(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreNotSealed(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreNotStatic(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreSealed(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreStatic(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, bool inherit = true)
+            where TAttribute : System.Attribute { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
+            where TAttribute : System.Attribute { }
+        public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> HaveNamespace(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, string expected) { }
+    }
+    public static class TypeFilters
+    {
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichInheritFrom(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Type baseType, bool forceDirect = false) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichInheritFrom<TBaseType>(this aweXpect.Reflection.Collections.Filtered.Types @this, bool forceDirect = false) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichSatisfy(this aweXpect.Reflection.Collections.Filtered.Types types, System.Func<System.Type, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Reflection.TypeFilters.TypesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Types @this, bool inherit = true)
+            where TAttribute : System.Attribute { }
+        public static aweXpect.Reflection.TypeFilters.TypesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
+            where TAttribute : System.Attribute { }
+        public static aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Types @this, string expected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResultType WithNamespace(this aweXpect.Reflection.Collections.Filtered.Types @this, string expected) { }
+        public class TypesWith : aweXpect.Reflection.Collections.Filtered.Types
+        {
+            public TypesWith(aweXpect.Reflection.Collections.Filtered.Types inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Type> filter) { }
+            public aweXpect.Reflection.TypeFilters.TypesWith OrWith<TAttribute>(bool inherit = true)
+                where TAttribute : System.Attribute { }
+            public aweXpect.Reflection.TypeFilters.TypesWith OrWith<TAttribute>(System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
+                where TAttribute : System.Attribute { }
+        }
+    }
+}
 namespace aweXpect.Reflection.Collections
 {
     [System.Flags]
@@ -112,153 +267,5 @@ namespace aweXpect.Reflection.Collections
     {
         bool Applies(TEntity value);
         string Describes(string text);
-    }
-}
-namespace aweXpect.Reflection
-{
-    public static class FilteredExtensions
-    {
-        public static aweXpect.Reflection.Collections.Filtered.Types AbstractTypes(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
-        public static aweXpect.Reflection.Collections.Filtered.Types NestedTypes(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
-        public static aweXpect.Reflection.Collections.Filtered.Types SealedTypes(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
-        public static aweXpect.Reflection.Collections.Filtered.Types StaticTypes(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
-        public static aweXpect.Reflection.Collections.Filtered.Types WhichInheritFrom(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Type baseType, bool forceDirect = false) { }
-        public static aweXpect.Reflection.Collections.Filtered.Types WhichInheritFrom<TBaseType>(this aweXpect.Reflection.Collections.Filtered.Types @this, bool forceDirect = false) { }
-        public static aweXpect.Reflection.Collections.Filtered.Assemblies WhichSatisfy(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, System.Func<System.Reflection.Assembly, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
-        public static aweXpect.Reflection.FilteredExtensions.MethodsWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Methods @this, bool inherit = true)
-            where TAttribute : System.Attribute { }
-        public static aweXpect.Reflection.FilteredExtensions.TypesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Types @this, bool inherit = true)
-            where TAttribute : System.Attribute { }
-        public static aweXpect.Reflection.FilteredExtensions.MethodsWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Methods @this, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
-            where TAttribute : System.Attribute { }
-        public static aweXpect.Reflection.FilteredExtensions.TypesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
-            where TAttribute : System.Attribute { }
-        public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, string expected) { }
-        public static aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Types @this, string expected) { }
-        public static aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResultType WithNamespace(this aweXpect.Reflection.Collections.Filtered.Types @this, string expected) { }
-        public class MethodsWith : aweXpect.Reflection.Collections.Filtered.Methods
-        {
-            public MethodsWith(aweXpect.Reflection.Collections.Filtered.Methods inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Reflection.MethodInfo> filter) { }
-            public aweXpect.Reflection.FilteredExtensions.MethodsWith OrWith<TAttribute>(bool inherit = true)
-                where TAttribute : System.Attribute { }
-            public aweXpect.Reflection.FilteredExtensions.MethodsWith OrWith<TAttribute>(System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
-                where TAttribute : System.Attribute { }
-        }
-        public class TypesWith : aweXpect.Reflection.Collections.Filtered.Types
-        {
-            public TypesWith(aweXpect.Reflection.Collections.Filtered.Types inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Type> filter) { }
-            public aweXpect.Reflection.FilteredExtensions.TypesWith OrWith<TAttribute>(bool inherit = true)
-                where TAttribute : System.Attribute { }
-            public aweXpect.Reflection.FilteredExtensions.TypesWith OrWith<TAttribute>(System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
-                where TAttribute : System.Attribute { }
-        }
-    }
-    public static class In
-    {
-        public static aweXpect.Reflection.Collections.Filtered.Assemblies AllLoadedAssemblies() { }
-        public static aweXpect.Reflection.Collections.Filtered.Assemblies Assemblies(System.Collections.Generic.IEnumerable<System.Reflection.Assembly> assemblies) { }
-        public static aweXpect.Reflection.Collections.Filtered.Assemblies Assemblies(params System.Reflection.Assembly?[] assemblies) { }
-        public static aweXpect.Reflection.Collections.Filtered.Assemblies AssemblyContaining(System.Type type) { }
-        public static aweXpect.Reflection.Collections.Filtered.Assemblies AssemblyContaining<TType>() { }
-        public static aweXpect.Reflection.Collections.Filtered.Assemblies EntryAssembly() { }
-        public static aweXpect.Reflection.Collections.Filtered.Assemblies ExecutingAssembly() { }
-    }
-    public static class ThatAssemblies
-    {
-        public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>>> HaveName(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>> subject, string expected) { }
-    }
-    public static class ThatAssembly
-    {
-        public static aweXpect.Results.StringEqualityTypeResult<System.Reflection.Assembly?, aweXpect.Core.IThat<System.Reflection.Assembly?>> HasName(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject, string expected) { }
-    }
-    public static class ThatEvent { }
-    public static class ThatEvents { }
-    public static class ThatField { }
-    public static class ThatFields { }
-    public static class ThatMember
-    {
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreInternal<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
-            where TMember : System.Reflection.MemberInfo? { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreNotInternal<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
-            where TMember : System.Reflection.MemberInfo? { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreNotPrivate<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
-            where TMember : System.Reflection.MemberInfo? { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreNotProtected<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
-            where TMember : System.Reflection.MemberInfo? { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreNotPublic<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
-            where TMember : System.Reflection.MemberInfo? { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> ArePrivate<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
-            where TMember : System.Reflection.MemberInfo? { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreProtected<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
-            where TMember : System.Reflection.MemberInfo? { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> ArePublic<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
-            where TMember : System.Reflection.MemberInfo? { }
-        public static aweXpect.Results.StringEqualityTypeResult<TMember, aweXpect.Core.IThat<TMember>> HasName<TMember>(this aweXpect.Core.IThat<TMember> subject, string expected)
-            where TMember : System.Reflection.MemberInfo? { }
-        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsInternal<TMember>(this aweXpect.Core.IThat<TMember> subject)
-            where TMember : System.Reflection.MemberInfo? { }
-        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsNotInternal<TMember>(this aweXpect.Core.IThat<TMember> subject)
-            where TMember : System.Reflection.MemberInfo? { }
-        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsNotPrivate<TMember>(this aweXpect.Core.IThat<TMember> subject)
-            where TMember : System.Reflection.MemberInfo? { }
-        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsNotProtected<TMember>(this aweXpect.Core.IThat<TMember> subject)
-            where TMember : System.Reflection.MemberInfo? { }
-        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsNotPublic<TMember>(this aweXpect.Core.IThat<TMember> subject)
-            where TMember : System.Reflection.MemberInfo? { }
-        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsPrivate<TMember>(this aweXpect.Core.IThat<TMember> subject)
-            where TMember : System.Reflection.MemberInfo? { }
-        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsProtected<TMember>(this aweXpect.Core.IThat<TMember> subject)
-            where TMember : System.Reflection.MemberInfo? { }
-        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsPublic<TMember>(this aweXpect.Core.IThat<TMember> subject)
-            where TMember : System.Reflection.MemberInfo? { }
-    }
-    public static class ThatMembers
-    {
-        public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> HaveName<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject, string expected)
-            where TMember : System.Reflection.MemberInfo? { }
-    }
-    public static class ThatMethod { }
-    public static class ThatMethods { }
-    public static class ThatProperties { }
-    public static class ThatProperty { }
-    public static class ThatType
-    {
-        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> Has<TAttribute>(this aweXpect.Core.IThat<System.Type?> subject, bool inherit = true)
-            where TAttribute : System.Attribute { }
-        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> Has<TAttribute>(this aweXpect.Core.IThat<System.Type?> subject, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
-            where TAttribute : System.Attribute { }
-        public static aweXpect.Results.StringEqualityTypeResult<System.Type?, aweXpect.Core.IThat<System.Type?>> HasNamespace(this aweXpect.Core.IThat<System.Type?> subject, string expected) { }
-        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsAClass(this aweXpect.Core.IThat<System.Type?> subject) { }
-        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsAbstract(this aweXpect.Core.IThat<System.Type?> subject) { }
-        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsAnInterface(this aweXpect.Core.IThat<System.Type?> subject) { }
-        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsGeneric(this aweXpect.Core.IThat<System.Type?> subject) { }
-        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsNested(this aweXpect.Core.IThat<System.Type?> subject) { }
-        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsNotAClass(this aweXpect.Core.IThat<System.Type?> subject) { }
-        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsNotAbstract(this aweXpect.Core.IThat<System.Type?> subject) { }
-        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsNotAnInterface(this aweXpect.Core.IThat<System.Type?> subject) { }
-        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsNotGeneric(this aweXpect.Core.IThat<System.Type?> subject) { }
-        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsNotNested(this aweXpect.Core.IThat<System.Type?> subject) { }
-        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsNotSealed(this aweXpect.Core.IThat<System.Type?> subject) { }
-        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsNotStatic(this aweXpect.Core.IThat<System.Type?> subject) { }
-        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsSealed(this aweXpect.Core.IThat<System.Type?> subject) { }
-        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsStatic(this aweXpect.Core.IThat<System.Type?> subject) { }
-    }
-    public static class ThatTypes
-    {
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreAbstract(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreGeneric(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreNested(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreNotAbstract(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreNotGeneric(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreNotNested(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreNotSealed(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreNotStatic(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreSealed(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreStatic(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, bool inherit = true)
-            where TAttribute : System.Attribute { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
-            where TAttribute : System.Attribute { }
-        public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> HaveNamespace(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, string expected) { }
     }
 }

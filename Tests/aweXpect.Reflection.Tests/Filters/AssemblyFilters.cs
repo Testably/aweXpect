@@ -1,8 +1,8 @@
 ﻿using aweXpect.Reflection.Collections;
 
-namespace aweXpect.Reflection.Tests.Collections;
+namespace aweXpect.Reflection.Tests.Filters;
 
-public sealed partial class FilteredExtensions
+public sealed partial class AssemblyFilters
 {
 	public static TheoryData<AccessModifiers, string> GetAccessModifiers()
 		=> new()

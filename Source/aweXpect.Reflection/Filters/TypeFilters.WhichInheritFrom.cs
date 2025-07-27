@@ -4,7 +4,7 @@ using aweXpect.Reflection.Helpers;
 
 namespace aweXpect.Reflection;
 
-public static partial class FilteredExtensions
+public static partial class TypeFilters
 {
 	/// <summary>
 	///     Filter for types that inherit from <typeparamref name="TBaseType" />.
