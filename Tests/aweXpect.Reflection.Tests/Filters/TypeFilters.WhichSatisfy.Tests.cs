@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using aweXpect.Reflection.Tests.TestHelpers;
 
 namespace aweXpect.Reflection.Tests.Filters;
 

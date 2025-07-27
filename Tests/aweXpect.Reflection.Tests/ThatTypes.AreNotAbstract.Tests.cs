@@ -11,7 +11,7 @@ public sealed partial class ThatTypes
 			[Fact]
 			public async Task WhenAssembliesContainNonAbstractTypes_ShouldSucceed()
 			{
-				Filtered.Types subject = In.AssemblyContaining<AreAbstract>().SealedTypes();
+				Filtered.Types subject = In.AssemblyContaining<AreAbstract>().Sealed.Types();
 
 				async Task Act()
 					=> await That(subject).AreNotAbstract();
@@ -22,7 +22,7 @@ public sealed partial class ThatTypes
 			[Fact]
 			public async Task WhenFilteringOnlyAbstractTypes_ShouldFail()
 			{
-				Filtered.Types subject = In.AssemblyContaining<AreAbstract>().AbstractTypes();
+				Filtered.Types subject = In.AssemblyContaining<AreAbstract>().Abstract.Types();
 
 				async Task Act()
 					=> await That(subject).AreNotAbstract();

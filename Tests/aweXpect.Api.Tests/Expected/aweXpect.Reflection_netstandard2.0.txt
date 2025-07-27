@@ -5,11 +5,7 @@ namespace aweXpect.Reflection
 {
     public static class AssemblyFilters
     {
-        public static aweXpect.Reflection.Collections.Filtered.Types AbstractTypes(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
-        public static aweXpect.Reflection.Collections.Filtered.Types NestedTypes(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
-        public static aweXpect.Reflection.Collections.Filtered.Types SealedTypes(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
-        public static aweXpect.Reflection.Collections.Filtered.Types StaticTypes(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
-        public static aweXpect.Reflection.Collections.Filtered.Assemblies WhichSatisfy(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, System.Func<System.Reflection.Assembly, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies WhichSatisfy(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, System.Func<System.Reflection.Assembly, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, string expected) { }
     }
     public static class In
@@ -139,7 +135,7 @@ namespace aweXpect.Reflection
     {
         public static aweXpect.Reflection.Collections.Filtered.Types WhichInheritFrom(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Type baseType, bool forceDirect = false) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichInheritFrom<TBaseType>(this aweXpect.Reflection.Collections.Filtered.Types @this, bool forceDirect = false) { }
-        public static aweXpect.Reflection.Collections.Filtered.Types WhichSatisfy(this aweXpect.Reflection.Collections.Filtered.Types types, System.Func<System.Type, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichSatisfy(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<System.Type, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Reflection.TypeFilters.TypesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Types @this, bool inherit = true)
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.TypeFilters.TypesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
@@ -169,18 +165,25 @@ namespace aweXpect.Reflection.Collections
     }
     public static class Filtered
     {
-        public class Assemblies : aweXpect.Reflection.Collections.Filtered<System.Reflection.Assembly, aweXpect.Reflection.Collections.Filtered.Assemblies>, aweXpect.Core.IDescribableSubject
+        public class Assemblies : aweXpect.Reflection.Collections.Filtered<System.Reflection.Assembly, aweXpect.Reflection.Collections.Filtered.Assemblies>, aweXpect.Core.IDescribableSubject, aweXpect.Reflection.Collections.ITypeAssemblies
         {
             protected Assemblies(aweXpect.Reflection.Collections.Filtered.Assemblies inner) { }
             public Assemblies(System.Collections.Generic.IEnumerable<System.Reflection.Assembly?> source, string description) { }
             public Assemblies(System.Reflection.Assembly? source, string description) { }
+            public aweXpect.Reflection.Collections.ITypeAssemblies Abstract { get; }
+            public aweXpect.Reflection.Collections.Filtered.Assemblies Nested { get; }
+            public aweXpect.Reflection.Collections.ITypeAssemblies Sealed { get; }
+            public aweXpect.Reflection.Collections.ITypeAssemblies Static { get; }
+            public aweXpect.Reflection.Collections.Filtered.Types Classes(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
             public aweXpect.Reflection.Collections.Filtered.Constructors Constructors() { }
+            public aweXpect.Reflection.Collections.Filtered.Types Enums(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
             public aweXpect.Reflection.Collections.Filtered.Events Events() { }
             public aweXpect.Reflection.Collections.Filtered.Fields Fields() { }
             public string GetDescription() { }
+            public aweXpect.Reflection.Collections.Filtered.Types Interfaces(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
             public aweXpect.Reflection.Collections.Filtered.Methods Methods() { }
             public aweXpect.Reflection.Collections.Filtered.Properties Properties() { }
-            public aweXpect.Reflection.Collections.Filtered.Types Types() { }
+            public aweXpect.Reflection.Collections.Filtered.Types Types(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
             public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Assemblies
             {
                 public aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResult IgnoringCase(bool ignoreCase = true) { }
@@ -267,5 +270,10 @@ namespace aweXpect.Reflection.Collections
     {
         bool Applies(TEntity value);
         string Describes(string text);
+    }
+    public interface ITypeAssemblies
+    {
+        aweXpect.Reflection.Collections.Filtered.Types Classes(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15);
+        aweXpect.Reflection.Collections.Filtered.Types Types(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15);
     }
 }

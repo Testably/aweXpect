@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using aweXpect.Core;
 using aweXpect.Options;
+using aweXpect.Reflection.Helpers;
 
 // ReSharper disable MemberHidesStaticFromOuterClass
 
@@ -14,9 +16,11 @@ public static partial class Filtered
 	/// <summary>
 	///     Container for a filterable collection of <see cref="Assembly" />.
 	/// </summary>
-	public class Assemblies : Filtered<Assembly, Assemblies>, IDescribableSubject
+	public class Assemblies : Filtered<Assembly, Assemblies>, IDescribableSubject, ITypeAssemblies
 	{
 		private readonly string _description;
+		private readonly List<Func<Type, bool>> _typeFilters = [];
+		private string? _typeFilterDescription;
 
 		/// <summary>
 		///     Container for a filterable collection of <see cref="Assembly" />.
@@ -52,6 +56,58 @@ public static partial class Filtered
 			_description = inner._description;
 		}
 
+		/// <summary>
+		///     Filters only for abstract types.
+		/// </summary>
+		public ITypeAssemblies Abstract
+		{
+			get
+			{
+				_typeFilterDescription = "abstract " + (_typeFilterDescription ?? "");
+				_typeFilters.Add(type => type.IsReallyAbstract());
+				return this;
+			}
+		}
+
+		/// <summary>
+		///     Filters only for sealed types.
+		/// </summary>
+		public ITypeAssemblies Sealed
+		{
+			get
+			{
+				_typeFilterDescription = "sealed " + (_typeFilterDescription ?? "");
+				_typeFilters.Add(type => type.IsReallySealed());
+				return this;
+			}
+		}
+
+		/// <summary>
+		///     Filters only for static types.
+		/// </summary>
+		public ITypeAssemblies Static
+		{
+			get
+			{
+				_typeFilterDescription = "static " + (_typeFilterDescription ?? "");
+				_typeFilters.Add(type => type.IsReallyStatic());
+				return this;
+			}
+		}
+
+		/// <summary>
+		///     Filters only for nested types.
+		/// </summary>
+		public Assemblies Nested
+		{
+			get
+			{
+				_typeFilterDescription = "nested " + (_typeFilterDescription ?? "");
+				_typeFilters.Add(type => type.IsNested);
+				return this;
+			}
+		}
+
 		/// <inheritdoc />
 		public string GetDescription()
 		{
@@ -64,35 +120,102 @@ public static partial class Filtered
 			return description;
 		}
 
+		/// <inheritdoc cref="ITypeAssemblies.Types(AccessModifiers)" />
+		public Types Types(AccessModifiers accessModifier = AccessModifiers.Any)
+		{
+			if (accessModifier != AccessModifiers.Any)
+			{
+				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
+				_typeFilterDescription = accessModifier.GetString(" ") + (_typeFilterDescription ?? "");
+			}
+
+			if (_typeFilters.Any())
+			{
+				return new Types(this, "types ")
+					.Which(Filter.Prefix<Type>(
+						type => _typeFilters.All(predicate => predicate.Invoke(type)),
+						_typeFilterDescription ?? ""));
+			}
+
+			return new Types(this, "types ");
+		}
+
+		/// <inheritdoc cref="ITypeAssemblies.Classes(AccessModifiers)" />
+		public Types Classes(AccessModifiers accessModifier = AccessModifiers.Any)
+		{
+			_typeFilters.Add(type => type.IsClass);
+			if (accessModifier != AccessModifiers.Any)
+			{
+				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
+				_typeFilterDescription = accessModifier.GetString(" ") + (_typeFilterDescription ?? "");
+			}
+
+			return new Types(this, "classes ")
+				.Which(Filter.Prefix<Type>(
+					type => _typeFilters.All(predicate => predicate.Invoke(type)),
+					_typeFilterDescription ?? ""));
+		}
+
 		/// <summary>
-		///     Get all types in the filtered assemblies.
+		///     Get all interfaces in the filtered assemblies.
 		/// </summary>
-		public Types Types() => new(this, "types ");
+		public Types Interfaces(AccessModifiers accessModifier = AccessModifiers.Any)
+		{
+			_typeFilters.Add(type => type.IsInterface);
+			if (accessModifier != AccessModifiers.Any)
+			{
+				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
+				_typeFilterDescription = accessModifier.GetString(" ") + (_typeFilterDescription ?? "");
+			}
+
+			return new Types(this, "interfaces ")
+				.Which(Filter.Prefix<Type>(
+					type => _typeFilters.All(predicate => predicate.Invoke(type)),
+					_typeFilterDescription ?? ""));
+		}
+
+		/// <summary>
+		///     Get all enums in the filtered assemblies.
+		/// </summary>
+		public Types Enums(AccessModifiers accessModifier = AccessModifiers.Any)
+		{
+			_typeFilters.Add(type => type.IsEnum);
+			if (accessModifier != AccessModifiers.Any)
+			{
+				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
+				_typeFilterDescription = accessModifier.GetString(" ") + (_typeFilterDescription ?? "");
+			}
+
+			return new Types(this, "enums ")
+				.Which(Filter.Prefix<Type>(
+					type => _typeFilters.All(predicate => predicate.Invoke(type)),
+					_typeFilterDescription ?? ""));
+		}
 
 		/// <summary>
 		///     Get all constructors in the filtered types.
 		/// </summary>
-		public Constructors Constructors() => new(new(this, ""), "constructors ");
+		public Constructors Constructors() => new(new Types(this, ""), "constructors ");
 
 		/// <summary>
 		///     Get all events in the filtered types.
 		/// </summary>
-		public Events Events() => new(new(this, ""), "events ");
+		public Events Events() => new(new Types(this, ""), "events ");
 
 		/// <summary>
 		///     Get all fields in the filtered types.
 		/// </summary>
-		public Fields Fields() => new(new(this, ""), "fields ");
+		public Fields Fields() => new(new Types(this, ""), "fields ");
 
 		/// <summary>
 		///     Get all methods in the filtered types.
 		/// </summary>
-		public Methods Methods() => new(new(this, ""), "methods ");
+		public Methods Methods() => new(new Types(this, ""), "methods ");
 
 		/// <summary>
 		///     Get all properties in the filtered types.
 		/// </summary>
-		public Properties Properties() => new(new(this, ""), "properties ");
+		public Properties Properties() => new(new Types(this, ""), "properties ");
 
 		/// <summary>
 		///     A Container for a filterable collection of <see cref="Assembly" />,

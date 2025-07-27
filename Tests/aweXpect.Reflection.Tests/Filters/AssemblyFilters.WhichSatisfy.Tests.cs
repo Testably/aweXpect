@@ -11,11 +11,11 @@ public sealed partial class AssemblyFilters
 			[Fact]
 			public async Task ShouldFilterForAssembliesWhichSatisfyThePredicate()
 			{
-				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()
+				Filtered.Assemblies typeAssemblies = In.AllLoadedAssemblies()
 					.WhichSatisfy(it => it.FullName!.Contains("aweXpect.Reflection.Tests"));
 
-				await That(assemblies).HasSingle().Which.IsEqualTo(typeof(AssemblyFilters).Assembly);
-				await That(assemblies.GetDescription())
+				await That(typeAssemblies).HasSingle().Which.IsEqualTo(typeof(AssemblyFilters).Assembly);
+				await That(typeAssemblies.GetDescription())
 					.IsEqualTo(
 						"in all loaded assemblies matching it => it.FullName!.Contains(\"aweXpect.Reflection.Tests\")");
 			}
