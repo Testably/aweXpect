@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using aweXpect.Reflection.Helpers;
 
 namespace aweXpect.Reflection.Internal.Tests.Helpers;
@@ -6,6 +8,21 @@ namespace aweXpect.Reflection.Internal.Tests.Helpers;
 // ReSharper disable UnusedMember.Local
 public sealed class TypeHelpersTests
 {
+	[Fact]
+	public async Task GetDeclaredFields_ShouldFilterOutBackingFields()
+	{
+		Type type = typeof(TestClassWithPropertyAndField);
+
+		FieldInfo[] allFields = type.GetFields(BindingFlags.DeclaredOnly |
+		                                       BindingFlags.NonPublic |
+		                                       BindingFlags.Public |
+		                                       BindingFlags.Instance).ToArray();
+		FieldInfo[] result = type.GetDeclaredFields();
+
+		await That(allFields).HasCount(2);
+		await That(result).HasCount(1);
+	}
+
 	[Fact]
 	public async Task HasAttribute_WithAttribute_ShouldReturnTrue()
 	{
@@ -198,5 +215,11 @@ public sealed class TypeHelpersTests
 		[Dummy(2)]
 		public void Method2WithAttribute()
 			=> throw new NotSupportedException();
+	}
+
+	public class TestClassWithPropertyAndField
+	{
+		public int MyField = 1;
+		public int MyProperty { get; set; } = 2;
 	}
 }

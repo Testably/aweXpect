@@ -8,9 +8,9 @@ public sealed class EventInfoHelpersTests
 	[Fact]
 	public async Task HasAttribute_WithAttribute_ShouldReturnTrue()
 	{
-		EventInfo type = typeof(TestClass).GetEvent(nameof(TestClass.Event1WithAttribute))!;
+		EventInfo eventInfo = typeof(TestClass).GetEvent(nameof(TestClass.Event1WithAttribute))!;
 
-		bool result = type.HasAttribute<DummyAttribute>();
+		bool result = eventInfo.HasAttribute<DummyAttribute>();
 
 		await That(result).IsTrue();
 	}
@@ -18,10 +18,10 @@ public sealed class EventInfoHelpersTests
 	[Fact]
 	public async Task HasAttribute_WithInheritedAttribute_ShouldReturnTrue()
 	{
-		EventInfo type =
+		EventInfo eventInfo =
 			typeof(TestClass).GetEvent(nameof(TestClass.EventWithAttributeInBaseClass))!;
 
-		bool result = type.HasAttribute<DummyAttribute>();
+		bool result = eventInfo.HasAttribute<DummyAttribute>();
 
 		await That(result).IsTrue();
 	}
@@ -29,9 +29,9 @@ public sealed class EventInfoHelpersTests
 	[Fact]
 	public async Task HasAttribute_WithoutAttribute_ShouldReturnFalse()
 	{
-		EventInfo type = typeof(TestClass).GetEvent(nameof(TestClass.Event2WithoutAttribute))!;
+		EventInfo eventInfo = typeof(TestClass).GetEvent(nameof(TestClass.Event2WithoutAttribute))!;
 
-		bool result = type.HasAttribute<DummyAttribute>();
+		bool result = eventInfo.HasAttribute<DummyAttribute>();
 
 		await That(result).IsFalse();
 	}
@@ -39,10 +39,10 @@ public sealed class EventInfoHelpersTests
 	[Fact]
 	public async Task HasAttribute_WithPredicate_ShouldReturnPredicateResult()
 	{
-		EventInfo type = typeof(TestClass).GetEvent(nameof(TestClass.Event1WithAttribute))!;
+		EventInfo eventInfo = typeof(TestClass).GetEvent(nameof(TestClass.Event1WithAttribute))!;
 
-		bool result1 = type.HasAttribute<DummyAttribute>(d => d.Value == 1);
-		bool result2 = type.HasAttribute<DummyAttribute>(d => d.Value == 2);
+		bool result1 = eventInfo.HasAttribute<DummyAttribute>(d => d.Value == 1);
+		bool result2 = eventInfo.HasAttribute<DummyAttribute>(d => d.Value == 2);
 
 		await That(result1).IsTrue();
 		await That(result2).IsFalse();

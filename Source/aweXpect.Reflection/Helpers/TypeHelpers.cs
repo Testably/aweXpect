@@ -21,8 +21,7 @@ internal static class TypeHelpers
 			.GetConstructors(BindingFlags.DeclaredOnly |
 			                 BindingFlags.NonPublic |
 			                 BindingFlags.Public |
-			                 BindingFlags.Instance)
-			.ToArray();
+			                 BindingFlags.Instance);
 
 	/// <summary>
 	///     Searches for fields in the <paramref name="type" /> that were directly declared there.
@@ -49,6 +48,20 @@ internal static class TypeHelpers
 			            BindingFlags.Public |
 			            BindingFlags.Static |
 			            BindingFlags.Instance)
+			.Where(m => !m.IsSpecialName)
+			.ToArray();
+
+	/// <summary>
+	///     Searches for properties in the <paramref name="type" /> that were directly declared there.
+	/// </summary>
+	public static PropertyInfo[] GetDeclaredProperties(
+		this Type type)
+		=> type
+			.GetProperties(BindingFlags.DeclaredOnly |
+			               BindingFlags.NonPublic |
+			               BindingFlags.Public |
+			               BindingFlags.Static |
+			               BindingFlags.Instance)
 			.Where(m => !m.IsSpecialName)
 			.ToArray();
 
