@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Reflection.Tests.Collections;
+﻿using aweXpect.Reflection.Collections;
+
+namespace aweXpect.Reflection.Tests.Collections;
 
 public sealed partial class Filtered
 {
@@ -14,6 +16,16 @@ public sealed partial class Filtered
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Nested.Classes();
 
 					await That(types).All().Satisfy(t => t is { IsClass: true, IsNested: true, });
+				}
+
+				[Fact]
+				public async Task ShouldConsiderAccessModifier()
+				{
+					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies()
+						.Nested.Classes(AccessModifiers.Public);
+
+					await That(types).All().Satisfy(type
+						=> type is { IsClass: true, IsNested: true, IsNestedPublic: true, });
 				}
 
 				[Fact]

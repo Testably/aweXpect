@@ -32,5 +32,19 @@ public sealed partial class Filtered
 					"public, protected or internal "
 				},
 			};
+
+		public static TheoryData<AccessModifiers, Func<Type, bool>> CheckAccessModifiers()
+			=> new()
+			{
+				{
+					AccessModifiers.Public, type => type.IsNested ? type.IsNestedPublic : type.IsPublic
+				},
+				{
+					AccessModifiers.Private, type => type.IsNested ? type.IsNestedPrivate : type.IsNotPublic
+				},
+				{
+					AccessModifiers.Internal, type => type.IsNested ? type.IsNestedAssembly : !type.IsVisible
+				},
+			};
 	}
 }

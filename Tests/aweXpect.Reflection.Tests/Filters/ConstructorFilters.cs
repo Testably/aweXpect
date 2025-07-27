@@ -7,13 +7,14 @@ public sealed partial class ConstructorFilters
 {
 	private static ConstructorInfo? ExpectedConstructorInfo()
 		=> typeof(SomeClassToVerifyTheConstructorNameOfIt)
-			.GetConstructors().Single();
+			.GetConstructors(
+				BindingFlags.DeclaredOnly | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
+			.Single();
 
 	private class SomeClassToVerifyTheConstructorNameOfIt
 	{
-		public SomeClassToVerifyTheConstructorNameOfIt()
+		private SomeClassToVerifyTheConstructorNameOfIt()
 		{
-			
 		}
 	}
 }

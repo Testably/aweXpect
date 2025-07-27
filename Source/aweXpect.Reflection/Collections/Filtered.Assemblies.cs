@@ -73,7 +73,11 @@ public static partial class Filtered
 		{
 			get
 			{
-				_typeFilterDescription = "abstract " + (_typeFilterDescription ?? "");
+				_typeFilterDescription = _typeFilterDescription switch
+				{
+					null => "abstract ",
+					_ => _typeFilterDescription + "abstract ",
+				};
 				_typeFilters.Add(type => type.IsReallyAbstract());
 				return this;
 			}
@@ -84,7 +88,11 @@ public static partial class Filtered
 		{
 			get
 			{
-				_typeFilterDescription = "sealed " + (_typeFilterDescription ?? "");
+				_typeFilterDescription = _typeFilterDescription switch
+				{
+					null => "sealed ",
+					_ => _typeFilterDescription + "sealed ",
+				};
 				_typeFilters.Add(type => type.IsReallySealed());
 				return this;
 			}
@@ -95,7 +103,11 @@ public static partial class Filtered
 		{
 			get
 			{
-				_typeFilterDescription = "static " + (_typeFilterDescription ?? "");
+				_typeFilterDescription = _typeFilterDescription switch
+				{
+					null => "static ",
+					_ => _typeFilterDescription + "static ",
+				};
 				_typeFilters.Add(type => type.IsReallyStatic());
 				return this;
 			}
@@ -106,7 +118,11 @@ public static partial class Filtered
 		{
 			get
 			{
-				_typeFilterDescription = "generic " + (_typeFilterDescription ?? "");
+				_typeFilterDescription = _typeFilterDescription switch
+				{
+					null => "generic ",
+					_ => _typeFilterDescription + "generic ",
+				};
 				_typeFilters.Add(type => type.IsGenericType);
 				return this;
 			}
@@ -117,7 +133,11 @@ public static partial class Filtered
 		{
 			get
 			{
-				_typeFilterDescription = "nested " + (_typeFilterDescription ?? "");
+				_typeFilterDescription = _typeFilterDescription switch
+				{
+					null => "nested ",
+					_ => _typeFilterDescription + "nested ",
+				};
 				_typeFilters.Add(type => type.IsNested);
 				return this;
 			}
