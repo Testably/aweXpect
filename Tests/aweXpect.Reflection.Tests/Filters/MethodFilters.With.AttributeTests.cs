@@ -16,8 +16,8 @@ public sealed partial class MethodFilters
 					.Methods().With<BarAttribute>();
 
 				await That(methods).IsEqualTo([
-					typeof(Dummy).GetMethod(nameof(Dummy.MyBarMethod)),
-					typeof(DummyChild).GetMethod(nameof(DummyChild.MyBarMethod)),
+					typeof(Dummy).GetMethod(nameof(Dummy.MyBarMethod))!,
+					typeof(DummyChild).GetMethod(nameof(DummyChild.MyBarMethod))!,
 				]).InAnyOrder();
 				await That(methods.GetDescription())
 					.IsEqualTo("methods with MethodFilters.With.BarAttribute")
@@ -25,7 +25,7 @@ public sealed partial class MethodFilters
 			}
 
 			[Fact]
-			public async Task WhenInheritIsSetToFalse_ShouldFilterForTypesWithAttributeDirectlySet()
+			public async Task WhenInheritIsSetToFalse_ShouldFilterForMethodsWithAttributeDirectlySet()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
 					.Methods().With<BarAttribute>(false);
@@ -38,13 +38,13 @@ public sealed partial class MethodFilters
 
 			[Theory]
 			[MemberData(nameof(GetFooValues))]
-			public async Task WithPredicate_ShouldFilterForTypesWithAttributeMatchingPredicate(int value,
-				MethodInfo?[] expectedTypes)
+			public async Task WithPredicate_ShouldFilterForMethodsWithAttributeMatchingPredicate(int value,
+				MethodInfo?[] expectedMethods)
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
 					.Methods().With<FooAttribute>(foo => foo.Value == value);
 
-				await That(methods).IsEqualTo(expectedTypes).InAnyOrder();
+				await That(methods).IsEqualTo(expectedMethods).InAnyOrder();
 				await That(methods.GetDescription())
 					.IsEqualTo(
 						"methods with MethodFilters.With.FooAttribute matching foo => foo.Value == value")
@@ -52,7 +52,7 @@ public sealed partial class MethodFilters
 			}
 
 			[Fact]
-			public async Task WithPredicate_WhenInheritIsSetToFalse_ShouldFilterForTypesWithAttributeDirectlySet()
+			public async Task WithPredicate_WhenInheritIsSetToFalse_ShouldFilterForMethodsWithAttributeDirectlySet()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
 					.Methods().With<FooAttribute>(foo => foo.Value == 2, false);
@@ -89,11 +89,11 @@ public sealed partial class MethodFilters
 					.Methods().With<BarAttribute>().OrWith<FooAttribute>();
 
 				await That(methods).IsEqualTo([
-					typeof(Dummy).GetMethod(nameof(Dummy.MyBarMethod)),
-					typeof(Dummy).GetMethod(nameof(Dummy.MyFooMethod2)),
-					typeof(Dummy).GetMethod(nameof(Dummy.MyFooMethod3)),
-					typeof(DummyChild).GetMethod(nameof(DummyChild.MyBarMethod)),
-					typeof(DummyChild).GetMethod(nameof(DummyChild.MyFooMethod2)),
+					typeof(Dummy).GetMethod(nameof(Dummy.MyBarMethod))!,
+					typeof(Dummy).GetMethod(nameof(Dummy.MyFooMethod2))!,
+					typeof(Dummy).GetMethod(nameof(Dummy.MyFooMethod3))!,
+					typeof(DummyChild).GetMethod(nameof(DummyChild.MyBarMethod))!,
+					typeof(DummyChild).GetMethod(nameof(DummyChild.MyFooMethod2))!,
 				]).InAnyOrder();
 				await That(methods.GetDescription())
 					.IsEqualTo(
@@ -102,16 +102,16 @@ public sealed partial class MethodFilters
 			}
 
 			[Fact]
-			public async Task WhenInheritIsSetToFalse_ShouldFilterForTypesWithAttributeDirectlySet()
+			public async Task WhenInheritIsSetToFalse_ShouldFilterForMethodsWithAttributeDirectlySet()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
 					.Methods().With<BarAttribute>().OrWith<FooAttribute>(false);
 
 				await That(methods).IsEqualTo([
-					typeof(Dummy).GetMethod(nameof(Dummy.MyBarMethod)),
-					typeof(Dummy).GetMethod(nameof(Dummy.MyFooMethod2)),
-					typeof(Dummy).GetMethod(nameof(Dummy.MyFooMethod3)),
-					typeof(DummyChild).GetMethod(nameof(DummyChild.MyBarMethod)),
+					typeof(Dummy).GetMethod(nameof(Dummy.MyBarMethod))!,
+					typeof(Dummy).GetMethod(nameof(Dummy.MyFooMethod2))!,
+					typeof(Dummy).GetMethod(nameof(Dummy.MyFooMethod3))!,
+					typeof(DummyChild).GetMethod(nameof(DummyChild.MyBarMethod))!,
 				]).InAnyOrder();
 				await That(methods.GetDescription())
 					.IsEqualTo(
@@ -121,13 +121,13 @@ public sealed partial class MethodFilters
 
 			[Theory]
 			[MemberData(nameof(GetFooValues))]
-			public async Task WithPredicate_ShouldFilterForTypesWithAttributeMatchingPredicate(int value,
-				MethodInfo?[] expectedTypes)
+			public async Task WithPredicate_ShouldFilterForMethodsWithAttributeMatchingPredicate(int value,
+				MethodInfo?[] expectedMethods)
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
 					.Methods().With<BarAttribute>(false).OrWith<FooAttribute>(foo => foo.Value == value);
 
-				await That(methods).IsEqualTo(expectedTypes).InAnyOrder();
+				await That(methods).IsEqualTo(expectedMethods).InAnyOrder();
 				await That(methods.GetDescription())
 					.IsEqualTo(
 						"methods with direct MethodFilters.With.BarAttribute or with MethodFilters.With.FooAttribute matching foo => foo.Value == value")
@@ -135,7 +135,7 @@ public sealed partial class MethodFilters
 			}
 
 			[Fact]
-			public async Task WithPredicate_WhenInheritIsSetToFalse_ShouldFilterForTypesWithAttributeDirectlySet()
+			public async Task WithPredicate_WhenInheritIsSetToFalse_ShouldFilterForMethodsWithAttributeDirectlySet()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
 					.Methods().With<BarAttribute>(_ => false)

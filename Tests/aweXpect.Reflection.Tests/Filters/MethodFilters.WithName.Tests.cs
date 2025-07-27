@@ -37,11 +37,11 @@ public sealed partial class MethodFilters
 			public async Task ShouldSupportAsRegex()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().WithName("[a-zA-Z]*VerifyTheNameOfIt").AsRegex();
+					.Methods().WithName("[a-zA-Z]*MethodToVerifyTheName").AsRegex();
 
 				await That(methods).HasSingle().Which.IsEqualTo(ExpectedMethodInfo());
 				await That(methods.GetDescription())
-					.IsEqualTo("methods with name matching regex \"[a-zA-Z]*VerifyTheNameOfIt\" in assembly")
+					.IsEqualTo("methods with name matching regex \"[a-zA-Z]*MethodToVerifyTheName\" in assembly")
 					.AsPrefix();
 			}
 
@@ -60,11 +60,11 @@ public sealed partial class MethodFilters
 			public async Task ShouldSupportAsWildcard()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().WithName("*ToVerifyTheNameOf*").AsWildcard();
+					.Methods().WithName("*MethodToVerifyTheNameOf*").AsWildcard();
 
 				await That(methods).HasSingle().Which.IsEqualTo(ExpectedMethodInfo());
 				await That(methods.GetDescription())
-					.IsEqualTo("methods with name matching \"*ToVerifyTheNameOf*\" in assembly").AsPrefix();
+					.IsEqualTo("methods with name matching \"*MethodToVerifyTheNameOf*\" in assembly").AsPrefix();
 			}
 
 			[Fact]

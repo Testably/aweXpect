@@ -1,6 +1,9 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using aweXpect.Core;
+using aweXpect.Options;
 using aweXpect.Reflection.Helpers;
 
 // ReSharper disable MemberHidesStaticFromOuterClass
@@ -28,6 +31,15 @@ public static partial class Filtered
 		{
 			_types = types;
 			_description = description;
+		}
+
+		/// <summary>
+		///     Container for a filterable collection of <see cref="ConstructorInfo" />.
+		/// </summary>
+		protected Constructors(Constructors inner) : base(inner, inner.Filters)
+		{
+			_description = inner._description;
+			_types = inner._types;
 		}
 
 		/// <inheritdoc />

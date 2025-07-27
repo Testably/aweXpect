@@ -62,7 +62,7 @@ public static partial class MethodFilters
 		public MethodsWith OrWith<TAttribute>(bool inherit = true)
 			where TAttribute : Attribute
 		{
-			filter.UpdateFilter((result, type) => result || type.HasAttribute<TAttribute>(inherit: inherit),
+			filter.UpdateFilter((result, methodInfo) => result || methodInfo.HasAttribute<TAttribute>(inherit: inherit),
 				description
 					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} ");
 			return this;
@@ -84,7 +84,7 @@ public static partial class MethodFilters
 			where TAttribute : Attribute
 		{
 			filter.UpdateFilter(
-				(result, type) => result || type.HasAttribute(predicate, inherit),
+				(result, methodInfo) => result || methodInfo.HasAttribute(predicate, inherit),
 				description
 					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue} ");
 			return this;

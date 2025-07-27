@@ -9,46 +9,46 @@ public sealed partial class MethodFilters
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task ShouldAllowFilteringForInternalTypes()
+			public async Task ShouldAllowFilteringForInternalMethods()
 			{
-				Filtered.Methods types = In.AssemblyContaining<AssemblyFilters>()
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
 					.Methods().WhichAre(AccessModifiers.Internal);
 
-				await That(types).AreInternal();
-				await That(types.GetDescription())
+				await That(methods).AreInternal();
+				await That(methods.GetDescription())
 					.IsEqualTo("internal methods in assembly").AsPrefix();
 			}
 
 			[Fact]
-			public async Task ShouldAllowFilteringForPrivateTypes()
+			public async Task ShouldAllowFilteringForPrivateMethods()
 			{
-				Filtered.Methods types = In.AssemblyContaining<AssemblyFilters>()
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
 					.Methods().WhichAre(AccessModifiers.Private);
 
-				await That(types).ArePrivate();
-				await That(types.GetDescription())
+				await That(methods).ArePrivate();
+				await That(methods.GetDescription())
 					.IsEqualTo("private methods in assembly").AsPrefix();
 			}
 
 			[Fact]
-			public async Task ShouldAllowFilteringForProtectedTypes()
+			public async Task ShouldAllowFilteringForProtectedMethods()
 			{
-				Filtered.Methods types = In.AssemblyContaining<AssemblyFilters>()
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
 					.Methods().WhichAre(AccessModifiers.Protected);
 
-				await That(types).AreProtected();
-				await That(types.GetDescription())
+				await That(methods).AreProtected();
+				await That(methods.GetDescription())
 					.IsEqualTo("protected methods in assembly").AsPrefix();
 			}
 
 			[Fact]
-			public async Task ShouldAllowFilteringForPublicTypes()
+			public async Task ShouldAllowFilteringForPublicMethods()
 			{
-				Filtered.Methods types = In.AssemblyContaining<AssemblyFilters>()
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
 					.Methods().WhichAre(AccessModifiers.Public);
 
-				await That(types).ArePublic();
-				await That(types.GetDescription())
+				await That(methods).ArePublic();
+				await That(methods.GetDescription())
 					.IsEqualTo("public methods in assembly").AsPrefix();
 			}
 		}
