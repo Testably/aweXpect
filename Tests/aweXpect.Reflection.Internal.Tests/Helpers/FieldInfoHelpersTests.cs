@@ -1,18 +1,14 @@
-﻿using System.Linq;
-using System.Reflection;
-using aweXpect.Reflection.Extensions;
+﻿using System.Reflection;
+using aweXpect.Reflection.Helpers;
 
-namespace aweXpect.Reflection.Internal.Tests.Extensions;
+namespace aweXpect.Reflection.Internal.Tests.Helpers;
 
-// ReSharper disable UnusedParameter.Local
-// ReSharper disable UnusedMember.Local
-public sealed class ConstructorInfoExtensionsTests
+public sealed class FieldInfoHelpersTests
 {
 	[Fact]
 	public async Task HasAttribute_WithAttribute_ShouldReturnTrue()
 	{
-		ConstructorInfo type = typeof(TestClass).GetDeclaredConstructors()
-			.Single(c => c.GetParameters().Length == 2);
+		FieldInfo type = typeof(TestClass).GetField(nameof(TestClass.Field1WithAttribute))!;
 
 		bool result = type.HasAttribute<DummyAttribute>();
 
@@ -22,8 +18,7 @@ public sealed class ConstructorInfoExtensionsTests
 	[Fact]
 	public async Task HasAttribute_WithoutAttribute_ShouldReturnFalse()
 	{
-		ConstructorInfo type = typeof(TestClass).GetDeclaredConstructors()
-			.Single(c => c.GetParameters().Length == 3);
+		FieldInfo type = typeof(TestClass).GetField(nameof(TestClass.Field2WithoutAttribute))!;
 
 		bool result = type.HasAttribute<DummyAttribute>();
 
@@ -33,8 +28,7 @@ public sealed class ConstructorInfoExtensionsTests
 	[Fact]
 	public async Task HasAttribute_WithPredicate_ShouldReturnPredicateResult()
 	{
-		ConstructorInfo type = typeof(TestClass).GetDeclaredConstructors()
-			.Single(c => c.GetParameters().Length == 2);
+		FieldInfo type = typeof(TestClass).GetField(nameof(TestClass.Field1WithAttribute))!;
 
 		bool result1 = type.HasAttribute<DummyAttribute>(d => d.Value == 1);
 		bool result2 = type.HasAttribute<DummyAttribute>(d => d.Value == 2);
@@ -43,7 +37,7 @@ public sealed class ConstructorInfoExtensionsTests
 		await That(result2).IsFalse();
 	}
 
-	[AttributeUsage(AttributeTargets.Constructor)]
+	[AttributeUsage(AttributeTargets.Field)]
 	private class DummyAttribute : Attribute
 	{
 		public DummyAttribute(int value)
@@ -54,15 +48,12 @@ public sealed class ConstructorInfoExtensionsTests
 		public int Value { get; }
 	}
 
+#pragma warning disable CS0649
 	private class TestClass
 	{
-		[Dummy(1)]
-		public TestClass(int value1, int value2)
-		{
-		}
+		[Dummy(1)] public int Field1WithAttribute = 1;
 
-		public TestClass(int value1, int value2, int value3)
-		{
-		}
+		public int Field2WithoutAttribute = 1;
 	}
+#pragma warning restore CS0649
 }

@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Reflection;
 using aweXpect.Core;
+using aweXpect.Reflection.Helpers;
 
 // ReSharper disable MemberHidesStaticFromOuterClass
 
@@ -49,15 +50,15 @@ public static partial class Filtered
 
 			if (_types is not null)
 			{
-				return description + "in " + _types.GetDescription();
+				return description + _types.GetDescription().PrefixIn();
 			}
 
 			return description;
 		}
 
 		/// <summary>
-		///     Get all types of the filtered methods.
+		///     Get all declaring types of the filtered methods.
 		/// </summary>
-		public Types Types() => new(this);
+		public Types DeclaringTypes() => new(this);
 	}
 }

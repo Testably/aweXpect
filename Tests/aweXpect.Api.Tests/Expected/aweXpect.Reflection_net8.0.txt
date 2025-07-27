@@ -19,7 +19,12 @@ namespace aweXpect.Reflection.Collections
             protected Assemblies(aweXpect.Reflection.Collections.Filtered.Assemblies inner) { }
             public Assemblies(System.Collections.Generic.IEnumerable<System.Reflection.Assembly?> source, string description) { }
             public Assemblies(System.Reflection.Assembly? source, string description) { }
+            public aweXpect.Reflection.Collections.Filtered.Constructors Constructors() { }
+            public aweXpect.Reflection.Collections.Filtered.Events Events() { }
+            public aweXpect.Reflection.Collections.Filtered.Fields Fields() { }
             public string GetDescription() { }
+            public aweXpect.Reflection.Collections.Filtered.Methods Methods() { }
+            public aweXpect.Reflection.Collections.Filtered.Properties Properties() { }
             public aweXpect.Reflection.Collections.Filtered.Types Types() { }
             public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Assemblies
             {
@@ -39,29 +44,29 @@ namespace aweXpect.Reflection.Collections
         }
         public class Constructors : aweXpect.Reflection.Collections.Filtered<System.Reflection.ConstructorInfo, aweXpect.Reflection.Collections.Filtered.Constructors>, aweXpect.Core.IDescribableSubject
         {
+            public aweXpect.Reflection.Collections.Filtered.Types DeclaringTypes() { }
             public string GetDescription() { }
-            public aweXpect.Reflection.Collections.Filtered.Types Types() { }
         }
         public class Events : aweXpect.Reflection.Collections.Filtered<System.Reflection.EventInfo, aweXpect.Reflection.Collections.Filtered.Events>, aweXpect.Core.IDescribableSubject
         {
+            public aweXpect.Reflection.Collections.Filtered.Types DeclaringTypes() { }
             public string GetDescription() { }
-            public aweXpect.Reflection.Collections.Filtered.Types Types() { }
         }
         public class Fields : aweXpect.Reflection.Collections.Filtered<System.Reflection.FieldInfo, aweXpect.Reflection.Collections.Filtered.Fields>, aweXpect.Core.IDescribableSubject
         {
+            public aweXpect.Reflection.Collections.Filtered.Types DeclaringTypes() { }
             public string GetDescription() { }
-            public aweXpect.Reflection.Collections.Filtered.Types Types() { }
         }
         public class Methods : aweXpect.Reflection.Collections.Filtered<System.Reflection.MethodInfo, aweXpect.Reflection.Collections.Filtered.Methods>, aweXpect.Core.IDescribableSubject
         {
             protected Methods(aweXpect.Reflection.Collections.Filtered.Methods inner) { }
+            public aweXpect.Reflection.Collections.Filtered.Types DeclaringTypes() { }
             public string GetDescription() { }
-            public aweXpect.Reflection.Collections.Filtered.Types Types() { }
         }
         public class Properties : aweXpect.Reflection.Collections.Filtered<System.Reflection.PropertyInfo, aweXpect.Reflection.Collections.Filtered.Properties>, aweXpect.Core.IDescribableSubject
         {
+            public aweXpect.Reflection.Collections.Filtered.Types DeclaringTypes() { }
             public string GetDescription() { }
-            public aweXpect.Reflection.Collections.Filtered.Types Types() { }
         }
         public class Types : aweXpect.Reflection.Collections.Filtered<System.Type, aweXpect.Reflection.Collections.Filtered.Types>, aweXpect.Core.IDescribableSubject
         {
@@ -90,43 +95,6 @@ namespace aweXpect.Reflection.Collections
             }
         }
     }
-    public static class FilteredExtensions
-    {
-        public static aweXpect.Reflection.Collections.Filtered.Types AbstractTypes(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
-        public static aweXpect.Reflection.Collections.Filtered.Types NestedTypes(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
-        public static aweXpect.Reflection.Collections.Filtered.Types SealedTypes(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
-        public static aweXpect.Reflection.Collections.Filtered.Types StaticTypes(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
-        public static aweXpect.Reflection.Collections.Filtered.Types WhichInheritFrom(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Type baseType, bool forceDirect = false) { }
-        public static aweXpect.Reflection.Collections.Filtered.Types WhichInheritFrom<TBaseType>(this aweXpect.Reflection.Collections.Filtered.Types @this, bool forceDirect = false) { }
-        public static aweXpect.Reflection.Collections.Filtered.Assemblies WhichSatisfy(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, System.Func<System.Reflection.Assembly, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
-        public static aweXpect.Reflection.Collections.FilteredExtensions.MethodsWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Methods @this, bool inherit = true)
-            where TAttribute : System.Attribute { }
-        public static aweXpect.Reflection.Collections.FilteredExtensions.TypesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Types @this, bool inherit = true)
-            where TAttribute : System.Attribute { }
-        public static aweXpect.Reflection.Collections.FilteredExtensions.MethodsWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Methods @this, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
-            where TAttribute : System.Attribute { }
-        public static aweXpect.Reflection.Collections.FilteredExtensions.TypesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
-            where TAttribute : System.Attribute { }
-        public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, string expected) { }
-        public static aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Types @this, string expected) { }
-        public static aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResultType WithNamespace(this aweXpect.Reflection.Collections.Filtered.Types @this, string expected) { }
-        public class MethodsWith : aweXpect.Reflection.Collections.Filtered.Methods
-        {
-            public MethodsWith(aweXpect.Reflection.Collections.Filtered.Methods inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Reflection.MethodInfo> filter) { }
-            public aweXpect.Reflection.Collections.FilteredExtensions.MethodsWith OrWith<TAttribute>(bool inherit = true)
-                where TAttribute : System.Attribute { }
-            public aweXpect.Reflection.Collections.FilteredExtensions.MethodsWith OrWith<TAttribute>(System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
-                where TAttribute : System.Attribute { }
-        }
-        public class TypesWith : aweXpect.Reflection.Collections.Filtered.Types
-        {
-            public TypesWith(aweXpect.Reflection.Collections.Filtered.Types inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Type> filter) { }
-            public aweXpect.Reflection.Collections.FilteredExtensions.TypesWith OrWith<TAttribute>(bool inherit = true)
-                where TAttribute : System.Attribute { }
-            public aweXpect.Reflection.Collections.FilteredExtensions.TypesWith OrWith<TAttribute>(System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
-                where TAttribute : System.Attribute { }
-        }
-    }
     public abstract class Filtered<T, TFiltered> : System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable
         where TFiltered : aweXpect.Reflection.Collections.Filtered<T, TFiltered>
     {
@@ -148,6 +116,43 @@ namespace aweXpect.Reflection.Collections
 }
 namespace aweXpect.Reflection
 {
+    public static class FilteredExtensions
+    {
+        public static aweXpect.Reflection.Collections.Filtered.Types AbstractTypes(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types NestedTypes(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types SealedTypes(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types StaticTypes(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichInheritFrom(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Type baseType, bool forceDirect = false) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichInheritFrom<TBaseType>(this aweXpect.Reflection.Collections.Filtered.Types @this, bool forceDirect = false) { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies WhichSatisfy(this aweXpect.Reflection.Collections.Filtered.Assemblies assemblies, System.Func<System.Reflection.Assembly, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Reflection.FilteredExtensions.MethodsWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Methods @this, bool inherit = true)
+            where TAttribute : System.Attribute { }
+        public static aweXpect.Reflection.FilteredExtensions.TypesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Types @this, bool inherit = true)
+            where TAttribute : System.Attribute { }
+        public static aweXpect.Reflection.FilteredExtensions.MethodsWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Methods @this, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
+            where TAttribute : System.Attribute { }
+        public static aweXpect.Reflection.FilteredExtensions.TypesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
+            where TAttribute : System.Attribute { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, string expected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Types @this, string expected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResultType WithNamespace(this aweXpect.Reflection.Collections.Filtered.Types @this, string expected) { }
+        public class MethodsWith : aweXpect.Reflection.Collections.Filtered.Methods
+        {
+            public MethodsWith(aweXpect.Reflection.Collections.Filtered.Methods inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Reflection.MethodInfo> filter) { }
+            public aweXpect.Reflection.FilteredExtensions.MethodsWith OrWith<TAttribute>(bool inherit = true)
+                where TAttribute : System.Attribute { }
+            public aweXpect.Reflection.FilteredExtensions.MethodsWith OrWith<TAttribute>(System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
+                where TAttribute : System.Attribute { }
+        }
+        public class TypesWith : aweXpect.Reflection.Collections.Filtered.Types
+        {
+            public TypesWith(aweXpect.Reflection.Collections.Filtered.Types inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Type> filter) { }
+            public aweXpect.Reflection.FilteredExtensions.TypesWith OrWith<TAttribute>(bool inherit = true)
+                where TAttribute : System.Attribute { }
+            public aweXpect.Reflection.FilteredExtensions.TypesWith OrWith<TAttribute>(System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
+                where TAttribute : System.Attribute { }
+        }
+    }
     public static class In
     {
         public static aweXpect.Reflection.Collections.Filtered.Assemblies AllLoadedAssemblies() { }

@@ -3,51 +3,51 @@ using System.Linq;
 using System.Reflection;
 using aweXpect.Reflection.Collections;
 
-namespace aweXpect.Reflection.Extensions;
+namespace aweXpect.Reflection.Helpers;
 
 /// <summary>
-///     Extension methods for <see cref="MethodInfo" />.
+///     Extension fields for <see cref="FieldInfo" />.
 /// </summary>
-internal static class MethodInfoExtensions
+internal static class FieldInfoHelpers
 {
 	/// <summary>
-	///     Checks if the <paramref name="methodInfo" /> has the specified <paramref name="accessModifiers" />.
+	///     Checks if the <paramref name="fieldInfo" /> has the specified <paramref name="accessModifiers" />.
 	/// </summary>
-	/// <param name="methodInfo">The <see cref="MethodInfo" /> which is checked to have the attribute.</param>
+	/// <param name="fieldInfo">The <see cref="FieldInfo" /> which is checked to have the attribute.</param>
 	/// <param name="accessModifiers">
 	///     The <see cref="AccessModifiers" />.
 	///     <para />
 	///     Supports specifying multiple <see cref="AccessModifiers" />.
 	/// </param>
 	public static bool HasAccessModifier(
-		this MethodInfo? methodInfo,
+		this FieldInfo? fieldInfo,
 		AccessModifiers accessModifiers)
 	{
-		if (methodInfo == null)
+		if (fieldInfo == null)
 		{
 			return false;
 		}
-
+		
 		if (accessModifiers.HasFlag(AccessModifiers.Internal) &&
-		    methodInfo.IsAssembly)
+		    fieldInfo.IsAssembly)
 		{
 			return true;
 		}
 
 		if (accessModifiers.HasFlag(AccessModifiers.Protected) &&
-		    methodInfo.IsFamily)
+		    fieldInfo.IsFamily)
 		{
 			return true;
 		}
 
 		if (accessModifiers.HasFlag(AccessModifiers.Private) &&
-		    methodInfo.IsPrivate)
+		    fieldInfo.IsPrivate)
 		{
 			return true;
 		}
 
 		if (accessModifiers.HasFlag(AccessModifiers.Public) &&
-		    methodInfo.IsPublic)
+		    fieldInfo.IsPublic)
 		{
 			return true;
 		}
@@ -56,27 +56,21 @@ internal static class MethodInfoExtensions
 	}
 
 	/// <summary>
-	///     Checks if the <paramref name="methodInfo" /> has an attribute which satisfies the <paramref name="predicate" />.
+	///     Checks if the <paramref name="fieldInfo" /> has an attribute which satisfies the <paramref name="predicate" />.
 	/// </summary>
 	/// <typeparam name="TAttribute">The type of the <see cref="Attribute" />.</typeparam>
-	/// <param name="methodInfo">The <see cref="MethodInfo" /> which is checked to have the attribute.</param>
+	/// <param name="fieldInfo">The <see cref="FieldInfo" /> which is checked to have the attribute.</param>
 	/// <param name="predicate">
 	///     (optional) A predicate to check the attribute values.
 	///     <para />
 	///     If not set (<see langword="null" />), will only check if the attribute is present.
 	/// </param>
-	/// <param name="inherit">
-	///     <see langword="true" /> to search the inheritance chain to find the attributes; otherwise,
-	///     <see langword="false" />.<br />
-	///     Defaults to <see langword="true" />
-	/// </param>
 	public static bool HasAttribute<TAttribute>(
-		this MethodInfo methodInfo,
-		Func<TAttribute, bool>? predicate = null,
-		bool inherit = true)
+		this FieldInfo fieldInfo,
+		Func<TAttribute, bool>? predicate = null)
 		where TAttribute : Attribute
 	{
-		object? attribute = Attribute.GetCustomAttributes(methodInfo, typeof(TAttribute), inherit)
+		object? attribute = fieldInfo.GetCustomAttributes(typeof(TAttribute))
 			.FirstOrDefault();
 		if (attribute is TAttribute castedAttribute)
 		{

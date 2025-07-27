@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using aweXpect.Reflection.Collections;
 
-namespace aweXpect.Reflection.Collections;
+namespace aweXpect.Reflection;
 
 public static partial class FilteredExtensions
 {

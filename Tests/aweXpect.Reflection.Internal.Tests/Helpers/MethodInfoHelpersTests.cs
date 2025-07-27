@@ -1,15 +1,15 @@
 ﻿using System.Reflection;
-using aweXpect.Reflection.Extensions;
+using aweXpect.Reflection.Helpers;
 
-namespace aweXpect.Reflection.Internal.Tests.Extensions;
+namespace aweXpect.Reflection.Internal.Tests.Helpers;
 
-public sealed class PropertyInfoExtensionsTests
+// ReSharper disable UnusedMember.Local
+public sealed class MethodInfoHelpersTests
 {
 	[Fact]
 	public async Task HasAttribute_WithAttribute_ShouldReturnTrue()
 	{
-		PropertyInfo type =
-			typeof(TestClass).GetProperty(nameof(TestClass.Property1WithAttribute))!;
+		MethodInfo type = typeof(TestClass).GetMethod(nameof(TestClass.Method1WithAttribute))!;
 
 		bool result = type.HasAttribute<DummyAttribute>();
 
@@ -19,8 +19,8 @@ public sealed class PropertyInfoExtensionsTests
 	[Fact]
 	public async Task HasAttribute_WithInheritedAttribute_ShouldReturnTrue()
 	{
-		PropertyInfo type =
-			typeof(TestClass).GetProperty(nameof(TestClass.PropertyWithAttributeInBaseClass))!;
+		MethodInfo type =
+			typeof(TestClass).GetMethod(nameof(TestClass.MethodWithAttributeInBaseClass))!;
 
 		bool result = type.HasAttribute<DummyAttribute>();
 
@@ -30,8 +30,7 @@ public sealed class PropertyInfoExtensionsTests
 	[Fact]
 	public async Task HasAttribute_WithoutAttribute_ShouldReturnFalse()
 	{
-		PropertyInfo type =
-			typeof(TestClass).GetProperty(nameof(TestClass.Property2WithoutAttribute))!;
+		MethodInfo type = typeof(TestClass).GetMethod(nameof(TestClass.Method2WithoutAttribute))!;
 
 		bool result = type.HasAttribute<DummyAttribute>();
 
@@ -41,8 +40,7 @@ public sealed class PropertyInfoExtensionsTests
 	[Fact]
 	public async Task HasAttribute_WithPredicate_ShouldReturnPredicateResult()
 	{
-		PropertyInfo type =
-			typeof(TestClass).GetProperty(nameof(TestClass.Property1WithAttribute))!;
+		MethodInfo type = typeof(TestClass).GetMethod(nameof(TestClass.Method1WithAttribute))!;
 
 		bool result1 = type.HasAttribute<DummyAttribute>(d => d.Value == 1);
 		bool result2 = type.HasAttribute<DummyAttribute>(d => d.Value == 2);
@@ -51,7 +49,7 @@ public sealed class PropertyInfoExtensionsTests
 		await That(result2).IsFalse();
 	}
 
-	[AttributeUsage(AttributeTargets.Property)]
+	[AttributeUsage(AttributeTargets.Method)]
 	private class DummyAttribute : Attribute
 	{
 		public DummyAttribute(int value)
@@ -64,15 +62,21 @@ public sealed class PropertyInfoExtensionsTests
 
 	private class TestClass : TestClassBase
 	{
-		[Dummy(1)] public int Property1WithAttribute { get; set; } = 1;
+		[Dummy(1)]
+		public void Method1WithAttribute()
+			=> throw new NotSupportedException();
 
-		public int Property2WithoutAttribute { get; set; } = 1;
+		public void Method2WithoutAttribute()
+			=> throw new NotSupportedException();
 
-		public override int PropertyWithAttributeInBaseClass { get; set; } = 1;
+		public override void MethodWithAttributeInBaseClass()
+			=> throw new NotSupportedException();
 	}
 
 	private class TestClassBase
 	{
-		[Dummy(1)] public virtual int PropertyWithAttributeInBaseClass { get; set; } = 1;
+		[Dummy(1)]
+		public virtual void MethodWithAttributeInBaseClass()
+			=> throw new NotSupportedException();
 	}
 }

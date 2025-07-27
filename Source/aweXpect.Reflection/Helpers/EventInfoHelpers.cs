@@ -3,40 +3,32 @@ using System.Linq;
 using System.Reflection;
 using aweXpect.Reflection.Collections;
 
-namespace aweXpect.Reflection.Extensions;
+namespace aweXpect.Reflection.Helpers;
 
 /// <summary>
-///     Extension properties for <see cref="PropertyInfo" />.
+///     Extension events for <see cref="EventInfo" />.
 /// </summary>
-internal static class PropertyInfoExtensions
+internal static class EventInfoHelpers
 {
 	/// <summary>
-	///     Checks if the <paramref name="propertyInfo" /> has the specified <paramref name="accessModifiers" />.
+	///     Checks if the <paramref name="eventInfo" /> has the specified <paramref name="accessModifiers" />.
 	/// </summary>
-	/// <param name="propertyInfo">The <see cref="PropertyInfo" /> which is checked to have the attribute.</param>
+	/// <param name="eventInfo">The <see cref="FieldInfo" /> which is checked to have the attribute.</param>
 	/// <param name="accessModifiers">
 	///     The <see cref="AccessModifiers" />.
 	///     <para />
 	///     Supports specifying multiple <see cref="AccessModifiers" />.
 	/// </param>
 	public static bool HasAccessModifier(
-		this PropertyInfo? propertyInfo,
+		this EventInfo? eventInfo,
 		AccessModifiers accessModifiers)
-	{
-		if (propertyInfo == null)
-		{
-			return false;
-		}
-
-		return propertyInfo.GetMethod.HasAccessModifier(accessModifiers) &&
-		       propertyInfo.SetMethod.HasAccessModifier(accessModifiers);
-	}
+		=> eventInfo?.AddMethod.HasAccessModifier(accessModifiers) == true;
 
 	/// <summary>
-	///     Checks if the <paramref name="propertyInfo" /> has an attribute which satisfies the <paramref name="predicate" />.
+	///     Checks if the <paramref name="eventInfo" /> has an attribute which satisfies the <paramref name="predicate" />.
 	/// </summary>
 	/// <typeparam name="TAttribute">The type of the <see cref="Attribute" />.</typeparam>
-	/// <param name="propertyInfo">The <see cref="PropertyInfo" /> which is checked to have the attribute.</param>
+	/// <param name="eventInfo">The <see cref="EventInfo" /> which is checked to have the attribute.</param>
 	/// <param name="predicate">
 	///     (optional) A predicate to check the attribute values.
 	///     <para />
@@ -48,12 +40,12 @@ internal static class PropertyInfoExtensions
 	///     Defaults to <see langword="true" />
 	/// </param>
 	public static bool HasAttribute<TAttribute>(
-		this PropertyInfo propertyInfo,
+		this EventInfo eventInfo,
 		Func<TAttribute, bool>? predicate = null,
 		bool inherit = true)
 		where TAttribute : Attribute
 	{
-		object? attribute = Attribute.GetCustomAttributes(propertyInfo, typeof(TAttribute), inherit)
+		object? attribute = Attribute.GetCustomAttributes(eventInfo, typeof(TAttribute), inherit)
 			.FirstOrDefault();
 		if (attribute is TAttribute castedAttribute)
 		{

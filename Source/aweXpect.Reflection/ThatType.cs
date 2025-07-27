@@ -1,5 +1,5 @@
 ﻿using System;
-using aweXpect.Reflection.Extensions;
+using aweXpect.Reflection.Helpers;
 
 namespace aweXpect.Reflection;
 

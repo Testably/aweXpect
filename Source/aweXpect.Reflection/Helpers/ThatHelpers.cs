@@ -2,9 +2,9 @@
 using System.Diagnostics.CodeAnalysis;
 using aweXpect.Core;
 
-namespace aweXpect.Reflection.Extensions;
+namespace aweXpect.Reflection.Helpers;
 
-internal static class ThatExtensions
+internal static class ThatHelpers
 {
 	[ExcludeFromCodeCoverage]
 	public static IExpectThat<T> Get<T>(this IThat<T> subject)

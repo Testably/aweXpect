@@ -5,7 +5,7 @@ using aweXpect.Reflection.Collections;
 namespace aweXpect.Reflection.Tests;
 
 // ReSharper disable PossibleMultipleEnumeration
-public class InTests
+public sealed class InTests
 {
 	[Fact]
 	public async Task AllLoadedAssemblies_ShouldContainMultipleAssemblies()

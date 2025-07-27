@@ -1,7 +1,8 @@
 ﻿using System;
-using aweXpect.Reflection.Extensions;
+using aweXpect.Reflection.Collections;
+using aweXpect.Reflection.Helpers;
 
-namespace aweXpect.Reflection.Collections;
+namespace aweXpect.Reflection;
 
 public static partial class FilteredExtensions
 {

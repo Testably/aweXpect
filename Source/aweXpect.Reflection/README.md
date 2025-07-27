@@ -29,9 +29,12 @@ There is also a helper construct (`In`) to simplify the construction of collecti
 specific criteria:
 
 ```csharp
-// Verifies that all xunit test classes (types with at least one method with a `FactAttribute` or `TheoryAttribute`) are sealed:
-var xunitTestClasses = In.AllLoadedAssemblies().Types().Methods().With<FactAttribute>().OrWith<TheoryAttribute>().Types();
-await That(xunitTestClasses).AreSealed();
+// Verifies that all xunit test classes (types with at least one method with
+// a `FactAttribute` or `TheoryAttribute`) have a name that ends with "Tests":
+await That(In.AllLoadedAssemblies()
+        .Methods().With<FactAttribute>().OrWith<TheoryAttribute>()
+        .DeclaringTypes())
+    .HaveName("Tests").AsSuffix();
 ```
 
 This helper consists of the static class `In` for accessing assemblies and allows filtering and navigating between the

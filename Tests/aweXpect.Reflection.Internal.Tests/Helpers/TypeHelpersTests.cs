@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using aweXpect.Reflection.Extensions;
+using aweXpect.Reflection.Helpers;
 
-namespace aweXpect.Reflection.Internal.Tests.Extensions;
+namespace aweXpect.Reflection.Internal.Tests.Helpers;
 
 // ReSharper disable UnusedMember.Local
-public sealed class TypeExtensionsTests
+public sealed class TypeHelpersTests
 {
 	[Fact]
 	public async Task HasAttribute_WithAttribute_ShouldReturnTrue()

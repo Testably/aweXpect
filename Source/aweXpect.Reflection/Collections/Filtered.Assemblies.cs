@@ -41,7 +41,7 @@ public static partial class Filtered
 		/// </summary>
 		internal Assemblies(Types types) : base(types.Select(type => type.Assembly).Distinct())
 		{
-			_description = types.GetDescription() + " assemblies";
+			_description = "assemblies containing " + types.GetDescription();
 		}
 
 		/// <summary>
@@ -68,6 +68,31 @@ public static partial class Filtered
 		///     Get all types in the filtered assemblies.
 		/// </summary>
 		public Types Types() => new(this, "types ");
+
+		/// <summary>
+		///     Get all constructors in the filtered types.
+		/// </summary>
+		public Constructors Constructors() => new(new(this, ""), "constructors ");
+
+		/// <summary>
+		///     Get all events in the filtered types.
+		/// </summary>
+		public Events Events() => new(new(this, ""), "events ");
+
+		/// <summary>
+		///     Get all fields in the filtered types.
+		/// </summary>
+		public Fields Fields() => new(new(this, ""), "fields ");
+
+		/// <summary>
+		///     Get all methods in the filtered types.
+		/// </summary>
+		public Methods Methods() => new(new(this, ""), "methods ");
+
+		/// <summary>
+		///     Get all properties in the filtered types.
+		/// </summary>
+		public Properties Properties() => new(new(this, ""), "properties ");
 
 		/// <summary>
 		///     A Container for a filterable collection of <see cref="Assembly" />,
