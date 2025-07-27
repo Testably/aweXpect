@@ -47,6 +47,10 @@ namespace aweXpect.Reflection
     }
     public static class FieldFilters
     {
+        public static aweXpect.Reflection.FieldFilters.FieldsOfType OfExactType(this aweXpect.Reflection.Collections.Filtered.Fields @this, System.Type fieldType) { }
+        public static aweXpect.Reflection.FieldFilters.FieldsOfType OfExactType<TField>(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
+        public static aweXpect.Reflection.FieldFilters.FieldsOfType OfType(this aweXpect.Reflection.Collections.Filtered.Fields @this, System.Type fieldType) { }
+        public static aweXpect.Reflection.FieldFilters.FieldsOfType OfType<TField>(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAre(this aweXpect.Reflection.Collections.Filtered.Fields @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNot(this aweXpect.Reflection.Collections.Filtered.Fields @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichSatisfy(this aweXpect.Reflection.Collections.Filtered.Fields @this, System.Func<System.Reflection.FieldInfo, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
@@ -55,6 +59,14 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.FieldFilters.FieldsWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Fields @this, System.Func<TAttribute, bool>? predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Collections.Filtered.Fields.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Fields @this, string expected) { }
+        public class FieldsOfType : aweXpect.Reflection.Collections.Filtered.Fields
+        {
+            public FieldsOfType(aweXpect.Reflection.Collections.Filtered.Fields inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Reflection.FieldInfo> filter) { }
+            public aweXpect.Reflection.FieldFilters.FieldsOfType OrOfExactType(System.Type fieldType) { }
+            public aweXpect.Reflection.FieldFilters.FieldsOfType OrOfExactType<TField>() { }
+            public aweXpect.Reflection.FieldFilters.FieldsOfType OrOfType(System.Type fieldType) { }
+            public aweXpect.Reflection.FieldFilters.FieldsOfType OrOfType<TField>() { }
+        }
         public class FieldsWith : aweXpect.Reflection.Collections.Filtered.Fields
         {
             public FieldsWith(aweXpect.Reflection.Collections.Filtered.Fields inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Reflection.FieldInfo> filter) { }
@@ -95,6 +107,10 @@ namespace aweXpect.Reflection
     }
     public static class PropertyFilters
     {
+        public static aweXpect.Reflection.PropertyFilters.PropertiesOfType OfExactType(this aweXpect.Reflection.Collections.Filtered.Properties @this, System.Type propertyType) { }
+        public static aweXpect.Reflection.PropertyFilters.PropertiesOfType OfExactType<TProperty>(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
+        public static aweXpect.Reflection.PropertyFilters.PropertiesOfType OfType(this aweXpect.Reflection.Collections.Filtered.Properties @this, System.Type propertyType) { }
+        public static aweXpect.Reflection.PropertyFilters.PropertiesOfType OfType<TProperty>(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAre(this aweXpect.Reflection.Collections.Filtered.Properties @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNot(this aweXpect.Reflection.Collections.Filtered.Properties @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichSatisfy(this aweXpect.Reflection.Collections.Filtered.Properties @this, System.Func<System.Reflection.PropertyInfo, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
@@ -103,6 +119,14 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.PropertyFilters.PropertiesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Properties @this, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Collections.Filtered.Properties.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Properties @this, string expected) { }
+        public class PropertiesOfType : aweXpect.Reflection.Collections.Filtered.Properties
+        {
+            public PropertiesOfType(aweXpect.Reflection.Collections.Filtered.Properties inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Reflection.PropertyInfo> filter) { }
+            public aweXpect.Reflection.PropertyFilters.PropertiesOfType OrOfExactType(System.Type propertyType) { }
+            public aweXpect.Reflection.PropertyFilters.PropertiesOfType OrOfExactType<TProperty>() { }
+            public aweXpect.Reflection.PropertyFilters.PropertiesOfType OrOfType(System.Type propertyType) { }
+            public aweXpect.Reflection.PropertyFilters.PropertiesOfType OrOfType<TProperty>() { }
+        }
         public class PropertiesWith : aweXpect.Reflection.Collections.Filtered.Properties
         {
             public PropertiesWith(aweXpect.Reflection.Collections.Filtered.Properties inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Reflection.PropertyInfo> filter) { }

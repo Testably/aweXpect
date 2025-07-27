@@ -1,4 +1,5 @@
-﻿using aweXpect.Reflection.Collections;
+﻿using System.Reflection;
+using aweXpect.Reflection.Collections;
 
 namespace aweXpect.Reflection;
 
@@ -7,4 +8,9 @@ namespace aweXpect.Reflection;
 /// </summary>
 public static partial class PropertyFilters
 {
+	/// <summary>
+	///     Additional filters on properties of a specific type.
+	/// </summary>
+	public partial class PropertiesOfType(Filtered.Properties inner, IChangeableFilter<PropertyInfo> filter)
+		: Filtered.Properties(inner);
 }
