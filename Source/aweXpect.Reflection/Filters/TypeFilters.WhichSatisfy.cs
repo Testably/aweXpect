@@ -9,7 +9,7 @@ namespace aweXpect.Reflection;
 public static partial class TypeFilters
 {
 	/// <summary>
-	///     Filters the types according to the <paramref name="predicate" />.
+	///     Filters for types that satisfy the <paramref name="predicate" />.
 	/// </summary>
 	public static Filtered.Types WhichSatisfy(this Filtered.Types @this,
 		Func<Type, bool> predicate,

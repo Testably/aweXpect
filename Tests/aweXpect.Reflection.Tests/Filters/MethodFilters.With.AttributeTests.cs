@@ -13,7 +13,7 @@ public sealed partial class MethodFilters
 			public async Task ShouldFilterForMethodsWithAttribute()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Types().Methods().With<BarAttribute>();
+					.Methods().With<BarAttribute>();
 
 				await That(methods).IsEqualTo([
 					typeof(Dummy).GetMethod(nameof(Dummy.MyBarMethod)),
@@ -28,7 +28,7 @@ public sealed partial class MethodFilters
 			public async Task WhenInheritIsSetToFalse_ShouldFilterForTypesWithAttributeDirectlySet()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Types().Methods().With<BarAttribute>(false);
+					.Methods().With<BarAttribute>(false);
 
 				await That(methods).HasSingle().Which.IsEqualTo(typeof(Dummy).GetMethod(nameof(Dummy.MyBarMethod)));
 				await That(methods.GetDescription())
@@ -42,7 +42,7 @@ public sealed partial class MethodFilters
 				MethodInfo?[] expectedTypes)
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Types().Methods().With<FooAttribute>(foo => foo.Value == value);
+					.Methods().With<FooAttribute>(foo => foo.Value == value);
 
 				await That(methods).IsEqualTo(expectedTypes).InAnyOrder();
 				await That(methods.GetDescription())
@@ -55,7 +55,7 @@ public sealed partial class MethodFilters
 			public async Task WithPredicate_WhenInheritIsSetToFalse_ShouldFilterForTypesWithAttributeDirectlySet()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Types().Methods().With<FooAttribute>(foo => foo.Value == 2, false);
+					.Methods().With<FooAttribute>(foo => foo.Value == 2, false);
 
 				await That(methods).HasSingle().Which
 					.IsEqualTo(typeof(Dummy).GetMethod(nameof(Dummy.MyFooMethod2)));
@@ -86,7 +86,7 @@ public sealed partial class MethodFilters
 			public async Task ShouldFilterForMethodsWithAttribute()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Types().Methods().With<BarAttribute>().OrWith<FooAttribute>();
+					.Methods().With<BarAttribute>().OrWith<FooAttribute>();
 
 				await That(methods).IsEqualTo([
 					typeof(Dummy).GetMethod(nameof(Dummy.MyBarMethod)),
@@ -105,7 +105,7 @@ public sealed partial class MethodFilters
 			public async Task WhenInheritIsSetToFalse_ShouldFilterForTypesWithAttributeDirectlySet()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Types().Methods().With<BarAttribute>().OrWith<FooAttribute>(false);
+					.Methods().With<BarAttribute>().OrWith<FooAttribute>(false);
 
 				await That(methods).IsEqualTo([
 					typeof(Dummy).GetMethod(nameof(Dummy.MyBarMethod)),
@@ -125,7 +125,7 @@ public sealed partial class MethodFilters
 				MethodInfo?[] expectedTypes)
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Types().Methods().With<BarAttribute>(false).OrWith<FooAttribute>(foo => foo.Value == value);
+					.Methods().With<BarAttribute>(false).OrWith<FooAttribute>(foo => foo.Value == value);
 
 				await That(methods).IsEqualTo(expectedTypes).InAnyOrder();
 				await That(methods.GetDescription())
@@ -138,7 +138,7 @@ public sealed partial class MethodFilters
 			public async Task WithPredicate_WhenInheritIsSetToFalse_ShouldFilterForTypesWithAttributeDirectlySet()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Types().Methods().With<BarAttribute>(_ => false)
+					.Methods().With<BarAttribute>(_ => false)
 					.OrWith<FooAttribute>(foo => foo.Value == 2, false);
 
 				await That(methods).HasSingle().Which
