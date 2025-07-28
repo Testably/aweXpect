@@ -16,7 +16,10 @@ public static partial class Filtered
 	/// <summary>
 	///     Container for a filterable collection of <see cref="Assembly" />.
 	/// </summary>
-	public class Assemblies : Filtered<Assembly, Assemblies>, IDescribableSubject, ITypeAssemblies
+	public class Assemblies : Filtered<Assembly, Assemblies>,
+		IDescribableSubject,
+		ITypeAssemblies.IProtected,
+		ITypeAssemblies.IPrivate
 	{
 		private readonly string _description;
 		private readonly List<Func<Type, bool>> _typeFilters = [];
@@ -56,6 +59,62 @@ public static partial class Filtered
 			_description = inner._description;
 		}
 
+		/// <summary>
+		///     Filters for public types.
+		/// </summary>
+		public ITypeAssemblies Public
+		{
+			get
+			{
+				AccessModifiers accessModifier = AccessModifiers.Public;
+				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
+				_typeFilterDescription = accessModifier.GetString(" ") + (_typeFilterDescription ?? "");
+				return this;
+			}
+		}
+
+		/// <summary>
+		///     Filters for private types.
+		/// </summary>
+		public ITypeAssemblies.IPrivate Private
+		{
+			get
+			{
+				AccessModifiers accessModifier = AccessModifiers.Private;
+				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
+				_typeFilterDescription = accessModifier.GetString(" ") + (_typeFilterDescription ?? "");
+				return this;
+			}
+		}
+
+		/// <summary>
+		///     Filters for protected types.
+		/// </summary>
+		public ITypeAssemblies.IProtected Protected
+		{
+			get
+			{
+				AccessModifiers accessModifier = AccessModifiers.Protected;
+				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
+				_typeFilterDescription = accessModifier.GetString(" ") + (_typeFilterDescription ?? "");
+				return this;
+			}
+		}
+
+		/// <summary>
+		///     Filters for internal types.
+		/// </summary>
+		public ITypeAssemblies Internal
+		{
+			get
+			{
+				AccessModifiers accessModifier = AccessModifiers.Internal;
+				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
+				_typeFilterDescription = accessModifier.GetString(" ") + (_typeFilterDescription ?? "");
+				return this;
+			}
+		}
+
 		/// <inheritdoc />
 		public string GetDescription()
 		{
@@ -66,6 +125,30 @@ public static partial class Filtered
 			}
 
 			return description;
+		}
+
+		/// <inheritdoc cref="ITypeAssemblies.IPrivate.Protected" />
+		ITypeAssemblies ITypeAssemblies.IPrivate.Protected
+		{
+			get
+			{
+				AccessModifiers accessModifier = AccessModifiers.Protected;
+				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
+				_typeFilterDescription = (_typeFilterDescription ?? "") + accessModifier.GetString(" ");
+				return this;
+			}
+		}
+
+		/// <inheritdoc cref="ITypeAssemblies.IProtected.Internal" />
+		ITypeAssemblies ITypeAssemblies.IProtected.Internal
+		{
+			get
+			{
+				AccessModifiers accessModifier = AccessModifiers.Internal;
+				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
+				_typeFilterDescription = (_typeFilterDescription ?? "") + accessModifier.GetString(" ");
+				return this;
+			}
 		}
 
 		/// <inheritdoc cref="ITypeAssemblies.Abstract" />

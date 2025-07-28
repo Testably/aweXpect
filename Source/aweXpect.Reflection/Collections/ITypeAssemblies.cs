@@ -33,4 +33,34 @@ public interface ITypeAssemblies : ILimitedTypeAssemblies<ITypeAssemblies>
 	///     Get all enums in the filtered assemblies.
 	/// </summary>
 	Filtered.Types Enums(AccessModifiers accessModifier = AccessModifiers.Any);
+
+	/// <summary>
+	///     An interface to allow filtering for types in assemblies.
+	/// </summary>
+	/// <remarks>
+	///     In addition to the properties and methods in <see cref="ITypeAssemblies" /> it also
+	///     allows filtering for a private protected access modifier.
+	/// </remarks>
+	public interface IPrivate : ITypeAssemblies
+	{
+		/// <summary>
+		///     Filters for private protected types.
+		/// </summary>
+		ITypeAssemblies Protected { get; }
+	}
+
+	/// <summary>
+	///     An interface to allow filtering for types in assemblies.
+	/// </summary>
+	/// <remarks>
+	///     In addition to the properties and methods in <see cref="ITypeAssemblies" /> it also
+	///     allows filtering for a protected internal access modifier.
+	/// </remarks>
+	public interface IProtected : ITypeAssemblies
+	{
+		/// <summary>
+		///     Filters for protected internal types.
+		/// </summary>
+		ITypeAssemblies Internal { get; }
+	}
 }
