@@ -85,6 +85,11 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Assemblies AssemblyContaining<TType>() { }
         public static aweXpect.Reflection.Collections.Filtered.Assemblies EntryAssembly() { }
         public static aweXpect.Reflection.Collections.Filtered.Assemblies ExecutingAssembly() { }
+        public static aweXpect.Reflection.Collections.Filtered.Types Type(System.Type type) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types Type<TType>() { }
+        public static aweXpect.Reflection.Collections.Filtered.Types Types(params System.Type[] types) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types Types<TType1, TType2>() { }
+        public static aweXpect.Reflection.Collections.Filtered.Types Types<TType1, TType2, TType3>() { }
     }
     public static class MethodFilters
     {
@@ -399,6 +404,7 @@ namespace aweXpect.Reflection.Collections
         public class Types : aweXpect.Reflection.Collections.Filtered<System.Type, aweXpect.Reflection.Collections.Filtered.Types>, aweXpect.Core.IDescribableSubject
         {
             protected Types(aweXpect.Reflection.Collections.Filtered.Types inner) { }
+            public Types(System.Collections.Generic.IEnumerable<System.Type?> source, string description) { }
             public aweXpect.Reflection.Collections.Filtered.Assemblies Assemblies() { }
             public aweXpect.Reflection.Collections.Filtered.Constructors Constructors() { }
             public aweXpect.Reflection.Collections.Filtered.Events Events() { }

@@ -24,6 +24,15 @@ public static partial class Filtered
 		/// <summary>
 		///     Container for a filterable collection of <see cref="Type" />.
 		/// </summary>
+		public Types(IEnumerable<Type?> source, string description)
+			: base(source.Where(a => a is not null).Cast<Type>())
+		{
+			_description = description;
+		}
+
+		/// <summary>
+		///     Container for a filterable collection of <see cref="Type" />.
+		/// </summary>
 		internal Types(Assemblies assemblies, string description) : base(
 			assemblies.SelectMany(assembly => assembly.GetTypes()))
 		{

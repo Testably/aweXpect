@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using aweXpect.Reflection.Collections;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -98,5 +99,57 @@ public sealed class InTests
 		await That(sut).HasSingle().Which
 			.IsEqualTo(expectedAssembly);
 		await That(sut.GetDescription()).IsEqualTo("in executing assembly");
+	}
+
+	[Fact]
+	public async Task Type_WithGenericParameter_ShouldIncludeSpecifiedType()
+	{
+		Filtered.Types sut = In.Type<InTests>();
+
+		await That(sut).HasSingle().Which
+			.IsEqualTo(typeof(InTests));
+		await That(sut.GetDescription()).IsEqualTo($"in type {nameof(InTests)}");
+	}
+
+	[Fact]
+	public async Task Type_WithTypeParameter_ShouldIncludeSpecifiedType()
+	{
+		Filtered.Types sut = In.Type(typeof(InTests));
+
+		await That(sut).HasSingle().Which
+			.IsEqualTo(typeof(InTests));
+		await That(sut.GetDescription()).IsEqualTo($"in type {nameof(InTests)}");
+	}
+
+	[Fact]
+	public async Task Types_WithThreeGenericParameters_ShouldIncludeSpecifiedTypes()
+	{
+		Filtered.Types sut = In.Types<InTests, InternalClass, PublicClass>();
+
+		await That(sut).IsEqualTo([typeof(InTests), typeof(InternalClass), typeof(PublicClass),]).InAnyOrder();
+		await That(sut.GetDescription())
+			.IsEqualTo($"in types {nameof(InTests)}, {nameof(InternalClass)} and {nameof(PublicClass)}");
+	}
+
+	[Fact]
+	public async Task Types_WithTwoGenericParameters_ShouldIncludeSpecifiedTypes()
+	{
+		Filtered.Types sut = In.Types<InTests, InternalClass>();
+
+		await That(sut).IsEqualTo([typeof(InTests), typeof(InternalClass),]).InAnyOrder();
+		await That(sut.GetDescription()).IsEqualTo($"in types {nameof(InTests)} and {nameof(InternalClass)}");
+	}
+
+	[Fact]
+	public async Task Types_WithTypeParameters_ShouldIncludeSpecifiedTypes()
+	{
+		Filtered.Types sut = In.Types(typeof(InTests), typeof(InternalClass), typeof(PublicClass),
+			typeof(AccessModifiers));
+
+		await That(sut)
+			.IsEqualTo([typeof(InTests), typeof(InternalClass), typeof(PublicClass), typeof(AccessModifiers),])
+			.InAnyOrder();
+		await That(sut.GetDescription())
+			.IsEqualTo($"in types [{nameof(InTests)}, {nameof(InternalClass)}, {nameof(PublicClass)}, {nameof(AccessModifiers)}]");
 	}
 }
