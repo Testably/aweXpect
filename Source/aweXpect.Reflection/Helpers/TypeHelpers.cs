@@ -255,6 +255,9 @@ internal static class TypeHelpers
 		return !forceDirect && type.InheritsFrom(parentType);
 	}
 
+	public static bool IsReallyClass(this Type? type)
+		=> type?.IsClass == true && !type.IsRecordClass();
+
 	public static bool IsRecordClass(this Type? type)
 		=> type?.GetMethod("<Clone>$", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly) is not
 			   null &&
