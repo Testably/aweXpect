@@ -11,7 +11,15 @@ namespace aweXpect.Reflection
     public static class ConstructorFilters
     {
         public static aweXpect.Reflection.Collections.Filtered.Constructors WhichAre(this aweXpect.Reflection.Collections.Filtered.Constructors @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
+        public static aweXpect.Reflection.Collections.Filtered.Constructors WhichAreInternal(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Constructors WhichAreNot(this aweXpect.Reflection.Collections.Filtered.Constructors @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
+        public static aweXpect.Reflection.Collections.Filtered.Constructors WhichAreNotInternal(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Constructors WhichAreNotPrivate(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Constructors WhichAreNotProtected(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Constructors WhichAreNotPublic(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Constructors WhichArePrivate(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Constructors WhichAreProtected(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Constructors WhichArePublic(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Constructors WhichSatisfy(this aweXpect.Reflection.Collections.Filtered.Constructors @this, System.Func<System.Reflection.ConstructorInfo, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Reflection.ConstructorFilters.ConstructorsWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Constructors @this)
             where TAttribute : System.Attribute { }
@@ -29,7 +37,15 @@ namespace aweXpect.Reflection
     public static class EventFilters
     {
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAre(this aweXpect.Reflection.Collections.Filtered.Events @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
+        public static aweXpect.Reflection.Collections.Filtered.Events WhichAreInternal(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNot(this aweXpect.Reflection.Collections.Filtered.Events @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
+        public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNotInternal(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNotPrivate(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNotProtected(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNotPublic(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Events WhichArePrivate(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Events WhichAreProtected(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Events WhichArePublic(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichSatisfy(this aweXpect.Reflection.Collections.Filtered.Events @this, System.Func<System.Reflection.EventInfo, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Reflection.EventFilters.EventsWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Events @this, bool inherit = true)
             where TAttribute : System.Attribute { }
@@ -52,7 +68,15 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.FieldFilters.FieldsOfType OfType(this aweXpect.Reflection.Collections.Filtered.Fields @this, System.Type fieldType) { }
         public static aweXpect.Reflection.FieldFilters.FieldsOfType OfType<TField>(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAre(this aweXpect.Reflection.Collections.Filtered.Fields @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
+        public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreInternal(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNot(this aweXpect.Reflection.Collections.Filtered.Fields @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
+        public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNotInternal(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNotPrivate(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNotProtected(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNotPublic(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Fields WhichArePrivate(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreProtected(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Fields WhichArePublic(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichSatisfy(this aweXpect.Reflection.Collections.Filtered.Fields @this, System.Func<System.Reflection.FieldInfo, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Reflection.FieldFilters.FieldsWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Fields @this)
             where TAttribute : System.Attribute { }
@@ -94,7 +118,15 @@ namespace aweXpect.Reflection
     public static class MethodFilters
     {
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAre(this aweXpect.Reflection.Collections.Filtered.Methods @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
+        public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreInternal(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNot(this aweXpect.Reflection.Collections.Filtered.Methods @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
+        public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNotInternal(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNotPrivate(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNotProtected(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNotPublic(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Methods WhichArePrivate(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreProtected(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Methods WhichArePublic(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichSatisfy(this aweXpect.Reflection.Collections.Filtered.Methods @this, System.Func<System.Reflection.MethodInfo, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Reflection.MethodFilters.MethodsWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Methods @this, bool inherit = true)
             where TAttribute : System.Attribute { }
@@ -117,7 +149,15 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.PropertyFilters.PropertiesOfType OfType(this aweXpect.Reflection.Collections.Filtered.Properties @this, System.Type propertyType) { }
         public static aweXpect.Reflection.PropertyFilters.PropertiesOfType OfType<TProperty>(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAre(this aweXpect.Reflection.Collections.Filtered.Properties @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
+        public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreInternal(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNot(this aweXpect.Reflection.Collections.Filtered.Properties @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
+        public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNotInternal(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNotPrivate(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNotProtected(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNotPublic(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Properties WhichArePrivate(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreProtected(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Properties WhichArePublic(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichSatisfy(this aweXpect.Reflection.Collections.Filtered.Properties @this, System.Func<System.Reflection.PropertyInfo, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Reflection.PropertyFilters.PropertiesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Properties @this, bool inherit = true)
             where TAttribute : System.Attribute { }
@@ -250,7 +290,15 @@ namespace aweXpect.Reflection
     public static class TypeFilters
     {
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAre(this aweXpect.Reflection.Collections.Filtered.Types @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichAreInternal(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNot(this aweXpect.Reflection.Collections.Filtered.Types @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotInternal(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotPrivate(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotProtected(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotPublic(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichArePrivate(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichAreProtected(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichArePublic(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichInheritFrom(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Type baseType, bool forceDirect = false) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichInheritFrom<TBaseType>(this aweXpect.Reflection.Collections.Filtered.Types @this, bool forceDirect = false) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichSatisfy(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<System.Type, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }

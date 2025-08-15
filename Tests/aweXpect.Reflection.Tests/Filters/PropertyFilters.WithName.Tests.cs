@@ -13,7 +13,8 @@ public sealed partial class PropertyFilters
 			public async Task ShouldFilterForTypesWithName()
 			{
 				Filtered.Properties properties = In.Type<SomeClassToVerifyThePropertyNameOfIt>()
-					.Properties().WithName(nameof(SomeClassToVerifyThePropertyNameOfIt.SomePropertyToVerifyTheNameOfIt));
+					.Properties()
+					.WithName(nameof(SomeClassToVerifyThePropertyNameOfIt.SomePropertyToVerifyTheNameOfIt));
 
 				await That(properties).HasSingle().Which.IsEqualTo(ExpectedPropertyInfo());
 				await That(properties.GetDescription())

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using aweXpect.Core;
-using aweXpect.Options;
 using aweXpect.Reflection.Collections;
 
 namespace aweXpect.Reflection;

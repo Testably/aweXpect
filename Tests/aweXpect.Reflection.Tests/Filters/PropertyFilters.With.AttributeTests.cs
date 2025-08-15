@@ -176,14 +176,11 @@ public sealed partial class PropertyFilters
 
 		private class Dummy
 		{
-			[Bar]
-			public virtual int MyBarProperty { get; set; }
+			[Bar] public virtual int MyBarProperty { get; set; }
 
-			[Foo(Value = 2)]
-			public virtual int MyFooProperty2 { get; set; }
+			[Foo(Value = 2)] public virtual int MyFooProperty2 { get; set; }
 
-			[Foo(Value = 3)]
-			public virtual int MyFooProperty3 { get; set; }
+			[Foo(Value = 3)] public virtual int MyFooProperty3 { get; set; }
 		}
 
 		private class DummyChild : Dummy

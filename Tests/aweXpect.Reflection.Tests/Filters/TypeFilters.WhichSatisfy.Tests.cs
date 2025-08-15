@@ -16,7 +16,9 @@ public sealed partial class TypeFilters
 
 				await That(types).HasSingle().Which.IsEqualTo(typeof(SomeClassToVerifyViaAPredicate));
 				await That(types.GetDescription())
-					.IsEqualTo("types matching it => it.Name.Equals(nameof(SomeClassToVerifyViaAPredicate)) in assembly").AsPrefix();
+					.IsEqualTo(
+						"types matching it => it.Name.Equals(nameof(SomeClassToVerifyViaAPredicate)) in assembly")
+					.AsPrefix();
 			}
 
 			private class SomeClassToVerifyViaAPredicate;

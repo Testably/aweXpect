@@ -50,7 +50,8 @@ public static partial class PropertyFilters
 	/// <summary>
 	///     Additional filters on properties with an attribute.
 	/// </summary>
-	public class PropertiesWith(Filtered.Properties inner, IChangeableFilter<PropertyInfo> filter) : Filtered.Properties(inner)
+	public class PropertiesWith(Filtered.Properties inner, IChangeableFilter<PropertyInfo> filter)
+		: Filtered.Properties(inner)
 	{
 		/// <summary>
 		///     Allow an alternative attribute of type <typeparamref name="TAttribute" />.
@@ -62,7 +63,8 @@ public static partial class PropertyFilters
 		public PropertiesWith OrWith<TAttribute>(bool inherit = true)
 			where TAttribute : Attribute
 		{
-			filter.UpdateFilter((result, propertyInfo) => result || propertyInfo.HasAttribute<TAttribute>(inherit: inherit),
+			filter.UpdateFilter(
+				(result, propertyInfo) => result || propertyInfo.HasAttribute<TAttribute>(inherit: inherit),
 				description
 					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} ");
 			return this;
