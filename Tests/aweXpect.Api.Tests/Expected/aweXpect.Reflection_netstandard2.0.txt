@@ -129,6 +129,8 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichArePublic(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.MethodFilters.MethodsWhichReturn WhichReturn(this aweXpect.Reflection.Collections.Filtered.Methods @this, System.Type returnType) { }
         public static aweXpect.Reflection.MethodFilters.MethodsWhichReturn WhichReturn<TReturn>(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
+        public static aweXpect.Reflection.MethodFilters.MethodsWhichReturn WhichReturnExactly(this aweXpect.Reflection.Collections.Filtered.Methods @this, System.Type returnType) { }
+        public static aweXpect.Reflection.MethodFilters.MethodsWhichReturn WhichReturnExactly<TReturn>(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichSatisfy(this aweXpect.Reflection.Collections.Filtered.Methods @this, System.Func<System.Reflection.MethodInfo, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Reflection.MethodFilters.MethodsWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Methods @this, bool inherit = true)
             where TAttribute : System.Attribute { }
@@ -140,6 +142,8 @@ namespace aweXpect.Reflection
             public MethodsWhichReturn(aweXpect.Reflection.Collections.Filtered.Methods inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Reflection.MethodInfo> filter) { }
             public aweXpect.Reflection.MethodFilters.MethodsWhichReturn OrReturn(System.Type returnType) { }
             public aweXpect.Reflection.MethodFilters.MethodsWhichReturn OrReturn<TReturn>() { }
+            public aweXpect.Reflection.MethodFilters.MethodsWhichReturn OrReturnExactly(System.Type returnType) { }
+            public aweXpect.Reflection.MethodFilters.MethodsWhichReturn OrReturnExactly<TReturn>() { }
         }
         public class MethodsWith : aweXpect.Reflection.Collections.Filtered.Methods
         {

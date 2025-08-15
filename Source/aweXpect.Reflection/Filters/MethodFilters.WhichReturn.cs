@@ -28,7 +28,7 @@ public static partial class MethodFilters
 	/// <summary>
 	///     Additional filters on methods which return a specific type.
 	/// </summary>
-	public class MethodsWhichReturn(Filtered.Methods inner, IChangeableFilter<MethodInfo> filter)
+	public partial class MethodsWhichReturn(Filtered.Methods inner, IChangeableFilter<MethodInfo> filter)
 		: Filtered.Methods(inner)
 	{
 		/// <summary>
