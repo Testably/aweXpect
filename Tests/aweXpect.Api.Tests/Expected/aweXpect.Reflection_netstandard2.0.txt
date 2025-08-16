@@ -40,7 +40,7 @@ namespace aweXpect.Reflection
         }
         public class ConstructorsWithNamedParameter<T> : aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameter<T>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>
         {
-            public ConstructorsWithNamedParameter(aweXpect.Reflection.Collections.Filtered.Constructors inner, aweXpect.Options.CollectionIndexOptions collectionIndexOptions, aweXpect.Reflection.Options.ParameterFilterOptions parameterFiltersOptions, aweXpect.Options.StringEqualityOptions options) { }
+            public ConstructorsWithNamedParameter(aweXpect.Reflection.Collections.Filtered.Constructors inner, aweXpect.Options.CollectionIndexOptions collectionIndexOptions, aweXpect.Reflection.Options.ParameterFilterOptions parameterFilterOptions, aweXpect.Options.StringEqualityOptions options) { }
             public aweXpect.Reflection.ConstructorFilters.ConstructorsWithNamedParameter<T> AsPrefix() { }
             public aweXpect.Reflection.ConstructorFilters.ConstructorsWithNamedParameter<T> AsRegex() { }
             public aweXpect.Reflection.ConstructorFilters.ConstructorsWithNamedParameter<T> AsSuffix() { }
@@ -50,7 +50,7 @@ namespace aweXpect.Reflection
         }
         public class ConstructorsWithParameter<T> : aweXpect.Reflection.Collections.Filtered.Constructors, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.ParameterFilterOptions>
         {
-            public ConstructorsWithParameter(aweXpect.Reflection.Collections.Filtered.Constructors inner, aweXpect.Options.CollectionIndexOptions collectionIndexOptions, aweXpect.Reflection.Options.ParameterFilterOptions parameterFiltersOptions) { }
+            public ConstructorsWithParameter(aweXpect.Reflection.Collections.Filtered.Constructors inner, aweXpect.Options.CollectionIndexOptions collectionIndexOptions, aweXpect.Reflection.Options.ParameterFilterOptions parameterFilterOptions) { }
             public aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameterAtIndex<T> AtIndex(int index) { }
             public aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameter<T> WithDefaultValue() { }
             public aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameter<T> WithDefaultValue<TValue>(TValue expected)
@@ -271,6 +271,18 @@ namespace aweXpect.Reflection
         public static aweXpect.Results.StringEqualityTypeResult<System.Reflection.Assembly?, aweXpect.Core.IThat<System.Reflection.Assembly?>> HasName(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject, string expected) { }
         public static aweXpect.Results.StringEqualityTypeResult<System.Reflection.Assembly?, aweXpect.Core.IThat<System.Reflection.Assembly?>> HasNoDependencyOn(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject, string unexpected) { }
     }
+    public static class ThatConstructor
+    {
+        public static aweXpect.Reflection.Results.NamedParameterCollectionResult<System.Reflection.ConstructorInfo?, object?> HasParameter(this aweXpect.Core.IThat<System.Reflection.ConstructorInfo?> subject, string expected) { }
+        public static aweXpect.Reflection.Results.ParameterCollectionResult<System.Reflection.ConstructorInfo?, TParameter> HasParameter<TParameter>(this aweXpect.Core.IThat<System.Reflection.ConstructorInfo?> subject) { }
+        public static aweXpect.Reflection.Results.NamedParameterCollectionResult<System.Reflection.ConstructorInfo?, TParameter> HasParameter<TParameter>(this aweXpect.Core.IThat<System.Reflection.ConstructorInfo?> subject, string expected) { }
+    }
+    public static class ThatConstructors
+    {
+        public static aweXpect.Reflection.Results.NamedParameterCollectionResult<System.Collections.Generic.IEnumerable<System.Reflection.ConstructorInfo?>, object?> HaveParameter(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.ConstructorInfo?>> subject, string expected) { }
+        public static aweXpect.Reflection.Results.ParameterCollectionResult<System.Collections.Generic.IEnumerable<System.Reflection.ConstructorInfo?>, TParameter> HaveParameter<TParameter>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.ConstructorInfo?>> subject) { }
+        public static aweXpect.Reflection.Results.NamedParameterCollectionResult<System.Collections.Generic.IEnumerable<System.Reflection.ConstructorInfo?>, TParameter> HaveParameter<TParameter>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.ConstructorInfo?>> subject, string expected) { }
+    }
     public static class ThatEvent
     {
         public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.EventInfo?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.EventInfo?> subject, bool inherit = true)
@@ -347,6 +359,9 @@ namespace aweXpect.Reflection
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.MethodInfo?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
+        public static aweXpect.Reflection.Results.NamedParameterCollectionResult<System.Reflection.MethodInfo?, object?> HasParameter(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject, string expected) { }
+        public static aweXpect.Reflection.Results.ParameterCollectionResult<System.Reflection.MethodInfo?, TParameter> HasParameter<TParameter>(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
+        public static aweXpect.Reflection.Results.NamedParameterCollectionResult<System.Reflection.MethodInfo?, TParameter> HasParameter<TParameter>(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject, string expected) { }
         public static aweXpect.Reflection.ThatMethod.MethodReturnResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> Returns(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject, System.Type returnType) { }
         public static aweXpect.Reflection.ThatMethod.MethodReturnResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> Returns<TReturn>(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
         public static aweXpect.Reflection.ThatMethod.MethodReturnResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> ReturnsExactly(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject, System.Type returnType) { }
@@ -367,6 +382,9 @@ namespace aweXpect.Reflection
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.MethodInfo?> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
+        public static aweXpect.Reflection.Results.NamedParameterCollectionResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>, object?> HaveParameter(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject, string expected) { }
+        public static aweXpect.Reflection.Results.ParameterCollectionResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>, TParameter> HaveParameter<TParameter>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject) { }
+        public static aweXpect.Reflection.Results.NamedParameterCollectionResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>, TParameter> HaveParameter<TParameter>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject, string expected) { }
         public static aweXpect.Reflection.ThatMethods.MethodsReturnResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>>> Return(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>> subject, System.Type returnType) { }
         public static aweXpect.Reflection.ThatMethods.MethodsReturnResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>>> Return<TReturn>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>> subject) { }
         public static aweXpect.Reflection.ThatMethods.MethodsReturnResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>>> ReturnExactly(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>> subject, System.Type returnType) { }
@@ -735,5 +753,29 @@ namespace aweXpect.Reflection.Results
             where TAttribute : System.Attribute { }
         public aweXpect.Reflection.Results.HaveAttributeResult<TMember> OrHave<TAttribute>(System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
+    }
+    public class NamedParameterCollectionResult<TThat, TParameter> : aweXpect.Reflection.Results.ParameterCollectionResult<TThat, TParameter>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>
+    {
+        public NamedParameterCollectionResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TThat> subject, aweXpect.Options.CollectionIndexOptions collectionIndexOptions, aweXpect.Reflection.Options.ParameterFilterOptions parameterFilterOptions, aweXpect.Options.StringEqualityOptions options) { }
+        public aweXpect.Reflection.Results.NamedParameterCollectionResult<TThat, TParameter> AsPrefix() { }
+        public aweXpect.Reflection.Results.NamedParameterCollectionResult<TThat, TParameter> AsRegex() { }
+        public aweXpect.Reflection.Results.NamedParameterCollectionResult<TThat, TParameter> AsSuffix() { }
+        public aweXpect.Reflection.Results.NamedParameterCollectionResult<TThat, TParameter> AsWildcard() { }
+        public aweXpect.Reflection.Results.NamedParameterCollectionResult<TThat, TParameter> IgnoringCase(bool ignoreCase = true) { }
+        public aweXpect.Reflection.Results.NamedParameterCollectionResult<TThat, TParameter> Using(System.Collections.Generic.IEqualityComparer<string> comparer) { }
+    }
+    public class ParameterCollectionAtIndexResult<TThat, TParameter> : aweXpect.Results.AndOrResult<TThat, aweXpect.Core.IThat<TThat>>
+    {
+        public ParameterCollectionAtIndexResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TThat> subject, aweXpect.Options.CollectionIndexOptions collectionIndexOptions) { }
+        public aweXpect.Reflection.Results.ParameterCollectionAtIndexResult<TThat, TParameter> FromEnd() { }
+    }
+    public class ParameterCollectionResult<TThat, TParameter> : aweXpect.Results.AndOrResult<TThat, aweXpect.Core.IThat<TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.ParameterFilterOptions>
+    {
+        public ParameterCollectionResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TThat> subject, aweXpect.Options.CollectionIndexOptions collectionIndexOptions, aweXpect.Reflection.Options.ParameterFilterOptions parameterFilterOptions) { }
+        public aweXpect.Reflection.Results.ParameterCollectionAtIndexResult<TThat, TParameter> AtIndex(int index) { }
+        public aweXpect.Reflection.Results.ParameterCollectionResult<TThat, TParameter> WithDefaultValue() { }
+        public aweXpect.Reflection.Results.ParameterCollectionResult<TThat, TParameter> WithDefaultValue<TValue>(TValue expected)
+            where TValue : TParameter { }
+        public aweXpect.Reflection.Results.ParameterCollectionResult<TThat, TParameter> WithoutDefaultValue() { }
     }
 }

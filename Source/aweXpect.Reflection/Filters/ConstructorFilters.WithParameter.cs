@@ -113,7 +113,7 @@ public static partial class ConstructorFilters
 	public class ConstructorsWithParameter<T>(
 		Filtered.Constructors inner,
 		CollectionIndexOptions collectionIndexOptions,
-		ParameterFilterOptions parameterFiltersOptions)
+		ParameterFilterOptions parameterFilterOptions)
 		: Filtered.Constructors(inner),
 			IOptionsProvider<CollectionIndexOptions>,
 			IOptionsProvider<ParameterFilterOptions>
@@ -122,7 +122,7 @@ public static partial class ConstructorFilters
 		CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions;
 
 		/// <inheritdoc cref="IOptionsProvider{ParameterFilterOptions}.Options" />
-		ParameterFilterOptions IOptionsProvider<ParameterFilterOptions>.Options => parameterFiltersOptions;
+		ParameterFilterOptions IOptionsProvider<ParameterFilterOptions>.Options => parameterFilterOptions;
 
 		/// <summary>
 		///     …at the given <paramref name="index" />.
@@ -138,7 +138,7 @@ public static partial class ConstructorFilters
 		/// </summary>
 		public ConstructorsWithParameter<T> WithoutDefaultValue()
 		{
-			parameterFiltersOptions.AddPredicate(p => !p.HasDefaultValue, () => "without a default value");
+			parameterFilterOptions.AddPredicate(p => !p.HasDefaultValue, () => "without a default value");
 			return this;
 		}
 
@@ -147,7 +147,7 @@ public static partial class ConstructorFilters
 		/// </summary>
 		public ConstructorsWithParameter<T> WithDefaultValue()
 		{
-			parameterFiltersOptions.AddPredicate(p => p.HasDefaultValue, () => "with a default value");
+			parameterFilterOptions.AddPredicate(p => p.HasDefaultValue, () => "with a default value");
 			return this;
 		}
 
@@ -157,7 +157,7 @@ public static partial class ConstructorFilters
 		public ConstructorsWithParameter<T> WithDefaultValue<TValue>(TValue expected)
 			where TValue : T
 		{
-			parameterFiltersOptions.AddPredicate(p => p.HasDefaultValue && Equals(p.DefaultValue, expected),
+			parameterFilterOptions.AddPredicate(p => p.HasDefaultValue && Equals(p.DefaultValue, expected),
 				() => $"with default value {Formatter.Format(expected)}");
 			return this;
 		}
@@ -195,9 +195,9 @@ public static partial class ConstructorFilters
 	public class ConstructorsWithNamedParameter<T>(
 		Filtered.Constructors inner,
 		CollectionIndexOptions collectionIndexOptions,
-		ParameterFilterOptions parameterFiltersOptions,
+		ParameterFilterOptions parameterFilterOptions,
 		StringEqualityOptions options)
-		: ConstructorsWithParameter<T>(inner, collectionIndexOptions, parameterFiltersOptions),
+		: ConstructorsWithParameter<T>(inner, collectionIndexOptions, parameterFilterOptions),
 			IOptionsProvider<StringEqualityOptions>
 	{
 		/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />

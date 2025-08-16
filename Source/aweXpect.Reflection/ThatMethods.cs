@@ -5,6 +5,4 @@ namespace aweXpect.Reflection;
 /// <summary>
 ///     Expectations on a collection of <see cref="MethodInfo" />.
 /// </summary>
-public static partial class ThatMethods
-{
-}
+public static partial class ThatMethods;
