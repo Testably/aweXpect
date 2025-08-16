@@ -69,10 +69,10 @@ public sealed partial class MethodFilters
 		}
 	}
 
+#pragma warning disable CA1822
+	// ReSharper disable UnusedParameter.Local
 	private class ClassWithMultipleMethods
 	{
-#pragma warning disable CA1822
-		// ReSharper disable UnusedParameter.Local
 		public void MethodWithoutParameters()
 		{
 		}
@@ -84,7 +84,7 @@ public sealed partial class MethodFilters
 		public void MethodWithMultipleParameters(string name, int value)
 		{
 		}
-		// ReSharper restore UnusedParameter.Local
-#pragma warning restore CA1822
 	}
+	// ReSharper restore UnusedParameter.Local
+#pragma warning restore CA1822
 }
