@@ -25,6 +25,8 @@ namespace aweXpect.Reflection
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.ConstructorFilters.ConstructorsWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Constructors @this, System.Func<TAttribute, bool>? predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
+        public static aweXpect.Reflection.Collections.Filtered.Constructors WithParameterCount(this aweXpect.Reflection.Collections.Filtered.Constructors @this, int expectedCount) { }
+        public static aweXpect.Reflection.Collections.Filtered.Constructors WithoutParameters(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
         public class ConstructorsWith : aweXpect.Reflection.Collections.Filtered.Constructors
         {
             public ConstructorsWith(aweXpect.Reflection.Collections.Filtered.Constructors inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Reflection.ConstructorInfo> filter) { }
@@ -137,6 +139,8 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.MethodFilters.MethodsWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Methods @this, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Collections.Filtered.Methods.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Methods @this, string expected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Methods WithParameterCount(this aweXpect.Reflection.Collections.Filtered.Methods @this, int expectedCount) { }
+        public static aweXpect.Reflection.Collections.Filtered.Methods WithoutParameters(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public class MethodsWhichReturn : aweXpect.Reflection.Collections.Filtered.Methods
         {
             public MethodsWhichReturn(aweXpect.Reflection.Collections.Filtered.Methods inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Reflection.MethodInfo> filter) { }
