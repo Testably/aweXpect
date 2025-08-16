@@ -4,7 +4,8 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Reflection.Helpers;
-using aweXpect.Results;
+using aweXpect.Reflection.Options;
+using aweXpect.Reflection.Results;
 
 namespace aweXpect.Reflection;
 
@@ -13,60 +14,63 @@ public static partial class ThatType
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> has attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> Has<TAttribute>(this IThat<Type?> subject, bool inherit = true)
+	/// <remarks>
+	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" />) specifies, if
+	///     the attribute can be inherited from a base type.
+	/// </remarks>
+	public static HasAttributeResult<Type?> Has<TAttribute>(this IThat<Type?> subject, bool inherit = true)
 		where TAttribute : Attribute
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new HasAttributeConstraint<TAttribute>(it, grammars, inherit)),
-			subject);
-
+	{
+		AttributeFilterOptions<Type?> attributeFilterOptions =
+			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
+		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
+		return new HasAttributeResult<Type?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
+			subject,
+			attributeFilterOptions);
+	}
 
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> has attribute of type <typeparamref name="TAttribute" /> that
 	///     matches the <paramref name="predicate" />.
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> Has<TAttribute>(
+	/// <remarks>
+	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" />) specifies, if
+	///     the attribute can be inherited from a base type.
+	/// </remarks>
+	public static HasAttributeResult<Type?> Has<TAttribute>(
 		this IThat<Type?> subject,
-		Func<TAttribute, bool>? predicate,
+		Func<TAttribute, bool> predicate,
 		bool inherit = true,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new HasAttributeConstraint<TAttribute>(it, grammars, inherit, predicate, doNotPopulateThisValue)),
-			subject);
+	{
+		AttributeFilterOptions<Type?> attributeFilterOptions =
+			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
+		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue);
+		return new HasAttributeResult<Type?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
+			subject,
+			attributeFilterOptions);
+	}
 
-	private sealed class HasAttributeConstraint<TAttribute>(
+	private sealed class HasAttributeConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		bool inherit,
-		Func<TAttribute, bool>? predicate = null,
-		string predicateExpression = "")
+		AttributeFilterOptions<Type?> attributeFilterOptions)
 		: ConstraintResult.WithNotNullValue<Type?>(it, grammars),
 			IValueConstraint<Type?>
-		where TAttribute : Attribute
 	{
 		public ConstraintResult IsMetBy(Type? actual)
 		{
 			Actual = actual;
-			Outcome = actual?.HasAttribute(predicate, inherit) == true ? Outcome.Success : Outcome.Failure;
+			Outcome = attributeFilterOptions.Matches(actual) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append("has ");
-			if (!inherit)
-			{
-				stringBuilder.Append("direct ");
-			}
-
-			Formatter.Format(stringBuilder, typeof(TAttribute));
-			if (predicate != null)
-			{
-				stringBuilder.Append(" matching ");
-				stringBuilder.Append(predicateExpression);
-			}
-		}
+			=> attributeFilterOptions.AppendDescription(stringBuilder, Grammars);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -75,20 +79,7 @@ public static partial class ThatType
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append("has no ");
-			if (!inherit)
-			{
-				stringBuilder.Append("direct ");
-			}
-
-			Formatter.Format(stringBuilder, typeof(TAttribute));
-			if (predicate != null)
-			{
-				stringBuilder.Append(" matching ");
-				stringBuilder.Append(predicateExpression);
-			}
-		}
+			=> attributeFilterOptions.AppendDescription(stringBuilder, Grammars);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{

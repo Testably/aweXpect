@@ -6,7 +6,8 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Reflection.Helpers;
-using aweXpect.Results;
+using aweXpect.Reflection.Options;
+using aweXpect.Reflection.Results;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -22,12 +23,18 @@ public static partial class ThatTypes
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> Have<TAttribute>(
+	public static HaveAttributeResult<Type?> Have<TAttribute>(
 		this IThat<IEnumerable<Type?>> subject, bool inherit = true)
 		where TAttribute : Attribute
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new HaveAttributeConstraint<TAttribute>(it, grammars, inherit)),
-			subject);
+	{
+		AttributeFilterOptions<Type?> attributeFilterOptions =
+			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
+		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
+		return new HaveAttributeResult<Type?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
+			subject,
+			attributeFilterOptions);
+	}
 
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> have
@@ -37,77 +44,57 @@ public static partial class ThatTypes
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> Have<TAttribute>(
+	public static HaveAttributeResult<Type?> Have<TAttribute>(
 		this IThat<IEnumerable<Type?>> subject,
-		Func<TAttribute, bool>? predicate,
+		Func<TAttribute, bool> predicate,
 		bool inherit = true,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new HaveAttributeConstraint<TAttribute>(it, grammars, inherit, predicate, doNotPopulateThisValue)),
-			subject);
+	{
+		AttributeFilterOptions<Type?> attributeFilterOptions =
+			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
+		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue);
+		return new HaveAttributeResult<Type?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
+			subject,
+			attributeFilterOptions);
+	}
 
-	private sealed class HaveAttributeConstraint<TAttribute>(
+	private sealed class HaveAttributeConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		bool inherit,
-		Func<TAttribute, bool>? predicate = null,
-		string predicateExpression = "")
-		: ConstraintResult.WithValue<IEnumerable<Type?>>(grammars),
+		AttributeFilterOptions<Type?> attributeFilterOptions)
+		: ConstraintResult.WithNotNullValue<IEnumerable<Type?>>(it, grammars),
 			IValueConstraint<IEnumerable<Type?>>
-		where TAttribute : Attribute
 	{
 		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
 		{
 			Actual = actual;
-			Outcome = actual.All(type => type.HasAttribute(predicate, inherit)) ? Outcome.Success : Outcome.Failure;
+			Outcome = actual.All(attributeFilterOptions.Matches) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("all have ");
-			if (inherit)
-			{
-				stringBuilder.Append("direct ");
-			}
-
-			Formatter.Format(stringBuilder, typeof(TAttribute));
-			if (predicate != null)
-			{
-				stringBuilder.Append(" matching ");
-				stringBuilder.Append(predicateExpression);
-			}
+			stringBuilder.Append("all ");
+			attributeFilterOptions.AppendDescription(stringBuilder, Grammars);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" contained not matching types ");
-			Formatter.Format(stringBuilder, Actual?.Where(type => !type.HasAttribute(predicate, inherit)),
+			stringBuilder.Append(It).Append(" contained not matching types ");
+			Formatter.Format(stringBuilder, Actual?.Where(type => !attributeFilterOptions.Matches(type)),
 				FormattingOptions.Indented(indentation));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append("not all have ");
-			if (inherit)
-			{
-				stringBuilder.Append("direct ");
-			}
-
-			Formatter.Format(stringBuilder, typeof(TAttribute));
-			if (predicate != null)
-			{
-				stringBuilder.Append(" matching ");
-				stringBuilder.Append(predicateExpression);
-			}
-		}
+			=> AppendNormalResult(stringBuilder, indentation);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" only contained matching types ");
-			Formatter.Format(stringBuilder, Actual?.Where(type => type.HasAttribute(predicate, inherit)),
+			stringBuilder.Append(It).Append(" only contained matching types ");
+			Formatter.Format(stringBuilder, Actual?.Where(attributeFilterOptions.Matches),
 				FormattingOptions.Indented(indentation));
 		}
 	}
