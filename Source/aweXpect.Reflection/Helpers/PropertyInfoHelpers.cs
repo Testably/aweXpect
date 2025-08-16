@@ -62,4 +62,35 @@ internal static class PropertyInfoHelpers
 
 		return false;
 	}
+
+	/// <summary>
+	///     Checks if the <paramref name="propertyInfo" /> has an attribute which satisfies the <paramref name="predicate" />.
+	/// </summary>
+	/// <param name="propertyInfo">The <see cref="PropertyInfo" /> which is checked to have the attribute.</param>
+	/// <param name="attributeType">The type of the attribute to check for.</param>
+	/// <param name="predicate">
+	///     (optional) A predicate to check the attribute values.
+	///     <para />
+	///     If not set (<see langword="null" />), will only check if the attribute is present.
+	/// </param>
+	/// <param name="inherit">
+	///     <see langword="true" /> to search the inheritance chain to find the attributes; otherwise,
+	///     <see langword="false" />.<br />
+	///     Defaults to <see langword="true" />
+	/// </param>
+	public static bool HasAttribute(
+		this PropertyInfo? propertyInfo,
+		Type attributeType,
+		Func<Attribute, bool>? predicate = null,
+		bool inherit = true)
+	{
+		object? attribute = propertyInfo?.GetCustomAttributes(attributeType, inherit)
+			.FirstOrDefault();
+		if (attribute is Attribute attributeValue)
+		{
+			return predicate?.Invoke(attributeValue) ?? true;
+		}
+
+		return false;
+	}
 }

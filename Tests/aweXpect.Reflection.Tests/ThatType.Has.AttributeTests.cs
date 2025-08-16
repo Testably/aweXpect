@@ -196,7 +196,7 @@ public sealed partial class ThatType
                     await That(Act).Throws<XunitException>()
                         .WithMessage("""
                                      Expected that subject
-                                     has ThatType.Has.OrHas.AttributeTests.FooAttribute or has ThatType.Has.OrHas.AttributeTests.BarAttribute,
+                                     has ThatType.Has.OrHas.AttributeTests.FooAttribute or ThatType.Has.OrHas.AttributeTests.BarAttribute,
                                      but it did not in ThatType.Has.OrHas.AttributeTests.BazClass
                                      """);
                 }
@@ -234,7 +234,7 @@ public sealed partial class ThatType
                     await That(Act).Throws<XunitException>()
                         .WithMessage("""
                                      Expected that subject
-                                     has ThatType.Has.OrHas.AttributeTests.FooAttribute matching foo => foo.Value == 5 or has ThatType.Has.OrHas.AttributeTests.BarAttribute matching bar => bar.Name == "test",
+                                     has ThatType.Has.OrHas.AttributeTests.FooAttribute matching foo => foo.Value == 5 or ThatType.Has.OrHas.AttributeTests.BarAttribute matching bar => bar.Name == "test",
                                      but it did not in ThatType.Has.OrHas.AttributeTests.FooClass2
                                      """);
                 }
@@ -261,7 +261,7 @@ public sealed partial class ThatType
                     await That(Act).Throws<XunitException>()
                         .WithMessage("""
                                      Expected that subject
-                                     has direct ThatType.Has.OrHas.AttributeTests.FooAttribute or has direct ThatType.Has.OrHas.AttributeTests.BarAttribute,
+                                     has direct ThatType.Has.OrHas.AttributeTests.FooAttribute or direct ThatType.Has.OrHas.AttributeTests.BarAttribute,
                                      but it did not in ThatType.Has.OrHas.AttributeTests.FooChildClass
                                      """);
                 }

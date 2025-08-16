@@ -27,7 +27,7 @@ internal static class MemberInfoHelpers
 		};
 
 	/// <summary>
-	///     Gets the <see cref="AccessModifiers"/> of the <paramref name="memberInfo" />.
+	///     Gets the <see cref="AccessModifiers" /> of the <paramref name="memberInfo" />.
 	/// </summary>
 	public static AccessModifiers GetAccessModifier(
 		this MemberInfo? memberInfo)
@@ -36,14 +36,17 @@ internal static class MemberInfoHelpers
 		{
 			return AccessModifiers.Public;
 		}
+
 		if (memberInfo.HasAccessModifier(AccessModifiers.Private))
 		{
 			return AccessModifiers.Private;
 		}
+
 		if (memberInfo.HasAccessModifier(AccessModifiers.Protected))
 		{
 			return AccessModifiers.Protected;
 		}
+
 		if (memberInfo.HasAccessModifier(AccessModifiers.Internal))
 		{
 			return AccessModifiers.Internal;

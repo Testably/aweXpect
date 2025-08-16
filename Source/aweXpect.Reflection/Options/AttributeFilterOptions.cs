@@ -47,7 +47,6 @@ public class AttributeFilterOptions<TMember>(Func<TMember, Type, Func<Attribute,
 			if (index++ > 0)
 			{
 				stringBuilder.Append(" or ");
-				stringBuilder.Append(prefix);
 			}
 
 			description(stringBuilder);

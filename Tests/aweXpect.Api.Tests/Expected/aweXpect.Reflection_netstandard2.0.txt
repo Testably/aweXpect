@@ -253,20 +253,52 @@ namespace aweXpect.Reflection
     }
     public static class ThatAssemblies
     {
+        public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.Assembly?> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>> subject, bool inherit = true)
+            where TAttribute : System.Attribute { }
+        public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.Assembly?> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
+            where TAttribute : System.Attribute { }
         public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>>> HaveADependencyOn(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>> subject, string expected) { }
         public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>>> HaveName(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>> subject, string expected) { }
         public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>>> HaveNoDependencyOn(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>> subject, string unexpected) { }
     }
     public static class ThatAssembly
     {
+        public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.Assembly?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject, bool inherit = true)
+            where TAttribute : System.Attribute { }
+        public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.Assembly?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
+            where TAttribute : System.Attribute { }
         public static aweXpect.Results.StringEqualityTypeResult<System.Reflection.Assembly?, aweXpect.Core.IThat<System.Reflection.Assembly?>> HasADependencyOn(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject, string expected) { }
         public static aweXpect.Results.StringEqualityTypeResult<System.Reflection.Assembly?, aweXpect.Core.IThat<System.Reflection.Assembly?>> HasName(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject, string expected) { }
         public static aweXpect.Results.StringEqualityTypeResult<System.Reflection.Assembly?, aweXpect.Core.IThat<System.Reflection.Assembly?>> HasNoDependencyOn(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject, string unexpected) { }
     }
-    public static class ThatEvent { }
-    public static class ThatEvents { }
-    public static class ThatField { }
-    public static class ThatFields { }
+    public static class ThatEvent
+    {
+        public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.EventInfo?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.EventInfo?> subject, bool inherit = true)
+            where TAttribute : System.Attribute { }
+        public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.EventInfo?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.EventInfo?> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
+            where TAttribute : System.Attribute { }
+    }
+    public static class ThatEvents
+    {
+        public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.EventInfo?> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>> subject, bool inherit = true)
+            where TAttribute : System.Attribute { }
+        public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.EventInfo?> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
+            where TAttribute : System.Attribute { }
+    }
+    public static class ThatField
+    {
+        public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.FieldInfo?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.FieldInfo?> subject, bool inherit = true)
+            where TAttribute : System.Attribute { }
+        public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.FieldInfo?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.FieldInfo?> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
+            where TAttribute : System.Attribute { }
+    }
+    public static class ThatFields
+    {
+        public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.FieldInfo?> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>> subject, bool inherit = true)
+            where TAttribute : System.Attribute { }
+        public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.FieldInfo?> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
+            where TAttribute : System.Attribute { }
+    }
     public static class ThatMember
     {
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreInternal<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
@@ -311,6 +343,10 @@ namespace aweXpect.Reflection
     }
     public static class ThatMethod
     {
+        public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.MethodInfo?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject, bool inherit = true)
+            where TAttribute : System.Attribute { }
+        public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.MethodInfo?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
+            where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.ThatMethod.MethodReturnResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> Returns(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject, System.Type returnType) { }
         public static aweXpect.Reflection.ThatMethod.MethodReturnResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> Returns<TReturn>(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
         public static aweXpect.Reflection.ThatMethod.MethodReturnResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> ReturnsExactly(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject, System.Type returnType) { }
@@ -327,6 +363,10 @@ namespace aweXpect.Reflection
     }
     public static class ThatMethods
     {
+        public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.MethodInfo?> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject, bool inherit = true)
+            where TAttribute : System.Attribute { }
+        public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.MethodInfo?> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
+            where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.ThatMethods.MethodsReturnResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>>> Return(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>> subject, System.Type returnType) { }
         public static aweXpect.Reflection.ThatMethods.MethodsReturnResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>>> Return<TReturn>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>> subject) { }
         public static aweXpect.Reflection.ThatMethods.MethodsReturnResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>>> ReturnExactly(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>> subject, System.Type returnType) { }
@@ -341,8 +381,20 @@ namespace aweXpect.Reflection
             public aweXpect.Reflection.ThatMethods.MethodsReturnResult<TValue, TResult> OrReturnExactly<TReturn>() { }
         }
     }
-    public static class ThatProperties { }
-    public static class ThatProperty { }
+    public static class ThatProperties
+    {
+        public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.PropertyInfo?> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> subject, bool inherit = true)
+            where TAttribute : System.Attribute { }
+        public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.PropertyInfo?> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
+            where TAttribute : System.Attribute { }
+    }
+    public static class ThatProperty
+    {
+        public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.PropertyInfo?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject, bool inherit = true)
+            where TAttribute : System.Attribute { }
+        public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.PropertyInfo?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
+            where TAttribute : System.Attribute { }
+    }
     public static class ThatType
     {
         public static aweXpect.Reflection.Results.HasAttributeResult<System.Type?> Has<TAttribute>(this aweXpect.Core.IThat<System.Type?> subject, bool inherit = true)

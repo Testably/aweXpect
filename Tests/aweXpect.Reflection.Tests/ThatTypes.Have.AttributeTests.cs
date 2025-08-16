@@ -209,9 +209,9 @@ public sealed partial class ThatTypes
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that types
-						             all have ThatTypes.Have.OrHave.AttributeTests.FooAttribute or have ThatTypes.Have.OrHave.AttributeTests.BarAttribute,
+						             all have ThatTypes.Have.FooAttribute or ThatTypes.Have.BarAttribute,
 						             but it contained not matching types [
-						               ThatTypes.Have.OrHave.AttributeTests.BazClass
+						               ThatTypes.Have.BazClass
 						             ]
 						             """);
 				}
@@ -249,9 +249,9 @@ public sealed partial class ThatTypes
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that types
-						             all have direct ThatTypes.Have.OrHave.AttributeTests.FooAttribute or have direct ThatTypes.Have.OrHave.AttributeTests.BarAttribute,
+						             all have direct ThatTypes.Have.FooAttribute or direct ThatTypes.Have.BarAttribute,
 						             but it contained not matching types [
-						               ThatTypes.Have.OrHave.AttributeTests.FooChildClass
+						               ThatTypes.Have.FooChildClass
 						             ]
 						             """);
 				}
@@ -268,65 +268,110 @@ public sealed partial class ThatTypes
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that types
-						             all have ThatTypes.Have.OrHave.AttributeTests.FooAttribute matching foo => foo.Value == 5 or have ThatTypes.Have.OrHave.AttributeTests.BarAttribute matching bar => bar.Name == "test",
+						             all have ThatTypes.Have.FooAttribute matching foo => foo.Value == 5 or ThatTypes.Have.BarAttribute matching bar => bar.Name == "test",
 						             but it contained not matching types [
-						               ThatTypes.Have.OrHave.AttributeTests.FooClass2
+						               ThatTypes.Have.FooClass2
 						             ]
 						             """);
 				}
-
-				[AttributeUsage(AttributeTargets.Class)]
-				private class FooAttribute : Attribute
-				{
-					public int Value { get; set; }
-				}
-
-				[AttributeUsage(AttributeTargets.Class)]
-				private class BarAttribute : Attribute
-				{
-					public string? Name { get; set; }
-				}
-
-				[AttributeUsage(AttributeTargets.Class)]
-				private class BazAttribute : Attribute
-				{
-				}
-
-				[Foo]
-				private class FooClass
-				{
-				}
-
-				[Foo(Value = 2)]
-				private class FooClass2
-				{
-				}
-
-				[Bar]
-				private class BarClass
-				{
-				}
-
-				[Bar(Name = "test")]
-				private class BarClass3
-				{
-				}
-
-				[Foo]
-				[Bar]
-				private class FooBarClass
-				{
-				}
-
-				[Baz]
-				private class BazClass
-				{
-				}
-
-				private class FooChildClass : FooClass
-				{
-				}
 			}
+		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenTypesDoNotHaveAttribute_ShouldSucceed()
+			{
+				List<Type> subjects = [typeof(BazClass),];
+
+				async Task Act()
+					=> await That(subjects).DoesNotComplyWith(they => they.Have<FooAttribute>());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTypesDoNotHaveMatchingAttribute_ShouldSucceed()
+			{
+				List<Type> subjects = [typeof(FooClass2),];
+
+				async Task Act()
+					=> await That(subjects).DoesNotComplyWith(they
+						=> they.Have<FooAttribute>(attr => attr.Value == 3));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenPropertiesHaveAttribute_ShouldFail()
+			{
+				List<Type> subjects = [typeof(FooClass2),];
+
+				async Task Act()
+					=> await That(subjects).DoesNotComplyWith(they
+						=> they.Have<FooAttribute>().OrHave<BarAttribute>(x => x.Name == "foo"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subjects
+					             not all have ThatTypes.Have.FooAttribute or ThatTypes.Have.BarAttribute matching x => x.Name == "foo",
+					             but it only contained matching types [
+					               ThatTypes.Have.FooClass2
+					             ]
+					             """);
+			}
+		}
+
+		[AttributeUsage(AttributeTargets.Class)]
+		private class FooAttribute : Attribute
+		{
+			public int Value { get; set; }
+		}
+
+		[AttributeUsage(AttributeTargets.Class)]
+		private class BarAttribute : Attribute
+		{
+			public string? Name { get; set; }
+		}
+
+		[AttributeUsage(AttributeTargets.Class)]
+		private class BazAttribute : Attribute
+		{
+		}
+
+		[Foo]
+		private class FooClass
+		{
+		}
+
+		[Foo(Value = 2)]
+		private class FooClass2
+		{
+		}
+
+		[Bar]
+		private class BarClass
+		{
+		}
+
+		[Bar(Name = "test")]
+		private class BarClass3
+		{
+		}
+
+		[Foo]
+		[Bar]
+		private class FooBarClass
+		{
+		}
+
+		[Baz]
+		private class BazClass
+		{
+		}
+
+		private class FooChildClass : FooClass
+		{
 		}
 	}
 }
