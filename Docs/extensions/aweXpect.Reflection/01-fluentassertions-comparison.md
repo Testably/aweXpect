@@ -1,4 +1,4 @@
-# aweXpect.Reflection vs FluentAssertions: Feature Comparison
+# Feature Comparison with FluentAssertions
 
 This document provides a comprehensive comparison between aweXpect.Reflection and FluentAssertions for reflection-based
 testing scenarios. Both libraries offer powerful capabilities for asserting against reflection types, but with different
