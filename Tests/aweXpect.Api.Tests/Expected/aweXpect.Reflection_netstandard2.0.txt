@@ -309,8 +309,30 @@ namespace aweXpect.Reflection
         public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> HaveName<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject, string expected)
             where TMember : System.Reflection.MemberInfo? { }
     }
-    public static class ThatMethod { }
-    public static class ThatMethods { }
+    public static class ThatMethod
+    {
+        public static aweXpect.Reflection.ThatMethod.MethodReturnResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> Returns(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject, System.Type returnType) { }
+        public static aweXpect.Reflection.ThatMethod.MethodReturnResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> Returns<TReturn>(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
+        public sealed class MethodReturnResult<TValue, TResult> : aweXpect.Results.AndOrResult<TValue, TResult>
+            where TResult : aweXpect.Core.IThat<TValue>
+        {
+            public MethodReturnResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TResult subject, System.Collections.Generic.List<System.Type> returnTypes) { }
+            public aweXpect.Reflection.ThatMethod.MethodReturnResult<TValue, TResult> OrReturns(System.Type returnType) { }
+            public aweXpect.Reflection.ThatMethod.MethodReturnResult<TValue, TResult> OrReturns<TReturn>() { }
+        }
+    }
+    public static class ThatMethods
+    {
+        public static aweXpect.Reflection.ThatMethods.MethodsReturnResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>>> Return(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>> subject, System.Type returnType) { }
+        public static aweXpect.Reflection.ThatMethods.MethodsReturnResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>>> Return<TReturn>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>> subject) { }
+        public sealed class MethodsReturnResult<TValue, TResult> : aweXpect.Results.AndOrResult<TValue, TResult>
+            where TResult : aweXpect.Core.IThat<TValue>
+        {
+            public MethodsReturnResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TResult subject, System.Collections.Generic.List<System.Type> returnTypes) { }
+            public aweXpect.Reflection.ThatMethods.MethodsReturnResult<TValue, TResult> OrReturn(System.Type returnType) { }
+            public aweXpect.Reflection.ThatMethods.MethodsReturnResult<TValue, TResult> OrReturn<TReturn>() { }
+        }
+    }
     public static class ThatProperties { }
     public static class ThatProperty { }
     public static class ThatType

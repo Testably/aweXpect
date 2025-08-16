@@ -10,6 +10,14 @@ public sealed class ExampleTests
 			.HaveName("Async").AsSuffix();
 #endif
 
+#if NET8_0_OR_GREATER
+	[Fact]
+	public async Task AllMethodsWithAsyncSuffixReturnTaskOrValueTask()
+		=> await That(In.AssemblyContaining(typeof(In))
+				.Methods().WithName("Async").AsSuffix())
+			.Return<Task>().OrReturn<ValueTask>();
+#endif
+
 	[Fact]
 	public async Task AllTestClassesHaveNameThatEndsWithTests()
 		=> await That(In.AssemblyContaining<ExampleTests>()
