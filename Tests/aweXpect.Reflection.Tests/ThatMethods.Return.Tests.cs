@@ -20,7 +20,7 @@ public sealed partial class ThatMethods
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
-					             Expected that methods matching m => m.Name.StartsWith("Get") in type ThatMethods.Return.TestClass
+					             Expected that methods matching m => m.Name.StartsWith("Get") in type ThatMethods.TestClass
 					             all return string,
 					             but it contained not matching methods [*]
 					             """).AsWildcard();
@@ -64,7 +64,7 @@ public sealed partial class ThatMethods
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
-					             Expected that methods matching m => m.Name.StartsWith("Get") in type ThatMethods.Return.TestClass
+					             Expected that methods matching m => m.Name.StartsWith("Get") in type ThatMethods.TestClass
 					             all return string,
 					             but it contained not matching methods [*]
 					             """).AsWildcard();
@@ -126,8 +126,47 @@ public sealed partial class ThatMethods
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
-					             Expected that methods matching m => m.Name.StartsWith("Get") in type ThatMethods.Return.TestClass
+					             Expected that methods matching m => m.Name.StartsWith("Get") in type ThatMethods.TestClass
 					             all return bool or Task,
+					             but it contained not matching methods [*]
+					             """).AsWildcard();
+			}
+		}
+
+		public sealed class OrReturnExactlyTests
+		{
+			[Fact]
+			public async Task WithMultipleOrReturn_ShouldSupportChaining()
+			{
+				Filtered.Methods methods = In.Type<TestClass>()
+					.Methods().Which(m => m.Name.StartsWith("Get"));
+
+				await That(methods).Return<int>().OrReturn<string>().OrReturnExactly(typeof(bool))
+					.OrReturn<DummyBase>();
+			}
+
+			[Fact]
+			public async Task WithOrReturn_WhenAllMethodsReturnOneOfTheTypes_ShouldSucceed()
+			{
+				Filtered.Methods methods = In.Type<TestClass>()
+					.Methods().Which(m => m.Name is nameof(TestClass.GetString) or nameof(TestClass.GetInt));
+
+				await That(methods).Return<string>().OrReturnExactly(typeof(int));
+			}
+
+			[Fact]
+			public async Task WithOrReturn_WhenSomeMethodsDoNotReturnAnyOfTheTypes_ShouldFail()
+			{
+				Filtered.Methods methods = In.Type<TestClass>()
+					.Methods().Which(m => m.Name.StartsWith("Get"));
+
+				async Task Act()
+					=> await That(methods).Return<bool>().OrReturnExactly<Task>();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods matching m => m.Name.StartsWith("Get") in type ThatMethods.TestClass
+					             all return bool or exactly Task,
 					             but it contained not matching methods [*]
 					             """).AsWildcard();
 			}
@@ -148,7 +187,7 @@ public sealed partial class ThatMethods
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
-						             Expected that methods matching m => m.Name == nameof(TestClass.GetString) in type ThatMethods.Return.TestClass
+						             Expected that methods matching m => m.Name == nameof(TestClass.GetString) in type ThatMethods.TestClass
 						             not all return string,
 						             but it only contained matching methods [
 						               System.String GetString()
@@ -168,8 +207,8 @@ public sealed partial class ThatMethods
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
-						             Expected that methods matching m => m.Name == nameof(TestClass.GetDummy) in type ThatMethods.Return.TestClass
-						             not all return ThatMethods.Return.DummyBase,
+						             Expected that methods matching m => m.Name == nameof(TestClass.GetDummy) in type ThatMethods.TestClass
+						             not all return ThatMethods.DummyBase,
 						             but it only contained matching methods [
 						               Dummy GetDummy()
 						             ]
@@ -203,7 +242,7 @@ public sealed partial class ThatMethods
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
-						             Expected that methods matching m => m.Name == nameof(TestClass.GetString) in type ThatMethods.Return.TestClass
+						             Expected that methods matching m => m.Name == nameof(TestClass.GetString) in type ThatMethods.TestClass
 						             not all return string,
 						             but it only contained matching methods [
 						               System.String GetString()
@@ -223,8 +262,8 @@ public sealed partial class ThatMethods
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
-						             Expected that methods matching m => m.Name == nameof(TestClass.GetDummy) in type ThatMethods.Return.TestClass
-						             not all return ThatMethods.Return.DummyBase,
+						             Expected that methods matching m => m.Name == nameof(TestClass.GetDummy) in type ThatMethods.TestClass
+						             not all return ThatMethods.DummyBase,
 						             but it only contained matching methods [
 						               Dummy GetDummy()
 						             ]
@@ -271,7 +310,7 @@ public sealed partial class ThatMethods
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
-						             Expected that methods matching m => m.Name is nameof(TestClass.GetString) or nameof(TestClass.GetInt) in type ThatMethods.Return.TestClass
+						             Expected that methods matching m => m.Name is nameof(TestClass.GetString) or nameof(TestClass.GetInt) in type ThatMethods.TestClass
 						             not all return string or int,
 						             but it only contained matching methods [
 						               System.String GetString(),
@@ -293,28 +332,6 @@ public sealed partial class ThatMethods
 					await That(Act).DoesNotThrow();
 				}
 			}
-		}
-
-#pragma warning disable CA1822 // Mark members as static
-		// ReSharper disable UnusedMember.Local
-		private class TestClass
-		{
-			public string GetString() => "test";
-			public int GetInt() => 42;
-			public bool GetBool() => true;
-			public DummyBase GetDummyBase() => new();
-			public Dummy GetDummy() => new();
-			public async Task AsyncMethod() => await Task.CompletedTask;
-		}
-		// ReSharper restore UnusedMember.Local
-#pragma warning restore CA1822
-
-		private class DummyBase
-		{
-		}
-
-		private class Dummy : DummyBase
-		{
 		}
 	}
 }

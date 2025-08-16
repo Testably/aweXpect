@@ -162,6 +162,47 @@ public sealed partial class ThatMethod
 			}
 		}
 
+		public sealed class OrReturnsExactlyTests
+		{
+			[Fact]
+			public async Task WithMultipleOrReturns_ShouldSupportChaining()
+			{
+				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
+
+				async Task Act()
+					=> await That(subject).Returns<string>().OrReturns(typeof(bool)).OrReturnsExactly<int>();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithOrReturns_WhenMethodReturnsNoneOfTheTypes_ShouldFail()
+			{
+				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
+
+				async Task Act()
+					=> await That(subject).Returns<string>().OrReturnsExactly<bool>();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             returns string or exactly bool,
+					             but it returned int
+					             """);
+			}
+
+			[Fact]
+			public async Task WithOrReturns_WhenMethodReturnsOneOfTheTypes_ShouldSucceed()
+			{
+				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
+
+				async Task Act()
+					=> await That(subject).Returns(typeof(string)).OrReturnsExactly<int>();
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
 		public sealed class NegatedTests
 		{
 			public sealed class GenericTests
@@ -214,7 +255,8 @@ public sealed partial class ThatMethod
 				[Fact]
 				public async Task WhenReturnTypeInheritsFromExpectedType_ShouldFail()
 				{
-					MethodInfo subject = typeof(ClassWithInheritance).GetMethod(nameof(ClassWithInheritance.GetDerived))!;
+					MethodInfo subject =
+						typeof(ClassWithInheritance).GetMethod(nameof(ClassWithInheritance.GetDerived))!;
 
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.Returns<BaseClass>());
@@ -222,7 +264,7 @@ public sealed partial class ThatMethod
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             does not return ThatMethod.Returns.BaseClass,
+						             does not return ThatMethod.BaseClass,
 						             but it did
 						             """)
 						.AsWildcard();
@@ -279,7 +321,8 @@ public sealed partial class ThatMethod
 				[Fact]
 				public async Task WhenReturnTypeInheritsFromExpectedType_ShouldFail()
 				{
-					MethodInfo subject = typeof(ClassWithInheritance).GetMethod(nameof(ClassWithInheritance.GetDerived))!;
+					MethodInfo subject =
+						typeof(ClassWithInheritance).GetMethod(nameof(ClassWithInheritance.GetDerived))!;
 
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.Returns(typeof(BaseClass)));
@@ -287,7 +330,7 @@ public sealed partial class ThatMethod
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             does not return ThatMethod.Returns.BaseClass,
+						             does not return ThatMethod.BaseClass,
 						             but it did
 						             """)
 						.AsWildcard();
@@ -296,6 +339,18 @@ public sealed partial class ThatMethod
 
 			public sealed class OrReturnsTests
 			{
+				[Fact]
+				public async Task WithMultipleOrReturns_ShouldSupportChaining()
+				{
+					MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it
+							=> it.Returns<string>().OrReturns(typeof(bool)).OrReturns<Task>());
+
+					await That(Act).DoesNotThrow();
+				}
+
 				[Fact]
 				public async Task WithOrReturns_WhenMethodReturnsNoneOfTheTypes_ShouldSucceed()
 				{
@@ -323,29 +378,7 @@ public sealed partial class ThatMethod
 						             """)
 						.AsWildcard();
 				}
-
-				[Fact]
-				public async Task WithMultipleOrReturns_ShouldSupportChaining()
-				{
-					MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
-
-					async Task Act()
-						=> await That(subject).DoesNotComplyWith(it => it.Returns<string>().OrReturns(typeof(bool)).OrReturns<Task>());
-
-					await That(Act).DoesNotThrow();
-				}
 			}
 		}
-
-#pragma warning disable CA1822 // Mark members as static
-		public class ClassWithInheritance
-		{
-			public DerivedClass GetDerived() => new();
-		}
-
-		public abstract class BaseClass;
-
-		public class DerivedClass : BaseClass;
-#pragma warning restore CA1822 // Mark members as static
 	}
 }

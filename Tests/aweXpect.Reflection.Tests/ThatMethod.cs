@@ -10,8 +10,8 @@ public sealed partial class ThatMethod
 			BindingFlags.NonPublic |
 			BindingFlags.Public |
 			BindingFlags.Instance);
-	
-#pragma warning disable CA1822
+
+#pragma warning disable CA1822 // Mark members as static
 	public class ClassWithMethods
 	{
 		public int PublicMethod() => 0;
@@ -24,5 +24,14 @@ public sealed partial class ThatMethod
 	{
 		public int MyMethod() => 0;
 	}
-#pragma warning restore CA1822
+
+	public class ClassWithInheritance
+	{
+		public DerivedClass GetDerived() => new();
+	}
+
+	public abstract class BaseClass;
+
+	public class DerivedClass : BaseClass;
+#pragma warning restore CA1822 // Mark members as static
 }

@@ -10,8 +10,16 @@ public sealed partial class ThatMethods
 
 	public static Filtered.Types GetTypes<T>()
 		=> In.AssemblyContaining<T>().Types().Which(t => t == typeof(T));
-	
-#pragma warning disable CA1822
+
+	private class DummyBase
+	{
+	}
+
+	private class Dummy : DummyBase
+	{
+	}
+
+#pragma warning disable CA1822 // Mark members as static
 	public class ClassWithMethods
 	{
 		public int PublicMethod1() => 0;
@@ -24,5 +32,16 @@ public sealed partial class ThatMethods
 		private int PrivateMethod2() => 0;
 	}
 
+	// ReSharper disable UnusedMember.Local
+	private class TestClass
+	{
+		public string GetString() => "test";
+		public int GetInt() => 42;
+		public bool GetBool() => true;
+		public DummyBase GetDummyBase() => new();
+		public Dummy GetDummy() => new();
+		public async Task AsyncMethod() => await Task.CompletedTask;
+	}
+	// ReSharper restore UnusedMember.Local
 #pragma warning restore CA1822
 }

@@ -313,24 +313,32 @@ namespace aweXpect.Reflection
     {
         public static aweXpect.Reflection.ThatMethod.MethodReturnResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> Returns(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject, System.Type returnType) { }
         public static aweXpect.Reflection.ThatMethod.MethodReturnResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> Returns<TReturn>(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
-        public sealed class MethodReturnResult<TValue, TResult> : aweXpect.Results.AndOrResult<TValue, TResult>
+        public static aweXpect.Reflection.ThatMethod.MethodReturnResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> ReturnsExactly(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject, System.Type returnType) { }
+        public static aweXpect.Reflection.ThatMethod.MethodReturnResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> ReturnsExactly<TReturn>(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
+        public sealed class MethodReturnResult<TValue, TResult> : aweXpect.Results.AndOrResult<TValue, TResult>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.TypeFilterOptions>
             where TResult : aweXpect.Core.IThat<TValue>
         {
-            public MethodReturnResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TResult subject, System.Collections.Generic.List<System.Type> returnTypes) { }
+            public MethodReturnResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TResult subject, aweXpect.Reflection.Options.TypeFilterOptions typeFilterOptions) { }
             public aweXpect.Reflection.ThatMethod.MethodReturnResult<TValue, TResult> OrReturns(System.Type returnType) { }
             public aweXpect.Reflection.ThatMethod.MethodReturnResult<TValue, TResult> OrReturns<TReturn>() { }
+            public aweXpect.Reflection.ThatMethod.MethodReturnResult<TValue, TResult> OrReturnsExactly(System.Type returnType) { }
+            public aweXpect.Reflection.ThatMethod.MethodReturnResult<TValue, TResult> OrReturnsExactly<TReturn>() { }
         }
     }
     public static class ThatMethods
     {
         public static aweXpect.Reflection.ThatMethods.MethodsReturnResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>>> Return(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>> subject, System.Type returnType) { }
         public static aweXpect.Reflection.ThatMethods.MethodsReturnResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>>> Return<TReturn>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>> subject) { }
-        public sealed class MethodsReturnResult<TValue, TResult> : aweXpect.Results.AndOrResult<TValue, TResult>
+        public static aweXpect.Reflection.ThatMethods.MethodsReturnResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>>> ReturnExactly(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>> subject, System.Type returnType) { }
+        public static aweXpect.Reflection.ThatMethods.MethodsReturnResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>>> ReturnExactly<TReturn>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo>> subject) { }
+        public sealed class MethodsReturnResult<TValue, TResult> : aweXpect.Results.AndOrResult<TValue, TResult>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.TypeFilterOptions>
             where TResult : aweXpect.Core.IThat<TValue>
         {
-            public MethodsReturnResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TResult subject, System.Collections.Generic.List<System.Type> returnTypes) { }
+            public MethodsReturnResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TResult subject, aweXpect.Reflection.Options.TypeFilterOptions typeFilterOptions) { }
             public aweXpect.Reflection.ThatMethods.MethodsReturnResult<TValue, TResult> OrReturn(System.Type returnType) { }
             public aweXpect.Reflection.ThatMethods.MethodsReturnResult<TValue, TResult> OrReturn<TReturn>() { }
+            public aweXpect.Reflection.ThatMethods.MethodsReturnResult<TValue, TResult> OrReturnExactly(System.Type returnType) { }
+            public aweXpect.Reflection.ThatMethods.MethodsReturnResult<TValue, TResult> OrReturnExactly<TReturn>() { }
         }
     }
     public static class ThatProperties { }
@@ -649,6 +657,13 @@ namespace aweXpect.Reflection.Options
         public void AddPredicate(System.Func<System.Reflection.ParameterInfo, bool> predicate, System.Func<string> description) { }
         public string GetDescription() { }
         public bool Matches(System.Reflection.ParameterInfo parameter) { }
+    }
+    public class TypeFilterOptions
+    {
+        public TypeFilterOptions() { }
+        public void AppendDescription(System.Text.StringBuilder stringBuilder, aweXpect.Core.ExpectationGrammars grammar) { }
+        public bool Matches(System.Type? type) { }
+        public void RegisterType(System.Type type, bool forceDirect) { }
     }
 }
 namespace aweXpect.Reflection.Results
