@@ -4,11 +4,11 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatMethods
 {
-	public static Filtered.Methods GetMethods(string methodPrefix)
+	internal static Filtered.Methods GetMethods(string methodPrefix = "")
 		=> In.AssemblyContaining<ClassWithMethods>().Types().Which(t => t == typeof(ClassWithMethods))
 			.Methods().Which(methodInfo => methodInfo.Name.StartsWith(methodPrefix));
 
-	public static Filtered.Types GetTypes<T>()
+	internal static Filtered.Types GetTypes<T>()
 		=> In.AssemblyContaining<T>().Types().Which(t => t == typeof(T));
 
 	internal class DummyBase
@@ -28,8 +28,15 @@ public sealed partial class ThatMethods
 		internal int InternalMethod2() => 0;
 		protected int ProtectedMethod1() => 0;
 		protected int ProtectedMethod2() => 0;
+		// ReSharper disable once UnusedMember.Local
 		private int PrivateMethod1() => 0;
+		// ReSharper disable once UnusedMember.Local
 		private int PrivateMethod2() => 0;
+
+		public T GenericMethod1<T>(T value) => value;
+		public U GenericMethod2<T, U>(T first, U second) => second;
+		public int NonGenericMethod1() => 1;
+		public int NonGenericMethod2() => 2;
 	}
 
 	// ReSharper disable UnusedMember.Local
@@ -42,6 +49,7 @@ public sealed partial class ThatMethods
 		public Dummy GetDummy() => new();
 		public async Task AsyncMethod() => await Task.CompletedTask;
 		public T GenericMethod<T>(T value) => value;
+		// ReSharper disable once UnusedTypeParameter
 		public void GenericVoidMethod<T>() { }
 		public T GenericMethodWithConstraint<T>(T value) where T : class => value;
 	}

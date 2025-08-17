@@ -392,6 +392,8 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Results.NamedParameterCollectionResult<System.Reflection.MethodInfo?, object?> HasParameter(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject, string expected) { }
         public static aweXpect.Reflection.Results.ParameterCollectionResult<System.Reflection.MethodInfo?, TParameter> HasParameter<TParameter>(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
         public static aweXpect.Reflection.Results.NamedParameterCollectionResult<System.Reflection.MethodInfo?, TParameter> HasParameter<TParameter>(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject, string expected) { }
+        public static aweXpect.Results.AndOrResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> IsGeneric(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> IsNotGeneric(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
         public static aweXpect.Reflection.ThatMethod.MethodReturnResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> Returns(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject, System.Type returnType) { }
         public static aweXpect.Reflection.ThatMethod.MethodReturnResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> Returns<TReturn>(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
         public static aweXpect.Reflection.ThatMethod.MethodReturnResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> ReturnsExactly(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject, System.Type returnType) { }
@@ -408,6 +410,8 @@ namespace aweXpect.Reflection
     }
     public static class ThatMethods
     {
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>>> AreGeneric(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>>> AreNotGeneric(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject) { }
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.MethodInfo?> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject, bool inherit = true)
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.MethodInfo?> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
