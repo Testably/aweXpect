@@ -79,5 +79,35 @@ public sealed partial class ThatAssembly
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenAssemblyDoesNotHaveName_ShouldSucceed()
+			{
+				Assembly subject = typeof(PublicAbstractClass).Assembly;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasName("NonExistentAssembly"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenAssemblyHasName_ShouldFail()
+			{
+				Assembly subject = typeof(PublicAbstractClass).Assembly;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasName("aweXpect.Reflection.Tests"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has name not equal to "aweXpect.Reflection.Tests",
+					             but it was "aweXpect.Reflection.Tests"
+					             """);
+			}
+		}
 	}
 }

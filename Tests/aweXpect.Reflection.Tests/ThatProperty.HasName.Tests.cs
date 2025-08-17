@@ -82,5 +82,37 @@ public sealed partial class ThatProperty
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenPropertyInfoDoesNotHaveName_ShouldSucceed()
+			{
+				PropertyInfo? subject =
+					typeof(ClassWithProperties).GetProperty(nameof(ClassWithProperties.PublicProperty));
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasName("NonExistentProperty"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenPropertyInfoHasName_ShouldFail()
+			{
+				PropertyInfo? subject =
+					typeof(ClassWithProperties).GetProperty(nameof(ClassWithProperties.PublicProperty));
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasName("PublicProperty"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has name not equal to "PublicProperty",
+					             but it was "PublicProperty"
+					             """);
+			}
+		}
 	}
 }

@@ -55,5 +55,38 @@ public sealed partial class ThatEvent
 					             """);
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Theory]
+			[InlineData("ProtectedEvent")]
+			[InlineData("PublicEvent")]
+			[InlineData("PrivateEvent")]
+			public async Task WhenEventInfoIsNotProtectedInternal_ShouldSucceed(string eventName)
+			{
+				EventInfo? subject = GetEvent(eventName);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsProtectedInternal());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenEventInfoIsProtectedInternal_ShouldFail()
+			{
+				EventInfo? subject = GetEvent("ProtectedInternalEvent");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsProtectedInternal());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not protected internal,
+					             but it was
+					             """);
+			}
+		}
 	}
 }

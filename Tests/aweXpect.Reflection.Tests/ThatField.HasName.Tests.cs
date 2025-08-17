@@ -82,5 +82,37 @@ public sealed partial class ThatField
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenFieldInfoDoesNotHaveName_ShouldSucceed()
+			{
+				FieldInfo? subject =
+					typeof(ClassWithFields).GetField(nameof(ClassWithFields.PublicField));
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasName("NonExistentField"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenFieldInfoHasName_ShouldFail()
+			{
+				FieldInfo? subject =
+					typeof(ClassWithFields).GetField(nameof(ClassWithFields.PublicField));
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasName("PublicField"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has name not equal to "PublicField",
+					             but it was "PublicField"
+					             """);
+			}
+		}
 	}
 }

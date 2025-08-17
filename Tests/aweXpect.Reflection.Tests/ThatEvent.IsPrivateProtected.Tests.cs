@@ -55,5 +55,38 @@ public sealed partial class ThatEvent
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Theory]
+			[InlineData("ProtectedEvent")]
+			[InlineData("PublicEvent")]
+			[InlineData("InternalEvent")]
+			public async Task WhenEventInfoIsNotPrivateProtected_ShouldSucceed(string eventName)
+			{
+				EventInfo? subject = GetEvent(eventName);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsPrivateProtected());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenEventInfoIsPrivateProtected_ShouldFail()
+			{
+				EventInfo? subject = GetEvent("PrivateProtectedEvent");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsPrivateProtected());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not private protected,
+					             but it was
+					             """);
+			}
+		}
 	}
 }

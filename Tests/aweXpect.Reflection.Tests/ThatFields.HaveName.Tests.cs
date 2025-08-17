@@ -60,5 +60,35 @@ public sealed partial class ThatFields
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenFieldsDoNotHaveName_ShouldSucceed()
+			{
+				Filtered.Fields subject = GetTypes<ThatField.ClassWithFields>().Fields();
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(they => they.HaveName("NonExistentField"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenFieldsHaveName_ShouldFail()
+			{
+				Filtered.Fields subject = GetTypes<ThatField.ClassWithSingleField>().Fields();
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(they => they.HaveName("MyField"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that fields in types matching t => t == typeof(T) in assembly containing type ThatField.ClassWithSingleField
+					             not all have name equal to "MyField",
+					             but it only contained matching items *
+					             """).AsWildcard();
+			}
+		}
 	}
 }

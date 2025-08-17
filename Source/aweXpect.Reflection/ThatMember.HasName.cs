@@ -50,7 +50,7 @@ public static partial class ThatMember
 			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, Actual?.Name, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have name ").Append(options.GetExpectation(expected, Grammars));
+			=> AppendNormalExpectation(stringBuilder, indentation);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);

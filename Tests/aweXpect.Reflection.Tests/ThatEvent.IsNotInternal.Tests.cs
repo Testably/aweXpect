@@ -55,5 +55,38 @@ public sealed partial class ThatEvent
 					             """);
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenEventInfoIsInternal_ShouldSucceed()
+			{
+				EventInfo? subject = GetEvent("InternalEvent");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotInternal());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Theory]
+			[InlineData("ProtectedEvent", "protected")]
+			[InlineData("PublicEvent", "public")]
+			[InlineData("PrivateEvent", "private")]
+			public async Task WhenEventInfoIsNotInternal_ShouldFail(string eventName, string expectedAccessModifier)
+			{
+				EventInfo? subject = GetEvent(eventName);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotInternal());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is internal,
+					              but it was {expectedAccessModifier}
+					              """);
+			}
+		}
 	}
 }

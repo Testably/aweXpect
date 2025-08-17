@@ -55,5 +55,38 @@ public sealed partial class ThatField
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Theory]
+			[InlineData("ProtectedField")]
+			[InlineData("InternalField")]
+			[InlineData("PrivateField")]
+			public async Task WhenFieldInfoIsNotPublic_ShouldSucceed(string fieldName)
+			{
+				FieldInfo? subject = GetField(fieldName);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsPublic());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenFieldInfoIsPublic_ShouldFail()
+			{
+				FieldInfo? subject = GetField("PublicField");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsPublic());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not public,
+					             but it was
+					             """);
+			}
+		}
 	}
 }

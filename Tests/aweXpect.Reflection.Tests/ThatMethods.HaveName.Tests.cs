@@ -60,5 +60,35 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenMethodsDoNotHaveName_ShouldSucceed()
+			{
+				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithMethods>().Methods();
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(they => they.HaveName("NonExistentMethod"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenMethodsHaveName_ShouldFail()
+			{
+				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithSingleMethod>().Methods();
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(they => they.HaveName("MyMethod"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods in types matching t => t == typeof(T) in assembly containing type ThatMethod.ClassWithSingleMethod
+					             not all have name equal to "MyMethod",
+					             but it only contained matching items *
+					             """).AsWildcard();
+			}
+		}
 	}
 }

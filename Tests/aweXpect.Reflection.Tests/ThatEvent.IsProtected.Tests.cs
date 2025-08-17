@@ -55,5 +55,38 @@ public sealed partial class ThatEvent
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Theory]
+			[InlineData("InternalEvent")]
+			[InlineData("PublicEvent")]
+			[InlineData("PrivateEvent")]
+			public async Task WhenEventInfoIsNotProtected_ShouldSucceed(string eventName)
+			{
+				EventInfo? subject = GetEvent(eventName);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsProtected());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenEventInfoIsProtected_ShouldFail()
+			{
+				EventInfo? subject = GetEvent("ProtectedEvent");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsProtected());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not protected,
+					             but it was
+					             """);
+			}
+		}
 	}
 }

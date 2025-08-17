@@ -61,5 +61,35 @@ public sealed partial class ThatAssemblies
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenAssembliesDoNotHaveName_ShouldSucceed()
+			{
+				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(they => they.HaveName("NonExistentAssembly"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenAssembliesHaveName_ShouldFail()
+			{
+				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(they => they.HaveName("aweXpect.Reflection.Tests"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that in assembly containing type PublicAbstractClass
+					             not all have name equal to "aweXpect.Reflection.Tests",
+					             but it only contained matching types *
+					             """).AsWildcard();
+			}
+		}
 	}
 }

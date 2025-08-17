@@ -59,7 +59,7 @@ public static partial class ThatMembers
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("all have name ").Append(options.GetExpectation(expected, Grammars));
+			=> stringBuilder.Append("not all have name ").Append(options.GetExpectation(expected, Grammars.Negate()));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{

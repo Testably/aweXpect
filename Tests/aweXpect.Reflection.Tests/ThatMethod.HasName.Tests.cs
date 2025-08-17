@@ -82,5 +82,37 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenMethodInfoDoesNotHaveName_ShouldSucceed()
+			{
+				MethodInfo? subject =
+					typeof(ClassWithMethods).GetMethod(nameof(ClassWithMethods.PublicMethod));
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasName("NonExistentMethod"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenMethodInfoHasName_ShouldFail()
+			{
+				MethodInfo? subject =
+					typeof(ClassWithMethods).GetMethod(nameof(ClassWithMethods.PublicMethod));
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasName("PublicMethod"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has name not equal to "PublicMethod",
+					             but it was "PublicMethod"
+					             """);
+			}
+		}
 	}
 }
