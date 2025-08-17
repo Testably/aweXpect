@@ -85,4 +85,20 @@ internal static class EventInfoHelpers
 
 		return false;
 	}
+
+	/// <summary>
+	///     Checks if the <paramref name="eventInfo" /> is abstract (based on its accessor methods).
+	/// </summary>
+	/// <param name="eventInfo">The <see cref="EventInfo" /> to check.</param>
+	/// <returns><see langword="true" /> if the event is abstract; otherwise, <see langword="false" />.</returns>
+	public static bool IsReallyAbstract(this EventInfo? eventInfo)
+		=> eventInfo?.AddMethod?.IsAbstract == true;
+
+	/// <summary>
+	///     Checks if the <paramref name="eventInfo" /> is sealed (based on its accessor methods).
+	/// </summary>
+	/// <param name="eventInfo">The <see cref="EventInfo" /> to check.</param>
+	/// <returns><see langword="true" /> if the event is sealed; otherwise, <see langword="false" />.</returns>
+	public static bool IsReallySealed(this EventInfo? eventInfo)
+		=> eventInfo?.AddMethod?.IsFinal == true;
 }

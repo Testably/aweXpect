@@ -16,4 +16,25 @@ public sealed partial class MethodFilters
 		}
 #pragma warning restore CA1822
 	}
+
+	private abstract class AbstractMethodClass
+	{
+		public abstract void AbstractMethod();
+		public virtual void VirtualMethod() { }
+	}
+
+	private class ConcreteMethodClass
+	{
+		// ReSharper disable once UnusedMember.Global
+		public virtual void VirtualMethod() { }
+#pragma warning disable CA1822
+		// ReSharper disable once UnusedMember.Local
+		public void ConcreteMethod() { }
+#pragma warning restore CA1822
+	}
+
+	private class SealedMethodClass : ConcreteMethodClass
+	{
+		public sealed override string ToString() => "SealedMethodClass";
+	}
 }
