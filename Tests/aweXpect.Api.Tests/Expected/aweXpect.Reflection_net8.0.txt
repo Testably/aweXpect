@@ -547,12 +547,18 @@ namespace aweXpect.Reflection
     {
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAre(this aweXpect.Reflection.Collections.Filtered.Types @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreAbstract(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichAreClasses(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichAreEnums(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreGeneric(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichAreInterfaces(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreInternal(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNested(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNot(this aweXpect.Reflection.Collections.Filtered.Types @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotAbstract(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotClasses(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotEnums(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotGeneric(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotInterfaces(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotInternal(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotNested(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotPrivate(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
