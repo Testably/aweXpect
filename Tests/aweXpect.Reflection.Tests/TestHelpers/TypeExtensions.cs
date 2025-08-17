@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace aweXpect.Reflection.Tests.TestHelpers;
 
@@ -21,6 +22,17 @@ internal static class TypeExtensions
 				   BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly)?
 			   .GetMethod?.HasAttribute<CompilerGeneratedAttribute>() == true;
 
+	public static bool IsRecordStruct(this Type? type) =>
+		// As noted here: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-10.0/record-structs#open-questions
+		// recognizing record structs from metadata is an open point. The following check is based on common sense
+		// and heuristic testing, apparently giving good results but not supported by official documentation.
+		type?.BaseType == typeof(ValueType) &&
+		type.GetMethod("PrintMembers", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly, null,
+			[typeof(StringBuilder),], null) is not null &&
+		type.GetMethod("op_Equality", BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly, null,
+				[type, type,], null)?
+			.HasAttribute<CompilerGeneratedAttribute>() == true;
+	
 	public static bool HasAttribute<TAttribute>(
 		this MethodInfo methodInfo,
 		Func<TAttribute, bool>? predicate = null,

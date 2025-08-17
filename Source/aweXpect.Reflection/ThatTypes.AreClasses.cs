@@ -70,7 +70,7 @@ public static partial class ThatTypes
 		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
 		{
 			Actual = actual;
-			Outcome = actual.All(type => type?.IsClass != true || type.IsRecordClass()) ? Outcome.Success : Outcome.Failure;
+			Outcome = actual.All(type => !type.IsReallyClass()) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 

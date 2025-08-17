@@ -16,7 +16,7 @@ public sealed partial class Filtered
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Abstract.Classes();
 
 					await That(types).All().Satisfy(t => t is
-						{ IsClass: true, IsAbstract: true, IsSealed: false, IsInterface: false, });
+						{ IsClass: true, IsAbstract: true, IsSealed: false, IsInterface: false, }).And.IsNotEmpty();
 				}
 
 				[Fact]
@@ -27,7 +27,7 @@ public sealed partial class Filtered
 
 					await That(types).All().Satisfy(type
 						=> type is { IsAbstract: true, IsSealed: false, IsInterface: false, IsClass: true, } &&
-						   (type.IsNested ? type.IsNestedPublic : type.IsPublic));
+						   (type.IsNested ? type.IsNestedPublic : type.IsPublic)).And.IsNotEmpty();
 				}
 
 				[Fact]

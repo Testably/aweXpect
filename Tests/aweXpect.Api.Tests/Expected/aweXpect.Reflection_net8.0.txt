@@ -535,12 +535,18 @@ namespace aweXpect.Reflection
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> InheritsFrom(this aweXpect.Core.IThat<System.Type?> subject, System.Type baseType, bool forceDirect = false) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> InheritsFrom<TBaseType>(this aweXpect.Core.IThat<System.Type?> subject, bool forceDirect = false) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsAClass(this aweXpect.Core.IThat<System.Type?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsARecord(this aweXpect.Core.IThat<System.Type?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsARecordStruct(this aweXpect.Core.IThat<System.Type?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsAStruct(this aweXpect.Core.IThat<System.Type?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsAbstract(this aweXpect.Core.IThat<System.Type?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsAnEnum(this aweXpect.Core.IThat<System.Type?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsAnInterface(this aweXpect.Core.IThat<System.Type?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsGeneric(this aweXpect.Core.IThat<System.Type?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsNested(this aweXpect.Core.IThat<System.Type?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsNotAClass(this aweXpect.Core.IThat<System.Type?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsNotARecord(this aweXpect.Core.IThat<System.Type?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsNotARecordStruct(this aweXpect.Core.IThat<System.Type?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsNotAStruct(this aweXpect.Core.IThat<System.Type?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsNotAbstract(this aweXpect.Core.IThat<System.Type?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsNotAnEnum(this aweXpect.Core.IThat<System.Type?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsNotAnInterface(this aweXpect.Core.IThat<System.Type?> subject) { }
@@ -565,10 +571,16 @@ namespace aweXpect.Reflection
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreNotGeneric(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreNotInterfaces(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreNotNested(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreNotRecordStructs(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreNotRecords(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreNotSealed(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreNotStatic(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreNotStructs(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreRecordStructs(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreRecords(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreSealed(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreStatic(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreStructs(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> DoNotInheritFrom(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Type baseType, bool forceDirect = false) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> DoNotInheritFrom<TBaseType>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, bool forceDirect = false) { }
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Type?> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, bool inherit = true)
@@ -602,15 +614,21 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotProtected(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotProtectedInternal(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotPublic(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotRecordStructs(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotRecords(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotSealed(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotStatic(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotStructs(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichArePrivate(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichArePrivateProtected(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreProtected(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreProtectedInternal(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichArePublic(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichAreRecordStructs(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichAreRecords(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreSealed(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreStatic(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichAreStructs(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichInheritFrom(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Type baseType, bool forceDirect = false) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichInheritFrom<TBaseType>(this aweXpect.Reflection.Collections.Filtered.Types @this, bool forceDirect = false) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichSatisfy(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<System.Type, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
@@ -645,20 +663,20 @@ namespace aweXpect.Reflection.Collections
     }
     public static class Filtered
     {
-        public class Assemblies : aweXpect.Reflection.Collections.Filtered<System.Reflection.Assembly, aweXpect.Reflection.Collections.Filtered.Assemblies>, aweXpect.Core.IDescribableSubject, aweXpect.Reflection.Collections.ILimitedTypeAssemblies, aweXpect.Reflection.Collections.ILimitedTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>, aweXpect.Reflection.Collections.ITypeAssemblies, aweXpect.Reflection.Collections.ITypeAssemblies.IPrivate, aweXpect.Reflection.Collections.ITypeAssemblies.IProtected
+        public class Assemblies : aweXpect.Reflection.Collections.Filtered<System.Reflection.Assembly, aweXpect.Reflection.Collections.Filtered.Assemblies>, aweXpect.Core.IDescribableSubject, aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies, aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>, aweXpect.Reflection.Collections.ITypeAssemblies, aweXpect.Reflection.Collections.ITypeAssemblies.IPrivate, aweXpect.Reflection.Collections.ITypeAssemblies.IProtected
         {
             protected Assemblies(aweXpect.Reflection.Collections.Filtered.Assemblies inner) { }
             public Assemblies(System.Collections.Generic.IEnumerable<System.Reflection.Assembly?> source, string description) { }
             public Assemblies(System.Reflection.Assembly? source, string description) { }
-            public aweXpect.Reflection.Collections.ILimitedTypeAssemblies<aweXpect.Reflection.Collections.ILimitedTypeAssemblies> Abstract { get; }
+            public aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies<aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies> Abstract { get; }
             public aweXpect.Reflection.Collections.ITypeAssemblies Generic { get; }
             public aweXpect.Reflection.Collections.ITypeAssemblies Internal { get; }
             public aweXpect.Reflection.Collections.ITypeAssemblies Nested { get; }
             public aweXpect.Reflection.Collections.ITypeAssemblies.IPrivate Private { get; }
             public aweXpect.Reflection.Collections.ITypeAssemblies.IProtected Protected { get; }
             public aweXpect.Reflection.Collections.ITypeAssemblies Public { get; }
-            public aweXpect.Reflection.Collections.ILimitedTypeAssemblies<aweXpect.Reflection.Collections.ILimitedTypeAssemblies> Sealed { get; }
-            public aweXpect.Reflection.Collections.ILimitedTypeAssemblies<aweXpect.Reflection.Collections.ILimitedTypeAssemblies> Static { get; }
+            public aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies<aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies> Sealed { get; }
+            public aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies<aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies> Static { get; }
             public aweXpect.Reflection.Collections.Filtered.Types Classes(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 63) { }
             public aweXpect.Reflection.Collections.Filtered.Constructors Constructors() { }
             public aweXpect.Reflection.Collections.Filtered.Types Enums(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 63) { }
@@ -668,6 +686,9 @@ namespace aweXpect.Reflection.Collections
             public aweXpect.Reflection.Collections.Filtered.Types Interfaces(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 63) { }
             public aweXpect.Reflection.Collections.Filtered.Methods Methods() { }
             public aweXpect.Reflection.Collections.Filtered.Properties Properties() { }
+            public aweXpect.Reflection.Collections.Filtered.Types RecordStructs(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 63) { }
+            public aweXpect.Reflection.Collections.Filtered.Types Records(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 63) { }
+            public aweXpect.Reflection.Collections.Filtered.Types Structs(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 63) { }
             public aweXpect.Reflection.Collections.Filtered.Types Types(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 63) { }
             public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Assemblies
             {
@@ -821,22 +842,28 @@ namespace aweXpect.Reflection.Collections
         bool Applies(TEntity value);
         string Describes(string text);
     }
-    public interface ILimitedTypeAssemblies
+    public interface ILimitedAbstractSealedTypeAssemblies : aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies
+    {
+        aweXpect.Reflection.Collections.Filtered.Types Records(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 63);
+    }
+    public interface ILimitedAbstractSealedTypeAssemblies<out TLimitedTypeAssemblies> : aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies<TLimitedTypeAssemblies>
+        where out TLimitedTypeAssemblies : aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies { }
+    public interface ILimitedStaticTypeAssemblies
     {
         aweXpect.Reflection.Collections.Filtered.Types Classes(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 63);
         aweXpect.Reflection.Collections.Filtered.Types Types(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 63);
     }
-    public interface ILimitedTypeAssemblies<out TLimitedTypeAssemblies> : aweXpect.Reflection.Collections.ILimitedTypeAssemblies
-        where out TLimitedTypeAssemblies : aweXpect.Reflection.Collections.ILimitedTypeAssemblies
+    public interface ILimitedStaticTypeAssemblies<out TLimitedTypeAssemblies> : aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies
+        where out TLimitedTypeAssemblies : aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies
     {
         TLimitedTypeAssemblies Generic { get; }
         TLimitedTypeAssemblies Nested { get; }
     }
-    public interface ITypeAssemblies : aweXpect.Reflection.Collections.ILimitedTypeAssemblies, aweXpect.Reflection.Collections.ILimitedTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>
+    public interface ITypeAssemblies : aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies, aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>
     {
-        aweXpect.Reflection.Collections.ILimitedTypeAssemblies<aweXpect.Reflection.Collections.ILimitedTypeAssemblies> Abstract { get; }
-        aweXpect.Reflection.Collections.ILimitedTypeAssemblies<aweXpect.Reflection.Collections.ILimitedTypeAssemblies> Sealed { get; }
-        aweXpect.Reflection.Collections.ILimitedTypeAssemblies<aweXpect.Reflection.Collections.ILimitedTypeAssemblies> Static { get; }
+        aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies<aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies> Abstract { get; }
+        aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies<aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies> Sealed { get; }
+        aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies<aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies> Static { get; }
         aweXpect.Reflection.Collections.Filtered.Constructors Constructors();
         aweXpect.Reflection.Collections.Filtered.Types Enums(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 63);
         aweXpect.Reflection.Collections.Filtered.Events Events();
@@ -844,11 +871,13 @@ namespace aweXpect.Reflection.Collections
         aweXpect.Reflection.Collections.Filtered.Types Interfaces(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 63);
         aweXpect.Reflection.Collections.Filtered.Methods Methods();
         aweXpect.Reflection.Collections.Filtered.Properties Properties();
-        public interface IPrivate : aweXpect.Reflection.Collections.ILimitedTypeAssemblies, aweXpect.Reflection.Collections.ILimitedTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>, aweXpect.Reflection.Collections.ITypeAssemblies
+        aweXpect.Reflection.Collections.Filtered.Types RecordStructs(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 63);
+        aweXpect.Reflection.Collections.Filtered.Types Structs(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 63);
+        public interface IPrivate : aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies, aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>, aweXpect.Reflection.Collections.ITypeAssemblies
         {
             aweXpect.Reflection.Collections.ITypeAssemblies Protected { get; }
         }
-        public interface IProtected : aweXpect.Reflection.Collections.ILimitedTypeAssemblies, aweXpect.Reflection.Collections.ILimitedTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>, aweXpect.Reflection.Collections.ITypeAssemblies
+        public interface IProtected : aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies, aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>, aweXpect.Reflection.Collections.ITypeAssemblies
         {
             aweXpect.Reflection.Collections.ITypeAssemblies Internal { get; }
         }

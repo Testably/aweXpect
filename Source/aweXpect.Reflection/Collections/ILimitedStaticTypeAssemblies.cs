@@ -6,7 +6,7 @@ namespace aweXpect.Reflection.Collections;
 /// <remarks>
 ///     It only supports accessing <see cref="Types" /> or <see cref="Classes" />.
 /// </remarks>
-public interface ILimitedTypeAssemblies
+public interface ILimitedStaticTypeAssemblies
 {
 	/// <summary>
 	///     Get all types in the filtered assemblies.
@@ -23,11 +23,11 @@ public interface ILimitedTypeAssemblies
 ///     A limited interface to allow basic filtering for types in assemblies.
 /// </summary>
 /// <remarks>
-///     In addition to the methods in <see cref="ILimitedTypeAssemblies" /> it also
+///     In addition to the methods in <see cref="ILimitedAbstractSealedTypeAssemblies" /> it also
 ///     supports adding a filter for generic or nested types.
 /// </remarks>
-public interface ILimitedTypeAssemblies<out TLimitedTypeAssemblies> : ILimitedTypeAssemblies
-	where TLimitedTypeAssemblies : ILimitedTypeAssemblies
+public interface ILimitedStaticTypeAssemblies<out TLimitedTypeAssemblies> : ILimitedStaticTypeAssemblies
+	where TLimitedTypeAssemblies : ILimitedStaticTypeAssemblies
 {
 	/// <summary>
 	///     Filters only for generic types.

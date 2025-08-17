@@ -15,7 +15,7 @@ public sealed partial class Filtered
 				{
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Classes();
 
-					await That(types).All().Satisfy(t => t.IsClass);
+					await That(types).All().Satisfy(t => t.IsClass).And.IsNotEmpty();
 				}
 
 				[Theory]
@@ -25,7 +25,7 @@ public sealed partial class Filtered
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies()
 						.Classes(accessModifier);
 
-					await That(types).All().Satisfy(type => type.IsClass && check(type));
+					await That(types).All().Satisfy(type => type.IsClass && check(type)).And.IsNotEmpty();
 				}
 
 				[Fact]

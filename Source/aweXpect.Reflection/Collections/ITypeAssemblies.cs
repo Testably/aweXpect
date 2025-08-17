@@ -4,25 +4,27 @@
 ///     An interface to allow filtering for types in assemblies.
 /// </summary>
 /// <remarks>
-///     In addition to the properties and methods in <see cref="ILimitedTypeAssemblies{ITypeAssemblies}" /> it also
+///     In addition to the properties and methods in
+///     <see cref="ILimitedAbstractSealedTypeAssemblies{TLimitedTypeAssemblies}" /> it also
 ///     supports adding a filter for abstract, sealed or static types as well as accessing interfaces or enums.
 /// </remarks>
-public interface ITypeAssemblies : ILimitedTypeAssemblies<ITypeAssemblies>
+public interface ITypeAssemblies
+	: ILimitedAbstractSealedTypeAssemblies<ITypeAssemblies>
 {
 	/// <summary>
 	///     Filters only for abstract types.
 	/// </summary>
-	ILimitedTypeAssemblies<ILimitedTypeAssemblies> Abstract { get; }
+	ILimitedAbstractSealedTypeAssemblies<ILimitedAbstractSealedTypeAssemblies> Abstract { get; }
 
 	/// <summary>
 	///     Filters only for sealed types.
 	/// </summary>
-	ILimitedTypeAssemblies<ILimitedTypeAssemblies> Sealed { get; }
+	ILimitedAbstractSealedTypeAssemblies<ILimitedAbstractSealedTypeAssemblies> Sealed { get; }
 
 	/// <summary>
 	///     Filters only for static types.
 	/// </summary>
-	ILimitedTypeAssemblies<ILimitedTypeAssemblies> Static { get; }
+	ILimitedStaticTypeAssemblies<ILimitedStaticTypeAssemblies> Static { get; }
 
 	/// <summary>
 	///     Get all interfaces in the filtered assemblies.
@@ -33,6 +35,16 @@ public interface ITypeAssemblies : ILimitedTypeAssemblies<ITypeAssemblies>
 	///     Get all enums in the filtered assemblies.
 	/// </summary>
 	Filtered.Types Enums(AccessModifiers accessModifier = AccessModifiers.Any);
+
+	/// <summary>
+	///     Get all record structs in the filtered assemblies.
+	/// </summary>
+	Filtered.Types RecordStructs(AccessModifiers accessModifier = AccessModifiers.Any);
+
+	/// <summary>
+	///     Get all structs in the filtered assemblies.
+	/// </summary>
+	Filtered.Types Structs(AccessModifiers accessModifier = AccessModifiers.Any);
 
 	/// <summary>
 	///     Get all constructors in the filtered types.

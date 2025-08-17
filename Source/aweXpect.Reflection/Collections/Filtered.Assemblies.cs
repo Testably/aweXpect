@@ -141,7 +141,7 @@ public static partial class Filtered
 		}
 
 		/// <inheritdoc cref="ITypeAssemblies.Abstract" />
-		public ILimitedTypeAssemblies<ILimitedTypeAssemblies> Abstract
+		public ILimitedAbstractSealedTypeAssemblies<ILimitedAbstractSealedTypeAssemblies> Abstract
 		{
 			get
 			{
@@ -156,7 +156,7 @@ public static partial class Filtered
 		}
 
 		/// <inheritdoc cref="ITypeAssemblies.Sealed" />
-		public ILimitedTypeAssemblies<ILimitedTypeAssemblies> Sealed
+		public ILimitedAbstractSealedTypeAssemblies<ILimitedAbstractSealedTypeAssemblies> Sealed
 		{
 			get
 			{
@@ -171,7 +171,7 @@ public static partial class Filtered
 		}
 
 		/// <inheritdoc cref="ITypeAssemblies.Static" />
-		public ILimitedTypeAssemblies<ILimitedTypeAssemblies> Static
+		public ILimitedStaticTypeAssemblies<ILimitedStaticTypeAssemblies> Static
 		{
 			get
 			{
@@ -185,7 +185,7 @@ public static partial class Filtered
 			}
 		}
 
-		/// <inheritdoc cref="ILimitedTypeAssemblies{ITypeAssemblies}.Generic" />
+		/// <inheritdoc cref="ILimitedStaticTypeAssemblies{TLimitedTypeAssemblies}.Generic" />
 		public ITypeAssemblies Generic
 		{
 			get
@@ -200,7 +200,7 @@ public static partial class Filtered
 			}
 		}
 
-		/// <inheritdoc cref="ILimitedTypeAssemblies{ITypeAssemblies}.Nested" />
+		/// <inheritdoc cref="ILimitedStaticTypeAssemblies{TLimitedTypeAssemblies}.Nested" />
 		public ITypeAssemblies Nested
 		{
 			get
@@ -215,7 +215,7 @@ public static partial class Filtered
 			}
 		}
 
-		/// <inheritdoc cref="ILimitedTypeAssemblies.Types(AccessModifiers)" />
+		/// <inheritdoc cref="ILimitedStaticTypeAssemblies.Types(AccessModifiers)" />
 		public Types Types(AccessModifiers accessModifier = AccessModifiers.Any)
 		{
 			if (_implicitAccessModifier is not null)
@@ -241,10 +241,10 @@ public static partial class Filtered
 			return new Types(this, "types ");
 		}
 
-		/// <inheritdoc cref="ILimitedTypeAssemblies.Classes(AccessModifiers)" />
+		/// <inheritdoc cref="ILimitedStaticTypeAssemblies.Classes(AccessModifiers)" />
 		public Types Classes(AccessModifiers accessModifier = AccessModifiers.Any)
 		{
-			_typeFilters.Add(type => type.IsClass);
+			_typeFilters.Add(type => type.IsReallyClass());
 			if (_implicitAccessModifier is not null)
 			{
 				_typeFilters.Add(type => type.HasAccessModifier(_implicitAccessModifier.Value));
@@ -258,6 +258,72 @@ public static partial class Filtered
 			}
 
 			return new Types(this, "classes ")
+				.Which(Filter.Prefix<Type>(
+					type => _typeFilters.All(predicate => predicate.Invoke(type)),
+					_typeFilterDescription ?? ""));
+		}
+
+		/// <inheritdoc cref="ILimitedAbstractSealedTypeAssemblies.Records(AccessModifiers)" />
+		public Types Records(AccessModifiers accessModifier = AccessModifiers.Any)
+		{
+			_typeFilters.Add(type => type.IsRecordClass());
+			if (_implicitAccessModifier is not null)
+			{
+				_typeFilters.Add(type => type.HasAccessModifier(_implicitAccessModifier.Value));
+				_typeFilterDescription = (_typeFilterDescription ?? "") + _implicitAccessModifier.Value.GetString(" ");
+			}
+
+			if (accessModifier != AccessModifiers.Any)
+			{
+				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
+				_typeFilterDescription = accessModifier.GetString(" ") + (_typeFilterDescription ?? "");
+			}
+
+			return new Types(this, "records ")
+				.Which(Filter.Prefix<Type>(
+					type => _typeFilters.All(predicate => predicate.Invoke(type)),
+					_typeFilterDescription ?? ""));
+		}
+
+		/// <inheritdoc cref="ITypeAssemblies.RecordStructs(AccessModifiers)" />
+		public Types RecordStructs(AccessModifiers accessModifier = AccessModifiers.Any)
+		{
+			_typeFilters.Add(type => type.IsRecordStruct());
+			if (_implicitAccessModifier is not null)
+			{
+				_typeFilters.Add(type => type.HasAccessModifier(_implicitAccessModifier.Value));
+				_typeFilterDescription = (_typeFilterDescription ?? "") + _implicitAccessModifier.Value.GetString(" ");
+			}
+
+			if (accessModifier != AccessModifiers.Any)
+			{
+				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
+				_typeFilterDescription = accessModifier.GetString(" ") + (_typeFilterDescription ?? "");
+			}
+
+			return new Types(this, "record structs ")
+				.Which(Filter.Prefix<Type>(
+					type => _typeFilters.All(predicate => predicate.Invoke(type)),
+					_typeFilterDescription ?? ""));
+		}
+
+		/// <inheritdoc cref="ITypeAssemblies.Structs(AccessModifiers)" />
+		public Types Structs(AccessModifiers accessModifier = AccessModifiers.Any)
+		{
+			_typeFilters.Add(type => type.IsReallyStruct());
+			if (_implicitAccessModifier is not null)
+			{
+				_typeFilters.Add(type => type.HasAccessModifier(_implicitAccessModifier.Value));
+				_typeFilterDescription = (_typeFilterDescription ?? "") + _implicitAccessModifier.Value.GetString(" ");
+			}
+
+			if (accessModifier != AccessModifiers.Any)
+			{
+				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
+				_typeFilterDescription = accessModifier.GetString(" ") + (_typeFilterDescription ?? "");
+			}
+
+			return new Types(this, "structs ")
 				.Which(Filter.Prefix<Type>(
 					type => _typeFilters.All(predicate => predicate.Invoke(type)),
 					_typeFilterDescription ?? ""));

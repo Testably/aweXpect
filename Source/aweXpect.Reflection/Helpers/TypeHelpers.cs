@@ -301,6 +301,10 @@ internal static class TypeHelpers
 			   .GetMethod?.HasAttribute<CompilerGeneratedAttribute>() == true;
 
 
+	public static bool IsReallyStruct(this Type? type) =>
+		type is { IsValueType: true, IsEnum: false, } &&
+		!IsRecordStruct(type);
+
 	public static bool IsRecordStruct(this Type? type) =>
 		// As noted here: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-10.0/record-structs#open-questions
 		// recognizing record structs from metadata is an open point. The following check is based on common sense
