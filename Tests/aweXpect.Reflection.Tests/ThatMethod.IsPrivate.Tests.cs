@@ -55,5 +55,38 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Theory]
+			[InlineData("ProtectedMethod")]
+			[InlineData("PublicMethod")]
+			[InlineData("InternalMethod")]
+			public async Task WhenMethodInfoIsNotPrivate_ShouldSucceed(string methodName)
+			{
+				MethodInfo? subject = GetMethod(methodName);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsPrivate());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenMethodInfoIsPrivate_ShouldFail()
+			{
+				MethodInfo? subject = GetMethod("PrivateMethod");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsPrivate());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not private,
+					             but it was
+					             """);
+			}
+		}
 	}
 }

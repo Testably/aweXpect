@@ -13,6 +13,8 @@ public sealed partial class ThatMethod
 			[InlineData("InternalMethod")]
 			[InlineData("PublicMethod")]
 			[InlineData("PrivateMethod")]
+			[InlineData("ProtectedInternalMethod")]
+			[InlineData("PrivateProtectedMethod")]
 			public async Task WhenMethodInfoIsNotProtected_ShouldSucceed(string methodName)
 			{
 				MethodInfo? subject = GetMethod(methodName);
@@ -53,6 +55,41 @@ public sealed partial class ThatMethod
 					             is not protected,
 					             but it was
 					             """);
+			}
+		}
+
+		public sealed class NegatedTests
+		{
+			[Theory]
+			[InlineData("InternalMethod", "internal")]
+			[InlineData("PublicMethod", "public")]
+			[InlineData("PrivateMethod", "private")]
+			[InlineData("ProtectedInternalMethod", "protected internal")]
+			[InlineData("PrivateProtectedMethod", "private protected")]
+			public async Task WhenMethodInfoIsNotProtected_ShouldFail(string methodName, string expectedAccessModifier)
+			{
+				MethodInfo? subject = GetMethod(methodName);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotProtected());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is protected,
+					              but it was {expectedAccessModifier}
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenMethodInfoIsProtected_ShouldSucceed()
+			{
+				MethodInfo? subject = GetMethod("ProtectedMethod");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotProtected());
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 	}

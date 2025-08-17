@@ -55,5 +55,38 @@ public sealed partial class ThatMethod
 					             """);
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Theory]
+			[InlineData("ProtectedMethod")]
+			[InlineData("PublicMethod")]
+			[InlineData("PrivateMethod")]
+			public async Task WhenMethodInfoIsNotProtectedInternal_ShouldSucceed(string methodName)
+			{
+				MethodInfo? subject = GetMethod(methodName);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsProtectedInternal());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenMethodInfoIsProtectedInternal_ShouldFail()
+			{
+				MethodInfo? subject = GetMethod("ProtectedInternalMethod");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsProtectedInternal());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not protected internal,
+					             but it was
+					             """);
+			}
+		}
 	}
 }
