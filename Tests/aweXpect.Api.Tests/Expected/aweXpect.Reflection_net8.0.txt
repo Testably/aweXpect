@@ -697,8 +697,13 @@ namespace aweXpect.Reflection.Collections
         aweXpect.Reflection.Collections.ILimitedTypeAssemblies<aweXpect.Reflection.Collections.ILimitedTypeAssemblies> Abstract { get; }
         aweXpect.Reflection.Collections.ILimitedTypeAssemblies<aweXpect.Reflection.Collections.ILimitedTypeAssemblies> Sealed { get; }
         aweXpect.Reflection.Collections.ILimitedTypeAssemblies<aweXpect.Reflection.Collections.ILimitedTypeAssemblies> Static { get; }
+        aweXpect.Reflection.Collections.Filtered.Constructors Constructors();
         aweXpect.Reflection.Collections.Filtered.Types Enums(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15);
+        aweXpect.Reflection.Collections.Filtered.Events Events();
+        aweXpect.Reflection.Collections.Filtered.Fields Fields();
         aweXpect.Reflection.Collections.Filtered.Types Interfaces(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 15);
+        aweXpect.Reflection.Collections.Filtered.Methods Methods();
+        aweXpect.Reflection.Collections.Filtered.Properties Properties();
         public interface IPrivate : aweXpect.Reflection.Collections.ILimitedTypeAssemblies, aweXpect.Reflection.Collections.ILimitedTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>, aweXpect.Reflection.Collections.ITypeAssemblies
         {
             aweXpect.Reflection.Collections.ITypeAssemblies Protected { get; }

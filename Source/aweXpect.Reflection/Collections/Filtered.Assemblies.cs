@@ -22,6 +22,7 @@ public static partial class Filtered
 		ITypeAssemblies.IPrivate
 	{
 		private readonly string _description;
+		private readonly List<AccessModifiers> _implicitAccessModifiers = new(2);
 		private readonly List<Func<Type, bool>> _typeFilters = [];
 		private string? _typeFilterDescription;
 
@@ -66,9 +67,7 @@ public static partial class Filtered
 		{
 			get
 			{
-				AccessModifiers accessModifier = AccessModifiers.Public;
-				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
-				_typeFilterDescription = accessModifier.GetString(" ") + (_typeFilterDescription ?? "");
+				_implicitAccessModifiers.Add(AccessModifiers.Public);
 				return this;
 			}
 		}
@@ -80,9 +79,7 @@ public static partial class Filtered
 		{
 			get
 			{
-				AccessModifiers accessModifier = AccessModifiers.Private;
-				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
-				_typeFilterDescription = accessModifier.GetString(" ") + (_typeFilterDescription ?? "");
+				_implicitAccessModifiers.Add(AccessModifiers.Private);
 				return this;
 			}
 		}
@@ -94,9 +91,7 @@ public static partial class Filtered
 		{
 			get
 			{
-				AccessModifiers accessModifier = AccessModifiers.Protected;
-				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
-				_typeFilterDescription = accessModifier.GetString(" ") + (_typeFilterDescription ?? "");
+				_implicitAccessModifiers.Add(AccessModifiers.Protected);
 				return this;
 			}
 		}
@@ -108,9 +103,7 @@ public static partial class Filtered
 		{
 			get
 			{
-				AccessModifiers accessModifier = AccessModifiers.Internal;
-				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
-				_typeFilterDescription = accessModifier.GetString(" ") + (_typeFilterDescription ?? "");
+				_implicitAccessModifiers.Add(AccessModifiers.Internal);
 				return this;
 			}
 		}
@@ -132,9 +125,7 @@ public static partial class Filtered
 		{
 			get
 			{
-				AccessModifiers accessModifier = AccessModifiers.Protected;
-				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
-				_typeFilterDescription = (_typeFilterDescription ?? "") + accessModifier.GetString(" ");
+				_implicitAccessModifiers.Add(AccessModifiers.Protected);
 				return this;
 			}
 		}
@@ -144,9 +135,7 @@ public static partial class Filtered
 		{
 			get
 			{
-				AccessModifiers accessModifier = AccessModifiers.Internal;
-				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
-				_typeFilterDescription = (_typeFilterDescription ?? "") + accessModifier.GetString(" ");
+				_implicitAccessModifiers.Add(AccessModifiers.Internal);
 				return this;
 			}
 		}
@@ -229,6 +218,15 @@ public static partial class Filtered
 		/// <inheritdoc cref="ILimitedTypeAssemblies.Types(AccessModifiers)" />
 		public Types Types(AccessModifiers accessModifier = AccessModifiers.Any)
 		{
+			if (_implicitAccessModifiers.Any())
+			{
+				foreach (AccessModifiers implicitAccessModifier in _implicitAccessModifiers)
+				{
+					_typeFilters.Add(type => type.HasAccessModifier(implicitAccessModifier));
+					_typeFilterDescription = (_typeFilterDescription ?? "") + implicitAccessModifier.GetString(" ");
+				}
+			}
+
 			if (accessModifier != AccessModifiers.Any)
 			{
 				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
@@ -250,6 +248,15 @@ public static partial class Filtered
 		public Types Classes(AccessModifiers accessModifier = AccessModifiers.Any)
 		{
 			_typeFilters.Add(type => type.IsClass);
+			if (_implicitAccessModifiers.Any())
+			{
+				foreach (AccessModifiers implicitAccessModifier in _implicitAccessModifiers)
+				{
+					_typeFilters.Add(type => type.HasAccessModifier(implicitAccessModifier));
+					_typeFilterDescription = (_typeFilterDescription ?? "") + implicitAccessModifier.GetString(" ");
+				}
+			}
+
 			if (accessModifier != AccessModifiers.Any)
 			{
 				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
@@ -266,6 +273,15 @@ public static partial class Filtered
 		public Types Interfaces(AccessModifiers accessModifier = AccessModifiers.Any)
 		{
 			_typeFilters.Add(type => type.IsInterface);
+			if (_implicitAccessModifiers.Any())
+			{
+				foreach (AccessModifiers implicitAccessModifier in _implicitAccessModifiers)
+				{
+					_typeFilters.Add(type => type.HasAccessModifier(implicitAccessModifier));
+					_typeFilterDescription = (_typeFilterDescription ?? "") + implicitAccessModifier.GetString(" ");
+				}
+			}
+
 			if (accessModifier != AccessModifiers.Any)
 			{
 				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
@@ -282,6 +298,15 @@ public static partial class Filtered
 		public Types Enums(AccessModifiers accessModifier = AccessModifiers.Any)
 		{
 			_typeFilters.Add(type => type.IsEnum);
+			if (_implicitAccessModifiers.Any())
+			{
+				foreach (AccessModifiers implicitAccessModifier in _implicitAccessModifiers)
+				{
+					_typeFilters.Add(type => type.HasAccessModifier(implicitAccessModifier));
+					_typeFilterDescription = (_typeFilterDescription ?? "") + implicitAccessModifier.GetString(" ");
+				}
+			}
+
 			if (accessModifier != AccessModifiers.Any)
 			{
 				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
@@ -294,30 +319,115 @@ public static partial class Filtered
 					_typeFilterDescription ?? ""));
 		}
 
-		/// <summary>
-		///     Get all constructors in the filtered types.
-		/// </summary>
-		public Constructors Constructors() => new(new Types(this, ""), "constructors ");
+		/// <inheritdoc cref="ITypeAssemblies.Constructors()" />
+		public Constructors Constructors()
+		{
+			if (_implicitAccessModifiers.Any())
+			{
+				List<Func<ConstructorInfo, bool>> filters = [];
+				string filterDescription = "";
+				foreach (AccessModifiers implicitAccessModifier in _implicitAccessModifiers)
+				{
+					filters.Add(constructor => constructor.HasAccessModifier(implicitAccessModifier));
+					filterDescription += implicitAccessModifier.GetString(" ");
+				}
 
-		/// <summary>
-		///     Get all events in the filtered types.
-		/// </summary>
-		public Events Events() => new(new Types(this, ""), "events ");
+				return new Constructors(new Types(this, ""), "constructors ")
+					.Which(Filter.Prefix<ConstructorInfo>(
+						constructor => filters.All(predicate => predicate.Invoke(constructor)),
+						filterDescription));
+			}
 
-		/// <summary>
-		///     Get all fields in the filtered types.
-		/// </summary>
-		public Fields Fields() => new(new Types(this, ""), "fields ");
+			return new Constructors(new Types(this, ""), "constructors ");
+		}
 
-		/// <summary>
-		///     Get all methods in the filtered types.
-		/// </summary>
-		public Methods Methods() => new(new Types(this, ""), "methods ");
+		/// <inheritdoc cref="ITypeAssemblies.Events()" />
+		public Events Events()
+		{
+			if (_implicitAccessModifiers.Any())
+			{
+				List<Func<EventInfo, bool>> filters = [];
+				string filterDescription = "";
+				foreach (AccessModifiers implicitAccessModifier in _implicitAccessModifiers)
+				{
+					filters.Add(@event => @event.HasAccessModifier(implicitAccessModifier));
+					filterDescription += implicitAccessModifier.GetString(" ");
+				}
 
-		/// <summary>
-		///     Get all properties in the filtered types.
-		/// </summary>
-		public Properties Properties() => new(new Types(this, ""), "properties ");
+				return new Events(new Types(this, ""), "events ")
+					.Which(Filter.Prefix<EventInfo>(
+						@event => filters.All(predicate => predicate.Invoke(@event)),
+						filterDescription));
+			}
+
+			return new Events(new Types(this, ""), "events ");
+		}
+
+		/// <inheritdoc cref="ITypeAssemblies.Fields()" />
+		public Fields Fields()
+		{
+			if (_implicitAccessModifiers.Any())
+			{
+				List<Func<FieldInfo, bool>> filters = [];
+				string filterDescription = "";
+				foreach (AccessModifiers implicitAccessModifier in _implicitAccessModifiers)
+				{
+					filters.Add(field => field.HasAccessModifier(implicitAccessModifier));
+					filterDescription += implicitAccessModifier.GetString(" ");
+				}
+
+				return new Fields(new Types(this, ""), "fields ")
+					.Which(Filter.Prefix<FieldInfo>(
+						field => filters.All(predicate => predicate.Invoke(field)),
+						filterDescription));
+			}
+
+			return new Fields(new Types(this, ""), "fields ");
+		}
+
+		/// <inheritdoc cref="ITypeAssemblies.Methods()" />
+		public Methods Methods()
+		{
+			if (_implicitAccessModifiers.Any())
+			{
+				List<Func<MethodInfo, bool>> filters = [];
+				string filterDescription = "";
+				foreach (AccessModifiers implicitAccessModifier in _implicitAccessModifiers)
+				{
+					filters.Add(method => method.HasAccessModifier(implicitAccessModifier));
+					filterDescription += implicitAccessModifier.GetString(" ");
+				}
+
+				return new Methods(new Types(this, ""), "methods ")
+					.Which(Filter.Prefix<MethodInfo>(
+						method => filters.All(predicate => predicate.Invoke(method)),
+						filterDescription));
+			}
+
+			return new Methods(new Types(this, ""), "methods ");
+		}
+
+		/// <inheritdoc cref="ITypeAssemblies.Properties()" />
+		public Properties Properties()
+		{
+			if (_implicitAccessModifiers.Any())
+			{
+				List<Func<PropertyInfo, bool>> filters = [];
+				string filterDescription = "";
+				foreach (AccessModifiers implicitAccessModifier in _implicitAccessModifiers)
+				{
+					filters.Add(property => property.HasAccessModifier(implicitAccessModifier));
+					filterDescription += implicitAccessModifier.GetString(" ");
+				}
+
+				return new Properties(new Types(this, ""), "properties ")
+					.Which(Filter.Prefix<PropertyInfo>(
+						property => filters.All(predicate => predicate.Invoke(property)),
+						filterDescription));
+			}
+
+			return new Properties(new Types(this, ""), "properties ");
+		}
 
 		/// <summary>
 		///     A Container for a filterable collection of <see cref="Assembly" />,

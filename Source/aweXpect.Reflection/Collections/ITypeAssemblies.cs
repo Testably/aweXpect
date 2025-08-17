@@ -35,6 +35,31 @@ public interface ITypeAssemblies : ILimitedTypeAssemblies<ITypeAssemblies>
 	Filtered.Types Enums(AccessModifiers accessModifier = AccessModifiers.Any);
 
 	/// <summary>
+	///     Get all constructors in the filtered types.
+	/// </summary>
+	Filtered.Constructors Constructors();
+
+	/// <summary>
+	///     Get all events in the filtered types.
+	/// </summary>
+	Filtered.Events Events();
+
+	/// <summary>
+	///     Get all fields in the filtered types.
+	/// </summary>
+	Filtered.Fields Fields();
+
+	/// <summary>
+	///     Get all methods in the filtered types.
+	/// </summary>
+	Filtered.Methods Methods();
+
+	/// <summary>
+	///     Get all properties in the filtered types.
+	/// </summary>
+	Filtered.Properties Properties();
+
+	/// <summary>
 	///     An interface to allow filtering for types in assemblies.
 	/// </summary>
 	/// <remarks>

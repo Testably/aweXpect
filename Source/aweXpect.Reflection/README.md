@@ -132,6 +132,10 @@ In.AllLoadedAssemblies().Methods()
     .WhichArePrivate()
     .WhichAreProtected()
     .WhichAreInternal()
+	
+// Alternatively
+In.AllLoadedAssemblies().Public.Methods()
+In.AllLoadedAssemblies().Private.Protected.Methods()
 
 // Filter by return types
 In.AllLoadedAssemblies().Methods()
@@ -161,29 +165,25 @@ In.AllLoadedAssemblies().Methods()
 
 ```csharp
 // Properties
-In.AllLoadedAssemblies().Properties()
-    .WhichArePublic()
+In.AllLoadedAssemblies().Public.Properties()
     .OfType<string>()
     .OfExactType<List<int>>()
     .WithName("Id").AsSuffix()
     .With<RequiredAttribute>()
 
 // Fields
-In.AllLoadedAssemblies().Fields()
-    .WhichArePrivate()
+In.AllLoadedAssemblies().Private.Fields()
     .OfType<ILogger>()
     .WithName("_").AsPrefix()
     .With<NonSerializedAttribute>()
 
 // Events
-In.AllLoadedAssemblies().Events()
-    .WhichArePublic()
+In.AllLoadedAssemblies().Public.Events()
     .WithName("Changed").AsSuffix()
     .With<ObsoleteAttribute>()
 
 // Constructors
-In.AllLoadedAssemblies().Constructors()
-    .WhichArePublic()
+In.AllLoadedAssemblies().Public.Constructors()
     .WithoutParameters()
     .WithParameter<string>()
     .WithParameterCount(1)
@@ -220,7 +220,7 @@ Here are some practical examples of using the `In` helper:
 ```csharp
 // Verify all test classes follow naming convention
 await Expect.That(In.AllLoadedAssemblies()
-        .Methods().With<FactAttribute>().OrWith<TheoryAttribute>()
+        .Public.Methods().With<FactAttribute>().OrWith<TheoryAttribute>()
         .DeclaringTypes())
     .HaveName("Tests").AsSuffix();
 
@@ -234,21 +234,10 @@ await Expect.That(In.AssemblyContaining<MyClass>()
         .Methods().WithName("Async").AsSuffix())
     .Return<Task>().OrReturn<ValueTask>();
 
-// Verify all public classes have XML documentation
-await Expect.That(In.AllLoadedAssemblies()
-        .Types().WhichAreClasses().WhichArePublic())
-    .Have<DocumentationAttribute>();
-
 // Verify controllers follow naming convention
 await Expect.That(In.AllLoadedAssemblies()
         .Types().WhichInheritFrom<ControllerBase>())
     .HaveName("Controller").AsSuffix();
-
-// Verify all properties with setters are not init-only
-await Expect.That(In.AllLoadedAssemblies()
-        .Properties().WhichSatisfy(p => p.SetMethod != null))
-    .Satisfy(p => !p.SetMethod.ReturnParameter.GetRequiredCustomModifiers()
-        .Contains(typeof(System.Runtime.CompilerServices.IsExternalInit)));
 ```
 
 ## Assemblies
