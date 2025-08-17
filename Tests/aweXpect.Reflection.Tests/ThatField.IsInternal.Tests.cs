@@ -55,5 +55,38 @@ public sealed partial class ThatField
 					             """);
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Theory]
+			[InlineData("ProtectedField")]
+			[InlineData("PublicField")]
+			[InlineData("PrivateField")]
+			public async Task WhenFieldInfoIsNotInternal_ShouldSucceed(string fieldName)
+			{
+				FieldInfo? subject = GetField(fieldName);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsInternal());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenFieldInfoIsInternal_ShouldFail()
+			{
+				FieldInfo? subject = GetField("InternalField");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsInternal());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not internal,
+					             but it was
+					             """);
+			}
+		}
 	}
 }

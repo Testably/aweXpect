@@ -13,6 +13,8 @@ public sealed partial class ThatField
 			[InlineData("ProtectedField")]
 			[InlineData("InternalField")]
 			[InlineData("PrivateField")]
+			[InlineData("ProtectedInternalField")]
+			[InlineData("PrivateProtectedField")]
 			public async Task WhenFieldInfoIsNotPublic_ShouldSucceed(string fieldName)
 			{
 				FieldInfo? subject = GetField(fieldName);
@@ -54,6 +56,51 @@ public sealed partial class ThatField
 					             but it was
 					             """);
 			}
+		}
+
+		public sealed class NegatedTests
+		{
+			[Theory]
+			[InlineData("ProtectedField")]
+			[InlineData("InternalField")]
+			[InlineData("PrivateField")]
+			[InlineData("ProtectedInternalField")]
+			[InlineData("PrivateProtectedField")]
+			public async Task WhenFieldInfoIsNotPublic_ShouldFail(string fieldName)
+			{
+				FieldInfo? subject = GetField(fieldName);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotPublic());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is public,
+					              but it was {GetExpectedAccessModifier(fieldName)}
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenFieldInfoIsPublic_ShouldSucceed()
+			{
+				FieldInfo? subject = GetField("PublicField");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotPublic());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			private static string GetExpectedAccessModifier(string fieldName) => fieldName switch
+			{
+				"ProtectedField" => "protected",
+				"PrivateField" => "private",
+				"InternalField" => "internal",
+				"ProtectedInternalField" => "protected internal",
+				"PrivateProtectedField" => "private protected",
+				_ => throw new ArgumentException($"Unknown field name: {fieldName}"),
+			};
 		}
 	}
 }
