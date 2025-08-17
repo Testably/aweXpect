@@ -58,7 +58,8 @@ public static partial class ThatTypes
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("all have namespace ").Append(options.GetExpectation(expected, Grammars));
+			=> stringBuilder.Append("not all have namespace ")
+				.Append(options.GetExpectation(expected, Grammars.Negate()));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{

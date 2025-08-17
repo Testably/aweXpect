@@ -66,5 +66,39 @@ public sealed partial class ThatTypes
 
 			private class SomeClassToTestHaveNameForTypes;
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenTypesHaveName_ShouldFail()
+			{
+				Filtered.Types subject = In.AssemblyContaining<Tests>()
+					.Types().WithName("SomeClassToTestHaveNameForTypes");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(they => they.HaveName("SomeClassToTestHaveNameForTypes"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that types with name equal to "SomeClassToTestHaveNameForType…" in assembly containing type ThatTypes.HaveName.Tests
+					             not all have name equal to "SomeClassToTestHaveNameForType…",
+					             but it only contained matching items [
+					               *SomeClassToTestHaveNameForTypes*
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenTypesContainTypeWithDifferentName_ShouldSucceed()
+			{
+				Filtered.Types subject = In.AssemblyContaining<Tests>()
+					.Types().WithName("Some").AsPrefix();
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(they => they.HaveName("SomeOtherClassName"));
+
+				await That(Act).DoesNotThrow();
+			}
+		}
 	}
 }
