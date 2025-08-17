@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using aweXpect.Reflection.Helpers;
 
 namespace aweXpect.Reflection.Collections;
 
@@ -44,5 +45,5 @@ public abstract class Filtered<T, TFiltered>(IEnumerable<T> source, List<IFilter
 	public TFiltered Which(Func<T, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
-		=> Which(Filter.Suffix(predicate, $"matching {doNotPopulateThisValue} "));
+		=> Which(Filter.Suffix(predicate, $"matching {doNotPopulateThisValue.TrimCommonWhiteSpace()} "));
 }

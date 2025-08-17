@@ -50,7 +50,7 @@ public static partial class ThatProperty
 	{
 		AttributeFilterOptions<PropertyInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue);
+		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
 		return new HasAttributeResult<PropertyInfo?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
 			subject,

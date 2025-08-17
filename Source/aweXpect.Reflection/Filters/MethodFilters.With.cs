@@ -43,7 +43,7 @@ public static partial class MethodFilters
 	{
 		IChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
 			methodInfo => methodInfo.HasAttribute(predicate, inherit),
-			$"with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue} ");
+			$"with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimCommonWhiteSpace()} ");
 		return new MethodsWith(@this.Which(filter), filter);
 	}
 
@@ -86,7 +86,7 @@ public static partial class MethodFilters
 			filter.UpdateFilter(
 				(result, methodInfo) => result || methodInfo.HasAttribute(predicate, inherit),
 				description
-					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue} ");
+					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimCommonWhiteSpace()} ");
 			return this;
 		}
 	}

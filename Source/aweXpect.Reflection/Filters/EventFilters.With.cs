@@ -43,7 +43,7 @@ public static partial class EventFilters
 	{
 		IChangeableFilter<EventInfo> filter = Filter.Suffix<EventInfo>(
 			eventInfo => eventInfo.HasAttribute(predicate, inherit),
-			$"with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue} ");
+			$"with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimCommonWhiteSpace()} ");
 		return new EventsWith(@this.Which(filter), filter);
 	}
 
@@ -86,7 +86,7 @@ public static partial class EventFilters
 			filter.UpdateFilter(
 				(result, eventInfo) => result || eventInfo.HasAttribute(predicate, inherit),
 				description
-					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue} ");
+					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimCommonWhiteSpace()} ");
 			return this;
 		}
 	}

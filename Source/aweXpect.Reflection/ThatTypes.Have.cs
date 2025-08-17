@@ -54,7 +54,7 @@ public static partial class ThatTypes
 	{
 		AttributeFilterOptions<Type?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue);
+		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
 		return new HaveAttributeResult<Type?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject,

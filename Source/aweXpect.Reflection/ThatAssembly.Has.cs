@@ -49,7 +49,7 @@ public static partial class ThatAssembly
 	{
 		AttributeFilterOptions<Assembly?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue);
+		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
 		return new HasAttributeResult<Assembly?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
 			subject,

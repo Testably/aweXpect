@@ -12,7 +12,8 @@ public sealed partial class ConstructorFilters
 			public async Task ShouldFilterForConstructorsWhichSatisfyThePredicate()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
-					.Constructors().WhichSatisfy(it => it.DeclaringType == typeof(SomeClassToVerifyTheConstructorNameOfIt));
+					.Constructors().WhichSatisfy(it
+						=> it.DeclaringType == typeof(SomeClassToVerifyTheConstructorNameOfIt));
 
 				await That(constructors).HasSingle().Which.IsEqualTo(ExpectedConstructorInfo());
 				await That(constructors.GetDescription())

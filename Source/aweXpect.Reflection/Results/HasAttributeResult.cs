@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using aweXpect.Core;
+using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
 using aweXpect.Results;
 
@@ -49,7 +50,7 @@ public sealed class HasAttributeResult<TMember>(
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
-		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue);
+		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
 		return this;
 	}
 }

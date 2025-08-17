@@ -32,7 +32,7 @@ public static partial class ConstructorFilters
 	{
 		IChangeableFilter<ConstructorInfo> filter = Filter.Suffix<ConstructorInfo>(
 			constructorInfo => constructorInfo.HasAttribute(predicate),
-			$"with {Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue} ");
+			$"with {Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimCommonWhiteSpace()} ");
 		return new ConstructorsWith(@this.Which(filter), filter);
 	}
 
@@ -67,7 +67,7 @@ public static partial class ConstructorFilters
 			filter.UpdateFilter(
 				(result, constructorInfo) => result || constructorInfo.HasAttribute(predicate),
 				description
-					=> $"{description}or with {Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue} ");
+					=> $"{description}or with {Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimCommonWhiteSpace()} ");
 			return this;
 		}
 	}

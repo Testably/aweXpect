@@ -40,7 +40,7 @@ public static partial class TypeFilters
 		where TAttribute : Attribute
 	{
 		IChangeableFilter<Type> filter = Filter.Suffix<Type>(type => type.HasAttribute(predicate, inherit),
-			$"with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue} ");
+			$"with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimCommonWhiteSpace()} ");
 		return new TypesWith(@this.Which(filter), filter);
 	}
 
@@ -83,7 +83,7 @@ public static partial class TypeFilters
 			filter.UpdateFilter(
 				(result, type) => result || type.HasAttribute(predicate, inherit),
 				description
-					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue} ");
+					=> $"{description}or with {(inherit ? "" : DirectText)}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimCommonWhiteSpace()} ");
 			return this;
 		}
 	}

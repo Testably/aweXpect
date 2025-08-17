@@ -32,7 +32,7 @@ public static partial class FieldFilters
 	{
 		IChangeableFilter<FieldInfo> filter = Filter.Suffix<FieldInfo>(
 			fieldInfo => fieldInfo.HasAttribute(predicate),
-			$"with {Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue} ");
+			$"with {Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimCommonWhiteSpace()} ");
 		return new FieldsWith(@this.Which(filter), filter);
 	}
 
@@ -66,7 +66,7 @@ public static partial class FieldFilters
 			filter.UpdateFilter(
 				(result, fieldInfo) => result || fieldInfo.HasAttribute(predicate),
 				description
-					=> $"{description}or with {Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue} ");
+					=> $"{description}or with {Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimCommonWhiteSpace()} ");
 			return this;
 		}
 	}

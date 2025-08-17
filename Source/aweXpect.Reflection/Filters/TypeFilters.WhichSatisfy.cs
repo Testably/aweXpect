@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using aweXpect.Reflection.Collections;
+using aweXpect.Reflection.Helpers;
 
 namespace aweXpect.Reflection;
 
@@ -13,5 +14,5 @@ public static partial class TypeFilters
 		Func<Type, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
-		=> @this.Which(Filter.Suffix(predicate, $"matching {doNotPopulateThisValue} "));
+		=> @this.Which(Filter.Suffix(predicate, $"matching {doNotPopulateThisValue.TrimCommonWhiteSpace()} "));
 }
