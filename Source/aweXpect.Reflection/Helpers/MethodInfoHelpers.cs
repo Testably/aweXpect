@@ -116,4 +116,11 @@ internal static class MethodInfoHelpers
 
 		return false;
 	}
+
+	/// <summary>
+	///     Gets a value indicating whether the <see cref="MethodInfo" /> is sealed (virtual and final).
+	/// </summary>
+	/// <param name="methodInfo">The <see cref="MethodInfo" />.</param>
+	public static bool IsReallySealed(this MethodInfo? methodInfo)
+		=> methodInfo is { IsVirtual: true, IsFinal: true };
 }

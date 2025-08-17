@@ -323,9 +323,17 @@ namespace aweXpect.Reflection
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.EventInfo?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.EventInfo?> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
+        public static aweXpect.Results.AndOrResult<System.Reflection.EventInfo?, aweXpect.Core.IThat<System.Reflection.EventInfo?>> IsAbstract(this aweXpect.Core.IThat<System.Reflection.EventInfo?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Reflection.EventInfo?, aweXpect.Core.IThat<System.Reflection.EventInfo?>> IsNotAbstract(this aweXpect.Core.IThat<System.Reflection.EventInfo?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Reflection.EventInfo?, aweXpect.Core.IThat<System.Reflection.EventInfo?>> IsNotSealed(this aweXpect.Core.IThat<System.Reflection.EventInfo?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Reflection.EventInfo?, aweXpect.Core.IThat<System.Reflection.EventInfo?>> IsSealed(this aweXpect.Core.IThat<System.Reflection.EventInfo?> subject) { }
     }
     public static class ThatEvents
     {
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>>> AreAbstract(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>>> AreNotAbstract(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>>> AreNotSealed(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>>> AreSealed(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>> subject) { }
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.EventInfo?> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>> subject, bool inherit = true)
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.EventInfo?> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
@@ -400,9 +408,13 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Results.NamedParameterCollectionResult<System.Reflection.MethodInfo?, object?> HasParameter(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject, string expected) { }
         public static aweXpect.Reflection.Results.ParameterCollectionResult<System.Reflection.MethodInfo?, TParameter> HasParameter<TParameter>(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
         public static aweXpect.Reflection.Results.NamedParameterCollectionResult<System.Reflection.MethodInfo?, TParameter> HasParameter<TParameter>(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject, string expected) { }
+        public static aweXpect.Results.AndOrResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> IsAbstract(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> IsGeneric(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> IsNotAbstract(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> IsNotGeneric(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> IsNotSealed(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> IsNotStatic(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> IsSealed(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> IsStatic(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
         public static aweXpect.Reflection.ThatMethod.MethodReturnResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> Returns(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject, System.Type returnType) { }
         public static aweXpect.Reflection.ThatMethod.MethodReturnResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> Returns<TReturn>(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
@@ -420,9 +432,13 @@ namespace aweXpect.Reflection
     }
     public static class ThatMethods
     {
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>>> AreAbstract(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>>> AreGeneric(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>>> AreNotAbstract(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>>> AreNotGeneric(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>>> AreNotSealed(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>>> AreNotStatic(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>>> AreSealed(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>>> AreStatic(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject) { }
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.MethodInfo?> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject, bool inherit = true)
             where TAttribute : System.Attribute { }
@@ -447,7 +463,11 @@ namespace aweXpect.Reflection
     }
     public static class ThatProperties
     {
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>>> AreAbstract(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>>> AreNotAbstract(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>>> AreNotSealed(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>>> AreNotStatic(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>>> AreSealed(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>>> AreStatic(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> subject) { }
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.PropertyInfo?> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> subject, bool inherit = true)
             where TAttribute : System.Attribute { }
@@ -460,7 +480,11 @@ namespace aweXpect.Reflection
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.PropertyInfo?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
+        public static aweXpect.Results.AndOrResult<System.Reflection.PropertyInfo?, aweXpect.Core.IThat<System.Reflection.PropertyInfo?>> IsAbstract(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Reflection.PropertyInfo?, aweXpect.Core.IThat<System.Reflection.PropertyInfo?>> IsNotAbstract(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Reflection.PropertyInfo?, aweXpect.Core.IThat<System.Reflection.PropertyInfo?>> IsNotSealed(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.PropertyInfo?, aweXpect.Core.IThat<System.Reflection.PropertyInfo?>> IsNotStatic(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Reflection.PropertyInfo?, aweXpect.Core.IThat<System.Reflection.PropertyInfo?>> IsSealed(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.PropertyInfo?, aweXpect.Core.IThat<System.Reflection.PropertyInfo?>> IsStatic(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject) { }
     }
     public static class ThatType
