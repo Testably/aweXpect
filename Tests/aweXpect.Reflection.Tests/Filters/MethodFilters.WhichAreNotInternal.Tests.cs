@@ -14,7 +14,7 @@ public sealed partial class MethodFilters
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
 					.Methods().WhichAreNotInternal();
 
-				await That(methods).AreNotInternal();
+				await That(methods).AreNotInternal().And.IsNotEmpty();
 				await That(methods.GetDescription())
 					.IsEqualTo("non-internal methods in assembly").AsPrefix();
 			}

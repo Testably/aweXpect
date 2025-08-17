@@ -14,7 +14,7 @@ public sealed partial class FieldFilters
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()
 					.Fields().WhichAreNotProtected();
 
-				await That(fields).AreNotProtected();
+				await That(fields).AreNotProtected().And.IsNotEmpty();
 				await That(fields.GetDescription())
 					.IsEqualTo("non-protected fields in assembly").AsPrefix();
 			}

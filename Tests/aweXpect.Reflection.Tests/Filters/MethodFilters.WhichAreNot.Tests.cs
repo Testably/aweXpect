@@ -14,7 +14,7 @@ public sealed partial class MethodFilters
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
 					.Methods().WhichAreNot(AccessModifiers.Internal);
 
-				await That(methods).AreNotInternal();
+				await That(methods).AreNotInternal().And.IsNotEmpty();
 				await That(methods.GetDescription())
 					.IsEqualTo("non-internal methods in assembly").AsPrefix();
 			}
@@ -25,7 +25,7 @@ public sealed partial class MethodFilters
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
 					.Methods().WhichAreNot(AccessModifiers.Private);
 
-				await That(methods).AreNotPrivate();
+				await That(methods).AreNotPrivate().And.IsNotEmpty();
 				await That(methods.GetDescription())
 					.IsEqualTo("non-private methods in assembly").AsPrefix();
 			}
@@ -36,7 +36,7 @@ public sealed partial class MethodFilters
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
 					.Methods().WhichAreNot(AccessModifiers.Protected);
 
-				await That(methods).AreNotProtected();
+				await That(methods).AreNotProtected().And.IsNotEmpty();
 				await That(methods.GetDescription())
 					.IsEqualTo("non-protected methods in assembly").AsPrefix();
 			}
@@ -47,7 +47,7 @@ public sealed partial class MethodFilters
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
 					.Methods().WhichAreNot(AccessModifiers.Public);
 
-				await That(methods).AreNotPublic();
+				await That(methods).AreNotPublic().And.IsNotEmpty();
 				await That(methods.GetDescription())
 					.IsEqualTo("non-public methods in assembly").AsPrefix();
 			}

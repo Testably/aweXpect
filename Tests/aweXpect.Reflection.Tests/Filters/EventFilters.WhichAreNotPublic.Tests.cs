@@ -14,7 +14,7 @@ public sealed partial class EventFilters
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>()
 					.Events().WhichAreNotPublic();
 
-				await That(events).AreNotPublic();
+				await That(events).AreNotPublic().And.IsNotEmpty();
 				await That(events.GetDescription())
 					.IsEqualTo("non-public events in assembly").AsPrefix();
 			}

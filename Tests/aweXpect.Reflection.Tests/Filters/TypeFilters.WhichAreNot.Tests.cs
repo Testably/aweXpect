@@ -14,7 +14,7 @@ public sealed partial class TypeFilters
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
 					.Types().WhichAreNot(AccessModifiers.Internal);
 
-				await That(types).AreNotInternal();
+				await That(types).AreNotInternal().And.IsNotEmpty();
 				await That(types.GetDescription())
 					.IsEqualTo("non-internal types in assembly").AsPrefix();
 			}
@@ -25,7 +25,7 @@ public sealed partial class TypeFilters
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
 					.Types().WhichAreNot(AccessModifiers.Private);
 
-				await That(types).AreNotPrivate();
+				await That(types).AreNotPrivate().And.IsNotEmpty();
 				await That(types.GetDescription())
 					.IsEqualTo("non-private types in assembly").AsPrefix();
 			}
@@ -36,7 +36,7 @@ public sealed partial class TypeFilters
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
 					.Types().WhichAreNot(AccessModifiers.Protected);
 
-				await That(types).AreNotProtected();
+				await That(types).AreNotProtected().And.IsNotEmpty();
 				await That(types.GetDescription())
 					.IsEqualTo("non-protected types in assembly").AsPrefix();
 			}
@@ -47,7 +47,7 @@ public sealed partial class TypeFilters
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
 					.Types().WhichAreNot(AccessModifiers.Public);
 
-				await That(types).AreNotPublic();
+				await That(types).AreNotPublic().And.IsNotEmpty();
 				await That(types.GetDescription())
 					.IsEqualTo("non-public types in assembly").AsPrefix();
 			}

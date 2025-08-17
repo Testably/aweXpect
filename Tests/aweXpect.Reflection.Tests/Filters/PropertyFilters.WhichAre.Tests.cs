@@ -14,7 +14,7 @@ public sealed partial class PropertyFilters
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
 					.Properties().WhichAre(AccessModifiers.Internal);
 
-				await That(properties).AreInternal();
+				await That(properties).AreInternal().And.IsNotEmpty();
 				await That(properties.GetDescription())
 					.IsEqualTo("internal properties in assembly").AsPrefix();
 			}
@@ -25,7 +25,7 @@ public sealed partial class PropertyFilters
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
 					.Properties().WhichAre(AccessModifiers.Private);
 
-				await That(properties).ArePrivate();
+				await That(properties).ArePrivate().And.IsNotEmpty();
 				await That(properties.GetDescription())
 					.IsEqualTo("private properties in assembly").AsPrefix();
 			}
@@ -36,7 +36,7 @@ public sealed partial class PropertyFilters
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
 					.Properties().WhichAre(AccessModifiers.Protected);
 
-				await That(properties).AreProtected();
+				await That(properties).AreProtected().And.IsNotEmpty();
 				await That(properties.GetDescription())
 					.IsEqualTo("protected properties in assembly").AsPrefix();
 			}
@@ -47,7 +47,7 @@ public sealed partial class PropertyFilters
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
 					.Properties().WhichAre(AccessModifiers.Public);
 
-				await That(properties).ArePublic();
+				await That(properties).ArePublic().And.IsNotEmpty();
 				await That(properties.GetDescription())
 					.IsEqualTo("public properties in assembly").AsPrefix();
 			}

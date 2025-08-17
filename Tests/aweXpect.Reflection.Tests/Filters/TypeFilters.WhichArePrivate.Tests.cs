@@ -14,7 +14,7 @@ public sealed partial class TypeFilters
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
 					.Types().WhichArePrivate();
 
-				await That(types).ArePrivate();
+				await That(types).ArePrivate().And.IsNotEmpty();
 				await That(types.GetDescription())
 					.IsEqualTo("private types in assembly").AsPrefix();
 			}

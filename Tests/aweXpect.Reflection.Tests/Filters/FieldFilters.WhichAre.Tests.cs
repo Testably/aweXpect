@@ -14,7 +14,7 @@ public sealed partial class FieldFilters
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()
 					.Fields().WhichAre(AccessModifiers.Internal);
 
-				await That(fields).AreInternal();
+				await That(fields).AreInternal().And.IsNotEmpty();
 				await That(fields.GetDescription())
 					.IsEqualTo("internal fields in assembly").AsPrefix();
 			}
@@ -25,7 +25,7 @@ public sealed partial class FieldFilters
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()
 					.Fields().WhichAre(AccessModifiers.Private);
 
-				await That(fields).ArePrivate();
+				await That(fields).ArePrivate().And.IsNotEmpty();
 				await That(fields.GetDescription())
 					.IsEqualTo("private fields in assembly").AsPrefix();
 			}
@@ -36,7 +36,7 @@ public sealed partial class FieldFilters
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()
 					.Fields().WhichAre(AccessModifiers.Protected);
 
-				await That(fields).AreProtected();
+				await That(fields).AreProtected().And.IsNotEmpty();
 				await That(fields.GetDescription())
 					.IsEqualTo("protected fields in assembly").AsPrefix();
 			}
@@ -47,7 +47,7 @@ public sealed partial class FieldFilters
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()
 					.Fields().WhichAre(AccessModifiers.Public);
 
-				await That(fields).ArePublic();
+				await That(fields).ArePublic().And.IsNotEmpty();
 				await That(fields.GetDescription())
 					.IsEqualTo("public fields in assembly").AsPrefix();
 			}

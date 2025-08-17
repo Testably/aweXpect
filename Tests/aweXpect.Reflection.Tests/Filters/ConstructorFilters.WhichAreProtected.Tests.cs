@@ -14,7 +14,7 @@ public sealed partial class ConstructorFilters
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
 					.Constructors().WhichAreProtected();
 
-				await That(constructors).AreProtected();
+				await That(constructors).AreProtected().And.IsNotEmpty();
 				await That(constructors.GetDescription())
 					.IsEqualTo("protected constructors in assembly").AsPrefix();
 			}

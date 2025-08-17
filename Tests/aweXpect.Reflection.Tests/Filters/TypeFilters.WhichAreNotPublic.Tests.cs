@@ -14,7 +14,7 @@ public sealed partial class TypeFilters
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
 					.Types().WhichAreNotPublic();
 
-				await That(types).AreNotPublic();
+				await That(types).AreNotPublic().And.IsNotEmpty();
 				await That(types.GetDescription())
 					.IsEqualTo("non-public types in assembly").AsPrefix();
 			}

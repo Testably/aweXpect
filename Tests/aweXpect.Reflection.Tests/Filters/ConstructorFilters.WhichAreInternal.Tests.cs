@@ -14,9 +14,19 @@ public sealed partial class ConstructorFilters
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
 					.Constructors().WhichAreInternal();
 
-				await That(constructors).AreInternal();
+				await That(constructors).AreInternal().And.IsNotEmpty();
 				await That(constructors.GetDescription())
 					.IsEqualTo("internal constructors in assembly").AsPrefix();
+			}
+
+			// ReSharper disable once UnusedType.Local
+			private sealed class WithInternalConstructor
+			{
+				// ReSharper disable once EmptyConstructor
+				internal WithInternalConstructor()
+				{
+					
+				}
 			}
 		}
 	}

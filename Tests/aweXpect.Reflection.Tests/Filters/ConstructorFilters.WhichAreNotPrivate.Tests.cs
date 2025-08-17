@@ -14,7 +14,7 @@ public sealed partial class ConstructorFilters
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
 					.Constructors().WhichAreNotPrivate();
 
-				await That(constructors).AreNotPrivate();
+				await That(constructors).AreNotPrivate().And.IsNotEmpty();
 				await That(constructors.GetDescription())
 					.IsEqualTo("non-private constructors in assembly").AsPrefix();
 			}

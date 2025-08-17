@@ -14,7 +14,7 @@ public sealed partial class ConstructorFilters
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
 					.Constructors().WhichAreNotInternal();
 
-				await That(constructors).AreNotInternal();
+				await That(constructors).AreNotInternal().And.IsNotEmpty();
 				await That(constructors.GetDescription())
 					.IsEqualTo("non-internal constructors in assembly").AsPrefix();
 			}

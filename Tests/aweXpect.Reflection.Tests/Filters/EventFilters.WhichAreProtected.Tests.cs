@@ -14,7 +14,7 @@ public sealed partial class EventFilters
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>()
 					.Events().WhichAreProtected();
 
-				await That(events).AreProtected();
+				await That(events).AreProtected().And.IsNotEmpty();
 				await That(events.GetDescription())
 					.IsEqualTo("protected events in assembly").AsPrefix();
 			}

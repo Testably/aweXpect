@@ -14,7 +14,7 @@ public sealed partial class PropertyFilters
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
 					.Properties().WhichAreInternal();
 
-				await That(properties).AreInternal();
+				await That(properties).AreInternal().And.IsNotEmpty();
 				await That(properties.GetDescription())
 					.IsEqualTo("internal properties in assembly").AsPrefix();
 			}

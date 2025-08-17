@@ -14,7 +14,7 @@ public sealed partial class ConstructorFilters
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
 					.Constructors().WhichAreNot(AccessModifiers.Internal);
 
-				await That(constructors).AreNotInternal();
+				await That(constructors).AreNotInternal().And.IsNotEmpty();
 				await That(constructors.GetDescription())
 					.IsEqualTo("non-internal constructors in assembly").AsPrefix();
 			}
@@ -25,7 +25,7 @@ public sealed partial class ConstructorFilters
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
 					.Constructors().WhichAreNot(AccessModifiers.Private);
 
-				await That(constructors).AreNotPrivate();
+				await That(constructors).AreNotPrivate().And.IsNotEmpty();
 				await That(constructors.GetDescription())
 					.IsEqualTo("non-private constructors in assembly").AsPrefix();
 			}
@@ -36,7 +36,7 @@ public sealed partial class ConstructorFilters
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
 					.Constructors().WhichAreNot(AccessModifiers.Protected);
 
-				await That(constructors).AreNotProtected();
+				await That(constructors).AreNotProtected().And.IsNotEmpty();
 				await That(constructors.GetDescription())
 					.IsEqualTo("non-protected constructors in assembly").AsPrefix();
 			}
@@ -47,7 +47,7 @@ public sealed partial class ConstructorFilters
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
 					.Constructors().WhichAreNot(AccessModifiers.Public);
 
-				await That(constructors).AreNotPublic();
+				await That(constructors).AreNotPublic().And.IsNotEmpty();
 				await That(constructors.GetDescription())
 					.IsEqualTo("non-public constructors in assembly").AsPrefix();
 			}

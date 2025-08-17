@@ -27,7 +27,8 @@ public static partial class Filtered
 			type.GetConstructors(BindingFlags.DeclaredOnly |
 			                     BindingFlags.NonPublic |
 			                     BindingFlags.Public |
-			                     BindingFlags.Instance)))
+			                     BindingFlags.Instance |
+			                     BindingFlags.Static)))
 		{
 			_types = types;
 			_description = description;

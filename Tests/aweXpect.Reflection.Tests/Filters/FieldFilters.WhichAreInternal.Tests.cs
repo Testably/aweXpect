@@ -14,7 +14,7 @@ public sealed partial class FieldFilters
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()
 					.Fields().WhichAreInternal();
 
-				await That(fields).AreInternal();
+				await That(fields).AreInternal().And.IsNotEmpty();
 				await That(fields.GetDescription())
 					.IsEqualTo("internal fields in assembly").AsPrefix();
 			}

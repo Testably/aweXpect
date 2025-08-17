@@ -14,7 +14,7 @@ public sealed partial class MethodFilters
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
 					.Methods().WhichAreNotProtected();
 
-				await That(methods).AreNotProtected();
+				await That(methods).AreNotProtected().And.IsNotEmpty();
 				await That(methods.GetDescription())
 					.IsEqualTo("non-protected methods in assembly").AsPrefix();
 			}

@@ -14,7 +14,7 @@ public sealed partial class EventFilters
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>()
 					.Events().WhichAreNotInternal();
 
-				await That(events).AreNotInternal();
+				await That(events).AreNotInternal().And.IsNotEmpty();
 				await That(events.GetDescription())
 					.IsEqualTo("non-internal events in assembly").AsPrefix();
 			}

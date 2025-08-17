@@ -93,4 +93,12 @@ internal static class PropertyInfoHelpers
 
 		return false;
 	}
+
+	/// <summary>
+	///     Checks if the <paramref name="propertyInfo" /> is static.
+	/// </summary>
+	/// <param name="propertyInfo">The <see cref="PropertyInfo" /> which is checked to be static.</param>
+	public static bool IsReallyStatic(
+		this PropertyInfo? propertyInfo)
+		=> (propertyInfo?.GetMethod?.IsStatic ?? false) || (propertyInfo?.SetMethod?.IsStatic ?? false);
 }

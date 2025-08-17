@@ -14,7 +14,7 @@ public sealed partial class MethodFilters
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
 					.Methods().WhichAreNotPublic();
 
-				await That(methods).AreNotPublic();
+				await That(methods).AreNotPublic().And.IsNotEmpty();
 				await That(methods.GetDescription())
 					.IsEqualTo("non-public methods in assembly").AsPrefix();
 			}

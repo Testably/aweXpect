@@ -14,7 +14,7 @@ public sealed partial class PropertyFilters
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
 					.Properties().WhichAreProtected();
 
-				await That(properties).AreProtected();
+				await That(properties).AreProtected().And.IsNotEmpty();
 				await That(properties.GetDescription())
 					.IsEqualTo("protected properties in assembly").AsPrefix();
 			}

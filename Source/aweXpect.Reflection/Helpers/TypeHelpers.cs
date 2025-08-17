@@ -21,7 +21,8 @@ internal static class TypeHelpers
 			.GetConstructors(BindingFlags.DeclaredOnly |
 			                 BindingFlags.NonPublic |
 			                 BindingFlags.Public |
-			                 BindingFlags.Instance);
+			                 BindingFlags.Instance |
+			                 BindingFlags.Static);
 
 	/// <summary>
 	///     Searches for fields in the <paramref name="type" /> that were directly declared there.
@@ -32,7 +33,8 @@ internal static class TypeHelpers
 			.GetFields(BindingFlags.DeclaredOnly |
 			           BindingFlags.NonPublic |
 			           BindingFlags.Public |
-			           BindingFlags.Instance)
+			           BindingFlags.Instance |
+			           BindingFlags.Static)
 			.Where(m => !m.IsSpecialName)
 			.Where(m => !m.Name.EndsWith("__BackingField"))
 			.ToArray();
@@ -47,7 +49,8 @@ internal static class TypeHelpers
 			            BindingFlags.NonPublic |
 			            BindingFlags.Public |
 			            BindingFlags.Static |
-			            BindingFlags.Instance)
+			            BindingFlags.Instance |
+			            BindingFlags.Static)
 			.Where(m => !m.IsSpecialName)
 			.ToArray();
 
@@ -61,7 +64,8 @@ internal static class TypeHelpers
 			               BindingFlags.NonPublic |
 			               BindingFlags.Public |
 			               BindingFlags.Static |
-			               BindingFlags.Instance)
+			               BindingFlags.Instance |
+			               BindingFlags.Static)
 			.Where(m => !m.IsSpecialName)
 			.ToArray();
 

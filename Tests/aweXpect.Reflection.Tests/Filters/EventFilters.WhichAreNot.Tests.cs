@@ -14,7 +14,7 @@ public sealed partial class EventFilters
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>()
 					.Events().WhichAreNot(AccessModifiers.Internal);
 
-				await That(events).AreNotInternal();
+				await That(events).AreNotInternal().And.IsNotEmpty();
 				await That(events.GetDescription())
 					.IsEqualTo("non-internal events in assembly").AsPrefix();
 			}
@@ -25,7 +25,7 @@ public sealed partial class EventFilters
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>()
 					.Events().WhichAreNot(AccessModifiers.Private);
 
-				await That(events).AreNotPrivate();
+				await That(events).AreNotPrivate().And.IsNotEmpty();
 				await That(events.GetDescription())
 					.IsEqualTo("non-private events in assembly").AsPrefix();
 			}
@@ -36,7 +36,7 @@ public sealed partial class EventFilters
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>()
 					.Events().WhichAreNot(AccessModifiers.Protected);
 
-				await That(events).AreNotProtected();
+				await That(events).AreNotProtected().And.IsNotEmpty();
 				await That(events.GetDescription())
 					.IsEqualTo("non-protected events in assembly").AsPrefix();
 			}
@@ -47,7 +47,7 @@ public sealed partial class EventFilters
 				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>()
 					.Events().WhichAreNot(AccessModifiers.Public);
 
-				await That(events).AreNotPublic();
+				await That(events).AreNotPublic().And.IsNotEmpty();
 				await That(events.GetDescription())
 					.IsEqualTo("non-public events in assembly").AsPrefix();
 			}

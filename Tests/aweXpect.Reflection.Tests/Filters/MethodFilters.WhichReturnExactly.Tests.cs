@@ -128,8 +128,10 @@ public sealed partial class MethodFilters
 			[Fact]
 			public async Task ShouldFilterForMethodsWhichReturnExactlyAnyOfMultipleTypes()
 			{
-				Filtered.Methods methods = In.Type<TestClass>()
-					.Methods().WhichReturnExactly(typeof(string)).OrReturnExactly(typeof(int)).OrReturnExactly(typeof(bool));
+				Filtered.Methods methods = In.Type<TestClass>().Methods()
+					.WhichReturnExactly(typeof(string))
+					.OrReturnExactly(typeof(int))
+					.OrReturnExactly(typeof(bool));
 
 				await That(methods).IsEqualTo([
 					typeof(TestClass).GetMethod(nameof(TestClass.GetString))!,
@@ -163,28 +165,10 @@ public sealed partial class MethodFilters
 		public sealed class MixingWithWhichReturnTests
 		{
 			[Fact]
-			public async Task ShouldAllowMixingWhichReturnWithOrReturnExactly()
-			{
-				Filtered.Methods methods = In.Type<TestClass>()
-					.Methods().WhichReturn<DummyBase>().OrReturnExactly<string>();
-
-				await That(methods).IsEqualTo([
-					typeof(TestClass).GetMethod(nameof(TestClass.GetDummyBase))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.GetDummy))!, // Included because WhichReturn allows inheritance
-					typeof(TestClass).GetMethod(nameof(TestClass.GetString))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.GetStringFromObject))!,
-				]).InAnyOrder();
-				await That(methods.GetDescription())
-					.IsEqualTo(
-						"methods which return MethodFilters.WhichReturnExactly.DummyBase or return exactly string in type")
-					.AsPrefix();
-			}
-
-			[Fact]
 			public async Task ShouldAllowMixingWhichReturnExactlyWithOrReturn()
 			{
-				Filtered.Methods methods = In.Type<TestClass>()
-					.Methods().WhichReturnExactly<DummyBase>().OrReturn<string>();
+				Filtered.Methods methods = In.Type<TestClass>().Methods()
+					.WhichReturnExactly<DummyBase>().OrReturn<string>();
 
 				await That(methods).IsEqualTo([
 					typeof(TestClass).GetMethod(nameof(TestClass.GetDummyBase))!,
@@ -197,6 +181,25 @@ public sealed partial class MethodFilters
 						"methods which return exactly MethodFilters.WhichReturnExactly.DummyBase or return string in type")
 					.AsPrefix();
 			}
+
+			[Fact]
+			public async Task ShouldAllowMixingWhichReturnWithOrReturnExactly()
+			{
+				Filtered.Methods methods = In.Type<TestClass>()
+					.Methods().WhichReturn<DummyBase>().OrReturnExactly<string>();
+
+				await That(methods).IsEqualTo([
+					typeof(TestClass).GetMethod(nameof(TestClass.GetDummyBase))!,
+					typeof(TestClass).GetMethod(
+						nameof(TestClass.GetDummy))!, // Included because WhichReturn allows inheritance
+					typeof(TestClass).GetMethod(nameof(TestClass.GetString))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.GetStringFromObject))!,
+				]).InAnyOrder();
+				await That(methods.GetDescription())
+					.IsEqualTo(
+						"methods which return MethodFilters.WhichReturnExactly.DummyBase or return exactly string in type")
+					.AsPrefix();
+			}
 		}
 
 		public sealed class InheritanceContrastTests
@@ -206,7 +209,7 @@ public sealed partial class MethodFilters
 			{
 				Filtered.Methods exactMethods = In.Type<TestClass>()
 					.Methods().WhichReturnExactly<DummyBase>();
-				
+
 				Filtered.Methods inheritingMethods = In.Type<TestClass>()
 					.Methods().WhichReturn<DummyBase>();
 

@@ -14,7 +14,7 @@ public sealed partial class TypeFilters
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
 					.Types().WhichAreNotInternal();
 
-				await That(types).AreNotInternal();
+				await That(types).AreNotInternal().And.IsNotEmpty();
 				await That(types.GetDescription())
 					.IsEqualTo("non-internal types in assembly").AsPrefix();
 			}
