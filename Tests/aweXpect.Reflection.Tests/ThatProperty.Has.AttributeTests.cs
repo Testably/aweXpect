@@ -94,61 +94,62 @@ public sealed partial class ThatProperty
 			}
 			// ReSharper restore UnusedMember.Local
 		}
-	}
 
-	public sealed class NegatedTests
-	{
-		[Fact]
-		public async Task WhenPropertyDoesNotHaveAttribute_ShouldSucceed()
+		public sealed class NegatedTests
 		{
-			PropertyInfo subject = typeof(TestClass).GetProperty("NoAttributeProperty")!;
+			[Fact]
+			public async Task WhenPropertyDoesNotHaveAttribute_ShouldSucceed()
+			{
+				PropertyInfo subject = typeof(TestClass).GetProperty("NoAttributeProperty")!;
 
-			async Task Act()
-				=> await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
 
-			await That(Act).DoesNotThrow();
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenPropertyDoesNotHaveMatchingAttribute_ShouldSucceed()
+			{
+				PropertyInfo subject = typeof(TestClass).GetProperty("TestProperty")!;
+
+				async Task Act()
+					=> await That(subject)
+						.DoesNotComplyWith(it => it.Has<TestAttribute>(attr => attr.Value == "NonExistent"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenPropertyHasAttribute_ShouldFail()
+			{
+				PropertyInfo subject = typeof(TestClass).GetProperty("TestProperty")!;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no ThatProperty.Has.NegatedTests.TestAttribute,
+					             but it did in System.String TestProperty
+					             """);
+			}
+
+			[AttributeUsage(AttributeTargets.Property)]
+			private class TestAttribute : Attribute
+			{
+				public string Value { get; set; } = "";
+			}
+
+			// ReSharper disable UnusedMember.Local
+			private class TestClass
+			{
+				[Test(Value = "PropertyValue")] public string TestProperty { get; set; } = "";
+
+				public string NoAttributeProperty { get; set; } = "";
+			}
+			// ReSharper restore UnusedMember.Local
 		}
-
-		[Fact]
-		public async Task WhenPropertyDoesNotHaveMatchingAttribute_ShouldSucceed()
-		{
-			PropertyInfo subject = typeof(TestClass).GetProperty("TestProperty")!;
-
-			async Task Act()
-				=> await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>(attr => attr.Value == "NonExistent"));
-
-			await That(Act).DoesNotThrow();
-		}
-
-		[Fact]
-		public async Task WhenPropertyHasAttribute_ShouldFail()
-		{
-			PropertyInfo subject = typeof(TestClass).GetProperty("TestProperty")!;
-
-			async Task Act()
-				=> await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
-
-			await That(Act).Throws<XunitException>()
-				.WithMessage("""
-				             Expected that subject
-				             has no ThatProperty.NegatedTests.TestAttribute,
-				             but it did in System.String TestProperty
-				             """);
-		}
-
-		[AttributeUsage(AttributeTargets.Property)]
-		private class TestAttribute : Attribute
-		{
-			public string Value { get; set; } = "";
-		}
-
-		// ReSharper disable UnusedMember.Local
-		private class TestClass
-		{
-			[Test(Value = "PropertyValue")] public string TestProperty { get; set; } = "";
-
-			public string NoAttributeProperty { get; set; } = "";
-		}
-		// ReSharper restore UnusedMember.Local
 	}
 }

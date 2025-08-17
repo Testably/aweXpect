@@ -95,62 +95,63 @@ public sealed partial class ThatMethod
 			}
 			// ReSharper restore UnusedMember.Local
 		}
-	}
 
-	public sealed class NegatedTests
-	{
-		[Fact]
-		public async Task WhenMethodDoesNotHaveAttribute_ShouldSucceed()
+		public sealed class NegatedTests
 		{
-			MethodInfo subject = typeof(TestClass).GetMethod("NoAttributeMethod")!;
+			[Fact]
+			public async Task WhenMethodDoesNotHaveAttribute_ShouldSucceed()
+			{
+				MethodInfo subject = typeof(TestClass).GetMethod("NoAttributeMethod")!;
 
-			async Task Act()
-				=> await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
 
-			await That(Act).DoesNotThrow();
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenMethodDoesNotHaveMatchingAttribute_ShouldSucceed()
+			{
+				MethodInfo subject = typeof(TestClass).GetMethod("TestMethod")!;
+
+				async Task Act()
+					=> await That(subject)
+						.DoesNotComplyWith(it => it.Has<TestAttribute>(attr => attr.Value == "NonExistent"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenMethodHasAttribute_ShouldFail()
+			{
+				MethodInfo subject = typeof(TestClass).GetMethod("TestMethod")!;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no ThatMethod.Has.NegatedTests.TestAttribute,
+					             but it did in Void TestMethod()
+					             """);
+			}
+
+			[AttributeUsage(AttributeTargets.Method)]
+			private class TestAttribute : Attribute
+			{
+				public string Value { get; set; } = "";
+			}
+
+			// ReSharper disable UnusedMember.Local
+			private class TestClass
+			{
+				[Test(Value = "MethodValue")]
+				public void TestMethod() { }
+
+				public void NoAttributeMethod() { }
+			}
+			// ReSharper restore UnusedMember.Local
 		}
-
-		[Fact]
-		public async Task WhenMethodDoesNotHaveMatchingAttribute_ShouldSucceed()
-		{
-			MethodInfo subject = typeof(TestClass).GetMethod("TestMethod")!;
-
-			async Task Act()
-				=> await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>(attr => attr.Value == "NonExistent"));
-
-			await That(Act).DoesNotThrow();
-		}
-
-		[Fact]
-		public async Task WhenMethodHasAttribute_ShouldFail()
-		{
-			MethodInfo subject = typeof(TestClass).GetMethod("TestMethod")!;
-
-			async Task Act()
-				=> await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
-
-			await That(Act).Throws<XunitException>()
-				.WithMessage("""
-				             Expected that subject
-				             has no ThatMethod.NegatedTests.TestAttribute,
-				             but it did in Void TestMethod()
-				             """);
-		}
-
-		[AttributeUsage(AttributeTargets.Method)]
-		private class TestAttribute : Attribute
-		{
-			public string Value { get; set; } = "";
-		}
-
-		// ReSharper disable UnusedMember.Local
-		private class TestClass
-		{
-			[Test(Value = "MethodValue")]
-			public void TestMethod() { }
-
-			public void NoAttributeMethod() { }
-		}
-		// ReSharper restore UnusedMember.Local
 	}
 }

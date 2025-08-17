@@ -96,63 +96,63 @@ public sealed partial class ThatField
 			}
 #pragma warning restore CS0414
 		}
-	}
 
-	public sealed class NegatedTests
-	{
-		[Fact]
-		public async Task WhenFieldDoesNotHaveAttribute_ShouldSucceed()
+		public sealed class NegatedTests
 		{
-			FieldInfo subject = typeof(TestClass).GetField("NoAttributeField")!;
+			[Fact]
+			public async Task WhenFieldDoesNotHaveAttribute_ShouldSucceed()
+			{
+				FieldInfo subject = typeof(TestClass).GetField("NoAttributeField")!;
 
-			async Task Act()
-				=> await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
 
-			await That(Act).DoesNotThrow();
-		}
+				await That(Act).DoesNotThrow();
+			}
 
-		[Fact]
-		public async Task WhenFieldDoesNotHaveMatchingAttribute_ShouldSucceed()
-		{
-			FieldInfo subject = typeof(TestClass).GetField("TestFieldWithValue")!;
+			[Fact]
+			public async Task WhenFieldDoesNotHaveMatchingAttribute_ShouldSucceed()
+			{
+				FieldInfo subject = typeof(TestClass).GetField("TestFieldWithValue")!;
 
-			async Task Act()
-				=> await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>(attr => attr.Value == 999));
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>(attr => attr.Value == 999));
 
-			await That(Act).DoesNotThrow();
-		}
+				await That(Act).DoesNotThrow();
+			}
 
-		[Fact]
-		public async Task WhenFieldHasAttribute_ShouldFail()
-		{
-			FieldInfo subject = typeof(TestClass).GetField("TestField")!;
+			[Fact]
+			public async Task WhenFieldHasAttribute_ShouldFail()
+			{
+				FieldInfo subject = typeof(TestClass).GetField("TestField")!;
 
-			async Task Act()
-				=> await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
 
-			await That(Act).Throws<XunitException>()
-				.WithMessage("""
-				             Expected that subject
-				             has no ThatField.NegatedTests.TestAttribute,
-				             but it did in System.String TestField
-				             """);
-		}
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no ThatField.Has.NegatedTests.TestAttribute,
+					             but it did in System.String TestField
+					             """);
+			}
 
-		[AttributeUsage(AttributeTargets.Field)]
-		private class TestAttribute : Attribute
-		{
-			public int Value { get; set; }
-		}
+			[AttributeUsage(AttributeTargets.Field)]
+			private class TestAttribute : Attribute
+			{
+				public int Value { get; set; }
+			}
 
 #pragma warning disable CS0414 // Field is assigned but its value is never used
-		private class TestClass
-		{
-			public string NoAttributeField = "";
+			private class TestClass
+			{
+				public string NoAttributeField = "";
 
-			[Test] public string TestField = "";
+				[Test] public string TestField = "";
 
-			[Test(Value = 42)] public string TestFieldWithValue = "";
-		}
+				[Test(Value = 42)] public string TestFieldWithValue = "";
+			}
 #pragma warning restore CS0414
+		}
 	}
 }
