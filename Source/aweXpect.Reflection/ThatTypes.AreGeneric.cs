@@ -85,7 +85,7 @@ public static partial class ThatTypes
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("also contain an generic type");
+			=> stringBuilder.Append("also contain a generic type");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{

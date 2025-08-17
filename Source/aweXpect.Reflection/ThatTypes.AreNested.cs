@@ -85,7 +85,7 @@ public static partial class ThatTypes
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("also contain an nested type");
+			=> stringBuilder.Append("also contain a nested type");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{

@@ -59,5 +59,43 @@ public sealed partial class ThatType
 					typeof(IPublicInterface),
 				];
 		}
+
+		public sealed class NegatedTests
+		{
+			[Theory]
+			[MemberData(nameof(NonStaticTypes))]
+			public async Task WhenTypeIsNotStatic_ShouldSucceed(Type subject)
+			{
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsStatic());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTypeIsStatic_ShouldFail()
+			{
+				Type subject = typeof(PublicStaticClass);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsStatic());
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             is not static,
+					             but it was static PublicStaticClass
+					             """);
+			}
+
+			public static TheoryData<Type> NonStaticTypes()
+				=>
+				[
+					typeof(PublicAbstractClass),
+					typeof(PublicSealedClass),
+					typeof(Container.PublicNestedClass),
+					typeof(IPublicInterface),
+				];
+		}
 	}
 }
