@@ -19,6 +19,8 @@ public sealed partial class ThatField
 		private int PrivateField;
 		protected int ProtectedField;
 		public int PublicField;
+		protected internal int ProtectedInternalField;
+		private protected int PrivateProtectedField;
 	}
 
 	public class ClassWithSingleField

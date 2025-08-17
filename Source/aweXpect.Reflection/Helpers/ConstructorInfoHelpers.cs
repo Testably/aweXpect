@@ -47,6 +47,18 @@ internal static class ConstructorInfoHelpers
 			return true;
 		}
 
+		if (accessModifiers.HasFlag(AccessModifiers.PrivateProtected) &&
+		    constructorInfo.IsFamilyAndAssembly)
+		{
+			return true;
+		}
+
+		if (accessModifiers.HasFlag(AccessModifiers.ProtectedInternal) &&
+		    constructorInfo.IsFamilyOrAssembly)
+		{
+			return true;
+		}
+
 		return false;
 	}
 

@@ -32,6 +32,10 @@ public sealed partial class ThatMethods
 		private int PrivateMethod1() => 0;
 		// ReSharper disable once UnusedMember.Local
 		private int PrivateMethod2() => 0;
+		protected internal int ProtectedInternalMethod1() => 0;
+		protected internal int ProtectedInternalMethod2() => 0;
+		private protected int PrivateProtectedMethod1() => 0;
+		private protected int PrivateProtectedMethod2() => 0;
 
 		public T GenericMethod1<T>(T value) => value;
 		public U GenericMethod2<T, U>(T first, U second) => second;

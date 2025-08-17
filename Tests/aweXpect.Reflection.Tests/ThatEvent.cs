@@ -18,7 +18,9 @@ public sealed partial class ThatEvent
 		public event EventHandler PublicEvent;
 		internal event EventHandler InternalEvent;
 		protected event EventHandler ProtectedEvent;
+		protected internal event EventHandler ProtectedInternalEvent;
 		private event EventHandler PrivateEvent;
+		private protected event EventHandler PrivateProtectedEvent;
 	}
 
 	public class ClassWithSingleEvent

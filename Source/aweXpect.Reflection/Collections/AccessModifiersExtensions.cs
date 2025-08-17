@@ -29,6 +29,16 @@ internal static class AccessModifiersExtensions
 			return "internal" + suffix;
 		}
 
+		if (accessModifier == AccessModifiers.ProtectedInternal)
+		{
+			return "protected internal" + suffix;
+		}
+
+		if (accessModifier == AccessModifiers.PrivateProtected)
+		{
+			return "private protected" + suffix;
+		}
+
 		if (accessModifier == AccessModifiers.Any)
 		{
 			return string.Empty;
@@ -53,6 +63,16 @@ internal static class AccessModifiersExtensions
 		if (accessModifier.HasFlag(AccessModifiers.Internal))
 		{
 			modifiers.Add("internal");
+		}
+
+		if (accessModifier.HasFlag(AccessModifiers.PrivateProtected))
+		{
+			modifiers.Add("private protected");
+		}
+
+		if (accessModifier.HasFlag(AccessModifiers.ProtectedInternal))
+		{
+			modifiers.Add("protected internal");
 		}
 
 #if NET8_0_OR_GREATER

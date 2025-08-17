@@ -20,6 +20,10 @@ public sealed partial class ThatEvents
 		protected event EventHandler ProtectedEvent2;
 		private event EventHandler PrivateEvent1;
 		private event EventHandler PrivateEvent2;
+		protected internal event EventHandler ProtectedInternalEvent1;
+		protected internal event EventHandler ProtectedInternalEvent2;
+		private protected event EventHandler PrivateProtectedEvent1;
+		private protected event EventHandler PrivateProtectedEvent2;
 	}
 #pragma warning restore CS0067
 #pragma warning restore CS8618

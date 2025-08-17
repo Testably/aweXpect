@@ -39,11 +39,21 @@ internal static class MemberInfoHelpers
 
 		if (memberInfo.HasAccessModifier(AccessModifiers.Private))
 		{
+			if (memberInfo.HasAccessModifier(AccessModifiers.Protected))
+			{
+				return AccessModifiers.PrivateProtected;
+			}
+
 			return AccessModifiers.Private;
 		}
 
 		if (memberInfo.HasAccessModifier(AccessModifiers.Protected))
 		{
+			if (memberInfo.HasAccessModifier(AccessModifiers.Internal))
+			{
+				return AccessModifiers.ProtectedInternal;
+			}
+
 			return AccessModifiers.Protected;
 		}
 

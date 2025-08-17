@@ -21,5 +21,9 @@ public sealed partial class ThatProperties
 		protected int ProtectedProperty2 { get; set; }
 		private int PrivateProperty1 { get; set; }
 		private int PrivateProperty2 { get; set; }
+		protected internal int ProtectedInternalProperty1 { get; set; }
+		protected internal int ProtectedInternalProperty2 { get; set; }
+		private protected int PrivateProtectedProperty1 { get; set; }
+		private protected int PrivateProtectedProperty2 { get; set; }
 	}
 }

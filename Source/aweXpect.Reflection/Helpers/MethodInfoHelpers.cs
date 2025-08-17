@@ -52,6 +52,18 @@ internal static class MethodInfoHelpers
 			return true;
 		}
 
+		if (accessModifiers.HasFlag(AccessModifiers.PrivateProtected) &&
+		    methodInfo.IsFamilyAndAssembly)
+		{
+			return true;
+		}
+
+		if (accessModifiers.HasFlag(AccessModifiers.ProtectedInternal) &&
+		    methodInfo.IsFamilyOrAssembly)
+		{
+			return true;
+		}
+
 		return false;
 	}
 

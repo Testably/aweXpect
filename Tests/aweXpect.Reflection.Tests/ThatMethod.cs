@@ -18,6 +18,8 @@ public sealed partial class ThatMethod
 		internal int InternalMethod() => 0;
 		protected int ProtectedMethod() => 0;
 		private int PrivateMethod() => 0;
+		protected internal int ProtectedInternalMethod() => 0;
+		private protected int PrivateProtectedMethod() => 0;
 		
 		public T GenericMethod<T>(T value) => value;
 		public void AnotherGenericMethod<T, U>(T first, U second) { }

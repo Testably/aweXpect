@@ -17,6 +17,8 @@ public sealed partial class ThatProperty
 		internal int InternalProperty { get; set; }
 		protected int ProtectedProperty { get; set; }
 		private int PrivateProperty { get; set; }
+		protected internal int ProtectedInternalProperty { get; set; }
+		private protected int PrivateProtectedProperty { get; set; }
 	}
 
 	public class ClassWithSingleProperty

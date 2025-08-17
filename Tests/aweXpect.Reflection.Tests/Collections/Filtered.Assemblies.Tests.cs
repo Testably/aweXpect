@@ -277,7 +277,7 @@ public sealed partial class Filtered
 					In.AllLoadedAssemblies().Private.Protected.Constructors();
 				string description = constructors.GetDescription();
 
-				await That(constructors).ArePrivate().And.AreProtected();
+				await That(constructors).ArePrivateProtected();
 				await That(description).IsEqualTo("private protected constructors in all loaded assemblies");
 			}
 
@@ -287,7 +287,7 @@ public sealed partial class Filtered
 				Reflection.Collections.Filtered.Events events = In.AllLoadedAssemblies().Private.Protected.Events();
 				string description = events.GetDescription();
 
-				await That(events).ArePrivate().And.AreProtected();
+				await That(events).ArePrivateProtected();
 				await That(description).IsEqualTo("private protected events in all loaded assemblies");
 			}
 
@@ -297,7 +297,7 @@ public sealed partial class Filtered
 				Reflection.Collections.Filtered.Fields fields = In.AllLoadedAssemblies().Private.Protected.Fields();
 				string description = fields.GetDescription();
 
-				await That(fields).ArePrivate().And.AreProtected();
+				await That(fields).ArePrivateProtected();
 				await That(description).IsEqualTo("private protected fields in all loaded assemblies");
 			}
 
@@ -307,7 +307,7 @@ public sealed partial class Filtered
 				Reflection.Collections.Filtered.Methods methods = In.AllLoadedAssemblies().Private.Protected.Methods();
 				string description = methods.GetDescription();
 
-				await That(methods).ArePrivate().And.AreProtected();
+				await That(methods).ArePrivateProtected();
 				await That(description).IsEqualTo("private protected methods in all loaded assemblies");
 			}
 
@@ -318,7 +318,7 @@ public sealed partial class Filtered
 					In.AllLoadedAssemblies().Private.Protected.Properties();
 				string description = properties.GetDescription();
 
-				await That(properties).ArePrivate().And.AreProtected();
+				await That(properties).ArePrivateProtected();
 				await That(description).IsEqualTo("private protected properties in all loaded assemblies");
 			}
 
@@ -328,7 +328,7 @@ public sealed partial class Filtered
 				Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Private.Protected.Types();
 				string description = types.GetDescription();
 
-				await That(types).ArePrivate().And.AreProtected();
+				await That(types).ArePrivateProtected();
 				await That(description).IsEqualTo("private protected types in all loaded assemblies");
 			}
 
@@ -380,7 +380,7 @@ public sealed partial class Filtered
 					In.AllLoadedAssemblies().Protected.Internal.Constructors();
 				string description = constructors.GetDescription();
 
-				await That(constructors).AreProtected().And.AreInternal();
+				await That(constructors).AreProtectedInternal();
 				await That(description).IsEqualTo("protected internal constructors in all loaded assemblies");
 			}
 
@@ -390,7 +390,7 @@ public sealed partial class Filtered
 				Reflection.Collections.Filtered.Events events = In.AllLoadedAssemblies().Protected.Internal.Events();
 				string description = events.GetDescription();
 
-				await That(events).AreProtected().And.AreInternal();
+				await That(events).AreProtectedInternal();
 				await That(description).IsEqualTo("protected internal events in all loaded assemblies");
 			}
 
@@ -400,7 +400,7 @@ public sealed partial class Filtered
 				Reflection.Collections.Filtered.Fields fields = In.AllLoadedAssemblies().Protected.Internal.Fields();
 				string description = fields.GetDescription();
 
-				await That(fields).AreProtected().And.AreInternal();
+				await That(fields).AreProtectedInternal();
 				await That(description).IsEqualTo("protected internal fields in all loaded assemblies");
 			}
 
@@ -410,7 +410,7 @@ public sealed partial class Filtered
 				Reflection.Collections.Filtered.Methods methods = In.AllLoadedAssemblies().Protected.Internal.Methods();
 				string description = methods.GetDescription();
 
-				await That(methods).AreProtected().And.AreInternal();
+				await That(methods).AreProtectedInternal();
 				await That(description).IsEqualTo("protected internal methods in all loaded assemblies");
 			}
 
@@ -421,7 +421,7 @@ public sealed partial class Filtered
 					In.AllLoadedAssemblies().Protected.Internal.Properties();
 				string description = properties.GetDescription();
 
-				await That(properties).AreProtected().And.AreInternal();
+				await That(properties).AreProtectedInternal();
 				await That(description).IsEqualTo("protected internal properties in all loaded assemblies");
 			}
 
@@ -431,7 +431,7 @@ public sealed partial class Filtered
 				Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Protected.Internal.Types();
 				string description = types.GetDescription();
 
-				await That(types).AreProtected().And.AreInternal();
+				await That(types).AreProtectedInternal();
 				await That(description).IsEqualTo("protected internal types in all loaded assemblies");
 			}
 

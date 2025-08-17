@@ -1,0 +1,59 @@
+﻿using System.Reflection;
+using Xunit.Sdk;
+
+namespace aweXpect.Reflection.Tests;
+
+public sealed partial class ThatField
+{
+	public sealed class IsPrivateProtected
+	{
+		public sealed class Tests
+		{
+			[Theory]
+			[InlineData("ProtectedField", "protected")]
+			[InlineData("PublicField", "public")]
+			[InlineData("InternalField", "internal")]
+			public async Task WhenFieldInfoIsNotPrivateProtected_ShouldFail(string fieldName, string expectedAccessModifier)
+			{
+				FieldInfo? subject = GetField(fieldName);
+
+				async Task Act()
+					=> await That(subject).IsPrivateProtected();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is private protected,
+					              but it was {expectedAccessModifier}
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenFieldInfoIsNull_ShouldFail()
+			{
+				FieldInfo? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsPrivateProtected();
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             is private protected,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenFieldInfoIsPrivateProtected_ShouldSucceed()
+			{
+				FieldInfo? subject = GetField("PrivateProtectedField");
+
+				async Task Act()
+					=> await That(subject).IsPrivateProtected();
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+	}
+}
