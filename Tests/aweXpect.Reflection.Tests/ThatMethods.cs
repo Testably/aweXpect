@@ -11,11 +11,11 @@ public sealed partial class ThatMethods
 	public static Filtered.Types GetTypes<T>()
 		=> In.AssemblyContaining<T>().Types().Which(t => t == typeof(T));
 
-	private class DummyBase
+	internal class DummyBase
 	{
 	}
 
-	private class Dummy : DummyBase
+	internal class Dummy : DummyBase
 	{
 	}
 
@@ -33,7 +33,7 @@ public sealed partial class ThatMethods
 	}
 
 	// ReSharper disable UnusedMember.Local
-	private class TestClass
+	internal class TestClass
 	{
 		public string GetString() => "test";
 		public int GetInt() => 42;
@@ -41,6 +41,9 @@ public sealed partial class ThatMethods
 		public DummyBase GetDummyBase() => new();
 		public Dummy GetDummy() => new();
 		public async Task AsyncMethod() => await Task.CompletedTask;
+		public T GenericMethod<T>(T value) => value;
+		public void GenericVoidMethod<T>() { }
+		public T GenericMethodWithConstraint<T>(T value) where T : class => value;
 	}
 	// ReSharper restore UnusedMember.Local
 #pragma warning restore CA1822
