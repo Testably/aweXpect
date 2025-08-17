@@ -58,22 +58,12 @@ public sealed partial class ThatEvent
 
 		public sealed class NegatedTests
 		{
-			[Fact]
-			public async Task WhenEventInfoIsPrivateProtected_ShouldSucceed()
-			{
-				EventInfo? subject = GetEvent("PrivateProtectedEvent");
-
-				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotPrivateProtected());
-
-				await That(Act).DoesNotThrow();
-			}
-
 			[Theory]
 			[InlineData("ProtectedEvent", "protected")]
 			[InlineData("PublicEvent", "public")]
 			[InlineData("InternalEvent", "internal")]
-			public async Task WhenEventInfoIsNotPrivateProtected_ShouldFail(string eventName, string expectedAccessModifier)
+			public async Task WhenEventInfoIsNotPrivateProtected_ShouldFail(string eventName,
+				string expectedAccessModifier)
 			{
 				EventInfo? subject = GetEvent(eventName);
 
@@ -86,6 +76,17 @@ public sealed partial class ThatEvent
 					              is private protected,
 					              but it was {expectedAccessModifier}
 					              """);
+			}
+
+			[Fact]
+			public async Task WhenEventInfoIsPrivateProtected_ShouldSucceed()
+			{
+				EventInfo? subject = GetEvent("PrivateProtectedEvent");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotPrivateProtected());
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 	}

@@ -9,22 +9,12 @@ public sealed partial class ThatProperty
 	{
 		public sealed class Tests
 		{
-			[Fact]
-			public async Task WhenPropertyInfoIsProtectedInternal_ShouldSucceed()
-			{
-				PropertyInfo? subject = GetProperty("ProtectedInternalProperty");
-
-				async Task Act()
-					=> await That(subject).IsProtectedInternal();
-
-				await That(Act).DoesNotThrow();
-			}
-
 			[Theory]
 			[InlineData("ProtectedProperty", "protected")]
 			[InlineData("PublicProperty", "public")]
 			[InlineData("PrivateProperty", "private")]
-			public async Task WhenPropertyInfoIsNotProtectedInternal_ShouldFail(string propertyName, string expectedAccessModifier)
+			public async Task WhenPropertyInfoIsNotProtectedInternal_ShouldFail(string propertyName,
+				string expectedAccessModifier)
 			{
 				PropertyInfo? subject = GetProperty(propertyName);
 
@@ -54,23 +44,21 @@ public sealed partial class ThatProperty
 					             but it was <null>
 					             """);
 			}
-		}
 
-		public sealed class NegatedTests
-		{
 			[Fact]
-			public async Task WhenPropertyInfoIsProtectedInternal_ShouldFail()
+			public async Task WhenPropertyInfoIsProtectedInternal_ShouldSucceed()
 			{
 				PropertyInfo? subject = GetProperty("ProtectedInternalProperty");
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsProtectedInternal());
+					=> await That(subject).IsProtectedInternal();
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("Expected that subject*")
-					.AsWildcard();
+				await That(Act).DoesNotThrow();
 			}
+		}
 
+		public sealed class NegatedTests
+		{
 			[Theory]
 			[InlineData("ProtectedProperty")]
 			[InlineData("PublicProperty")]
@@ -83,6 +71,19 @@ public sealed partial class ThatProperty
 					=> await That(subject).DoesNotComplyWith(it => it.IsProtectedInternal());
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenPropertyInfoIsProtectedInternal_ShouldFail()
+			{
+				PropertyInfo? subject = GetProperty("ProtectedInternalProperty");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsProtectedInternal());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("Expected that subject*")
+					.AsWildcard();
 			}
 		}
 	}

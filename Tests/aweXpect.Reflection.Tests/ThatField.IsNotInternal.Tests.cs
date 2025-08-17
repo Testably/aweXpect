@@ -82,21 +82,21 @@ public sealed partial class ThatField
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
-					             Expected that subject
-					             is internal,
-					             but it was {GetExpectedAccessModifier(fieldName)}
-					             """);
+					              Expected that subject
+					              is internal,
+					              but it was {GetExpectedAccessModifier(fieldName)}
+					              """);
 			}
 
 			private static string GetExpectedAccessModifier(string fieldName) => fieldName switch
 			{
 				"ProtectedField" => "protected",
-				"PublicField" => "public", 
+				"PublicField" => "public",
 				"PrivateField" => "private",
 				"InternalField" => "internal",
 				"ProtectedInternalField" => "protected internal",
 				"PrivateProtectedField" => "private protected",
-				_ => throw new ArgumentException($"Unknown field name: {fieldName}")
+				_ => throw new ArgumentException($"Unknown field name: {fieldName}"),
 			};
 		}
 	}

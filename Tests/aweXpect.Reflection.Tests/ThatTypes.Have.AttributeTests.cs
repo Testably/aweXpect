@@ -280,6 +280,25 @@ public sealed partial class ThatTypes
 		public sealed class NegatedTests
 		{
 			[Fact]
+			public async Task WhenPropertiesHaveAttribute_ShouldFail()
+			{
+				List<Type> subjects = [typeof(FooClass2),];
+
+				async Task Act()
+					=> await That(subjects).DoesNotComplyWith(they
+						=> they.Have<FooAttribute>().OrHave<BarAttribute>(x => x.Name == "foo"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subjects
+					             not all have ThatTypes.Have.FooAttribute or ThatTypes.Have.BarAttribute matching x => x.Name == "foo",
+					             but it only contained matching types [
+					               ThatTypes.Have.FooClass2
+					             ]
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenTypesDoNotHaveAttribute_ShouldSucceed()
 			{
 				List<Type> subjects = [typeof(BazClass),];
@@ -300,25 +319,6 @@ public sealed partial class ThatTypes
 						=> they.Have<FooAttribute>(attr => attr.Value == 3));
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenPropertiesHaveAttribute_ShouldFail()
-			{
-				List<Type> subjects = [typeof(FooClass2),];
-
-				async Task Act()
-					=> await That(subjects).DoesNotComplyWith(they
-						=> they.Have<FooAttribute>().OrHave<BarAttribute>(x => x.Name == "foo"));
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subjects
-					             not all have ThatTypes.Have.FooAttribute or ThatTypes.Have.BarAttribute matching x => x.Name == "foo",
-					             but it only contained matching types [
-					               ThatTypes.Have.FooClass2
-					             ]
-					             """);
 			}
 		}
 

@@ -10,7 +10,7 @@ public sealed partial class ThatProperties
 
 	public static Filtered.Types GetTypes<T>()
 		=> In.AssemblyContaining<T>().Types().Which(t => t == typeof(T));
-	
+
 	public class ClassWithProperties
 	{
 		public int PublicProperty1 { get; set; }

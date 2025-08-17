@@ -9,22 +9,12 @@ public sealed partial class ThatMethod
 	{
 		public sealed class Tests
 		{
-			[Fact]
-			public async Task WhenMethodInfoIsProtectedInternal_ShouldSucceed()
-			{
-				MethodInfo? subject = GetMethod("ProtectedInternalMethod");
-
-				async Task Act()
-					=> await That(subject).IsProtectedInternal();
-
-				await That(Act).DoesNotThrow();
-			}
-
 			[Theory]
 			[InlineData("ProtectedMethod", "protected")]
 			[InlineData("PublicMethod", "public")]
 			[InlineData("PrivateMethod", "private")]
-			public async Task WhenMethodInfoIsNotProtectedInternal_ShouldFail(string methodName, string expectedAccessModifier)
+			public async Task WhenMethodInfoIsNotProtectedInternal_ShouldFail(string methodName,
+				string expectedAccessModifier)
 			{
 				MethodInfo? subject = GetMethod(methodName);
 
@@ -53,6 +43,17 @@ public sealed partial class ThatMethod
 					             is protected internal,
 					             but it was <null>
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenMethodInfoIsProtectedInternal_ShouldSucceed()
+			{
+				MethodInfo? subject = GetMethod("ProtectedInternalMethod");
+
+				async Task Act()
+					=> await That(subject).IsProtectedInternal();
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 

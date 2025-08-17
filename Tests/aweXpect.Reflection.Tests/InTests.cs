@@ -150,6 +150,7 @@ public sealed class InTests
 			.IsEqualTo([typeof(InTests), typeof(InternalClass), typeof(PublicClass), typeof(AccessModifiers),])
 			.InAnyOrder();
 		await That(sut.GetDescription())
-			.IsEqualTo($"in types [{nameof(InTests)}, {nameof(InternalClass)}, {nameof(PublicClass)}, {nameof(AccessModifiers)}]");
+			.IsEqualTo(
+				$"in types [{nameof(InTests)}, {nameof(InternalClass)}, {nameof(PublicClass)}, {nameof(AccessModifiers)}]");
 	}
 }

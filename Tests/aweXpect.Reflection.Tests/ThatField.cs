@@ -17,10 +17,10 @@ public sealed partial class ThatField
 	{
 		internal int InternalField;
 		private int PrivateField;
-		protected int ProtectedField;
-		public int PublicField;
-		protected internal int ProtectedInternalField;
 		private protected int PrivateProtectedField;
+		protected int ProtectedField;
+		protected internal int ProtectedInternalField;
+		public int PublicField;
 	}
 
 	public class ClassWithSingleField

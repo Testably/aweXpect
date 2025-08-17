@@ -10,6 +10,19 @@ public sealed partial class ThatType
 		{
 			[Theory]
 			[InlineData(typeof(ProtectedType))]
+			[InlineData(typeof(PrivateType))]
+			[InlineData(typeof(InternalType))]
+			public async Task WhenTypeIsNotPublic_ShouldFailWithNegatedAssertion(Type? subject)
+			{
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotPublic());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("*is public*but it was*").AsWildcard();
+			}
+
+			[Theory]
+			[InlineData(typeof(ProtectedType))]
 			[InlineData(typeof(InternalType))]
 			[InlineData(typeof(PrivateType))]
 			public async Task WhenTypeIsNotPublic_ShouldSucceed(Type? subject)
@@ -50,6 +63,17 @@ public sealed partial class ThatType
 					             is not public,
 					             but it was
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenTypeIsPublic_ShouldSucceedWithNegatedAssertion()
+			{
+				Type? subject = typeof(PublicType);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotPublic());
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 	}

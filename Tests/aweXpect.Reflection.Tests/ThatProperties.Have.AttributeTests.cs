@@ -105,34 +105,6 @@ public sealed partial class ThatProperties
 			public sealed class AttributeTests
 			{
 				[Fact]
-				public async Task WhenPropertiesHaveFirstAttribute_ShouldSucceed()
-				{
-					IEnumerable<PropertyInfo> subject = new[]
-					{
-						typeof(TestClass).GetProperty("TestProperty1")!,
-					};
-
-					async Task Act()
-						=> await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
-
-					await That(Act).DoesNotThrow();
-				}
-
-				[Fact]
-				public async Task WhenPropertiesHaveSecondAttribute_ShouldSucceed()
-				{
-					IEnumerable<PropertyInfo> subject = new[]
-					{
-						typeof(TestClass).GetProperty("BarProperty")!,
-					};
-
-					async Task Act()
-						=> await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
-
-					await That(Act).DoesNotThrow();
-				}
-
-				[Fact]
 				public async Task WhenPropertiesHaveBothAttributes_ShouldSucceed()
 				{
 					IEnumerable<PropertyInfo> subject = new[]
@@ -147,24 +119,17 @@ public sealed partial class ThatProperties
 				}
 
 				[Fact]
-				public async Task WhenPropertiesHaveNeitherAttribute_ShouldFail()
+				public async Task WhenPropertiesHaveFirstAttribute_ShouldSucceed()
 				{
 					IEnumerable<PropertyInfo> subject = new[]
 					{
-						typeof(TestClass).GetProperty("NoAttributeProperty")!,
+						typeof(TestClass).GetProperty("TestProperty1")!,
 					};
 
 					async Task Act()
 						=> await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
 
-					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that subject
-						             all have ThatProperties.Have.OrHave.AttributeTests.TestAttribute or ThatProperties.Have.OrHave.AttributeTests.BarAttribute,
-						             but it contained not matching properties [
-						               System.String NoAttributeProperty
-						             ]
-						             """);
+					await That(Act).DoesNotThrow();
 				}
 
 				[Fact]
@@ -193,6 +158,41 @@ public sealed partial class ThatProperties
 					async Task Act()
 						=> await That(subject).Have<TestAttribute>(attr => attr.Value == "NonExistent")
 							.OrHave<BarAttribute>(attr => attr.Name == "bar");
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenPropertiesHaveNeitherAttribute_ShouldFail()
+				{
+					IEnumerable<PropertyInfo> subject = new[]
+					{
+						typeof(TestClass).GetProperty("NoAttributeProperty")!,
+					};
+
+					async Task Act()
+						=> await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             all have ThatProperties.Have.OrHave.AttributeTests.TestAttribute or ThatProperties.Have.OrHave.AttributeTests.BarAttribute,
+						             but it contained not matching properties [
+						               System.String NoAttributeProperty
+						             ]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenPropertiesHaveSecondAttribute_ShouldSucceed()
+				{
+					IEnumerable<PropertyInfo> subject = new[]
+					{
+						typeof(TestClass).GetProperty("BarProperty")!,
+					};
+
+					async Task Act()
+						=> await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
 
 					await That(Act).DoesNotThrow();
 				}

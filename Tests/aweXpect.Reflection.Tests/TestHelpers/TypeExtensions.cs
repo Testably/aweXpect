@@ -32,7 +32,7 @@ internal static class TypeExtensions
 		type.GetMethod("op_Equality", BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly, null,
 				[type, type,], null)?
 			.HasAttribute<CompilerGeneratedAttribute>() == true;
-	
+
 	public static bool HasAttribute<TAttribute>(
 		this MethodInfo methodInfo,
 		Func<TAttribute, bool>? predicate = null,

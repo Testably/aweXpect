@@ -1,4 +1,5 @@
 ﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
+using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -21,6 +22,32 @@ public sealed partial class ThatType
 					             Expected that subject
 					             is not a struct,
 					             but it was struct PublicStruct
+					             """);
+			}
+
+			[Theory]
+			[MemberData(nameof(StructTypesForNegated))]
+			public async Task WhenTypeIsAStruct_ShouldSucceedWithNegatedAssertion(Type subject)
+			{
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotAStruct());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTypeIsNotAStruct_ShouldFailWithNegatedAssertion()
+			{
+				Type subject = typeof(PublicClass);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotAStruct());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is a struct,
+					             but it was class PublicClass
 					             """);
 			}
 
@@ -49,6 +76,11 @@ public sealed partial class ThatType
 					             but it was <null>
 					             """);
 			}
+
+			public static TheoryData<Type> StructTypesForNegated() => new()
+			{
+				typeof(PublicStruct),
+			};
 
 			public static TheoryData<Type> NonStructTypes()
 				=>

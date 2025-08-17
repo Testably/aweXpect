@@ -90,34 +90,6 @@ public sealed partial class ThatAssemblies
 			public sealed class AttributeTests
 			{
 				[Fact]
-				public async Task WhenAssembliesHaveFirstAttribute_ShouldSucceed()
-				{
-					IEnumerable<Assembly> subjects = new[]
-					{
-						typeof(AttributeTests).Assembly,
-					};
-
-					async Task Act()
-						=> await That(subjects).Have<AssemblyTitleAttribute>().OrHave<AssemblyVersionAttribute>();
-
-					await That(Act).DoesNotThrow();
-				}
-
-				[Fact]
-				public async Task WhenAssembliesHaveSecondAttribute_ShouldSucceed()
-				{
-					IEnumerable<Assembly> subjects = new[]
-					{
-						typeof(AttributeTests).Assembly,
-					};
-
-					async Task Act()
-						=> await That(subjects).Have<TestAttribute>().OrHave<AssemblyTitleAttribute>();
-
-					await That(Act).DoesNotThrow();
-				}
-
-				[Fact]
 				public async Task WhenAssembliesHaveBothAttributes_ShouldSucceed()
 				{
 					IEnumerable<Assembly> subjects = new[]
@@ -132,7 +104,7 @@ public sealed partial class ThatAssemblies
 				}
 
 				[Fact]
-				public async Task WhenAssembliesHaveNeitherAttribute_ShouldFail()
+				public async Task WhenAssembliesHaveFirstAttribute_ShouldSucceed()
 				{
 					IEnumerable<Assembly> subjects = new[]
 					{
@@ -140,16 +112,9 @@ public sealed partial class ThatAssemblies
 					};
 
 					async Task Act()
-						=> await That(subjects).Have<TestAttribute>().OrHave<BarAttribute>();
+						=> await That(subjects).Have<AssemblyTitleAttribute>().OrHave<AssemblyVersionAttribute>();
 
-					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that subjects
-						             all have ThatAssemblies.Have.OrHave.AttributeTests.TestAttribute or ThatAssemblies.Have.OrHave.AttributeTests.BarAttribute,
-						             but it contained not matching assemblies [
-						               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
-						             ]
-						             """).AsWildcard();
+					await That(Act).DoesNotThrow();
 				}
 
 				[Fact]
@@ -183,6 +148,41 @@ public sealed partial class ThatAssemblies
 				}
 
 				[Fact]
+				public async Task WhenAssembliesHaveNeitherAttribute_ShouldFail()
+				{
+					IEnumerable<Assembly> subjects = new[]
+					{
+						typeof(AttributeTests).Assembly,
+					};
+
+					async Task Act()
+						=> await That(subjects).Have<TestAttribute>().OrHave<BarAttribute>();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subjects
+						             all have ThatAssemblies.Have.OrHave.AttributeTests.TestAttribute or ThatAssemblies.Have.OrHave.AttributeTests.BarAttribute,
+						             but it contained not matching assemblies [
+						               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+						             ]
+						             """).AsWildcard();
+				}
+
+				[Fact]
+				public async Task WhenAssembliesHaveSecondAttribute_ShouldSucceed()
+				{
+					IEnumerable<Assembly> subjects = new[]
+					{
+						typeof(AttributeTests).Assembly,
+					};
+
+					async Task Act()
+						=> await That(subjects).Have<TestAttribute>().OrHave<AssemblyTitleAttribute>();
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
 				public async Task WithPredicate_WhenAssembliesHaveNotMatchingAttribute_ShouldFail()
 				{
 					IEnumerable<Assembly> subjects = new[]
@@ -207,7 +207,7 @@ public sealed partial class ThatAssemblies
 				[AttributeUsage(AttributeTargets.Assembly)]
 				private class TestAttribute : Attribute
 				{
-					public string Value { get; set; } = "";
+					public string Value { get; } = "";
 				}
 
 				[AttributeUsage(AttributeTargets.Assembly)]

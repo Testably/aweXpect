@@ -30,8 +30,7 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!,
-					typeof(TestClass).GetMethod(
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!, typeof(TestClass).GetMethod(
 						nameof(TestClass.MethodWithString))!, // Has "name" parameter, not "value"
 				};
 
@@ -101,8 +100,7 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!,
-					typeof(TestClass).GetMethod(
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!, typeof(TestClass).GetMethod(
 						nameof(TestClass.MethodWithString))!, // Has string "name", not int "value"
 				};
 
@@ -158,8 +156,7 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!,
-					typeof(TestClass).GetMethod(
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!, typeof(TestClass).GetMethod(
 						nameof(TestClass.MethodWithString))!, // Has "name" parameter, not "value"
 				};
 
@@ -229,8 +226,7 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!,
-					typeof(TestClass).GetMethod(
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!, typeof(TestClass).GetMethod(
 						nameof(TestClass.MethodWithString))!, // Has string "name", not int "value"
 				};
 

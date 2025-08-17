@@ -104,34 +104,6 @@ public sealed partial class ThatFields
 			public sealed class AttributeTests
 			{
 				[Fact]
-				public async Task WhenFieldsHaveFirstAttribute_ShouldSucceed()
-				{
-					IEnumerable<FieldInfo> subject = new[]
-					{
-						typeof(TestClass).GetField("TestField1")!,
-					};
-
-					async Task Act()
-						=> await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
-
-					await That(Act).DoesNotThrow();
-				}
-
-				[Fact]
-				public async Task WhenFieldsHaveSecondAttribute_ShouldSucceed()
-				{
-					IEnumerable<FieldInfo> subject = new[]
-					{
-						typeof(TestClass).GetField("BarField")!,
-					};
-
-					async Task Act()
-						=> await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
-
-					await That(Act).DoesNotThrow();
-				}
-
-				[Fact]
 				public async Task WhenFieldsHaveBothAttributes_ShouldSucceed()
 				{
 					IEnumerable<FieldInfo> subject = new[]
@@ -146,24 +118,17 @@ public sealed partial class ThatFields
 				}
 
 				[Fact]
-				public async Task WhenFieldsHaveNeitherAttribute_ShouldFail()
+				public async Task WhenFieldsHaveFirstAttribute_ShouldSucceed()
 				{
 					IEnumerable<FieldInfo> subject = new[]
 					{
-						typeof(TestClass).GetField("NoAttributeField")!,
+						typeof(TestClass).GetField("TestField1")!,
 					};
 
 					async Task Act()
 						=> await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
 
-					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that subject
-						             all have ThatFields.Have.OrHave.AttributeTests.TestAttribute or ThatFields.Have.OrHave.AttributeTests.BarAttribute,
-						             but it contained not matching fields [
-						               System.String NoAttributeField
-						             ]
-						             """);
+					await That(Act).DoesNotThrow();
 				}
 
 				[Fact]
@@ -192,6 +157,41 @@ public sealed partial class ThatFields
 					async Task Act()
 						=> await That(subject).Have<TestAttribute>(attr => attr.Value == "NonExistent")
 							.OrHave<BarAttribute>(attr => attr.Name == "bar");
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenFieldsHaveNeitherAttribute_ShouldFail()
+				{
+					IEnumerable<FieldInfo> subject = new[]
+					{
+						typeof(TestClass).GetField("NoAttributeField")!,
+					};
+
+					async Task Act()
+						=> await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             all have ThatFields.Have.OrHave.AttributeTests.TestAttribute or ThatFields.Have.OrHave.AttributeTests.BarAttribute,
+						             but it contained not matching fields [
+						               System.String NoAttributeField
+						             ]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenFieldsHaveSecondAttribute_ShouldSucceed()
+				{
+					IEnumerable<FieldInfo> subject = new[]
+					{
+						typeof(TestClass).GetField("BarField")!,
+					};
+
+					async Task Act()
+						=> await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
 
 					await That(Act).DoesNotThrow();
 				}
@@ -233,14 +233,14 @@ public sealed partial class ThatFields
 #pragma warning disable CS0414 // Field is assigned but its value is never used
 				private class TestClass
 				{
-					public string NoAttributeField = "";
-
-					[Test(Value = "Field1Value")] public string TestField1 = "";
-
 					[Bar(Name = "bar")] public string BarField = "";
 
 					[Test(Value = "BothValue")] [Bar(Name = "both")]
 					public string BothField = "";
+
+					public string NoAttributeField = "";
+
+					[Test(Value = "Field1Value")] public string TestField1 = "";
 				}
 #pragma warning restore CS0414
 			}
@@ -286,7 +286,8 @@ public sealed partial class ThatFields
 				};
 
 				async Task Act()
-					=> await That(subjects).DoesNotComplyWith(they => they.Have<TestAttribute>().OrHave<TestAttribute>(x => x.Value == "foo"));
+					=> await That(subjects).DoesNotComplyWith(they
+						=> they.Have<TestAttribute>().OrHave<TestAttribute>(x => x.Value == "foo"));
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -307,9 +308,8 @@ public sealed partial class ThatFields
 #pragma warning disable CS0414 // Field is assigned but its value is never used
 			private class TestClass
 			{
-				[Test(Value = "Field1Value")] public string TestField1 = "";
-
 				public string NoAttributeField = "";
+				[Test(Value = "Field1Value")] public string TestField1 = "";
 			}
 #pragma warning restore CS0414
 		}

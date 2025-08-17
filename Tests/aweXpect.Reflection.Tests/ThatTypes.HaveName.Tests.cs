@@ -70,6 +70,18 @@ public sealed partial class ThatTypes
 		public sealed class NegatedTests
 		{
 			[Fact]
+			public async Task WhenTypesContainTypeWithDifferentName_ShouldSucceed()
+			{
+				Filtered.Types subject = In.AssemblyContaining<Tests>()
+					.Types().WithName("Some").AsPrefix();
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(they => they.HaveName("SomeOtherClassName"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenTypesHaveName_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<Tests>()
@@ -86,18 +98,6 @@ public sealed partial class ThatTypes
 					               *SomeClassToTestHaveNameForTypes*
 					             ]
 					             """).AsWildcard();
-			}
-
-			[Fact]
-			public async Task WhenTypesContainTypeWithDifferentName_ShouldSucceed()
-			{
-				Filtered.Types subject = In.AssemblyContaining<Tests>()
-					.Types().WithName("Some").AsPrefix();
-
-				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.HaveName("SomeOtherClassName"));
-
-				await That(Act).DoesNotThrow();
 			}
 		}
 	}

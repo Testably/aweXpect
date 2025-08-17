@@ -9,6 +9,20 @@ public sealed partial class ThatEvents
 	{
 		public sealed class Tests
 		{
+			[Theory]
+			[InlineData("ProtectedEvent")]
+			[InlineData("PublicEvent")]
+			[InlineData("PrivateEvent")]
+			public async Task WhenEventInfoIsNotProtectedInternal_ShouldFail(string eventName)
+			{
+				Filtered.Events subject = GetEvents(eventName);
+
+				async Task Act()
+					=> await That(subject).AreNotProtectedInternal();
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[Fact]
 			public async Task WhenEventInfoIsProtectedInternal_ShouldFail()
 			{
@@ -26,35 +40,10 @@ public sealed partial class ThatEvents
 					             ]
 					             """).AsWildcard();
 			}
-
-			[Theory]
-			[InlineData("ProtectedEvent")]
-			[InlineData("PublicEvent")]
-			[InlineData("PrivateEvent")]
-			public async Task WhenEventInfoIsNotProtectedInternal_ShouldFail(string eventName)
-			{
-				Filtered.Events subject = GetEvents(eventName);
-
-				async Task Act()
-					=> await That(subject).AreNotProtectedInternal();
-
-				await That(Act).DoesNotThrow();
-			}
 		}
 
 		public sealed class NegatedTests
 		{
-			[Fact]
-			public async Task WhenEventInfoIsProtectedInternal_ShouldSucceed()
-			{
-				Filtered.Events subject = GetEvents("ProtectedInternalEvent");
-
-				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreNotProtectedInternal());
-
-				await That(Act).DoesNotThrow();
-			}
-
 			[Theory]
 			[InlineData("ProtectedEvent")]
 			[InlineData("PublicEvent")]
@@ -72,6 +61,17 @@ public sealed partial class ThatEvents
 					             at least one is protected internal,
 					             but none were
 					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenEventInfoIsProtectedInternal_ShouldSucceed()
+			{
+				Filtered.Events subject = GetEvents("ProtectedInternalEvent");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(they => they.AreNotProtectedInternal());
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 	}

@@ -9,22 +9,12 @@ public sealed partial class ThatField
 	{
 		public sealed class Tests
 		{
-			[Fact]
-			public async Task WhenFieldInfoIsProtectedInternal_ShouldSucceed()
-			{
-				FieldInfo? subject = GetField("ProtectedInternalField");
-
-				async Task Act()
-					=> await That(subject).IsProtectedInternal();
-
-				await That(Act).DoesNotThrow();
-			}
-
 			[Theory]
 			[InlineData("ProtectedField", "protected")]
 			[InlineData("PublicField", "public")]
 			[InlineData("PrivateField", "private")]
-			public async Task WhenFieldInfoIsNotProtectedInternal_ShouldFail(string fieldName, string expectedAccessModifier)
+			public async Task WhenFieldInfoIsNotProtectedInternal_ShouldFail(string fieldName,
+				string expectedAccessModifier)
 			{
 				FieldInfo? subject = GetField(fieldName);
 
@@ -53,6 +43,17 @@ public sealed partial class ThatField
 					             is protected internal,
 					             but it was <null>
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenFieldInfoIsProtectedInternal_ShouldSucceed()
+			{
+				FieldInfo? subject = GetField("ProtectedInternalField");
+
+				async Task Act()
+					=> await That(subject).IsProtectedInternal();
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 

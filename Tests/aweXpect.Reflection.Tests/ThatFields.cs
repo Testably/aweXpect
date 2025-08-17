@@ -19,14 +19,14 @@ public sealed partial class ThatFields
 		internal int InternalField2;
 		private int PrivateField1;
 		private int PrivateField2;
-		protected int ProtectedField1;
-		protected int ProtectedField2;
-		public int PublicField1;
-		public int PublicField2;
-		protected internal int ProtectedInternalField1;
-		protected internal int ProtectedInternalField2;
 		private protected int PrivateProtectedField1;
 		private protected int PrivateProtectedField2;
+		protected int ProtectedField1;
+		protected int ProtectedField2;
+		protected internal int ProtectedInternalField1;
+		protected internal int ProtectedInternalField2;
+		public int PublicField1;
+		public int PublicField2;
 	}
 
 #pragma warning restore CS0649

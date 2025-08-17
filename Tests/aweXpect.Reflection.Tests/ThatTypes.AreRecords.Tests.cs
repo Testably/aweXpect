@@ -44,6 +44,17 @@ public sealed partial class ThatTypes
 		public sealed class NegatedTests
 		{
 			[Fact]
+			public async Task WhenAssembliesContainNonRecordTypes_ShouldSucceed()
+			{
+				Filtered.Types subject = In.AssemblyContaining<AreRecords>().Types();
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(they => they.AreRecords());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenFilteringOnlyRecords_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreRecords>().Types()
@@ -60,17 +71,6 @@ public sealed partial class ThatTypes
 					               *
 					             ]
 					             """).AsWildcard();
-			}
-
-			[Fact]
-			public async Task WhenAssembliesContainNonRecordTypes_ShouldSucceed()
-			{
-				Filtered.Types subject = In.AssemblyContaining<AreRecords>().Types();
-
-				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreRecords());
-
-				await That(Act).DoesNotThrow();
 			}
 		}
 	}

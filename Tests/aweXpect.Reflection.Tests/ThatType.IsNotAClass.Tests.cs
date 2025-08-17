@@ -1,4 +1,5 @@
 ﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
+using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -48,6 +49,41 @@ public sealed partial class ThatType
 					             is not a class,
 					             but it was <null>
 					             """);
+			}
+
+			public static TheoryData<Type> NonClassTypes()
+				=>
+				[
+					typeof(IPublicInterface),
+					typeof(PublicEnum),
+					typeof(PublicStruct),
+					typeof(PublicRecord),
+					typeof(PublicRecordStruct),
+				];
+		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenTypeIsAClass_ShouldSucceed()
+			{
+				Type subject = typeof(PublicClass);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotAClass());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Theory]
+			[MemberData(nameof(NonClassTypes))]
+			public async Task WhenTypeIsNotAClass_ShouldFail(Type subject)
+			{
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotAClass());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("*is a class*but it was*").AsWildcard();
 			}
 
 			public static TheoryData<Type> NonClassTypes()

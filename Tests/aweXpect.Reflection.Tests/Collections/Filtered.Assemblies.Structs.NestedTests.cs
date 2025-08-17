@@ -15,7 +15,9 @@ public sealed partial class Filtered
 				{
 					Reflection.Collections.Filtered.Types types = In.AllLoadedAssemblies().Nested.Structs();
 
-					await That(types).All().Satisfy(t => t is { IsClass: false, IsEnum: false, IsValueType: true, IsNested: true, }).And.IsNotEmpty();
+					await That(types).All()
+						.Satisfy(t => t is { IsClass: false, IsEnum: false, IsValueType: true, IsNested: true, }).And
+						.IsNotEmpty();
 				}
 
 				[Fact]
@@ -25,7 +27,10 @@ public sealed partial class Filtered
 						.Nested.Structs(AccessModifiers.Protected);
 
 					await That(types).All().Satisfy(type
-						=> type is { IsClass: false, IsEnum: false, IsValueType: true, IsNested: true, IsNestedFamily: true, }).And.IsNotEmpty();
+						=> type is
+						{
+							IsClass: false, IsEnum: false, IsValueType: true, IsNested: true, IsNestedFamily: true,
+						}).And.IsNotEmpty();
 				}
 
 				[Fact]

@@ -25,6 +25,18 @@ public sealed partial class ThatType
 					              """);
 			}
 
+			[Theory]
+			[InlineData(typeof(ProtectedType))]
+			[InlineData(typeof(PublicType))]
+			[InlineData(typeof(InternalType))]
+			public async Task WhenTypeIsNotPrivate_ShouldSucceedWithNegatedAssertion(Type? subject)
+			{
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsPrivate());
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[Fact]
 			public async Task WhenTypeIsNull_ShouldFail()
 			{
@@ -42,9 +54,21 @@ public sealed partial class ThatType
 			}
 
 			[Fact]
-			public async Task WhenTypeIsPrivate_ShouldSucceed()
+			public async Task WhenTypeIsPrivate_ShouldFailWithNegatedAssertion()
 			{
 				Type? subject = typeof(PrivateType);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsPrivate());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("*is not private*but it was*").AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenTypeIsPrivate_ShouldSucceed()
+			{
+				Type subject = typeof(PrivateType);
 
 				async Task Act()
 					=> await That(subject).IsPrivate();

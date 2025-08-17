@@ -1,4 +1,5 @@
 ﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
+using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -21,6 +22,32 @@ public sealed partial class ThatType
 					             Expected that subject
 					             is not abstract,
 					             but it was abstract PublicAbstractClass
+					             """);
+			}
+
+			[Theory]
+			[MemberData(nameof(AbstractTypesForNegated))]
+			public async Task WhenTypeIsAbstract_ShouldSucceedWithNegatedAssertion(Type subject)
+			{
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotAbstract());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTypeIsNotAbstract_ShouldFailWithNegatedAssertion()
+			{
+				Type subject = typeof(PublicClass);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotAbstract());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is abstract,
+					             but it was non-abstract PublicClass
 					             """);
 			}
 
@@ -49,6 +76,11 @@ public sealed partial class ThatType
 					             but it was <null>
 					             """);
 			}
+
+			public static TheoryData<Type> AbstractTypesForNegated() => new()
+			{
+				typeof(PublicAbstractClass),
+			};
 
 			public static TheoryData<Type> NonAbstractTypes()
 				=>

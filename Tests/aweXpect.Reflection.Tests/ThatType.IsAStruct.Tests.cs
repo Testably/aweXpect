@@ -1,4 +1,5 @@
 ﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
+using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -69,6 +70,62 @@ public sealed partial class ThatType
 				},
 				{
 					typeof(PublicRecordStruct), "record struct PublicRecordStruct"
+				},
+			};
+		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenTypeIsAStruct_ShouldFail()
+			{
+				Type subject = typeof(PublicStruct);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsAStruct());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not a struct,
+					             but it was struct PublicStruct
+					             """);
+			}
+
+			[Theory]
+			[MemberData(nameof(NonStructTypeForNegated))]
+			public async Task WhenTypeIsNotAStruct_ShouldSucceed(Type subject)
+			{
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsAStruct());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			public static TheoryData<Type> NonStructTypeForNegated() => new()
+			{
+				typeof(PublicClass),
+				typeof(IPublicInterface),
+				typeof(PublicEnum),
+				typeof(PublicRecord),
+			};
+
+			public static TheoryData<Type?, string> NonStructType() => new()
+			{
+				{
+					null, "<null>"
+				},
+				{
+					typeof(PublicClass), "class PublicClass"
+				},
+				{
+					typeof(IPublicInterface), "interface IPublicInterface"
+				},
+				{
+					typeof(PublicEnum), "enum PublicEnum"
+				},
+				{
+					typeof(PublicRecord), "record PublicRecord"
 				},
 			};
 		}

@@ -1,4 +1,3 @@
-using System;
 using System.Reflection;
 using Xunit.Sdk;
 
@@ -10,6 +9,22 @@ public sealed partial class ThatAssembly
 	{
 		public sealed class AttributeTests
 		{
+			[Fact]
+			public async Task WhenAssemblyDoesNotHaveAttribute_ShouldFail()
+			{
+				Assembly subject = Assembly.GetExecutingAssembly();
+
+				async Task Act()
+					=> await That(subject).Has<TestAttribute>();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has ThatAssembly.Has.AttributeTests.TestAttribute,
+					             but it did not in aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             """).AsWildcard();
+			}
+
 			[Fact]
 			public async Task WhenAssemblyHasAttribute_ShouldSucceed()
 			{
@@ -30,22 +45,6 @@ public sealed partial class ThatAssembly
 					=> await That(subject).Has<AssemblyTitleAttribute>(attr => attr.Title.Contains("Reflection"));
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenAssemblyDoesNotHaveAttribute_ShouldFail()
-			{
-				Assembly subject = Assembly.GetExecutingAssembly();
-
-				async Task Act()
-					=> await That(subject).Has<TestAttribute>();
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             has ThatAssembly.Has.AttributeTests.TestAttribute,
-					             but it did not in aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
-					             """).AsWildcard();
 			}
 
 			[Fact]
@@ -115,7 +114,8 @@ public sealed partial class ThatAssembly
 				Assembly subject = Assembly.GetExecutingAssembly();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.Has<AssemblyTitleAttribute>().OrHas<TestAttribute>());
+					=> await That(subject)
+						.DoesNotComplyWith(it => it.Has<AssemblyTitleAttribute>().OrHas<TestAttribute>());
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

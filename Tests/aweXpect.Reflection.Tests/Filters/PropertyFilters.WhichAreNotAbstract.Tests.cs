@@ -1,4 +1,3 @@
-using System.Linq;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers;
 

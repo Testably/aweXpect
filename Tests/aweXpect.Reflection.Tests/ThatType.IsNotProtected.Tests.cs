@@ -9,6 +9,19 @@ public sealed partial class ThatType
 		public sealed class Tests
 		{
 			[Theory]
+			[InlineData(typeof(PrivateType))]
+			[InlineData(typeof(PublicType))]
+			[InlineData(typeof(InternalType))]
+			public async Task WhenTypeIsNotProtected_ShouldFailWithNegatedAssertion(Type? subject)
+			{
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotProtected());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("*is protected*but it was*").AsWildcard();
+			}
+
+			[Theory]
 			[InlineData(typeof(InternalType))]
 			[InlineData(typeof(PublicType))]
 			[InlineData(typeof(PrivateType))]
@@ -50,6 +63,17 @@ public sealed partial class ThatType
 					             is not protected,
 					             but it was
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenTypeIsProtected_ShouldSucceedWithNegatedAssertion()
+			{
+				Type? subject = typeof(ProtectedType);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotProtected());
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 	}

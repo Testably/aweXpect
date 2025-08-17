@@ -9,22 +9,12 @@ public sealed partial class ThatEvent
 	{
 		public sealed class Tests
 		{
-			[Fact]
-			public async Task WhenEventInfoIsProtectedInternal_ShouldSucceed()
-			{
-				EventInfo? subject = GetEvent("ProtectedInternalEvent");
-
-				async Task Act()
-					=> await That(subject).IsProtectedInternal();
-
-				await That(Act).DoesNotThrow();
-			}
-
 			[Theory]
 			[InlineData("ProtectedEvent", "protected")]
 			[InlineData("PublicEvent", "public")]
 			[InlineData("PrivateEvent", "private")]
-			public async Task WhenEventInfoIsNotProtectedInternal_ShouldFail(string eventName, string expectedAccessModifier)
+			public async Task WhenEventInfoIsNotProtectedInternal_ShouldFail(string eventName,
+				string expectedAccessModifier)
 			{
 				EventInfo? subject = GetEvent(eventName);
 
@@ -53,6 +43,17 @@ public sealed partial class ThatEvent
 					             is protected internal,
 					             but it was <null>
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenEventInfoIsProtectedInternal_ShouldSucceed()
+			{
+				EventInfo? subject = GetEvent("ProtectedInternalEvent");
+
+				async Task Act()
+					=> await That(subject).IsProtectedInternal();
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 

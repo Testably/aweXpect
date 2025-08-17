@@ -13,7 +13,8 @@ public sealed partial class ThatField
 			[InlineData("ProtectedField", "protected")]
 			[InlineData("PublicField", "public")]
 			[InlineData("InternalField", "internal")]
-			public async Task WhenFieldInfoIsNotPrivateProtected_ShouldFail(string fieldName, string expectedAccessModifier)
+			public async Task WhenFieldInfoIsNotPrivateProtected_ShouldFail(string fieldName,
+				string expectedAccessModifier)
 			{
 				FieldInfo? subject = GetField(fieldName);
 

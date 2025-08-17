@@ -9,6 +9,20 @@ public sealed partial class ThatMethods
 	{
 		public sealed class Tests
 		{
+			[Theory]
+			[InlineData("ProtectedMethod")]
+			[InlineData("PublicMethod")]
+			[InlineData("PrivateMethod")]
+			public async Task WhenMethodInfoIsNotProtectedInternal_ShouldFail(string methodName)
+			{
+				Filtered.Methods subject = GetMethods(methodName);
+
+				async Task Act()
+					=> await That(subject).AreNotProtectedInternal();
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[Fact]
 			public async Task WhenMethodInfoIsProtectedInternal_ShouldFail()
 			{
@@ -26,35 +40,10 @@ public sealed partial class ThatMethods
 					             ]
 					             """).AsWildcard();
 			}
-
-			[Theory]
-			[InlineData("ProtectedMethod")]
-			[InlineData("PublicMethod")]
-			[InlineData("PrivateMethod")]
-			public async Task WhenMethodInfoIsNotProtectedInternal_ShouldFail(string methodName)
-			{
-				Filtered.Methods subject = GetMethods(methodName);
-
-				async Task Act()
-					=> await That(subject).AreNotProtectedInternal();
-
-				await That(Act).DoesNotThrow();
-			}
 		}
 
 		public sealed class NegatedTests
 		{
-			[Fact]
-			public async Task WhenMethodInfoIsProtectedInternal_ShouldSucceed()
-			{
-				Filtered.Methods subject = GetMethods("ProtectedInternalMethod");
-
-				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreNotProtectedInternal());
-
-				await That(Act).DoesNotThrow();
-			}
-
 			[Theory]
 			[InlineData("ProtectedMethod")]
 			[InlineData("PublicMethod")]
@@ -72,6 +61,17 @@ public sealed partial class ThatMethods
 					             at least one is protected internal,
 					             but none were
 					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenMethodInfoIsProtectedInternal_ShouldSucceed()
+			{
+				Filtered.Methods subject = GetMethods("ProtectedInternalMethod");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(they => they.AreNotProtectedInternal());
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 	}

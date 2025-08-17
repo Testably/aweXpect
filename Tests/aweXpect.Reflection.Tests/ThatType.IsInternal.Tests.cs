@@ -52,5 +52,32 @@ public sealed partial class ThatType
 					             """);
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenTypeIsInternal_ShouldFail()
+			{
+				Type subject = typeof(InternalType);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsInternal());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("*is not internal*but it was*").AsWildcard();
+			}
+
+			[Theory]
+			[InlineData(typeof(ProtectedType))]
+			[InlineData(typeof(PublicType))]
+			[InlineData(typeof(PrivateType))]
+			public async Task WhenTypeIsNotInternal_ShouldSucceed(Type subject)
+			{
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsInternal());
+
+				await That(Act).DoesNotThrow();
+			}
+		}
 	}
 }

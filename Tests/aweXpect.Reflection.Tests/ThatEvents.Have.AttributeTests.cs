@@ -104,34 +104,6 @@ public sealed partial class ThatEvents
 			public sealed class AttributeTests
 			{
 				[Fact]
-				public async Task WhenEventsHaveFirstAttribute_ShouldSucceed()
-				{
-					IEnumerable<EventInfo> subject = new[]
-					{
-						typeof(TestClass).GetEvent("TestEvent1")!,
-					};
-
-					async Task Act()
-						=> await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
-
-					await That(Act).DoesNotThrow();
-				}
-
-				[Fact]
-				public async Task WhenEventsHaveSecondAttribute_ShouldSucceed()
-				{
-					IEnumerable<EventInfo> subject = new[]
-					{
-						typeof(TestClass).GetEvent("BarEvent")!,
-					};
-
-					async Task Act()
-						=> await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
-
-					await That(Act).DoesNotThrow();
-				}
-
-				[Fact]
 				public async Task WhenEventsHaveBothAttributes_ShouldSucceed()
 				{
 					IEnumerable<EventInfo> subject = new[]
@@ -146,24 +118,17 @@ public sealed partial class ThatEvents
 				}
 
 				[Fact]
-				public async Task WhenEventsHaveNeitherAttribute_ShouldFail()
+				public async Task WhenEventsHaveFirstAttribute_ShouldSucceed()
 				{
 					IEnumerable<EventInfo> subject = new[]
 					{
-						typeof(TestClass).GetEvent("NoAttributeEvent")!,
+						typeof(TestClass).GetEvent("TestEvent1")!,
 					};
 
 					async Task Act()
 						=> await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
 
-					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that subject
-						             all have ThatEvents.Have.OrHave.AttributeTests.TestAttribute or ThatEvents.Have.OrHave.AttributeTests.BarAttribute,
-						             but it contained not matching events [
-						               System.Action NoAttributeEvent
-						             ]
-						             """);
+					await That(Act).DoesNotThrow();
 				}
 
 				[Fact]
@@ -192,6 +157,41 @@ public sealed partial class ThatEvents
 					async Task Act()
 						=> await That(subject).Have<TestAttribute>(attr => attr.Value == "NonExistent")
 							.OrHave<BarAttribute>(attr => attr.Name == "bar");
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenEventsHaveNeitherAttribute_ShouldFail()
+				{
+					IEnumerable<EventInfo> subject = new[]
+					{
+						typeof(TestClass).GetEvent("NoAttributeEvent")!,
+					};
+
+					async Task Act()
+						=> await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             all have ThatEvents.Have.OrHave.AttributeTests.TestAttribute or ThatEvents.Have.OrHave.AttributeTests.BarAttribute,
+						             but it contained not matching events [
+						               System.Action NoAttributeEvent
+						             ]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenEventsHaveSecondAttribute_ShouldSucceed()
+				{
+					IEnumerable<EventInfo> subject = new[]
+					{
+						typeof(TestClass).GetEvent("BarEvent")!,
+					};
+
+					async Task Act()
+						=> await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
 
 					await That(Act).DoesNotThrow();
 				}
@@ -287,7 +287,8 @@ public sealed partial class ThatEvents
 				};
 
 				async Task Act()
-					=> await That(subjects).DoesNotComplyWith(they => they.Have<TestAttribute>().OrHave<TestAttribute>(x => x.Value == "foo"));
+					=> await That(subjects).DoesNotComplyWith(they
+						=> they.Have<TestAttribute>().OrHave<TestAttribute>(x => x.Value == "foo"));
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

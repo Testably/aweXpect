@@ -13,7 +13,8 @@ public sealed partial class ThatEvent
 			[InlineData("ProtectedEvent", "protected")]
 			[InlineData("PublicEvent", "public")]
 			[InlineData("InternalEvent", "internal")]
-			public async Task WhenEventInfoIsNotPrivateProtected_ShouldFail(string eventName, string expectedAccessModifier)
+			public async Task WhenEventInfoIsNotPrivateProtected_ShouldFail(string eventName,
+				string expectedAccessModifier)
 			{
 				EventInfo? subject = GetEvent(eventName);
 

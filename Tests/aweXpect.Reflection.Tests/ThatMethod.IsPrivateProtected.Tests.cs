@@ -13,7 +13,8 @@ public sealed partial class ThatMethod
 			[InlineData("ProtectedMethod", "protected")]
 			[InlineData("PublicMethod", "public")]
 			[InlineData("InternalMethod", "internal")]
-			public async Task WhenMethodInfoIsNotPrivateProtected_ShouldFail(string methodName, string expectedAccessModifier)
+			public async Task WhenMethodInfoIsNotPrivateProtected_ShouldFail(string methodName,
+				string expectedAccessModifier)
 			{
 				MethodInfo? subject = GetMethod(methodName);
 

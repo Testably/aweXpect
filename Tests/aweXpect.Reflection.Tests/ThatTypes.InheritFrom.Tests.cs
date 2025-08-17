@@ -198,6 +198,27 @@ public sealed partial class ThatTypes
 		public sealed class NegatedTests
 		{
 			[Fact]
+			public async Task WhenAllTypesImplementInterface_ShouldFail()
+			{
+				Filtered.Types subject = In.AssemblyContaining<NegatedTests>()
+					.Types()
+					.Which(type => type == typeof(ClassWithInterface1) || type == typeof(ClassWithInterface2));
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(they => they.InheritFrom<ITestInterface>());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that types matching type => type == typeof(ClassWithInterface1) || type == typeof(ClassWithInterface2) in assembly containing type ThatTypes.InheritFrom.NegatedTests
+					             not all inherit from ThatTypes.ITestInterface,
+					             but it only contained types that inherit from ThatTypes.ITestInterface [
+					               ThatTypes.ClassWithInterface1,
+					               ThatTypes.ClassWithInterface2
+					             ]
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenAllTypesInheritFromBaseClass_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<NegatedTests>()
@@ -229,27 +250,6 @@ public sealed partial class ThatTypes
 					=> await That(subject).DoesNotComplyWith(they => they.InheritFrom<BaseClass>());
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenAllTypesImplementInterface_ShouldFail()
-			{
-				Filtered.Types subject = In.AssemblyContaining<NegatedTests>()
-					.Types()
-					.Which(type => type == typeof(ClassWithInterface1) || type == typeof(ClassWithInterface2));
-
-				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.InheritFrom<ITestInterface>());
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that types matching type => type == typeof(ClassWithInterface1) || type == typeof(ClassWithInterface2) in assembly containing type ThatTypes.InheritFrom.NegatedTests
-					             not all inherit from ThatTypes.ITestInterface,
-					             but it only contained types that inherit from ThatTypes.ITestInterface [
-					               ThatTypes.ClassWithInterface1,
-					               ThatTypes.ClassWithInterface2
-					             ]
-					             """);
 			}
 
 			[Fact]

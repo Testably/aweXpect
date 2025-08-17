@@ -1,4 +1,5 @@
-﻿using Container = aweXpect.Reflection.Tests.TestHelpers.Types.Container;
+﻿using Xunit.Sdk;
+using Container = aweXpect.Reflection.Tests.TestHelpers.Types.Container;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -21,6 +22,33 @@ public sealed partial class ThatType
 					             Expected that subject
 					             is not nested,
 					             but it was nested Container.PublicNestedClass
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenTypeIsNested_ShouldSucceedWithNegatedAssertion()
+			{
+				Type subject = typeof(Container.PublicNestedClass);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotNested());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTypeIsNotNested_ShouldFailWithNegatedAssertion()
+			{
+				Type subject = typeof(Container);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotNested());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is nested,
+					             but it was non-nested Container
 					             """);
 			}
 

@@ -8,6 +8,9 @@ public sealed partial class ThatEvents
 		=> In.AssemblyContaining<ClassWithEvents>().Types().Which(t => t == typeof(ClassWithEvents))
 			.Events().Which(eventInfo => eventInfo.Name.StartsWith(eventPrefix));
 
+	public static Filtered.Types GetTypes<T>()
+		=> In.AssemblyContaining<T>().Types().Which(t => t == typeof(T));
+
 #pragma warning disable CS8618
 #pragma warning disable CS0067
 	public class ClassWithEvents
@@ -27,7 +30,4 @@ public sealed partial class ThatEvents
 	}
 #pragma warning restore CS0067
 #pragma warning restore CS8618
-	
-	public static Filtered.Types GetTypes<T>()
-		=> In.AssemblyContaining<T>().Types().Which(t => t == typeof(T));
 }

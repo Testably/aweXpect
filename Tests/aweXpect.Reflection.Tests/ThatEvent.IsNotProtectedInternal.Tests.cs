@@ -9,22 +9,6 @@ public sealed partial class ThatEvent
 	{
 		public sealed class Tests
 		{
-			[Fact]
-			public async Task WhenEventInfoIsProtectedInternal_ShouldFail()
-			{
-				EventInfo? subject = GetEvent("ProtectedInternalEvent");
-
-				async Task Act()
-					=> await That(subject).IsNotProtectedInternal();
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not protected internal,
-					             but it was
-					             """);
-			}
-
 			[Theory]
 			[InlineData("ProtectedEvent")]
 			[InlineData("PublicEvent")]
@@ -54,26 +38,32 @@ public sealed partial class ThatEvent
 					             but it was <null>
 					             """);
 			}
-		}
 
-		public sealed class NegatedTests
-		{
 			[Fact]
-			public async Task WhenEventInfoIsProtectedInternal_ShouldSucceed()
+			public async Task WhenEventInfoIsProtectedInternal_ShouldFail()
 			{
 				EventInfo? subject = GetEvent("ProtectedInternalEvent");
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotProtectedInternal());
+					=> await That(subject).IsNotProtectedInternal();
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not protected internal,
+					             but it was
+					             """);
 			}
+		}
 
+		public sealed class NegatedTests
+		{
 			[Theory]
 			[InlineData("ProtectedEvent", "protected")]
 			[InlineData("PublicEvent", "public")]
 			[InlineData("PrivateEvent", "private")]
-			public async Task WhenEventInfoIsNotProtectedInternal_ShouldFail(string eventName, string expectedAccessModifier)
+			public async Task WhenEventInfoIsNotProtectedInternal_ShouldFail(string eventName,
+				string expectedAccessModifier)
 			{
 				EventInfo? subject = GetEvent(eventName);
 
@@ -86,6 +76,17 @@ public sealed partial class ThatEvent
 					              is protected internal,
 					              but it was {expectedAccessModifier}
 					              """);
+			}
+
+			[Fact]
+			public async Task WhenEventInfoIsProtectedInternal_ShouldSucceed()
+			{
+				EventInfo? subject = GetEvent("ProtectedInternalEvent");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotProtectedInternal());
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 	}

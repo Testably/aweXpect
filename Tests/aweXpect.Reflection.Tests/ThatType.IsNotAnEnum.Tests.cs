@@ -1,4 +1,5 @@
 ﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
+using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -21,6 +22,32 @@ public sealed partial class ThatType
 					             Expected that subject
 					             is not an enum,
 					             but it was enum PublicEnum
+					             """);
+			}
+
+			[Theory]
+			[MemberData(nameof(EnumTypesForNegated))]
+			public async Task WhenTypeIsAnEnum_ShouldSucceedWithNegatedAssertion(Type subject)
+			{
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotAnEnum());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTypeIsNotAnEnum_ShouldFailWithNegatedAssertion()
+			{
+				Type subject = typeof(PublicClass);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotAnEnum());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an enum,
+					             but it was class PublicClass
 					             """);
 			}
 
@@ -49,6 +76,11 @@ public sealed partial class ThatType
 					             but it was <null>
 					             """);
 			}
+
+			public static TheoryData<Type> EnumTypesForNegated() => new()
+			{
+				typeof(PublicEnum),
+			};
 
 			public static TheoryData<Type> NonEnumTypes()
 				=>

@@ -106,34 +106,6 @@ public sealed partial class ThatMethods
 			public sealed class AttributeTests
 			{
 				[Fact]
-				public async Task WhenMethodsHaveFirstAttribute_ShouldSucceed()
-				{
-					IEnumerable<MethodInfo> subject = new[]
-					{
-						typeof(TestClass).GetMethod("TestMethod1")!,
-					};
-
-					async Task Act()
-						=> await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
-
-					await That(Act).DoesNotThrow();
-				}
-
-				[Fact]
-				public async Task WhenMethodsHaveSecondAttribute_ShouldSucceed()
-				{
-					IEnumerable<MethodInfo> subject = new[]
-					{
-						typeof(TestClass).GetMethod("BarMethod")!,
-					};
-
-					async Task Act()
-						=> await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
-
-					await That(Act).DoesNotThrow();
-				}
-
-				[Fact]
 				public async Task WhenMethodsHaveBothAttributes_ShouldSucceed()
 				{
 					IEnumerable<MethodInfo> subject = new[]
@@ -148,24 +120,17 @@ public sealed partial class ThatMethods
 				}
 
 				[Fact]
-				public async Task WhenMethodsHaveNeitherAttribute_ShouldFail()
+				public async Task WhenMethodsHaveFirstAttribute_ShouldSucceed()
 				{
 					IEnumerable<MethodInfo> subject = new[]
 					{
-						typeof(TestClass).GetMethod("NoAttributeMethod")!,
+						typeof(TestClass).GetMethod("TestMethod1")!,
 					};
 
 					async Task Act()
 						=> await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
 
-					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that subject
-						             all have ThatMethods.Have.OrHave.AttributeTests.TestAttribute or ThatMethods.Have.OrHave.AttributeTests.BarAttribute,
-						             but it contained not matching methods [
-						               Void NoAttributeMethod()
-						             ]
-						             """);
+					await That(Act).DoesNotThrow();
 				}
 
 				[Fact]
@@ -194,6 +159,41 @@ public sealed partial class ThatMethods
 					async Task Act()
 						=> await That(subject).Have<TestAttribute>(attr => attr.Value == "NonExistent")
 							.OrHave<BarAttribute>(attr => attr.Name == "bar");
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenMethodsHaveNeitherAttribute_ShouldFail()
+				{
+					IEnumerable<MethodInfo> subject = new[]
+					{
+						typeof(TestClass).GetMethod("NoAttributeMethod")!,
+					};
+
+					async Task Act()
+						=> await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             all have ThatMethods.Have.OrHave.AttributeTests.TestAttribute or ThatMethods.Have.OrHave.AttributeTests.BarAttribute,
+						             but it contained not matching methods [
+						               Void NoAttributeMethod()
+						             ]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenMethodsHaveSecondAttribute_ShouldSucceed()
+				{
+					IEnumerable<MethodInfo> subject = new[]
+					{
+						typeof(TestClass).GetMethod("BarMethod")!,
+					};
+
+					async Task Act()
+						=> await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
 
 					await That(Act).DoesNotThrow();
 				}

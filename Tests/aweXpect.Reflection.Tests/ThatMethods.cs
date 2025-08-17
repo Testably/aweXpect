@@ -28,8 +28,10 @@ public sealed partial class ThatMethods
 		internal int InternalMethod2() => 0;
 		protected int ProtectedMethod1() => 0;
 		protected int ProtectedMethod2() => 0;
+
 		// ReSharper disable once UnusedMember.Local
 		private int PrivateMethod1() => 0;
+
 		// ReSharper disable once UnusedMember.Local
 		private int PrivateMethod2() => 0;
 		protected internal int ProtectedInternalMethod1() => 0;
@@ -53,6 +55,7 @@ public sealed partial class ThatMethods
 		public Dummy GetDummy() => new();
 		public async Task AsyncMethod() => await Task.CompletedTask;
 		public T GenericMethod<T>(T value) => value;
+
 		// ReSharper disable once UnusedTypeParameter
 		public void GenericVoidMethod<T>() { }
 		public T GenericMethodWithConstraint<T>(T value) where T : class => value;

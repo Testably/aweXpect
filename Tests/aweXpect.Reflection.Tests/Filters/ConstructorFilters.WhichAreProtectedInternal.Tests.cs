@@ -25,7 +25,6 @@ public sealed partial class ConstructorFilters
 				// ReSharper disable once EmptyConstructor
 				protected internal WithProtectedInternalConstructor()
 				{
-					
 				}
 			}
 		}

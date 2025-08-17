@@ -67,5 +67,32 @@ public sealed partial class ThatType
 					             """);
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenTypeDoesNotHaveNamespace_ShouldSucceed()
+			{
+				Type subject = typeof(PublicAbstractClass);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasNamespace("SomeOtherNamespace"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTypeHasNamespace_ShouldFail()
+			{
+				Type subject = typeof(PublicAbstractClass);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it
+						=> it.HasNamespace("aweXpect.Reflection.Tests.TestHelpers.Types"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("*does not have namespace*aweXpect.Reflection.Tests.TestHelpers.Types*").AsWildcard();
+			}
+		}
 	}
 }

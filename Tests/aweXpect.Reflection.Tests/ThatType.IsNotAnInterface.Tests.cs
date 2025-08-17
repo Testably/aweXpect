@@ -1,4 +1,5 @@
 ﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
+using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -21,6 +22,32 @@ public sealed partial class ThatType
 					             Expected that subject
 					             is not an interface,
 					             but it was interface IPublicInterface
+					             """);
+			}
+
+			[Theory]
+			[MemberData(nameof(InterfaceTypesForNegated))]
+			public async Task WhenTypeIsAnInterface_ShouldSucceedWithNegatedAssertion(Type subject)
+			{
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotAnInterface());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTypeIsNotAnInterface_ShouldFailWithNegatedAssertion()
+			{
+				Type subject = typeof(PublicClass);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotAnInterface());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an interface,
+					             but it was class PublicClass
 					             """);
 			}
 
@@ -49,6 +76,11 @@ public sealed partial class ThatType
 					             but it was <null>
 					             """);
 			}
+
+			public static TheoryData<Type> InterfaceTypesForNegated() => new()
+			{
+				typeof(IPublicInterface),
+			};
 
 			public static TheoryData<Type> NonInterfaceTypes()
 				=>
