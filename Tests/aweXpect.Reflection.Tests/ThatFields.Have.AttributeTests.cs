@@ -54,7 +54,7 @@ public sealed partial class ThatFields
 					             Expected that subject
 					             all have ThatFields.Have.AttributeTests.TestAttribute,
 					             but it contained not matching fields [
-					               System.String NoAttributeField
+					               string ThatFields.Have.AttributeTests.TestClass.NoAttributeField
 					             ]
 					             """);
 			}
@@ -75,8 +75,8 @@ public sealed partial class ThatFields
 					             Expected that subject
 					             all have ThatFields.Have.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
 					             but it contained not matching fields [
-					               System.String TestField1,
-					               System.String TestField2
+					               string ThatFields.Have.AttributeTests.TestClass.TestField1,
+					               string ThatFields.Have.AttributeTests.TestClass.TestField2
 					             ]
 					             """);
 			}
@@ -177,7 +177,7 @@ public sealed partial class ThatFields
 						             Expected that subject
 						             all have ThatFields.Have.OrHave.AttributeTests.TestAttribute or ThatFields.Have.OrHave.AttributeTests.BarAttribute,
 						             but it contained not matching fields [
-						               System.String NoAttributeField
+						               string ThatFields.Have.OrHave.AttributeTests.TestClass.NoAttributeField
 						             ]
 						             """);
 				}
@@ -213,7 +213,7 @@ public sealed partial class ThatFields
 						             Expected that subject
 						             all have ThatFields.Have.OrHave.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue" or ThatFields.Have.OrHave.AttributeTests.BarAttribute matching attr => attr.Name == "wrong",
 						             but it contained not matching fields [
-						               System.String TestField1
+						               string ThatFields.Have.OrHave.AttributeTests.TestClass.TestField1
 						             ]
 						             """);
 				}
@@ -294,7 +294,7 @@ public sealed partial class ThatFields
 					             Expected that subjects
 					             not all have ThatFields.Have.NegatedTests.TestAttribute or ThatFields.Have.NegatedTests.TestAttribute matching x => x.Value == "foo",
 					             but it only contained matching fields [
-					               System.String TestField1
+					               string ThatFields.Have.NegatedTests.TestClass.TestField1
 					             ]
 					             """);
 			}

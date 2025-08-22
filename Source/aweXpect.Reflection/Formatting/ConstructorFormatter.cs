@@ -7,12 +7,12 @@ internal class ConstructorFormatter : IValueFormatter
 {
 	public bool TryFormat(StringBuilder stringBuilder, object value, FormattingOptions? options)
 	{
-		if (value is ConstructorInfo constructor)
+		if (value is ConstructorInfo constructorInfo)
 		{
-			Formatter.Format(stringBuilder, constructor.DeclaringType);
+			Formatter.Format(stringBuilder, constructorInfo.DeclaringType);
 			stringBuilder.Append('(');
 			int index = 0;
-			foreach (ParameterInfo? parameter in constructor.GetParameters())
+			foreach (ParameterInfo? parameter in constructorInfo.GetParameters())
 			{
 				if (index++ > 0)
 				{

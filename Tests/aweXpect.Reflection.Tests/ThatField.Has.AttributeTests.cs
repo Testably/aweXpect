@@ -21,7 +21,7 @@ public sealed partial class ThatField
 					.WithMessage("""
 					             Expected that subject
 					             has ThatField.Has.AttributeTests.TestAttribute,
-					             but it did not in System.String NoAttributeField
+					             but it did not in string ThatField.Has.AttributeTests.TestClass.NoAttributeField
 					             """);
 			}
 
@@ -59,7 +59,7 @@ public sealed partial class ThatField
 					.WithMessage("""
 					             Expected that subject
 					             has ThatField.Has.AttributeTests.TestAttribute matching attr => attr.Value == 99,
-					             but it did not in System.String TestFieldWithValue
+					             but it did not in string ThatField.Has.AttributeTests.TestClass.TestFieldWithValue
 					             """);
 			}
 
@@ -133,7 +133,7 @@ public sealed partial class ThatField
 					.WithMessage("""
 					             Expected that subject
 					             has no ThatField.Has.NegatedTests.TestAttribute,
-					             but it did in System.String TestField
+					             but it did in string ThatField.Has.NegatedTests.TestClass.TestField
 					             """);
 			}
 

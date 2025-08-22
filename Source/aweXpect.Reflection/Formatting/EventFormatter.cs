@@ -7,14 +7,14 @@ internal class EventFormatter : IValueFormatter
 {
 	public bool TryFormat(StringBuilder stringBuilder, object value, FormattingOptions? options)
 	{
-		if (value is EventInfo @event)
+		if (value is EventInfo eventInfo)
 		{
 			stringBuilder.Append("event ");
-			Formatter.Format(stringBuilder, @event.EventHandlerType);
+			Formatter.Format(stringBuilder, eventInfo.EventHandlerType);
 			stringBuilder.Append(' ');
-			Formatter.Format(stringBuilder, @event.DeclaringType);
+			Formatter.Format(stringBuilder, eventInfo.DeclaringType);
 			stringBuilder.Append('.');
-			stringBuilder.Append(@event.Name);
+			stringBuilder.Append(eventInfo.Name);
 			return true;
 		}
 

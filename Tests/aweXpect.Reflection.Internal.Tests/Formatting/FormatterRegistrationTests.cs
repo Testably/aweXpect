@@ -52,6 +52,23 @@ public class FormatterRegistrationTests
 	}
 
 	[Fact]
+	public async Task Initialize_ShouldRegisterFormatterForFieldInfo()
+	{
+		FieldInfo fieldInfo = typeof(FieldFormatterTests.MyTestClass).GetFields().First();
+		await That(true).IsTrue();
+		string result1 = Format.Formatter.Format(fieldInfo);
+
+		FormatterRegistration.Instance.Dispose();
+		string result2 = Format.Formatter.Format(fieldInfo);
+		FormatterRegistration.Instance.Initialize();
+
+		string result3 = Format.Formatter.Format(fieldInfo);
+
+		await That(result1).IsEqualTo(result3);
+		await That(result2).IsNotEqualTo(result3);
+	}
+
+	[Fact]
 	public async Task Initialize_ShouldRegisterFormatterForPropertyInfo()
 	{
 		PropertyInfo propertyInfo = typeof(PropertyFormatterTests.MyTestClass).GetProperties().First();

@@ -9,19 +9,19 @@ internal class PropertyFormatter : IValueFormatter
 {
 	public bool TryFormat(StringBuilder stringBuilder, object value, FormattingOptions? options)
 	{
-		if (value is PropertyInfo property)
+		if (value is PropertyInfo propertyInfo)
 		{
-			var propertyAccess = property.GetAccessModifier();
+			var propertyAccess = propertyInfo.GetAccessModifier();
 			stringBuilder.Append(propertyAccess.GetString(" "));
-			Formatter.Format(stringBuilder, property.PropertyType);
+			Formatter.Format(stringBuilder, propertyInfo.PropertyType);
 			stringBuilder.Append(' ');
-			Formatter.Format(stringBuilder, property.DeclaringType);
+			Formatter.Format(stringBuilder, propertyInfo.DeclaringType);
 			stringBuilder.Append('.');
-			stringBuilder.Append(property.Name);
+			stringBuilder.Append(propertyInfo.Name);
 			stringBuilder.Append(" { ");
-			if (property.CanRead)
+			if (propertyInfo.CanRead)
 			{
-				var getAccess = property.GetMethod.GetAccessModifier();
+				var getAccess = propertyInfo.GetMethod.GetAccessModifier();
 				if (propertyAccess != getAccess)
 				{
 					stringBuilder.Append(getAccess.GetString(" "));
@@ -29,9 +29,9 @@ internal class PropertyFormatter : IValueFormatter
 				stringBuilder.Append("get; ");
 			}
 
-			if (property.CanWrite)
+			if (propertyInfo.CanWrite)
 			{
-				var setAccess = property.SetMethod.GetAccessModifier();
+				var setAccess = propertyInfo.SetMethod.GetAccessModifier();
 				if (propertyAccess != setAccess)
 				{
 					stringBuilder.Append(setAccess.GetString(" "));
