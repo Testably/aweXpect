@@ -71,7 +71,7 @@ public sealed partial class ThatMethod
 					.WithMessage("""
 					             Expected that subject
 					             is not abstract,
-					             but it was abstract Void AbstractMethod()
+					             but it was abstract void AbstractClassWithMembers.AbstractMethod()
 					             """);
 			}
 

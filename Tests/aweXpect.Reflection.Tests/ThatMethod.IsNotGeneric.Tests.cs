@@ -20,7 +20,7 @@ public sealed partial class ThatMethod
 					.WithMessage("""
 					             Expected that subject
 					             is not generic,
-					             but it was generic T GenericMethod[T](T)
+					             but it was generic T ThatMethod.ClassWithMethods.GenericMethod<T>(T value)
 					             """);
 			}
 
@@ -77,7 +77,7 @@ public sealed partial class ThatMethod
 					.WithMessage("""
 					             Expected that subject
 					             is generic,
-					             but it was non-generic Int32 NonGenericMethod()
+					             but it was non-generic int ThatMethod.ClassWithMethods.NonGenericMethod()
 					             """);
 			}
 		}

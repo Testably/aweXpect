@@ -71,7 +71,7 @@ public sealed partial class ThatMethod
 					.WithMessage("""
 					             Expected that subject
 					             is sealed,
-					             but it was non-sealed Void VirtualMethod()
+					             but it was non-sealed void AbstractClassWithMembers.VirtualMethod()
 					             """);
 			}
 

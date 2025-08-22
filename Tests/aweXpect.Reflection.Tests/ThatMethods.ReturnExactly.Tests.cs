@@ -114,7 +114,7 @@ public sealed partial class ThatMethods
 					             Expected that methods matching m => m.Name == nameof(TestClass.GetDummy) in type ThatMethods.TestClass
 					             all return exactly ThatMethods.DummyBase or exactly string,
 					             but it contained not matching methods [
-					               Dummy GetDummy()
+					               ThatMethods.Dummy ThatMethods.TestClass.GetDummy()
 					             ]
 					             """)
 					.AsWildcard();
@@ -177,7 +177,7 @@ public sealed partial class ThatMethods
 					             Expected that methods matching m => m.Name == nameof(TestClass.GetDummy) in type ThatMethods.TestClass
 					             all return exactly ThatMethods.DummyBase or string,
 					             but it contained not matching methods [
-					               Dummy GetDummy()
+					               ThatMethods.Dummy ThatMethods.TestClass.GetDummy()
 					             ]
 					             """)
 					.AsWildcard();
@@ -229,7 +229,7 @@ public sealed partial class ThatMethods
 						             Expected that methods matching m => m.Name == nameof(TestClass.GetString) in type ThatMethods.TestClass
 						             not all return exactly string,
 						             but it only contained matching methods [
-						               System.String GetString()
+						               string ThatMethods.TestClass.GetString()
 						             ]
 						             """)
 						.AsWildcard();

@@ -54,7 +54,7 @@ public sealed partial class ThatMethods
 					             Expected that subject
 					             all have ThatMethods.Have.AttributeTests.TestAttribute,
 					             but it contained not matching methods [
-					               Void NoAttributeMethod()
+					               void ThatMethods.Have.AttributeTests.TestClass.NoAttributeMethod()
 					             ]
 					             """);
 			}
@@ -75,8 +75,8 @@ public sealed partial class ThatMethods
 					             Expected that subject
 					             all have ThatMethods.Have.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
 					             but it contained not matching methods [
-					               Void TestMethod1(),
-					               Void TestMethod2()
+					               void ThatMethods.Have.AttributeTests.TestClass.TestMethod1(),
+					               void ThatMethods.Have.AttributeTests.TestClass.TestMethod2()
 					             ]
 					             """);
 			}
@@ -179,7 +179,7 @@ public sealed partial class ThatMethods
 						             Expected that subject
 						             all have ThatMethods.Have.OrHave.AttributeTests.TestAttribute or ThatMethods.Have.OrHave.AttributeTests.BarAttribute,
 						             but it contained not matching methods [
-						               Void NoAttributeMethod()
+						               void ThatMethods.Have.OrHave.AttributeTests.TestClass.NoAttributeMethod()
 						             ]
 						             """);
 				}
@@ -215,7 +215,7 @@ public sealed partial class ThatMethods
 						             Expected that subject
 						             all have ThatMethods.Have.OrHave.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue" or ThatMethods.Have.OrHave.AttributeTests.BarAttribute matching attr => attr.Name == "wrong",
 						             but it contained not matching methods [
-						               Void TestMethod1()
+						               void ThatMethods.Have.OrHave.AttributeTests.TestClass.TestMethod1()
 						             ]
 						             """);
 				}
@@ -299,7 +299,7 @@ public sealed partial class ThatMethods
 					             Expected that subjects
 					             not all have ThatMethods.Have.NegatedTests.TestAttribute or ThatMethods.Have.NegatedTests.TestAttribute matching x => x.Value == "foo",
 					             but it only contained matching methods [
-					               Void TestMethod1()
+					               void ThatMethods.Have.NegatedTests.TestClass.TestMethod1()
 					             ]
 					             """);
 			}

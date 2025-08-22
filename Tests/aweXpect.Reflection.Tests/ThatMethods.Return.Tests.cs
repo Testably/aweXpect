@@ -190,7 +190,7 @@ public sealed partial class ThatMethods
 						             Expected that methods matching m => m.Name == nameof(TestClass.GetString) in type ThatMethods.TestClass
 						             not all return string,
 						             but it only contained matching methods [
-						               System.String GetString()
+						               string ThatMethods.TestClass.GetString()
 						             ]
 						             """)
 						.AsWildcard();
@@ -210,7 +210,7 @@ public sealed partial class ThatMethods
 						             Expected that methods matching m => m.Name == nameof(TestClass.GetDummy) in type ThatMethods.TestClass
 						             not all return ThatMethods.DummyBase,
 						             but it only contained matching methods [
-						               Dummy GetDummy()
+						               ThatMethods.Dummy ThatMethods.TestClass.GetDummy()
 						             ]
 						             """)
 						.AsWildcard();
@@ -245,7 +245,7 @@ public sealed partial class ThatMethods
 						             Expected that methods matching m => m.Name == nameof(TestClass.GetString) in type ThatMethods.TestClass
 						             not all return string,
 						             but it only contained matching methods [
-						               System.String GetString()
+						               string ThatMethods.TestClass.GetString()
 						             ]
 						             """)
 						.AsWildcard();
@@ -265,7 +265,7 @@ public sealed partial class ThatMethods
 						             Expected that methods matching m => m.Name == nameof(TestClass.GetDummy) in type ThatMethods.TestClass
 						             not all return ThatMethods.DummyBase,
 						             but it only contained matching methods [
-						               Dummy GetDummy()
+						               ThatMethods.Dummy ThatMethods.TestClass.GetDummy()
 						             ]
 						             """)
 						.AsWildcard();
@@ -313,8 +313,8 @@ public sealed partial class ThatMethods
 						             Expected that methods matching m => m.Name is nameof(TestClass.GetString) or nameof(TestClass.GetInt) in type ThatMethods.TestClass
 						             not all return string or int,
 						             but it only contained matching methods [
-						               System.String GetString(),
-						               Int32 GetInt()
+						               string ThatMethods.TestClass.GetString(),
+						               int ThatMethods.TestClass.GetInt()
 						             ]
 						             """)
 						.AsWildcard();

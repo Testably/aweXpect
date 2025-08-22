@@ -21,7 +21,7 @@ public sealed partial class ThatMethod
 					.WithMessage("""
 					             Expected that subject
 					             has ThatMethod.Has.AttributeTests.TestAttribute,
-					             but it did not in Void NoAttributeMethod()
+					             but it did not in void ThatMethod.Has.AttributeTests.TestClass.NoAttributeMethod()
 					             """);
 			}
 
@@ -59,7 +59,7 @@ public sealed partial class ThatMethod
 					.WithMessage("""
 					             Expected that subject
 					             has ThatMethod.Has.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
-					             but it did not in Void TestMethod()
+					             but it did not in void ThatMethod.Has.AttributeTests.TestClass.TestMethod()
 					             """);
 			}
 
@@ -133,7 +133,7 @@ public sealed partial class ThatMethod
 					.WithMessage("""
 					             Expected that subject
 					             has no ThatMethod.Has.NegatedTests.TestAttribute,
-					             but it did in Void TestMethod()
+					             but it did in void ThatMethod.Has.NegatedTests.TestClass.TestMethod()
 					             """);
 			}
 
