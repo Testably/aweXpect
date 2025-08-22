@@ -21,7 +21,7 @@ public sealed partial class ThatConstructor
 					.WithMessage("""
 					             Expected that subject
 					             has ThatConstructor.Has.AttributeTests.TestAttribute,
-					             but it did not in Void .ctor()
+					             but it did not in ThatConstructor.Has.AttributeTests.TestClass()
 					             """);
 			}
 
@@ -59,7 +59,7 @@ public sealed partial class ThatConstructor
 					.WithMessage("""
 					             Expected that subject
 					             has ThatConstructor.Has.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
-					             but it did not in Void .ctor(System.String)
+					             but it did not in ThatConstructor.Has.AttributeTests.TestClass(string value)
 					             """);
 			}
 
@@ -159,7 +159,7 @@ public sealed partial class ThatConstructor
 						.WithMessage("""
 						             Expected that subject
 						             has ThatConstructor.Has.OrHas.AttributeTests.FooAttribute or ThatConstructor.Has.OrHas.AttributeTests.BarAttribute,
-						             but it did not in Void .ctor()
+						             but it did not in ThatConstructor.Has.OrHas.AttributeTests.TestClass()
 						             """);
 				}
 
@@ -187,7 +187,7 @@ public sealed partial class ThatConstructor
 						.WithMessage("""
 						             Expected that subject
 						             has ThatConstructor.Has.OrHas.AttributeTests.FooAttribute matching foo => foo.Value == 42 or ThatConstructor.Has.OrHas.AttributeTests.BarAttribute matching bar => bar.Name == "does-not-match",
-						             but it did not in Void .ctor(Int32, System.String)
+						             but it did not in ThatConstructor.Has.OrHas.AttributeTests.TestClass(int value, string name)
 						             """);
 				}
 
@@ -261,7 +261,7 @@ public sealed partial class ThatConstructor
 					.WithMessage("""
 					             Expected that subject
 					             has no ThatConstructor.Has.NegatedTests.TestAttribute,
-					             but it did in Void .ctor(System.String)
+					             but it did in ThatConstructor.Has.NegatedTests.TestClass(string value)
 					             """);
 			}
 

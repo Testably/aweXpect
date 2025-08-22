@@ -57,7 +57,7 @@ public sealed partial class ThatConstructors
 					             Expected that subject
 					             all have ThatConstructors.Have.AttributeTests.TestAttribute,
 					             but it contained not matching constructors [
-					               Void .ctor()
+					               ThatConstructors.Have.AttributeTests.TestClass()
 					             ]
 					             """);
 			}
@@ -79,8 +79,8 @@ public sealed partial class ThatConstructors
 					             Expected that subject
 					             all have ThatConstructors.Have.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
 					             but it contained not matching constructors [
-					               Void .ctor(System.String),
-					               Void .ctor(Int32)
+					               ThatConstructors.Have.AttributeTests.TestClass(string value),
+					               ThatConstructors.Have.AttributeTests.TestClass(int value)
 					             ]
 					             """);
 			}
@@ -186,7 +186,7 @@ public sealed partial class ThatConstructors
 						             Expected that subject
 						             all have ThatConstructors.Have.OrHave.AttributeTests.TestAttribute or ThatConstructors.Have.OrHave.AttributeTests.BarAttribute,
 						             but it contained not matching constructors [
-						               Void .ctor()
+						               ThatConstructors.Have.OrHave.AttributeTests.TestClass()
 						             ]
 						             """);
 				}
@@ -278,8 +278,8 @@ public sealed partial class ThatConstructors
 					             Expected that subject
 					             not all have ThatConstructors.Have.NegatedTests.TestAttribute,
 					             but it only contained matching constructors [
-					               Void .ctor(System.String),
-					               Void .ctor(Int32)
+					               ThatConstructors.Have.NegatedTests.TestClass(string value),
+					               ThatConstructors.Have.NegatedTests.TestClass(int value)
 					             ]
 					             """);
 			}
