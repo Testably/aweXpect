@@ -34,7 +34,8 @@ public static partial class MethodFilters
 						CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(i, parameters.Length),
 						_ => false,
 					};
-					return isIndexInRange == true && parameterFilterOptions.Matches(p);
+					return isIndexInRange == true &&
+					       parameterFilterOptions.Matches(p);
 				}).Any();
 			},
 			()
@@ -67,8 +68,8 @@ public static partial class MethodFilters
 						CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(i, parameters.Length),
 						_ => false,
 					};
-					return isIndexInRange != false && p.ParameterType == parameterType &&
-					       stringEqualityOptions.AreConsideredEqual(p.Name, expected);
+					return isIndexInRange == true &&
+					       parameterFilterOptions.Matches(p);
 				}).Any();
 			},
 			()
@@ -98,7 +99,8 @@ public static partial class MethodFilters
 						CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(i, parameters.Length),
 						_ => false,
 					};
-					return isIndexInRange != false && stringEqualityOptions.AreConsideredEqual(p.Name, expected);
+					return isIndexInRange == true &&
+					       parameterFilterOptions.Matches(p);
 				}).Any();
 			},
 			()
@@ -129,7 +131,7 @@ public static partial class MethodFilters
 		/// </summary>
 		public MethodsWithParameterAtIndex<T> AtIndex(int index)
 		{
-			collectionIndexOptions.SetMatch(new HasParameterAtIndexMatch(index));
+			collectionIndexOptions.SetMatch(new AtIndexMatch(index));
 			return new MethodsWithParameterAtIndex<T>(this, collectionIndexOptions);
 		}
 

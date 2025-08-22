@@ -4,14 +4,14 @@ namespace aweXpect.Reflection.Tests.Filters;
 
 public sealed partial class MethodFilters
 {
-	public sealed class WhichAreGeneric
+	public sealed partial class WhichAreGeneric
 	{
 		public sealed class Tests
 		{
 			[Fact]
 			public async Task ShouldFilterOnlyGenericMethods()
 			{
-				Filtered.Methods subject = In.AssemblyContaining<ThatMethods>().Types()
+				Filtered.Methods subject = In.AssemblyContaining<WhichAreGeneric>().Types()
 					.Which(t => t == typeof(ThatMethods.TestClass))
 					.Methods()
 					.WhichAreGeneric();
@@ -22,7 +22,7 @@ public sealed partial class MethodFilters
 			[Fact]
 			public async Task ShouldUpdateDescription()
 			{
-				Filtered.Methods subject = In.AssemblyContaining<ThatMethods>().Types()
+				Filtered.Methods subject = In.AssemblyContaining<WhichAreGeneric>().Types()
 					.Methods()
 					.WhichAreGeneric();
 

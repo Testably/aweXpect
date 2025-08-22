@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;

@@ -4,7 +4,7 @@ namespace aweXpect.Reflection.Tests.Filters;
 
 public sealed partial class TypeFilters
 {
-	public sealed class WhichAreGeneric
+	public sealed partial class WhichAreGeneric
 	{
 		public sealed class Tests
 		{

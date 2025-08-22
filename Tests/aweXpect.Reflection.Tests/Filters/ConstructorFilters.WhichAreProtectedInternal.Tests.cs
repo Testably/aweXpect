@@ -19,14 +19,15 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("protected internal constructors in assembly").AsPrefix();
 			}
 
+#pragma warning disable CS0628 // New protected member declared in sealed type
 			// ReSharper disable once UnusedType.Local
-			private sealed class WithProtectedInternalConstructor
+			private class WithProtectedInternalConstructor
 			{
-				// ReSharper disable once EmptyConstructor
 				protected internal WithProtectedInternalConstructor()
 				{
 				}
 			}
+#pragma warning restore CS0628 // New protected member declared in sealed type
 		}
 	}
 }

@@ -3,11 +3,11 @@ using aweXpect.Options;
 
 namespace aweXpect.Reflection.Helpers;
 
-internal sealed class HasParameterAtIndexMatch : CollectionIndexOptions.IMatchFromBeginning
+internal sealed class AtIndexMatch : CollectionIndexOptions.IMatchFromBeginning
 {
 	private readonly int _index;
 
-	public HasParameterAtIndexMatch(int index)
+	public AtIndexMatch(int index)
 	{
 		if (index < 0)
 		{
@@ -38,7 +38,7 @@ internal sealed class HasParameterAtIndexMatch : CollectionIndexOptions.IMatchFr
 	/// <inheritdoc cref="CollectionIndexOptions.IMatchFromBeginning.FromEnd()" />
 	public CollectionIndexOptions.IMatchFromEnd FromEnd() => new HasParameterAtIndexMatchFromEnd(this);
 
-	private sealed class HasParameterAtIndexMatchFromEnd(HasParameterAtIndexMatch inner)
+	private sealed class HasParameterAtIndexMatchFromEnd(AtIndexMatch inner)
 		: CollectionIndexOptions.IMatchFromEnd
 	{
 		/// <inheritdoc cref="CollectionIndexOptions.IMatch.GetDescription()" />

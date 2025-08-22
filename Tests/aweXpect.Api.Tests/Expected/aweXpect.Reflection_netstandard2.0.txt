@@ -168,7 +168,7 @@ namespace aweXpect.Reflection
     {
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAre(this aweXpect.Reflection.Collections.Filtered.Methods @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreAbstract(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
-        public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreGeneric(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
+        public static aweXpect.Reflection.MethodFilters.GenericMethods WhichAreGeneric(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreInternal(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNot(this aweXpect.Reflection.Collections.Filtered.Methods @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNotAbstract(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
@@ -203,6 +203,34 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.MethodFilters.MethodsWithNamedParameter<T> WithParameter<T>(this aweXpect.Reflection.Collections.Filtered.Methods @this, string expected) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WithParameterCount(this aweXpect.Reflection.Collections.Filtered.Methods @this, int expectedCount) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WithoutParameters(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
+        public class GenericMethods : aweXpect.Reflection.Collections.Filtered.Methods
+        {
+            public GenericMethods(aweXpect.Reflection.Collections.Filtered.Methods inner) { }
+            public aweXpect.Reflection.MethodFilters.GenericMethodsWithNamedArgument WithArgument(string expected) { }
+            public aweXpect.Reflection.MethodFilters.GenericMethodsWithArgument WithArgument<T>() { }
+            public aweXpect.Reflection.MethodFilters.GenericMethodsWithNamedArgument WithArgument<T>(string expected) { }
+            public aweXpect.Reflection.MethodFilters.GenericMethods WithArgumentCount(int expected) { }
+        }
+        public class GenericMethodsWithArgument : aweXpect.Reflection.MethodFilters.GenericMethods, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>
+        {
+            public GenericMethodsWithArgument(aweXpect.Reflection.MethodFilters.GenericMethods inner, aweXpect.Options.CollectionIndexOptions collectionIndexOptions) { }
+            public aweXpect.Reflection.MethodFilters.GenericMethodsWithArgumentAtIndex AtIndex(int index) { }
+        }
+        public class GenericMethodsWithArgumentAtIndex : aweXpect.Reflection.MethodFilters.GenericMethods, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>
+        {
+            public GenericMethodsWithArgumentAtIndex(aweXpect.Reflection.MethodFilters.GenericMethods inner, aweXpect.Options.CollectionIndexOptions collectionIndexOptions) { }
+            public aweXpect.Reflection.MethodFilters.GenericMethods FromEnd() { }
+        }
+        public class GenericMethodsWithNamedArgument : aweXpect.Reflection.MethodFilters.GenericMethodsWithArgument, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>
+        {
+            public GenericMethodsWithNamedArgument(aweXpect.Reflection.MethodFilters.GenericMethods inner, aweXpect.Options.CollectionIndexOptions collectionIndexOptions, aweXpect.Options.StringEqualityOptions options) { }
+            public aweXpect.Reflection.MethodFilters.GenericMethodsWithNamedArgument AsPrefix() { }
+            public aweXpect.Reflection.MethodFilters.GenericMethodsWithNamedArgument AsRegex() { }
+            public aweXpect.Reflection.MethodFilters.GenericMethodsWithNamedArgument AsSuffix() { }
+            public aweXpect.Reflection.MethodFilters.GenericMethodsWithNamedArgument AsWildcard() { }
+            public aweXpect.Reflection.MethodFilters.GenericMethodsWithNamedArgument IgnoringCase(bool ignoreCase = true) { }
+            public aweXpect.Reflection.MethodFilters.GenericMethodsWithNamedArgument Using(System.Collections.Generic.IEqualityComparer<string> comparer) { }
+        }
         public class MethodsWhichReturn : aweXpect.Reflection.Collections.Filtered.Methods
         {
             public MethodsWhichReturn(aweXpect.Reflection.Collections.Filtered.Methods inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Reflection.MethodInfo> filter) { }
@@ -597,7 +625,7 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreAbstract(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreClasses(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreEnums(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
-        public static aweXpect.Reflection.Collections.Filtered.Types WhichAreGeneric(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
+        public static aweXpect.Reflection.TypeFilters.GenericTypes WhichAreGeneric(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreInterfaces(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreInternal(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNested(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
@@ -638,6 +666,34 @@ namespace aweXpect.Reflection
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Types @this, string expected) { }
         public static aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResultType WithNamespace(this aweXpect.Reflection.Collections.Filtered.Types @this, string expected) { }
+        public class GenericTypes : aweXpect.Reflection.Collections.Filtered.Types
+        {
+            public GenericTypes(aweXpect.Reflection.Collections.Filtered.Types inner) { }
+            public aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument WithArgument(string expected) { }
+            public aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithArgument WithArgument<T>() { }
+            public aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument WithArgument<T>(string expected) { }
+            public aweXpect.Reflection.TypeFilters.GenericTypes WithArgumentCount(int expected) { }
+            public class GenericTypesWithArgument : aweXpect.Reflection.TypeFilters.GenericTypes, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>
+            {
+                public GenericTypesWithArgument(aweXpect.Reflection.TypeFilters.GenericTypes inner, aweXpect.Options.CollectionIndexOptions collectionIndexOptions) { }
+                public aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithArgumentAtIndex AtIndex(int index) { }
+            }
+            public class GenericTypesWithArgumentAtIndex : aweXpect.Reflection.TypeFilters.GenericTypes, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>
+            {
+                public GenericTypesWithArgumentAtIndex(aweXpect.Reflection.TypeFilters.GenericTypes inner, aweXpect.Options.CollectionIndexOptions collectionIndexOptions) { }
+                public aweXpect.Reflection.TypeFilters.GenericTypes FromEnd() { }
+            }
+            public class GenericTypesWithNamedArgument : aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithArgument, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>
+            {
+                public GenericTypesWithNamedArgument(aweXpect.Reflection.TypeFilters.GenericTypes inner, aweXpect.Options.CollectionIndexOptions collectionIndexOptions, aweXpect.Options.StringEqualityOptions options) { }
+                public aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument AsPrefix() { }
+                public aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument AsRegex() { }
+                public aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument AsSuffix() { }
+                public aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument AsWildcard() { }
+                public aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument IgnoringCase(bool ignoreCase = true) { }
+                public aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument Using(System.Collections.Generic.IEqualityComparer<string> comparer) { }
+            }
+        }
         public class TypesWith : aweXpect.Reflection.Collections.Filtered.Types
         {
             public TypesWith(aweXpect.Reflection.Collections.Filtered.Types inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Type> filter) { }
@@ -894,6 +950,13 @@ namespace aweXpect.Reflection.Options
             where TAttribute : System.Attribute { }
         public void RegisterAttribute<TAttribute>(bool inherit, System.Func<TAttribute, bool> predicate, string predicateExpression)
             where TAttribute : System.Attribute { }
+    }
+    public class GenericArgumentFilterOptions
+    {
+        public GenericArgumentFilterOptions(System.Func<System.Type, bool> predicate, System.Func<string> description) { }
+        public void AddPredicate(System.Func<System.Type, bool> predicate, System.Func<string> description) { }
+        public string GetDescription() { }
+        public bool Matches(System.Type argument) { }
     }
     public class ParameterFilterOptions
     {

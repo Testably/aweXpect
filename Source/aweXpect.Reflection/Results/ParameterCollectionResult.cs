@@ -32,7 +32,7 @@ public class ParameterCollectionResult<TThat, TParameter>(
 	/// </summary>
 	public ParameterCollectionAtIndexResult<TThat, TParameter> AtIndex(int index)
 	{
-		collectionIndexOptions.SetMatch(new HasParameterAtIndexMatch(index));
+		collectionIndexOptions.SetMatch(new AtIndexMatch(index));
 		return new ParameterCollectionAtIndexResult<TThat, TParameter>(_expectationBuilder, _subject,
 			collectionIndexOptions);
 	}
