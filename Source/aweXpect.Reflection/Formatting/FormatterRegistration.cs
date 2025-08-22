@@ -27,6 +27,7 @@ internal sealed class FormatterRegistration : IAweXpectInitializer, IDisposable
 	public void Initialize() => _disposables =
 	[
 		ValueFormatter.Register(new ConstructorFormatter()),
+		ValueFormatter.Register(new EventFormatter()),
 		ValueFormatter.Register(new PropertyFormatter()),
 	];
 

@@ -103,7 +103,7 @@ public class PropertyFormatterTests
 	}
 
 	// ReSharper disable UnusedMember.Local
-	private class MyTestClass
+	internal class MyTestClass
 	{
 		public int MyProperty { get; private set; }
 		internal int InternalProperty { get; private set; }

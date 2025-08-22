@@ -83,7 +83,7 @@ public sealed partial class ThatEvent
 					.WithMessage("""
 					             Expected that subject
 					             is abstract,
-					             but it was non-abstract System.EventHandler VirtualEvent
+					             but it was non-abstract event EventHandler AbstractClassWithMembers.VirtualEvent
 					             """);
 			}
 		}

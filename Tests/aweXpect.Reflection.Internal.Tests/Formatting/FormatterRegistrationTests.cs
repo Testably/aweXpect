@@ -13,13 +13,14 @@ public class FormatterRegistrationTests
 		void Act() => _ = new FormatterRegistration();
 
 		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("A FormatterRegistration instance is already initialized. Dispose the existing instance before creating a new one.");
+			.WithMessage(
+				"A FormatterRegistration instance is already initialized. Dispose the existing instance before creating a new one.");
 	}
 
 	[Fact]
 	public async Task Initialize_ShouldRegisterFormatterForConstructorInfo()
 	{
-		ConstructorInfo constructorInfo = typeof(FormatterRegistrationTests).GetConstructors().First();
+		ConstructorInfo constructorInfo = typeof(ConstructorFormatterTests.MyTestClass).GetConstructors().First();
 		await That(true).IsTrue();
 		string result1 = Format.Formatter.Format(constructorInfo);
 
@@ -28,6 +29,40 @@ public class FormatterRegistrationTests
 		FormatterRegistration.Instance.Initialize();
 
 		string result3 = Format.Formatter.Format(constructorInfo);
+
+		await That(result1).IsEqualTo(result3);
+		await That(result2).IsNotEqualTo(result3);
+	}
+
+	[Fact]
+	public async Task Initialize_ShouldRegisterFormatterForEventInfo()
+	{
+		EventInfo eventInfo = typeof(EventFormatterTests.MyTestClass).GetEvents().First();
+		await That(true).IsTrue();
+		string result1 = Format.Formatter.Format(eventInfo);
+
+		FormatterRegistration.Instance.Dispose();
+		string result2 = Format.Formatter.Format(eventInfo);
+		FormatterRegistration.Instance.Initialize();
+
+		string result3 = Format.Formatter.Format(eventInfo);
+
+		await That(result1).IsEqualTo(result3);
+		await That(result2).IsNotEqualTo(result3);
+	}
+
+	[Fact]
+	public async Task Initialize_ShouldRegisterFormatterForPropertyInfo()
+	{
+		PropertyInfo propertyInfo = typeof(PropertyFormatterTests.MyTestClass).GetProperties().First();
+		await That(true).IsTrue();
+		string result1 = Format.Formatter.Format(propertyInfo);
+
+		FormatterRegistration.Instance.Dispose();
+		string result2 = Format.Formatter.Format(propertyInfo);
+		FormatterRegistration.Instance.Initialize();
+
+		string result3 = Format.Formatter.Format(propertyInfo);
 
 		await That(result1).IsEqualTo(result3);
 		await That(result2).IsNotEqualTo(result3);

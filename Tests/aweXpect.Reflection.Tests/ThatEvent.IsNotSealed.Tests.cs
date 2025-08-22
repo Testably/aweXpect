@@ -71,7 +71,7 @@ public sealed partial class ThatEvent
 					.WithMessage("""
 					             Expected that subject
 					             is sealed,
-					             but it was non-sealed System.EventHandler VirtualEvent
+					             but it was non-sealed event EventHandler AbstractClassWithMembers.VirtualEvent
 					             """);
 			}
 

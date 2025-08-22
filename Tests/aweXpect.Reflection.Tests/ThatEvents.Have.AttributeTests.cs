@@ -54,7 +54,7 @@ public sealed partial class ThatEvents
 					             Expected that subject
 					             all have ThatEvents.Have.AttributeTests.TestAttribute,
 					             but it contained not matching events [
-					               System.Action NoAttributeEvent
+					               event Action ThatEvents.Have.AttributeTests.TestClass.NoAttributeEvent
 					             ]
 					             """);
 			}
@@ -75,8 +75,8 @@ public sealed partial class ThatEvents
 					             Expected that subject
 					             all have ThatEvents.Have.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
 					             but it contained not matching events [
-					               System.Action TestEvent1,
-					               System.Action TestEvent2
+					               event Action ThatEvents.Have.AttributeTests.TestClass.TestEvent1,
+					               event Action ThatEvents.Have.AttributeTests.TestClass.TestEvent2
 					             ]
 					             """);
 			}
@@ -177,7 +177,7 @@ public sealed partial class ThatEvents
 						             Expected that subject
 						             all have ThatEvents.Have.OrHave.AttributeTests.TestAttribute or ThatEvents.Have.OrHave.AttributeTests.BarAttribute,
 						             but it contained not matching events [
-						               System.Action NoAttributeEvent
+						               event Action ThatEvents.Have.OrHave.AttributeTests.TestClass.NoAttributeEvent
 						             ]
 						             """);
 				}
@@ -213,7 +213,7 @@ public sealed partial class ThatEvents
 						             Expected that subject
 						             all have ThatEvents.Have.OrHave.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue" or ThatEvents.Have.OrHave.AttributeTests.BarAttribute matching attr => attr.Name == "wrong",
 						             but it contained not matching events [
-						               System.Action TestEvent1
+						               event Action ThatEvents.Have.OrHave.AttributeTests.TestClass.TestEvent1
 						             ]
 						             """);
 				}
@@ -295,7 +295,7 @@ public sealed partial class ThatEvents
 					             Expected that subjects
 					             not all have ThatEvents.Have.NegatedTests.TestAttribute or ThatEvents.Have.NegatedTests.TestAttribute matching x => x.Value == "foo",
 					             but it only contained matching events [
-					               System.Action TestEvent1
+					               event Action ThatEvents.Have.NegatedTests.TestClass.TestEvent1
 					             ]
 					             """);
 			}

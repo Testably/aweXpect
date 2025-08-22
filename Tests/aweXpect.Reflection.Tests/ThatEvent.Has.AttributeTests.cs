@@ -21,7 +21,7 @@ public sealed partial class ThatEvent
 					.WithMessage("""
 					             Expected that subject
 					             has ThatEvent.Has.AttributeTests.TestAttribute,
-					             but it did not in System.Action NoAttributeEvent
+					             but it did not in event Action ThatEvent.Has.AttributeTests.TestClass.NoAttributeEvent
 					             """);
 			}
 
@@ -59,7 +59,7 @@ public sealed partial class ThatEvent
 					.WithMessage("""
 					             Expected that subject
 					             has ThatEvent.Has.AttributeTests.TestAttribute matching attr => attr.Value == 99,
-					             but it did not in System.Action TestEventWithValue
+					             but it did not in event Action ThatEvent.Has.AttributeTests.TestClass.TestEventWithValue
 					             """);
 			}
 
@@ -158,7 +158,7 @@ public sealed partial class ThatEvent
 						.WithMessage("""
 						             Expected that subject
 						             has ThatEvent.Has.OrHas.AttributeTests.FooAttribute or ThatEvent.Has.OrHas.AttributeTests.BarAttribute,
-						             but it did not in System.Action BazEvent
+						             but it did not in event Action ThatEvent.Has.OrHas.AttributeTests.BazClass.BazEvent
 						             """);
 				}
 
@@ -186,7 +186,7 @@ public sealed partial class ThatEvent
 						.WithMessage("""
 						             Expected that subject
 						             has ThatEvent.Has.OrHas.AttributeTests.FooAttribute matching foo => foo.Value == 5 or ThatEvent.Has.OrHas.AttributeTests.BarAttribute matching bar => bar.Name == "test",
-						             but it did not in System.Action FooEvent2
+						             but it did not in event Action ThatEvent.Has.OrHas.AttributeTests.FooClass2.FooEvent2
 						             """);
 				}
 
@@ -278,7 +278,7 @@ public sealed partial class ThatEvent
 					.WithMessage("""
 					             Expected that subject
 					             has no ThatEvent.Has.NegatedTests.TestAttribute,
-					             but it did in System.Action TestEvent
+					             but it did in event Action ThatEvent.Has.NegatedTests.TestClass.TestEvent
 					             """);
 			}
 

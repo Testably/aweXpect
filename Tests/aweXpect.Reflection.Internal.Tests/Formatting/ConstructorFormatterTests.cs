@@ -52,7 +52,7 @@ public class ConstructorFormatterTests
 
 	// ReSharper disable UnusedMember.Local
 	// ReSharper disable UnusedParameter.Local
-	private class MyTestClass
+	internal class MyTestClass
 	{
 		public MyTestClass()
 		{

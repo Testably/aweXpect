@@ -71,7 +71,7 @@ public sealed partial class ThatEvent
 					.WithMessage("""
 					             Expected that subject
 					             is not abstract,
-					             but it was abstract System.EventHandler AbstractEvent
+					             but it was abstract event EventHandler AbstractClassWithMembers.AbstractEvent
 					             """);
 			}
 
