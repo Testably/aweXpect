@@ -28,7 +28,7 @@ internal static class PropertyInfoHelpers
 			return false;
 		}
 
-		return propertyInfo.GetMethod.HasAccessModifier(accessModifiers) &&
+		return propertyInfo.GetMethod.HasAccessModifier(accessModifiers) ||
 		       propertyInfo.SetMethod.HasAccessModifier(accessModifiers);
 	}
 

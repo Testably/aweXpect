@@ -83,7 +83,7 @@ public sealed partial class ThatProperty
 					.WithMessage("""
 					             Expected that subject
 					             is abstract,
-					             but it was non-abstract System.String VirtualProperty
+					             but it was non-abstract public string AbstractClassWithMembers.VirtualProperty { get; set; }
 					             """);
 			}
 		}

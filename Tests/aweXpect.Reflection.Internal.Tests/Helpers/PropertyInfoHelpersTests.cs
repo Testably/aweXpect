@@ -22,16 +22,16 @@ public sealed class PropertyInfoHelpersTests
 	[Theory]
 	[InlineData(nameof(AccessModifierTestClass.PublicPropertyWithPrivateGetter))]
 	[InlineData(nameof(AccessModifierTestClass.PublicPropertyWithPrivateSetter))]
-	public async Task HasAccessModifier_MixedAccessConditionsForGetterAndSetter_ShouldNotMatch(string propertyName)
+	public async Task HasAccessModifier_MixedAccessConditionsForGetterAndSetter_ShouldMatchBoth(string propertyName)
 	{
 		PropertyInfo propertyInfo = typeof(AccessModifierTestClass).GetDeclaredProperties()
 			.Single(c => c.Name == propertyName);
 
 		await That(propertyInfo).IsNotNull();
 		await That(propertyInfo.HasAccessModifier(AccessModifiers.Internal)).IsFalse();
-		await That(propertyInfo.HasAccessModifier(AccessModifiers.Private)).IsFalse();
+		await That(propertyInfo.HasAccessModifier(AccessModifiers.Private)).IsTrue();
 		await That(propertyInfo.HasAccessModifier(AccessModifiers.Protected)).IsFalse();
-		await That(propertyInfo.HasAccessModifier(AccessModifiers.Public)).IsFalse();
+		await That(propertyInfo.HasAccessModifier(AccessModifiers.Public)).IsTrue();
 	}
 
 	[Fact]

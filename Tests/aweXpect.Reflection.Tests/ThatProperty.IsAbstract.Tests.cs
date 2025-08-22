@@ -71,7 +71,7 @@ public sealed partial class ThatProperty
 					.WithMessage("""
 					             Expected that subject
 					             is not abstract,
-					             but it was abstract System.String AbstractProperty
+					             but it was abstract public string AbstractClassWithMembers.AbstractProperty { get; set; }
 					             """);
 			}
 

@@ -37,9 +37,9 @@ internal static class MemberInfoHelpers
 			return AccessModifiers.Public;
 		}
 
-		if (memberInfo.HasAccessModifier(AccessModifiers.Private))
+		if (memberInfo.HasAccessModifier(AccessModifiers.ProtectedInternal))
 		{
-			return AccessModifiers.Private;
+			return AccessModifiers.ProtectedInternal;
 		}
 
 		if (memberInfo.HasAccessModifier(AccessModifiers.Protected))
@@ -56,10 +56,10 @@ internal static class MemberInfoHelpers
 		{
 			return AccessModifiers.PrivateProtected;
 		}
-
-		if (memberInfo.HasAccessModifier(AccessModifiers.ProtectedInternal))
+		
+		if (memberInfo.HasAccessModifier(AccessModifiers.Private))
 		{
-			return AccessModifiers.ProtectedInternal;
+			return AccessModifiers.Private;
 		}
 
 		return AccessModifiers.Any;

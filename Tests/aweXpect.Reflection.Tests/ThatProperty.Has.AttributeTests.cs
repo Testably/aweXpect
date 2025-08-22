@@ -21,7 +21,7 @@ public sealed partial class ThatProperty
 					.WithMessage("""
 					             Expected that subject
 					             has ThatProperty.Has.AttributeTests.TestAttribute,
-					             but it did not in System.String NoAttributeProperty
+					             but it did not in public string ThatProperty.Has.AttributeTests.TestClass.NoAttributeProperty { get; set; }
 					             """);
 			}
 
@@ -59,7 +59,7 @@ public sealed partial class ThatProperty
 					.WithMessage("""
 					             Expected that subject
 					             has ThatProperty.Has.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
-					             but it did not in System.String TestProperty
+					             but it did not in public string ThatProperty.Has.AttributeTests.TestClass.TestProperty { get; set; }
 					             """);
 			}
 
@@ -132,7 +132,7 @@ public sealed partial class ThatProperty
 					.WithMessage("""
 					             Expected that subject
 					             has no ThatProperty.Has.NegatedTests.TestAttribute,
-					             but it did in System.String TestProperty
+					             but it did in public string ThatProperty.Has.NegatedTests.TestClass.TestProperty { get; set; }
 					             """);
 			}
 

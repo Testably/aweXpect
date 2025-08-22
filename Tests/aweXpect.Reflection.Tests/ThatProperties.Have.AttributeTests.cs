@@ -55,7 +55,7 @@ public sealed partial class ThatProperties
 					             Expected that subject
 					             all have ThatProperties.Have.AttributeTests.TestAttribute,
 					             but it contained not matching properties [
-					               System.String NoAttributeProperty
+					               public string ThatProperties.Have.AttributeTests.TestClass.NoAttributeProperty { get; set; }
 					             ]
 					             """);
 			}
@@ -76,8 +76,8 @@ public sealed partial class ThatProperties
 					             Expected that subject
 					             all have ThatProperties.Have.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
 					             but it contained not matching properties [
-					               System.String TestProperty1,
-					               System.String TestProperty2
+					               public string ThatProperties.Have.AttributeTests.TestClass.TestProperty1 { get; set; },
+					               public string ThatProperties.Have.AttributeTests.TestClass.TestProperty2 { get; set; }
 					             ]
 					             """);
 			}
@@ -178,7 +178,7 @@ public sealed partial class ThatProperties
 						             Expected that subject
 						             all have ThatProperties.Have.OrHave.AttributeTests.TestAttribute or ThatProperties.Have.OrHave.AttributeTests.BarAttribute,
 						             but it contained not matching properties [
-						               System.String NoAttributeProperty
+						               public string ThatProperties.Have.OrHave.AttributeTests.TestClass.NoAttributeProperty { get; set; }
 						             ]
 						             """);
 				}
@@ -214,7 +214,7 @@ public sealed partial class ThatProperties
 						             Expected that subject
 						             all have ThatProperties.Have.OrHave.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue" or ThatProperties.Have.OrHave.AttributeTests.BarAttribute matching attr => attr.Name == "wrong",
 						             but it contained not matching properties [
-						               System.String TestProperty1
+						               public string ThatProperties.Have.OrHave.AttributeTests.TestClass.TestProperty1 { get; set; }
 						             ]
 						             """);
 				}
@@ -296,7 +296,7 @@ public sealed partial class ThatProperties
 					             Expected that subjects
 					             not all have ThatProperties.Have.NegatedTests.TestAttribute or ThatProperties.Have.NegatedTests.TestAttribute matching x => x.Value == "foo",
 					             but it only contained matching properties [
-					               System.String TestProperty1
+					               public string ThatProperties.Have.NegatedTests.TestClass.TestProperty1 { get; set; }
 					             ]
 					             """);
 			}

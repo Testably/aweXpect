@@ -83,7 +83,7 @@ public sealed partial class ThatProperty
 					.WithMessage("""
 					             Expected that subject
 					             is not sealed,
-					             but it was sealed System.String VirtualProperty
+					             but it was sealed public string ClassWithSealedMembers.VirtualProperty { get; set; }
 					             """);
 			}
 		}
