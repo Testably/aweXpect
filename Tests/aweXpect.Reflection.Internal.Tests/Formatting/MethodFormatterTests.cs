@@ -107,7 +107,7 @@ public class MethodFormatterTests
 				"void MethodFormatterTests.MyTestClass.MyMethodWithTwoParameters(int parameter1, string parameter2)");
 	}
 
-#pragma warning disable CS1822
+#pragma warning disable CA1822
 	// ReSharper disable UnusedParameter.Global
 	internal abstract class MyTestClass
 	{
@@ -138,5 +138,5 @@ public class MethodFormatterTests
 			=> p1 + p2;
 	}
 	// ReSharper restore UnusedParameter.Global
-#pragma warning restore CS1822
+#pragma warning restore CA1822
 }
