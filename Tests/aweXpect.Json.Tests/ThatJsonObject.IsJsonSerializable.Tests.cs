@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using aweXpect.Equivalency;
 
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedAutoPropertyAccessor.Local
@@ -46,7 +47,7 @@ public sealed class ThatJsonObject
 				async Task Act()
 					=> await That(subject).IsJsonSerializable(o => o with
 					{
-						MembersToIgnore = ["Name",],
+						MembersToIgnore = [new MemberToIgnore.ByName("Name"),],
 					});
 
 				await That(Act).DoesNotThrow();
@@ -193,7 +194,7 @@ public sealed class ThatJsonObject
 				async Task Act()
 					=> await That(subject).IsJsonSerializable<PocoWithIgnoredProperty>(o => o with
 					{
-						MembersToIgnore = ["Name",],
+						MembersToIgnore = [new MemberToIgnore.ByName("Name"),],
 					});
 
 				await That(Act).DoesNotThrow();
@@ -363,7 +364,7 @@ public sealed class ThatJsonObject
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsJsonSerializable(o => o with
 					{
-						MembersToIgnore = ["Name",],
+						MembersToIgnore = [new MemberToIgnore.ByName("Name"),],
 					}));
 
 				await That(Act).Throws<XunitException>()

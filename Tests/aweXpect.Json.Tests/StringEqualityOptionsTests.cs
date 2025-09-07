@@ -14,7 +14,7 @@ public sealed class StringEqualityOptionsTests
 		IOptionsProvider<StringEqualityOptions> optionsProvider = That(actual).IsEqualTo(expected).AsJson();
 #pragma warning restore aweXpect0001
 
-		bool result = optionsProvider.Options.AreConsideredEqual(actual, expected);
+		bool result = await optionsProvider.Options.AreConsideredEqual(actual, expected);
 		string failure = optionsProvider.Options.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
 		await That(result).IsTrue();

@@ -2,6 +2,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Customization;
@@ -83,12 +85,12 @@ public static class ThatJsonObject
 		JsonSerializerOptions serializerOptions,
 		EquivalencyOptions options)
 		: ConstraintResult.WithValue<object?>(grammars),
-			IValueConstraint<object?>
+			IAsyncConstraint<object?>
 	{
 		private string? _deserializationError;
 		private StringBuilder? _failureBuilder;
 
-		public ConstraintResult IsMetBy(object? actual)
+		public async Task<ConstraintResult> IsMetBy(object? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual is not T)
@@ -111,7 +113,7 @@ public static class ThatJsonObject
 			}
 
 			_failureBuilder = new StringBuilder();
-			if (EquivalencyComparison.Compare(deserializedObject, actual, options, _failureBuilder))
+			if (await EquivalencyComparison.Compare(deserializedObject, actual, options, _failureBuilder))
 			{
 				Outcome = Outcome.Success;
 				return this;
