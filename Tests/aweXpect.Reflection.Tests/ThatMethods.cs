@@ -43,6 +43,15 @@ public sealed partial class ThatMethods
 		public U GenericMethod2<T, U>(T first, U second) => second;
 		public int NonGenericMethod1() => 1;
 		public int NonGenericMethod2() => 2;
+
+		public void GenericWithUnrestrictedArgumentMethod<TFoo>()
+		{
+		}
+
+		public void GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+			where TBar : ThatMethod.BaseClass
+		{
+		}
 	}
 
 	// ReSharper disable UnusedMember.Local

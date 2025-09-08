@@ -473,7 +473,7 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Results.ParameterCollectionResult<System.Reflection.MethodInfo?, TParameter> HasParameter<TParameter>(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
         public static aweXpect.Reflection.Results.NamedParameterCollectionResult<System.Reflection.MethodInfo?, TParameter> HasParameter<TParameter>(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject, string expected) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> IsAbstract(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
-        public static aweXpect.Results.AndOrResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> IsGeneric(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
+        public static aweXpect.Reflection.Results.GenericArgumentCollectionResult<System.Reflection.MethodInfo?> IsGeneric(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> IsNotAbstract(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> IsNotGeneric(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> IsNotSealed(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
@@ -497,7 +497,7 @@ namespace aweXpect.Reflection
     public static class ThatMethods
     {
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>>> AreAbstract(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject) { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>>> AreGeneric(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject) { }
+        public static aweXpect.Reflection.Results.GenericArgumentCollectionResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> AreGeneric(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>>> AreNotAbstract(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>>> AreNotGeneric(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>>> AreNotSealed(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject) { }
@@ -958,6 +958,14 @@ namespace aweXpect.Reflection.Options
         public string GetDescription() { }
         public bool Matches(System.Type argument) { }
     }
+    public class GenericArgumentsFilterOptions
+    {
+        public GenericArgumentsFilterOptions() { }
+        public void AddFilter(aweXpect.Reflection.Options.GenericArgumentFilterOptions filter, aweXpect.Options.CollectionIndexOptions options) { }
+        public void AddPredicate(System.Func<System.Type[], bool> predicate, System.Func<string> description) { }
+        public string GetDescription() { }
+        public bool Matches(System.Type[] arguments) { }
+    }
     public class ParameterFilterOptions
     {
         public ParameterFilterOptions(System.Func<System.Reflection.ParameterInfo, bool> predicate, System.Func<string> description) { }
@@ -975,6 +983,34 @@ namespace aweXpect.Reflection.Options
 }
 namespace aweXpect.Reflection.Results
 {
+    public class GenericArgumentCollectionResult<TThat> : aweXpect.Results.AndOrResult<TThat, aweXpect.Core.IThat<TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.GenericArgumentsFilterOptions>
+    {
+        public GenericArgumentCollectionResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TThat> subject, aweXpect.Reflection.Options.GenericArgumentsFilterOptions genericArgumentsFilterOptions) { }
+        public aweXpect.Reflection.Results.GenericArgumentCollectionWithNamedArgumentResult<TThat> WithArgument(string expected) { }
+        public aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentResult<TThat> WithArgument<T>() { }
+        public aweXpect.Reflection.Results.GenericArgumentCollectionWithNamedArgumentResult<TThat> WithArgument<T>(string expected) { }
+        public aweXpect.Reflection.Results.GenericArgumentCollectionResult<TThat> WithArgumentCount(int expected) { }
+    }
+    public class GenericArgumentCollectionWithArgumentAtIndexResult<TThat> : aweXpect.Reflection.Results.GenericArgumentCollectionResult<TThat>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>
+    {
+        public GenericArgumentCollectionWithArgumentAtIndexResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TThat> subject, aweXpect.Reflection.Options.GenericArgumentsFilterOptions genericArgumentsFilterOptions, aweXpect.Options.CollectionIndexOptions collectionIndexOptions) { }
+        public aweXpect.Reflection.Results.GenericArgumentCollectionResult<TThat> FromEnd() { }
+    }
+    public class GenericArgumentCollectionWithArgumentResult<TThat> : aweXpect.Reflection.Results.GenericArgumentCollectionResult<TThat>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>
+    {
+        public GenericArgumentCollectionWithArgumentResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TThat> subject, aweXpect.Reflection.Options.GenericArgumentsFilterOptions genericArgumentsFilterOptions, aweXpect.Options.CollectionIndexOptions collectionIndexOptions) { }
+        public aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentAtIndexResult<TThat> AtIndex(int index) { }
+    }
+    public class GenericArgumentCollectionWithNamedArgumentResult<TThat> : aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentResult<TThat>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>
+    {
+        public GenericArgumentCollectionWithNamedArgumentResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TThat> subject, aweXpect.Reflection.Options.GenericArgumentsFilterOptions genericArgumentsFilterOptions, aweXpect.Options.CollectionIndexOptions collectionIndexOptions, aweXpect.Options.StringEqualityOptions options) { }
+        public aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentResult<TThat> AsPrefix() { }
+        public aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentResult<TThat> AsRegex() { }
+        public aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentResult<TThat> AsSuffix() { }
+        public aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentResult<TThat> AsWildcard() { }
+        public aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentResult<TThat> IgnoringCase(bool ignoreCase = true) { }
+        public aweXpect.Reflection.Results.GenericArgumentCollectionWithArgumentResult<TThat> Using(System.Collections.Generic.IEqualityComparer<string> comparer) { }
+    }
     public sealed class HasAttributeResult<TMember> : aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.AttributeFilterOptions<TMember>>
     {
         public HasAttributeResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TMember> subject, aweXpect.Reflection.Options.AttributeFilterOptions<TMember> attributeFilterOptions) { }

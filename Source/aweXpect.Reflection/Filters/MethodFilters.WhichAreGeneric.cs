@@ -52,15 +52,15 @@ public static partial class MethodFilters
 		/// </summary>
 		public GenericMethodsWithArgument WithArgument<T>()
 		{
-			Type? argumentType = typeof(T);
+			Type argumentType = typeof(T);
 			GenericArgumentFilterOptions genericArgumentFilterOptions = new(
 				p => argumentType == p.BaseType,
 				() => $"of type {Formatter.Format(typeof(T))}");
 			CollectionIndexOptions collectionIndexOptions = new();
-			IChangeableFilter<MethodInfo>? filter = Filter.Suffix<MethodInfo>(
+			IChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
 				method =>
 				{
-					Type[]? arguments = method.GetGenericArguments();
+					Type[] arguments = method.GetGenericArguments();
 					return arguments.Where((p, i) =>
 					{
 						bool? isIndexInRange = collectionIndexOptions.Match switch
@@ -84,7 +84,7 @@ public static partial class MethodFilters
 		/// </summary>
 		public GenericMethodsWithNamedArgument WithArgument<T>(string expected)
 		{
-			Type? argumentType = typeof(T);
+			Type argumentType = typeof(T);
 			StringEqualityOptions stringEqualityOptions = new();
 			GenericArgumentFilterOptions genericArgumentFilterOptions = new(
 				p => argumentType == p.BaseType,
@@ -93,10 +93,10 @@ public static partial class MethodFilters
 				p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 				() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 			CollectionIndexOptions collectionIndexOptions = new();
-			IChangeableFilter<MethodInfo>? filter = Filter.Suffix<MethodInfo>(
+			IChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
 				method =>
 				{
-					Type[]? arguments = method.GetGenericArguments();
+					Type[] arguments = method.GetGenericArguments();
 					return arguments.Where((p, i) =>
 					{
 						bool? isIndexInRange = collectionIndexOptions.Match switch
@@ -125,10 +125,10 @@ public static partial class MethodFilters
 				p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 				() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 			CollectionIndexOptions collectionIndexOptions = new();
-			IChangeableFilter<MethodInfo>? filter = Filter.Suffix<MethodInfo>(
+			IChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
 				method =>
 				{
-					Type[]? arguments = method.GetGenericArguments();
+					Type[] arguments = method.GetGenericArguments();
 					return arguments.Where((p, i) =>
 					{
 						bool? isIndexInRange = collectionIndexOptions.Match switch
@@ -184,7 +184,7 @@ public static partial class MethodFilters
 		StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => options;
 
 		/// <summary>
-		///     Ignores casing when comparing the parameter name,
+		///     Ignores casing when comparing the generic argument name,
 		///     according to the <paramref name="ignoreCase" /> parameter.
 		/// </summary>
 		public GenericMethodsWithNamedArgument IgnoringCase(bool ignoreCase = true)
@@ -194,7 +194,7 @@ public static partial class MethodFilters
 		}
 
 		/// <summary>
-		///     Uses the provided <paramref name="comparer" /> for comparing parameter names.
+		///     Uses the provided <paramref name="comparer" /> for comparing generic argument names.
 		/// </summary>
 		public GenericMethodsWithNamedArgument Using(IEqualityComparer<string> comparer)
 		{
@@ -203,7 +203,7 @@ public static partial class MethodFilters
 		}
 
 		/// <summary>
-		///     Interprets the expected parameter name as a prefix, so that the actual value starts with it.
+		///     Interprets the expected generic argument name as a prefix, so that the actual value starts with it.
 		/// </summary>
 		public GenericMethodsWithNamedArgument AsPrefix()
 		{
@@ -212,7 +212,7 @@ public static partial class MethodFilters
 		}
 
 		/// <summary>
-		///     Interprets the expected parameter name as a <see cref="Regex" /> pattern.
+		///     Interprets the expected generic argument name as a <see cref="Regex" /> pattern.
 		/// </summary>
 		public GenericMethodsWithNamedArgument AsRegex()
 		{
@@ -221,7 +221,7 @@ public static partial class MethodFilters
 		}
 
 		/// <summary>
-		///     Interprets the expected parameter name as a suffix, so that the actual value ends with it.
+		///     Interprets the expected generic argument name as a suffix, so that the actual value ends with it.
 		/// </summary>
 		public GenericMethodsWithNamedArgument AsSuffix()
 		{
@@ -230,7 +230,7 @@ public static partial class MethodFilters
 		}
 
 		/// <summary>
-		///     Interprets the expected parameter name as wildcard pattern.<br />
+		///     Interprets the expected generic argument name as wildcard pattern.<br />
 		///     Supports * to match zero or more characters and ? to match exactly one character.
 		/// </summary>
 		public GenericMethodsWithNamedArgument AsWildcard()
