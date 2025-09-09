@@ -5,7 +5,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatType
 {
-	public sealed class IsGeneric
+	public sealed partial class IsGeneric
 	{
 		public sealed class Tests
 		{

@@ -569,7 +569,7 @@ namespace aweXpect.Reflection
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsAbstract(this aweXpect.Core.IThat<System.Type?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsAnEnum(this aweXpect.Core.IThat<System.Type?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsAnInterface(this aweXpect.Core.IThat<System.Type?> subject) { }
-        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsGeneric(this aweXpect.Core.IThat<System.Type?> subject) { }
+        public static aweXpect.Reflection.Results.GenericArgumentCollectionResult<System.Type?> IsGeneric(this aweXpect.Core.IThat<System.Type?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsNested(this aweXpect.Core.IThat<System.Type?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsNotAClass(this aweXpect.Core.IThat<System.Type?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> IsNotARecord(this aweXpect.Core.IThat<System.Type?> subject) { }
@@ -590,7 +590,7 @@ namespace aweXpect.Reflection
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreAbstract(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreClasses(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreEnums(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreGeneric(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
+        public static aweXpect.Reflection.Results.GenericArgumentCollectionResult<System.Collections.Generic.IEnumerable<System.Type?>> AreGeneric(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreInterfaces(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreNested(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreNotAbstract(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
@@ -953,10 +953,10 @@ namespace aweXpect.Reflection.Options
     }
     public class GenericArgumentFilterOptions
     {
-        public GenericArgumentFilterOptions(System.Func<System.Type, bool> predicate, System.Func<string> description) { }
-        public void AddPredicate(System.Func<System.Type, bool> predicate, System.Func<string> description) { }
+        public GenericArgumentFilterOptions(System.Func<System.Type, string?, bool> predicate, System.Func<string> description) { }
+        public void AddPredicate(System.Func<System.Type, string?, bool> predicate, System.Func<string> description) { }
         public string GetDescription() { }
-        public bool Matches(System.Type argument) { }
+        public bool Matches(System.Type argument, string? genericArgumentName = null) { }
     }
     public class GenericArgumentsFilterOptions
     {
@@ -964,7 +964,8 @@ namespace aweXpect.Reflection.Options
         public void AddFilter(aweXpect.Reflection.Options.GenericArgumentFilterOptions filter, aweXpect.Options.CollectionIndexOptions options) { }
         public void AddPredicate(System.Func<System.Type[], bool> predicate, System.Func<string> description) { }
         public string GetDescription() { }
-        public bool Matches(System.Type[] arguments) { }
+        public bool Matches(System.Reflection.MethodInfo method) { }
+        public bool Matches(System.Type type) { }
     }
     public class ParameterFilterOptions
     {

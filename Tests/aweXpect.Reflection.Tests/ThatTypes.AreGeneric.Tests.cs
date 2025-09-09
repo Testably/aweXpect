@@ -5,7 +5,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatTypes
 {
-	public sealed class AreGeneric
+	public sealed partial class AreGeneric
 	{
 		public sealed class Tests
 		{
@@ -21,7 +21,7 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types in assembly containing type ThatTypes.AreGeneric
 					             are all generic,
-					             but it contained non-generic types [
+					             but it contained not matching types [
 					               *
 					             ]
 					             """).AsWildcard();

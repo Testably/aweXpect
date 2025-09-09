@@ -49,7 +49,7 @@ public static partial class ThatMethod
 		public ConstraintResult IsMetBy(MethodInfo? actual)
 		{
 			Actual = actual;
-			Outcome = actual?.IsGenericMethod == true && options.Matches(actual.GetGenericArguments())
+			Outcome = actual?.IsGenericMethod == true && options.Matches(actual)
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;

@@ -23,4 +23,6 @@ public sealed partial class ThatType
 	private class ClassWithInterface : ITestInterface;
 
 	private interface ITestInterface;
+
+	private class GenericClassWithTwoArguments<TFoo, TBar> where TBar : BaseClass;
 }

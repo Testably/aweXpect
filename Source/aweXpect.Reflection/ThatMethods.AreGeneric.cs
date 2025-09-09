@@ -49,9 +49,7 @@ public static partial class ThatMethods
 		{
 			Actual = actual;
 			Outcome = actual
-				.All(method =>
-					method?.IsGenericMethod == true &&
-					options.Matches(method.GetGenericArguments()))
+				.All(method => method?.IsGenericMethod == true && options.Matches(method))
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -68,7 +66,7 @@ public static partial class ThatMethods
 			stringBuilder.Append(it).Append(" contained not matching methods ");
 			Formatter.Format(stringBuilder,
 				Actual?.Where(method
-					=> method?.IsGenericMethod != true || !options.Matches(method.GetGenericArguments())),
+					=> method?.IsGenericMethod != true || !options.Matches(method)),
 				FormattingOptions.Indented(indentation));
 		}
 
@@ -80,7 +78,7 @@ public static partial class ThatMethods
 			stringBuilder.Append(it).Append(" only contained generic methods ");
 			Formatter.Format(stringBuilder,
 				Actual?.Where(method
-					=> method?.IsGenericMethod == true && options.Matches(method.GetGenericArguments())),
+					=> method?.IsGenericMethod == true && options.Matches(method)),
 				FormattingOptions.Indented(indentation));
 		}
 	}

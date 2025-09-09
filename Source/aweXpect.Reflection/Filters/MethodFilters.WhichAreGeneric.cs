@@ -54,7 +54,7 @@ public static partial class MethodFilters
 		{
 			Type argumentType = typeof(T);
 			GenericArgumentFilterOptions genericArgumentFilterOptions = new(
-				p => argumentType == p.BaseType,
+				(p, _) => argumentType == p.BaseType,
 				() => $"of type {Formatter.Format(typeof(T))}");
 			CollectionIndexOptions collectionIndexOptions = new();
 			IChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
@@ -67,7 +67,7 @@ public static partial class MethodFilters
 						{
 							CollectionIndexOptions.IMatchFromBeginning fromBeginning => fromBeginning.MatchesIndex(i),
 							CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(i, arguments.Length),
-							_ => false
+							_ => false,
 						};
 						return isIndexInRange == true &&
 						       genericArgumentFilterOptions.Matches(p);
@@ -87,10 +87,10 @@ public static partial class MethodFilters
 			Type argumentType = typeof(T);
 			StringEqualityOptions stringEqualityOptions = new();
 			GenericArgumentFilterOptions genericArgumentFilterOptions = new(
-				p => argumentType == p.BaseType,
+				(p, _) => argumentType == p.BaseType,
 				() => $"of type {Formatter.Format(typeof(T))}");
 			genericArgumentFilterOptions.AddPredicate(
-				p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
+				(p, _) => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 				() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 			CollectionIndexOptions collectionIndexOptions = new();
 			IChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
@@ -103,7 +103,7 @@ public static partial class MethodFilters
 						{
 							CollectionIndexOptions.IMatchFromBeginning fromBeginning => fromBeginning.MatchesIndex(i),
 							CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(i, arguments.Length),
-							_ => false
+							_ => false,
 						};
 						return isIndexInRange == true &&
 						       genericArgumentFilterOptions.Matches(p);
@@ -122,7 +122,7 @@ public static partial class MethodFilters
 		{
 			StringEqualityOptions stringEqualityOptions = new();
 			GenericArgumentFilterOptions genericArgumentFilterOptions = new(
-				p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
+				(p, _) => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 				() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 			CollectionIndexOptions collectionIndexOptions = new();
 			IChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
@@ -135,7 +135,7 @@ public static partial class MethodFilters
 						{
 							CollectionIndexOptions.IMatchFromBeginning fromBeginning => fromBeginning.MatchesIndex(i),
 							CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(i, arguments.Length),
-							_ => false
+							_ => false,
 						};
 						return isIndexInRange == true &&
 						       genericArgumentFilterOptions.Matches(p);

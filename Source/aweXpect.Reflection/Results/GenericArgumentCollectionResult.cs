@@ -40,7 +40,7 @@ public class GenericArgumentCollectionResult<TThat>(
 	{
 		Type argumentType = typeof(T);
 		GenericArgumentFilterOptions genericArgumentFilterOptions = new(
-			p => argumentType == p.BaseType,
+			(type, name) => argumentType == (name is null ? type.BaseType : type),
 			() => $"of type {Formatter.Format(typeof(T))}");
 		CollectionIndexOptions collectionIndexOptions = new();
 		genericArgumentsFilterOptions.AddFilter(genericArgumentFilterOptions, collectionIndexOptions);
@@ -56,10 +56,10 @@ public class GenericArgumentCollectionResult<TThat>(
 		StringEqualityOptions stringEqualityOptions = new();
 		Type argumentType = typeof(T);
 		GenericArgumentFilterOptions genericArgumentFilterOptions = new(
-			p => argumentType == p.BaseType,
+			(type, name) => argumentType == (name is null ? type.BaseType : type),
 			() => $"of type {Formatter.Format(typeof(T))}");
 		genericArgumentFilterOptions.AddPredicate(
-			p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
+			(type, name) => stringEqualityOptions.AreConsideredEqual(name ?? type.Name, expected),
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 		CollectionIndexOptions collectionIndexOptions = new();
 		genericArgumentsFilterOptions.AddFilter(genericArgumentFilterOptions, collectionIndexOptions);
@@ -75,7 +75,7 @@ public class GenericArgumentCollectionResult<TThat>(
 	{
 		StringEqualityOptions stringEqualityOptions = new();
 		GenericArgumentFilterOptions genericArgumentFilterOptions = new(
-			p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
+			(type, name) => stringEqualityOptions.AreConsideredEqual(name ?? type.Name, expected),
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 		CollectionIndexOptions collectionIndexOptions = new();
 		genericArgumentsFilterOptions.AddFilter(genericArgumentFilterOptions, collectionIndexOptions);

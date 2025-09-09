@@ -5,6 +5,8 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Reflection.Helpers;
+using aweXpect.Reflection.Options;
+using aweXpect.Reflection.Results;
 using aweXpect.Results;
 
 // ReSharper disable PossibleMultipleEnumeration
@@ -16,11 +18,16 @@ public static partial class ThatTypes
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> are generic.
 	/// </summary>
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreGeneric(
+	public static GenericArgumentCollectionResult<IEnumerable<Type?>> AreGeneric(
 		this IThat<IEnumerable<Type?>> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new AreGenericConstraint(it, grammars)),
-			subject);
+	{
+		GenericArgumentsFilterOptions genericFilterOptions = new();
+		return new GenericArgumentCollectionResult<IEnumerable<Type?>>(subject.Get().ExpectationBuilder
+				.AddConstraint((it, grammars)
+					=> new AreGenericConstraint(it, grammars, genericFilterOptions)),
+			subject,
+			genericFilterOptions);
+	}
 
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> are not generic.
@@ -31,24 +38,36 @@ public static partial class ThatTypes
 				=> new AreNotGenericConstraint(it, grammars)),
 			subject);
 
-	private sealed class AreGenericConstraint(string it, ExpectationGrammars grammars)
+	private sealed class AreGenericConstraint(
+		string it,
+		ExpectationGrammars grammars,
+		GenericArgumentsFilterOptions options)
 		: ConstraintResult.WithValue<IEnumerable<Type?>>(grammars),
 			IValueConstraint<IEnumerable<Type?>>
 	{
 		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
 		{
 			Actual = actual;
-			Outcome = actual.All(type => type?.IsGenericType == true) ? Outcome.Success : Outcome.Failure;
+			Outcome = actual
+				.All(type =>
+					type?.IsGenericType == true &&
+					options.Matches(type))
+				? Outcome.Success
+				: Outcome.Failure;
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("are all generic");
+		{
+			stringBuilder.Append("are all generic");
+			stringBuilder.Append(options.GetDescription());
+		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" contained non-generic types ");
-			Formatter.Format(stringBuilder, Actual?.Where(type => type?.IsGenericType != true),
+			stringBuilder.Append(it).Append(" contained not matching types ");
+			Formatter.Format(stringBuilder, Actual?.Where(type
+					=> type?.IsGenericType != true || !options.Matches(type)),
 				FormattingOptions.Indented(indentation));
 		}
 
@@ -58,7 +77,8 @@ public static partial class ThatTypes
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained generic types ");
-			Formatter.Format(stringBuilder, Actual?.Where(type => type?.IsGenericType == true),
+			Formatter.Format(stringBuilder, Actual?.Where(type
+					=> type?.IsGenericType == true && options.Matches(type)),
 				FormattingOptions.Indented(indentation));
 		}
 	}

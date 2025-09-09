@@ -51,22 +51,22 @@ public static partial class TypeFilters
 		/// </summary>
 		public GenericTypesWithArgument WithArgument<T>()
 		{
-			Type? argumentType = typeof(T);
+			Type argumentType = typeof(T);
 			GenericArgumentFilterOptions genericArgumentFilterOptions = new(
-				p => argumentType == p.BaseType,
+				(type, name) => argumentType == (name is null ? type.BaseType : type),
 				() => $"of type {Formatter.Format(typeof(T))}");
 			CollectionIndexOptions collectionIndexOptions = new();
-			IChangeableFilter<Type>? filter = Filter.Suffix<Type>(
+			IChangeableFilter<Type> filter = Filter.Suffix<Type>(
 				type =>
 				{
-					Type[]? arguments = type.GetGenericArguments();
+					Type[] arguments = type.GetGenericArguments();
 					return arguments.Where((p, i) =>
 					{
 						bool? isIndexInRange = collectionIndexOptions.Match switch
 						{
 							CollectionIndexOptions.IMatchFromBeginning fromBeginning => fromBeginning.MatchesIndex(i),
 							CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(i, arguments.Length),
-							_ => false
+							_ => false,
 						};
 						return isIndexInRange == true &&
 						       genericArgumentFilterOptions.Matches(p);
@@ -83,26 +83,26 @@ public static partial class TypeFilters
 		/// </summary>
 		public GenericTypesWithNamedArgument WithArgument<T>(string expected)
 		{
-			Type? argumentType = typeof(T);
+			Type argumentType = typeof(T);
 			StringEqualityOptions stringEqualityOptions = new();
 			GenericArgumentFilterOptions genericArgumentFilterOptions = new(
-				p => argumentType == p.BaseType,
+				(type, name) => argumentType == (name is null ? type.BaseType : type),
 				() => $"of type {Formatter.Format(typeof(T))}");
 			genericArgumentFilterOptions.AddPredicate(
-				p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
+				(type, name) => stringEqualityOptions.AreConsideredEqual(name ?? type.Name, expected),
 				() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 			CollectionIndexOptions collectionIndexOptions = new();
-			IChangeableFilter<Type>? filter = Filter.Suffix<Type>(
+			IChangeableFilter<Type> filter = Filter.Suffix<Type>(
 				type =>
 				{
-					Type[]? arguments = type.GetGenericArguments();
+					Type[] arguments = type.GetGenericArguments();
 					return arguments.Where((p, i) =>
 					{
 						bool? isIndexInRange = collectionIndexOptions.Match switch
 						{
 							CollectionIndexOptions.IMatchFromBeginning fromBeginning => fromBeginning.MatchesIndex(i),
 							CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(i, arguments.Length),
-							_ => false
+							_ => false,
 						};
 						return isIndexInRange == true &&
 						       genericArgumentFilterOptions.Matches(p);
@@ -121,20 +121,20 @@ public static partial class TypeFilters
 		{
 			StringEqualityOptions stringEqualityOptions = new();
 			GenericArgumentFilterOptions genericArgumentFilterOptions = new(
-				p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
+				(type, name) => stringEqualityOptions.AreConsideredEqual(name ?? type.Name, expected),
 				() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 			CollectionIndexOptions collectionIndexOptions = new();
-			IChangeableFilter<Type>? filter = Filter.Suffix<Type>(
+			IChangeableFilter<Type> filter = Filter.Suffix<Type>(
 				type =>
 				{
-					Type[]? arguments = type.GetGenericArguments();
+					Type[] arguments = type.GetGenericArguments();
 					return arguments.Where((p, i) =>
 					{
 						bool? isIndexInRange = collectionIndexOptions.Match switch
 						{
 							CollectionIndexOptions.IMatchFromBeginning fromBeginning => fromBeginning.MatchesIndex(i),
 							CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(i, arguments.Length),
-							_ => false
+							_ => false,
 						};
 						return isIndexInRange == true &&
 						       genericArgumentFilterOptions.Matches(p);
