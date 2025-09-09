@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Reflection.Collections;
+﻿using System.Threading.Tasks;
+
+namespace aweXpect.Reflection.Collections;
 
 /// <summary>
 ///     Filter for <typeparamref name="TEntity" />.
@@ -8,7 +10,11 @@ public interface IFilter<in TEntity>
 	/// <summary>
 	///     Checks if the filter applies to the given <typeparamref name="TEntity" />.
 	/// </summary>
-	bool Applies(TEntity value);
+#if NET8_0_OR_GREATER
+	ValueTask<bool> Applies(TEntity value);
+#else
+	Task<bool> Applies(TEntity value);
+#endif
 
 	/// <summary>
 	///     Describes the filter around the given <paramref name="text" />.

@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Options;
@@ -90,9 +92,9 @@ public static partial class ThatMethod
 		CollectionIndexOptions collectionIndexOptions,
 		ParameterFilterOptions parameterFilterOptions)
 		: ConstraintResult.WithNotNullValue<MethodInfo?>(it, grammars),
-			IValueConstraint<MethodInfo?>
+			IAsyncConstraint<MethodInfo?>
 	{
-		public ConstraintResult IsMetBy(MethodInfo? actual)
+		public async Task<ConstraintResult> IsMetBy(MethodInfo? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual is null)
@@ -102,7 +104,7 @@ public static partial class ThatMethod
 			}
 
 			ParameterInfo[] parameters = actual.GetParameters();
-			bool hasParameter = parameters.Where((p, i) =>
+			bool hasParameter = await parameters.AnyAsync(async (p, i) =>
 			{
 				bool? isIndexInRange = collectionIndexOptions.Match switch
 				{
@@ -110,8 +112,8 @@ public static partial class ThatMethod
 					CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(i, parameters.Length),
 					_ => true, // No index constraint means all indices are valid
 				};
-				return isIndexInRange != false && parameterFilterOptions.Matches(p);
-			}).Any();
+				return isIndexInRange != false && await parameterFilterOptions.Matches(p);
+			});
 
 			Outcome = hasParameter ? Outcome.Success : Outcome.Failure;
 			return this;

@@ -24,7 +24,8 @@ public abstract class Filtered<T, TFiltered>(IEnumerable<T> source, List<IFilter
 	protected List<IFilter<T>> Filters { get; } = filters ?? [];
 
 	/// <inheritdoc />
-	public IEnumerator<T> GetEnumerator() => source.Where(a => Filters.All(f => f.Applies(a))).GetEnumerator();
+	// TODO
+	public IEnumerator<T> GetEnumerator() => source.Where(a => Filters.All(f => f.Applies(a).GetAwaiter().GetResult())).GetEnumerator();
 
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 

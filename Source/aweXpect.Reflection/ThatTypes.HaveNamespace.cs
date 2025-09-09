@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Options;
@@ -35,14 +36,17 @@ public static partial class ThatTypes
 		string expected,
 		StringEqualityOptions options)
 		: ConstraintResult.WithValue<IEnumerable<Type?>>(grammars),
-			IValueConstraint<IEnumerable<Type?>>
+			IAsyncConstraint<IEnumerable<Type?>>
 	{
-		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
+		private Type?[] _matching = [];
+		private Type?[] _unmatching = [];
+
+		public async Task<ConstraintResult> IsMetBy(IEnumerable<Type?> actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			Outcome = actual.All(type => options.AreConsideredEqual(type?.Namespace, expected))
-				? Outcome.Success
-				: Outcome.Failure;
+			(_matching, _unmatching) = await actual
+				.SplitAsync(type => options.AreConsideredEqual(type?.Namespace, expected));
+			Outcome = _unmatching.Length == 0 ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -52,9 +56,7 @@ public static partial class ThatTypes
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" contained not matching types ");
-			Formatter.Format(stringBuilder,
-				Actual?.Where(type => !options.AreConsideredEqual(type?.Namespace, expected)),
-				FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, _unmatching, FormattingOptions.Indented(indentation));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -64,9 +66,7 @@ public static partial class ThatTypes
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained matching types ");
-			Formatter.Format(stringBuilder,
-				Actual?.Where(type => options.AreConsideredEqual(type?.Namespace, expected)),
-				FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, _matching, FormattingOptions.Indented(indentation));
 		}
 	}
 }

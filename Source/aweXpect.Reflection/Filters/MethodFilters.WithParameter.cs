@@ -22,11 +22,11 @@ public static partial class MethodFilters
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType == parameterType,
 			() => $"of type {Formatter.Format(parameterType)}");
-		IChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
+		IAsyncChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
 			methodInfo =>
 			{
 				ParameterInfo[] parameters = methodInfo.GetParameters();
-				return parameters.Where((p, i) =>
+				return parameters.AnyAsync(async (p, i) =>
 				{
 					bool? isIndexInRange = collectionIndexOptions.Match switch
 					{
@@ -35,8 +35,8 @@ public static partial class MethodFilters
 						_ => false,
 					};
 					return isIndexInRange == true &&
-					       parameterFilterOptions.Matches(p);
-				}).Any();
+					       await parameterFilterOptions.Matches(p);
+				});
 			},
 			()
 				=> $"with parameter {parameterFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
@@ -56,11 +56,11 @@ public static partial class MethodFilters
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 		CollectionIndexOptions collectionIndexOptions = new();
-		IChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
+		IAsyncChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
 			methodInfo =>
 			{
 				ParameterInfo[] parameters = methodInfo.GetParameters();
-				return parameters.Where((p, i) =>
+				return parameters.AnyAsync(async (p, i) =>
 				{
 					bool? isIndexInRange = collectionIndexOptions.Match switch
 					{
@@ -69,8 +69,8 @@ public static partial class MethodFilters
 						_ => false,
 					};
 					return isIndexInRange == true &&
-					       parameterFilterOptions.Matches(p);
-				}).Any();
+					       await parameterFilterOptions.Matches(p);
+				});
 			},
 			()
 				=> $"with parameter {parameterFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
@@ -87,11 +87,11 @@ public static partial class MethodFilters
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions = new(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 			() => $"with name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
-		IChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
+		IAsyncChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
 			methodInfo =>
 			{
 				ParameterInfo[] parameters = methodInfo.GetParameters();
-				return parameters.Where((p, i) =>
+				return parameters.AnyAsync(async (p, i) =>
 				{
 					bool? isIndexInRange = collectionIndexOptions.Match switch
 					{
@@ -100,8 +100,8 @@ public static partial class MethodFilters
 						_ => false,
 					};
 					return isIndexInRange == true &&
-					       parameterFilterOptions.Matches(p);
-				}).Any();
+					       await parameterFilterOptions.Matches(p);
+				});
 			},
 			()
 				=> $"with parameter {parameterFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");

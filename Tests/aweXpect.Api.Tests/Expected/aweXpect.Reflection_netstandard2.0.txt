@@ -889,13 +889,17 @@ namespace aweXpect.Reflection.Collections
         public TFiltered Which(aweXpect.Reflection.Collections.IFilter<T> filter) { }
         public TFiltered Which(System.Func<T, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
     }
+    public interface IAsyncChangeableFilter<TEntity> : aweXpect.Reflection.Collections.IFilter<TEntity>
+    {
+        void UpdateFilter(System.Func<bool, TEntity, System.Threading.Tasks.Task<bool>> predicate, System.Func<string, string> description);
+    }
     public interface IChangeableFilter<TEntity> : aweXpect.Reflection.Collections.IFilter<TEntity>
     {
         void UpdateFilter(System.Func<bool, TEntity, bool> predicate, System.Func<string, string> description);
     }
     public interface IFilter<in TEntity>
     {
-        bool Applies(TEntity value);
+        System.Threading.Tasks.Task<bool> Applies(TEntity value);
         string Describes(string text);
     }
     public interface ILimitedAbstractSealedTypeAssemblies : aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies
@@ -953,10 +957,12 @@ namespace aweXpect.Reflection.Options
     }
     public class GenericArgumentFilterOptions
     {
+        public GenericArgumentFilterOptions(System.Func<System.Type, string?, System.Threading.Tasks.Task<bool>> predicate, System.Func<string> description) { }
         public GenericArgumentFilterOptions(System.Func<System.Type, string?, bool> predicate, System.Func<string> description) { }
+        public void AddPredicate(System.Func<System.Type, string?, System.Threading.Tasks.Task<bool>> predicate, System.Func<string> description) { }
         public void AddPredicate(System.Func<System.Type, string?, bool> predicate, System.Func<string> description) { }
         public string GetDescription() { }
-        public bool Matches(System.Type argument, string? genericArgumentName = null) { }
+        public System.Threading.Tasks.Task<bool> Matches(System.Type argument, string? genericArgumentName = null) { }
     }
     public class GenericArgumentsFilterOptions
     {
@@ -964,15 +970,17 @@ namespace aweXpect.Reflection.Options
         public void AddFilter(aweXpect.Reflection.Options.GenericArgumentFilterOptions filter, aweXpect.Options.CollectionIndexOptions options) { }
         public void AddPredicate(System.Func<System.Type[], bool> predicate, System.Func<string> description) { }
         public string GetDescription() { }
-        public bool Matches(System.Reflection.MethodInfo method) { }
-        public bool Matches(System.Type type) { }
+        public System.Threading.Tasks.Task<bool> Matches(System.Reflection.MethodInfo? method) { }
+        public System.Threading.Tasks.Task<bool> Matches(System.Type? type) { }
     }
     public class ParameterFilterOptions
     {
+        public ParameterFilterOptions(System.Func<System.Reflection.ParameterInfo, System.Threading.Tasks.Task<bool>> predicate, System.Func<string> description) { }
         public ParameterFilterOptions(System.Func<System.Reflection.ParameterInfo, bool> predicate, System.Func<string> description) { }
+        public void AddPredicate(System.Func<System.Reflection.ParameterInfo, System.Threading.Tasks.Task<bool>> predicate, System.Func<string> description) { }
         public void AddPredicate(System.Func<System.Reflection.ParameterInfo, bool> predicate, System.Func<string> description) { }
         public string GetDescription() { }
-        public bool Matches(System.Reflection.ParameterInfo parameter) { }
+        public System.Threading.Tasks.Task<bool> Matches(System.Reflection.ParameterInfo parameter) { }
     }
     public class TypeFilterOptions
     {

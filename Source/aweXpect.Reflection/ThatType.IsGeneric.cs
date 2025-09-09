@@ -1,5 +1,7 @@
 using System;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Reflection.Helpers;
@@ -41,13 +43,13 @@ public static partial class ThatType
 		ExpectationGrammars grammars,
 		GenericArgumentsFilterOptions options)
 		: ConstraintResult.WithNotNullValue<Type?>(it, grammars),
-			IValueConstraint<Type?>
+			IAsyncConstraint<Type?>
 	{
-		public ConstraintResult IsMetBy(Type? actual)
+		public async Task<ConstraintResult> IsMetBy(Type? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			Outcome = actual?.IsGenericType == true &&
-			          options.Matches(actual)
+			          await options.Matches(actual)
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;

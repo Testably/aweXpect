@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Reflection.Helpers;
@@ -43,15 +45,17 @@ public static partial class ThatMethods
 		ExpectationGrammars grammars,
 		GenericArgumentsFilterOptions options)
 		: ConstraintResult.WithValue<IEnumerable<MethodInfo?>>(grammars),
-			IValueConstraint<IEnumerable<MethodInfo?>>
+			IAsyncConstraint<IEnumerable<MethodInfo?>>
 	{
-		public ConstraintResult IsMetBy(IEnumerable<MethodInfo?> actual)
+		private MethodInfo?[] _matching = [];
+		private MethodInfo?[] _unmatching = [];
+
+		public async Task<ConstraintResult> IsMetBy(IEnumerable<MethodInfo?> actual,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			Outcome = actual
-				.All(method => method?.IsGenericMethod == true && options.Matches(method))
-				? Outcome.Success
-				: Outcome.Failure;
+			(_matching, _unmatching) = await actual.SplitAsync(options.Matches);
+			Outcome = _unmatching.Length == 0 ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -64,10 +68,7 @@ public static partial class ThatMethods
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" contained not matching methods ");
-			Formatter.Format(stringBuilder,
-				Actual?.Where(method
-					=> method?.IsGenericMethod != true || !options.Matches(method)),
-				FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, _unmatching, FormattingOptions.Indented(indentation));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -76,10 +77,7 @@ public static partial class ThatMethods
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained generic methods ");
-			Formatter.Format(stringBuilder,
-				Actual?.Where(method
-					=> method?.IsGenericMethod == true && options.Matches(method)),
-				FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, _matching, FormattingOptions.Indented(indentation));
 		}
 	}
 

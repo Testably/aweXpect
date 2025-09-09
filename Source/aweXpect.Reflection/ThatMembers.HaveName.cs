@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Options;
@@ -36,13 +37,18 @@ public static partial class ThatMembers
 		string expected,
 		StringEqualityOptions options)
 		: ConstraintResult.WithValue<IEnumerable<TMember>>(grammars),
-			IValueConstraint<IEnumerable<TMember>>
+			IAsyncConstraint<IEnumerable<TMember>>
 		where TMember : MemberInfo?
 	{
-		public ConstraintResult IsMetBy(IEnumerable<TMember> actual)
+		private TMember[] _matching = [];
+		private TMember[] _unmatching = [];
+
+		public async Task<ConstraintResult> IsMetBy(IEnumerable<TMember> actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			Outcome = actual.All(memberInfo => options.AreConsideredEqual(memberInfo?.Name, expected))
+			(_matching, _unmatching) = await actual
+				.SplitAsync(memberInfo => options.AreConsideredEqual(memberInfo?.Name, expected));
+			Outcome = _unmatching.Length == 0
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
@@ -54,8 +60,7 @@ public static partial class ThatMembers
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" contained not matching items ");
-			Formatter.Format(stringBuilder, Actual?.Where(type => !options.AreConsideredEqual(type?.Name, expected)),
-				FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, _unmatching, FormattingOptions.Indented(indentation));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -64,8 +69,7 @@ public static partial class ThatMembers
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained matching items ");
-			Formatter.Format(stringBuilder, Actual?.Where(type => options.AreConsideredEqual(type?.Name, expected)),
-				FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, _matching, FormattingOptions.Indented(indentation));
 		}
 	}
 }

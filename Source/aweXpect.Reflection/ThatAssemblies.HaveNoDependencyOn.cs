@@ -1,7 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Options;
@@ -35,16 +36,18 @@ public static partial class ThatAssemblies
 		string unexpected,
 		StringEqualityOptions options)
 		: ConstraintResult.WithValue<IEnumerable<Assembly?>>(grammars),
-			IValueConstraint<IEnumerable<Assembly?>>
+			IAsyncConstraint<IEnumerable<Assembly?>>
 	{
-		public ConstraintResult IsMetBy(IEnumerable<Assembly?> actual)
+		private Assembly?[] _matching = [];
+		private Assembly?[] _unmatching = [];
+
+		public async Task<ConstraintResult> IsMetBy(IEnumerable<Assembly?> actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			Outcome = actual.All(assembly =>
-				assembly?.GetReferencedAssemblies().Any(dep => options.AreConsideredEqual(dep.Name, unexpected)) !=
-				true)
-				? Outcome.Success
-				: Outcome.Failure;
+			(_unmatching, _matching) = await actual
+				.SplitWhereAnyAsync(assembly =>
+					assembly?.GetReferencedAssemblies(), dep => options.AreConsideredEqual(dep.Name, unexpected));
+			Outcome = _unmatching.Length == 0 ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -55,11 +58,7 @@ public static partial class ThatAssemblies
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" contained assemblies with the unexpected dependency ");
-			Formatter.Format(stringBuilder,
-				Actual?.Where(assembly =>
-					assembly?.GetReferencedAssemblies().Any(dep => options.AreConsideredEqual(dep.Name, unexpected)) ==
-					true),
-				FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, _unmatching, FormattingOptions.Indented(indentation));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -69,11 +68,7 @@ public static partial class ThatAssemblies
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained assemblies without the unexpected dependency ");
-			Formatter.Format(stringBuilder,
-				Actual?.Where(assembly =>
-					assembly?.GetReferencedAssemblies().Any(dep => options.AreConsideredEqual(dep.Name, unexpected)) !=
-					true),
-				FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, _matching, FormattingOptions.Indented(indentation));
 		}
 	}
 }

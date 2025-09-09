@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 using aweXpect.Core;
 using aweXpect.Options;
@@ -56,11 +55,11 @@ public static partial class TypeFilters
 				(type, name) => argumentType == (name is null ? type.BaseType : type),
 				() => $"of type {Formatter.Format(typeof(T))}");
 			CollectionIndexOptions collectionIndexOptions = new();
-			IChangeableFilter<Type> filter = Filter.Suffix<Type>(
+			IAsyncChangeableFilter<Type> filter = Filter.Suffix<Type>(
 				type =>
 				{
 					Type[] arguments = type.GetGenericArguments();
-					return arguments.Where((p, i) =>
+					return arguments.AnyAsync(async (p, i) =>
 					{
 						bool? isIndexInRange = collectionIndexOptions.Match switch
 						{
@@ -69,8 +68,8 @@ public static partial class TypeFilters
 							_ => false,
 						};
 						return isIndexInRange == true &&
-						       genericArgumentFilterOptions.Matches(p);
-					}).Any();
+						       await genericArgumentFilterOptions.Matches(p);
+					});
 				},
 				()
 					=> $"with argument {genericArgumentFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
@@ -92,11 +91,11 @@ public static partial class TypeFilters
 				(type, name) => stringEqualityOptions.AreConsideredEqual(name ?? type.Name, expected),
 				() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 			CollectionIndexOptions collectionIndexOptions = new();
-			IChangeableFilter<Type> filter = Filter.Suffix<Type>(
+			IAsyncChangeableFilter<Type> filter = Filter.Suffix<Type>(
 				type =>
 				{
 					Type[] arguments = type.GetGenericArguments();
-					return arguments.Where((p, i) =>
+					return arguments.AnyAsync(async (p, i) =>
 					{
 						bool? isIndexInRange = collectionIndexOptions.Match switch
 						{
@@ -105,8 +104,8 @@ public static partial class TypeFilters
 							_ => false,
 						};
 						return isIndexInRange == true &&
-						       genericArgumentFilterOptions.Matches(p);
-					}).Any();
+						       await genericArgumentFilterOptions.Matches(p);
+					});
 				},
 				()
 					=> $"with argument {genericArgumentFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
@@ -124,11 +123,11 @@ public static partial class TypeFilters
 				(type, name) => stringEqualityOptions.AreConsideredEqual(name ?? type.Name, expected),
 				() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 			CollectionIndexOptions collectionIndexOptions = new();
-			IChangeableFilter<Type> filter = Filter.Suffix<Type>(
+			IAsyncChangeableFilter<Type> filter = Filter.Suffix<Type>(
 				type =>
 				{
 					Type[] arguments = type.GetGenericArguments();
-					return arguments.Where((p, i) =>
+					return arguments.AnyAsync(async (p, i) =>
 					{
 						bool? isIndexInRange = collectionIndexOptions.Match switch
 						{
@@ -137,8 +136,8 @@ public static partial class TypeFilters
 							_ => false,
 						};
 						return isIndexInRange == true &&
-						       genericArgumentFilterOptions.Matches(p);
-					}).Any();
+						       await genericArgumentFilterOptions.Matches(p);
+					});
 				},
 				()
 					=> $"with argument {genericArgumentFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");

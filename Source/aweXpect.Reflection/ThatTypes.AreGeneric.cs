@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Reflection.Helpers;
@@ -43,17 +45,16 @@ public static partial class ThatTypes
 		ExpectationGrammars grammars,
 		GenericArgumentsFilterOptions options)
 		: ConstraintResult.WithValue<IEnumerable<Type?>>(grammars),
-			IValueConstraint<IEnumerable<Type?>>
+			IAsyncConstraint<IEnumerable<Type?>>
 	{
-		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
+		private Type?[] _matching = [];
+		private Type?[] _unmatching = [];
+
+		public async Task<ConstraintResult> IsMetBy(IEnumerable<Type?> actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			Outcome = actual
-				.All(type =>
-					type?.IsGenericType == true &&
-					options.Matches(type))
-				? Outcome.Success
-				: Outcome.Failure;
+			(_matching, _unmatching) = await actual.SplitAsync(options.Matches);
+			Outcome = _unmatching.Length == 0 ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -66,9 +67,7 @@ public static partial class ThatTypes
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" contained not matching types ");
-			Formatter.Format(stringBuilder, Actual?.Where(type
-					=> type?.IsGenericType != true || !options.Matches(type)),
-				FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, _unmatching, FormattingOptions.Indented(indentation));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -77,9 +76,7 @@ public static partial class ThatTypes
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained generic types ");
-			Formatter.Format(stringBuilder, Actual?.Where(type
-					=> type?.IsGenericType == true && options.Matches(type)),
-				FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, _matching, FormattingOptions.Indented(indentation));
 		}
 	}
 

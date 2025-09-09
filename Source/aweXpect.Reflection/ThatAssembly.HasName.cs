@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Options;
@@ -32,12 +34,12 @@ public static partial class ThatAssembly
 		string expected,
 		StringEqualityOptions options)
 		: ConstraintResult.WithNotNullValue<Assembly?>(it, grammars),
-			IValueConstraint<Assembly?>
+			IAsyncConstraint<Assembly?>
 	{
-		public ConstraintResult IsMetBy(Assembly? actual)
+		public async Task<ConstraintResult> IsMetBy(Assembly? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			Outcome = options.AreConsideredEqual(actual?.GetName().Name, expected) ? Outcome.Success : Outcome.Failure;
+			Outcome = await options.AreConsideredEqual(actual?.GetName().Name, expected) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 

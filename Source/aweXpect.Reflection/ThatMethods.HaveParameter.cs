@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Options;
@@ -95,12 +96,13 @@ public static partial class ThatMethods
 		CollectionIndexOptions collectionIndexOptions,
 		ParameterFilterOptions parameterFilterOptions)
 		: ConstraintResult.WithNotNullValue<IEnumerable<MethodInfo?>>(it, grammars),
-			IValueConstraint<IEnumerable<MethodInfo?>>
+			IAsyncConstraint<IEnumerable<MethodInfo?>>
 	{
-		public ConstraintResult IsMetBy(IEnumerable<MethodInfo?> actual)
+		public async Task<ConstraintResult> IsMetBy(IEnumerable<MethodInfo?> actual,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			bool allHaveParameter = actual.All(method =>
+			bool allHaveParameter = await actual.AllAsync(async method =>
 			{
 				if (method == null)
 				{
@@ -108,7 +110,7 @@ public static partial class ThatMethods
 				}
 
 				ParameterInfo[] parameters = method.GetParameters();
-				bool hasParameter = parameters.Where((p, i) =>
+				return await parameters.AnyAsync(async (p, i) =>
 				{
 					bool? isIndexInRange = collectionIndexOptions.Match switch
 					{
@@ -116,9 +118,8 @@ public static partial class ThatMethods
 						CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(i, parameters.Length),
 						_ => true, // No index constraint means all indices are valid
 					};
-					return isIndexInRange != false && parameterFilterOptions.Matches(p);
-				}).Any();
-				return hasParameter;
+					return isIndexInRange != false && await parameterFilterOptions.Matches(p);
+				});
 			});
 
 			Outcome = allHaveParameter ? Outcome.Success : Outcome.Failure;

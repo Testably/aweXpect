@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using aweXpect.Core;
@@ -22,11 +21,11 @@ public static partial class ConstructorFilters
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType == parameterType,
 			() => $"of type {Formatter.Format(parameterType)}");
-		IChangeableFilter<ConstructorInfo> filter = Filter.Suffix<ConstructorInfo>(
+		IAsyncChangeableFilter<ConstructorInfo> filter = Filter.Suffix<ConstructorInfo>(
 			constructorInfo =>
 			{
 				ParameterInfo[] parameters = constructorInfo.GetParameters();
-				return parameters.Where((p, i) =>
+				return parameters.AnyAsync(async (p, i) =>
 				{
 					bool? isIndexInRange = collectionIndexOptions.Match switch
 					{
@@ -35,8 +34,8 @@ public static partial class ConstructorFilters
 						_ => false,
 					};
 					return isIndexInRange == true &&
-					       parameterFilterOptions.Matches(p);
-				}).Any();
+					       await parameterFilterOptions.Matches(p);
+				});
 			},
 			()
 				=> $"with parameter {parameterFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
@@ -56,11 +55,11 @@ public static partial class ConstructorFilters
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 		CollectionIndexOptions collectionIndexOptions = new();
-		IChangeableFilter<ConstructorInfo> filter = Filter.Suffix<ConstructorInfo>(
+		IAsyncChangeableFilter<ConstructorInfo> filter = Filter.Suffix<ConstructorInfo>(
 			constructorInfo =>
 			{
 				ParameterInfo[] parameters = constructorInfo.GetParameters();
-				return parameters.Where((p, i) =>
+				return parameters.AnyAsync(async (p, i) =>
 				{
 					bool? isIndexInRange = collectionIndexOptions.Match switch
 					{
@@ -69,8 +68,8 @@ public static partial class ConstructorFilters
 						_ => false,
 					};
 					return isIndexInRange == true &&
-					       parameterFilterOptions.Matches(p);
-				}).Any();
+					       await parameterFilterOptions.Matches(p);
+				});
 			},
 			()
 				=> $"with parameter {parameterFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
@@ -87,11 +86,11 @@ public static partial class ConstructorFilters
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions = new(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 			() => $"with name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
-		IChangeableFilter<ConstructorInfo> filter = Filter.Suffix<ConstructorInfo>(
+		IAsyncChangeableFilter<ConstructorInfo> filter = Filter.Suffix<ConstructorInfo>(
 			constructorInfo =>
 			{
 				ParameterInfo[] parameters = constructorInfo.GetParameters();
-				return parameters.Where((p, i) =>
+				return parameters.AnyAsync(async (p, i) =>
 				{
 					bool? isIndexInRange = collectionIndexOptions.Match switch
 					{
@@ -100,8 +99,8 @@ public static partial class ConstructorFilters
 						_ => false,
 					};
 					return isIndexInRange == true &&
-					       parameterFilterOptions.Matches(p);
-				}).Any();
+					       await parameterFilterOptions.Matches(p);
+				});
 			},
 			()
 				=> $"with parameter {parameterFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
