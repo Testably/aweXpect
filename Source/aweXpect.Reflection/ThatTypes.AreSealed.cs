@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Reflection.Helpers;
@@ -22,9 +23,24 @@ public static partial class ThatTypes
 	/// </remarks>
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreSealed(
 		this IThat<IEnumerable<Type?>> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
 				=> new AreSealedConstraint(it, grammars)),
 			subject);
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> are sealed.
+	/// </summary>
+	/// <remarks>
+	///     Static types are not considered sealed, even though they
+	///     have <see cref="Type.IsSealed" /> set to <see langword="true" />.
+	/// </remarks>
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> AreSealed(
+		this IThat<IAsyncEnumerable<Type?>> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
+				=> new AreSealedConstraint(it, grammars)),
+			subject);
+#endif
 
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> are not sealed.
@@ -35,20 +51,40 @@ public static partial class ThatTypes
 	/// </remarks>
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreNotSealed(
 		this IThat<IEnumerable<Type?>> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
 				=> new AreNotSealedConstraint(it, grammars)),
 			subject);
 
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> are not sealed.
+	/// </summary>
+	/// <remarks>
+	///     Static types are considered not sealed, even though they
+	///     have <see cref="Type.IsSealed" /> set to <see langword="true" />.
+	/// </remarks>
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> AreNotSealed(
+		this IThat<IAsyncEnumerable<Type?>> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
+				=> new AreNotSealedConstraint(it, grammars)),
+			subject);
+#endif
+
 	private sealed class AreSealedConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<IEnumerable<Type?>>(grammars),
+		: CollectionConstraintResult<Type?>(grammars),
 			IValueConstraint<IEnumerable<Type?>>
+#if NET8_0_OR_GREATER
+			, IAsyncConstraint<IAsyncEnumerable<Type?>>
+#endif
 	{
+#if NET8_0_OR_GREATER
+		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual,
+			CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, type => type.IsReallySealed());
+#endif
+
 		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
-		{
-			Actual = actual;
-			Outcome = actual.All(type => type.IsReallySealed()) ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
+			=> SetValue(actual, type => type.IsReallySealed());
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("are all sealed");
@@ -56,8 +92,7 @@ public static partial class ThatTypes
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" contained non-sealed types ");
-			Formatter.Format(stringBuilder, Actual?.Where(type => !type.IsReallySealed()),
-				FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -66,21 +101,25 @@ public static partial class ThatTypes
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained sealed types ");
-			Formatter.Format(stringBuilder, Actual?.Where(type => type.IsReallySealed()),
-				FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation));
 		}
 	}
 
 	private sealed class AreNotSealedConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<IEnumerable<Type>>(grammars),
-			IValueConstraint<IEnumerable<Type>>
+		: CollectionConstraintResult<Type?>(grammars),
+			IValueConstraint<IEnumerable<Type?>>
+#if NET8_0_OR_GREATER
+			, IAsyncConstraint<IAsyncEnumerable<Type?>>
+#endif
 	{
-		public ConstraintResult IsMetBy(IEnumerable<Type> actual)
-		{
-			Actual = actual;
-			Outcome = actual.All(type => !type.IsReallySealed()) ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
+#if NET8_0_OR_GREATER
+		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual,
+			CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, type => !type.IsReallySealed());
+#endif
+
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
+			=> SetValue(actual, type => !type.IsReallySealed());
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("are all not sealed");
@@ -88,8 +127,7 @@ public static partial class ThatTypes
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" contained sealed types ");
-			Formatter.Format(stringBuilder, Actual?.Where(type => type.IsReallySealed()),
-				FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -98,8 +136,7 @@ public static partial class ThatTypes
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained non-sealed types ");
-			Formatter.Format(stringBuilder, Actual?.Where(type => !type.IsReallySealed()),
-				FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation));
 		}
 	}
 }

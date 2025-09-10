@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -29,8 +30,8 @@ public static partial class ThatMethods
 		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType == parameterType,
 			() => $"of type {Formatter.Format(parameterType)}");
 		return new ParameterCollectionResult<IEnumerable<MethodInfo?>, TParameter>(subject.Get().ExpectationBuilder
-				.AddConstraint((it, grammars)
-					=> new HaveParameterConstraint(it, grammars, parameterType, null,
+				.AddConstraint<IEnumerable<MethodInfo?>>((_, grammars)
+					=> new HaveParameterConstraint(grammars, parameterType, null,
 						collectionIndexOptions,
 						parameterFilterOptions)),
 			subject,
@@ -54,8 +55,8 @@ public static partial class ThatMethods
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 		return new NamedParameterCollectionResult<IEnumerable<MethodInfo?>, TParameter>(subject.Get()
 				.ExpectationBuilder
-				.AddConstraint((it, grammars)
-					=> new HaveParameterConstraint(it, grammars, parameterType, expected,
+				.AddConstraint<IEnumerable<MethodInfo?>>((_, grammars)
+					=> new HaveParameterConstraint(grammars, parameterType, expected,
 						collectionIndexOptions,
 						parameterFilterOptions)),
 			subject,
@@ -78,8 +79,8 @@ public static partial class ThatMethods
 			() => $"with name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 		return new NamedParameterCollectionResult<IEnumerable<MethodInfo?>, object?>(subject.Get()
 				.ExpectationBuilder
-				.AddConstraint((it, grammars)
-					=> new HaveParameterConstraint(it, grammars, null, expected,
+				.AddConstraint<IEnumerable<MethodInfo?>>((_, grammars)
+					=> new HaveParameterConstraint(grammars, null, expected,
 						collectionIndexOptions,
 						parameterFilterOptions)),
 			subject,
@@ -88,21 +89,99 @@ public static partial class ThatMethods
 			stringEqualityOptions);
 	}
 
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have
+	///     a parameter of type <typeparamref name="TParameter" />.
+	/// </summary>
+	public static ParameterCollectionResult<IAsyncEnumerable<MethodInfo?>, TParameter> HaveParameter<TParameter>(
+		this IThat<IAsyncEnumerable<MethodInfo?>> subject)
+	{
+		Type parameterType = typeof(TParameter);
+		CollectionIndexOptions collectionIndexOptions = new();
+		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType == parameterType,
+			() => $"of type {Formatter.Format(parameterType)}");
+		return new ParameterCollectionResult<IAsyncEnumerable<MethodInfo?>, TParameter>(subject.Get().ExpectationBuilder
+				.AddConstraint<IAsyncEnumerable<MethodInfo?>>((_, grammars)
+					=> new HaveParameterConstraint(grammars, parameterType, null,
+						collectionIndexOptions,
+						parameterFilterOptions)),
+			subject,
+			collectionIndexOptions,
+			parameterFilterOptions);
+	}
+#endif
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have
+	///     a parameter of type <typeparamref name="TParameter" /> with the <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<IAsyncEnumerable<MethodInfo?>, TParameter> HaveParameter<TParameter>(
+		this IThat<IAsyncEnumerable<MethodInfo?>> subject, string expected)
+	{
+		Type parameterType = typeof(TParameter);
+		StringEqualityOptions stringEqualityOptions = new();
+		CollectionIndexOptions collectionIndexOptions = new();
+		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType == parameterType,
+			() => $"of type {Formatter.Format(parameterType)}");
+		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
+			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+		return new NamedParameterCollectionResult<IAsyncEnumerable<MethodInfo?>, TParameter>(subject.Get()
+				.ExpectationBuilder
+				.AddConstraint<IAsyncEnumerable<MethodInfo?>>((_, grammars)
+					=> new HaveParameterConstraint(grammars, parameterType, expected,
+						collectionIndexOptions,
+						parameterFilterOptions)),
+			subject,
+			collectionIndexOptions,
+			parameterFilterOptions,
+			stringEqualityOptions);
+	}
+#endif
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have
+	///     a parameter with the <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<IAsyncEnumerable<MethodInfo?>, object?> HaveParameter(
+		this IThat<IAsyncEnumerable<MethodInfo?>> subject, string expected)
+	{
+		StringEqualityOptions stringEqualityOptions = new();
+		CollectionIndexOptions collectionIndexOptions = new();
+		ParameterFilterOptions parameterFilterOptions = new(
+			p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
+			() => $"with name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+		return new NamedParameterCollectionResult<IAsyncEnumerable<MethodInfo?>, object?>(subject.Get()
+				.ExpectationBuilder
+				.AddConstraint<IAsyncEnumerable<MethodInfo?>>((_, grammars)
+					=> new HaveParameterConstraint(grammars, null, expected,
+						collectionIndexOptions,
+						parameterFilterOptions)),
+			subject,
+			collectionIndexOptions,
+			parameterFilterOptions,
+			stringEqualityOptions);
+	}
+#endif
+
 	private sealed class HaveParameterConstraint(
-		string it,
 		ExpectationGrammars grammars,
 		Type? parameterType,
 		string? expectedName,
 		CollectionIndexOptions collectionIndexOptions,
 		ParameterFilterOptions parameterFilterOptions)
-		: ConstraintResult.WithNotNullValue<IEnumerable<MethodInfo?>>(it, grammars),
+		: CollectionConstraintResult<MethodInfo?>(grammars),
 			IAsyncConstraint<IEnumerable<MethodInfo?>>
+#if NET8_0_OR_GREATER
+			, IAsyncConstraint<IAsyncEnumerable<MethodInfo?>>
+#endif
 	{
-		public async Task<ConstraintResult> IsMetBy(IEnumerable<MethodInfo?> actual,
+#if NET8_0_OR_GREATER
+		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<MethodInfo?> actual,
 			CancellationToken cancellationToken)
-		{
-			Actual = actual;
-			bool allHaveParameter = await actual.AllAsync(async method =>
+			=> await SetAsyncValue(actual, async method =>
 			{
 				if (method == null)
 				{
@@ -121,10 +200,29 @@ public static partial class ThatMethods
 					return isIndexInRange != false && await parameterFilterOptions.Matches(p);
 				});
 			});
+#endif
 
-			Outcome = allHaveParameter ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
+		public async Task<ConstraintResult> IsMetBy(IEnumerable<MethodInfo?> actual,
+			CancellationToken cancellationToken)
+			=> await SetValue(actual, async method =>
+			{
+				if (method == null)
+				{
+					return false;
+				}
+
+				ParameterInfo[] parameters = method.GetParameters();
+				return await parameters.AnyAsync(async (p, i) =>
+				{
+					bool? isIndexInRange = collectionIndexOptions.Match switch
+					{
+						CollectionIndexOptions.IMatchFromBeginning fromBeginning => fromBeginning.MatchesIndex(i),
+						CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(i, parameters.Length),
+						_ => true, // No index constraint means all indices are valid
+					};
+					return isIndexInRange != false && await parameterFilterOptions.Matches(p);
+				});
+			});
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{

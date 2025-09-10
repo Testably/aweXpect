@@ -27,11 +27,37 @@ public static partial class ThatMethods
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(returnType, true);
 		return new MethodsReturnResult<IEnumerable<MethodInfo>, IThat<IEnumerable<MethodInfo>>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<MethodInfo>>((it, grammars)
 				=> new ReturnConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject,
 			typeFilterOptions);
 	}
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all methods in the filtered collection return exactly type <typeparamref name="TReturn" />.
+	/// </summary>
+	public static MethodsReturnResult<IAsyncEnumerable<MethodInfo>, IThat<IAsyncEnumerable<MethodInfo>>> ReturnExactly<TReturn>(
+		this IThat<IAsyncEnumerable<MethodInfo>> subject)
+		=> ReturnExactly(subject, typeof(TReturn));
+#endif
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all methods in the filtered collection return exactly type <paramref name="returnType" />.
+	/// </summary>
+	public static MethodsReturnResult<IAsyncEnumerable<MethodInfo>, IThat<IAsyncEnumerable<MethodInfo>>> ReturnExactly(
+		this IThat<IAsyncEnumerable<MethodInfo>> subject, Type returnType)
+	{
+		TypeFilterOptions typeFilterOptions = new();
+		typeFilterOptions.RegisterType(returnType, true);
+		return new MethodsReturnResult<IAsyncEnumerable<MethodInfo>, IThat<IAsyncEnumerable<MethodInfo>>>(
+			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<MethodInfo>>((it, grammars)
+				=> new ReturnConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
+			subject,
+			typeFilterOptions);
+	}
+#endif
 
 	public sealed partial class MethodsReturnResult<TValue, TResult>
 	{

@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Reflection.Helpers;
@@ -31,11 +32,38 @@ public static partial class ThatMethods
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(returnType, false);
 		return new MethodsReturnResult<IEnumerable<MethodInfo>, IThat<IEnumerable<MethodInfo>>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<MethodInfo>>((it, grammars)
 				=> new ReturnConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject,
 			typeFilterOptions);
 	}
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all methods in the filtered collection return type <typeparamref name="TReturn" />.
+	/// </summary>
+	public static MethodsReturnResult<IAsyncEnumerable<MethodInfo>, IThat<IAsyncEnumerable<MethodInfo>>>
+		Return<TReturn>(
+			this IThat<IAsyncEnumerable<MethodInfo>> subject)
+		=> Return(subject, typeof(TReturn));
+#endif
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all methods in the filtered collection return type <paramref name="returnType" />.
+	/// </summary>
+	public static MethodsReturnResult<IAsyncEnumerable<MethodInfo>, IThat<IAsyncEnumerable<MethodInfo>>> Return(
+		this IThat<IAsyncEnumerable<MethodInfo>> subject, Type returnType)
+	{
+		TypeFilterOptions typeFilterOptions = new();
+		typeFilterOptions.RegisterType(returnType, false);
+		return new MethodsReturnResult<IAsyncEnumerable<MethodInfo>, IThat<IAsyncEnumerable<MethodInfo>>>(
+			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<MethodInfo>>((it, grammars)
+				=> new ReturnConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
+			subject,
+			typeFilterOptions);
+	}
+#endif
 
 	/// <summary>
 	///     Result that allows chaining additional return types for method collections.
@@ -71,17 +99,20 @@ public static partial class ThatMethods
 		string it,
 		ExpectationGrammars grammars,
 		TypeFilterOptions typeFilterOptions)
-		: ConstraintResult.WithValue<IEnumerable<MethodInfo>>(grammars),
+		: CollectionConstraintResult<MethodInfo>(grammars),
 			IValueConstraint<IEnumerable<MethodInfo>>
+#if NET8_0_OR_GREATER
+			, IAsyncConstraint<IAsyncEnumerable<MethodInfo>>
+#endif
 	{
+#if NET8_0_OR_GREATER
+		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<MethodInfo> actual,
+			CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, method => typeFilterOptions.Matches(method.ReturnType));
+#endif
+
 		public ConstraintResult IsMetBy(IEnumerable<MethodInfo> actual)
-		{
-			Actual = actual;
-			Outcome = actual.All(methodInfo => typeFilterOptions.Matches(methodInfo.ReturnType))
-				? Outcome.Success
-				: Outcome.Failure;
-			return this;
-		}
+			=> SetValue(actual, method => typeFilterOptions.Matches(method.ReturnType));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -92,9 +123,7 @@ public static partial class ThatMethods
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" contained not matching methods ");
-			Formatter.Format(stringBuilder,
-				Actual?.Where(methodInfo => !typeFilterOptions.Matches(methodInfo.ReturnType)),
-				FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -106,9 +135,7 @@ public static partial class ThatMethods
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained matching methods ");
-			Formatter.Format(stringBuilder,
-				Actual?.Where(methodInfo => typeFilterOptions.Matches(methodInfo.ReturnType)),
-				FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation));
 		}
 	}
 }

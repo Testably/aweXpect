@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Reflection.Helpers;
@@ -23,14 +24,15 @@ public static partial class ThatTypes
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
-	public static HaveAttributeResult<Type?> Have<TAttribute>(
+	public static HaveAttributeResult<Type?, IEnumerable<Type?>> Have<TAttribute>(
 		this IThat<IEnumerable<Type?>> subject, bool inherit = true)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<Type?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
-		return new HaveAttributeResult<Type?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new HaveAttributeResult<Type?, IEnumerable<Type?>>(
+			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);
@@ -44,7 +46,7 @@ public static partial class ThatTypes
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
-	public static HaveAttributeResult<Type?> Have<TAttribute>(
+	public static HaveAttributeResult<Type?, IEnumerable<Type?>> Have<TAttribute>(
 		this IThat<IEnumerable<Type?>> subject,
 		Func<TAttribute, bool> predicate,
 		bool inherit = true,
@@ -55,25 +57,82 @@ public static partial class ThatTypes
 		AttributeFilterOptions<Type?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
-		return new HaveAttributeResult<Type?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new HaveAttributeResult<Type?, IEnumerable<Type?>>(
+			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);
 	}
 
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> have
+	///     attribute of type <typeparamref name="TAttribute" />.
+	/// </summary>
+	/// <remarks>
+	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
+	///     the attribute can be inherited from a base type.
+	/// </remarks>
+	public static HaveAttributeResult<Type?, IAsyncEnumerable<Type?>> Have<TAttribute>(
+		this IThat<IAsyncEnumerable<Type?>> subject, bool inherit = true)
+		where TAttribute : Attribute
+	{
+		AttributeFilterOptions<Type?> attributeFilterOptions =
+			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
+		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
+		return new HaveAttributeResult<Type?, IAsyncEnumerable<Type?>>(
+			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
+				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
+			subject,
+			attributeFilterOptions);
+	}
+#endif
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> have
+	///     attribute of type <typeparamref name="TAttribute" />.
+	/// </summary>
+	/// <remarks>
+	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
+	///     the attribute can be inherited from a base type.
+	/// </remarks>
+	public static HaveAttributeResult<Type?, IAsyncEnumerable<Type?>> Have<TAttribute>(
+		this IThat<IAsyncEnumerable<Type?>> subject,
+		Func<TAttribute, bool> predicate,
+		bool inherit = true,
+		[CallerArgumentExpression("predicate")]
+		string doNotPopulateThisValue = "")
+		where TAttribute : Attribute
+	{
+		AttributeFilterOptions<Type?> attributeFilterOptions =
+			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
+		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
+		return new HaveAttributeResult<Type?, IAsyncEnumerable<Type?>>(
+			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
+				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
+			subject,
+			attributeFilterOptions);
+	}
+#endif
+
 	private sealed class HaveAttributeConstraint(
 		string it,
 		ExpectationGrammars grammars,
 		AttributeFilterOptions<Type?> attributeFilterOptions)
-		: ConstraintResult.WithNotNullValue<IEnumerable<Type?>>(it, grammars),
+		: CollectionConstraintResult<Type?>(grammars),
 			IValueConstraint<IEnumerable<Type?>>
+#if NET8_0_OR_GREATER
+			, IAsyncConstraint<IAsyncEnumerable<Type?>>
+#endif
 	{
+#if NET8_0_OR_GREATER
+		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, attributeFilterOptions.Matches);
+#endif
+
 		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
-		{
-			Actual = actual;
-			Outcome = actual.All(attributeFilterOptions.Matches) ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
+			=> SetValue(actual, attributeFilterOptions.Matches);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -83,22 +142,20 @@ public static partial class ThatTypes
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" contained not matching types ");
-			Formatter.Format(stringBuilder, Actual?.Where(type => !attributeFilterOptions.Matches(type)),
-				FormattingOptions.Indented(indentation));
+			stringBuilder.Append(it).Append(" contained not matching types ");
+			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("not all ");
-			attributeFilterOptions.AppendDescription(stringBuilder, Grammars.Negate());
+			attributeFilterOptions.AppendDescription(stringBuilder, Grammars);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" only contained matching types ");
-			Formatter.Format(stringBuilder, Actual?.Where(attributeFilterOptions.Matches),
-				FormattingOptions.Indented(indentation));
+			stringBuilder.Append(it).Append(" only contained matching types ");
+			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation));
 		}
 	}
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,39 +23,68 @@ public static partial class ThatTypes
 		this IThat<IEnumerable<Type?>> subject)
 	{
 		GenericArgumentsFilterOptions genericFilterOptions = new();
-		return new GenericArgumentCollectionResult<IEnumerable<Type?>>(subject.Get().ExpectationBuilder
-				.AddConstraint((it, grammars)
-					=> new AreGenericConstraint(it, grammars, genericFilterOptions)),
+		return new GenericArgumentCollectionResult<IEnumerable<Type?>>(
+			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
+				=> new AreGenericConstraint(it, grammars, genericFilterOptions)),
 			subject,
 			genericFilterOptions);
 	}
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> are generic.
+	/// </summary>
+	public static GenericArgumentCollectionResult<IAsyncEnumerable<Type?>> AreGeneric(
+		this IThat<IAsyncEnumerable<Type?>> subject)
+	{
+		GenericArgumentsFilterOptions genericFilterOptions = new();
+		return new GenericArgumentCollectionResult<IAsyncEnumerable<Type?>>(
+			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
+				=> new AreGenericConstraint(it, grammars, genericFilterOptions)),
+			subject,
+			genericFilterOptions);
+	}
+#endif
 
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> are not generic.
 	/// </summary>
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreNotGeneric(
 		this IThat<IEnumerable<Type?>> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
 				=> new AreNotGenericConstraint(it, grammars)),
 			subject);
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="Type" /> are not generic.
+	/// </summary>
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> AreNotGeneric(
+		this IThat<IAsyncEnumerable<Type?>> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
+				=> new AreNotGenericConstraint(it, grammars)),
+			subject);
+#endif
 
 	private sealed class AreGenericConstraint(
 		string it,
 		ExpectationGrammars grammars,
 		GenericArgumentsFilterOptions options)
-		: ConstraintResult.WithValue<IEnumerable<Type?>>(grammars),
+		: CollectionConstraintResult<Type?>(grammars),
 			IAsyncConstraint<IEnumerable<Type?>>
+#if NET8_0_OR_GREATER
+			, IAsyncConstraint<IAsyncEnumerable<Type?>>
+#endif
 	{
-		private Type?[] _matching = [];
-		private Type?[] _unmatching = [];
+#if NET8_0_OR_GREATER
+		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual,
+			CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, options.Matches);
+#endif
 
-		public async Task<ConstraintResult> IsMetBy(IEnumerable<Type?> actual, CancellationToken cancellationToken)
-		{
-			Actual = actual;
-			(_matching, _unmatching) = await actual.SplitAsync(options.Matches);
-			Outcome = _unmatching.Length == 0 ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
+		public async Task<ConstraintResult> IsMetBy(IEnumerable<Type?> actual,
+			CancellationToken cancellationToken)
+			=> await SetValue(actual, options.Matches);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -67,7 +95,7 @@ public static partial class ThatTypes
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" contained not matching types ");
-			Formatter.Format(stringBuilder, _unmatching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -76,20 +104,25 @@ public static partial class ThatTypes
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained generic types ");
-			Formatter.Format(stringBuilder, _matching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation));
 		}
 	}
 
 	private sealed class AreNotGenericConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<IEnumerable<Type?>>(grammars),
+		: CollectionConstraintResult<Type?>(grammars),
 			IValueConstraint<IEnumerable<Type?>>
+#if NET8_0_OR_GREATER
+			, IAsyncConstraint<IAsyncEnumerable<Type?>>
+#endif
 	{
+#if NET8_0_OR_GREATER
+		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual,
+			CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, method => method?.IsGenericType != true);
+#endif
+
 		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
-		{
-			Actual = actual;
-			Outcome = actual.All(type => type?.IsGenericType != true) ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
+			=> SetValue(actual, method => method?.IsGenericType != true);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("are all not generic");
@@ -97,8 +130,7 @@ public static partial class ThatTypes
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" contained generic types ");
-			Formatter.Format(stringBuilder, Actual?.Where(type => type?.IsGenericType == true),
-				FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -107,8 +139,7 @@ public static partial class ThatTypes
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained non-generic types ");
-			Formatter.Format(stringBuilder, Actual?.Where(type => type?.IsGenericType != true),
-				FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation));
 		}
 	}
 }

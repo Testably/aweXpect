@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Reflection.Helpers;
@@ -24,14 +25,15 @@ public static partial class ThatAssemblies
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
-	public static HaveAttributeResult<Assembly?> Have<TAttribute>(
+	public static HaveAttributeResult<Assembly?, IEnumerable<Assembly?>> Have<TAttribute>(
 		this IThat<IEnumerable<Assembly?>> subject, bool inherit = true)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<Assembly?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
-		return new HaveAttributeResult<Assembly?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new HaveAttributeResult<Assembly?, IEnumerable<Assembly?>>(
+			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Assembly?>>((it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);
@@ -45,7 +47,7 @@ public static partial class ThatAssemblies
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
-	public static HaveAttributeResult<Assembly?> Have<TAttribute>(
+	public static HaveAttributeResult<Assembly?, IEnumerable<Assembly?>> Have<TAttribute>(
 		this IThat<IEnumerable<Assembly?>> subject,
 		Func<TAttribute, bool> predicate,
 		bool inherit = true,
@@ -56,25 +58,83 @@ public static partial class ThatAssemblies
 		AttributeFilterOptions<Assembly?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
-		return new HaveAttributeResult<Assembly?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new HaveAttributeResult<Assembly?, IEnumerable<Assembly?>>(
+			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Assembly?>>((it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);
 	}
 
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="Assembly" /> have
+	///     attribute of type <typeparamref name="TAttribute" />.
+	/// </summary>
+	/// <remarks>
+	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
+	///     the attribute can be inherited from a base type.
+	/// </remarks>
+	public static HaveAttributeResult<Assembly?, IAsyncEnumerable<Assembly?>> Have<TAttribute>(
+		this IThat<IAsyncEnumerable<Assembly?>> subject, bool inherit = true)
+		where TAttribute : Attribute
+	{
+		AttributeFilterOptions<Assembly?> attributeFilterOptions =
+			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
+		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
+		return new HaveAttributeResult<Assembly?, IAsyncEnumerable<Assembly?>>(
+			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Assembly?>>((it, grammars)
+				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
+			subject,
+			attributeFilterOptions);
+	}
+#endif
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="Assembly" /> have
+	///     attribute of type <typeparamref name="TAttribute" />.
+	/// </summary>
+	/// <remarks>
+	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
+	///     the attribute can be inherited from a base type.
+	/// </remarks>
+	public static HaveAttributeResult<Assembly?, IAsyncEnumerable<Assembly?>> Have<TAttribute>(
+		this IThat<IAsyncEnumerable<Assembly?>> subject,
+		Func<TAttribute, bool> predicate,
+		bool inherit = true,
+		[CallerArgumentExpression("predicate")]
+		string doNotPopulateThisValue = "")
+		where TAttribute : Attribute
+	{
+		AttributeFilterOptions<Assembly?> attributeFilterOptions =
+			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
+		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
+		return new HaveAttributeResult<Assembly?, IAsyncEnumerable<Assembly?>>(
+			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Assembly?>>((it, grammars)
+				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
+			subject,
+			attributeFilterOptions);
+	}
+#endif
+
 	private sealed class HaveAttributeConstraint(
 		string it,
 		ExpectationGrammars grammars,
 		AttributeFilterOptions<Assembly?> attributeFilterOptions)
-		: ConstraintResult.WithNotNullValue<IEnumerable<Assembly?>>(it, grammars),
+		: CollectionConstraintResult<Assembly?>(grammars),
 			IValueConstraint<IEnumerable<Assembly?>>
+#if NET8_0_OR_GREATER
+			, IAsyncConstraint<IAsyncEnumerable<Assembly?>>
+#endif
 	{
+#if NET8_0_OR_GREATER
+		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual,
+			CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, attributeFilterOptions.Matches);
+#endif
+
 		public ConstraintResult IsMetBy(IEnumerable<Assembly?> actual)
-		{
-			Actual = actual;
-			Outcome = actual.All(attributeFilterOptions.Matches) ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
+			=> SetValue(actual, attributeFilterOptions.Matches);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -84,22 +144,20 @@ public static partial class ThatAssemblies
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" contained not matching assemblies ");
-			Formatter.Format(stringBuilder, Actual?.Where(assembly => !attributeFilterOptions.Matches(assembly)),
-				FormattingOptions.Indented(indentation));
+			stringBuilder.Append(it).Append(" contained not matching assemblies ");
+			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("not all ");
-			attributeFilterOptions.AppendDescription(stringBuilder, Grammars.Negate());
+			attributeFilterOptions.AppendDescription(stringBuilder, Grammars);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" only contained matching assemblies ");
-			Formatter.Format(stringBuilder, Actual?.Where(attributeFilterOptions.Matches),
-				FormattingOptions.Indented(indentation));
+			stringBuilder.Append(it).Append(" only contained matching assemblies ");
+			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation));
 		}
 	}
 }

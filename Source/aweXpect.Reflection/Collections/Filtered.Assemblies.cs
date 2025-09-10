@@ -30,7 +30,7 @@ public static partial class Filtered
 		///     Container for a filterable collection of <see cref="Assembly" />.
 		/// </summary>
 		public Assemblies(IEnumerable<Assembly?> source, string description)
-			: base(source.Where(a => a is not null).Cast<Assembly>())
+			: base(source.WhereNotNull())
 		{
 			_description = description;
 		}
@@ -38,8 +38,7 @@ public static partial class Filtered
 		/// <summary>
 		///     Container for a filterable collection of <see cref="Assembly" />.
 		/// </summary>
-		public Assemblies(Assembly? source, string description)
-			: base(source == null ? [] : [source,])
+		public Assemblies(Assembly? source, string description) : this([source,], description)
 		{
 			_description = description;
 		}

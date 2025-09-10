@@ -25,7 +25,7 @@ public static partial class Filtered
 		///     Container for a filterable collection of <see cref="Type" />.
 		/// </summary>
 		public Types(IEnumerable<Type?> source, string description)
-			: base(source.Where(a => a is not null).Cast<Type>())
+			: base(source.WhereNotNull())
 		{
 			_description = description;
 		}
@@ -45,8 +45,7 @@ public static partial class Filtered
 		/// </summary>
 		internal Types(Constructors constructors) : base(constructors
 			.Select(constructorInfo => constructorInfo.DeclaringType)
-			.Where(x => x is not null)
-			.Cast<Type>()
+			.WhereNotNull()
 			.Distinct())
 		{
 			_description = DeclaringTypesPrefix + constructors.GetDescription();
@@ -57,8 +56,7 @@ public static partial class Filtered
 		/// </summary>
 		internal Types(Properties properties) : base(properties
 			.Select(propertyInfo => propertyInfo.DeclaringType)
-			.Where(x => x is not null)
-			.Cast<Type>()
+			.WhereNotNull()
 			.Distinct())
 		{
 			_description = DeclaringTypesPrefix + properties.GetDescription();
@@ -69,8 +67,7 @@ public static partial class Filtered
 		/// </summary>
 		internal Types(Methods methods) : base(methods
 			.Select(methodInfo => methodInfo.DeclaringType)
-			.Where(x => x is not null)
-			.Cast<Type>()
+			.WhereNotNull()
 			.Distinct())
 		{
 			_description = DeclaringTypesPrefix + methods.GetDescription();
@@ -81,8 +78,7 @@ public static partial class Filtered
 		/// </summary>
 		internal Types(Fields fields) : base(fields
 			.Select(fieldInfo => fieldInfo.DeclaringType)
-			.Where(x => x is not null)
-			.Cast<Type>()
+			.WhereNotNull()
 			.Distinct())
 		{
 			_description = DeclaringTypesPrefix + fields.GetDescription();
@@ -93,8 +89,7 @@ public static partial class Filtered
 		/// </summary>
 		internal Types(Events events) : base(events
 			.Select(eventInfo => eventInfo.DeclaringType)
-			.Where(x => x is not null)
-			.Cast<Type>()
+			.WhereNotNull()
 			.Distinct())
 		{
 			_description = DeclaringTypesPrefix + events.GetDescription();

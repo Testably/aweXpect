@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Reflection.Helpers;
@@ -18,29 +19,56 @@ public static partial class ThatConstructors
 	/// </summary>
 	public static AndOrResult<IEnumerable<ConstructorInfo?>, IThat<IEnumerable<ConstructorInfo?>>> AreStatic(
 		this IThat<IEnumerable<ConstructorInfo?>> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<ConstructorInfo?>>((it, grammars)
 				=> new AreStaticConstraint(it, grammars)),
 			subject);
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> are static.
+	/// </summary>
+	public static AndOrResult<IAsyncEnumerable<ConstructorInfo?>, IThat<IAsyncEnumerable<ConstructorInfo?>>> AreStatic(
+		this IThat<IAsyncEnumerable<ConstructorInfo?>> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<ConstructorInfo?>>((it, grammars)
+				=> new AreStaticConstraint(it, grammars)),
+			subject);
+#endif
 
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> are not static.
 	/// </summary>
 	public static AndOrResult<IEnumerable<ConstructorInfo?>, IThat<IEnumerable<ConstructorInfo?>>> AreNotStatic(
 		this IThat<IEnumerable<ConstructorInfo?>> subject)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<ConstructorInfo?>>((it, grammars)
 				=> new AreNotStaticConstraint(it, grammars)),
 			subject);
 
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> are not static.
+	/// </summary>
+	public static AndOrResult<IAsyncEnumerable<ConstructorInfo?>, IThat<IAsyncEnumerable<ConstructorInfo?>>>
+		AreNotStatic(this IThat<IAsyncEnumerable<ConstructorInfo?>> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<ConstructorInfo?>>((it, grammars)
+				=> new AreNotStaticConstraint(it, grammars)),
+			subject);
+#endif
+
 	private sealed class AreStaticConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<IEnumerable<ConstructorInfo?>>(grammars),
+		: CollectionConstraintResult<ConstructorInfo?>(grammars),
 			IValueConstraint<IEnumerable<ConstructorInfo?>>
+#if NET8_0_OR_GREATER
+			, IAsyncConstraint<IAsyncEnumerable<ConstructorInfo?>>
+#endif
 	{
+#if NET8_0_OR_GREATER
+		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<ConstructorInfo?> actual,
+			CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, constructor => constructor?.IsStatic == true);
+#endif
+
 		public ConstraintResult IsMetBy(IEnumerable<ConstructorInfo?> actual)
-		{
-			Actual = actual;
-			Outcome = actual.All(constructor => constructor?.IsStatic == true) ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
+			=> SetValue(actual, constructor => constructor?.IsStatic == true);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("are all static");
@@ -48,8 +76,7 @@ public static partial class ThatConstructors
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" contained non-static constructors ");
-			Formatter.Format(stringBuilder, Actual?.Where(constructor => constructor?.IsStatic == false),
-				FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -58,21 +85,25 @@ public static partial class ThatConstructors
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained static constructors ");
-			Formatter.Format(stringBuilder, Actual?.Where(constructor => constructor?.IsStatic == true),
-				FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation));
 		}
 	}
 
 	private sealed class AreNotStaticConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<IEnumerable<ConstructorInfo?>>(grammars),
+		: CollectionConstraintResult<ConstructorInfo?>(grammars),
 			IValueConstraint<IEnumerable<ConstructorInfo?>>
+#if NET8_0_OR_GREATER
+			, IAsyncConstraint<IAsyncEnumerable<ConstructorInfo?>>
+#endif
 	{
+#if NET8_0_OR_GREATER
+		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<ConstructorInfo?> actual,
+			CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, constructor => constructor?.IsStatic == false);
+#endif
+
 		public ConstraintResult IsMetBy(IEnumerable<ConstructorInfo?> actual)
-		{
-			Actual = actual;
-			Outcome = actual.All(constructor => constructor?.IsStatic == false) ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
+			=> SetValue(actual, constructor => constructor?.IsStatic == false);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("are all not static");
@@ -80,8 +111,7 @@ public static partial class ThatConstructors
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" contained static constructors ");
-			Formatter.Format(stringBuilder, Actual?.Where(constructor => constructor?.IsStatic == true),
-				FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -90,8 +120,7 @@ public static partial class ThatConstructors
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained non-static constructors ");
-			Formatter.Format(stringBuilder, Actual?.Where(constructor => constructor?.IsStatic == false),
-				FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation));
 		}
 	}
 }
