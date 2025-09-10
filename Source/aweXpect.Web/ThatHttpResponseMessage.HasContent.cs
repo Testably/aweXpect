@@ -79,7 +79,7 @@ public static partial class ThatHttpResponseMessage
 #else
 			_message = await actual.Content.ReadAsStringAsync(cancellationToken);
 #endif
-			if (options.AreConsideredEqual(_message, expected))
+			if (await options.AreConsideredEqual(_message, expected))
 			{
 				Outcome = Outcome.Success;
 				return this;

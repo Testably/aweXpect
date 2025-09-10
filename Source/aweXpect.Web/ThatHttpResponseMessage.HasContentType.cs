@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
@@ -39,11 +41,11 @@ public static partial class ThatHttpResponseMessage
 		string expected,
 		StringEqualityOptions options)
 		: ConstraintResult.WithNotNullValue<HttpResponseMessage>(it, grammars),
-			IValueConstraint<HttpResponseMessage>
+			IAsyncConstraint<HttpResponseMessage>
 	{
 		private string? _contentType;
 
-		public ConstraintResult IsMetBy(HttpResponseMessage? actual)
+		public async Task<ConstraintResult> IsMetBy(HttpResponseMessage? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual == null)
@@ -59,7 +61,7 @@ public static partial class ThatHttpResponseMessage
 				return this;
 			}
 
-			if (!options.AreConsideredEqual(_contentType, expected))
+			if (!await options.AreConsideredEqual(_contentType, expected))
 			{
 				expectationBuilder.AddContext(actual);
 				Outcome = Outcome.Failure;

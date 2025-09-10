@@ -90,7 +90,7 @@ public static partial class ThatHttpResponseMessage
 			{
 				_failures.Add($"{It} did not match the expected format because no 'type' property existed");
 			}
-			else if (expectedType != null && !typeOptions.AreConsideredEqual(type, expectedType))
+			else if (expectedType != null && !await typeOptions.AreConsideredEqual(type, expectedType))
 			{
 				_failures.Add(
 					$"{It} was type {Formatter.Format(type)} which {new StringDifference(type, expectedType)}");
@@ -101,19 +101,19 @@ public static partial class ThatHttpResponseMessage
 				_failures.Add($"{It} had status {Formatter.Format(status)}");
 			}
 
-			if (!options.IsTitleConsideredEqualTo(title))
+			if (!await options.IsTitleConsideredEqualTo(title))
 			{
 				_failures.Add(
 					$"{It} had title {Formatter.Format(title)} which {new StringDifference(title, options.Title)}");
 			}
 
-			if (!options.IsDetailConsideredEqualTo(detail))
+			if (!await options.IsDetailConsideredEqualTo(detail))
 			{
 				_failures.Add(
 					$"{It} had detail {Formatter.Format(detail)} which {new StringDifference(detail, options.Detail)}");
 			}
 
-			if (!options.IsInstanceConsideredEqualTo(instance))
+			if (!await options.IsInstanceConsideredEqualTo(instance))
 			{
 				_failures.Add(
 					$"{It} had instance {Formatter.Format(instance)} which {new StringDifference(instance, options.Instance)}");

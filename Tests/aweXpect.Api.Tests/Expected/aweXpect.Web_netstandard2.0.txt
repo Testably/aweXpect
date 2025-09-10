@@ -64,9 +64,9 @@ namespace aweXpect.Web.Results
         public string? Instance { get; }
         public int? Status { get; }
         public string? Title { get; }
-        public bool IsDetailConsideredEqualTo(string? detail) { }
-        public bool IsInstanceConsideredEqualTo(string? instance) { }
-        public bool IsTitleConsideredEqualTo(string? title) { }
+        public System.Threading.Tasks.Task<bool> IsDetailConsideredEqualTo(string? detail) { }
+        public System.Threading.Tasks.Task<bool> IsInstanceConsideredEqualTo(string? instance) { }
+        public System.Threading.Tasks.Task<bool> IsTitleConsideredEqualTo(string? title) { }
         public override string ToString() { }
         public aweXpect.Options.StringEqualityOptions WithDetail(string detail) { }
         public aweXpect.Options.StringEqualityOptions WithInstance(string instance) { }

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Options;
@@ -88,11 +90,11 @@ public class HasHeaderValueResult<TType, TThat>
 		Func<TType, string?[]?> headerValueAccessor,
 		StringEqualityOptions options)
 		: ConstraintResult.WithValue<TType?>(grammars),
-			IValueConstraint<TType?>
+			IAsyncConstraint<TType?>
 	{
 		private string?[]? _headerValues;
 
-		public ConstraintResult IsMetBy(TType? actual)
+		public async Task<ConstraintResult> IsMetBy(TType? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual is null)
@@ -109,7 +111,7 @@ public class HasHeaderValueResult<TType, TThat>
 			}
 
 			string? headerValue = _headerValues[0];
-			Outcome = options.AreConsideredEqual(headerValue, expected) ? Outcome.Success : Outcome.Failure;
+			Outcome = await options.AreConsideredEqual(headerValue, expected) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 

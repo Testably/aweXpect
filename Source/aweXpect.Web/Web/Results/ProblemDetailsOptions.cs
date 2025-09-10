@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using aweXpect.Options;
 
 namespace aweXpect.Web.Results;
@@ -97,19 +98,34 @@ public class ProblemDetailsOptions
 	/// <summary>
 	///     Checks if the <paramref name="title" /> matches the expected <see cref="Title" />.
 	/// </summary>
-	public bool IsTitleConsideredEqualTo(string? title)
+#if NET8_0_OR_GREATER
+	public ValueTask<bool>
+#else
+	public Task<bool>
+#endif
+		IsTitleConsideredEqualTo(string? title)
 		=> _titleOptions.AreConsideredEqual(title, Title);
 
 	/// <summary>
 	///     Checks if the <paramref name="detail" /> matches the expected <see cref="Detail" />.
 	/// </summary>
-	public bool IsDetailConsideredEqualTo(string? detail)
+#if NET8_0_OR_GREATER
+	public ValueTask<bool>
+#else
+	public Task<bool>
+#endif
+		IsDetailConsideredEqualTo(string? detail)
 		=> _detailOptions.AreConsideredEqual(detail, Detail);
 
 	/// <summary>
 	///     Checks if the <paramref name="instance" /> matches the expected <see cref="Instance" />.
 	/// </summary>
-	public bool IsInstanceConsideredEqualTo(string? instance)
+#if NET8_0_OR_GREATER
+	public ValueTask<bool>
+#else
+	public Task<bool>
+#endif
+		IsInstanceConsideredEqualTo(string? instance)
 		=> _instanceOptions.AreConsideredEqual(instance, Instance);
 
 	/// <inheritdoc cref="object.ToString()" />
@@ -121,6 +137,6 @@ public class ProblemDetailsOptions
 			_ => $", {string
 				.Join(", ", _parts
 					.Take(_parts.Count - 1)
-					.Select(part => part.Invoke()))} and {_parts[^1].Invoke()}",
+					.Select(part => part.Invoke()))} and {_parts[^1].Invoke()}"
 		};
 }
