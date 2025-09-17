@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json;
+using System.Threading.Tasks;
 using aweXpect.Core;
 
 namespace aweXpect.Json;
@@ -34,11 +35,16 @@ internal sealed class JsonMatchType(JsonOptions options) : IStringMatchType
 	}
 
 	/// <inheritdoc cref="IStringMatchType.AreConsideredEqual(string?, string?, bool, IEqualityComparer{string})" />
-	public bool AreConsideredEqual(
-		string? actual,
-		string? expected,
-		bool ignoreCase,
-		IEqualityComparer<string> comparer)
+#if NET8_0_OR_GREATER
+	public async ValueTask<bool>
+#else
+	public async Task<bool>
+#endif
+		AreConsideredEqual(
+			string? actual,
+			string? expected,
+			bool ignoreCase,
+			IEqualityComparer<string> comparer)
 	{
 		if (actual == null && expected == null)
 		{
@@ -58,10 +64,11 @@ internal sealed class JsonMatchType(JsonOptions options) : IStringMatchType
 			{
 				using JsonDocument actualJson = JsonDocument.Parse(actual, options.DocumentOptions);
 
-				_comparisonResult = JsonElementValidator.Compare(
+				_comparisonResult = await JsonElementValidator.Compare(
 					actualJson.RootElement,
 					expectedJson.RootElement,
-					options);
+					options,
+					null);
 				return !_comparisonResult.HasError;
 			}
 			catch (JsonException e)
