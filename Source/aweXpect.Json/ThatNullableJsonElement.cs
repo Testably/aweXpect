@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Helpers;
 using aweXpect.Json;
 
 namespace aweXpect;
@@ -53,7 +54,7 @@ public static partial class ThatNullableJsonElement
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("matches ").Append(expectedExpression);
+			stringBuilder.Append("matches ").Append(expectedExpression.TrimCommonWhiteSpace());
 			if (!options.IgnoreAdditionalProperties)
 			{
 				stringBuilder.Append(" exactly");
@@ -73,7 +74,7 @@ public static partial class ThatNullableJsonElement
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("does not match ").Append(expectedExpression);
+			stringBuilder.Append("does not match ").Append(expectedExpression.TrimCommonWhiteSpace());
 			if (!options.IgnoreAdditionalProperties)
 			{
 				stringBuilder.Append(" exactly");

@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Helpers;
 using aweXpect.Json;
 
 namespace aweXpect;
@@ -56,7 +57,7 @@ public static partial class ThatJsonString
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is valid JSON which matches ").Append(expectedExpression);
+			stringBuilder.Append("is valid JSON which matches ").Append(expectedExpression.TrimCommonWhiteSpace());
 			if (!options.IgnoreAdditionalProperties)
 			{
 				stringBuilder.Append(" exactly");
@@ -68,7 +69,7 @@ public static partial class ThatJsonString
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is no valid JSON which matches ").Append(expectedExpression);
+			stringBuilder.Append("is no valid JSON which matches ").Append(expectedExpression.TrimCommonWhiteSpace());
 			if (!options.IgnoreAdditionalProperties)
 			{
 				stringBuilder.Append(" exactly");

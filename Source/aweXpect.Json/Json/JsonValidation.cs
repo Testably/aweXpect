@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using aweXpect.Core;
+using aweXpect.Helpers;
 
 namespace aweXpect.Json;
 
@@ -333,7 +334,8 @@ internal class JsonValidation : IJsonObjectResult,
 	{
 		string currentPath = CurrentPath;
 		_expectationBuilder.Add((sb, grammars) => sb.Append(And(grammars)).Append(currentPath)
-			.Append(grammars.IsNegated() ? " does not match " : " matches ").Append(doNotPopulateThisValue));
+			.Append(grammars.IsNegated() ? " does not match " : " matches ")
+			.Append(doNotPopulateThisValue.TrimCommonWhiteSpace()));
 		JsonElement? currentElement = _currentElements.Pop();
 		if (currentElement == null)
 		{
@@ -392,7 +394,8 @@ internal class JsonValidation : IJsonObjectResult,
 	{
 		string currentPath = CurrentPath;
 		_expectationBuilder.Add((sb, grammars) => sb.Append(And(grammars)).Append(currentPath)
-			.Append(grammars.IsNegated() ? " does not match " : " matches ").Append(doNotPopulateThisValue));
+			.Append(grammars.IsNegated() ? " does not match " : " matches ")
+			.Append(doNotPopulateThisValue.TrimCommonWhiteSpace()));
 		JsonElement? currentElement = _currentElements.Pop();
 		if (currentElement == null)
 		{

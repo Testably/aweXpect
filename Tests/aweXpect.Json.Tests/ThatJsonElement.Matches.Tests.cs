@@ -350,9 +350,9 @@ public sealed partial class ThatJsonElement
 					.WithMessage($$"""
 					               Expected that subject
 					               matches new
-					               					{
-					               						foo = 2,
-					               					},
+					               {
+					               	foo = 2,
+					               },
 					               but it differed as {{errorMessage}}
 					               """);
 			}
@@ -385,9 +385,9 @@ public sealed partial class ThatJsonElement
 					.WithMessage("""
 					             Expected that subject
 					             matches new
-					             					{
-					             						bar = 3,
-					             					},
+					             {
+					             	bar = 3,
+					             },
 					             but it differed as $.bar was 2 instead of 3
 					             """);
 			}
@@ -421,9 +421,9 @@ public sealed partial class ThatJsonElement
 					.WithMessage("""
 					             Expected that subject
 					             matches new
-					             					{
-					             						bar = 2,
-					             					} exactly,
+					             {
+					             	bar = 2,
+					             } exactly,
 					             but it differed as $.foo had unexpected Null
 					             """);
 			}

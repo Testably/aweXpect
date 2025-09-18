@@ -251,9 +251,9 @@ public sealed partial class ThatJsonElement
 					.WithMessage("""
 					             Expected that subject
 					             is an array and $[0] matches new
-					             					{
-					             						foo = 1,
-					             					},
+					             {
+					             	foo = 1,
+					             },
 					             but it differed as $[0].bar had unexpected 2
 					             """);
 			}

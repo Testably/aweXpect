@@ -286,9 +286,9 @@ public sealed partial class ThatJsonString
 					.WithMessage($$"""
 					               Expected that subject
 					               is valid JSON which matches new
-					               					{
-					               						foo = 2,
-					               					},
+					               {
+					               	foo = 2,
+					               },
 					               but it differed as {{errorMessage}}
 					               """);
 			}
@@ -332,9 +332,9 @@ public sealed partial class ThatJsonString
 					.WithMessage("""
 					             Expected that subject
 					             is valid JSON which matches new
-					             					{
-					             						bar2 = It.Is<double>().That.IsLessThan(2.0),
-					             					},
+					             {
+					             	bar2 = It.Is<double>().That.IsLessThan(2.0),
+					             },
 					             but it differed as $.bar2 was 2.1
 					             """);
 			}
@@ -367,9 +367,9 @@ public sealed partial class ThatJsonString
 					.WithMessage("""
 					             Expected that subject
 					             is valid JSON which matches new
-					             					{
-					             						baz2 = It.Is<bool>().That.IsTrue(),
-					             					},
+					             {
+					             	baz2 = It.Is<bool>().That.IsTrue(),
+					             },
 					             but it differed as $.baz2 was False
 					             """);
 			}
@@ -402,9 +402,9 @@ public sealed partial class ThatJsonString
 					.WithMessage("""
 					             Expected that subject
 					             is valid JSON which matches new
-					             					{
-					             						bar = It.Is<int>().That.IsGreaterThan(3),
-					             					},
+					             {
+					             	bar = It.Is<int>().That.IsGreaterThan(3),
+					             },
 					             but it differed as $.bar was 2
 					             """);
 			}
@@ -437,9 +437,9 @@ public sealed partial class ThatJsonString
 					.WithMessage("""
 					             Expected that subject
 					             is valid JSON which matches new
-					             					{
-					             						list = It.Is<object[]>().That.Contains(4),
-					             					},
+					             {
+					             	list = It.Is<object[]>().That.Contains(4),
+					             },
 					             but it differed as $.list did not contain it
 					             """);
 			}
@@ -472,9 +472,9 @@ public sealed partial class ThatJsonString
 					.WithMessage("""
 					             Expected that subject
 					             is valid JSON which matches new
-					             					{
-					             						empty = It.Is<object?>().That.IsNotNull(),
-					             					},
+					             {
+					             	empty = It.Is<object?>().That.IsNotNull(),
+					             },
 					             but it differed as $.empty was <null>
 					             """);
 			}
@@ -510,12 +510,12 @@ public sealed partial class ThatJsonString
 					.WithMessage("""
 					             Expected that subject
 					             is valid JSON which matches new
-					             					{
-					             						nested = new
-					             						{
-					             							foo = It.Is<string>().That.IsEqualTo("A"),
-					             						},
-					             					},
+					             {
+					             	nested = new
+					             	{
+					             		foo = It.Is<string>().That.IsEqualTo("A"),
+					             	},
+					             },
 					             but it differed as $.nested.foo was "" with a length of 0 which is shorter than the expected length of 1 and misses:
 					               "A"
 					             """);
@@ -549,9 +549,9 @@ public sealed partial class ThatJsonString
 					.WithMessage("""
 					             Expected that subject
 					             is valid JSON which matches new
-					             					{
-					             						foo = It.Is<string>().That.EndsWith("bc"),
-					             					},
+					             {
+					             	foo = It.Is<string>().That.EndsWith("bc"),
+					             },
 					             but it differed as $.foo was "xyz" which differs before index 2:
 					                  ↓ (actual)
 					               "xyz"
@@ -588,9 +588,9 @@ public sealed partial class ThatJsonString
 					.WithMessage("""
 					             Expected that subject
 					             is valid JSON which matches new
-					             					{
-					             						baz1 = It.Is<bool>().That.IsFalse(),
-					             					},
+					             {
+					             	baz1 = It.Is<bool>().That.IsFalse(),
+					             },
 					             but it differed as $.baz1 was True
 					             """);
 			}
@@ -610,9 +610,9 @@ public sealed partial class ThatJsonString
 					.WithMessage("""
 					             Expected that subject
 					             is valid JSON which matches new
-					             					{
-					             						bar = 3,
-					             					},
+					             {
+					             	bar = 3,
+					             },
 					             but it differed as $.bar was 2 instead of 3
 					             """);
 			}
@@ -683,9 +683,9 @@ public sealed partial class ThatJsonString
 					.WithMessage("""
 					             Expected that subject
 					             is valid JSON which matches new
-					             					{
-					             						bar = 2,
-					             					} exactly,
+					             {
+					             	bar = 2,
+					             } exactly,
 					             but it differed as $.foo had unexpected Null
 					             """);
 			}
