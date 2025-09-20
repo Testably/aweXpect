@@ -29,6 +29,7 @@ namespace aweXpect
     {
         public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> DoesNotHaveDefaultPort(this aweXpect.Core.IThat<System.Uri> source) { }
         public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> HasDefaultPort(this aweXpect.Core.IThat<System.Uri> source) { }
+        public static aweXpect.Results.PropertyResult.String<System.Uri> HasScheme(this aweXpect.Core.IThat<System.Uri> source) { }
         public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> IsAbsolute(this aweXpect.Core.IThat<System.Uri> source) { }
         public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> IsFile(this aweXpect.Core.IThat<System.Uri> source) { }
         public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> IsLoopback(this aweXpect.Core.IThat<System.Uri> source) { }
