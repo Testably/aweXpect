@@ -1,7 +1,7 @@
-# [aweXpect.Reflection](https://github.com/aweXpect/aweXpect.Reflection)
+# aweXpect.Reflection
 
 [![Nuget](https://img.shields.io/nuget/v/aweXpect.Reflection)](https://www.nuget.org/packages/aweXpect.Reflection)
 
-Expectations for reflection types.
+[aweXpect.Reflection](https://github.com/aweXpect/aweXpect.Reflection) contains expectations for reflection types.
 
 {README}
