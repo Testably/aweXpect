@@ -44,7 +44,7 @@ internal sealed class JsonMatchType(JsonOptions options) : IStringMatchType
 			string? actual,
 			string? expected,
 			bool ignoreCase,
-			IEqualityComparer<string> comparer)
+			IEqualityComparer<string>? comparer)
 	{
 		if (actual == null && expected == null)
 		{
