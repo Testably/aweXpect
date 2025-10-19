@@ -25,7 +25,7 @@ internal static class ThatExtensions
 		=> expectationBuilder.UpdateContexts(contexts => contexts
 			.Open()
 			.Clear()
-			.Add(new ResultContext(HttpRequestContext,
+			.Add(new ResultContext.AsyncCallback(HttpRequestContext,
 				async cancellationToken
 					=> await HttpFormatter.Format(request, "  ", cancellationToken)))
 			.Close());
@@ -38,7 +38,7 @@ internal static class ThatExtensions
 			return expectationBuilder.UpdateContexts(contexts => contexts
 				.Open()
 				.Clear()
-				.Add(new ResultContext(HttpResponseContext,
+				.Add(new ResultContext.AsyncCallback(HttpResponseContext,
 					async cancellationToken
 						=> await HttpFormatter.Format(response, "  ", cancellationToken)))
 				.Close());
@@ -47,10 +47,10 @@ internal static class ThatExtensions
 		return expectationBuilder.UpdateContexts(contexts => contexts
 			.Open()
 			.Clear()
-			.Add(new ResultContext(HttpRequestContext,
+			.Add(new ResultContext.AsyncCallback(HttpRequestContext,
 				async cancellationToken
 					=> await HttpFormatter.Format(response.RequestMessage, "  ", cancellationToken)))
-			.Add(new ResultContext(HttpResponseContext,
+			.Add(new ResultContext.AsyncCallback(HttpResponseContext,
 				async cancellationToken
 					=> await HttpFormatter.Format(response, "  ", cancellationToken)))
 			.Close());
