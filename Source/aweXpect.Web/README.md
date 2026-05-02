@@ -1,12 +1,12 @@
 # aweXpect.Web
 
 [![Nuget](https://img.shields.io/nuget/v/aweXpect.Web)](https://www.nuget.org/packages/aweXpect.Web)
-[![Build](https://github.com/aweXpect/aweXpect.Web/actions/workflows/build.yml/badge.svg)](https://github.com/aweXpect/aweXpect.Web/actions/workflows/build.yml)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=aweXpect_aweXpect.Web&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=aweXpect_aweXpect.Web)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=aweXpect_aweXpect.Web&metric=coverage)](https://sonarcloud.io/summary/overall?id=aweXpect_aweXpect.Web)
-[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2FaweXpect%2FaweXpect.Web%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/aweXpect/aweXpect.Web/main)
+[![Build](https://github.com/Testably/aweXpect.Web/actions/workflows/build.yml/badge.svg)](https://github.com/Testably/aweXpect.Web/actions/workflows/build.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Testably_aweXpect.Web&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Testably_aweXpect.Web)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Testably_aweXpect.Web&metric=coverage)](https://sonarcloud.io/summary/overall?id=Testably_aweXpect.Web)
+[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2FTestably%2FaweXpect.Web%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/Testably/aweXpect.Web/main)
 
-Web extensions for [aweXpect](https://github.com/aweXpect/aweXpect).
+Web extensions for [aweXpect](https://github.com/Testably/aweXpect).
 
 ## `HttpRequestMessage`
 
@@ -15,7 +15,7 @@ Web extensions for [aweXpect](https://github.com/aweXpect/aweXpect).
 You can verify, the method of the `HttpRequestMessage`:
 
 ```csharp
-var request = new HttpRequestMessage(HttpMethod.Get, "https://github.com/aweXpect/aweXpect.Web");
+var request = new HttpRequestMessage(HttpMethod.Get, "https://github.com/Testably/aweXpect.Web");
 
 await Expect.That(request).HasMethod(HttpMethod.Get);
 ```
@@ -25,10 +25,10 @@ await Expect.That(request).HasMethod(HttpMethod.Get);
 You can verify, the request URI of the `HttpRequestMessage`:
 
 ```csharp
-var request = new HttpRequestMessage(HttpMethod.Get, "https://github.com/aweXpect/aweXpect.Web");
+var request = new HttpRequestMessage(HttpMethod.Get, "https://github.com/Testably/aweXpect.Web");
 
-await Expect.That(request).HasRequestUri("https://github.com/aweXpect/aweXpect.Web");
-await Expect.That(request).HasRequestUri(new Uri("https://github.com/aweXpect/aweXpect.Web"));
+await Expect.That(request).HasRequestUri("https://github.com/Testably/aweXpect.Web");
+await Expect.That(request).HasRequestUri(new Uri("https://github.com/Testably/aweXpect.Web"));
 ```
 
 ### Header
@@ -36,7 +36,7 @@ await Expect.That(request).HasRequestUri(new Uri("https://github.com/aweXpect/aw
 You can verify the headers of the `HttpRequestMessage`:
 
 ```csharp
-HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "https://github.com/aweXpect/aweXpect.Web");
+HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "https://github.com/Testably/aweXpect.Web");
 // Add headers
 
 await Expect.That(request).HasHeader("X-GitHub-Request-Id");
@@ -49,7 +49,7 @@ await Expect.That(request).DoesNotHaveHeader("X-My-Header");
 You can also add additional expectations on the header value(s):
 
 ```csharp
-HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "https://github.com/aweXpect/aweXpect.Web");
+HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "https://github.com/Testably/aweXpect.Web");
 // Add headers
 
 await Expect.That(request).HasHeader("X-GitHub-Request-Id")
@@ -63,7 +63,7 @@ await Expect.That(request).HasHeader("Vary")
 You can verify, the content of the `HttpRequestMessage`:
 
 ```csharp
-var request = new HttpRequestMessage(HttpMethod.Post, "https://github.com/aweXpect/aweXpect.Web")
+var request = new HttpRequestMessage(HttpMethod.Post, "https://github.com/Testably/aweXpect.Web")
 {
 	Content = new StringContent("my aweXpect content")
 };
@@ -81,11 +81,11 @@ when [comparing strings](https://awexpect.com/docs/expectations/string#equality)
 You can verify the status code of the `HttpResponseMessage`:
 
 ```csharp
-HttpResponseMessage response = await httpClient.GetAsync("https://github.com/aweXpect/aweXpect.Web");
+HttpResponseMessage response = await httpClient.GetAsync("https://github.com/Testably/aweXpect.Web");
 await Expect.That(response).HasStatusCode().Success();
 await Expect.That(response).HasStatusCode(HttpStatusCode.OK);
 
-response = await httpClient.PostAsync("https://github.com/aweXpect/aweXpect.Web", new StringContent(""));
+response = await httpClient.PostAsync("https://github.com/Testably/aweXpect.Web", new StringContent(""));
 await Expect.That(response).HasStatusCode().ClientError().Or.HasStatusCode().ServerError().Or.HasStatusCode().Redirection();
 ```
 
@@ -94,7 +94,7 @@ await Expect.That(response).HasStatusCode().ClientError().Or.HasStatusCode().Ser
 You can verify the headers of the `HttpResponseMessage`:
 
 ```csharp
-HttpResponseMessage response = await httpClient.GetAsync("https://github.com/aweXpect/aweXpect.Web");
+HttpResponseMessage response = await httpClient.GetAsync("https://github.com/Testably/aweXpect.Web");
 
 await Expect.That(response).HasHeader("X-GitHub-Request-Id");
 await Expect.That(response).HasHeader("Cache-Control")
@@ -106,7 +106,7 @@ await Expect.That(response).DoesNotHaveHeader("X-My-Header");
 You can also add additional expectations on the header value(s):
 
 ```csharp
-HttpResponseMessage response = await httpClient.GetAsync("https://github.com/aweXpect/aweXpect.Web");
+HttpResponseMessage response = await httpClient.GetAsync("https://github.com/Testably/aweXpect.Web");
 
 await Expect.That(response).HasHeader("X-GitHub-Request-Id")
     .WhoseValue(value => value.IsNotEmpty());
@@ -119,7 +119,7 @@ await Expect.That(response).HasHeader("Vary")
 You can verify, the content of the `HttpResponseMessage`:
 
 ```csharp
-HttpResponseMessage response = await httpClient.GetAsync("https://github.com/aweXpect/aweXpect");
+HttpResponseMessage response = await httpClient.GetAsync("https://github.com/Testably/aweXpect");
 
 await Expect.That(response).HasContent("*aweXpect*").AsWildcard();
 ```
@@ -135,7 +135,7 @@ The response could look similar to:
 > but it was 404 NotFound
 > 
 > HTTP-Request:
->   GET https://github.com/aweXpect/missing-repo HTTP/1.1
+>   GET https://github.com/Testably/missing-repo HTTP/1.1
 > 
 > HTTP-Response:
 >   404 NotFound HTTP/1.1
