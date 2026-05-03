@@ -1,7 +1,7 @@
 # aweXpect.Json
 
 [![Nuget](https://img.shields.io/nuget/v/aweXpect.Json)](https://www.nuget.org/packages/aweXpect.Json)
-[![Build](https://github.com/aweXpect/aweXpect.Json/actions/workflows/build.yml/badge.svg)](https://github.com/aweXpect/aweXpect.Json/actions/workflows/build.yml)
+[![Build](https://github.com/Testably/aweXpect.Json/actions/workflows/build.yml/badge.svg)](https://github.com/Testably/aweXpect.Json/actions/workflows/build.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Testably_aweXpect.Json&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Testably_aweXpect.Json)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Testably_aweXpect.Json&metric=coverage)](https://sonarcloud.io/summary/overall?id=Testably_aweXpect.Json)
 [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2FTestably%2FaweXpect.Json%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/Testably/aweXpect.Json/main)
