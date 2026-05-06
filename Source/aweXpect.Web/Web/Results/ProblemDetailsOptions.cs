@@ -129,6 +129,7 @@ public class ProblemDetailsOptions
 		=> _instanceOptions.AreConsideredEqual(instance, Instance);
 
 	/// <inheritdoc cref="object.ToString()" />
+#if NET8_0_OR_GREATER
 	public override string ToString()
 		=> _parts.Count switch
 		{
@@ -139,4 +140,16 @@ public class ProblemDetailsOptions
 					.Take(_parts.Count - 1)
 					.Select(part => part.Invoke()))} and {_parts[^1].Invoke()}"
 		};
+#else
+	public override string ToString()
+		=> _parts.Count switch
+		{
+			0 => "",
+			1 => $" and {_parts[0].Invoke()}",
+			_ => $", {string
+				.Join(", ", _parts
+					.Take(_parts.Count - 1)
+					.Select(part => part.Invoke()))} and {_parts[_parts.Count - 1].Invoke()}"
+		};
+#endif
 }
