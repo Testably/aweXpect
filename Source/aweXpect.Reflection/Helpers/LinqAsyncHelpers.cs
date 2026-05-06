@@ -247,7 +247,7 @@ internal static class LinqAsyncHelpers
 	}
 #endif
 
-#if NET8_0_OR_GREATER
+#if NET8_0
 	public static async IAsyncEnumerable<TResult> Select<TSource, TResult>(
 		this IAsyncEnumerable<TSource> source,
 		Func<TSource, TResult> selector)
@@ -259,7 +259,7 @@ internal static class LinqAsyncHelpers
 	}
 #endif
 
-#if NET8_0_OR_GREATER
+#if NET8_0
 	public static async IAsyncEnumerable<TResult> SelectMany<TSource, TResult>(
 		this IAsyncEnumerable<TSource> source,
 		Func<TSource, IEnumerable<TResult>> selector)
