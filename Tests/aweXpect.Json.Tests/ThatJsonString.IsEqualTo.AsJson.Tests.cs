@@ -96,6 +96,9 @@ public sealed partial class ThatJsonString
 						               "foo11": null,
 						               "foo12": null,
 						             }
+
+						             Expected:
+						             {}
 						             """);
 				}
 
@@ -150,6 +153,9 @@ public sealed partial class ThatJsonString
 						               "foo11": null,
 						               "foo12": null,
 						             }
+
+						             Expected:
+						             {}
 						             """);
 				}
 
@@ -175,6 +181,9 @@ public sealed partial class ThatJsonString
 
 						               Actual:
 						               {}
+
+						               Expected:
+						               {{expected}}
 						               """);
 				}
 
@@ -249,6 +258,13 @@ public sealed partial class ThatJsonString
 
 						             Actual:
 						             { "foo": 1.1, "bar": "baz", "something": "else" }
+
+						             Expected:
+						             {
+						               "foo": 2.1,
+						               "bar": "bart",
+						               "baz": true
+						             }
 						             """);
 				}
 
@@ -293,6 +309,11 @@ public sealed partial class ThatJsonString
 
 						             Actual:
 						             { "foo": 1, "bar" : "xyz" }
+
+						             Expected:
+						             {
+						               "foo": 1
+						             }
 						             """);
 				}
 
@@ -319,6 +340,9 @@ public sealed partial class ThatJsonString
 
 						             Actual:
 						             [1, 2]
+
+						             Expected:
+						             [1,2,3,4]
 						             """);
 				}
 
@@ -349,6 +373,9 @@ public sealed partial class ThatJsonString
 						             {
 						               "foo": [1, 2, 3, 4]
 						             }
+
+						             Expected:
+						             {"foo":[1,2]}
 						             """);
 				}
 
@@ -374,6 +401,9 @@ public sealed partial class ThatJsonString
 
 						               Actual:
 						               {{subject}}
+
+						               Expected:
+						               {}
 						               """);
 				}
 

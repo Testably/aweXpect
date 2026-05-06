@@ -40,7 +40,7 @@ internal static class StringExtensions
 			{
 				if (lines[l][i] != commonWhiteSpace[i])
 				{
-					commonWhiteSpace = commonWhiteSpace[..i];
+					commonWhiteSpace = commonWhiteSpace.Substring(0, i);
 					break;
 				}
 			}
@@ -50,7 +50,7 @@ internal static class StringExtensions
 		sb.Append(lines[0]);
 		foreach (string? line in lines.Skip(1))
 		{
-			sb.Append('\n').Append(line[commonWhiteSpace.Length..]);
+			sb.Append('\n').Append(line.Substring(commonWhiteSpace.Length));
 		}
 
 		return sb.ToString();

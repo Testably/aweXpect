@@ -28,6 +28,9 @@ public sealed class CustomizeJsonTests
 
 				             Actual:
 				             [1, 2,]
+				             
+				             Expected:
+				             [1, 2]
 				             """);
 		}
 
