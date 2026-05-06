@@ -213,11 +213,11 @@ public sealed partial class ThatType
 
 					await That(Act).ThrowsException()
 						.OnlyIf(!expectSuccess)
-						.WithMessage($$"""
-						               Expected that subject
-						               is generic with argument of type ThatType.BaseClass and name equal to "{{name}}",
-						               but it was generic ThatType.GenericClassWithTwoArguments<, >
-						               """);
+						.WithMessage($"""
+						              Expected that subject
+						              is generic with argument of type ThatType.BaseClass and name equal to "{name}",
+						              but it was generic ThatType.GenericClassWithTwoArguments
+						              """);
 				}
 
 				[Theory]
