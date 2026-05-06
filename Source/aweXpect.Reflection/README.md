@@ -6,7 +6,7 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Testably_aweXpect.Reflection&metric=coverage)](https://sonarcloud.io/summary/overall?id=Testably_aweXpect.Reflection)
 [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2FTestably%2FaweXpect.Reflection%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/Testably/aweXpect.Reflection/main)
 
-Expectations for reflection types for [aweXpect](https://github.com/aweXpect/aweXpect).
+Expectations for reflection types for [aweXpect](https://github.com/Testably/aweXpect).
 
 ## Overview
 
