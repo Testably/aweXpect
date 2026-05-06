@@ -1,0 +1,135 @@
+[assembly: System.Reflection.AssemblyMetadata("RepositoryUrl", "https://github.com/Testably/aweXpect.Web.git")]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(@"aweXpect.Web.Internal.Tests, PublicKey=0024000004800000940000000602000000240000525341310004000001000100bd818c7b1f408c9cae5e376d754fadbead7aa6046aaf3f4911a9c032c2ca4ccd46d6d2d5c9158a15a8639f34d6bfafc236c19e9158dd8fce375c43069256487d9be2dc05ab53fb90e3e9d8241c0ff0f70133bd74e88683ff1317b1b09ae6fd6ddc6fba1454e9d5487a97af791dd5fc73383f194b3be6e441e878a8691a1518e1")]
+[assembly: System.Runtime.Versioning.TargetFramework(".NETCoreApp,Version=v10.0", FrameworkDisplayName=".NET 10.0")]
+namespace aweXpect
+{
+    public static class ThatHttpRequestMessage
+    {
+        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> DoesNotHaveHeader(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> source, string unexpected) { }
+        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasContent(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> source, System.Action<aweXpect.Core.IThat<string?>> expectations) { }
+        public static aweXpect.Results.StringEqualityTypeResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasContent(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> source, string expected) { }
+        public static aweXpect.Web.Results.HasHeaderValueResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasHeader(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> source, string expected) { }
+        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasMethod(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> source, System.Net.Http.HttpMethod expected) { }
+        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasRequestUri(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> source, System.Uri expected) { }
+        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasRequestUri(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> source, string expected) { }
+    }
+    public static class ThatHttpResponseMessage
+    {
+        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> DoesNotHaveHeader(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, string unexpected) { }
+        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasContent(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, System.Action<aweXpect.Core.IThat<string?>> expectations) { }
+        public static aweXpect.Results.StringEqualityTypeResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasContent(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, string expected) { }
+        public static aweXpect.Results.StringEqualityTypeResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasContentType(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, string expected) { }
+        public static aweXpect.Web.Results.HasHeaderValueResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasHeader(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, string expected) { }
+        public static aweXpect.Web.Results.ProblemDetailsResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>>.String HasProblemDetailsContent(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, string? type = null) { }
+        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasRequestMessage(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, System.Action<aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage>> expectations) { }
+        public static aweXpect.Web.Results.StatusCodeResult HasStatusCode(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source) { }
+        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasStatusCode(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, System.Net.HttpStatusCode? expected) { }
+    }
+    public static class ThatUri
+    {
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> DoesNotHaveDefaultPort(this aweXpect.Core.IThat<System.Uri> source) { }
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> HasDefaultPort(this aweXpect.Core.IThat<System.Uri> source) { }
+        public static aweXpect.Results.PropertyResult.String<System.Uri> HasScheme(this aweXpect.Core.IThat<System.Uri> source) { }
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> IsAbsolute(this aweXpect.Core.IThat<System.Uri> source) { }
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> IsFile(this aweXpect.Core.IThat<System.Uri> source) { }
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> IsLoopback(this aweXpect.Core.IThat<System.Uri> source) { }
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> IsNotAbsolute(this aweXpect.Core.IThat<System.Uri> source) { }
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> IsNotFile(this aweXpect.Core.IThat<System.Uri> source) { }
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> IsNotLoopback(this aweXpect.Core.IThat<System.Uri> source) { }
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> IsNotUnc(this aweXpect.Core.IThat<System.Uri> source) { }
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> IsUnc(this aweXpect.Core.IThat<System.Uri> source) { }
+    }
+}
+namespace aweXpect.Web.ContentProcessors
+{
+    public class BinaryContentProcessor : aweXpect.Web.ContentProcessors.IContentProcessor
+    {
+        public BinaryContentProcessor() { }
+        public System.Threading.Tasks.Task<bool> AppendContentInfo(System.Text.StringBuilder messageBuilder, System.Net.Http.HttpContent httpContent, string indentation, System.Threading.CancellationToken cancellationToken = default) { }
+    }
+    public interface IContentProcessor
+    {
+        System.Threading.Tasks.Task<bool> AppendContentInfo(System.Text.StringBuilder messageBuilder, System.Net.Http.HttpContent httpContent, string indentation, System.Threading.CancellationToken cancellationToken = default);
+    }
+    public class JsonContentProcessor : aweXpect.Web.ContentProcessors.IContentProcessor
+    {
+        public JsonContentProcessor() { }
+        public System.Threading.Tasks.Task<bool> AppendContentInfo(System.Text.StringBuilder messageBuilder, System.Net.Http.HttpContent httpContent, string indentation, System.Threading.CancellationToken cancellationToken = default) { }
+    }
+    public class StringContentProcessor : aweXpect.Web.ContentProcessors.IContentProcessor
+    {
+        public StringContentProcessor() { }
+        public System.Threading.Tasks.Task<bool> AppendContentInfo(System.Text.StringBuilder messageBuilder, System.Net.Http.HttpContent httpContent, string indentation, System.Threading.CancellationToken cancellationToken = default) { }
+    }
+}
+namespace aweXpect.Web.Results
+{
+    public class HasHeaderValueResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat>
+        where TType :  class
+    {
+        public aweXpect.Results.AndOrResult<TType, TThat> WhoseValue(System.Action<aweXpect.Core.IThat<string?>> expectations) { }
+        public aweXpect.Results.AndOrResult<TType, TThat> WhoseValues(System.Action<aweXpect.Core.IThat<string?[]?>> expectations) { }
+        public aweXpect.Results.StringEqualityResult<TType, TThat> WithValue(string? expected) { }
+    }
+    public class ProblemDetailsOptions
+    {
+        public ProblemDetailsOptions() { }
+        public string? Detail { get; }
+        public string? Instance { get; }
+        public int? Status { get; }
+        public string? Title { get; }
+        public System.Threading.Tasks.ValueTask<bool> IsDetailConsideredEqualTo(string? detail) { }
+        public System.Threading.Tasks.ValueTask<bool> IsInstanceConsideredEqualTo(string? instance) { }
+        public System.Threading.Tasks.ValueTask<bool> IsTitleConsideredEqualTo(string? title) { }
+        public override string ToString() { }
+        public aweXpect.Options.StringEqualityOptions WithDetail(string detail) { }
+        public aweXpect.Options.StringEqualityOptions WithInstance(string instance) { }
+        public void WithStatus(int status) { }
+        public aweXpect.Options.StringEqualityOptions WithTitle(string title) { }
+    }
+    public class ProblemDetailsResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>>
+    {
+        public ProblemDetailsResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Web.Results.ProblemDetailsOptions options) { }
+        public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String WithDetail(string detail) { }
+        public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String WithInstance(string instance) { }
+        public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat> WithStatus(int status) { }
+        public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String WithTitle(string title) { }
+        public class String : aweXpect.Results.StringEqualityResult<TType, TThat, aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String>
+        {
+            public String(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.StringEqualityOptions stringEqualityOptions, aweXpect.Web.Results.ProblemDetailsOptions options) { }
+            public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String WithDetail(string detail) { }
+            public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String WithInstance(string instance) { }
+            public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat> WithStatus(int status) { }
+            public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String WithTitle(string title) { }
+        }
+    }
+    public class StatusCodeResult
+    {
+        public StatusCodeResult(aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, System.Func<System.Net.Http.HttpResponseMessage, System.Net.HttpStatusCode> mapper) { }
+        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> ClientError() { }
+        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> DifferentTo(System.Net.HttpStatusCode? unexpected) { }
+        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> EqualTo(System.Net.HttpStatusCode? expected) { }
+        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> Error() { }
+        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> Redirection() { }
+        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> ServerError() { }
+        public aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> Success() { }
+    }
+}
+namespace aweXpect.Web
+{
+    public static class WebAwexpectCustomizationExtensions
+    {
+        public static aweXpect.Web.WebAwexpectCustomizationExtensions.WebCustomization Web(this aweXpect.Customization.AwexpectCustomization awexpectCustomization) { }
+        public class WebCustomization : aweXpect.Customization.ICustomizationValueUpdater<aweXpect.Web.WebAwexpectCustomizationExtensions.WebCustomizationValue>
+        {
+            public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Web.ContentProcessors.IContentProcessor[]> ContentProcessors { get; }
+            public aweXpect.Web.WebAwexpectCustomizationExtensions.WebCustomizationValue Get() { }
+            public aweXpect.Customization.CustomizationLifetime Update(System.Func<aweXpect.Web.WebAwexpectCustomizationExtensions.WebCustomizationValue, aweXpect.Web.WebAwexpectCustomizationExtensions.WebCustomizationValue> update) { }
+        }
+        public class WebCustomizationValue : System.IEquatable<aweXpect.Web.WebAwexpectCustomizationExtensions.WebCustomizationValue>
+        {
+            public WebCustomizationValue() { }
+            public aweXpect.Web.ContentProcessors.IContentProcessor[] ContentProcessors { get; init; }
+        }
+    }
+}
