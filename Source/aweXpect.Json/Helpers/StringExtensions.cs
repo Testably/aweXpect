@@ -50,7 +50,11 @@ internal static class StringExtensions
 		sb.Append(lines[0]);
 		foreach (string? line in lines.Skip(1))
 		{
+#if NET8_0_OR_GREATER
+			sb.Append('\n').Append(line.AsSpan(commonWhiteSpace.Length));
+#else
 			sb.Append('\n').Append(line.Substring(commonWhiteSpace.Length));
+#endif
 		}
 
 		return sb.ToString();

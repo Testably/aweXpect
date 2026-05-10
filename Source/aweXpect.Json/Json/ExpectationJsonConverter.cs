@@ -43,7 +43,11 @@ internal class ExpectationJsonConverter : JsonConverter<Expectation>
 		{
 			string? value = element.GetString();
 			if (value?.StartsWith(Prefix) == true &&
+#if NET8_0_OR_GREATER
+			    Guid.TryParse(value.AsSpan(Prefix.Length), out Guid guid) &&
+#else
 			    Guid.TryParse(value.Substring(Prefix.Length), out Guid guid) &&
+#endif
 			    _expectations.TryGetValue(guid, out Expectation? expectation) &&
 			    expectation is IOptionsProvider<ExpectationBuilder>
 			    {
