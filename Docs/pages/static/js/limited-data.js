@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "2d01d5d4ae09712418ac60220dbe3fd631c46f15",
-        "author": "dependabot[bot]",
-        "date": "Thu Mar 5 21:15:57 2026 \u002B0100",
-        "message": "chore: Bump the nunit group with 1 update (#895)"
-      },
-      {
         "sha": "35c4a43c7dc0340202d24719b0b5e63267bee244",
         "author": "dependabot[bot]",
         "date": "Thu Mar 5 21:16:04 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon May 18 18:23:18 2026 \u002B0200",
         "message": "chore: Bump FluentAssertions from 8.9.0 to 8.10.0 (#964)"
+      },
+      {
+        "sha": "d5f54ae420dc90ef67a7c179b69c61c154384779",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon May 18 18:42:33 2026 \u002B0200",
+        "message": "fix: use \u0060Environment.NewLine\u0060 in \u0060AppendIsIncomplete\u0060 failure messages (#966)"
       }
     ],
     "labels": [
-      "2d01d5d4",
       "35c4a43c",
       "b222f4f1",
       "91119c67",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "7d61bd7f",
       "a7143ffe",
       "695339ab",
-      "a9e05ce1"
+      "a9e05ce1",
+      "d5f54ae4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          263.5331333705357,
           278.7213392893473,
           259.43754277910506,
           255.43598403930665,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           259.0494612375895,
           255.77837548937117,
           238.8254194577535,
-          251.92092113494874
+          251.92092113494874,
+          248.4225470860799
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          230.8140913327535,
           236.4197154385703,
           251.80484850066048,
           238.8532030765827,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           265.56048842838834,
           251.82736268410315,
           250.92081941877092,
-          236.78602307183402
+          236.78602307183402,
+          247.2772104581197
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "2d01d5d4ae09712418ac60220dbe3fd631c46f15",
-        "author": "dependabot[bot]",
-        "date": "Thu Mar 5 21:15:57 2026 \u002B0100",
-        "message": "chore: Bump the nunit group with 1 update (#895)"
-      },
-      {
         "sha": "35c4a43c7dc0340202d24719b0b5e63267bee244",
         "author": "dependabot[bot]",
         "date": "Thu Mar 5 21:16:04 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon May 18 18:23:18 2026 \u002B0200",
         "message": "chore: Bump FluentAssertions from 8.9.0 to 8.10.0 (#964)"
+      },
+      {
+        "sha": "d5f54ae420dc90ef67a7c179b69c61c154384779",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon May 18 18:42:33 2026 \u002B0200",
+        "message": "fix: use \u0060Environment.NewLine\u0060 in \u0060AppendIsIncomplete\u0060 failure messages (#966)"
       }
     ],
     "labels": [
-      "2d01d5d4",
       "35c4a43c",
       "b222f4f1",
       "91119c67",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "7d61bd7f",
       "a7143ffe",
       "695339ab",
-      "a9e05ce1"
+      "a9e05ce1",
+      "d5f54ae4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          323228.1271484375,
           318231.6474233774,
           310285.5333909255,
           323185.21315104165,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           312724.05810546875,
           303773.33639322914,
           296890.3802408854,
-          298966.8494140625
+          298966.8494140625,
+          314822.47265625
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1067,8 +1067,8 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
+          335444,
           335444,
           335444,
           335444,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2627771.4544270835,
           2702339.1487165177,
           2716350.6177884615,
           2661700.421574519,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2417831.9322916665,
           2616952.1244791667,
           2469620.8059895835,
-          2506167.606026786
+          2506167.606026786,
+          2721793.542708333
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1169,7 +1169,6 @@ window.BENCHMARK_DATA = {
           4804906,
           4804906,
           4804906,
-          4804906,
           4804902,
           4804906,
           4804906,
@@ -1202,6 +1201,7 @@ window.BENCHMARK_DATA = {
           4804891,
           4804906,
           4804906,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "2d01d5d4ae09712418ac60220dbe3fd631c46f15",
-        "author": "dependabot[bot]",
-        "date": "Thu Mar 5 21:15:57 2026 \u002B0100",
-        "message": "chore: Bump the nunit group with 1 update (#895)"
-      },
       {
         "sha": "35c4a43c7dc0340202d24719b0b5e63267bee244",
         "author": "dependabot[bot]",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon May 18 18:23:18 2026 \u002B0200",
         "message": "chore: Bump FluentAssertions from 8.9.0 to 8.10.0 (#964)"
+      },
+      {
+        "sha": "d5f54ae420dc90ef67a7c179b69c61c154384779",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon May 18 18:42:33 2026 \u002B0200",
+        "message": "fix: use \u0060Environment.NewLine\u0060 in \u0060AppendIsIncomplete\u0060 failure messages (#966)"
       }
     ],
     "labels": [
-      "2d01d5d4",
       "35c4a43c",
       "b222f4f1",
       "91119c67",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "7d61bd7f",
       "a7143ffe",
       "695339ab",
-      "a9e05ce1"
+      "a9e05ce1",
+      "d5f54ae4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          487.34094285964966,
           509.20142786843434,
           495.4024134363447,
           474.37436154683434,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           504.8283741633097,
           497.5992493947347,
           482.30627117156985,
-          466.29830408096313
+          466.29830408096313,
+          493.37997512817384
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          465.17105099360145,
           458.45469357172647,
           480.3576805114746,
           487.0893595559256,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           497.13243865966797,
           513.9540702819825,
           488.19118172327677,
-          454.54766511917114
+          454.54766511917114,
+          475.0375202383314
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "2d01d5d4ae09712418ac60220dbe3fd631c46f15",
-        "author": "dependabot[bot]",
-        "date": "Thu Mar 5 21:15:57 2026 \u002B0100",
-        "message": "chore: Bump the nunit group with 1 update (#895)"
-      },
-      {
         "sha": "35c4a43c7dc0340202d24719b0b5e63267bee244",
         "author": "dependabot[bot]",
         "date": "Thu Mar 5 21:16:04 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon May 18 18:23:18 2026 \u002B0200",
         "message": "chore: Bump FluentAssertions from 8.9.0 to 8.10.0 (#964)"
+      },
+      {
+        "sha": "d5f54ae420dc90ef67a7c179b69c61c154384779",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon May 18 18:42:33 2026 \u002B0200",
+        "message": "fix: use \u0060Environment.NewLine\u0060 in \u0060AppendIsIncomplete\u0060 failure messages (#966)"
       }
     ],
     "labels": [
-      "2d01d5d4",
       "35c4a43c",
       "b222f4f1",
       "91119c67",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "7d61bd7f",
       "a7143ffe",
       "695339ab",
-      "a9e05ce1"
+      "a9e05ce1",
+      "d5f54ae4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          234.1531896909078,
           271.5756461279733,
           257.62049766949247,
           250.18207321166992,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           269.2381171158382,
           286.583234723409,
           249.57111711502074,
-          255.2972011566162
+          255.2972011566162,
+          279.3821127573649
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2274,7 +2274,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
-          808,
+          864,
           864,
           864,
           864,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          238.37504285176595,
           238.7645983695984,
           266.93414096832277,
           247.5719152178083,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           272.71939734050204,
           251.24291484696525,
           247.27812787464686,
-          242.3993557049678
+          242.3993557049678,
+          267.3096298535665
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "2d01d5d4ae09712418ac60220dbe3fd631c46f15",
-        "author": "dependabot[bot]",
-        "date": "Thu Mar 5 21:15:57 2026 \u002B0100",
-        "message": "chore: Bump the nunit group with 1 update (#895)"
-      },
-      {
         "sha": "35c4a43c7dc0340202d24719b0b5e63267bee244",
         "author": "dependabot[bot]",
         "date": "Thu Mar 5 21:16:04 2026 \u002B0100",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon May 18 18:23:18 2026 \u002B0200",
         "message": "chore: Bump FluentAssertions from 8.9.0 to 8.10.0 (#964)"
+      },
+      {
+        "sha": "d5f54ae420dc90ef67a7c179b69c61c154384779",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon May 18 18:42:33 2026 \u002B0200",
+        "message": "fix: use \u0060Environment.NewLine\u0060 in \u0060AppendIsIncomplete\u0060 failure messages (#966)"
       }
     ],
     "labels": [
-      "2d01d5d4",
       "35c4a43c",
       "b222f4f1",
       "91119c67",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "7d61bd7f",
       "a7143ffe",
       "695339ab",
-      "a9e05ce1"
+      "a9e05ce1",
+      "d5f54ae4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          453.19023609161377,
           475.71959554232086,
           480.1629158337911,
           466.8385944684347,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           486.5856046676636,
           498.7164555867513,
           457.5987121899923,
-          469.0115102018629
+          469.0115102018629,
+          457.5411386489868
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1318.8236610412598,
           1219.223635160006,
           1200.5062602116511,
           1249.1121862956456,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1264.411087290446,
           1218.8710580190022,
           1189.5655532836913,
-          1197.790695063273
+          1197.790695063273,
+          1311.036827214559
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "2d01d5d4ae09712418ac60220dbe3fd631c46f15",
-        "author": "dependabot[bot]",
-        "date": "Thu Mar 5 21:15:57 2026 \u002B0100",
-        "message": "chore: Bump the nunit group with 1 update (#895)"
-      },
-      {
         "sha": "35c4a43c7dc0340202d24719b0b5e63267bee244",
         "author": "dependabot[bot]",
         "date": "Thu Mar 5 21:16:04 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon May 18 18:23:18 2026 \u002B0200",
         "message": "chore: Bump FluentAssertions from 8.9.0 to 8.10.0 (#964)"
+      },
+      {
+        "sha": "d5f54ae420dc90ef67a7c179b69c61c154384779",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon May 18 18:42:33 2026 \u002B0200",
+        "message": "fix: use \u0060Environment.NewLine\u0060 in \u0060AppendIsIncomplete\u0060 failure messages (#966)"
       }
     ],
     "labels": [
-      "2d01d5d4",
       "35c4a43c",
       "b222f4f1",
       "91119c67",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "7d61bd7f",
       "a7143ffe",
       "695339ab",
-      "a9e05ce1"
+      "a9e05ce1",
+      "d5f54ae4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1846.5016866048177,
           1876.7450063069662,
           1897.1938844827505,
           2004.8365948994954,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1923.3706199101039,
           1957.9539733886718,
           2011.6034900120326,
-          1858.8217960357665
+          1858.8217960357665,
+          2077.406628417969
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1300.813966623942,
           1274.6752377827963,
           1354.9895329108606,
           1313.6850591023763,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1436.0171778361002,
           1374.953965250651,
           1296.8864002227783,
-          1320.8793548583985
+          1320.8793548583985,
+          1513.755392074585
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "2d01d5d4ae09712418ac60220dbe3fd631c46f15",
-        "author": "dependabot[bot]",
-        "date": "Thu Mar 5 21:15:57 2026 \u002B0100",
-        "message": "chore: Bump the nunit group with 1 update (#895)"
-      },
-      {
         "sha": "35c4a43c7dc0340202d24719b0b5e63267bee244",
         "author": "dependabot[bot]",
         "date": "Thu Mar 5 21:16:04 2026 \u002B0100",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon May 18 18:23:18 2026 \u002B0200",
         "message": "chore: Bump FluentAssertions from 8.9.0 to 8.10.0 (#964)"
+      },
+      {
+        "sha": "d5f54ae420dc90ef67a7c179b69c61c154384779",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon May 18 18:42:33 2026 \u002B0200",
+        "message": "fix: use \u0060Environment.NewLine\u0060 in \u0060AppendIsIncomplete\u0060 failure messages (#966)"
       }
     ],
     "labels": [
-      "2d01d5d4",
       "35c4a43c",
       "b222f4f1",
       "91119c67",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "7d61bd7f",
       "a7143ffe",
       "695339ab",
-      "a9e05ce1"
+      "a9e05ce1",
+      "d5f54ae4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2446.9000423976354,
           2451.813960484096,
           2606.99295098441,
           2635.6223008292063,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2286.5064811706543,
           2595.122526041667,
           2542.2298736572266,
-          2500.5137016296385
+          2500.5137016296385,
+          2658.722917175293
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          88087.75282505581,
           85927.06174879808,
           88615.19264322917,
           88515.51064453126,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           69898.10595703125,
           91340.0798688616,
           63397.70445963542,
-          27218.916241455077
+          27218.916241455077,
+          27746.698482259115
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          58598,
           58598,
           58598,
           58598,
@@ -4242,6 +4241,7 @@ window.BENCHMARK_DATA = {
           57488,
           57481,
           57480,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
