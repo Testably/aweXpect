@@ -220,19 +220,14 @@ internal static class CollectionHelpers
 
 		if (formattedItems.EndsWith($"…{Environment.NewLine}]"))
 		{
-			return $"""
-			        {formattedItems[..^(Environment.NewLine.Length + 2)]}(… and maybe others)
-			        ]
-			        """;
+			return formattedItems[..^(Environment.NewLine.Length + 2)] +
+			       $"(… and maybe others){Environment.NewLine}]";
 		}
 
 		if (formattedItems.EndsWith($"{Environment.NewLine}]"))
 		{
-			return $"""
-			        {formattedItems[..^(Environment.NewLine.Length + 1)]},
-			          (… and maybe others)
-			        ]
-			        """;
+			return formattedItems[..^(Environment.NewLine.Length + 1)] +
+			       $",{Environment.NewLine}  (… and maybe others){Environment.NewLine}]";
 		}
 
 		return $"""
