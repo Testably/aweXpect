@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "6d8658fdb6e2c8a83c231ee55355b756e2bd7ec7",
-        "author": "dependabot[bot]",
-        "date": "Mon Mar 2 09:36:02 2026 \u002B0100",
-        "message": "chore: Bump actions/upload-artifact from 6 to 7 (#898)"
-      },
-      {
         "sha": "97d102a039c77cabf06fcc44d47356d38cc6ee43",
         "author": "dependabot[bot]",
         "date": "Mon Mar 2 09:36:08 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon May 18 16:04:52 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 3 updates (#962)"
+      },
+      {
+        "sha": "a7143ffe3d0126d97f36f76f57521fef8804476b",
+        "author": "dependabot[bot]",
+        "date": "Mon May 18 16:04:39 2026 \u002B0200",
+        "message": "chore: Bump the mstest group with 2 updates (#961)"
       }
     ],
     "labels": [
-      "6d8658fd",
       "97d102a0",
       "53280373",
       "2d01d5d4",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "e66001e4",
       "6b4e9445",
       "85829d9b",
-      "7d61bd7f"
+      "7d61bd7f",
+      "a7143ffe"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          271.8221520105998,
           267.37161986033124,
           250.84299635887146,
           263.5331333705357,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           282.7335612590496,
           268.70427735646564,
           237.4230009828295,
-          259.0494612375895
+          259.0494612375895,
+          255.77837548937117
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          265.79296936307634,
           241.2708761351449,
           229.21329975128174,
           230.8140913327535,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           287.0162956237793,
           265.210053062439,
           246.33136133352914,
-          265.56048842838834
+          265.56048842838834,
+          251.82736268410315
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "6d8658fdb6e2c8a83c231ee55355b756e2bd7ec7",
-        "author": "dependabot[bot]",
-        "date": "Mon Mar 2 09:36:02 2026 \u002B0100",
-        "message": "chore: Bump actions/upload-artifact from 6 to 7 (#898)"
-      },
-      {
         "sha": "97d102a039c77cabf06fcc44d47356d38cc6ee43",
         "author": "dependabot[bot]",
         "date": "Mon Mar 2 09:36:08 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon May 18 16:04:52 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 3 updates (#962)"
+      },
+      {
+        "sha": "a7143ffe3d0126d97f36f76f57521fef8804476b",
+        "author": "dependabot[bot]",
+        "date": "Mon May 18 16:04:39 2026 \u002B0200",
+        "message": "chore: Bump the mstest group with 2 updates (#961)"
       }
     ],
     "labels": [
-      "6d8658fd",
       "97d102a0",
       "53280373",
       "2d01d5d4",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "e66001e4",
       "6b4e9445",
       "85829d9b",
-      "7d61bd7f"
+      "7d61bd7f",
+      "a7143ffe"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          312262.4853841146,
           346484.9851422991,
           308634.7874474159,
           323228.1271484375,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           324214.9382324219,
           301004.5183454241,
           302280.16071428574,
-          312724.05810546875
+          312724.05810546875,
+          303773.33639322914
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1070,8 +1070,8 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
+          335444,
           335444,
           335444,
           335444,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2797757.5419270834,
           2899627.1322916667,
           2511978.9489397323,
           2627771.4544270835,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2523500.0549665177,
           2389638.21328125,
           2348583.0646033655,
-          2417831.9322916665
+          2417831.9322916665,
+          2616952.1244791667
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4804906,
           4804906,
           4804906,
           4804906,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4804887,
           4804887,
           4804906,
-          4804891
+          4804891,
+          4804906
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "6d8658fdb6e2c8a83c231ee55355b756e2bd7ec7",
-        "author": "dependabot[bot]",
-        "date": "Mon Mar 2 09:36:02 2026 \u002B0100",
-        "message": "chore: Bump actions/upload-artifact from 6 to 7 (#898)"
-      },
       {
         "sha": "97d102a039c77cabf06fcc44d47356d38cc6ee43",
         "author": "dependabot[bot]",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon May 18 16:04:52 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 3 updates (#962)"
+      },
+      {
+        "sha": "a7143ffe3d0126d97f36f76f57521fef8804476b",
+        "author": "dependabot[bot]",
+        "date": "Mon May 18 16:04:39 2026 \u002B0200",
+        "message": "chore: Bump the mstest group with 2 updates (#961)"
       }
     ],
     "labels": [
-      "6d8658fd",
       "97d102a0",
       "53280373",
       "2d01d5d4",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "e66001e4",
       "6b4e9445",
       "85829d9b",
-      "7d61bd7f"
+      "7d61bd7f",
+      "a7143ffe"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          509.7549436569214,
           488.97239786783854,
           491.2775817235311,
           487.34094285964966,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           514.4281489054362,
           490.6153142929077,
           448.98505452963025,
-          504.8283741633097
+          504.8283741633097,
+          497.5992493947347
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          517.2347898483276,
           490.8028434753418,
           455.07171317509244,
           465.17105099360145,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           565.151062520345,
           521.0802545547485,
           474.35661142213,
-          497.13243865966797
+          497.13243865966797,
+          513.9540702819825
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "6d8658fdb6e2c8a83c231ee55355b756e2bd7ec7",
-        "author": "dependabot[bot]",
-        "date": "Mon Mar 2 09:36:02 2026 \u002B0100",
-        "message": "chore: Bump actions/upload-artifact from 6 to 7 (#898)"
-      },
-      {
         "sha": "97d102a039c77cabf06fcc44d47356d38cc6ee43",
         "author": "dependabot[bot]",
         "date": "Mon Mar 2 09:36:08 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon May 18 16:04:52 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 3 updates (#962)"
+      },
+      {
+        "sha": "a7143ffe3d0126d97f36f76f57521fef8804476b",
+        "author": "dependabot[bot]",
+        "date": "Mon May 18 16:04:39 2026 \u002B0200",
+        "message": "chore: Bump the mstest group with 2 updates (#961)"
       }
     ],
     "labels": [
-      "6d8658fd",
       "97d102a0",
       "53280373",
       "2d01d5d4",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "e66001e4",
       "6b4e9445",
       "85829d9b",
-      "7d61bd7f"
+      "7d61bd7f",
+      "a7143ffe"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          261.82209097544353,
           245.24079701105754,
           237.24129445212228,
           234.1531896909078,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           294.5753111521403,
           266.6199170430501,
           252.91675303777058,
-          269.2381171158382
+          269.2381171158382,
+          286.583234723409
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2277,7 +2277,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
-          808,
+          864,
           864,
           864,
           864,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          267.6064671516418,
           250.52479286193847,
           239.1205061844417,
           238.37504285176595,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           320.9762630144755,
           276.4317260742188,
           246.13310197194417,
-          272.71939734050204
+          272.71939734050204,
+          251.24291484696525
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "6d8658fdb6e2c8a83c231ee55355b756e2bd7ec7",
-        "author": "dependabot[bot]",
-        "date": "Mon Mar 2 09:36:02 2026 \u002B0100",
-        "message": "chore: Bump actions/upload-artifact from 6 to 7 (#898)"
-      },
-      {
         "sha": "97d102a039c77cabf06fcc44d47356d38cc6ee43",
         "author": "dependabot[bot]",
         "date": "Mon Mar 2 09:36:08 2026 \u002B0100",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon May 18 16:04:52 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 3 updates (#962)"
+      },
+      {
+        "sha": "a7143ffe3d0126d97f36f76f57521fef8804476b",
+        "author": "dependabot[bot]",
+        "date": "Mon May 18 16:04:39 2026 \u002B0200",
+        "message": "chore: Bump the mstest group with 2 updates (#961)"
       }
     ],
     "labels": [
-      "6d8658fd",
       "97d102a0",
       "53280373",
       "2d01d5d4",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "e66001e4",
       "6b4e9445",
       "85829d9b",
-      "7d61bd7f"
+      "7d61bd7f",
+      "a7143ffe"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          493.50351060231526,
           486.6617435455322,
           447.41257105554854,
           453.19023609161377,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           507.17106711069744,
           492.00367908477784,
           480.8208510194506,
-          486.5856046676636
+          486.5856046676636,
+          498.7164555867513
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1319.760937009539,
           1307.6220469156901,
           1224.544841493879,
           1318.8236610412598,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1371.2025916235787,
           1231.9606870015461,
           1141.5442563465663,
-          1264.411087290446
+          1264.411087290446,
+          1218.8710580190022
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "6d8658fdb6e2c8a83c231ee55355b756e2bd7ec7",
-        "author": "dependabot[bot]",
-        "date": "Mon Mar 2 09:36:02 2026 \u002B0100",
-        "message": "chore: Bump actions/upload-artifact from 6 to 7 (#898)"
-      },
-      {
         "sha": "97d102a039c77cabf06fcc44d47356d38cc6ee43",
         "author": "dependabot[bot]",
         "date": "Mon Mar 2 09:36:08 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon May 18 16:04:52 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 3 updates (#962)"
+      },
+      {
+        "sha": "a7143ffe3d0126d97f36f76f57521fef8804476b",
+        "author": "dependabot[bot]",
+        "date": "Mon May 18 16:04:39 2026 \u002B0200",
+        "message": "chore: Bump the mstest group with 2 updates (#961)"
       }
     ],
     "labels": [
-      "6d8658fd",
       "97d102a0",
       "53280373",
       "2d01d5d4",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "e66001e4",
       "6b4e9445",
       "85829d9b",
-      "7d61bd7f"
+      "7d61bd7f",
+      "a7143ffe"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1946.5554180145264,
           1981.9845700945173,
           1875.6047532008245,
           1846.5016866048177,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1778.3158333642143,
           1703.5914309183756,
           1879.4010169165474,
-          1923.3706199101039
+          1923.3706199101039,
+          1957.9539733886718
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1397.6151933034262,
           1439.5374179840087,
           1296.1729478200277,
           1300.813966623942,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1518.6698633829753,
           1370.8832670847576,
           1284.857862218221,
-          1436.0171778361002
+          1436.0171778361002,
+          1374.953965250651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "6d8658fdb6e2c8a83c231ee55355b756e2bd7ec7",
-        "author": "dependabot[bot]",
-        "date": "Mon Mar 2 09:36:02 2026 \u002B0100",
-        "message": "chore: Bump actions/upload-artifact from 6 to 7 (#898)"
-      },
-      {
         "sha": "97d102a039c77cabf06fcc44d47356d38cc6ee43",
         "author": "dependabot[bot]",
         "date": "Mon Mar 2 09:36:08 2026 \u002B0100",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon May 18 16:04:52 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 3 updates (#962)"
+      },
+      {
+        "sha": "a7143ffe3d0126d97f36f76f57521fef8804476b",
+        "author": "dependabot[bot]",
+        "date": "Mon May 18 16:04:39 2026 \u002B0200",
+        "message": "chore: Bump the mstest group with 2 updates (#961)"
       }
     ],
     "labels": [
-      "6d8658fd",
       "97d102a0",
       "53280373",
       "2d01d5d4",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "e66001e4",
       "6b4e9445",
       "85829d9b",
-      "7d61bd7f"
+      "7d61bd7f",
+      "a7143ffe"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2559.9431947980606,
           2553.876935068766,
           2527.417298243596,
           2446.9000423976354,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2172.7669953566333,
           2245.68141784668,
           2479.450833892822,
-          2286.5064811706543
+          2286.5064811706543,
+          2595.122526041667
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          89158.824609375,
           88844.73707682292,
           88595.19474283855,
           88087.75282505581,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           70406.93802584134,
           70462.63976111778,
           61951.423302283656,
-          69898.10595703125
+          69898.10595703125,
+          91340.0798688616
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          58598,
           58598,
           58598,
           58598,
@@ -4242,7 +4241,8 @@ window.BENCHMARK_DATA = {
           57488,
           57952,
           56986,
-          57488
+          57488,
+          57481
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
