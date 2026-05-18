@@ -3114,6 +3114,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon May 18 16:04:39 2026 \u002B0200",
         "message": "chore: Bump the mstest group with 2 updates (#961)"
+      },
+      {
+        "sha": "695339ab55e47ed029a403c4cc125117d165b130",
+        "author": "dependabot[bot]",
+        "date": "Mon May 18 16:05:06 2026 \u002B0200",
+        "message": "chore: Bump coverlet.collector from 10.0.0 to 10.0.1 (#963)"
       }
     ],
     "labels": [
@@ -3635,7 +3641,8 @@ window.BENCHMARK_DATA = {
       "6b4e9445",
       "85829d9b",
       "7d61bd7f",
-      "a7143ffe"
+      "a7143ffe",
+      "695339ab"
     ],
     "datasets": [
       {
@@ -4160,7 +4167,8 @@ window.BENCHMARK_DATA = {
           268.70427735646564,
           237.4230009828295,
           259.0494612375895,
-          255.77837548937117
+          255.77837548937117,
+          238.8254194577535
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4633,6 +4641,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5223,7 +5232,8 @@ window.BENCHMARK_DATA = {
           265.210053062439,
           246.33136133352914,
           265.56048842838834,
-          251.82736268410315
+          251.82736268410315,
+          250.92081941877092
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5416,6 +5426,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -8419,6 +8430,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon May 18 16:04:39 2026 \u002B0200",
         "message": "chore: Bump the mstest group with 2 updates (#961)"
+      },
+      {
+        "sha": "695339ab55e47ed029a403c4cc125117d165b130",
+        "author": "dependabot[bot]",
+        "date": "Mon May 18 16:05:06 2026 \u002B0200",
+        "message": "chore: Bump coverlet.collector from 10.0.0 to 10.0.1 (#963)"
       }
     ],
     "labels": [
@@ -8863,7 +8880,8 @@ window.BENCHMARK_DATA = {
       "6b4e9445",
       "85829d9b",
       "7d61bd7f",
-      "a7143ffe"
+      "a7143ffe",
+      "695339ab"
     ],
     "datasets": [
       {
@@ -9311,7 +9329,8 @@ window.BENCHMARK_DATA = {
           301004.5183454241,
           302280.16071428574,
           312724.05810546875,
-          303773.33639322914
+          303773.33639322914,
+          296890.3802408854
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9758,6 +9777,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335442,
+          335444,
           335444,
           335444,
           335444,
@@ -10220,7 +10240,8 @@ window.BENCHMARK_DATA = {
           2389638.21328125,
           2348583.0646033655,
           2417831.9322916665,
-          2616952.1244791667
+          2616952.1244791667,
+          2469620.8059895835
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10673,6 +10694,7 @@ window.BENCHMARK_DATA = {
           4804887,
           4804906,
           4804891,
+          4804906,
           4804906
         ],
         "borderColor": "#FF671B",
@@ -13801,6 +13823,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon May 18 16:04:39 2026 \u002B0200",
         "message": "chore: Bump the mstest group with 2 updates (#961)"
+      },
+      {
+        "sha": "695339ab55e47ed029a403c4cc125117d165b130",
+        "author": "dependabot[bot]",
+        "date": "Mon May 18 16:05:06 2026 \u002B0200",
+        "message": "chore: Bump coverlet.collector from 10.0.0 to 10.0.1 (#963)"
       }
     ],
     "labels": [
@@ -14322,7 +14350,8 @@ window.BENCHMARK_DATA = {
       "6b4e9445",
       "85829d9b",
       "7d61bd7f",
-      "a7143ffe"
+      "a7143ffe",
+      "695339ab"
     ],
     "datasets": [
       {
@@ -14847,7 +14876,8 @@ window.BENCHMARK_DATA = {
           490.6153142929077,
           448.98505452963025,
           504.8283741633097,
-          497.5992493947347
+          497.5992493947347,
+          482.30627117156985
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15320,6 +15350,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -15910,7 +15941,8 @@ window.BENCHMARK_DATA = {
           521.0802545547485,
           474.35661142213,
           497.13243865966797,
-          513.9540702819825
+          513.9540702819825,
+          488.19118172327677
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16103,6 +16135,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -19568,6 +19601,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon May 18 16:04:39 2026 \u002B0200",
         "message": "chore: Bump the mstest group with 2 updates (#961)"
+      },
+      {
+        "sha": "695339ab55e47ed029a403c4cc125117d165b130",
+        "author": "dependabot[bot]",
+        "date": "Mon May 18 16:05:06 2026 \u002B0200",
+        "message": "chore: Bump coverlet.collector from 10.0.0 to 10.0.1 (#963)"
       }
     ],
     "labels": [
@@ -20089,7 +20128,8 @@ window.BENCHMARK_DATA = {
       "6b4e9445",
       "85829d9b",
       "7d61bd7f",
-      "a7143ffe"
+      "a7143ffe",
+      "695339ab"
     ],
     "datasets": [
       {
@@ -20614,7 +20654,8 @@ window.BENCHMARK_DATA = {
           266.6199170430501,
           252.91675303777058,
           269.2381171158382,
-          286.583234723409
+          286.583234723409,
+          249.57111711502074
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21128,6 +21169,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -21677,7 +21719,8 @@ window.BENCHMARK_DATA = {
           276.4317260742188,
           246.13310197194417,
           272.71939734050204,
-          251.24291484696525
+          251.24291484696525,
+          247.27812787464686
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21870,6 +21913,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -25335,6 +25379,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon May 18 16:04:39 2026 \u002B0200",
         "message": "chore: Bump the mstest group with 2 updates (#961)"
+      },
+      {
+        "sha": "695339ab55e47ed029a403c4cc125117d165b130",
+        "author": "dependabot[bot]",
+        "date": "Mon May 18 16:05:06 2026 \u002B0200",
+        "message": "chore: Bump coverlet.collector from 10.0.0 to 10.0.1 (#963)"
       }
     ],
     "labels": [
@@ -25856,7 +25906,8 @@ window.BENCHMARK_DATA = {
       "6b4e9445",
       "85829d9b",
       "7d61bd7f",
-      "a7143ffe"
+      "a7143ffe",
+      "695339ab"
     ],
     "datasets": [
       {
@@ -26381,7 +26432,8 @@ window.BENCHMARK_DATA = {
           492.00367908477784,
           480.8208510194506,
           486.5856046676636,
-          498.7164555867513
+          498.7164555867513,
+          457.5987121899923
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -26854,6 +26906,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -27444,7 +27497,8 @@ window.BENCHMARK_DATA = {
           1231.9606870015461,
           1141.5442563465663,
           1264.411087290446,
-          1218.8710580190022
+          1218.8710580190022,
+          1189.5655532836913
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -27873,6 +27927,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -31102,6 +31157,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon May 18 16:04:39 2026 \u002B0200",
         "message": "chore: Bump the mstest group with 2 updates (#961)"
+      },
+      {
+        "sha": "695339ab55e47ed029a403c4cc125117d165b130",
+        "author": "dependabot[bot]",
+        "date": "Mon May 18 16:05:06 2026 \u002B0200",
+        "message": "chore: Bump coverlet.collector from 10.0.0 to 10.0.1 (#963)"
       }
     ],
     "labels": [
@@ -31623,7 +31684,8 @@ window.BENCHMARK_DATA = {
       "6b4e9445",
       "85829d9b",
       "7d61bd7f",
-      "a7143ffe"
+      "a7143ffe",
+      "695339ab"
     ],
     "datasets": [
       {
@@ -32148,7 +32210,8 @@ window.BENCHMARK_DATA = {
           1703.5914309183756,
           1879.4010169165474,
           1923.3706199101039,
-          1957.9539733886718
+          1957.9539733886718,
+          2011.6034900120326
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32621,6 +32684,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -33211,7 +33275,8 @@ window.BENCHMARK_DATA = {
           1370.8832670847576,
           1284.857862218221,
           1436.0171778361002,
-          1374.953965250651
+          1374.953965250651,
+          1296.8864002227783
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33404,6 +33469,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -36869,6 +36935,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon May 18 16:04:39 2026 \u002B0200",
         "message": "chore: Bump the mstest group with 2 updates (#961)"
+      },
+      {
+        "sha": "695339ab55e47ed029a403c4cc125117d165b130",
+        "author": "dependabot[bot]",
+        "date": "Mon May 18 16:05:06 2026 \u002B0200",
+        "message": "chore: Bump coverlet.collector from 10.0.0 to 10.0.1 (#963)"
       }
     ],
     "labels": [
@@ -37390,7 +37462,8 @@ window.BENCHMARK_DATA = {
       "6b4e9445",
       "85829d9b",
       "7d61bd7f",
-      "a7143ffe"
+      "a7143ffe",
+      "695339ab"
     ],
     "datasets": [
       {
@@ -37915,7 +37988,8 @@ window.BENCHMARK_DATA = {
           2245.68141784668,
           2479.450833892822,
           2286.5064811706543,
-          2595.122526041667
+          2595.122526041667,
+          2542.2298736572266
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38388,6 +38462,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -38978,7 +39053,8 @@ window.BENCHMARK_DATA = {
           70462.63976111778,
           61951.423302283656,
           69898.10595703125,
-          91340.0798688616
+          91340.0798688616,
+          63397.70445963542
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39508,7 +39584,8 @@ window.BENCHMARK_DATA = {
           57952,
           56986,
           57488,
-          57481
+          57481,
+          57480
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
