@@ -3126,6 +3126,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon May 18 18:23:18 2026 \u002B0200",
         "message": "chore: Bump FluentAssertions from 8.9.0 to 8.10.0 (#964)"
+      },
+      {
+        "sha": "d5f54ae420dc90ef67a7c179b69c61c154384779",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon May 18 18:42:33 2026 \u002B0200",
+        "message": "fix: use \u0060Environment.NewLine\u0060 in \u0060AppendIsIncomplete\u0060 failure messages (#966)"
       }
     ],
     "labels": [
@@ -3649,7 +3655,8 @@ window.BENCHMARK_DATA = {
       "7d61bd7f",
       "a7143ffe",
       "695339ab",
-      "a9e05ce1"
+      "a9e05ce1",
+      "d5f54ae4"
     ],
     "datasets": [
       {
@@ -4176,7 +4183,8 @@ window.BENCHMARK_DATA = {
           259.0494612375895,
           255.77837548937117,
           238.8254194577535,
-          251.92092113494874
+          251.92092113494874,
+          248.4225470860799
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4649,6 +4657,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5243,7 +5252,8 @@ window.BENCHMARK_DATA = {
           265.56048842838834,
           251.82736268410315,
           250.92081941877092,
-          236.78602307183402
+          236.78602307183402,
+          247.2772104581197
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5436,6 +5446,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -8453,6 +8464,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon May 18 18:23:18 2026 \u002B0200",
         "message": "chore: Bump FluentAssertions from 8.9.0 to 8.10.0 (#964)"
+      },
+      {
+        "sha": "d5f54ae420dc90ef67a7c179b69c61c154384779",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon May 18 18:42:33 2026 \u002B0200",
+        "message": "fix: use \u0060Environment.NewLine\u0060 in \u0060AppendIsIncomplete\u0060 failure messages (#966)"
       }
     ],
     "labels": [
@@ -8899,7 +8916,8 @@ window.BENCHMARK_DATA = {
       "7d61bd7f",
       "a7143ffe",
       "695339ab",
-      "a9e05ce1"
+      "a9e05ce1",
+      "d5f54ae4"
     ],
     "datasets": [
       {
@@ -9349,7 +9367,8 @@ window.BENCHMARK_DATA = {
           312724.05810546875,
           303773.33639322914,
           296890.3802408854,
-          298966.8494140625
+          298966.8494140625,
+          314822.47265625
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9796,6 +9815,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335442,
+          335444,
           335444,
           335444,
           335444,
@@ -10262,7 +10282,8 @@ window.BENCHMARK_DATA = {
           2417831.9322916665,
           2616952.1244791667,
           2469620.8059895835,
-          2506167.606026786
+          2506167.606026786,
+          2721793.542708333
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10717,6 +10738,7 @@ window.BENCHMARK_DATA = {
           4804891,
           4804906,
           4804906,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -13857,6 +13879,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon May 18 18:23:18 2026 \u002B0200",
         "message": "chore: Bump FluentAssertions from 8.9.0 to 8.10.0 (#964)"
+      },
+      {
+        "sha": "d5f54ae420dc90ef67a7c179b69c61c154384779",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon May 18 18:42:33 2026 \u002B0200",
+        "message": "fix: use \u0060Environment.NewLine\u0060 in \u0060AppendIsIncomplete\u0060 failure messages (#966)"
       }
     ],
     "labels": [
@@ -14380,7 +14408,8 @@ window.BENCHMARK_DATA = {
       "7d61bd7f",
       "a7143ffe",
       "695339ab",
-      "a9e05ce1"
+      "a9e05ce1",
+      "d5f54ae4"
     ],
     "datasets": [
       {
@@ -14907,7 +14936,8 @@ window.BENCHMARK_DATA = {
           504.8283741633097,
           497.5992493947347,
           482.30627117156985,
-          466.29830408096313
+          466.29830408096313,
+          493.37997512817384
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15380,6 +15410,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -15974,7 +16005,8 @@ window.BENCHMARK_DATA = {
           497.13243865966797,
           513.9540702819825,
           488.19118172327677,
-          454.54766511917114
+          454.54766511917114,
+          475.0375202383314
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16167,6 +16199,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -19646,6 +19679,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon May 18 18:23:18 2026 \u002B0200",
         "message": "chore: Bump FluentAssertions from 8.9.0 to 8.10.0 (#964)"
+      },
+      {
+        "sha": "d5f54ae420dc90ef67a7c179b69c61c154384779",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon May 18 18:42:33 2026 \u002B0200",
+        "message": "fix: use \u0060Environment.NewLine\u0060 in \u0060AppendIsIncomplete\u0060 failure messages (#966)"
       }
     ],
     "labels": [
@@ -20169,7 +20208,8 @@ window.BENCHMARK_DATA = {
       "7d61bd7f",
       "a7143ffe",
       "695339ab",
-      "a9e05ce1"
+      "a9e05ce1",
+      "d5f54ae4"
     ],
     "datasets": [
       {
@@ -20696,7 +20736,8 @@ window.BENCHMARK_DATA = {
           269.2381171158382,
           286.583234723409,
           249.57111711502074,
-          255.2972011566162
+          255.2972011566162,
+          279.3821127573649
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21210,6 +21251,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -21763,7 +21805,8 @@ window.BENCHMARK_DATA = {
           272.71939734050204,
           251.24291484696525,
           247.27812787464686,
-          242.3993557049678
+          242.3993557049678,
+          267.3096298535665
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21956,6 +21999,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -25435,6 +25479,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon May 18 18:23:18 2026 \u002B0200",
         "message": "chore: Bump FluentAssertions from 8.9.0 to 8.10.0 (#964)"
+      },
+      {
+        "sha": "d5f54ae420dc90ef67a7c179b69c61c154384779",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon May 18 18:42:33 2026 \u002B0200",
+        "message": "fix: use \u0060Environment.NewLine\u0060 in \u0060AppendIsIncomplete\u0060 failure messages (#966)"
       }
     ],
     "labels": [
@@ -25958,7 +26008,8 @@ window.BENCHMARK_DATA = {
       "7d61bd7f",
       "a7143ffe",
       "695339ab",
-      "a9e05ce1"
+      "a9e05ce1",
+      "d5f54ae4"
     ],
     "datasets": [
       {
@@ -26485,7 +26536,8 @@ window.BENCHMARK_DATA = {
           486.5856046676636,
           498.7164555867513,
           457.5987121899923,
-          469.0115102018629
+          469.0115102018629,
+          457.5411386489868
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -26958,6 +27010,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -27552,7 +27605,8 @@ window.BENCHMARK_DATA = {
           1264.411087290446,
           1218.8710580190022,
           1189.5655532836913,
-          1197.790695063273
+          1197.790695063273,
+          1311.036827214559
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -27981,6 +28035,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -31224,6 +31279,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon May 18 18:23:18 2026 \u002B0200",
         "message": "chore: Bump FluentAssertions from 8.9.0 to 8.10.0 (#964)"
+      },
+      {
+        "sha": "d5f54ae420dc90ef67a7c179b69c61c154384779",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon May 18 18:42:33 2026 \u002B0200",
+        "message": "fix: use \u0060Environment.NewLine\u0060 in \u0060AppendIsIncomplete\u0060 failure messages (#966)"
       }
     ],
     "labels": [
@@ -31747,7 +31808,8 @@ window.BENCHMARK_DATA = {
       "7d61bd7f",
       "a7143ffe",
       "695339ab",
-      "a9e05ce1"
+      "a9e05ce1",
+      "d5f54ae4"
     ],
     "datasets": [
       {
@@ -32274,7 +32336,8 @@ window.BENCHMARK_DATA = {
           1923.3706199101039,
           1957.9539733886718,
           2011.6034900120326,
-          1858.8217960357665
+          1858.8217960357665,
+          2077.406628417969
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32747,6 +32810,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -33341,7 +33405,8 @@ window.BENCHMARK_DATA = {
           1436.0171778361002,
           1374.953965250651,
           1296.8864002227783,
-          1320.8793548583985
+          1320.8793548583985,
+          1513.755392074585
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33534,6 +33599,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -37013,6 +37079,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon May 18 18:23:18 2026 \u002B0200",
         "message": "chore: Bump FluentAssertions from 8.9.0 to 8.10.0 (#964)"
+      },
+      {
+        "sha": "d5f54ae420dc90ef67a7c179b69c61c154384779",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon May 18 18:42:33 2026 \u002B0200",
+        "message": "fix: use \u0060Environment.NewLine\u0060 in \u0060AppendIsIncomplete\u0060 failure messages (#966)"
       }
     ],
     "labels": [
@@ -37536,7 +37608,8 @@ window.BENCHMARK_DATA = {
       "7d61bd7f",
       "a7143ffe",
       "695339ab",
-      "a9e05ce1"
+      "a9e05ce1",
+      "d5f54ae4"
     ],
     "datasets": [
       {
@@ -38063,7 +38136,8 @@ window.BENCHMARK_DATA = {
           2286.5064811706543,
           2595.122526041667,
           2542.2298736572266,
-          2500.5137016296385
+          2500.5137016296385,
+          2658.722917175293
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38536,6 +38610,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -39130,7 +39205,8 @@ window.BENCHMARK_DATA = {
           69898.10595703125,
           91340.0798688616,
           63397.70445963542,
-          27218.916241455077
+          27218.916241455077,
+          27746.698482259115
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39662,6 +39738,7 @@ window.BENCHMARK_DATA = {
           57488,
           57481,
           57480,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
