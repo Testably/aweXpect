@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Reflection;
 using aweXpect.Reflection.Helpers;
 
@@ -16,11 +16,41 @@ public sealed class TypeHelpersTests
 		FieldInfo[] allFields = type.GetFields(BindingFlags.DeclaredOnly |
 		                                       BindingFlags.NonPublic |
 		                                       BindingFlags.Public |
-		                                       BindingFlags.Instance).ToArray();
+		                                       BindingFlags.Instance);
 		FieldInfo[] result = type.GetDeclaredFields();
 
 		await That(allFields).HasCount(2);
 		await That(result).HasCount(1);
+	}
+
+	[Theory]
+	[InlineData(typeof(TypeLoadException))]
+	[InlineData(typeof(FileNotFoundException))]
+	[InlineData(typeof(FileLoadException))]
+	public async Task GetDeclaredMembers_WhenReflectionThrowsLoadException_ShouldReturnEmpty(Type exceptionType)
+	{
+		Exception exception = (Exception)Activator.CreateInstance(exceptionType)!;
+		Type type = new ThrowingType(typeof(TestClassWithAttribute), exception);
+
+		await That(type.GetDeclaredConstructors()).IsEmpty();
+		await That(type.GetDeclaredEvents()).IsEmpty();
+		await That(type.GetDeclaredFields()).IsEmpty();
+		await That(type.GetDeclaredMethods()).IsEmpty();
+		await That(type.GetDeclaredProperties()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task GetDeclaredMembers_WhenReflectionThrowsUnrelatedException_ShouldNotCatch()
+	{
+		Type type = new ThrowingType(typeof(TestClassWithAttribute), new InvalidOperationException());
+
+		async Task Act()
+		{
+			await Task.Yield();
+			type.GetDeclaredMethods();
+		}
+
+		await That(Act).Throws<InvalidOperationException>();
 	}
 
 	[Fact]
@@ -190,6 +220,15 @@ public sealed class TypeHelpersTests
 
 	private interface IFooInterface
 	{
+	}
+
+	private sealed class ThrowingType(Type inner, Exception exception) : TypeDelegator(inner)
+	{
+		public override ConstructorInfo[] GetConstructors(BindingFlags bindingAttr) => throw exception;
+		public override EventInfo[] GetEvents(BindingFlags bindingAttr) => throw exception;
+		public override FieldInfo[] GetFields(BindingFlags bindingAttr) => throw exception;
+		public override MethodInfo[] GetMethods(BindingFlags bindingAttr) => throw exception;
+		public override PropertyInfo[] GetProperties(BindingFlags bindingAttr) => throw exception;
 	}
 
 	[Dummy(1)]

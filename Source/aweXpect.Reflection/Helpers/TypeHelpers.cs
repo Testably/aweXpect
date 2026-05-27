@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -17,68 +18,128 @@ internal static class TypeHelpers
 	/// </summary>
 	public static ConstructorInfo[] GetDeclaredConstructors(
 		this Type type)
-		=> type
-			.GetConstructors(BindingFlags.DeclaredOnly |
-			                 BindingFlags.NonPublic |
-			                 BindingFlags.Public |
-			                 BindingFlags.Instance |
-			                 BindingFlags.Static);
+	{
+		try
+		{
+			return type
+				.GetConstructors(BindingFlags.DeclaredOnly |
+				                 BindingFlags.NonPublic |
+				                 BindingFlags.Public |
+				                 BindingFlags.Instance |
+				                 BindingFlags.Static);
+		}
+		catch (Exception exception) when (exception
+			is TypeLoadException
+			or FileNotFoundException
+			or FileLoadException)
+		{
+			return [];
+		}
+	}
 
 	/// <summary>
 	///     Searches for events in the <paramref name="type" /> that were directly declared there.
 	/// </summary>
 	public static EventInfo[] GetDeclaredEvents(
 		this Type type)
-		=> type
-			.GetEvents(BindingFlags.DeclaredOnly |
-			           BindingFlags.NonPublic |
-			           BindingFlags.Public |
-			           BindingFlags.Instance);
+	{
+		try
+		{
+			return type
+				.GetEvents(BindingFlags.DeclaredOnly |
+				           BindingFlags.NonPublic |
+				           BindingFlags.Public |
+				           BindingFlags.Instance);
+		}
+		catch (Exception exception) when (exception
+			is TypeLoadException
+			or FileNotFoundException
+			or FileLoadException)
+		{
+			return [];
+		}
+	}
 
 	/// <summary>
 	///     Searches for fields in the <paramref name="type" /> that were directly declared there.
 	/// </summary>
 	public static FieldInfo[] GetDeclaredFields(
 		this Type type)
-		=> type
-			.GetFields(BindingFlags.DeclaredOnly |
-			           BindingFlags.NonPublic |
-			           BindingFlags.Public |
-			           BindingFlags.Instance |
-			           BindingFlags.Static)
-			.Where(m => !m.IsSpecialName)
-			.Where(m => !m.Name.EndsWith("__BackingField"))
-			.ToArray();
+	{
+		try
+		{
+			return type
+				.GetFields(BindingFlags.DeclaredOnly |
+				           BindingFlags.NonPublic |
+				           BindingFlags.Public |
+				           BindingFlags.Instance |
+				           BindingFlags.Static)
+				.Where(m => !m.IsSpecialName)
+				.Where(m => !m.Name.EndsWith("__BackingField"))
+				.ToArray();
+		}
+		catch (Exception exception) when (exception
+			is TypeLoadException
+			or FileNotFoundException
+			or FileLoadException)
+		{
+			return [];
+		}
+	}
 
 	/// <summary>
 	///     Searches for methods in the <paramref name="type" /> that were directly declared there.
 	/// </summary>
 	public static MethodInfo[] GetDeclaredMethods(
 		this Type type)
-		=> type
-			.GetMethods(BindingFlags.DeclaredOnly |
-			            BindingFlags.NonPublic |
-			            BindingFlags.Public |
-			            BindingFlags.Static |
-			            BindingFlags.Instance |
-			            BindingFlags.Static)
-			.Where(m => !m.IsSpecialName)
-			.ToArray();
+	{
+		try
+		{
+			return type
+				.GetMethods(BindingFlags.DeclaredOnly |
+				            BindingFlags.NonPublic |
+				            BindingFlags.Public |
+				            BindingFlags.Static |
+				            BindingFlags.Instance |
+				            BindingFlags.Static)
+				.Where(m => !m.IsSpecialName)
+				.ToArray();
+		}
+		catch (Exception exception) when (exception
+			is TypeLoadException
+			or FileNotFoundException
+			or FileLoadException)
+		{
+			return [];
+		}
+	}
 
 	/// <summary>
 	///     Searches for properties in the <paramref name="type" /> that were directly declared there.
 	/// </summary>
 	public static PropertyInfo[] GetDeclaredProperties(
 		this Type type)
-		=> type
-			.GetProperties(BindingFlags.DeclaredOnly |
-			               BindingFlags.NonPublic |
-			               BindingFlags.Public |
-			               BindingFlags.Static |
-			               BindingFlags.Instance |
-			               BindingFlags.Static)
-			.Where(m => !m.IsSpecialName)
-			.ToArray();
+	{
+		try
+		{
+			return type
+				.GetProperties(BindingFlags.DeclaredOnly |
+				               BindingFlags.NonPublic |
+				               BindingFlags.Public |
+				               BindingFlags.Static |
+				               BindingFlags.Instance |
+				               BindingFlags.Static)
+				.Where(m => !m.IsSpecialName)
+				.ToArray();
+		}
+		catch (Exception exception) when (exception
+			is TypeLoadException
+			or FileNotFoundException
+			or FileLoadException)
+		{
+			return [];
+		}
+	}
 
 	/// <summary>
 	///     Checks if the <paramref name="type" /> has the specified <paramref name="accessModifiers" />.
