@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using aweXpect.Core;
 using aweXpect.Options;
@@ -34,7 +35,7 @@ public static partial class Filtered
 		///     Container for a filterable collection of <see cref="Type" />.
 		/// </summary>
 		internal Types(Assemblies assemblies, string description) : base(
-			assemblies.SelectMany(assembly => assembly.GetTypes()))
+			assemblies.SelectMany(GetLoadableTypes))
 		{
 			_assemblies = assemblies;
 			_description = description;
@@ -119,6 +120,26 @@ public static partial class Filtered
 			}
 
 			return description;
+		}
+
+		/// <summary>
+		///     Gets the types of the <paramref name="assembly" />, ignoring those that fail to load.
+		/// </summary>
+		/// <remarks>
+		///     <see cref="Assembly.GetTypes()" /> throws a <see cref="ReflectionTypeLoadException" /> when any type cannot be
+		///     loaded (e.g. an unresolvable dependency). The exception still exposes the types that loaded successfully via
+		///     <see cref="ReflectionTypeLoadException.Types" />, so we fall back to those instead of failing the whole query.
+		/// </remarks>
+		private static IEnumerable<Type> GetLoadableTypes(Assembly assembly)
+		{
+			try
+			{
+				return assembly.GetTypes();
+			}
+			catch (ReflectionTypeLoadException exception)
+			{
+				return exception.Types.Where(type => type is not null)!;
+			}
 		}
 
 		/// <summary>

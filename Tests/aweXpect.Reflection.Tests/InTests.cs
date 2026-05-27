@@ -122,6 +122,17 @@ public sealed class InTests
 	}
 
 	[Fact]
+	public async Task Types_WhenGetTypesThrowsReflectionTypeLoadException_ShouldUseTypesThatLoaded()
+	{
+		Type?[] loadableTypes = [typeof(PublicClass), null, typeof(InternalClass),];
+		Assembly assembly = new ThrowingAssembly(loadableTypes);
+
+		Filtered.Types sut = In.Assemblies(assembly).Types();
+
+		await That(sut).IsEqualTo([typeof(PublicClass), typeof(InternalClass),]).InAnyOrder();
+	}
+
+	[Fact]
 	public async Task Types_WithThreeGenericParameters_ShouldIncludeSpecifiedTypes()
 	{
 		Filtered.Types sut = In.Types<InTests, InternalClass, PublicClass>();
@@ -152,5 +163,13 @@ public sealed class InTests
 		await That(sut.GetDescription())
 			.IsEqualTo(
 				$"in types [{nameof(InTests)}, {nameof(InternalClass)}, {nameof(PublicClass)}, {nameof(AccessModifiers)}]");
+	}
+
+	private sealed class ThrowingAssembly(Type?[] loadableTypes) : Assembly
+	{
+		public override string FullName => nameof(ThrowingAssembly);
+
+		public override Type[] GetTypes()
+			=> throw new ReflectionTypeLoadException(loadableTypes, null);
 	}
 }
