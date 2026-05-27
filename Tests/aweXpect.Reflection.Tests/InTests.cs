@@ -102,6 +102,22 @@ public sealed class InTests
 	}
 
 	[Fact]
+	public async Task Fields_ShouldExcludeCompilerGeneratedBackingFields()
+	{
+		Filtered.Fields fields = In.Type<ClassWithMembers>().Fields();
+
+		await That(fields).All().Satisfy(field => !field.Name.EndsWith("__BackingField")).And.IsNotEmpty();
+	}
+
+	[Fact]
+	public async Task Methods_ShouldExcludeCompilerGeneratedAccessors()
+	{
+		Filtered.Methods methods = In.Type<ClassWithMembers>().Methods();
+
+		await That(methods).All().Satisfy(method => !method.IsSpecialName).And.IsNotEmpty();
+	}
+
+	[Fact]
 	public async Task Type_WithGenericParameter_ShouldIncludeSpecifiedType()
 	{
 		Filtered.Types sut = In.Type<InTests>();
@@ -163,6 +179,14 @@ public sealed class InTests
 		await That(sut.GetDescription())
 			.IsEqualTo(
 				$"in types [{nameof(InTests)}, {nameof(InternalClass)}, {nameof(PublicClass)}, {nameof(AccessModifiers)}]");
+	}
+
+	private sealed class ClassWithMembers
+	{
+		public readonly int Field = 1;
+		public int Property { get; set; }
+
+		public int Method() => Field + Property;
 	}
 
 	private sealed class ThrowingAssembly(Type?[] loadableTypes) : Assembly

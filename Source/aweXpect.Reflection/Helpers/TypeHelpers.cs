@@ -25,6 +25,17 @@ internal static class TypeHelpers
 			                 BindingFlags.Static);
 
 	/// <summary>
+	///     Searches for events in the <paramref name="type" /> that were directly declared there.
+	/// </summary>
+	public static EventInfo[] GetDeclaredEvents(
+		this Type type)
+		=> type
+			.GetEvents(BindingFlags.DeclaredOnly |
+			           BindingFlags.NonPublic |
+			           BindingFlags.Public |
+			           BindingFlags.Instance);
+
+	/// <summary>
 	///     Searches for fields in the <paramref name="type" /> that were directly declared there.
 	/// </summary>
 	public static FieldInfo[] GetDeclaredFields(

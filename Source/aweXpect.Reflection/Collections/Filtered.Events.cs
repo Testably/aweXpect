@@ -24,10 +24,7 @@ public static partial class Filtered
 		///     Container for a filterable collection of <see cref="EventInfo" />.
 		/// </summary>
 		internal Events(Types types, string description) : base(types.SelectMany(type =>
-			type.GetEvents(BindingFlags.DeclaredOnly |
-			               BindingFlags.NonPublic |
-			               BindingFlags.Public |
-			               BindingFlags.Instance)))
+			type.GetDeclaredEvents()))
 		{
 			_types = types;
 			_description = description;
