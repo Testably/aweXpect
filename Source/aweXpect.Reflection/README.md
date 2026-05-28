@@ -146,7 +146,8 @@ In.AllLoadedAssemblies().Methods()
 // Filter by parameters
 In.AllLoadedAssemblies().Methods()
     .WithoutParameters()
-    .WithParameter<string>()
+    .WithParameter<string>()          // Parameter of type string or a subtype
+    .WithExactParameter<string>()     // Parameter of exactly type string
     .WithParameter<int>("count")
     .WithParameterCount(2)
 
@@ -185,7 +186,8 @@ In.AllLoadedAssemblies().Public.Events()
 // Constructors
 In.AllLoadedAssemblies().Public.Constructors()
     .WithoutParameters()
-    .WithParameter<string>()
+    .WithParameter<string>()          // Parameter of type string or a subtype
+    .WithExactParameter<string>()     // Parameter of exactly type string
     .WithParameterCount(1)
     .With<JsonConstructorAttribute>()
 ```

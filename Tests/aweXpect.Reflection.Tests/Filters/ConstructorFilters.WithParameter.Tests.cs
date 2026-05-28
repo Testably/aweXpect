@@ -36,8 +36,11 @@ public sealed partial class ConstructorFilters
 			[Fact]
 			public async Task WithParameterAtIndex_WhenIndexIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
-				void Act() => In.Type<TestClassWithConstructorParameters>()
-					.Constructors().WithParameter<int>().AtIndex(-1);
+				void Act()
+				{
+					In.Type<TestClassWithConstructorParameters>()
+						.Constructors().WithParameter<int>().AtIndex(-1);
+				}
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
 					.WithParamName("index").And
@@ -175,6 +178,20 @@ public sealed partial class ConstructorFilters
 			}
 
 			[Fact]
+			public async Task WithParameterOfType_ShouldIncludeConstructorsWithParameterOfDerivedType()
+			{
+				Filtered.Constructors constructors = In.Type<TestClassWithInheritedConstructorParameters>()
+					.Constructors().WithParameter<BaseParameter>();
+
+				await That(constructors).IsEqualTo([
+					typeof(TestClassWithInheritedConstructorParameters).GetConstructor([typeof(BaseParameter),])!,
+					typeof(TestClassWithInheritedConstructorParameters).GetConstructor([typeof(DerivedParameter),])!,
+				]).InAnyOrder();
+				await That(constructors.GetDescription())
+					.IsEqualTo("constructors with parameter of type ").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WithParameterOfTypeAndName_ShouldFilterForConstructorsWithParameterOfSpecificTypeAndName()
 			{
 				Filtered.Constructors constructors = In.Type<TestClassWithConstructorParameters>()
@@ -217,6 +234,14 @@ public sealed partial class ConstructorFilters
 			}
 		}
 
+		private class BaseParameter
+		{
+		}
+
+		private class DerivedParameter : BaseParameter
+		{
+		}
+
 		// ReSharper disable UnusedMember.Local
 		// ReSharper disable UnusedParameter.Local
 		private class TestClassWithConstructorParameters
@@ -226,6 +251,12 @@ public sealed partial class ConstructorFilters
 			public TestClassWithConstructorParameters(int id, string name) { }
 			public TestClassWithConstructorParameters(int id = 42) { }
 			public TestClassWithConstructorParameters(string id, int value = 100) { }
+		}
+
+		private class TestClassWithInheritedConstructorParameters
+		{
+			public TestClassWithInheritedConstructorParameters(BaseParameter parameter) { }
+			public TestClassWithInheritedConstructorParameters(DerivedParameter parameter) { }
 		}
 		// ReSharper restore UnusedParameter.Local
 		// ReSharper restore UnusedMember.Local

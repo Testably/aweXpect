@@ -31,6 +31,8 @@ namespace aweXpect.Reflection
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.ConstructorFilters.ConstructorsWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Constructors @this, System.Func<TAttribute, bool>? predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
+        public static aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameter<T> WithExactParameter<T>(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
+        public static aweXpect.Reflection.ConstructorFilters.ConstructorsWithNamedParameter<T> WithExactParameter<T>(this aweXpect.Reflection.Collections.Filtered.Constructors @this, string expected) { }
         public static aweXpect.Reflection.ConstructorFilters.ConstructorsWithNamedParameter<object?> WithParameter(this aweXpect.Reflection.Collections.Filtered.Constructors @this, string expected) { }
         public static aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameter<T> WithParameter<T>(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
         public static aweXpect.Reflection.ConstructorFilters.ConstructorsWithNamedParameter<T> WithParameter<T>(this aweXpect.Reflection.Collections.Filtered.Constructors @this, string expected) { }
@@ -197,6 +199,8 @@ namespace aweXpect.Reflection
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.MethodFilters.MethodsWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Methods @this, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
+        public static aweXpect.Reflection.MethodFilters.MethodsWithParameter<T> WithExactParameter<T>(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
+        public static aweXpect.Reflection.MethodFilters.MethodsWithNamedParameter<T> WithExactParameter<T>(this aweXpect.Reflection.Collections.Filtered.Methods @this, string expected) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Methods @this, string expected) { }
         public static aweXpect.Reflection.MethodFilters.MethodsWithNamedParameter<object?> WithParameter(this aweXpect.Reflection.Collections.Filtered.Methods @this, string expected) { }
         public static aweXpect.Reflection.MethodFilters.MethodsWithParameter<T> WithParameter<T>(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }

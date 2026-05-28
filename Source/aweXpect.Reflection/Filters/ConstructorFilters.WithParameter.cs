@@ -20,7 +20,7 @@ public static partial class ConstructorFilters
 	{
 		Type parameterType = typeof(T);
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType == parameterType,
+		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType.IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
 		IAsyncChangeableFilter<ConstructorInfo> filter = Filter.Suffix<ConstructorInfo>(
 			constructorInfo =>
@@ -51,7 +51,7 @@ public static partial class ConstructorFilters
 	{
 		Type parameterType = typeof(T);
 		StringEqualityOptions stringEqualityOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType == parameterType,
+		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType.IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");

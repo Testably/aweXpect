@@ -38,8 +38,11 @@ public sealed partial class MethodFilters
 			[Fact]
 			public async Task WithParameterAtIndex_WhenIndexIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
-				void Act() => In.Type<TestClassWithMethodParameters>()
-					.Methods().WithParameter<int>().AtIndex(-1);
+				void Act()
+				{
+					In.Type<TestClassWithMethodParameters>()
+						.Methods().WithParameter<int>().AtIndex(-1);
+				}
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
 					.WithParamName("index").And
@@ -197,6 +200,22 @@ public sealed partial class MethodFilters
 			}
 
 			[Fact]
+			public async Task WithParameterOfType_ShouldIncludeMethodsWithParameterOfDerivedType()
+			{
+				Filtered.Methods methods = In.Type<TestClassWithInheritedParameters>()
+					.Methods().WithParameter<BaseParameter>();
+
+				await That(methods).IsEqualTo([
+					typeof(TestClassWithInheritedParameters).GetMethod(
+						nameof(TestClassWithInheritedParameters.MethodWithBaseParameter))!,
+					typeof(TestClassWithInheritedParameters).GetMethod(
+						nameof(TestClassWithInheritedParameters.MethodWithDerivedParameter))!,
+				]).InAnyOrder();
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of type ").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WithParameterOfTypeAndName_ShouldFilterForMethodsWithParameterOfSpecificTypeAndName()
 			{
 				Filtered.Methods methods = In.Type<TestClassWithMethodParameters>()
@@ -244,6 +263,14 @@ public sealed partial class MethodFilters
 			}
 		}
 
+		private class BaseParameter
+		{
+		}
+
+		private class DerivedParameter : BaseParameter
+		{
+		}
+
 #pragma warning disable CA1822
 		// ReSharper disable UnusedParameter.Local
 		private class TestClassWithMethodParameters
@@ -253,6 +280,12 @@ public sealed partial class MethodFilters
 			public void Method2(int id, string name) { }
 			public void Method3(int id = 42) { }
 			public void Method4(string id, int value = 100) { }
+		}
+
+		private class TestClassWithInheritedParameters
+		{
+			public void MethodWithBaseParameter(BaseParameter parameter) { }
+			public void MethodWithDerivedParameter(DerivedParameter parameter) { }
 		}
 		// ReSharper restore UnusedParameter.Local
 #pragma warning restore CA1822
