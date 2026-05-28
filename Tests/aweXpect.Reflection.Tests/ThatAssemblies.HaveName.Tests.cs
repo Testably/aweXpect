@@ -60,6 +60,47 @@ public sealed partial class ThatAssemblies
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenSelectorReturnsEachAssemblysOwnName_ShouldSucceed()
+			{
+				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
+
+				async Task Act()
+					=> await That(subject).HaveName(assembly => assembly!.GetName().Name!);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSelectorMatchesIgnoringCase_ShouldSucceed()
+			{
+				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
+
+				async Task Act()
+					=> await That(subject).HaveName(assembly => assembly!.GetName().Name!.ToUpperInvariant())
+						.IgnoringCase();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSelectorReturnsDifferentName_ShouldFail()
+			{
+				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
+
+				async Task Act()
+					=> await That(subject).HaveName(_ => "WrongName");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that in assembly containing type PublicAbstractClass
+					             all have name matching _ => "WrongName",
+					             but it contained not matching types [
+					               aweXpect.Reflection.Tests, Version=* with name "aweXpect.Reflection.Tests" instead of "WrongName"
+					             ]
+					             """).AsWildcard();
+			}
 		}
 
 		public sealed class NegatedTests
@@ -87,6 +128,33 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             not all have name equal to "aweXpect.Reflection.Tests",
+					             but it only contained matching types *
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenSelectorMatchesNoName_ShouldSucceed()
+			{
+				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(they => they.HaveName(_ => "WrongName"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSelectorMatchesEveryName_ShouldFail()
+			{
+				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(they => they.HaveName(_ => "aweXpect.Reflection.Tests"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that in assembly containing type PublicAbstractClass
+					             not all have name matching _ => "aweXpect.Reflection.Tests",
 					             but it only contained matching types *
 					             """).AsWildcard();
 			}

@@ -59,6 +59,57 @@ public sealed partial class ThatMethods
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenSelectorReturnsEachMethodsOwnName_ShouldSucceed()
+			{
+				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithMethods>().Methods();
+
+				async Task Act()
+					=> await That(subject).HaveName(method => method.Name);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSelectorMatchesIgnoringCase_ShouldSucceed()
+			{
+				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithSingleMethod>().Methods();
+
+				async Task Act()
+					=> await That(subject).HaveName(method => method.Name.ToUpperInvariant()).IgnoringCase();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSelectorMatchesAsPrefix_ShouldSucceed()
+			{
+				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithSingleMethod>().Methods();
+
+				async Task Act()
+					=> await That(subject).HaveName(_ => "My").AsPrefix();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSelectorReturnsDifferentName_ShouldFail()
+			{
+				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithSingleMethod>().Methods();
+
+				async Task Act()
+					=> await That(subject).HaveName(method => method.Name + "X");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods in types matching t => t == typeof(T) in assembly containing type ThatMethod.ClassWithSingleMethod
+					             all have name matching method => method.Name + "X",
+					             but it contained not matching items [
+					               * with name "MyMethod" instead of "MyMethodX"
+					             ]
+					             """).AsWildcard();
+			}
 		}
 
 		public sealed class NegatedTests
@@ -86,6 +137,33 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods in types matching t => t == typeof(T) in assembly containing type ThatMethod.ClassWithSingleMethod
 					             not all have name equal to "MyMethod",
+					             but it only contained matching items *
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenSelectorMatchesNoName_ShouldSucceed()
+			{
+				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithSingleMethod>().Methods();
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(they => they.HaveName(method => method.Name + "X"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSelectorMatchesEveryName_ShouldFail()
+			{
+				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithSingleMethod>().Methods();
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(they => they.HaveName(method => method.Name));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods in types matching t => t == typeof(T) in assembly containing type ThatMethod.ClassWithSingleMethod
+					             not all have name matching method => method.Name,
 					             but it only contained matching items *
 					             """).AsWildcard();
 			}

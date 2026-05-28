@@ -240,6 +240,11 @@ await Expect.That(In.AssemblyContaining<MyClass>()
 await Expect.That(In.AllLoadedAssemblies()
         .Types().WhichInheritFrom<ControllerBase>())
     .HaveName("Controller").AsSuffix();
+
+// Verify each event handler is named after the event it handles (e.g. "OnOrderPlaced")
+await Expect.That(In.AssemblyContaining<MyAggregate>()
+        .Methods().WhichSatisfy(m => m.GetParameters().Length == 1))
+    .HaveName(method => "On" + method.GetParameters()[0].ParameterType.Name);
 ```
 
 ## Assemblies
