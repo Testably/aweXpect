@@ -23,7 +23,7 @@ public static partial class ThatMethod
 	{
 		Type parameterType = typeof(TParameter);
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType == parameterType,
+		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType.IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
 		return new ParameterCollectionResult<MethodInfo?, TParameter>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars)
@@ -46,7 +46,7 @@ public static partial class ThatMethod
 		Type parameterType = typeof(TParameter);
 		StringEqualityOptions stringEqualityOptions = new();
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType == parameterType,
+		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType.IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
@@ -90,7 +90,8 @@ public static partial class ThatMethod
 		Type? parameterType,
 		string? expectedName,
 		CollectionIndexOptions collectionIndexOptions,
-		ParameterFilterOptions parameterFilterOptions)
+		ParameterFilterOptions parameterFilterOptions,
+		bool exactType = false)
 		: ConstraintResult.WithNotNullValue<MethodInfo?>(it, grammars),
 			IAsyncConstraint<MethodInfo?>
 	{
@@ -124,7 +125,7 @@ public static partial class ThatMethod
 			stringBuilder.Append("has parameter");
 			if (parameterType != null)
 			{
-				stringBuilder.Append(" of type ").Append(Formatter.Format(parameterType));
+				stringBuilder.Append(exactType ? " of exact type " : " of type ").Append(Formatter.Format(parameterType));
 			}
 
 			if (expectedName != null)
@@ -147,7 +148,7 @@ public static partial class ThatMethod
 			stringBuilder.Append("does not have parameter");
 			if (parameterType != null)
 			{
-				stringBuilder.Append(" of type ").Append(Formatter.Format(parameterType));
+				stringBuilder.Append(exactType ? " of exact type " : " of type ").Append(Formatter.Format(parameterType));
 			}
 
 			if (expectedName != null)

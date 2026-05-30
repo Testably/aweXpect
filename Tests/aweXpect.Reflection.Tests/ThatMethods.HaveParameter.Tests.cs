@@ -1,4 +1,5 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using Xunit.Sdk;
 
@@ -81,6 +82,21 @@ public sealed partial class ThatMethods
 			}
 
 			[Fact]
+			public async Task HaveParameterByType_WhenAllHaveSubtypeParameter_ShouldSucceed()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithStream))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithMemoryStream))!,
+				};
+
+				async Task Act()
+					=> await That(methods).HaveParameter<IDisposable>();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task HaveParameterByTypeAndName_WhenAllHaveParameter_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -123,6 +139,8 @@ public sealed partial class ThatMethods
 				public void MethodWithInt(int value) { }
 				public void MethodWithString(string name) { }
 				public void MethodWithIntAndString(int value, string name) { }
+				public void MethodWithStream(Stream stream) { }
+				public void MethodWithMemoryStream(MemoryStream stream) { }
 			}
 			// ReSharper restore UnusedParameter.Local
 			// ReSharper restore UnusedMember.Local
@@ -244,6 +262,8 @@ public sealed partial class ThatMethods
 				public void MethodWithInt(int value) { }
 				public void MethodWithString(string name) { }
 				public void MethodWithIntAndString(int value, string name) { }
+				public void MethodWithStream(Stream stream) { }
+				public void MethodWithMemoryStream(MemoryStream stream) { }
 			}
 			// ReSharper restore UnusedParameter.Local
 			// ReSharper restore UnusedMember.Local

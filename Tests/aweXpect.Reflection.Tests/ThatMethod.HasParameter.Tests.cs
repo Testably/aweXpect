@@ -1,3 +1,4 @@
+﻿using System.IO;
 using System.Reflection;
 using Xunit.Sdk;
 
@@ -113,6 +114,17 @@ public sealed partial class ThatMethod
 			}
 
 			[Fact]
+			public async Task HasParameterByType_WhenParameterIsSubtype_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithStream))!;
+
+				async Task Act()
+					=> await That(methodInfo).HasParameter<IDisposable>();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task HasParameterByTypeAndName_WhenParameterDoesNotExist_ShouldFail()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutParameters))!;
@@ -197,6 +209,7 @@ public sealed partial class ThatMethod
 				public void MethodWithString(string name) { }
 				public void MethodWithIntAndString(int value, string name) { }
 				public void MethodWithDefaults(int value, string name = "default") { }
+				public void MethodWithStream(Stream stream) { }
 			}
 			// ReSharper restore UnusedParameter.Local
 			// ReSharper restore UnusedMember.Local
@@ -295,6 +308,7 @@ public sealed partial class ThatMethod
 				public void MethodWithString(string name) { }
 				public void MethodWithIntAndString(int value, string name) { }
 				public void MethodWithDefaults(int value, string name = "default") { }
+				public void MethodWithStream(Stream stream) { }
 			}
 			// ReSharper restore UnusedParameter.Local
 			// ReSharper restore UnusedMember.Local

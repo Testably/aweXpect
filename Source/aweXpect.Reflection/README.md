@@ -293,16 +293,16 @@ In addition to [access modifiers](#access-modifiers),
 [attributes](#attributes) and
 [names](#names-and-namespaces):
 
-|                                      | Filter                                              | Assert (single)                                   | Assert (many)         |
-|--------------------------------------|-----------------------------------------------------|---------------------------------------------------|-----------------------|
-| static / abstract / sealed / generic | `.WhichAreStatic()` …                               | `.IsStatic()` …                                   | `.AreStatic()` …      |
-| returns type (or a subtype)          | `.WhichReturn<T>()`                                 | `.Returns<T>()`                                   | `.Return<T>()`        |
-| returns exactly                      | `.WhichReturnExactly<T>()`                          | `.ReturnsExactly<T>()`                            | `.ReturnExactly<T>()` |
-| no parameters                        | `.WithoutParameters()`                              | -                                                 | -                     |
-| parameter of type (or subtype)       | `.WithParameter<T>()` / `.WithParameter<T>("name")` | `.HasParameter<T>()` / `.HasParameter<T>("name")` | `.HaveParameter<T>()` |
-| parameter of exact type              | `.WithExactParameter<T>()`                          | -                                                 | -                     |
-| parameter count                      | `.WithParameterCount(n)`                            | -                                                 | -                     |
-| custom predicate                     | `.Which(m => …)`                                    | -                                                 | -                     |
+|                                      | Filter                                              | Assert (single)                                             | Assert (many)              |
+|--------------------------------------|-----------------------------------------------------|-------------------------------------------------------------|----------------------------|
+| static / abstract / sealed / generic | `.WhichAreStatic()` …                               | `.IsStatic()` …                                             | `.AreStatic()` …           |
+| returns type (or a subtype)          | `.WhichReturn<T>()`                                 | `.Returns<T>()`                                             | `.Return<T>()`             |
+| returns exactly                      | `.WhichReturnExactly<T>()`                          | `.ReturnsExactly<T>()`                                      | `.ReturnExactly<T>()`      |
+| no parameters                        | `.WithoutParameters()`                              | `.HasNoParameters()`                                        | `.HaveNoParameters()`      |
+| parameter of type (or subtype)       | `.WithParameter<T>()` / `.WithParameter<T>("name")` | `.HasParameter<T>()` / `.HasParameter<T>("name")`           | `.HaveParameter<T>()`      |
+| parameter of exact type              | `.WithExactParameter<T>()`                          | `.HasExactParameter<T>()` / `.HasExactParameter<T>("name")` | `.HaveExactParameter<T>()` |
+| parameter count                      | `.WithParameterCount(n)`                            | `.HasParameterCount(n)`                                     | `.HaveParameterCount(n)`   |
+| custom predicate                     | `.Which(m => …)`                                    | -                                                           | -                          |
 
 `WhichReturn<Task>()` and `Returns<Task>()` also match `Task<T>`; the `…Exactly` variants match only the
 exact type. Use `OrReturn<T>()` / `OrReturnExactly<T>()` to allow several return types.
