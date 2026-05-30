@@ -92,6 +92,42 @@ public static partial class ThatConstructors
 		=> subject.HaveParameter(expected).WithModifier(p => p.IsParamsParameter(), "with params modifier");
 #endif
 
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
+	///     a <see langword="params" /> parameter of exact type <typeparamref name="TParameter" />.
+	/// </summary>
+	public static ParameterCollectionResult<IEnumerable<ConstructorInfo?>, TParameter> HaveParamsParameterExactly<TParameter>(
+		this IThat<IEnumerable<ConstructorInfo?>> subject)
+		=> subject.HaveParameterExactly<TParameter>().WithModifier(p => p.IsParamsParameter(), "with params modifier");
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
+	///     a <see langword="params" /> parameter of exact type <typeparamref name="TParameter" /> with the
+	///     <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, TParameter> HaveParamsParameterExactly<TParameter>(
+		this IThat<IEnumerable<ConstructorInfo?>> subject, string expected)
+		=> subject.HaveParameterExactly<TParameter>(expected).WithModifier(p => p.IsParamsParameter(), "with params modifier");
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
+	///     a <see langword="params" /> parameter of exact type <typeparamref name="TParameter" />.
+	/// </summary>
+	public static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, TParameter> HaveParamsParameterExactly<TParameter>(
+		this IThat<IAsyncEnumerable<ConstructorInfo?>> subject)
+		=> subject.HaveParameterExactly<TParameter>().WithModifier(p => p.IsParamsParameter(), "with params modifier");
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
+	///     a <see langword="params" /> parameter of exact type <typeparamref name="TParameter" /> with the
+	///     <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, TParameter> HaveParamsParameterExactly<TParameter>(
+		this IThat<IAsyncEnumerable<ConstructorInfo?>> subject, string expected)
+		=> subject.HaveParameterExactly<TParameter>(expected).WithModifier(p => p.IsParamsParameter(), "with params modifier");
+#endif
+
 	private sealed class HaveParamsParameterConstraint(string it, ExpectationGrammars grammars)
 		: CollectionConstraintResult<ConstructorInfo?>(grammars),
 			IValueConstraint<IEnumerable<ConstructorInfo?>>

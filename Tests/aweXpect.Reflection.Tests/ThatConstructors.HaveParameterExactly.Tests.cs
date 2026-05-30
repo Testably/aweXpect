@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Xunit.Sdk;
@@ -7,12 +7,23 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatConstructors
 {
-	public sealed class HaveExactParameter
+	public sealed class HaveParameterExactly
 	{
+#if NET8_0_OR_GREATER
+		private static async IAsyncEnumerable<ConstructorInfo> ToAsyncEnumerable(params ConstructorInfo[] items)
+		{
+			foreach (ConstructorInfo item in items)
+			{
+				yield return item;
+			}
+
+			await Task.CompletedTask;
+		}
+#endif
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenAllHaveExactParameter_ShouldSucceed()
+			public async Task WhenAllHaveParameterExactly_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
 				{
@@ -21,14 +32,14 @@ public sealed partial class ThatConstructors
 
 				async Task Act()
 				{
-					await That(constructors).HaveExactParameter<Stream>();
+					await That(constructors).HaveParameterExactly<Stream>();
 				}
 
 				await That(Act).DoesNotThrow();
 			}
 
 			[Fact]
-			public async Task WhenAllHaveExactParameterWithName_ShouldSucceed()
+			public async Task WhenAllHaveParameterExactlyWithName_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
 				{
@@ -37,7 +48,7 @@ public sealed partial class ThatConstructors
 
 				async Task Act()
 				{
-					await That(constructors).HaveExactParameter<Stream>("stream");
+					await That(constructors).HaveParameterExactly<Stream>("stream");
 				}
 
 				await That(Act).DoesNotThrow();
@@ -53,7 +64,7 @@ public sealed partial class ThatConstructors
 
 				async Task Act()
 				{
-					await That(constructors).HaveExactParameter<IDisposable>();
+					await That(constructors).HaveParameterExactly<IDisposable>();
 				}
 
 				await That(Act).Throws<XunitException>()
@@ -63,12 +74,57 @@ public sealed partial class ThatConstructors
 					             but at least one did not
 					             """);
 			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task AsyncEnumerable_WhenAllHaveParameterExactly_ShouldSucceed()
+			{
+				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
+					typeof(TestClass).GetConstructor([typeof(Stream),])!,
+					typeof(OtherClass).GetConstructor([typeof(Stream),])!);
+
+				async Task Act()
+				{
+					await That(constructors).HaveParameterExactly<Stream>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task AsyncEnumerable_WhenAllHaveParameterExactlyWithName_ShouldSucceed()
+			{
+				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
+					typeof(TestClass).GetConstructor([typeof(Stream),])!);
+
+				async Task Act()
+				{
+					await That(constructors).HaveParameterExactly<Stream>("stream");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task AsyncEnumerable_WhenAnyParameterIsSubtype_ShouldFail()
+			{
+				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
+					typeof(TestClass).GetConstructor([typeof(Stream),])!);
+
+				async Task Act()
+				{
+					await That(constructors).HaveParameterExactly<IDisposable>();
+				}
+
+				await That(Act).Throws<XunitException>();
+			}
+#endif
 		}
 
 		public sealed class NegatedTests
 		{
 			[Fact]
-			public async Task WhenAllHaveExactParameter_ShouldFail()
+			public async Task WhenAllHaveParameterExactly_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
 				{
@@ -77,7 +133,7 @@ public sealed partial class ThatConstructors
 
 				async Task Act()
 				{
-					await That(constructors).DoesNotComplyWith(they => they.HaveExactParameter<Stream>());
+					await That(constructors).DoesNotComplyWith(they => they.HaveParameterExactly<Stream>());
 				}
 
 				await That(Act).Throws<XunitException>()
@@ -98,7 +154,7 @@ public sealed partial class ThatConstructors
 
 				async Task Act()
 				{
-					await That(constructors).DoesNotComplyWith(they => they.HaveExactParameter<IDisposable>());
+					await That(constructors).DoesNotComplyWith(they => they.HaveParameterExactly<IDisposable>());
 				}
 
 				await That(Act).DoesNotThrow();

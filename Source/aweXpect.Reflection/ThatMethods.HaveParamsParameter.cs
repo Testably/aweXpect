@@ -92,6 +92,42 @@ public static partial class ThatMethods
 		=> subject.HaveParameter(expected).WithModifier(p => p.IsParamsParameter(), "with params modifier");
 #endif
 
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have
+	///     a <see langword="params" /> parameter of exact type <typeparamref name="TParameter" />.
+	/// </summary>
+	public static ParameterCollectionResult<IEnumerable<MethodInfo?>, TParameter> HaveParamsParameterExactly<TParameter>(
+		this IThat<IEnumerable<MethodInfo?>> subject)
+		=> subject.HaveParameterExactly<TParameter>().WithModifier(p => p.IsParamsParameter(), "with params modifier");
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have
+	///     a <see langword="params" /> parameter of exact type <typeparamref name="TParameter" /> with the
+	///     <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<IEnumerable<MethodInfo?>, TParameter> HaveParamsParameterExactly<TParameter>(
+		this IThat<IEnumerable<MethodInfo?>> subject, string expected)
+		=> subject.HaveParameterExactly<TParameter>(expected).WithModifier(p => p.IsParamsParameter(), "with params modifier");
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have
+	///     a <see langword="params" /> parameter of exact type <typeparamref name="TParameter" />.
+	/// </summary>
+	public static ParameterCollectionResult<IAsyncEnumerable<MethodInfo?>, TParameter> HaveParamsParameterExactly<TParameter>(
+		this IThat<IAsyncEnumerable<MethodInfo?>> subject)
+		=> subject.HaveParameterExactly<TParameter>().WithModifier(p => p.IsParamsParameter(), "with params modifier");
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have
+	///     a <see langword="params" /> parameter of exact type <typeparamref name="TParameter" /> with the
+	///     <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<IAsyncEnumerable<MethodInfo?>, TParameter> HaveParamsParameterExactly<TParameter>(
+		this IThat<IAsyncEnumerable<MethodInfo?>> subject, string expected)
+		=> subject.HaveParameterExactly<TParameter>(expected).WithModifier(p => p.IsParamsParameter(), "with params modifier");
+#endif
+
 	private sealed class HaveParamsParameterConstraint(string it, ExpectationGrammars grammars)
 		: CollectionConstraintResult<MethodInfo?>(grammars),
 			IValueConstraint<IEnumerable<MethodInfo?>>

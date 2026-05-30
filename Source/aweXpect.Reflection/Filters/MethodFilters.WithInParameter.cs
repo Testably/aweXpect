@@ -36,4 +36,17 @@ public static partial class MethodFilters
 	/// </summary>
 	public static MethodsWithNamedParameter<object?> WithInParameter(this Filtered.Methods @this, string expected)
 		=> @this.WithParameter(expected).WithModifier(p => p.IsInParameter(), "with in modifier");
+
+	/// <summary>
+	///     Filter for methods with an <see langword="in" /> parameter of exact type <typeparamref name="T" />.
+	/// </summary>
+	public static MethodsWithParameter<T> WithInParameterExactly<T>(this Filtered.Methods @this)
+		=> @this.WithParameterExactly<T>().WithModifier(p => p.IsInParameter(), "with in modifier");
+
+	/// <summary>
+	///     Filter for methods with an <see langword="in" /> parameter of exact type <typeparamref name="T" /> with the
+	///     <paramref name="expected" /> name.
+	/// </summary>
+	public static MethodsWithNamedParameter<T> WithInParameterExactly<T>(this Filtered.Methods @this, string expected)
+		=> @this.WithParameterExactly<T>(expected).WithModifier(p => p.IsInParameter(), "with in modifier");
 }

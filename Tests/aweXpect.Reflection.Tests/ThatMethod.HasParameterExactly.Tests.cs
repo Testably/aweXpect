@@ -6,7 +6,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatMethod
 {
-	public sealed class HasExactParameter
+	public sealed class HasParameterExactly
 	{
 		public sealed class Tests
 		{
@@ -17,7 +17,7 @@ public sealed partial class ThatMethod
 
 				async Task Act()
 				{
-					await That(methodInfo).HasExactParameter<Stream>();
+					await That(methodInfo).HasParameterExactly<Stream>();
 				}
 
 				await That(Act).Throws<XunitException>()
@@ -35,7 +35,7 @@ public sealed partial class ThatMethod
 
 				async Task Act()
 				{
-					await That(methodInfo).HasExactParameter<Stream>();
+					await That(methodInfo).HasParameterExactly<Stream>();
 				}
 
 				await That(Act).DoesNotThrow();
@@ -48,7 +48,7 @@ public sealed partial class ThatMethod
 
 				async Task Act()
 				{
-					await That(methodInfo).HasExactParameter<Stream>("stream");
+					await That(methodInfo).HasParameterExactly<Stream>("stream");
 				}
 
 				await That(Act).DoesNotThrow();
@@ -61,7 +61,7 @@ public sealed partial class ThatMethod
 
 				async Task Act()
 				{
-					await That(methodInfo).HasExactParameter<IDisposable>();
+					await That(methodInfo).HasParameterExactly<IDisposable>();
 				}
 
 				await That(Act).Throws<XunitException>()
@@ -79,7 +79,7 @@ public sealed partial class ThatMethod
 
 				async Task Act()
 				{
-					await That(methodInfo).HasExactParameter<Stream>("other");
+					await That(methodInfo).HasParameterExactly<Stream>("other");
 				}
 
 				await That(Act).Throws<XunitException>()
@@ -100,7 +100,7 @@ public sealed partial class ThatMethod
 
 				async Task Act()
 				{
-					await That(methodInfo).DoesNotComplyWith(it => it.HasExactParameter<Stream>());
+					await That(methodInfo).DoesNotComplyWith(it => it.HasParameterExactly<Stream>());
 				}
 
 				await That(Act).Throws<XunitException>()
@@ -118,7 +118,7 @@ public sealed partial class ThatMethod
 
 				async Task Act()
 				{
-					await That(methodInfo).DoesNotComplyWith(it => it.HasExactParameter<IDisposable>());
+					await That(methodInfo).DoesNotComplyWith(it => it.HasParameterExactly<IDisposable>());
 				}
 
 				await That(Act).DoesNotThrow();

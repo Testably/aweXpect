@@ -92,6 +92,42 @@ public static partial class ThatConstructors
 		=> subject.HaveParameter(expected).WithModifier(p => p.IsOutParameter(), "with out modifier");
 #endif
 
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
+	///     an <see langword="out" /> parameter of exact type <typeparamref name="TParameter" />.
+	/// </summary>
+	public static ParameterCollectionResult<IEnumerable<ConstructorInfo?>, TParameter> HaveOutParameterExactly<TParameter>(
+		this IThat<IEnumerable<ConstructorInfo?>> subject)
+		=> subject.HaveParameterExactly<TParameter>().WithModifier(p => p.IsOutParameter(), "with out modifier");
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
+	///     an <see langword="out" /> parameter of exact type <typeparamref name="TParameter" /> with the
+	///     <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, TParameter> HaveOutParameterExactly<TParameter>(
+		this IThat<IEnumerable<ConstructorInfo?>> subject, string expected)
+		=> subject.HaveParameterExactly<TParameter>(expected).WithModifier(p => p.IsOutParameter(), "with out modifier");
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
+	///     an <see langword="out" /> parameter of exact type <typeparamref name="TParameter" />.
+	/// </summary>
+	public static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, TParameter> HaveOutParameterExactly<TParameter>(
+		this IThat<IAsyncEnumerable<ConstructorInfo?>> subject)
+		=> subject.HaveParameterExactly<TParameter>().WithModifier(p => p.IsOutParameter(), "with out modifier");
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
+	///     an <see langword="out" /> parameter of exact type <typeparamref name="TParameter" /> with the
+	///     <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, TParameter> HaveOutParameterExactly<TParameter>(
+		this IThat<IAsyncEnumerable<ConstructorInfo?>> subject, string expected)
+		=> subject.HaveParameterExactly<TParameter>(expected).WithModifier(p => p.IsOutParameter(), "with out modifier");
+#endif
+
 	private sealed class HaveOutParameterConstraint(string it, ExpectationGrammars grammars)
 		: CollectionConstraintResult<ConstructorInfo?>(grammars),
 			IValueConstraint<IEnumerable<ConstructorInfo?>>

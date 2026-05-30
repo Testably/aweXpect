@@ -4,7 +4,7 @@ namespace aweXpect.Reflection.Tests.Filters;
 
 public sealed partial class ConstructorFilters
 {
-	public sealed class WithExactParameter
+	public sealed class WithParameterExactly
 	{
 		public sealed class Tests
 		{
@@ -12,7 +12,7 @@ public sealed partial class ConstructorFilters
 			public async Task ShouldFilterForConstructorsWithParameterOfExactType()
 			{
 				Filtered.Constructors constructors = In.Type<TestClass>()
-					.Constructors().WithExactParameter<DummyBase>();
+					.Constructors().WithParameterExactly<DummyBase>();
 
 				await That(constructors).IsEqualTo([
 					typeof(TestClass).GetConstructor([typeof(DummyBase),])!,
@@ -25,7 +25,7 @@ public sealed partial class ConstructorFilters
 			public async Task ShouldNotIncludeConstructorsWithParameterOfDerivedType()
 			{
 				Filtered.Constructors exactConstructors = In.Type<TestClass>()
-					.Constructors().WithExactParameter<DummyBase>();
+					.Constructors().WithParameterExactly<DummyBase>();
 				Filtered.Constructors assignableConstructors = In.Type<TestClass>()
 					.Constructors().WithParameter<DummyBase>();
 
@@ -42,7 +42,7 @@ public sealed partial class ConstructorFilters
 			public async Task WithName_ShouldFilterForConstructorsWithParameterOfExactTypeAndName()
 			{
 				Filtered.Constructors constructors = In.Type<TestClass>()
-					.Constructors().WithExactParameter<DummyBase>("parameter");
+					.Constructors().WithParameterExactly<DummyBase>("parameter");
 
 				await That(constructors).IsEqualTo([
 					typeof(TestClass).GetConstructor([typeof(DummyBase),])!,

@@ -36,4 +36,17 @@ public static partial class ConstructorFilters
 	/// </summary>
 	public static ConstructorsWithNamedParameter<object?> WithOptionalParameter(this Filtered.Constructors @this, string expected)
 		=> @this.WithParameter(expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+
+	/// <summary>
+	///     Filter for constructors with an optional parameter of exact type <typeparamref name="T" />.
+	/// </summary>
+	public static ConstructorsWithParameter<T> WithOptionalParameterExactly<T>(this Filtered.Constructors @this)
+		=> @this.WithParameterExactly<T>().WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+
+	/// <summary>
+	///     Filter for constructors with an optional parameter of exact type <typeparamref name="T" /> with the
+	///     <paramref name="expected" /> name.
+	/// </summary>
+	public static ConstructorsWithNamedParameter<T> WithOptionalParameterExactly<T>(this Filtered.Constructors @this, string expected)
+		=> @this.WithParameterExactly<T>(expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
 }

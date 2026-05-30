@@ -36,4 +36,17 @@ public static partial class ConstructorFilters
 	/// </summary>
 	public static ConstructorsWithNamedParameter<object?> WithOutParameter(this Filtered.Constructors @this, string expected)
 		=> @this.WithParameter(expected).WithModifier(p => p.IsOutParameter(), "with out modifier");
+
+	/// <summary>
+	///     Filter for constructors with an <see langword="out" /> parameter of exact type <typeparamref name="T" />.
+	/// </summary>
+	public static ConstructorsWithParameter<T> WithOutParameterExactly<T>(this Filtered.Constructors @this)
+		=> @this.WithParameterExactly<T>().WithModifier(p => p.IsOutParameter(), "with out modifier");
+
+	/// <summary>
+	///     Filter for constructors with an <see langword="out" /> parameter of exact type <typeparamref name="T" /> with the
+	///     <paramref name="expected" /> name.
+	/// </summary>
+	public static ConstructorsWithNamedParameter<T> WithOutParameterExactly<T>(this Filtered.Constructors @this, string expected)
+		=> @this.WithParameterExactly<T>(expected).WithModifier(p => p.IsOutParameter(), "with out modifier");
 }

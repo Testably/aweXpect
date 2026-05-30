@@ -17,12 +17,12 @@ public static partial class ThatMethods
 	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have
 	///     a parameter of exact type <typeparamref name="TParameter" />.
 	/// </summary>
-	public static ParameterCollectionResult<IEnumerable<MethodInfo?>, TParameter> HaveExactParameter<TParameter>(
+	public static ParameterCollectionResult<IEnumerable<MethodInfo?>, TParameter> HaveParameterExactly<TParameter>(
 		this IThat<IEnumerable<MethodInfo?>> subject)
 	{
 		Type parameterType = typeof(TParameter);
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType.IsOrInheritsFrom(parameterType, true),
+		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
 			() => $"of exact type {Formatter.Format(parameterType)}");
 		return new ParameterCollectionResult<IEnumerable<MethodInfo?>, TParameter>(subject.Get().ExpectationBuilder
 				.AddConstraint<IEnumerable<MethodInfo?>>((_, grammars)
@@ -39,13 +39,13 @@ public static partial class ThatMethods
 	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have
 	///     a parameter of exact type <typeparamref name="TParameter" /> with the <paramref name="expected" /> name.
 	/// </summary>
-	public static NamedParameterCollectionResult<IEnumerable<MethodInfo?>, TParameter> HaveExactParameter<TParameter>(
+	public static NamedParameterCollectionResult<IEnumerable<MethodInfo?>, TParameter> HaveParameterExactly<TParameter>(
 		this IThat<IEnumerable<MethodInfo?>> subject, string expected)
 	{
 		Type parameterType = typeof(TParameter);
 		StringEqualityOptions stringEqualityOptions = new();
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType.IsOrInheritsFrom(parameterType, true),
+		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
 			() => $"of exact type {Formatter.Format(parameterType)}");
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
@@ -67,12 +67,12 @@ public static partial class ThatMethods
 	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have
 	///     a parameter of exact type <typeparamref name="TParameter" />.
 	/// </summary>
-	public static ParameterCollectionResult<IAsyncEnumerable<MethodInfo?>, TParameter> HaveExactParameter<TParameter>(
+	public static ParameterCollectionResult<IAsyncEnumerable<MethodInfo?>, TParameter> HaveParameterExactly<TParameter>(
 		this IThat<IAsyncEnumerable<MethodInfo?>> subject)
 	{
 		Type parameterType = typeof(TParameter);
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType.IsOrInheritsFrom(parameterType, true),
+		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
 			() => $"of exact type {Formatter.Format(parameterType)}");
 		return new ParameterCollectionResult<IAsyncEnumerable<MethodInfo?>, TParameter>(subject.Get().ExpectationBuilder
 				.AddConstraint<IAsyncEnumerable<MethodInfo?>>((_, grammars)
@@ -91,13 +91,13 @@ public static partial class ThatMethods
 	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have
 	///     a parameter of exact type <typeparamref name="TParameter" /> with the <paramref name="expected" /> name.
 	/// </summary>
-	public static NamedParameterCollectionResult<IAsyncEnumerable<MethodInfo?>, TParameter> HaveExactParameter<TParameter>(
+	public static NamedParameterCollectionResult<IAsyncEnumerable<MethodInfo?>, TParameter> HaveParameterExactly<TParameter>(
 		this IThat<IAsyncEnumerable<MethodInfo?>> subject, string expected)
 	{
 		Type parameterType = typeof(TParameter);
 		StringEqualityOptions stringEqualityOptions = new();
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType.IsOrInheritsFrom(parameterType, true),
+		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
 			() => $"of exact type {Formatter.Format(parameterType)}");
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");

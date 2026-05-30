@@ -44,6 +44,22 @@ public static partial class ThatMethod
 		this IThat<MethodInfo?> subject, string expected)
 		=> subject.HasParameter(expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
 
+	/// <summary>
+	///     Verifies that the <see cref="MethodInfo" /> has an optional parameter of exact type
+	///     <typeparamref name="TParameter" />.
+	/// </summary>
+	public static ParameterCollectionResult<MethodInfo?, TParameter> HasOptionalParameterExactly<TParameter>(
+		this IThat<MethodInfo?> subject)
+		=> subject.HasParameterExactly<TParameter>().WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+
+	/// <summary>
+	///     Verifies that the <see cref="MethodInfo" /> has an optional parameter of exact type
+	///     <typeparamref name="TParameter" /> with the <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<MethodInfo?, TParameter> HasOptionalParameterExactly<TParameter>(
+		this IThat<MethodInfo?> subject, string expected)
+		=> subject.HasParameterExactly<TParameter>(expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+
 	private sealed class HasOptionalParameterConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<MethodInfo?>(it, grammars),
 			IValueConstraint<MethodInfo?>

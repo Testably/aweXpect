@@ -9,21 +9,21 @@ using aweXpect.Reflection.Options;
 
 namespace aweXpect.Reflection;
 
-public static partial class ConstructorFilters
+public static partial class MethodFilters
 {
 	/// <summary>
-	///     Filter for constructors with a parameter of exact type <typeparamref name="T" />.
+	///     Filter for methods with a parameter of exact type <typeparamref name="T" />.
 	/// </summary>
-	public static ConstructorsWithParameter<T> WithExactParameter<T>(this Filtered.Constructors @this)
+	public static MethodsWithParameter<T> WithParameterExactly<T>(this Filtered.Methods @this)
 	{
 		Type parameterType = typeof(T);
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType.IsOrInheritsFrom(parameterType, true),
+		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
 			() => $"of exact type {Formatter.Format(parameterType)}");
-		IAsyncChangeableFilter<ConstructorInfo> filter = Filter.Suffix<ConstructorInfo>(
-			constructorInfo =>
+		IAsyncChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
+			methodInfo =>
 			{
-				ParameterInfo[] parameters = constructorInfo.GetParameters();
+				ParameterInfo[] parameters = methodInfo.GetParameters();
 				return parameters.AnyAsync(async (p, i) =>
 				{
 					bool? isIndexInRange = collectionIndexOptions.Match switch
@@ -38,26 +38,26 @@ public static partial class ConstructorFilters
 			},
 			()
 				=> $"with parameter {parameterFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
-		return new ConstructorsWithParameter<T>(@this.Which(filter), collectionIndexOptions, parameterFilterOptions);
+		return new MethodsWithParameter<T>(@this.Which(filter), collectionIndexOptions, parameterFilterOptions);
 	}
 
 	/// <summary>
-	///     Filter for constructors with a parameter of exact type <typeparamref name="T" /> with the
-	///     <paramref name="expected" /> name.
+	///     Filter for methods with a parameter of exact type <typeparamref name="T" /> with the <paramref name="expected" />
+	///     name.
 	/// </summary>
-	public static ConstructorsWithNamedParameter<T> WithExactParameter<T>(this Filtered.Constructors @this, string expected)
+	public static MethodsWithNamedParameter<T> WithParameterExactly<T>(this Filtered.Methods @this, string expected)
 	{
 		Type parameterType = typeof(T);
 		StringEqualityOptions stringEqualityOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType.IsOrInheritsFrom(parameterType, true),
+		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
 			() => $"of exact type {Formatter.Format(parameterType)}");
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 		CollectionIndexOptions collectionIndexOptions = new();
-		IAsyncChangeableFilter<ConstructorInfo> filter = Filter.Suffix<ConstructorInfo>(
-			constructorInfo =>
+		IAsyncChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
+			methodInfo =>
 			{
-				ParameterInfo[] parameters = constructorInfo.GetParameters();
+				ParameterInfo[] parameters = methodInfo.GetParameters();
 				return parameters.AnyAsync(async (p, i) =>
 				{
 					bool? isIndexInRange = collectionIndexOptions.Match switch
@@ -72,6 +72,6 @@ public static partial class ConstructorFilters
 			},
 			()
 				=> $"with parameter {parameterFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
-		return new ConstructorsWithNamedParameter<T>(@this.Which(filter), collectionIndexOptions, parameterFilterOptions, stringEqualityOptions);
+		return new MethodsWithNamedParameter<T>(@this.Which(filter), collectionIndexOptions, parameterFilterOptions, stringEqualityOptions);
 	}
 }

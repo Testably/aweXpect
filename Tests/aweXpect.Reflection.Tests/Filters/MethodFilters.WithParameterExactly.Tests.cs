@@ -4,7 +4,7 @@ namespace aweXpect.Reflection.Tests.Filters;
 
 public sealed partial class MethodFilters
 {
-	public sealed class WithExactParameter
+	public sealed class WithParameterExactly
 	{
 		public sealed class Tests
 		{
@@ -12,7 +12,7 @@ public sealed partial class MethodFilters
 			public async Task ShouldFilterForMethodsWithParameterOfExactType()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
-					.Methods().WithExactParameter<DummyBase>();
+					.Methods().WithParameterExactly<DummyBase>();
 
 				await That(methods).IsEqualTo([
 					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithDummyBase))!,
@@ -25,7 +25,7 @@ public sealed partial class MethodFilters
 			public async Task ShouldNotIncludeMethodsWithParameterOfDerivedType()
 			{
 				Filtered.Methods exactMethods = In.Type<TestClass>()
-					.Methods().WithExactParameter<DummyBase>();
+					.Methods().WithParameterExactly<DummyBase>();
 				Filtered.Methods assignableMethods = In.Type<TestClass>()
 					.Methods().WithParameter<DummyBase>();
 
@@ -42,7 +42,7 @@ public sealed partial class MethodFilters
 			public async Task WithName_ShouldFilterForMethodsWithParameterOfExactTypeAndName()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
-					.Methods().WithExactParameter<DummyBase>("parameter");
+					.Methods().WithParameterExactly<DummyBase>("parameter");
 
 				await That(methods).IsEqualTo([
 					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithDummyBase))!,

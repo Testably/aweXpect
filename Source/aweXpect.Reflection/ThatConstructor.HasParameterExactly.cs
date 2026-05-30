@@ -14,12 +14,12 @@ public static partial class ThatConstructor
 	///     Verifies that the <see cref="ConstructorInfo" /> has a parameter of exact type
 	///     <typeparamref name="TParameter" />.
 	/// </summary>
-	public static ParameterCollectionResult<ConstructorInfo?, TParameter> HasExactParameter<TParameter>(
+	public static ParameterCollectionResult<ConstructorInfo?, TParameter> HasParameterExactly<TParameter>(
 		this IThat<ConstructorInfo?> subject)
 	{
 		Type parameterType = typeof(TParameter);
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType.IsOrInheritsFrom(parameterType, true),
+		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
 			() => $"of exact type {Formatter.Format(parameterType)}");
 		return new ParameterCollectionResult<ConstructorInfo?, TParameter>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars)
@@ -36,13 +36,13 @@ public static partial class ThatConstructor
 	///     Verifies that the <see cref="ConstructorInfo" /> has a parameter of exact type
 	///     <typeparamref name="TParameter" /> with the <paramref name="expected" /> name.
 	/// </summary>
-	public static NamedParameterCollectionResult<ConstructorInfo?, TParameter> HasExactParameter<TParameter>(
+	public static NamedParameterCollectionResult<ConstructorInfo?, TParameter> HasParameterExactly<TParameter>(
 		this IThat<ConstructorInfo?> subject, string expected)
 	{
 		Type parameterType = typeof(TParameter);
 		StringEqualityOptions stringEqualityOptions = new();
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType.IsOrInheritsFrom(parameterType, true),
+		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
 			() => $"of exact type {Formatter.Format(parameterType)}");
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");

@@ -44,6 +44,22 @@ public static partial class ThatConstructor
 		this IThat<ConstructorInfo?> subject, string expected)
 		=> subject.HasParameter(expected).WithModifier(p => p.IsInParameter(), "with in modifier");
 
+	/// <summary>
+	///     Verifies that the <see cref="ConstructorInfo" /> has an <see langword="in" /> parameter of exact type
+	///     <typeparamref name="TParameter" />.
+	/// </summary>
+	public static ParameterCollectionResult<ConstructorInfo?, TParameter> HasInParameterExactly<TParameter>(
+		this IThat<ConstructorInfo?> subject)
+		=> subject.HasParameterExactly<TParameter>().WithModifier(p => p.IsInParameter(), "with in modifier");
+
+	/// <summary>
+	///     Verifies that the <see cref="ConstructorInfo" /> has an <see langword="in" /> parameter of exact type
+	///     <typeparamref name="TParameter" /> with the <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<ConstructorInfo?, TParameter> HasInParameterExactly<TParameter>(
+		this IThat<ConstructorInfo?> subject, string expected)
+		=> subject.HasParameterExactly<TParameter>(expected).WithModifier(p => p.IsInParameter(), "with in modifier");
+
 	private sealed class HasInParameterConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<ConstructorInfo?>(it, grammars),
 			IValueConstraint<ConstructorInfo?>

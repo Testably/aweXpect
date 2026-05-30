@@ -36,4 +36,17 @@ public static partial class ConstructorFilters
 	/// </summary>
 	public static ConstructorsWithNamedParameter<object?> WithParamsParameter(this Filtered.Constructors @this, string expected)
 		=> @this.WithParameter(expected).WithModifier(p => p.IsParamsParameter(), "with params modifier");
+
+	/// <summary>
+	///     Filter for constructors with a <see langword="params" /> parameter of exact type <typeparamref name="T" />.
+	/// </summary>
+	public static ConstructorsWithParameter<T> WithParamsParameterExactly<T>(this Filtered.Constructors @this)
+		=> @this.WithParameterExactly<T>().WithModifier(p => p.IsParamsParameter(), "with params modifier");
+
+	/// <summary>
+	///     Filter for constructors with a <see langword="params" /> parameter of exact type <typeparamref name="T" /> with the
+	///     <paramref name="expected" /> name.
+	/// </summary>
+	public static ConstructorsWithNamedParameter<T> WithParamsParameterExactly<T>(this Filtered.Constructors @this, string expected)
+		=> @this.WithParameterExactly<T>(expected).WithModifier(p => p.IsParamsParameter(), "with params modifier");
 }

@@ -6,7 +6,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatConstructor
 {
-	public sealed class HasExactParameter
+	public sealed class HasParameterExactly
 	{
 		public sealed class Tests
 		{
@@ -17,7 +17,7 @@ public sealed partial class ThatConstructor
 
 				async Task Act()
 				{
-					await That(constructorInfo).HasExactParameter<Stream>();
+					await That(constructorInfo).HasParameterExactly<Stream>();
 				}
 
 				await That(Act).Throws<XunitException>()
@@ -35,7 +35,7 @@ public sealed partial class ThatConstructor
 
 				async Task Act()
 				{
-					await That(constructorInfo).HasExactParameter<Stream>();
+					await That(constructorInfo).HasParameterExactly<Stream>();
 				}
 
 				await That(Act).DoesNotThrow();
@@ -48,7 +48,7 @@ public sealed partial class ThatConstructor
 
 				async Task Act()
 				{
-					await That(constructorInfo).HasExactParameter<Stream>("stream");
+					await That(constructorInfo).HasParameterExactly<Stream>("stream");
 				}
 
 				await That(Act).DoesNotThrow();
@@ -61,7 +61,7 @@ public sealed partial class ThatConstructor
 
 				async Task Act()
 				{
-					await That(constructorInfo).HasExactParameter<IDisposable>();
+					await That(constructorInfo).HasParameterExactly<IDisposable>();
 				}
 
 				await That(Act).Throws<XunitException>()
@@ -79,7 +79,7 @@ public sealed partial class ThatConstructor
 
 				async Task Act()
 				{
-					await That(constructorInfo).HasExactParameter<Stream>("other");
+					await That(constructorInfo).HasParameterExactly<Stream>("other");
 				}
 
 				await That(Act).Throws<XunitException>()
@@ -100,7 +100,7 @@ public sealed partial class ThatConstructor
 
 				async Task Act()
 				{
-					await That(constructorInfo).DoesNotComplyWith(it => it.HasExactParameter<Stream>());
+					await That(constructorInfo).DoesNotComplyWith(it => it.HasParameterExactly<Stream>());
 				}
 
 				await That(Act).Throws<XunitException>()
@@ -118,7 +118,7 @@ public sealed partial class ThatConstructor
 
 				async Task Act()
 				{
-					await That(constructorInfo).DoesNotComplyWith(it => it.HasExactParameter<IDisposable>());
+					await That(constructorInfo).DoesNotComplyWith(it => it.HasParameterExactly<IDisposable>());
 				}
 
 				await That(Act).DoesNotThrow();

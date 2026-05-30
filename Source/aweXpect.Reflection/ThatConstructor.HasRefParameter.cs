@@ -44,6 +44,22 @@ public static partial class ThatConstructor
 		this IThat<ConstructorInfo?> subject, string expected)
 		=> subject.HasParameter(expected).WithModifier(p => p.IsRefParameter(), "with ref modifier");
 
+	/// <summary>
+	///     Verifies that the <see cref="ConstructorInfo" /> has a <see langword="ref" /> parameter of exact type
+	///     <typeparamref name="TParameter" />.
+	/// </summary>
+	public static ParameterCollectionResult<ConstructorInfo?, TParameter> HasRefParameterExactly<TParameter>(
+		this IThat<ConstructorInfo?> subject)
+		=> subject.HasParameterExactly<TParameter>().WithModifier(p => p.IsRefParameter(), "with ref modifier");
+
+	/// <summary>
+	///     Verifies that the <see cref="ConstructorInfo" /> has a <see langword="ref" /> parameter of exact type
+	///     <typeparamref name="TParameter" /> with the <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<ConstructorInfo?, TParameter> HasRefParameterExactly<TParameter>(
+		this IThat<ConstructorInfo?> subject, string expected)
+		=> subject.HasParameterExactly<TParameter>(expected).WithModifier(p => p.IsRefParameter(), "with ref modifier");
+
 	private sealed class HasRefParameterConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<ConstructorInfo?>(it, grammars),
 			IValueConstraint<ConstructorInfo?>

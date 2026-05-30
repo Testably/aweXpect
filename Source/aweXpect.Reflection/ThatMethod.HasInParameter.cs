@@ -44,6 +44,22 @@ public static partial class ThatMethod
 		this IThat<MethodInfo?> subject, string expected)
 		=> subject.HasParameter(expected).WithModifier(p => p.IsInParameter(), "with in modifier");
 
+	/// <summary>
+	///     Verifies that the <see cref="MethodInfo" /> has an <see langword="in" /> parameter of exact type
+	///     <typeparamref name="TParameter" />.
+	/// </summary>
+	public static ParameterCollectionResult<MethodInfo?, TParameter> HasInParameterExactly<TParameter>(
+		this IThat<MethodInfo?> subject)
+		=> subject.HasParameterExactly<TParameter>().WithModifier(p => p.IsInParameter(), "with in modifier");
+
+	/// <summary>
+	///     Verifies that the <see cref="MethodInfo" /> has an <see langword="in" /> parameter of exact type
+	///     <typeparamref name="TParameter" /> with the <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<MethodInfo?, TParameter> HasInParameterExactly<TParameter>(
+		this IThat<MethodInfo?> subject, string expected)
+		=> subject.HasParameterExactly<TParameter>(expected).WithModifier(p => p.IsInParameter(), "with in modifier");
+
 	private sealed class HasInParameterConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<MethodInfo?>(it, grammars),
 			IValueConstraint<MethodInfo?>
