@@ -1,15 +1,15 @@
-﻿namespace aweXpect.Reflection.Collections;
+namespace aweXpect.Reflection.Collections;
 
 /// <summary>
 ///     An interface to allow filtering for types in assemblies.
 /// </summary>
 /// <remarks>
 ///     In addition to the properties and methods in
-///     <see cref="ILimitedAbstractSealedTypeAssemblies{TLimitedTypeAssemblies}" /> it also
-///     supports adding a filter for abstract, sealed or static types as well as accessing interfaces or enums.
+///     <see cref="ILimitedStaticTypeAssemblies{TLimitedTypeAssemblies}" /> it also
+///     supports adding a filter for abstract, sealed or static types as well as accessing interfaces, records or enums.
 /// </remarks>
 public interface ITypeAssemblies
-	: ILimitedAbstractSealedTypeAssemblies<ITypeAssemblies>
+	: ILimitedStaticTypeAssemblies<ITypeAssemblies>
 {
 	/// <summary>
 	///     Filters only for abstract types.
@@ -32,6 +32,11 @@ public interface ITypeAssemblies
 	Filtered.Types Interfaces(AccessModifiers accessModifier = AccessModifiers.Any);
 
 	/// <summary>
+	///     Get all records in the filtered assemblies.
+	/// </summary>
+	Filtered.Types Records(AccessModifiers accessModifier = AccessModifiers.Any);
+
+	/// <summary>
 	///     Get all enums in the filtered assemblies.
 	/// </summary>
 	Filtered.Types Enums(AccessModifiers accessModifier = AccessModifiers.Any);
@@ -45,31 +50,6 @@ public interface ITypeAssemblies
 	///     Get all structs in the filtered assemblies.
 	/// </summary>
 	Filtered.Types Structs(AccessModifiers accessModifier = AccessModifiers.Any);
-
-	/// <summary>
-	///     Get all constructors in the filtered types.
-	/// </summary>
-	Filtered.Constructors Constructors();
-
-	/// <summary>
-	///     Get all events in the filtered types.
-	/// </summary>
-	Filtered.Events Events();
-
-	/// <summary>
-	///     Get all fields in the filtered types.
-	/// </summary>
-	Filtered.Fields Fields();
-
-	/// <summary>
-	///     Get all methods in the filtered types.
-	/// </summary>
-	Filtered.Methods Methods();
-
-	/// <summary>
-	///     Get all properties in the filtered types.
-	/// </summary>
-	Filtered.Properties Properties();
 
 	/// <summary>
 	///     An interface to allow filtering for types in assemblies.

@@ -15,12 +15,17 @@ public static partial class Filtered
 	/// <summary>
 	///     Container for a filterable collection of <see cref="Type" />.
 	/// </summary>
-	public class Types : Filtered<Type, Types>, IDescribableSubject
+	public class Types : Filtered<Type, Types>,
+		IDescribableSubject,
+		IMembers.IPrivate,
+		IMembers.IProtected,
+		ILimitedAbstractSealedMembers
 	{
 		private const string DeclaringTypesPrefix = "declaring types of ";
 
 		private readonly Assemblies? _assemblies;
 		private readonly string _description;
+		private readonly MemberFilterState _memberState = new();
 
 		/// <summary>
 		///     Container for a filterable collection of <see cref="Type" />.
@@ -105,6 +110,110 @@ public static partial class Filtered
 			_assemblies = inner._assemblies;
 		}
 
+		/// <summary>
+		///     Filters for public members.
+		/// </summary>
+		public IMembers Public
+		{
+			get
+			{
+				_memberState.SetAccess(AccessModifiers.Public);
+				return this;
+			}
+		}
+
+		/// <summary>
+		///     Filters for private members.
+		/// </summary>
+		public IMembers.IPrivate Private
+		{
+			get
+			{
+				_memberState.SetAccess(AccessModifiers.Private);
+				return this;
+			}
+		}
+
+		/// <summary>
+		///     Filters for protected members.
+		/// </summary>
+		public IMembers.IProtected Protected
+		{
+			get
+			{
+				_memberState.SetAccess(AccessModifiers.Protected);
+				return this;
+			}
+		}
+
+		/// <summary>
+		///     Filters for internal members.
+		/// </summary>
+		public IMembers Internal
+		{
+			get
+			{
+				_memberState.SetAccess(AccessModifiers.Internal);
+				return this;
+			}
+		}
+
+		/// <summary>
+		///     Filters for static members.
+		/// </summary>
+		public IMemberSelectors Static
+		{
+			get
+			{
+				_memberState.SetStatic();
+				return this;
+			}
+		}
+
+		/// <summary>
+		///     Filters for abstract members.
+		/// </summary>
+		public ILimitedAbstractSealedMembers Abstract
+		{
+			get
+			{
+				_memberState.SetAbstract();
+				return this;
+			}
+		}
+
+		/// <summary>
+		///     Filters for sealed members.
+		/// </summary>
+		public ILimitedAbstractSealedMembers Sealed
+		{
+			get
+			{
+				_memberState.SetSealed();
+				return this;
+			}
+		}
+
+		/// <inheritdoc cref="IMembers.IPrivate.Protected" />
+		IMembers IMembers.IPrivate.Protected
+		{
+			get
+			{
+				_memberState.SetAccess(AccessModifiers.PrivateProtected);
+				return this;
+			}
+		}
+
+		/// <inheritdoc cref="IMembers.IProtected.Internal" />
+		IMembers IMembers.IProtected.Internal
+		{
+			get
+			{
+				_memberState.SetAccess(AccessModifiers.ProtectedInternal);
+				return this;
+			}
+		}
+
 		/// <inheritdoc />
 		public string GetDescription()
 		{
@@ -150,27 +259,57 @@ public static partial class Filtered
 		/// <summary>
 		///     Get all constructors in the filtered types.
 		/// </summary>
-		public Constructors Constructors() => new(this, "constructors ");
+		public Constructors Constructors()
+		{
+			Constructors constructors = new(this, "constructors ");
+			IFilter<ConstructorInfo>? filter = _memberState.BuildConstructorFilter();
+			_memberState.Reset();
+			return filter is null ? constructors : constructors.Which(filter);
+		}
 
 		/// <summary>
 		///     Get all events in the filtered types.
 		/// </summary>
-		public Events Events() => new(this, "events ");
+		public Events Events()
+		{
+			Events events = new(this, "events ");
+			IFilter<EventInfo>? filter = _memberState.BuildEventFilter();
+			_memberState.Reset();
+			return filter is null ? events : events.Which(filter);
+		}
 
 		/// <summary>
 		///     Get all fields in the filtered types.
 		/// </summary>
-		public Fields Fields() => new(this, "fields ");
+		public Fields Fields()
+		{
+			Fields fields = new(this, "fields ");
+			IFilter<FieldInfo>? filter = _memberState.BuildFieldFilter();
+			_memberState.Reset();
+			return filter is null ? fields : fields.Which(filter);
+		}
 
 		/// <summary>
 		///     Get all methods in the filtered types.
 		/// </summary>
-		public Methods Methods() => new(this, "methods ");
+		public Methods Methods()
+		{
+			Methods methods = new(this, "methods ");
+			IFilter<MethodInfo>? filter = _memberState.BuildMethodFilter();
+			_memberState.Reset();
+			return filter is null ? methods : methods.Which(filter);
+		}
 
 		/// <summary>
 		///     Get all properties in the filtered types.
 		/// </summary>
-		public Properties Properties() => new(this, "properties ");
+		public Properties Properties()
+		{
+			Properties properties = new(this, "properties ");
+			IFilter<PropertyInfo>? filter = _memberState.BuildPropertyFilter();
+			_memberState.Reset();
+			return filter is null ? properties : properties.Which(filter);
+		}
 
 		/// <summary>
 		///     A Container for a filterable collection of <see cref="Type" />,

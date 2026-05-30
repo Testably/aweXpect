@@ -845,7 +845,7 @@ namespace aweXpect.Reflection.Collections
     }
     public static class Filtered
     {
-        public class Assemblies : aweXpect.Reflection.Collections.Filtered<System.Reflection.Assembly, aweXpect.Reflection.Collections.Filtered.Assemblies>, aweXpect.Core.IDescribableSubject, aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies, aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>, aweXpect.Reflection.Collections.ITypeAssemblies, aweXpect.Reflection.Collections.ITypeAssemblies.IPrivate, aweXpect.Reflection.Collections.ITypeAssemblies.IProtected
+        public class Assemblies : aweXpect.Reflection.Collections.Filtered<System.Reflection.Assembly, aweXpect.Reflection.Collections.Filtered.Assemblies>, aweXpect.Core.IDescribableSubject, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>, aweXpect.Reflection.Collections.ITypeAssemblies, aweXpect.Reflection.Collections.ITypeAssemblies.IPrivate, aweXpect.Reflection.Collections.ITypeAssemblies.IProtected
         {
             protected Assemblies(aweXpect.Reflection.Collections.Filtered.Assemblies inner) { }
             public Assemblies(System.Collections.Generic.IEnumerable<System.Reflection.Assembly?> source, string description) { }
@@ -978,10 +978,17 @@ namespace aweXpect.Reflection.Collections
                 public aweXpect.Reflection.Collections.Filtered.Properties.StringEqualityResult Exactly() { }
             }
         }
-        public class Types : aweXpect.Reflection.Collections.Filtered<System.Type, aweXpect.Reflection.Collections.Filtered.Types>, aweXpect.Core.IDescribableSubject
+        public class Types : aweXpect.Reflection.Collections.Filtered<System.Type, aweXpect.Reflection.Collections.Filtered.Types>, aweXpect.Core.IDescribableSubject, aweXpect.Reflection.Collections.ILimitedAbstractSealedMembers, aweXpect.Reflection.Collections.IMemberSelectors, aweXpect.Reflection.Collections.IMembers, aweXpect.Reflection.Collections.IMembers.IPrivate, aweXpect.Reflection.Collections.IMembers.IProtected
         {
             protected Types(aweXpect.Reflection.Collections.Filtered.Types inner) { }
             public Types(System.Collections.Generic.IEnumerable<System.Type?> source, string description) { }
+            public aweXpect.Reflection.Collections.ILimitedAbstractSealedMembers Abstract { get; }
+            public aweXpect.Reflection.Collections.IMembers Internal { get; }
+            public aweXpect.Reflection.Collections.IMembers.IPrivate Private { get; }
+            public aweXpect.Reflection.Collections.IMembers.IProtected Protected { get; }
+            public aweXpect.Reflection.Collections.IMembers Public { get; }
+            public aweXpect.Reflection.Collections.ILimitedAbstractSealedMembers Sealed { get; }
+            public aweXpect.Reflection.Collections.IMemberSelectors Static { get; }
             public aweXpect.Reflection.Collections.Filtered.Assemblies Assemblies() { }
             public aweXpect.Reflection.Collections.Filtered.Constructors Constructors() { }
             public aweXpect.Reflection.Collections.Filtered.Events Events() { }
@@ -1028,15 +1035,35 @@ namespace aweXpect.Reflection.Collections
         System.Threading.Tasks.ValueTask<bool> Applies(TEntity value);
         string Describes(string text);
     }
-    public interface ILimitedAbstractSealedTypeAssemblies : aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies
+    public interface ILimitedAbstractSealedMembers
     {
-        aweXpect.Reflection.Collections.Filtered.Types Records(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 63);
+        aweXpect.Reflection.Collections.Filtered.Events Events();
+        aweXpect.Reflection.Collections.Filtered.Methods Methods();
+        aweXpect.Reflection.Collections.Filtered.Properties Properties();
     }
-    public interface ILimitedAbstractSealedTypeAssemblies<out TLimitedTypeAssemblies> : aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies<TLimitedTypeAssemblies>
-        where out TLimitedTypeAssemblies : aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies { }
+    public interface ILimitedAbstractSealedTypeAssemblies
+    {
+        aweXpect.Reflection.Collections.Filtered.Types Classes(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 63);
+        aweXpect.Reflection.Collections.Filtered.Events Events();
+        aweXpect.Reflection.Collections.Filtered.Methods Methods();
+        aweXpect.Reflection.Collections.Filtered.Properties Properties();
+        aweXpect.Reflection.Collections.Filtered.Types Records(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 63);
+        aweXpect.Reflection.Collections.Filtered.Types Types(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 63);
+    }
+    public interface ILimitedAbstractSealedTypeAssemblies<out TLimitedTypeAssemblies> : aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies
+        where out TLimitedTypeAssemblies : aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies
+    {
+        TLimitedTypeAssemblies Generic { get; }
+        TLimitedTypeAssemblies Nested { get; }
+    }
     public interface ILimitedStaticTypeAssemblies
     {
         aweXpect.Reflection.Collections.Filtered.Types Classes(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 63);
+        aweXpect.Reflection.Collections.Filtered.Constructors Constructors();
+        aweXpect.Reflection.Collections.Filtered.Events Events();
+        aweXpect.Reflection.Collections.Filtered.Fields Fields();
+        aweXpect.Reflection.Collections.Filtered.Methods Methods();
+        aweXpect.Reflection.Collections.Filtered.Properties Properties();
         aweXpect.Reflection.Collections.Filtered.Types Types(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 63);
     }
     public interface ILimitedStaticTypeAssemblies<out TLimitedTypeAssemblies> : aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies
@@ -1045,25 +1072,43 @@ namespace aweXpect.Reflection.Collections
         TLimitedTypeAssemblies Generic { get; }
         TLimitedTypeAssemblies Nested { get; }
     }
-    public interface ITypeAssemblies : aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies, aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>
+    public interface IMemberSelectors
+    {
+        aweXpect.Reflection.Collections.Filtered.Constructors Constructors();
+        aweXpect.Reflection.Collections.Filtered.Events Events();
+        aweXpect.Reflection.Collections.Filtered.Fields Fields();
+        aweXpect.Reflection.Collections.Filtered.Methods Methods();
+        aweXpect.Reflection.Collections.Filtered.Properties Properties();
+    }
+    public interface IMembers : aweXpect.Reflection.Collections.IMemberSelectors
+    {
+        aweXpect.Reflection.Collections.ILimitedAbstractSealedMembers Abstract { get; }
+        aweXpect.Reflection.Collections.ILimitedAbstractSealedMembers Sealed { get; }
+        aweXpect.Reflection.Collections.IMemberSelectors Static { get; }
+        public interface IPrivate : aweXpect.Reflection.Collections.IMemberSelectors, aweXpect.Reflection.Collections.IMembers
+        {
+            aweXpect.Reflection.Collections.IMembers Protected { get; }
+        }
+        public interface IProtected : aweXpect.Reflection.Collections.IMemberSelectors, aweXpect.Reflection.Collections.IMembers
+        {
+            aweXpect.Reflection.Collections.IMembers Internal { get; }
+        }
+    }
+    public interface ITypeAssemblies : aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>
     {
         aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies<aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies> Abstract { get; }
         aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies<aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies> Sealed { get; }
         aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies<aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies> Static { get; }
-        aweXpect.Reflection.Collections.Filtered.Constructors Constructors();
         aweXpect.Reflection.Collections.Filtered.Types Enums(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 63);
-        aweXpect.Reflection.Collections.Filtered.Events Events();
-        aweXpect.Reflection.Collections.Filtered.Fields Fields();
         aweXpect.Reflection.Collections.Filtered.Types Interfaces(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 63);
-        aweXpect.Reflection.Collections.Filtered.Methods Methods();
-        aweXpect.Reflection.Collections.Filtered.Properties Properties();
         aweXpect.Reflection.Collections.Filtered.Types RecordStructs(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 63);
+        aweXpect.Reflection.Collections.Filtered.Types Records(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 63);
         aweXpect.Reflection.Collections.Filtered.Types Structs(aweXpect.Reflection.Collections.AccessModifiers accessModifier = 63);
-        public interface IPrivate : aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies, aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>, aweXpect.Reflection.Collections.ITypeAssemblies
+        public interface IPrivate : aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>, aweXpect.Reflection.Collections.ITypeAssemblies
         {
             aweXpect.Reflection.Collections.ITypeAssemblies Protected { get; }
         }
-        public interface IProtected : aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies, aweXpect.Reflection.Collections.ILimitedAbstractSealedTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>, aweXpect.Reflection.Collections.ITypeAssemblies
+        public interface IProtected : aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>, aweXpect.Reflection.Collections.ITypeAssemblies
         {
             aweXpect.Reflection.Collections.ITypeAssemblies Internal { get; }
         }

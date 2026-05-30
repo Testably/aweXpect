@@ -4,7 +4,8 @@ namespace aweXpect.Reflection.Collections;
 ///     A limited interface to allow basic filtering for types in assemblies.
 /// </summary>
 /// <remarks>
-///     It only supports accessing <see cref="Types" /> or <see cref="Classes" />.
+///     It only supports accessing <see cref="Types" /> or <see cref="Classes" />,
+///     and selecting members of the filtered types.
 /// </remarks>
 public interface ILimitedStaticTypeAssemblies
 {
@@ -17,6 +18,31 @@ public interface ILimitedStaticTypeAssemblies
 	///     Get all classes in the filtered assemblies.
 	/// </summary>
 	Filtered.Types Classes(AccessModifiers accessModifier = AccessModifiers.Any);
+
+	/// <summary>
+	///     Get all constructors in the filtered types.
+	/// </summary>
+	Filtered.Constructors Constructors();
+
+	/// <summary>
+	///     Get all events in the filtered types.
+	/// </summary>
+	Filtered.Events Events();
+
+	/// <summary>
+	///     Get all fields in the filtered types.
+	/// </summary>
+	Filtered.Fields Fields();
+
+	/// <summary>
+	///     Get all methods in the filtered types.
+	/// </summary>
+	Filtered.Methods Methods();
+
+	/// <summary>
+	///     Get all properties in the filtered types.
+	/// </summary>
+	Filtered.Properties Properties();
 }
 
 /// <summary>
