@@ -8,125 +8,230 @@
 
 Expectations for reflection types for [aweXpect](https://github.com/Testably/aweXpect).
 
-## Overview
+Write architecture and convention tests as plain, readable assertions: **select** the assemblies, types
+or members you care about with `In`, then **assert** a rule on them with `Expect.That`.
 
-This library contains expectations on reflection types:
-
-- [`Assembly`](https://learn.microsoft.com/en-us/dotnet/api/system.reflection.assembly)
-- [`Type`](https://learn.microsoft.com/en-us/dotnet/api/system.type)
-- [`ConstructorInfo`](https://learn.microsoft.com/en-us/dotnet/api/system.reflection.constructorinfo)
-- [`EventInfo`](https://learn.microsoft.com/en-us/dotnet/api/system.reflection.eventinfo)
-- [`FieldInfo`](https://learn.microsoft.com/en-us/dotnet/api/system.reflection.fieldinfo)
-- [`MethodInfo`](https://learn.microsoft.com/en-us/dotnet/api/system.reflection.methodinfo)
-- [`PropertyInfo`](https://learn.microsoft.com/en-us/dotnet/api/system.reflection.propertyinfo)
-
-You can apply the expectations either on a single type or a collection of types (e.g. `Assembly[]` or
-`IEnumerable<Type?>`).
-
-## Advanced Filtering with `In`
-
-The `In` helper provides powerful filtering capabilities to construct collections of reflection types that match specific criteria. This allows for complex queries across assemblies, types, and their members.
-
-### Assembly Selection
-
-You can select assemblies in various ways:
+## At a glance
 
 ```csharp
-// All currently loaded assemblies (excluding system assemblies)
-In.AllLoadedAssemblies()
-
-// Specific assemblies
-In.Assemblies(assembly1, assembly2)
-In.Assemblies(assemblyCollection)
-
-// Assembly containing a specific type
-In.AssemblyContaining<MyClass>()
-In.AssemblyContaining(typeof(MyClass))
-
-// Special assemblies
-In.EntryAssembly()
-In.ExecutingAssembly()
+// "Every async method must end in 'Async'"
+await Expect.That(In.AssemblyContaining<MyClass>()    // ① pick a source
+        .Methods()                                    // ② navigate to a member kind
+        .WhichReturn<Task>().OrReturn<ValueTask>())   // ③ filter it down
+    .HaveName("Async").AsSuffix();                    // ④ assert
 ```
 
-### Type Selection
+Every expectation follows the same four-part shape:
 
-From assemblies, you can navigate to types:
+| Step                      | What it does           | Examples                                                                               |
+|---------------------------|------------------------|----------------------------------------------------------------------------------------|
+| ① **Source**              | choose *where* to look | `In.AllLoadedAssemblies()`, `In.AssemblyContaining<T>()`, `In.Type<T>()`               |
+| ② **Navigate**            | move to a member kind  | `.Types()`, `.Methods()`, `.Properties()`, `.Fields()`, `.Events()`, `.Constructors()` |
+| ③ **Filter** *(optional)* | narrow the set         | `.WhichArePublic()`, `.With<T>()`, `.WithName(…)`, `.Which(…)`                         |
+| ④ **Assert**              | state the rule         | `Expect.That(…).HaveName(…)`, `.AreClasses()`, `.Return<Task>()`                       |
+
+Steps ② and ③ are optional. You can assert directly on a single `Type`, `MethodInfo`, … or on a whole
+`Assembly`, and every expectation works the same whether the subject is one item or a collection
+(`Assembly[]`, `IEnumerable<Type?>`, …).
+
+The supported reflection subjects are
+[`Assembly`](https://learn.microsoft.com/en-us/dotnet/api/system.reflection.assembly),
+[`Type`](https://learn.microsoft.com/en-us/dotnet/api/system.type),
+[`ConstructorInfo`](https://learn.microsoft.com/en-us/dotnet/api/system.reflection.constructorinfo),
+[`EventInfo`](https://learn.microsoft.com/en-us/dotnet/api/system.reflection.eventinfo),
+[`FieldInfo`](https://learn.microsoft.com/en-us/dotnet/api/system.reflection.fieldinfo),
+[`MethodInfo`](https://learn.microsoft.com/en-us/dotnet/api/system.reflection.methodinfo) and
+[`PropertyInfo`](https://learn.microsoft.com/en-us/dotnet/api/system.reflection.propertyinfo).
+
+## Real-world examples
 
 ```csharp
-// All types in assemblies
+// Verify all test classes follow the naming convention
+await Expect.That(In.AllLoadedAssemblies()
+        .Public.Classes()
+        .WhichContainMethods(m => m.With<FactAttribute>().OrWith<TheoryAttribute>()))
+    .HaveName("Tests").AsSuffix();
+
+// Verify all async methods have an "Async" suffix
+await Expect.That(In.AssemblyContaining<MyClass>()
+        .Methods().WhichReturn<Task>().OrReturn<ValueTask>())
+    .HaveName("Async").AsSuffix();
+
+// Verify all methods with an "Async" suffix return Task or ValueTask
+await Expect.That(In.AssemblyContaining<MyClass>()
+        .Methods().WithName("Async").AsSuffix())
+    .Return<Task>().OrReturn<ValueTask>();
+
+// Verify controllers follow the naming convention
+await Expect.That(In.AllLoadedAssemblies()
+        .Types().WhichInheritFrom<ControllerBase>())
+    .HaveName("Controller").AsSuffix();
+
+// Verify each event handler is named after the event it handles (e.g. "OnOrderPlaced")
+await Expect.That(In.AssemblyContaining<MyAggregate>()
+        .Methods().Which(m => m.GetParameters().Length == 1))
+    .HaveName(method => "On" + method.GetParameters()[0].ParameterType.Name);
+
+// Verify all test classes (those containing a [Fact] or [Theory] method) follow the naming convention
+await Expect.That(In.AllLoadedAssemblies()
+        .Types().WhichContainMethods(m => m.With<FactAttribute>().OrWith<TheoryAttribute>()))
+    .HaveName("Tests").AsSuffix();
+
+// Verify each serializable type has exactly one parameterless constructor
+await Expect.That(In.AllLoadedAssemblies()
+        .Types().With<SerializableAttribute>()
+        .WhichContainConstructors(c => c.WithoutParameters()).Exactly(1))
+    .AreClasses();
+```
+
+## Sources: the `In` helper
+
+`In` builds the collection of reflection objects you want to reason about. Every source returns a lazily
+evaluated collection that you can navigate and filter further.
+
+| Source                                                                  | Returns                                                                              |
+|-------------------------------------------------------------------------|--------------------------------------------------------------------------------------|
+| `In.AllLoadedAssemblies()`                                              | all currently loaded assemblies (system assemblies [excluded](#assembly-exclusions)) |
+| `In.Assemblies(a1, a2, …)` / `In.Assemblies(collection)`                | the given assemblies                                                                 |
+| `In.AssemblyContaining<T>()` / `In.AssemblyContaining(typeof(T))`       | the assembly that declares `T`                                                       |
+| `In.EntryAssembly()`                                                    | the entry assembly                                                                   |
+| `In.ExecutingAssembly()`                                                | the executing assembly                                                               |
+| `In.Type<T>()` / `In.Type(typeof(T))`                                   | a single type                                                                        |
+| `In.Types<T1, T2>()` / `In.Types<T1, T2, T3>()` / `In.Types(t1, t2, …)` | the given types                                                                      |
+
+## Navigating to members
+
+From a collection of assemblies or types you can navigate to the members they contain, and from members
+back to their declaring types.
+
+| From               | Navigate with                                                              | Yields                   |
+|--------------------|----------------------------------------------------------------------------|--------------------------|
+| assemblies         | `.Types()`                                                                 | the contained types      |
+| assemblies / types | `.Methods()`, `.Properties()`, `.Fields()`, `.Events()`, `.Constructors()` | the contained members    |
+| members            | `.DeclaringTypes()`                                                        | the declaring types      |
+| types              | `.Assemblies()`                                                            | the declaring assemblies |
+
+Assemblies also expose shorthand terminals that select a type *kind* directly:
+`.Classes()`, `.Interfaces()`, `.Enums()`, `.Structs()`, `.Records()`, `.RecordStructs()`.
+
+```csharp
+// All types in all (non-system) assemblies
 In.AllLoadedAssemblies().Types()
 
-// Specific types
-In.Type<MyClass>()
-In.Type(typeof(MyClass))
-In.Types<Class1, Class2>()
-In.Types<Class1, Class2, Class3>()
-In.Types(type1, type2, type3)
-```
-
-### Member Navigation
-
-From types, you can navigate to their members:
-
-```csharp
-Type myType = typeof(MyClass);
-
-// Get all members
-In.Type(myType).Methods()
-In.Type(myType).Properties()
-In.Type(myType).Fields()
-In.Type(myType).Events()
-In.Type(myType).Constructors()
-
-// Navigate back to declaring types from members
+// Navigate from members back to their declaring types
 In.AllLoadedAssemblies().Methods().DeclaringTypes()
+
+// Shorthand: all public classes
+In.AllLoadedAssemblies().Public.Classes()
 ```
 
-### Advanced Filtering
+## Filters and the matching assertions
 
-You can apply complex filters to narrow down your selections:
+A **filter** (`.WhichAre…` / `.With…`) narrows a collection *before* you assert on it. An **assertion**
+(`Expect.That(…).Is… / .Are… / .Has… / .Have…`) states the rule the subject must satisfy. They mirror
+each other: a filter has an `Is…`/`Are…` assertion counterpart for the same concept.
 
-#### Type Filters
+The tables below pair them up. The **Filter** column is used inside `In.…`; the **Assert (single)**
+column applies to one subject; the **Assert (many)** column applies to a collection.
+
+### Access modifiers
+
+Shared by all types and members: these names are identical for types, methods, properties, fields,
+events and constructors.
+
+| Modifier           | Filter                                                 | Assert (single)          | Assert (many)             |
+|--------------------|--------------------------------------------------------|--------------------------|---------------------------|
+| public             | `.WhichArePublic()` / `.Public`                        | `.IsPublic()`            | `.ArePublic()`            |
+| internal           | `.WhichAreInternal()` / `.Internal`                    | `.IsInternal()`          | `.AreInternal()`          |
+| private            | `.WhichArePrivate()` / `.Private`                      | `.IsPrivate()`           | `.ArePrivate()`           |
+| protected          | `.WhichAreProtected()` / `.Protected`                  | `.IsProtected()`         | `.AreProtected()`         |
+| private protected  | `.WhichArePrivateProtected()` / `.Private.Protected`   | `.IsPrivateProtected()`  | `.ArePrivateProtected()`  |
+| protected internal | `.WhichAreProtectedInternal()` / `.Protected.Internal` | `.IsProtectedInternal()` | `.AreProtectedInternal()` |
 
 ```csharp
-// Filter by type characteristics
-In.AllLoadedAssemblies().Types()
-    .WhichAreClasses()
-    .WhichArePublic()
-    .WhichAreAbstract()
-    .WhichAreSealed()
-    .WhichAreStatic()
-    .WhichAreGeneric()
-    .WhichAreNested()
-	
-// Alternatively
-In.AllLoadedAssemblies().Public.Abstract.Classes()
-In.AllLoadedAssemblies().Internal.Generic.Interfaces()
+// Filter, then assert
+In.AllLoadedAssemblies().Public.Methods()        // shorthand modifier
+In.AllLoadedAssemblies().Methods().WhichArePublic()
 
-// Filter by name or namespace
-In.AllLoadedAssemblies().Types()
-    .WithName("Service").AsSuffix()
-    .WithNamespace("MyApp.Services")
-
-// Filter by inheritance
-In.AllLoadedAssemblies().Types()
-    .WhichInheritFrom<BaseClass>()
-    .WhichInheritFrom(typeof(IInterface))
-
-// Filter by attributes
-In.AllLoadedAssemblies().Types()
-    .With<ObsoleteAttribute>()
-    .With<DescriptionAttribute>(a => a.Description.Contains("important"))
-
-// Filter by custom predicates
-In.AllLoadedAssemblies().Types()
-    .Which(t => t.Name.StartsWith("Test"))
+await Expect.That(method).IsPublic();
+await Expect.That(methods).ArePublic();
 ```
 
-#### Member Containment Filters
+### Attributes
 
-You can select types based on the members they contain. The lambda receives the members declared on
-each individual type and may use the full member-filter DSL:
+Shared by all types and members.
+
+|                                    | Filter                      | Assert (single)            | Assert (many)               |
+|------------------------------------|-----------------------------|----------------------------|-----------------------------|
+| has attribute                      | `.With<TAttribute>()`       | `.Has<TAttribute>()`       | `.Have<TAttribute>()`       |
+| has attribute matching a predicate | `.With<TAttribute>(a => …)` | `.Has<TAttribute>(a => …)` | `.Have<TAttribute>(a => …)` |
+| any of several attributes          | `.With<T1>().OrWith<T2>()`  | -                          | -                           |
+
+All attribute filters and assertions (`With`, `OrWith`, `Has`, `Have`, `OrHas`, `OrHave`) take an optional
+`inherit` parameter (default `true`) that controls whether attributes inherited from base types are
+considered: `.With<TAttribute>(inherit: false)`.
+
+```csharp
+await Expect.That(type).Has<ObsoleteAttribute>(a => a.Message == "Use NewClass instead");
+await Expect.That(methods).Have<FactAttribute>();
+```
+
+### Names and namespaces
+
+Shared by all types and members.
+
+|                             | Filter                | Assert (single)      | Assert (many)         |
+|-----------------------------|-----------------------|----------------------|-----------------------|
+| by name                     | `.WithName("x")`      | `.HasName("x")`      | `.HaveName("x")`      |
+| by namespace *(types only)* | `.WithNamespace("x")` | `.HasNamespace("x")` | `.HaveNamespace("x")` |
+
+All name/namespace filters and assertions accept the
+[string matching options](#string-matching-options) (`AsPrefix`, `AsSuffix`, `AsWildcard`, `AsRegex`,
+`IgnoringCase`, …). Collection assertions also accept a selector to derive the expected name per item:
+
+```csharp
+await Expect.That(types).HaveName("Service").AsSuffix();
+await Expect.That(methods).HaveName(m => "On" + m.GetParameters()[0].ParameterType.Name);
+```
+
+### Types
+
+| Kind             | Filter                                          | Assert (single)      | Assert (many)         |
+|------------------|-------------------------------------------------|----------------------|-----------------------|
+| class            | `.WhichAreClasses()` / `.Classes()`             | `.IsAClass()`        | `.AreClasses()`       |
+| interface        | `.WhichAreInterfaces()` / `.Interfaces()`       | `.IsAnInterface()`   | `.AreInterfaces()`    |
+| enum             | `.WhichAreEnums()` / `.Enums()`                 | `.IsAnEnum()`        | `.AreEnums()`         |
+| struct           | `.WhichAreStructs()` / `.Structs()`             | `.IsAStruct()`       | `.AreStructs()`       |
+| record           | `.WhichAreRecords()` / `.Records()`             | `.IsARecord()`       | `.AreRecords()`       |
+| record struct    | `.WhichAreRecordStructs()` / `.RecordStructs()` | `.IsARecordStruct()` | `.AreRecordStructs()` |
+| abstract         | `.WhichAreAbstract()` / `.Abstract`             | `.IsAbstract()`      | `.AreAbstract()`      |
+| sealed           | `.WhichAreSealed()` / `.Sealed`                 | `.IsSealed()`        | `.AreSealed()`        |
+| static           | `.WhichAreStatic()` / `.Static`                 | `.IsStatic()`        | `.AreStatic()`        |
+| generic          | `.WhichAreGeneric()` / `.Generic`               | `.IsGeneric()`       | `.AreGeneric()`       |
+| nested           | `.WhichAreNested()` / `.Nested`                 | `.IsNested()`        | `.AreNested()`        |
+| inherits from    | `.WhichInheritFrom<T>()`                        | `.InheritsFrom<T>()` | `.InheritFrom<T>()`   |
+| custom predicate | `.Which(t => …)`                                | -                    | -                     |
+
+`WhichInheritFrom` / `InheritsFrom` accept a generic argument or a `Type`, plus an optional
+`forceDirect` flag to require *direct* inheritance.
+
+```csharp
+In.AllLoadedAssemblies().Types()
+    .WhichAreClasses().WhichArePublic()
+    .WithName("Service").AsSuffix()
+    .WhichInheritFrom<BaseService>()
+
+// Shorthand for the same access/kind filters
+In.AllLoadedAssemblies().Public.Abstract.Classes()
+```
+
+> **Negation:** every kind/modifier row above has a negated form: `WhichAreNot…` on filters and
+> `IsNot…` / `AreNot…` on assertions (e.g. `WhichAreNotSealed()`, `IsNotAClass()`, `AreNotStatic()`).
+
+#### Types containing specific members
+
+You can select types based on the members they declare. The lambda receives the members declared on each
+individual type and may use the full member-filter DSL:
 
 ```csharp
 // Types that contain at least one method with [Fact] or [Theory]
@@ -141,8 +246,8 @@ In.AllLoadedAssemblies().Types()
     .WhichContainConstructors(constructors => constructors.WithoutParameters())
 ```
 
-By default a type matches when it contains **at least one** matching member. You can append a
-quantifier (the same quantifiers as in [`aweXpect`](https://awexpect.com)) to require a specific count:
+By default a type matches when it contains **at least one** matching member. Append a quantifier (the same
+quantifiers as in [`aweXpect`](https://docs.testably.org/aweXpect)) to require a specific count:
 
 ```csharp
 In.AllLoadedAssemblies().Types()
@@ -152,700 +257,229 @@ In.AllLoadedAssemblies().Types()
     .WhichContainFields(f => f.WhichArePrivate()).Between(1).And(5)
 ```
 
-Each quantifier applies only to the condition it directly follows; all other conditions implicitly
-require the member to occur _at least once_. The available quantifiers are `Exactly`, `AtLeast`,
-`AtMost`, `MoreThan`, `LessThan`, `Between(…).And(…)`, `Never`, `Once` and `Twice`.
+Each quantifier applies only to the condition it directly follows; all other conditions implicitly require
+the member to occur _at least once_. The available quantifiers are `Exactly`, `AtLeast`, `AtMost`,
+`MoreThan`, `LessThan`, `Between(…).And(…)`, `Never`, `Once` and `Twice`.
 
-#### Method Filters
+#### Generic type arguments
+
+After `.WhichAreGeneric()` you can drill into the generic arguments themselves. The same filters are
+available on generic **methods** (`.Methods().WhichAreGeneric()`).
+
+| Filter                       | Selects generic types/methods…                                                        |
+|------------------------------|---------------------------------------------------------------------------------------|
+| `.WithArgumentCount(n)`      | with exactly `n` generic arguments                                                    |
+| `.WithArgument<T>()`         | with a generic argument constrained to `T`                                            |
+| `.WithArgument<T>("name")`   | with a generic argument constrained to `T` and named `"name"`                         |
+| `.WithArgument("name")`      | with a generic argument named `"name"`                                                |
+| `.AtIndex(n)` / `.FromEnd()` | restrict the preceding `WithArgument` to a position (optionally counted from the end) |
+
+The `"name"` overloads accept the [string matching options](#string-matching-options), and
+`.AtIndex(n)` is chained after a `WithArgument` to pin it to a specific position.
 
 ```csharp
-// Filter by method characteristics
-In.AllLoadedAssemblies().Methods()
-    .WhichArePublic()
-    .WhichArePrivate()
-    .WhichAreProtected()
-    .WhichAreInternal()
-	
-// Alternatively
-In.AllLoadedAssemblies().Public.Methods()
-In.AllLoadedAssemblies().Private.Protected.Methods()
+// Generic types with a single argument constrained to IEntity
+In.AllLoadedAssemblies().Types()
+    .WhichAreGeneric().WithArgumentCount(1).WithArgument<IEntity>()
 
-// Filter by return types
+// Generic methods whose first argument is named "TKey"
 In.AllLoadedAssemblies().Methods()
-    .WhichReturn<Task>()           // Methods returning Task or Task<T>
-    .WhichReturnExactly<Task>()    // Methods returning exactly Task
-    .WhichReturn<string>()
-
-// Filter by parameters
-In.AllLoadedAssemblies().Methods()
-    .WithoutParameters()
-    .WithParameter<string>()          // Parameter of type string or a subtype
-    .WithExactParameter<string>()     // Parameter of exactly type string
-    .WithParameter<int>("count")
-    .WithParameterCount(2)
-
-// Filter by attributes
-In.AllLoadedAssemblies().Methods()
-    .With<TestAttribute>()
-    .With<ObsoleteAttribute>(a => a.Message != null)
-
-// Filter by name
-In.AllLoadedAssemblies().Methods()
-    .WithName("Get").AsPrefix()
-    .WithName("Async").AsSuffix()
+    .WhichAreGeneric().WithArgument("TKey").AtIndex(0)
 ```
 
-#### Property, Field, Event, and Constructor Filters
+### Methods
+
+In addition to [access modifiers](#access-modifiers),
+[attributes](#attributes) and
+[names](#names-and-namespaces):
+
+|                                      | Filter                                              | Assert (single)                                   | Assert (many)         |
+|--------------------------------------|-----------------------------------------------------|---------------------------------------------------|-----------------------|
+| static / abstract / sealed / generic | `.WhichAreStatic()` …                               | `.IsStatic()` …                                   | `.AreStatic()` …      |
+| returns type (or a subtype)          | `.WhichReturn<T>()`                                 | `.Returns<T>()`                                   | `.Return<T>()`        |
+| returns exactly                      | `.WhichReturnExactly<T>()`                          | `.ReturnsExactly<T>()`                            | `.ReturnExactly<T>()` |
+| no parameters                        | `.WithoutParameters()`                              | -                                                 | -                     |
+| parameter of type (or subtype)       | `.WithParameter<T>()` / `.WithParameter<T>("name")` | `.HasParameter<T>()` / `.HasParameter<T>("name")` | `.HaveParameter<T>()` |
+| parameter of exact type              | `.WithExactParameter<T>()`                          | -                                                 | -                     |
+| parameter count                      | `.WithParameterCount(n)`                            | -                                                 | -                     |
+| custom predicate                     | `.Which(m => …)`                                    | -                                                 | -                     |
+
+`WhichReturn<Task>()` and `Returns<Task>()` also match `Task<T>`; the `…Exactly` variants match only the
+exact type. Use `OrReturn<T>()` / `OrReturnExactly<T>()` to allow several return types.
 
 ```csharp
-// Properties
+In.AllLoadedAssemblies().Methods()
+    .WhichArePublic()
+    .WhichReturn<Task>().OrReturn<ValueTask>()
+    .WithParameter<CancellationToken>()
+    .With<HttpGetAttribute>().OrWith<HttpPostAttribute>()
+
+await Expect.That(method).HasParameter<int>("count");
+await Expect.That(methods).Return<Task>().OrReturn<ValueTask>();
+```
+
+### Properties & Fields
+
+In addition to [access modifiers](#access-modifiers),
+[attributes](#attributes) and
+[names](#names-and-namespaces):
+
+|                                       | Filter                                      | Assert (single)                 | Assert (many)                     |
+|---------------------------------------|---------------------------------------------|---------------------------------|-----------------------------------|
+| of type (or a subtype)                | `.OfType<T>()`                              | -                               | -                                 |
+| of exact type                         | `.OfExactType<T>()`                         | -                               | -                                 |
+| static *(properties & fields)*        | `.WhichAreStatic()`                         | `.IsStatic()`                   | `.AreStatic()`                    |
+| abstract / sealed *(properties only)* | `.WhichAreAbstract()` / `.WhichAreSealed()` | `.IsAbstract()` / `.IsSealed()` | `.AreAbstract()` / `.AreSealed()` |
+
+Use `OrOfType<T>()` / `OrOfExactType<T>()` to allow several types.
+
+```csharp
 In.AllLoadedAssemblies().Public.Properties()
     .OfType<string>()
-    .OfExactType<List<int>>()
     .WithName("Id").AsSuffix()
     .With<RequiredAttribute>()
 
-// Fields
 In.AllLoadedAssemblies().Private.Fields()
     .OfType<ILogger>()
     .WithName("_").AsPrefix()
-    .With<NonSerializedAttribute>()
+```
 
-// Events
+### Events
+
+Events support [access modifiers](#access-modifiers),
+[attributes](#attributes),
+[names](#names-and-namespaces) and the `abstract` / `sealed` modifiers
+(`.WhichAreAbstract()` / `.IsAbstract()` / `.AreAbstract()`, likewise for `sealed`).
+
+```csharp
 In.AllLoadedAssemblies().Public.Events()
     .WithName("Changed").AsSuffix()
     .With<ObsoleteAttribute>()
+```
 
-// Constructors
+### Constructors
+
+In addition to [access modifiers](#access-modifiers) and
+[attributes](#attributes):
+
+|                                | Filter                                              | Assert (single)                                   | Assert (many)         |
+|--------------------------------|-----------------------------------------------------|---------------------------------------------------|-----------------------|
+| static                         | `.WhichAreStatic()`                                 | `.IsStatic()`                                     | `.AreStatic()`        |
+| no parameters                  | `.WithoutParameters()`                              | -                                                 | -                     |
+| parameter of type (or subtype) | `.WithParameter<T>()` / `.WithParameter<T>("name")` | `.HasParameter<T>()` / `.HasParameter<T>("name")` | `.HaveParameter<T>()` |
+| parameter of exact type        | `.WithExactParameter<T>()`                          | -                                                 | -                     |
+| parameter count                | `.WithParameterCount(n)`                            | -                                                 | -                     |
+
+```csharp
 In.AllLoadedAssemblies().Public.Constructors()
-    .WithoutParameters()
-    .WithParameter<string>()          // Parameter of type string or a subtype
-    .WithExactParameter<string>()     // Parameter of exactly type string
     .WithParameterCount(1)
+    .WithParameter<string>()
     .With<JsonConstructorAttribute>()
 ```
 
-### Combining Filters
+### Assemblies
 
-Filters can be chained and combined using `Or` methods:
+Assemblies are usually used as a [source](#sources-the-in-helper), but you can also filter and assert
+on them directly:
 
-```csharp
-// Multiple attribute options
-In.AllLoadedAssemblies().Methods()
-    .With<FactAttribute>().OrWith<TheoryAttribute>()
-
-// Multiple return type options
-In.AllLoadedAssemblies().Methods()
-    .WhichReturn<Task>().OrReturn<ValueTask>()
-
-// Complex combinations
-In.AllLoadedAssemblies().Types()
-    .WhichAreClasses()
-    .WhichArePublic()
-    .WithName("Service").AsSuffix()
-    .Methods()
-    .WhichArePublic()
-    .With<HttpGetAttribute>().OrWith<HttpPostAttribute>()
-```
-
-### Real-World Examples
-
-Here are some practical examples of using the `In` helper:
-
-```csharp
-// Verify all test classes follow naming convention
-await Expect.That(In.AllLoadedAssemblies()
-        .Public.Methods().With<FactAttribute>().OrWith<TheoryAttribute>()
-        .DeclaringTypes())
-    .HaveName("Tests").AsSuffix();
-
-// Verify all async methods have "Async" suffix
-await Expect.That(In.AssemblyContaining<MyClass>()
-        .Methods().WhichReturn<Task>().OrReturn<ValueTask>())
-    .HaveName("Async").AsSuffix();
-
-// Verify all methods with "Async" suffix return Task or ValueTask
-await Expect.That(In.AssemblyContaining<MyClass>()
-        .Methods().WithName("Async").AsSuffix())
-    .Return<Task>().OrReturn<ValueTask>();
-
-// Verify controllers follow naming convention
-await Expect.That(In.AllLoadedAssemblies()
-        .Types().WhichInheritFrom<ControllerBase>())
-    .HaveName("Controller").AsSuffix();
-
-// Verify each event handler is named after the event it handles (e.g. "OnOrderPlaced")
-await Expect.That(In.AssemblyContaining<MyAggregate>()
-        .Methods().Which(m => m.GetParameters().Length == 1))
-    .HaveName(method => "On" + method.GetParameters()[0].ParameterType.Name);
-
-// Verify all test classes (those containing a [Fact] or [Theory] method) follow naming convention
-await Expect.That(In.AllLoadedAssemblies()
-        .Types().WhichContainMethods(m => m.With<FactAttribute>().OrWith<TheoryAttribute>()))
-    .HaveName("Tests").AsSuffix();
-
-// Verify each serializable type has exactly one parameterless constructor
-await Expect.That(In.AllLoadedAssemblies()
-        .Types().With<SerializableAttribute>()
-        .WhichContainConstructors(c => c.WithoutParameters()).Exactly(1))
-    .AreClasses();
-```
-
-## Assemblies
-
-### Name
-
-You can verify the name of an assembly or a collection of assemblies:
+|                             | Filter           | Assert (single)           | Assert (many)              |
+|-----------------------------|------------------|---------------------------|----------------------------|
+| by name                     | `.WithName("x")` | `.HasName("x")`           | `.HaveName("x")`           |
+| has attribute               | -                | `.Has<TAttribute>()`      | `.Have<TAttribute>()`      |
+| depends on assembly         | -                | `.HasADependencyOn("x")`  | `.HaveADependencyOn("x")`  |
+| does not depend on assembly | -                | `.HasNoDependencyOn("x")` | `.HaveNoDependencyOn("x")` |
+| custom predicate            | `.Which(a => …)` | -                         | -                          |
 
 ```csharp
 Assembly subject = Assembly.GetEntryAssembly();
 Assembly[] subjects = AppDomain.CurrentDomain.GetAssemblies();
 
-await Expect.That(subject).HasName("aweXpect.Reflection");
-await Expect.That(subjects).HaveName("aweXpect").AsPrefix();
-```
-
-You can use the same configuration options as
-when [comparing strings](https://awexpect.com/docs/expectations/string#equality).
-
-### Dependencies
-
-You can verify whether assemblies have specific dependencies:
-
-```csharp
-Assembly subject = Assembly.GetEntryAssembly();
-Assembly[] subjects = AppDomain.CurrentDomain.GetAssemblies();
-
-// Single assembly
+await Expect.That(subject).HasName("aweXpect").AsPrefix();
 await Expect.That(subject).HasADependencyOn("System.Core");
 await Expect.That(subject).HasNoDependencyOn("UnwantedDependency");
-
-// Multiple assemblies
-await Expect.That(subjects).HaveADependencyOn("System.Core");
-await Expect.That(subjects).HaveNoDependencyOn("UnwantedDependency");
-```
-
-### Attributes
-
-You can verify whether assemblies have specific attributes:
-
-```csharp
-Assembly subject = Assembly.GetEntryAssembly();
-Assembly[] subjects = AppDomain.CurrentDomain.GetAssemblies();
-
-// Single assembly
-await Expect.That(subject).Has<AssemblyTitleAttribute>();
-await Expect.That(subject).Has<AssemblyVersionAttribute>(a => a.Version == "1.0.0");
-
-// Multiple assemblies
 await Expect.That(subjects).Have<AssemblyTitleAttribute>();
 ```
 
-## Types
+## Combining filters
 
-### Name / Namespace
-
-You can verify the name or namespace of a type or a collection of types:
+Filters chain naturally (each narrows the previous result). Several filters offer an `Or…` companion to
+widen a single step:
 
 ```csharp
-Type subject = typeof(MyClass);
-IEnumerable<Type> subjects = In.EntryAssembly().Types();
+// Any of several attributes
+In.AllLoadedAssemblies().Methods()
+    .With<FactAttribute>().OrWith<TheoryAttribute>()
 
-await Expect.That(subject).HasNamespace("aweXpect").AsPrefix();
-await Expect.That(subject).HasName("MyClass");
+// Any of several return types
+In.AllLoadedAssemblies().Methods()
+    .WhichReturn<Task>().OrReturn<ValueTask>()
 
-await Expect.That(subjects).HaveNamespace("aweXpect").AsPrefix();
-await Expect.That(subjects).HaveName("Tests").AsSuffix();
+// Any of several property/field types
+In.AllLoadedAssemblies().Properties()
+    .OfType<string>().OrOfType<Guid>()
 ```
 
-You can use the same configuration options as
-when [comparing strings](https://awexpect.com/docs/expectations/string#equality).
+## String matching options
 
-### Type Kinds
+Every name and namespace filter/assertion uses the same string matching options as the core aweXpect
+library (see [the docs](https://docs.testably.org/aweXpect/common-types/string#equality)):
 
-You can verify what kind of type you're dealing with:
-
-```csharp
-Type subject = typeof(MyClass);
-IEnumerable<Type> subjects = In.EntryAssembly().Types();
-
-// Single type
-await Expect.That(subject).IsAClass();
-await Expect.That(subject).IsAnInterface();
-await Expect.That(subject).IsAnEnum();
-await Expect.That(subject).IsAbstract();
-await Expect.That(subject).IsSealed();
-await Expect.That(subject).IsStatic();
-await Expect.That(subject).IsGeneric();
-await Expect.That(subject).IsNested();
-
-// Multiple types
-await Expect.That(subjects).AreClasses();
-await Expect.That(subjects).AreInterfaces();
-await Expect.That(subjects).AreEnums();
-await Expect.That(subjects).AreAbstract();
-await Expect.That(subjects).AreSealed();
-await Expect.That(subjects).AreStatic();
-await Expect.That(subjects).AreGeneric();
-await Expect.That(subjects).AreNested();
-
-// Negative assertions
-await Expect.That(subject).IsNotAClass();
-await Expect.That(subject).IsNotAnInterface();
-await Expect.That(subject).IsNotAnEnum();
-await Expect.That(subject).IsNotAbstract();
-await Expect.That(subject).IsNotSealed();
-await Expect.That(subject).IsNotStatic();
-await Expect.That(subject).IsNotGeneric();
-await Expect.That(subject).IsNotNested();
-
-// Multiple types negative assertions
-await Expect.That(subjects).AreNotClasses();
-await Expect.That(subjects).AreNotInterfaces();
-await Expect.That(subjects).AreNotEnums();
-await Expect.That(subjects).AreNotAbstract();
-await Expect.That(subjects).AreNotSealed();
-await Expect.That(subjects).AreNotStatic();
-await Expect.That(subjects).AreNotGeneric();
-await Expect.That(subjects).AreNotNested();
-```
-
-### Access Modifiers
-
-You can verify the access modifiers of types:
+| Option                                                           | Effect                                            |
+|------------------------------------------------------------------|---------------------------------------------------|
+| *(none)*                                                         | exact match (default)                             |
+| `.AsPrefix()`                                                    | the value must start with the expected string     |
+| `.AsSuffix()`                                                    | the value must end with the expected string       |
+| `.AsWildcard()`                                                  | match using `*` and `?` wildcards                 |
+| `.AsRegex()`                                                     | match using a regular expression                  |
+| `.IgnoringCase()`                                                | case-insensitive comparison                       |
+| `.IgnoringLeadingWhiteSpace()` / `.IgnoringTrailingWhiteSpace()` | trim before comparing                             |
+| `.Using(comparer)`                                               | compare with a custom `IEqualityComparer<string>` |
 
 ```csharp
-Type subject = typeof(MyClass);
-IEnumerable<Type> subjects = In.EntryAssembly().Types();
-
-// Single type
-await Expect.That(subject).IsPublic();
-await Expect.That(subject).IsInternal();
-await Expect.That(subject).IsPrivate();
-await Expect.That(subject).IsProtected();
-
-// Multiple types
-await Expect.That(subjects).ArePublic();
-await Expect.That(subjects).AreInternal();
-await Expect.That(subjects).ArePrivate();
-await Expect.That(subjects).AreProtected();
-
-// Negative assertions
-await Expect.That(subject).IsNotPublic();
-await Expect.That(subject).IsNotInternal();
-await Expect.That(subject).IsNotPrivate();
-await Expect.That(subject).IsNotProtected();
-```
-
-### Attributes
-
-You can verify whether types have specific attributes:
-
-```csharp
-Type subject = typeof(MyClass);
-IEnumerable<Type> subjects = In.EntryAssembly().Types();
-
-// Single type
-await Expect.That(subject).Has<ObsoleteAttribute>();
-await Expect.That(subject).Has<ObsoleteAttribute>(a => a.Message == "Use NewClass instead");
-
-// Multiple types
-await Expect.That(subjects).Have<SerializableAttribute>();
-```
-
-## Methods
-
-### Name
-
-You can verify the names of methods:
-
-```csharp
-MethodInfo subject = typeof(MyClass).GetMethod("MyMethod");
-IEnumerable<MethodInfo> subjects = typeof(MyClass).GetMethods();
-
-// Single method
-await Expect.That(subject).HasName("MyMethod");
-
-// Multiple methods
-await Expect.That(subjects).HaveName("Get").AsPrefix();
-```
-
-### Parameters
-
-You can verify method parameters:
-
-```csharp
-MethodInfo subject = typeof(MyClass).GetMethod("MyMethod");
-IEnumerable<MethodInfo> subjects = typeof(MyClass).GetMethods();
-
-// Single method
-await Expect.That(subject).HasParameter<string>();
-await Expect.That(subject).HasParameter<string>("parameterName");
-await Expect.That(subject).HasParameter("parameterName").OfType<int>();
-
-// Multiple methods
-await Expect.That(subjects).HaveParameter<string>();
-await Expect.That(subjects).HaveParameter<DateTime>("timestamp");
-```
-
-### Return Types
-
-You can verify what methods return:
-
-```csharp
-MethodInfo subject = typeof(MyClass).GetMethod("MyMethod");
-IEnumerable<MethodInfo> subjects = typeof(MyClass).GetMethods();
-
-// Single method
-await Expect.That(subject).Returns<string>();
-await Expect.That(subject).ReturnsExactly<string>(); // Exact type match
-await Expect.That(subject).Returns<Task>(); // Also matches Task<T>
-await Expect.That(subject).ReturnsExactly<Task>(); // Only matches Task, not Task<T>
-
-// Multiple methods
-await Expect.That(subjects).Return<Task>();
-await Expect.That(subjects).ReturnExactly<void>();
-```
-
-### Access Modifiers
-
-You can verify the access modifiers of methods:
-
-```csharp
-MethodInfo subject = typeof(MyClass).GetMethod("MyMethod");
-IEnumerable<MethodInfo> subjects = typeof(MyClass).GetMethods();
-
-// Single method
-await Expect.That(subject).IsPublic();
-await Expect.That(subject).IsPrivate();
-await Expect.That(subject).IsProtected();
-await Expect.That(subject).IsInternal();
-
-// Multiple methods
-await Expect.That(subjects).ArePublic();
-await Expect.That(subjects).ArePrivate();
-await Expect.That(subjects).AreProtected();
-await Expect.That(subjects).AreInternal();
-
-// Negative assertions
-await Expect.That(subject).IsNotPublic();
-await Expect.That(subjects).AreNotPrivate();
-```
-
-### Attributes
-
-You can verify whether methods have specific attributes:
-
-```csharp
-MethodInfo subject = typeof(MyClass).GetMethod("MyMethod");
-IEnumerable<MethodInfo> subjects = typeof(MyClass).GetMethods();
-
-// Single method
-await Expect.That(subject).Has<ObsoleteAttribute>();
-await Expect.That(subject).Has<DescriptionAttribute>(a => a.Description == "My method");
-
-// Multiple methods
-await Expect.That(subjects).Have<AsyncStateMachineAttribute>();
-```
-
-## Properties
-
-### Name and Type
-
-You can verify properties by name:
-
-```csharp
-PropertyInfo subject = typeof(MyClass).GetProperty("MyProperty");
-IEnumerable<PropertyInfo> subjects = typeof(MyClass).GetProperties();
-
-// Single property
-await Expect.That(subject).HasName("MyProperty");
-
-// Multiple properties
-await Expect.That(subjects).HaveName("Id").AsSuffix();
-```
-
-### Access Modifiers
-
-You can verify the access modifiers of properties:
-
-```csharp
-PropertyInfo subject = typeof(MyClass).GetProperty("MyProperty");
-IEnumerable<PropertyInfo> subjects = typeof(MyClass).GetProperties();
-
-// Single property
-await Expect.That(subject).IsPublic();
-await Expect.That(subject).IsPrivate();
-await Expect.That(subject).IsProtected();
-await Expect.That(subject).IsInternal();
-
-// Multiple properties
-await Expect.That(subjects).ArePublic();
-await Expect.That(subjects).AreInternal();
-
-// Negative assertions
-await Expect.That(subject).IsNotPrivate();
-await Expect.That(subjects).AreNotProtected();
-```
-
-### Attributes
-
-You can verify whether properties have specific attributes:
-
-```csharp
-PropertyInfo subject = typeof(MyClass).GetProperty("MyProperty");
-IEnumerable<PropertyInfo> subjects = typeof(MyClass).GetProperties();
-
-// Single property
-await Expect.That(subject).Has<RequiredAttribute>();
-await Expect.That(subject).Has<JsonPropertyNameAttribute>(a => a.Name == "my_property");
-
-// Multiple properties
-await Expect.That(subjects).Have<JsonIgnoreAttribute>();
-```
-
-## Fields
-
-### Name
-
-You can verify fields by name:
-
-```csharp
-FieldInfo subject = typeof(MyClass).GetField("MyField");
-IEnumerable<FieldInfo> subjects = typeof(MyClass).GetFields();
-
-// Single field
-await Expect.That(subject).HasName("MyField");
-
-// Multiple fields
-await Expect.That(subjects).HaveName("_").AsPrefix();
-```
-
-### Access Modifiers
-
-You can verify the access modifiers of fields:
-
-```csharp
-FieldInfo subject = typeof(MyClass).GetField("MyField");
-IEnumerable<FieldInfo> subjects = typeof(MyClass).GetFields();
-
-// Single field
-await Expect.That(subject).IsPublic();
-await Expect.That(subject).IsPrivate();
-await Expect.That(subject).IsProtected();
-await Expect.That(subject).IsInternal();
-
-// Multiple fields
-await Expect.That(subjects).ArePrivate();
-
-// Negative assertions
-await Expect.That(subject).IsNotPublic();
-await Expect.That(subjects).AreNotPublic();
-```
-
-### Attributes
-
-You can verify whether fields have specific attributes:
-
-```csharp
-FieldInfo subject = typeof(MyClass).GetField("MyField");
-IEnumerable<FieldInfo> subjects = typeof(MyClass).GetFields();
-
-// Single field
-await Expect.That(subject).Has<NonSerializedAttribute>();
-
-// Multiple fields
-await Expect.That(subjects).Have<CompilerGeneratedAttribute>();
-```
-
-## Events
-
-### Name
-
-You can verify event names:
-
-```csharp
-EventInfo subject = typeof(MyClass).GetEvent("MyEvent");
-IEnumerable<EventInfo> subjects = typeof(MyClass).GetEvents();
-
-// Single event
-await Expect.That(subject).HasName("MyEvent");
-
-// Multiple events
-await Expect.That(subjects).HaveName("Changed").AsSuffix();
-```
-
-### Access Modifiers
-
-You can verify the access modifiers of events:
-
-```csharp
-EventInfo subject = typeof(MyClass).GetEvent("MyEvent");
-IEnumerable<EventInfo> subjects = typeof(MyClass).GetEvents();
-
-// Single event
-await Expect.That(subject).IsPublic();
-await Expect.That(subject).IsPrivate();
-await Expect.That(subject).IsProtected();
-await Expect.That(subject).IsInternal();
-
-// Multiple events
-await Expect.That(subjects).ArePublic();
-await Expect.That(subjects).AreInternal();
-
-// Negative assertions
-await Expect.That(subject).IsNotPrivate();
-await Expect.That(subjects).AreNotProtected();
-```
-
-### Attributes
-
-You can verify whether events have specific attributes:
-
-```csharp
-EventInfo subject = typeof(MyClass).GetEvent("MyEvent");
-IEnumerable<EventInfo> subjects = typeof(MyClass).GetEvents();
-
-// Single event
-await Expect.That(subject).Has<ObsoleteAttribute>();
-
-// Multiple events
-await Expect.That(subjects).Have<EditorBrowsableAttribute>();
-```
-
-## Constructors
-
-### Parameters
-
-You can verify constructor parameters:
-
-```csharp
-ConstructorInfo subject = typeof(MyClass).GetConstructor(Type.EmptyTypes);
-IEnumerable<ConstructorInfo> subjects = typeof(MyClass).GetConstructors();
-
-// Single constructor
-await Expect.That(subject).HasParameter<string>();
-await Expect.That(subject).HasParameter<string>("name");
-
-// Multiple constructors
-await Expect.That(subjects).HaveParameter<ILogger>();
-```
-
-### Attributes
-
-You can verify whether constructors have specific attributes:
-
-```csharp
-ConstructorInfo subject = typeof(MyClass).GetConstructor(Type.EmptyTypes);
-IEnumerable<ConstructorInfo> subjects = typeof(MyClass).GetConstructors();
-
-// Single constructor
-await Expect.That(subject).Has<JsonConstructorAttribute>();
-
-// Multiple constructors
-await Expect.That(subjects).Have<ObsoleteAttribute>();
-```
-
-## String Matching Options
-
-When verifying names and other string properties, you have access to the same powerful string matching options as the core aweXpect library:
-
-### Exact Matching
-```csharp
-await Expect.That(type).HasName("MyClass"); // Exact match
-await Expect.That(assembly).HasName("MyAssembly"); // Exact match
-```
-
-### Prefix/Suffix Matching
-```csharp
-await Expect.That(types).HaveName("Test").AsPrefix();
 await Expect.That(types).HaveName("Service").AsSuffix();
-await Expect.That(types).HaveNamespace("MyApp").AsPrefix();
-```
-
-### Case Sensitivity
-```csharp
-await Expect.That(type).HasName("myclass").IgnoringCase();
-await Expect.That(types).HaveName("SERVICE").AsSuffix().IgnoringCase();
-```
-
-### Wildcards and Patterns
-```csharp
 await Expect.That(types).HaveName("*Test*").AsWildcard();
-await Expect.That(methods).HaveName("Get*Async").AsWildcard();
-```
-
-### Regular Expressions
-```csharp
 await Expect.That(types).HaveName(@"^Test\w+$").AsRegex();
-await Expect.That(methods).HaveName(@"^(Get|Set)\w+").AsRegex();
+await Expect.That(methods).HaveName("Get*Async").AsWildcard().IgnoringCase();
 ```
 
-## Collection Operations
+## Collections and quantifiers
 
-All expectations work seamlessly with both single items and collections. When working with collections, you can:
+Every expectation works with both a single item and a collection. A collection can be an array,
+any `IEnumerable<T?>` or — on .NET 8 and later — an `IAsyncEnumerable<T?>`. The plural assertions already
+require **every** item to match; for ad-hoc predicates use aweXpect's `All()` / `Any()` quantifiers with
+`Satisfy(…)`, and combine selections with LINQ:
 
-### Apply expectations to all items
 ```csharp
-// All types must be classes
-await Expect.That(types).AreClasses();
+// The plural assertion already means "every item":
+await Expect.That(types).ArePublic();
 
-// All methods must be public
-await Expect.That(methods).ArePublic();
+// Ad-hoc predicate across the whole collection:
+await Expect.That(types).All().Satisfy(type => type.IsSealed);
+await Expect.That(types).Any().Satisfy(type => type.IsAbstract);
 
-// All assemblies must have a specific dependency
-await Expect.That(assemblies).HaveADependencyOn("System.Core");
+// Mix with LINQ (assign to IEnumerable<Type?> so Where binds to LINQ):
+IEnumerable<Type?> publicClasses = In.AllLoadedAssemblies().Types()
+    .WhichAreClasses().WhichArePublic();
+var managers = publicClasses.Where(type => type!.GetInterfaces().Length > 2);
+await Expect.That(managers).HaveName("Manager").AsSuffix();
 ```
 
-### Use quantifiers
+## Configuration
+
+### Assembly exclusions
+
+By default, assemblies whose name starts with one of the following prefixes are excluded from
+`In.AllLoadedAssemblies()`:
+
+`mscorlib`, `System`, `Microsoft`, `JetBrains`, `xunit`, `Castle`, `DynamicProxyGenAssembly2`.
+
+Customize this via `Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes`. `Set(…)` replaces the
+list and returns a scope that restores the previous value when disposed:
+
 ```csharp
-// At least one type should be abstract
-await Expect.That(types).Any().IsAbstract();
-
-// All types should be public
-await Expect.That(types).All().ArePublic();
-
-// Exactly 3 methods should have parameters
-await Expect.That(methods).Count().Exactly(3).HaveParameter<string>();
+using (Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes
+    .Set(new[] { "mscorlib", "System", "Microsoft", "MyCompany.Generated" }))
+{
+    // In.AllLoadedAssemblies() applies the custom prefixes within this scope
+}
 ```
-
-### Combine with LINQ
-```csharp
-// Work with filtered collections
-var publicMethods = typeof(MyClass).GetMethods().Where(m => m.IsPublic);
-await Expect.That(publicMethods).HaveName("Get").AsPrefix();
-
-// Use complex filtering
-var complexTypes = In.AllLoadedAssemblies()
-    .Types()
-    .WhichAreClasses()
-    .WhichArePublic()
-    .Where(t => t.GetInterfaces().Length > 2);
-await Expect.That(complexTypes).HaveName("Manager").AsSuffix();
-```
-
-## Configuration and Customization
-
-### Assembly Exclusions
-
-By default, system assemblies that start with the following prefixes are excluded from `In.AllLoadedAssemblies()`:
-- "mscorlib"
-- "System"
-- "Microsoft"
-- "JetBrains"
-- "xunit"
-- "Castle"
-- "DynamicProxyGenAssembly2"
-
-You can customize this behavior through aweXpect's customization system via `Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes`.
-
-### Thread Safety
-
-All expectations are thread-safe and can be used in parallel tests without issues.
-
-### Performance Considerations
-
-- The `In` helper uses lazy evaluation where possible
-- Filtering operations are optimized for common scenarios
-- Consider caching reflection results if you're performing the same queries repeatedly
-
