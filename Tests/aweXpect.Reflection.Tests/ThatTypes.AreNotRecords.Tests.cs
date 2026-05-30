@@ -25,7 +25,7 @@ public sealed partial class ThatTypes
 			public async Task WhenFilteringOnlyRecords_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotRecords>().Types()
-					.WhichSatisfy(type => type.IsRecordClass());
+					.Which(type => type.IsRecordClass());
 
 				async Task Act()
 					=> await That(subject).AreNotRecords();
@@ -65,7 +65,7 @@ public sealed partial class ThatTypes
 			public async Task WhenFilteringOnlyRecords_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotRecords>().Types()
-					.WhichSatisfy(type => type.IsRecordClass());
+					.Which(type => type.IsRecordClass());
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(they => they.AreNotRecords());

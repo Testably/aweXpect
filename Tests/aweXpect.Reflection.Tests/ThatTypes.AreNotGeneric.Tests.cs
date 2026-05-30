@@ -13,7 +13,7 @@ public sealed partial class ThatTypes
 			public async Task WhenAssembliesContainNonGenericTypes_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotGeneric>().Types()
-					.WhichSatisfy(type => !type.IsGenericType);
+					.Which(type => !type.IsGenericType);
 
 				async Task Act()
 					=> await That(subject).AreNotGeneric();
@@ -25,7 +25,7 @@ public sealed partial class ThatTypes
 			public async Task WhenFilteringOnlyGenericTypes_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotGeneric>().Types()
-					.WhichSatisfy(type => type.IsGenericType);
+					.Which(type => type.IsGenericType);
 
 				async Task Act()
 					=> await That(subject).AreNotGeneric();
@@ -47,7 +47,7 @@ public sealed partial class ThatTypes
 			public async Task WhenAssembliesContainNonGenericTypes_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotGeneric>().Types()
-					.WhichSatisfy(type => !type.IsGenericType);
+					.Which(type => !type.IsGenericType);
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(they => they.AreNotGeneric());
@@ -66,7 +66,7 @@ public sealed partial class ThatTypes
 			public async Task WhenFilteringOnlyGenericTypes_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotGeneric>().Types()
-					.WhichSatisfy(type => type.IsGenericType);
+					.Which(type => type.IsGenericType);
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(they => they.AreNotGeneric());

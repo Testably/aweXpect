@@ -4,7 +4,7 @@ namespace aweXpect.Reflection.Tests.Filters;
 
 public sealed partial class MethodFilters
 {
-	public sealed class WhichSatisfy
+	public sealed class Which
 	{
 		public sealed class Tests
 		{
@@ -12,7 +12,7 @@ public sealed partial class MethodFilters
 			public async Task ShouldFilterForMethodsWhichSatisfyThePredicate()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().WhichSatisfy(it => it.Name.Equals("SomeMethodToVerifyTheNameOfIt"));
+					.Methods().Which(it => it.Name.Equals("SomeMethodToVerifyTheNameOfIt"));
 
 				await That(methods).HasSingle().Which.IsEqualTo(ExpectedMethodInfo());
 				await That(methods.GetDescription())

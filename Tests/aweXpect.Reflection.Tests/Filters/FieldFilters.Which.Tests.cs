@@ -4,7 +4,7 @@ namespace aweXpect.Reflection.Tests.Filters;
 
 public sealed partial class FieldFilters
 {
-	public sealed class WhichSatisfy
+	public sealed class Which
 	{
 		public sealed class Tests
 		{
@@ -12,7 +12,7 @@ public sealed partial class FieldFilters
 			public async Task ShouldFilterForFieldsWhichSatisfyThePredicate()
 			{
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()
-					.Fields().WhichSatisfy(it => it.Name.Equals("SomeFieldToVerifyTheNameOfIt"));
+					.Fields().Which(it => it.Name.Equals("SomeFieldToVerifyTheNameOfIt"));
 
 				await That(fields).HasSingle().Which.IsEqualTo(ExpectedFieldInfo());
 				await That(fields.GetDescription())

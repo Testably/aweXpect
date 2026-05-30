@@ -31,7 +31,7 @@ public sealed partial class ThatTypes
 			public async Task WhenFilteringOnlyInterfaces_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreInterfaces>().Types()
-					.WhichSatisfy(type => type.IsInterface);
+					.Which(type => type.IsInterface);
 
 				async Task Act()
 					=> await That(subject).AreInterfaces();
@@ -57,7 +57,7 @@ public sealed partial class ThatTypes
 			public async Task WhenFilteringOnlyInterfaces_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreInterfaces>().Types()
-					.WhichSatisfy(type => type.IsInterface);
+					.Which(type => type.IsInterface);
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(they => they.AreInterfaces());

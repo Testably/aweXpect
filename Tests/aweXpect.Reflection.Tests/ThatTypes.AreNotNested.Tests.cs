@@ -13,7 +13,7 @@ public sealed partial class ThatTypes
 			public async Task WhenAssembliesContainNonNestedTypes_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotNested>().Types()
-					.WhichSatisfy(type => !type.IsNested);
+					.Which(type => !type.IsNested);
 
 				async Task Act()
 					=> await That(subject).AreNotNested();
@@ -25,7 +25,7 @@ public sealed partial class ThatTypes
 			public async Task WhenFilteringOnlyNestedTypes_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotNested>().Types()
-					.WhichSatisfy(type => type.IsNested);
+					.Which(type => type.IsNested);
 
 				async Task Act()
 					=> await That(subject).AreNotNested();
@@ -47,7 +47,7 @@ public sealed partial class ThatTypes
 			public async Task WhenAssembliesContainNonNestedTypes_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotNested>().Types()
-					.WhichSatisfy(type => !type.IsNested);
+					.Which(type => !type.IsNested);
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(they => they.AreNotNested());
@@ -66,7 +66,7 @@ public sealed partial class ThatTypes
 			public async Task WhenFilteringOnlyNestedTypes_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotNested>().Types()
-					.WhichSatisfy(type => type.IsNested);
+					.Which(type => type.IsNested);
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(they => they.AreNotNested());

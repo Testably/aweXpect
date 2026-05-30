@@ -6,13 +6,13 @@ using aweXpect.Reflection.Helpers;
 
 namespace aweXpect.Reflection;
 
-public static partial class PropertyFilters
+public static partial class EventFilters
 {
 	/// <summary>
-	///     Filters for properties that satisfy the <paramref name="predicate" />.
+	///     Filters for events that satisfy the <paramref name="predicate" />.
 	/// </summary>
-	public static Filtered.Properties WhichSatisfy(this Filtered.Properties @this,
-		Func<PropertyInfo, bool> predicate,
+	public static Filtered.Events Which(this Filtered.Events @this,
+		Func<EventInfo, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		=> @this.Which(Filter.Suffix(predicate, $"matching {doNotPopulateThisValue.TrimCommonWhiteSpace()} "));

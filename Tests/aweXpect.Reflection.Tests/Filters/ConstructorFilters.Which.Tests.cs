@@ -4,7 +4,7 @@ namespace aweXpect.Reflection.Tests.Filters;
 
 public sealed partial class ConstructorFilters
 {
-	public sealed class WhichSatisfy
+	public sealed class Which
 	{
 		public sealed class Tests
 		{
@@ -12,7 +12,7 @@ public sealed partial class ConstructorFilters
 			public async Task ShouldFilterForConstructorsWhichSatisfyThePredicate()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
-					.Constructors().WhichSatisfy(it
+					.Constructors().Which(it
 						=> it.DeclaringType == typeof(SomeClassToVerifyTheConstructorNameOfIt));
 
 				await That(constructors).HasSingle().Which.IsEqualTo(ExpectedConstructorInfo());

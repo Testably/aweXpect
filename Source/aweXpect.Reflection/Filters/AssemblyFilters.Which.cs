@@ -11,7 +11,7 @@ public static partial class AssemblyFilters
 	/// <summary>
 	///     Filters for assemblies that satisfy the <paramref name="predicate" />.
 	/// </summary>
-	public static Filtered.Assemblies WhichSatisfy(this Filtered.Assemblies @this,
+	public static Filtered.Assemblies Which(this Filtered.Assemblies @this,
 		Func<Assembly, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")

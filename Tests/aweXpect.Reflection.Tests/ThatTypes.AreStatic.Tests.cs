@@ -30,7 +30,7 @@ public sealed partial class ThatTypes
 			public async Task WhenFilteringOnlyStaticTypes_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreStatic>().Types()
-					.WhichSatisfy(type => type is { IsAbstract: true, IsSealed: true, IsInterface: false, });
+					.Which(type => type is { IsAbstract: true, IsSealed: true, IsInterface: false, });
 
 				async Task Act()
 					=> await That(subject).AreStatic();
@@ -56,7 +56,7 @@ public sealed partial class ThatTypes
 			public async Task WhenFilteringOnlyStaticTypes_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreStatic>().Types()
-					.WhichSatisfy(type => type is { IsAbstract: true, IsSealed: true, IsInterface: false, });
+					.Which(type => type is { IsAbstract: true, IsSealed: true, IsInterface: false, });
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(they => they.AreStatic());

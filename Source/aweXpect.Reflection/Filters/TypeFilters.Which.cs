@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 
 namespace aweXpect.Reflection;
 
-public static partial class FieldFilters
+public static partial class TypeFilters
 {
 	/// <summary>
-	///     Filters for fields that satisfy the <paramref name="predicate" />.
+	///     Filters for types that satisfy the <paramref name="predicate" />.
 	/// </summary>
-	public static Filtered.Fields WhichSatisfy(this Filtered.Fields @this,
-		Func<FieldInfo, bool> predicate,
+	public static Filtered.Types Which(this Filtered.Types @this,
+		Func<Type, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		=> @this.Which(Filter.Suffix(predicate, $"matching {doNotPopulateThisValue.TrimCommonWhiteSpace()} "));

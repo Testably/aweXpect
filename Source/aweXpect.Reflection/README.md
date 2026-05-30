@@ -120,7 +120,7 @@ In.AllLoadedAssemblies().Types()
 
 // Filter by custom predicates
 In.AllLoadedAssemblies().Types()
-    .WhichSatisfy(t => t.Name.StartsWith("Test"))
+    .Which(t => t.Name.StartsWith("Test"))
 ```
 
 #### Method Filters
@@ -243,7 +243,7 @@ await Expect.That(In.AllLoadedAssemblies()
 
 // Verify each event handler is named after the event it handles (e.g. "OnOrderPlaced")
 await Expect.That(In.AssemblyContaining<MyAggregate>()
-        .Methods().WhichSatisfy(m => m.GetParameters().Length == 1))
+        .Methods().Which(m => m.GetParameters().Length == 1))
     .HaveName(method => "On" + method.GetParameters()[0].ParameterType.Name);
 ```
 

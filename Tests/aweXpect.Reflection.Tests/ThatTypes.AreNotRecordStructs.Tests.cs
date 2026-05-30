@@ -25,7 +25,7 @@ public sealed partial class ThatTypes
 			public async Task WhenFilteringOnlyRecordStructs_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotRecordStructs>().Types()
-					.WhichSatisfy(type => type.IsRecordStruct());
+					.Which(type => type.IsRecordStruct());
 
 				async Task Act()
 					=> await That(subject).AreNotRecordStructs();
@@ -65,7 +65,7 @@ public sealed partial class ThatTypes
 			public async Task WhenFilteringOnlyRecordStructs_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreNotRecordStructs>().Types()
-					.WhichSatisfy(type => type.IsRecordStruct());
+					.Which(type => type.IsRecordStruct());
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(they => they.AreNotRecordStructs());

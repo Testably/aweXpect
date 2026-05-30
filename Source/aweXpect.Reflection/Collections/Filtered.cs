@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using aweXpect.Reflection.Helpers;
 #if NET8_0_OR_GREATER
 using System.Threading;
 using System.Threading.Tasks;
@@ -63,13 +60,4 @@ public abstract class Filtered<T, TFiltered>(IEnumerable<T> source, List<IFilter
 		Filters.Add(filter);
 		return (TFiltered)this;
 	}
-
-	/// <summary>
-	///     Filters the applicable <typeparamref name="T" /> on which the expectations should be applied
-	///     according to the <paramref name="predicate" />.
-	/// </summary>
-	public TFiltered Which(Func<T, bool> predicate,
-		[CallerArgumentExpression("predicate")]
-		string doNotPopulateThisValue = "")
-		=> Which(Filter.Suffix(predicate, $"matching {doNotPopulateThisValue.TrimCommonWhiteSpace()} "));
 }

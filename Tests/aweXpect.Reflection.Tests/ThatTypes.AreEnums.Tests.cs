@@ -31,7 +31,7 @@ public sealed partial class ThatTypes
 			public async Task WhenFilteringOnlyEnums_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreEnums>().Types()
-					.WhichSatisfy(type => type.IsEnum);
+					.Which(type => type.IsEnum);
 
 				async Task Act()
 					=> await That(subject).AreEnums();
@@ -57,7 +57,7 @@ public sealed partial class ThatTypes
 			public async Task WhenFilteringOnlyEnums_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AreEnums>().Types()
-					.WhichSatisfy(type => type.IsEnum);
+					.Which(type => type.IsEnum);
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(they => they.AreEnums());
