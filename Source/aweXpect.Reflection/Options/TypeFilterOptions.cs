@@ -54,6 +54,25 @@ public class TypeFilterOptions
 	}
 
 	/// <summary>
+	///     Appends the registered types as <c>"of type {type}"</c> (or <c>"of exact type {type}"</c> for exact
+	///     matches), joined by <c>" or "</c>.
+	/// </summary>
+	internal void AppendOfTypeDescription(StringBuilder stringBuilder)
+	{
+		int index = 0;
+		foreach ((Type type, bool isDirect) in _types)
+		{
+			if (index++ > 0)
+			{
+				stringBuilder.Append(" or ");
+			}
+
+			stringBuilder.Append(isDirect ? "of exact type " : "of type ");
+			Formatter.Format(stringBuilder, type);
+		}
+	}
+
+	/// <summary>
 	///     Registers a <paramref name="type" />.
 	/// </summary>
 	public void RegisterType(Type type, bool forceDirect) => _types.Add((type, forceDirect));

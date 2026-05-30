@@ -326,8 +326,8 @@ In addition to [access modifiers](#access-modifiers),
 
 |                                       | Filter                                      | Assert (single)                 | Assert (many)                     |
 |---------------------------------------|---------------------------------------------|---------------------------------|-----------------------------------|
-| of type (or a subtype)                | `.OfType<T>()`                              | -                               | -                                 |
-| of exact type                         | `.OfExactType<T>()`                         | -                               | -                                 |
+| of type (or a subtype)                | `.OfType<T>()`                              | `.IsOfType<T>()`                | `.AreOfType<T>()`                 |
+| of exact type                         | `.OfExactType<T>()`                         | `.IsOfExactType<T>()`           | `.AreOfExactType<T>()`            |
 | static *(properties & fields)*        | `.WhichAreStatic()`                         | `.IsStatic()`                   | `.AreStatic()`                    |
 | abstract / sealed *(properties only)* | `.WhichAreAbstract()` / `.WhichAreSealed()` | `.IsAbstract()` / `.IsSealed()` | `.AreAbstract()` / `.AreSealed()` |
 

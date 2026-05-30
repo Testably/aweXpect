@@ -424,12 +424,33 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.FieldInfo?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.FieldInfo?> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
         public static aweXpect.Results.AndOrResult<System.Reflection.FieldInfo?, aweXpect.Core.IThat<System.Reflection.FieldInfo?>> IsNotStatic(this aweXpect.Core.IThat<System.Reflection.FieldInfo?> subject) { }
+        public static aweXpect.Reflection.ThatField.FieldOfTypeResult<System.Reflection.FieldInfo?, aweXpect.Core.IThat<System.Reflection.FieldInfo?>> IsOfExactType(this aweXpect.Core.IThat<System.Reflection.FieldInfo?> subject, System.Type fieldType) { }
+        public static aweXpect.Reflection.ThatField.FieldOfTypeResult<System.Reflection.FieldInfo?, aweXpect.Core.IThat<System.Reflection.FieldInfo?>> IsOfExactType<TField>(this aweXpect.Core.IThat<System.Reflection.FieldInfo?> subject) { }
+        public static aweXpect.Reflection.ThatField.FieldOfTypeResult<System.Reflection.FieldInfo?, aweXpect.Core.IThat<System.Reflection.FieldInfo?>> IsOfType(this aweXpect.Core.IThat<System.Reflection.FieldInfo?> subject, System.Type fieldType) { }
+        public static aweXpect.Reflection.ThatField.FieldOfTypeResult<System.Reflection.FieldInfo?, aweXpect.Core.IThat<System.Reflection.FieldInfo?>> IsOfType<TField>(this aweXpect.Core.IThat<System.Reflection.FieldInfo?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.FieldInfo?, aweXpect.Core.IThat<System.Reflection.FieldInfo?>> IsStatic(this aweXpect.Core.IThat<System.Reflection.FieldInfo?> subject) { }
+        public sealed class FieldOfTypeResult<TValue, TResult> : aweXpect.Results.AndOrResult<TValue, TResult>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.TypeFilterOptions>
+            where TResult : aweXpect.Core.IThat<TValue>
+        {
+            public FieldOfTypeResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TResult subject, aweXpect.Reflection.Options.TypeFilterOptions typeFilterOptions) { }
+            public aweXpect.Reflection.ThatField.FieldOfTypeResult<TValue, TResult> OrOfExactType(System.Type fieldType) { }
+            public aweXpect.Reflection.ThatField.FieldOfTypeResult<TValue, TResult> OrOfExactType<TField>() { }
+            public aweXpect.Reflection.ThatField.FieldOfTypeResult<TValue, TResult> OrOfType(System.Type fieldType) { }
+            public aweXpect.Reflection.ThatField.FieldOfTypeResult<TValue, TResult> OrOfType<TField>() { }
+        }
     }
     public static class ThatFields
     {
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.FieldInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.FieldInfo?>>> AreNotStatic(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.FieldInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>>> AreNotStatic(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>> subject) { }
+        public static aweXpect.Reflection.ThatFields.FieldsOfTypeResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.FieldInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.FieldInfo?>>> AreOfExactType(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.FieldInfo?>> subject, System.Type fieldType) { }
+        public static aweXpect.Reflection.ThatFields.FieldsOfTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>>> AreOfExactType(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>> subject, System.Type fieldType) { }
+        public static aweXpect.Reflection.ThatFields.FieldsOfTypeResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.FieldInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.FieldInfo?>>> AreOfExactType<TField>(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.FieldInfo?>> subject) { }
+        public static aweXpect.Reflection.ThatFields.FieldsOfTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>>> AreOfExactType<TField>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>> subject) { }
+        public static aweXpect.Reflection.ThatFields.FieldsOfTypeResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.FieldInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.FieldInfo?>>> AreOfType(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.FieldInfo?>> subject, System.Type fieldType) { }
+        public static aweXpect.Reflection.ThatFields.FieldsOfTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>>> AreOfType(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>> subject, System.Type fieldType) { }
+        public static aweXpect.Reflection.ThatFields.FieldsOfTypeResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.FieldInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.FieldInfo?>>> AreOfType<TField>(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.FieldInfo?>> subject) { }
+        public static aweXpect.Reflection.ThatFields.FieldsOfTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>>> AreOfType<TField>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.FieldInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.FieldInfo?>>> AreStatic(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.FieldInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>>> AreStatic(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>> subject) { }
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.FieldInfo?, System.Collections.Generic.IAsyncEnumerable<System.Reflection.FieldInfo?>> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.FieldInfo?>> subject, bool inherit = true)
@@ -440,6 +461,15 @@ namespace aweXpect.Reflection
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.FieldInfo?, System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
+        public sealed class FieldsOfTypeResult<TValue, TResult> : aweXpect.Results.AndOrResult<TValue, TResult>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.TypeFilterOptions>
+            where TResult : aweXpect.Core.IThat<TValue>
+        {
+            public FieldsOfTypeResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TResult subject, aweXpect.Reflection.Options.TypeFilterOptions typeFilterOptions) { }
+            public aweXpect.Reflection.ThatFields.FieldsOfTypeResult<TValue, TResult> OrOfExactType(System.Type fieldType) { }
+            public aweXpect.Reflection.ThatFields.FieldsOfTypeResult<TValue, TResult> OrOfExactType<TField>() { }
+            public aweXpect.Reflection.ThatFields.FieldsOfTypeResult<TValue, TResult> OrOfType(System.Type fieldType) { }
+            public aweXpect.Reflection.ThatFields.FieldsOfTypeResult<TValue, TResult> OrOfType<TField>() { }
+        }
     }
     public static class ThatMember
     {
@@ -632,6 +662,14 @@ namespace aweXpect.Reflection
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>>> AreNotSealed(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>>> AreNotStatic(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>>> AreNotStatic(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> subject) { }
+        public static aweXpect.Reflection.ThatProperties.PropertiesOfTypeResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>>> AreOfExactType(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>> subject, System.Type propertyType) { }
+        public static aweXpect.Reflection.ThatProperties.PropertiesOfTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>>> AreOfExactType(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> subject, System.Type propertyType) { }
+        public static aweXpect.Reflection.ThatProperties.PropertiesOfTypeResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>>> AreOfExactType<TProperty>(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>> subject) { }
+        public static aweXpect.Reflection.ThatProperties.PropertiesOfTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>>> AreOfExactType<TProperty>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> subject) { }
+        public static aweXpect.Reflection.ThatProperties.PropertiesOfTypeResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>>> AreOfType(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>> subject, System.Type propertyType) { }
+        public static aweXpect.Reflection.ThatProperties.PropertiesOfTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>>> AreOfType(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> subject, System.Type propertyType) { }
+        public static aweXpect.Reflection.ThatProperties.PropertiesOfTypeResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>>> AreOfType<TProperty>(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>> subject) { }
+        public static aweXpect.Reflection.ThatProperties.PropertiesOfTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>>> AreOfType<TProperty>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>>> AreSealed(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>>> AreSealed(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>>> AreStatic(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>> subject) { }
@@ -644,6 +682,15 @@ namespace aweXpect.Reflection
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.PropertyInfo?, System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
+        public sealed class PropertiesOfTypeResult<TValue, TResult> : aweXpect.Results.AndOrResult<TValue, TResult>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.TypeFilterOptions>
+            where TResult : aweXpect.Core.IThat<TValue>
+        {
+            public PropertiesOfTypeResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TResult subject, aweXpect.Reflection.Options.TypeFilterOptions typeFilterOptions) { }
+            public aweXpect.Reflection.ThatProperties.PropertiesOfTypeResult<TValue, TResult> OrOfExactType(System.Type propertyType) { }
+            public aweXpect.Reflection.ThatProperties.PropertiesOfTypeResult<TValue, TResult> OrOfExactType<TProperty>() { }
+            public aweXpect.Reflection.ThatProperties.PropertiesOfTypeResult<TValue, TResult> OrOfType(System.Type propertyType) { }
+            public aweXpect.Reflection.ThatProperties.PropertiesOfTypeResult<TValue, TResult> OrOfType<TProperty>() { }
+        }
     }
     public static class ThatProperty
     {
@@ -655,8 +702,21 @@ namespace aweXpect.Reflection
         public static aweXpect.Results.AndOrResult<System.Reflection.PropertyInfo?, aweXpect.Core.IThat<System.Reflection.PropertyInfo?>> IsNotAbstract(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.PropertyInfo?, aweXpect.Core.IThat<System.Reflection.PropertyInfo?>> IsNotSealed(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.PropertyInfo?, aweXpect.Core.IThat<System.Reflection.PropertyInfo?>> IsNotStatic(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject) { }
+        public static aweXpect.Reflection.ThatProperty.PropertyOfTypeResult<System.Reflection.PropertyInfo?, aweXpect.Core.IThat<System.Reflection.PropertyInfo?>> IsOfExactType(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject, System.Type propertyType) { }
+        public static aweXpect.Reflection.ThatProperty.PropertyOfTypeResult<System.Reflection.PropertyInfo?, aweXpect.Core.IThat<System.Reflection.PropertyInfo?>> IsOfExactType<TProperty>(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject) { }
+        public static aweXpect.Reflection.ThatProperty.PropertyOfTypeResult<System.Reflection.PropertyInfo?, aweXpect.Core.IThat<System.Reflection.PropertyInfo?>> IsOfType(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject, System.Type propertyType) { }
+        public static aweXpect.Reflection.ThatProperty.PropertyOfTypeResult<System.Reflection.PropertyInfo?, aweXpect.Core.IThat<System.Reflection.PropertyInfo?>> IsOfType<TProperty>(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.PropertyInfo?, aweXpect.Core.IThat<System.Reflection.PropertyInfo?>> IsSealed(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.PropertyInfo?, aweXpect.Core.IThat<System.Reflection.PropertyInfo?>> IsStatic(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject) { }
+        public sealed class PropertyOfTypeResult<TValue, TResult> : aweXpect.Results.AndOrResult<TValue, TResult>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.TypeFilterOptions>
+            where TResult : aweXpect.Core.IThat<TValue>
+        {
+            public PropertyOfTypeResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TResult subject, aweXpect.Reflection.Options.TypeFilterOptions typeFilterOptions) { }
+            public aweXpect.Reflection.ThatProperty.PropertyOfTypeResult<TValue, TResult> OrOfExactType(System.Type propertyType) { }
+            public aweXpect.Reflection.ThatProperty.PropertyOfTypeResult<TValue, TResult> OrOfExactType<TProperty>() { }
+            public aweXpect.Reflection.ThatProperty.PropertyOfTypeResult<TValue, TResult> OrOfType(System.Type propertyType) { }
+            public aweXpect.Reflection.ThatProperty.PropertyOfTypeResult<TValue, TResult> OrOfType<TProperty>() { }
+        }
     }
     public static class ThatType
     {
