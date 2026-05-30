@@ -231,7 +231,7 @@ In.AllLoadedAssemblies().Public.Abstract.Classes()
 #### Types containing specific members
 
 You can select types based on the members they declare. The lambda receives the members declared on each
-individual type and may use the full member-filter DSL:
+individual type and may use the full member-filter API:
 
 ```csharp
 // Types that contain at least one method with [Fact] or [Theory]
@@ -260,6 +260,32 @@ In.AllLoadedAssemblies().Types()
 Each quantifier applies only to the condition it directly follows; all other conditions implicitly require
 the member to occur _at least once_. The available quantifiers are `Exactly`, `AtLeast`, `AtMost`,
 `MoreThan`, `LessThan`, `Between(…).And(…)`, `Never`, `Once` and `Twice`.
+
+The same five member kinds are available as **assertions** on a single `Type` (`Contains…`) and on a
+collection of types (`Contain…`), using the same member-filter lambdas and the same quantifiers (default:
+_at least one_ matching member):
+
+| Member kind  | Filter                         | Assert (single)            | Assert (many)             |
+|--------------|--------------------------------|----------------------------|---------------------------|
+| methods      | `.WhichContainMethods(…)`      | `.ContainsMethods(…)`      | `.ContainMethods(…)`      |
+| properties   | `.WhichContainProperties(…)`   | `.ContainsProperties(…)`   | `.ContainProperties(…)`   |
+| fields       | `.WhichContainFields(…)`       | `.ContainsFields(…)`       | `.ContainFields(…)`       |
+| events       | `.WhichContainEvents(…)`       | `.ContainsEvents(…)`       | `.ContainEvents(…)`       |
+| constructors | `.WhichContainConstructors(…)` | `.ContainsConstructors(…)` | `.ContainConstructors(…)` |
+
+```csharp
+// A single type contains at least one [Fact] or [Theory] method
+await Expect.That(typeof(MyTests))
+    .ContainsMethods(methods => methods.With<FactAttribute>().OrWith<TheoryAttribute>());
+
+// …with exactly two parameterless constructors
+await Expect.That(typeof(MyService))
+    .ContainsConstructors(constructors => constructors.WithoutParameters()).Exactly(2.Times());
+
+// Every type in a collection contains a matching property
+await Expect.That(types)
+    .ContainProperties(properties => properties.With<RequiredAttribute>()).AtLeast(1.Times());
+```
 
 #### Generic type arguments
 

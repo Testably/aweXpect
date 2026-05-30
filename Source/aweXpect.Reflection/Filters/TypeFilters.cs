@@ -25,6 +25,18 @@ public static partial class TypeFilters
 	}
 
 	/// <summary>
+	///     Creates the shared <see cref="IContainedMembersFilter" /> that counts the members of a single
+	///     <see cref="Type" /> matching the <paramref name="filter" />, reusing the same counting and description logic
+	///     as the <see cref="Filtered.Types" /> filters.
+	/// </summary>
+	internal static IContainedMembersFilter ContainedMembers<TMember, TFiltered>(
+		Func<Filtered.Types, TFiltered> navigate,
+		Func<TFiltered, TFiltered> filter,
+		Quantifier quantifier)
+		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
+		=> new ContainedMembersFilter<TMember, TFiltered>(navigate, filter, quantifier);
+
+	/// <summary>
 	///     A filterable collection of <see cref="Type" /> that contain matching members, allowing to specify a quantifier
 	///     for the number of matching members.
 	/// </summary>
@@ -160,11 +172,10 @@ public static partial class TypeFilters
 		}
 	}
 
-	private sealed class ContainedMembersFilter<TMember, TFiltered> : IFilter<Type>
+	private sealed class ContainedMembersFilter<TMember, TFiltered> : IContainedMembersFilter
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
 	{
 		private readonly Func<TFiltered, TFiltered> _filter;
-		private readonly string _membersDescription;
 		private readonly Func<Filtered.Types, TFiltered> _navigate;
 		private readonly Quantifier _quantifier;
 
@@ -183,11 +194,15 @@ public static partial class TypeFilters
 				inner = inner.Substring(0, inner.Length - "in ".Length);
 			}
 
-			_membersDescription = inner;
+			MembersDescription = inner;
 		}
 
+		/// <inheritdoc cref="IContainedMembersFilter.MembersDescription" />
+		public string MembersDescription { get; }
+
 #if NET8_0_OR_GREATER
-		public async ValueTask<bool> Applies(Type value)
+		/// <inheritdoc cref="IContainedMembersFilter.CountMatchingMembers(Type)" />
+		public async ValueTask<int> CountMatchingMembers(Type value)
 		{
 			int count = 0;
 			await foreach (var _ in _filter(_navigate(new Filtered.Types([value,], ""))))
@@ -195,17 +210,21 @@ public static partial class TypeFilters
 				count++;
 			}
 
-			return _quantifier.Check(count, true) ?? false;
+			return count;
 		}
+
+		public async ValueTask<bool> Applies(Type value)
+			=> _quantifier.Check(await CountMatchingMembers(value), true) ?? false;
 #else
-		public Task<bool> Applies(Type value)
-		{
-			int count = _filter(_navigate(new Filtered.Types([value,], ""))).Count();
-			return Task.FromResult(_quantifier.Check(count, true) ?? false);
-		}
+		/// <inheritdoc cref="IContainedMembersFilter.CountMatchingMembers(Type)" />
+		public Task<int> CountMatchingMembers(Type value)
+			=> Task.FromResult(_filter(_navigate(new Filtered.Types([value,], ""))).Count());
+
+		public async Task<bool> Applies(Type value)
+			=> _quantifier.Check(await CountMatchingMembers(value), true) ?? false;
 #endif
 
 		public string Describes(string text)
-			=> $"{text.TrimEnd()} which contain {_membersDescription}{_quantifier} ";
+			=> $"{text.TrimEnd()} which contain {MembersDescription}{_quantifier} ";
 	}
 }

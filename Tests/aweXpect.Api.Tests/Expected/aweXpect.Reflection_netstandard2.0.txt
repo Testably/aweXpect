@@ -642,6 +642,11 @@ namespace aweXpect.Reflection
     }
     public static class ThatType
     {
+        public static aweXpect.Reflection.Results.TypeContainingMembersResult<System.Type?> ContainsConstructors(this aweXpect.Core.IThat<System.Type?> subject, System.Func<aweXpect.Reflection.Collections.Filtered.Constructors, aweXpect.Reflection.Collections.Filtered.Constructors> filter) { }
+        public static aweXpect.Reflection.Results.TypeContainingMembersResult<System.Type?> ContainsEvents(this aweXpect.Core.IThat<System.Type?> subject, System.Func<aweXpect.Reflection.Collections.Filtered.Events, aweXpect.Reflection.Collections.Filtered.Events> filter) { }
+        public static aweXpect.Reflection.Results.TypeContainingMembersResult<System.Type?> ContainsFields(this aweXpect.Core.IThat<System.Type?> subject, System.Func<aweXpect.Reflection.Collections.Filtered.Fields, aweXpect.Reflection.Collections.Filtered.Fields> filter) { }
+        public static aweXpect.Reflection.Results.TypeContainingMembersResult<System.Type?> ContainsMethods(this aweXpect.Core.IThat<System.Type?> subject, System.Func<aweXpect.Reflection.Collections.Filtered.Methods, aweXpect.Reflection.Collections.Filtered.Methods> filter) { }
+        public static aweXpect.Reflection.Results.TypeContainingMembersResult<System.Type?> ContainsProperties(this aweXpect.Core.IThat<System.Type?> subject, System.Func<aweXpect.Reflection.Collections.Filtered.Properties, aweXpect.Reflection.Collections.Filtered.Properties> filter) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> DoesNotInheritFrom(this aweXpect.Core.IThat<System.Type?> subject, System.Type baseType, bool forceDirect = false) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> DoesNotInheritFrom<TBaseType>(this aweXpect.Core.IThat<System.Type?> subject, bool forceDirect = false) { }
         public static aweXpect.Reflection.Results.HasAttributeResult<System.Type?> Has<TAttribute>(this aweXpect.Core.IThat<System.Type?> subject, bool inherit = true)
@@ -698,6 +703,11 @@ namespace aweXpect.Reflection
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreSealed(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreStatic(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> AreStructs(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
+        public static aweXpect.Reflection.Results.TypeContainingMembersResult<System.Collections.Generic.IEnumerable<System.Type?>> ContainConstructors(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Func<aweXpect.Reflection.Collections.Filtered.Constructors, aweXpect.Reflection.Collections.Filtered.Constructors> filter) { }
+        public static aweXpect.Reflection.Results.TypeContainingMembersResult<System.Collections.Generic.IEnumerable<System.Type?>> ContainEvents(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Func<aweXpect.Reflection.Collections.Filtered.Events, aweXpect.Reflection.Collections.Filtered.Events> filter) { }
+        public static aweXpect.Reflection.Results.TypeContainingMembersResult<System.Collections.Generic.IEnumerable<System.Type?>> ContainFields(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Func<aweXpect.Reflection.Collections.Filtered.Fields, aweXpect.Reflection.Collections.Filtered.Fields> filter) { }
+        public static aweXpect.Reflection.Results.TypeContainingMembersResult<System.Collections.Generic.IEnumerable<System.Type?>> ContainMethods(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Func<aweXpect.Reflection.Collections.Filtered.Methods, aweXpect.Reflection.Collections.Filtered.Methods> filter) { }
+        public static aweXpect.Reflection.Results.TypeContainingMembersResult<System.Collections.Generic.IEnumerable<System.Type?>> ContainProperties(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Func<aweXpect.Reflection.Collections.Filtered.Properties, aweXpect.Reflection.Collections.Filtered.Properties> filter) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> DoNotInheritFrom(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Type baseType, bool forceDirect = false) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> DoNotInheritFrom<TBaseType>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, bool forceDirect = false) { }
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Type?, System.Collections.Generic.IEnumerable<System.Type?>> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, bool inherit = true)
@@ -1213,5 +1223,22 @@ namespace aweXpect.Reflection.Results
         public aweXpect.Reflection.Results.ParameterCollectionResult<TThat, TParameter> WithDefaultValue<TValue>(TValue expected)
             where TValue : TParameter { }
         public aweXpect.Reflection.Results.ParameterCollectionResult<TThat, TParameter> WithoutDefaultValue() { }
+    }
+    public class TypeContainingMembersResult<TThat> : aweXpect.Results.AndOrResult<TThat, aweXpect.Core.IThat<TThat>>
+    {
+        public TypeContainingMembersResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TThat> subject, aweXpect.Options.Quantifier quantifier) { }
+        public aweXpect.Results.CountTimesResult<aweXpect.Reflection.Results.TypeContainingMembersResult<TThat>> AtLeast() { }
+        public aweXpect.Reflection.Results.TypeContainingMembersResult<TThat> AtLeast(aweXpect.Core.Times minimum) { }
+        public aweXpect.Results.CountTimesResult<aweXpect.Reflection.Results.TypeContainingMembersResult<TThat>> AtMost() { }
+        public aweXpect.Reflection.Results.TypeContainingMembersResult<TThat> AtMost(aweXpect.Core.Times maximum) { }
+        public aweXpect.Results.BetweenResult<aweXpect.Reflection.Results.TypeContainingMembersResult<TThat>> Between(int minimum) { }
+        public aweXpect.Reflection.Results.TypeContainingMembersResult<TThat> Exactly(aweXpect.Core.Times expected) { }
+        public aweXpect.Results.CountTimesResult<aweXpect.Reflection.Results.TypeContainingMembersResult<TThat>> LessThan() { }
+        public aweXpect.Reflection.Results.TypeContainingMembersResult<TThat> LessThan(aweXpect.Core.Times maximum) { }
+        public aweXpect.Results.CountTimesResult<aweXpect.Reflection.Results.TypeContainingMembersResult<TThat>> MoreThan() { }
+        public aweXpect.Reflection.Results.TypeContainingMembersResult<TThat> MoreThan(aweXpect.Core.Times minimum) { }
+        public aweXpect.Reflection.Results.TypeContainingMembersResult<TThat> Never() { }
+        public aweXpect.Reflection.Results.TypeContainingMembersResult<TThat> Once() { }
+        public aweXpect.Reflection.Results.TypeContainingMembersResult<TThat> Twice() { }
     }
 }
