@@ -4,7 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using aweXpect.Core;
+using aweXpect.Customization;
 using aweXpect.Options;
+using aweXpect.Reflection.Helpers;
 
 // ReSharper disable MemberHidesStaticFromOuterClass
 
@@ -209,14 +211,20 @@ public static partial class Filtered
 		/// </remarks>
 		private static IEnumerable<Type> GetLoadableTypes(Assembly assembly)
 		{
+			IEnumerable<Type> types;
 			try
 			{
-				return assembly.GetTypes();
+				types = assembly.GetTypes();
 			}
 			catch (ReflectionTypeLoadException exception)
 			{
-				return exception.Types.Where(type => type is not null)!;
+				types = exception.Types.Where(type => type is not null)!;
 			}
+
+			CompilerGeneratedMembers included = Customize.aweXpect.Reflection()
+				.IncludedCompilerGeneratedMembers().Get();
+			return types.Where(type => !type.IsCompilerGenerated() ||
+			                           included.HasFlag(CompilerGeneratedMembers.Types));
 		}
 
 		/// <summary>

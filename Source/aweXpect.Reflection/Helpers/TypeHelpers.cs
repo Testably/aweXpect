@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
+using aweXpect.Customization;
 using aweXpect.Reflection.Collections;
 
 namespace aweXpect.Reflection.Helpers;
@@ -21,12 +22,16 @@ internal static class TypeHelpers
 	{
 		try
 		{
+			CompilerGeneratedMembers included = IncludedCompilerGeneratedMembers;
 			return type
 				.GetConstructors(BindingFlags.DeclaredOnly |
 				                 BindingFlags.NonPublic |
 				                 BindingFlags.Public |
 				                 BindingFlags.Instance |
-				                 BindingFlags.Static);
+				                 BindingFlags.Static)
+				.Where(m => !m.IsCompilerGenerated() ||
+				            included.HasFlag(CompilerGeneratedMembers.Constructors))
+				.ToArray();
 		}
 		catch (Exception exception) when (exception
 			                                  is TypeLoadException
@@ -45,11 +50,15 @@ internal static class TypeHelpers
 	{
 		try
 		{
+			CompilerGeneratedMembers included = IncludedCompilerGeneratedMembers;
 			return type
 				.GetEvents(BindingFlags.DeclaredOnly |
 				           BindingFlags.NonPublic |
 				           BindingFlags.Public |
-				           BindingFlags.Instance);
+				           BindingFlags.Instance)
+				.Where(m => !m.IsCompilerGenerated() ||
+				            included.HasFlag(CompilerGeneratedMembers.Events))
+				.ToArray();
 		}
 		catch (Exception exception) when (exception
 			                                  is TypeLoadException
@@ -68,6 +77,7 @@ internal static class TypeHelpers
 	{
 		try
 		{
+			CompilerGeneratedMembers included = IncludedCompilerGeneratedMembers;
 			return type
 				.GetFields(BindingFlags.DeclaredOnly |
 				           BindingFlags.NonPublic |
@@ -75,7 +85,8 @@ internal static class TypeHelpers
 				           BindingFlags.Instance |
 				           BindingFlags.Static)
 				.Where(m => !m.IsSpecialName)
-				.Where(m => !m.Name.EndsWith("__BackingField"))
+				.Where(m => !m.IsCompilerGenerated() ||
+				            included.HasFlag(CompilerGeneratedMembers.Fields))
 				.ToArray();
 		}
 		catch (Exception exception) when (exception
@@ -95,6 +106,8 @@ internal static class TypeHelpers
 	{
 		try
 		{
+			CompilerGeneratedMembers includedCompilerGenerated = IncludedCompilerGeneratedMembers;
+			SpecialNameMembers includedSpecialName = IncludedSpecialNameMembers;
 			return type
 				.GetMethods(BindingFlags.DeclaredOnly |
 				            BindingFlags.NonPublic |
@@ -102,7 +115,7 @@ internal static class TypeHelpers
 				            BindingFlags.Static |
 				            BindingFlags.Instance |
 				            BindingFlags.Static)
-				.Where(m => !m.IsSpecialName)
+				.Where(m => IncludeMethod(m, includedCompilerGenerated, includedSpecialName))
 				.ToArray();
 		}
 		catch (Exception exception) when (exception
@@ -122,6 +135,7 @@ internal static class TypeHelpers
 	{
 		try
 		{
+			CompilerGeneratedMembers included = IncludedCompilerGeneratedMembers;
 			return type
 				.GetProperties(BindingFlags.DeclaredOnly |
 				               BindingFlags.NonPublic |
@@ -130,6 +144,8 @@ internal static class TypeHelpers
 				               BindingFlags.Instance |
 				               BindingFlags.Static)
 				.Where(m => !m.IsSpecialName)
+				.Where(m => !m.IsCompilerGenerated() ||
+				            included.HasFlag(CompilerGeneratedMembers.Properties))
 				.ToArray();
 		}
 		catch (Exception exception) when (exception
@@ -139,6 +155,59 @@ internal static class TypeHelpers
 		{
 			return [];
 		}
+	}
+
+	/// <summary>
+	///     The compiler-generated members that are currently included via customization.
+	/// </summary>
+	private static CompilerGeneratedMembers IncludedCompilerGeneratedMembers
+		=> Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers().Get();
+
+	/// <summary>
+	///     The special-name methods that are currently included via customization.
+	/// </summary>
+	private static SpecialNameMembers IncludedSpecialNameMembers
+		=> Customize.aweXpect.Reflection().IncludedSpecialNameMembers().Get();
+
+	/// <summary>
+	///     Determines whether the <paramref name="member" /> (or any of its declaring types) is compiler-generated.
+	/// </summary>
+	public static bool IsCompilerGenerated(this MemberInfo member)
+	{
+		for (Type? type = member as Type ?? member.DeclaringType;
+		     type is not null;
+		     type = type.DeclaringType)
+		{
+			if (type.IsDefined(typeof(CompilerGeneratedAttribute), false))
+			{
+				return true;
+			}
+		}
+
+		return member.IsDefined(typeof(CompilerGeneratedAttribute), false);
+	}
+
+	private static bool IncludeMethod(
+		MethodInfo method,
+		CompilerGeneratedMembers includedCompilerGenerated,
+		SpecialNameMembers includedSpecialName)
+	{
+		if (method.IsSpecialName)
+		{
+			bool isOperator = method.Name.StartsWith("op_", StringComparison.Ordinal);
+			if (isOperator
+				    ? includedSpecialName.HasFlag(SpecialNameMembers.Operators)
+				    : includedSpecialName.HasFlag(SpecialNameMembers.Accessors))
+			{
+				return true;
+			}
+
+			return method.IsCompilerGenerated() &&
+			       includedCompilerGenerated.HasFlag(CompilerGeneratedMembers.Methods);
+		}
+
+		return !method.IsCompilerGenerated() ||
+		       includedCompilerGenerated.HasFlag(CompilerGeneratedMembers.Methods);
 	}
 
 	/// <summary>

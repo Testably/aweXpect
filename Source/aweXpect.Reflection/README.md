@@ -509,3 +509,34 @@ using (Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes
     // In.AllLoadedAssemblies() applies the custom prefixes within this scope
 }
 ```
+
+### Compiler-generated members
+
+By default, compiler-generated types and members are **excluded** from every navigation
+(`.Types()`, `.Methods()`, `.Fields()`, …). This hides closures, async/iterator state machines,
+anonymous types, local functions, auto-property backing fields and the generated members of records
+(`ToString`, `Equals`, `<Clone>$`, the copy-constructor, …), so convention tests see only the members
+you actually wrote.
+
+Opt specific kinds back in with the `[Flags]` enum `CompilerGeneratedMembers`
+(`None`, `Types`, `Constructors`, `Methods`, `Properties`, `Fields`, `Events`, `All`):
+
+```csharp
+using (Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers()
+    .Set(CompilerGeneratedMembers.Types | CompilerGeneratedMembers.Methods))
+{
+    // closures, state machines and compiler-generated methods are now visible
+}
+```
+
+Operators (`op_*`) and property/event accessors (`get_`, `set_`, `add_`, `remove_`) are *user-written*
+but likewise excluded by default. Include them via the separate `SpecialNameMembers` enum
+(`None`, `Operators`, `Accessors`, `All`), which only affects `.Methods()`:
+
+```csharp
+using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers()
+    .Set(SpecialNameMembers.Operators))
+{
+    // operator methods are now visible in .Methods()
+}
+```
