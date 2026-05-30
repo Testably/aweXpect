@@ -27,7 +27,7 @@ public static partial class ThatConstructors
 	{
 		Type parameterType = typeof(TParameter);
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType == parameterType,
+		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType.IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
 		return new ParameterCollectionResult<IEnumerable<ConstructorInfo?>, TParameter>(subject.Get().ExpectationBuilder
 				.AddConstraint<IEnumerable<ConstructorInfo?>>((_, grammars)
@@ -49,7 +49,7 @@ public static partial class ThatConstructors
 		Type parameterType = typeof(TParameter);
 		StringEqualityOptions stringEqualityOptions = new();
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType == parameterType,
+		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType.IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
@@ -99,7 +99,7 @@ public static partial class ThatConstructors
 	{
 		Type parameterType = typeof(TParameter);
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType == parameterType,
+		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType.IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
 		return new ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, TParameter>(subject.Get().ExpectationBuilder
 				.AddConstraint<IAsyncEnumerable<ConstructorInfo?>>((_, grammars)
@@ -123,7 +123,7 @@ public static partial class ThatConstructors
 		Type parameterType = typeof(TParameter);
 		StringEqualityOptions stringEqualityOptions = new();
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType == parameterType,
+		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType.IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
@@ -171,7 +171,8 @@ public static partial class ThatConstructors
 		Type? parameterType,
 		string? expectedName,
 		CollectionIndexOptions collectionIndexOptions,
-		ParameterFilterOptions parameterFilterOptions)
+		ParameterFilterOptions parameterFilterOptions,
+		bool exactType = false)
 		: CollectionConstraintResult<ConstructorInfo?>(grammars),
 			IAsyncConstraint<IEnumerable<ConstructorInfo?>>
 #if NET8_0_OR_GREATER
@@ -230,7 +231,7 @@ public static partial class ThatConstructors
 			stringBuilder.Append("all have parameter");
 			if (parameterType != null)
 			{
-				stringBuilder.Append(" of type ").Append(Formatter.Format(parameterType));
+				stringBuilder.Append(exactType ? " of exact type " : " of type ").Append(Formatter.Format(parameterType));
 			}
 
 			if (expectedName != null)
@@ -253,7 +254,7 @@ public static partial class ThatConstructors
 			stringBuilder.Append("not all have parameter");
 			if (parameterType != null)
 			{
-				stringBuilder.Append(" of type ").Append(Formatter.Format(parameterType));
+				stringBuilder.Append(exactType ? " of exact type " : " of type ").Append(Formatter.Format(parameterType));
 			}
 
 			if (expectedName != null)

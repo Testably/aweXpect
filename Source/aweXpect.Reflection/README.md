@@ -362,13 +362,13 @@ In.AllLoadedAssemblies().Public.Events()
 In addition to [access modifiers](#access-modifiers) and
 [attributes](#attributes):
 
-|                                | Filter                                              | Assert (single)                                   | Assert (many)         |
-|--------------------------------|-----------------------------------------------------|---------------------------------------------------|-----------------------|
-| static                         | `.WhichAreStatic()`                                 | `.IsStatic()`                                     | `.AreStatic()`        |
-| no parameters                  | `.WithoutParameters()`                              | -                                                 | -                     |
-| parameter of type (or subtype) | `.WithParameter<T>()` / `.WithParameter<T>("name")` | `.HasParameter<T>()` / `.HasParameter<T>("name")` | `.HaveParameter<T>()` |
-| parameter of exact type        | `.WithExactParameter<T>()`                          | -                                                 | -                     |
-| parameter count                | `.WithParameterCount(n)`                            | -                                                 | -                     |
+|                                | Filter                                              | Assert (single)                                             | Assert (many)              |
+|--------------------------------|-----------------------------------------------------|-------------------------------------------------------------|----------------------------|
+| static                         | `.WhichAreStatic()`                                 | `.IsStatic()`                                               | `.AreStatic()`             |
+| no parameters                  | `.WithoutParameters()`                              | `.HasNoParameters()`                                        | `.HaveNoParameters()`      |
+| parameter of type (or subtype) | `.WithParameter<T>()` / `.WithParameter<T>("name")` | `.HasParameter<T>()` / `.HasParameter<T>("name")`           | `.HaveParameter<T>()`      |
+| parameter of exact type        | `.WithExactParameter<T>()`                          | `.HasExactParameter<T>()` / `.HasExactParameter<T>("name")` | `.HaveExactParameter<T>()` |
+| parameter count                | `.WithParameterCount(n)`                            | `.HasParameterCount(n)`                                     | `.HaveParameterCount(n)`   |
 
 ```csharp
 In.AllLoadedAssemblies().Public.Constructors()

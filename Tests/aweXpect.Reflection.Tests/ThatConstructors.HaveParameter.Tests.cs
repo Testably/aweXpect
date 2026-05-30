@@ -1,4 +1,6 @@
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using Xunit.Sdk;
 
@@ -81,6 +83,21 @@ public sealed partial class ThatConstructors
 			}
 
 			[Fact]
+			public async Task HaveParameterByType_WhenAllHaveSubtypeParameter_ShouldSucceed()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(TestClass).GetConstructor([typeof(Stream),])!,
+					typeof(TestClass).GetConstructor([typeof(MemoryStream),])!,
+				};
+
+				async Task Act()
+					=> await That(constructors).HaveParameter<IDisposable>();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task HaveParameterByTypeAndName_WhenAllHaveParameter_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -122,6 +139,8 @@ public sealed partial class ThatConstructors
 				public TestClass(int value) { }
 				public TestClass(string name) { }
 				public TestClass(int value, string name) { }
+				public TestClass(Stream stream) { }
+				public TestClass(MemoryStream stream) { }
 			}
 			// ReSharper restore UnusedParameter.Local
 			// ReSharper restore UnusedMember.Local
@@ -241,6 +260,8 @@ public sealed partial class ThatConstructors
 				public TestClass(int value) { }
 				public TestClass(string name) { }
 				public TestClass(int value, string name) { }
+				public TestClass(Stream stream) { }
+				public TestClass(MemoryStream stream) { }
 			}
 			// ReSharper restore UnusedParameter.Local
 			// ReSharper restore UnusedMember.Local

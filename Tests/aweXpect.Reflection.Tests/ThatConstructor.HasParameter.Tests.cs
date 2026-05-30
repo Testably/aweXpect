@@ -1,3 +1,5 @@
+﻿using System;
+using System.IO;
 using System.Reflection;
 using Xunit.Sdk;
 
@@ -113,6 +115,17 @@ public sealed partial class ThatConstructor
 			}
 
 			[Fact]
+			public async Task HasParameterByType_WhenParameterIsSubtype_ShouldSucceed()
+			{
+				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(Stream),])!;
+
+				async Task Act()
+					=> await That(constructorInfo).HasParameter<IDisposable>();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task HasParameterByTypeAndName_WhenParameterDoesNotExist_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(string),])!;
@@ -197,6 +210,7 @@ public sealed partial class ThatConstructor
 				public TestClass(string name) { }
 				public TestClass(int value, string name) { }
 				public TestClass(int value, bool hasDefault = true, string name = "") { }
+				public TestClass(Stream stream) { }
 			}
 			// ReSharper restore UnusedParameter.Local
 			// ReSharper restore UnusedMember.Local
@@ -293,6 +307,7 @@ public sealed partial class ThatConstructor
 				public TestClass(string name) { }
 				public TestClass(int value, string name) { }
 				public TestClass(int value, bool hasDefault = true, string name = "") { }
+				public TestClass(Stream stream) { }
 			}
 			// ReSharper restore UnusedParameter.Local
 			// ReSharper restore UnusedMember.Local
