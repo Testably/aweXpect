@@ -784,6 +784,11 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreSealed(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreStatic(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreStructs(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
+        public static aweXpect.Reflection.TypeFilters.TypesContainingMembers WhichContainConstructors(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<aweXpect.Reflection.Collections.Filtered.Constructors, aweXpect.Reflection.Collections.Filtered.Constructors> filter) { }
+        public static aweXpect.Reflection.TypeFilters.TypesContainingMembers WhichContainEvents(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<aweXpect.Reflection.Collections.Filtered.Events, aweXpect.Reflection.Collections.Filtered.Events> filter) { }
+        public static aweXpect.Reflection.TypeFilters.TypesContainingMembers WhichContainFields(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<aweXpect.Reflection.Collections.Filtered.Fields, aweXpect.Reflection.Collections.Filtered.Fields> filter) { }
+        public static aweXpect.Reflection.TypeFilters.TypesContainingMembers WhichContainMethods(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<aweXpect.Reflection.Collections.Filtered.Methods, aweXpect.Reflection.Collections.Filtered.Methods> filter) { }
+        public static aweXpect.Reflection.TypeFilters.TypesContainingMembers WhichContainProperties(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<aweXpect.Reflection.Collections.Filtered.Properties, aweXpect.Reflection.Collections.Filtered.Properties> filter) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichInheritFrom(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Type baseType, bool forceDirect = false) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichInheritFrom<TBaseType>(this aweXpect.Reflection.Collections.Filtered.Types @this, bool forceDirect = false) { }
         public static aweXpect.Reflection.TypeFilters.TypesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Types @this, bool inherit = true)
@@ -819,6 +824,22 @@ namespace aweXpect.Reflection
                 public aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument IgnoringCase(bool ignoreCase = true) { }
                 public aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument Using(System.Collections.Generic.IEqualityComparer<string> comparer) { }
             }
+        }
+        public class TypesContainingMembers : aweXpect.Reflection.Collections.Filtered.Types
+        {
+            public aweXpect.Results.CountTimesResult<aweXpect.Reflection.Collections.Filtered.Types> AtLeast() { }
+            public aweXpect.Reflection.Collections.Filtered.Types AtLeast(aweXpect.Core.Times minimum) { }
+            public aweXpect.Results.CountTimesResult<aweXpect.Reflection.Collections.Filtered.Types> AtMost() { }
+            public aweXpect.Reflection.Collections.Filtered.Types AtMost(aweXpect.Core.Times maximum) { }
+            public aweXpect.Results.BetweenResult<aweXpect.Reflection.Collections.Filtered.Types> Between(int minimum) { }
+            public aweXpect.Reflection.Collections.Filtered.Types Exactly(aweXpect.Core.Times expected) { }
+            public aweXpect.Results.CountTimesResult<aweXpect.Reflection.Collections.Filtered.Types> LessThan() { }
+            public aweXpect.Reflection.Collections.Filtered.Types LessThan(aweXpect.Core.Times maximum) { }
+            public aweXpect.Results.CountTimesResult<aweXpect.Reflection.Collections.Filtered.Types> MoreThan() { }
+            public aweXpect.Reflection.Collections.Filtered.Types MoreThan(aweXpect.Core.Times minimum) { }
+            public aweXpect.Reflection.Collections.Filtered.Types Never() { }
+            public aweXpect.Reflection.Collections.Filtered.Types Once() { }
+            public aweXpect.Reflection.Collections.Filtered.Types Twice() { }
         }
         public class TypesWith : aweXpect.Reflection.Collections.Filtered.Types
         {

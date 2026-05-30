@@ -123,6 +123,39 @@ In.AllLoadedAssemblies().Types()
     .Which(t => t.Name.StartsWith("Test"))
 ```
 
+#### Member Containment Filters
+
+You can select types based on the members they contain. The lambda receives the members declared on
+each individual type and may use the full member-filter DSL:
+
+```csharp
+// Types that contain at least one method with [Fact] or [Theory]
+In.AllLoadedAssemblies().Types()
+    .WhichContainMethods(methods => methods.With<FactAttribute>().OrWith<TheoryAttribute>())
+
+// The same is available for the other member kinds
+In.AllLoadedAssemblies().Types()
+    .WhichContainProperties(properties => properties.With<RequiredAttribute>())
+    .WhichContainFields(fields => fields.WithName("_").AsPrefix())
+    .WhichContainEvents(events => events.With<ObsoleteAttribute>())
+    .WhichContainConstructors(constructors => constructors.WithoutParameters())
+```
+
+By default a type matches when it contains **at least one** matching member. You can append a
+quantifier (the same quantifiers as in [`aweXpect`](https://awexpect.com)) to require a specific count:
+
+```csharp
+In.AllLoadedAssemblies().Types()
+    .WhichContainConstructors(c => c.WithoutParameters()).Exactly(1)
+    .WhichContainMethods(m => m.With<ObsoleteAttribute>()).Never()
+    .WhichContainProperties(p => p.With<RequiredAttribute>()).AtLeast(2)
+    .WhichContainFields(f => f.WhichArePrivate()).Between(1).And(5)
+```
+
+Each quantifier applies only to the condition it directly follows; all other conditions implicitly
+require the member to occur _at least once_. The available quantifiers are `Exactly`, `AtLeast`,
+`AtMost`, `MoreThan`, `LessThan`, `Between(…).And(…)`, `Never`, `Once` and `Twice`.
+
 #### Method Filters
 
 ```csharp
@@ -245,6 +278,17 @@ await Expect.That(In.AllLoadedAssemblies()
 await Expect.That(In.AssemblyContaining<MyAggregate>()
         .Methods().Which(m => m.GetParameters().Length == 1))
     .HaveName(method => "On" + method.GetParameters()[0].ParameterType.Name);
+
+// Verify all test classes (those containing a [Fact] or [Theory] method) follow naming convention
+await Expect.That(In.AllLoadedAssemblies()
+        .Types().WhichContainMethods(m => m.With<FactAttribute>().OrWith<TheoryAttribute>()))
+    .HaveName("Tests").AsSuffix();
+
+// Verify each serializable type has exactly one parameterless constructor
+await Expect.That(In.AllLoadedAssemblies()
+        .Types().With<SerializableAttribute>()
+        .WhichContainConstructors(c => c.WithoutParameters()).Exactly(1))
+    .AreClasses();
 ```
 
 ## Assemblies
