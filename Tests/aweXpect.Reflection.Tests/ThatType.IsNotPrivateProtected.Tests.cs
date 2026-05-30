@@ -16,7 +16,9 @@ public sealed partial class ThatType
 			public async Task WhenTypeIsNotPrivateProtected_ShouldFailWithNegatedAssertion(Type? subject)
 			{
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotPrivateProtected());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotPrivateProtected());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("*is private protected*but it was*").AsWildcard();
@@ -29,7 +31,9 @@ public sealed partial class ThatType
 			public async Task WhenTypeIsNotPrivateProtected_ShouldSucceed(Type? subject)
 			{
 				async Task Act()
-					=> await That(subject).IsNotPrivateProtected();
+				{
+					await That(subject).IsNotPrivateProtected();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -40,7 +44,9 @@ public sealed partial class ThatType
 				Type? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsNotPrivateProtected();
+				{
+					await That(subject).IsNotPrivateProtected();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -56,7 +62,9 @@ public sealed partial class ThatType
 				Type? subject = typeof(PrivateProtectedType);
 
 				async Task Act()
-					=> await That(subject).IsNotPrivateProtected();
+				{
+					await That(subject).IsNotPrivateProtected();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -72,7 +80,9 @@ public sealed partial class ThatType
 				Type? subject = typeof(PrivateProtectedType);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotPrivateProtected());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotPrivateProtected());
+				}
 
 				await That(Act).DoesNotThrow();
 			}

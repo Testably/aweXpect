@@ -47,7 +47,7 @@ internal abstract class CollectionConstraintResult<T>(ExpectationGrammars gramma
 	/// </summary>
 #else
 	/// <summary>
-	/// The matching elements after calling <c>SetValue</c>.
+	///     The matching elements after calling <c>SetValue</c>.
 	/// </summary>
 #endif
 	protected T[] Matching { get; private set; } = [];
@@ -58,7 +58,7 @@ internal abstract class CollectionConstraintResult<T>(ExpectationGrammars gramma
 	/// </summary>
 #else
 	/// <summary>
-	/// The not matching elements after calling <c>SetValue</c>.
+	///     The not matching elements after calling <c>SetValue</c>.
 	/// </summary>
 #endif
 	protected T[] NotMatching { get; private set; } = [];

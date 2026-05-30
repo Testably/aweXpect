@@ -15,7 +15,9 @@ public sealed partial class ThatType
 				Type subject = typeof(PublicAbstractClass);
 
 				async Task Act()
-					=> await That(subject).IsNotAbstract();
+				{
+					await That(subject).IsNotAbstract();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -30,7 +32,9 @@ public sealed partial class ThatType
 			public async Task WhenTypeIsAbstract_ShouldSucceedWithNegatedAssertion(Type subject)
 			{
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotAbstract());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotAbstract());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -41,7 +45,9 @@ public sealed partial class ThatType
 				Type subject = typeof(PublicClass);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotAbstract());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotAbstract());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -56,7 +62,9 @@ public sealed partial class ThatType
 			public async Task WhenTypeIsNotAbstract_ShouldSucceed(Type subject)
 			{
 				async Task Act()
-					=> await That(subject).IsNotAbstract();
+				{
+					await That(subject).IsNotAbstract();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -67,7 +75,9 @@ public sealed partial class ThatType
 				Type? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsNotAbstract();
+				{
+					await That(subject).IsNotAbstract();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""

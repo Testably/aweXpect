@@ -15,7 +15,9 @@ public sealed partial class ThatEvent
 				EventInfo subject = typeof(TestClass).GetEvent("NoAttributeEvent")!;
 
 				async Task Act()
-					=> await That(subject).Has<TestAttribute>();
+				{
+					await That(subject).Has<TestAttribute>();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -31,7 +33,9 @@ public sealed partial class ThatEvent
 				EventInfo subject = typeof(TestClass).GetEvent("TestEvent")!;
 
 				async Task Act()
-					=> await That(subject).Has<TestAttribute>();
+				{
+					await That(subject).Has<TestAttribute>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -42,7 +46,9 @@ public sealed partial class ThatEvent
 				EventInfo subject = typeof(TestClass).GetEvent("TestEventWithValue")!;
 
 				async Task Act()
-					=> await That(subject).Has<TestAttribute>(attr => attr.Value == 42);
+				{
+					await That(subject).Has<TestAttribute>(attr => attr.Value == 42);
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -53,7 +59,9 @@ public sealed partial class ThatEvent
 				EventInfo subject = typeof(TestClass).GetEvent("TestEventWithValue")!;
 
 				async Task Act()
-					=> await That(subject).Has<TestAttribute>(attr => attr.Value == 99);
+				{
+					await That(subject).Has<TestAttribute>(attr => attr.Value == 99);
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -69,7 +77,9 @@ public sealed partial class ThatEvent
 				EventInfo? subject = null;
 
 				async Task Act()
-					=> await That(subject).Has<TestAttribute>();
+				{
+					await That(subject).Has<TestAttribute>();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -107,7 +117,9 @@ public sealed partial class ThatEvent
 					EventInfo subject = typeof(FooBarClass).GetEvent("FooBarEvent")!;
 
 					async Task Act()
-						=> await That(subject).Has<FooAttribute>().OrHas<BarAttribute>();
+					{
+						await That(subject).Has<FooAttribute>().OrHas<BarAttribute>();
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -118,7 +130,9 @@ public sealed partial class ThatEvent
 					EventInfo subject = typeof(FooClass).GetEvent("FooEvent")!;
 
 					async Task Act()
-						=> await That(subject).Has<FooAttribute>().OrHas<BarAttribute>();
+					{
+						await That(subject).Has<FooAttribute>().OrHas<BarAttribute>();
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -129,7 +143,9 @@ public sealed partial class ThatEvent
 					EventInfo subject = typeof(FooClass2).GetEvent("FooEvent2")!;
 
 					async Task Act()
-						=> await That(subject).Has<FooAttribute>(foo => foo.Value == 2).OrHas<BarAttribute>();
+					{
+						await That(subject).Has<FooAttribute>(foo => foo.Value == 2).OrHas<BarAttribute>();
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -140,8 +156,10 @@ public sealed partial class ThatEvent
 					EventInfo subject = typeof(BarClass3).GetEvent("BarEvent3")!;
 
 					async Task Act()
-						=> await That(subject).Has<FooAttribute>(foo => foo.Value == 5)
+					{
+						await That(subject).Has<FooAttribute>(foo => foo.Value == 5)
 							.OrHas<BarAttribute>(bar => bar.Name == "test");
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -152,7 +170,9 @@ public sealed partial class ThatEvent
 					EventInfo subject = typeof(BazClass).GetEvent("BazEvent")!;
 
 					async Task Act()
-						=> await That(subject).Has<FooAttribute>().OrHas<BarAttribute>();
+					{
+						await That(subject).Has<FooAttribute>().OrHas<BarAttribute>();
+					}
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -168,7 +188,9 @@ public sealed partial class ThatEvent
 					EventInfo subject = typeof(BarClass).GetEvent("BarEvent")!;
 
 					async Task Act()
-						=> await That(subject).Has<FooAttribute>().OrHas<BarAttribute>();
+					{
+						await That(subject).Has<FooAttribute>().OrHas<BarAttribute>();
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -179,8 +201,10 @@ public sealed partial class ThatEvent
 					EventInfo subject = typeof(FooClass2).GetEvent("FooEvent2")!;
 
 					async Task Act()
-						=> await That(subject).Has<FooAttribute>(foo => foo.Value == 5)
+					{
+						await That(subject).Has<FooAttribute>(foo => foo.Value == 5)
 							.OrHas<BarAttribute>(bar => bar.Name == "test");
+					}
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -249,7 +273,9 @@ public sealed partial class ThatEvent
 				EventInfo subject = typeof(TestClass).GetEvent("NoAttributeEvent")!;
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+				{
+					await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -260,8 +286,10 @@ public sealed partial class ThatEvent
 				EventInfo subject = typeof(TestClass).GetEvent("TestEvent")!;
 
 				async Task Act()
-					=> await That(subject)
+				{
+					await That(subject)
 						.DoesNotComplyWith(it => it.Has<TestAttribute>(attr => attr.Value == "NonExistent"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -272,7 +300,9 @@ public sealed partial class ThatEvent
 				EventInfo subject = typeof(TestClass).GetEvent("TestEvent")!;
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+				{
+					await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

@@ -1,7 +1,9 @@
-using System.Reflection;
+﻿using System.Reflection;
 using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
+
+#pragma warning disable CA2263 // tests intentionally exercise the non-generic Type overload
 
 public sealed partial class ThatMethod
 {
@@ -15,7 +17,9 @@ public sealed partial class ThatMethod
 				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
 
 				async Task Act()
-					=> await That(subject).ReturnsExactly<string>();
+				{
+					await That(subject).ReturnsExactly<string>();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -31,7 +35,9 @@ public sealed partial class ThatMethod
 				MethodInfo? subject = null;
 
 				async Task Act()
-					=> await That(subject).ReturnsExactly<int>();
+				{
+					await That(subject).ReturnsExactly<int>();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -47,7 +53,9 @@ public sealed partial class ThatMethod
 				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
 
 				async Task Act()
-					=> await That(subject).ReturnsExactly<int>();
+				{
+					await That(subject).ReturnsExactly<int>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -58,7 +66,9 @@ public sealed partial class ThatMethod
 				MethodInfo subject = typeof(ClassWithInheritance).GetMethod(nameof(ClassWithInheritance.GetDerived))!;
 
 				async Task Act()
-					=> await That(subject).ReturnsExactly<BaseClass>();
+				{
+					await That(subject).ReturnsExactly<BaseClass>();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -78,7 +88,9 @@ public sealed partial class ThatMethod
 				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
 
 				async Task Act()
-					=> await That(subject).ReturnsExactly(typeof(string));
+				{
+					await That(subject).ReturnsExactly(typeof(string));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -94,7 +106,9 @@ public sealed partial class ThatMethod
 				MethodInfo? subject = null;
 
 				async Task Act()
-					=> await That(subject).ReturnsExactly(typeof(int));
+				{
+					await That(subject).ReturnsExactly(typeof(int));
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -110,7 +124,9 @@ public sealed partial class ThatMethod
 				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
 
 				async Task Act()
-					=> await That(subject).ReturnsExactly(typeof(int));
+				{
+					await That(subject).ReturnsExactly(typeof(int));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -121,7 +137,9 @@ public sealed partial class ThatMethod
 				MethodInfo subject = typeof(ClassWithInheritance).GetMethod(nameof(ClassWithInheritance.GetDerived))!;
 
 				async Task Act()
-					=> await That(subject).ReturnsExactly(typeof(BaseClass));
+				{
+					await That(subject).ReturnsExactly(typeof(BaseClass));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -141,8 +159,10 @@ public sealed partial class ThatMethod
 				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
 
 				async Task Act()
-					=> await That(subject).ReturnsExactly<string>().OrReturnsExactly(typeof(bool))
+				{
+					await That(subject).ReturnsExactly<string>().OrReturnsExactly(typeof(bool))
 						.OrReturnsExactly<int>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -153,7 +173,9 @@ public sealed partial class ThatMethod
 				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
 
 				async Task Act()
-					=> await That(subject).ReturnsExactly<string>().OrReturnsExactly<bool>();
+				{
+					await That(subject).ReturnsExactly<string>().OrReturnsExactly<bool>();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -169,7 +191,9 @@ public sealed partial class ThatMethod
 				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
 
 				async Task Act()
-					=> await That(subject).ReturnsExactly<string>().OrReturnsExactly<int>();
+				{
+					await That(subject).ReturnsExactly<string>().OrReturnsExactly<int>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -180,7 +204,9 @@ public sealed partial class ThatMethod
 				MethodInfo subject = typeof(ClassWithInheritance).GetMethod(nameof(ClassWithInheritance.GetDerived))!;
 
 				async Task Act()
-					=> await That(subject).ReturnsExactly<BaseClass>().OrReturnsExactly<string>();
+				{
+					await That(subject).ReturnsExactly<BaseClass>().OrReturnsExactly<string>();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -200,8 +226,10 @@ public sealed partial class ThatMethod
 				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
 
 				async Task Act()
-					=> await That(subject).ReturnsExactly<string>().OrReturns(typeof(bool))
+				{
+					await That(subject).ReturnsExactly<string>().OrReturns(typeof(bool))
 						.OrReturnsExactly<int>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -212,7 +240,9 @@ public sealed partial class ThatMethod
 				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
 
 				async Task Act()
-					=> await That(subject).ReturnsExactly<string>().OrReturns<bool>();
+				{
+					await That(subject).ReturnsExactly<string>().OrReturns<bool>();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -228,7 +258,9 @@ public sealed partial class ThatMethod
 				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
 
 				async Task Act()
-					=> await That(subject).ReturnsExactly<string>().OrReturns<int>();
+				{
+					await That(subject).ReturnsExactly<string>().OrReturns<int>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -239,7 +271,9 @@ public sealed partial class ThatMethod
 				MethodInfo subject = typeof(ClassWithInheritance).GetMethod(nameof(ClassWithInheritance.GetDerived))!;
 
 				async Task Act()
-					=> await That(subject).ReturnsExactly<BaseClass>().OrReturns<string>();
+				{
+					await That(subject).ReturnsExactly<BaseClass>().OrReturns<string>();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -261,7 +295,9 @@ public sealed partial class ThatMethod
 					MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
 
 					async Task Act()
-						=> await That(subject).DoesNotComplyWith(it => it.ReturnsExactly<string>());
+					{
+						await That(subject).DoesNotComplyWith(it => it.ReturnsExactly<string>());
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -272,7 +308,9 @@ public sealed partial class ThatMethod
 					MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
 
 					async Task Act()
-						=> await That(subject).DoesNotComplyWith(it => it.ReturnsExactly<int>());
+					{
+						await That(subject).DoesNotComplyWith(it => it.ReturnsExactly<int>());
+					}
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -289,7 +327,9 @@ public sealed partial class ThatMethod
 						typeof(ClassWithInheritance).GetMethod(nameof(ClassWithInheritance.GetDerived))!;
 
 					async Task Act()
-						=> await That(subject).DoesNotComplyWith(it => it.ReturnsExactly<BaseClass>());
+					{
+						await That(subject).DoesNotComplyWith(it => it.ReturnsExactly<BaseClass>());
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -303,8 +343,10 @@ public sealed partial class ThatMethod
 					MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
 
 					async Task Act()
-						=> await That(subject).DoesNotComplyWith(it
+					{
+						await That(subject).DoesNotComplyWith(it
 							=> it.ReturnsExactly<string>().OrReturnsExactly(typeof(bool)).OrReturns<Task>());
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -315,8 +357,10 @@ public sealed partial class ThatMethod
 					MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
 
 					async Task Act()
-						=> await That(subject)
+					{
+						await That(subject)
 							.DoesNotComplyWith(it => it.ReturnsExactly<string>().OrReturns<bool>());
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -327,8 +371,10 @@ public sealed partial class ThatMethod
 					MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
 
 					async Task Act()
-						=> await That(subject)
+					{
+						await That(subject)
 							.DoesNotComplyWith(it => it.ReturnsExactly<string>().OrReturns<int>());
+					}
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -341,3 +387,5 @@ public sealed partial class ThatMethod
 		}
 	}
 }
+
+#pragma warning restore CA2263

@@ -1,7 +1,5 @@
 ﻿using System.Reflection;
 using System.Text;
-using aweXpect.Reflection.Collections;
-using aweXpect.Reflection.Helpers;
 
 namespace aweXpect.Reflection.Formatting;
 

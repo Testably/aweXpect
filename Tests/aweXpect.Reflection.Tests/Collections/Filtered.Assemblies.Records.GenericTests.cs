@@ -22,8 +22,10 @@ public sealed partial class Filtered
 				public async Task ShouldIncludeNestedInformationInErrorMessage()
 				{
 					async Task Act()
-						=> await That(In.AllLoadedAssemblies().Generic.Records())
+					{
+						await That(In.AllLoadedAssemblies().Generic.Records())
 							.AreNotGeneric();
+					}
 
 					await That(Act).ThrowsException()
 						.WithMessage("""
@@ -42,8 +44,10 @@ public sealed partial class Filtered
 					AccessModifiers accessModifier, string expectedString)
 				{
 					async Task Act()
-						=> await That(In.AllLoadedAssemblies().Generic.Records(accessModifier))
+					{
+						await That(In.AllLoadedAssemblies().Generic.Records(accessModifier))
 							.AreNotGeneric();
+					}
 
 					await That(Act).ThrowsException()
 						.WithMessage($"""

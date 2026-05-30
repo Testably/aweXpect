@@ -33,8 +33,10 @@ public sealed partial class Filtered
 				public async Task ShouldIncludeAbstractInformationInErrorMessage()
 				{
 					async Task Act()
-						=> await That(In.AllLoadedAssemblies().Abstract.Types())
+					{
+						await That(In.AllLoadedAssemblies().Abstract.Types())
 							.AreNotAbstract();
+					}
 
 					await That(Act).ThrowsException()
 						.WithMessage("""
@@ -52,8 +54,10 @@ public sealed partial class Filtered
 					AccessModifiers accessModifier, string expectedString)
 				{
 					async Task Act()
-						=> await That(In.AllLoadedAssemblies().Abstract.Types(accessModifier))
+					{
+						await That(In.AllLoadedAssemblies().Abstract.Types(accessModifier))
 							.AreNotAbstract();
+					}
 
 					await That(Act).ThrowsException()
 						.WithMessage($"""

@@ -17,7 +17,9 @@ public sealed partial class ThatMethods
 					.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly);
 
 				async Task Act()
-					=> await That(subject).AreStatic();
+				{
+					await That(subject).AreStatic();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -30,7 +32,9 @@ public sealed partial class ThatMethods
 					            BindingFlags.DeclaredOnly);
 
 				async Task Act()
-					=> await That(subject).AreStatic();
+				{
+					await That(subject).AreStatic();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -52,7 +56,9 @@ public sealed partial class ThatMethods
 					.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreStatic());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreStatic());
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -72,7 +78,9 @@ public sealed partial class ThatMethods
 					            BindingFlags.DeclaredOnly);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreStatic());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreStatic());
+				}
 
 				await That(Act).DoesNotThrow();
 			}

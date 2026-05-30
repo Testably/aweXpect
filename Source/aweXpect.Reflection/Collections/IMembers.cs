@@ -59,7 +59,7 @@ public interface IMembers : IMemberSelectors
 	/// <summary>
 	///     An interface to allow filtering for members of types after the <c>Private</c> access modifier.
 	/// </summary>
-	public interface IPrivate : IMembers
+	interface IPrivate : IMembers
 	{
 		/// <summary>
 		///     Filters for private protected members.
@@ -70,7 +70,7 @@ public interface IMembers : IMemberSelectors
 	/// <summary>
 	///     An interface to allow filtering for members of types after the <c>Protected</c> access modifier.
 	/// </summary>
-	public interface IProtected : IMembers
+	interface IProtected : IMembers
 	{
 		/// <summary>
 		///     Filters for protected internal members.

@@ -88,7 +88,7 @@ public static partial class ThatConstructors
 			parameterFilterOptions,
 			stringEqualityOptions);
 	}
-	
+
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
@@ -111,7 +111,7 @@ public static partial class ThatConstructors
 			parameterFilterOptions);
 	}
 #endif
-	
+
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
@@ -139,7 +139,7 @@ public static partial class ThatConstructors
 			stringEqualityOptions);
 	}
 #endif
-	
+
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have

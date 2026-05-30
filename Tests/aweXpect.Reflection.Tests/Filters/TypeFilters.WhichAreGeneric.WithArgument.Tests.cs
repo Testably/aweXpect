@@ -12,6 +12,19 @@ public sealed partial class TypeFilters
 			public sealed class GenericTests
 			{
 				[Fact]
+				public async Task WhenNoTypeMatchesTheType_ShouldBeEmpty()
+				{
+					Filtered.Types subject = In
+						.AssemblyContaining<WhichAreGeneric>()
+						.Types().WithName("MyGenericTestClass").AsPrefix()
+						.WhichAreGeneric()
+						.WithArgument<string>();
+
+					await That(subject).IsEmpty();
+					await That(subject.GetDescription()).Contains("with argument of type string in");
+				}
+
+				[Fact]
 				public async Task WhenTypeMatchesADerivedType_ShouldNotBeIncluded()
 				{
 					Filtered.Types subject = In
@@ -73,19 +86,6 @@ public sealed partial class TypeFilters
 					await That(subject).HasCount(expectedCount);
 					await That(subject.GetDescription())
 						.Contains($"with argument of type ThatMethod.BaseClass at index {index} from end in");
-				}
-
-				[Fact]
-				public async Task WhenNoTypeMatchesTheType_ShouldBeEmpty()
-				{
-					Filtered.Types subject = In
-						.AssemblyContaining<WhichAreGeneric>()
-						.Types().WithName("MyGenericTestClass").AsPrefix()
-						.WhichAreGeneric()
-						.WithArgument<string>();
-
-					await That(subject).IsEmpty();
-					await That(subject.GetDescription()).Contains("with argument of type string in");
 				}
 			}
 
@@ -179,6 +179,20 @@ public sealed partial class TypeFilters
 				}
 
 				[Fact]
+				public async Task WhenNoTypeMatchesTheType_ShouldBeEmpty()
+				{
+					Filtered.Types subject = In
+						.AssemblyContaining<WhichAreGeneric>()
+						.Types().WithName("MyGenericTestClass").AsPrefix()
+						.WhichAreGeneric()
+						.WithArgument<string>("Foo");
+
+					await That(subject).IsEmpty();
+					await That(subject.GetDescription())
+						.Contains("with argument of type string and name equal to \"Foo\" in");
+				}
+
+				[Fact]
 				public async Task WhenTypeMatchesADerivedTypeAndName_ShouldNotBeIncluded()
 				{
 					Filtered.Types subject = In
@@ -257,20 +271,6 @@ public sealed partial class TypeFilters
 					await That(subject).IsEmpty();
 					await That(subject.GetDescription())
 						.Contains("with argument of type ThatMethod.BaseClass and name equal to \"T1\" in");
-				}
-
-				[Fact]
-				public async Task WhenNoTypeMatchesTheType_ShouldBeEmpty()
-				{
-					Filtered.Types subject = In
-						.AssemblyContaining<WhichAreGeneric>()
-						.Types().WithName("MyGenericTestClass").AsPrefix()
-						.WhichAreGeneric()
-						.WithArgument<string>("Foo");
-
-					await That(subject).IsEmpty();
-					await That(subject.GetDescription())
-						.Contains("with argument of type string and name equal to \"Foo\" in");
 				}
 			}
 

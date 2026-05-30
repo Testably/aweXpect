@@ -134,5 +134,5 @@ internal static class MethodInfoHelpers
 	/// </summary>
 	/// <param name="methodInfo">The <see cref="MethodInfo" />.</param>
 	public static bool IsReallySealed(this MethodInfo? methodInfo)
-		=> methodInfo is { IsVirtual: true, IsFinal: true };
+		=> methodInfo is { IsVirtual: true, IsFinal: true, };
 }

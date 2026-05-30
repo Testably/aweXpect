@@ -11,12 +11,61 @@ public sealed partial class ThatAssemblies
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenSelectorMatchesIgnoringCase_ShouldSucceed()
+			{
+				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
+
+				async Task Act()
+				{
+					await That(subject).HaveName(assembly => assembly!.GetName().Name!.ToUpperInvariant())
+						.IgnoringCase();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSelectorReturnsDifferentName_ShouldFail()
+			{
+				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
+
+				async Task Act()
+				{
+					await That(subject).HaveName(_ => "WrongName");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that in assembly containing type PublicAbstractClass
+					             all have name matching _ => "WrongName",
+					             but it contained not matching types [
+					               aweXpect.Reflection.Tests, Version=* with name "aweXpect.Reflection.Tests" instead of "WrongName"
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenSelectorReturnsEachAssemblysOwnName_ShouldSucceed()
+			{
+				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
+
+				async Task Act()
+				{
+					await That(subject).HaveName(assembly => assembly!.GetName().Name!);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenTypesContainTypeWithDifferentName_ShouldFail()
 			{
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
 
 				async Task Act()
-					=> await That(subject).HaveName("Reflection");
+				{
+					await That(subject).HaveName("Reflection");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -34,7 +83,9 @@ public sealed partial class ThatAssemblies
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
 
 				async Task Act()
-					=> await That(subject).HaveName("aweXpect.Reflection.Tests");
+				{
+					await That(subject).HaveName("aweXpect.Reflection.Tests");
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -45,7 +96,9 @@ public sealed partial class ThatAssemblies
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
 
 				async Task Act()
-					=> await That(subject).HaveName("AWExPECT.rEFLECTION.tESTS").IgnoringCase();
+				{
+					await That(subject).HaveName("AWExPECT.rEFLECTION.tESTS").IgnoringCase();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -56,50 +109,11 @@ public sealed partial class ThatAssemblies
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
 
 				async Task Act()
-					=> await That(subject).HaveName("aweXpect").AsPrefix();
+				{
+					await That(subject).HaveName("aweXpect").AsPrefix();
+				}
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenSelectorReturnsEachAssemblysOwnName_ShouldSucceed()
-			{
-				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
-
-				async Task Act()
-					=> await That(subject).HaveName(assembly => assembly!.GetName().Name!);
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenSelectorMatchesIgnoringCase_ShouldSucceed()
-			{
-				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
-
-				async Task Act()
-					=> await That(subject).HaveName(assembly => assembly!.GetName().Name!.ToUpperInvariant())
-						.IgnoringCase();
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenSelectorReturnsDifferentName_ShouldFail()
-			{
-				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
-
-				async Task Act()
-					=> await That(subject).HaveName(_ => "WrongName");
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that in assembly containing type PublicAbstractClass
-					             all have name matching _ => "WrongName",
-					             but it contained not matching types [
-					               aweXpect.Reflection.Tests, Version=* with name "aweXpect.Reflection.Tests" instead of "WrongName"
-					             ]
-					             """).AsWildcard();
 			}
 		}
 
@@ -111,7 +125,9 @@ public sealed partial class ThatAssemblies
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.HaveName("NonExistentAssembly"));
+				{
+					await That(subject).DoesNotComplyWith(they => they.HaveName("NonExistentAssembly"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -122,7 +138,9 @@ public sealed partial class ThatAssemblies
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.HaveName("aweXpect.Reflection.Tests"));
+				{
+					await That(subject).DoesNotComplyWith(they => they.HaveName("aweXpect.Reflection.Tests"));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -133,23 +151,14 @@ public sealed partial class ThatAssemblies
 			}
 
 			[Fact]
-			public async Task WhenSelectorMatchesNoName_ShouldSucceed()
-			{
-				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
-
-				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.HaveName(_ => "WrongName"));
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenSelectorMatchesEveryName_ShouldFail()
 			{
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.HaveName(_ => "aweXpect.Reflection.Tests"));
+				{
+					await That(subject).DoesNotComplyWith(they => they.HaveName(_ => "aweXpect.Reflection.Tests"));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -157,6 +166,19 @@ public sealed partial class ThatAssemblies
 					             not all have name matching _ => "aweXpect.Reflection.Tests",
 					             but it only contained matching types *
 					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenSelectorMatchesNoName_ShouldSucceed()
+			{
+				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they.HaveName(_ => "WrongName"));
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 	}

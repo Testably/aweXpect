@@ -16,7 +16,9 @@ public sealed partial class ThatTypes
 					.Which(type => !type.IsGenericType);
 
 				async Task Act()
-					=> await That(subject).AreNotGeneric();
+				{
+					await That(subject).AreNotGeneric();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -28,7 +30,9 @@ public sealed partial class ThatTypes
 					.Which(type => type.IsGenericType);
 
 				async Task Act()
-					=> await That(subject).AreNotGeneric();
+				{
+					await That(subject).AreNotGeneric();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -50,7 +54,9 @@ public sealed partial class ThatTypes
 					.Which(type => !type.IsGenericType);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreNotGeneric());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotGeneric());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -69,7 +75,9 @@ public sealed partial class ThatTypes
 					.Which(type => type.IsGenericType);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreNotGeneric());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotGeneric());
+				}
 
 				await That(Act).DoesNotThrow();
 			}

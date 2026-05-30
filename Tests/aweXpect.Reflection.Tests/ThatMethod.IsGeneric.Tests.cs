@@ -14,7 +14,9 @@ public sealed partial class ThatMethod
 				MethodInfo? subject = GetMethod("GenericMethod");
 
 				async Task Act()
-					=> await That(subject).IsGeneric();
+				{
+					await That(subject).IsGeneric();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -25,7 +27,9 @@ public sealed partial class ThatMethod
 				MethodInfo? subject = GetMethod("NonGenericMethod");
 
 				async Task Act()
-					=> await That(subject).IsGeneric();
+				{
+					await That(subject).IsGeneric();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -41,7 +45,9 @@ public sealed partial class ThatMethod
 				MethodInfo? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsGeneric();
+				{
+					await That(subject).IsGeneric();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -60,7 +66,9 @@ public sealed partial class ThatMethod
 				MethodInfo? subject = GetMethod("GenericMethod");
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsGeneric());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsGeneric());
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -76,7 +84,9 @@ public sealed partial class ThatMethod
 				MethodInfo? subject = GetMethod("NonGenericMethod");
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsGeneric());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsGeneric());
+				}
 
 				await That(Act).DoesNotThrow();
 			}

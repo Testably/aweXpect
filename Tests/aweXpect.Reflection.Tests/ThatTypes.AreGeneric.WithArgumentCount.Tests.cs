@@ -20,7 +20,9 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithOneArgument<int>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgumentCount(argumentCount);
+					{
+						await That(subject).AreGeneric().WithArgumentCount(argumentCount);
+					}
 
 					await That(Act).ThrowsException()
 						.OnlyIf(!expectSuccess)
@@ -42,7 +44,9 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithTwoArguments<int, BaseClass>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgumentCount(argumentCount);
+					{
+						await That(subject).AreGeneric().WithArgumentCount(argumentCount);
+					}
 
 					await That(Act).ThrowsException()
 						.OnlyIf(!expectSuccess)
@@ -62,7 +66,9 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(PublicClass), typeof(UnrelatedClass));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgumentCount(1);
+					{
+						await That(subject).AreGeneric().WithArgumentCount(1);
+					}
 
 					await That(Act).ThrowsException()
 						.WithMessage("""

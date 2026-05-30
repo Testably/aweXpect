@@ -15,7 +15,9 @@ public sealed partial class ThatTypes
 				Filtered.Types subject = In.AssemblyContaining<AreAbstract>().Types();
 
 				async Task Act()
-					=> await That(subject).AreAbstract();
+				{
+					await That(subject).AreAbstract();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -34,7 +36,9 @@ public sealed partial class ThatTypes
 					.Which(type => type is { IsAbstract: true, IsSealed: false, IsInterface: false, });
 
 				async Task Act()
-					=> await That(subject).AreAbstract();
+				{
+					await That(subject).AreAbstract();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -48,7 +52,9 @@ public sealed partial class ThatTypes
 				Filtered.Types subject = In.AssemblyContaining<AreAbstract>().Types();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreAbstract());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreAbstract());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -60,7 +66,9 @@ public sealed partial class ThatTypes
 					.Which(type => type is { IsAbstract: true, IsSealed: false, IsInterface: false, });
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreAbstract());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreAbstract());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

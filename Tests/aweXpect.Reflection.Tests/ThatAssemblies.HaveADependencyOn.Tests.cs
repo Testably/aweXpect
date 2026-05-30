@@ -16,7 +16,9 @@ public sealed partial class ThatAssemblies
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
 
 				async Task Act()
-					=> await That(subject).HaveADependencyOn("NonExistentAssembly");
+				{
+					await That(subject).HaveADependencyOn("NonExistentAssembly");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -34,7 +36,9 @@ public sealed partial class ThatAssemblies
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
 
 				async Task Act()
-					=> await That(subject).HaveADependencyOn("aweXpect.Core");
+				{
+					await That(subject).HaveADependencyOn("aweXpect.Core");
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -45,7 +49,9 @@ public sealed partial class ThatAssemblies
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
 
 				async Task Act()
-					=> await That(subject).HaveADependencyOn("aweX").AsPrefix();
+				{
+					await That(subject).HaveADependencyOn("aweX").AsPrefix();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -56,7 +62,9 @@ public sealed partial class ThatAssemblies
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
 
 				async Task Act()
-					=> await That(subject).HaveADependencyOn("aweXpect.Core").IgnoringCase();
+				{
+					await That(subject).HaveADependencyOn("aweXpect.Core").IgnoringCase();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -70,7 +78,9 @@ public sealed partial class ThatAssemblies
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.HaveADependencyOn("NonExistentAssembly"));
+				{
+					await That(subject).DoesNotComplyWith(they => they.HaveADependencyOn("NonExistentAssembly"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -81,7 +91,9 @@ public sealed partial class ThatAssemblies
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.HaveADependencyOn("aweXpect.Core"));
+				{
+					await That(subject).DoesNotComplyWith(they => they.HaveADependencyOn("aweXpect.Core"));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

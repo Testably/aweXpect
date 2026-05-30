@@ -18,7 +18,9 @@ public sealed partial class ThatEvent
 				EventInfo? subject = GetEvent(eventName);
 
 				async Task Act()
-					=> await That(subject).IsProtected();
+				{
+					await That(subject).IsProtected();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -34,7 +36,9 @@ public sealed partial class ThatEvent
 				EventInfo? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsProtected();
+				{
+					await That(subject).IsProtected();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -50,7 +54,9 @@ public sealed partial class ThatEvent
 				EventInfo? subject = GetEvent("ProtectedEvent");
 
 				async Task Act()
-					=> await That(subject).IsProtected();
+				{
+					await That(subject).IsProtected();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -67,7 +73,9 @@ public sealed partial class ThatEvent
 				EventInfo? subject = GetEvent(eventName);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsProtected());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsProtected());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -78,7 +86,9 @@ public sealed partial class ThatEvent
 				EventInfo? subject = GetEvent("ProtectedEvent");
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsProtected());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsProtected());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

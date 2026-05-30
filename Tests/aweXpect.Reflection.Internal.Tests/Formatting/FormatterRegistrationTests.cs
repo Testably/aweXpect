@@ -10,7 +10,10 @@ public class FormatterRegistrationTests
 	[Fact]
 	public async Task Constructor_WhenNotDisposed_ShouldThrowInvalidOperationException()
 	{
-		void Act() => _ = new FormatterRegistration();
+		void Act()
+		{
+			_ = new FormatterRegistration();
+		}
 
 		await That(Act).Throws<InvalidOperationException>()
 			.WithMessage(

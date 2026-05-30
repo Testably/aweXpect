@@ -15,7 +15,9 @@ public sealed partial class ThatType
 				Type subject = typeof(PublicStruct);
 
 				async Task Act()
-					=> await That(subject).IsAStruct();
+				{
+					await That(subject).IsAStruct();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -25,7 +27,9 @@ public sealed partial class ThatType
 			public async Task WhenTypeIsNotAStruct_ShouldFail(Type? subject, string name)
 			{
 				async Task Act()
-					=> await That(subject).IsAStruct();
+				{
+					await That(subject).IsAStruct();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage($"""
@@ -41,7 +45,9 @@ public sealed partial class ThatType
 				Type? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsAStruct();
+				{
+					await That(subject).IsAStruct();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -82,7 +88,9 @@ public sealed partial class ThatType
 				Type subject = typeof(PublicStruct);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsAStruct());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsAStruct());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -97,7 +105,9 @@ public sealed partial class ThatType
 			public async Task WhenTypeIsNotAStruct_ShouldSucceed(Type subject)
 			{
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsAStruct());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsAStruct());
+				}
 
 				await That(Act).DoesNotThrow();
 			}

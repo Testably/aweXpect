@@ -9,14 +9,25 @@ public sealed partial class TypeFilters
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task ShouldChainPublicBeforeMethods()
+			public async Task ShouldChainAbstractBeforeMethods()
 			{
-				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Classes().Public.Methods();
+				Filtered.Methods methods = In.Type<AbstractMemberClass>().Abstract.Methods();
 
-				await That(methods).All().Satisfy(m => m.IsPublic).And.IsNotEmpty();
+				await That(methods).All().Satisfy(m => m.IsAbstract).And.IsNotEmpty();
 				await That(methods.GetDescription())
-					.IsEqualTo("public methods in classes in assembly").AsPrefix();
+					.IsEqualTo("abstract methods in type").AsPrefix();
+			}
+
+			[Fact]
+			public async Task ShouldChainAbstractBeforeProperties()
+			{
+				Filtered.Properties properties = In.Type<AbstractMemberClass>().Abstract.Properties();
+
+				await That(properties).All()
+					.Satisfy(p => p.GetMethod?.IsAbstract == true || p.SetMethod?.IsAbstract == true)
+					.And.IsNotEmpty();
+				await That(properties.GetDescription())
+					.IsEqualTo("abstract properties in type").AsPrefix();
 			}
 
 			[Fact]
@@ -42,6 +53,28 @@ public sealed partial class TypeFilters
 			}
 
 			[Fact]
+			public async Task ShouldChainPublicBeforeMethods()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Classes().Public.Methods();
+
+				await That(methods).All().Satisfy(m => m.IsPublic).And.IsNotEmpty();
+				await That(methods.GetDescription())
+					.IsEqualTo("public methods in classes in assembly").AsPrefix();
+			}
+
+			[Fact]
+			public async Task ShouldChainSealedBeforeMethods()
+			{
+				Filtered.Methods methods = In.Type<SealedMemberClass>().Sealed.Methods();
+
+				await That(methods).All().Satisfy(m => m is { IsVirtual: true, IsFinal: true, })
+					.And.IsNotEmpty();
+				await That(methods.GetDescription())
+					.IsEqualTo("sealed methods in type").AsPrefix();
+			}
+
+			[Fact]
 			public async Task ShouldChainStaticBeforeConstructors()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -61,39 +94,6 @@ public sealed partial class TypeFilters
 				await That(methods).All().Satisfy(m => m.IsStatic).And.IsNotEmpty();
 				await That(methods.GetDescription())
 					.IsEqualTo("static methods in classes in assembly").AsPrefix();
-			}
-
-			[Fact]
-			public async Task ShouldChainAbstractBeforeMethods()
-			{
-				Filtered.Methods methods = In.Type<AbstractMemberClass>().Abstract.Methods();
-
-				await That(methods).All().Satisfy(m => m.IsAbstract).And.IsNotEmpty();
-				await That(methods.GetDescription())
-					.IsEqualTo("abstract methods in type").AsPrefix();
-			}
-
-			[Fact]
-			public async Task ShouldChainAbstractBeforeProperties()
-			{
-				Filtered.Properties properties = In.Type<AbstractMemberClass>().Abstract.Properties();
-
-				await That(properties).All()
-					.Satisfy(p => p.GetMethod?.IsAbstract == true || p.SetMethod?.IsAbstract == true)
-					.And.IsNotEmpty();
-				await That(properties.GetDescription())
-					.IsEqualTo("abstract properties in type").AsPrefix();
-			}
-
-			[Fact]
-			public async Task ShouldChainSealedBeforeMethods()
-			{
-				Filtered.Methods methods = In.Type<SealedMemberClass>().Sealed.Methods();
-
-				await That(methods).All().Satisfy(m => m is { IsVirtual: true, IsFinal: true })
-					.And.IsNotEmpty();
-				await That(methods.GetDescription())
-					.IsEqualTo("sealed methods in type").AsPrefix();
 			}
 
 			[Fact]
@@ -140,6 +140,7 @@ public sealed partial class TypeFilters
 				public virtual void VirtualMethod() { }
 			}
 
+			// ReSharper disable once ClassNeverInstantiated.Local
 			private sealed class SealedMemberClass : ConcreteForSealed
 			{
 				public sealed override string ToString() => "Sealed";

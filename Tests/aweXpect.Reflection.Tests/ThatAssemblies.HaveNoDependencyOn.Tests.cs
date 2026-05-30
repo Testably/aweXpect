@@ -16,7 +16,9 @@ public sealed partial class ThatAssemblies
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
 
 				async Task Act()
-					=> await That(subject).HaveNoDependencyOn("aweXpect.Core");
+				{
+					await That(subject).HaveNoDependencyOn("aweXpect.Core");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -34,7 +36,9 @@ public sealed partial class ThatAssemblies
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
 
 				async Task Act()
-					=> await That(subject).HaveNoDependencyOn("NonExistentAssembly");
+				{
+					await That(subject).HaveNoDependencyOn("NonExistentAssembly");
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -45,7 +49,9 @@ public sealed partial class ThatAssemblies
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
 
 				async Task Act()
-					=> await That(subject).HaveNoDependencyOn("System").AsPrefix();
+				{
+					await That(subject).HaveNoDependencyOn("System").AsPrefix();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -63,7 +69,9 @@ public sealed partial class ThatAssemblies
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
 
 				async Task Act()
-					=> await That(subject).HaveNoDependencyOn("AWExPECT.cORE").IgnoringCase();
+				{
+					await That(subject).HaveNoDependencyOn("AWExPECT.cORE").IgnoringCase();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -84,7 +92,9 @@ public sealed partial class ThatAssemblies
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.HaveNoDependencyOn("aweXpect.Core"));
+				{
+					await That(subject).DoesNotComplyWith(they => they.HaveNoDependencyOn("aweXpect.Core"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -95,7 +105,9 @@ public sealed partial class ThatAssemblies
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.HaveNoDependencyOn("NonExistentAssembly"));
+				{
+					await That(subject).DoesNotComplyWith(they => they.HaveNoDependencyOn("NonExistentAssembly"));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

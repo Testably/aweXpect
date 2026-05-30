@@ -28,8 +28,7 @@ public sealed partial class Filtered
 					AccessModifiers.Public | AccessModifiers.Internal, "public or internal "
 				},
 				{
-					AccessModifiers.Public | AccessModifiers.Protected | AccessModifiers.Internal,
-					"public, protected or internal "
+					AccessModifiers.Public | AccessModifiers.Protected | AccessModifiers.Internal, "public, protected or internal "
 				},
 			};
 

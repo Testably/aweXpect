@@ -19,7 +19,9 @@ public sealed partial class ThatMethods
 					.Where(m => !m.IsAbstract);
 
 				async Task Act()
-					=> await That(subject).AreNotAbstract();
+				{
+					await That(subject).AreNotAbstract();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -31,7 +33,9 @@ public sealed partial class ThatMethods
 					.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
 				async Task Act()
-					=> await That(subject).AreNotAbstract();
+				{
+					await That(subject).AreNotAbstract();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -54,7 +58,9 @@ public sealed partial class ThatMethods
 					.Where(m => !m.IsAbstract);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreNotAbstract());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotAbstract());
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -73,7 +79,9 @@ public sealed partial class ThatMethods
 					.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreNotAbstract());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotAbstract());
+				}
 
 				await That(Act).DoesNotThrow();
 			}

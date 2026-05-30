@@ -23,8 +23,10 @@ public sealed partial class Filtered
 				public async Task ShouldIncludeStaticInformationInErrorMessage()
 				{
 					async Task Act()
-						=> await That(In.AllLoadedAssemblies().Static.Types())
+					{
+						await That(In.AllLoadedAssemblies().Static.Types())
 							.AreNotStatic();
+					}
 
 					await That(Act).ThrowsException()
 						.WithMessage("""
@@ -43,8 +45,10 @@ public sealed partial class Filtered
 					AccessModifiers accessModifier, string expectedString)
 				{
 					async Task Act()
-						=> await That(In.AllLoadedAssemblies().Static.Types(accessModifier))
+					{
+						await That(In.AllLoadedAssemblies().Static.Types(accessModifier))
 							.AreNotStatic();
+					}
 
 					await That(Act).ThrowsException()
 						.WithMessage($"""

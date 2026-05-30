@@ -16,7 +16,9 @@ public sealed partial class ThatEvent
 					typeof(ClassWithEvents).GetEvent(nameof(ClassWithEvents.PublicEvent));
 
 				async Task Act()
-					=> await That(subject).HasName("Public").AsPrefix();
+				{
+					await That(subject).HasName("Public").AsPrefix();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -28,7 +30,9 @@ public sealed partial class ThatEvent
 					typeof(ClassWithEvents).GetEvent(nameof(ClassWithEvents.PublicEvent));
 
 				async Task Act()
-					=> await That(subject).HasName("PublicEvent");
+				{
+					await That(subject).HasName("PublicEvent");
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -39,7 +43,9 @@ public sealed partial class ThatEvent
 				EventInfo? subject = null;
 
 				async Task Act()
-					=> await That(subject).HasName("foo");
+				{
+					await That(subject).HasName("foo");
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -56,7 +62,9 @@ public sealed partial class ThatEvent
 					typeof(ClassWithEvents).GetEvent(nameof(ClassWithEvents.PublicEvent));
 
 				async Task Act()
-					=> await That(subject).HasName("pUBLICevent").IgnoringCase();
+				{
+					await That(subject).HasName("pUBLICevent").IgnoringCase();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -68,7 +76,9 @@ public sealed partial class ThatEvent
 					typeof(ClassWithEvents).GetEvent(nameof(ClassWithEvents.PublicEvent));
 
 				async Task Act()
-					=> await That(subject).HasName("Event");
+				{
+					await That(subject).HasName("Event");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -92,7 +102,9 @@ public sealed partial class ThatEvent
 					typeof(ClassWithEvents).GetEvent(nameof(ClassWithEvents.PublicEvent));
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.HasName("NonExistentEvent"));
+				{
+					await That(subject).DoesNotComplyWith(it => it.HasName("NonExistentEvent"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -104,7 +116,9 @@ public sealed partial class ThatEvent
 					typeof(ClassWithEvents).GetEvent(nameof(ClassWithEvents.PublicEvent));
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.HasName("PublicEvent"));
+				{
+					await That(subject).DoesNotComplyWith(it => it.HasName("PublicEvent"));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

@@ -22,15 +22,6 @@ public sealed partial class AssemblyFilters
 			}
 
 			[Fact]
-			public async Task WhenAssemblyHasNoSuchDependency_ShouldBeFilteredOut()
-			{
-				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
-					.WhichHaveADependencyOn("NonExistentAssembly");
-
-				await That(assemblies).IsEmpty();
-			}
-
-			[Fact]
 			public async Task ShouldSupportAsPrefix()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
@@ -64,6 +55,15 @@ public sealed partial class AssemblyFilters
 				await That(assemblies.GetDescription())
 					.IsEqualTo(
 						"in assembly containing type PublicAbstractClass which have a dependency on assembly equal to \"awexpect.core\" ignoring case");
+			}
+
+			[Fact]
+			public async Task WhenAssemblyHasNoSuchDependency_ShouldBeFilteredOut()
+			{
+				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
+					.WhichHaveADependencyOn("NonExistentAssembly");
+
+				await That(assemblies).IsEmpty();
 			}
 		}
 	}

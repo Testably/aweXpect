@@ -11,12 +11,45 @@ public sealed partial class ThatMethod
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenMethodIsNull_ShouldFail()
+			{
+				MethodInfo? methodInfo = null;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasExactParameter<Stream>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of exact type Stream,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenParameterIsExactType_ShouldSucceed()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithStream))!;
 
 				async Task Act()
-					=> await That(methodInfo).HasExactParameter<Stream>();
+				{
+					await That(methodInfo).HasExactParameter<Stream>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenParameterIsExactTypeWithName_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithStream))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasExactParameter<Stream>("stream");
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -27,7 +60,9 @@ public sealed partial class ThatMethod
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithStream))!;
 
 				async Task Act()
-					=> await That(methodInfo).HasExactParameter<IDisposable>();
+				{
+					await That(methodInfo).HasExactParameter<IDisposable>();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -38,23 +73,14 @@ public sealed partial class ThatMethod
 			}
 
 			[Fact]
-			public async Task WhenParameterIsExactTypeWithName_ShouldSucceed()
-			{
-				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithStream))!;
-
-				async Task Act()
-					=> await That(methodInfo).HasExactParameter<Stream>("stream");
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenParameterNameDoesNotMatch_ShouldFail()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithStream))!;
 
 				async Task Act()
-					=> await That(methodInfo).HasExactParameter<Stream>("other");
+				{
+					await That(methodInfo).HasExactParameter<Stream>("other");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -63,44 +89,19 @@ public sealed partial class ThatMethod
 					             but it did not
 					             """);
 			}
-
-			[Fact]
-			public async Task WhenMethodIsNull_ShouldFail()
-			{
-				MethodInfo? methodInfo = null;
-
-				async Task Act()
-					=> await That(methodInfo).HasExactParameter<Stream>();
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that methodInfo
-					             has parameter of exact type Stream,
-					             but it was <null>
-					             """);
-			}
 		}
 
 		public sealed class NegatedTests
 		{
-			[Fact]
-			public async Task WhenParameterIsSubtype_ShouldSucceed()
-			{
-				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithStream))!;
-
-				async Task Act()
-					=> await That(methodInfo).DoesNotComplyWith(it => it.HasExactParameter<IDisposable>());
-
-				await That(Act).DoesNotThrow();
-			}
-
 			[Fact]
 			public async Task WhenParameterIsExactType_ShouldFail()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithStream))!;
 
 				async Task Act()
-					=> await That(methodInfo).DoesNotComplyWith(it => it.HasExactParameter<Stream>());
+				{
+					await That(methodInfo).DoesNotComplyWith(it => it.HasExactParameter<Stream>());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -108,6 +109,19 @@ public sealed partial class ThatMethod
 					             does not have parameter of exact type Stream,
 					             but it did
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenParameterIsSubtype_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithStream))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).DoesNotComplyWith(it => it.HasExactParameter<IDisposable>());
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 

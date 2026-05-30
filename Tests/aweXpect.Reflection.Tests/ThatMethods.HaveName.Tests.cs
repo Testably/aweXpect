@@ -15,7 +15,9 @@ public sealed partial class ThatMethods
 				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithMethods>().Methods();
 
 				async Task Act()
-					=> await That(subject).HaveName("PublicMethod");
+				{
+					await That(subject).HaveName("PublicMethod");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -33,7 +35,9 @@ public sealed partial class ThatMethods
 				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithSingleMethod>().Methods();
 
 				async Task Act()
-					=> await That(subject).HaveName("MyMethod");
+				{
+					await That(subject).HaveName("MyMethod");
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -44,7 +48,9 @@ public sealed partial class ThatMethods
 				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithSingleMethod>().Methods();
 
 				async Task Act()
-					=> await That(subject).HaveName("mYmethod").IgnoringCase();
+				{
+					await That(subject).HaveName("mYmethod").IgnoringCase();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -55,29 +61,9 @@ public sealed partial class ThatMethods
 				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithMethods>().Methods();
 
 				async Task Act()
-					=> await That(subject).HaveName("Method").AsSuffix();
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenSelectorReturnsEachMethodsOwnName_ShouldSucceed()
-			{
-				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithMethods>().Methods();
-
-				async Task Act()
-					=> await That(subject).HaveName(method => method.Name);
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenSelectorMatchesIgnoringCase_ShouldSucceed()
-			{
-				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithSingleMethod>().Methods();
-
-				async Task Act()
-					=> await That(subject).HaveName(method => method.Name.ToUpperInvariant()).IgnoringCase();
+				{
+					await That(subject).HaveName("Method").AsSuffix();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -88,7 +74,22 @@ public sealed partial class ThatMethods
 				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithSingleMethod>().Methods();
 
 				async Task Act()
-					=> await That(subject).HaveName(_ => "My").AsPrefix();
+				{
+					await That(subject).HaveName(_ => "My").AsPrefix();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSelectorMatchesIgnoringCase_ShouldSucceed()
+			{
+				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithSingleMethod>().Methods();
+
+				async Task Act()
+				{
+					await That(subject).HaveName(method => method.Name.ToUpperInvariant()).IgnoringCase();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -99,7 +100,9 @@ public sealed partial class ThatMethods
 				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithSingleMethod>().Methods();
 
 				async Task Act()
-					=> await That(subject).HaveName(method => method.Name + "X");
+				{
+					await That(subject).HaveName(method => method.Name + "X");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -109,6 +112,19 @@ public sealed partial class ThatMethods
 					               * with name "MyMethod" instead of "MyMethodX"
 					             ]
 					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenSelectorReturnsEachMethodsOwnName_ShouldSucceed()
+			{
+				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithMethods>().Methods();
+
+				async Task Act()
+				{
+					await That(subject).HaveName(method => method.Name);
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 
@@ -120,7 +136,9 @@ public sealed partial class ThatMethods
 				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithMethods>().Methods();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.HaveName("NonExistentMethod"));
+				{
+					await That(subject).DoesNotComplyWith(they => they.HaveName("NonExistentMethod"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -131,7 +149,9 @@ public sealed partial class ThatMethods
 				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithSingleMethod>().Methods();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.HaveName("MyMethod"));
+				{
+					await That(subject).DoesNotComplyWith(they => they.HaveName("MyMethod"));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -142,23 +162,14 @@ public sealed partial class ThatMethods
 			}
 
 			[Fact]
-			public async Task WhenSelectorMatchesNoName_ShouldSucceed()
-			{
-				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithSingleMethod>().Methods();
-
-				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.HaveName(method => method.Name + "X"));
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenSelectorMatchesEveryName_ShouldFail()
 			{
 				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithSingleMethod>().Methods();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.HaveName(method => method.Name));
+				{
+					await That(subject).DoesNotComplyWith(they => they.HaveName(method => method.Name));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -166,6 +177,19 @@ public sealed partial class ThatMethods
 					             not all have name matching method => method.Name,
 					             but it only contained matching items *
 					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenSelectorMatchesNoName_ShouldSucceed()
+			{
+				Filtered.Methods subject = GetTypes<ThatMethod.ClassWithSingleMethod>().Methods();
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they.HaveName(method => method.Name + "X"));
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 	}

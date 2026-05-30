@@ -17,7 +17,9 @@ public sealed partial class ThatProperties
 					.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
 				async Task Act()
-					=> await That(subject).AreNotSealed();
+				{
+					await That(subject).AreNotSealed();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -29,7 +31,9 @@ public sealed partial class ThatProperties
 					.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
 				async Task Act()
-					=> await That(subject).AreNotSealed();
+				{
+					await That(subject).AreNotSealed();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -51,7 +55,9 @@ public sealed partial class ThatProperties
 					.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreNotSealed());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotSealed());
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -70,7 +76,9 @@ public sealed partial class ThatProperties
 					.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreNotSealed());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotSealed());
+				}
 
 				await That(Act).DoesNotThrow();
 			}

@@ -18,7 +18,9 @@ public sealed partial class ThatProperties
 				Filtered.Properties subject = GetProperties(propertyName);
 
 				async Task Act()
-					=> await That(subject).AreProtectedInternal();
+				{
+					await That(subject).AreProtectedInternal();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -36,7 +38,9 @@ public sealed partial class ThatProperties
 				Filtered.Properties subject = GetProperties("ProtectedInternalProperty");
 
 				async Task Act()
-					=> await That(subject).AreProtectedInternal();
+				{
+					await That(subject).AreProtectedInternal();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -53,7 +57,9 @@ public sealed partial class ThatProperties
 				Filtered.Properties subject = GetProperties(propertyName);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreProtectedInternal());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreProtectedInternal());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -64,7 +70,9 @@ public sealed partial class ThatProperties
 				Filtered.Properties subject = GetProperties("ProtectedInternalProperty");
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreProtectedInternal());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreProtectedInternal());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

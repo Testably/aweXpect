@@ -15,12 +15,13 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithStringAndInt))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithStringAndInt))!,
 				};
 
 				async Task Act()
-					=> await That(methods).HaveParameterCount(2);
+				{
+					await That(methods).HaveParameterCount(2);
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -30,12 +31,13 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInt))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInt))!,
 				};
 
 				async Task Act()
-					=> await That(methods).HaveParameterCount(2);
+				{
+					await That(methods).HaveParameterCount(2);
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -53,12 +55,13 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithStringAndInt))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithStringAndInt))!,
 				};
 
 				async Task Act()
-					=> await That(methods).DoesNotComplyWith(they => they.HaveParameterCount(2));
+				{
+					await That(methods).DoesNotComplyWith(they => they.HaveParameterCount(2));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -73,12 +76,13 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInt))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInt))!,
 				};
 
 				async Task Act()
-					=> await That(methods).DoesNotComplyWith(they => they.HaveParameterCount(2));
+				{
+					await That(methods).DoesNotComplyWith(they => they.HaveParameterCount(2));
+				}
 
 				await That(Act).DoesNotThrow();
 			}

@@ -19,7 +19,9 @@ public sealed partial class ThatField
 				FieldInfo? subject = GetField(fieldName);
 
 				async Task Act()
-					=> await That(subject).IsPrivateProtected();
+				{
+					await That(subject).IsPrivateProtected();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -35,7 +37,9 @@ public sealed partial class ThatField
 				FieldInfo? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsPrivateProtected();
+				{
+					await That(subject).IsPrivateProtected();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -51,7 +55,9 @@ public sealed partial class ThatField
 				FieldInfo? subject = GetField("PrivateProtectedField");
 
 				async Task Act()
-					=> await That(subject).IsPrivateProtected();
+				{
+					await That(subject).IsPrivateProtected();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -68,7 +74,9 @@ public sealed partial class ThatField
 				FieldInfo? subject = GetField(fieldName);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsPrivateProtected());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsPrivateProtected());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -79,7 +87,9 @@ public sealed partial class ThatField
 				FieldInfo? subject = GetField("PrivateProtectedField");
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsPrivateProtected());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsPrivateProtected());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

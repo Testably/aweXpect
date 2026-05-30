@@ -16,7 +16,9 @@ public sealed partial class ThatAssembly
 				Assembly subject = typeof(PublicAbstractClass).Assembly;
 
 				async Task Act()
-					=> await That(subject).HasName("Reflection");
+				{
+					await That(subject).HasName("Reflection");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -36,7 +38,9 @@ public sealed partial class ThatAssembly
 				Assembly subject = typeof(PublicAbstractClass).Assembly;
 
 				async Task Act()
-					=> await That(subject).HasName("aweXpect.Reflection").AsPrefix();
+				{
+					await That(subject).HasName("aweXpect.Reflection").AsPrefix();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -47,7 +51,9 @@ public sealed partial class ThatAssembly
 				Assembly subject = typeof(PublicAbstractClass).Assembly;
 
 				async Task Act()
-					=> await That(subject).HasName("aweXpect.Reflection.Tests");
+				{
+					await That(subject).HasName("aweXpect.Reflection.Tests");
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -58,7 +64,9 @@ public sealed partial class ThatAssembly
 				Assembly? subject = null;
 
 				async Task Act()
-					=> await That(subject).HasName("foo");
+				{
+					await That(subject).HasName("foo");
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -74,7 +82,9 @@ public sealed partial class ThatAssembly
 				Assembly subject = typeof(PublicAbstractClass).Assembly;
 
 				async Task Act()
-					=> await That(subject).HasName("AWExPECT.rEFLECTION.tESTS").IgnoringCase();
+				{
+					await That(subject).HasName("AWExPECT.rEFLECTION.tESTS").IgnoringCase();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -88,7 +98,9 @@ public sealed partial class ThatAssembly
 				Assembly subject = typeof(PublicAbstractClass).Assembly;
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.HasName("NonExistentAssembly"));
+				{
+					await That(subject).DoesNotComplyWith(it => it.HasName("NonExistentAssembly"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -99,7 +111,9 @@ public sealed partial class ThatAssembly
 				Assembly subject = typeof(PublicAbstractClass).Assembly;
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.HasName("aweXpect.Reflection.Tests"));
+				{
+					await That(subject).DoesNotComplyWith(it => it.HasName("aweXpect.Reflection.Tests"));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

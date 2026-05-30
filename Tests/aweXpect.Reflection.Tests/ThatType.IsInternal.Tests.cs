@@ -14,7 +14,9 @@ public sealed partial class ThatType
 				Type subject = typeof(InternalType);
 
 				async Task Act()
-					=> await That(subject).IsInternal();
+				{
+					await That(subject).IsInternal();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -26,7 +28,9 @@ public sealed partial class ThatType
 			public async Task WhenTypeIsNotInternal_ShouldFail(Type? subject, string expectedAccessModifier)
 			{
 				async Task Act()
-					=> await That(subject).IsInternal();
+				{
+					await That(subject).IsInternal();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -42,7 +46,9 @@ public sealed partial class ThatType
 				Type? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsInternal();
+				{
+					await That(subject).IsInternal();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -61,7 +67,9 @@ public sealed partial class ThatType
 				Type subject = typeof(InternalType);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsInternal());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsInternal());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("*is not internal*but it was*").AsWildcard();
@@ -74,7 +82,9 @@ public sealed partial class ThatType
 			public async Task WhenTypeIsNotInternal_ShouldSucceed(Type subject)
 			{
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsInternal());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsInternal());
+				}
 
 				await That(Act).DoesNotThrow();
 			}

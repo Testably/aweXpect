@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Xunit.Sdk;
@@ -17,12 +16,29 @@ public sealed partial class ThatConstructors
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
 				{
-					typeof(TestClass).GetConstructor([typeof(Stream),])!,
-					typeof(OtherClass).GetConstructor([typeof(Stream),])!,
+					typeof(TestClass).GetConstructor([typeof(Stream),])!, typeof(OtherClass).GetConstructor([typeof(Stream),])!,
 				};
 
 				async Task Act()
-					=> await That(constructors).HaveExactParameter<Stream>();
+				{
+					await That(constructors).HaveExactParameter<Stream>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenAllHaveExactParameterWithName_ShouldSucceed()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(TestClass).GetConstructor([typeof(Stream),])!,
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveExactParameter<Stream>("stream");
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -36,7 +52,9 @@ public sealed partial class ThatConstructors
 				};
 
 				async Task Act()
-					=> await That(constructors).HaveExactParameter<IDisposable>();
+				{
+					await That(constructors).HaveExactParameter<IDisposable>();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -45,24 +63,31 @@ public sealed partial class ThatConstructors
 					             but at least one did not
 					             """);
 			}
-
-			[Fact]
-			public async Task WhenAllHaveExactParameterWithName_ShouldSucceed()
-			{
-				IEnumerable<ConstructorInfo> constructors = new[]
-				{
-					typeof(TestClass).GetConstructor([typeof(Stream),])!,
-				};
-
-				async Task Act()
-					=> await That(constructors).HaveExactParameter<Stream>("stream");
-
-				await That(Act).DoesNotThrow();
-			}
 		}
 
 		public sealed class NegatedTests
 		{
+			[Fact]
+			public async Task WhenAllHaveExactParameter_ShouldFail()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(TestClass).GetConstructor([typeof(Stream),])!, typeof(OtherClass).GetConstructor([typeof(Stream),])!,
+				};
+
+				async Task Act()
+				{
+					await That(constructors).DoesNotComplyWith(they => they.HaveExactParameter<Stream>());
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             not all have parameter of exact type Stream,
+					             but all did
+					             """);
+			}
+
 			[Fact]
 			public async Task WhenAnyParameterIsSubtype_ShouldSucceed()
 			{
@@ -72,29 +97,11 @@ public sealed partial class ThatConstructors
 				};
 
 				async Task Act()
-					=> await That(constructors).DoesNotComplyWith(they => they.HaveExactParameter<IDisposable>());
+				{
+					await That(constructors).DoesNotComplyWith(they => they.HaveExactParameter<IDisposable>());
+				}
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenAllHaveExactParameter_ShouldFail()
-			{
-				IEnumerable<ConstructorInfo> constructors = new[]
-				{
-					typeof(TestClass).GetConstructor([typeof(Stream),])!,
-					typeof(OtherClass).GetConstructor([typeof(Stream),])!,
-				};
-
-				async Task Act()
-					=> await That(constructors).DoesNotComplyWith(they => they.HaveExactParameter<Stream>());
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that constructors
-					             not all have parameter of exact type Stream,
-					             but all did
-					             """);
 			}
 		}
 

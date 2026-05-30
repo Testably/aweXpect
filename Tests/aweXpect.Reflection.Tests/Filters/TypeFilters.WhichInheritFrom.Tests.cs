@@ -10,8 +10,10 @@ public sealed partial class TypeFilters
 			public async Task ShouldApplyFilterForBaseType()
 			{
 				async Task Act()
-					=> await That(In.AssemblyContaining<WhichInheritFrom>().Types().WhichInheritFrom<FooBase>())
+				{
+					await That(In.AssemblyContaining<WhichInheritFrom>().Types().WhichInheritFrom<FooBase>())
 						.AreNotAbstract();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -20,8 +22,10 @@ public sealed partial class TypeFilters
 			public async Task ShouldIncludeInheritInformationInErrorMessage()
 			{
 				async Task Act()
-					=> await That(In.AssemblyContaining<WhichInheritFrom>().Types().WhichInheritFrom<FooBase>())
+				{
+					await That(In.AssemblyContaining<WhichInheritFrom>().Types().WhichInheritFrom<FooBase>())
 						.AreAbstract();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""

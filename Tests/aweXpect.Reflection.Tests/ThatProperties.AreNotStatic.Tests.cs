@@ -17,7 +17,9 @@ public sealed partial class ThatProperties
 					.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
 
 				async Task Act()
-					=> await That(subject).AreNotStatic();
+				{
+					await That(subject).AreNotStatic();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -30,7 +32,9 @@ public sealed partial class ThatProperties
 					               BindingFlags.DeclaredOnly);
 
 				async Task Act()
-					=> await That(subject).AreNotStatic();
+				{
+					await That(subject).AreNotStatic();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -52,7 +56,9 @@ public sealed partial class ThatProperties
 					.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreNotStatic());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotStatic());
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -72,7 +78,9 @@ public sealed partial class ThatProperties
 					               BindingFlags.DeclaredOnly);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreNotStatic());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotStatic());
+				}
 
 				await That(Act).DoesNotThrow();
 			}

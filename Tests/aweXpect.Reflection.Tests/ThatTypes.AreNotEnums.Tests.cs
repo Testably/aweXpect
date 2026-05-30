@@ -15,7 +15,9 @@ public sealed partial class ThatTypes
 				Filtered.Types subject = In.AssemblyContaining<AreNotEnums>().Classes();
 
 				async Task Act()
-					=> await That(subject).AreNotEnums();
+				{
+					await That(subject).AreNotEnums();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -27,7 +29,9 @@ public sealed partial class ThatTypes
 					.Which(type => type.IsEnum);
 
 				async Task Act()
-					=> await That(subject).AreNotEnums();
+				{
+					await That(subject).AreNotEnums();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -48,7 +52,9 @@ public sealed partial class ThatTypes
 				Filtered.Types subject = In.AssemblyContaining<AreNotEnums>().Classes();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreNotEnums());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotEnums());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -67,7 +73,9 @@ public sealed partial class ThatTypes
 					.Which(type => type.IsEnum);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreNotEnums());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotEnums());
+				}
 
 				await That(Act).DoesNotThrow();
 			}

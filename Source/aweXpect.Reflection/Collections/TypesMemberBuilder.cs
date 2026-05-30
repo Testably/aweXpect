@@ -25,9 +25,6 @@ internal sealed class TypesMemberBuilder :
 	IMembers IMembers.IPrivate.Protected
 		=> new TypesMemberBuilder(_source, _state.WithAccess(AccessModifiers.PrivateProtected));
 
-	IMembers IMembers.IProtected.Internal
-		=> new TypesMemberBuilder(_source, _state.WithAccess(AccessModifiers.ProtectedInternal));
-
 	public Filtered.Constructors Constructors()
 	{
 		Filtered.Constructors constructors = new(_source, "constructors ");
@@ -62,4 +59,7 @@ internal sealed class TypesMemberBuilder :
 		IFilter<PropertyInfo>? filter = _state.BuildPropertyFilter();
 		return filter is null ? properties : properties.Which(filter);
 	}
+
+	IMembers IMembers.IProtected.Internal
+		=> new TypesMemberBuilder(_source, _state.WithAccess(AccessModifiers.ProtectedInternal));
 }

@@ -15,12 +15,13 @@ public sealed partial class ThatConstructors
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
 				{
-					typeof(TestClass).GetConstructor([])!,
-					typeof(OtherClass).GetConstructor([])!,
+					typeof(TestClass).GetConstructor([])!, typeof(OtherClass).GetConstructor([])!,
 				};
 
 				async Task Act()
-					=> await That(constructors).HaveNoParameters();
+				{
+					await That(constructors).HaveNoParameters();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -30,12 +31,13 @@ public sealed partial class ThatConstructors
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
 				{
-					typeof(TestClass).GetConstructor([])!,
-					typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!,
+					typeof(TestClass).GetConstructor([])!, typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!,
 				};
 
 				async Task Act()
-					=> await That(constructors).HaveNoParameters();
+				{
+					await That(constructors).HaveNoParameters();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -49,31 +51,17 @@ public sealed partial class ThatConstructors
 		public sealed class NegatedTests
 		{
 			[Fact]
-			public async Task WhenNotAllHaveNoParameters_ShouldSucceed()
-			{
-				IEnumerable<ConstructorInfo> constructors = new[]
-				{
-					typeof(TestClass).GetConstructor([])!,
-					typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!,
-				};
-
-				async Task Act()
-					=> await That(constructors).DoesNotComplyWith(they => they.HaveNoParameters());
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenAllHaveNoParameters_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
 				{
-					typeof(TestClass).GetConstructor([])!,
-					typeof(OtherClass).GetConstructor([])!,
+					typeof(TestClass).GetConstructor([])!, typeof(OtherClass).GetConstructor([])!,
 				};
 
 				async Task Act()
-					=> await That(constructors).DoesNotComplyWith(they => they.HaveNoParameters());
+				{
+					await That(constructors).DoesNotComplyWith(they => they.HaveNoParameters());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -81,6 +69,22 @@ public sealed partial class ThatConstructors
 					             not all have no parameters,
 					             but it only contained constructors with no parameters *
 					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenNotAllHaveNoParameters_ShouldSucceed()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(TestClass).GetConstructor([])!, typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!,
+				};
+
+				async Task Act()
+				{
+					await That(constructors).DoesNotComplyWith(they => they.HaveNoParameters());
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 
@@ -94,7 +98,6 @@ public sealed partial class ThatConstructors
 
 		private class OtherClass
 		{
-			public OtherClass() { }
 		}
 		// ReSharper restore UnusedParameter.Local
 		// ReSharper restore UnusedMember.Local

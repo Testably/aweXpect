@@ -19,7 +19,9 @@ public sealed partial class ThatProperties
 				];
 
 				async Task Act()
-					=> await That(subject).AreOfExactType<DummyBase>();
+				{
+					await That(subject).AreOfExactType<DummyBase>();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -40,7 +42,9 @@ public sealed partial class ThatProperties
 				];
 
 				async Task Act()
-					=> await That(subject).AreOfExactType<DummyBase>();
+				{
+					await That(subject).AreOfExactType<DummyBase>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -58,7 +62,9 @@ public sealed partial class ThatProperties
 				];
 
 				async Task Act()
-					=> await That(subject).AreOfExactType<DummyBase>().OrOfExactType<Dummy>();
+				{
+					await That(subject).AreOfExactType<DummyBase>().OrOfExactType<Dummy>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}

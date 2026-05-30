@@ -11,7 +11,7 @@ internal class PropertyFormatter : IValueFormatter
 	{
 		if (value is PropertyInfo propertyInfo)
 		{
-			var propertyAccess = propertyInfo.GetAccessModifier();
+			AccessModifiers propertyAccess = propertyInfo.GetAccessModifier();
 			stringBuilder.Append(propertyAccess.GetString(" "));
 			Formatter.Format(stringBuilder, propertyInfo.PropertyType);
 			stringBuilder.Append(' ');
@@ -21,21 +21,23 @@ internal class PropertyFormatter : IValueFormatter
 			stringBuilder.Append(" { ");
 			if (propertyInfo.CanRead)
 			{
-				var getAccess = propertyInfo.GetMethod.GetAccessModifier();
+				AccessModifiers getAccess = propertyInfo.GetMethod.GetAccessModifier();
 				if (propertyAccess != getAccess)
 				{
 					stringBuilder.Append(getAccess.GetString(" "));
 				}
+
 				stringBuilder.Append("get; ");
 			}
 
 			if (propertyInfo.CanWrite)
 			{
-				var setAccess = propertyInfo.SetMethod.GetAccessModifier();
+				AccessModifiers setAccess = propertyInfo.SetMethod.GetAccessModifier();
 				if (propertyAccess != setAccess)
 				{
 					stringBuilder.Append(setAccess.GetString(" "));
 				}
+
 				stringBuilder.Append("set; ");
 			}
 

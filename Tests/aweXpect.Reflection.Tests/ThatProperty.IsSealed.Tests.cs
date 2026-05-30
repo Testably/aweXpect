@@ -17,7 +17,9 @@ public sealed partial class ThatProperty
 					typeof(AbstractClassWithMembers).GetProperty(nameof(AbstractClassWithMembers.VirtualProperty))!;
 
 				async Task Act()
-					=> await That(subject).IsSealed();
+				{
+					await That(subject).IsSealed();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage($"""
@@ -33,7 +35,9 @@ public sealed partial class ThatProperty
 				PropertyInfo? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsSealed();
+				{
+					await That(subject).IsSealed();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -50,7 +54,9 @@ public sealed partial class ThatProperty
 					typeof(ClassWithSealedMembers).GetProperty(nameof(ClassWithSealedMembers.VirtualProperty))!;
 
 				async Task Act()
-					=> await That(subject).IsSealed();
+				{
+					await That(subject).IsSealed();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -65,7 +71,9 @@ public sealed partial class ThatProperty
 					typeof(AbstractClassWithMembers).GetProperty(nameof(AbstractClassWithMembers.VirtualProperty))!;
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsSealed());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsSealed());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -77,7 +85,9 @@ public sealed partial class ThatProperty
 					typeof(ClassWithSealedMembers).GetProperty(nameof(ClassWithSealedMembers.VirtualProperty))!;
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsSealed());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsSealed());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

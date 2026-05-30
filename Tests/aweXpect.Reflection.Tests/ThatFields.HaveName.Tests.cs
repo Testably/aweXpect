@@ -15,7 +15,9 @@ public sealed partial class ThatFields
 				Filtered.Fields subject = GetTypes<ThatField.ClassWithFields>().Fields();
 
 				async Task Act()
-					=> await That(subject).HaveName("PublicField");
+				{
+					await That(subject).HaveName("PublicField");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -33,7 +35,9 @@ public sealed partial class ThatFields
 				Filtered.Fields subject = GetTypes<ThatField.ClassWithSingleField>().Fields();
 
 				async Task Act()
-					=> await That(subject).HaveName("MyField");
+				{
+					await That(subject).HaveName("MyField");
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -44,7 +48,9 @@ public sealed partial class ThatFields
 				Filtered.Fields subject = GetTypes<ThatField.ClassWithSingleField>().Fields();
 
 				async Task Act()
-					=> await That(subject).HaveName("mYfIELD").IgnoringCase();
+				{
+					await That(subject).HaveName("mYfIELD").IgnoringCase();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -55,7 +61,9 @@ public sealed partial class ThatFields
 				Filtered.Fields subject = GetTypes<ThatField.ClassWithFields>().Fields();
 
 				async Task Act()
-					=> await That(subject).HaveName("Field").AsSuffix();
+				{
+					await That(subject).HaveName("Field").AsSuffix();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -69,7 +77,9 @@ public sealed partial class ThatFields
 				Filtered.Fields subject = GetTypes<ThatField.ClassWithFields>().Fields();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.HaveName("NonExistentField"));
+				{
+					await That(subject).DoesNotComplyWith(they => they.HaveName("NonExistentField"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -80,7 +90,9 @@ public sealed partial class ThatFields
 				Filtered.Fields subject = GetTypes<ThatField.ClassWithSingleField>().Fields();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.HaveName("MyField"));
+				{
+					await That(subject).DoesNotComplyWith(they => they.HaveName("MyField"));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

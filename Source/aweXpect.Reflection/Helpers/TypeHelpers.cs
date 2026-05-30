@@ -29,9 +29,9 @@ internal static class TypeHelpers
 				                 BindingFlags.Static);
 		}
 		catch (Exception exception) when (exception
-			is TypeLoadException
-			or FileNotFoundException
-			or FileLoadException)
+			                                  is TypeLoadException
+			                                  or FileNotFoundException
+			                                  or FileLoadException)
 		{
 			return [];
 		}
@@ -52,9 +52,9 @@ internal static class TypeHelpers
 				           BindingFlags.Instance);
 		}
 		catch (Exception exception) when (exception
-			is TypeLoadException
-			or FileNotFoundException
-			or FileLoadException)
+			                                  is TypeLoadException
+			                                  or FileNotFoundException
+			                                  or FileLoadException)
 		{
 			return [];
 		}
@@ -79,9 +79,9 @@ internal static class TypeHelpers
 				.ToArray();
 		}
 		catch (Exception exception) when (exception
-			is TypeLoadException
-			or FileNotFoundException
-			or FileLoadException)
+			                                  is TypeLoadException
+			                                  or FileNotFoundException
+			                                  or FileLoadException)
 		{
 			return [];
 		}
@@ -106,9 +106,9 @@ internal static class TypeHelpers
 				.ToArray();
 		}
 		catch (Exception exception) when (exception
-			is TypeLoadException
-			or FileNotFoundException
-			or FileLoadException)
+			                                  is TypeLoadException
+			                                  or FileNotFoundException
+			                                  or FileLoadException)
 		{
 			return [];
 		}
@@ -133,9 +133,9 @@ internal static class TypeHelpers
 				.ToArray();
 		}
 		catch (Exception exception) when (exception
-			is TypeLoadException
-			or FileNotFoundException
-			or FileLoadException)
+			                                  is TypeLoadException
+			                                  or FileNotFoundException
+			                                  or FileLoadException)
 		{
 			return [];
 		}

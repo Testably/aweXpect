@@ -18,7 +18,9 @@ public sealed partial class ThatFields
 					           BindingFlags.DeclaredOnly);
 
 				async Task Act()
-					=> await That(subject).AreStatic();
+				{
+					await That(subject).AreStatic();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -37,7 +39,9 @@ public sealed partial class ThatFields
 					.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly);
 
 				async Task Act()
-					=> await That(subject).AreStatic();
+				{
+					await That(subject).AreStatic();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -53,7 +57,9 @@ public sealed partial class ThatFields
 					           BindingFlags.DeclaredOnly);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreStatic());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreStatic());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -65,7 +71,9 @@ public sealed partial class ThatFields
 					.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreStatic());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreStatic());
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""

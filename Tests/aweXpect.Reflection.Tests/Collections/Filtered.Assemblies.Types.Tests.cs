@@ -45,8 +45,10 @@ public sealed partial class Filtered
 				public async Task ShouldIncludeAbstractInformationInErrorMessage()
 				{
 					async Task Act()
-						=> await That(In.AllLoadedAssemblies().Types())
+					{
+						await That(In.AllLoadedAssemblies().Types())
 							.AreAbstract();
+					}
 
 					await That(Act).ThrowsException()
 						.WithMessage("""

@@ -16,7 +16,9 @@ public sealed partial class ThatTypes
 					.Types().WithNamespace("ToVerifyingTheNamespaceOfIt").AsSuffix();
 
 				async Task Act()
-					=> await That(subject).HaveNamespace("aweXpect.Reflection");
+				{
+					await That(subject).HaveNamespace("aweXpect.Reflection");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -35,8 +37,10 @@ public sealed partial class ThatTypes
 					.Types().WithNamespace("ToVerifyingTheNamespaceOfIt").AsSuffix();
 
 				async Task Act()
-					=> await That(subject)
+				{
+					await That(subject)
 						.HaveNamespace("aweXpect.Reflection.Tests.TestHelpers.Types.ToVerifyingTheNamespaceOfIt");
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -48,9 +52,11 @@ public sealed partial class ThatTypes
 					.Types().WithNamespace("ToVerifyingTheNamespaceOfIt").AsSuffix();
 
 				async Task Act()
-					=> await That(subject)
+				{
+					await That(subject)
 						.HaveNamespace("AWExPECT.rEFLECTION.tESTS.tESThELPERS.tYPES.tOvERIFYINGtHEnAMESPACEoFiT")
 						.IgnoringCase();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -62,7 +68,9 @@ public sealed partial class ThatTypes
 					.Types().WithNamespace("ToVerifyingTheNamespaceOfIt").AsSuffix();
 
 				async Task Act()
-					=> await That(subject).HaveNamespace("aweXpect.Reflection.Tests").AsPrefix();
+				{
+					await That(subject).HaveNamespace("aweXpect.Reflection.Tests").AsPrefix();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -77,7 +85,9 @@ public sealed partial class ThatTypes
 					.Types().WithNamespace("ToVerifyingTheNamespaceOfIt").AsSuffix();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.HaveNamespace("aweXpect.Reflection"));
+				{
+					await That(subject).DoesNotComplyWith(they => they.HaveNamespace("aweXpect.Reflection"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -89,9 +99,11 @@ public sealed partial class ThatTypes
 					.Types().WithNamespace("ToVerifyingTheNamespaceOfIt").AsSuffix();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they
+				{
+					await That(subject).DoesNotComplyWith(they
 						=> they.HaveNamespace(
 							"aweXpect.Reflection.Tests.TestHelpers.Types.ToVerifyingTheNamespaceOfIt"));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

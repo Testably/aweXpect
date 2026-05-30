@@ -20,7 +20,9 @@ public sealed partial class ThatProperty
 				PropertyInfo? subject = GetProperty(propertyName);
 
 				async Task Act()
-					=> await That(subject).IsNotProtected();
+				{
+					await That(subject).IsNotProtected();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -31,7 +33,9 @@ public sealed partial class ThatProperty
 				PropertyInfo? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsNotProtected();
+				{
+					await That(subject).IsNotProtected();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -47,7 +51,9 @@ public sealed partial class ThatProperty
 				PropertyInfo? subject = GetProperty("ProtectedProperty");
 
 				async Task Act()
-					=> await That(subject).IsNotProtected();
+				{
+					await That(subject).IsNotProtected();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -71,7 +77,9 @@ public sealed partial class ThatProperty
 				PropertyInfo? subject = GetProperty(propertyName);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotProtected());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotProtected());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("Expected that subject*")
@@ -84,7 +92,9 @@ public sealed partial class ThatProperty
 				PropertyInfo? subject = GetProperty("ProtectedProperty");
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotProtected());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotProtected());
+				}
 
 				await That(Act).DoesNotThrow();
 			}

@@ -16,7 +16,9 @@ public sealed partial class ThatTypes
 				Filtered.Types subject = In.AssemblyContaining<AreNotRecords>().Interfaces();
 
 				async Task Act()
-					=> await That(subject).AreNotRecords();
+				{
+					await That(subject).AreNotRecords();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -28,7 +30,9 @@ public sealed partial class ThatTypes
 					.Which(type => type.IsRecordClass());
 
 				async Task Act()
-					=> await That(subject).AreNotRecords();
+				{
+					await That(subject).AreNotRecords();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -49,7 +53,9 @@ public sealed partial class ThatTypes
 				Filtered.Types subject = In.AssemblyContaining<AreNotRecords>().Interfaces();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreNotRecords());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotRecords());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -68,7 +74,9 @@ public sealed partial class ThatTypes
 					.Which(type => type.IsRecordClass());
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreNotRecords());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotRecords());
+				}
 
 				await That(Act).DoesNotThrow();
 			}

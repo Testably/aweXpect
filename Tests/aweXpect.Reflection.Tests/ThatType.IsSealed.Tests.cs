@@ -14,7 +14,9 @@ public sealed partial class ThatType
 			public async Task WhenTypeIsNotSealed_ShouldFail(Type subject)
 			{
 				async Task Act()
-					=> await That(subject).IsSealed();
+				{
+					await That(subject).IsSealed();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage($"""
@@ -30,7 +32,9 @@ public sealed partial class ThatType
 				Type? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsSealed();
+				{
+					await That(subject).IsSealed();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -46,7 +50,9 @@ public sealed partial class ThatType
 				Type subject = typeof(PublicSealedClass);
 
 				async Task Act()
-					=> await That(subject).IsSealed();
+				{
+					await That(subject).IsSealed();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -68,7 +74,9 @@ public sealed partial class ThatType
 			public async Task WhenTypeIsNotSealed_ShouldSucceed(Type subject)
 			{
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsSealed());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsSealed());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -79,7 +87,9 @@ public sealed partial class ThatType
 				Type subject = typeof(PublicSealedClass);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsSealed());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsSealed());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("*is not sealed*but it was*").AsWildcard();

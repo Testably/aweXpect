@@ -16,7 +16,9 @@ public sealed partial class ThatTypes
 				Filtered.Types subject = In.AssemblyContaining<AttributeTests>().Types().With<FooAttribute>();
 
 				async Task Act()
-					=> await That(subject).Have<FooAttribute>();
+				{
+					await That(subject).Have<FooAttribute>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -28,7 +30,9 @@ public sealed partial class ThatTypes
 					.Which(type => type == typeof(FooChildClass2));
 
 				async Task Act()
-					=> await That(subject).Have<FooAttribute>();
+				{
+					await That(subject).Have<FooAttribute>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -40,7 +44,9 @@ public sealed partial class ThatTypes
 					.Which(type => type == typeof(FooChildClass2));
 
 				async Task Act()
-					=> await That(subject).Have<FooAttribute>(false);
+				{
+					await That(subject).Have<FooAttribute>(false);
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -59,7 +65,9 @@ public sealed partial class ThatTypes
 					.Which(type => type == typeof(FooClass2));
 
 				async Task Act()
-					=> await That(subject).Have<FooAttribute>(foo => foo.Value == 2);
+				{
+					await That(subject).Have<FooAttribute>(foo => foo.Value == 2);
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -71,7 +79,9 @@ public sealed partial class ThatTypes
 					.Which(type => type == typeof(FooChildClass2));
 
 				async Task Act()
-					=> await That(subject).Have<FooAttribute>(foo => foo.Value == 2);
+				{
+					await That(subject).Have<FooAttribute>(foo => foo.Value == 2);
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -83,7 +93,9 @@ public sealed partial class ThatTypes
 					.Which(type => type == typeof(FooChildClass2));
 
 				async Task Act()
-					=> await That(subject).Have<FooAttribute>(foo => foo.Value == 2, false);
+				{
+					await That(subject).Have<FooAttribute>(foo => foo.Value == 2, false);
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -102,7 +114,9 @@ public sealed partial class ThatTypes
 					.Which(type => type == typeof(FooClass2));
 
 				async Task Act()
-					=> await That(subject).Have<FooAttribute>(foo => foo.Value == 3);
+				{
+					await That(subject).Have<FooAttribute>(foo => foo.Value == 3);
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -121,7 +135,9 @@ public sealed partial class ThatTypes
 					.Which(type => type == typeof(FooChildClass2));
 
 				async Task Act()
-					=> await That(subject).Have<FooAttribute>(foo => foo.Value == 3);
+				{
+					await That(subject).Have<FooAttribute>(foo => foo.Value == 3);
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -159,7 +175,9 @@ public sealed partial class ThatTypes
 					List<Type> types = [typeof(FooBarClass),];
 
 					async Task Act()
-						=> await That(types).Have<FooAttribute>().OrHave<BarAttribute>();
+					{
+						await That(types).Have<FooAttribute>().OrHave<BarAttribute>();
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -170,7 +188,9 @@ public sealed partial class ThatTypes
 					List<Type> types = [typeof(FooClass),];
 
 					async Task Act()
-						=> await That(types).Have<FooAttribute>().OrHave<BarAttribute>();
+					{
+						await That(types).Have<FooAttribute>().OrHave<BarAttribute>();
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -181,7 +201,9 @@ public sealed partial class ThatTypes
 					List<Type> types = [typeof(FooClass2),];
 
 					async Task Act()
-						=> await That(types).Have<FooAttribute>(foo => foo.Value == 2).OrHave<BarAttribute>();
+					{
+						await That(types).Have<FooAttribute>(foo => foo.Value == 2).OrHave<BarAttribute>();
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -192,8 +214,10 @@ public sealed partial class ThatTypes
 					List<Type> types = [typeof(BarClass3),];
 
 					async Task Act()
-						=> await That(types).Have<FooAttribute>(foo => foo.Value == 5)
+					{
+						await That(types).Have<FooAttribute>(foo => foo.Value == 5)
 							.OrHave<BarAttribute>(bar => bar.Name == "test");
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -204,7 +228,9 @@ public sealed partial class ThatTypes
 					List<Type> types = [typeof(BazClass),];
 
 					async Task Act()
-						=> await That(types).Have<FooAttribute>().OrHave<BarAttribute>();
+					{
+						await That(types).Have<FooAttribute>().OrHave<BarAttribute>();
+					}
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -222,7 +248,9 @@ public sealed partial class ThatTypes
 					List<Type> types = [typeof(BarClass),];
 
 					async Task Act()
-						=> await That(types).Have<FooAttribute>().OrHave<BarAttribute>();
+					{
+						await That(types).Have<FooAttribute>().OrHave<BarAttribute>();
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -233,7 +261,9 @@ public sealed partial class ThatTypes
 					List<Type> types = [typeof(FooChildClass),];
 
 					async Task Act()
-						=> await That(types).Have<FooAttribute>().OrHave<BarAttribute>();
+					{
+						await That(types).Have<FooAttribute>().OrHave<BarAttribute>();
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -244,7 +274,9 @@ public sealed partial class ThatTypes
 					List<Type> types = [typeof(FooChildClass),];
 
 					async Task Act()
-						=> await That(types).Have<FooAttribute>(false).OrHave<BarAttribute>(false);
+					{
+						await That(types).Have<FooAttribute>(false).OrHave<BarAttribute>(false);
+					}
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -262,8 +294,10 @@ public sealed partial class ThatTypes
 					List<Type> types = [typeof(FooClass2),];
 
 					async Task Act()
-						=> await That(types).Have<FooAttribute>(foo => foo.Value == 5)
+					{
+						await That(types).Have<FooAttribute>(foo => foo.Value == 5)
 							.OrHave<BarAttribute>(bar => bar.Name == "test");
+					}
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -285,8 +319,10 @@ public sealed partial class ThatTypes
 				List<Type> subjects = [typeof(FooClass2),];
 
 				async Task Act()
-					=> await That(subjects).DoesNotComplyWith(they
+				{
+					await That(subjects).DoesNotComplyWith(they
 						=> they.Have<FooAttribute>().OrHave<BarAttribute>(x => x.Name == "foo"));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -304,7 +340,9 @@ public sealed partial class ThatTypes
 				List<Type> subjects = [typeof(BazClass),];
 
 				async Task Act()
-					=> await That(subjects).DoesNotComplyWith(they => they.Have<FooAttribute>());
+				{
+					await That(subjects).DoesNotComplyWith(they => they.Have<FooAttribute>());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -315,8 +353,10 @@ public sealed partial class ThatTypes
 				List<Type> subjects = [typeof(FooClass2),];
 
 				async Task Act()
-					=> await That(subjects).DoesNotComplyWith(they
+				{
+					await That(subjects).DoesNotComplyWith(they
 						=> they.Have<FooAttribute>(attr => attr.Value == 3));
+				}
 
 				await That(Act).DoesNotThrow();
 			}

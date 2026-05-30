@@ -16,12 +16,13 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInt))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInt))!,
 				};
 
 				async Task Act()
-					=> await That(methods).HaveParameter("value");
+				{
+					await That(methods).HaveParameter("value");
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -36,7 +37,9 @@ public sealed partial class ThatMethods
 				};
 
 				async Task Act()
-					=> await That(methods).HaveParameter("value");
+				{
+					await That(methods).HaveParameter("value");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -51,12 +54,29 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInt))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInt))!,
 				};
 
 				async Task Act()
-					=> await That(methods).HaveParameter<int>();
+				{
+					await That(methods).HaveParameter<int>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task HaveParameterByType_WhenAllHaveSubtypeParameter_ShouldSucceed()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithStream))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithMemoryStream))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveParameter<IDisposable>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -66,12 +86,13 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithString))!, // No int parameter
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithString))!, // No int parameter
 				};
 
 				async Task Act()
-					=> await That(methods).HaveParameter<int>();
+				{
+					await That(methods).HaveParameter<int>();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -82,31 +103,17 @@ public sealed partial class ThatMethods
 			}
 
 			[Fact]
-			public async Task HaveParameterByType_WhenAllHaveSubtypeParameter_ShouldSucceed()
-			{
-				IEnumerable<MethodInfo> methods = new[]
-				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithStream))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithMemoryStream))!,
-				};
-
-				async Task Act()
-					=> await That(methods).HaveParameter<IDisposable>();
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task HaveParameterByTypeAndName_WhenAllHaveParameter_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInt))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInt))!,
 				};
 
 				async Task Act()
-					=> await That(methods).HaveParameter<int>("value");
+				{
+					await That(methods).HaveParameter<int>("value");
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -121,7 +128,9 @@ public sealed partial class ThatMethods
 				};
 
 				async Task Act()
-					=> await That(methods).HaveParameter<int>("value");
+				{
+					await That(methods).HaveParameter<int>("value");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -154,12 +163,13 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInt))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInt))!,
 				};
 
 				async Task Act()
-					=> await That(methods).DoesNotComplyWith(they => they.HaveParameter("value"));
+				{
+					await That(methods).DoesNotComplyWith(they => they.HaveParameter("value"));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -179,7 +189,9 @@ public sealed partial class ThatMethods
 				};
 
 				async Task Act()
-					=> await That(methods).DoesNotComplyWith(they => they.HaveParameter("value"));
+				{
+					await That(methods).DoesNotComplyWith(they => they.HaveParameter("value"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -189,12 +201,13 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInt))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInt))!,
 				};
 
 				async Task Act()
-					=> await That(methods).DoesNotComplyWith(they => they.HaveParameter<int>());
+				{
+					await That(methods).DoesNotComplyWith(they => they.HaveParameter<int>());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -209,12 +222,13 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithString))!, // No int parameter
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithString))!, // No int parameter
 				};
 
 				async Task Act()
-					=> await That(methods).DoesNotComplyWith(they => they.HaveParameter<int>());
+				{
+					await That(methods).DoesNotComplyWith(they => they.HaveParameter<int>());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -224,12 +238,13 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInt))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInt))!,
 				};
 
 				async Task Act()
-					=> await That(methods).DoesNotComplyWith(they => they.HaveParameter<int>("value"));
+				{
+					await That(methods).DoesNotComplyWith(they => they.HaveParameter<int>("value"));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -249,7 +264,9 @@ public sealed partial class ThatMethods
 				};
 
 				async Task Act()
-					=> await That(methods).DoesNotComplyWith(they => they.HaveParameter<int>("value"));
+				{
+					await That(methods).DoesNotComplyWith(they => they.HaveParameter<int>("value"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -282,7 +299,9 @@ public sealed partial class ThatMethods
 				};
 
 				async Task Act()
-					=> await That(methods).HaveParameter("na").AsPrefix();
+				{
+					await That(methods).HaveParameter("na").AsPrefix();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -297,7 +316,9 @@ public sealed partial class ThatMethods
 				};
 
 				async Task Act()
-					=> await That(methods).HaveParameter("n.*e").AsRegex();
+				{
+					await That(methods).HaveParameter("n.*e").AsRegex();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -312,7 +333,9 @@ public sealed partial class ThatMethods
 				};
 
 				async Task Act()
-					=> await That(methods).HaveParameter("me").AsSuffix();
+				{
+					await That(methods).HaveParameter("me").AsSuffix();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -327,7 +350,9 @@ public sealed partial class ThatMethods
 				};
 
 				async Task Act()
-					=> await That(methods).HaveParameter("n*e").AsWildcard();
+				{
+					await That(methods).HaveParameter("n*e").AsWildcard();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -342,7 +367,9 @@ public sealed partial class ThatMethods
 				};
 
 				async Task Act()
-					=> await That(methods).HaveParameter<int>().AtIndex(0);
+				{
+					await That(methods).HaveParameter<int>().AtIndex(0);
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -357,7 +384,9 @@ public sealed partial class ThatMethods
 				};
 
 				async Task Act()
-					=> await That(methods).HaveParameter<int>().AtIndex(0);
+				{
+					await That(methods).HaveParameter<int>().AtIndex(0);
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -379,7 +408,9 @@ public sealed partial class ThatMethods
 				};
 
 				async Task Act()
-					=> await That(methods).HaveParameter<string>().AtIndex(0).FromEnd();
+				{
+					await That(methods).HaveParameter<string>().AtIndex(0).FromEnd();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -394,7 +425,9 @@ public sealed partial class ThatMethods
 				};
 
 				async Task Act()
-					=> await That(methods).HaveParameter("NAME").IgnoringCase();
+				{
+					await That(methods).HaveParameter("NAME").IgnoringCase();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -409,7 +442,9 @@ public sealed partial class ThatMethods
 				};
 
 				async Task Act()
-					=> await That(methods).HaveParameter<bool>().WithDefaultValue();
+				{
+					await That(methods).HaveParameter<bool>().WithDefaultValue();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -424,7 +459,9 @@ public sealed partial class ThatMethods
 				};
 
 				async Task Act()
-					=> await That(methods).HaveParameter<int>().WithoutDefaultValue();
+				{
+					await That(methods).HaveParameter<int>().WithoutDefaultValue();
+				}
 
 				await That(Act).DoesNotThrow();
 			}

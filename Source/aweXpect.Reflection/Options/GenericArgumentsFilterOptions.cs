@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using aweXpect.Options;
-using aweXpect.Reflection.Helpers;
 
 namespace aweXpect.Reflection.Options;
 

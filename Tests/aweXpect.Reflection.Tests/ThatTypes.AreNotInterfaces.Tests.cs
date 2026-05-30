@@ -15,7 +15,9 @@ public sealed partial class ThatTypes
 				Filtered.Types subject = In.AssemblyContaining<AreNotInterfaces>().Enums();
 
 				async Task Act()
-					=> await That(subject).AreNotInterfaces();
+				{
+					await That(subject).AreNotInterfaces();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -27,7 +29,9 @@ public sealed partial class ThatTypes
 					.Which(type => type.IsInterface);
 
 				async Task Act()
-					=> await That(subject).AreNotInterfaces();
+				{
+					await That(subject).AreNotInterfaces();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -48,7 +52,9 @@ public sealed partial class ThatTypes
 				Filtered.Types subject = In.AssemblyContaining<AreNotInterfaces>().Enums();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreNotInterfaces());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotInterfaces());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -67,7 +73,9 @@ public sealed partial class ThatTypes
 					.Which(type => type.IsInterface);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreNotInterfaces());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotInterfaces());
+				}
 
 				await That(Act).DoesNotThrow();
 			}

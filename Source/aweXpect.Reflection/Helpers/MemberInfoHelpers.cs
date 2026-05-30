@@ -56,7 +56,7 @@ internal static class MemberInfoHelpers
 		{
 			return AccessModifiers.PrivateProtected;
 		}
-		
+
 		if (memberInfo.HasAccessModifier(AccessModifiers.Private))
 		{
 			return AccessModifiers.Private;

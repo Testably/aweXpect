@@ -17,7 +17,9 @@ public sealed partial class ThatMethod
 					typeof(AbstractClassWithMembers).GetMethod(nameof(AbstractClassWithMembers.AbstractMethod))!;
 
 				async Task Act()
-					=> await That(subject).IsAbstract();
+				{
+					await That(subject).IsAbstract();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -29,7 +31,9 @@ public sealed partial class ThatMethod
 					typeof(AbstractClassWithMembers).GetMethod(nameof(AbstractClassWithMembers.VirtualMethod))!;
 
 				async Task Act()
-					=> await That(subject).IsAbstract();
+				{
+					await That(subject).IsAbstract();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage($"""
@@ -45,7 +49,9 @@ public sealed partial class ThatMethod
 				MethodInfo? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsAbstract();
+				{
+					await That(subject).IsAbstract();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -65,7 +71,9 @@ public sealed partial class ThatMethod
 					typeof(AbstractClassWithMembers).GetMethod(nameof(AbstractClassWithMembers.AbstractMethod))!;
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsAbstract());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsAbstract());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -82,7 +90,9 @@ public sealed partial class ThatMethod
 					typeof(AbstractClassWithMembers).GetMethod(nameof(AbstractClassWithMembers.VirtualMethod))!;
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsAbstract());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsAbstract());
+				}
 
 				await That(Act).DoesNotThrow();
 			}

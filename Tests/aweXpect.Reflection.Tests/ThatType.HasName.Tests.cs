@@ -15,7 +15,9 @@ public sealed partial class ThatType
 				Type subject = typeof(PublicAbstractClass);
 
 				async Task Act()
-					=> await That(subject).HasName("Abstract");
+				{
+					await That(subject).HasName("Abstract");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -35,7 +37,9 @@ public sealed partial class ThatType
 				Type subject = typeof(PublicAbstractClass);
 
 				async Task Act()
-					=> await That(subject).HasName("PublicAbstract").AsPrefix();
+				{
+					await That(subject).HasName("PublicAbstract").AsPrefix();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -46,7 +50,9 @@ public sealed partial class ThatType
 				Type subject = typeof(PublicAbstractClass);
 
 				async Task Act()
-					=> await That(subject).HasName("PublicAbstractClass");
+				{
+					await That(subject).HasName("PublicAbstractClass");
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -57,7 +63,9 @@ public sealed partial class ThatType
 				Type? subject = null;
 
 				async Task Act()
-					=> await That(subject).HasName("foo");
+				{
+					await That(subject).HasName("foo");
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -73,7 +81,9 @@ public sealed partial class ThatType
 				Type subject = typeof(PublicAbstractClass);
 
 				async Task Act()
-					=> await That(subject).HasName("pUBLICaBSTRACTcLASS").IgnoringCase();
+				{
+					await That(subject).HasName("pUBLICaBSTRACTcLASS").IgnoringCase();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -87,7 +97,9 @@ public sealed partial class ThatType
 				Type subject = typeof(PublicAbstractClass);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.HasName("NonExistentClass"));
+				{
+					await That(subject).DoesNotComplyWith(it => it.HasName("NonExistentClass"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -98,7 +110,9 @@ public sealed partial class ThatType
 				Type subject = typeof(PublicAbstractClass);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.HasName("PublicAbstractClass"));
+				{
+					await That(subject).DoesNotComplyWith(it => it.HasName("PublicAbstractClass"));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

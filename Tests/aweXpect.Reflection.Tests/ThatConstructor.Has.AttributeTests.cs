@@ -15,7 +15,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo subject = typeof(TestClass).GetConstructor(Type.EmptyTypes)!;
 
 				async Task Act()
-					=> await That(subject).Has<TestAttribute>();
+				{
+					await That(subject).Has<TestAttribute>();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -31,7 +33,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo subject = typeof(TestClass).GetConstructor([typeof(string),])!;
 
 				async Task Act()
-					=> await That(subject).Has<TestAttribute>();
+				{
+					await That(subject).Has<TestAttribute>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -42,7 +46,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo subject = typeof(TestClass).GetConstructor([typeof(string),])!;
 
 				async Task Act()
-					=> await That(subject).Has<TestAttribute>(attr => attr.Value == "ConstructorValue");
+				{
+					await That(subject).Has<TestAttribute>(attr => attr.Value == "ConstructorValue");
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -53,7 +59,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo subject = typeof(TestClass).GetConstructor([typeof(string),])!;
 
 				async Task Act()
-					=> await That(subject).Has<TestAttribute>(attr => attr.Value == "WrongValue");
+				{
+					await That(subject).Has<TestAttribute>(attr => attr.Value == "WrongValue");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -69,7 +77,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo? subject = null;
 
 				async Task Act()
-					=> await That(subject).Has<TestAttribute>();
+				{
+					await That(subject).Has<TestAttribute>();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -107,7 +117,9 @@ public sealed partial class ThatConstructor
 					ConstructorInfo subject = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
 
 					async Task Act()
-						=> await That(subject).Has<FooAttribute>().OrHas<BarAttribute>();
+					{
+						await That(subject).Has<FooAttribute>().OrHas<BarAttribute>();
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -118,7 +130,9 @@ public sealed partial class ThatConstructor
 					ConstructorInfo subject = typeof(TestClass).GetConstructor([typeof(int),])!;
 
 					async Task Act()
-						=> await That(subject).Has<FooAttribute>().OrHas<BarAttribute>();
+					{
+						await That(subject).Has<FooAttribute>().OrHas<BarAttribute>();
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -129,8 +143,10 @@ public sealed partial class ThatConstructor
 					ConstructorInfo subject = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
 
 					async Task Act()
-						=> await That(subject).Has<FooAttribute>(foo => foo.Value == 1)
+					{
+						await That(subject).Has<FooAttribute>(foo => foo.Value == 1)
 							.OrHas<BarAttribute>(bar => bar.Name == "does-not-match");
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -141,8 +157,10 @@ public sealed partial class ThatConstructor
 					ConstructorInfo subject = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
 
 					async Task Act()
-						=> await That(subject).Has<FooAttribute>(foo => foo.Value == int.MaxValue)
+					{
+						await That(subject).Has<FooAttribute>(foo => foo.Value == int.MaxValue)
 							.OrHas<BarAttribute>(bar => bar.Name == "foo");
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -153,7 +171,9 @@ public sealed partial class ThatConstructor
 					ConstructorInfo subject = typeof(TestClass).GetConstructor(Type.EmptyTypes)!;
 
 					async Task Act()
-						=> await That(subject).Has<FooAttribute>().OrHas<BarAttribute>();
+					{
+						await That(subject).Has<FooAttribute>().OrHas<BarAttribute>();
+					}
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -169,7 +189,9 @@ public sealed partial class ThatConstructor
 					ConstructorInfo subject = typeof(TestClass).GetConstructor([typeof(string),])!;
 
 					async Task Act()
-						=> await That(subject).Has<FooAttribute>().OrHas<BarAttribute>();
+					{
+						await That(subject).Has<FooAttribute>().OrHas<BarAttribute>();
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -180,8 +202,10 @@ public sealed partial class ThatConstructor
 					ConstructorInfo subject = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
 
 					async Task Act()
-						=> await That(subject).Has<FooAttribute>(foo => foo.Value == 42)
+					{
+						await That(subject).Has<FooAttribute>(foo => foo.Value == 42)
 							.OrHas<BarAttribute>(bar => bar.Name == "does-not-match");
+					}
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -232,7 +256,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo subject = typeof(TestClass).GetConstructor(Type.EmptyTypes)!;
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+				{
+					await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -243,8 +269,10 @@ public sealed partial class ThatConstructor
 				ConstructorInfo subject = typeof(TestClass).GetConstructor([typeof(string),])!;
 
 				async Task Act()
-					=> await That(subject)
+				{
+					await That(subject)
 						.DoesNotComplyWith(it => it.Has<TestAttribute>(attr => attr.Value == "NonExistent"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -255,7 +283,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo subject = typeof(TestClass).GetConstructor([typeof(string),])!;
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+				{
+					await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

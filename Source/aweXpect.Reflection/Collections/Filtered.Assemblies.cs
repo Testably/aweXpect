@@ -76,6 +76,22 @@ public static partial class Filtered
 		/// </summary>
 		public ITypeAssemblies Internal => NewBuilder(MemberFilterState.Empty.WithAccess(AccessModifiers.Internal));
 
+		/// <inheritdoc />
+		public string GetDescription()
+		{
+			string description = _description;
+			foreach (IFilter<Assembly> filter in Filters)
+			{
+				description = filter.Describes(description);
+			}
+
+			return description;
+		}
+
+		/// <inheritdoc cref="ITypeAssemblies.IPrivate.Protected" />
+		ITypeAssemblies ITypeAssemblies.IPrivate.Protected
+			=> NewBuilder(MemberFilterState.Empty.WithAccess(AccessModifiers.PrivateProtected));
+
 		/// <inheritdoc cref="ITypeAssemblies.Abstract" />
 		public ILimitedAbstractSealedTypeAssemblies<ILimitedAbstractSealedTypeAssemblies> Abstract
 			=> NewBuilder(MemberFilterState.Empty).Abstract;
@@ -94,25 +110,9 @@ public static partial class Filtered
 		/// <inheritdoc cref="ILimitedStaticTypeAssemblies{TLimitedTypeAssemblies}.Nested" />
 		public ITypeAssemblies Nested => NewBuilder(MemberFilterState.Empty).Nested;
 
-		/// <inheritdoc cref="ITypeAssemblies.IPrivate.Protected" />
-		ITypeAssemblies ITypeAssemblies.IPrivate.Protected
-			=> NewBuilder(MemberFilterState.Empty.WithAccess(AccessModifiers.PrivateProtected));
-
 		/// <inheritdoc cref="ITypeAssemblies.IProtected.Internal" />
 		ITypeAssemblies ITypeAssemblies.IProtected.Internal
 			=> NewBuilder(MemberFilterState.Empty.WithAccess(AccessModifiers.ProtectedInternal));
-
-		/// <inheritdoc />
-		public string GetDescription()
-		{
-			string description = _description;
-			foreach (IFilter<Assembly> filter in Filters)
-			{
-				description = filter.Describes(description);
-			}
-
-			return description;
-		}
 
 		/// <inheritdoc cref="ILimitedStaticTypeAssemblies.Types(AccessModifiers)" />
 		public Types Types(AccessModifiers accessModifier = AccessModifiers.Any)

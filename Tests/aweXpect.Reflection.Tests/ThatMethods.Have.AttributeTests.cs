@@ -19,7 +19,9 @@ public sealed partial class ThatMethods
 				};
 
 				async Task Act()
-					=> await That(subject).Have<TestAttribute>();
+				{
+					await That(subject).Have<TestAttribute>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -33,7 +35,9 @@ public sealed partial class ThatMethods
 				};
 
 				async Task Act()
-					=> await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Method"));
+				{
+					await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Method"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -47,7 +51,9 @@ public sealed partial class ThatMethods
 				};
 
 				async Task Act()
-					=> await That(subject).Have<TestAttribute>();
+				{
+					await That(subject).Have<TestAttribute>();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -68,7 +74,9 @@ public sealed partial class ThatMethods
 				};
 
 				async Task Act()
-					=> await That(subject).Have<TestAttribute>(attr => attr.Value == "WrongValue");
+				{
+					await That(subject).Have<TestAttribute>(attr => attr.Value == "WrongValue");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -114,7 +122,9 @@ public sealed partial class ThatMethods
 					};
 
 					async Task Act()
-						=> await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+					{
+						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -128,7 +138,9 @@ public sealed partial class ThatMethods
 					};
 
 					async Task Act()
-						=> await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+					{
+						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -142,8 +154,10 @@ public sealed partial class ThatMethods
 					};
 
 					async Task Act()
-						=> await That(subject).Have<TestAttribute>(attr => attr.Value == "Method1Value")
+					{
+						await That(subject).Have<TestAttribute>(attr => attr.Value == "Method1Value")
 							.OrHave<BarAttribute>();
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -157,8 +171,10 @@ public sealed partial class ThatMethods
 					};
 
 					async Task Act()
-						=> await That(subject).Have<TestAttribute>(attr => attr.Value == "NonExistent")
+					{
+						await That(subject).Have<TestAttribute>(attr => attr.Value == "NonExistent")
 							.OrHave<BarAttribute>(attr => attr.Name == "bar");
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -172,7 +188,9 @@ public sealed partial class ThatMethods
 					};
 
 					async Task Act()
-						=> await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+					{
+						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+					}
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -193,7 +211,9 @@ public sealed partial class ThatMethods
 					};
 
 					async Task Act()
-						=> await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+					{
+						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -207,8 +227,10 @@ public sealed partial class ThatMethods
 					};
 
 					async Task Act()
-						=> await That(subject).Have<TestAttribute>(attr => attr.Value == "WrongValue")
+					{
+						await That(subject).Have<TestAttribute>(attr => attr.Value == "WrongValue")
 							.OrHave<BarAttribute>(attr => attr.Name == "wrong");
+					}
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -262,7 +284,9 @@ public sealed partial class ThatMethods
 				};
 
 				async Task Act()
-					=> await That(subjects).DoesNotComplyWith(they => they.Have<TestAttribute>());
+				{
+					await That(subjects).DoesNotComplyWith(they => they.Have<TestAttribute>());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -276,8 +300,10 @@ public sealed partial class ThatMethods
 				};
 
 				async Task Act()
-					=> await That(subjects).DoesNotComplyWith(they
+				{
+					await That(subjects).DoesNotComplyWith(they
 						=> they.Have<TestAttribute>(attr => attr.Value == "NonExistent"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -291,8 +317,10 @@ public sealed partial class ThatMethods
 				};
 
 				async Task Act()
-					=> await That(subjects).DoesNotComplyWith(they
+				{
+					await That(subjects).DoesNotComplyWith(they
 						=> they.Have<TestAttribute>().OrHave<TestAttribute>(x => x.Value == "foo"));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

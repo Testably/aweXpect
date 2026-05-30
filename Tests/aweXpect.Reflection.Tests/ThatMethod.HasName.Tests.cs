@@ -16,7 +16,9 @@ public sealed partial class ThatMethod
 					typeof(ClassWithMethods).GetMethod(nameof(ClassWithMethods.PublicMethod));
 
 				async Task Act()
-					=> await That(subject).HasName("Method");
+				{
+					await That(subject).HasName("Method");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -37,7 +39,9 @@ public sealed partial class ThatMethod
 					typeof(ClassWithMethods).GetMethod(nameof(ClassWithMethods.PublicMethod));
 
 				async Task Act()
-					=> await That(subject).HasName("Public").AsPrefix();
+				{
+					await That(subject).HasName("Public").AsPrefix();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -49,7 +53,9 @@ public sealed partial class ThatMethod
 					typeof(ClassWithMethods).GetMethod(nameof(ClassWithMethods.PublicMethod));
 
 				async Task Act()
-					=> await That(subject).HasName("PublicMethod");
+				{
+					await That(subject).HasName("PublicMethod");
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -60,7 +66,9 @@ public sealed partial class ThatMethod
 				MethodInfo? subject = null;
 
 				async Task Act()
-					=> await That(subject).HasName("foo");
+				{
+					await That(subject).HasName("foo");
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -77,7 +85,9 @@ public sealed partial class ThatMethod
 					typeof(ClassWithMethods).GetMethod(nameof(ClassWithMethods.PublicMethod));
 
 				async Task Act()
-					=> await That(subject).HasName("pUBLICmethod").IgnoringCase();
+				{
+					await That(subject).HasName("pUBLICmethod").IgnoringCase();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -92,7 +102,9 @@ public sealed partial class ThatMethod
 					typeof(ClassWithMethods).GetMethod(nameof(ClassWithMethods.PublicMethod));
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.HasName("NonExistentMethod"));
+				{
+					await That(subject).DoesNotComplyWith(it => it.HasName("NonExistentMethod"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -104,7 +116,9 @@ public sealed partial class ThatMethod
 					typeof(ClassWithMethods).GetMethod(nameof(ClassWithMethods.PublicMethod));
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.HasName("PublicMethod"));
+				{
+					await That(subject).DoesNotComplyWith(it => it.HasName("PublicMethod"));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

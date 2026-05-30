@@ -16,7 +16,9 @@ public sealed partial class ThatProperty
 					typeof(ClassWithProperties).GetProperty(nameof(ClassWithProperties.PublicProperty));
 
 				async Task Act()
-					=> await That(subject).HasName("Property");
+				{
+					await That(subject).HasName("Property");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -37,7 +39,9 @@ public sealed partial class ThatProperty
 					typeof(ClassWithProperties).GetProperty(nameof(ClassWithProperties.PublicProperty));
 
 				async Task Act()
-					=> await That(subject).HasName("Public").AsPrefix();
+				{
+					await That(subject).HasName("Public").AsPrefix();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -49,7 +53,9 @@ public sealed partial class ThatProperty
 					typeof(ClassWithProperties).GetProperty(nameof(ClassWithProperties.PublicProperty));
 
 				async Task Act()
-					=> await That(subject).HasName("PublicProperty");
+				{
+					await That(subject).HasName("PublicProperty");
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -60,7 +66,9 @@ public sealed partial class ThatProperty
 				PropertyInfo? subject = null;
 
 				async Task Act()
-					=> await That(subject).HasName("foo");
+				{
+					await That(subject).HasName("foo");
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -77,7 +85,9 @@ public sealed partial class ThatProperty
 					typeof(ClassWithProperties).GetProperty(nameof(ClassWithProperties.PublicProperty));
 
 				async Task Act()
-					=> await That(subject).HasName("pUBLICpROPERTY").IgnoringCase();
+				{
+					await That(subject).HasName("pUBLICpROPERTY").IgnoringCase();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -92,7 +102,9 @@ public sealed partial class ThatProperty
 					typeof(ClassWithProperties).GetProperty(nameof(ClassWithProperties.PublicProperty));
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.HasName("NonExistentProperty"));
+				{
+					await That(subject).DoesNotComplyWith(it => it.HasName("NonExistentProperty"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -104,7 +116,9 @@ public sealed partial class ThatProperty
 					typeof(ClassWithProperties).GetProperty(nameof(ClassWithProperties.PublicProperty));
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.HasName("PublicProperty"));
+				{
+					await That(subject).DoesNotComplyWith(it => it.HasName("PublicProperty"));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

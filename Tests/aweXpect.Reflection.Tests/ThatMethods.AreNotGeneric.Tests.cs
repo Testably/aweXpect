@@ -14,7 +14,9 @@ public sealed partial class ThatMethods
 				Filtered.Methods subject = GetMethods("GenericMethod");
 
 				async Task Act()
-					=> await That(subject).AreNotGeneric();
+				{
+					await That(subject).AreNotGeneric();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -32,7 +34,9 @@ public sealed partial class ThatMethods
 				Filtered.Methods subject = GetMethods("NonGenericMethod");
 
 				async Task Act()
-					=> await That(subject).AreNotGeneric();
+				{
+					await That(subject).AreNotGeneric();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -46,7 +50,9 @@ public sealed partial class ThatMethods
 				Filtered.Methods subject = GetMethods("GenericMethod");
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreNotGeneric());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotGeneric());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -57,7 +63,9 @@ public sealed partial class ThatMethods
 				Filtered.Methods subject = GetMethods("NonGenericMethod");
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreNotGeneric());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotGeneric());
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""

@@ -16,7 +16,9 @@ public sealed partial class ThatTypes
 					.Types().WithName("Some").AsPrefix();
 
 				async Task Act()
-					=> await That(subject).HaveName("SomeOtherClassName");
+				{
+					await That(subject).HaveName("SomeOtherClassName");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -35,7 +37,9 @@ public sealed partial class ThatTypes
 					.Types().WithName(nameof(SomeClassToTestHaveNameForTypes));
 
 				async Task Act()
-					=> await That(subject).HaveName("SomeClassToTestHaveNameForTypes");
+				{
+					await That(subject).HaveName("SomeClassToTestHaveNameForTypes");
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -47,7 +51,9 @@ public sealed partial class ThatTypes
 					.Types().WithName(nameof(SomeClassToTestHaveNameForTypes));
 
 				async Task Act()
-					=> await That(subject).HaveName("sOMEcLASStOtESThAVEnAMEfORtYPES").IgnoringCase();
+				{
+					await That(subject).HaveName("sOMEcLASStOtESThAVEnAMEfORtYPES").IgnoringCase();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -59,7 +65,9 @@ public sealed partial class ThatTypes
 					.Types().WithName(nameof(SomeClassToTestHaveNameForTypes));
 
 				async Task Act()
-					=> await That(subject).HaveName("SomeClass").AsPrefix();
+				{
+					await That(subject).HaveName("SomeClass").AsPrefix();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -76,7 +84,9 @@ public sealed partial class ThatTypes
 					.Types().WithName("Some").AsPrefix();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.HaveName("SomeOtherClassName"));
+				{
+					await That(subject).DoesNotComplyWith(they => they.HaveName("SomeOtherClassName"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -88,7 +98,9 @@ public sealed partial class ThatTypes
 					.Types().WithName("SomeClassToTestHaveNameForTypes");
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.HaveName("SomeClassToTestHaveNameForTypes"));
+				{
+					await That(subject).DoesNotComplyWith(they => they.HaveName("SomeClassToTestHaveNameForTypes"));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

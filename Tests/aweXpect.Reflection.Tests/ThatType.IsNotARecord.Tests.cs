@@ -15,7 +15,9 @@ public sealed partial class ThatType
 				Type subject = typeof(PublicRecord);
 
 				async Task Act()
-					=> await That(subject).IsNotARecord();
+				{
+					await That(subject).IsNotARecord();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -30,7 +32,9 @@ public sealed partial class ThatType
 			public async Task WhenTypeIsNotARecord_ShouldSucceed(Type subject)
 			{
 				async Task Act()
-					=> await That(subject).IsNotARecord();
+				{
+					await That(subject).IsNotARecord();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -41,7 +45,9 @@ public sealed partial class ThatType
 				Type? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsNotARecord();
+				{
+					await That(subject).IsNotARecord();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -70,7 +76,9 @@ public sealed partial class ThatType
 				Type subject = typeof(PublicRecord);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotARecord());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotARecord());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -80,7 +88,9 @@ public sealed partial class ThatType
 			public async Task WhenTypeIsNotARecord_ShouldFail(Type subject)
 			{
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotARecord());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotARecord());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("*is a record*but it was*").AsWildcard();

@@ -18,7 +18,9 @@ public sealed partial class ThatEvents
 					.GetEvents(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
 				async Task Act()
-					=> await That(subject).AreAbstract();
+				{
+					await That(subject).AreAbstract();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -38,7 +40,9 @@ public sealed partial class ThatEvents
 					.Where(e => e.Name == nameof(AbstractClassWithMembers.AbstractEvent));
 
 				async Task Act()
-					=> await That(subject).AreAbstract();
+				{
+					await That(subject).AreAbstract();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -53,7 +57,9 @@ public sealed partial class ThatEvents
 					.GetEvents(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreAbstract());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreAbstract());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -66,7 +72,9 @@ public sealed partial class ThatEvents
 					.Where(e => e.Name == nameof(AbstractClassWithMembers.AbstractEvent));
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreAbstract());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreAbstract());
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""

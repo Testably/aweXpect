@@ -20,7 +20,9 @@ public sealed partial class ThatField
 				FieldInfo? subject = GetField(fieldName);
 
 				async Task Act()
-					=> await That(subject).IsNotProtectedInternal();
+				{
+					await That(subject).IsNotProtectedInternal();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -31,7 +33,9 @@ public sealed partial class ThatField
 				FieldInfo? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsNotProtectedInternal();
+				{
+					await That(subject).IsNotProtectedInternal();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -47,7 +51,9 @@ public sealed partial class ThatField
 				FieldInfo? subject = GetField("ProtectedInternalField");
 
 				async Task Act()
-					=> await That(subject).IsNotProtectedInternal();
+				{
+					await That(subject).IsNotProtectedInternal();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -71,7 +77,9 @@ public sealed partial class ThatField
 				FieldInfo? subject = GetField(fieldName);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotProtectedInternal());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotProtectedInternal());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -87,7 +95,9 @@ public sealed partial class ThatField
 				FieldInfo? subject = GetField("ProtectedInternalField");
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotProtectedInternal());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotProtectedInternal());
+				}
 
 				await That(Act).DoesNotThrow();
 			}

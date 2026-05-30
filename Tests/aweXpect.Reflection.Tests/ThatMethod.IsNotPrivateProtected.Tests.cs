@@ -20,7 +20,9 @@ public sealed partial class ThatMethod
 				MethodInfo? subject = GetMethod(methodName);
 
 				async Task Act()
-					=> await That(subject).IsNotPrivateProtected();
+				{
+					await That(subject).IsNotPrivateProtected();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -31,7 +33,9 @@ public sealed partial class ThatMethod
 				MethodInfo? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsNotPrivateProtected();
+				{
+					await That(subject).IsNotPrivateProtected();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -47,7 +51,9 @@ public sealed partial class ThatMethod
 				MethodInfo? subject = GetMethod("PrivateProtectedMethod");
 
 				async Task Act()
-					=> await That(subject).IsNotPrivateProtected();
+				{
+					await That(subject).IsNotPrivateProtected();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -72,7 +78,9 @@ public sealed partial class ThatMethod
 				MethodInfo? subject = GetMethod(methodName);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotPrivateProtected());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotPrivateProtected());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -88,7 +96,9 @@ public sealed partial class ThatMethod
 				MethodInfo? subject = GetMethod("PrivateProtectedMethod");
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotPrivateProtected());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotPrivateProtected());
+				}
 
 				await That(Act).DoesNotThrow();
 			}

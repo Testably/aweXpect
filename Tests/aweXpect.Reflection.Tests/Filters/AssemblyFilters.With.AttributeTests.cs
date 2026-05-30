@@ -22,18 +22,6 @@ public sealed partial class AssemblyFilters
 			}
 
 			[Fact]
-			public async Task WithPredicate_ShouldFilterForAssembliesWithMatchingAttribute()
-			{
-				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()
-					.With<AssemblyTitleAttribute>(attribute => attribute.Title == "aweXpect.Reflection.Tests");
-
-				await That(assemblies).HasSingle().Which.IsEqualTo(typeof(AssemblyFilters).Assembly);
-				await That(assemblies.GetDescription())
-					.IsEqualTo(
-						"in all loaded assemblies with AssemblyTitleAttribute matching attribute => attribute.Title == \"aweXpect.Reflection.Tests\"");
-			}
-
-			[Fact]
 			public async Task WhenInheritIsSetToFalse_ShouldFilterForAssembliesWithAttributeDirectlySet()
 			{
 				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()
@@ -43,6 +31,18 @@ public sealed partial class AssemblyFilters
 				await That(assemblies.GetDescription())
 					.IsEqualTo("in all loaded assemblies with direct AssemblyTitleAttribute")
 					.AsPrefix();
+			}
+
+			[Fact]
+			public async Task WithPredicate_ShouldFilterForAssembliesWithMatchingAttribute()
+			{
+				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()
+					.With<AssemblyTitleAttribute>(attribute => attribute.Title == "aweXpect.Reflection.Tests");
+
+				await That(assemblies).HasSingle().Which.IsEqualTo(typeof(AssemblyFilters).Assembly);
+				await That(assemblies.GetDescription())
+					.IsEqualTo(
+						"in all loaded assemblies with AssemblyTitleAttribute matching attribute => attribute.Title == \"aweXpect.Reflection.Tests\"");
 			}
 		}
 

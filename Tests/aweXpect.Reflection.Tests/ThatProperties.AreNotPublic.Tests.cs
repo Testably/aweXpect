@@ -18,7 +18,9 @@ public sealed partial class ThatProperties
 				Filtered.Properties subject = GetProperties(propertyName);
 
 				async Task Act()
-					=> await That(subject).AreNotPublic();
+				{
+					await That(subject).AreNotPublic();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -29,7 +31,9 @@ public sealed partial class ThatProperties
 				Filtered.Properties subject = GetProperties("PublicProperty");
 
 				async Task Act()
-					=> await That(subject).AreNotPublic();
+				{
+					await That(subject).AreNotPublic();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -53,7 +57,9 @@ public sealed partial class ThatProperties
 				Filtered.Properties subject = GetProperties(propertyName);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreNotPublic());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotPublic());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -69,7 +75,9 @@ public sealed partial class ThatProperties
 				Filtered.Properties subject = GetProperties("PublicProperty");
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreNotPublic());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotPublic());
+				}
 
 				await That(Act).DoesNotThrow();
 			}

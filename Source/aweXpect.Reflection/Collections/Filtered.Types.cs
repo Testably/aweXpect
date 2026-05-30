@@ -132,6 +132,23 @@ public static partial class Filtered
 		public IMembers Internal
 			=> new TypesMemberBuilder(this, MemberFilterState.Empty.WithAccess(AccessModifiers.Internal));
 
+		/// <inheritdoc />
+		public string GetDescription()
+		{
+			string description = _description;
+			foreach (IFilter<Type> filter in Filters)
+			{
+				description = filter.Describes(description);
+			}
+
+			if (_assemblies is not null)
+			{
+				return description + _assemblies.GetDescription();
+			}
+
+			return description;
+		}
+
 		/// <summary>
 		///     Filters for static members.
 		/// </summary>
@@ -152,52 +169,6 @@ public static partial class Filtered
 		/// <inheritdoc cref="IMembers.IPrivate.Protected" />
 		IMembers IMembers.IPrivate.Protected
 			=> new TypesMemberBuilder(this, MemberFilterState.Empty.WithAccess(AccessModifiers.PrivateProtected));
-
-		/// <inheritdoc cref="IMembers.IProtected.Internal" />
-		IMembers IMembers.IProtected.Internal
-			=> new TypesMemberBuilder(this, MemberFilterState.Empty.WithAccess(AccessModifiers.ProtectedInternal));
-
-		/// <inheritdoc />
-		public string GetDescription()
-		{
-			string description = _description;
-			foreach (IFilter<Type> filter in Filters)
-			{
-				description = filter.Describes(description);
-			}
-
-			if (_assemblies is not null)
-			{
-				return description + _assemblies.GetDescription();
-			}
-
-			return description;
-		}
-
-		/// <summary>
-		///     Gets the types of the <paramref name="assembly" />, ignoring those that fail to load.
-		/// </summary>
-		/// <remarks>
-		///     <see cref="Assembly.GetTypes()" /> throws a <see cref="ReflectionTypeLoadException" /> when any type cannot be
-		///     loaded (e.g. an unresolvable dependency). The exception still exposes the types that loaded successfully via
-		///     <see cref="ReflectionTypeLoadException.Types" />, so we fall back to those instead of failing the whole query.
-		/// </remarks>
-		private static IEnumerable<Type> GetLoadableTypes(Assembly assembly)
-		{
-			try
-			{
-				return assembly.GetTypes();
-			}
-			catch (ReflectionTypeLoadException exception)
-			{
-				return exception.Types.Where(type => type is not null)!;
-			}
-		}
-
-		/// <summary>
-		///     Get all assemblies of the filtered types.
-		/// </summary>
-		public Assemblies Assemblies() => new(this);
 
 		/// <summary>
 		///     Get all constructors in the filtered types.
@@ -223,6 +194,35 @@ public static partial class Filtered
 		///     Get all properties in the filtered types.
 		/// </summary>
 		public Properties Properties() => new TypesMemberBuilder(this, MemberFilterState.Empty).Properties();
+
+		/// <inheritdoc cref="IMembers.IProtected.Internal" />
+		IMembers IMembers.IProtected.Internal
+			=> new TypesMemberBuilder(this, MemberFilterState.Empty.WithAccess(AccessModifiers.ProtectedInternal));
+
+		/// <summary>
+		///     Gets the types of the <paramref name="assembly" />, ignoring those that fail to load.
+		/// </summary>
+		/// <remarks>
+		///     <see cref="Assembly.GetTypes()" /> throws a <see cref="ReflectionTypeLoadException" /> when any type cannot be
+		///     loaded (e.g. an unresolvable dependency). The exception still exposes the types that loaded successfully via
+		///     <see cref="ReflectionTypeLoadException.Types" />, so we fall back to those instead of failing the whole query.
+		/// </remarks>
+		private static IEnumerable<Type> GetLoadableTypes(Assembly assembly)
+		{
+			try
+			{
+				return assembly.GetTypes();
+			}
+			catch (ReflectionTypeLoadException exception)
+			{
+				return exception.Types.Where(type => type is not null)!;
+			}
+		}
+
+		/// <summary>
+		///     Get all assemblies of the filtered types.
+		/// </summary>
+		public Assemblies Assemblies() => new(this);
 
 		/// <summary>
 		///     A Container for a filterable collection of <see cref="Type" />,

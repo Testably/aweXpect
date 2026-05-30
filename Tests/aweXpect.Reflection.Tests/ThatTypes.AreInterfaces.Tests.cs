@@ -15,7 +15,9 @@ public sealed partial class ThatTypes
 				Filtered.Types subject = In.AssemblyContaining<AreInterfaces>().Types();
 
 				async Task Act()
-					=> await That(subject).AreInterfaces();
+				{
+					await That(subject).AreInterfaces();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -34,7 +36,9 @@ public sealed partial class ThatTypes
 					.Which(type => type.IsInterface);
 
 				async Task Act()
-					=> await That(subject).AreInterfaces();
+				{
+					await That(subject).AreInterfaces();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -48,7 +52,9 @@ public sealed partial class ThatTypes
 				Filtered.Types subject = In.AssemblyContaining<AreInterfaces>().Types();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreInterfaces());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreInterfaces());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -60,7 +66,9 @@ public sealed partial class ThatTypes
 					.Which(type => type.IsInterface);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreInterfaces());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreInterfaces());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

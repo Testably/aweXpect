@@ -15,7 +15,9 @@ public sealed partial class ThatType
 			public async Task WhenTypeIsNotProtected_ShouldFailWithNegatedAssertion(Type? subject)
 			{
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotProtected());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotProtected());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("*is protected*but it was*").AsWildcard();
@@ -28,7 +30,9 @@ public sealed partial class ThatType
 			public async Task WhenTypeIsNotProtected_ShouldSucceed(Type? subject)
 			{
 				async Task Act()
-					=> await That(subject).IsNotProtected();
+				{
+					await That(subject).IsNotProtected();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -39,7 +43,9 @@ public sealed partial class ThatType
 				Type? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsNotProtected();
+				{
+					await That(subject).IsNotProtected();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -55,7 +61,9 @@ public sealed partial class ThatType
 				Type? subject = typeof(ProtectedType);
 
 				async Task Act()
-					=> await That(subject).IsNotProtected();
+				{
+					await That(subject).IsNotProtected();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -71,7 +79,9 @@ public sealed partial class ThatType
 				Type? subject = typeof(ProtectedType);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotProtected());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotProtected());
+				}
 
 				await That(Act).DoesNotThrow();
 			}

@@ -10,23 +10,14 @@ public sealed partial class ThatConstructor
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenConstructorHasExpectedCount_ShouldSucceed()
-			{
-				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
-
-				async Task Act()
-					=> await That(constructorInfo).HasParameterCount(2);
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenConstructorHasDifferentCount_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
 
 				async Task Act()
-					=> await That(constructorInfo).HasParameterCount(3);
+				{
+					await That(constructorInfo).HasParameterCount(3);
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -37,12 +28,27 @@ public sealed partial class ThatConstructor
 			}
 
 			[Fact]
+			public async Task WhenConstructorHasExpectedCount_ShouldSucceed()
+			{
+				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
+
+				async Task Act()
+				{
+					await That(constructorInfo).HasParameterCount(2);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenConstructorHasSingleParameter_ShouldDescribeWithSingular()
 			{
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(int),])!;
 
 				async Task Act()
-					=> await That(constructorInfo).HasParameterCount(2);
+				{
+					await That(constructorInfo).HasParameterCount(2);
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -58,7 +64,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo? constructorInfo = null;
 
 				async Task Act()
-					=> await That(constructorInfo).HasParameterCount(0);
+				{
+					await That(constructorInfo).HasParameterCount(0);
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -72,12 +80,27 @@ public sealed partial class ThatConstructor
 		public sealed class NegatedTests
 		{
 			[Fact]
+			public async Task WhenConstructorHasDifferentCount_ShouldSucceed()
+			{
+				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
+
+				async Task Act()
+				{
+					await That(constructorInfo).DoesNotComplyWith(it => it.HasParameterCount(3));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenConstructorHasExpectedCount_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
 
 				async Task Act()
-					=> await That(constructorInfo).DoesNotComplyWith(it => it.HasParameterCount(2));
+				{
+					await That(constructorInfo).DoesNotComplyWith(it => it.HasParameterCount(2));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -85,17 +108,6 @@ public sealed partial class ThatConstructor
 					             does not have 2 parameters,
 					             but it did
 					             """);
-			}
-
-			[Fact]
-			public async Task WhenConstructorHasDifferentCount_ShouldSucceed()
-			{
-				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
-
-				async Task Act()
-					=> await That(constructorInfo).DoesNotComplyWith(it => it.HasParameterCount(3));
-
-				await That(Act).DoesNotThrow();
 			}
 		}
 

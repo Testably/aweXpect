@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
 using Xunit.Sdk;
 
@@ -17,7 +16,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
 
 				async Task Act()
-					=> await That(constructorInfo).HasParameter<int>("val").AsPrefix();
+				{
+					await That(constructorInfo).HasParameter<int>("val").AsPrefix();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -28,7 +29,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
 
 				async Task Act()
-					=> await That(constructorInfo).HasParameter<string>().AtIndex(0);
+				{
+					await That(constructorInfo).HasParameter<string>().AtIndex(0);
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -44,7 +47,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
 
 				async Task Act()
-					=> await That(constructorInfo).HasParameter<int>().AtIndex(0);
+				{
+					await That(constructorInfo).HasParameter<int>().AtIndex(0);
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -55,7 +60,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
 
 				async Task Act()
-					=> await That(constructorInfo).HasParameter<string>().AtIndex(0).FromEnd();
+				{
+					await That(constructorInfo).HasParameter<string>().AtIndex(0).FromEnd();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -66,7 +73,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(string),])!;
 
 				async Task Act()
-					=> await That(constructorInfo).HasParameter("value");
+				{
+					await That(constructorInfo).HasParameter("value");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -82,7 +91,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
 
 				async Task Act()
-					=> await That(constructorInfo).HasParameter("value");
+				{
+					await That(constructorInfo).HasParameter("value");
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -93,7 +104,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(string),])!;
 
 				async Task Act()
-					=> await That(constructorInfo).HasParameter<int>();
+				{
+					await That(constructorInfo).HasParameter<int>();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -109,7 +122,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
 
 				async Task Act()
-					=> await That(constructorInfo).HasParameter<int>();
+				{
+					await That(constructorInfo).HasParameter<int>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -120,7 +135,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(Stream),])!;
 
 				async Task Act()
-					=> await That(constructorInfo).HasParameter<IDisposable>();
+				{
+					await That(constructorInfo).HasParameter<IDisposable>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -131,7 +148,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(string),])!;
 
 				async Task Act()
-					=> await That(constructorInfo).HasParameter<int>("value");
+				{
+					await That(constructorInfo).HasParameter<int>("value");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -147,7 +166,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
 
 				async Task Act()
-					=> await That(constructorInfo).HasParameter<int>("value");
+				{
+					await That(constructorInfo).HasParameter<int>("value");
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -158,7 +179,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
 
 				async Task Act()
-					=> await That(constructorInfo).HasParameter<string>("value");
+				{
+					await That(constructorInfo).HasParameter<string>("value");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -174,7 +197,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
 
 				async Task Act()
-					=> await That(constructorInfo).HasParameter<int>("VALUE").IgnoringCase();
+				{
+					await That(constructorInfo).HasParameter<int>("VALUE").IgnoringCase();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -186,7 +211,9 @@ public sealed partial class ThatConstructor
 					typeof(TestClass).GetConstructor([typeof(int), typeof(bool), typeof(string),])!;
 
 				async Task Act()
-					=> await That(constructorInfo).HasParameter<string>().WithDefaultValue();
+				{
+					await That(constructorInfo).HasParameter<string>().WithDefaultValue();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -197,7 +224,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
 
 				async Task Act()
-					=> await That(constructorInfo).HasParameter<int>().WithoutDefaultValue();
+				{
+					await That(constructorInfo).HasParameter<int>().WithoutDefaultValue();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -224,7 +253,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(string),])!;
 
 				async Task Act()
-					=> await That(constructorInfo).DoesNotComplyWith(it => it.HasParameter("value"));
+				{
+					await That(constructorInfo).DoesNotComplyWith(it => it.HasParameter("value"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -235,7 +266,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
 
 				async Task Act()
-					=> await That(constructorInfo).DoesNotComplyWith(it => it.HasParameter("value"));
+				{
+					await That(constructorInfo).DoesNotComplyWith(it => it.HasParameter("value"));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -251,7 +284,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(string),])!;
 
 				async Task Act()
-					=> await That(constructorInfo).DoesNotComplyWith(it => it.HasParameter<int>());
+				{
+					await That(constructorInfo).DoesNotComplyWith(it => it.HasParameter<int>());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -262,7 +297,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
 
 				async Task Act()
-					=> await That(constructorInfo).DoesNotComplyWith(it => it.HasParameter<int>());
+				{
+					await That(constructorInfo).DoesNotComplyWith(it => it.HasParameter<int>());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -278,7 +315,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(string),])!;
 
 				async Task Act()
-					=> await That(constructorInfo).DoesNotComplyWith(it => it.HasParameter<int>("value"));
+				{
+					await That(constructorInfo).DoesNotComplyWith(it => it.HasParameter<int>("value"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -289,7 +328,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
 
 				async Task Act()
-					=> await That(constructorInfo).DoesNotComplyWith(it => it.HasParameter<int>("value"));
+				{
+					await That(constructorInfo).DoesNotComplyWith(it => it.HasParameter<int>("value"));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

@@ -59,15 +59,8 @@ internal sealed class AssembliesTypeBuilder :
 			_typeFilters,
 			_typeFilterDescription);
 
-	ITypeAssemblies ITypeAssemblies.IProtected.Internal
-		=> new AssembliesTypeBuilder(
-			_source,
-			_memberState.WithAccess(AccessModifiers.ProtectedInternal),
-			_typeFilters,
-			_typeFilterDescription);
-
 	public Filtered.Types Types(AccessModifiers accessModifier = AccessModifiers.Any)
-		=> BuildTypes(_typeFilters, _typeFilterDescription, accessModifier, "types ", includeWhenEmpty: false);
+		=> BuildTypes(_typeFilters, _typeFilterDescription, accessModifier, "types ", false);
 
 	public Filtered.Types Classes(AccessModifiers accessModifier = AccessModifiers.Any)
 		=> BuildTypes(AppendFilter(t => t.IsReallyClass()), _typeFilterDescription, accessModifier, "classes ");
@@ -124,6 +117,13 @@ internal sealed class AssembliesTypeBuilder :
 		IFilter<PropertyInfo>? filter = _memberState.BuildPropertyFilter();
 		return filter is null ? properties : properties.Which(filter);
 	}
+
+	ITypeAssemblies ITypeAssemblies.IProtected.Internal
+		=> new AssembliesTypeBuilder(
+			_source,
+			_memberState.WithAccess(AccessModifiers.ProtectedInternal),
+			_typeFilters,
+			_typeFilterDescription);
 
 	private AssembliesTypeBuilder AppendTypeFilter(Func<Type, bool> predicate, string descriptionAppend)
 		=> new(

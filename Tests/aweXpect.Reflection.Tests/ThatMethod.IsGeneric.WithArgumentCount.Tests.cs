@@ -19,7 +19,9 @@ public sealed partial class ThatMethod
 					MethodInfo? subject = GetMethod("GenericMethod");
 
 					async Task Act()
-						=> await That(subject).IsGeneric().WithArgumentCount(argumentCount);
+					{
+						await That(subject).IsGeneric().WithArgumentCount(argumentCount);
+					}
 
 					await That(Act).ThrowsException()
 						.OnlyIf(!expectSuccess)
@@ -39,7 +41,9 @@ public sealed partial class ThatMethod
 					MethodInfo? subject = GetMethod("AnotherGenericMethod");
 
 					async Task Act()
-						=> await That(subject).IsGeneric().WithArgumentCount(argumentCount);
+					{
+						await That(subject).IsGeneric().WithArgumentCount(argumentCount);
+					}
 
 					await That(Act).ThrowsException()
 						.OnlyIf(!expectSuccess)
@@ -57,7 +61,9 @@ public sealed partial class ThatMethod
 					MethodInfo? subject = GetMethod("NonGenericMethod");
 
 					async Task Act()
-						=> await That(subject).IsGeneric().WithArgumentCount(1);
+					{
+						await That(subject).IsGeneric().WithArgumentCount(1);
+					}
 
 					await That(Act).ThrowsException()
 						.WithMessage("""

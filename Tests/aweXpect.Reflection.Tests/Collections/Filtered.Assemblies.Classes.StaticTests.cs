@@ -22,8 +22,10 @@ public sealed partial class Filtered
 				public async Task ShouldIncludeAbstractInformationInErrorMessage()
 				{
 					async Task Act()
-						=> await That(In.AllLoadedAssemblies().Static.Classes())
+					{
+						await That(In.AllLoadedAssemblies().Static.Classes())
 							.AreInternal();
+					}
 
 					await That(Act).ThrowsException()
 						.WithMessage("""

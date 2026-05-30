@@ -16,7 +16,9 @@ public sealed partial class ThatField
 					typeof(TestClassWithStaticMembers).GetField(nameof(TestClassWithStaticMembers.NonStaticField))!;
 
 				async Task Act()
-					=> await That(subject).IsNotStatic();
+				{
+					await That(subject).IsNotStatic();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -27,7 +29,9 @@ public sealed partial class ThatField
 				FieldInfo? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsNotStatic();
+				{
+					await That(subject).IsNotStatic();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -44,7 +48,9 @@ public sealed partial class ThatField
 					typeof(TestClassWithStaticMembers).GetField(nameof(TestClassWithStaticMembers.StaticField))!;
 
 				async Task Act()
-					=> await That(subject).IsNotStatic();
+				{
+					await That(subject).IsNotStatic();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage($"""
@@ -64,7 +70,9 @@ public sealed partial class ThatField
 					typeof(TestClassWithStaticMembers).GetField(nameof(TestClassWithStaticMembers.NonStaticField))!;
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotStatic());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotStatic());
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage($"""
@@ -81,7 +89,9 @@ public sealed partial class ThatField
 					typeof(TestClassWithStaticMembers).GetField(nameof(TestClassWithStaticMembers.StaticField))!;
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotStatic());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotStatic());
+				}
 
 				await That(Act).DoesNotThrow();
 			}

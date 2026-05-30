@@ -37,7 +37,7 @@ public class TypeFilterOptions
 		}
 
 		int index = 0;
-		foreach (var (type, isDirect) in _types)
+		foreach ((Type? type, bool isDirect) in _types)
 		{
 			if (index++ > 0)
 			{

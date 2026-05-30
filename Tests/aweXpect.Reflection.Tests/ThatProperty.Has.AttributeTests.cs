@@ -15,7 +15,9 @@ public sealed partial class ThatProperty
 				PropertyInfo subject = typeof(TestClass).GetProperty("NoAttributeProperty")!;
 
 				async Task Act()
-					=> await That(subject).Has<TestAttribute>();
+				{
+					await That(subject).Has<TestAttribute>();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -31,7 +33,9 @@ public sealed partial class ThatProperty
 				PropertyInfo subject = typeof(TestClass).GetProperty("TestProperty")!;
 
 				async Task Act()
-					=> await That(subject).Has<TestAttribute>();
+				{
+					await That(subject).Has<TestAttribute>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -42,7 +46,9 @@ public sealed partial class ThatProperty
 				PropertyInfo subject = typeof(TestClass).GetProperty("TestProperty")!;
 
 				async Task Act()
-					=> await That(subject).Has<TestAttribute>(attr => attr.Value == "PropertyValue");
+				{
+					await That(subject).Has<TestAttribute>(attr => attr.Value == "PropertyValue");
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -53,7 +59,9 @@ public sealed partial class ThatProperty
 				PropertyInfo subject = typeof(TestClass).GetProperty("TestProperty")!;
 
 				async Task Act()
-					=> await That(subject).Has<TestAttribute>(attr => attr.Value == "WrongValue");
+				{
+					await That(subject).Has<TestAttribute>(attr => attr.Value == "WrongValue");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -69,7 +77,9 @@ public sealed partial class ThatProperty
 				PropertyInfo? subject = null;
 
 				async Task Act()
-					=> await That(subject).Has<TestAttribute>();
+				{
+					await That(subject).Has<TestAttribute>();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -103,7 +113,9 @@ public sealed partial class ThatProperty
 				PropertyInfo subject = typeof(TestClass).GetProperty("NoAttributeProperty")!;
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+				{
+					await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -114,8 +126,10 @@ public sealed partial class ThatProperty
 				PropertyInfo subject = typeof(TestClass).GetProperty("TestProperty")!;
 
 				async Task Act()
-					=> await That(subject)
+				{
+					await That(subject)
 						.DoesNotComplyWith(it => it.Has<TestAttribute>(attr => attr.Value == "NonExistent"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -126,7 +140,9 @@ public sealed partial class ThatProperty
 				PropertyInfo subject = typeof(TestClass).GetProperty("TestProperty")!;
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+				{
+					await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

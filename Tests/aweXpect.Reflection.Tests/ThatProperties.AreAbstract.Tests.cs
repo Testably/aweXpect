@@ -19,7 +19,9 @@ public sealed partial class ThatProperties
 					.Where(p => p.GetGetMethod()?.IsAbstract == true || p.GetSetMethod()?.IsAbstract == true);
 
 				async Task Act()
-					=> await That(subject).AreAbstract();
+				{
+					await That(subject).AreAbstract();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -31,7 +33,9 @@ public sealed partial class ThatProperties
 					.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
 				async Task Act()
-					=> await That(subject).AreAbstract();
+				{
+					await That(subject).AreAbstract();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -54,7 +58,9 @@ public sealed partial class ThatProperties
 					.Where(p => p.GetGetMethod()?.IsAbstract == true || p.GetSetMethod()?.IsAbstract == true);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreAbstract());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreAbstract());
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -73,7 +79,9 @@ public sealed partial class ThatProperties
 					.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreAbstract());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreAbstract());
+				}
 
 				await That(Act).DoesNotThrow();
 			}

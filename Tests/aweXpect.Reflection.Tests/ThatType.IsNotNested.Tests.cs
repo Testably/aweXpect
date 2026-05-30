@@ -15,7 +15,9 @@ public sealed partial class ThatType
 				Type subject = typeof(Container.PublicNestedClass);
 
 				async Task Act()
-					=> await That(subject).IsNotNested();
+				{
+					await That(subject).IsNotNested();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -31,7 +33,9 @@ public sealed partial class ThatType
 				Type subject = typeof(Container.PublicNestedClass);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotNested());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotNested());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -42,7 +46,9 @@ public sealed partial class ThatType
 				Type subject = typeof(Container);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotNested());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotNested());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -58,7 +64,9 @@ public sealed partial class ThatType
 				Type subject = typeof(Container);
 
 				async Task Act()
-					=> await That(subject).IsNotNested();
+				{
+					await That(subject).IsNotNested();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -69,7 +77,9 @@ public sealed partial class ThatType
 				Type? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsNotNested();
+				{
+					await That(subject).IsNotNested();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""

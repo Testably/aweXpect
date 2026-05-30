@@ -1,7 +1,9 @@
-using aweXpect.Reflection.Collections;
+﻿using aweXpect.Reflection.Collections;
 using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
+
+#pragma warning disable CA2263 // tests intentionally exercise the non-generic Type overload
 
 public sealed partial class ThatMethods
 {
@@ -16,7 +18,9 @@ public sealed partial class ThatMethods
 					.Methods().Which(m => m.Name == nameof(TestClass.GetString));
 
 				async Task Act()
-					=> await That(methods).ReturnExactly<string>();
+				{
+					await That(methods).ReturnExactly<string>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -28,7 +32,9 @@ public sealed partial class ThatMethods
 					.Methods().Which(m => m.Name == nameof(TestClass.GetDummy));
 
 				async Task Act()
-					=> await That(methods).ReturnExactly<DummyBase>();
+				{
+					await That(methods).ReturnExactly<DummyBase>();
+				}
 
 				await That(Act).Throws<XunitException>();
 			}
@@ -40,7 +46,9 @@ public sealed partial class ThatMethods
 					.Methods().Which(m => m.Name.StartsWith("Get"));
 
 				async Task Act()
-					=> await That(methods).ReturnExactly<string>();
+				{
+					await That(methods).ReturnExactly<string>();
+				}
 
 				await That(Act).Throws<XunitException>();
 			}
@@ -55,7 +63,9 @@ public sealed partial class ThatMethods
 					.Methods().Which(m => m.Name == nameof(TestClass.GetString));
 
 				async Task Act()
-					=> await That(methods).ReturnExactly(typeof(string));
+				{
+					await That(methods).ReturnExactly(typeof(string));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -67,7 +77,9 @@ public sealed partial class ThatMethods
 					.Methods().Which(m => m.Name == nameof(TestClass.GetDummy));
 
 				async Task Act()
-					=> await That(methods).ReturnExactly(typeof(DummyBase));
+				{
+					await That(methods).ReturnExactly(typeof(DummyBase));
+				}
 
 				await That(Act).Throws<XunitException>();
 			}
@@ -79,7 +91,9 @@ public sealed partial class ThatMethods
 					.Methods().Which(m => m.Name.StartsWith("Get"));
 
 				async Task Act()
-					=> await That(methods).ReturnExactly(typeof(string));
+				{
+					await That(methods).ReturnExactly(typeof(string));
+				}
 
 				await That(Act).Throws<XunitException>();
 			}
@@ -95,7 +109,9 @@ public sealed partial class ThatMethods
 						=> m.Name == nameof(TestClass.GetString) || m.Name == nameof(TestClass.GetInt));
 
 				async Task Act()
-					=> await That(methods).ReturnExactly<string>().OrReturnExactly<int>();
+				{
+					await That(methods).ReturnExactly<string>().OrReturnExactly<int>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -107,7 +123,9 @@ public sealed partial class ThatMethods
 					.Methods().Which(m => m.Name == nameof(TestClass.GetDummy));
 
 				async Task Act()
-					=> await That(methods).ReturnExactly<DummyBase>().OrReturnExactly<string>();
+				{
+					await That(methods).ReturnExactly<DummyBase>().OrReturnExactly<string>();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -127,7 +145,9 @@ public sealed partial class ThatMethods
 					.Methods().Which(m => m.Name.StartsWith("Get"));
 
 				async Task Act()
-					=> await That(methods).ReturnExactly<string>().OrReturnExactly<int>();
+				{
+					await That(methods).ReturnExactly<string>().OrReturnExactly<int>();
+				}
 
 				await That(Act).Throws<XunitException>();
 			}
@@ -141,8 +161,10 @@ public sealed partial class ThatMethods
 						   m.Name == nameof(TestClass.GetBool));
 
 				async Task Act()
-					=> await That(methods).ReturnExactly<string>().OrReturnExactly(typeof(int))
+				{
+					await That(methods).ReturnExactly<string>().OrReturnExactly(typeof(int))
 						.OrReturnExactly<bool>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -158,7 +180,9 @@ public sealed partial class ThatMethods
 						=> m.Name == nameof(TestClass.GetString) || m.Name == nameof(TestClass.GetInt));
 
 				async Task Act()
-					=> await That(methods).ReturnExactly<string>().OrReturn<int>();
+				{
+					await That(methods).ReturnExactly<string>().OrReturn<int>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -170,7 +194,9 @@ public sealed partial class ThatMethods
 					.Methods().Which(m => m.Name == nameof(TestClass.GetDummy));
 
 				async Task Act()
-					=> await That(methods).ReturnExactly<DummyBase>().OrReturn<string>();
+				{
+					await That(methods).ReturnExactly<DummyBase>().OrReturn<string>();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -190,7 +216,9 @@ public sealed partial class ThatMethods
 					.Methods().Which(m => m.Name.StartsWith("Get"));
 
 				async Task Act()
-					=> await That(methods).ReturnExactly<string>().OrReturn<int>();
+				{
+					await That(methods).ReturnExactly<string>().OrReturn<int>();
+				}
 
 				await That(Act).Throws<XunitException>();
 			}
@@ -204,8 +232,10 @@ public sealed partial class ThatMethods
 						   m.Name == nameof(TestClass.GetBool));
 
 				async Task Act()
-					=> await That(methods).ReturnExactly<string>().OrReturnExactly(typeof(int))
+				{
+					await That(methods).ReturnExactly<string>().OrReturnExactly(typeof(int))
 						.OrReturnExactly<bool>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -222,7 +252,9 @@ public sealed partial class ThatMethods
 						.Methods().Which(m => m.Name == nameof(TestClass.GetString));
 
 					async Task Act()
-						=> await That(methods).DoesNotComplyWith(they => they.ReturnExactly<string>());
+					{
+						await That(methods).DoesNotComplyWith(they => they.ReturnExactly<string>());
+					}
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -242,7 +274,9 @@ public sealed partial class ThatMethods
 						.Methods().Which(m => m.Name == nameof(TestClass.GetDummy));
 
 					async Task Act()
-						=> await That(methods).DoesNotComplyWith(they => they.ReturnExactly<DummyBase>());
+					{
+						await That(methods).DoesNotComplyWith(they => they.ReturnExactly<DummyBase>());
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -254,7 +288,9 @@ public sealed partial class ThatMethods
 						.Methods().Which(m => m.Name.StartsWith("Get"));
 
 					async Task Act()
-						=> await That(methods).DoesNotComplyWith(they => they.ReturnExactly<string>());
+					{
+						await That(methods).DoesNotComplyWith(they => they.ReturnExactly<string>());
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -270,8 +306,10 @@ public sealed partial class ThatMethods
 							=> m.Name == nameof(TestClass.GetString) || m.Name == nameof(TestClass.GetInt));
 
 					async Task Act()
-						=> await That(methods).DoesNotComplyWith(they
+					{
+						await That(methods).DoesNotComplyWith(they
 							=> they.ReturnExactly<string>().OrReturnExactly<int>());
+					}
 
 					await That(Act).Throws<XunitException>();
 				}
@@ -283,8 +321,10 @@ public sealed partial class ThatMethods
 						.Methods().Which(m => m.Name.StartsWith("Get"));
 
 					async Task Act()
-						=> await That(methods).DoesNotComplyWith(they
+					{
+						await That(methods).DoesNotComplyWith(they
 							=> they.ReturnExactly<string>().OrReturnExactly<int>());
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -297,8 +337,10 @@ public sealed partial class ThatMethods
 							=> m.Name == nameof(TestClass.GetString) || m.Name == nameof(TestClass.GetInt));
 
 					async Task Act()
-						=> await That(methods)
+					{
+						await That(methods)
 							.DoesNotComplyWith(they => they.ReturnExactly<bool>().OrReturnExactly<Task>());
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -306,3 +348,5 @@ public sealed partial class ThatMethods
 		}
 	}
 }
+
+#pragma warning restore CA2263

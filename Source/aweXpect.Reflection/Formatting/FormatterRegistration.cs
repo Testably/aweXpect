@@ -30,7 +30,7 @@ internal sealed class FormatterRegistration : IAweXpectInitializer, IDisposable
 		ValueFormatter.Register(new EventFormatter()),
 		ValueFormatter.Register(new FieldFormatter()),
 		ValueFormatter.Register(new MethodFormatter()),
-		ValueFormatter.Register(new PropertyFormatter())
+		ValueFormatter.Register(new PropertyFormatter()),
 	];
 
 	public void Dispose()

@@ -15,7 +15,9 @@ public sealed partial class ThatEvents
 				Filtered.Events subject = GetTypes<ThatEvent.ClassWithEvents>().Events();
 
 				async Task Act()
-					=> await That(subject).HaveName("PublicEvent");
+				{
+					await That(subject).HaveName("PublicEvent");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -33,7 +35,9 @@ public sealed partial class ThatEvents
 				Filtered.Events subject = GetTypes<ThatEvent.ClassWithSingleEvent>().Events();
 
 				async Task Act()
-					=> await That(subject).HaveName("MyEvent");
+				{
+					await That(subject).HaveName("MyEvent");
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -44,7 +48,9 @@ public sealed partial class ThatEvents
 				Filtered.Events subject = GetTypes<ThatEvent.ClassWithSingleEvent>().Events();
 
 				async Task Act()
-					=> await That(subject).HaveName("mYevent").IgnoringCase();
+				{
+					await That(subject).HaveName("mYevent").IgnoringCase();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -55,7 +61,9 @@ public sealed partial class ThatEvents
 				Filtered.Events subject = GetTypes<ThatEvent.ClassWithEvents>().Events();
 
 				async Task Act()
-					=> await That(subject).HaveName("Event").AsSuffix();
+				{
+					await That(subject).HaveName("Event").AsSuffix();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -69,7 +77,9 @@ public sealed partial class ThatEvents
 				Filtered.Events subject = GetTypes<ThatEvent.ClassWithEvents>().Events();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.HaveName("NonExistentEvent"));
+				{
+					await That(subject).DoesNotComplyWith(they => they.HaveName("NonExistentEvent"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -80,7 +90,9 @@ public sealed partial class ThatEvents
 				Filtered.Events subject = GetTypes<ThatEvent.ClassWithSingleEvent>().Events();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.HaveName("MyEvent"));
+				{
+					await That(subject).DoesNotComplyWith(they => they.HaveName("MyEvent"));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

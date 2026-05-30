@@ -13,7 +13,9 @@ public sealed partial class ThatType
 			public async Task WhenTypeIsNotStatic_ShouldFail(Type subject)
 			{
 				async Task Act()
-					=> await That(subject).IsStatic();
+				{
+					await That(subject).IsStatic();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage($"""
@@ -29,7 +31,9 @@ public sealed partial class ThatType
 				Type? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsStatic();
+				{
+					await That(subject).IsStatic();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -45,7 +49,9 @@ public sealed partial class ThatType
 				Type subject = typeof(PublicStaticClass);
 
 				async Task Act()
-					=> await That(subject).IsStatic();
+				{
+					await That(subject).IsStatic();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -67,7 +73,9 @@ public sealed partial class ThatType
 			public async Task WhenTypeIsNotStatic_ShouldSucceed(Type subject)
 			{
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsStatic());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsStatic());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -78,7 +86,9 @@ public sealed partial class ThatType
 				Type subject = typeof(PublicStaticClass);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsStatic());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsStatic());
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""

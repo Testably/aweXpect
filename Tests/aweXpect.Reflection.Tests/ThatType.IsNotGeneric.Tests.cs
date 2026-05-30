@@ -15,7 +15,9 @@ public sealed partial class ThatType
 				Type subject = typeof(PublicGenericClass<>);
 
 				async Task Act()
-					=> await That(subject).IsNotGeneric();
+				{
+					await That(subject).IsNotGeneric();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -31,7 +33,9 @@ public sealed partial class ThatType
 				Type subject = typeof(PublicGenericClass<>);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotGeneric());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotGeneric());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -42,7 +46,9 @@ public sealed partial class ThatType
 				Type subject = typeof(PublicSealedClass);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotGeneric());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotGeneric());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -58,7 +64,9 @@ public sealed partial class ThatType
 				Type subject = typeof(PublicSealedClass);
 
 				async Task Act()
-					=> await That(subject).IsNotGeneric();
+				{
+					await That(subject).IsNotGeneric();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -69,7 +77,9 @@ public sealed partial class ThatType
 				Type? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsNotGeneric();
+				{
+					await That(subject).IsNotGeneric();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""

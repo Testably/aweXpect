@@ -15,7 +15,9 @@ public sealed partial class ThatProperties
 				Filtered.Properties subject = GetTypes<ThatProperty.ClassWithProperties>().Properties();
 
 				async Task Act()
-					=> await That(subject).HaveName("PublicProperty");
+				{
+					await That(subject).HaveName("PublicProperty");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -33,7 +35,9 @@ public sealed partial class ThatProperties
 				Filtered.Properties subject = GetTypes<ThatProperty.ClassWithSingleProperty>().Properties();
 
 				async Task Act()
-					=> await That(subject).HaveName("MyProperty");
+				{
+					await That(subject).HaveName("MyProperty");
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -44,7 +48,9 @@ public sealed partial class ThatProperties
 				Filtered.Properties subject = GetTypes<ThatProperty.ClassWithSingleProperty>().Properties();
 
 				async Task Act()
-					=> await That(subject).HaveName("mYpROPERTY").IgnoringCase();
+				{
+					await That(subject).HaveName("mYpROPERTY").IgnoringCase();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -55,7 +61,9 @@ public sealed partial class ThatProperties
 				Filtered.Properties subject = GetTypes<ThatProperty.ClassWithProperties>().Properties();
 
 				async Task Act()
-					=> await That(subject).HaveName("Property").AsSuffix();
+				{
+					await That(subject).HaveName("Property").AsSuffix();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -69,7 +77,9 @@ public sealed partial class ThatProperties
 				Filtered.Properties subject = GetTypes<ThatProperty.ClassWithProperties>().Properties();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.HaveName("NonExistentProperty"));
+				{
+					await That(subject).DoesNotComplyWith(they => they.HaveName("NonExistentProperty"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -80,7 +90,9 @@ public sealed partial class ThatProperties
 				Filtered.Properties subject = GetTypes<ThatProperty.ClassWithSingleProperty>().Properties();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.HaveName("MyProperty"));
+				{
+					await That(subject).DoesNotComplyWith(they => they.HaveName("MyProperty"));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

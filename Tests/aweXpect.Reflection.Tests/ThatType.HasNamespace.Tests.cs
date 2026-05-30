@@ -15,7 +15,9 @@ public sealed partial class ThatType
 				Type subject = typeof(PublicAbstractClass);
 
 				async Task Act()
-					=> await That(subject).HasNamespace("Reflection.Tests.TestHelpers");
+				{
+					await That(subject).HasNamespace("Reflection.Tests.TestHelpers");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -35,7 +37,9 @@ public sealed partial class ThatType
 				Type subject = typeof(PublicAbstractClass);
 
 				async Task Act()
-					=> await That(subject).HasNamespace("aweXpect.Reflection.Tests").AsPrefix();
+				{
+					await That(subject).HasNamespace("aweXpect.Reflection.Tests").AsPrefix();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -46,7 +50,9 @@ public sealed partial class ThatType
 				Type subject = typeof(PublicAbstractClass);
 
 				async Task Act()
-					=> await That(subject).HasNamespace("aweXpect.Reflection.Tests.TestHelpers.Types");
+				{
+					await That(subject).HasNamespace("aweXpect.Reflection.Tests.TestHelpers.Types");
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -57,7 +63,9 @@ public sealed partial class ThatType
 				Type? subject = null;
 
 				async Task Act()
-					=> await That(subject).HasNamespace("foo");
+				{
+					await That(subject).HasNamespace("foo");
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -76,7 +84,9 @@ public sealed partial class ThatType
 				Type subject = typeof(PublicAbstractClass);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.HasNamespace("SomeOtherNamespace"));
+				{
+					await That(subject).DoesNotComplyWith(it => it.HasNamespace("SomeOtherNamespace"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -87,8 +97,10 @@ public sealed partial class ThatType
 				Type subject = typeof(PublicAbstractClass);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it
+				{
+					await That(subject).DoesNotComplyWith(it
 						=> it.HasNamespace("aweXpect.Reflection.Tests.TestHelpers.Types"));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("*does not have namespace*aweXpect.Reflection.Tests.TestHelpers.Types*").AsWildcard();

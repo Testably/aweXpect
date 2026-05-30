@@ -18,7 +18,9 @@ public sealed partial class ThatEvents
 				Filtered.Events subject = GetEvents(eventName);
 
 				async Task Act()
-					=> await That(subject).ArePrivateProtected();
+				{
+					await That(subject).ArePrivateProtected();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -36,7 +38,9 @@ public sealed partial class ThatEvents
 				Filtered.Events subject = GetEvents("PrivateProtectedEvent");
 
 				async Task Act()
-					=> await That(subject).ArePrivateProtected();
+				{
+					await That(subject).ArePrivateProtected();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -53,7 +57,9 @@ public sealed partial class ThatEvents
 				Filtered.Events subject = GetEvents(eventName);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.ArePrivateProtected());
+				{
+					await That(subject).DoesNotComplyWith(they => they.ArePrivateProtected());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -64,7 +70,9 @@ public sealed partial class ThatEvents
 				Filtered.Events subject = GetEvents("PrivateProtectedEvent");
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.ArePrivateProtected());
+				{
+					await That(subject).DoesNotComplyWith(they => they.ArePrivateProtected());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

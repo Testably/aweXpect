@@ -15,7 +15,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([])!;
 
 				async Task Act()
-					=> await That(constructorInfo).HasNoParameters();
+				{
+					await That(constructorInfo).HasNoParameters();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -26,7 +28,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
 
 				async Task Act()
-					=> await That(constructorInfo).HasNoParameters();
+				{
+					await That(constructorInfo).HasNoParameters();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -42,7 +46,9 @@ public sealed partial class ThatConstructor
 				ConstructorInfo? constructorInfo = null;
 
 				async Task Act()
-					=> await That(constructorInfo).HasNoParameters();
+				{
+					await That(constructorInfo).HasNoParameters();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -56,23 +62,14 @@ public sealed partial class ThatConstructor
 		public sealed class NegatedTests
 		{
 			[Fact]
-			public async Task WhenConstructorHasParameters_ShouldSucceed()
-			{
-				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
-
-				async Task Act()
-					=> await That(constructorInfo).DoesNotComplyWith(it => it.HasNoParameters());
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenConstructorHasNoParameters_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([])!;
 
 				async Task Act()
-					=> await That(constructorInfo).DoesNotComplyWith(it => it.HasNoParameters());
+				{
+					await That(constructorInfo).DoesNotComplyWith(it => it.HasNoParameters());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -80,6 +77,19 @@ public sealed partial class ThatConstructor
 					             does not have no parameters,
 					             but it did
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenConstructorHasParameters_ShouldSucceed()
+			{
+				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
+
+				async Task Act()
+				{
+					await That(constructorInfo).DoesNotComplyWith(it => it.HasNoParameters());
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 

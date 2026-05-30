@@ -15,7 +15,9 @@ public sealed partial class ThatType
 			public async Task WhenTypeIsNotPublic_ShouldFail(Type? subject, string expectedAccessModifier)
 			{
 				async Task Act()
-					=> await That(subject).IsPublic();
+				{
+					await That(subject).IsPublic();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -31,7 +33,9 @@ public sealed partial class ThatType
 				Type? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsPublic();
+				{
+					await That(subject).IsPublic();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -47,7 +51,9 @@ public sealed partial class ThatType
 				Type subject = typeof(PublicType);
 
 				async Task Act()
-					=> await That(subject).IsPublic();
+				{
+					await That(subject).IsPublic();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -62,7 +68,9 @@ public sealed partial class ThatType
 			public async Task WhenTypeIsNotPublic_ShouldSucceed(Type subject)
 			{
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsPublic());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsPublic());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -73,7 +81,9 @@ public sealed partial class ThatType
 				Type subject = typeof(PublicType);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsPublic());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsPublic());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("*is not public*but it was*").AsWildcard();

@@ -15,7 +15,7 @@ namespace aweXpect.Reflection;
 public static partial class ThatMember
 {
 	/// <summary>
-	///     Verifies that the <typeparamref name="TMember"/> has the <paramref name="expected" /> name.
+	///     Verifies that the <typeparamref name="TMember" /> has the <paramref name="expected" /> name.
 	/// </summary>
 	public static StringEqualityTypeResult<TMember, IThat<TMember>> HasName<TMember>(
 		this IThat<TMember> subject, string expected)

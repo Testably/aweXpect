@@ -15,7 +15,9 @@ public sealed partial class ThatField
 				FieldInfo subject = typeof(TestClass).GetField("NoAttributeField")!;
 
 				async Task Act()
-					=> await That(subject).Has<TestAttribute>();
+				{
+					await That(subject).Has<TestAttribute>();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -31,7 +33,9 @@ public sealed partial class ThatField
 				FieldInfo subject = typeof(TestClass).GetField("TestField")!;
 
 				async Task Act()
-					=> await That(subject).Has<TestAttribute>();
+				{
+					await That(subject).Has<TestAttribute>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -42,7 +46,9 @@ public sealed partial class ThatField
 				FieldInfo subject = typeof(TestClass).GetField("TestFieldWithValue")!;
 
 				async Task Act()
-					=> await That(subject).Has<TestAttribute>(attr => attr.Value == 42);
+				{
+					await That(subject).Has<TestAttribute>(attr => attr.Value == 42);
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -53,7 +59,9 @@ public sealed partial class ThatField
 				FieldInfo subject = typeof(TestClass).GetField("TestFieldWithValue")!;
 
 				async Task Act()
-					=> await That(subject).Has<TestAttribute>(attr => attr.Value == 99);
+				{
+					await That(subject).Has<TestAttribute>(attr => attr.Value == 99);
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -69,7 +77,9 @@ public sealed partial class ThatField
 				FieldInfo? subject = null;
 
 				async Task Act()
-					=> await That(subject).Has<TestAttribute>();
+				{
+					await That(subject).Has<TestAttribute>();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -105,7 +115,9 @@ public sealed partial class ThatField
 				FieldInfo subject = typeof(TestClass).GetField("NoAttributeField")!;
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+				{
+					await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -116,7 +128,9 @@ public sealed partial class ThatField
 				FieldInfo subject = typeof(TestClass).GetField("TestFieldWithValue")!;
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>(attr => attr.Value == 999));
+				{
+					await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>(attr => attr.Value == 999));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -127,7 +141,9 @@ public sealed partial class ThatField
 				FieldInfo subject = typeof(TestClass).GetField("TestField")!;
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+				{
+					await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

@@ -15,7 +15,9 @@ public sealed partial class ThatMethods
 				Filtered.Methods subject = GetMethods("InternalMethod");
 
 				async Task Act()
-					=> await That(subject).AreNotInternal();
+				{
+					await That(subject).AreNotInternal();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -36,7 +38,9 @@ public sealed partial class ThatMethods
 				Filtered.Methods subject = GetMethods(methodName);
 
 				async Task Act()
-					=> await That(subject).AreNotInternal();
+				{
+					await That(subject).AreNotInternal();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -50,7 +54,9 @@ public sealed partial class ThatMethods
 				Filtered.Methods subject = GetMethods("InternalMethod");
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreNotInternal());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotInternal());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -64,7 +70,9 @@ public sealed partial class ThatMethods
 				Filtered.Methods subject = GetMethods(methodName);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreNotInternal());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotInternal());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

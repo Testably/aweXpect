@@ -16,12 +16,29 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.SecondMethodWithStream))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!, typeof(TestClass).GetMethod(nameof(TestClass.SecondMethodWithStream))!,
 				};
 
 				async Task Act()
-					=> await That(methods).HaveExactParameter<Stream>();
+				{
+					await That(methods).HaveExactParameter<Stream>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenAllHaveExactTypeWithName_ShouldSucceed()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!, typeof(TestClass).GetMethod(nameof(TestClass.SecondMethodWithStream))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveExactParameter<Stream>("stream");
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -31,12 +48,13 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithMemoryStream))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithMemoryStream))!,
 				};
 
 				async Task Act()
-					=> await That(methods).HaveExactParameter<Stream>();
+				{
+					await That(methods).HaveExactParameter<Stream>();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -44,21 +62,6 @@ public sealed partial class ThatMethods
 					             all have parameter of exact type Stream,
 					             but at least one did not
 					             """);
-			}
-
-			[Fact]
-			public async Task WhenAllHaveExactTypeWithName_ShouldSucceed()
-			{
-				IEnumerable<MethodInfo> methods = new[]
-				{
-					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.SecondMethodWithStream))!,
-				};
-
-				async Task Act()
-					=> await That(methods).HaveExactParameter<Stream>("stream");
-
-				await That(Act).DoesNotThrow();
 			}
 		}
 
@@ -69,12 +72,13 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.SecondMethodWithStream))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!, typeof(TestClass).GetMethod(nameof(TestClass.SecondMethodWithStream))!,
 				};
 
 				async Task Act()
-					=> await That(methods).DoesNotComplyWith(they => they.HaveExactParameter<Stream>());
+				{
+					await That(methods).DoesNotComplyWith(they => they.HaveExactParameter<Stream>());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -89,12 +93,13 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithMemoryStream))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithMemoryStream))!,
 				};
 
 				async Task Act()
-					=> await That(methods).DoesNotComplyWith(they => they.HaveExactParameter<Stream>());
+				{
+					await That(methods).DoesNotComplyWith(they => they.HaveExactParameter<Stream>());
+				}
 
 				await That(Act).DoesNotThrow();
 			}

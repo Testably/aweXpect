@@ -16,7 +16,9 @@ public sealed partial class ThatMethod
 					typeof(TestClassWithStaticMembers).GetMethod(nameof(TestClassWithStaticMembers.NonStaticMethod))!;
 
 				async Task Act()
-					=> await That(subject).IsNotStatic();
+				{
+					await That(subject).IsNotStatic();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -27,7 +29,9 @@ public sealed partial class ThatMethod
 				MethodInfo? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsNotStatic();
+				{
+					await That(subject).IsNotStatic();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -44,7 +48,9 @@ public sealed partial class ThatMethod
 					typeof(TestClassWithStaticMembers).GetMethod(nameof(TestClassWithStaticMembers.StaticMethod))!;
 
 				async Task Act()
-					=> await That(subject).IsNotStatic();
+				{
+					await That(subject).IsNotStatic();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage($"""
@@ -64,7 +70,9 @@ public sealed partial class ThatMethod
 					typeof(TestClassWithStaticMembers).GetMethod(nameof(TestClassWithStaticMembers.NonStaticMethod))!;
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotStatic());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotStatic());
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage($"""
@@ -81,7 +89,9 @@ public sealed partial class ThatMethod
 					typeof(TestClassWithStaticMembers).GetMethod(nameof(TestClassWithStaticMembers.StaticMethod))!;
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotStatic());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotStatic());
+				}
 
 				await That(Act).DoesNotThrow();
 			}

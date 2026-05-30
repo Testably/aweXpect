@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Reflection;
 using aweXpect.Core;
 using aweXpect.Options;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
 using aweXpect.Reflection.Results;
-using System.Reflection;
 
 namespace aweXpect.Reflection;
 

@@ -14,7 +14,9 @@ public sealed partial class ThatType
 				Type? subject = typeof(InternalType);
 
 				async Task Act()
-					=> await That(subject).IsNotInternal();
+				{
+					await That(subject).IsNotInternal();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -30,7 +32,9 @@ public sealed partial class ThatType
 				Type? subject = typeof(InternalType);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotInternal());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotInternal());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -42,7 +46,9 @@ public sealed partial class ThatType
 			public async Task WhenTypeIsNotInternal_ShouldFailWithNegatedAssertion(Type? subject)
 			{
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotInternal());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotInternal());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("*is internal*but it was*").AsWildcard();
@@ -55,7 +61,9 @@ public sealed partial class ThatType
 			public async Task WhenTypeIsNotInternal_ShouldSucceed(Type? subject)
 			{
 				async Task Act()
-					=> await That(subject).IsNotInternal();
+				{
+					await That(subject).IsNotInternal();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -66,7 +74,9 @@ public sealed partial class ThatType
 				Type? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsNotInternal();
+				{
+					await That(subject).IsNotInternal();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""

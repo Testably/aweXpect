@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
+#if NET8_0_OR_GREATER
 using System.Threading;
 using System.Threading.Tasks;
+#endif
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Reflection.Helpers;

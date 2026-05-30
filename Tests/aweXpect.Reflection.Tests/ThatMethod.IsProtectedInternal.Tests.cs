@@ -19,7 +19,9 @@ public sealed partial class ThatMethod
 				MethodInfo? subject = GetMethod(methodName);
 
 				async Task Act()
-					=> await That(subject).IsProtectedInternal();
+				{
+					await That(subject).IsProtectedInternal();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -35,7 +37,9 @@ public sealed partial class ThatMethod
 				MethodInfo? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsProtectedInternal();
+				{
+					await That(subject).IsProtectedInternal();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -51,7 +55,9 @@ public sealed partial class ThatMethod
 				MethodInfo? subject = GetMethod("ProtectedInternalMethod");
 
 				async Task Act()
-					=> await That(subject).IsProtectedInternal();
+				{
+					await That(subject).IsProtectedInternal();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -68,7 +74,9 @@ public sealed partial class ThatMethod
 				MethodInfo? subject = GetMethod(methodName);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsProtectedInternal());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsProtectedInternal());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -79,7 +87,9 @@ public sealed partial class ThatMethod
 				MethodInfo? subject = GetMethod("ProtectedInternalMethod");
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsProtectedInternal());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsProtectedInternal());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

@@ -15,12 +15,13 @@ public sealed partial class ThatConstructors
 			{
 				IEnumerable<ConstructorInfo> subject = new[]
 				{
-					typeof(TestClass).GetConstructor([typeof(string),])!,
-					typeof(TestClass).GetConstructor([typeof(int),])!,
+					typeof(TestClass).GetConstructor([typeof(string),])!, typeof(TestClass).GetConstructor([typeof(int),])!,
 				};
 
 				async Task Act()
-					=> await That(subject).Have<TestAttribute>();
+				{
+					await That(subject).Have<TestAttribute>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -30,12 +31,13 @@ public sealed partial class ThatConstructors
 			{
 				IEnumerable<ConstructorInfo> subject = new[]
 				{
-					typeof(TestClass).GetConstructor([typeof(string),])!,
-					typeof(TestClass).GetConstructor([typeof(int),])!,
+					typeof(TestClass).GetConstructor([typeof(string),])!, typeof(TestClass).GetConstructor([typeof(int),])!,
 				};
 
 				async Task Act()
-					=> await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Constructor"));
+				{
+					await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Constructor"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -45,12 +47,13 @@ public sealed partial class ThatConstructors
 			{
 				IEnumerable<ConstructorInfo> subject = new[]
 				{
-					typeof(TestClass).GetConstructor([typeof(string),])!,
-					typeof(TestClass).GetConstructor(Type.EmptyTypes)!,
+					typeof(TestClass).GetConstructor([typeof(string),])!, typeof(TestClass).GetConstructor(Type.EmptyTypes)!,
 				};
 
 				async Task Act()
-					=> await That(subject).Have<TestAttribute>();
+				{
+					await That(subject).Have<TestAttribute>();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -67,12 +70,13 @@ public sealed partial class ThatConstructors
 			{
 				IEnumerable<ConstructorInfo> subject = new[]
 				{
-					typeof(TestClass).GetConstructor([typeof(string),])!,
-					typeof(TestClass).GetConstructor([typeof(int),])!,
+					typeof(TestClass).GetConstructor([typeof(string),])!, typeof(TestClass).GetConstructor([typeof(int),])!,
 				};
 
 				async Task Act()
-					=> await That(subject).Have<TestAttribute>(attr => attr.Value == "WrongValue");
+				{
+					await That(subject).Have<TestAttribute>(attr => attr.Value == "WrongValue");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -120,7 +124,9 @@ public sealed partial class ThatConstructors
 					};
 
 					async Task Act()
-						=> await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+					{
+						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -130,12 +136,13 @@ public sealed partial class ThatConstructors
 				{
 					IEnumerable<ConstructorInfo> subject = new[]
 					{
-						typeof(TestClass).GetConstructor([typeof(string),])!,
-						typeof(TestClass).GetConstructor([typeof(int),])!,
+						typeof(TestClass).GetConstructor([typeof(string),])!, typeof(TestClass).GetConstructor([typeof(int),])!,
 					};
 
 					async Task Act()
-						=> await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+					{
+						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -149,8 +156,10 @@ public sealed partial class ThatConstructors
 					};
 
 					async Task Act()
-						=> await That(subject).Have<TestAttribute>(attr => attr.Value == "Constructor1Value")
+					{
+						await That(subject).Have<TestAttribute>(attr => attr.Value == "Constructor1Value")
 							.OrHave<BarAttribute>();
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -164,8 +173,10 @@ public sealed partial class ThatConstructors
 					};
 
 					async Task Act()
-						=> await That(subject).Have<TestAttribute>()
+					{
+						await That(subject).Have<TestAttribute>()
 							.OrHave<BarAttribute>(attr => attr.Name == "bar");
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -179,7 +190,9 @@ public sealed partial class ThatConstructors
 					};
 
 					async Task Act()
-						=> await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+					{
+						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+					}
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -196,12 +209,13 @@ public sealed partial class ThatConstructors
 				{
 					IEnumerable<ConstructorInfo> subject = new[]
 					{
-						typeof(TestClass).GetConstructor([typeof(double),])!,
-						typeof(TestClass).GetConstructor([typeof(float),])!,
+						typeof(TestClass).GetConstructor([typeof(double),])!, typeof(TestClass).GetConstructor([typeof(float),])!,
 					};
 
 					async Task Act()
-						=> await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+					{
+						await That(subject).Have<TestAttribute>().OrHave<BarAttribute>();
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -215,7 +229,9 @@ public sealed partial class ThatConstructors
 					};
 
 					async Task Act()
-						=> await That(subject).Have<TestAttribute>(false);
+					{
+						await That(subject).Have<TestAttribute>(false);
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -266,12 +282,13 @@ public sealed partial class ThatConstructors
 			{
 				IEnumerable<ConstructorInfo> subject = new[]
 				{
-					typeof(TestClass).GetConstructor([typeof(string),])!,
-					typeof(TestClass).GetConstructor([typeof(int),])!,
+					typeof(TestClass).GetConstructor([typeof(string),])!, typeof(TestClass).GetConstructor([typeof(int),])!,
 				};
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.Have<TestAttribute>());
+				{
+					await That(subject).DoesNotComplyWith(it => it.Have<TestAttribute>());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -289,12 +306,13 @@ public sealed partial class ThatConstructors
 			{
 				IEnumerable<ConstructorInfo> subject = new[]
 				{
-					typeof(TestClass).GetConstructor([typeof(string),])!,
-					typeof(TestClass).GetConstructor(Type.EmptyTypes)!,
+					typeof(TestClass).GetConstructor([typeof(string),])!, typeof(TestClass).GetConstructor(Type.EmptyTypes)!,
 				};
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.Have<TestAttribute>());
+				{
+					await That(subject).DoesNotComplyWith(it => it.Have<TestAttribute>());
+				}
 
 				await That(Act).DoesNotThrow();
 			}

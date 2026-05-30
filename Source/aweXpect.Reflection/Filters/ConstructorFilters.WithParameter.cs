@@ -154,7 +154,7 @@ public static partial class ConstructorFilters
 		}
 
 		/// <summary>
-		///     …with the <paramref name="expected"/> default value.
+		///     …with the <paramref name="expected" /> default value.
 		/// </summary>
 		public ConstructorsWithParameter<T> WithDefaultValue<TValue>(TValue expected)
 			where TValue : T

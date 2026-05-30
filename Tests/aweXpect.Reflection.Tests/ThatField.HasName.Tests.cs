@@ -16,7 +16,9 @@ public sealed partial class ThatField
 					typeof(ClassWithFields).GetField(nameof(ClassWithFields.PublicField));
 
 				async Task Act()
-					=> await That(subject).HasName("Field");
+				{
+					await That(subject).HasName("Field");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -37,7 +39,9 @@ public sealed partial class ThatField
 					typeof(ClassWithFields).GetField(nameof(ClassWithFields.PublicField));
 
 				async Task Act()
-					=> await That(subject).HasName("Public").AsPrefix();
+				{
+					await That(subject).HasName("Public").AsPrefix();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -49,7 +53,9 @@ public sealed partial class ThatField
 					typeof(ClassWithFields).GetField(nameof(ClassWithFields.PublicField));
 
 				async Task Act()
-					=> await That(subject).HasName("PublicField");
+				{
+					await That(subject).HasName("PublicField");
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -60,7 +66,9 @@ public sealed partial class ThatField
 				FieldInfo? subject = null;
 
 				async Task Act()
-					=> await That(subject).HasName("foo");
+				{
+					await That(subject).HasName("foo");
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -77,7 +85,9 @@ public sealed partial class ThatField
 					typeof(ClassWithFields).GetField(nameof(ClassWithFields.PublicField));
 
 				async Task Act()
-					=> await That(subject).HasName("pUBLICfIELD").IgnoringCase();
+				{
+					await That(subject).HasName("pUBLICfIELD").IgnoringCase();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -92,7 +102,9 @@ public sealed partial class ThatField
 					typeof(ClassWithFields).GetField(nameof(ClassWithFields.PublicField));
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.HasName("NonExistentField"));
+				{
+					await That(subject).DoesNotComplyWith(it => it.HasName("NonExistentField"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -104,7 +116,9 @@ public sealed partial class ThatField
 					typeof(ClassWithFields).GetField(nameof(ClassWithFields.PublicField));
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.HasName("PublicField"));
+				{
+					await That(subject).DoesNotComplyWith(it => it.HasName("PublicField"));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

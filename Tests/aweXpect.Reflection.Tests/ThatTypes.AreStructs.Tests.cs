@@ -16,7 +16,9 @@ public sealed partial class ThatTypes
 				Filtered.Types subject = In.AssemblyContaining<AreStructs>().Types();
 
 				async Task Act()
-					=> await That(subject).AreStructs();
+				{
+					await That(subject).AreStructs();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -35,7 +37,9 @@ public sealed partial class ThatTypes
 					.Which(type => type.IsValueType && !type.IsRecordStruct() && !type.IsEnum);
 
 				async Task Act()
-					=> await That(subject).AreStructs();
+				{
+					await That(subject).AreStructs();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -49,7 +53,9 @@ public sealed partial class ThatTypes
 				Filtered.Types subject = In.AssemblyContaining<AreStructs>().Types();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreStructs());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreStructs());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -61,7 +67,9 @@ public sealed partial class ThatTypes
 					.Which(type => type.IsValueType && !type.IsRecordStruct() && !type.IsEnum);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreStructs());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreStructs());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

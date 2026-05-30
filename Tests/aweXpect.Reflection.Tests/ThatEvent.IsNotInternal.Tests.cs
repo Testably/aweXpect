@@ -15,7 +15,9 @@ public sealed partial class ThatEvent
 				EventInfo? subject = GetEvent("InternalEvent");
 
 				async Task Act()
-					=> await That(subject).IsNotInternal();
+				{
+					await That(subject).IsNotInternal();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -34,7 +36,9 @@ public sealed partial class ThatEvent
 				EventInfo? subject = GetEvent(eventName);
 
 				async Task Act()
-					=> await That(subject).IsNotInternal();
+				{
+					await That(subject).IsNotInternal();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -45,7 +49,9 @@ public sealed partial class ThatEvent
 				EventInfo? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsNotInternal();
+				{
+					await That(subject).IsNotInternal();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -64,7 +70,9 @@ public sealed partial class ThatEvent
 				EventInfo? subject = GetEvent("InternalEvent");
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotInternal());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotInternal());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -78,7 +86,9 @@ public sealed partial class ThatEvent
 				EventInfo? subject = GetEvent(eventName);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotInternal());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotInternal());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""

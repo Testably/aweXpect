@@ -15,7 +15,9 @@ public sealed partial class ThatField
 				FieldInfo? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsOfType<int>();
+				{
+					await That(subject).IsOfType<int>();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -31,7 +33,9 @@ public sealed partial class ThatField
 				FieldInfo subject = typeof(TestClass).GetField(nameof(TestClass.IntField))!;
 
 				async Task Act()
-					=> await That(subject).IsOfType<string>();
+				{
+					await That(subject).IsOfType<string>();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -47,7 +51,9 @@ public sealed partial class ThatField
 				FieldInfo subject = typeof(TestClass).GetField(nameof(TestClass.IntField))!;
 
 				async Task Act()
-					=> await That(subject).IsOfType<int>();
+				{
+					await That(subject).IsOfType<int>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -58,73 +64,13 @@ public sealed partial class ThatField
 				FieldInfo subject = typeof(TestClass).GetField(nameof(TestClass.DummyField))!;
 
 				async Task Act()
-					=> await That(subject).IsOfType<DummyBase>();
+				{
+					await That(subject).IsOfType<DummyBase>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
 		}
-
-#pragma warning disable CA2263 // tests intentionally exercise the non-generic Type overload
-		public sealed class TypeTests
-		{
-			[Fact]
-			public async Task WhenFieldIsOfDifferentType_ShouldFail()
-			{
-				FieldInfo subject = typeof(TestClass).GetField(nameof(TestClass.IntField))!;
-
-				async Task Act()
-					=> await That(subject).IsOfType(typeof(string));
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is of type string,
-					             but it was of type int
-					             """);
-			}
-
-			[Fact]
-			public async Task WhenFieldIsOfExpectedType_ShouldSucceed()
-			{
-				FieldInfo subject = typeof(TestClass).GetField(nameof(TestClass.IntField))!;
-
-				async Task Act()
-					=> await That(subject).IsOfType(typeof(int));
-
-				await That(Act).DoesNotThrow();
-			}
-		}
-
-		public sealed class OrOfTypeTests
-		{
-			[Fact]
-			public async Task WithMultipleOrOfType_ShouldSupportChaining()
-			{
-				FieldInfo subject = typeof(TestClass).GetField(nameof(TestClass.IntField))!;
-
-				async Task Act()
-					=> await That(subject).IsOfType<string>().OrOfType(typeof(bool)).OrOfType<int>();
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenFieldIsNoneOfTheTypes_ShouldFail()
-			{
-				FieldInfo subject = typeof(TestClass).GetField(nameof(TestClass.IntField))!;
-
-				async Task Act()
-					=> await That(subject).IsOfType<string>().OrOfType<bool>();
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is of type string or of type bool,
-					             but it was of type int
-					             """);
-			}
-		}
-#pragma warning restore CA2263
 
 		public sealed class OrOfExactTypeTests
 		{
@@ -134,7 +80,9 @@ public sealed partial class ThatField
 				FieldInfo subject = typeof(TestClass).GetField(nameof(TestClass.IntField))!;
 
 				async Task Act()
-					=> await That(subject).IsOfType<string>().OrOfExactType<int>();
+				{
+					await That(subject).IsOfType<string>().OrOfExactType<int>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -148,7 +96,9 @@ public sealed partial class ThatField
 				FieldInfo subject = typeof(TestClass).GetField(nameof(TestClass.IntField))!;
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsOfType<string>());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsOfType<string>());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -159,7 +109,9 @@ public sealed partial class ThatField
 				FieldInfo subject = typeof(TestClass).GetField(nameof(TestClass.IntField))!;
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsOfType<int>());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsOfType<int>());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -187,5 +139,75 @@ public sealed partial class ThatField
 		private class Dummy : DummyBase
 		{
 		}
+
+#pragma warning disable CA2263 // tests intentionally exercise the non-generic Type overload
+		public sealed class TypeTests
+		{
+			[Fact]
+			public async Task WhenFieldIsOfDifferentType_ShouldFail()
+			{
+				FieldInfo subject = typeof(TestClass).GetField(nameof(TestClass.IntField))!;
+
+				async Task Act()
+				{
+					await That(subject).IsOfType(typeof(string));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is of type string,
+					             but it was of type int
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenFieldIsOfExpectedType_ShouldSucceed()
+			{
+				FieldInfo subject = typeof(TestClass).GetField(nameof(TestClass.IntField))!;
+
+				async Task Act()
+				{
+					await That(subject).IsOfType(typeof(int));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
+		public sealed class OrOfTypeTests
+		{
+			[Fact]
+			public async Task WhenFieldIsNoneOfTheTypes_ShouldFail()
+			{
+				FieldInfo subject = typeof(TestClass).GetField(nameof(TestClass.IntField))!;
+
+				async Task Act()
+				{
+					await That(subject).IsOfType<string>().OrOfType<bool>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is of type string or of type bool,
+					             but it was of type int
+					             """);
+			}
+
+			[Fact]
+			public async Task WithMultipleOrOfType_ShouldSupportChaining()
+			{
+				FieldInfo subject = typeof(TestClass).GetField(nameof(TestClass.IntField))!;
+
+				async Task Act()
+				{
+					await That(subject).IsOfType<string>().OrOfType(typeof(bool)).OrOfType<int>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+#pragma warning restore CA2263
 	}
 }

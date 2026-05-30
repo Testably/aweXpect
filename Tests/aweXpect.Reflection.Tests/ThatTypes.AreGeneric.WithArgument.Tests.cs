@@ -21,7 +21,9 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithTwoArguments<int, BaseClass>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgument<BaseClass>().AtIndex(index);
+					{
+						await That(subject).AreGeneric().WithArgument<BaseClass>().AtIndex(index);
+					}
 
 					await That(Act).ThrowsException()
 						.OnlyIf(!expectSuccess)
@@ -44,8 +46,10 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithTwoArguments<int, BaseClass>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgument<BaseClass>().AtIndex(index)
+					{
+						await That(subject).AreGeneric().WithArgument<BaseClass>().AtIndex(index)
 							.FromEnd();
+					}
 
 					await That(Act).ThrowsException()
 						.OnlyIf(!expectSuccess)
@@ -64,7 +68,9 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithTwoArguments<int, BaseClass>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgument<BaseClass>();
+					{
+						await That(subject).AreGeneric().WithArgument<BaseClass>();
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -75,7 +81,9 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithTwoArguments<int, BaseClass>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgument<ThatMethod.DerivedClass>();
+					{
+						await That(subject).AreGeneric().WithArgument<ThatMethod.DerivedClass>();
+					}
 
 					await That(Act).ThrowsException()
 						.WithMessage("""
@@ -93,7 +101,9 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithOneArgument<int>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgument<BaseClass>();
+					{
+						await That(subject).AreGeneric().WithArgument<BaseClass>();
+					}
 
 					await That(Act).ThrowsException()
 						.WithMessage("""
@@ -118,7 +128,9 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithTwoArguments<int, BaseClass>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgument<BaseClass>("TBar").AtIndex(index);
+					{
+						await That(subject).AreGeneric().WithArgument<BaseClass>("TBar").AtIndex(index);
+					}
 
 					await That(Act).ThrowsException()
 						.OnlyIf(!expectSuccess)
@@ -141,8 +153,10 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithTwoArguments<int, BaseClass>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgument<BaseClass>("TBar").AtIndex(index)
+					{
+						await That(subject).AreGeneric().WithArgument<BaseClass>("TBar").AtIndex(index)
 							.FromEnd();
+					}
 
 					await That(Act).ThrowsException()
 						.OnlyIf(!expectSuccess)
@@ -161,7 +175,9 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithTwoArguments<int, BaseClass>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgument<BaseClass>("TBar");
+					{
+						await That(subject).AreGeneric().WithArgument<BaseClass>("TBar");
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -172,7 +188,9 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithTwoArguments<int, BaseClass>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgument<BaseClass>("Tbar");
+					{
+						await That(subject).AreGeneric().WithArgument<BaseClass>("Tbar");
+					}
 
 					await That(Act).ThrowsException()
 						.WithMessage("""
@@ -190,7 +208,9 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithTwoArguments<int, BaseClass>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgument<ThatMethod.DerivedClass>("TBar");
+					{
+						await That(subject).AreGeneric().WithArgument<ThatMethod.DerivedClass>("TBar");
+					}
 
 					await That(Act).ThrowsException()
 						.WithMessage("""
@@ -208,7 +228,9 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithOneArgument<int>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgument<BaseClass>("TBar");
+					{
+						await That(subject).AreGeneric().WithArgument<BaseClass>("TBar");
+					}
 
 					await That(Act).ThrowsException()
 						.WithMessage("""
@@ -228,7 +250,9 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithTwoArguments<int, BaseClass>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgument<BaseClass>(prefix).AsPrefix();
+					{
+						await That(subject).AreGeneric().WithArgument<BaseClass>(prefix).AsPrefix();
+					}
 
 					await That(Act).ThrowsException()
 						.OnlyIf(!expectSuccess)
@@ -249,7 +273,9 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithTwoArguments<int, BaseClass>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgument<BaseClass>(regex).AsRegex();
+					{
+						await That(subject).AreGeneric().WithArgument<BaseClass>(regex).AsRegex();
+					}
 
 					await That(Act).ThrowsException()
 						.OnlyIf(!expectSuccess)
@@ -270,7 +296,9 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithTwoArguments<int, BaseClass>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgument<BaseClass>(suffix).AsSuffix();
+					{
+						await That(subject).AreGeneric().WithArgument<BaseClass>(suffix).AsSuffix();
+					}
 
 					await That(Act).ThrowsException()
 						.OnlyIf(!expectSuccess)
@@ -291,7 +319,9 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithTwoArguments<int, BaseClass>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgument<BaseClass>(wildcard).AsWildcard();
+					{
+						await That(subject).AreGeneric().WithArgument<BaseClass>(wildcard).AsWildcard();
+					}
 
 					await That(Act).ThrowsException()
 						.OnlyIf(!expectSuccess)
@@ -312,8 +342,10 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithTwoArguments<int, BaseClass>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgument<BaseClass>("TBAR")
+					{
+						await That(subject).AreGeneric().WithArgument<BaseClass>("TBAR")
 							.IgnoringCase(ignoreCase);
+					}
 
 					await That(Act).ThrowsException()
 						.OnlyIf(!expectSuccess)
@@ -332,8 +364,10 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithTwoArguments<int, BaseClass>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgument<BaseClass>("TBAr")
+					{
+						await That(subject).AreGeneric().WithArgument<BaseClass>("TBAr")
 							.Using(new IgnoreCaseForVocalsComparer());
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -351,7 +385,9 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithTwoArguments<int, BaseClass>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgument("TBar").AtIndex(index);
+					{
+						await That(subject).AreGeneric().WithArgument("TBar").AtIndex(index);
+					}
 
 					await That(Act).ThrowsException()
 						.OnlyIf(!expectSuccess)
@@ -375,7 +411,9 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithTwoArguments<int, BaseClass>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgument("TBar").AtIndex(index).FromEnd();
+					{
+						await That(subject).AreGeneric().WithArgument("TBar").AtIndex(index).FromEnd();
+					}
 
 					await That(Act).ThrowsException()
 						.OnlyIf(!expectSuccess)
@@ -394,7 +432,9 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithTwoArguments<int, BaseClass>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgument("TBar");
+					{
+						await That(subject).AreGeneric().WithArgument("TBar");
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -405,7 +445,9 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithTwoArguments<int, BaseClass>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgument("Tbar");
+					{
+						await That(subject).AreGeneric().WithArgument("Tbar");
+					}
 
 					await That(Act).ThrowsException()
 						.WithMessage("""
@@ -425,7 +467,9 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithTwoArguments<int, BaseClass>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgument(prefix).AsPrefix();
+					{
+						await That(subject).AreGeneric().WithArgument(prefix).AsPrefix();
+					}
 
 					await That(Act).ThrowsException()
 						.OnlyIf(!expectSuccess)
@@ -446,7 +490,9 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithTwoArguments<int, BaseClass>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgument(regex).AsRegex();
+					{
+						await That(subject).AreGeneric().WithArgument(regex).AsRegex();
+					}
 
 					await That(Act).ThrowsException()
 						.OnlyIf(!expectSuccess)
@@ -467,7 +513,9 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithTwoArguments<int, BaseClass>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgument(suffix).AsSuffix();
+					{
+						await That(subject).AreGeneric().WithArgument(suffix).AsSuffix();
+					}
 
 					await That(Act).ThrowsException()
 						.OnlyIf(!expectSuccess)
@@ -488,7 +536,9 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithTwoArguments<int, BaseClass>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgument(wildcard).AsWildcard();
+					{
+						await That(subject).AreGeneric().WithArgument(wildcard).AsWildcard();
+					}
 
 					await That(Act).ThrowsException()
 						.OnlyIf(!expectSuccess)
@@ -509,7 +559,9 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithTwoArguments<int, BaseClass>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgument("TBAR").IgnoringCase(ignoreCase);
+					{
+						await That(subject).AreGeneric().WithArgument("TBAR").IgnoringCase(ignoreCase);
+					}
 
 					await That(Act).ThrowsException()
 						.OnlyIf(!expectSuccess)
@@ -528,8 +580,10 @@ public sealed partial class ThatTypes
 					Filtered.Types subject = In.Types(typeof(GenericClassWithTwoArguments<int, BaseClass>));
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgument("TBAr")
+					{
+						await That(subject).AreGeneric().WithArgument("TBAr")
 							.Using(new IgnoreCaseForVocalsComparer());
+					}
 
 					await That(Act).DoesNotThrow();
 				}

@@ -23,8 +23,10 @@ public sealed partial class Filtered
 				public async Task ShouldIncludeSealedInformationInErrorMessage()
 				{
 					async Task Act()
-						=> await That(In.AllLoadedAssemblies().Sealed.Types())
+					{
+						await That(In.AllLoadedAssemblies().Sealed.Types())
 							.AreNotSealed();
+					}
 
 					await That(Act).ThrowsException()
 						.WithMessage("""
@@ -43,8 +45,10 @@ public sealed partial class Filtered
 					AccessModifiers accessModifier, string expectedString)
 				{
 					async Task Act()
-						=> await That(In.AllLoadedAssemblies().Sealed.Types(accessModifier))
+					{
+						await That(In.AllLoadedAssemblies().Sealed.Types(accessModifier))
 							.AreNotSealed();
+					}
 
 					await That(Act).ThrowsException()
 						.WithMessage($"""

@@ -7,17 +7,6 @@ namespace aweXpect.Reflection.Internal.Tests.Formatting;
 public class FieldFormatterTests
 {
 	[Fact]
-	public async Task WithoutInitialization_ShouldFormatCorrectly()
-	{
-		FieldInfo? fieldInfo = typeof(MyTestClass).GetField(nameof(MyTestClass.Field1));
-		FieldFormatter formatter = new();
-
-		string result = formatter.GetString(fieldInfo);
-
-		await That(result).IsEqualTo("int FieldFormatterTests.MyTestClass.Field1");
-	}
-
-	[Fact]
 	public async Task WithInitialization_ShouldFormatCorrectly()
 	{
 		FieldInfo? fieldInfo = typeof(MyTestClass).GetField(nameof(MyTestClass.Field2));
@@ -26,6 +15,17 @@ public class FieldFormatterTests
 		string result = formatter.GetString(fieldInfo);
 
 		await That(result).IsEqualTo("string FieldFormatterTests.MyTestClass.Field2");
+	}
+
+	[Fact]
+	public async Task WithoutInitialization_ShouldFormatCorrectly()
+	{
+		FieldInfo? fieldInfo = typeof(MyTestClass).GetField(nameof(MyTestClass.Field1));
+		FieldFormatter formatter = new();
+
+		string result = formatter.GetString(fieldInfo);
+
+		await That(result).IsEqualTo("int FieldFormatterTests.MyTestClass.Field1");
 	}
 
 	internal class MyTestClass

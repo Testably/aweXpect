@@ -18,7 +18,9 @@ public sealed partial class ThatField
 				FieldInfo? subject = GetField(fieldName);
 
 				async Task Act()
-					=> await That(subject).IsPublic();
+				{
+					await That(subject).IsPublic();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -34,7 +36,9 @@ public sealed partial class ThatField
 				FieldInfo? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsPublic();
+				{
+					await That(subject).IsPublic();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -50,7 +54,9 @@ public sealed partial class ThatField
 				FieldInfo? subject = GetField("PublicField");
 
 				async Task Act()
-					=> await That(subject).IsPublic();
+				{
+					await That(subject).IsPublic();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -67,7 +73,9 @@ public sealed partial class ThatField
 				FieldInfo? subject = GetField(fieldName);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsPublic());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsPublic());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -78,7 +86,9 @@ public sealed partial class ThatField
 				FieldInfo? subject = GetField("PublicField");
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsPublic());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsPublic());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

@@ -14,7 +14,9 @@ public sealed partial class ThatType
 				Type subject = typeof(UnrelatedClass);
 
 				async Task Act()
-					=> await That(subject).InheritsFrom<BaseClass>();
+				{
+					await That(subject).InheritsFrom<BaseClass>();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -30,7 +32,9 @@ public sealed partial class ThatType
 				Type subject = typeof(ClassWithInterface);
 
 				async Task Act()
-					=> await That(subject).InheritsFrom<ITestInterface>();
+				{
+					await That(subject).InheritsFrom<ITestInterface>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -41,7 +45,9 @@ public sealed partial class ThatType
 				Type subject = typeof(DerivedClass);
 
 				async Task Act()
-					=> await That(subject).InheritsFrom<BaseClass>(true);
+				{
+					await That(subject).InheritsFrom<BaseClass>(true);
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -52,7 +58,9 @@ public sealed partial class ThatType
 				Type subject = typeof(DerivedClass);
 
 				async Task Act()
-					=> await That(subject).InheritsFrom<BaseClass>();
+				{
+					await That(subject).InheritsFrom<BaseClass>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -63,7 +71,9 @@ public sealed partial class ThatType
 				Type subject = typeof(GrandChildClass);
 
 				async Task Act()
-					=> await That(subject).InheritsFrom<BaseClass>();
+				{
+					await That(subject).InheritsFrom<BaseClass>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -74,7 +84,9 @@ public sealed partial class ThatType
 				Type subject = typeof(GrandChildClass);
 
 				async Task Act()
-					=> await That(subject).InheritsFrom<BaseClass>(true);
+				{
+					await That(subject).InheritsFrom<BaseClass>(true);
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -90,7 +102,9 @@ public sealed partial class ThatType
 				Type subject = typeof(BaseClass);
 
 				async Task Act()
-					=> await That(subject).InheritsFrom<BaseClass>();
+				{
+					await That(subject).InheritsFrom<BaseClass>();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -110,7 +124,9 @@ public sealed partial class ThatType
 				Type baseType = typeof(BaseClass);
 
 				async Task Act()
-					=> await That(subject).InheritsFrom(baseType);
+				{
+					await That(subject).InheritsFrom(baseType);
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -127,7 +143,9 @@ public sealed partial class ThatType
 				Type interfaceType = typeof(ITestInterface);
 
 				async Task Act()
-					=> await That(subject).InheritsFrom(interfaceType);
+				{
+					await That(subject).InheritsFrom(interfaceType);
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -139,7 +157,9 @@ public sealed partial class ThatType
 				Type baseType = typeof(BaseClass);
 
 				async Task Act()
-					=> await That(subject).InheritsFrom(baseType, true);
+				{
+					await That(subject).InheritsFrom(baseType, true);
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -151,7 +171,9 @@ public sealed partial class ThatType
 				Type baseType = typeof(BaseClass);
 
 				async Task Act()
-					=> await That(subject).InheritsFrom(baseType);
+				{
+					await That(subject).InheritsFrom(baseType);
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -163,7 +185,9 @@ public sealed partial class ThatType
 				Type baseType = typeof(BaseClass);
 
 				async Task Act()
-					=> await That(subject).InheritsFrom(baseType, true);
+				{
+					await That(subject).InheritsFrom(baseType, true);
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -182,7 +206,9 @@ public sealed partial class ThatType
 				Type subject = typeof(UnrelatedClass);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.InheritsFrom<BaseClass>());
+				{
+					await That(subject).DoesNotComplyWith(it => it.InheritsFrom<BaseClass>());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -193,7 +219,9 @@ public sealed partial class ThatType
 				Type subject = typeof(ClassWithInterface);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.InheritsFrom<ITestInterface>());
+				{
+					await That(subject).DoesNotComplyWith(it => it.InheritsFrom<ITestInterface>());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -209,7 +237,9 @@ public sealed partial class ThatType
 				Type subject = typeof(DerivedClass);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.InheritsFrom<BaseClass>());
+				{
+					await That(subject).DoesNotComplyWith(it => it.InheritsFrom<BaseClass>());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -225,7 +255,9 @@ public sealed partial class ThatType
 				Type subject = typeof(GrandChildClass);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.InheritsFrom<BaseClass>());
+				{
+					await That(subject).DoesNotComplyWith(it => it.InheritsFrom<BaseClass>());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

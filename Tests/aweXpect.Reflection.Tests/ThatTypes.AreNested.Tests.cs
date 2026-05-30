@@ -15,7 +15,9 @@ public sealed partial class ThatTypes
 				Filtered.Types subject = In.AssemblyContaining<AreNested>().Types();
 
 				async Task Act()
-					=> await That(subject).AreNested();
+				{
+					await That(subject).AreNested();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -34,7 +36,9 @@ public sealed partial class ThatTypes
 					.Which(type => type.IsNested);
 
 				async Task Act()
-					=> await That(subject).AreNested();
+				{
+					await That(subject).AreNested();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -48,7 +52,9 @@ public sealed partial class ThatTypes
 				Filtered.Types subject = In.AssemblyContaining<AreNested>().Types();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreNested());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNested());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -60,7 +66,9 @@ public sealed partial class ThatTypes
 					.Which(type => type.IsNested);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.AreNested());
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNested());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

@@ -18,7 +18,9 @@ public sealed partial class ThatEvent
 				EventInfo? subject = GetEvent(eventName);
 
 				async Task Act()
-					=> await That(subject).IsNotPublic();
+				{
+					await That(subject).IsNotPublic();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -29,7 +31,9 @@ public sealed partial class ThatEvent
 				EventInfo? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsNotPublic();
+				{
+					await That(subject).IsNotPublic();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -45,7 +49,9 @@ public sealed partial class ThatEvent
 				EventInfo? subject = GetEvent("PublicEvent");
 
 				async Task Act()
-					=> await That(subject).IsNotPublic();
+				{
+					await That(subject).IsNotPublic();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -67,7 +73,9 @@ public sealed partial class ThatEvent
 				EventInfo? subject = GetEvent(eventName);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotPublic());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotPublic());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -83,7 +91,9 @@ public sealed partial class ThatEvent
 				EventInfo? subject = GetEvent("PublicEvent");
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotPublic());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotPublic());
+				}
 
 				await That(Act).DoesNotThrow();
 			}

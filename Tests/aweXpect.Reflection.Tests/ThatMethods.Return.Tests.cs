@@ -1,7 +1,9 @@
-using aweXpect.Reflection.Collections;
+﻿using aweXpect.Reflection.Collections;
 using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
+
+#pragma warning disable CA2263 // tests intentionally exercise the non-generic Type overload
 
 public sealed partial class ThatMethods
 {
@@ -16,7 +18,9 @@ public sealed partial class ThatMethods
 					.Methods().Which(m => m.Name.StartsWith("Get"));
 
 				async Task Act()
-					=> await That(methods).Return<string>();
+				{
+					await That(methods).Return<string>();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -33,7 +37,9 @@ public sealed partial class ThatMethods
 					.Methods().Which(m => m.Name == nameof(TestClass.GetString));
 
 				async Task Act()
-					=> await That(methods).Return<string>();
+				{
+					await That(methods).Return<string>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -45,7 +51,9 @@ public sealed partial class ThatMethods
 					.Methods().Which(m => m.Name == nameof(TestClass.GetDummy));
 
 				async Task Act()
-					=> await That(methods).Return<DummyBase>();
+				{
+					await That(methods).Return<DummyBase>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -60,7 +68,9 @@ public sealed partial class ThatMethods
 					.Methods().Which(m => m.Name.StartsWith("Get"));
 
 				async Task Act()
-					=> await That(methods).Return(typeof(string));
+				{
+					await That(methods).Return(typeof(string));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -77,7 +87,9 @@ public sealed partial class ThatMethods
 					.Methods().Which(m => m.Name == nameof(TestClass.GetString));
 
 				async Task Act()
-					=> await That(methods).Return(typeof(string));
+				{
+					await That(methods).Return(typeof(string));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -89,7 +101,9 @@ public sealed partial class ThatMethods
 					.Methods().Which(m => m.Name == nameof(TestClass.GetDummy));
 
 				async Task Act()
-					=> await That(methods).Return(typeof(DummyBase));
+				{
+					await That(methods).Return(typeof(DummyBase));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -122,7 +136,9 @@ public sealed partial class ThatMethods
 					.Methods().Which(m => m.Name.StartsWith("Get"));
 
 				async Task Act()
-					=> await That(methods).Return<bool>().OrReturn<Task>();
+				{
+					await That(methods).Return<bool>().OrReturn<Task>();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -161,7 +177,9 @@ public sealed partial class ThatMethods
 					.Methods().Which(m => m.Name.StartsWith("Get"));
 
 				async Task Act()
-					=> await That(methods).Return<bool>().OrReturnExactly<Task>();
+				{
+					await That(methods).Return<bool>().OrReturnExactly<Task>();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -183,7 +201,9 @@ public sealed partial class ThatMethods
 						.Methods().Which(m => m.Name == nameof(TestClass.GetString));
 
 					async Task Act()
-						=> await That(methods).DoesNotComplyWith(they => they.Return<string>());
+					{
+						await That(methods).DoesNotComplyWith(they => they.Return<string>());
+					}
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -203,7 +223,9 @@ public sealed partial class ThatMethods
 						.Methods().Which(m => m.Name == nameof(TestClass.GetDummy));
 
 					async Task Act()
-						=> await That(methods).DoesNotComplyWith(they => they.Return<DummyBase>());
+					{
+						await That(methods).DoesNotComplyWith(they => they.Return<DummyBase>());
+					}
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -223,7 +245,9 @@ public sealed partial class ThatMethods
 						.Methods().Which(m => m.Name.StartsWith("Get"));
 
 					async Task Act()
-						=> await That(methods).DoesNotComplyWith(they => they.Return<string>());
+					{
+						await That(methods).DoesNotComplyWith(they => they.Return<string>());
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -238,7 +262,9 @@ public sealed partial class ThatMethods
 						.Methods().Which(m => m.Name == nameof(TestClass.GetString));
 
 					async Task Act()
-						=> await That(methods).DoesNotComplyWith(they => they.Return(typeof(string)));
+					{
+						await That(methods).DoesNotComplyWith(they => they.Return(typeof(string)));
+					}
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -258,7 +284,9 @@ public sealed partial class ThatMethods
 						.Methods().Which(m => m.Name == nameof(TestClass.GetDummy));
 
 					async Task Act()
-						=> await That(methods).DoesNotComplyWith(they => they.Return(typeof(DummyBase)));
+					{
+						await That(methods).DoesNotComplyWith(they => they.Return(typeof(DummyBase)));
+					}
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -278,7 +306,9 @@ public sealed partial class ThatMethods
 						.Methods().Which(m => m.Name.StartsWith("Get"));
 
 					async Task Act()
-						=> await That(methods).DoesNotComplyWith(they => they.Return(typeof(string)));
+					{
+						await That(methods).DoesNotComplyWith(they => they.Return(typeof(string)));
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -293,8 +323,10 @@ public sealed partial class ThatMethods
 						.Methods().Which(m => m.Name == nameof(TestClass.AsyncMethod));
 
 					async Task Act()
-						=> await That(methods).DoesNotComplyWith(they
+					{
+						await That(methods).DoesNotComplyWith(they
 							=> they.Return<int>().OrReturn<string>().OrReturn(typeof(bool)).OrReturn<DummyBase>());
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -306,7 +338,9 @@ public sealed partial class ThatMethods
 						.Methods().Which(m => m.Name is nameof(TestClass.GetString) or nameof(TestClass.GetInt));
 
 					async Task Act()
-						=> await That(methods).DoesNotComplyWith(they => they.Return<string>().OrReturn(typeof(int)));
+					{
+						await That(methods).DoesNotComplyWith(they => they.Return<string>().OrReturn(typeof(int)));
+					}
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -327,7 +361,9 @@ public sealed partial class ThatMethods
 						.Methods().Which(m => m.Name.StartsWith("Get"));
 
 					async Task Act()
-						=> await That(methods).DoesNotComplyWith(they => they.Return<bool>().OrReturn<Task>());
+					{
+						await That(methods).DoesNotComplyWith(they => they.Return<bool>().OrReturn<Task>());
+					}
 
 					await That(Act).DoesNotThrow();
 				}
@@ -335,3 +371,5 @@ public sealed partial class ThatMethods
 		}
 	}
 }
+
+#pragma warning restore CA2263

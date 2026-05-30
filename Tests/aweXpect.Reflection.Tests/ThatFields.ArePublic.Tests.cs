@@ -18,7 +18,9 @@ public sealed partial class ThatFields
 				Filtered.Fields subject = GetFields(fieldName);
 
 				async Task Act()
-					=> await That(subject).ArePublic();
+				{
+					await That(subject).ArePublic();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -36,7 +38,9 @@ public sealed partial class ThatFields
 				Filtered.Fields subject = GetFields("PublicField");
 
 				async Task Act()
-					=> await That(subject).ArePublic();
+				{
+					await That(subject).ArePublic();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -53,7 +57,9 @@ public sealed partial class ThatFields
 				Filtered.Fields subject = GetFields(fieldName);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.ArePublic());
+				{
+					await That(subject).DoesNotComplyWith(they => they.ArePublic());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -64,7 +70,9 @@ public sealed partial class ThatFields
 				Filtered.Fields subject = GetFields("PublicField");
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.ArePublic());
+				{
+					await That(subject).DoesNotComplyWith(they => they.ArePublic());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

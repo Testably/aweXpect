@@ -17,7 +17,9 @@ public sealed partial class ThatProperty
 					!;
 
 				async Task Act()
-					=> await That(subject).IsNotStatic();
+				{
+					await That(subject).IsNotStatic();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -28,7 +30,9 @@ public sealed partial class ThatProperty
 				PropertyInfo? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsNotStatic();
+				{
+					await That(subject).IsNotStatic();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -45,7 +49,9 @@ public sealed partial class ThatProperty
 					typeof(TestClassWithStaticMembers).GetProperty(nameof(TestClassWithStaticMembers.StaticProperty))!;
 
 				async Task Act()
-					=> await That(subject).IsNotStatic();
+				{
+					await That(subject).IsNotStatic();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage($"""
@@ -66,7 +72,9 @@ public sealed partial class ThatProperty
 					!;
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotStatic());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotStatic());
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage($"""
@@ -83,7 +91,9 @@ public sealed partial class ThatProperty
 					typeof(TestClassWithStaticMembers).GetProperty(nameof(TestClassWithStaticMembers.StaticProperty))!;
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotStatic());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotStatic());
+				}
 
 				await That(Act).DoesNotThrow();
 			}

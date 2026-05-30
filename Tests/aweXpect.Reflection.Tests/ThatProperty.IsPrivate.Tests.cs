@@ -19,7 +19,9 @@ public sealed partial class ThatProperty
 				PropertyInfo? subject = GetProperty(propertyName);
 
 				async Task Act()
-					=> await That(subject).IsPrivate();
+				{
+					await That(subject).IsPrivate();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -35,7 +37,9 @@ public sealed partial class ThatProperty
 				PropertyInfo? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsPrivate();
+				{
+					await That(subject).IsPrivate();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -51,7 +55,9 @@ public sealed partial class ThatProperty
 				PropertyInfo? subject = GetProperty("PrivateProperty");
 
 				async Task Act()
-					=> await That(subject).IsPrivate();
+				{
+					await That(subject).IsPrivate();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -68,7 +74,9 @@ public sealed partial class ThatProperty
 				PropertyInfo? subject = GetProperty(propertyName);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsPrivate());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsPrivate());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -79,7 +87,9 @@ public sealed partial class ThatProperty
 				PropertyInfo? subject = GetProperty("PrivateProperty");
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsPrivate());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsPrivate());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("Expected that subject*")

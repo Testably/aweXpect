@@ -18,7 +18,7 @@ public class AttributeFilterOptions<TMember>(Func<TMember, Type, Func<Attribute,
 	/// </summary>
 	public bool Matches(TMember member)
 	{
-		foreach (var (attributeType, predicate, inherits) in _predicates)
+		foreach ((Type? attributeType, Func<Attribute, bool>? predicate, bool inherits) in _predicates)
 		{
 			if (memberHasAttribute(member, attributeType, predicate, inherits))
 			{

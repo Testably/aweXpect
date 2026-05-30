@@ -15,7 +15,9 @@ public sealed partial class ThatMethod
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutParameters))!;
 
 				async Task Act()
-					=> await That(methodInfo).HasNoParameters();
+				{
+					await That(methodInfo).HasNoParameters();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -26,7 +28,9 @@ public sealed partial class ThatMethod
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
 
 				async Task Act()
-					=> await That(methodInfo).HasNoParameters();
+				{
+					await That(methodInfo).HasNoParameters();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -42,7 +46,9 @@ public sealed partial class ThatMethod
 				MethodInfo? methodInfo = null;
 
 				async Task Act()
-					=> await That(methodInfo).HasNoParameters();
+				{
+					await That(methodInfo).HasNoParameters();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -56,23 +62,14 @@ public sealed partial class ThatMethod
 		public sealed class NegatedTests
 		{
 			[Fact]
-			public async Task WhenMethodHasParameters_ShouldSucceed()
-			{
-				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
-
-				async Task Act()
-					=> await That(methodInfo).DoesNotComplyWith(it => it.HasNoParameters());
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenMethodHasNoParameters_ShouldFail()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutParameters))!;
 
 				async Task Act()
-					=> await That(methodInfo).DoesNotComplyWith(it => it.HasNoParameters());
+				{
+					await That(methodInfo).DoesNotComplyWith(it => it.HasNoParameters());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -80,6 +77,19 @@ public sealed partial class ThatMethod
 					             does not have no parameters,
 					             but it did
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenMethodHasParameters_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).DoesNotComplyWith(it => it.HasNoParameters());
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 

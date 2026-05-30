@@ -16,7 +16,9 @@ public sealed partial class ThatMethod
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
 
 				async Task Act()
-					=> await That(methodInfo).HasParameter<int>("val").AsPrefix();
+				{
+					await That(methodInfo).HasParameter<int>("val").AsPrefix();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -27,7 +29,9 @@ public sealed partial class ThatMethod
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
 
 				async Task Act()
-					=> await That(methodInfo).HasParameter<string>().AtIndex(0);
+				{
+					await That(methodInfo).HasParameter<string>().AtIndex(0);
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -43,7 +47,9 @@ public sealed partial class ThatMethod
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
 
 				async Task Act()
-					=> await That(methodInfo).HasParameter<int>().AtIndex(0);
+				{
+					await That(methodInfo).HasParameter<int>().AtIndex(0);
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -54,7 +60,9 @@ public sealed partial class ThatMethod
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
 
 				async Task Act()
-					=> await That(methodInfo).HasParameter<string>().AtIndex(0).FromEnd();
+				{
+					await That(methodInfo).HasParameter<string>().AtIndex(0).FromEnd();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -65,7 +73,9 @@ public sealed partial class ThatMethod
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutParameters))!;
 
 				async Task Act()
-					=> await That(methodInfo).HasParameter("value");
+				{
+					await That(methodInfo).HasParameter("value");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -81,7 +91,9 @@ public sealed partial class ThatMethod
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
 
 				async Task Act()
-					=> await That(methodInfo).HasParameter("value");
+				{
+					await That(methodInfo).HasParameter("value");
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -92,7 +104,9 @@ public sealed partial class ThatMethod
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutParameters))!;
 
 				async Task Act()
-					=> await That(methodInfo).HasParameter<int>();
+				{
+					await That(methodInfo).HasParameter<int>();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -108,7 +122,9 @@ public sealed partial class ThatMethod
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
 
 				async Task Act()
-					=> await That(methodInfo).HasParameter<int>();
+				{
+					await That(methodInfo).HasParameter<int>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -119,7 +135,9 @@ public sealed partial class ThatMethod
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithStream))!;
 
 				async Task Act()
-					=> await That(methodInfo).HasParameter<IDisposable>();
+				{
+					await That(methodInfo).HasParameter<IDisposable>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -130,7 +148,9 @@ public sealed partial class ThatMethod
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutParameters))!;
 
 				async Task Act()
-					=> await That(methodInfo).HasParameter<int>("value");
+				{
+					await That(methodInfo).HasParameter<int>("value");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -146,7 +166,9 @@ public sealed partial class ThatMethod
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
 
 				async Task Act()
-					=> await That(methodInfo).HasParameter<int>("value");
+				{
+					await That(methodInfo).HasParameter<int>("value");
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -157,7 +179,9 @@ public sealed partial class ThatMethod
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
 
 				async Task Act()
-					=> await That(methodInfo).HasParameter<string>("value");
+				{
+					await That(methodInfo).HasParameter<string>("value");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -173,7 +197,9 @@ public sealed partial class ThatMethod
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
 
 				async Task Act()
-					=> await That(methodInfo).HasParameter<int>("VALUE").IgnoringCase();
+				{
+					await That(methodInfo).HasParameter<int>("VALUE").IgnoringCase();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -184,7 +210,9 @@ public sealed partial class ThatMethod
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithDefaults))!;
 
 				async Task Act()
-					=> await That(methodInfo).HasParameter<string>().WithDefaultValue();
+				{
+					await That(methodInfo).HasParameter<string>().WithDefaultValue();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -195,7 +223,9 @@ public sealed partial class ThatMethod
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
 
 				async Task Act()
-					=> await That(methodInfo).HasParameter<int>().WithoutDefaultValue();
+				{
+					await That(methodInfo).HasParameter<int>().WithoutDefaultValue();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -224,7 +254,9 @@ public sealed partial class ThatMethod
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutParameters))!;
 
 				async Task Act()
-					=> await That(methodInfo).DoesNotComplyWith(it => it.HasParameter("value"));
+				{
+					await That(methodInfo).DoesNotComplyWith(it => it.HasParameter("value"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -235,7 +267,9 @@ public sealed partial class ThatMethod
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
 
 				async Task Act()
-					=> await That(methodInfo).DoesNotComplyWith(it => it.HasParameter("value"));
+				{
+					await That(methodInfo).DoesNotComplyWith(it => it.HasParameter("value"));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -251,7 +285,9 @@ public sealed partial class ThatMethod
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutParameters))!;
 
 				async Task Act()
-					=> await That(methodInfo).DoesNotComplyWith(it => it.HasParameter<int>());
+				{
+					await That(methodInfo).DoesNotComplyWith(it => it.HasParameter<int>());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -262,7 +298,9 @@ public sealed partial class ThatMethod
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
 
 				async Task Act()
-					=> await That(methodInfo).DoesNotComplyWith(it => it.HasParameter<int>());
+				{
+					await That(methodInfo).DoesNotComplyWith(it => it.HasParameter<int>());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -278,7 +316,9 @@ public sealed partial class ThatMethod
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutParameters))!;
 
 				async Task Act()
-					=> await That(methodInfo).DoesNotComplyWith(it => it.HasParameter<int>("value"));
+				{
+					await That(methodInfo).DoesNotComplyWith(it => it.HasParameter<int>("value"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -289,7 +329,9 @@ public sealed partial class ThatMethod
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
 
 				async Task Act()
-					=> await That(methodInfo).DoesNotComplyWith(it => it.HasParameter<int>("value"));
+				{
+					await That(methodInfo).DoesNotComplyWith(it => it.HasParameter<int>("value"));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

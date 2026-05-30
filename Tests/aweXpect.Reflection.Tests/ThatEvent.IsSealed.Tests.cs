@@ -17,7 +17,9 @@ public sealed partial class ThatEvent
 					typeof(AbstractClassWithMembers).GetEvent(nameof(AbstractClassWithMembers.VirtualEvent))!;
 
 				async Task Act()
-					=> await That(subject).IsSealed();
+				{
+					await That(subject).IsSealed();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage($"""
@@ -33,7 +35,9 @@ public sealed partial class ThatEvent
 				EventInfo? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsSealed();
+				{
+					await That(subject).IsSealed();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -50,7 +54,9 @@ public sealed partial class ThatEvent
 					typeof(ClassWithSealedMembers).GetEvent(nameof(ClassWithSealedMembers.VirtualEvent))!;
 
 				async Task Act()
-					=> await That(subject).IsSealed();
+				{
+					await That(subject).IsSealed();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -65,7 +71,9 @@ public sealed partial class ThatEvent
 					typeof(AbstractClassWithMembers).GetEvent(nameof(AbstractClassWithMembers.VirtualEvent))!;
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsSealed());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsSealed());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -77,7 +85,9 @@ public sealed partial class ThatEvent
 					typeof(ClassWithSealedMembers).GetEvent(nameof(ClassWithSealedMembers.VirtualEvent))!;
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsSealed());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsSealed());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

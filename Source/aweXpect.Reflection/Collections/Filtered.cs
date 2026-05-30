@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-#if NET8_0_OR_GREATER
+﻿#if NET8_0_OR_GREATER
 using System.Threading;
 using System.Threading.Tasks;
 #else
 using System.Collections;
 #endif
+using System.Collections.Generic;
+using System.Linq;
 
 namespace aweXpect.Reflection.Collections;
 

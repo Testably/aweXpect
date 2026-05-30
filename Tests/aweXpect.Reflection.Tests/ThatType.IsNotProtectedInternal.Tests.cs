@@ -16,7 +16,9 @@ public sealed partial class ThatType
 			public async Task WhenTypeIsNotProtectedInternal_ShouldFailWithNegatedAssertion(Type? subject)
 			{
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotProtectedInternal());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotProtectedInternal());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("*is protected internal*but it was*").AsWildcard();
@@ -29,7 +31,9 @@ public sealed partial class ThatType
 			public async Task WhenTypeIsNotProtectedInternal_ShouldSucceed(Type? subject)
 			{
 				async Task Act()
-					=> await That(subject).IsNotProtectedInternal();
+				{
+					await That(subject).IsNotProtectedInternal();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -40,7 +44,9 @@ public sealed partial class ThatType
 				Type? subject = null;
 
 				async Task Act()
-					=> await That(subject).IsNotProtectedInternal();
+				{
+					await That(subject).IsNotProtectedInternal();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -56,7 +62,9 @@ public sealed partial class ThatType
 				Type? subject = typeof(ProtectedInternalType);
 
 				async Task Act()
-					=> await That(subject).IsNotProtectedInternal();
+				{
+					await That(subject).IsNotProtectedInternal();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -72,7 +80,9 @@ public sealed partial class ThatType
 				Type? subject = typeof(ProtectedInternalType);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsNotProtectedInternal());
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsNotProtectedInternal());
+				}
 
 				await That(Act).DoesNotThrow();
 			}

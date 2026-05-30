@@ -58,7 +58,7 @@ public interface ITypeAssemblies
 	///     In addition to the properties and methods in <see cref="ITypeAssemblies" /> it also
 	///     allows filtering for a private protected access modifier.
 	/// </remarks>
-	public interface IPrivate : ITypeAssemblies
+	interface IPrivate : ITypeAssemblies
 	{
 		/// <summary>
 		///     Filters for private protected types.
@@ -73,7 +73,7 @@ public interface ITypeAssemblies
 	///     In addition to the properties and methods in <see cref="ITypeAssemblies" /> it also
 	///     allows filtering for a protected internal access modifier.
 	/// </remarks>
-	public interface IProtected : ITypeAssemblies
+	interface IProtected : ITypeAssemblies
 	{
 		/// <summary>
 		///     Filters for protected internal types.

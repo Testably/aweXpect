@@ -15,7 +15,9 @@ public sealed partial class ThatAssembly
 				Assembly subject = Assembly.GetExecutingAssembly();
 
 				async Task Act()
-					=> await That(subject).Has<TestAttribute>();
+				{
+					await That(subject).Has<TestAttribute>();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -31,7 +33,9 @@ public sealed partial class ThatAssembly
 				Assembly subject = Assembly.GetExecutingAssembly();
 
 				async Task Act()
-					=> await That(subject).Has<AssemblyTitleAttribute>();
+				{
+					await That(subject).Has<AssemblyTitleAttribute>();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -42,7 +46,9 @@ public sealed partial class ThatAssembly
 				Assembly subject = Assembly.GetExecutingAssembly();
 
 				async Task Act()
-					=> await That(subject).Has<AssemblyTitleAttribute>(attr => attr.Title.Contains("Reflection"));
+				{
+					await That(subject).Has<AssemblyTitleAttribute>(attr => attr.Title.Contains("Reflection"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -53,7 +59,9 @@ public sealed partial class ThatAssembly
 				Assembly subject = Assembly.GetExecutingAssembly();
 
 				async Task Act()
-					=> await That(subject).Has<AssemblyTitleAttribute>(attr => attr.Title == "NonExistentTitle");
+				{
+					await That(subject).Has<AssemblyTitleAttribute>(attr => attr.Title == "NonExistentTitle");
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -69,7 +77,9 @@ public sealed partial class ThatAssembly
 				Assembly? subject = null;
 
 				async Task Act()
-					=> await That(subject).Has<AssemblyTitleAttribute>();
+				{
+					await That(subject).Has<AssemblyTitleAttribute>();
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -91,7 +101,9 @@ public sealed partial class ThatAssembly
 				Assembly subject = Assembly.GetExecutingAssembly();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+				{
+					await That(subject).DoesNotComplyWith(it => it.Has<TestAttribute>());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -102,8 +114,10 @@ public sealed partial class ThatAssembly
 				Assembly subject = Assembly.GetExecutingAssembly();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it
+				{
+					await That(subject).DoesNotComplyWith(it
 						=> it.Has<AssemblyTitleAttribute>(attr => attr.Title == "NonExistentTitle"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -114,8 +128,10 @@ public sealed partial class ThatAssembly
 				Assembly subject = Assembly.GetExecutingAssembly();
 
 				async Task Act()
-					=> await That(subject)
+				{
+					await That(subject)
 						.DoesNotComplyWith(it => it.Has<AssemblyTitleAttribute>().OrHas<TestAttribute>());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

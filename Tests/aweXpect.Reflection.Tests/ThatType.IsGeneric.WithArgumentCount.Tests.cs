@@ -19,7 +19,9 @@ public sealed partial class ThatType
 					Type subject = typeof(PublicGenericClass<int>);
 
 					async Task Act()
-						=> await That(subject).IsGeneric().WithArgumentCount(argumentCount);
+					{
+						await That(subject).IsGeneric().WithArgumentCount(argumentCount);
+					}
 
 					await That(Act).ThrowsException()
 						.OnlyIf(!expectSuccess)
@@ -39,7 +41,9 @@ public sealed partial class ThatType
 					Type subject = typeof(GenericClassWithTwoArguments<int, BaseClass>);
 
 					async Task Act()
-						=> await That(subject).IsGeneric().WithArgumentCount(argumentCount);
+					{
+						await That(subject).IsGeneric().WithArgumentCount(argumentCount);
+					}
 
 					await That(Act).ThrowsException()
 						.OnlyIf(!expectSuccess)
@@ -57,7 +61,9 @@ public sealed partial class ThatType
 					Type subject = typeof(PublicClass);
 
 					async Task Act()
-						=> await That(subject).IsGeneric().WithArgumentCount(1);
+					{
+						await That(subject).IsGeneric().WithArgumentCount(1);
+					}
 
 					await That(Act).ThrowsException()
 						.WithMessage("""

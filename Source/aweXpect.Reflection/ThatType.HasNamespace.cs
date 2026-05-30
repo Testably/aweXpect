@@ -21,9 +21,8 @@ public static partial class ThatType
 		this IThat<Type?> subject, string expected)
 	{
 		StringEqualityOptions options = new();
-		return new StringEqualityTypeResult<Type?, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint(
-				(it, grammars)
-					=> new HasNamespaceConstraint(it, grammars, expected, options)),
+		return new StringEqualityTypeResult<Type?, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new HasNamespaceConstraint(it, grammars, expected, options)),
 			subject,
 			options);
 	}

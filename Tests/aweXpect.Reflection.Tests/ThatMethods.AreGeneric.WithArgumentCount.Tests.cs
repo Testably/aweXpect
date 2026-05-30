@@ -19,7 +19,9 @@ public sealed partial class ThatMethods
 					Filtered.Methods subject = GetMethods("GenericMethod1");
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgumentCount(argumentCount);
+					{
+						await That(subject).AreGeneric().WithArgumentCount(argumentCount);
+					}
 
 					await That(Act).ThrowsException()
 						.OnlyIf(!expectSuccess)
@@ -41,7 +43,9 @@ public sealed partial class ThatMethods
 					Filtered.Methods subject = GetMethods("GenericMethod2");
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgumentCount(argumentCount);
+					{
+						await That(subject).AreGeneric().WithArgumentCount(argumentCount);
+					}
 
 					await That(Act).ThrowsException()
 						.OnlyIf(!expectSuccess)
@@ -61,7 +65,9 @@ public sealed partial class ThatMethods
 					Filtered.Methods subject = GetMethods("NonGenericMethod");
 
 					async Task Act()
-						=> await That(subject).AreGeneric().WithArgumentCount(1);
+					{
+						await That(subject).AreGeneric().WithArgumentCount(1);
+					}
 
 					await That(Act).ThrowsException()
 						.WithMessage("""
