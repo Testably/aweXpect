@@ -302,7 +302,7 @@ In addition to [access modifiers](#access-modifiers),
 | parameter of type (or subtype)       | `.WithParameter<T>()` / `.WithParameter<T>("name")` | `.HasParameter<T>()` / `.HasParameter<T>("name")`           | `.HaveParameter<T>()`      |
 | parameter of exact type              | `.WithExactParameter<T>()`                          | `.HasExactParameter<T>()` / `.HasExactParameter<T>("name")` | `.HaveExactParameter<T>()` |
 | parameter count                      | `.WithParameterCount(n)`                            | `.HasParameterCount(n)`                                     | `.HaveParameterCount(n)`   |
-| custom predicate                     | `.Which(m => …)`                                    | -                                                           | -                          |
+| custom predicate                     | `.Which(m => …)`                                    | `.Satisfies(m => …)`                                        | `.All().Satisfy(m => …)`   |
 
 `WhichReturn<Task>()` and `Returns<Task>()` also match `Task<T>`; the `…Exactly` variants match only the
 exact type. Use `OrReturn<T>()` / `OrReturnExactly<T>()` to allow several return types.
