@@ -386,8 +386,8 @@ on them directly:
 |-----------------------------|---------------------------------|---------------------------|----------------------------|
 | by name                     | `.WithName("x")`                | `.HasName("x")`           | `.HaveName("x")`           |
 | has attribute               | `.With<TAttribute>()`           | `.Has<TAttribute>()`      | `.Have<TAttribute>()`      |
-| depends on assembly         | -                               | `.HasADependencyOn("x")`  | `.HaveADependencyOn("x")`  |
-| does not depend on assembly | -                               | `.HasNoDependencyOn("x")` | `.HaveNoDependencyOn("x")` |
+| depends on assembly         | `.WhichHaveADependencyOn("x")`  | `.HasADependencyOn("x")`  | `.HaveADependencyOn("x")`  |
+| does not depend on assembly | `.WhichHaveNoDependencyOn("x")` | `.HasNoDependencyOn("x")` | `.HaveNoDependencyOn("x")` |
 | custom predicate            | `.Which(a => …)`                | -                         | -                          |
 
 ```csharp

@@ -6,6 +6,8 @@ namespace aweXpect.Reflection
     public static class AssemblyFilters
     {
         public static aweXpect.Reflection.Collections.Filtered.Assemblies Which(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, System.Func<System.Reflection.Assembly, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResultType WhichHaveADependencyOn(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, string expected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResultType WhichHaveNoDependencyOn(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, string unexpected) { }
         public static aweXpect.Reflection.AssemblyFilters.AssembliesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, bool inherit = true)
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.AssemblyFilters.AssembliesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
