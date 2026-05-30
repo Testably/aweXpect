@@ -41,6 +41,8 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.AssemblyFilters.AssembliesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, string expected) { }
+        public static aweXpect.Reflection.AssemblyFilters.AssembliesWithVersion WithVersion(this aweXpect.Reflection.Collections.Filtered.Assemblies @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies WithVersion(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, System.Func<System.Version, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public class AssembliesWith : aweXpect.Reflection.Collections.Filtered.Assemblies
         {
             public AssembliesWith(aweXpect.Reflection.Collections.Filtered.Assemblies inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Reflection.Assembly> filter) { }
@@ -48,6 +50,24 @@ namespace aweXpect.Reflection
                 where TAttribute : System.Attribute { }
             public aweXpect.Reflection.AssemblyFilters.AssembliesWith OrWith<TAttribute>(System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
                 where TAttribute : System.Attribute { }
+        }
+        public class AssembliesWithVersion : aweXpect.Reflection.Collections.Filtered.Assemblies
+        {
+            public AssembliesWithVersion(aweXpect.Reflection.Collections.Filtered.Assemblies inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Reflection.Assembly> filter) { }
+            public aweXpect.Reflection.AssemblyFilters.VersionComponent WithBuild { get; }
+            public aweXpect.Reflection.AssemblyFilters.VersionComponent WithMajor { get; }
+            public aweXpect.Reflection.AssemblyFilters.VersionComponent WithMinor { get; }
+            public aweXpect.Reflection.AssemblyFilters.VersionComponent WithRevision { get; }
+        }
+        public class VersionComponent
+        {
+            public VersionComponent(aweXpect.Reflection.AssemblyFilters.AssembliesWithVersion owner, aweXpect.Reflection.Collections.IChangeableFilter<System.Reflection.Assembly> filter, string component, System.Func<System.Version, int> selector) { }
+            public aweXpect.Reflection.AssemblyFilters.AssembliesWithVersion EqualTo(int expected) { }
+            public aweXpect.Reflection.AssemblyFilters.AssembliesWithVersion GreaterThan(int expected) { }
+            public aweXpect.Reflection.AssemblyFilters.AssembliesWithVersion GreaterThanOrEqualTo(int expected) { }
+            public aweXpect.Reflection.AssemblyFilters.AssembliesWithVersion LessThan(int expected) { }
+            public aweXpect.Reflection.AssemblyFilters.AssembliesWithVersion LessThanOrEqualTo(int expected) { }
+            public aweXpect.Reflection.AssemblyFilters.AssembliesWithVersion NotEqualTo(int expected) { }
         }
     }
     public static class ConstructorFilters
@@ -455,6 +475,27 @@ namespace aweXpect.Reflection
         public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>>> HaveName(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>> subject, System.Func<System.Reflection.Assembly?, string> expectedNameSelector, [System.Runtime.CompilerServices.CallerArgumentExpression("expectedNameSelector")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.Assembly?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.Assembly?>>> HaveNoDependencyOn(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.Assembly?>> subject, string unexpected) { }
         public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>>> HaveNoDependencyOn(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>> subject, string unexpected) { }
+        public static aweXpect.Reflection.ThatAssemblies.HaveVersionResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.Assembly?>> HaveVersion(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.Assembly?>> subject) { }
+        public static aweXpect.Reflection.ThatAssemblies.HaveVersionResult<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>> HaveVersion(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.Assembly?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.Assembly?>>> HaveVersion(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.Assembly?>> subject, System.Func<System.Version, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>>> HaveVersion(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>> subject, System.Func<System.Version, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+        public class HaveVersionResult<TCollection> : aweXpect.Results.AndOrResult<TCollection, aweXpect.Core.IThat<TCollection>>
+        {
+            public aweXpect.Reflection.ThatAssemblies.VersionComponentResult<TCollection> WithBuild { get; }
+            public aweXpect.Reflection.ThatAssemblies.VersionComponentResult<TCollection> WithMajor { get; }
+            public aweXpect.Reflection.ThatAssemblies.VersionComponentResult<TCollection> WithMinor { get; }
+            public aweXpect.Reflection.ThatAssemblies.VersionComponentResult<TCollection> WithRevision { get; }
+        }
+        public class VersionComponentResult<TCollection>
+        {
+            public VersionComponentResult(aweXpect.Reflection.ThatAssemblies.HaveVersionResult<TCollection> owner, string component, System.Func<System.Version, int> selector) { }
+            public aweXpect.Reflection.ThatAssemblies.HaveVersionResult<TCollection> EqualTo(int expected) { }
+            public aweXpect.Reflection.ThatAssemblies.HaveVersionResult<TCollection> GreaterThan(int expected) { }
+            public aweXpect.Reflection.ThatAssemblies.HaveVersionResult<TCollection> GreaterThanOrEqualTo(int expected) { }
+            public aweXpect.Reflection.ThatAssemblies.HaveVersionResult<TCollection> LessThan(int expected) { }
+            public aweXpect.Reflection.ThatAssemblies.HaveVersionResult<TCollection> LessThanOrEqualTo(int expected) { }
+            public aweXpect.Reflection.ThatAssemblies.HaveVersionResult<TCollection> NotEqualTo(int expected) { }
+        }
     }
     public static class ThatAssembly
     {
@@ -465,6 +506,25 @@ namespace aweXpect.Reflection
         public static aweXpect.Results.StringEqualityTypeResult<System.Reflection.Assembly?, aweXpect.Core.IThat<System.Reflection.Assembly?>> HasADependencyOn(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject, string expected) { }
         public static aweXpect.Results.StringEqualityTypeResult<System.Reflection.Assembly?, aweXpect.Core.IThat<System.Reflection.Assembly?>> HasName(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject, string expected) { }
         public static aweXpect.Results.StringEqualityTypeResult<System.Reflection.Assembly?, aweXpect.Core.IThat<System.Reflection.Assembly?>> HasNoDependencyOn(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject, string unexpected) { }
+        public static aweXpect.Reflection.ThatAssembly.HasVersionResult HasVersion(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Reflection.Assembly?, aweXpect.Core.IThat<System.Reflection.Assembly?>> HasVersion(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject, System.Func<System.Version, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+        public class HasVersionResult : aweXpect.Results.AndOrResult<System.Reflection.Assembly?, aweXpect.Core.IThat<System.Reflection.Assembly?>>
+        {
+            public aweXpect.Reflection.ThatAssembly.VersionComponent WithBuild { get; }
+            public aweXpect.Reflection.ThatAssembly.VersionComponent WithMajor { get; }
+            public aweXpect.Reflection.ThatAssembly.VersionComponent WithMinor { get; }
+            public aweXpect.Reflection.ThatAssembly.VersionComponent WithRevision { get; }
+        }
+        public class VersionComponent
+        {
+            public VersionComponent(aweXpect.Reflection.ThatAssembly.HasVersionResult owner, string component, System.Func<System.Version, int> selector) { }
+            public aweXpect.Reflection.ThatAssembly.HasVersionResult EqualTo(int expected) { }
+            public aweXpect.Reflection.ThatAssembly.HasVersionResult GreaterThan(int expected) { }
+            public aweXpect.Reflection.ThatAssembly.HasVersionResult GreaterThanOrEqualTo(int expected) { }
+            public aweXpect.Reflection.ThatAssembly.HasVersionResult LessThan(int expected) { }
+            public aweXpect.Reflection.ThatAssembly.HasVersionResult LessThanOrEqualTo(int expected) { }
+            public aweXpect.Reflection.ThatAssembly.HasVersionResult NotEqualTo(int expected) { }
+        }
     }
     public static class ThatConstructor
     {
