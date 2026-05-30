@@ -61,6 +61,8 @@ public partial class AwexpectCustomization
 		///     - mscorlib<br />
 		///     - System<br />
 		///     - Microsoft<br />
+		///     - netstandard<br />
+		///     - WindowsBase<br />
 		///     - JetBrains<br />
 		///     - xunit<br />
 		///     - Castle<br />
@@ -71,6 +73,8 @@ public partial class AwexpectCustomization
 			"mscorlib",
 			"System",
 			"Microsoft",
+			"netstandard",
+			"WindowsBase",
 			"JetBrains",
 			"xunit",
 			"Castle",

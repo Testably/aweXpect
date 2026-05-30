@@ -34,6 +34,8 @@ public sealed class CustomizeReflectionTests
 			"mscorlib",
 			"System",
 			"Microsoft",
+			"netstandard",
+			"WindowsBase",
 			"JetBrains",
 			"xunit",
 			"Castle",
