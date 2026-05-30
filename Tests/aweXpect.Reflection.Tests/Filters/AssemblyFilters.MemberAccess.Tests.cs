@@ -94,6 +94,33 @@ public sealed partial class AssemblyFilters
 				await That(anyMethods.GetDescription())
 					.IsEqualTo("methods in assembly").AsPrefix();
 			}
+
+			[Fact]
+			public async Task ShouldNotLeakTypeFiltersAcrossSelectorCalls()
+			{
+				Filtered.Assemblies assemblies = In.AssemblyContaining<AssemblyFilters>();
+
+				_ = assemblies.Sealed.Classes();
+				Filtered.Types interfaces = assemblies.Interfaces();
+
+				await That(interfaces).IsNotEmpty();
+				await That(interfaces).All().Satisfy(t => t.IsInterface);
+				await That(interfaces.GetDescription())
+					.IsEqualTo("interfaces in assembly").AsPrefix();
+			}
+
+			[Fact]
+			public async Task ShouldNotRetroactivelyMutatePredicateOfReturnedTypes()
+			{
+				Filtered.Assemblies assemblies = In.AssemblyContaining<AssemblyFilters>();
+				Filtered.Types sealedClasses = assemblies.Sealed.Classes();
+
+				_ = assemblies.Generic.Nested.Interfaces();
+
+				await That(sealedClasses).IsNotEmpty();
+				await That(sealedClasses).All().Satisfy(t => t is
+					{ IsClass: true, IsSealed: true, IsInterface: false, });
+			}
 		}
 	}
 }

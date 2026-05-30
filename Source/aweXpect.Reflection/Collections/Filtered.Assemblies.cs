@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using aweXpect.Core;
 using aweXpect.Options;
-using aweXpect.Reflection.Helpers;
 
 // ReSharper disable MemberHidesStaticFromOuterClass
 
@@ -22,9 +21,6 @@ public static partial class Filtered
 		ITypeAssemblies.IPrivate
 	{
 		private readonly string _description;
-		private readonly MemberFilterState _memberState = new();
-		private readonly List<Func<Type, bool>> _typeFilters = [];
-		private string? _typeFilterDescription;
 
 		/// <summary>
 		///     Container for a filterable collection of <see cref="Assembly" />.
@@ -62,50 +58,49 @@ public static partial class Filtered
 		/// <summary>
 		///     Filters for public types.
 		/// </summary>
-		public ITypeAssemblies Public
-		{
-			get
-			{
-				_memberState.SetAccess(AccessModifiers.Public);
-				return this;
-			}
-		}
+		public ITypeAssemblies Public => NewBuilder(MemberFilterState.Empty.WithAccess(AccessModifiers.Public));
 
 		/// <summary>
 		///     Filters for private types.
 		/// </summary>
-		public ITypeAssemblies.IPrivate Private
-		{
-			get
-			{
-				_memberState.SetAccess(AccessModifiers.Private);
-				return this;
-			}
-		}
+		public ITypeAssemblies.IPrivate Private => NewBuilder(MemberFilterState.Empty.WithAccess(AccessModifiers.Private));
 
 		/// <summary>
 		///     Filters for protected types.
 		/// </summary>
 		public ITypeAssemblies.IProtected Protected
-		{
-			get
-			{
-				_memberState.SetAccess(AccessModifiers.Protected);
-				return this;
-			}
-		}
+			=> NewBuilder(MemberFilterState.Empty.WithAccess(AccessModifiers.Protected));
 
 		/// <summary>
 		///     Filters for internal types.
 		/// </summary>
-		public ITypeAssemblies Internal
-		{
-			get
-			{
-				_memberState.SetAccess(AccessModifiers.Internal);
-				return this;
-			}
-		}
+		public ITypeAssemblies Internal => NewBuilder(MemberFilterState.Empty.WithAccess(AccessModifiers.Internal));
+
+		/// <inheritdoc cref="ITypeAssemblies.Abstract" />
+		public ILimitedAbstractSealedTypeAssemblies<ILimitedAbstractSealedTypeAssemblies> Abstract
+			=> NewBuilder(MemberFilterState.Empty).Abstract;
+
+		/// <inheritdoc cref="ITypeAssemblies.Sealed" />
+		public ILimitedAbstractSealedTypeAssemblies<ILimitedAbstractSealedTypeAssemblies> Sealed
+			=> NewBuilder(MemberFilterState.Empty).Sealed;
+
+		/// <inheritdoc cref="ITypeAssemblies.Static" />
+		public ILimitedStaticTypeAssemblies<ILimitedStaticTypeAssemblies> Static
+			=> NewBuilder(MemberFilterState.Empty).Static;
+
+		/// <inheritdoc cref="ILimitedStaticTypeAssemblies{TLimitedTypeAssemblies}.Generic" />
+		public ITypeAssemblies Generic => NewBuilder(MemberFilterState.Empty).Generic;
+
+		/// <inheritdoc cref="ILimitedStaticTypeAssemblies{TLimitedTypeAssemblies}.Nested" />
+		public ITypeAssemblies Nested => NewBuilder(MemberFilterState.Empty).Nested;
+
+		/// <inheritdoc cref="ITypeAssemblies.IPrivate.Protected" />
+		ITypeAssemblies ITypeAssemblies.IPrivate.Protected
+			=> NewBuilder(MemberFilterState.Empty.WithAccess(AccessModifiers.PrivateProtected));
+
+		/// <inheritdoc cref="ITypeAssemblies.IProtected.Internal" />
+		ITypeAssemblies ITypeAssemblies.IProtected.Internal
+			=> NewBuilder(MemberFilterState.Empty.WithAccess(AccessModifiers.ProtectedInternal));
 
 		/// <inheritdoc />
 		public string GetDescription()
@@ -119,307 +114,51 @@ public static partial class Filtered
 			return description;
 		}
 
-		/// <inheritdoc cref="ITypeAssemblies.IPrivate.Protected" />
-		ITypeAssemblies ITypeAssemblies.IPrivate.Protected
-		{
-			get
-			{
-				_memberState.SetAccess(AccessModifiers.PrivateProtected);
-				return this;
-			}
-		}
-
-		/// <inheritdoc cref="ITypeAssemblies.IProtected.Internal" />
-		ITypeAssemblies ITypeAssemblies.IProtected.Internal
-		{
-			get
-			{
-				_memberState.SetAccess(AccessModifiers.ProtectedInternal);
-				return this;
-			}
-		}
-
-		/// <inheritdoc cref="ITypeAssemblies.Abstract" />
-		public ILimitedAbstractSealedTypeAssemblies<ILimitedAbstractSealedTypeAssemblies> Abstract
-		{
-			get
-			{
-				_typeFilterDescription = (_typeFilterDescription ?? "") + "abstract ";
-				_typeFilters.Add(type => type.IsReallyAbstract());
-				_memberState.SetAbstract();
-				return new LimitedAbstractSealedAssemblies(this);
-			}
-		}
-
-		/// <inheritdoc cref="ITypeAssemblies.Sealed" />
-		public ILimitedAbstractSealedTypeAssemblies<ILimitedAbstractSealedTypeAssemblies> Sealed
-		{
-			get
-			{
-				_typeFilterDescription = (_typeFilterDescription ?? "") + "sealed ";
-				_typeFilters.Add(type => type.IsReallySealed());
-				_memberState.SetSealed();
-				return new LimitedAbstractSealedAssemblies(this);
-			}
-		}
-
-		/// <inheritdoc cref="ITypeAssemblies.Static" />
-		public ILimitedStaticTypeAssemblies<ILimitedStaticTypeAssemblies> Static
-		{
-			get
-			{
-				_typeFilterDescription = (_typeFilterDescription ?? "") + "static ";
-				_typeFilters.Add(type => type.IsReallyStatic());
-				_memberState.SetStatic();
-				return this;
-			}
-		}
-
-		/// <inheritdoc cref="ILimitedStaticTypeAssemblies{TLimitedTypeAssemblies}.Generic" />
-		public ITypeAssemblies Generic
-		{
-			get
-			{
-				_typeFilterDescription = (_typeFilterDescription ?? "") + "generic ";
-				_typeFilters.Add(type => type.IsGenericType);
-				return this;
-			}
-		}
-
-		/// <inheritdoc cref="ILimitedStaticTypeAssemblies{TLimitedTypeAssemblies}.Nested" />
-		public ITypeAssemblies Nested
-		{
-			get
-			{
-				_typeFilterDescription = (_typeFilterDescription ?? "") + "nested ";
-				_typeFilters.Add(type => type.IsNested);
-				return this;
-			}
-		}
-
 		/// <inheritdoc cref="ILimitedStaticTypeAssemblies.Types(AccessModifiers)" />
 		public Types Types(AccessModifiers accessModifier = AccessModifiers.Any)
-		{
-			AccessModifiers? implicitAccess = _memberState.AccessModifier;
-			if (implicitAccess is not null)
-			{
-				_typeFilters.Add(type => type.HasAccessModifier(implicitAccess.Value));
-				_typeFilterDescription = (_typeFilterDescription ?? "") + implicitAccess.Value.GetString(" ");
-			}
-
-			_memberState.Reset();
-
-			if (accessModifier != AccessModifiers.Any)
-			{
-				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
-				_typeFilterDescription = accessModifier.GetString(" ") + (_typeFilterDescription ?? "");
-			}
-
-			if (_typeFilters.Any())
-			{
-				return new Types(this, "types ")
-					.Which(Filter.Prefix<Type>(
-						type => _typeFilters.All(predicate => predicate.Invoke(type)),
-						_typeFilterDescription ?? ""));
-			}
-
-			return new Types(this, "types ");
-		}
+			=> NewBuilder(MemberFilterState.Empty).Types(accessModifier);
 
 		/// <inheritdoc cref="ILimitedStaticTypeAssemblies.Classes(AccessModifiers)" />
 		public Types Classes(AccessModifiers accessModifier = AccessModifiers.Any)
-		{
-			_typeFilters.Add(type => type.IsReallyClass());
-			AccessModifiers? implicitAccess = _memberState.AccessModifier;
-			if (implicitAccess is not null)
-			{
-				_typeFilters.Add(type => type.HasAccessModifier(implicitAccess.Value));
-				_typeFilterDescription = (_typeFilterDescription ?? "") + implicitAccess.Value.GetString(" ");
-			}
-
-			_memberState.Reset();
-
-			if (accessModifier != AccessModifiers.Any)
-			{
-				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
-				_typeFilterDescription = accessModifier.GetString(" ") + (_typeFilterDescription ?? "");
-			}
-
-			return new Types(this, "classes ")
-				.Which(Filter.Prefix<Type>(
-					type => _typeFilters.All(predicate => predicate.Invoke(type)),
-					_typeFilterDescription ?? ""));
-		}
+			=> NewBuilder(MemberFilterState.Empty).Classes(accessModifier);
 
 		/// <inheritdoc cref="ILimitedAbstractSealedTypeAssemblies.Records(AccessModifiers)" />
 		public Types Records(AccessModifiers accessModifier = AccessModifiers.Any)
-		{
-			_typeFilters.Add(type => type.IsRecordClass());
-			AccessModifiers? implicitAccess = _memberState.AccessModifier;
-			if (implicitAccess is not null)
-			{
-				_typeFilters.Add(type => type.HasAccessModifier(implicitAccess.Value));
-				_typeFilterDescription = (_typeFilterDescription ?? "") + implicitAccess.Value.GetString(" ");
-			}
-
-			_memberState.Reset();
-
-			if (accessModifier != AccessModifiers.Any)
-			{
-				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
-				_typeFilterDescription = accessModifier.GetString(" ") + (_typeFilterDescription ?? "");
-			}
-
-			return new Types(this, "records ")
-				.Which(Filter.Prefix<Type>(
-					type => _typeFilters.All(predicate => predicate.Invoke(type)),
-					_typeFilterDescription ?? ""));
-		}
+			=> NewBuilder(MemberFilterState.Empty).Records(accessModifier);
 
 		/// <inheritdoc cref="ITypeAssemblies.RecordStructs(AccessModifiers)" />
 		public Types RecordStructs(AccessModifiers accessModifier = AccessModifiers.Any)
-		{
-			_typeFilters.Add(type => type.IsRecordStruct());
-			AccessModifiers? implicitAccess = _memberState.AccessModifier;
-			if (implicitAccess is not null)
-			{
-				_typeFilters.Add(type => type.HasAccessModifier(implicitAccess.Value));
-				_typeFilterDescription = (_typeFilterDescription ?? "") + implicitAccess.Value.GetString(" ");
-			}
-
-			_memberState.Reset();
-
-			if (accessModifier != AccessModifiers.Any)
-			{
-				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
-				_typeFilterDescription = accessModifier.GetString(" ") + (_typeFilterDescription ?? "");
-			}
-
-			return new Types(this, "record structs ")
-				.Which(Filter.Prefix<Type>(
-					type => _typeFilters.All(predicate => predicate.Invoke(type)),
-					_typeFilterDescription ?? ""));
-		}
+			=> NewBuilder(MemberFilterState.Empty).RecordStructs(accessModifier);
 
 		/// <inheritdoc cref="ITypeAssemblies.Structs(AccessModifiers)" />
 		public Types Structs(AccessModifiers accessModifier = AccessModifiers.Any)
-		{
-			_typeFilters.Add(type => type.IsReallyStruct());
-			AccessModifiers? implicitAccess = _memberState.AccessModifier;
-			if (implicitAccess is not null)
-			{
-				_typeFilters.Add(type => type.HasAccessModifier(implicitAccess.Value));
-				_typeFilterDescription = (_typeFilterDescription ?? "") + implicitAccess.Value.GetString(" ");
-			}
-
-			_memberState.Reset();
-
-			if (accessModifier != AccessModifiers.Any)
-			{
-				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
-				_typeFilterDescription = accessModifier.GetString(" ") + (_typeFilterDescription ?? "");
-			}
-
-			return new Types(this, "structs ")
-				.Which(Filter.Prefix<Type>(
-					type => _typeFilters.All(predicate => predicate.Invoke(type)),
-					_typeFilterDescription ?? ""));
-		}
+			=> NewBuilder(MemberFilterState.Empty).Structs(accessModifier);
 
 		/// <inheritdoc cref="ITypeAssemblies.Interfaces(AccessModifiers)" />
 		public Types Interfaces(AccessModifiers accessModifier = AccessModifiers.Any)
-		{
-			_typeFilters.Add(type => type.IsInterface);
-			AccessModifiers? implicitAccess = _memberState.AccessModifier;
-			if (implicitAccess is not null)
-			{
-				_typeFilters.Add(type => type.HasAccessModifier(implicitAccess.Value));
-				_typeFilterDescription = (_typeFilterDescription ?? "") + implicitAccess.Value.GetString(" ");
-			}
-
-			_memberState.Reset();
-
-			if (accessModifier != AccessModifiers.Any)
-			{
-				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
-				_typeFilterDescription = accessModifier.GetString(" ") + (_typeFilterDescription ?? "");
-			}
-
-			return new Types(this, "interfaces ")
-				.Which(Filter.Prefix<Type>(
-					type => _typeFilters.All(predicate => predicate.Invoke(type)),
-					_typeFilterDescription ?? ""));
-		}
+			=> NewBuilder(MemberFilterState.Empty).Interfaces(accessModifier);
 
 		/// <inheritdoc cref="ITypeAssemblies.Enums(AccessModifiers)" />
 		public Types Enums(AccessModifiers accessModifier = AccessModifiers.Any)
-		{
-			_typeFilters.Add(type => type.IsEnum);
-			AccessModifiers? implicitAccess = _memberState.AccessModifier;
-			if (implicitAccess is not null)
-			{
-				_typeFilters.Add(type => type.HasAccessModifier(implicitAccess.Value));
-				_typeFilterDescription = (_typeFilterDescription ?? "") + implicitAccess.Value.GetString(" ");
-			}
-
-			_memberState.Reset();
-
-			if (accessModifier != AccessModifiers.Any)
-			{
-				_typeFilters.Add(type => type.HasAccessModifier(accessModifier));
-				_typeFilterDescription = accessModifier.GetString(" ") + (_typeFilterDescription ?? "");
-			}
-
-			return new Types(this, "enums ")
-				.Which(Filter.Prefix<Type>(
-					type => _typeFilters.All(predicate => predicate.Invoke(type)),
-					_typeFilterDescription ?? ""));
-		}
+			=> NewBuilder(MemberFilterState.Empty).Enums(accessModifier);
 
 		/// <inheritdoc cref="ILimitedStaticTypeAssemblies.Constructors()" />
-		public Constructors Constructors()
-		{
-			Constructors constructors = new(new Types(this, ""), "constructors ");
-			IFilter<ConstructorInfo>? filter = _memberState.BuildConstructorFilter();
-			_memberState.Reset();
-			return filter is null ? constructors : constructors.Which(filter);
-		}
+		public Constructors Constructors() => NewBuilder(MemberFilterState.Empty).Constructors();
 
 		/// <inheritdoc cref="ILimitedStaticTypeAssemblies.Events()" />
-		public Events Events()
-		{
-			Events events = new(new Types(this, ""), "events ");
-			IFilter<EventInfo>? filter = _memberState.BuildEventFilter();
-			_memberState.Reset();
-			return filter is null ? events : events.Which(filter);
-		}
+		public Events Events() => NewBuilder(MemberFilterState.Empty).Events();
 
 		/// <inheritdoc cref="ILimitedStaticTypeAssemblies.Fields()" />
-		public Fields Fields()
-		{
-			Fields fields = new(new Types(this, ""), "fields ");
-			IFilter<FieldInfo>? filter = _memberState.BuildFieldFilter();
-			_memberState.Reset();
-			return filter is null ? fields : fields.Which(filter);
-		}
+		public Fields Fields() => NewBuilder(MemberFilterState.Empty).Fields();
 
 		/// <inheritdoc cref="ILimitedStaticTypeAssemblies.Methods()" />
-		public Methods Methods()
-		{
-			Methods methods = new(new Types(this, ""), "methods ");
-			IFilter<MethodInfo>? filter = _memberState.BuildMethodFilter();
-			_memberState.Reset();
-			return filter is null ? methods : methods.Which(filter);
-		}
+		public Methods Methods() => NewBuilder(MemberFilterState.Empty).Methods();
 
 		/// <inheritdoc cref="ILimitedStaticTypeAssemblies.Properties()" />
-		public Properties Properties()
-		{
-			Properties properties = new(new Types(this, ""), "properties ");
-			IFilter<PropertyInfo>? filter = _memberState.BuildPropertyFilter();
-			_memberState.Reset();
-			return filter is null ? properties : properties.Which(filter);
-		}
+		public Properties Properties() => NewBuilder(MemberFilterState.Empty).Properties();
+
+		private AssembliesTypeBuilder NewBuilder(MemberFilterState memberState)
+			=> new(this, memberState, new List<Func<Type, bool>>(), "");
 
 		/// <summary>
 		///     A Container for a filterable collection of <see cref="Assembly" />,
@@ -536,48 +275,6 @@ public static partial class Filtered
 				_options.AsWildcard();
 				return this;
 			}
-		}
-
-		private sealed class LimitedAbstractSealedAssemblies
-			: ILimitedAbstractSealedTypeAssemblies<ILimitedAbstractSealedTypeAssemblies>
-		{
-			private readonly Assemblies _inner;
-
-			public LimitedAbstractSealedAssemblies(Assemblies inner)
-			{
-				_inner = inner;
-			}
-
-			public ILimitedAbstractSealedTypeAssemblies Generic
-			{
-				get
-				{
-					_ = _inner.Generic;
-					return this;
-				}
-			}
-
-			public ILimitedAbstractSealedTypeAssemblies Nested
-			{
-				get
-				{
-					_ = _inner.Nested;
-					return this;
-				}
-			}
-
-			public Types Types(AccessModifiers accessModifier = AccessModifiers.Any)
-				=> _inner.Types(accessModifier);
-
-			public Types Classes(AccessModifiers accessModifier = AccessModifiers.Any)
-				=> _inner.Classes(accessModifier);
-
-			public Types Records(AccessModifiers accessModifier = AccessModifiers.Any)
-				=> _inner.Records(accessModifier);
-
-			public Events Events() => _inner.Events();
-			public Methods Methods() => _inner.Methods();
-			public Properties Properties() => _inner.Properties();
 		}
 	}
 }

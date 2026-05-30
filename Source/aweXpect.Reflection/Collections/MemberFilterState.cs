@@ -5,60 +5,53 @@ namespace aweXpect.Reflection.Collections;
 
 internal sealed class MemberFilterState
 {
-	public AccessModifiers? AccessModifier;
-	public bool IsAbstract;
-	public bool IsSealed;
-	public bool IsStatic;
-	private string _modifierDescription = "";
+	public static readonly MemberFilterState Empty = new(null, false, false, false);
 
-	public bool HasAnything => AccessModifier is not null || IsStatic || IsAbstract || IsSealed;
-
-	public void Reset()
+	private MemberFilterState(AccessModifiers? accessModifier, bool isStatic, bool isAbstract, bool isSealed)
 	{
-		AccessModifier = null;
-		IsStatic = false;
-		IsAbstract = false;
-		IsSealed = false;
-		_modifierDescription = "";
+		AccessModifier = accessModifier;
+		IsStatic = isStatic;
+		IsAbstract = isAbstract;
+		IsSealed = isSealed;
 	}
 
-	public void SetAccess(AccessModifiers modifier) => AccessModifier = modifier;
+	public AccessModifiers? AccessModifier { get; }
+	public bool IsAbstract { get; }
+	public bool IsSealed { get; }
+	public bool IsStatic { get; }
 
-	public void SetStatic()
-	{
-		if (IsStatic)
-		{
-			return;
-		}
+	public MemberFilterState WithAccess(AccessModifiers modifier)
+		=> new(modifier, IsStatic, IsAbstract, IsSealed);
 
-		IsStatic = true;
-		_modifierDescription += "static ";
-	}
+	public MemberFilterState WithStatic()
+		=> IsStatic ? this : new MemberFilterState(AccessModifier, true, IsAbstract, IsSealed);
 
-	public void SetAbstract()
-	{
-		if (IsAbstract)
-		{
-			return;
-		}
+	public MemberFilterState WithAbstract()
+		=> IsAbstract ? this : new MemberFilterState(AccessModifier, IsStatic, true, IsSealed);
 
-		IsAbstract = true;
-		_modifierDescription += "abstract ";
-	}
-
-	public void SetSealed()
-	{
-		if (IsSealed)
-		{
-			return;
-		}
-
-		IsSealed = true;
-		_modifierDescription += "sealed ";
-	}
+	public MemberFilterState WithSealed()
+		=> IsSealed ? this : new MemberFilterState(AccessModifier, IsStatic, IsAbstract, true);
 
 	public string BuildDescription()
-		=> (AccessModifier?.GetString(" ") ?? "") + _modifierDescription;
+	{
+		string description = AccessModifier?.GetString(" ") ?? "";
+		if (IsStatic)
+		{
+			description += "static ";
+		}
+
+		if (IsAbstract)
+		{
+			description += "abstract ";
+		}
+
+		if (IsSealed)
+		{
+			description += "sealed ";
+		}
+
+		return description;
+	}
 
 	public IFilter<ConstructorInfo>? BuildConstructorFilter()
 	{
