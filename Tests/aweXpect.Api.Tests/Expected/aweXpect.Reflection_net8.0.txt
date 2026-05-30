@@ -6,7 +6,19 @@ namespace aweXpect.Reflection
     public static class AssemblyFilters
     {
         public static aweXpect.Reflection.Collections.Filtered.Assemblies Which(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, System.Func<System.Reflection.Assembly, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Reflection.AssemblyFilters.AssembliesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, bool inherit = true)
+            where TAttribute : System.Attribute { }
+        public static aweXpect.Reflection.AssemblyFilters.AssembliesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
+            where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, string expected) { }
+        public class AssembliesWith : aweXpect.Reflection.Collections.Filtered.Assemblies
+        {
+            public AssembliesWith(aweXpect.Reflection.Collections.Filtered.Assemblies inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Reflection.Assembly> filter) { }
+            public aweXpect.Reflection.AssemblyFilters.AssembliesWith OrWith<TAttribute>(bool inherit = true)
+                where TAttribute : System.Attribute { }
+            public aweXpect.Reflection.AssemblyFilters.AssembliesWith OrWith<TAttribute>(System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
+                where TAttribute : System.Attribute { }
+        }
     }
     public static class ConstructorFilters
     {

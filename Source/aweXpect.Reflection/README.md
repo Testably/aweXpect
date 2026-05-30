@@ -159,7 +159,7 @@ await Expect.That(methods).ArePublic();
 
 ### Attributes
 
-Shared by all types and members.
+Shared by all types, members, and assemblies.
 
 |                                    | Filter                      | Assert (single)            | Assert (many)               |
 |------------------------------------|-----------------------------|----------------------------|-----------------------------|
@@ -382,13 +382,13 @@ In.AllLoadedAssemblies().Public.Constructors()
 Assemblies are usually used as a [source](#sources-the-in-helper), but you can also filter and assert
 on them directly:
 
-|                             | Filter           | Assert (single)           | Assert (many)              |
-|-----------------------------|------------------|---------------------------|----------------------------|
-| by name                     | `.WithName("x")` | `.HasName("x")`           | `.HaveName("x")`           |
-| has attribute               | -                | `.Has<TAttribute>()`      | `.Have<TAttribute>()`      |
-| depends on assembly         | -                | `.HasADependencyOn("x")`  | `.HaveADependencyOn("x")`  |
-| does not depend on assembly | -                | `.HasNoDependencyOn("x")` | `.HaveNoDependencyOn("x")` |
-| custom predicate            | `.Which(a => …)` | -                         | -                          |
+|                             | Filter                          | Assert (single)           | Assert (many)              |
+|-----------------------------|---------------------------------|---------------------------|----------------------------|
+| by name                     | `.WithName("x")`                | `.HasName("x")`           | `.HaveName("x")`           |
+| has attribute               | `.With<TAttribute>()`           | `.Has<TAttribute>()`      | `.Have<TAttribute>()`      |
+| depends on assembly         | -                               | `.HasADependencyOn("x")`  | `.HaveADependencyOn("x")`  |
+| does not depend on assembly | -                               | `.HasNoDependencyOn("x")` | `.HaveNoDependencyOn("x")` |
+| custom predicate            | `.Which(a => …)`                | -                         | -                          |
 
 ```csharp
 Assembly subject = Assembly.GetEntryAssembly();
