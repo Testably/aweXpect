@@ -23,7 +23,7 @@ public static partial class ThatConstructor
 	{
 		Type parameterType = typeof(TParameter);
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType.IsOrInheritsFrom(parameterType),
+		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
 		return new ParameterCollectionResult<ConstructorInfo?, TParameter>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars)
@@ -46,7 +46,7 @@ public static partial class ThatConstructor
 		Type parameterType = typeof(TParameter);
 		StringEqualityOptions stringEqualityOptions = new();
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType.IsOrInheritsFrom(parameterType),
+		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
@@ -133,6 +133,8 @@ public static partial class ThatConstructor
 				stringBuilder.Append(" with name \"").Append(expectedName).Append('"');
 			}
 
+			stringBuilder.Append(parameterFilterOptions.GetModifierDescription());
+
 			string indexDescription = collectionIndexOptions.Match.GetDescription();
 			if (!string.IsNullOrEmpty(indexDescription))
 			{
@@ -155,6 +157,8 @@ public static partial class ThatConstructor
 			{
 				stringBuilder.Append(" with name \"").Append(expectedName).Append('"');
 			}
+
+			stringBuilder.Append(parameterFilterOptions.GetModifierDescription());
 
 			string indexDescription = collectionIndexOptions.Match.GetDescription();
 			if (!string.IsNullOrEmpty(indexDescription))

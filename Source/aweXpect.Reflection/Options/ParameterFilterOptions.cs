@@ -12,6 +12,7 @@ namespace aweXpect.Reflection.Options;
 public class ParameterFilterOptions
 {
 	private readonly List<Func<string>> _descriptions;
+	private readonly List<Func<string>> _modifierDescriptions = [];
 #if NET8_0_OR_GREATER
 	private readonly List<Func<ParameterInfo, ValueTask<bool>>> _predicates;
 #else
@@ -59,6 +60,20 @@ public class ParameterFilterOptions
 	}
 
 	/// <summary>
+	///     Adds an additional modifier <paramref name="predicate" /> with the <paramref name="description" />.
+	/// </summary>
+	/// <remarks>
+	///     Unlike <see cref="AddPredicate(Func{ParameterInfo, bool}, Func{string})" />, the <paramref name="description" />
+	///     is additionally tracked separately so that it can be appended to assertion expectations via
+	///     <see cref="GetModifierDescription" />.
+	/// </remarks>
+	public void AddModifier(Func<ParameterInfo, bool> predicate, Func<string> description)
+	{
+		_predicates.Add(ToAsyncPredicate(predicate));
+		_modifierDescriptions.Add(description);
+	}
+
+	/// <summary>
 	///     Verifies that the <paramref name="parameter" /> matches all predicates.
 	/// </summary>
 #if NET8_0_OR_GREATER
@@ -88,8 +103,17 @@ public class ParameterFilterOptions
 #endif
 
 	/// <summary>
-	///     Returns the combination of all descriptions joined by <c>" and "</c>.
+	///     Returns the combination of all descriptions (including modifier descriptions) joined by <c>" and "</c>.
 	/// </summary>
 	public string GetDescription()
-		=> string.Join(" and ", _descriptions.Select(@delegate => @delegate()));
+		=> string.Join(" and ", _descriptions.Concat(_modifierDescriptions).Select(@delegate => @delegate()));
+
+	/// <summary>
+	///     Returns the combination of all modifier descriptions joined by <c>" and "</c> and prefixed with a space,
+	///     or an empty string if no modifier descriptions exist.
+	/// </summary>
+	public string GetModifierDescription()
+		=> _modifierDescriptions.Count == 0
+			? string.Empty
+			: " " + string.Join(" and ", _modifierDescriptions.Select(@delegate => @delegate()));
 }

@@ -27,7 +27,7 @@ public static partial class ThatConstructors
 	{
 		Type parameterType = typeof(TParameter);
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType.IsOrInheritsFrom(parameterType),
+		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
 		return new ParameterCollectionResult<IEnumerable<ConstructorInfo?>, TParameter>(subject.Get().ExpectationBuilder
 				.AddConstraint<IEnumerable<ConstructorInfo?>>((_, grammars)
@@ -49,7 +49,7 @@ public static partial class ThatConstructors
 		Type parameterType = typeof(TParameter);
 		StringEqualityOptions stringEqualityOptions = new();
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType.IsOrInheritsFrom(parameterType),
+		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
@@ -99,7 +99,7 @@ public static partial class ThatConstructors
 	{
 		Type parameterType = typeof(TParameter);
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType.IsOrInheritsFrom(parameterType),
+		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
 		return new ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, TParameter>(subject.Get().ExpectationBuilder
 				.AddConstraint<IAsyncEnumerable<ConstructorInfo?>>((_, grammars)
@@ -123,7 +123,7 @@ public static partial class ThatConstructors
 		Type parameterType = typeof(TParameter);
 		StringEqualityOptions stringEqualityOptions = new();
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType.IsOrInheritsFrom(parameterType),
+		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
@@ -239,6 +239,8 @@ public static partial class ThatConstructors
 				stringBuilder.Append(" with name \"").Append(expectedName).Append('"');
 			}
 
+			stringBuilder.Append(parameterFilterOptions.GetModifierDescription());
+
 			string indexDescription = collectionIndexOptions.Match.GetDescription();
 			if (!string.IsNullOrEmpty(indexDescription))
 			{
@@ -261,6 +263,8 @@ public static partial class ThatConstructors
 			{
 				stringBuilder.Append(" with name \"").Append(expectedName).Append('"');
 			}
+
+			stringBuilder.Append(parameterFilterOptions.GetModifierDescription());
 
 			string indexDescription = collectionIndexOptions.Match.GetDescription();
 			if (!string.IsNullOrEmpty(indexDescription))

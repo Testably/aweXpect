@@ -20,7 +20,7 @@ public static partial class ConstructorFilters
 	{
 		Type parameterType = typeof(T);
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType.IsOrInheritsFrom(parameterType),
+		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
 		IAsyncChangeableFilter<ConstructorInfo> filter = Filter.Suffix<ConstructorInfo>(
 			constructorInfo =>
@@ -51,7 +51,7 @@ public static partial class ConstructorFilters
 	{
 		Type parameterType = typeof(T);
 		StringEqualityOptions stringEqualityOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.ParameterType.IsOrInheritsFrom(parameterType),
+		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
 			() => $"of type {Formatter.Format(parameterType)}");
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
@@ -161,6 +161,51 @@ public static partial class ConstructorFilters
 		{
 			parameterFilterOptions.AddPredicate(p => p.HasDefaultValue && Equals(p.DefaultValue, expected),
 				() => $"with default value {Formatter.Format(expected)}");
+			return this;
+		}
+
+		/// <summary>
+		///     …with the <see langword="ref" /> modifier.
+		/// </summary>
+		public ConstructorsWithParameter<T> WithRefModifier()
+		{
+			parameterFilterOptions.AddPredicate(p => p.IsRefParameter(), () => "with ref modifier");
+			return this;
+		}
+
+		/// <summary>
+		///     …with the <see langword="out" /> modifier.
+		/// </summary>
+		public ConstructorsWithParameter<T> WithOutModifier()
+		{
+			parameterFilterOptions.AddPredicate(p => p.IsOutParameter(), () => "with out modifier");
+			return this;
+		}
+
+		/// <summary>
+		///     …with the <see langword="in" /> modifier.
+		/// </summary>
+		public ConstructorsWithParameter<T> WithInModifier()
+		{
+			parameterFilterOptions.AddPredicate(p => p.IsInParameter(), () => "with in modifier");
+			return this;
+		}
+
+		/// <summary>
+		///     …with the optional modifier.
+		/// </summary>
+		public ConstructorsWithParameter<T> WithOptionalModifier()
+		{
+			parameterFilterOptions.AddPredicate(p => p.IsOptionalParameter(), () => "with optional modifier");
+			return this;
+		}
+
+		/// <summary>
+		///     …with the <see langword="params" /> modifier.
+		/// </summary>
+		public ConstructorsWithParameter<T> WithParamsModifier()
+		{
+			parameterFilterOptions.AddPredicate(p => p.IsParamsParameter(), () => "with params modifier");
 			return this;
 		}
 	}
