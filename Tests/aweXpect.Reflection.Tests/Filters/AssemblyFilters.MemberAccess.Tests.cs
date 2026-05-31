@@ -121,6 +121,40 @@ public sealed partial class AssemblyFilters
 				await That(methods.GetDescription())
 					.IsEqualTo("static methods in assembly").AsPrefix();
 			}
+
+			[Fact]
+			public async Task ShouldSupportSealedBeforeEvents()
+			{
+				Filtered.Events events = In.AssemblyContaining<AssemblyFilters>().Sealed.Events();
+
+				await That(events).All().Satisfy(e => e.AddMethod?.IsFinal == true).And.IsNotEmpty();
+				await That(events.GetDescription())
+					.IsEqualTo("sealed events in assembly").AsPrefix();
+			}
+
+			[Fact]
+			public async Task ShouldSupportAbstractBeforeProperties()
+			{
+				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>().Abstract.Properties();
+
+				await That(properties).All()
+					.Satisfy(p => p.GetMethod?.IsAbstract == true || p.SetMethod?.IsAbstract == true)
+					.And.IsNotEmpty();
+				await That(properties.GetDescription())
+					.IsEqualTo("abstract properties in assembly").AsPrefix();
+			}
+
+			[Fact]
+			public async Task ShouldApplyImplicitAccessModifierBeforeSealedTypes()
+			{
+				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>().Public.Sealed.Types();
+
+				await That(types).All().Satisfy(t => t is { IsSealed: true, IsAbstract: false, })
+					.And.IsNotEmpty();
+				await That(types).All().Satisfy(t => t.IsNested ? t.IsNestedPublic : t.IsPublic);
+				await That(types.GetDescription())
+					.IsEqualTo("sealed public types in assembly").AsPrefix();
+			}
 		}
 	}
 }
