@@ -22,6 +22,16 @@ public sealed partial class ThatMethods
 
 			await Task.CompletedTask;
 		}
+
+		private static async IAsyncEnumerable<MethodInfo?> ToAsyncEnumerableNullable(params MethodInfo?[] items)
+		{
+			foreach (MethodInfo? item in items)
+			{
+				yield return item;
+			}
+
+			await Task.CompletedTask;
+		}
 #endif
 		public sealed class Tests
 		{
@@ -150,6 +160,71 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with name "value",
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task HaveParameterByTypeAndName_WhenTypeMatchesButNameDoesNot_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!, // int "value", string "name"
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInt))!, // int "value"
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveParameter<int>("name");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of type int with name "name",
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task HaveParameterByTypeParameterAndName_WhenTypeMatchesButNameDoesNot_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!, // int "value", string "name"
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInt))!, // int "value"
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveParameter(typeof(int), "name");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of type int with name "name",
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task ByType_WhenMethodIsNull_ShouldFail()
+			{
+				IEnumerable<MethodInfo?> methods = new MethodInfo?[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInt)), null,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveParameter<int>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of type int,
 					             but at least one did not
 					             """);
 			}
@@ -312,6 +387,45 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with name "value",
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task AsyncEnumerable_ByTypeParameter_WhenTypeMatchesButNameDoesNot_ShouldFail()
+			{
+				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInt))!);
+
+				async Task Act()
+				{
+					await That(methods).HaveParameter(typeof(int), "name");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of type int with name "name",
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task AsyncEnumerable_ByType_WhenMethodIsNull_ShouldFail()
+			{
+				IAsyncEnumerable<MethodInfo?> methods = ToAsyncEnumerableNullable(
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInt)), null);
+
+				async Task Act()
+				{
+					await That(methods).HaveParameter(typeof(int));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of type int,
 					             but at least one did not
 					             """);
 			}
@@ -523,6 +637,49 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
+			[Fact]
+			public async Task AtIndex_WhenAllHaveParameterAtIndex_ShouldFailWithIndexDescription()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInt))!, // int at index 0
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!, // int at index 0
+				};
+
+				async Task Act()
+				{
+					await That(methods).DoesNotComplyWith(they => they.HaveParameter<int>().AtIndex(0));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             not all have parameter of type int at index 0,
+					             but all did
+					             """);
+			}
+
+			[Fact]
+			public async Task WithModifier_WhenAllHaveRefParameter_ShouldFailWithModifierDescription()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefInt))!, typeof(TestClass).GetMethod(nameof(TestClass.AnotherMethodWithRefInt))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).DoesNotComplyWith(they => they.HaveRefParameter<int>());
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             not all have parameter of type int with ref modifier,
+					             but all did
+					             """);
+			}
+
 #pragma warning disable CA1822
 			// ReSharper disable UnusedParameter.Local
 			// ReSharper disable UnusedMember.Local
@@ -533,6 +690,8 @@ public sealed partial class ThatMethods
 				public void MethodWithIntAndString(int value, string name) { }
 				public void MethodWithStream(Stream stream) { }
 				public void MethodWithMemoryStream(MemoryStream stream) { }
+				public void MethodWithRefInt(ref int value) => value = 0;
+				public void AnotherMethodWithRefInt(ref int number) => number = 0;
 			}
 			// ReSharper restore UnusedParameter.Local
 			// ReSharper restore UnusedMember.Local

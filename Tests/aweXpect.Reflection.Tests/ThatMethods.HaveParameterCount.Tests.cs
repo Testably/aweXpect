@@ -8,6 +8,18 @@ public sealed partial class ThatMethods
 {
 	public sealed class HaveParameterCount
 	{
+#if NET8_0_OR_GREATER
+		private static async IAsyncEnumerable<MethodInfo> ToAsyncEnumerable(params MethodInfo[] items)
+		{
+			foreach (MethodInfo item in items)
+			{
+				yield return item;
+			}
+
+			await Task.CompletedTask;
+		}
+#endif
+
 		public sealed class Tests
 		{
 			[Fact]
@@ -43,9 +55,67 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have 2 parameters,
+					             but it contained methods with a different number of parameters *MethodWithInt(*
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenExpectingOneParameter_ShouldIncludeSingularDescription()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithStringAndInt))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveParameterCount(1);
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have one parameter,
 					             but it contained methods with a different number of parameters *
 					             """).AsWildcard();
 			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task AsyncEnumerable_WhenAllHaveExpectedCount_ShouldSucceed()
+			{
+				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithStringAndInt))!);
+
+				async Task Act()
+				{
+					await That(methods).HaveParameterCount(2);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task AsyncEnumerable_WhenNotAllHaveExpectedCount_ShouldFail()
+			{
+				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInt))!);
+
+				async Task Act()
+				{
+					await That(methods).HaveParameterCount(2);
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have 2 parameters,
+					             but it contained methods with a different number of parameters *MethodWithInt(*
+					             """).AsWildcard();
+			}
+#endif
 		}
 
 		public sealed class NegatedTests
@@ -67,7 +137,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             not all have 2 parameters,
-					             but it only contained methods with 2 parameters *
+					             but it only contained methods with 2 parameters *MethodWithIntAndString(*
 					             """).AsWildcard();
 			}
 
