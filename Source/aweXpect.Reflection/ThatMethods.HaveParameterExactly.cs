@@ -22,8 +22,8 @@ public static partial class ThatMethods
 	{
 		Type parameterType = typeof(TParameter);
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
-			() => $"of exact type {Formatter.Format(parameterType)}");
+		ParameterFilterOptions parameterFilterOptions =
+			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
 		return new ParameterCollectionResult<IEnumerable<MethodInfo?>, TParameter>(subject.Get().ExpectationBuilder
 				.AddConstraint<IEnumerable<MethodInfo?>>((_, grammars)
 					=> new HaveParameterConstraint(grammars, parameterType, null,
@@ -43,8 +43,8 @@ public static partial class ThatMethods
 		this IThat<IEnumerable<MethodInfo?>> subject, Type parameterType)
 	{
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
-			() => $"of exact type {Formatter.Format(parameterType)}");
+		ParameterFilterOptions parameterFilterOptions =
+			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
 		return new ParameterCollectionResult<IEnumerable<MethodInfo?>, object?>(subject.Get().ExpectationBuilder
 				.AddConstraint<IEnumerable<MethodInfo?>>((_, grammars)
 					=> new HaveParameterConstraint(grammars, parameterType, null,
@@ -66,10 +66,9 @@ public static partial class ThatMethods
 		Type parameterType = typeof(TParameter);
 		StringEqualityOptions stringEqualityOptions = new();
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
-			() => $"of exact type {Formatter.Format(parameterType)}");
-		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
-			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+		ParameterFilterOptions parameterFilterOptions =
+			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
+		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
 		return new NamedParameterCollectionResult<IEnumerable<MethodInfo?>, TParameter>(subject.Get()
 				.ExpectationBuilder
 				.AddConstraint<IEnumerable<MethodInfo?>>((_, grammars)
@@ -92,10 +91,9 @@ public static partial class ThatMethods
 	{
 		StringEqualityOptions stringEqualityOptions = new();
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
-			() => $"of exact type {Formatter.Format(parameterType)}");
-		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
-			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+		ParameterFilterOptions parameterFilterOptions =
+			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
+		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
 		return new NamedParameterCollectionResult<IEnumerable<MethodInfo?>, object?>(subject.Get()
 				.ExpectationBuilder
 				.AddConstraint<IEnumerable<MethodInfo?>>((_, grammars)
@@ -119,8 +117,8 @@ public static partial class ThatMethods
 	{
 		Type parameterType = typeof(TParameter);
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
-			() => $"of exact type {Formatter.Format(parameterType)}");
+		ParameterFilterOptions parameterFilterOptions =
+			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
 		return new ParameterCollectionResult<IAsyncEnumerable<MethodInfo?>, TParameter>(subject.Get().ExpectationBuilder
 				.AddConstraint<IAsyncEnumerable<MethodInfo?>>((_, grammars)
 					=> new HaveParameterConstraint(grammars, parameterType, null,
@@ -142,8 +140,8 @@ public static partial class ThatMethods
 		this IThat<IAsyncEnumerable<MethodInfo?>> subject, Type parameterType)
 	{
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
-			() => $"of exact type {Formatter.Format(parameterType)}");
+		ParameterFilterOptions parameterFilterOptions =
+			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
 		return new ParameterCollectionResult<IAsyncEnumerable<MethodInfo?>, object?>(subject.Get().ExpectationBuilder
 				.AddConstraint<IAsyncEnumerable<MethodInfo?>>((_, grammars)
 					=> new HaveParameterConstraint(grammars, parameterType, null,
@@ -167,10 +165,9 @@ public static partial class ThatMethods
 		Type parameterType = typeof(TParameter);
 		StringEqualityOptions stringEqualityOptions = new();
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
-			() => $"of exact type {Formatter.Format(parameterType)}");
-		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
-			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+		ParameterFilterOptions parameterFilterOptions =
+			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
+		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
 		return new NamedParameterCollectionResult<IAsyncEnumerable<MethodInfo?>, TParameter>(subject.Get()
 				.ExpectationBuilder
 				.AddConstraint<IAsyncEnumerable<MethodInfo?>>((_, grammars)
@@ -195,10 +192,9 @@ public static partial class ThatMethods
 	{
 		StringEqualityOptions stringEqualityOptions = new();
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
-			() => $"of exact type {Formatter.Format(parameterType)}");
-		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
-			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+		ParameterFilterOptions parameterFilterOptions =
+			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
+		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
 		return new NamedParameterCollectionResult<IAsyncEnumerable<MethodInfo?>, object?>(subject.Get()
 				.ExpectationBuilder
 				.AddConstraint<IAsyncEnumerable<MethodInfo?>>((_, grammars)

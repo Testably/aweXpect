@@ -23,8 +23,8 @@ public static partial class ThatMethod
 	{
 		Type parameterType = typeof(TParameter);
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
-			() => $"of type {Formatter.Format(parameterType)}");
+		ParameterFilterOptions parameterFilterOptions =
+			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
 		return new ParameterCollectionResult<MethodInfo?, TParameter>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars)
 					=> new HasParameterConstraint(it, grammars, parameterType, null,
@@ -46,10 +46,9 @@ public static partial class ThatMethod
 		Type parameterType = typeof(TParameter);
 		StringEqualityOptions stringEqualityOptions = new();
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
-			() => $"of type {Formatter.Format(parameterType)}");
-		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
-			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+		ParameterFilterOptions parameterFilterOptions =
+			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
+		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
 		return new NamedParameterCollectionResult<MethodInfo?, TParameter>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars)
 					=> new HasParameterConstraint(it, grammars, parameterType, expected,
@@ -68,8 +67,8 @@ public static partial class ThatMethod
 		this IThat<MethodInfo?> subject, Type parameterType)
 	{
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
-			() => $"of type {Formatter.Format(parameterType)}");
+		ParameterFilterOptions parameterFilterOptions =
+			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
 		return new ParameterCollectionResult<MethodInfo?, object?>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars)
 					=> new HasParameterConstraint(it, grammars, parameterType, null,
@@ -90,10 +89,9 @@ public static partial class ThatMethod
 	{
 		StringEqualityOptions stringEqualityOptions = new();
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
-			() => $"of type {Formatter.Format(parameterType)}");
-		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
-			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+		ParameterFilterOptions parameterFilterOptions =
+			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
+		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
 		return new NamedParameterCollectionResult<MethodInfo?, object?>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars)
 					=> new HasParameterConstraint(it, grammars, parameterType, expected,
@@ -115,8 +113,7 @@ public static partial class ThatMethod
 		StringEqualityOptions stringEqualityOptions = new();
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions = new(
-			p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
-			() => $"with name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+			p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
 		return new NamedParameterCollectionResult<MethodInfo?, object?>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars)
 					=> new HasParameterConstraint(it, grammars, null, expected,

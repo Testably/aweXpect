@@ -27,8 +27,8 @@ public static partial class ThatConstructors
 	{
 		Type parameterType = typeof(TParameter);
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
-			() => $"of type {Formatter.Format(parameterType)}");
+		ParameterFilterOptions parameterFilterOptions =
+			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
 		return new ParameterCollectionResult<IEnumerable<ConstructorInfo?>, TParameter>(subject.Get().ExpectationBuilder
 				.AddConstraint<IEnumerable<ConstructorInfo?>>((_, grammars)
 					=> new HaveParameterConstraint(grammars, parameterType, null,
@@ -47,8 +47,8 @@ public static partial class ThatConstructors
 		this IThat<IEnumerable<ConstructorInfo?>> subject, Type parameterType)
 	{
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
-			() => $"of type {Formatter.Format(parameterType)}");
+		ParameterFilterOptions parameterFilterOptions =
+			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
 		return new ParameterCollectionResult<IEnumerable<ConstructorInfo?>, object?>(subject.Get().ExpectationBuilder
 				.AddConstraint<IEnumerable<ConstructorInfo?>>((_, grammars)
 					=> new HaveParameterConstraint(grammars, parameterType, null,
@@ -69,10 +69,9 @@ public static partial class ThatConstructors
 		Type parameterType = typeof(TParameter);
 		StringEqualityOptions stringEqualityOptions = new();
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
-			() => $"of type {Formatter.Format(parameterType)}");
-		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
-			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+		ParameterFilterOptions parameterFilterOptions =
+			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
+		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
 		return new NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, TParameter>(subject.Get()
 				.ExpectationBuilder
 				.AddConstraint<IEnumerable<ConstructorInfo?>>((_, grammars)
@@ -94,10 +93,9 @@ public static partial class ThatConstructors
 	{
 		StringEqualityOptions stringEqualityOptions = new();
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
-			() => $"of type {Formatter.Format(parameterType)}");
-		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
-			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+		ParameterFilterOptions parameterFilterOptions =
+			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
+		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
 		return new NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, object?>(subject.Get()
 				.ExpectationBuilder
 				.AddConstraint<IEnumerable<ConstructorInfo?>>((_, grammars)
@@ -120,8 +118,7 @@ public static partial class ThatConstructors
 		StringEqualityOptions stringEqualityOptions = new();
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions = new(
-			p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
-			() => $"with name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+			p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
 		return new NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, object?>(subject.Get()
 				.ExpectationBuilder
 				.AddConstraint<IEnumerable<ConstructorInfo?>>((_, grammars)
@@ -144,8 +141,8 @@ public static partial class ThatConstructors
 	{
 		Type parameterType = typeof(TParameter);
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
-			() => $"of type {Formatter.Format(parameterType)}");
+		ParameterFilterOptions parameterFilterOptions =
+			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
 		return new ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, TParameter>(subject.Get().ExpectationBuilder
 				.AddConstraint<IAsyncEnumerable<ConstructorInfo?>>((_, grammars)
 					=> new HaveParameterConstraint(grammars, parameterType, null,
@@ -166,8 +163,8 @@ public static partial class ThatConstructors
 		this IThat<IAsyncEnumerable<ConstructorInfo?>> subject, Type parameterType)
 	{
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
-			() => $"of type {Formatter.Format(parameterType)}");
+		ParameterFilterOptions parameterFilterOptions =
+			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
 		return new ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, object?>(subject.Get().ExpectationBuilder
 				.AddConstraint<IAsyncEnumerable<ConstructorInfo?>>((_, grammars)
 					=> new HaveParameterConstraint(grammars, parameterType, null,
@@ -190,10 +187,9 @@ public static partial class ThatConstructors
 		Type parameterType = typeof(TParameter);
 		StringEqualityOptions stringEqualityOptions = new();
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
-			() => $"of type {Formatter.Format(parameterType)}");
-		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
-			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+		ParameterFilterOptions parameterFilterOptions =
+			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
+		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
 		return new NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, TParameter>(subject.Get()
 				.ExpectationBuilder
 				.AddConstraint<IAsyncEnumerable<ConstructorInfo?>>((_, grammars)
@@ -217,10 +213,9 @@ public static partial class ThatConstructors
 	{
 		StringEqualityOptions stringEqualityOptions = new();
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
-			() => $"of type {Formatter.Format(parameterType)}");
-		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
-			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+		ParameterFilterOptions parameterFilterOptions =
+			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType));
+		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
 		return new NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, object?>(subject.Get()
 				.ExpectationBuilder
 				.AddConstraint<IAsyncEnumerable<ConstructorInfo?>>((_, grammars)
@@ -245,8 +240,7 @@ public static partial class ThatConstructors
 		StringEqualityOptions stringEqualityOptions = new();
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions = new(
-			p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
-			() => $"with name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+			p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
 		return new NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, object?>(subject.Get()
 				.ExpectationBuilder
 				.AddConstraint<IAsyncEnumerable<ConstructorInfo?>>((_, grammars)

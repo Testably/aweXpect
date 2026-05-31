@@ -37,6 +37,24 @@ public class ParameterFilterOptions
 		_predicates = [ToAsyncPredicate(predicate),];
 	}
 
+	/// <inheritdoc cref="ParameterFilterOptions" />
+#if NET8_0_OR_GREATER
+	internal ParameterFilterOptions(Func<ParameterInfo, ValueTask<bool>> predicate)
+#else
+	internal ParameterFilterOptions(Func<ParameterInfo, Task<bool>> predicate)
+#endif
+	{
+		_descriptions = [];
+		_predicates = [predicate,];
+	}
+
+	/// <inheritdoc cref="ParameterFilterOptions" />
+	internal ParameterFilterOptions(Func<ParameterInfo, bool> predicate)
+	{
+		_descriptions = [];
+		_predicates = [ToAsyncPredicate(predicate),];
+	}
+
 	/// <summary>
 	///     Adds an additional <paramref name="predicate" /> with the <paramref name="description" />.
 	/// </summary>
@@ -57,6 +75,26 @@ public class ParameterFilterOptions
 	{
 		_predicates.Add(ToAsyncPredicate(predicate));
 		_descriptions.Add(description);
+	}
+
+	/// <summary>
+	///     Adds an additional <paramref name="predicate" />.
+	/// </summary>
+#if NET8_0_OR_GREATER
+	internal void AddPredicate(Func<ParameterInfo, ValueTask<bool>> predicate)
+#else
+	internal void AddPredicate(Func<ParameterInfo, Task<bool>> predicate)
+#endif
+	{
+		_predicates.Add(predicate);
+	}
+
+	/// <summary>
+	///     Adds an additional <paramref name="predicate" />.
+	/// </summary>
+	internal void AddPredicate(Func<ParameterInfo, bool> predicate)
+	{
+		_predicates.Add(ToAsyncPredicate(predicate));
 	}
 
 	/// <summary>
