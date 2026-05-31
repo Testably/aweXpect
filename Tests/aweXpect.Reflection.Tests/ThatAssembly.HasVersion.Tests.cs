@@ -14,6 +14,7 @@ public sealed partial class ThatAssembly
 			public async Task WhenVersionDoesNotMatch_ShouldFail()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+				Version actualVersion = assembly.GetName().Version!;
 
 				async Task Act()
 				{
@@ -21,11 +22,11 @@ public sealed partial class ThatAssembly
 				}
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("""
+					.WithMessage($"""
 					             Expected that assembly
 					             has version matching version => version.Major < 0,
-					             but it had version *
-					             """).AsWildcard();
+					             but it had version {actualVersion}
+					             """);
 			}
 
 			[Fact]
@@ -111,8 +112,11 @@ public sealed partial class ThatAssembly
 				}
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"*has major version {wording} {expected}*but it had major version {major}*")
-					.AsWildcard();
+					.WithMessage($"""
+					             Expected that assembly
+					             has major version {wording} {expected},
+					             but it had major version {major}
+					             """);
 			}
 
 			[Theory]
@@ -200,14 +204,18 @@ public sealed partial class ThatAssembly
 				}
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"*has {name} version greater than {actual}*but it had {name} version {actual}*")
-					.AsWildcard();
+					.WithMessage($"""
+					             Expected that assembly
+					             has {name} version greater than {actual},
+					             but it had {name} version {actual}
+					             """);
 			}
 
 			[Fact]
 			public async Task WhenComponentDoesNotMatch_ShouldFail()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+				int major = assembly.GetName().Version!.Major;
 
 				async Task Act()
 				{
@@ -215,11 +223,11 @@ public sealed partial class ThatAssembly
 				}
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("""
+					.WithMessage($"""
 					             Expected that assembly
 					             has major version less than 0,
-					             but it had major version *
-					             """).AsWildcard();
+					             but it had major version {major}
+					             """);
 			}
 
 			[Fact]
@@ -249,9 +257,11 @@ public sealed partial class ThatAssembly
 				}
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage(
-						$"*has major version equal to {version.Major} and minor version greater than {version.Minor}*but it had minor version {version.Minor}*")
-					.AsWildcard();
+					.WithMessage($"""
+					             Expected that assembly
+					             has major version equal to {version.Major} and minor version greater than {version.Minor},
+					             but it had minor version {version.Minor}
+					             """);
 			}
 
 			[Fact]
@@ -287,6 +297,7 @@ public sealed partial class ThatAssembly
 			public async Task WhenComponentMatches_ShouldFail()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+				Version version = assembly.GetName().Version!;
 
 				async Task Act()
 				{
@@ -294,13 +305,18 @@ public sealed partial class ThatAssembly
 				}
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("*does not have major version greater than or equal to 0*").AsWildcard();
+					.WithMessage($"""
+					             Expected that assembly
+					             does not have major version greater than or equal to 0,
+					             but it had version {version}
+					             """);
 			}
 
 			[Fact]
 			public async Task WhenVersionExists_ShouldFail()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+				Version version = assembly.GetName().Version!;
 
 				async Task Act()
 				{
@@ -308,7 +324,11 @@ public sealed partial class ThatAssembly
 				}
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("*does not have a version*").AsWildcard();
+					.WithMessage($"""
+					             Expected that assembly
+					             does not have a version,
+					             but it had version {version}
+					             """);
 			}
 		}
 	}

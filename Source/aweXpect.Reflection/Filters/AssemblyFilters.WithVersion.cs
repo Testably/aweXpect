@@ -51,11 +51,13 @@ public static partial class AssemblyFilters
 		/// <summary>
 		///     Compares the <see cref="Version.Build" /> version component.
 		/// </summary>
+		/// <remarks>The build component is <c>-1</c> when it is absent from the version.</remarks>
 		public VersionComponent WithBuild => new(this, filter, "build", version => version.Build);
 
 		/// <summary>
 		///     Compares the <see cref="Version.Revision" /> version component.
 		/// </summary>
+		/// <remarks>The revision component is <c>-1</c> when it is absent from the version.</remarks>
 		public VersionComponent WithRevision => new(this, filter, "revision", version => version.Revision);
 	}
 

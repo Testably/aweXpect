@@ -101,11 +101,13 @@ public static partial class ThatAssemblies
 		/// <summary>
 		///     Compares the <see cref="Version.Build" /> version component.
 		/// </summary>
+		/// <remarks>The build component is <c>-1</c> when it is absent from the version.</remarks>
 		public VersionComponentResult<TCollection> WithBuild => new(this, "build version", version => version.Build);
 
 		/// <summary>
 		///     Compares the <see cref="Version.Revision" /> version component.
 		/// </summary>
+		/// <remarks>The revision component is <c>-1</c> when it is absent from the version.</remarks>
 		public VersionComponentResult<TCollection> WithRevision
 			=> new(this, "revision version", version => version.Revision);
 

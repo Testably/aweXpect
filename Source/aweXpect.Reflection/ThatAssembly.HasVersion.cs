@@ -63,11 +63,13 @@ public static partial class ThatAssembly
 		/// <summary>
 		///     Compares the <see cref="Version.Build" /> version component.
 		/// </summary>
+		/// <remarks>The build component is <c>-1</c> when it is absent from the version.</remarks>
 		public VersionComponent WithBuild => new(this, "build version", version => version.Build);
 
 		/// <summary>
 		///     Compares the <see cref="Version.Revision" /> version component.
 		/// </summary>
+		/// <remarks>The revision component is <c>-1</c> when it is absent from the version.</remarks>
 		public VersionComponent WithRevision => new(this, "revision version", version => version.Revision);
 
 		internal HasVersionResult Add(string component, string comparisonText, Func<Version, int> selector,
