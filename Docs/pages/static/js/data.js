@@ -3168,6 +3168,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 31 08:20:10 2026 \u002B0200",
         "message": "refactor: anchor assembly-prefix exclusion at name boundaries (#972)"
+      },
+      {
+        "sha": "e8b147950c865babea7d27d9e600eade0d95a15e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun May 31 08:37:04 2026 \u002B0200",
+        "message": "feat: update \u0060Because\u0060 method to handle null reason (#973)"
       }
     ],
     "labels": [
@@ -3698,7 +3704,8 @@ window.BENCHMARK_DATA = {
       "eca352d8",
       "a9e6ee54",
       "e3547a28",
-      "01e92402"
+      "01e92402",
+      "e8b14795"
     ],
     "datasets": [
       {
@@ -4232,7 +4239,8 @@ window.BENCHMARK_DATA = {
           279.3069086710612,
           248.5982816696167,
           275.9644400732858,
-          265.64060691197716
+          265.64060691197716,
+          259.96589612960815
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4705,6 +4713,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5313,7 +5322,8 @@ window.BENCHMARK_DATA = {
           246.36039815630232,
           245.674853682518,
           277.8404155458723,
-          273.71951723098755
+          273.71951723098755,
+          256.0557377888606
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5506,6 +5516,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -8572,6 +8583,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 31 08:20:10 2026 \u002B0200",
         "message": "refactor: anchor assembly-prefix exclusion at name boundaries (#972)"
+      },
+      {
+        "sha": "e8b147950c865babea7d27d9e600eade0d95a15e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun May 31 08:37:04 2026 \u002B0200",
+        "message": "feat: update \u0060Because\u0060 method to handle null reason (#973)"
       }
     ],
     "labels": [
@@ -9025,7 +9042,8 @@ window.BENCHMARK_DATA = {
       "eca352d8",
       "a9e6ee54",
       "e3547a28",
-      "01e92402"
+      "01e92402",
+      "e8b14795"
     ],
     "datasets": [
       {
@@ -9482,7 +9500,8 @@ window.BENCHMARK_DATA = {
           305520.9623046875,
           288501.6021972656,
           325430.2694986979,
-          306960.026953125
+          306960.026953125,
+          309851.21736653644
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9929,6 +9948,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335442,
+          335444,
           335444,
           335444,
           335444,
@@ -10409,7 +10429,8 @@ window.BENCHMARK_DATA = {
           2396152.1788504464,
           2333367.4771634615,
           2501984.40078125,
-          2440085.4848958333
+          2440085.4848958333,
+          2497785.16015625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10871,7 +10892,8 @@ window.BENCHMARK_DATA = {
           4841648,
           4841651,
           4841651,
-          4841635
+          4841635,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14053,6 +14075,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 31 08:20:10 2026 \u002B0200",
         "message": "refactor: anchor assembly-prefix exclusion at name boundaries (#972)"
+      },
+      {
+        "sha": "e8b147950c865babea7d27d9e600eade0d95a15e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun May 31 08:37:04 2026 \u002B0200",
+        "message": "feat: update \u0060Because\u0060 method to handle null reason (#973)"
       }
     ],
     "labels": [
@@ -14583,7 +14611,8 @@ window.BENCHMARK_DATA = {
       "eca352d8",
       "a9e6ee54",
       "e3547a28",
-      "01e92402"
+      "01e92402",
+      "e8b14795"
     ],
     "datasets": [
       {
@@ -15117,7 +15146,8 @@ window.BENCHMARK_DATA = {
           494.3127051762172,
           491.9864620844523,
           525.8678716512827,
-          519.1855758666992
+          519.1855758666992,
+          536.2258410771688
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15590,6 +15620,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -16198,7 +16229,8 @@ window.BENCHMARK_DATA = {
           500.78588752746583,
           489.8172462463379,
           575.5573016484578,
-          534.4196135203043
+          534.4196135203043,
+          527.0402784347534
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16391,6 +16423,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -19919,6 +19952,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 31 08:20:10 2026 \u002B0200",
         "message": "refactor: anchor assembly-prefix exclusion at name boundaries (#972)"
+      },
+      {
+        "sha": "e8b147950c865babea7d27d9e600eade0d95a15e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun May 31 08:37:04 2026 \u002B0200",
+        "message": "feat: update \u0060Because\u0060 method to handle null reason (#973)"
       }
     ],
     "labels": [
@@ -20449,7 +20488,8 @@ window.BENCHMARK_DATA = {
       "eca352d8",
       "a9e6ee54",
       "e3547a28",
-      "01e92402"
+      "01e92402",
+      "e8b14795"
     ],
     "datasets": [
       {
@@ -20983,7 +21023,8 @@ window.BENCHMARK_DATA = {
           260.2109740461622,
           250.86766112645466,
           289.60294075012206,
-          270.79918734232587
+          270.79918734232587,
+          281.7966275555747
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21497,6 +21538,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -22064,7 +22106,8 @@ window.BENCHMARK_DATA = {
           256.84688316981,
           242.7303590774536,
           280.68075227737427,
-          287.6870683942522
+          287.6870683942522,
+          253.69892297472273
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22257,6 +22300,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -25785,6 +25829,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 31 08:20:10 2026 \u002B0200",
         "message": "refactor: anchor assembly-prefix exclusion at name boundaries (#972)"
+      },
+      {
+        "sha": "e8b147950c865babea7d27d9e600eade0d95a15e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun May 31 08:37:04 2026 \u002B0200",
+        "message": "feat: update \u0060Because\u0060 method to handle null reason (#973)"
       }
     ],
     "labels": [
@@ -26315,7 +26365,8 @@ window.BENCHMARK_DATA = {
       "eca352d8",
       "a9e6ee54",
       "e3547a28",
-      "01e92402"
+      "01e92402",
+      "e8b14795"
     ],
     "datasets": [
       {
@@ -26849,7 +26900,8 @@ window.BENCHMARK_DATA = {
           487.77328910827634,
           474.0714020388467,
           501.06716607411704,
-          489.47474308013915
+          489.47474308013915,
+          510.8510365852943
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27322,6 +27374,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -27930,7 +27983,8 @@ window.BENCHMARK_DATA = {
           1179.1341366449992,
           1158.3489807128906,
           1260.5177664438884,
-          1316.6445543924967
+          1316.6445543924967,
+          1266.2381830215454
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28359,6 +28413,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -31651,6 +31706,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 31 08:20:10 2026 \u002B0200",
         "message": "refactor: anchor assembly-prefix exclusion at name boundaries (#972)"
+      },
+      {
+        "sha": "e8b147950c865babea7d27d9e600eade0d95a15e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun May 31 08:37:04 2026 \u002B0200",
+        "message": "feat: update \u0060Because\u0060 method to handle null reason (#973)"
       }
     ],
     "labels": [
@@ -32181,7 +32242,8 @@ window.BENCHMARK_DATA = {
       "eca352d8",
       "a9e6ee54",
       "e3547a28",
-      "01e92402"
+      "01e92402",
+      "e8b14795"
     ],
     "datasets": [
       {
@@ -32715,7 +32777,8 @@ window.BENCHMARK_DATA = {
           1975.9966021219889,
           1879.6414785385132,
           1967.8454129536947,
-          1693.962996037801
+          1693.962996037801,
+          1994.0278645833334
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33188,6 +33251,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -33796,7 +33860,8 @@ window.BENCHMARK_DATA = {
           1355.970089639936,
           1292.155686187744,
           1464.532755025228,
-          1415.400666509356
+          1415.400666509356,
+          1408.166918209621
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33989,6 +34054,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -37517,6 +37583,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 31 08:20:10 2026 \u002B0200",
         "message": "refactor: anchor assembly-prefix exclusion at name boundaries (#972)"
+      },
+      {
+        "sha": "e8b147950c865babea7d27d9e600eade0d95a15e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun May 31 08:37:04 2026 \u002B0200",
+        "message": "feat: update \u0060Because\u0060 method to handle null reason (#973)"
       }
     ],
     "labels": [
@@ -38047,7 +38119,8 @@ window.BENCHMARK_DATA = {
       "eca352d8",
       "a9e6ee54",
       "e3547a28",
-      "01e92402"
+      "01e92402",
+      "e8b14795"
     ],
     "datasets": [
       {
@@ -38581,7 +38654,8 @@ window.BENCHMARK_DATA = {
           2604.601530456543,
           2471.1331678118027,
           2545.2915908813475,
-          2208.495192391532
+          2208.495192391532,
+          2551.065022604806
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -39054,6 +39128,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -39662,7 +39737,8 @@ window.BENCHMARK_DATA = {
           20107.476479163535,
           19812.127221679686,
           21747.517711094446,
-          23846.91423688616
+          23846.91423688616,
+          20514.311822509764
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40201,7 +40277,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33468
+          33468,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
