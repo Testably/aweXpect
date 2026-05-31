@@ -29,7 +29,129 @@ public sealed partial class MethodFilters
 
 				await That(methods).DoesNotContain(PlainMethod());
 			}
+
+			[Fact]
+			public async Task ShouldIncludeMethodWhenOnlySomeButNotAllParametersAreOptionalParameters()
+			{
+				Filtered.Methods methods = In.Type<ClassWithOptionalParameterMethod>()
+					.Methods().WithOptionalParameter();
+
+				await That(methods).Contains(MixedParameterMethod());
+				await That(methods).DoesNotContain(PlainMethod());
+			}
+
+			[Fact]
+			public async Task Generic_ShouldIncludeOptionalModifierInDescription()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithOptionalParameter<int>();
+
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of type int and with optional modifier in assembly")
+					.AsPrefix();
+			}
+
+			[Fact]
+			public async Task Generic_WithName_ShouldIncludeOptionalModifierInDescription()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithOptionalParameter<int>("value");
+
+				await That(methods.GetDescription())
+					.IsEqualTo(
+						"methods with parameter of type int and name equal to \"value\" and with optional modifier in assembly")
+					.AsPrefix();
+			}
+
+			[Fact]
+			public async Task ByName_ShouldIncludeOptionalModifierInDescription()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithOptionalParameter("value");
+
+				await That(methods.GetDescription())
+					.IsEqualTo(
+						"methods with parameter with name equal to \"value\" and with optional modifier in assembly")
+					.AsPrefix();
+			}
+
+#pragma warning disable CA2263
+			[Fact]
+			public async Task UsingType_ShouldIncludeOptionalModifierInDescription()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithOptionalParameter(typeof(int));
+
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of type int and with optional modifier in assembly")
+					.AsPrefix();
+			}
+
+			[Fact]
+			public async Task UsingType_WithName_ShouldIncludeOptionalModifierInDescription()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithOptionalParameter(typeof(int), "value");
+
+				await That(methods.GetDescription())
+					.IsEqualTo(
+						"methods with parameter of type int and name equal to \"value\" and with optional modifier in assembly")
+					.AsPrefix();
+			}
+#pragma warning restore CA2263
+
+			[Fact]
+			public async Task GenericExactly_ShouldIncludeOptionalModifierInDescription()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithOptionalParameterExactly<int>();
+
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of exact type int and with optional modifier in assembly")
+					.AsPrefix();
+			}
+
+			[Fact]
+			public async Task GenericExactly_WithName_ShouldIncludeOptionalModifierInDescription()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithOptionalParameterExactly<int>("value");
+
+				await That(methods.GetDescription())
+					.IsEqualTo(
+						"methods with parameter of exact type int and name equal to \"value\" and with optional modifier in assembly")
+					.AsPrefix();
+			}
+
+#pragma warning disable CA2263
+			[Fact]
+			public async Task UsingTypeExactly_ShouldIncludeOptionalModifierInDescription()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithOptionalParameterExactly(typeof(int));
+
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of exact type int and with optional modifier in assembly")
+					.AsPrefix();
+			}
+
+			[Fact]
+			public async Task UsingTypeExactly_WithName_ShouldIncludeOptionalModifierInDescription()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithOptionalParameterExactly(typeof(int), "value");
+
+				await That(methods.GetDescription())
+					.IsEqualTo(
+						"methods with parameter of exact type int and name equal to \"value\" and with optional modifier in assembly")
+					.AsPrefix();
+			}
+#pragma warning restore CA2263
 		}
+
+		private static MethodInfo? MixedParameterMethod()
+			=> typeof(ClassWithOptionalParameterMethod)
+				.GetMethod(nameof(ClassWithOptionalParameterMethod.MethodWithMixedParameters));
 
 		private static MethodInfo? OptionalParameterMethod()
 			=> typeof(ClassWithOptionalParameterMethod)
@@ -45,6 +167,10 @@ public sealed partial class MethodFilters
 		private class ClassWithOptionalParameterMethod
 		{
 			public void MethodWithOptionalParameter(int value = 0)
+			{
+			}
+
+			public void MethodWithMixedParameters(int other, int value = 0)
 			{
 			}
 

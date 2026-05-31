@@ -30,6 +30,9 @@ public sealed partial class MethodFilters
 
 				await That(methods).Contains(OutIntMethod());
 				await That(methods).DoesNotContain(PlainIntMethod());
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of type int and with out modifier in assembly")
+					.AsPrefix();
 			}
 
 			[Fact]
@@ -40,6 +43,9 @@ public sealed partial class MethodFilters
 
 				await That(methods).Contains(InIntMethod());
 				await That(methods).DoesNotContain(PlainIntMethod());
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of type int and with in modifier in assembly")
+					.AsPrefix();
 			}
 
 			[Fact]
@@ -50,6 +56,9 @@ public sealed partial class MethodFilters
 
 				await That(methods).Contains(OptionalIntMethod());
 				await That(methods).DoesNotContain(PlainIntMethod());
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of type int and with optional modifier in assembly")
+					.AsPrefix();
 			}
 
 			[Fact]
@@ -59,6 +68,9 @@ public sealed partial class MethodFilters
 					.Methods().WithParameter<int[]>().WithParamsModifier();
 
 				await That(methods).Contains(ParamsIntMethod());
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of type int[] and with params modifier in assembly")
+					.AsPrefix();
 			}
 		}
 

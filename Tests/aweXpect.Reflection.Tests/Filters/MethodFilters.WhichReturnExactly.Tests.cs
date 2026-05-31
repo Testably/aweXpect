@@ -89,6 +89,19 @@ public sealed partial class MethodFilters
 		public sealed class OrReturnExactlyGenericTests
 		{
 			[Fact]
+			public async Task ShouldKeepMethodsMatchingTheFirstTypeWhenAddingAnAlternative()
+			{
+				Filtered.Methods methods = In.Type<TestClass>()
+					.Methods().WhichReturnExactly<string>().OrReturnExactly<int>();
+
+				// The first branch (string) must still match after the OR-alternative is added,
+				// and the alternative (int) must also match.
+				await That(methods).Contains(typeof(TestClass).GetMethod(nameof(TestClass.GetString))!);
+				await That(methods).Contains(typeof(TestClass).GetMethod(nameof(TestClass.GetInt))!);
+				await That(methods).DoesNotContain(typeof(TestClass).GetMethod(nameof(TestClass.GetBool))!);
+			}
+
+			[Fact]
 			public async Task ShouldFilterForMethodsWhichReturnExactlyAnyOfMultipleTypes()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
