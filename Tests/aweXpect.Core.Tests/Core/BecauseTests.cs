@@ -8,7 +8,7 @@ public class BecauseTests
 	public async Task ActionDelegate_ShouldApplyAsyncBecauseReason()
 	{
 		string because = "this is the reason";
-		Task<string> becauseTask = Task.Delay(5).ContinueWith(_ => because);
+		Task<string?> becauseTask = Task.Delay(5).ContinueWith(_ => because)!;
 		Action subject = () => throw new MyException();
 
 		async Task Act()
@@ -84,7 +84,7 @@ public class BecauseTests
 	public async Task FuncDelegate_ShouldApplyAsyncBecauseReason()
 	{
 		string because = "this is the reason";
-		Task<string> becauseTask = Task.Delay(5).ContinueWith(_ => because);
+		Task<string?> becauseTask = Task.Delay(5).ContinueWith(_ => because)!;
 		Func<int> subject = () => throw new MyException();
 
 		async Task Act()
