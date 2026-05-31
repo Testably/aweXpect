@@ -580,6 +580,24 @@ public sealed partial class ThatMethod
 		public sealed class NegatedTests
 		{
 			[Fact]
+			public async Task AtIndex_WhenParameterExistsAtSpecificIndex_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).DoesNotComplyWith(it => it.HasParameter<int>().AtIndex(0));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             does not have parameter of type int at index 0,
+					             but it did
+					             """);
+			}
+
+			[Fact]
 			public async Task HasParameterByName_WhenParameterDoesNotExist_ShouldSucceed()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutParameters))!;

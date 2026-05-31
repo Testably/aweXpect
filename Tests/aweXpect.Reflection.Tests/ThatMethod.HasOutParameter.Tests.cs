@@ -59,6 +59,163 @@ public sealed partial class ThatMethod
 			}
 
 			[Fact]
+			public async Task WhenSomeButNotAllParametersAreOutParameters_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithMixedParameters))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasOutParameter();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task Generic_WhenMethodHasNoOutParameter_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasOutParameter<int>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type int with out modifier,
+					             but it did not
+					             """);
+			}
+
+			[Fact]
+			public async Task GenericWithName_WhenMethodHasNoOutParameter_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasOutParameter<int>("value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type int with name "value" with out modifier,
+					             but it did not
+					             """);
+			}
+
+			[Fact]
+			public async Task TypeWithName_WhenMethodHasNoOutParameter_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasOutParameter(typeof(int), "value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type int with name "value" with out modifier,
+					             but it did not
+					             """);
+			}
+
+			[Fact]
+			public async Task Name_WhenMethodHasNoOutParameter_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasOutParameter("value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter with name "value" with out modifier,
+					             but it did not
+					             """);
+			}
+
+			[Fact]
+			public async Task GenericExactly_WhenMethodHasNoOutParameter_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasOutParameterExactly<int>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of exact type int with out modifier,
+					             but it did not
+					             """);
+			}
+
+			[Fact]
+			public async Task TypeExactly_WhenMethodHasNoOutParameter_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasOutParameterExactly(typeof(int));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of exact type int with out modifier,
+					             but it did not
+					             """);
+			}
+
+			[Fact]
+			public async Task GenericExactlyWithName_WhenMethodHasNoOutParameter_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasOutParameterExactly<int>("value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of exact type int with name "value" with out modifier,
+					             but it did not
+					             """);
+			}
+
+			[Fact]
+			public async Task TypeExactlyWithName_WhenMethodHasNoOutParameter_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasOutParameterExactly(typeof(int), "value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of exact type int with name "value" with out modifier,
+					             but it did not
+					             """);
+			}
+
+			[Fact]
 			public async Task Type_WhenMethodHasOutParameterOfType_ShouldSucceed()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!;
@@ -169,6 +326,11 @@ public sealed partial class ThatMethod
 		private class TestClass
 		{
 			public void MethodWithOutParameter(out int value)
+			{
+				value = 0;
+			}
+
+			public void MethodWithMixedParameters(out int value, string other)
 			{
 				value = 0;
 			}

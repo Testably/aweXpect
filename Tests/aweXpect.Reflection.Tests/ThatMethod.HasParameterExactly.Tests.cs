@@ -94,6 +94,24 @@ public sealed partial class ThatMethod
 			}
 
 			[Fact]
+			public async Task WithName_WhenParameterIsSubtype_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithStream))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameterExactly<IDisposable>("stream");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of exact type IDisposable with name "stream",
+					             but it did not
+					             """);
+			}
+
+			[Fact]
 			public async Task Type_WhenMethodIsNull_ShouldFail()
 			{
 				MethodInfo? methodInfo = null;
