@@ -356,6 +356,9 @@ In addition to [access modifiers](#access-modifiers),
 | of exact type                         | `.OfExactType<T>()`                         | `.IsOfExactType<T>()`           | `.AreOfExactType<T>()`            |
 | static *(properties & fields)*        | `.WhichAreStatic()`                         | `.IsStatic()`                   | `.AreStatic()`                    |
 | abstract / sealed *(properties only)* | `.WhichAreAbstract()` / `.WhichAreSealed()` | `.IsAbstract()` / `.IsSealed()` | `.AreAbstract()` / `.AreSealed()` |
+| read-only *(properties only)*         | `.WhichAreReadOnly()`                       | `.IsReadOnly()`                 | `.AreReadOnly()`                  |
+| write-only *(properties only)*        | `.WhichAreWriteOnly()`                      | `.IsWriteOnly()`                | `.AreWriteOnly()`                 |
+| read-write *(properties only)*        | `.WhichAreReadWrite()`                      | `.IsReadWrite()`                | `.AreReadWrite()`                 |
 
 Use `OrOfType<T>()` / `OrOfExactType<T>()` to allow several types.
 

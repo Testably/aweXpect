@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reflection;
 using aweXpect.Reflection.Collections;
@@ -125,4 +125,22 @@ internal static class PropertyInfoHelpers
 		this PropertyInfo? propertyInfo)
 		=> propertyInfo?.GetMethod?.IsStatic == true ||
 		   propertyInfo?.SetMethod?.IsStatic == true;
+
+	/// <summary>
+	///     Checks if the <paramref name="propertyInfo" /> is read-only (can be read but not written).
+	/// </summary>
+	public static bool IsReadOnly(this PropertyInfo? propertyInfo)
+		=> propertyInfo is { CanRead: true, CanWrite: false, };
+
+	/// <summary>
+	///     Checks if the <paramref name="propertyInfo" /> is write-only (can be written but not read).
+	/// </summary>
+	public static bool IsWriteOnly(this PropertyInfo? propertyInfo)
+		=> propertyInfo is { CanRead: false, CanWrite: true, };
+
+	/// <summary>
+	///     Checks if the <paramref name="propertyInfo" /> is read-write (can be both read and written).
+	/// </summary>
+	public static bool IsReadWrite(this PropertyInfo? propertyInfo)
+		=> propertyInfo is { CanRead: true, CanWrite: true, };
 }
