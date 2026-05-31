@@ -92,6 +92,30 @@ public sealed class ConstructorInfoHelpersTests
 		await That(result2).IsFalse();
 	}
 
+	[Fact]
+	public async Task HasAttribute_WithAttributeType_WithoutPredicate_ShouldReturnTrue()
+	{
+		ConstructorInfo constructorInfo = typeof(TestClass).GetDeclaredConstructors()
+			.Single(c => c.GetParameters().Length == 2);
+
+		bool result = constructorInfo.HasAttribute(typeof(DummyAttribute));
+
+		await That(result).IsTrue();
+	}
+
+	[Fact]
+	public async Task HasAttribute_WithAttributeType_WithPredicate_ShouldReturnPredicateResult()
+	{
+		ConstructorInfo constructorInfo = typeof(TestClass).GetDeclaredConstructors()
+			.Single(c => c.GetParameters().Length == 2);
+
+		bool result1 = constructorInfo.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 1);
+		bool result2 = constructorInfo.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 2);
+
+		await That(result1).IsTrue();
+		await That(result2).IsFalse();
+	}
+
 	[AttributeUsage(AttributeTargets.Constructor)]
 	private class DummyAttribute : Attribute
 	{

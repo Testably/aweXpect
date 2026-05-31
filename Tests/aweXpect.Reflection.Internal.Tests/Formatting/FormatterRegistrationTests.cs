@@ -21,6 +21,30 @@ public class FormatterRegistrationTests
 	}
 
 	[Fact]
+	public async Task Dispose_WhenNotInitialized_ShouldNotThrow()
+	{
+		// Free the existing singleton so a fresh, never-initialized instance can be created.
+		FormatterRegistration.Instance.Dispose();
+
+		FormatterRegistration fresh = new();
+
+		void Act()
+			=> fresh.Dispose();
+
+		try
+		{
+			// A never-initialized instance must have an empty (not single-null) disposables array,
+			// so disposing it must not throw a NullReferenceException.
+			await That(Act).DoesNotThrow();
+		}
+		finally
+		{
+			// Restore the singleton and re-register all formatters for subsequent tests.
+			FormatterRegistration.Instance.Initialize();
+		}
+	}
+
+	[Fact]
 	public async Task Initialize_ShouldRegisterFormatterForConstructorInfo()
 	{
 		ConstructorInfo constructorInfo = typeof(ConstructorFormatterTests.MyTestClass).GetConstructors().First();

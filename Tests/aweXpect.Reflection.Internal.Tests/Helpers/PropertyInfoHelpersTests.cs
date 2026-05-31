@@ -127,6 +127,63 @@ public sealed class PropertyInfoHelpersTests
 		await That(result2).IsFalse();
 	}
 
+	[Fact]
+	public async Task HasAttribute_WithAttributeType_WithoutPredicate_ShouldReturnTrue()
+	{
+		PropertyInfo propertyInfo =
+			typeof(TestClass).GetProperty(nameof(TestClass.Property1WithAttribute))!;
+
+		bool result = propertyInfo.HasAttribute(typeof(DummyAttribute));
+
+		await That(result).IsTrue();
+	}
+
+	[Fact]
+	public async Task HasAttribute_WithAttributeType_WithPredicate_ShouldReturnPredicateResult()
+	{
+		PropertyInfo propertyInfo =
+			typeof(TestClass).GetProperty(nameof(TestClass.Property1WithAttribute))!;
+
+		bool result1 = propertyInfo.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 1);
+		bool result2 = propertyInfo.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 2);
+
+		await That(result1).IsTrue();
+		await That(result2).IsFalse();
+	}
+
+	[Fact]
+	public async Task IsReallyStatic_WhenOnlyGetterIsStatic_ShouldReturnTrue()
+	{
+		PropertyInfo propertyInfo = typeof(StaticAccessorTestClass)
+			.GetProperty(nameof(StaticAccessorTestClass.StaticGetOnlyProperty))!;
+
+		bool result = propertyInfo.IsReallyStatic();
+
+		await That(result).IsTrue();
+	}
+
+	[Fact]
+	public async Task IsReallyStatic_WhenOnlySetterIsStatic_ShouldReturnTrue()
+	{
+		PropertyInfo propertyInfo = typeof(StaticAccessorTestClass)
+			.GetProperty(nameof(StaticAccessorTestClass.StaticSetOnlyProperty))!;
+
+		bool result = propertyInfo.IsReallyStatic();
+
+		await That(result).IsTrue();
+	}
+
+	[Fact]
+	public async Task IsReallyStatic_WhenInstanceProperty_ShouldReturnFalse()
+	{
+		PropertyInfo propertyInfo = typeof(StaticAccessorTestClass)
+			.GetProperty(nameof(StaticAccessorTestClass.InstanceProperty))!;
+
+		bool result = propertyInfo.IsReallyStatic();
+
+		await That(result).IsFalse();
+	}
+
 	[AttributeUsage(AttributeTargets.Property)]
 	private class DummyAttribute : Attribute
 	{
@@ -162,5 +219,19 @@ public sealed class PropertyInfoHelpersTests
 		public int PublicProperty { get; set; }
 		public int PublicPropertyWithPrivateSetter { get; private set; }
 		public int PublicPropertyWithPrivateGetter { private get; set; }
+	}
+
+	private class StaticAccessorTestClass
+	{
+		private static int _staticSetOnly;
+
+		public static int StaticGetOnlyProperty => 1;
+
+		public static int StaticSetOnlyProperty
+		{
+			set => _staticSetOnly = value;
+		}
+
+		public int InstanceProperty { get; set; }
 	}
 }

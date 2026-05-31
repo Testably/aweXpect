@@ -110,6 +110,28 @@ public sealed class MethodInfoHelpersTests
 		await That(result2).IsFalse();
 	}
 
+	[Fact]
+	public async Task HasAttribute_WithAttributeType_WithoutPredicate_ShouldReturnTrue()
+	{
+		MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.Method1WithAttribute))!;
+
+		bool result = methodInfo.HasAttribute(typeof(DummyAttribute));
+
+		await That(result).IsTrue();
+	}
+
+	[Fact]
+	public async Task HasAttribute_WithAttributeType_WithPredicate_ShouldReturnPredicateResult()
+	{
+		MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.Method1WithAttribute))!;
+
+		bool result1 = methodInfo.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 1);
+		bool result2 = methodInfo.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 2);
+
+		await That(result1).IsTrue();
+		await That(result2).IsFalse();
+	}
+
 	[AttributeUsage(AttributeTargets.Method)]
 	private class DummyAttribute : Attribute
 	{

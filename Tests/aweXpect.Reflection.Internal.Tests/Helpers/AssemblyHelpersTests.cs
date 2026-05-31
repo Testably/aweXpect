@@ -1,9 +1,35 @@
+using System.Reflection;
+using System.Runtime.Versioning;
 using aweXpect.Reflection.Helpers;
 
 namespace aweXpect.Reflection.Internal.Tests.Helpers;
 
 public class AssemblyHelpersTests
 {
+	[Fact]
+	public async Task HasAttribute_WithAttributeType_WithoutPredicate_WhenAttributePresent_ShouldReturnTrue()
+	{
+		Assembly assembly = typeof(AssemblyHelpersTests).Assembly;
+
+		bool result = assembly.HasAttribute(typeof(TargetFrameworkAttribute));
+
+		await That(result).IsTrue();
+	}
+
+	[Fact]
+	public async Task HasAttribute_WithAttributeType_WithPredicate_ShouldReturnPredicateResult()
+	{
+		Assembly assembly = typeof(AssemblyHelpersTests).Assembly;
+
+		bool result1 = assembly.HasAttribute(typeof(TargetFrameworkAttribute),
+			a => ((TargetFrameworkAttribute)a).FrameworkName.Length > 0);
+		bool result2 = assembly.HasAttribute(typeof(TargetFrameworkAttribute),
+			a => ((TargetFrameworkAttribute)a).FrameworkName.Length < 0);
+
+		await That(result1).IsTrue();
+		await That(result2).IsFalse();
+	}
+
 	[Theory]
 	[InlineData(".NETCoreApp,Version=v5.0", "net5.0")]
 	[InlineData(".NETCoreApp,Version=v6.0", "net6.0")]

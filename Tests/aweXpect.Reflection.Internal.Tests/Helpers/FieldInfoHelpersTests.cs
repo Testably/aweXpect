@@ -98,6 +98,28 @@ public sealed class FieldInfoHelpersTests
 		await That(result2).IsFalse();
 	}
 
+	[Fact]
+	public async Task HasAttribute_WithAttributeType_WithoutPredicate_ShouldReturnTrue()
+	{
+		FieldInfo fieldInfo = typeof(TestClass).GetField(nameof(TestClass.Field1WithAttribute))!;
+
+		bool result = fieldInfo.HasAttribute(typeof(DummyAttribute));
+
+		await That(result).IsTrue();
+	}
+
+	[Fact]
+	public async Task HasAttribute_WithAttributeType_WithPredicate_ShouldReturnPredicateResult()
+	{
+		FieldInfo fieldInfo = typeof(TestClass).GetField(nameof(TestClass.Field1WithAttribute))!;
+
+		bool result1 = fieldInfo.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 1);
+		bool result2 = fieldInfo.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 2);
+
+		await That(result1).IsTrue();
+		await That(result2).IsFalse();
+	}
+
 	[AttributeUsage(AttributeTargets.Field)]
 	private class DummyAttribute : Attribute
 	{
