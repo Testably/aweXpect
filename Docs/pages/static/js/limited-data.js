@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "b222f4f1b22affc6939c7a0da09535f584c98287",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Mar 6 12:28:00 2026 \u002B0100",
-        "message": "chore: update docusaurus webpage (#900)"
-      },
-      {
         "sha": "91119c67df62e12e31b89dc3e457ab2fa34b500b",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Mar 6 13:56:46 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:07 2026 \u002B0200",
         "message": "chore: Bump the nunit group with 1 update (#967)"
+      },
+      {
+        "sha": "d1b8256e55271156aa5aa799bfa0b2d8e4b18fd2",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:17 2026 \u002B0200",
+        "message": "chore: Bump the tunit group with 3 updates (#968)"
       }
     ],
     "labels": [
-      "b222f4f1",
       "91119c67",
       "d205de6c",
       "ad9a5bc1",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "695339ab",
       "a9e05ce1",
       "d5f54ae4",
-      "5fb898f6"
+      "5fb898f6",
+      "d1b8256e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          259.43754277910506,
           255.43598403930665,
           263.6416559537252,
           246.52351846694947,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           238.8254194577535,
           251.92092113494874,
           248.4225470860799,
-          281.60268538338795
+          281.60268538338795,
+          264.24082912717546
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          251.80484850066048,
           238.8532030765827,
           265.8687606224647,
           238.11322654088337,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           250.92081941877092,
           236.78602307183402,
           247.2772104581197,
-          270.7715315085191
+          270.7715315085191,
+          248.43984563534076
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "b222f4f1b22affc6939c7a0da09535f584c98287",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Mar 6 12:28:00 2026 \u002B0100",
-        "message": "chore: update docusaurus webpage (#900)"
-      },
-      {
         "sha": "91119c67df62e12e31b89dc3e457ab2fa34b500b",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Mar 6 13:56:46 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:07 2026 \u002B0200",
         "message": "chore: Bump the nunit group with 1 update (#967)"
+      },
+      {
+        "sha": "d1b8256e55271156aa5aa799bfa0b2d8e4b18fd2",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:17 2026 \u002B0200",
+        "message": "chore: Bump the tunit group with 3 updates (#968)"
       }
     ],
     "labels": [
-      "b222f4f1",
       "91119c67",
       "d205de6c",
       "ad9a5bc1",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "695339ab",
       "a9e05ce1",
       "d5f54ae4",
-      "5fb898f6"
+      "5fb898f6",
+      "d1b8256e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          310285.5333909255,
           323185.21315104165,
           339061.4876464844,
           306435.1392252604,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           296890.3802408854,
           298966.8494140625,
           314822.47265625,
-          338613.4191545759
+          338613.4191545759,
+          322577.8310546875
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1065,8 +1065,8 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
+          335444,
           335444,
           335444,
           335444,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2716350.6177884615,
           2661700.421574519,
           2628906.339285714,
           2610370.2845052085,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2469620.8059895835,
           2506167.606026786,
           2721793.542708333,
-          2971366.189322917
+          2971366.189322917,
+          2807100.845833333
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1167,7 +1167,6 @@ window.BENCHMARK_DATA = {
           4804906,
           4804906,
           4804906,
-          4804906,
           4804902,
           4804906,
           4804906,
@@ -1200,6 +1199,7 @@ window.BENCHMARK_DATA = {
           4804891,
           4804906,
           4804906,
+          4841651,
           4841651,
           4841651,
           4841651
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "b222f4f1b22affc6939c7a0da09535f584c98287",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Mar 6 12:28:00 2026 \u002B0100",
-        "message": "chore: update docusaurus webpage (#900)"
-      },
       {
         "sha": "91119c67df62e12e31b89dc3e457ab2fa34b500b",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:07 2026 \u002B0200",
         "message": "chore: Bump the nunit group with 1 update (#967)"
+      },
+      {
+        "sha": "d1b8256e55271156aa5aa799bfa0b2d8e4b18fd2",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:17 2026 \u002B0200",
+        "message": "chore: Bump the tunit group with 3 updates (#968)"
       }
     ],
     "labels": [
-      "b222f4f1",
       "91119c67",
       "d205de6c",
       "ad9a5bc1",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "695339ab",
       "a9e05ce1",
       "d5f54ae4",
-      "5fb898f6"
+      "5fb898f6",
+      "d1b8256e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          495.4024134363447,
           474.37436154683434,
           506.95444876352946,
           490.06468060811363,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           482.30627117156985,
           466.29830408096313,
           493.37997512817384,
-          532.7778127034505
+          532.7778127034505,
+          488.29805401393344
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          480.3576805114746,
           487.0893595559256,
           500.7376543925359,
           462.64450785091947,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           488.19118172327677,
           454.54766511917114,
           475.0375202383314,
-          560.9847352981567
+          560.9847352981567,
+          478.60503266652427
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "b222f4f1b22affc6939c7a0da09535f584c98287",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Mar 6 12:28:00 2026 \u002B0100",
-        "message": "chore: update docusaurus webpage (#900)"
-      },
-      {
         "sha": "91119c67df62e12e31b89dc3e457ab2fa34b500b",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Mar 6 13:56:46 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:07 2026 \u002B0200",
         "message": "chore: Bump the nunit group with 1 update (#967)"
+      },
+      {
+        "sha": "d1b8256e55271156aa5aa799bfa0b2d8e4b18fd2",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:17 2026 \u002B0200",
+        "message": "chore: Bump the tunit group with 3 updates (#968)"
       }
     ],
     "labels": [
-      "b222f4f1",
       "91119c67",
       "d205de6c",
       "ad9a5bc1",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "695339ab",
       "a9e05ce1",
       "d5f54ae4",
-      "5fb898f6"
+      "5fb898f6",
+      "d1b8256e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          257.62049766949247,
           250.18207321166992,
           245.01450351079305,
           252.4207589785258,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           249.57111711502074,
           255.2972011566162,
           279.3821127573649,
-          293.83324213027953
+          293.83324213027953,
+          272.31214714050293
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2272,7 +2272,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
-          808,
+          864,
           864,
           864,
           864,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          266.93414096832277,
           247.5719152178083,
           265.4116718610128,
           236.38564470836096,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           247.27812787464686,
           242.3993557049678,
           267.3096298535665,
-          292.9080077489217
+          292.9080077489217,
+          246.19398107528687
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "b222f4f1b22affc6939c7a0da09535f584c98287",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Mar 6 12:28:00 2026 \u002B0100",
-        "message": "chore: update docusaurus webpage (#900)"
-      },
-      {
         "sha": "91119c67df62e12e31b89dc3e457ab2fa34b500b",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Mar 6 13:56:46 2026 \u002B0100",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:07 2026 \u002B0200",
         "message": "chore: Bump the nunit group with 1 update (#967)"
+      },
+      {
+        "sha": "d1b8256e55271156aa5aa799bfa0b2d8e4b18fd2",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:17 2026 \u002B0200",
+        "message": "chore: Bump the tunit group with 3 updates (#968)"
       }
     ],
     "labels": [
-      "b222f4f1",
       "91119c67",
       "d205de6c",
       "ad9a5bc1",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "695339ab",
       "a9e05ce1",
       "d5f54ae4",
-      "5fb898f6"
+      "5fb898f6",
+      "d1b8256e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          480.1629158337911,
           466.8385944684347,
           452.8107095105307,
           434.6160683291299,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           457.5987121899923,
           469.0115102018629,
           457.5411386489868,
-          494.96092816761563
+          494.96092816761563,
+          469.9096125602722
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1200.5062602116511,
           1249.1121862956456,
           1262.7269182840982,
           1219.7700771331788,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1189.5655532836913,
           1197.790695063273,
           1311.036827214559,
-          1303.3011100769043
+          1303.3011100769043,
+          1248.5900349934896
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "b222f4f1b22affc6939c7a0da09535f584c98287",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Mar 6 12:28:00 2026 \u002B0100",
-        "message": "chore: update docusaurus webpage (#900)"
-      },
-      {
         "sha": "91119c67df62e12e31b89dc3e457ab2fa34b500b",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Mar 6 13:56:46 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:07 2026 \u002B0200",
         "message": "chore: Bump the nunit group with 1 update (#967)"
+      },
+      {
+        "sha": "d1b8256e55271156aa5aa799bfa0b2d8e4b18fd2",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:17 2026 \u002B0200",
+        "message": "chore: Bump the tunit group with 3 updates (#968)"
       }
     ],
     "labels": [
-      "b222f4f1",
       "91119c67",
       "d205de6c",
       "ad9a5bc1",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "695339ab",
       "a9e05ce1",
       "d5f54ae4",
-      "5fb898f6"
+      "5fb898f6",
+      "d1b8256e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1897.1938844827505,
           2004.8365948994954,
           1922.7649700164795,
           1916.6972241719563,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2011.6034900120326,
           1858.8217960357665,
           2077.406628417969,
-          2010.5027500788372
+          2010.5027500788372,
+          1943.1482081095378
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1354.9895329108606,
           1313.6850591023763,
           1316.8638970692953,
           1312.3660928090414,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1296.8864002227783,
           1320.8793548583985,
           1513.755392074585,
-          1435.4089012145996
+          1435.4089012145996,
+          1318.7738965352376
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "b222f4f1b22affc6939c7a0da09535f584c98287",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Mar 6 12:28:00 2026 \u002B0100",
-        "message": "chore: update docusaurus webpage (#900)"
-      },
-      {
         "sha": "91119c67df62e12e31b89dc3e457ab2fa34b500b",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Mar 6 13:56:46 2026 \u002B0100",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:07 2026 \u002B0200",
         "message": "chore: Bump the nunit group with 1 update (#967)"
+      },
+      {
+        "sha": "d1b8256e55271156aa5aa799bfa0b2d8e4b18fd2",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:17 2026 \u002B0200",
+        "message": "chore: Bump the tunit group with 3 updates (#968)"
       }
     ],
     "labels": [
-      "b222f4f1",
       "91119c67",
       "d205de6c",
       "ad9a5bc1",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "695339ab",
       "a9e05ce1",
       "d5f54ae4",
-      "5fb898f6"
+      "5fb898f6",
+      "d1b8256e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2606.99295098441,
           2635.6223008292063,
           2624.485747528076,
           2564.1558205740794,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2542.2298736572266,
           2500.5137016296385,
           2658.722917175293,
-          2654.85319846017
+          2654.85319846017,
+          2577.84052494594
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          88615.19264322917,
           88515.51064453126,
           90939.52669270833,
           85872.35096153847,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           63397.70445963542,
           27218.916241455077,
           27746.698482259115,
-          28228.60042114258
+          28228.60042114258,
+          28157.407215663367
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          58598,
           58598,
           58598,
           58598,
@@ -4240,6 +4239,7 @@ window.BENCHMARK_DATA = {
           57488,
           57481,
           57480,
+          33471,
           33471,
           33471,
           33471
