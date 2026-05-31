@@ -69,6 +69,42 @@ public sealed partial class ThatAssembly
 			}
 
 			[Fact]
+			public async Task WhenNoAllowedAssembliesAreGiven_ShouldDescribeNoAssemblies()
+			{
+				Assembly subject = typeof(In).Assembly;
+
+				async Task Act()
+				{
+					await That(subject).HasDependenciesOnlyOn();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has dependencies only on no assemblies,
+					             but it also had dependencies on *
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenMultipleAllowedAssembliesAreGiven_ShouldDescribeAssemblies()
+			{
+				Assembly subject = typeof(PublicAbstractClass).Assembly;
+
+				async Task Act()
+				{
+					await That(subject).HasDependenciesOnlyOn("First", "Second");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has dependencies only on assemblies equal to "First" or equal to "Second",
+					             but it also had dependencies on *
+					             """).AsWildcard();
+			}
+
+			[Fact]
 			public async Task WhenAssemblyIsNull_ShouldFail()
 			{
 				Assembly? subject = null;

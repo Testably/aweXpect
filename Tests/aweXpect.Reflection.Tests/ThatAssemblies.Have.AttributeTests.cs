@@ -89,6 +89,112 @@ public sealed partial class ThatAssemblies
 					             """).AsWildcard();
 			}
 
+			[Fact]
+			public async Task WhenNegated_ShouldListMatchingAssemblies()
+			{
+				IEnumerable<Assembly> subjects = new[]
+				{
+					typeof(AttributeTests).Assembly,
+				};
+
+				async Task Act()
+				{
+					await That(subjects).DoesNotComplyWith(they => they.Have<AssemblyTitleAttribute>());
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subjects
+					             not all have AssemblyTitleAttribute,
+					             but it only contained matching assemblies [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             ]
+					             """).AsWildcard();
+			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task AsyncEnumerable_WhenAllAssembliesHaveAttribute_ShouldSucceed()
+			{
+				IAsyncEnumerable<Assembly?> subjects = ToAsyncEnumerable(
+					typeof(AttributeTests).Assembly);
+
+				async Task Act()
+				{
+					await That(subjects).Have<AssemblyTitleAttribute>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task AsyncEnumerable_WhenNotAllAssembliesHaveAttribute_ShouldFail()
+			{
+				IAsyncEnumerable<Assembly?> subjects = ToAsyncEnumerable(
+					typeof(AttributeTests).Assembly);
+
+				async Task Act()
+				{
+					await That(subjects).Have<TestAttribute>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subjects
+					             all have ThatAssemblies.Have.AttributeTests.TestAttribute,
+					             but it contained not matching assemblies [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task AsyncEnumerable_WithPredicate_WhenNotAllAssembliesMatch_ShouldFail()
+			{
+				IAsyncEnumerable<Assembly?> subjects = ToAsyncEnumerable(
+					typeof(AttributeTests).Assembly);
+
+				async Task Act()
+				{
+					await That(subjects).Have<AssemblyTitleAttribute>(attr => attr.Title == "NonExistentTitle");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subjects
+					             all have AssemblyTitleAttribute matching attr => attr.Title == "NonExistentTitle",
+					             but it contained not matching assemblies [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task AsyncEnumerable_WithPredicate_WhenAllAssembliesMatch_ShouldSucceed()
+			{
+				IAsyncEnumerable<Assembly?> subjects = ToAsyncEnumerable(
+					typeof(AttributeTests).Assembly);
+
+				async Task Act()
+				{
+					await That(subjects)
+						.Have<AssemblyTitleAttribute>(attr => attr.Title == "aweXpect.Reflection.Tests");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			private static async IAsyncEnumerable<Assembly?> ToAsyncEnumerable(params Assembly?[] items)
+			{
+				foreach (Assembly? item in items)
+				{
+					yield return item;
+				}
+
+				await Task.CompletedTask;
+			}
+#endif
+
 			[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
 			private class TestAttribute : Attribute;
 		}
