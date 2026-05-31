@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "91119c67df62e12e31b89dc3e457ab2fa34b500b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Mar 6 13:56:46 2026 \u002B0100",
-        "message": "refactor: fix build warnings (#902)"
-      },
-      {
         "sha": "d205de6c0ddc96bb4075cabade715fb9f78e88a3",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Mar 6 14:13:35 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:17 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 3 updates (#968)"
+      },
+      {
+        "sha": "eca352d8ebe33eeb5a97ea9bac82ffc602aaffc0",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:29 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.6.2 to 18.7.0 (#969)"
       }
     ],
     "labels": [
-      "91119c67",
       "d205de6c",
       "ad9a5bc1",
       "53a7bc7d",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "a9e05ce1",
       "d5f54ae4",
       "5fb898f6",
-      "d1b8256e"
+      "d1b8256e",
+      "eca352d8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          255.43598403930665,
           263.6416559537252,
           246.52351846694947,
           277.33378842898776,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           251.92092113494874,
           248.4225470860799,
           281.60268538338795,
-          264.24082912717546
+          264.24082912717546,
+          279.3069086710612
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          238.8532030765827,
           265.8687606224647,
           238.11322654088337,
           258.2727716445923,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           236.78602307183402,
           247.2772104581197,
           270.7715315085191,
-          248.43984563534076
+          248.43984563534076,
+          246.36039815630232
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "91119c67df62e12e31b89dc3e457ab2fa34b500b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Mar 6 13:56:46 2026 \u002B0100",
-        "message": "refactor: fix build warnings (#902)"
-      },
-      {
         "sha": "d205de6c0ddc96bb4075cabade715fb9f78e88a3",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Mar 6 14:13:35 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:17 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 3 updates (#968)"
+      },
+      {
+        "sha": "eca352d8ebe33eeb5a97ea9bac82ffc602aaffc0",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:29 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.6.2 to 18.7.0 (#969)"
       }
     ],
     "labels": [
-      "91119c67",
       "d205de6c",
       "ad9a5bc1",
       "53a7bc7d",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "a9e05ce1",
       "d5f54ae4",
       "5fb898f6",
-      "d1b8256e"
+      "d1b8256e",
+      "eca352d8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          323185.21315104165,
           339061.4876464844,
           306435.1392252604,
           310221.6845377604,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           298966.8494140625,
           314822.47265625,
           338613.4191545759,
-          322577.8310546875
+          322577.8310546875,
+          305520.9623046875
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          335444,
           335444,
           335444,
           335444,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
+          335444,
           335444
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2661700.421574519,
           2628906.339285714,
           2610370.2845052085,
           2741954.3526041666,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2506167.606026786,
           2721793.542708333,
           2971366.189322917,
-          2807100.845833333
+          2807100.845833333,
+          2396152.1788504464
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1166,7 +1166,6 @@ window.BENCHMARK_DATA = {
           4804906,
           4804906,
           4804906,
-          4804906,
           4804902,
           4804906,
           4804906,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841651
+          4841651,
+          4841648
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "91119c67df62e12e31b89dc3e457ab2fa34b500b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Mar 6 13:56:46 2026 \u002B0100",
-        "message": "refactor: fix build warnings (#902)"
-      },
       {
         "sha": "d205de6c0ddc96bb4075cabade715fb9f78e88a3",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:17 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 3 updates (#968)"
+      },
+      {
+        "sha": "eca352d8ebe33eeb5a97ea9bac82ffc602aaffc0",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:29 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.6.2 to 18.7.0 (#969)"
       }
     ],
     "labels": [
-      "91119c67",
       "d205de6c",
       "ad9a5bc1",
       "53a7bc7d",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "a9e05ce1",
       "d5f54ae4",
       "5fb898f6",
-      "d1b8256e"
+      "d1b8256e",
+      "eca352d8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          474.37436154683434,
           506.95444876352946,
           490.06468060811363,
           490.6396679878235,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           466.29830408096313,
           493.37997512817384,
           532.7778127034505,
-          488.29805401393344
+          488.29805401393344,
+          494.3127051762172
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          487.0893595559256,
           500.7376543925359,
           462.64450785091947,
           496.7702851295471,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           454.54766511917114,
           475.0375202383314,
           560.9847352981567,
-          478.60503266652427
+          478.60503266652427,
+          500.78588752746583
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "91119c67df62e12e31b89dc3e457ab2fa34b500b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Mar 6 13:56:46 2026 \u002B0100",
-        "message": "refactor: fix build warnings (#902)"
-      },
-      {
         "sha": "d205de6c0ddc96bb4075cabade715fb9f78e88a3",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Mar 6 14:13:35 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:17 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 3 updates (#968)"
+      },
+      {
+        "sha": "eca352d8ebe33eeb5a97ea9bac82ffc602aaffc0",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:29 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.6.2 to 18.7.0 (#969)"
       }
     ],
     "labels": [
-      "91119c67",
       "d205de6c",
       "ad9a5bc1",
       "53a7bc7d",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "a9e05ce1",
       "d5f54ae4",
       "5fb898f6",
-      "d1b8256e"
+      "d1b8256e",
+      "eca352d8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          250.18207321166992,
           245.01450351079305,
           252.4207589785258,
           259.45027888615925,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           255.2972011566162,
           279.3821127573649,
           293.83324213027953,
-          272.31214714050293
+          272.31214714050293,
+          260.2109740461622
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2271,7 +2271,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
-          808,
+          864,
           864,
           864,
           864,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          247.5719152178083,
           265.4116718610128,
           236.38564470836096,
           252.89722798665363,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           242.3993557049678,
           267.3096298535665,
           292.9080077489217,
-          246.19398107528687
+          246.19398107528687,
+          256.84688316981
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "91119c67df62e12e31b89dc3e457ab2fa34b500b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Mar 6 13:56:46 2026 \u002B0100",
-        "message": "refactor: fix build warnings (#902)"
-      },
-      {
         "sha": "d205de6c0ddc96bb4075cabade715fb9f78e88a3",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Mar 6 14:13:35 2026 \u002B0100",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:17 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 3 updates (#968)"
+      },
+      {
+        "sha": "eca352d8ebe33eeb5a97ea9bac82ffc602aaffc0",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:29 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.6.2 to 18.7.0 (#969)"
       }
     ],
     "labels": [
-      "91119c67",
       "d205de6c",
       "ad9a5bc1",
       "53a7bc7d",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "a9e05ce1",
       "d5f54ae4",
       "5fb898f6",
-      "d1b8256e"
+      "d1b8256e",
+      "eca352d8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          466.8385944684347,
           452.8107095105307,
           434.6160683291299,
           454.3024052302043,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           469.0115102018629,
           457.5411386489868,
           494.96092816761563,
-          469.9096125602722
+          469.9096125602722,
+          487.77328910827634
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1249.1121862956456,
           1262.7269182840982,
           1219.7700771331788,
           1297.0697533534124,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1197.790695063273,
           1311.036827214559,
           1303.3011100769043,
-          1248.5900349934896
+          1248.5900349934896,
+          1179.1341366449992
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "91119c67df62e12e31b89dc3e457ab2fa34b500b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Mar 6 13:56:46 2026 \u002B0100",
-        "message": "refactor: fix build warnings (#902)"
-      },
-      {
         "sha": "d205de6c0ddc96bb4075cabade715fb9f78e88a3",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Mar 6 14:13:35 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:17 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 3 updates (#968)"
+      },
+      {
+        "sha": "eca352d8ebe33eeb5a97ea9bac82ffc602aaffc0",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:29 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.6.2 to 18.7.0 (#969)"
       }
     ],
     "labels": [
-      "91119c67",
       "d205de6c",
       "ad9a5bc1",
       "53a7bc7d",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "a9e05ce1",
       "d5f54ae4",
       "5fb898f6",
-      "d1b8256e"
+      "d1b8256e",
+      "eca352d8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2004.8365948994954,
           1922.7649700164795,
           1916.6972241719563,
           1877.6324087778728,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1858.8217960357665,
           2077.406628417969,
           2010.5027500788372,
-          1943.1482081095378
+          1943.1482081095378,
+          1975.9966021219889
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1313.6850591023763,
           1316.8638970692953,
           1312.3660928090414,
           1344.6447956085206,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1320.8793548583985,
           1513.755392074585,
           1435.4089012145996,
-          1318.7738965352376
+          1318.7738965352376,
+          1355.970089639936
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "91119c67df62e12e31b89dc3e457ab2fa34b500b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Mar 6 13:56:46 2026 \u002B0100",
-        "message": "refactor: fix build warnings (#902)"
-      },
-      {
         "sha": "d205de6c0ddc96bb4075cabade715fb9f78e88a3",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Mar 6 14:13:35 2026 \u002B0100",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:17 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 3 updates (#968)"
+      },
+      {
+        "sha": "eca352d8ebe33eeb5a97ea9bac82ffc602aaffc0",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:29 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.6.2 to 18.7.0 (#969)"
       }
     ],
     "labels": [
-      "91119c67",
       "d205de6c",
       "ad9a5bc1",
       "53a7bc7d",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "a9e05ce1",
       "d5f54ae4",
       "5fb898f6",
-      "d1b8256e"
+      "d1b8256e",
+      "eca352d8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2635.6223008292063,
           2624.485747528076,
           2564.1558205740794,
           2524.2061381022136,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2500.5137016296385,
           2658.722917175293,
           2654.85319846017,
-          2577.84052494594
+          2577.84052494594,
+          2604.601530456543
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          88515.51064453126,
           90939.52669270833,
           85872.35096153847,
           88075.89565805289,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           27218.916241455077,
           27746.698482259115,
           28228.60042114258,
-          28157.407215663367
+          28157.407215663367,
+          20107.476479163535
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          58598,
           58598,
           58598,
           59100,
@@ -4239,6 +4238,7 @@ window.BENCHMARK_DATA = {
           57488,
           57481,
           57480,
+          33471,
           33471,
           33471,
           33471,
