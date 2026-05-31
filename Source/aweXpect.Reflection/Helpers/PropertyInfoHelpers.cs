@@ -143,4 +143,16 @@ internal static class PropertyInfoHelpers
 	/// </summary>
 	public static bool IsReadWrite(this PropertyInfo? propertyInfo)
 		=> propertyInfo is { CanRead: true, CanWrite: true, };
+
+	/// <summary>
+	///     Checks if the <paramref name="propertyInfo" /> is readable (can be read).
+	/// </summary>
+	public static bool IsReadable(this PropertyInfo? propertyInfo)
+		=> propertyInfo is { CanRead: true, };
+
+	/// <summary>
+	///     Checks if the <paramref name="propertyInfo" /> is writable (can be written).
+	/// </summary>
+	public static bool IsWritable(this PropertyInfo? propertyInfo)
+		=> propertyInfo is { CanWrite: true, };
 }
