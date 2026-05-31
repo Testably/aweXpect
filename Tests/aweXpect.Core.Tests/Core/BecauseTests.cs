@@ -36,6 +36,23 @@ public class BecauseTests
 	[Theory]
 	[InlineData(null)]
 	[InlineData("")]
+	public async Task ActionDelegate_WhenAsyncReasonIsNullOrEmpty_ShouldNotIncludeBecause(string? because)
+	{
+		Task<string?> becauseTask = Task.FromResult(because);
+		Action subject = () => throw new MyException();
+
+		async Task Act()
+		{
+			await That(subject).DoesNotThrow().Because(becauseTask);
+		}
+
+		Exception exception = await That(Act).ThrowsException();
+		await That(exception.Message).DoesNotContain("because");
+	}
+
+	[Theory]
+	[InlineData(null)]
+	[InlineData("")]
 	public async Task ActionDelegate_WhenReasonIsNullOrEmpty_ShouldNotIncludeBecause(string? because)
 	{
 		Action subject = () => throw new MyException();
@@ -123,6 +140,27 @@ public class BecauseTests
 		}
 
 		await That(Act).ThrowsException().WithMessage($"*{because1}*").AsWildcard();
+	}
+
+	[Theory]
+	[InlineData(null)]
+	[InlineData("")]
+	public async Task WhenAsyncReasonIsNullOrEmpty_ShouldNotIncludeBecause(string? because)
+	{
+		Task<string?> becauseTask = Task.FromResult(because);
+		bool subject = true;
+
+		async Task Act()
+		{
+			await That(subject).IsFalse().Because(becauseTask);
+		}
+
+		await That(Act).ThrowsException()
+			.WithMessage("""
+			             Expected that subject
+			             is False,
+			             but it was True
+			             """);
 	}
 
 	[Fact]

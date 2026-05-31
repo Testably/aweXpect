@@ -48,7 +48,10 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	///     Provide an <see langword="async" /> <paramref name="reason" /> explaining why the constraint is needed.<br />
 	///     If the phrase does not start with the word <i>because</i>, it is prepended automatically.
 	/// </summary>
-	public ExpectationResult Because(Task<string> reason)
+	/// <remarks>
+	///     When the <paramref name="reason" /> resolves to <see langword="null" /> or empty, it is ignored.
+	/// </remarks>
+	public ExpectationResult Because(Task<string?> reason)
 	{
 		expectationBuilder.AddReason(reason);
 		return this;
@@ -191,7 +194,10 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	///     Provide an <see langword="async" /> <paramref name="reason" /> explaining why the constraint is needed.<br />
 	///     If the phrase does not start with the word <i>because</i>, it is prepended automatically.
 	/// </summary>
-	public TSelf Because(Task<string> reason)
+	/// <remarks>
+	///     When the <paramref name="reason" /> resolves to <see langword="null" /> or empty, it is ignored.
+	/// </remarks>
+	public TSelf Because(Task<string?> reason)
 	{
 		expectationBuilder.AddReason(reason);
 		return (TSelf)this;

@@ -4,7 +4,7 @@ using aweXpect.Core.Constraints;
 
 namespace aweXpect.Core.Helpers;
 
-internal struct AsyncBecauseReason(Task<string> reason) : IBecauseReason
+internal struct AsyncBecauseReason(Task<string?> reason) : IBecauseReason
 {
 	private string? _message;
 
@@ -27,7 +27,13 @@ internal struct AsyncBecauseReason(Task<string> reason) : IBecauseReason
 	{
 		if (_message is null)
 		{
-			_message = CreateMessage(await reason.ConfigureAwait(false));
+			string? resolvedReason = await reason.ConfigureAwait(false);
+			if (string.IsNullOrEmpty(resolvedReason))
+			{
+				return result;
+			}
+
+			_message = CreateMessage(resolvedReason);
 		}
 
 		string message = _message;

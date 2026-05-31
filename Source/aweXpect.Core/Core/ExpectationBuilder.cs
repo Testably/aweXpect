@@ -309,7 +309,7 @@ public abstract class ExpectationBuilder
 	/// <summary>
 	///     Adds a <paramref name="reason" /> to the current expectation constraint.
 	/// </summary>
-	internal void AddReason(Task<string> reason)
+	internal void AddReason(Task<string?> reason)
 	{
 		AsyncBecauseReason becauseReason = new(reason);
 		_node.SetReason(becauseReason);
