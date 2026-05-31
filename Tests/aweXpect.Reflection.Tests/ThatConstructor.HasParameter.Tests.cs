@@ -649,6 +649,24 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
+			[Fact]
+			public async Task AtIndex_WhenParameterExistsAtSpecificIndex_ShouldFail()
+			{
+				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!;
+
+				async Task Act()
+				{
+					await That(constructorInfo).DoesNotComplyWith(it => it.HasParameter<int>().AtIndex(0));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructorInfo
+					             does not have parameter of type int at index 0,
+					             but it did
+					             """);
+			}
+
 			// ReSharper disable UnusedParameter.Local
 			// ReSharper disable UnusedMember.Local
 			private class TestClass
