@@ -19,12 +19,102 @@ public sealed partial class TypeFilters
 			}
 
 			[Fact]
+			public async Task AtLeastTimes_ShouldFilterForTypesWithAtLeastTheCount()
+			{
+				Filtered.Types types = In.Types<TaggedClass, TwiceTaggedClass, UntaggedClass>()
+					.WhichContainMethods(methods => methods.With<MarkerAttribute>()).AtLeast(2);
+
+				await That(types).IsEqualTo([typeof(TwiceTaggedClass),]).InAnyOrder();
+			}
+
+			[Fact]
+			public async Task AtLeastFluent_ShouldFilterForTypesWithAtLeastTheCount()
+			{
+				Filtered.Types types = In.Types<TaggedClass, TwiceTaggedClass, UntaggedClass>()
+					.WhichContainMethods(methods => methods.With<MarkerAttribute>()).AtLeast().Twice();
+
+				await That(types).IsEqualTo([typeof(TwiceTaggedClass),]).InAnyOrder();
+			}
+
+			[Fact]
+			public async Task AtMostFluent_ShouldFilterForTypesWithAtMostTheCount()
+			{
+				Filtered.Types types = In.Types<TaggedClass, TwiceTaggedClass, UntaggedClass>()
+					.WhichContainMethods(methods => methods.With<MarkerAttribute>()).AtMost().Once();
+
+				await That(types).IsEqualTo([typeof(TaggedClass), typeof(UntaggedClass),]).InAnyOrder();
+			}
+
+			[Fact]
 			public async Task Between_ShouldFilterForTypesWithinTheRange()
 			{
 				Filtered.Types types = In.Types<TaggedClass, TwiceTaggedClass, UntaggedClass>()
 					.WhichContainMethods(methods => methods.With<MarkerAttribute>()).Between(1).And(2);
 
 				await That(types).IsEqualTo([typeof(TaggedClass), typeof(TwiceTaggedClass),]).InAnyOrder();
+			}
+
+			[Fact]
+			public async Task Between_ShouldExcludeTypesOutsideTheRange()
+			{
+				Filtered.Types types = In.Types<TaggedClass, TwiceTaggedClass, UntaggedClass>()
+					.WhichContainMethods(methods => methods.With<MarkerAttribute>()).Between(2).And(2);
+
+				await That(types).IsEqualTo([typeof(TwiceTaggedClass),]).InAnyOrder();
+			}
+
+			[Fact]
+			public async Task LessThanFluent_ShouldFilterForTypesWithLessThanTheCount()
+			{
+				Filtered.Types types = In.Types<TaggedClass, TwiceTaggedClass, UntaggedClass>()
+					.WhichContainMethods(methods => methods.With<MarkerAttribute>()).LessThan().Twice();
+
+				await That(types).IsEqualTo([typeof(TaggedClass), typeof(UntaggedClass),]).InAnyOrder();
+			}
+
+			[Fact]
+			public async Task LessThanTimes_ShouldFilterForTypesWithLessThanTheCount()
+			{
+				Filtered.Types types = In.Types<TaggedClass, TwiceTaggedClass, UntaggedClass>()
+					.WhichContainMethods(methods => methods.With<MarkerAttribute>()).LessThan(2);
+
+				await That(types).IsEqualTo([typeof(TaggedClass), typeof(UntaggedClass),]).InAnyOrder();
+			}
+
+			[Fact]
+			public async Task MoreThanFluent_ShouldFilterForTypesWithMoreThanTheCount()
+			{
+				Filtered.Types types = In.Types<TaggedClass, TwiceTaggedClass, UntaggedClass>()
+					.WhichContainMethods(methods => methods.With<MarkerAttribute>()).MoreThan().Once();
+
+				await That(types).IsEqualTo([typeof(TwiceTaggedClass),]).InAnyOrder();
+			}
+
+			[Fact]
+			public async Task MoreThanTimes_ShouldFilterForTypesWithMoreThanTheCount()
+			{
+				Filtered.Types types = In.Types<TaggedClass, TwiceTaggedClass, UntaggedClass>()
+					.WhichContainMethods(methods => methods.With<MarkerAttribute>()).MoreThan(1);
+
+				await That(types).IsEqualTo([typeof(TwiceTaggedClass),]).InAnyOrder();
+			}
+
+			[Fact]
+			public async Task Once_ShouldFilterForTypesWithExactlyOneMatch()
+			{
+				Filtered.Types types = In.Types<TaggedClass, TwiceTaggedClass, UntaggedClass>()
+					.WhichContainMethods(methods => methods.With<MarkerAttribute>()).Once();
+
+				await That(types).IsEqualTo([typeof(TaggedClass),]).InAnyOrder();
+			}
+
+			[Fact]
+			public async Task Twice_ShouldFilterForTypesWithExactlyTwoMatches()
+			{
+				Filtered.Types types = In.Types<TaggedClass, TwiceTaggedClass, UntaggedClass>()
+					.WhichContainMethods(methods => methods.With<MarkerAttribute>()).Twice();
+
+				await That(types).IsEqualTo([typeof(TwiceTaggedClass),]).InAnyOrder();
 			}
 
 			[Fact]
@@ -118,6 +208,22 @@ public sealed partial class TypeFilters
 					.IsEqualTo(
 						"types which contain methods with TypeFilters.WhichContainMethods.MarkerAttribute or with TypeFilters.WhichContainMethods.OtherAttribute at least once ")
 					.AsPrefix();
+			}
+
+			[Fact]
+			public async Task ShouldStripTrailingInFromTheInnerMembersDescription()
+			{
+				Filtered.Types types = In.AssemblyContaining<MarkerAttribute>().Types()
+					.WhichContainMethods(methods => methods.With<MarkerAttribute>());
+
+				// The inner probe description ("methods with …MarkerAttribute in ") has its
+				// trailing "in " removed before being embedded into the type description, so the
+				// members fragment reads exactly "…MarkerAttribute at least once " with no chopped
+				// characters around "MarkerAttribute".
+				await That(types.GetDescription())
+					.IsEqualTo(
+						"*which contain methods with TypeFilters.WhichContainMethods.MarkerAttribute at least once *")
+					.AsWildcard();
 			}
 		}
 

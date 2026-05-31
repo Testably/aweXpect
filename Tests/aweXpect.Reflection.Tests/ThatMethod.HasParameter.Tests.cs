@@ -476,6 +476,91 @@ public sealed partial class ThatMethod
 				await That(Act).DoesNotThrow();
 			}
 
+			[Fact]
+			public async Task WithDefaultValue_WhenParameterHasNoDefault_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<string>().WithDefaultValue();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type string,
+					             but it did not
+					             """);
+			}
+
+			[Fact]
+			public async Task WithoutDefaultValue_WhenParameterHasDefault_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithDefaults))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<string>().WithoutDefaultValue();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type string,
+					             but it did not
+					             """);
+			}
+
+			[Fact]
+			public async Task WithDefaultValueOfValue_WhenParameterHasMatchingDefault_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithDefaults))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<string>().WithDefaultValue("default");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithDefaultValueOfValue_WhenParameterHasDifferentDefault_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithDefaults))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<string>().WithDefaultValue("other");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type string,
+					             but it did not
+					             """);
+			}
+
+			[Fact]
+			public async Task WithDefaultValueOfValue_WhenParameterHasNoDefault_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<string>().WithDefaultValue("default");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type string,
+					             but it did not
+					             """);
+			}
+
 #pragma warning disable CA1822
 			// ReSharper disable UnusedParameter.Local
 			// ReSharper disable UnusedMember.Local

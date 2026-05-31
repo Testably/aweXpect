@@ -1,4 +1,6 @@
+using System.Reflection;
 using aweXpect.Reflection.Collections;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests.Filters;
 
@@ -104,6 +106,75 @@ public sealed partial class AssemblyFilters
 					.WithVersion().WithMajor.GreaterThan(100000);
 
 				await That(assemblies).IsEmpty();
+			}
+
+			[Fact]
+			public async Task GreaterThan_ShouldNotMatchTheBoundaryValue()
+			{
+				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+				int major = assembly.GetName().Version!.Major;
+
+				Filtered.Assemblies excluded = In.Assemblies(assembly).WithVersion().WithMajor.GreaterThan(major);
+				Filtered.Assemblies included = In.Assemblies(assembly).WithVersion().WithMajor.GreaterThan(major - 1);
+
+				await That(excluded).IsEmpty();
+				await That(included).HasSingle().Which.IsEqualTo(assembly);
+			}
+
+			[Fact]
+			public async Task GreaterThanOrEqualTo_ShouldMatchTheBoundaryValue()
+			{
+				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+				int major = assembly.GetName().Version!.Major;
+
+				Filtered.Assemblies included =
+					In.Assemblies(assembly).WithVersion().WithMajor.GreaterThanOrEqualTo(major);
+				Filtered.Assemblies excluded =
+					In.Assemblies(assembly).WithVersion().WithMajor.GreaterThanOrEqualTo(major + 1);
+
+				await That(included).HasSingle().Which.IsEqualTo(assembly);
+				await That(excluded).IsEmpty();
+			}
+
+			[Fact]
+			public async Task LessThanOrEqualTo_ShouldMatchTheBoundaryValue()
+			{
+				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+				int major = assembly.GetName().Version!.Major;
+
+				Filtered.Assemblies included =
+					In.Assemblies(assembly).WithVersion().WithMajor.LessThanOrEqualTo(major);
+				Filtered.Assemblies excluded =
+					In.Assemblies(assembly).WithVersion().WithMajor.LessThanOrEqualTo(major - 1);
+
+				await That(included).HasSingle().Which.IsEqualTo(assembly);
+				await That(excluded).IsEmpty();
+			}
+
+			[Fact]
+			public async Task EqualTo_ShouldMatchOnlyTheExactValue()
+			{
+				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+				int major = assembly.GetName().Version!.Major;
+
+				Filtered.Assemblies included = In.Assemblies(assembly).WithVersion().WithMajor.EqualTo(major);
+				Filtered.Assemblies excluded = In.Assemblies(assembly).WithVersion().WithMajor.EqualTo(major + 1);
+
+				await That(included).HasSingle().Which.IsEqualTo(assembly);
+				await That(excluded).IsEmpty();
+			}
+
+			[Fact]
+			public async Task NotEqualTo_ShouldMatchEverythingExceptTheExactValue()
+			{
+				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+				int major = assembly.GetName().Version!.Major;
+
+				Filtered.Assemblies excluded = In.Assemblies(assembly).WithVersion().WithMajor.NotEqualTo(major);
+				Filtered.Assemblies included = In.Assemblies(assembly).WithVersion().WithMajor.NotEqualTo(major + 1);
+
+				await That(excluded).IsEmpty();
+				await That(included).HasSingle().Which.IsEqualTo(assembly);
 			}
 
 			[Fact]

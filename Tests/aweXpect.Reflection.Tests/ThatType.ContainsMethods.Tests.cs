@@ -290,6 +290,196 @@ public sealed partial class ThatType
 					             but it contained 2 matching members in ThatType.ContainsMethods.ClassWithTwoMarkedMethods
 					             """);
 			}
+
+			[Fact]
+			public async Task AtLeast_Fluent_WhenCountIsInsufficient_ShouldFail()
+			{
+				Type subject = typeof(ClassWithMarkedMethod);
+
+				async Task Act()
+				{
+					await That(subject).ContainsMethods(methods => methods.With<MarkerAttribute>())
+						.AtLeast().Twice();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             contains methods with ThatType.ContainsMethods.MarkerAttribute at least twice,
+					             but it contained 1 matching member in ThatType.ContainsMethods.ClassWithMarkedMethod
+					             """);
+			}
+
+			[Fact]
+			public async Task AtLeast_Times_WhenCountIsInsufficient_ShouldFail()
+			{
+				Type subject = typeof(ClassWithMarkedMethod);
+
+				async Task Act()
+				{
+					await That(subject).ContainsMethods(methods => methods.With<MarkerAttribute>())
+						.AtLeast(2);
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             contains methods with ThatType.ContainsMethods.MarkerAttribute at least twice,
+					             but it contained 1 matching member in ThatType.ContainsMethods.ClassWithMarkedMethod
+					             """);
+			}
+
+			[Fact]
+			public async Task AtMost_Times_WhenCountExceedsLimit_ShouldFail()
+			{
+				Type subject = typeof(ClassWithTwoMarkedMethods);
+
+				async Task Act()
+				{
+					await That(subject).ContainsMethods(methods => methods.With<MarkerAttribute>())
+						.AtMost(1);
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             contains methods with ThatType.ContainsMethods.MarkerAttribute at most once,
+					             but it contained 2 matching members in ThatType.ContainsMethods.ClassWithTwoMarkedMethods
+					             """);
+			}
+
+			[Fact]
+			public async Task Between_And_WhenCountIsBelowRange_ShouldFail()
+			{
+				Type subject = typeof(ClassWithMarkedMethod);
+
+				async Task Act()
+				{
+					await That(subject).ContainsMethods(methods => methods.With<MarkerAttribute>())
+						.Between(2).And(3);
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             contains methods with ThatType.ContainsMethods.MarkerAttribute between 2 and 3 times,
+					             but it contained 1 matching member in ThatType.ContainsMethods.ClassWithMarkedMethod
+					             """);
+			}
+
+			[Fact]
+			public async Task LessThan_Fluent_WhenCountReachesLimit_ShouldFail()
+			{
+				Type subject = typeof(ClassWithTwoMarkedMethods);
+
+				async Task Act()
+				{
+					await That(subject).ContainsMethods(methods => methods.With<MarkerAttribute>())
+						.LessThan().Twice();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             contains methods with ThatType.ContainsMethods.MarkerAttribute less than twice,
+					             but it contained 2 matching members in ThatType.ContainsMethods.ClassWithTwoMarkedMethods
+					             """);
+			}
+
+			[Fact]
+			public async Task LessThan_Times_WhenCountReachesLimit_ShouldFail()
+			{
+				Type subject = typeof(ClassWithTwoMarkedMethods);
+
+				async Task Act()
+				{
+					await That(subject).ContainsMethods(methods => methods.With<MarkerAttribute>())
+						.LessThan(2);
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             contains methods with ThatType.ContainsMethods.MarkerAttribute less than twice,
+					             but it contained 2 matching members in ThatType.ContainsMethods.ClassWithTwoMarkedMethods
+					             """);
+			}
+
+			[Fact]
+			public async Task MoreThan_Fluent_WhenCountReachesLimit_ShouldFail()
+			{
+				Type subject = typeof(ClassWithTwoMarkedMethods);
+
+				async Task Act()
+				{
+					await That(subject).ContainsMethods(methods => methods.With<MarkerAttribute>())
+						.MoreThan().Twice();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             contains methods with ThatType.ContainsMethods.MarkerAttribute more than twice,
+					             but it contained 2 matching members in ThatType.ContainsMethods.ClassWithTwoMarkedMethods
+					             """);
+			}
+
+			[Fact]
+			public async Task MoreThan_Times_WhenCountReachesLimit_ShouldFail()
+			{
+				Type subject = typeof(ClassWithTwoMarkedMethods);
+
+				async Task Act()
+				{
+					await That(subject).ContainsMethods(methods => methods.With<MarkerAttribute>())
+						.MoreThan(2);
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             contains methods with ThatType.ContainsMethods.MarkerAttribute more than twice,
+					             but it contained 2 matching members in ThatType.ContainsMethods.ClassWithTwoMarkedMethods
+					             """);
+			}
+
+			[Fact]
+			public async Task Once_WhenCountIsTwo_ShouldFail()
+			{
+				Type subject = typeof(ClassWithTwoMarkedMethods);
+
+				async Task Act()
+				{
+					await That(subject).ContainsMethods(methods => methods.With<MarkerAttribute>())
+						.Once();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             contains methods with ThatType.ContainsMethods.MarkerAttribute exactly once,
+					             but it contained 2 matching members in ThatType.ContainsMethods.ClassWithTwoMarkedMethods
+					             """);
+			}
+
+			[Fact]
+			public async Task Twice_WhenCountIsOne_ShouldFail()
+			{
+				Type subject = typeof(ClassWithMarkedMethod);
+
+				async Task Act()
+				{
+					await That(subject).ContainsMethods(methods => methods.With<MarkerAttribute>())
+						.Twice();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             contains methods with ThatType.ContainsMethods.MarkerAttribute exactly twice,
+					             but it contained 1 matching member in ThatType.ContainsMethods.ClassWithMarkedMethod
+					             """);
+			}
 		}
 
 		public sealed class NegatedTests

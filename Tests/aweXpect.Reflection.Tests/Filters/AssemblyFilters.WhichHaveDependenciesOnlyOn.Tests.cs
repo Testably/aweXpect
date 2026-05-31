@@ -22,6 +22,17 @@ public sealed partial class AssemblyFilters
 			}
 
 			[Fact]
+			public async Task ShouldDescribeTheFilterForNoAllowedAssemblies()
+			{
+				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
+					.WhichHaveDependenciesOnlyOn();
+
+				await That(assemblies.GetDescription())
+					.IsEqualTo(
+						"in assembly containing type PublicAbstractClass which have dependencies only on no assemblies");
+			}
+
+			[Fact]
 			public async Task ShouldDescribeTheFilterForMultipleAllowedAssemblies()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
