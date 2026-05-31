@@ -180,12 +180,14 @@ await Expect.That(methods).Have<FactAttribute>();
 
 Shared by all types and members.
 
-|                             | Filter                | Assert (single)      | Assert (many)         |
-|-----------------------------|-----------------------|----------------------|-----------------------|
-| by name                     | `.WithName("x")`      | `.HasName("x")`      | `.HaveName("x")`      |
-| by namespace *(types only)* | `.WithNamespace("x")` | `.HasNamespace("x")` | `.HaveNamespace("x")` |
+|                                 | Filter                  | Assert (single)           | Assert (many)              |
+|---------------------------------|-------------------------|---------------------------|----------------------------|
+| by name                         | `.WithName("x")`        | `.HasName("x")`           | `.HaveName("x")`           |
+| by namespace *(types only)*     | `.WithNamespace("x")`   | `.HasNamespace("x")`      | `.HaveNamespace("x")`      |
+| within namespace *(types only)* | `.WithinNamespace("x")` | `.IsWithinNamespace("x")` | `.AreWithinNamespace("x")` |
 
-All name/namespace filters and assertions accept the
+The name/namespace *equality* filters and assertions (`WithName`, `WithNamespace`, and their
+`Has`/`Have` counterparts) accept the
 [string matching options](#string-matching-options) (`AsPrefix`, `AsSuffix`, `AsWildcard`, `AsRegex`,
 `IgnoringCase`, …). Collection assertions also accept a selector to derive the expected name per item:
 
@@ -193,6 +195,12 @@ All name/namespace filters and assertions accept the
 await Expect.That(types).HaveName("Service").AsSuffix();
 await Expect.That(methods).HaveName(m => "On" + m.GetParameters()[0].ParameterType.Name);
 ```
+
+The `WithinNamespace`/`IsWithinNamespace`/`AreWithinNamespace` variants match a namespace and all its
+sub-namespaces (so `Foo.Bar` includes `Foo.Bar.Baz` but not `Foo.BarBaz`). They compare the namespace
+exactly and case-sensitively and do not support any of the string matching options. Each has a negated
+form — `NotWithinNamespace`, `IsNotWithinNamespace` and `AreNotWithinNamespace` — that matches types
+outside the namespace.
 
 ### Types
 

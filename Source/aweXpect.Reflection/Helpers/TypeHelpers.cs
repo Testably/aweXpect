@@ -431,6 +431,31 @@ internal static class TypeHelpers
 		return !forceDirect && type.InheritsFrom(parentType);
 	}
 
+	/// <summary>
+	///     Checks if the <paramref name="type" /> is within the <paramref name="expected" /> namespace, i.e. it has the
+	///     <paramref name="expected" /> namespace or one of its sub-namespaces.
+	/// </summary>
+	/// <remarks>
+	///     Unlike a prefix match, <c>Foo.Bar</c> does not consider <c>Foo.BarBaz</c> to be within it, because the next
+	///     character after the match must be a namespace separator (<c>.</c>) or the end of the namespace.
+	/// </remarks>
+	public static bool IsWithinNamespace(this Type? type, string expected)
+	{
+		string? current = type?.Namespace;
+		while (current is not null)
+		{
+			if (string.Equals(current, expected, StringComparison.Ordinal))
+			{
+				return true;
+			}
+
+			int lastSeparator = current.LastIndexOf('.');
+			current = lastSeparator < 0 ? null : current.Substring(0, lastSeparator);
+		}
+
+		return false;
+	}
+
 	public static bool IsReallyClass(this Type? type)
 		=> type?.IsClass == true && !type.IsRecordClass();
 
