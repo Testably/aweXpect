@@ -63,8 +63,7 @@ internal static class AweXpectInitialization
 		ExecuteCustomInitializers();
 
 		foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies()
-			         .Where(assembly => Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes.Get()
-				         .All(excludedAssemblyPrefix => !assembly.FullName!.StartsWith(excludedAssemblyPrefix))))
+			         .Where(IsAssemblyIncluded))
 		{
 			try
 			{
@@ -86,12 +85,36 @@ internal static class AweXpectInitialization
 		return new InitializationState(new FallbackTestFramework());
 	}
 
+	private static bool IsAssemblyIncluded(Assembly assembly)
+		=> IsAssemblyNameIncluded(assembly.GetName().Name);
+
+	/// <summary>
+	///     Checks whether an assembly with the given <paramref name="assemblyName" /> (its simple name) should be scanned,
+	///     i.e. it is not excluded by any of the configured
+	///     <see cref="AwexpectCustomization.ReflectionCustomizationValue.ExcludedAssemblyPrefixes" />.
+	/// </summary>
+	/// <remarks>
+	///     A prefix matches the assembly name only at a name-segment boundary, so that e.g. <c>System</c> excludes
+	///     <c>System</c> and <c>System.Net.Http</c>, but not an unrelated assembly named <c>Systemics</c>.<br />
+	///     Assemblies without a name are never scanned, as they cannot host a test framework adapter or initializer.
+	/// </remarks>
+	internal static bool IsAssemblyNameIncluded(string? assemblyName)
+	{
+		if (string.IsNullOrEmpty(assemblyName))
+		{
+			return false;
+		}
+
+		return Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes.Get()
+			.All(prefix => assemblyName != prefix &&
+			               !assemblyName!.StartsWith(prefix + ".", StringComparison.Ordinal));
+	}
+
 	private static void ExecuteCustomInitializers()
 	{
 		Type initializerInterface = typeof(IAweXpectInitializer);
 		foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies()
-			         .Where(assembly => Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes.Get()
-				         .All(excludedAssemblyPrefix => !assembly.FullName!.StartsWith(excludedAssemblyPrefix))))
+			         .Where(IsAssemblyIncluded))
 		{
 			try
 			{
