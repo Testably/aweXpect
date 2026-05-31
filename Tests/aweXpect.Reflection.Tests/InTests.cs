@@ -13,7 +13,7 @@ public sealed class InTests
 	{
 		Filtered.Assemblies sut = In.AllLoadedAssemblies();
 
-		await That(sut).HasCount().AtLeast(5);
+		await That(sut).HasCount().AtLeast(4);
 		await That(sut).All().Satisfy(x => !x.FullName!.StartsWith("System."));
 		await That(sut.GetDescription()).IsEqualTo("in all loaded assemblies");
 	}

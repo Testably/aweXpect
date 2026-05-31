@@ -9,23 +9,11 @@ public sealed partial class ThatAssembly
 {
 	public sealed class HasDependenciesOnlyOn
 	{
-		/// <summary>
-		///     Excludes the framework facade assemblies that differ between target frameworks (e.g. <c>netstandard</c> on
-		///     <c>net48</c>), so that the tests only have to whitelist the actual non-framework dependencies.
-		/// </summary>
-		private static CustomizationLifetime ExcludeFrameworkAssemblies()
-			=> Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes
-				.Set([
-					.. Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes.Get(), "netstandard", "WindowsBase",
-				]);
-
 		public sealed class Tests
 		{
 			[Fact]
 			public async Task WhenAllowedMatchesAsWildcard_ShouldSucceed()
 			{
-				using CustomizationLifetime _ = ExcludeFrameworkAssemblies();
-
 				Assembly subject = typeof(In).Assembly;
 
 				async Task Act()
@@ -39,8 +27,6 @@ public sealed partial class ThatAssembly
 			[Fact]
 			public async Task WhenAllowedMatchesIgnoringCase_ShouldSucceed()
 			{
-				using CustomizationLifetime _ = ExcludeFrameworkAssemblies();
-
 				Assembly subject = typeof(In).Assembly;
 
 				async Task Act()
@@ -72,8 +58,6 @@ public sealed partial class ThatAssembly
 			[Fact]
 			public async Task WhenAssemblyDependsOnlyOnAllowed_ShouldSucceed()
 			{
-				using CustomizationLifetime _ = ExcludeFrameworkAssemblies();
-
 				Assembly subject = typeof(In).Assembly;
 
 				async Task Act()
@@ -121,8 +105,6 @@ public sealed partial class ThatAssembly
 			[Fact]
 			public async Task WhenAssemblyDependsOnlyOnAllowed_ShouldFail()
 			{
-				using CustomizationLifetime _ = ExcludeFrameworkAssemblies();
-
 				Assembly subject = typeof(In).Assembly;
 
 				async Task Act()
