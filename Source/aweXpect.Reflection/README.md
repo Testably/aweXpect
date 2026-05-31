@@ -212,6 +212,8 @@ outside the namespace.
 | struct           | `.WhichAreStructs()` / `.Structs()`             | `.IsAStruct()`       | `.AreStructs()`       |
 | record           | `.WhichAreRecords()` / `.Records()`             | `.IsARecord()`       | `.AreRecords()`       |
 | record struct    | `.WhichAreRecordStructs()` / `.RecordStructs()` | `.IsARecordStruct()` | `.AreRecordStructs()` |
+| readonly struct  | `.WhichAreReadOnly()`                           | `.IsReadOnly()`      | `.AreReadOnly()`      |
+| ref struct       | `.WhichAreRefStructs()`                         | `.IsARefStruct()`    | `.AreRefStructs()`    |
 | abstract         | `.WhichAreAbstract()` / `.Abstract`             | `.IsAbstract()`      | `.AreAbstract()`      |
 | sealed           | `.WhichAreSealed()` / `.Sealed`                 | `.IsSealed()`        | `.AreSealed()`        |
 | static           | `.WhichAreStatic()` / `.Static`                 | `.IsStatic()`        | `.AreStatic()`        |

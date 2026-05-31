@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Reflection;
-using aweXpect.Customization;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
 using Xunit.Sdk;
@@ -24,6 +23,24 @@ public sealed partial class ThatAssemblies
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenAllowedAssembliesAreGiven_ShouldDescribeAssemblies()
+			{
+				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
+
+				async Task Act()
+				{
+					await That(subject).HaveDependenciesOnlyOn("First", "Second");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that in assembly containing type PublicAbstractClass
+					             all have dependencies only on assemblies equal to "First" or equal to "Second",
+					             but it contained assemblies with disallowed dependencies *
+					             """).AsWildcard();
 			}
 
 			[Fact]
@@ -55,6 +72,29 @@ public sealed partial class ThatAssemblies
 					             all have dependencies only on assemblies equal to "aweXpect.Core",
 					             but it contained assemblies with disallowed dependencies [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null depends on ["aweXpect.Reflection", "aweXpect"]
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenAssemblyIsNull_ShouldFail()
+			{
+				IEnumerable<Assembly?> subject = new Assembly?[]
+				{
+					null,
+				};
+
+				async Task Act()
+				{
+					await That(subject).HaveDependenciesOnlyOn("aweXpect.Core");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have dependencies only on assemblies equal to "aweXpect.Core",
+					             but it contained assemblies with disallowed dependencies [
+					               <null> depends on []
 					             ]
 					             """).AsWildcard();
 			}
@@ -95,47 +135,6 @@ public sealed partial class ThatAssemblies
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have dependencies only on no assemblies,
 					             but it contained assemblies with disallowed dependencies *
-					             """).AsWildcard();
-			}
-
-			[Fact]
-			public async Task WhenAllowedAssembliesAreGiven_ShouldDescribeAssemblies()
-			{
-				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
-
-				async Task Act()
-				{
-					await That(subject).HaveDependenciesOnlyOn("First", "Second");
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that in assembly containing type PublicAbstractClass
-					             all have dependencies only on assemblies equal to "First" or equal to "Second",
-					             but it contained assemblies with disallowed dependencies *
-					             """).AsWildcard();
-			}
-
-			[Fact]
-			public async Task WhenAssemblyIsNull_ShouldFail()
-			{
-				IEnumerable<Assembly?> subject = new Assembly?[]
-				{
-					null,
-				};
-
-				async Task Act()
-				{
-					await That(subject).HaveDependenciesOnlyOn("aweXpect.Core");
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             all have dependencies only on assemblies equal to "aweXpect.Core",
-					             but it contained assemblies with disallowed dependencies [
-					               <null> depends on []
-					             ]
 					             """).AsWildcard();
 			}
 		}

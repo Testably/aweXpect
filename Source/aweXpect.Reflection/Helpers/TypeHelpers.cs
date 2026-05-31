@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -471,6 +471,24 @@ internal static class TypeHelpers
 		type is { IsValueType: true, IsEnum: false, } &&
 		!IsRecordStruct(type);
 
+	/// <summary>
+	///     Gets a value indicating whether the <see cref="Type" /> is a read-only struct
+	///     (declared with the <c>readonly</c> modifier).
+	/// </summary>
+	/// <param name="type">The <see cref="Type" />.</param>
+	public static bool IsReadOnlyStruct(this Type? type)
+		=> type is not null &&
+		   type.HasNamedAttribute("System.Runtime.CompilerServices.IsReadOnlyAttribute");
+
+	/// <summary>
+	///     Gets a value indicating whether the <see cref="Type" /> is a ref struct
+	///     (a stack-only, <c>IsByRefLike</c> value type).
+	/// </summary>
+	/// <param name="type">The <see cref="Type" />.</param>
+	public static bool IsRefStruct(this Type? type)
+		=> type is not null &&
+		   type.HasNamedAttribute("System.Runtime.CompilerServices.IsByRefLikeAttribute");
+
 	public static bool IsRecordStruct(this Type? type) =>
 		// As noted here: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-10.0/record-structs#open-questions
 		// recognizing record structs from metadata is an open point. The following check is based on common sense
@@ -537,6 +555,23 @@ internal static class TypeHelpers
 		}
 
 		return true;
+	}
+
+	private static bool HasNamedAttribute(this Type type, string attributeFullName)
+	{
+		try
+		{
+			return type.GetCustomAttributesData()
+				.Any(data => string.Equals(data.AttributeType.FullName, attributeFullName, StringComparison.Ordinal));
+		}
+		catch (Exception exception) when (exception
+			                                  is TypeLoadException
+			                                  or FileNotFoundException
+			                                  or FileLoadException)
+		{
+			// Ignore types that cannot be loaded.
+			return false;
+		}
 	}
 
 	private static bool HasAccessModifierForNestedClass(Type type, AccessModifiers accessModifiers)

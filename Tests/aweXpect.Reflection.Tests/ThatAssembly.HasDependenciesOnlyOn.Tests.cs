@@ -1,5 +1,4 @@
 using System.Reflection;
-using aweXpect.Customization;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
 using Xunit.Sdk;
 
@@ -69,21 +68,21 @@ public sealed partial class ThatAssembly
 			}
 
 			[Fact]
-			public async Task WhenNoAllowedAssembliesAreGiven_ShouldDescribeNoAssemblies()
+			public async Task WhenAssemblyIsNull_ShouldFail()
 			{
-				Assembly subject = typeof(In).Assembly;
+				Assembly? subject = null;
 
 				async Task Act()
 				{
-					await That(subject).HasDependenciesOnlyOn();
+					await That(subject).HasDependenciesOnlyOn("aweXpect.Core");
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).ThrowsException()
 					.WithMessage("""
 					             Expected that subject
-					             has dependencies only on no assemblies,
-					             but it also had dependencies on *
-					             """).AsWildcard();
+					             has dependencies only on assemblies equal to "aweXpect.Core",
+					             but it was <null>
+					             """);
 			}
 
 			[Fact]
@@ -105,21 +104,21 @@ public sealed partial class ThatAssembly
 			}
 
 			[Fact]
-			public async Task WhenAssemblyIsNull_ShouldFail()
+			public async Task WhenNoAllowedAssembliesAreGiven_ShouldDescribeNoAssemblies()
 			{
-				Assembly? subject = null;
+				Assembly subject = typeof(In).Assembly;
 
 				async Task Act()
 				{
-					await That(subject).HasDependenciesOnlyOn("aweXpect.Core");
+					await That(subject).HasDependenciesOnlyOn();
 				}
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has dependencies only on assemblies equal to "aweXpect.Core",
-					             but it was <null>
-					             """);
+					             has dependencies only on no assemblies,
+					             but it also had dependencies on *
+					             """).AsWildcard();
 			}
 		}
 

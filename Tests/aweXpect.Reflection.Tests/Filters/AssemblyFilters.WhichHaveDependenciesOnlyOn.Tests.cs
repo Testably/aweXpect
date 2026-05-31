@@ -1,4 +1,3 @@
-using aweXpect.Customization;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
 
@@ -22,17 +21,6 @@ public sealed partial class AssemblyFilters
 			}
 
 			[Fact]
-			public async Task ShouldDescribeTheFilterForNoAllowedAssemblies()
-			{
-				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
-					.WhichHaveDependenciesOnlyOn();
-
-				await That(assemblies.GetDescription())
-					.IsEqualTo(
-						"in assembly containing type PublicAbstractClass which have dependencies only on no assemblies");
-			}
-
-			[Fact]
 			public async Task ShouldDescribeTheFilterForMultipleAllowedAssemblies()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
@@ -41,6 +29,17 @@ public sealed partial class AssemblyFilters
 				await That(assemblies.GetDescription())
 					.IsEqualTo(
 						"in assembly containing type PublicAbstractClass which have dependencies only on assemblies equal to \"aweXpect.Core\" or equal to \"aweXpect\"");
+			}
+
+			[Fact]
+			public async Task ShouldDescribeTheFilterForNoAllowedAssemblies()
+			{
+				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
+					.WhichHaveDependenciesOnlyOn();
+
+				await That(assemblies.GetDescription())
+					.IsEqualTo(
+						"in assembly containing type PublicAbstractClass which have dependencies only on no assemblies");
 			}
 
 			[Fact]
