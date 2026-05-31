@@ -1,4 +1,6 @@
-﻿using aweXpect.Reflection.Collections;
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Collections;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
 using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
@@ -7,6 +9,48 @@ public sealed partial class ThatTypes
 {
 	public sealed class AreNotAbstract
 	{
+		public sealed class TypeTests
+		{
+			[Fact]
+			public async Task WhenEnumerableContainsAbstractType_ShouldFail()
+			{
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(PublicClass), typeof(PublicAbstractClass),
+				};
+
+				async Task Act()
+				{
+					await That(subject).AreNotAbstract();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             are all not abstract,
+					             but it contained abstract types [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenEnumerableContainsNoAbstractTypes_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(PublicSealedClass),
+				};
+
+				async Task Act()
+				{
+					await That(subject).AreNotAbstract();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
 		public sealed class Tests
 		{
 			[Fact]

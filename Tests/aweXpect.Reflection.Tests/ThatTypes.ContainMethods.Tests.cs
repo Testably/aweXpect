@@ -1,4 +1,5 @@
-﻿using aweXpect.Reflection.Collections;
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Collections;
 using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
@@ -7,6 +8,65 @@ public sealed partial class ThatTypes
 {
 	public sealed class ContainMethods
 	{
+		public sealed class TypeTests
+		{
+			[Fact]
+			public async Task WhenAllTypesContainMatchingMethod_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(ClassWithMarkedMethod), typeof(ClassWithTwoMarkedMethods),
+				};
+
+				async Task Act()
+					=> await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenEnumerableContainsNullType_ShouldFail()
+			{
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(ClassWithMarkedMethod), null,
+				};
+
+				async Task Act()
+					=> await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             all contain methods with ThatTypes.ContainMethods.MarkerAttribute at least once,
+					             but it contained not matching types [
+					               <null>
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSomeTypeContainsNoMatchingMethod_ShouldFail()
+			{
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(ClassWithMarkedMethod), typeof(ClassWithoutMarkedMethod),
+				};
+
+				async Task Act()
+					=> await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             all contain methods with ThatTypes.ContainMethods.MarkerAttribute at least once,
+					             but it contained not matching types [
+					               ThatTypes.ContainMethods.ClassWithoutMarkedMethod
+					             ]
+					             """);
+			}
+		}
+
 		public sealed class Tests
 		{
 			[Fact]

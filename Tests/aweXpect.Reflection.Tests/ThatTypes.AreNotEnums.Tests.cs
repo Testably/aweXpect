@@ -1,4 +1,6 @@
-﻿using aweXpect.Reflection.Collections;
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Collections;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
 using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
@@ -7,6 +9,48 @@ public sealed partial class ThatTypes
 {
 	public sealed class AreNotEnums
 	{
+		public sealed class TypeTests
+		{
+			[Fact]
+			public async Task WhenEnumerableContainsEnumType_ShouldFail()
+			{
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(PublicClass), typeof(PublicEnum),
+				};
+
+				async Task Act()
+				{
+					await That(subject).AreNotEnums();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             are all not enums,
+					             but it contained enums [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenEnumerableContainsNoEnumTypes_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(PublicClass),
+				};
+
+				async Task Act()
+				{
+					await That(subject).AreNotEnums();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
 		public sealed class Tests
 		{
 			[Fact]

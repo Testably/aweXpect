@@ -1,5 +1,7 @@
-﻿using aweXpect.Reflection.Collections;
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
 using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
@@ -8,6 +10,48 @@ public sealed partial class ThatTypes
 {
 	public sealed class AreNotRecordStructs
 	{
+		public sealed class TypeTests
+		{
+			[Fact]
+			public async Task WhenEnumerableContainsRecordStructType_ShouldFail()
+			{
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(IPublicInterface), typeof(PublicRecordStruct),
+				};
+
+				async Task Act()
+				{
+					await That(subject).AreNotRecordStructs();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             are all not record structs,
+					             but it contained record structs [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenEnumerableContainsNoRecordStructTypes_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(IPublicInterface),
+				};
+
+				async Task Act()
+				{
+					await That(subject).AreNotRecordStructs();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
 		public sealed class Tests
 		{
 			[Fact]

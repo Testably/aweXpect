@@ -1,4 +1,6 @@
-﻿using aweXpect.Reflection.Collections;
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Collections;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
 using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
@@ -7,6 +9,48 @@ public sealed partial class ThatTypes
 {
 	public sealed partial class AreGeneric
 	{
+		public sealed class TypeTests
+		{
+			[Fact]
+			public async Task WhenEnumerableContainsNonGenericType_ShouldFail()
+			{
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(PublicGenericClass<>), typeof(PublicClass),
+				};
+
+				async Task Act()
+				{
+					await That(subject).AreGeneric();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             are all generic,
+					             but it contained not matching types [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenEnumerableContainsOnlyGenericTypes_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(PublicGenericClass<>),
+				};
+
+				async Task Act()
+				{
+					await That(subject).AreGeneric();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
 		public sealed class Tests
 		{
 			[Fact]
