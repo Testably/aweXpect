@@ -46,7 +46,9 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have a ref parameter,
-					             but it contained constructors without a ref parameter *
+					             but it contained constructors without a ref parameter [
+					               *ClassWithoutModifiers*
+					             ]
 					             """).AsWildcard();
 			}
 
@@ -248,6 +250,430 @@ public sealed partial class ThatConstructors
 				await That(Act).Throws<XunitException>();
 			}
 #endif
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task AsyncEnumerable_WhenAllHaveRefParameter_ShouldSucceed()
+			{
+				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
+					typeof(ClassWithRefParameter).GetConstructors().Single(),
+					typeof(AnotherClassWithRefParameter).GetConstructors().Single());
+
+				async Task Act()
+				{
+					await That(constructors).HaveRefParameter();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task AsyncEnumerable_WhenNotAllHaveRefParameter_ShouldFail()
+			{
+				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
+					typeof(ClassWithRefParameter).GetConstructors().Single(),
+					typeof(ClassWithoutModifiers).GetConstructors().Single());
+
+				async Task Act()
+				{
+					await That(constructors).HaveRefParameter();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have a ref parameter,
+					             but it contained constructors without a ref parameter [
+					               *ClassWithoutModifiers*
+					             ]
+					             """).AsWildcard();
+			}
+			[Fact]
+			public async Task AsyncEnumerable_WhenConstructorHasSomeButNotAllRefParameters_ShouldSucceed()
+			{
+				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
+					typeof(ClassWithMixedParameters).GetConstructors().Single());
+
+				async Task Act()
+				{
+					await That(constructors).HaveRefParameter();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+#endif
+
+			[Fact]
+			public async Task WhenConstructorHasSomeButNotAllRefParameters_ShouldSucceed()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(ClassWithMixedParameters).GetConstructors().Single(),
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveRefParameter();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task Generic_WhenNotAllHaveRefParameter_ShouldFail()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(ClassWithRefParameter).GetConstructors().Single(),
+					typeof(ClassWithoutModifiers).GetConstructors().Single(),
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveRefParameter<int>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of type int with ref modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task GenericAndName_WhenNotAllHaveRefParameter_ShouldFail()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(ClassWithRefParameter).GetConstructors().Single(),
+					typeof(ClassWithoutModifiers).GetConstructors().Single(),
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveRefParameter<int>("value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of type int with name "value" with ref modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task ByTypeAndName_WhenNotAllHaveRefParameter_ShouldFail()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(ClassWithRefParameter).GetConstructors().Single(),
+					typeof(ClassWithoutModifiers).GetConstructors().Single(),
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveRefParameter(typeof(int), "value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of type int with name "value" with ref modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task ByName_WhenNotAllHaveRefParameter_ShouldFail()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(ClassWithRefParameter).GetConstructors().Single(),
+					typeof(ClassWithoutModifiers).GetConstructors().Single(),
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveRefParameter("value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter with name "value" with ref modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task GenericExactly_WhenNotAllHaveRefParameter_ShouldFail()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(ClassWithRefParameter).GetConstructors().Single(),
+					typeof(ClassWithoutModifiers).GetConstructors().Single(),
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveRefParameterExactly<int>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of exact type int with ref modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task ByTypeExactly_WhenNotAllHaveRefParameter_ShouldFail()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(ClassWithRefParameter).GetConstructors().Single(),
+					typeof(ClassWithoutModifiers).GetConstructors().Single(),
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveRefParameterExactly(typeof(int));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of exact type int with ref modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task GenericExactlyAndName_WhenNotAllHaveRefParameter_ShouldFail()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(ClassWithRefParameter).GetConstructors().Single(),
+					typeof(ClassWithoutModifiers).GetConstructors().Single(),
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveRefParameterExactly<int>("value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of exact type int with name "value" with ref modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task ByTypeExactlyAndName_WhenNotAllHaveRefParameter_ShouldFail()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(ClassWithRefParameter).GetConstructors().Single(),
+					typeof(ClassWithoutModifiers).GetConstructors().Single(),
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveRefParameterExactly(typeof(int), "value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of exact type int with name "value" with ref modifier,
+					             but at least one did not
+					             """);
+			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task AsyncEnumerable_ByType_WhenNotAllHaveRefParameter_ShouldFail()
+			{
+				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
+					typeof(ClassWithRefParameter).GetConstructors().Single(),
+					typeof(ClassWithoutModifiers).GetConstructors().Single());
+
+				async Task Act()
+				{
+					await That(constructors).HaveRefParameter(typeof(int));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of type int with ref modifier,
+					             but at least one did not
+					             """);
+			}
+			[Fact]
+			public async Task AsyncEnumerable_Generic_WhenNotAllHaveRefParameter_ShouldFail()
+			{
+				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
+					typeof(ClassWithRefParameter).GetConstructors().Single(),
+					typeof(ClassWithoutModifiers).GetConstructors().Single());
+
+				async Task Act()
+				{
+					await That(constructors).HaveRefParameter<int>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of type int with ref modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task AsyncEnumerable_ByTypeAndName_WhenNotAllHaveRefParameter_ShouldFail()
+			{
+				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
+					typeof(ClassWithRefParameter).GetConstructors().Single(),
+					typeof(ClassWithoutModifiers).GetConstructors().Single());
+
+				async Task Act()
+				{
+					await That(constructors).HaveRefParameter(typeof(int), "value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of type int with name "value" with ref modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task AsyncEnumerable_GenericAndName_WhenNotAllHaveRefParameter_ShouldFail()
+			{
+				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
+					typeof(ClassWithRefParameter).GetConstructors().Single(),
+					typeof(ClassWithoutModifiers).GetConstructors().Single());
+
+				async Task Act()
+				{
+					await That(constructors).HaveRefParameter<int>("value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of type int with name "value" with ref modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task AsyncEnumerable_ByName_WhenNotAllHaveRefParameter_ShouldFail()
+			{
+				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
+					typeof(ClassWithRefParameter).GetConstructors().Single(),
+					typeof(ClassWithoutModifiers).GetConstructors().Single());
+
+				async Task Act()
+				{
+					await That(constructors).HaveRefParameter("value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter with name "value" with ref modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task AsyncEnumerable_GenericExactly_WhenNotAllHaveRefParameter_ShouldFail()
+			{
+				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
+					typeof(ClassWithRefParameter).GetConstructors().Single(),
+					typeof(ClassWithoutModifiers).GetConstructors().Single());
+
+				async Task Act()
+				{
+					await That(constructors).HaveRefParameterExactly<int>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of exact type int with ref modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task AsyncEnumerable_ByTypeExactly_WhenNotAllHaveRefParameter_ShouldFail()
+			{
+				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
+					typeof(ClassWithRefParameter).GetConstructors().Single(),
+					typeof(ClassWithoutModifiers).GetConstructors().Single());
+
+				async Task Act()
+				{
+					await That(constructors).HaveRefParameterExactly(typeof(int));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of exact type int with ref modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task AsyncEnumerable_GenericExactlyAndName_WhenNotAllHaveRefParameter_ShouldFail()
+			{
+				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
+					typeof(ClassWithRefParameter).GetConstructors().Single(),
+					typeof(ClassWithoutModifiers).GetConstructors().Single());
+
+				async Task Act()
+				{
+					await That(constructors).HaveRefParameterExactly<int>("value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of exact type int with name "value" with ref modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task AsyncEnumerable_ByTypeExactlyAndName_WhenNotAllHaveRefParameter_ShouldFail()
+			{
+				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
+					typeof(ClassWithRefParameter).GetConstructors().Single(),
+					typeof(ClassWithoutModifiers).GetConstructors().Single());
+
+				async Task Act()
+				{
+					await That(constructors).HaveRefParameterExactly(typeof(int), "value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of exact type int with name "value" with ref modifier,
+					             but at least one did not
+					             """);
+			}
+#endif
 		}
 
 		public sealed class NegatedTests
@@ -270,7 +696,9 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             not all have a ref parameter,
-					             but it only contained constructors with a ref parameter *
+					             but it only contained constructors with a ref parameter [
+					               *ClassWithRefParameter*
+					             ]
 					             """).AsWildcard();
 			}
 
@@ -328,6 +756,15 @@ public sealed partial class ThatConstructors
 			{
 			}
 		}
+
+		private class ClassWithMixedParameters
+		{
+			public ClassWithMixedParameters(ref int value, string other)
+			{
+				value = 0;
+			}
+		}
+
 		// ReSharper restore UnusedMember.Local
 		// ReSharper restore UnusedParameter.Local
 	}
