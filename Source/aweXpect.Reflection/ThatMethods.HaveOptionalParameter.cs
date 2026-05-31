@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -50,12 +51,29 @@ public static partial class ThatMethods
 
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have
+	///     an optional parameter of type <paramref name="parameterType" />.
+	/// </summary>
+	public static ParameterCollectionResult<IEnumerable<MethodInfo?>, object?> HaveOptionalParameter(
+		this IThat<IEnumerable<MethodInfo?>> subject, Type parameterType)
+		=> subject.HaveParameter(parameterType).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have
 	///     an optional parameter of type <typeparamref name="TParameter" /> with the
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	public static NamedParameterCollectionResult<IEnumerable<MethodInfo?>, TParameter> HaveOptionalParameter<TParameter>(
 		this IThat<IEnumerable<MethodInfo?>> subject, string expected)
 		=> subject.HaveParameter<TParameter>(expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have
+	///     an optional parameter of type <paramref name="parameterType" /> with the
+	///     <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<IEnumerable<MethodInfo?>, object?> HaveOptionalParameter(
+		this IThat<IEnumerable<MethodInfo?>> subject, Type parameterType, string expected)
+		=> subject.HaveParameter(parameterType, expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
 
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have
@@ -76,12 +94,29 @@ public static partial class ThatMethods
 
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have
+	///     an optional parameter of type <paramref name="parameterType" />.
+	/// </summary>
+	public static ParameterCollectionResult<IAsyncEnumerable<MethodInfo?>, object?> HaveOptionalParameter(
+		this IThat<IAsyncEnumerable<MethodInfo?>> subject, Type parameterType)
+		=> subject.HaveParameter(parameterType).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have
 	///     an optional parameter of type <typeparamref name="TParameter" /> with the
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	public static NamedParameterCollectionResult<IAsyncEnumerable<MethodInfo?>, TParameter> HaveOptionalParameter<TParameter>(
 		this IThat<IAsyncEnumerable<MethodInfo?>> subject, string expected)
 		=> subject.HaveParameter<TParameter>(expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have
+	///     an optional parameter of type <paramref name="parameterType" /> with the
+	///     <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<IAsyncEnumerable<MethodInfo?>, object?> HaveOptionalParameter(
+		this IThat<IAsyncEnumerable<MethodInfo?>> subject, Type parameterType, string expected)
+		=> subject.HaveParameter(parameterType, expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
 
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have
@@ -102,12 +137,29 @@ public static partial class ThatMethods
 
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have
+	///     an optional parameter of exact type <paramref name="parameterType" />.
+	/// </summary>
+	public static ParameterCollectionResult<IEnumerable<MethodInfo?>, object?> HaveOptionalParameterExactly(
+		this IThat<IEnumerable<MethodInfo?>> subject, Type parameterType)
+		=> subject.HaveParameterExactly(parameterType).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have
 	///     an optional parameter of exact type <typeparamref name="TParameter" /> with the
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	public static NamedParameterCollectionResult<IEnumerable<MethodInfo?>, TParameter> HaveOptionalParameterExactly<TParameter>(
 		this IThat<IEnumerable<MethodInfo?>> subject, string expected)
 		=> subject.HaveParameterExactly<TParameter>(expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have
+	///     an optional parameter of exact type <paramref name="parameterType" /> with the
+	///     <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<IEnumerable<MethodInfo?>, object?> HaveOptionalParameterExactly(
+		this IThat<IEnumerable<MethodInfo?>> subject, Type parameterType, string expected)
+		=> subject.HaveParameterExactly(parameterType, expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
 
 #if NET8_0_OR_GREATER
 	/// <summary>
@@ -120,12 +172,29 @@ public static partial class ThatMethods
 
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have
+	///     an optional parameter of exact type <paramref name="parameterType" />.
+	/// </summary>
+	public static ParameterCollectionResult<IAsyncEnumerable<MethodInfo?>, object?> HaveOptionalParameterExactly(
+		this IThat<IAsyncEnumerable<MethodInfo?>> subject, Type parameterType)
+		=> subject.HaveParameterExactly(parameterType).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have
 	///     an optional parameter of exact type <typeparamref name="TParameter" /> with the
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	public static NamedParameterCollectionResult<IAsyncEnumerable<MethodInfo?>, TParameter> HaveOptionalParameterExactly<TParameter>(
 		this IThat<IAsyncEnumerable<MethodInfo?>> subject, string expected)
 		=> subject.HaveParameterExactly<TParameter>(expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have
+	///     an optional parameter of exact type <paramref name="parameterType" /> with the
+	///     <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<IAsyncEnumerable<MethodInfo?>, object?> HaveOptionalParameterExactly(
+		this IThat<IAsyncEnumerable<MethodInfo?>> subject, Type parameterType, string expected)
+		=> subject.HaveParameterExactly(parameterType, expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
 #endif
 
 	private sealed class HaveOptionalParameterConstraint(string it, ExpectationGrammars grammars)

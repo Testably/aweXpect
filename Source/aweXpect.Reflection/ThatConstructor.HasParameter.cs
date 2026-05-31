@@ -62,6 +62,50 @@ public static partial class ThatConstructor
 	}
 
 	/// <summary>
+	///     Verifies that the <see cref="ConstructorInfo" /> has a parameter of type <paramref name="parameterType" />.
+	/// </summary>
+	public static ParameterCollectionResult<ConstructorInfo?, object?> HasParameter(
+		this IThat<ConstructorInfo?> subject, Type parameterType)
+	{
+		CollectionIndexOptions collectionIndexOptions = new();
+		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
+			() => $"of type {Formatter.Format(parameterType)}");
+		return new ParameterCollectionResult<ConstructorInfo?, object?>(subject.Get().ExpectationBuilder
+				.AddConstraint((it, grammars)
+					=> new HasParameterConstraint(it, grammars, parameterType, null,
+						collectionIndexOptions,
+						parameterFilterOptions)),
+			subject,
+			collectionIndexOptions,
+			parameterFilterOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the <see cref="ConstructorInfo" /> has a parameter of type <paramref name="parameterType" /> with
+	///     the
+	///     <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<ConstructorInfo?, object?> HasParameter(
+		this IThat<ConstructorInfo?> subject, Type parameterType, string expected)
+	{
+		StringEqualityOptions stringEqualityOptions = new();
+		CollectionIndexOptions collectionIndexOptions = new();
+		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
+			() => $"of type {Formatter.Format(parameterType)}");
+		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
+			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+		return new NamedParameterCollectionResult<ConstructorInfo?, object?>(subject.Get().ExpectationBuilder
+				.AddConstraint((it, grammars)
+					=> new HasParameterConstraint(it, grammars, parameterType, expected,
+						collectionIndexOptions,
+						parameterFilterOptions)),
+			subject,
+			collectionIndexOptions,
+			parameterFilterOptions,
+			stringEqualityOptions);
+	}
+
+	/// <summary>
 	///     Verifies that the <see cref="ConstructorInfo" /> has a parameter with the <paramref name="expected" /> name.
 	/// </summary>
 	public static NamedParameterCollectionResult<ConstructorInfo?, object?> HasParameter(

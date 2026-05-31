@@ -78,6 +78,69 @@ public static partial class MethodFilters
 	}
 
 	/// <summary>
+	///     Filter for methods with a parameter of type <paramref name="parameterType" />.
+	/// </summary>
+	public static MethodsWithParameter<object?> WithParameter(this Filtered.Methods @this, Type parameterType)
+	{
+		CollectionIndexOptions collectionIndexOptions = new();
+		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
+			() => $"of type {Formatter.Format(parameterType)}");
+		IAsyncChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
+			methodInfo =>
+			{
+				ParameterInfo[] parameters = methodInfo.GetParameters();
+				return parameters.AnyAsync(async (p, i) =>
+				{
+					bool? isIndexInRange = collectionIndexOptions.Match switch
+					{
+						CollectionIndexOptions.IMatchFromBeginning fromBeginning => fromBeginning.MatchesIndex(i),
+						CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(i, parameters.Length),
+						_ => false,
+					};
+					return isIndexInRange == true &&
+					       await parameterFilterOptions.Matches(p);
+				});
+			},
+			()
+				=> $"with parameter {parameterFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
+		return new MethodsWithParameter<object?>(@this.Which(filter), collectionIndexOptions, parameterFilterOptions);
+	}
+
+	/// <summary>
+	///     Filter for methods with a parameter of type <paramref name="parameterType" /> with the
+	///     <paramref name="expected" /> name.
+	/// </summary>
+	public static MethodsWithNamedParameter<object?> WithParameter(this Filtered.Methods @this, Type parameterType,
+		string expected)
+	{
+		StringEqualityOptions stringEqualityOptions = new();
+		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
+			() => $"of type {Formatter.Format(parameterType)}");
+		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
+			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+		CollectionIndexOptions collectionIndexOptions = new();
+		IAsyncChangeableFilter<MethodInfo> filter = Filter.Suffix<MethodInfo>(
+			methodInfo =>
+			{
+				ParameterInfo[] parameters = methodInfo.GetParameters();
+				return parameters.AnyAsync(async (p, i) =>
+				{
+					bool? isIndexInRange = collectionIndexOptions.Match switch
+					{
+						CollectionIndexOptions.IMatchFromBeginning fromBeginning => fromBeginning.MatchesIndex(i),
+						CollectionIndexOptions.IMatchFromEnd fromEnd => fromEnd.MatchesIndex(i, parameters.Length),
+						_ => false,
+					};
+					return isIndexInRange == true &&
+					       await parameterFilterOptions.Matches(p);
+				});
+			},
+			()
+				=> $"with parameter {parameterFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
+		return new MethodsWithNamedParameter<object?>(@this.Which(filter), collectionIndexOptions, parameterFilterOptions, stringEqualityOptions);
+	}
+
+	/// <summary>
 	///     Filter for methods with a parameter with the <paramref name="expected" /> name.
 	/// </summary>
 	public static MethodsWithNamedParameter<object?> WithParameter(this Filtered.Methods @this,

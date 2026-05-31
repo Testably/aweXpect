@@ -57,6 +57,76 @@ public sealed partial class ThatMethod
 					             but it was <null>
 					             """);
 			}
+
+			[Fact]
+			public async Task Type_WhenMethodHasOptionalParameterOfType_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasOptionalParameter(typeof(int));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task Type_WhenMethodHasNoOptionalParameter_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasOptionalParameter(typeof(int));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type int with optional modifier,
+					             but it did not
+					             """);
+			}
+
+			[Fact]
+			public async Task Type_WhenMethodHasOptionalParameterOfTypeWithName_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasOptionalParameter(typeof(int), "value");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task TypeExactly_WhenMethodHasOptionalParameterOfExactType_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasOptionalParameterExactly(typeof(int));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task TypeExactly_WhenMethodHasOptionalParameterOfExactTypeWithName_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasOptionalParameterExactly(typeof(int), "value");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
 		}
 
 		public sealed class NegatedTests

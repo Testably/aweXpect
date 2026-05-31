@@ -48,6 +48,152 @@ public sealed partial class ThatMethods
 					             but it contained methods without a ref parameter *
 					             """).AsWildcard();
 			}
+
+			[Fact]
+			public async Task WithType_WhenAllHaveRefParameterOfType_ShouldSucceed()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefParameter))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveRefParameter(typeof(int));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithType_WhenNotAllHaveRefParameterOfType_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefParameter))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveRefParameter(typeof(int));
+				}
+
+				await That(Act).Throws<XunitException>();
+			}
+
+			[Fact]
+			public async Task WithTypeAndName_WhenAllHaveRefParameterOfType_ShouldSucceed()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefParameter))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveRefParameter(typeof(int), "value");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithTypeAndName_WhenNotAllHaveRefParameterOfType_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefParameter))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveRefParameter(typeof(int), "value");
+				}
+
+				await That(Act).Throws<XunitException>();
+			}
+
+			[Fact]
+			public async Task WithTypeExactly_WhenAllHaveRefParameterOfType_ShouldSucceed()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefParameter))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveRefParameterExactly(typeof(int));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithTypeExactly_WhenNotAllHaveRefParameterOfType_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefParameter))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveRefParameterExactly(typeof(int));
+				}
+
+				await That(Act).Throws<XunitException>();
+			}
+
+			[Fact]
+			public async Task WithTypeExactlyAndName_WhenAllHaveRefParameterOfType_ShouldSucceed()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefParameter))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveRefParameterExactly(typeof(int), "value");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task AsyncEnumerable_WithType_WhenAllHaveRefParameterOfType_ShouldSucceed()
+			{
+				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefParameter))!);
+
+				async Task Act()
+				{
+					await That(methods).HaveRefParameter(typeof(int));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task AsyncEnumerable_WithType_WhenNotAllHaveRefParameterOfType_ShouldFail()
+			{
+				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefParameter))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!);
+
+				async Task Act()
+				{
+					await That(methods).HaveRefParameter(typeof(int));
+				}
+
+				await That(Act).Throws<XunitException>();
+			}
+#endif
 		}
 
 		public sealed class NegatedTests
@@ -91,6 +237,18 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+#if NET8_0_OR_GREATER
+		private static async IAsyncEnumerable<MethodInfo> ToAsyncEnumerable(params MethodInfo[] items)
+		{
+			foreach (MethodInfo item in items)
+			{
+				yield return item;
+			}
+
+			await Task.CompletedTask;
+		}
+#endif
 
 #pragma warning disable CA1822
 		// ReSharper disable UnusedParameter.Local

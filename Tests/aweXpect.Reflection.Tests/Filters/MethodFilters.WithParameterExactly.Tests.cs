@@ -50,6 +50,49 @@ public sealed partial class MethodFilters
 				await That(methods.GetDescription())
 					.IsEqualTo("methods with parameter of exact type ").AsPrefix();
 			}
+
+			[Fact]
+			public async Task UsingType_ShouldFilterForMethodsWithParameterOfExactType()
+			{
+				Filtered.Methods methods = In.Type<TestClass>()
+					.Methods().WithParameterExactly(typeof(DummyBase));
+
+				await That(methods).IsEqualTo([
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithDummyBase))!,
+				]).InAnyOrder();
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of exact type ").AsPrefix();
+			}
+
+			[Fact]
+			public async Task UsingType_ShouldNotIncludeMethodsWithParameterOfDerivedType()
+			{
+				Filtered.Methods exactMethods = In.Type<TestClass>()
+					.Methods().WithParameterExactly(typeof(DummyBase));
+				Filtered.Methods assignableMethods = In.Type<TestClass>()
+					.Methods().WithParameter(typeof(DummyBase));
+
+				await That(exactMethods).IsEqualTo([
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithDummyBase))!,
+				]).InAnyOrder();
+				await That(assignableMethods).IsEqualTo([
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithDummyBase))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithDummy))!,
+				]).InAnyOrder();
+			}
+
+			[Fact]
+			public async Task UsingType_WithName_ShouldFilterForMethodsWithParameterOfExactTypeAndName()
+			{
+				Filtered.Methods methods = In.Type<TestClass>()
+					.Methods().WithParameterExactly(typeof(DummyBase), "parameter");
+
+				await That(methods).IsEqualTo([
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithDummyBase))!,
+				]).InAnyOrder();
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of exact type ").AsPrefix();
+			}
 		}
 
 #pragma warning disable CA1822

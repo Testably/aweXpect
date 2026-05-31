@@ -261,6 +261,242 @@ public sealed partial class MethodFilters
 				await That(methods.GetDescription())
 					.IsEqualTo("methods with parameter of type int and with default value 42 in").AsPrefix();
 			}
+
+			[Fact]
+			public async Task UsingType_GetDescription_ShouldReturnCorrectDescription()
+			{
+				Filtered.Methods methods = In.Type<TestClassWithMethodParameters>()
+					.Methods().WithParameter(typeof(string));
+
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of type string in").AsPrefix();
+			}
+
+			[Fact]
+			public async Task UsingType_WithParameterOfType_ShouldFilterForMethodsWithParameterOfSpecificType()
+			{
+				Filtered.Methods methods = In.Type<TestClassWithMethodParameters>()
+					.Methods().WithParameter(typeof(string));
+
+				await That(methods).IsEqualTo([
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method1),
+						[typeof(string),])!,
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method2),
+						[typeof(int), typeof(string),])!,
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method4),
+						[typeof(string), typeof(int),])!,
+				]).InAnyOrder();
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of type string in").AsPrefix();
+			}
+
+			[Fact]
+			public async Task UsingType_WithParameterOfType_ShouldIncludeMethodsWithParameterOfDerivedType()
+			{
+				Filtered.Methods methods = In.Type<TestClassWithInheritedParameters>()
+					.Methods().WithParameter(typeof(BaseParameter));
+
+				await That(methods).IsEqualTo([
+					typeof(TestClassWithInheritedParameters).GetMethod(
+						nameof(TestClassWithInheritedParameters.MethodWithBaseParameter))!,
+					typeof(TestClassWithInheritedParameters).GetMethod(
+						nameof(TestClassWithInheritedParameters.MethodWithDerivedParameter))!,
+				]).InAnyOrder();
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of type ").AsPrefix();
+			}
+
+			[Fact]
+			public async Task UsingType_WithParameterOfTypeAndName_ShouldFilterForMethodsWithParameterOfSpecificTypeAndName()
+			{
+				Filtered.Methods methods = In.Type<TestClassWithMethodParameters>()
+					.Methods().WithParameter(typeof(string), "name");
+
+				await That(methods).IsEqualTo([
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method1),
+						[typeof(string),])!,
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method2),
+						[typeof(int), typeof(string),])!,
+				]).InAnyOrder();
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of type string and name equal to \"name\" in").AsPrefix();
+			}
+
+			[Fact]
+			public async Task UsingType_WithParameterAtIndex_ShouldFilterForMethodsWithParameterAtSpecificIndex()
+			{
+				Filtered.Methods methods = In.Type<TestClassWithMethodParameters>()
+					.Methods().WithParameter(typeof(int)).AtIndex(0);
+
+				await That(methods).IsEqualTo([
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method2),
+						[typeof(int), typeof(string),])!,
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method3),
+						[typeof(int),])!,
+				]).InAnyOrder();
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of type int at index 0 in").AsPrefix();
+			}
+
+			[Fact]
+			public async Task UsingType_WithParameterAtIndexFromEnd_ShouldFilterForMethodsWithParameterAtSpecificIndex()
+			{
+				Filtered.Methods methods = In.Type<TestClassWithMethodParameters>()
+					.Methods().WithParameter(typeof(int)).AtIndex(0).FromEnd();
+
+				await That(methods).IsEqualTo([
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method3),
+						[typeof(int),])!,
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method4),
+						[typeof(string), typeof(int),])!,
+				]).InAnyOrder();
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of type int at index 0 from end in").AsPrefix();
+			}
+
+			[Fact]
+			public async Task UsingType_WithParameterName_ShouldSupportAsPrefix()
+			{
+				Filtered.Methods methods = In.Type<TestClassWithMethodParameters>()
+					.Methods().WithParameter(typeof(string), "nam").AsPrefix();
+
+				await That(methods).IsEqualTo([
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method1),
+						[typeof(string),])!,
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method2),
+						[typeof(int), typeof(string),])!,
+				]).InAnyOrder();
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of type string and name starting with \"nam\" in").AsPrefix();
+			}
+
+			[Fact]
+			public async Task UsingType_WithParameterName_ShouldSupportAsSuffix()
+			{
+				Filtered.Methods methods = In.Type<TestClassWithMethodParameters>()
+					.Methods().WithParameter(typeof(string), "ame").AsSuffix();
+
+				await That(methods).IsEqualTo([
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method1),
+						[typeof(string),])!,
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method2),
+						[typeof(int), typeof(string),])!,
+				]).InAnyOrder();
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of type string and name ending with \"ame\" in").AsPrefix();
+			}
+
+			[Fact]
+			public async Task UsingType_WithParameterName_ShouldSupportCustomComparer()
+			{
+				Filtered.Methods methods = In.Type<TestClassWithMethodParameters>()
+					.Methods().WithParameter(typeof(string), "nAmE").Using(new IgnoreCaseForVocalsComparer());
+
+				await That(methods).IsEqualTo([
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method1),
+						[typeof(string),])!,
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method2),
+						[typeof(int), typeof(string),])!,
+				]).InAnyOrder();
+				await That(methods.GetDescription())
+					.IsEqualTo(
+						"methods with parameter of type string and name equal to \"nAmE\" using IgnoreCaseForVocalsComparer in")
+					.AsPrefix();
+			}
+
+			[Fact]
+			public async Task UsingType_WithParameterName_ShouldSupportIgnoringCase()
+			{
+				Filtered.Methods methods = In.Type<TestClassWithMethodParameters>()
+					.Methods().WithParameter(typeof(string), "NAME").IgnoringCase();
+
+				await That(methods).IsEqualTo([
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method1),
+						[typeof(string),])!,
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method2),
+						[typeof(int), typeof(string),])!,
+				]).InAnyOrder();
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of type string and name equal to \"NAME\" ignoring case in")
+					.AsPrefix();
+			}
+
+			[Fact]
+			public async Task UsingType_WithParameterName_ShouldSupportRegex()
+			{
+				Filtered.Methods methods = In.Type<TestClassWithMethodParameters>()
+					.Methods().WithParameter(typeof(string), "n[a-z]*e").AsRegex();
+
+				await That(methods).IsEqualTo([
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method1),
+						[typeof(string),])!,
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method2),
+						[typeof(int), typeof(string),])!,
+				]).InAnyOrder();
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of type string and name matching regex \"n[a-z]*e\" in")
+					.AsPrefix();
+			}
+
+			[Fact]
+			public async Task UsingType_WithParameterName_ShouldSupportWildcard()
+			{
+				Filtered.Methods methods = In.Type<TestClassWithMethodParameters>()
+					.Methods().WithParameter(typeof(string), "n??e").AsWildcard();
+
+				await That(methods).IsEqualTo([
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method1),
+						[typeof(string),])!,
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method2),
+						[typeof(int), typeof(string),])!,
+				]).InAnyOrder();
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of type string and name matching \"n??e\" in").AsPrefix();
+			}
+
+			[Fact]
+			public async Task UsingType_WithParameterWithDefaultValue_ShouldFilterForMethodsWithParameterWithDefaultValue()
+			{
+				Filtered.Methods methods = In.Type<TestClassWithMethodParameters>()
+					.Methods().WithParameter(typeof(int)).WithDefaultValue();
+
+				await That(methods).IsEqualTo([
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method3),
+						[typeof(int),])!,
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method4),
+						[typeof(string), typeof(int),])!,
+				]).InAnyOrder();
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of type int and with a default value in").AsPrefix();
+			}
+
+			[Fact]
+			public async Task UsingType_WithParameterWithoutDefaultValue_ShouldFilterForMethodsWithParameterWithoutDefaultValue()
+			{
+				Filtered.Methods methods = In.Type<TestClassWithMethodParameters>()
+					.Methods().WithParameter(typeof(int)).WithoutDefaultValue();
+
+				await That(methods).IsEqualTo([
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method2),
+						[typeof(int), typeof(string),])!,
+				]).InAnyOrder();
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of type int and without a default value in").AsPrefix();
+			}
+
+			[Fact]
+			public async Task UsingType_WithParameterWithSpecificDefaultValue_ShouldFilterForMethodsWithParameterWithSpecificDefaultValue()
+			{
+				Filtered.Methods methods = In.Type<TestClassWithMethodParameters>()
+					.Methods().WithParameter(typeof(int)).WithDefaultValue(42);
+
+				await That(methods).IsEqualTo([
+					typeof(TestClassWithMethodParameters).GetMethod(nameof(TestClassWithMethodParameters.Method3),
+						[typeof(int),])!,
+				]).InAnyOrder();
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of type int and with default value 42 in").AsPrefix();
+			}
 		}
 
 		private class BaseParameter

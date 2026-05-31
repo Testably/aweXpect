@@ -62,6 +62,50 @@ public static partial class ThatMethod
 	}
 
 	/// <summary>
+	///     Verifies that the <see cref="MethodInfo" /> has a parameter of type <paramref name="parameterType" />.
+	/// </summary>
+	public static ParameterCollectionResult<MethodInfo?, object?> HasParameter(
+		this IThat<MethodInfo?> subject, Type parameterType)
+	{
+		CollectionIndexOptions collectionIndexOptions = new();
+		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
+			() => $"of type {Formatter.Format(parameterType)}");
+		return new ParameterCollectionResult<MethodInfo?, object?>(subject.Get().ExpectationBuilder
+				.AddConstraint((it, grammars)
+					=> new HasParameterConstraint(it, grammars, parameterType, null,
+						collectionIndexOptions,
+						parameterFilterOptions)),
+			subject,
+			collectionIndexOptions,
+			parameterFilterOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the <see cref="MethodInfo" /> has a parameter of type <paramref name="parameterType" /> with
+	///     the
+	///     <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<MethodInfo?, object?> HasParameter(
+		this IThat<MethodInfo?> subject, Type parameterType, string expected)
+	{
+		StringEqualityOptions stringEqualityOptions = new();
+		CollectionIndexOptions collectionIndexOptions = new();
+		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType),
+			() => $"of type {Formatter.Format(parameterType)}");
+		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
+			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+		return new NamedParameterCollectionResult<MethodInfo?, object?>(subject.Get().ExpectationBuilder
+				.AddConstraint((it, grammars)
+					=> new HasParameterConstraint(it, grammars, parameterType, expected,
+						collectionIndexOptions,
+						parameterFilterOptions)),
+			subject,
+			collectionIndexOptions,
+			parameterFilterOptions,
+			stringEqualityOptions);
+	}
+
+	/// <summary>
 	///     Verifies that the <see cref="MethodInfo" /> has a parameter with the <paramref name="expected" /> name.
 	/// </summary>
 	public static NamedParameterCollectionResult<MethodInfo?, object?> HasParameter(

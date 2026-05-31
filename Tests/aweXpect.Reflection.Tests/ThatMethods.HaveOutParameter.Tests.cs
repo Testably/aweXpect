@@ -48,6 +48,152 @@ public sealed partial class ThatMethods
 					             but it contained methods without an out parameter *
 					             """).AsWildcard();
 			}
+
+			[Fact]
+			public async Task WithType_WhenAllHaveOutParameterOfType_ShouldSucceed()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveOutParameter(typeof(int));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithType_WhenNotAllHaveOutParameterOfType_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveOutParameter(typeof(int));
+				}
+
+				await That(Act).Throws<XunitException>();
+			}
+
+			[Fact]
+			public async Task WithTypeAndName_WhenAllHaveOutParameterOfType_ShouldSucceed()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveOutParameter(typeof(int), "value");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithTypeAndName_WhenNotAllHaveOutParameterOfType_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveOutParameter(typeof(int), "value");
+				}
+
+				await That(Act).Throws<XunitException>();
+			}
+
+			[Fact]
+			public async Task WithTypeExactly_WhenAllHaveOutParameterOfType_ShouldSucceed()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveOutParameterExactly(typeof(int));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithTypeExactly_WhenNotAllHaveOutParameterOfType_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveOutParameterExactly(typeof(int));
+				}
+
+				await That(Act).Throws<XunitException>();
+			}
+
+			[Fact]
+			public async Task WithTypeExactlyAndName_WhenAllHaveOutParameterOfType_ShouldSucceed()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveOutParameterExactly(typeof(int), "value");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task AsyncEnumerable_WithType_WhenAllHaveOutParameterOfType_ShouldSucceed()
+			{
+				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!);
+
+				async Task Act()
+				{
+					await That(methods).HaveOutParameter(typeof(int));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task AsyncEnumerable_WithType_WhenNotAllHaveOutParameterOfType_ShouldFail()
+			{
+				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!);
+
+				async Task Act()
+				{
+					await That(methods).HaveOutParameter(typeof(int));
+				}
+
+				await That(Act).Throws<XunitException>();
+			}
+#endif
 		}
 
 		public sealed class NegatedTests
@@ -91,6 +237,18 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+#if NET8_0_OR_GREATER
+		private static async IAsyncEnumerable<MethodInfo> ToAsyncEnumerable(params MethodInfo[] items)
+		{
+			foreach (MethodInfo item in items)
+			{
+				yield return item;
+			}
+
+			await Task.CompletedTask;
+		}
+#endif
 
 #pragma warning disable CA1822
 		// ReSharper disable UnusedParameter.Local

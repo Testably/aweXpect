@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Reflection;
 using aweXpect.Reflection.Collections;
@@ -25,11 +26,24 @@ public static partial class ConstructorFilters
 		=> @this.WithParameter<T>().WithModifier(p => p.IsParamsParameter(), "with params modifier");
 
 	/// <summary>
+	///     Filter for constructors with a <see langword="params" /> parameter of type <paramref name="parameterType" />.
+	/// </summary>
+	public static ConstructorsWithParameter<object?> WithParamsParameter(this Filtered.Constructors @this, Type parameterType)
+		=> @this.WithParameter(parameterType).WithModifier(p => p.IsParamsParameter(), "with params modifier");
+
+	/// <summary>
 	///     Filter for constructors with a <see langword="params" /> parameter of type <typeparamref name="T" /> with the
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	public static ConstructorsWithNamedParameter<T> WithParamsParameter<T>(this Filtered.Constructors @this, string expected)
 		=> @this.WithParameter<T>(expected).WithModifier(p => p.IsParamsParameter(), "with params modifier");
+
+	/// <summary>
+	///     Filter for constructors with a <see langword="params" /> parameter of type <paramref name="parameterType" /> with the
+	///     <paramref name="expected" /> name.
+	/// </summary>
+	public static ConstructorsWithNamedParameter<object?> WithParamsParameter(this Filtered.Constructors @this, Type parameterType, string expected)
+		=> @this.WithParameter(parameterType, expected).WithModifier(p => p.IsParamsParameter(), "with params modifier");
 
 	/// <summary>
 	///     Filter for constructors with a <see langword="params" /> parameter with the <paramref name="expected" /> name.
@@ -49,4 +63,17 @@ public static partial class ConstructorFilters
 	/// </summary>
 	public static ConstructorsWithNamedParameter<T> WithParamsParameterExactly<T>(this Filtered.Constructors @this, string expected)
 		=> @this.WithParameterExactly<T>(expected).WithModifier(p => p.IsParamsParameter(), "with params modifier");
+
+	/// <summary>
+	///     Filter for constructors with a <see langword="params" /> parameter of exact type <paramref name="parameterType" />.
+	/// </summary>
+	public static ConstructorsWithParameter<object?> WithParamsParameterExactly(this Filtered.Constructors @this, Type parameterType)
+		=> @this.WithParameterExactly(parameterType).WithModifier(p => p.IsParamsParameter(), "with params modifier");
+
+	/// <summary>
+	///     Filter for constructors with a <see langword="params" /> parameter of exact type <paramref name="parameterType" /> with the
+	///     <paramref name="expected" /> name.
+	/// </summary>
+	public static ConstructorsWithNamedParameter<object?> WithParamsParameterExactly(this Filtered.Constructors @this, Type parameterType, string expected)
+		=> @this.WithParameterExactly(parameterType, expected).WithModifier(p => p.IsParamsParameter(), "with params modifier");
 }

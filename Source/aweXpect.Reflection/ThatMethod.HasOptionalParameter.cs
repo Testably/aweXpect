@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -30,11 +31,27 @@ public static partial class ThatMethod
 
 	/// <summary>
 	///     Verifies that the <see cref="MethodInfo" /> has an optional parameter of type
+	///     <paramref name="parameterType" />.
+	/// </summary>
+	public static ParameterCollectionResult<MethodInfo?, object?> HasOptionalParameter(
+		this IThat<MethodInfo?> subject, Type parameterType)
+		=> subject.HasParameter(parameterType).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+
+	/// <summary>
+	///     Verifies that the <see cref="MethodInfo" /> has an optional parameter of type
 	///     <typeparamref name="TParameter" /> with the <paramref name="expected" /> name.
 	/// </summary>
 	public static NamedParameterCollectionResult<MethodInfo?, TParameter> HasOptionalParameter<TParameter>(
 		this IThat<MethodInfo?> subject, string expected)
 		=> subject.HasParameter<TParameter>(expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+
+	/// <summary>
+	///     Verifies that the <see cref="MethodInfo" /> has an optional parameter of type
+	///     <paramref name="parameterType" /> with the <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<MethodInfo?, object?> HasOptionalParameter(
+		this IThat<MethodInfo?> subject, Type parameterType, string expected)
+		=> subject.HasParameter(parameterType, expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
 
 	/// <summary>
 	///     Verifies that the <see cref="MethodInfo" /> has an optional parameter with the
@@ -54,11 +71,27 @@ public static partial class ThatMethod
 
 	/// <summary>
 	///     Verifies that the <see cref="MethodInfo" /> has an optional parameter of exact type
+	///     <paramref name="parameterType" />.
+	/// </summary>
+	public static ParameterCollectionResult<MethodInfo?, object?> HasOptionalParameterExactly(
+		this IThat<MethodInfo?> subject, Type parameterType)
+		=> subject.HasParameterExactly(parameterType).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+
+	/// <summary>
+	///     Verifies that the <see cref="MethodInfo" /> has an optional parameter of exact type
 	///     <typeparamref name="TParameter" /> with the <paramref name="expected" /> name.
 	/// </summary>
 	public static NamedParameterCollectionResult<MethodInfo?, TParameter> HasOptionalParameterExactly<TParameter>(
 		this IThat<MethodInfo?> subject, string expected)
 		=> subject.HasParameterExactly<TParameter>(expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+
+	/// <summary>
+	///     Verifies that the <see cref="MethodInfo" /> has an optional parameter of exact type
+	///     <paramref name="parameterType" /> with the <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<MethodInfo?, object?> HasOptionalParameterExactly(
+		this IThat<MethodInfo?> subject, Type parameterType, string expected)
+		=> subject.HasParameterExactly(parameterType, expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
 
 	private sealed class HasOptionalParameterConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<MethodInfo?>(it, grammars),

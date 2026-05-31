@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -30,11 +31,27 @@ public static partial class ThatConstructor
 
 	/// <summary>
 	///     Verifies that the <see cref="ConstructorInfo" /> has a <see langword="params" /> parameter of type
+	///     <paramref name="parameterType" />.
+	/// </summary>
+	public static ParameterCollectionResult<ConstructorInfo?, object?> HasParamsParameter(
+		this IThat<ConstructorInfo?> subject, Type parameterType)
+		=> subject.HasParameter(parameterType).WithModifier(p => p.IsParamsParameter(), "with params modifier");
+
+	/// <summary>
+	///     Verifies that the <see cref="ConstructorInfo" /> has a <see langword="params" /> parameter of type
 	///     <typeparamref name="TParameter" /> with the <paramref name="expected" /> name.
 	/// </summary>
 	public static NamedParameterCollectionResult<ConstructorInfo?, TParameter> HasParamsParameter<TParameter>(
 		this IThat<ConstructorInfo?> subject, string expected)
 		=> subject.HasParameter<TParameter>(expected).WithModifier(p => p.IsParamsParameter(), "with params modifier");
+
+	/// <summary>
+	///     Verifies that the <see cref="ConstructorInfo" /> has a <see langword="params" /> parameter of type
+	///     <paramref name="parameterType" /> with the <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<ConstructorInfo?, object?> HasParamsParameter(
+		this IThat<ConstructorInfo?> subject, Type parameterType, string expected)
+		=> subject.HasParameter(parameterType, expected).WithModifier(p => p.IsParamsParameter(), "with params modifier");
 
 	/// <summary>
 	///     Verifies that the <see cref="ConstructorInfo" /> has a <see langword="params" /> parameter with the
@@ -54,11 +71,27 @@ public static partial class ThatConstructor
 
 	/// <summary>
 	///     Verifies that the <see cref="ConstructorInfo" /> has a <see langword="params" /> parameter of exact type
+	///     <paramref name="parameterType" />.
+	/// </summary>
+	public static ParameterCollectionResult<ConstructorInfo?, object?> HasParamsParameterExactly(
+		this IThat<ConstructorInfo?> subject, Type parameterType)
+		=> subject.HasParameterExactly(parameterType).WithModifier(p => p.IsParamsParameter(), "with params modifier");
+
+	/// <summary>
+	///     Verifies that the <see cref="ConstructorInfo" /> has a <see langword="params" /> parameter of exact type
 	///     <typeparamref name="TParameter" /> with the <paramref name="expected" /> name.
 	/// </summary>
 	public static NamedParameterCollectionResult<ConstructorInfo?, TParameter> HasParamsParameterExactly<TParameter>(
 		this IThat<ConstructorInfo?> subject, string expected)
 		=> subject.HasParameterExactly<TParameter>(expected).WithModifier(p => p.IsParamsParameter(), "with params modifier");
+
+	/// <summary>
+	///     Verifies that the <see cref="ConstructorInfo" /> has a <see langword="params" /> parameter of exact type
+	///     <paramref name="parameterType" /> with the <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<ConstructorInfo?, object?> HasParamsParameterExactly(
+		this IThat<ConstructorInfo?> subject, Type parameterType, string expected)
+		=> subject.HasParameterExactly(parameterType, expected).WithModifier(p => p.IsParamsParameter(), "with params modifier");
 
 	private sealed class HasParamsParameterConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<ConstructorInfo?>(it, grammars),

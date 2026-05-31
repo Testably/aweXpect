@@ -30,6 +30,33 @@ public sealed partial class ConstructorFilters
 
 				await That(constructors).DoesNotContain(PlainConstructor());
 			}
+
+			[Fact]
+			public async Task WithType_ShouldFilterForConstructorsWithInParameterOfSpecificType()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithInParameter(typeof(int));
+
+				await That(constructors).Contains(InParameterConstructor());
+			}
+
+			[Fact]
+			public async Task WithType_ShouldNotIncludeConstructorsWithInParameterOfOtherType()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithInParameter(typeof(string));
+
+				await That(constructors).DoesNotContain(InParameterConstructor());
+			}
+
+			[Fact]
+			public async Task WithType_WithName_ShouldFilterForConstructorsWithInParameterOfSpecificTypeAndName()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithInParameter(typeof(int), "value");
+
+				await That(constructors).Contains(InParameterConstructor());
+			}
 		}
 
 		private static ConstructorInfo? InParameterConstructor()

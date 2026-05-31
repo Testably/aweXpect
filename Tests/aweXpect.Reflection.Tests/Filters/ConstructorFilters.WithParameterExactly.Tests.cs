@@ -50,6 +50,49 @@ public sealed partial class ConstructorFilters
 				await That(constructors.GetDescription())
 					.IsEqualTo("constructors with parameter of exact type ").AsPrefix();
 			}
+
+			[Fact]
+			public async Task WithType_ShouldFilterForConstructorsWithParameterOfExactType()
+			{
+				Filtered.Constructors constructors = In.Type<TestClass>()
+					.Constructors().WithParameterExactly(typeof(DummyBase));
+
+				await That(constructors).IsEqualTo([
+					typeof(TestClass).GetConstructor([typeof(DummyBase),])!,
+				]).InAnyOrder();
+				await That(constructors.GetDescription())
+					.IsEqualTo("constructors with parameter of exact type ").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WithType_ShouldNotIncludeConstructorsWithParameterOfDerivedType()
+			{
+				Filtered.Constructors exactConstructors = In.Type<TestClass>()
+					.Constructors().WithParameterExactly(typeof(DummyBase));
+				Filtered.Constructors assignableConstructors = In.Type<TestClass>()
+					.Constructors().WithParameter(typeof(DummyBase));
+
+				await That(exactConstructors).IsEqualTo([
+					typeof(TestClass).GetConstructor([typeof(DummyBase),])!,
+				]).InAnyOrder();
+				await That(assignableConstructors).IsEqualTo([
+					typeof(TestClass).GetConstructor([typeof(DummyBase),])!,
+					typeof(TestClass).GetConstructor([typeof(Dummy),])!,
+				]).InAnyOrder();
+			}
+
+			[Fact]
+			public async Task WithType_WithName_ShouldFilterForConstructorsWithParameterOfExactTypeAndName()
+			{
+				Filtered.Constructors constructors = In.Type<TestClass>()
+					.Constructors().WithParameterExactly(typeof(DummyBase), "parameter");
+
+				await That(constructors).IsEqualTo([
+					typeof(TestClass).GetConstructor([typeof(DummyBase),])!,
+				]).InAnyOrder();
+				await That(constructors.GetDescription())
+					.IsEqualTo("constructors with parameter of exact type ").AsPrefix();
+			}
 		}
 
 		// ReSharper disable UnusedMember.Local

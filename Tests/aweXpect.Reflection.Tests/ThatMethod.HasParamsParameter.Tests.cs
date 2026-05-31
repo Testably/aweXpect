@@ -57,6 +57,76 @@ public sealed partial class ThatMethod
 					             but it was <null>
 					             """);
 			}
+
+			[Fact]
+			public async Task Type_WhenMethodHasParamsParameterOfType_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithParamsParameter))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParamsParameter(typeof(int[]));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task Type_WhenMethodHasNoParamsParameter_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParamsParameter(typeof(int[]));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type int[] with params modifier,
+					             but it did not
+					             """);
+			}
+
+			[Fact]
+			public async Task Type_WhenMethodHasParamsParameterOfTypeWithName_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithParamsParameter))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParamsParameter(typeof(int[]), "values");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task TypeExactly_WhenMethodHasParamsParameterOfExactType_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithParamsParameter))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParamsParameterExactly(typeof(int[]));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task TypeExactly_WhenMethodHasParamsParameterOfExactTypeWithName_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithParamsParameter))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParamsParameterExactly(typeof(int[]), "values");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
 		}
 
 		public sealed class NegatedTests

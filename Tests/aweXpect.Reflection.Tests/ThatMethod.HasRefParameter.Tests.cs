@@ -57,6 +57,76 @@ public sealed partial class ThatMethod
 					             but it was <null>
 					             """);
 			}
+
+			[Fact]
+			public async Task Type_WhenMethodHasRefParameterOfType_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefParameter))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasRefParameter(typeof(int));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task Type_WhenMethodHasNoRefParameter_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasRefParameter(typeof(int));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type int with ref modifier,
+					             but it did not
+					             """);
+			}
+
+			[Fact]
+			public async Task Type_WhenMethodHasRefParameterOfTypeWithName_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefParameter))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasRefParameter(typeof(int), "value");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task TypeExactly_WhenMethodHasRefParameterOfExactType_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefParameter))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasRefParameterExactly(typeof(int));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task TypeExactly_WhenMethodHasRefParameterOfExactTypeWithName_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefParameter))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasRefParameterExactly(typeof(int), "value");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
 		}
 
 		public sealed class NegatedTests

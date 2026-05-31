@@ -108,6 +108,124 @@ public sealed partial class MethodFilters
 				await That(methods).Contains(Method(nameof(ModifierMethods.RefDerived)));
 				await That(methods).DoesNotContain(Method(nameof(ModifierMethods.RefBase)));
 			}
+
+			[Fact]
+			public async Task WithRefParameterOfType_UsingType_ShouldFilterAndDescribe()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithRefParameter(typeof(int));
+
+				await That(methods).Contains(Method(nameof(ModifierMethods.RefInt)));
+				await That(methods).DoesNotContain(Method(nameof(ModifierMethods.PlainInt)));
+				await That(methods).DoesNotContain(Method(nameof(ModifierMethods.OutInt)));
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of type int and with ref modifier in assembly")
+					.AsPrefix();
+			}
+
+			[Fact]
+			public async Task WithRefParameterOfTypeAndName_UsingType_ShouldFilter()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithRefParameter(typeof(int), "value");
+
+				await That(methods).Contains(Method(nameof(ModifierMethods.RefInt)));
+			}
+
+			[Fact]
+			public async Task WithOptionalParameterOfType_UsingType_ShouldFilter()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithOptionalParameter(typeof(int));
+
+				await That(methods).Contains(Method(nameof(ModifierMethods.OptionalInt)));
+				await That(methods).DoesNotContain(Method(nameof(ModifierMethods.PlainInt)));
+			}
+
+			[Fact]
+			public async Task WithOptionalParameterOfTypeAndName_UsingType_ShouldFilter()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithOptionalParameter(typeof(int), "value");
+
+				await That(methods).Contains(Method(nameof(ModifierMethods.OptionalInt)));
+			}
+
+			[Fact]
+			public async Task WithParamsParameterOfType_UsingType_ShouldFilter()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithParamsParameter(typeof(int[]));
+
+				await That(methods).Contains(Method(nameof(ModifierMethods.ParamsInt)));
+			}
+
+			[Fact]
+			public async Task WithParamsParameterOfTypeAndName_UsingType_ShouldFilter()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithParamsParameter(typeof(int[]), "values");
+
+				await That(methods).Contains(Method(nameof(ModifierMethods.ParamsInt)));
+			}
+
+			[Fact]
+			public async Task WithOutParameterOfType_UsingType_ShouldFilter()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithOutParameter(typeof(int));
+
+				await That(methods).Contains(Method(nameof(ModifierMethods.OutInt)));
+				await That(methods).DoesNotContain(Method(nameof(ModifierMethods.RefInt)));
+			}
+
+			[Fact]
+			public async Task WithOutParameterOfTypeAndName_UsingType_ShouldFilter()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithOutParameter(typeof(int), "value");
+
+				await That(methods).Contains(Method(nameof(ModifierMethods.OutInt)));
+			}
+
+			[Fact]
+			public async Task WithInParameterOfType_UsingType_ShouldFilter()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithInParameter(typeof(int));
+
+				await That(methods).Contains(Method(nameof(ModifierMethods.InInt)));
+				await That(methods).DoesNotContain(Method(nameof(ModifierMethods.RefInt)));
+			}
+
+			[Fact]
+			public async Task WithInParameterOfTypeAndName_UsingType_ShouldFilter()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithInParameter(typeof(int), "value");
+
+				await That(methods).Contains(Method(nameof(ModifierMethods.InInt)));
+			}
+
+			[Fact]
+			public async Task WithRefParameterOfBaseType_UsingType_ShouldAlsoMatchDerivedParameterType()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithRefParameter(typeof(BaseType));
+
+				await That(methods).Contains(Method(nameof(ModifierMethods.RefBase)));
+				await That(methods).Contains(Method(nameof(ModifierMethods.RefDerived)));
+			}
+
+			[Fact]
+			public async Task WithRefParameterOfDerivedType_UsingType_ShouldNotMatchBaseParameterType()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithRefParameter(typeof(DerivedType));
+
+				await That(methods).Contains(Method(nameof(ModifierMethods.RefDerived)));
+				await That(methods).DoesNotContain(Method(nameof(ModifierMethods.RefBase)));
+			}
 		}
 
 		private static MethodInfo? Method(string name)

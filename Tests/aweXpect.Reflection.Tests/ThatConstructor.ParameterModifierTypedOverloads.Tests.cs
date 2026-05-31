@@ -100,6 +100,84 @@ public sealed partial class ThatConstructor
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task HasRefParameterWithType_WhenMatching_ShouldSucceed()
+			{
+				ConstructorInfo constructorInfo = Constructor<RefIntCtor>();
+
+				async Task Act()
+				{
+					await That(constructorInfo).HasRefParameter(typeof(int));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task HasRefParameterWithType_WhenWrongType_ShouldFail()
+			{
+				ConstructorInfo constructorInfo = Constructor<RefIntCtor>();
+
+				async Task Act()
+				{
+					await That(constructorInfo).HasRefParameter(typeof(string));
+				}
+
+				await That(Act).Throws<XunitException>();
+			}
+
+			[Fact]
+			public async Task HasRefParameterWithType_WhenParameterIsNotRef_ShouldFail()
+			{
+				ConstructorInfo constructorInfo = Constructor<PlainIntCtor>();
+
+				async Task Act()
+				{
+					await That(constructorInfo).HasRefParameter(typeof(int));
+				}
+
+				await That(Act).Throws<XunitException>();
+			}
+
+			[Fact]
+			public async Task HasRefParameterWithTypeAndName_WhenMatching_ShouldSucceed()
+			{
+				ConstructorInfo constructorInfo = Constructor<RefIntCtor>();
+
+				async Task Act()
+				{
+					await That(constructorInfo).HasRefParameter(typeof(int), "value");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task HasOptionalParameterWithType_WhenMatching_ShouldSucceed()
+			{
+				ConstructorInfo constructorInfo = Constructor<OptionalIntCtor>();
+
+				async Task Act()
+				{
+					await That(constructorInfo).HasOptionalParameter(typeof(int));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task HasParamsParameterWithType_WhenMatching_ShouldSucceed()
+			{
+				ConstructorInfo constructorInfo = Constructor<ParamsIntCtor>();
+
+				async Task Act()
+				{
+					await That(constructorInfo).HasParamsParameter(typeof(int[]));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
 		}
 
 		private static ConstructorInfo Constructor<T>()

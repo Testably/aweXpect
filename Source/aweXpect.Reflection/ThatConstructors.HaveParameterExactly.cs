@@ -37,6 +37,27 @@ public static partial class ThatConstructors
 
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
+	///     a parameter of exact type <paramref name="parameterType" />.
+	/// </summary>
+	public static ParameterCollectionResult<IEnumerable<ConstructorInfo?>, object?> HaveParameterExactly(
+		this IThat<IEnumerable<ConstructorInfo?>> subject, Type parameterType)
+	{
+		CollectionIndexOptions collectionIndexOptions = new();
+		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
+			() => $"of exact type {Formatter.Format(parameterType)}");
+		return new ParameterCollectionResult<IEnumerable<ConstructorInfo?>, object?>(subject.Get().ExpectationBuilder
+				.AddConstraint<IEnumerable<ConstructorInfo?>>((_, grammars)
+					=> new HaveParameterConstraint(grammars, parameterType, null,
+						collectionIndexOptions,
+						parameterFilterOptions,
+						true)),
+			subject,
+			collectionIndexOptions,
+			parameterFilterOptions);
+	}
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
 	///     a parameter of exact type <typeparamref name="TParameter" /> with the <paramref name="expected" /> name.
 	/// </summary>
 	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, TParameter> HaveParameterExactly<TParameter>(
@@ -50,6 +71,32 @@ public static partial class ThatConstructors
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 		return new NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, TParameter>(subject.Get()
+				.ExpectationBuilder
+				.AddConstraint<IEnumerable<ConstructorInfo?>>((_, grammars)
+					=> new HaveParameterConstraint(grammars, parameterType, expected,
+						collectionIndexOptions,
+						parameterFilterOptions,
+						true)),
+			subject,
+			collectionIndexOptions,
+			parameterFilterOptions,
+			stringEqualityOptions);
+	}
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
+	///     a parameter of exact type <paramref name="parameterType" /> with the <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, object?> HaveParameterExactly(
+		this IThat<IEnumerable<ConstructorInfo?>> subject, Type parameterType, string expected)
+	{
+		StringEqualityOptions stringEqualityOptions = new();
+		CollectionIndexOptions collectionIndexOptions = new();
+		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
+			() => $"of exact type {Formatter.Format(parameterType)}");
+		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
+			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+		return new NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, object?>(subject.Get()
 				.ExpectationBuilder
 				.AddConstraint<IEnumerable<ConstructorInfo?>>((_, grammars)
 					=> new HaveParameterConstraint(grammars, parameterType, expected,
@@ -89,6 +136,29 @@ public static partial class ThatConstructors
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
+	///     a parameter of exact type <paramref name="parameterType" />.
+	/// </summary>
+	public static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, object?> HaveParameterExactly(
+		this IThat<IAsyncEnumerable<ConstructorInfo?>> subject, Type parameterType)
+	{
+		CollectionIndexOptions collectionIndexOptions = new();
+		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
+			() => $"of exact type {Formatter.Format(parameterType)}");
+		return new ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, object?>(subject.Get().ExpectationBuilder
+				.AddConstraint<IAsyncEnumerable<ConstructorInfo?>>((_, grammars)
+					=> new HaveParameterConstraint(grammars, parameterType, null,
+						collectionIndexOptions,
+						parameterFilterOptions,
+						true)),
+			subject,
+			collectionIndexOptions,
+			parameterFilterOptions);
+	}
+#endif
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
 	///     a parameter of exact type <typeparamref name="TParameter" /> with the <paramref name="expected" /> name.
 	/// </summary>
 	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, TParameter> HaveParameterExactly<TParameter>(
@@ -102,6 +172,34 @@ public static partial class ThatConstructors
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
 			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
 		return new NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, TParameter>(subject.Get()
+				.ExpectationBuilder
+				.AddConstraint<IAsyncEnumerable<ConstructorInfo?>>((_, grammars)
+					=> new HaveParameterConstraint(grammars, parameterType, expected,
+						collectionIndexOptions,
+						parameterFilterOptions,
+						true)),
+			subject,
+			collectionIndexOptions,
+			parameterFilterOptions,
+			stringEqualityOptions);
+	}
+#endif
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
+	///     a parameter of exact type <paramref name="parameterType" /> with the <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, object?> HaveParameterExactly(
+		this IThat<IAsyncEnumerable<ConstructorInfo?>> subject, Type parameterType, string expected)
+	{
+		StringEqualityOptions stringEqualityOptions = new();
+		CollectionIndexOptions collectionIndexOptions = new();
+		ParameterFilterOptions parameterFilterOptions = new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true),
+			() => $"of exact type {Formatter.Format(parameterType)}");
+		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected),
+			() => $"name {stringEqualityOptions.GetExpectation(expected, ExpectationGrammars.None)}");
+		return new NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, object?>(subject.Get()
 				.ExpectationBuilder
 				.AddConstraint<IAsyncEnumerable<ConstructorInfo?>>((_, grammars)
 					=> new HaveParameterConstraint(grammars, parameterType, expected,

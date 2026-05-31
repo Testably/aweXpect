@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -50,12 +51,29 @@ public static partial class ThatConstructors
 
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
+	///     a <see langword="ref" /> parameter of type <paramref name="parameterType" />.
+	/// </summary>
+	public static ParameterCollectionResult<IEnumerable<ConstructorInfo?>, object?> HaveRefParameter(
+		this IThat<IEnumerable<ConstructorInfo?>> subject, Type parameterType)
+		=> subject.HaveParameter(parameterType).WithModifier(p => p.IsRefParameter(), "with ref modifier");
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
 	///     a <see langword="ref" /> parameter of type <typeparamref name="TParameter" /> with the
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, TParameter> HaveRefParameter<TParameter>(
 		this IThat<IEnumerable<ConstructorInfo?>> subject, string expected)
 		=> subject.HaveParameter<TParameter>(expected).WithModifier(p => p.IsRefParameter(), "with ref modifier");
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
+	///     a <see langword="ref" /> parameter of type <paramref name="parameterType" /> with the
+	///     <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, object?> HaveRefParameter(
+		this IThat<IEnumerable<ConstructorInfo?>> subject, Type parameterType, string expected)
+		=> subject.HaveParameter(parameterType, expected).WithModifier(p => p.IsRefParameter(), "with ref modifier");
 
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
@@ -76,12 +94,29 @@ public static partial class ThatConstructors
 
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
+	///     a <see langword="ref" /> parameter of type <paramref name="parameterType" />.
+	/// </summary>
+	public static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, object?> HaveRefParameter(
+		this IThat<IAsyncEnumerable<ConstructorInfo?>> subject, Type parameterType)
+		=> subject.HaveParameter(parameterType).WithModifier(p => p.IsRefParameter(), "with ref modifier");
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
 	///     a <see langword="ref" /> parameter of type <typeparamref name="TParameter" /> with the
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, TParameter> HaveRefParameter<TParameter>(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>> subject, string expected)
 		=> subject.HaveParameter<TParameter>(expected).WithModifier(p => p.IsRefParameter(), "with ref modifier");
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
+	///     a <see langword="ref" /> parameter of type <paramref name="parameterType" /> with the
+	///     <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, object?> HaveRefParameter(
+		this IThat<IAsyncEnumerable<ConstructorInfo?>> subject, Type parameterType, string expected)
+		=> subject.HaveParameter(parameterType, expected).WithModifier(p => p.IsRefParameter(), "with ref modifier");
 
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
@@ -102,12 +137,29 @@ public static partial class ThatConstructors
 
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
+	///     a <see langword="ref" /> parameter of exact type <paramref name="parameterType" />.
+	/// </summary>
+	public static ParameterCollectionResult<IEnumerable<ConstructorInfo?>, object?> HaveRefParameterExactly(
+		this IThat<IEnumerable<ConstructorInfo?>> subject, Type parameterType)
+		=> subject.HaveParameterExactly(parameterType).WithModifier(p => p.IsRefParameter(), "with ref modifier");
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
 	///     a <see langword="ref" /> parameter of exact type <typeparamref name="TParameter" /> with the
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, TParameter> HaveRefParameterExactly<TParameter>(
 		this IThat<IEnumerable<ConstructorInfo?>> subject, string expected)
 		=> subject.HaveParameterExactly<TParameter>(expected).WithModifier(p => p.IsRefParameter(), "with ref modifier");
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
+	///     a <see langword="ref" /> parameter of exact type <paramref name="parameterType" /> with the
+	///     <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, object?> HaveRefParameterExactly(
+		this IThat<IEnumerable<ConstructorInfo?>> subject, Type parameterType, string expected)
+		=> subject.HaveParameterExactly(parameterType, expected).WithModifier(p => p.IsRefParameter(), "with ref modifier");
 
 #if NET8_0_OR_GREATER
 	/// <summary>
@@ -120,12 +172,29 @@ public static partial class ThatConstructors
 
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
+	///     a <see langword="ref" /> parameter of exact type <paramref name="parameterType" />.
+	/// </summary>
+	public static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, object?> HaveRefParameterExactly(
+		this IThat<IAsyncEnumerable<ConstructorInfo?>> subject, Type parameterType)
+		=> subject.HaveParameterExactly(parameterType).WithModifier(p => p.IsRefParameter(), "with ref modifier");
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
 	///     a <see langword="ref" /> parameter of exact type <typeparamref name="TParameter" /> with the
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, TParameter> HaveRefParameterExactly<TParameter>(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>> subject, string expected)
 		=> subject.HaveParameterExactly<TParameter>(expected).WithModifier(p => p.IsRefParameter(), "with ref modifier");
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
+	///     a <see langword="ref" /> parameter of exact type <paramref name="parameterType" /> with the
+	///     <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, object?> HaveRefParameterExactly(
+		this IThat<IAsyncEnumerable<ConstructorInfo?>> subject, Type parameterType, string expected)
+		=> subject.HaveParameterExactly(parameterType, expected).WithModifier(p => p.IsRefParameter(), "with ref modifier");
 #endif
 
 	private sealed class HaveRefParameterConstraint(string it, ExpectationGrammars grammars)

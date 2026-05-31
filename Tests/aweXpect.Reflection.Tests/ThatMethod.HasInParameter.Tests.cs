@@ -57,6 +57,76 @@ public sealed partial class ThatMethod
 					             but it was <null>
 					             """);
 			}
+
+			[Fact]
+			public async Task Type_WhenMethodHasInParameterOfType_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasInParameter(typeof(int));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task Type_WhenMethodHasNoInParameter_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasInParameter(typeof(int));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type int with in modifier,
+					             but it did not
+					             """);
+			}
+
+			[Fact]
+			public async Task Type_WhenMethodHasInParameterOfTypeWithName_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasInParameter(typeof(int), "value");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task TypeExactly_WhenMethodHasInParameterOfExactType_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasInParameterExactly(typeof(int));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task TypeExactly_WhenMethodHasInParameterOfExactTypeWithName_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasInParameterExactly(typeof(int), "value");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
 		}
 
 		public sealed class NegatedTests

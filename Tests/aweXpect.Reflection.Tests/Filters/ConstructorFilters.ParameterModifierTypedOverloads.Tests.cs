@@ -112,6 +112,33 @@ public sealed partial class ConstructorFilters
 			{
 			}
 		}
+
+		private class InIntCtor
+		{
+			public InIntCtor(in int value)
+			{
+			}
+		}
+
+		private class RefBaseCtor
+		{
+			public RefBaseCtor(ref BaseType value)
+			{
+				value = null!;
+			}
+		}
+
+		private class RefDerivedCtor
+		{
+			public RefDerivedCtor(ref DerivedType value)
+			{
+				value = null!;
+			}
+		}
+
+		private class BaseType;
+
+		private sealed class DerivedType : BaseType;
 		// ReSharper restore UnusedParameter.Local
 		// ReSharper restore UnusedMember.Local
 	}
