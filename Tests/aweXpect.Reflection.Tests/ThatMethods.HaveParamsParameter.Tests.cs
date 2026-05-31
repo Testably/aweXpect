@@ -28,6 +28,22 @@ public sealed partial class ThatMethods
 			}
 
 			[Fact]
+			public async Task WhenMethodHasOneRequiredAndOneParamsParameter_ShouldSucceed()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRequiredAndParamsParameter))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveParamsParameter();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenNotAllHaveParamsParameter_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -45,7 +61,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have a params parameter,
-					             but it contained methods without a params parameter *
+					             but it contained methods without a params parameter *MethodWithoutModifiers(*
 					             """).AsWildcard();
 			}
 
@@ -79,7 +95,78 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParamsParameter(typeof(int[]));
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of type int[] with params modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task Generic_WhenNotAllHaveParamsParameterOfType_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithParamsParameter))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveParamsParameter<int[]>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of type int[] with params modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task GenericWithName_WhenNotAllHaveParamsParameterOfType_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithParamsParameter))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveParamsParameter<int[]>("values");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of type int[] with name "values" with params modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task WithName_WhenNotAllHaveParamsParameterWithName_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithParamsParameter))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveParamsParameter("values");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter with name "values" with params modifier,
+					             but at least one did not
+					             """);
 			}
 
 			[Fact]
@@ -112,7 +199,12 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParamsParameter(typeof(int[]), "values");
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of type int[] with name "values" with params modifier,
+					             but at least one did not
+					             """);
 			}
 
 			[Fact]
@@ -145,7 +237,78 @@ public sealed partial class ThatMethods
 					await That(methods).HaveParamsParameterExactly(typeof(int[]));
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type int[] with params modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task GenericExactly_WhenNotAllHaveParamsParameterOfType_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithParamsParameter))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveParamsParameterExactly<int[]>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type int[] with params modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task GenericExactlyWithName_WhenNotAllHaveParamsParameterOfType_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithParamsParameter))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveParamsParameterExactly<int[]>("values");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type int[] with name "values" with params modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task WithTypeExactlyAndName_WhenNotAllHaveParamsParameterOfType_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithParamsParameter))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveParamsParameterExactly(typeof(int[]), "values");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type int[] with name "values" with params modifier,
+					             but at least one did not
+					             """);
 			}
 
 			[Fact]
@@ -165,6 +328,55 @@ public sealed partial class ThatMethods
 			}
 
 #if NET8_0_OR_GREATER
+			[Fact]
+			public async Task AsyncEnumerable_WhenAllHaveParamsParameter_ShouldSucceed()
+			{
+				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithParamsParameter))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.AnotherMethodWithParamsParameter))!);
+
+				async Task Act()
+				{
+					await That(methods).HaveParamsParameter();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task AsyncEnumerable_WhenMethodHasOneRequiredAndOneParamsParameter_ShouldSucceed()
+			{
+				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRequiredAndParamsParameter))!);
+
+				async Task Act()
+				{
+					await That(methods).HaveParamsParameter();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task AsyncEnumerable_WhenNotAllHaveParamsParameter_ShouldFail()
+			{
+				IAsyncEnumerable<MethodInfo> methods = ToAsyncEnumerable(
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithParamsParameter))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!);
+
+				async Task Act()
+				{
+					await That(methods).HaveParamsParameter();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have a params parameter,
+					             but it contained methods without a params parameter *MethodWithoutModifiers(*
+					             """).AsWildcard();
+			}
+
 			[Fact]
 			public async Task AsyncEnumerable_WithType_WhenAllHaveParamsParameterOfType_ShouldSucceed()
 			{
@@ -216,7 +428,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             not all have a params parameter,
-					             but it only contained methods with a params parameter *
+					             but it only contained methods with a params parameter *MethodWithParamsParameter(*
 					             """).AsWildcard();
 			}
 
@@ -260,6 +472,10 @@ public sealed partial class ThatMethods
 			}
 
 			public void AnotherMethodWithParamsParameter(params string[] texts)
+			{
+			}
+
+			public void MethodWithRequiredAndParamsParameter(int required, params int[] values)
 			{
 			}
 
