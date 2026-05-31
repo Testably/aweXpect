@@ -3156,6 +3156,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:41 2026 \u002B0200",
         "message": "chore: Bump SharpCompress from 0.48.0 to 0.48.1 (#970)"
+      },
+      {
+        "sha": "e3547a28cde8fc36b5c423b3750125be83f83c22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun May 31 07:42:10 2026 \u002B0200",
+        "message": "feat: exclude netstandard and WindowsBase assembly prefixes by default (#971)"
       }
     ],
     "labels": [
@@ -3684,7 +3690,8 @@ window.BENCHMARK_DATA = {
       "5fb898f6",
       "d1b8256e",
       "eca352d8",
-      "a9e6ee54"
+      "a9e6ee54",
+      "e3547a28"
     ],
     "datasets": [
       {
@@ -4216,7 +4223,8 @@ window.BENCHMARK_DATA = {
           281.60268538338795,
           264.24082912717546,
           279.3069086710612,
-          248.5982816696167
+          248.5982816696167,
+          275.9644400732858
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4689,6 +4697,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5293,7 +5302,8 @@ window.BENCHMARK_DATA = {
           270.7715315085191,
           248.43984563534076,
           246.36039815630232,
-          245.674853682518
+          245.674853682518,
+          277.8404155458723
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5486,6 +5496,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -8538,6 +8549,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:41 2026 \u002B0200",
         "message": "chore: Bump SharpCompress from 0.48.0 to 0.48.1 (#970)"
+      },
+      {
+        "sha": "e3547a28cde8fc36b5c423b3750125be83f83c22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun May 31 07:42:10 2026 \u002B0200",
+        "message": "feat: exclude netstandard and WindowsBase assembly prefixes by default (#971)"
       }
     ],
     "labels": [
@@ -8989,7 +9006,8 @@ window.BENCHMARK_DATA = {
       "5fb898f6",
       "d1b8256e",
       "eca352d8",
-      "a9e6ee54"
+      "a9e6ee54",
+      "e3547a28"
     ],
     "datasets": [
       {
@@ -9444,7 +9462,8 @@ window.BENCHMARK_DATA = {
           338613.4191545759,
           322577.8310546875,
           305520.9623046875,
-          288501.6021972656
+          288501.6021972656,
+          325430.2694986979
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9891,6 +9910,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335442,
+          335444,
           335444,
           335444,
           335444,
@@ -10367,7 +10387,8 @@ window.BENCHMARK_DATA = {
           2971366.189322917,
           2807100.845833333,
           2396152.1788504464,
-          2333367.4771634615
+          2333367.4771634615,
+          2501984.40078125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10827,6 +10848,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841648,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -13997,6 +14019,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:41 2026 \u002B0200",
         "message": "chore: Bump SharpCompress from 0.48.0 to 0.48.1 (#970)"
+      },
+      {
+        "sha": "e3547a28cde8fc36b5c423b3750125be83f83c22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun May 31 07:42:10 2026 \u002B0200",
+        "message": "feat: exclude netstandard and WindowsBase assembly prefixes by default (#971)"
       }
     ],
     "labels": [
@@ -14525,7 +14553,8 @@ window.BENCHMARK_DATA = {
       "5fb898f6",
       "d1b8256e",
       "eca352d8",
-      "a9e6ee54"
+      "a9e6ee54",
+      "e3547a28"
     ],
     "datasets": [
       {
@@ -15057,7 +15086,8 @@ window.BENCHMARK_DATA = {
           532.7778127034505,
           488.29805401393344,
           494.3127051762172,
-          491.9864620844523
+          491.9864620844523,
+          525.8678716512827
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15530,6 +15560,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -16134,7 +16165,8 @@ window.BENCHMARK_DATA = {
           560.9847352981567,
           478.60503266652427,
           500.78588752746583,
-          489.8172462463379
+          489.8172462463379,
+          575.5573016484578
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16327,6 +16359,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -19841,6 +19874,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:41 2026 \u002B0200",
         "message": "chore: Bump SharpCompress from 0.48.0 to 0.48.1 (#970)"
+      },
+      {
+        "sha": "e3547a28cde8fc36b5c423b3750125be83f83c22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun May 31 07:42:10 2026 \u002B0200",
+        "message": "feat: exclude netstandard and WindowsBase assembly prefixes by default (#971)"
       }
     ],
     "labels": [
@@ -20369,7 +20408,8 @@ window.BENCHMARK_DATA = {
       "5fb898f6",
       "d1b8256e",
       "eca352d8",
-      "a9e6ee54"
+      "a9e6ee54",
+      "e3547a28"
     ],
     "datasets": [
       {
@@ -20901,7 +20941,8 @@ window.BENCHMARK_DATA = {
           293.83324213027953,
           272.31214714050293,
           260.2109740461622,
-          250.86766112645466
+          250.86766112645466,
+          289.60294075012206
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21415,6 +21456,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -21978,7 +22020,8 @@ window.BENCHMARK_DATA = {
           292.9080077489217,
           246.19398107528687,
           256.84688316981,
-          242.7303590774536
+          242.7303590774536,
+          280.68075227737427
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22171,6 +22214,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -25685,6 +25729,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:41 2026 \u002B0200",
         "message": "chore: Bump SharpCompress from 0.48.0 to 0.48.1 (#970)"
+      },
+      {
+        "sha": "e3547a28cde8fc36b5c423b3750125be83f83c22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun May 31 07:42:10 2026 \u002B0200",
+        "message": "feat: exclude netstandard and WindowsBase assembly prefixes by default (#971)"
       }
     ],
     "labels": [
@@ -26213,7 +26263,8 @@ window.BENCHMARK_DATA = {
       "5fb898f6",
       "d1b8256e",
       "eca352d8",
-      "a9e6ee54"
+      "a9e6ee54",
+      "e3547a28"
     ],
     "datasets": [
       {
@@ -26745,7 +26796,8 @@ window.BENCHMARK_DATA = {
           494.96092816761563,
           469.9096125602722,
           487.77328910827634,
-          474.0714020388467
+          474.0714020388467,
+          501.06716607411704
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27218,6 +27270,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -27822,7 +27875,8 @@ window.BENCHMARK_DATA = {
           1303.3011100769043,
           1248.5900349934896,
           1179.1341366449992,
-          1158.3489807128906
+          1158.3489807128906,
+          1260.5177664438884
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28251,6 +28305,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -31529,6 +31584,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:41 2026 \u002B0200",
         "message": "chore: Bump SharpCompress from 0.48.0 to 0.48.1 (#970)"
+      },
+      {
+        "sha": "e3547a28cde8fc36b5c423b3750125be83f83c22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun May 31 07:42:10 2026 \u002B0200",
+        "message": "feat: exclude netstandard and WindowsBase assembly prefixes by default (#971)"
       }
     ],
     "labels": [
@@ -32057,7 +32118,8 @@ window.BENCHMARK_DATA = {
       "5fb898f6",
       "d1b8256e",
       "eca352d8",
-      "a9e6ee54"
+      "a9e6ee54",
+      "e3547a28"
     ],
     "datasets": [
       {
@@ -32589,7 +32651,8 @@ window.BENCHMARK_DATA = {
           2010.5027500788372,
           1943.1482081095378,
           1975.9966021219889,
-          1879.6414785385132
+          1879.6414785385132,
+          1967.8454129536947
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33062,6 +33125,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -33666,7 +33730,8 @@ window.BENCHMARK_DATA = {
           1435.4089012145996,
           1318.7738965352376,
           1355.970089639936,
-          1292.155686187744
+          1292.155686187744,
+          1464.532755025228
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33859,6 +33924,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -37373,6 +37439,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:41 2026 \u002B0200",
         "message": "chore: Bump SharpCompress from 0.48.0 to 0.48.1 (#970)"
+      },
+      {
+        "sha": "e3547a28cde8fc36b5c423b3750125be83f83c22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun May 31 07:42:10 2026 \u002B0200",
+        "message": "feat: exclude netstandard and WindowsBase assembly prefixes by default (#971)"
       }
     ],
     "labels": [
@@ -37901,7 +37973,8 @@ window.BENCHMARK_DATA = {
       "5fb898f6",
       "d1b8256e",
       "eca352d8",
-      "a9e6ee54"
+      "a9e6ee54",
+      "e3547a28"
     ],
     "datasets": [
       {
@@ -38433,7 +38506,8 @@ window.BENCHMARK_DATA = {
           2654.85319846017,
           2577.84052494594,
           2604.601530456543,
-          2471.1331678118027
+          2471.1331678118027,
+          2545.2915908813475
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38906,6 +38980,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -39510,7 +39585,8 @@ window.BENCHMARK_DATA = {
           28228.60042114258,
           28157.407215663367,
           20107.476479163535,
-          19812.127221679686
+          19812.127221679686,
+          21747.517711094446
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40042,6 +40118,7 @@ window.BENCHMARK_DATA = {
           57488,
           57481,
           57480,
+          33471,
           33471,
           33471,
           33471,
