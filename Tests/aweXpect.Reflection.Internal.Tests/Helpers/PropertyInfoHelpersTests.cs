@@ -5,6 +5,8 @@ using aweXpect.Reflection.Helpers;
 
 namespace aweXpect.Reflection.Internal.Tests.Helpers;
 
+#pragma warning disable CA2263 // Prefer generic overload when type is known
+
 public sealed class PropertyInfoHelpersTests
 {
 	[Fact]
@@ -235,3 +237,5 @@ public sealed class PropertyInfoHelpersTests
 		public int InstanceProperty { get; set; }
 	}
 }
+
+#pragma warning restore CA2263 // Prefer generic overload when type is known

@@ -3,6 +3,8 @@ using aweXpect.Reflection.Helpers;
 
 namespace aweXpect.Reflection.Internal.Tests.Helpers;
 
+#pragma warning disable CA2263 // Prefer generic overload when type is known
+
 public sealed class EventInfoHelpersTests
 {
 	[Fact]
@@ -100,3 +102,5 @@ public sealed class EventInfoHelpersTests
 #pragma warning restore CS0067
 #pragma warning restore CS8618
 }
+
+#pragma warning restore CA2263 // Prefer generic overload when type is known

@@ -5,6 +5,8 @@ using aweXpect.Reflection.Helpers;
 
 namespace aweXpect.Reflection.Internal.Tests.Helpers;
 
+#pragma warning disable CA2263 // Prefer generic overload when type is known
+
 public sealed class FieldInfoHelpersTests
 {
 	[Fact]
@@ -152,3 +154,5 @@ public sealed class FieldInfoHelpersTests
 	}
 #pragma warning restore CS0649
 }
+
+#pragma warning restore CA2263 // Prefer generic overload when type is known

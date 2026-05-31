@@ -114,9 +114,9 @@ public sealed class LinqAsyncHelpersTests
 		int?[] source = [1, null, 2, null, 3,];
 
 		List<int> result = new();
-		await foreach (int item in source.WhereNotNull())
+		await foreach (int? item in source.WhereNotNull())
 		{
-			result.Add(item);
+			result.Add(item!.Value);
 		}
 
 		await That(result).IsEqualTo([1, 2, 3,]).InAnyOrder();

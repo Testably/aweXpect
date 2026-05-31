@@ -4,6 +4,8 @@ using aweXpect.Reflection.Helpers;
 
 namespace aweXpect.Reflection.Internal.Tests.Helpers;
 
+#pragma warning disable CA2263 // Prefer generic overload when type is known
+
 public class AssemblyHelpersTests
 {
 	[Fact]
@@ -75,3 +77,5 @@ public class AssemblyHelpersTests
 		await That(result).IsEqualTo("SomethingWithoutAVersion");
 	}
 }
+
+#pragma warning restore CA2263 // Prefer generic overload when type is known

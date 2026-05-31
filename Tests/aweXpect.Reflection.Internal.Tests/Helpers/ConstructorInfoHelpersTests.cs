@@ -5,6 +5,8 @@ using aweXpect.Reflection.Helpers;
 
 namespace aweXpect.Reflection.Internal.Tests.Helpers;
 
+#pragma warning disable CA2263 // Prefer generic overload when type is known
+
 // ReSharper disable UnusedParameter.Local
 // ReSharper disable UnusedMember.Local
 public sealed class ConstructorInfoHelpersTests
@@ -158,3 +160,5 @@ public sealed class ConstructorInfoHelpersTests
 		}
 	}
 }
+
+#pragma warning restore CA2263 // Prefer generic overload when type is known
