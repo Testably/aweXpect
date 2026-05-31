@@ -408,13 +408,14 @@ In.AllLoadedAssemblies().Public.Constructors()
 Assemblies are usually used as a [source](#sources-the-in-helper), but you can also filter and assert
 on them directly:
 
-|                             | Filter                          | Assert (single)           | Assert (many)              |
-|-----------------------------|---------------------------------|---------------------------|----------------------------|
-| by name                     | `.WithName("x")`                | `.HasName("x")`           | `.HaveName("x")`           |
-| has attribute               | `.With<TAttribute>()`           | `.Has<TAttribute>()`      | `.Have<TAttribute>()`      |
-| depends on assembly         | `.WhichHaveADependencyOn("x")`  | `.HasADependencyOn("x")`  | `.HaveADependencyOn("x")`  |
-| does not depend on assembly | `.WhichHaveNoDependencyOn("x")` | `.HasNoDependencyOn("x")` | `.HaveNoDependencyOn("x")` |
-| custom predicate            | `.Which(a => …)`                | -                         | -                          |
+|                             | Filter                                 | Assert (single)                  | Assert (many)                     |
+|-----------------------------|----------------------------------------|----------------------------------|-----------------------------------|
+| by name                     | `.WithName("x")`                       | `.HasName("x")`                  | `.HaveName("x")`                  |
+| has attribute               | `.With<TAttribute>()`                  | `.Has<TAttribute>()`             | `.Have<TAttribute>()`             |
+| depends on assembly         | `.WhichHaveADependencyOn("x")`         | `.HasADependencyOn("x")`         | `.HaveADependencyOn("x")`         |
+| does not depend on assembly | `.WhichHaveNoDependencyOn("x")`        | `.HasNoDependencyOn("x")`        | `.HaveNoDependencyOn("x")`        |
+| depends only on set         | `.WhichHaveDependenciesOnlyOn("x", …)` | `.HasDependenciesOnlyOn("x", …)` | `.HaveDependenciesOnlyOn("x", …)` |
+| custom predicate            | `.Which(a => …)`                       | -                                | -                                 |
 
 ```csharp
 Assembly subject = Assembly.GetEntryAssembly();
@@ -423,6 +424,7 @@ Assembly[] subjects = AppDomain.CurrentDomain.GetAssemblies();
 await Expect.That(subject).HasName("aweXpect").AsPrefix();
 await Expect.That(subject).HasADependencyOn("System.Core");
 await Expect.That(subject).HasNoDependencyOn("UnwantedDependency");
+await Expect.That(subject).HasDependenciesOnlyOn("aweXpect.Core", "aweXpect");
 await Expect.That(subjects).Have<AssemblyTitleAttribute>();
 ```
 
