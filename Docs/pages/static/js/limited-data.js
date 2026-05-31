@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "d205de6c0ddc96bb4075cabade715fb9f78e88a3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Mar 6 14:13:35 2026 \u002B0100",
-        "message": "feat: give access to \u0060Timeout\u0060 and \u0060CancellationToken\u0060 in the \u0060ExpectationBuilder\u0060 (#901)"
-      },
-      {
         "sha": "ad9a5bc17826bcc653b63c60ff1e1a69382481d6",
         "author": "dependabot[bot]",
         "date": "Tue Mar 17 15:59:16 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:29 2026 \u002B0200",
         "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.6.2 to 18.7.0 (#969)"
+      },
+      {
+        "sha": "a9e6ee54aa84513ebaaed1b622a98a4cda1ac33b",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:41 2026 \u002B0200",
+        "message": "chore: Bump SharpCompress from 0.48.0 to 0.48.1 (#970)"
       }
     ],
     "labels": [
-      "d205de6c",
       "ad9a5bc1",
       "53a7bc7d",
       "e257ec5a",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "d5f54ae4",
       "5fb898f6",
       "d1b8256e",
-      "eca352d8"
+      "eca352d8",
+      "a9e6ee54"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          263.6416559537252,
           246.52351846694947,
           277.33378842898776,
           248.5066386290959,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           248.4225470860799,
           281.60268538338795,
           264.24082912717546,
-          279.3069086710612
+          279.3069086710612,
+          248.5982816696167
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          265.8687606224647,
           238.11322654088337,
           258.2727716445923,
           233.3314108053843,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           247.2772104581197,
           270.7715315085191,
           248.43984563534076,
-          246.36039815630232
+          246.36039815630232,
+          245.674853682518
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "d205de6c0ddc96bb4075cabade715fb9f78e88a3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Mar 6 14:13:35 2026 \u002B0100",
-        "message": "feat: give access to \u0060Timeout\u0060 and \u0060CancellationToken\u0060 in the \u0060ExpectationBuilder\u0060 (#901)"
-      },
-      {
         "sha": "ad9a5bc17826bcc653b63c60ff1e1a69382481d6",
         "author": "dependabot[bot]",
         "date": "Tue Mar 17 15:59:16 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:29 2026 \u002B0200",
         "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.6.2 to 18.7.0 (#969)"
+      },
+      {
+        "sha": "a9e6ee54aa84513ebaaed1b622a98a4cda1ac33b",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:41 2026 \u002B0200",
+        "message": "chore: Bump SharpCompress from 0.48.0 to 0.48.1 (#970)"
       }
     ],
     "labels": [
-      "d205de6c",
       "ad9a5bc1",
       "53a7bc7d",
       "e257ec5a",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "d5f54ae4",
       "5fb898f6",
       "d1b8256e",
-      "eca352d8"
+      "eca352d8",
+      "a9e6ee54"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          339061.4876464844,
           306435.1392252604,
           310221.6845377604,
           305610.11399739585,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           314822.47265625,
           338613.4191545759,
           322577.8310546875,
-          305520.9623046875
+          305520.9623046875,
+          288501.6021972656
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          335444,
           335444,
           335444,
           335444,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
+          335444,
           335444
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2628906.339285714,
           2610370.2845052085,
           2741954.3526041666,
           2707282.3856770834,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2721793.542708333,
           2971366.189322917,
           2807100.845833333,
-          2396152.1788504464
+          2396152.1788504464,
+          2333367.4771634615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1165,7 +1165,6 @@ window.BENCHMARK_DATA = {
           4804906,
           4804906,
           4804906,
-          4804906,
           4804902,
           4804906,
           4804906,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841648
+          4841648,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "d205de6c0ddc96bb4075cabade715fb9f78e88a3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Mar 6 14:13:35 2026 \u002B0100",
-        "message": "feat: give access to \u0060Timeout\u0060 and \u0060CancellationToken\u0060 in the \u0060ExpectationBuilder\u0060 (#901)"
-      },
       {
         "sha": "ad9a5bc17826bcc653b63c60ff1e1a69382481d6",
         "author": "dependabot[bot]",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:29 2026 \u002B0200",
         "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.6.2 to 18.7.0 (#969)"
+      },
+      {
+        "sha": "a9e6ee54aa84513ebaaed1b622a98a4cda1ac33b",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:41 2026 \u002B0200",
+        "message": "chore: Bump SharpCompress from 0.48.0 to 0.48.1 (#970)"
       }
     ],
     "labels": [
-      "d205de6c",
       "ad9a5bc1",
       "53a7bc7d",
       "e257ec5a",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "d5f54ae4",
       "5fb898f6",
       "d1b8256e",
-      "eca352d8"
+      "eca352d8",
+      "a9e6ee54"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          506.95444876352946,
           490.06468060811363,
           490.6396679878235,
           471.9445881207784,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           493.37997512817384,
           532.7778127034505,
           488.29805401393344,
-          494.3127051762172
+          494.3127051762172,
+          491.9864620844523
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          500.7376543925359,
           462.64450785091947,
           496.7702851295471,
           454.3674567086356,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           475.0375202383314,
           560.9847352981567,
           478.60503266652427,
-          500.78588752746583
+          500.78588752746583,
+          489.8172462463379
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "d205de6c0ddc96bb4075cabade715fb9f78e88a3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Mar 6 14:13:35 2026 \u002B0100",
-        "message": "feat: give access to \u0060Timeout\u0060 and \u0060CancellationToken\u0060 in the \u0060ExpectationBuilder\u0060 (#901)"
-      },
-      {
         "sha": "ad9a5bc17826bcc653b63c60ff1e1a69382481d6",
         "author": "dependabot[bot]",
         "date": "Tue Mar 17 15:59:16 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:29 2026 \u002B0200",
         "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.6.2 to 18.7.0 (#969)"
+      },
+      {
+        "sha": "a9e6ee54aa84513ebaaed1b622a98a4cda1ac33b",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:41 2026 \u002B0200",
+        "message": "chore: Bump SharpCompress from 0.48.0 to 0.48.1 (#970)"
       }
     ],
     "labels": [
-      "d205de6c",
       "ad9a5bc1",
       "53a7bc7d",
       "e257ec5a",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "d5f54ae4",
       "5fb898f6",
       "d1b8256e",
-      "eca352d8"
+      "eca352d8",
+      "a9e6ee54"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          245.01450351079305,
           252.4207589785258,
           259.45027888615925,
           242.91976623535157,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           279.3821127573649,
           293.83324213027953,
           272.31214714050293,
-          260.2109740461622
+          260.2109740461622,
+          250.86766112645466
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2270,7 +2270,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
-          808,
+          864,
           864,
           864,
           864,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          265.4116718610128,
           236.38564470836096,
           252.89722798665363,
           239.50946207046508,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           267.3096298535665,
           292.9080077489217,
           246.19398107528687,
-          256.84688316981
+          256.84688316981,
+          242.7303590774536
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "d205de6c0ddc96bb4075cabade715fb9f78e88a3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Mar 6 14:13:35 2026 \u002B0100",
-        "message": "feat: give access to \u0060Timeout\u0060 and \u0060CancellationToken\u0060 in the \u0060ExpectationBuilder\u0060 (#901)"
-      },
-      {
         "sha": "ad9a5bc17826bcc653b63c60ff1e1a69382481d6",
         "author": "dependabot[bot]",
         "date": "Tue Mar 17 15:59:16 2026 \u002B0100",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:29 2026 \u002B0200",
         "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.6.2 to 18.7.0 (#969)"
+      },
+      {
+        "sha": "a9e6ee54aa84513ebaaed1b622a98a4cda1ac33b",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:41 2026 \u002B0200",
+        "message": "chore: Bump SharpCompress from 0.48.0 to 0.48.1 (#970)"
       }
     ],
     "labels": [
-      "d205de6c",
       "ad9a5bc1",
       "53a7bc7d",
       "e257ec5a",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "d5f54ae4",
       "5fb898f6",
       "d1b8256e",
-      "eca352d8"
+      "eca352d8",
+      "a9e6ee54"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          452.8107095105307,
           434.6160683291299,
           454.3024052302043,
           456.7321134249369,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           457.5411386489868,
           494.96092816761563,
           469.9096125602722,
-          487.77328910827634
+          487.77328910827634,
+          474.0714020388467
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1262.7269182840982,
           1219.7700771331788,
           1297.0697533534124,
           1199.8335903712682,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1311.036827214559,
           1303.3011100769043,
           1248.5900349934896,
-          1179.1341366449992
+          1179.1341366449992,
+          1158.3489807128906
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "d205de6c0ddc96bb4075cabade715fb9f78e88a3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Mar 6 14:13:35 2026 \u002B0100",
-        "message": "feat: give access to \u0060Timeout\u0060 and \u0060CancellationToken\u0060 in the \u0060ExpectationBuilder\u0060 (#901)"
-      },
-      {
         "sha": "ad9a5bc17826bcc653b63c60ff1e1a69382481d6",
         "author": "dependabot[bot]",
         "date": "Tue Mar 17 15:59:16 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:29 2026 \u002B0200",
         "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.6.2 to 18.7.0 (#969)"
+      },
+      {
+        "sha": "a9e6ee54aa84513ebaaed1b622a98a4cda1ac33b",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:41 2026 \u002B0200",
+        "message": "chore: Bump SharpCompress from 0.48.0 to 0.48.1 (#970)"
       }
     ],
     "labels": [
-      "d205de6c",
       "ad9a5bc1",
       "53a7bc7d",
       "e257ec5a",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "d5f54ae4",
       "5fb898f6",
       "d1b8256e",
-      "eca352d8"
+      "eca352d8",
+      "a9e6ee54"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1922.7649700164795,
           1916.6972241719563,
           1877.6324087778728,
           1905.5466705322265,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2077.406628417969,
           2010.5027500788372,
           1943.1482081095378,
-          1975.9966021219889
+          1975.9966021219889,
+          1879.6414785385132
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1316.8638970692953,
           1312.3660928090414,
           1344.6447956085206,
           1255.3370518003192,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1513.755392074585,
           1435.4089012145996,
           1318.7738965352376,
-          1355.970089639936
+          1355.970089639936,
+          1292.155686187744
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "d205de6c0ddc96bb4075cabade715fb9f78e88a3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Mar 6 14:13:35 2026 \u002B0100",
-        "message": "feat: give access to \u0060Timeout\u0060 and \u0060CancellationToken\u0060 in the \u0060ExpectationBuilder\u0060 (#901)"
-      },
-      {
         "sha": "ad9a5bc17826bcc653b63c60ff1e1a69382481d6",
         "author": "dependabot[bot]",
         "date": "Tue Mar 17 15:59:16 2026 \u002B0100",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:29 2026 \u002B0200",
         "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.6.2 to 18.7.0 (#969)"
+      },
+      {
+        "sha": "a9e6ee54aa84513ebaaed1b622a98a4cda1ac33b",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:41 2026 \u002B0200",
+        "message": "chore: Bump SharpCompress from 0.48.0 to 0.48.1 (#970)"
       }
     ],
     "labels": [
-      "d205de6c",
       "ad9a5bc1",
       "53a7bc7d",
       "e257ec5a",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "d5f54ae4",
       "5fb898f6",
       "d1b8256e",
-      "eca352d8"
+      "eca352d8",
+      "a9e6ee54"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2624.485747528076,
           2564.1558205740794,
           2524.2061381022136,
           2473.4556050981796,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2658.722917175293,
           2654.85319846017,
           2577.84052494594,
-          2604.601530456543
+          2604.601530456543,
+          2471.1331678118027
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          90939.52669270833,
           85872.35096153847,
           88075.89565805289,
           86934.47059044472,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           27746.698482259115,
           28228.60042114258,
           28157.407215663367,
-          20107.476479163535
+          20107.476479163535,
+          19812.127221679686
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          58598,
           58598,
           59100,
           58598,
@@ -4238,6 +4237,7 @@ window.BENCHMARK_DATA = {
           57488,
           57481,
           57480,
+          33471,
           33471,
           33471,
           33471,
