@@ -33,6 +33,22 @@ public class BecauseTests
 		await That(Act).ThrowsException().WithMessage($"*{because}*").AsWildcard();
 	}
 
+	[Theory]
+	[InlineData(null)]
+	[InlineData("")]
+	public async Task ActionDelegate_WhenReasonIsNullOrEmpty_ShouldNotIncludeBecause(string? because)
+	{
+		Action subject = () => throw new MyException();
+
+		async Task Act()
+		{
+			await That(subject).DoesNotThrow().Because(because);
+		}
+
+		Exception exception = await That(Act).ThrowsException();
+		await That(exception.Message).DoesNotContain("because");
+	}
+
 	[Fact]
 	public async Task ASpecifiedBecauseReason_ShouldBeIncludedInMessage()
 	{
@@ -170,6 +186,26 @@ public class BecauseTests
 		async Task Act()
 		{
 			await That(subject).IsFalse();
+		}
+
+		await That(Act).ThrowsException()
+			.WithMessage("""
+			             Expected that subject
+			             is False,
+			             but it was True
+			             """);
+	}
+
+	[Theory]
+	[InlineData(null)]
+	[InlineData("")]
+	public async Task WhenReasonIsNullOrEmpty_ShouldNotIncludeBecause(string? because)
+	{
+		bool subject = true;
+
+		async Task Act()
+		{
+			await That(subject).IsFalse().Because(because);
 		}
 
 		await That(Act).ThrowsException()

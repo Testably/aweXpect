@@ -10,6 +10,7 @@ public sealed class ApiAcceptance
 	///     Execute this test to update the expected public API to the current API surface.
 	/// </summary>
 	[TestCase]
+	[Explicit]
 	public async Task AcceptApiChanges()
 	{
 		string[] assemblyNames =

@@ -1156,7 +1156,7 @@ namespace aweXpect.Results
     {
         public ExpectationResult(aweXpect.Core.ExpectationBuilder expectationBuilder) { }
         public aweXpect.Results.ExpectationResult Because(System.Threading.Tasks.Task<string> reason) { }
-        public aweXpect.Results.ExpectationResult Because(string reason) { }
+        public aweXpect.Results.ExpectationResult Because(string? reason) { }
         public System.Runtime.CompilerServices.TaskAwaiter GetAwaiter() { }
         public override string? ToString() { }
         public aweXpect.Results.ExpectationResult WithCancellation(System.Threading.CancellationToken cancellationToken) { }
@@ -1171,7 +1171,7 @@ namespace aweXpect.Results
     {
         public ExpectationResult(aweXpect.Core.ExpectationBuilder expectationBuilder) { }
         public TSelf Because(System.Threading.Tasks.Task<string> reason) { }
-        public TSelf Because(string reason) { }
+        public TSelf Because(string? reason) { }
         public System.Runtime.CompilerServices.TaskAwaiter<TType> GetAwaiter() { }
         public override string? ToString() { }
         public TSelf WithCancellation(System.Threading.CancellationToken cancellationToken) { }
