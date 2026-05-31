@@ -48,7 +48,7 @@ public sealed partial class ConstructorFilters
 					typeof(TestClass).GetConstructor([typeof(DummyBase),])!,
 				]).InAnyOrder();
 				await That(constructors.GetDescription())
-					.IsEqualTo("constructors with parameter of exact type ").AsPrefix();
+					.Contains("and name equal to \"parameter\"");
 			}
 
 			[Fact]
@@ -91,7 +91,7 @@ public sealed partial class ConstructorFilters
 					typeof(TestClass).GetConstructor([typeof(DummyBase),])!,
 				]).InAnyOrder();
 				await That(constructors.GetDescription())
-					.IsEqualTo("constructors with parameter of exact type ").AsPrefix();
+					.Contains("and name equal to \"parameter\"");
 			}
 		}
 

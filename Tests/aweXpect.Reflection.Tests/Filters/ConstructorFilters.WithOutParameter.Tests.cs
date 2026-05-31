@@ -59,11 +59,109 @@ public sealed partial class ConstructorFilters
 			}
 		}
 
+		public sealed class DescriptionTests
+		{
+			[Fact]
+			public async Task ParameterlessFilter_ShouldMatchConstructorWithOnlySomeOutParameters()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithOutParameter();
+
+				await That(constructors).Contains(MixedConstructor());
+			}
+
+			[Fact]
+			public async Task OfType_ShouldDescribeWithOutModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithOutParameter<int>();
+
+				await That(constructors.GetDescription()).Contains("with out modifier");
+			}
+
+			[Fact]
+			public async Task OfTypeWithName_ShouldDescribeWithOutModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithOutParameter<int>("value");
+
+				await That(constructors.GetDescription()).Contains("with out modifier");
+			}
+
+			[Fact]
+			public async Task ByName_ShouldDescribeWithOutModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithOutParameter("value");
+
+				await That(constructors.GetDescription()).Contains("with out modifier");
+			}
+
+			[Fact]
+			public async Task ExactlyOfType_ShouldDescribeWithOutModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithOutParameterExactly<int>();
+
+				await That(constructors.GetDescription()).Contains("with out modifier");
+			}
+
+			[Fact]
+			public async Task ExactlyOfTypeWithName_ShouldDescribeWithOutModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithOutParameterExactly<int>("value");
+
+				await That(constructors.GetDescription()).Contains("with out modifier");
+			}
+
+#pragma warning disable CA2263
+			[Fact]
+			public async Task OfType_UsingType_ShouldDescribeWithOutModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithOutParameter(typeof(int));
+
+				await That(constructors.GetDescription()).Contains("with out modifier");
+			}
+
+			[Fact]
+			public async Task OfTypeWithName_UsingType_ShouldDescribeWithOutModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithOutParameter(typeof(int), "value");
+
+				await That(constructors.GetDescription()).Contains("with out modifier");
+			}
+
+			[Fact]
+			public async Task ExactlyOfType_UsingType_ShouldDescribeWithOutModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithOutParameterExactly(typeof(int));
+
+				await That(constructors.GetDescription()).Contains("with out modifier");
+			}
+
+			[Fact]
+			public async Task ExactlyOfTypeWithName_UsingType_ShouldDescribeWithOutModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithOutParameterExactly(typeof(int), "value");
+
+				await That(constructors.GetDescription()).Contains("with out modifier");
+			}
+#pragma warning restore CA2263
+		}
+
 		private static ConstructorInfo? OutParameterConstructor()
 			=> typeof(ClassWithOutParameterConstructor).GetConstructors().Single();
 
 		private static ConstructorInfo? PlainConstructor()
 			=> typeof(ClassWithPlainConstructor).GetConstructors().Single();
+
+		private static ConstructorInfo? MixedConstructor()
+			=> typeof(ClassWithMixedConstructor).GetConstructors().Single();
 
 		// ReSharper disable UnusedMember.Local
 		// ReSharper disable UnusedParameter.Local
@@ -79,6 +177,14 @@ public sealed partial class ConstructorFilters
 		{
 			public ClassWithPlainConstructor(int value)
 			{
+			}
+		}
+
+		private class ClassWithMixedConstructor
+		{
+			public ClassWithMixedConstructor(out int value, string other)
+			{
+				value = 0;
 			}
 		}
 		// ReSharper restore UnusedParameter.Local

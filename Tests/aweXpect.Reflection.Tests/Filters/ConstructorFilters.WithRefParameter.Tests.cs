@@ -59,11 +59,109 @@ public sealed partial class ConstructorFilters
 			}
 		}
 
+		public sealed class DescriptionTests
+		{
+			[Fact]
+			public async Task ParameterlessFilter_ShouldMatchConstructorWithOnlySomeRefParameters()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithRefParameter();
+
+				await That(constructors).Contains(MixedConstructor());
+			}
+
+			[Fact]
+			public async Task OfType_ShouldDescribeWithRefModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithRefParameter<int>();
+
+				await That(constructors.GetDescription()).Contains("with ref modifier");
+			}
+
+			[Fact]
+			public async Task OfTypeWithName_ShouldDescribeWithRefModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithRefParameter<int>("value");
+
+				await That(constructors.GetDescription()).Contains("with ref modifier");
+			}
+
+			[Fact]
+			public async Task ByName_ShouldDescribeWithRefModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithRefParameter("value");
+
+				await That(constructors.GetDescription()).Contains("with ref modifier");
+			}
+
+			[Fact]
+			public async Task ExactlyOfType_ShouldDescribeWithRefModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithRefParameterExactly<int>();
+
+				await That(constructors.GetDescription()).Contains("with ref modifier");
+			}
+
+			[Fact]
+			public async Task ExactlyOfTypeWithName_ShouldDescribeWithRefModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithRefParameterExactly<int>("value");
+
+				await That(constructors.GetDescription()).Contains("with ref modifier");
+			}
+
+#pragma warning disable CA2263
+			[Fact]
+			public async Task OfType_UsingType_ShouldDescribeWithRefModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithRefParameter(typeof(int));
+
+				await That(constructors.GetDescription()).Contains("with ref modifier");
+			}
+
+			[Fact]
+			public async Task OfTypeWithName_UsingType_ShouldDescribeWithRefModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithRefParameter(typeof(int), "value");
+
+				await That(constructors.GetDescription()).Contains("with ref modifier");
+			}
+
+			[Fact]
+			public async Task ExactlyOfType_UsingType_ShouldDescribeWithRefModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithRefParameterExactly(typeof(int));
+
+				await That(constructors.GetDescription()).Contains("with ref modifier");
+			}
+
+			[Fact]
+			public async Task ExactlyOfTypeWithName_UsingType_ShouldDescribeWithRefModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithRefParameterExactly(typeof(int), "value");
+
+				await That(constructors.GetDescription()).Contains("with ref modifier");
+			}
+#pragma warning restore CA2263
+		}
+
 		private static ConstructorInfo? RefParameterConstructor()
 			=> typeof(ClassWithRefParameterConstructor).GetConstructors().Single();
 
 		private static ConstructorInfo? PlainConstructor()
 			=> typeof(ClassWithPlainConstructor).GetConstructors().Single();
+
+		private static ConstructorInfo? MixedConstructor()
+			=> typeof(ClassWithMixedConstructor).GetConstructors().Single();
 
 		// ReSharper disable UnusedMember.Local
 		// ReSharper disable UnusedParameter.Local
@@ -79,6 +177,14 @@ public sealed partial class ConstructorFilters
 		{
 			public ClassWithPlainConstructor(int value)
 			{
+			}
+		}
+
+		private class ClassWithMixedConstructor
+		{
+			public ClassWithMixedConstructor(ref int value, string other)
+			{
+				value = 0;
 			}
 		}
 		// ReSharper restore UnusedParameter.Local

@@ -59,11 +59,109 @@ public sealed partial class ConstructorFilters
 			}
 		}
 
+		public sealed class DescriptionTests
+		{
+			[Fact]
+			public async Task ParameterlessFilter_ShouldMatchConstructorWithOnlySomeParamsParameters()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithParamsParameter();
+
+				await That(constructors).Contains(MixedConstructor());
+			}
+
+			[Fact]
+			public async Task OfType_ShouldDescribeWithParamsModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithParamsParameter<int[]>();
+
+				await That(constructors.GetDescription()).Contains("with params modifier");
+			}
+
+			[Fact]
+			public async Task OfTypeWithName_ShouldDescribeWithParamsModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithParamsParameter<int[]>("values");
+
+				await That(constructors.GetDescription()).Contains("with params modifier");
+			}
+
+			[Fact]
+			public async Task ByName_ShouldDescribeWithParamsModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithParamsParameter("values");
+
+				await That(constructors.GetDescription()).Contains("with params modifier");
+			}
+
+			[Fact]
+			public async Task ExactlyOfType_ShouldDescribeWithParamsModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithParamsParameterExactly<int[]>();
+
+				await That(constructors.GetDescription()).Contains("with params modifier");
+			}
+
+			[Fact]
+			public async Task ExactlyOfTypeWithName_ShouldDescribeWithParamsModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithParamsParameterExactly<int[]>("values");
+
+				await That(constructors.GetDescription()).Contains("with params modifier");
+			}
+
+#pragma warning disable CA2263
+			[Fact]
+			public async Task OfType_UsingType_ShouldDescribeWithParamsModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithParamsParameter(typeof(int[]));
+
+				await That(constructors.GetDescription()).Contains("with params modifier");
+			}
+
+			[Fact]
+			public async Task OfTypeWithName_UsingType_ShouldDescribeWithParamsModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithParamsParameter(typeof(int[]), "values");
+
+				await That(constructors.GetDescription()).Contains("with params modifier");
+			}
+
+			[Fact]
+			public async Task ExactlyOfType_UsingType_ShouldDescribeWithParamsModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithParamsParameterExactly(typeof(int[]));
+
+				await That(constructors.GetDescription()).Contains("with params modifier");
+			}
+
+			[Fact]
+			public async Task ExactlyOfTypeWithName_UsingType_ShouldDescribeWithParamsModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithParamsParameterExactly(typeof(int[]), "values");
+
+				await That(constructors.GetDescription()).Contains("with params modifier");
+			}
+#pragma warning restore CA2263
+		}
+
 		private static ConstructorInfo? ParamsParameterConstructor()
 			=> typeof(ClassWithParamsParameterConstructor).GetConstructors().Single();
 
 		private static ConstructorInfo? PlainConstructor()
 			=> typeof(ClassWithPlainConstructor).GetConstructors().Single();
+
+		private static ConstructorInfo? MixedConstructor()
+			=> typeof(ClassWithMixedConstructor).GetConstructors().Single();
 
 		// ReSharper disable UnusedMember.Local
 		// ReSharper disable UnusedParameter.Local
@@ -77,6 +175,13 @@ public sealed partial class ConstructorFilters
 		private class ClassWithPlainConstructor
 		{
 			public ClassWithPlainConstructor(int[] values)
+			{
+			}
+		}
+
+		private class ClassWithMixedConstructor
+		{
+			public ClassWithMixedConstructor(string other, params int[] values)
 			{
 			}
 		}

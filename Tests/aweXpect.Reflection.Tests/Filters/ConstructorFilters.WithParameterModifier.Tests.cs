@@ -31,6 +31,9 @@ public sealed partial class ConstructorFilters
 
 				await That(constructors).Contains(OutIntConstructor());
 				await That(constructors).DoesNotContain(PlainIntConstructor());
+				await That(constructors.GetDescription())
+					.IsEqualTo("constructors with parameter of type int and with out modifier in assembly")
+					.AsPrefix();
 			}
 
 			[Fact]
@@ -41,6 +44,9 @@ public sealed partial class ConstructorFilters
 
 				await That(constructors).Contains(InIntConstructor());
 				await That(constructors).DoesNotContain(PlainIntConstructor());
+				await That(constructors.GetDescription())
+					.IsEqualTo("constructors with parameter of type int and with in modifier in assembly")
+					.AsPrefix();
 			}
 
 			[Fact]
@@ -51,6 +57,9 @@ public sealed partial class ConstructorFilters
 
 				await That(constructors).Contains(OptionalIntConstructor());
 				await That(constructors).DoesNotContain(PlainIntConstructor());
+				await That(constructors.GetDescription())
+					.IsEqualTo("constructors with parameter of type int and with optional modifier in assembly")
+					.AsPrefix();
 			}
 
 			[Fact]
@@ -60,6 +69,9 @@ public sealed partial class ConstructorFilters
 					.Constructors().WithParameter<int[]>().WithParamsModifier();
 
 				await That(constructors).Contains(ParamsIntConstructor());
+				await That(constructors.GetDescription())
+					.IsEqualTo("constructors with parameter of type int[] and with params modifier in assembly")
+					.AsPrefix();
 			}
 		}
 
