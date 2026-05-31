@@ -22,9 +22,98 @@ public sealed partial class ThatConstructors
 
 			await Task.CompletedTask;
 		}
+
+		private static async IAsyncEnumerable<ConstructorInfo?> ToAsyncEnumerableNullable(params ConstructorInfo?[] items)
+		{
+			foreach (ConstructorInfo? item in items)
+			{
+				yield return item;
+			}
+
+			await Task.CompletedTask;
+		}
 #endif
 		public sealed class Tests
 		{
+			[Fact]
+			public async Task HaveParameterByType_WhenConstructorIsNull_ShouldFail()
+			{
+				IEnumerable<ConstructorInfo?> constructors = new ConstructorInfo?[]
+				{
+					null,
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveParameter<int>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of type int,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task HaveParameterByTypeAndName_WhenTypeMatchesButNameDiffers_ShouldFail()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!, // int parameter named "value"
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveParameter<int>("count");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of type int with name "count",
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task HaveParameterByTypeInstanceAndName_WhenTypeMatchesButNameDiffers_ShouldFail()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!, // int parameter named "value"
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveParameter(typeof(int), "count");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of type int with name "count",
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task HaveParameterByType_WhenMatchingParameterIsNotAtFirstIndex_ShouldSucceed()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(TestClass).GetConstructor([typeof(string), typeof(int),])!, // int at index 1, no index constraint
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveParameter<int>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[Fact]
 			public async Task HaveParameterByName_WhenAllHaveParameter_ShouldSucceed()
 			{
@@ -244,6 +333,76 @@ public sealed partial class ThatConstructors
 
 #if NET8_0_OR_GREATER
 			[Fact]
+			public async Task AsyncEnumerable_ByType_WhenConstructorIsNull_ShouldFail()
+			{
+				IAsyncEnumerable<ConstructorInfo?> constructors = ToAsyncEnumerableNullable([null,]);
+
+				async Task Act()
+				{
+					await That(constructors).HaveParameter(typeof(int));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of type int,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task AsyncEnumerable_ByTypeAndName_WhenTypeMatchesButNameDiffers_ShouldFail()
+			{
+				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
+					typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!); // int parameter named "value"
+
+				async Task Act()
+				{
+					await That(constructors).HaveParameter(typeof(int), "count");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of type int with name "count",
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task AsyncEnumerable_ByTypeAndNameGeneric_WhenTypeMatchesButNameDiffers_ShouldFail()
+			{
+				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
+					typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!); // int parameter named "value"
+
+				async Task Act()
+				{
+					await That(constructors).HaveParameter<int>("count");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of type int with name "count",
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task AsyncEnumerable_ByType_WhenMatchingParameterIsNotAtFirstIndex_ShouldSucceed()
+			{
+				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
+					typeof(TestClass).GetConstructor([typeof(string), typeof(int),])!); // int at index 1, no index constraint
+
+				async Task Act()
+				{
+					await That(constructors).HaveParameter(typeof(int));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task AsyncEnumerable_ByType_WhenAllHaveParameter_ShouldSucceed()
 			{
 				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
@@ -321,6 +480,7 @@ public sealed partial class ThatConstructors
 				public TestClass(int value) { }
 				public TestClass(string name) { }
 				public TestClass(int value, string name) { }
+				public TestClass(string name, int value) { }
 				public TestClass(Stream stream) { }
 				public TestClass(MemoryStream stream) { }
 			}
@@ -330,6 +490,48 @@ public sealed partial class ThatConstructors
 
 		public sealed class NegatedTests
 		{
+			[Fact]
+			public async Task AtIndex_WhenAllHaveParameterAtIndex_ShouldFailWithIndexInExpectation()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!, // int at index 0
+				};
+
+				async Task Act()
+				{
+					await That(constructors).DoesNotComplyWith(they => they.HaveParameter<int>().AtIndex(0));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             not all have parameter of type int at index 0,
+					             but all did
+					             """);
+			}
+
+			[Fact]
+			public async Task Modifier_WhenAllHaveModifierParameter_ShouldFailWithModifierInExpectation()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(ModifierClass).GetConstructors()[0], // in int parameter
+				};
+
+				async Task Act()
+				{
+					await That(constructors).DoesNotComplyWith(they => they.HaveInParameter<int>());
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             not all have parameter of type int with in modifier,
+					             but all did
+					             """);
+			}
+
 			[Fact]
 			public async Task HaveParameterByName_WhenAllHaveParameter_ShouldFail()
 			{
@@ -524,6 +726,11 @@ public sealed partial class ThatConstructors
 				public TestClass(int value, string name) { }
 				public TestClass(Stream stream) { }
 				public TestClass(MemoryStream stream) { }
+			}
+
+			private class ModifierClass
+			{
+				public ModifierClass(in int value) { }
 			}
 			// ReSharper restore UnusedParameter.Local
 			// ReSharper restore UnusedMember.Local

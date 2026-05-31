@@ -131,6 +131,90 @@ public sealed partial class ThatConstructors
 					             """);
 			}
 
+			[Fact]
+			public async Task WhenAnyParameterIsSubtypeWithName_ShouldFail()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(TestClass).GetConstructor([typeof(Stream),])!,
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveParameterExactly<IDisposable>("stream");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of exact type IDisposable with name "stream",
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenAnyParameterIsSubtypeByTypeWithName_ShouldFail()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(TestClass).GetConstructor([typeof(Stream),])!,
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveParameterExactly(typeof(IDisposable), "stream");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of exact type IDisposable with name "stream",
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenExactTypeMatchesButNameDiffers_ShouldFail()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(TestClass).GetConstructor([typeof(Stream),])!, // Stream parameter named "stream"
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveParameterExactly<Stream>("other");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of exact type Stream with name "other",
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenExactTypeMatchesButNameDiffersByType_ShouldFail()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(TestClass).GetConstructor([typeof(Stream),])!, // Stream parameter named "stream"
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveParameterExactly(typeof(Stream), "other");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of exact type Stream with name "other",
+					             but at least one did not
+					             """);
+			}
+
 #if NET8_0_OR_GREATER
 			[Fact]
 			public async Task AsyncEnumerable_WhenAllHaveParameterExactly_ShouldSucceed()
@@ -172,7 +256,12 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveParameterExactly<IDisposable>();
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of exact type IDisposable,
+					             but at least one did not
+					             """);
 			}
 
 			[Fact]
@@ -215,7 +304,88 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveParameterExactly(typeof(IDisposable));
 				}
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of exact type IDisposable,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task AsyncEnumerable_WhenAnyParameterIsSubtypeWithName_ShouldFail()
+			{
+				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
+					typeof(TestClass).GetConstructor([typeof(Stream),])!);
+
+				async Task Act()
+				{
+					await That(constructors).HaveParameterExactly<IDisposable>("stream");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of exact type IDisposable with name "stream",
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task AsyncEnumerable_WhenAnyParameterIsSubtypeByTypeWithName_ShouldFail()
+			{
+				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
+					typeof(TestClass).GetConstructor([typeof(Stream),])!);
+
+				async Task Act()
+				{
+					await That(constructors).HaveParameterExactly(typeof(IDisposable), "stream");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of exact type IDisposable with name "stream",
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task AsyncEnumerable_WhenExactTypeMatchesButNameDiffers_ShouldFail()
+			{
+				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
+					typeof(TestClass).GetConstructor([typeof(Stream),])!); // Stream parameter named "stream"
+
+				async Task Act()
+				{
+					await That(constructors).HaveParameterExactly<Stream>("other");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of exact type Stream with name "other",
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task AsyncEnumerable_WhenExactTypeMatchesButNameDiffersByType_ShouldFail()
+			{
+				IAsyncEnumerable<ConstructorInfo> constructors = ToAsyncEnumerable(
+					typeof(TestClass).GetConstructor([typeof(Stream),])!); // Stream parameter named "stream"
+
+				async Task Act()
+				{
+					await That(constructors).HaveParameterExactly(typeof(Stream), "other");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of exact type Stream with name "other",
+					             but at least one did not
+					             """);
 			}
 #endif
 		}
