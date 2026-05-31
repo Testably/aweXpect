@@ -3150,6 +3150,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:29 2026 \u002B0200",
         "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.6.2 to 18.7.0 (#969)"
+      },
+      {
+        "sha": "a9e6ee54aa84513ebaaed1b622a98a4cda1ac33b",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:41 2026 \u002B0200",
+        "message": "chore: Bump SharpCompress from 0.48.0 to 0.48.1 (#970)"
       }
     ],
     "labels": [
@@ -3677,7 +3683,8 @@ window.BENCHMARK_DATA = {
       "d5f54ae4",
       "5fb898f6",
       "d1b8256e",
-      "eca352d8"
+      "eca352d8",
+      "a9e6ee54"
     ],
     "datasets": [
       {
@@ -4208,7 +4215,8 @@ window.BENCHMARK_DATA = {
           248.4225470860799,
           281.60268538338795,
           264.24082912717546,
-          279.3069086710612
+          279.3069086710612,
+          248.5982816696167
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4681,6 +4689,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5283,7 +5292,8 @@ window.BENCHMARK_DATA = {
           247.2772104581197,
           270.7715315085191,
           248.43984563534076,
-          246.36039815630232
+          246.36039815630232,
+          245.674853682518
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5476,6 +5486,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -8521,6 +8532,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:29 2026 \u002B0200",
         "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.6.2 to 18.7.0 (#969)"
+      },
+      {
+        "sha": "a9e6ee54aa84513ebaaed1b622a98a4cda1ac33b",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:41 2026 \u002B0200",
+        "message": "chore: Bump SharpCompress from 0.48.0 to 0.48.1 (#970)"
       }
     ],
     "labels": [
@@ -8971,7 +8988,8 @@ window.BENCHMARK_DATA = {
       "d5f54ae4",
       "5fb898f6",
       "d1b8256e",
-      "eca352d8"
+      "eca352d8",
+      "a9e6ee54"
     ],
     "datasets": [
       {
@@ -9425,7 +9443,8 @@ window.BENCHMARK_DATA = {
           314822.47265625,
           338613.4191545759,
           322577.8310546875,
-          305520.9623046875
+          305520.9623046875,
+          288501.6021972656
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9872,6 +9891,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335442,
+          335444,
           335444,
           335444,
           335444,
@@ -10346,7 +10366,8 @@ window.BENCHMARK_DATA = {
           2721793.542708333,
           2971366.189322917,
           2807100.845833333,
-          2396152.1788504464
+          2396152.1788504464,
+          2333367.4771634615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10805,7 +10826,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841648
+          4841648,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13969,6 +13991,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:29 2026 \u002B0200",
         "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.6.2 to 18.7.0 (#969)"
+      },
+      {
+        "sha": "a9e6ee54aa84513ebaaed1b622a98a4cda1ac33b",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:41 2026 \u002B0200",
+        "message": "chore: Bump SharpCompress from 0.48.0 to 0.48.1 (#970)"
       }
     ],
     "labels": [
@@ -14496,7 +14524,8 @@ window.BENCHMARK_DATA = {
       "d5f54ae4",
       "5fb898f6",
       "d1b8256e",
-      "eca352d8"
+      "eca352d8",
+      "a9e6ee54"
     ],
     "datasets": [
       {
@@ -15027,7 +15056,8 @@ window.BENCHMARK_DATA = {
           493.37997512817384,
           532.7778127034505,
           488.29805401393344,
-          494.3127051762172
+          494.3127051762172,
+          491.9864620844523
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15500,6 +15530,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -16102,7 +16133,8 @@ window.BENCHMARK_DATA = {
           475.0375202383314,
           560.9847352981567,
           478.60503266652427,
-          500.78588752746583
+          500.78588752746583,
+          489.8172462463379
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16295,6 +16327,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -19802,6 +19835,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:29 2026 \u002B0200",
         "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.6.2 to 18.7.0 (#969)"
+      },
+      {
+        "sha": "a9e6ee54aa84513ebaaed1b622a98a4cda1ac33b",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:41 2026 \u002B0200",
+        "message": "chore: Bump SharpCompress from 0.48.0 to 0.48.1 (#970)"
       }
     ],
     "labels": [
@@ -20329,7 +20368,8 @@ window.BENCHMARK_DATA = {
       "d5f54ae4",
       "5fb898f6",
       "d1b8256e",
-      "eca352d8"
+      "eca352d8",
+      "a9e6ee54"
     ],
     "datasets": [
       {
@@ -20860,7 +20900,8 @@ window.BENCHMARK_DATA = {
           279.3821127573649,
           293.83324213027953,
           272.31214714050293,
-          260.2109740461622
+          260.2109740461622,
+          250.86766112645466
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21374,6 +21415,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -21935,7 +21977,8 @@ window.BENCHMARK_DATA = {
           267.3096298535665,
           292.9080077489217,
           246.19398107528687,
-          256.84688316981
+          256.84688316981,
+          242.7303590774536
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22128,6 +22171,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -25635,6 +25679,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:29 2026 \u002B0200",
         "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.6.2 to 18.7.0 (#969)"
+      },
+      {
+        "sha": "a9e6ee54aa84513ebaaed1b622a98a4cda1ac33b",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:41 2026 \u002B0200",
+        "message": "chore: Bump SharpCompress from 0.48.0 to 0.48.1 (#970)"
       }
     ],
     "labels": [
@@ -26162,7 +26212,8 @@ window.BENCHMARK_DATA = {
       "d5f54ae4",
       "5fb898f6",
       "d1b8256e",
-      "eca352d8"
+      "eca352d8",
+      "a9e6ee54"
     ],
     "datasets": [
       {
@@ -26693,7 +26744,8 @@ window.BENCHMARK_DATA = {
           457.5411386489868,
           494.96092816761563,
           469.9096125602722,
-          487.77328910827634
+          487.77328910827634,
+          474.0714020388467
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27166,6 +27218,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -27768,7 +27821,8 @@ window.BENCHMARK_DATA = {
           1311.036827214559,
           1303.3011100769043,
           1248.5900349934896,
-          1179.1341366449992
+          1179.1341366449992,
+          1158.3489807128906
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28197,6 +28251,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -31468,6 +31523,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:29 2026 \u002B0200",
         "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.6.2 to 18.7.0 (#969)"
+      },
+      {
+        "sha": "a9e6ee54aa84513ebaaed1b622a98a4cda1ac33b",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:41 2026 \u002B0200",
+        "message": "chore: Bump SharpCompress from 0.48.0 to 0.48.1 (#970)"
       }
     ],
     "labels": [
@@ -31995,7 +32056,8 @@ window.BENCHMARK_DATA = {
       "d5f54ae4",
       "5fb898f6",
       "d1b8256e",
-      "eca352d8"
+      "eca352d8",
+      "a9e6ee54"
     ],
     "datasets": [
       {
@@ -32526,7 +32588,8 @@ window.BENCHMARK_DATA = {
           2077.406628417969,
           2010.5027500788372,
           1943.1482081095378,
-          1975.9966021219889
+          1975.9966021219889,
+          1879.6414785385132
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32999,6 +33062,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -33601,7 +33665,8 @@ window.BENCHMARK_DATA = {
           1513.755392074585,
           1435.4089012145996,
           1318.7738965352376,
-          1355.970089639936
+          1355.970089639936,
+          1292.155686187744
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33794,6 +33859,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -37301,6 +37367,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:29 2026 \u002B0200",
         "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.6.2 to 18.7.0 (#969)"
+      },
+      {
+        "sha": "a9e6ee54aa84513ebaaed1b622a98a4cda1ac33b",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:41 2026 \u002B0200",
+        "message": "chore: Bump SharpCompress from 0.48.0 to 0.48.1 (#970)"
       }
     ],
     "labels": [
@@ -37828,7 +37900,8 @@ window.BENCHMARK_DATA = {
       "d5f54ae4",
       "5fb898f6",
       "d1b8256e",
-      "eca352d8"
+      "eca352d8",
+      "a9e6ee54"
     ],
     "datasets": [
       {
@@ -38359,7 +38432,8 @@ window.BENCHMARK_DATA = {
           2658.722917175293,
           2654.85319846017,
           2577.84052494594,
-          2604.601530456543
+          2604.601530456543,
+          2471.1331678118027
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38832,6 +38906,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -39434,7 +39509,8 @@ window.BENCHMARK_DATA = {
           27746.698482259115,
           28228.60042114258,
           28157.407215663367,
-          20107.476479163535
+          20107.476479163535,
+          19812.127221679686
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39966,6 +40042,7 @@ window.BENCHMARK_DATA = {
           57488,
           57481,
           57480,
+          33471,
           33471,
           33471,
           33471,
