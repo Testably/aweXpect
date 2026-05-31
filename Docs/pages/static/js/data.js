@@ -3144,6 +3144,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:17 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 3 updates (#968)"
+      },
+      {
+        "sha": "eca352d8ebe33eeb5a97ea9bac82ffc602aaffc0",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:29 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.6.2 to 18.7.0 (#969)"
       }
     ],
     "labels": [
@@ -3670,7 +3676,8 @@ window.BENCHMARK_DATA = {
       "a9e05ce1",
       "d5f54ae4",
       "5fb898f6",
-      "d1b8256e"
+      "d1b8256e",
+      "eca352d8"
     ],
     "datasets": [
       {
@@ -4200,7 +4207,8 @@ window.BENCHMARK_DATA = {
           251.92092113494874,
           248.4225470860799,
           281.60268538338795,
-          264.24082912717546
+          264.24082912717546,
+          279.3069086710612
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4673,6 +4681,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5273,7 +5282,8 @@ window.BENCHMARK_DATA = {
           236.78602307183402,
           247.2772104581197,
           270.7715315085191,
-          248.43984563534076
+          248.43984563534076,
+          246.36039815630232
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5466,6 +5476,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -8504,6 +8515,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:17 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 3 updates (#968)"
+      },
+      {
+        "sha": "eca352d8ebe33eeb5a97ea9bac82ffc602aaffc0",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:29 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.6.2 to 18.7.0 (#969)"
       }
     ],
     "labels": [
@@ -8953,7 +8970,8 @@ window.BENCHMARK_DATA = {
       "a9e05ce1",
       "d5f54ae4",
       "5fb898f6",
-      "d1b8256e"
+      "d1b8256e",
+      "eca352d8"
     ],
     "datasets": [
       {
@@ -9406,7 +9424,8 @@ window.BENCHMARK_DATA = {
           298966.8494140625,
           314822.47265625,
           338613.4191545759,
-          322577.8310546875
+          322577.8310546875,
+          305520.9623046875
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9853,6 +9872,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335442,
+          335444,
           335444,
           335444,
           335444,
@@ -10325,7 +10345,8 @@ window.BENCHMARK_DATA = {
           2506167.606026786,
           2721793.542708333,
           2971366.189322917,
-          2807100.845833333
+          2807100.845833333,
+          2396152.1788504464
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10783,7 +10804,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841651
+          4841651,
+          4841648
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13941,6 +13963,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:17 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 3 updates (#968)"
+      },
+      {
+        "sha": "eca352d8ebe33eeb5a97ea9bac82ffc602aaffc0",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:29 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.6.2 to 18.7.0 (#969)"
       }
     ],
     "labels": [
@@ -14467,7 +14495,8 @@ window.BENCHMARK_DATA = {
       "a9e05ce1",
       "d5f54ae4",
       "5fb898f6",
-      "d1b8256e"
+      "d1b8256e",
+      "eca352d8"
     ],
     "datasets": [
       {
@@ -14997,7 +15026,8 @@ window.BENCHMARK_DATA = {
           466.29830408096313,
           493.37997512817384,
           532.7778127034505,
-          488.29805401393344
+          488.29805401393344,
+          494.3127051762172
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15470,6 +15500,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -16070,7 +16101,8 @@ window.BENCHMARK_DATA = {
           454.54766511917114,
           475.0375202383314,
           560.9847352981567,
-          478.60503266652427
+          478.60503266652427,
+          500.78588752746583
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16263,6 +16295,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -19763,6 +19796,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:17 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 3 updates (#968)"
+      },
+      {
+        "sha": "eca352d8ebe33eeb5a97ea9bac82ffc602aaffc0",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:29 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.6.2 to 18.7.0 (#969)"
       }
     ],
     "labels": [
@@ -20289,7 +20328,8 @@ window.BENCHMARK_DATA = {
       "a9e05ce1",
       "d5f54ae4",
       "5fb898f6",
-      "d1b8256e"
+      "d1b8256e",
+      "eca352d8"
     ],
     "datasets": [
       {
@@ -20819,7 +20859,8 @@ window.BENCHMARK_DATA = {
           255.2972011566162,
           279.3821127573649,
           293.83324213027953,
-          272.31214714050293
+          272.31214714050293,
+          260.2109740461622
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21333,6 +21374,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -21892,7 +21934,8 @@ window.BENCHMARK_DATA = {
           242.3993557049678,
           267.3096298535665,
           292.9080077489217,
-          246.19398107528687
+          246.19398107528687,
+          256.84688316981
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22085,6 +22128,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -25585,6 +25629,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:17 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 3 updates (#968)"
+      },
+      {
+        "sha": "eca352d8ebe33eeb5a97ea9bac82ffc602aaffc0",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:29 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.6.2 to 18.7.0 (#969)"
       }
     ],
     "labels": [
@@ -26111,7 +26161,8 @@ window.BENCHMARK_DATA = {
       "a9e05ce1",
       "d5f54ae4",
       "5fb898f6",
-      "d1b8256e"
+      "d1b8256e",
+      "eca352d8"
     ],
     "datasets": [
       {
@@ -26641,7 +26692,8 @@ window.BENCHMARK_DATA = {
           469.0115102018629,
           457.5411386489868,
           494.96092816761563,
-          469.9096125602722
+          469.9096125602722,
+          487.77328910827634
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27114,6 +27166,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -27714,7 +27767,8 @@ window.BENCHMARK_DATA = {
           1197.790695063273,
           1311.036827214559,
           1303.3011100769043,
-          1248.5900349934896
+          1248.5900349934896,
+          1179.1341366449992
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28143,6 +28197,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -31407,6 +31462,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:17 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 3 updates (#968)"
+      },
+      {
+        "sha": "eca352d8ebe33eeb5a97ea9bac82ffc602aaffc0",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:29 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.6.2 to 18.7.0 (#969)"
       }
     ],
     "labels": [
@@ -31933,7 +31994,8 @@ window.BENCHMARK_DATA = {
       "a9e05ce1",
       "d5f54ae4",
       "5fb898f6",
-      "d1b8256e"
+      "d1b8256e",
+      "eca352d8"
     ],
     "datasets": [
       {
@@ -32463,7 +32525,8 @@ window.BENCHMARK_DATA = {
           1858.8217960357665,
           2077.406628417969,
           2010.5027500788372,
-          1943.1482081095378
+          1943.1482081095378,
+          1975.9966021219889
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32936,6 +32999,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -33536,7 +33600,8 @@ window.BENCHMARK_DATA = {
           1320.8793548583985,
           1513.755392074585,
           1435.4089012145996,
-          1318.7738965352376
+          1318.7738965352376,
+          1355.970089639936
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33729,6 +33794,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -37229,6 +37295,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:17 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 3 updates (#968)"
+      },
+      {
+        "sha": "eca352d8ebe33eeb5a97ea9bac82ffc602aaffc0",
+        "author": "dependabot[bot]",
+        "date": "Sun May 31 07:28:29 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.6.2 to 18.7.0 (#969)"
       }
     ],
     "labels": [
@@ -37755,7 +37827,8 @@ window.BENCHMARK_DATA = {
       "a9e05ce1",
       "d5f54ae4",
       "5fb898f6",
-      "d1b8256e"
+      "d1b8256e",
+      "eca352d8"
     ],
     "datasets": [
       {
@@ -38285,7 +38358,8 @@ window.BENCHMARK_DATA = {
           2500.5137016296385,
           2658.722917175293,
           2654.85319846017,
-          2577.84052494594
+          2577.84052494594,
+          2604.601530456543
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38758,6 +38832,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -39358,7 +39433,8 @@ window.BENCHMARK_DATA = {
           27218.916241455077,
           27746.698482259115,
           28228.60042114258,
-          28157.407215663367
+          28157.407215663367,
+          20107.476479163535
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39890,6 +39966,7 @@ window.BENCHMARK_DATA = {
           57488,
           57481,
           57480,
+          33471,
           33471,
           33471,
           33471,
