@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "53a7bc7d4e8453a408d563756dc9f2a58ab3af53",
-        "author": "dependabot[bot]",
-        "date": "Tue Mar 17 15:59:28 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.0.1 to 18.3.0 (#905)"
-      },
-      {
         "sha": "e257ec5aa3cafc3a0757cf00079de5f82d33b889",
         "author": "dependabot[bot]",
         "date": "Tue Mar 17 15:59:39 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 31 07:42:10 2026 \u002B0200",
         "message": "feat: exclude netstandard and WindowsBase assembly prefixes by default (#971)"
+      },
+      {
+        "sha": "01e92402b7f917c52b44f1199eba7d72c1a03798",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun May 31 08:20:10 2026 \u002B0200",
+        "message": "refactor: anchor assembly-prefix exclusion at name boundaries (#972)"
       }
     ],
     "labels": [
-      "53a7bc7d",
       "e257ec5a",
       "3a87b274",
       "e1f004a0",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "d1b8256e",
       "eca352d8",
       "a9e6ee54",
-      "e3547a28"
+      "e3547a28",
+      "01e92402"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          277.33378842898776,
           248.5066386290959,
           258.0216953277588,
           256.64958276748655,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           264.24082912717546,
           279.3069086710612,
           248.5982816696167,
-          275.9644400732858
+          275.9644400732858,
+          265.64060691197716
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          258.2727716445923,
           233.3314108053843,
           234.4076029062271,
           237.84907273451486,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           248.43984563534076,
           246.36039815630232,
           245.674853682518,
-          277.8404155458723
+          277.8404155458723,
+          273.71951723098755
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "53a7bc7d4e8453a408d563756dc9f2a58ab3af53",
-        "author": "dependabot[bot]",
-        "date": "Tue Mar 17 15:59:28 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.0.1 to 18.3.0 (#905)"
-      },
-      {
         "sha": "e257ec5aa3cafc3a0757cf00079de5f82d33b889",
         "author": "dependabot[bot]",
         "date": "Tue Mar 17 15:59:39 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 31 07:42:10 2026 \u002B0200",
         "message": "feat: exclude netstandard and WindowsBase assembly prefixes by default (#971)"
+      },
+      {
+        "sha": "01e92402b7f917c52b44f1199eba7d72c1a03798",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun May 31 08:20:10 2026 \u002B0200",
+        "message": "refactor: anchor assembly-prefix exclusion at name boundaries (#972)"
       }
     ],
     "labels": [
-      "53a7bc7d",
       "e257ec5a",
       "3a87b274",
       "e1f004a0",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "d1b8256e",
       "eca352d8",
       "a9e6ee54",
-      "e3547a28"
+      "e3547a28",
+      "01e92402"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          310221.6845377604,
           305610.11399739585,
           309059.9609375,
           329450.0514322917,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           322577.8310546875,
           305520.9623046875,
           288501.6021972656,
-          325430.2694986979
+          325430.2694986979,
+          306960.026953125
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          335444,
           335444,
           335444,
           335444,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
+          335444,
           335444
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2741954.3526041666,
           2707282.3856770834,
           2687938.640885417,
           2822776.1330915177,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2807100.845833333,
           2396152.1788504464,
           2333367.4771634615,
-          2501984.40078125
+          2501984.40078125,
+          2440085.4848958333
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4804906,
           4804906,
           4804906,
           4804906,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841648,
           4841651,
-          4841651
+          4841651,
+          4841635
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "53a7bc7d4e8453a408d563756dc9f2a58ab3af53",
-        "author": "dependabot[bot]",
-        "date": "Tue Mar 17 15:59:28 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.0.1 to 18.3.0 (#905)"
-      },
       {
         "sha": "e257ec5aa3cafc3a0757cf00079de5f82d33b889",
         "author": "dependabot[bot]",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 31 07:42:10 2026 \u002B0200",
         "message": "feat: exclude netstandard and WindowsBase assembly prefixes by default (#971)"
+      },
+      {
+        "sha": "01e92402b7f917c52b44f1199eba7d72c1a03798",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun May 31 08:20:10 2026 \u002B0200",
+        "message": "refactor: anchor assembly-prefix exclusion at name boundaries (#972)"
       }
     ],
     "labels": [
-      "53a7bc7d",
       "e257ec5a",
       "3a87b274",
       "e1f004a0",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "d1b8256e",
       "eca352d8",
       "a9e6ee54",
-      "e3547a28"
+      "e3547a28",
+      "01e92402"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          490.6396679878235,
           471.9445881207784,
           459.94838798963104,
           582.559289418734,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           488.29805401393344,
           494.3127051762172,
           491.9864620844523,
-          525.8678716512827
+          525.8678716512827,
+          519.1855758666992
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          496.7702851295471,
           454.3674567086356,
           447.1297173500061,
           561.0213035583496,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           478.60503266652427,
           500.78588752746583,
           489.8172462463379,
-          575.5573016484578
+          575.5573016484578,
+          534.4196135203043
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "53a7bc7d4e8453a408d563756dc9f2a58ab3af53",
-        "author": "dependabot[bot]",
-        "date": "Tue Mar 17 15:59:28 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.0.1 to 18.3.0 (#905)"
-      },
-      {
         "sha": "e257ec5aa3cafc3a0757cf00079de5f82d33b889",
         "author": "dependabot[bot]",
         "date": "Tue Mar 17 15:59:39 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 31 07:42:10 2026 \u002B0200",
         "message": "feat: exclude netstandard and WindowsBase assembly prefixes by default (#971)"
+      },
+      {
+        "sha": "01e92402b7f917c52b44f1199eba7d72c1a03798",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun May 31 08:20:10 2026 \u002B0200",
+        "message": "refactor: anchor assembly-prefix exclusion at name boundaries (#972)"
       }
     ],
     "labels": [
-      "53a7bc7d",
       "e257ec5a",
       "3a87b274",
       "e1f004a0",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "d1b8256e",
       "eca352d8",
       "a9e6ee54",
-      "e3547a28"
+      "e3547a28",
+      "01e92402"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          259.45027888615925,
           242.91976623535157,
           249.76007059642248,
           273.3258000101362,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           272.31214714050293,
           260.2109740461622,
           250.86766112645466,
-          289.60294075012206
+          289.60294075012206,
+          270.79918734232587
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2268,7 +2268,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
-          808,
+          864,
           864,
           864,
           864,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          252.89722798665363,
           239.50946207046508,
           243.25604276657106,
           287.00287331853593,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           246.19398107528687,
           256.84688316981,
           242.7303590774536,
-          280.68075227737427
+          280.68075227737427,
+          287.6870683942522
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "53a7bc7d4e8453a408d563756dc9f2a58ab3af53",
-        "author": "dependabot[bot]",
-        "date": "Tue Mar 17 15:59:28 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.0.1 to 18.3.0 (#905)"
-      },
-      {
         "sha": "e257ec5aa3cafc3a0757cf00079de5f82d33b889",
         "author": "dependabot[bot]",
         "date": "Tue Mar 17 15:59:39 2026 \u002B0100",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 31 07:42:10 2026 \u002B0200",
         "message": "feat: exclude netstandard and WindowsBase assembly prefixes by default (#971)"
+      },
+      {
+        "sha": "01e92402b7f917c52b44f1199eba7d72c1a03798",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun May 31 08:20:10 2026 \u002B0200",
+        "message": "refactor: anchor assembly-prefix exclusion at name boundaries (#972)"
       }
     ],
     "labels": [
-      "53a7bc7d",
       "e257ec5a",
       "3a87b274",
       "e1f004a0",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "d1b8256e",
       "eca352d8",
       "a9e6ee54",
-      "e3547a28"
+      "e3547a28",
+      "01e92402"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          454.3024052302043,
           456.7321134249369,
           461.3384098273057,
           506.6645399093628,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           469.9096125602722,
           487.77328910827634,
           474.0714020388467,
-          501.06716607411704
+          501.06716607411704,
+          489.47474308013915
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1297.0697533534124,
           1199.8335903712682,
           1160.3115118662515,
           1346.704011623676,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1248.5900349934896,
           1179.1341366449992,
           1158.3489807128906,
-          1260.5177664438884
+          1260.5177664438884,
+          1316.6445543924967
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "53a7bc7d4e8453a408d563756dc9f2a58ab3af53",
-        "author": "dependabot[bot]",
-        "date": "Tue Mar 17 15:59:28 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.0.1 to 18.3.0 (#905)"
-      },
-      {
         "sha": "e257ec5aa3cafc3a0757cf00079de5f82d33b889",
         "author": "dependabot[bot]",
         "date": "Tue Mar 17 15:59:39 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 31 07:42:10 2026 \u002B0200",
         "message": "feat: exclude netstandard and WindowsBase assembly prefixes by default (#971)"
+      },
+      {
+        "sha": "01e92402b7f917c52b44f1199eba7d72c1a03798",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun May 31 08:20:10 2026 \u002B0200",
+        "message": "refactor: anchor assembly-prefix exclusion at name boundaries (#972)"
       }
     ],
     "labels": [
-      "53a7bc7d",
       "e257ec5a",
       "3a87b274",
       "e1f004a0",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "d1b8256e",
       "eca352d8",
       "a9e6ee54",
-      "e3547a28"
+      "e3547a28",
+      "01e92402"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1877.6324087778728,
           1905.5466705322265,
           1957.0270599365235,
           1969.7964210510254,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1943.1482081095378,
           1975.9966021219889,
           1879.6414785385132,
-          1967.8454129536947
+          1967.8454129536947,
+          1693.962996037801
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1344.6447956085206,
           1255.3370518003192,
           1339.0221051534018,
           1478.572190475464,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1318.7738965352376,
           1355.970089639936,
           1292.155686187744,
-          1464.532755025228
+          1464.532755025228,
+          1415.400666509356
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "53a7bc7d4e8453a408d563756dc9f2a58ab3af53",
-        "author": "dependabot[bot]",
-        "date": "Tue Mar 17 15:59:28 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.0.1 to 18.3.0 (#905)"
-      },
-      {
         "sha": "e257ec5aa3cafc3a0757cf00079de5f82d33b889",
         "author": "dependabot[bot]",
         "date": "Tue Mar 17 15:59:39 2026 \u002B0100",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 31 07:42:10 2026 \u002B0200",
         "message": "feat: exclude netstandard and WindowsBase assembly prefixes by default (#971)"
+      },
+      {
+        "sha": "01e92402b7f917c52b44f1199eba7d72c1a03798",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun May 31 08:20:10 2026 \u002B0200",
+        "message": "refactor: anchor assembly-prefix exclusion at name boundaries (#972)"
       }
     ],
     "labels": [
-      "53a7bc7d",
       "e257ec5a",
       "3a87b274",
       "e1f004a0",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "d1b8256e",
       "eca352d8",
       "a9e6ee54",
-      "e3547a28"
+      "e3547a28",
+      "01e92402"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2524.2061381022136,
           2473.4556050981796,
           2561.3218955993652,
           2534.7219200134277,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2577.84052494594,
           2604.601530456543,
           2471.1331678118027,
-          2545.2915908813475
+          2545.2915908813475,
+          2208.495192391532
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          88075.89565805289,
           86934.47059044472,
           89031.1101422991,
           87612.40712193081,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           28157.407215663367,
           20107.476479163535,
           19812.127221679686,
-          21747.517711094446
+          21747.517711094446,
+          23846.91423688616
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          59100,
           58598,
           58598,
           58598,
@@ -4242,7 +4241,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471
+          33471,
+          33468
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
