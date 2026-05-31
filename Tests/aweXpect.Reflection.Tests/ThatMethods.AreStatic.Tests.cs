@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
+#if NET8_0_OR_GREATER
+using aweXpect.Reflection.Tests.TestHelpers;
+#endif
 
 namespace aweXpect.Reflection.Tests;
 
@@ -85,5 +88,70 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+#if NET8_0_OR_GREATER
+		public sealed class AsyncEnumerableTests
+		{
+			[Fact]
+			public async Task WhenFilteringOnlyStaticMethods_ShouldSucceed()
+			{
+				IAsyncEnumerable<MethodInfo?> subject = typeof(TestClassWithStaticMembers)
+					.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly)
+					.ToTestAsyncEnumerable<MethodInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).AreStatic();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenMethodsContainNonStaticMethods_ShouldFail()
+			{
+				IAsyncEnumerable<MethodInfo?> subject = typeof(TestClassWithStaticMembers)
+					.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance |
+					            BindingFlags.DeclaredOnly)
+					.ToTestAsyncEnumerable<MethodInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).AreStatic();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             are all static,
+					             but it contained non-static methods [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenFilteringOnlyStaticMethods_Negated_ShouldFail()
+			{
+				IAsyncEnumerable<MethodInfo?> subject = typeof(TestClassWithStaticMembers)
+					.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly)
+					.ToTestAsyncEnumerable<MethodInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreStatic());
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             are not all static,
+					             but it only contained static methods [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+		}
+#endif
 	}
 }

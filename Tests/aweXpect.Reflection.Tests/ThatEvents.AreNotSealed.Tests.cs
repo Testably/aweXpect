@@ -1,6 +1,9 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
+#if NET8_0_OR_GREATER
+using aweXpect.Reflection.Tests.TestHelpers;
+#endif
 
 namespace aweXpect.Reflection.Tests;
 
@@ -83,5 +86,47 @@ public sealed partial class ThatEvents
 					             """).AsWildcard();
 			}
 		}
+
+#if NET8_0_OR_GREATER
+		public sealed class AsyncEnumerableTests
+		{
+			[Fact]
+			public async Task WhenFilteringOnlyNonSealedEvents_ShouldSucceed()
+			{
+				IAsyncEnumerable<EventInfo?> subject = typeof(AbstractClassWithMembers)
+					.GetEvents(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+					.ToTestAsyncEnumerable<EventInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).AreNotSealed();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenEventsContainSealedEvents_ShouldFail()
+			{
+				IAsyncEnumerable<EventInfo?> subject = typeof(ClassWithSealedMembers)
+					.GetEvents(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+					.ToTestAsyncEnumerable<EventInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).AreNotSealed();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             are all not sealed,
+					             but it contained sealed events [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+		}
+#endif
 	}
 }

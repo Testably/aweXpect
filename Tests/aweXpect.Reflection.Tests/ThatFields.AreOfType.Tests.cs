@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using Xunit.Sdk;
+#if NET8_0_OR_GREATER
+using aweXpect.Reflection.Tests.TestHelpers;
+#endif
 
 namespace aweXpect.Reflection.Tests;
 
@@ -111,6 +114,68 @@ public sealed partial class ThatFields
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+#if NET8_0_OR_GREATER
+		public sealed class AsyncEnumerableTests
+		{
+			[Fact]
+			public async Task ShouldSucceedWhenAllFieldsAreOfType()
+			{
+				IAsyncEnumerable<FieldInfo?> subject = new[]
+				{
+					typeof(TestClass).GetField(nameof(TestClass.IntField))!,
+					typeof(TestClass).GetField(nameof(TestClass.OtherIntField))!,
+				}.ToTestAsyncEnumerable<FieldInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).AreOfType<int>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task ShouldSucceedWithInheritance()
+			{
+				IAsyncEnumerable<FieldInfo?> subject = new[]
+				{
+					typeof(TestClass).GetField(nameof(TestClass.DummyField))!,
+				}.ToTestAsyncEnumerable<FieldInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).AreOfType<DummyBase>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task ShouldFailWhenSomeFieldsAreNotOfType()
+			{
+				IAsyncEnumerable<FieldInfo?> subject = new[]
+				{
+					typeof(TestClass).GetField(nameof(TestClass.IntField))!,
+					typeof(TestClass).GetField(nameof(TestClass.StringField))!,
+				}.ToTestAsyncEnumerable<FieldInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).AreOfType<int>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             all are of type int,
+					             but it contained not matching fields [
+					               string ThatFields.AreOfType.TestClass.StringField
+					             ]
+					             """);
+			}
+		}
+#endif
 
 		private class TestClass
 		{

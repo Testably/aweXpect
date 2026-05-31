@@ -1,4 +1,6 @@
-﻿using aweXpect.Reflection.Collections;
+﻿using System.Collections.Generic;
+using System.Reflection;
+using aweXpect.Reflection.Collections;
 using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
@@ -7,6 +9,90 @@ public sealed partial class ThatMethods
 {
 	public sealed class HaveName
 	{
+		public sealed class EnumerableTests
+		{
+			[Fact]
+			public async Task WhenAllMethodsHaveName_ShouldSucceed()
+			{
+				IEnumerable<MethodInfo> subject =
+				[
+					typeof(ClassWithMethods).GetMethod(nameof(ClassWithMethods.PublicMethod1))!,
+				];
+
+				async Task Act()
+				{
+					await That(subject).HaveName("PublicMethod1");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSelectorMatchesEachName_ShouldSucceed()
+			{
+				IEnumerable<MethodInfo> subject =
+				[
+					typeof(ClassWithMethods).GetMethod(nameof(ClassWithMethods.PublicMethod1))!,
+					typeof(ClassWithMethods).GetMethod(nameof(ClassWithMethods.PublicMethod2))!,
+				];
+
+				async Task Act()
+				{
+					await That(subject).HaveName(method => method.Name);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenMultipleMethodsDoNotMatchSelector_ShouldListAllSeparatedByComma()
+			{
+				IEnumerable<MethodInfo> subject =
+				[
+					typeof(ClassWithMethods).GetMethod(nameof(ClassWithMethods.PublicMethod1))!,
+					typeof(ClassWithMethods).GetMethod(nameof(ClassWithMethods.PublicMethod2))!,
+				];
+
+				async Task Act()
+				{
+					await That(subject).HaveName(method => method.Name + "X");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have name matching method => method.Name + "X",
+					             but it contained not matching items [
+					               int ThatMethods.ClassWithMethods.PublicMethod1() with name "PublicMethod1" instead of "PublicMethod1X",
+					               int ThatMethods.ClassWithMethods.PublicMethod2() with name "PublicMethod2" instead of "PublicMethod2X"
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSelectorMatchesEachName_Negated_ShouldFail()
+			{
+				IEnumerable<MethodInfo> subject =
+				[
+					typeof(ClassWithMethods).GetMethod(nameof(ClassWithMethods.PublicMethod1))!,
+				];
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they.HaveName(method => method.Name));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             not all have name matching method => method.Name,
+					             but it only contained matching items [
+					               int ThatMethods.ClassWithMethods.PublicMethod1()
+					             ]
+					             """);
+			}
+		}
+
 		public sealed class Tests
 		{
 			[Fact]

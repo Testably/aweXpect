@@ -1,6 +1,9 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using Xunit.Sdk;
+#if NET8_0_OR_GREATER
+using aweXpect.Reflection.Tests.TestHelpers;
+#endif
 
 namespace aweXpect.Reflection.Tests;
 
@@ -88,6 +91,94 @@ public sealed partial class ThatConstructors
 					             ]
 					             """);
 			}
+
+#if NET8_0_OR_GREATER
+			public sealed class AsyncEnumerableTests
+			{
+				[Fact]
+				public async Task WhenAllConstructorsHaveAttribute_ShouldSucceed()
+				{
+					IAsyncEnumerable<ConstructorInfo?> subject = new[]
+					{
+						typeof(TestClass).GetConstructor([typeof(string),])!,
+						typeof(TestClass).GetConstructor([typeof(int),])!,
+					}.ToTestAsyncEnumerable<ConstructorInfo?>();
+
+					async Task Act()
+					{
+						await That(subject).Have<TestAttribute>();
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenNotAllConstructorsHaveAttribute_ShouldFail()
+				{
+					IAsyncEnumerable<ConstructorInfo?> subject = new[]
+					{
+						typeof(TestClass).GetConstructor([typeof(string),])!,
+						typeof(TestClass).GetConstructor(Type.EmptyTypes)!,
+					}.ToTestAsyncEnumerable<ConstructorInfo?>();
+
+					async Task Act()
+					{
+						await That(subject).Have<TestAttribute>();
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             all have ThatConstructors.Have.AttributeTests.TestAttribute,
+						             but it contained not matching constructors [
+						               ThatConstructors.Have.AttributeTests.TestClass()
+						             ]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenAllConstructorsHaveMatchingAttribute_ShouldSucceed()
+				{
+					IAsyncEnumerable<ConstructorInfo?> subject = new[]
+					{
+						typeof(TestClass).GetConstructor([typeof(string),])!,
+						typeof(TestClass).GetConstructor([typeof(int),])!,
+					}.ToTestAsyncEnumerable<ConstructorInfo?>();
+
+					async Task Act()
+					{
+						await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Constructor"));
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenNotAllConstructorsHaveMatchingAttribute_ShouldFail()
+				{
+					IAsyncEnumerable<ConstructorInfo?> subject = new[]
+					{
+						typeof(TestClass).GetConstructor([typeof(string),])!,
+						typeof(TestClass).GetConstructor([typeof(int),])!,
+					}.ToTestAsyncEnumerable<ConstructorInfo?>();
+
+					async Task Act()
+					{
+						await That(subject).Have<TestAttribute>(attr => attr.Value == "WrongValue");
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             all have ThatConstructors.Have.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
+						             but it contained not matching constructors [
+						               ThatConstructors.Have.AttributeTests.TestClass(string value),
+						               ThatConstructors.Have.AttributeTests.TestClass(int value)
+						             ]
+						             """);
+				}
+			}
+#endif
 
 			[AttributeUsage(AttributeTargets.Constructor)]
 			private class TestAttribute : Attribute

@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using Xunit.Sdk;
+#if NET8_0_OR_GREATER
+using aweXpect.Reflection.Tests.TestHelpers;
+#endif
 
 namespace aweXpect.Reflection.Tests;
 
@@ -68,7 +71,74 @@ public sealed partial class ThatProperties
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenPropertyStrictlyInheritsFromOrOfExactType_ShouldFail()
+			{
+				IEnumerable<PropertyInfo> subject =
+				[
+					typeof(TestClass).GetProperty(nameof(TestClass.DummyProperty))!,
+				];
+
+				async Task Act()
+				{
+					await That(subject).AreOfExactType<int>().OrOfExactType<DummyBase>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             all are of exact type int or of exact type *DummyBase,
+					             but it contained not matching properties [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
 		}
+
+#if NET8_0_OR_GREATER
+		public sealed class AsyncEnumerableTests
+		{
+			[Fact]
+			public async Task ShouldSucceedWhenAllPropertiesAreOfExactType()
+			{
+				IAsyncEnumerable<PropertyInfo?> subject = new[]
+				{
+					typeof(TestClass).GetProperty(nameof(TestClass.DummyBaseProperty))!,
+				}.ToTestAsyncEnumerable<PropertyInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).AreOfExactType<DummyBase>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task ShouldFailWhenPropertiesInheritFromType()
+			{
+				IAsyncEnumerable<PropertyInfo?> subject = new[]
+				{
+					typeof(TestClass).GetProperty(nameof(TestClass.DummyProperty))!,
+				}.ToTestAsyncEnumerable<PropertyInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).AreOfExactType<DummyBase>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             all are of exact type *DummyBase,
+					             but it contained not matching properties [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+		}
+#endif
 
 		private class TestClass
 		{

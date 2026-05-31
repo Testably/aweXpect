@@ -1,6 +1,9 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using Xunit.Sdk;
+#if NET8_0_OR_GREATER
+using aweXpect.Reflection.Tests.TestHelpers;
+#endif
 
 namespace aweXpect.Reflection.Tests;
 
@@ -88,6 +91,90 @@ public sealed partial class ThatMethods
 					             ]
 					             """);
 			}
+
+#if NET8_0_OR_GREATER
+			public sealed class AsyncEnumerableTests
+			{
+				[Fact]
+				public async Task WhenAllMethodsHaveAttribute_ShouldSucceed()
+				{
+					IAsyncEnumerable<MethodInfo?> subject = new[]
+					{
+						typeof(TestClass).GetMethod("TestMethod1")!, typeof(TestClass).GetMethod("TestMethod2")!,
+					}.ToTestAsyncEnumerable<MethodInfo?>();
+
+					async Task Act()
+					{
+						await That(subject).Have<TestAttribute>();
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenNotAllMethodsHaveAttribute_ShouldFail()
+				{
+					IAsyncEnumerable<MethodInfo?> subject = new[]
+					{
+						typeof(TestClass).GetMethod("TestMethod1")!, typeof(TestClass).GetMethod("NoAttributeMethod")!,
+					}.ToTestAsyncEnumerable<MethodInfo?>();
+
+					async Task Act()
+					{
+						await That(subject).Have<TestAttribute>();
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             all have ThatMethods.Have.AttributeTests.TestAttribute,
+						             but it contained not matching methods [
+						               void ThatMethods.Have.AttributeTests.TestClass.NoAttributeMethod()
+						             ]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenAllMethodsHaveMatchingAttribute_ShouldSucceed()
+				{
+					IAsyncEnumerable<MethodInfo?> subject = new[]
+					{
+						typeof(TestClass).GetMethod("TestMethod1")!, typeof(TestClass).GetMethod("TestMethod2")!,
+					}.ToTestAsyncEnumerable<MethodInfo?>();
+
+					async Task Act()
+					{
+						await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Method"));
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenNotAllMethodsHaveMatchingAttribute_ShouldFail()
+				{
+					IAsyncEnumerable<MethodInfo?> subject = new[]
+					{
+						typeof(TestClass).GetMethod("TestMethod1")!, typeof(TestClass).GetMethod("TestMethod2")!,
+					}.ToTestAsyncEnumerable<MethodInfo?>();
+
+					async Task Act()
+					{
+						await That(subject).Have<TestAttribute>(attr => attr.Value == "WrongValue");
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             all have ThatMethods.Have.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
+						             but it contained not matching methods [
+						               void ThatMethods.Have.AttributeTests.TestClass.TestMethod1(),
+						               void ThatMethods.Have.AttributeTests.TestClass.TestMethod2()
+						             ]
+						             """);
+				}
+			}
+#endif
 
 			[AttributeUsage(AttributeTargets.Method)]
 			private class TestAttribute : Attribute

@@ -1,6 +1,9 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using Xunit.Sdk;
+#if NET8_0_OR_GREATER
+using aweXpect.Reflection.Tests.TestHelpers;
+#endif
 
 namespace aweXpect.Reflection.Tests;
 
@@ -88,6 +91,90 @@ public sealed partial class ThatFields
 					             ]
 					             """);
 			}
+
+#if NET8_0_OR_GREATER
+			public sealed class AsyncEnumerableTests
+			{
+				[Fact]
+				public async Task WhenAllFieldsHaveAttribute_ShouldSucceed()
+				{
+					IAsyncEnumerable<FieldInfo?> subject = new[]
+					{
+						typeof(TestClass).GetField("TestField1")!, typeof(TestClass).GetField("TestField2")!,
+					}.ToTestAsyncEnumerable<FieldInfo?>();
+
+					async Task Act()
+					{
+						await That(subject).Have<TestAttribute>();
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenNotAllFieldsHaveAttribute_ShouldFail()
+				{
+					IAsyncEnumerable<FieldInfo?> subject = new[]
+					{
+						typeof(TestClass).GetField("TestField1")!, typeof(TestClass).GetField("NoAttributeField")!,
+					}.ToTestAsyncEnumerable<FieldInfo?>();
+
+					async Task Act()
+					{
+						await That(subject).Have<TestAttribute>();
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             all have ThatFields.Have.AttributeTests.TestAttribute,
+						             but it contained not matching fields [
+						               string ThatFields.Have.AttributeTests.TestClass.NoAttributeField
+						             ]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenAllFieldsHaveMatchingAttribute_ShouldSucceed()
+				{
+					IAsyncEnumerable<FieldInfo?> subject = new[]
+					{
+						typeof(TestClass).GetField("TestField1")!, typeof(TestClass).GetField("TestField2")!,
+					}.ToTestAsyncEnumerable<FieldInfo?>();
+
+					async Task Act()
+					{
+						await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Field"));
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenNotAllFieldsHaveMatchingAttribute_ShouldFail()
+				{
+					IAsyncEnumerable<FieldInfo?> subject = new[]
+					{
+						typeof(TestClass).GetField("TestField1")!, typeof(TestClass).GetField("TestField2")!,
+					}.ToTestAsyncEnumerable<FieldInfo?>();
+
+					async Task Act()
+					{
+						await That(subject).Have<TestAttribute>(attr => attr.Value == "WrongValue");
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             all have ThatFields.Have.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
+						             but it contained not matching fields [
+						               string ThatFields.Have.AttributeTests.TestClass.TestField1,
+						               string ThatFields.Have.AttributeTests.TestClass.TestField2
+						             ]
+						             """);
+				}
+			}
+#endif
 
 			[AttributeUsage(AttributeTargets.Field)]
 			private class TestAttribute : Attribute

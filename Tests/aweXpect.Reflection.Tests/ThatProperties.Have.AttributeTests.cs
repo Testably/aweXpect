@@ -1,6 +1,9 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using Xunit.Sdk;
+#if NET8_0_OR_GREATER
+using aweXpect.Reflection.Tests.TestHelpers;
+#endif
 
 namespace aweXpect.Reflection.Tests;
 
@@ -88,6 +91,91 @@ public sealed partial class ThatProperties
 					             ]
 					             """);
 			}
+
+#if NET8_0_OR_GREATER
+			public sealed class AsyncEnumerableTests
+			{
+				[Fact]
+				public async Task WhenAllPropertiesHaveAttribute_ShouldSucceed()
+				{
+					IAsyncEnumerable<PropertyInfo?> subject = new[]
+					{
+						typeof(TestClass).GetProperty("TestProperty1")!, typeof(TestClass).GetProperty("TestProperty2")!,
+					}.ToTestAsyncEnumerable<PropertyInfo?>();
+
+					async Task Act()
+					{
+						await That(subject).Have<TestAttribute>();
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenNotAllPropertiesHaveAttribute_ShouldFail()
+				{
+					IAsyncEnumerable<PropertyInfo?> subject = new[]
+					{
+						typeof(TestClass).GetProperty("TestProperty1")!,
+						typeof(TestClass).GetProperty("NoAttributeProperty")!,
+					}.ToTestAsyncEnumerable<PropertyInfo?>();
+
+					async Task Act()
+					{
+						await That(subject).Have<TestAttribute>();
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             all have ThatProperties.Have.AttributeTests.TestAttribute,
+						             but it contained not matching properties [
+						               public string ThatProperties.Have.AttributeTests.TestClass.NoAttributeProperty { get; set; }
+						             ]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenAllPropertiesHaveMatchingAttribute_ShouldSucceed()
+				{
+					IAsyncEnumerable<PropertyInfo?> subject = new[]
+					{
+						typeof(TestClass).GetProperty("TestProperty1")!, typeof(TestClass).GetProperty("TestProperty2")!,
+					}.ToTestAsyncEnumerable<PropertyInfo?>();
+
+					async Task Act()
+					{
+						await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Property"));
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenNotAllPropertiesHaveMatchingAttribute_ShouldFail()
+				{
+					IAsyncEnumerable<PropertyInfo?> subject = new[]
+					{
+						typeof(TestClass).GetProperty("TestProperty1")!, typeof(TestClass).GetProperty("TestProperty2")!,
+					}.ToTestAsyncEnumerable<PropertyInfo?>();
+
+					async Task Act()
+					{
+						await That(subject).Have<TestAttribute>(attr => attr.Value == "WrongValue");
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             all have ThatProperties.Have.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
+						             but it contained not matching properties [
+						               public string ThatProperties.Have.AttributeTests.TestClass.TestProperty1 { get; set; },
+						               public string ThatProperties.Have.AttributeTests.TestClass.TestProperty2 { get; set; }
+						             ]
+						             """);
+				}
+			}
+#endif
 
 			[AttributeUsage(AttributeTargets.Property)]
 			private class TestAttribute : Attribute

@@ -1,4 +1,6 @@
-﻿using aweXpect.Reflection.Collections;
+﻿using System.Collections.Generic;
+using System.Reflection;
+using aweXpect.Reflection.Collections;
 using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
@@ -9,6 +11,48 @@ public sealed partial class ThatMethods
 {
 	public sealed class ReturnExactly
 	{
+		public sealed class EnumerableTests
+		{
+			[Fact]
+			public async Task ShouldSucceedWhenAllMethodsReturnExactType()
+			{
+				IEnumerable<MethodInfo> subject =
+				[
+					typeof(TestClass).GetMethod(nameof(TestClass.GetString))!,
+				];
+
+				async Task Act()
+				{
+					await That(subject).ReturnExactly<string>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task ShouldFailWhenMethodsReturnInheritedType()
+			{
+				IEnumerable<MethodInfo> subject =
+				[
+					typeof(TestClass).GetMethod(nameof(TestClass.GetDummy))!,
+				];
+
+				async Task Act()
+				{
+					await That(subject).ReturnExactly<DummyBase>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             all return exactly *DummyBase,
+					             but it contained not matching methods [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+		}
+
 		public sealed class GenericTests
 		{
 			[Fact]

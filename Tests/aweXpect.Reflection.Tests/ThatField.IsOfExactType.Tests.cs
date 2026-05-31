@@ -142,6 +142,24 @@ public sealed partial class ThatField
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenFieldStrictlyInheritsFromOrOfExactType_ShouldFail()
+			{
+				FieldInfo subject = typeof(TestClass).GetField(nameof(TestClass.DummyField))!;
+
+				async Task Act()
+				{
+					await That(subject).IsOfExactType<int>().OrOfExactType<DummyBase>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is of exact type int or of exact type *DummyBase,
+					             but it was of type *Dummy
+					             """).AsWildcard();
+			}
 		}
 #pragma warning restore CA2263
 	}

@@ -1,6 +1,9 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using Xunit.Sdk;
+#if NET8_0_OR_GREATER
+using aweXpect.Reflection.Tests.TestHelpers;
+#endif
 
 namespace aweXpect.Reflection.Tests;
 
@@ -88,6 +91,90 @@ public sealed partial class ThatEvents
 					             ]
 					             """);
 			}
+
+#if NET8_0_OR_GREATER
+			public sealed class AsyncEnumerableTests
+			{
+				[Fact]
+				public async Task WhenAllEventsHaveAttribute_ShouldSucceed()
+				{
+					IAsyncEnumerable<EventInfo?> subject = new[]
+					{
+						typeof(TestClass).GetEvent("TestEvent1")!, typeof(TestClass).GetEvent("TestEvent2")!,
+					}.ToTestAsyncEnumerable<EventInfo?>();
+
+					async Task Act()
+					{
+						await That(subject).Have<TestAttribute>();
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenNotAllEventsHaveAttribute_ShouldFail()
+				{
+					IAsyncEnumerable<EventInfo?> subject = new[]
+					{
+						typeof(TestClass).GetEvent("TestEvent1")!, typeof(TestClass).GetEvent("NoAttributeEvent")!,
+					}.ToTestAsyncEnumerable<EventInfo?>();
+
+					async Task Act()
+					{
+						await That(subject).Have<TestAttribute>();
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             all have ThatEvents.Have.AttributeTests.TestAttribute,
+						             but it contained not matching events [
+						               event Action ThatEvents.Have.AttributeTests.TestClass.NoAttributeEvent
+						             ]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenAllEventsHaveMatchingAttribute_ShouldSucceed()
+				{
+					IAsyncEnumerable<EventInfo?> subject = new[]
+					{
+						typeof(TestClass).GetEvent("TestEvent1")!, typeof(TestClass).GetEvent("TestEvent2")!,
+					}.ToTestAsyncEnumerable<EventInfo?>();
+
+					async Task Act()
+					{
+						await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Event"));
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenNotAllEventsHaveMatchingAttribute_ShouldFail()
+				{
+					IAsyncEnumerable<EventInfo?> subject = new[]
+					{
+						typeof(TestClass).GetEvent("TestEvent1")!, typeof(TestClass).GetEvent("TestEvent2")!,
+					}.ToTestAsyncEnumerable<EventInfo?>();
+
+					async Task Act()
+					{
+						await That(subject).Have<TestAttribute>(attr => attr.Value == "WrongValue");
+					}
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             all have ThatEvents.Have.AttributeTests.TestAttribute matching attr => attr.Value == "WrongValue",
+						             but it contained not matching events [
+						               event Action ThatEvents.Have.AttributeTests.TestClass.TestEvent1,
+						               event Action ThatEvents.Have.AttributeTests.TestClass.TestEvent2
+						             ]
+						             """);
+				}
+			}
+#endif
 
 			[AttributeUsage(AttributeTargets.Event)]
 			private class TestAttribute : Attribute

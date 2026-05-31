@@ -1,6 +1,9 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
+#if NET8_0_OR_GREATER
+using aweXpect.Reflection.Tests.TestHelpers;
+#endif
 
 namespace aweXpect.Reflection.Tests;
 
@@ -83,5 +86,47 @@ public sealed partial class ThatProperties
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+#if NET8_0_OR_GREATER
+		public sealed class AsyncEnumerableTests
+		{
+			[Fact]
+			public async Task WhenFilteringOnlyNonSealedProperties_ShouldSucceed()
+			{
+				IAsyncEnumerable<PropertyInfo?> subject = typeof(AbstractClassWithMembers)
+					.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+					.ToTestAsyncEnumerable<PropertyInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).AreNotSealed();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenPropertiesContainSealedProperties_ShouldFail()
+			{
+				IAsyncEnumerable<PropertyInfo?> subject = typeof(ClassWithSealedMembers)
+					.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+					.ToTestAsyncEnumerable<PropertyInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).AreNotSealed();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             are all not sealed,
+					             but it contained sealed properties [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+		}
+#endif
 	}
 }

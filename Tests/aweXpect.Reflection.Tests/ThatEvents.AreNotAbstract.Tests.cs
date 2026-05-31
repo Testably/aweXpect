@@ -1,7 +1,10 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
+#if NET8_0_OR_GREATER
+using aweXpect.Reflection.Tests.TestHelpers;
+#endif
 
 namespace aweXpect.Reflection.Tests;
 
@@ -86,5 +89,48 @@ public sealed partial class ThatEvents
 					             """).AsWildcard();
 			}
 		}
+
+#if NET8_0_OR_GREATER
+		public sealed class AsyncEnumerableTests
+		{
+			[Fact]
+			public async Task WhenFilteringOnlyNonAbstractEvents_ShouldSucceed()
+			{
+				IAsyncEnumerable<EventInfo?> subject = typeof(AbstractClassWithMembers)
+					.GetEvents(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+					.Where(e => e.Name == nameof(AbstractClassWithMembers.VirtualEvent))
+					.ToTestAsyncEnumerable<EventInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).AreNotAbstract();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenEventsContainAbstractEvents_ShouldFail()
+			{
+				IAsyncEnumerable<EventInfo?> subject = typeof(AbstractClassWithMembers)
+					.GetEvents(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+					.ToTestAsyncEnumerable<EventInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).AreNotAbstract();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             are all not abstract,
+					             but it contained abstract events [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+		}
+#endif
 	}
 }

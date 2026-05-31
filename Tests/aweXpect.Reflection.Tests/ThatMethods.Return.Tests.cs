@@ -1,4 +1,6 @@
-﻿using aweXpect.Reflection.Collections;
+﻿using System.Collections.Generic;
+using System.Reflection;
+using aweXpect.Reflection.Collections;
 using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
@@ -9,6 +11,65 @@ public sealed partial class ThatMethods
 {
 	public sealed class Return
 	{
+		public sealed class EnumerableTests
+		{
+			[Fact]
+			public async Task ShouldSucceedWhenAllMethodsReturnSpecifiedType()
+			{
+				IEnumerable<MethodInfo> subject =
+				[
+					typeof(TestClass).GetMethod(nameof(TestClass.GetString))!,
+				];
+
+				async Task Act()
+				{
+					await That(subject).Return<string>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task ShouldSucceedWithInheritance()
+			{
+				IEnumerable<MethodInfo> subject =
+				[
+					typeof(TestClass).GetMethod(nameof(TestClass.GetDummy))!,
+				];
+
+				async Task Act()
+				{
+					await That(subject).Return<DummyBase>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task ShouldFailWhenSomeMethodsDoNotReturnSpecifiedType()
+			{
+				IEnumerable<MethodInfo> subject =
+				[
+					typeof(TestClass).GetMethod(nameof(TestClass.GetString))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.GetInt))!,
+				];
+
+				async Task Act()
+				{
+					await That(subject).Return<string>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             all return string,
+					             but it contained not matching methods [
+					               int ThatMethods.TestClass.GetInt()
+					             ]
+					             """);
+			}
+		}
+
 		public sealed class GenericTests
 		{
 			[Fact]

@@ -1,4 +1,6 @@
-﻿using aweXpect.Reflection.Collections;
+﻿using System.Collections.Generic;
+using System.Reflection;
+using aweXpect.Reflection.Collections;
 using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
@@ -7,6 +9,50 @@ public sealed partial class ThatMethods
 {
 	public sealed class AreNotPublic
 	{
+		public sealed class EnumerableTests
+		{
+			[Fact]
+			public async Task WhenAllMethodsAreNotPublic_ShouldSucceed()
+			{
+				IEnumerable<MethodInfo> subject =
+				[
+					typeof(ClassWithMethods).GetMethod("InternalMethod1",
+						BindingFlags.NonPublic | BindingFlags.Instance)!,
+				];
+
+				async Task Act()
+				{
+					await That(subject).AreNotPublic();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenMethodIsPublic_ShouldFail()
+			{
+				IEnumerable<MethodInfo> subject =
+				[
+					typeof(ClassWithMethods).GetMethod("PublicMethod1",
+						BindingFlags.Public | BindingFlags.Instance)!,
+				];
+
+				async Task Act()
+				{
+					await That(subject).AreNotPublic();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             all are not public,
+					             but it contained public items [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+		}
+
 		public sealed class Tests
 		{
 			[Theory]

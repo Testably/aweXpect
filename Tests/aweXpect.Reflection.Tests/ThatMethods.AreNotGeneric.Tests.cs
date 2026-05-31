@@ -1,4 +1,7 @@
+using System.Collections.Generic;
+using System.Reflection;
 using aweXpect.Reflection.Collections;
+using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -6,6 +9,48 @@ public sealed partial class ThatMethods
 {
 	public sealed class AreNotGeneric
 	{
+		public sealed class EnumerableTests
+		{
+			[Fact]
+			public async Task WhenAllMethodsAreNotGeneric_ShouldSucceed()
+			{
+				IEnumerable<MethodInfo> subject =
+				[
+					typeof(ClassWithMethods).GetMethod(nameof(ClassWithMethods.NonGenericMethod1))!,
+				];
+
+				async Task Act()
+				{
+					await That(subject).AreNotGeneric();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenMethodIsGeneric_ShouldFail()
+			{
+				IEnumerable<MethodInfo> subject =
+				[
+					typeof(ClassWithMethods).GetMethod(nameof(ClassWithMethods.GenericMethod1))!,
+				];
+
+				async Task Act()
+				{
+					await That(subject).AreNotGeneric();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             are all not generic,
+					             but it contained generic methods [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+		}
+
 		public sealed class Tests
 		{
 			[Fact]
