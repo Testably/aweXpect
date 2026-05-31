@@ -416,6 +416,7 @@ on them directly:
 |                             | Filter                                 | Assert (single)                  | Assert (many)                     |
 |-----------------------------|----------------------------------------|----------------------------------|-----------------------------------|
 | by name                     | `.WithName("x")`                       | `.HasName("x")`                  | `.HaveName("x")`                  |
+| by target framework         | `.WhichTarget("net8.0")`               | `.Targets("net8.0")`             | `.Target("net8.0")`               |
 | has attribute               | `.With<TAttribute>()`                  | `.Has<TAttribute>()`             | `.Have<TAttribute>()`             |
 | depends on assembly         | `.WhichHaveADependencyOn("x")`         | `.HasADependencyOn("x")`         | `.HaveADependencyOn("x")`         |
 | does not depend on assembly | `.WhichHaveNoDependencyOn("x")`        | `.HasNoDependencyOn("x")`        | `.HaveNoDependencyOn("x")`        |
@@ -431,7 +432,12 @@ await Expect.That(subject).HasADependencyOn("System.Core");
 await Expect.That(subject).HasNoDependencyOn("UnwantedDependency");
 await Expect.That(subject).HasDependenciesOnlyOn("aweXpect.Core", "aweXpect");
 await Expect.That(subjects).Have<AssemblyTitleAttribute>();
+await Expect.That(subject).Targets("net8.0");
 ```
+
+The target framework is matched against the short moniker form (e.g. `net8.0`, `netstandard2.0`, `net48`),
+derived from the assembly's `[TargetFramework]` attribute. Assemblies without that attribute are treated as
+having no target framework and never match.
 
 ## Combining filters
 

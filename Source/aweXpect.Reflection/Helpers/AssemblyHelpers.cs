@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Versioning;
 
 namespace aweXpect.Reflection.Helpers;
 
@@ -69,5 +70,61 @@ internal static class AssemblyHelpers
 		}
 
 		return false;
+	}
+
+	/// <summary>
+	///     Gets the target framework moniker (e.g. <c>net8.0</c>) of the <paramref name="assembly" />,
+	///     or <see langword="null" /> when it cannot be determined.
+	/// </summary>
+	/// <remarks>
+	///     The moniker is derived from the assembly-level
+	///     <see cref="TargetFrameworkAttribute" />. When the attribute is absent,
+	///     <see langword="null" /> is returned (treated as "no target").
+	/// </remarks>
+	public static string? GetTargetFramework(this Assembly? assembly)
+		=> MapFrameworkName(assembly?.GetCustomAttribute<TargetFrameworkAttribute>()?.FrameworkName);
+
+	/// <summary>
+	///     Maps a <see cref="TargetFrameworkAttribute.FrameworkName" /> (e.g. <c>.NETCoreApp,Version=v8.0</c>)
+	///     to its short target framework moniker (e.g. <c>net8.0</c>).
+	/// </summary>
+	/// <remarks>
+	///     Returns <see langword="null" /> when <paramref name="frameworkName" /> is <see langword="null" /> or
+	///     blank, and the unmodified <paramref name="frameworkName" /> when it cannot be parsed.
+	/// </remarks>
+	public static string? MapFrameworkName(string? frameworkName)
+	{
+		const string versionPrefix = "Version=v";
+		if (string.IsNullOrWhiteSpace(frameworkName))
+		{
+			return null;
+		}
+
+		string[] parts = frameworkName!.Split(',');
+		Version? version = null;
+		foreach (string part in parts)
+		{
+			string trimmed = part.Trim();
+			if (trimmed.StartsWith(versionPrefix, StringComparison.OrdinalIgnoreCase) &&
+			    Version.TryParse(trimmed.Substring(versionPrefix.Length), out Version? parsed))
+			{
+				version = parsed;
+			}
+		}
+
+		if (version is null)
+		{
+			return frameworkName;
+		}
+
+		return parts[0].Trim() switch
+		{
+			".NETCoreApp" => version.Major >= 5
+				? $"net{version.Major}.{version.Minor}"
+				: $"netcoreapp{version.Major}.{version.Minor}",
+			".NETStandard" => $"netstandard{version.Major}.{version.Minor}",
+			".NETFramework" => $"net{version.Major}{version.Minor}{(version.Build > 0 ? $"{version.Build}" : "")}",
+			_ => frameworkName,
+		};
 	}
 }
