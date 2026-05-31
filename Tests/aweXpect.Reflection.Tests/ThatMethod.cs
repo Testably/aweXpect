@@ -24,6 +24,7 @@ public sealed partial class ThatMethod
 		public T GenericMethod<T>(T value) => value;
 		public void AnotherGenericMethod<T, U>(T first, U second) { }
 		public int NonGenericMethod() => 1;
+		public void VoidMethod() { }
 
 		public void GenericWithUnrestrictedArgumentMethod<TFoo>()
 		{

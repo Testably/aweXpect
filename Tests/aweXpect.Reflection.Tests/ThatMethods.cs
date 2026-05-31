@@ -63,6 +63,7 @@ public sealed partial class ThatMethods
 		public DummyBase GetDummyBase() => new();
 		public Dummy GetDummy() => new();
 		public async Task AsyncMethod() => await Task.CompletedTask;
+		public void VoidMethod() { }
 		public T GenericMethod<T>(T value) => value;
 
 		// ReSharper disable once UnusedTypeParameter
