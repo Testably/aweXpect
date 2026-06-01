@@ -23,18 +23,14 @@ public static partial class ThatFields
 	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> have
 	///     attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
-	/// <remarks>
-	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
-	///     the attribute can be inherited from a base type.
-	/// </remarks>
-	public static HaveAttributeResult<FieldInfo?, IEnumerable<FieldInfo?>> Have<TAttribute>(
-		this IThat<IEnumerable<FieldInfo?>> subject, bool inherit = true)
+	public static HaveAttributeWithoutInheritResult<FieldInfo?, IEnumerable<FieldInfo?>> Have<TAttribute>(
+		this IThat<IEnumerable<FieldInfo?>> subject)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<FieldInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
-		return new HaveAttributeResult<FieldInfo?, IEnumerable<FieldInfo?>>(
+		attributeFilterOptions.RegisterAttribute<TAttribute>(true);
+		return new HaveAttributeWithoutInheritResult<FieldInfo?, IEnumerable<FieldInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<FieldInfo?>>((it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject,
@@ -45,22 +41,17 @@ public static partial class ThatFields
 	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> have
 	///     attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
-	/// <remarks>
-	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
-	///     the attribute can be inherited from a base type.
-	/// </remarks>
-	public static HaveAttributeResult<FieldInfo?, IEnumerable<FieldInfo?>> Have<TAttribute>(
+	public static HaveAttributeWithoutInheritResult<FieldInfo?, IEnumerable<FieldInfo?>> Have<TAttribute>(
 		this IThat<IEnumerable<FieldInfo?>> subject,
 		Func<TAttribute, bool> predicate,
-		bool inherit = true,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<FieldInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
-		return new HaveAttributeResult<FieldInfo?, IEnumerable<FieldInfo?>>(
+		attributeFilterOptions.RegisterAttribute(true, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
+		return new HaveAttributeWithoutInheritResult<FieldInfo?, IEnumerable<FieldInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<FieldInfo?>>((it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject,
@@ -72,18 +63,14 @@ public static partial class ThatFields
 	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> have
 	///     attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
-	/// <remarks>
-	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
-	///     the attribute can be inherited from a base type.
-	/// </remarks>
-	public static HaveAttributeResult<FieldInfo?, IAsyncEnumerable<FieldInfo?>> Have<TAttribute>(
-		this IThat<IAsyncEnumerable<FieldInfo?>> subject, bool inherit = true)
+	public static HaveAttributeWithoutInheritResult<FieldInfo?, IAsyncEnumerable<FieldInfo?>> Have<TAttribute>(
+		this IThat<IAsyncEnumerable<FieldInfo?>> subject)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<FieldInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
-		return new HaveAttributeResult<FieldInfo?, IAsyncEnumerable<FieldInfo?>>(
+		attributeFilterOptions.RegisterAttribute<TAttribute>(true);
+		return new HaveAttributeWithoutInheritResult<FieldInfo?, IAsyncEnumerable<FieldInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<FieldInfo?>>((it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject,
@@ -96,22 +83,17 @@ public static partial class ThatFields
 	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> have
 	///     attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
-	/// <remarks>
-	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
-	///     the attribute can be inherited from a base type.
-	/// </remarks>
-	public static HaveAttributeResult<FieldInfo?, IAsyncEnumerable<FieldInfo?>> Have<TAttribute>(
+	public static HaveAttributeWithoutInheritResult<FieldInfo?, IAsyncEnumerable<FieldInfo?>> Have<TAttribute>(
 		this IThat<IAsyncEnumerable<FieldInfo?>> subject,
 		Func<TAttribute, bool> predicate,
-		bool inherit = true,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<FieldInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
-		return new HaveAttributeResult<FieldInfo?, IAsyncEnumerable<FieldInfo?>>(
+		attributeFilterOptions.RegisterAttribute(true, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
+		return new HaveAttributeWithoutInheritResult<FieldInfo?, IAsyncEnumerable<FieldInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<FieldInfo?>>((it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject,

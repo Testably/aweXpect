@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -15,19 +15,16 @@ public static partial class ThatConstructor
 	/// <summary>
 	///     Verifies that the <see cref="ConstructorInfo" /> has attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
-	/// <remarks>
-	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" />) specifies, if
-	///     the attribute can be inherited from a base type.
-	/// </remarks>
-	public static HasAttributeResult<ConstructorInfo?> Has<TAttribute>(this IThat<ConstructorInfo?> subject,
-		bool inherit = true)
+	public static HasAttributeWithoutInheritResult<ConstructorInfo?> Has<TAttribute>(
+		this IThat<ConstructorInfo?> subject)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<ConstructorInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
-		return new HasAttributeResult<ConstructorInfo?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
+		attributeFilterOptions.RegisterAttribute<TAttribute>(true);
+		return new HasAttributeWithoutInheritResult<ConstructorInfo?>(subject.Get().ExpectationBuilder.AddConstraint(
+				(it, grammars)
+					=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);
 	}
@@ -36,23 +33,19 @@ public static partial class ThatConstructor
 	///     Verifies that the <see cref="ConstructorInfo" /> has attribute of type <typeparamref name="TAttribute" /> that
 	///     matches the <paramref name="predicate" />.
 	/// </summary>
-	/// <remarks>
-	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" />) specifies, if
-	///     the attribute can be inherited from a base type.
-	/// </remarks>
-	public static HasAttributeResult<ConstructorInfo?> Has<TAttribute>(
+	public static HasAttributeWithoutInheritResult<ConstructorInfo?> Has<TAttribute>(
 		this IThat<ConstructorInfo?> subject,
 		Func<TAttribute, bool> predicate,
-		bool inherit = true,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<ConstructorInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue);
-		return new HasAttributeResult<ConstructorInfo?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
+		attributeFilterOptions.RegisterAttribute(true, predicate, doNotPopulateThisValue);
+		return new HasAttributeWithoutInheritResult<ConstructorInfo?>(subject.Get().ExpectationBuilder.AddConstraint(
+				(it, grammars)
+					=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);
 	}

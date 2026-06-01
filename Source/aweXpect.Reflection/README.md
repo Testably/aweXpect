@@ -168,9 +168,10 @@ Shared by all types, members, and assemblies.
 | any of several attributes          | `.With<T1>().OrWith<T2>()`  | -                            | -                           |
 | does not have attribute            | `.Without<TAttribute>()`    | `.DoesNotHave<TAttribute>()` | `.DoNotHave<TAttribute>()`  |
 
-All attribute filters and assertions (`With`, `OrWith`, `Without`, `Has`, `Have`, `DoesNotHave`, `DoNotHave`,
+Most attribute filters and assertions (`With`, `OrWith`, `Without`, `Has`, `Have`, `DoesNotHave`, `DoNotHave`,
 `OrHas`, `OrHave`) take an optional `inherit` parameter (default `true`) that controls whether attributes
-inherited from base types are considered: `.With<TAttribute>(inherit: false)`. Chain multiple
+inherited from base types are considered: `.With<TAttribute>(inherit: false)`. Fields and constructors cannot
+inherit attributes, so their attribute filters and assertions omit the parameter. Chain multiple
 `.Without<TAttribute>()` calls to exclude several attributes (an item must have none of them).
 
 ```csharp

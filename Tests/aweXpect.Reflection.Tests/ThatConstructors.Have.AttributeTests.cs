@@ -321,7 +321,7 @@ public sealed partial class ThatConstructors
 
 					async Task Act()
 					{
-						await That(subject).Have<TestAttribute>(false);
+						await That(subject).Have<TestAttribute>();
 					}
 
 					await That(Act).DoesNotThrow();

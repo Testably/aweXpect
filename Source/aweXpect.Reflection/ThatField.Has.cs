@@ -15,18 +15,15 @@ public static partial class ThatField
 	/// <summary>
 	///     Verifies that the <see cref="FieldInfo" /> has attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
-	/// <remarks>
-	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" />) specifies, if
-	///     the attribute can be inherited from a base type.
-	/// </remarks>
-	public static HasAttributeResult<FieldInfo?> Has<TAttribute>(this IThat<FieldInfo?> subject, bool inherit = true)
+	public static HasAttributeWithoutInheritResult<FieldInfo?> Has<TAttribute>(this IThat<FieldInfo?> subject)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<FieldInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
-		return new HasAttributeResult<FieldInfo?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
+		attributeFilterOptions.RegisterAttribute<TAttribute>(true);
+		return new HasAttributeWithoutInheritResult<FieldInfo?>(subject.Get().ExpectationBuilder.AddConstraint(
+				(it, grammars)
+					=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);
 	}
@@ -35,23 +32,19 @@ public static partial class ThatField
 	///     Verifies that the <see cref="FieldInfo" /> has attribute of type <typeparamref name="TAttribute" /> that
 	///     matches the <paramref name="predicate" />.
 	/// </summary>
-	/// <remarks>
-	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" />) specifies, if
-	///     the attribute can be inherited from a base type.
-	/// </remarks>
-	public static HasAttributeResult<FieldInfo?> Has<TAttribute>(
+	public static HasAttributeWithoutInheritResult<FieldInfo?> Has<TAttribute>(
 		this IThat<FieldInfo?> subject,
 		Func<TAttribute, bool> predicate,
-		bool inherit = true,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<FieldInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
-		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
-		return new HasAttributeResult<FieldInfo?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
+		attributeFilterOptions.RegisterAttribute(true, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
+		return new HasAttributeWithoutInheritResult<FieldInfo?>(subject.Get().ExpectationBuilder.AddConstraint(
+				(it, grammars)
+					=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);
 	}
