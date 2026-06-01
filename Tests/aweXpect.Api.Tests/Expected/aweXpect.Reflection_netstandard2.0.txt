@@ -45,6 +45,7 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, string expected) { }
         public static aweXpect.Reflection.AssemblyFilters.AssembliesWithVersion WithVersion(this aweXpect.Reflection.Collections.Filtered.Assemblies @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Assemblies WithVersion(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, System.Func<System.Version, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResultType WithoutName(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, string unexpected) { }
         public class AssembliesWith : aweXpect.Reflection.Collections.Filtered.Assemblies
         {
             public AssembliesWith(aweXpect.Reflection.Collections.Filtered.Assemblies inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Reflection.Assembly> filter) { }
@@ -220,6 +221,7 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.EventFilters.EventsWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Events @this, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Collections.Filtered.Events.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Events @this, string expected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Events.StringEqualityResultType WithoutName(this aweXpect.Reflection.Collections.Filtered.Events @this, string unexpected) { }
         public class EventsWith : aweXpect.Reflection.Collections.Filtered.Events
         {
             public EventsWith(aweXpect.Reflection.Collections.Filtered.Events inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Reflection.EventInfo> filter) { }
@@ -257,6 +259,7 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.FieldFilters.FieldsWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Fields @this, System.Func<TAttribute, bool>? predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Collections.Filtered.Fields.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Fields @this, string expected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Fields.StringEqualityResultType WithoutName(this aweXpect.Reflection.Collections.Filtered.Fields @this, string unexpected) { }
         public class FieldsOfType : aweXpect.Reflection.Collections.Filtered.Fields
         {
             public FieldsOfType(aweXpect.Reflection.Collections.Filtered.Fields inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Reflection.FieldInfo> filter) { }
@@ -384,6 +387,7 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.MethodFilters.MethodsWithNamedParameter<object?> WithRefParameterExactly(this aweXpect.Reflection.Collections.Filtered.Methods @this, System.Type parameterType, string expected) { }
         public static aweXpect.Reflection.MethodFilters.MethodsWithParameter<T> WithRefParameterExactly<T>(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.MethodFilters.MethodsWithNamedParameter<T> WithRefParameterExactly<T>(this aweXpect.Reflection.Collections.Filtered.Methods @this, string expected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Methods.StringEqualityResultType WithoutName(this aweXpect.Reflection.Collections.Filtered.Methods @this, string unexpected) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WithoutParameters(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public class GenericMethods : aweXpect.Reflection.Collections.Filtered.Methods
         {
@@ -496,6 +500,7 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.PropertyFilters.PropertiesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Properties @this, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Collections.Filtered.Properties.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Properties @this, string expected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Properties.StringEqualityResultType WithoutName(this aweXpect.Reflection.Collections.Filtered.Properties @this, string unexpected) { }
         public class PropertiesOfType : aweXpect.Reflection.Collections.Filtered.Properties
         {
             public PropertiesOfType(aweXpect.Reflection.Collections.Filtered.Properties inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Reflection.PropertyInfo> filter) { }
@@ -515,6 +520,7 @@ namespace aweXpect.Reflection
     }
     public static class ThatAssemblies
     {
+        public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>>> DoNotHaveName(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>> subject, string unexpected) { }
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.Assembly?, System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>> subject, bool inherit = true)
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.Assembly?, System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
@@ -547,6 +553,7 @@ namespace aweXpect.Reflection
     }
     public static class ThatAssembly
     {
+        public static aweXpect.Results.StringEqualityTypeResult<System.Reflection.Assembly?, aweXpect.Core.IThat<System.Reflection.Assembly?>> DoesNotHaveName(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject, string unexpected) { }
         public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.Assembly?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject, bool inherit = true)
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.Assembly?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
@@ -808,6 +815,8 @@ namespace aweXpect.Reflection
             where TMember : System.Reflection.MemberInfo? { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> ArePublic<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
             where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.StringEqualityTypeResult<TMember, aweXpect.Core.IThat<TMember>> DoesNotHaveName<TMember>(this aweXpect.Core.IThat<TMember> subject, string unexpected)
+            where TMember : System.Reflection.MemberInfo? { }
         public static aweXpect.Results.StringEqualityTypeResult<TMember, aweXpect.Core.IThat<TMember>> HasName<TMember>(this aweXpect.Core.IThat<TMember> subject, string expected)
             where TMember : System.Reflection.MemberInfo? { }
         public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsInternal<TMember>(this aweXpect.Core.IThat<TMember> subject)
@@ -837,6 +846,8 @@ namespace aweXpect.Reflection
     }
     public static class ThatMembers
     {
+        public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> DoNotHaveName<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject, string unexpected)
+            where TMember : System.Reflection.MemberInfo? { }
         public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> HaveName<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject, string expected)
             where TMember : System.Reflection.MemberInfo? { }
         public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> HaveName<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject, System.Func<TMember, string> expectedNameSelector, [System.Runtime.CompilerServices.CallerArgumentExpression("expectedNameSelector")] string doNotPopulateThisValue = "")
@@ -1232,6 +1243,7 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Types @this, string expected) { }
         public static aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResultType WithNamespace(this aweXpect.Reflection.Collections.Filtered.Types @this, string expected) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WithinNamespace(this aweXpect.Reflection.Collections.Filtered.Types @this, string expected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResultType WithoutName(this aweXpect.Reflection.Collections.Filtered.Types @this, string unexpected) { }
         public class GenericTypes : aweXpect.Reflection.Collections.Filtered.Types
         {
             public GenericTypes(aweXpect.Reflection.Collections.Filtered.Types inner) { }

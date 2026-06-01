@@ -183,8 +183,20 @@ Shared by all types and members.
 |                                 | Filter                  | Assert (single)           | Assert (many)              |
 |---------------------------------|-------------------------|---------------------------|----------------------------|
 | by name                         | `.WithName("x")`        | `.HasName("x")`           | `.HaveName("x")`           |
+| not by name                     | `.WithoutName("x")`     | `.DoesNotHaveName("x")`   | `.DoNotHaveName("x")`      |
 | by namespace *(types only)*     | `.WithNamespace("x")`   | `.HasNamespace("x")`      | `.HaveNamespace("x")`      |
 | within namespace *(types only)* | `.WithinNamespace("x")` | `.IsWithinNamespace("x")` | `.AreWithinNamespace("x")` |
+
+`WithoutName`/`DoesNotHaveName`/`DoNotHaveName` are the negations of the name filter and assertions:
+`WithoutName` keeps the items whose name does *not* match, `DoesNotHaveName` verifies a single item is
+*not* named the given value, and `DoNotHaveName` verifies that *none* of the items in a collection are.
+They accept the same [string matching options](#string-matching-options) as their positive counterparts:
+
+```csharp
+// Verify that no type in the production assembly is named with a "Test" suffix
+await Expect.That(In.AssemblyContaining<MyClass>().Types())
+    .DoNotHaveName("Test").AsSuffix();
+```
 
 The name/namespace *equality* filters and assertions (`WithName`, `WithNamespace`, and their
 `Has`/`Have` counterparts) accept the
@@ -429,6 +441,7 @@ on them directly:
 |                             | Filter                                 | Assert (single)                  | Assert (many)                     |
 |-----------------------------|----------------------------------------|----------------------------------|-----------------------------------|
 | by name                     | `.WithName("x")`                       | `.HasName("x")`                  | `.HaveName("x")`                  |
+| not by name                 | `.WithoutName("x")`                    | `.DoesNotHaveName("x")`          | `.DoNotHaveName("x")`             |
 | by target framework         | `.WhichTarget("net8.0")`               | `.Targets("net8.0")`             | `.Target("net8.0")`               |
 | has attribute               | `.With<TAttribute>()`                  | `.Has<TAttribute>()`             | `.Have<TAttribute>()`             |
 | depends on assembly         | `.WhichHaveADependencyOn("x")`         | `.HasADependencyOn("x")`         | `.HaveADependencyOn("x")`         |
