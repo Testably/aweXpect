@@ -161,15 +161,17 @@ await Expect.That(methods).ArePublic();
 
 Shared by all types, members, and assemblies.
 
-|                                    | Filter                      | Assert (single)            | Assert (many)               |
-|------------------------------------|-----------------------------|----------------------------|-----------------------------|
-| has attribute                      | `.With<TAttribute>()`       | `.Has<TAttribute>()`       | `.Have<TAttribute>()`       |
-| has attribute matching a predicate | `.With<TAttribute>(a => …)` | `.Has<TAttribute>(a => …)` | `.Have<TAttribute>(a => …)` |
-| any of several attributes          | `.With<T1>().OrWith<T2>()`  | -                          | -                           |
+|                                    | Filter                      | Assert (single)              | Assert (many)               |
+|------------------------------------|-----------------------------|------------------------------|-----------------------------|
+| has attribute                      | `.With<TAttribute>()`       | `.Has<TAttribute>()`         | `.Have<TAttribute>()`       |
+| has attribute matching a predicate | `.With<TAttribute>(a => …)` | `.Has<TAttribute>(a => …)`   | `.Have<TAttribute>(a => …)` |
+| any of several attributes          | `.With<T1>().OrWith<T2>()`  | -                            | -                           |
+| does not have attribute            | `.Without<TAttribute>()`    | `.DoesNotHave<TAttribute>()` | `.DoNotHave<TAttribute>()`  |
 
-All attribute filters and assertions (`With`, `OrWith`, `Has`, `Have`, `OrHas`, `OrHave`) take an optional
-`inherit` parameter (default `true`) that controls whether attributes inherited from base types are
-considered: `.With<TAttribute>(inherit: false)`.
+All attribute filters and assertions (`With`, `OrWith`, `Without`, `Has`, `Have`, `DoesNotHave`, `DoNotHave`,
+`OrHas`, `OrHave`) take an optional `inherit` parameter (default `true`) that controls whether attributes
+inherited from base types are considered: `.With<TAttribute>(inherit: false)`. Chain multiple
+`.Without<TAttribute>()` calls to exclude several attributes (an item must have none of them).
 
 ```csharp
 await Expect.That(type).Has<ObsoleteAttribute>(a => a.Message == "Use NewClass instead");
@@ -444,6 +446,7 @@ on them directly:
 | not by name                 | `.WithoutName("x")`                    | `.DoesNotHaveName("x")`          | `.DoNotHaveName("x")`             |
 | by target framework         | `.WhichTarget("net8.0")`               | `.Targets("net8.0")`             | `.Target("net8.0")`               |
 | has attribute               | `.With<TAttribute>()`                  | `.Has<TAttribute>()`             | `.Have<TAttribute>()`             |
+| does not have attribute     | `.Without<TAttribute>()`               | `.DoesNotHave<TAttribute>()`     | `.DoNotHave<TAttribute>()`        |
 | depends on assembly         | `.WhichHaveADependencyOn("x")`         | `.HasADependencyOn("x")`         | `.HaveADependencyOn("x")`         |
 | does not depend on assembly | `.WhichHaveNoDependencyOn("x")`        | `.HasNoDependencyOn("x")`        | `.HaveNoDependencyOn("x")`        |
 | depends only on set         | `.WhichHaveDependenciesOnlyOn("x", …)` | `.HasDependenciesOnlyOn("x", …)` | `.HaveDependenciesOnlyOn("x", …)` |

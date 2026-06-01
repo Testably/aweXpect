@@ -45,6 +45,8 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, string expected) { }
         public static aweXpect.Reflection.AssemblyFilters.AssembliesWithVersion WithVersion(this aweXpect.Reflection.Collections.Filtered.Assemblies @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Assemblies WithVersion(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, System.Func<System.Version, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies Without<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, bool inherit = true)
+            where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Collections.Filtered.Assemblies.StringEqualityResultType WithoutName(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, string unexpected) { }
         public class AssembliesWith : aweXpect.Reflection.Collections.Filtered.Assemblies
         {
@@ -156,6 +158,8 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.ConstructorFilters.ConstructorsWithNamedParameter<object?> WithRefParameterExactly(this aweXpect.Reflection.Collections.Filtered.Constructors @this, System.Type parameterType, string expected) { }
         public static aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameter<T> WithRefParameterExactly<T>(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
         public static aweXpect.Reflection.ConstructorFilters.ConstructorsWithNamedParameter<T> WithRefParameterExactly<T>(this aweXpect.Reflection.Collections.Filtered.Constructors @this, string expected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Constructors Without<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Constructors @this)
+            where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Collections.Filtered.Constructors WithoutParameters(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
         public class ConstructorsWith : aweXpect.Reflection.Collections.Filtered.Constructors
         {
@@ -221,6 +225,8 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.EventFilters.EventsWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Events @this, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Collections.Filtered.Events.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Events @this, string expected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Events Without<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Events @this, bool inherit = true)
+            where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Collections.Filtered.Events.StringEqualityResultType WithoutName(this aweXpect.Reflection.Collections.Filtered.Events @this, string unexpected) { }
         public class EventsWith : aweXpect.Reflection.Collections.Filtered.Events
         {
@@ -259,6 +265,8 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.FieldFilters.FieldsWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Fields @this, System.Func<TAttribute, bool>? predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Collections.Filtered.Fields.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Fields @this, string expected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Fields Without<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Fields @this)
+            where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Collections.Filtered.Fields.StringEqualityResultType WithoutName(this aweXpect.Reflection.Collections.Filtered.Fields @this, string unexpected) { }
         public class FieldsOfType : aweXpect.Reflection.Collections.Filtered.Fields
         {
@@ -387,6 +395,8 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.MethodFilters.MethodsWithNamedParameter<object?> WithRefParameterExactly(this aweXpect.Reflection.Collections.Filtered.Methods @this, System.Type parameterType, string expected) { }
         public static aweXpect.Reflection.MethodFilters.MethodsWithParameter<T> WithRefParameterExactly<T>(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.MethodFilters.MethodsWithNamedParameter<T> WithRefParameterExactly<T>(this aweXpect.Reflection.Collections.Filtered.Methods @this, string expected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Methods Without<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Methods @this, bool inherit = true)
+            where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Collections.Filtered.Methods.StringEqualityResultType WithoutName(this aweXpect.Reflection.Collections.Filtered.Methods @this, string unexpected) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WithoutParameters(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public class GenericMethods : aweXpect.Reflection.Collections.Filtered.Methods
@@ -500,6 +510,8 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.PropertyFilters.PropertiesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Properties @this, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Collections.Filtered.Properties.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Properties @this, string expected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Properties Without<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Properties @this, bool inherit = true)
+            where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Collections.Filtered.Properties.StringEqualityResultType WithoutName(this aweXpect.Reflection.Collections.Filtered.Properties @this, string unexpected) { }
         public class PropertiesOfType : aweXpect.Reflection.Collections.Filtered.Properties
         {
@@ -520,6 +532,8 @@ namespace aweXpect.Reflection
     }
     public static class ThatAssemblies
     {
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>>> DoNotHave<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>> subject, bool inherit = true)
+            where TAttribute : System.Attribute { }
         public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>>> DoNotHaveName(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>> subject, string unexpected) { }
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.Assembly?, System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.Assembly?>> subject, bool inherit = true)
             where TAttribute : System.Attribute { }
@@ -553,6 +567,8 @@ namespace aweXpect.Reflection
     }
     public static class ThatAssembly
     {
+        public static aweXpect.Results.AndOrResult<System.Reflection.Assembly?, aweXpect.Core.IThat<System.Reflection.Assembly?>> DoesNotHave<TAttribute>(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject, bool inherit = true)
+            where TAttribute : System.Attribute { }
         public static aweXpect.Results.StringEqualityTypeResult<System.Reflection.Assembly?, aweXpect.Core.IThat<System.Reflection.Assembly?>> DoesNotHaveName(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject, string unexpected) { }
         public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.Assembly?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.Assembly?> subject, bool inherit = true)
             where TAttribute : System.Attribute { }
@@ -585,6 +601,8 @@ namespace aweXpect.Reflection
     }
     public static class ThatConstructor
     {
+        public static aweXpect.Results.AndOrResult<System.Reflection.ConstructorInfo?, aweXpect.Core.IThat<System.Reflection.ConstructorInfo?>> DoesNotHave<TAttribute>(this aweXpect.Core.IThat<System.Reflection.ConstructorInfo?> subject, bool inherit = true)
+            where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.ConstructorInfo?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.ConstructorInfo?> subject, bool inherit = true)
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.ConstructorInfo?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.ConstructorInfo?> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
@@ -657,6 +675,8 @@ namespace aweXpect.Reflection
     {
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.ConstructorInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.ConstructorInfo?>>> AreNotStatic(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.ConstructorInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.ConstructorInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.ConstructorInfo?>>> AreStatic(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.ConstructorInfo?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.ConstructorInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.ConstructorInfo?>>> DoNotHave<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.ConstructorInfo?>> subject, bool inherit = true)
+            where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.ConstructorInfo?, System.Collections.Generic.IEnumerable<System.Reflection.ConstructorInfo?>> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.ConstructorInfo?>> subject, bool inherit = true)
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.ConstructorInfo?, System.Collections.Generic.IEnumerable<System.Reflection.ConstructorInfo?>> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.ConstructorInfo?>> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
@@ -725,6 +745,8 @@ namespace aweXpect.Reflection
     }
     public static class ThatEvent
     {
+        public static aweXpect.Results.AndOrResult<System.Reflection.EventInfo?, aweXpect.Core.IThat<System.Reflection.EventInfo?>> DoesNotHave<TAttribute>(this aweXpect.Core.IThat<System.Reflection.EventInfo?> subject, bool inherit = true)
+            where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.EventInfo?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.EventInfo?> subject, bool inherit = true)
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.EventInfo?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.EventInfo?> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
@@ -740,6 +762,8 @@ namespace aweXpect.Reflection
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>>> AreNotAbstract(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>>> AreNotSealed(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>>> AreSealed(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>>> DoNotHave<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>> subject, bool inherit = true)
+            where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.EventInfo?, System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>> subject, bool inherit = true)
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.EventInfo?, System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
@@ -747,6 +771,8 @@ namespace aweXpect.Reflection
     }
     public static class ThatField
     {
+        public static aweXpect.Results.AndOrResult<System.Reflection.FieldInfo?, aweXpect.Core.IThat<System.Reflection.FieldInfo?>> DoesNotHave<TAttribute>(this aweXpect.Core.IThat<System.Reflection.FieldInfo?> subject, bool inherit = true)
+            where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.FieldInfo?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.FieldInfo?> subject, bool inherit = true)
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.FieldInfo?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.FieldInfo?> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
@@ -775,6 +801,8 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.ThatFields.FieldsOfTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>>> AreOfType(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>> subject, System.Type fieldType) { }
         public static aweXpect.Reflection.ThatFields.FieldsOfTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>>> AreOfType<TField>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>>> AreStatic(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>>> DoNotHave<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>> subject, bool inherit = true)
+            where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.FieldInfo?, System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>> subject, bool inherit = true)
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.FieldInfo?, System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo?>> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
@@ -855,6 +883,8 @@ namespace aweXpect.Reflection
     }
     public static class ThatMethod
     {
+        public static aweXpect.Results.AndOrResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> DoesNotHave<TAttribute>(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject, bool inherit = true)
+            where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.MethodInfo?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject, bool inherit = true)
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.MethodInfo?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
@@ -953,6 +983,8 @@ namespace aweXpect.Reflection
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>>> AreNotStatic(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>>> AreSealed(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>>> AreStatic(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>>> DoNotHave<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject, bool inherit = true)
+            where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.MethodInfo?, System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject, bool inherit = true)
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.MethodInfo?, System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo?>> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
@@ -1050,6 +1082,8 @@ namespace aweXpect.Reflection
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>>> AreStatic(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>>> AreWritable(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>>> AreWriteOnly(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>>> DoNotHave<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> subject, bool inherit = true)
+            where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.PropertyInfo?, System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> subject, bool inherit = true)
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.PropertyInfo?, System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
@@ -1066,6 +1100,8 @@ namespace aweXpect.Reflection
     }
     public static class ThatProperty
     {
+        public static aweXpect.Results.AndOrResult<System.Reflection.PropertyInfo?, aweXpect.Core.IThat<System.Reflection.PropertyInfo?>> DoesNotHave<TAttribute>(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject, bool inherit = true)
+            where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.PropertyInfo?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject, bool inherit = true)
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.PropertyInfo?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
@@ -1102,6 +1138,8 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Results.TypeContainingMembersResult<System.Type?> ContainsFields(this aweXpect.Core.IThat<System.Type?> subject, System.Func<aweXpect.Reflection.Collections.Filtered.Fields, aweXpect.Reflection.Collections.Filtered.Fields> filter) { }
         public static aweXpect.Reflection.Results.TypeContainingMembersResult<System.Type?> ContainsMethods(this aweXpect.Core.IThat<System.Type?> subject, System.Func<aweXpect.Reflection.Collections.Filtered.Methods, aweXpect.Reflection.Collections.Filtered.Methods> filter) { }
         public static aweXpect.Reflection.Results.TypeContainingMembersResult<System.Type?> ContainsProperties(this aweXpect.Core.IThat<System.Type?> subject, System.Func<aweXpect.Reflection.Collections.Filtered.Properties, aweXpect.Reflection.Collections.Filtered.Properties> filter) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> DoesNotHave<TAttribute>(this aweXpect.Core.IThat<System.Type?> subject, bool inherit = true)
+            where TAttribute : System.Attribute { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> DoesNotInheritFrom(this aweXpect.Core.IThat<System.Type?> subject, System.Type baseType, bool forceDirect = false) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> DoesNotInheritFrom<TBaseType>(this aweXpect.Core.IThat<System.Type?> subject, bool forceDirect = false) { }
         public static aweXpect.Reflection.Results.HasAttributeResult<System.Type?> Has<TAttribute>(this aweXpect.Core.IThat<System.Type?> subject, bool inherit = true)
@@ -1175,6 +1213,8 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Results.TypeContainingMembersResult<System.Collections.Generic.IEnumerable<System.Type?>> ContainFields(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Func<aweXpect.Reflection.Collections.Filtered.Fields, aweXpect.Reflection.Collections.Filtered.Fields> filter) { }
         public static aweXpect.Reflection.Results.TypeContainingMembersResult<System.Collections.Generic.IEnumerable<System.Type?>> ContainMethods(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Func<aweXpect.Reflection.Collections.Filtered.Methods, aweXpect.Reflection.Collections.Filtered.Methods> filter) { }
         public static aweXpect.Reflection.Results.TypeContainingMembersResult<System.Collections.Generic.IEnumerable<System.Type?>> ContainProperties(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Func<aweXpect.Reflection.Collections.Filtered.Properties, aweXpect.Reflection.Collections.Filtered.Properties> filter) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> DoNotHave<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, bool inherit = true)
+            where TAttribute : System.Attribute { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> DoNotInheritFrom(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Type baseType, bool forceDirect = false) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> DoNotInheritFrom<TBaseType>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, bool forceDirect = false) { }
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Type?, System.Collections.Generic.IEnumerable<System.Type?>> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, bool inherit = true)
@@ -1243,6 +1283,8 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResultType WithName(this aweXpect.Reflection.Collections.Filtered.Types @this, string expected) { }
         public static aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResultType WithNamespace(this aweXpect.Reflection.Collections.Filtered.Types @this, string expected) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WithinNamespace(this aweXpect.Reflection.Collections.Filtered.Types @this, string expected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types Without<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Types @this, bool inherit = true)
+            where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResultType WithoutName(this aweXpect.Reflection.Collections.Filtered.Types @this, string unexpected) { }
         public class GenericTypes : aweXpect.Reflection.Collections.Filtered.Types
         {
