@@ -135,4 +135,12 @@ internal static class MethodInfoHelpers
 	/// <param name="methodInfo">The <see cref="MethodInfo" />.</param>
 	public static bool IsReallySealed(this MethodInfo? methodInfo)
 		=> methodInfo is { IsVirtual: true, IsFinal: true, };
+
+	/// <summary>
+	///     Gets a value indicating whether the <see cref="MethodInfo" /> overrides a base class method.
+	/// </summary>
+	/// <param name="methodInfo">The <see cref="MethodInfo" />.</param>
+	public static bool IsOverride(this MethodInfo? methodInfo)
+		=> methodInfo is not null
+		   && methodInfo.GetBaseDefinition().DeclaringType != methodInfo.DeclaringType;
 }

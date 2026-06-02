@@ -347,6 +347,8 @@ In addition to [access modifiers](#access-modifiers),
 |                                      | Filter                                              | Assert (single)                                                 | Assert (many)                |
 |--------------------------------------|-----------------------------------------------------|-----------------------------------------------------------------|------------------------------|
 | static / abstract / sealed / generic | `.WhichAreStatic()` …                               | `.IsStatic()` …                                                 | `.AreStatic()` …             |
+| virtual                              | `.WhichAreVirtual()`                                | `.IsVirtual()`                                                  | `.AreVirtual()`              |
+| overrides a base method              | `.WhichOverride()`                                  | `.Overrides()`                                                  | `.Override()`                |
 | returns type (or a subtype)          | `.WhichReturn<T>()`                                 | `.Returns<T>()`                                                 | `.Return<T>()`               |
 | returns exactly                      | `.WhichReturnExactly<T>()`                          | `.ReturnsExactly<T>()`                                          | `.ReturnExactly<T>()`        |
 | returns void                         | `.WhichReturnVoid()`                                | `.ReturnsVoid()`                                                | `.ReturnVoid()`              |
