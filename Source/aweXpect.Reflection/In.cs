@@ -93,6 +93,36 @@ public static class In
 	/// <summary>
 	///     Defines expectations on the types <paramref name="types" />
 	/// </summary>
-	public static Filtered.Types Types(params Type[] types)
+	public static Filtered.Types Types(params IEnumerable<Type> types)
 		=> new(types, $"in types {Formatter.Format(types)}");
+
+	/// <summary>
+	///     Defines expectations on the given <paramref name="constructors" />.
+	/// </summary>
+	public static Filtered.Constructors Constructors(params IEnumerable<ConstructorInfo> constructors)
+		=> new(constructors, $"in the constructors {Formatter.Format(constructors)}");
+
+	/// <summary>
+	///     Defines expectations on the given <paramref name="events" />.
+	/// </summary>
+	public static Filtered.Events Events(params IEnumerable<EventInfo> events)
+		=> new(events, $"in the events {Formatter.Format(events)}");
+
+	/// <summary>
+	///     Defines expectations on the given <paramref name="fields" />.
+	/// </summary>
+	public static Filtered.Fields Fields(params IEnumerable<FieldInfo> fields)
+		=> new(fields, $"in the fields {Formatter.Format(fields)}");
+
+	/// <summary>
+	///     Defines expectations on the given <paramref name="methods" />.
+	/// </summary>
+	public static Filtered.Methods Methods(params IEnumerable<MethodInfo> methods)
+		=> new(methods, $"in the methods {Formatter.Format(methods)}");
+
+	/// <summary>
+	///     Defines expectations on the given <paramref name="properties" />.
+	/// </summary>
+	public static Filtered.Properties Properties(params IEnumerable<PropertyInfo> properties)
+		=> new(properties, $"in the properties {Formatter.Format(properties)}");
 }

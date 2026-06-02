@@ -32,6 +32,15 @@ public static partial class Filtered
 		}
 
 		/// <summary>
+		///     Container for a filterable collection of the given <paramref name="events" />.
+		/// </summary>
+		internal Events(IEnumerable<EventInfo> events, string description)
+			: base(events.WhereNotNull())
+		{
+			_description = description;
+		}
+
+		/// <summary>
 		///     Container for a filterable collection of <see cref="EventInfo" />.
 		/// </summary>
 		protected Events(Events inner) : base(inner, inner.Filters)

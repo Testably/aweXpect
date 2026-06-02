@@ -32,6 +32,15 @@ public static partial class Filtered
 		}
 
 		/// <summary>
+		///     Container for a filterable collection of the given <paramref name="fields" />.
+		/// </summary>
+		internal Fields(IEnumerable<FieldInfo> fields, string description)
+			: base(fields.WhereNotNull())
+		{
+			_description = description;
+		}
+
+		/// <summary>
 		///     Container for a filterable collection of <see cref="FieldInfo" />.
 		/// </summary>
 		protected Fields(Fields inner) : base(inner, inner.Filters)

@@ -74,6 +74,17 @@ public sealed class InTests
 	}
 
 	[Fact]
+	public async Task Constructors_WithEnumerable_ShouldContainProvidedConstructors()
+	{
+		IEnumerable<ConstructorInfo> constructors = typeof(ClassWithMembers).GetConstructors();
+
+		Filtered.Constructors sut = In.Constructors(constructors);
+
+		await That(sut).IsEqualTo(constructors).InAnyOrder();
+		await That(sut.GetDescription()).IsEqualTo("in the constructors ").AsPrefix();
+	}
+
+	[Fact]
 	public async Task EntryAssembly_ShouldContainExpectedAssembly()
 	{
 		Assembly? expectedAssembly = Assembly.GetEntryAssembly();
@@ -87,6 +98,17 @@ public sealed class InTests
 		await That(sut).IsEmpty();
 #endif
 		await That(sut.GetDescription()).IsEqualTo("in entry assembly");
+	}
+
+	[Fact]
+	public async Task Events_WithEnumerable_ShouldContainProvidedEvents()
+	{
+		IEnumerable<EventInfo> events = typeof(BaseClassWithMembers).GetEvents();
+
+		Filtered.Events sut = In.Events(events);
+
+		await That(sut).IsEqualTo(events).InAnyOrder();
+		await That(sut.GetDescription()).IsEqualTo("in the events ").AsPrefix();
 	}
 
 	[Fact]
@@ -110,11 +132,52 @@ public sealed class InTests
 	}
 
 	[Fact]
+	public async Task Fields_WithSingleField_ShouldContainProvidedField()
+	{
+		FieldInfo field = typeof(ClassWithMembers).GetField(nameof(ClassWithMembers.Field))!;
+
+		Filtered.Fields sut = In.Fields(field);
+
+		await That(sut).HasSingle().Which.IsEqualTo(field);
+	}
+
+	[Fact]
 	public async Task Methods_ShouldExcludeCompilerGeneratedAccessors()
 	{
 		Filtered.Methods methods = In.Type<ClassWithMembers>().Methods();
 
 		await That(methods).All().Satisfy(method => !method.IsSpecialName).And.IsNotEmpty();
+	}
+
+	[Fact]
+	public async Task Methods_WithSingleMethod_ShouldContainProvidedMethod()
+	{
+		MethodInfo method = typeof(ClassWithMembers).GetMethod(nameof(ClassWithMembers.Method))!;
+
+		Filtered.Methods sut = In.Methods(method);
+
+		await That(sut).HasSingle().Which.IsEqualTo(method);
+	}
+
+	[Fact]
+	public async Task Properties_ShouldComposeWithFilter()
+	{
+		IEnumerable<PropertyInfo> properties = typeof(ClassWithMembers).GetProperties();
+
+		Filtered.Properties sut = In.Properties(properties).Which(property => property.CanWrite);
+
+		await That(sut).All().Satisfy(property => property.CanWrite).And.IsNotEmpty();
+	}
+
+	[Fact]
+	public async Task Properties_WithEnumerable_ShouldContainProvidedProperties()
+	{
+		IEnumerable<PropertyInfo> properties = typeof(ClassWithMembers).GetProperties();
+
+		Filtered.Properties sut = In.Properties(properties);
+
+		await That(sut).IsEqualTo(properties).InAnyOrder();
+		await That(sut.GetDescription()).IsEqualTo("in the properties ").AsPrefix();
 	}
 
 	[Fact]
@@ -146,6 +209,16 @@ public sealed class InTests
 		Filtered.Types sut = In.Assemblies(assembly).Types();
 
 		await That(sut).IsEqualTo([typeof(PublicClass), typeof(InternalClass),]).InAnyOrder();
+	}
+
+	[Fact]
+	public async Task Types_WithEnumerable_ShouldIncludeSpecifiedTypes()
+	{
+		IEnumerable<Type> types = [typeof(InTests), typeof(InternalClass),];
+
+		Filtered.Types sut = In.Types(types);
+
+		await That(sut).IsEqualTo([typeof(InTests), typeof(InternalClass),]).InAnyOrder();
 	}
 
 	[Fact]

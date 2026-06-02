@@ -32,6 +32,15 @@ public static partial class Filtered
 		}
 
 		/// <summary>
+		///     Container for a filterable collection of the given <paramref name="methods" />.
+		/// </summary>
+		internal Methods(IEnumerable<MethodInfo> methods, string description)
+			: base(methods.WhereNotNull())
+		{
+			_description = description;
+		}
+
+		/// <summary>
 		///     Container for a filterable collection of <see cref="MethodInfo" />.
 		/// </summary>
 		protected Methods(Methods inner) : base(inner, inner.Filters)

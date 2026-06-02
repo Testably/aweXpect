@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using aweXpect.Core;
@@ -24,6 +25,15 @@ public static partial class Filtered
 			type.GetDeclaredConstructors()))
 		{
 			_types = types;
+			_description = description;
+		}
+
+		/// <summary>
+		///     Container for a filterable collection of the given <paramref name="constructors" />.
+		/// </summary>
+		internal Constructors(IEnumerable<ConstructorInfo> constructors, string description)
+			: base(constructors.WhereNotNull())
+		{
 			_description = description;
 		}
 

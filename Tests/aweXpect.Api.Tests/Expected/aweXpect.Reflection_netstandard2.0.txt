@@ -292,11 +292,16 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Assemblies Assemblies(params System.Reflection.Assembly?[] assemblies) { }
         public static aweXpect.Reflection.Collections.Filtered.Assemblies AssemblyContaining(System.Type type) { }
         public static aweXpect.Reflection.Collections.Filtered.Assemblies AssemblyContaining<TType>() { }
+        public static aweXpect.Reflection.Collections.Filtered.Constructors Constructors(System.Collections.Generic.IEnumerable<System.Reflection.ConstructorInfo> constructors) { }
         public static aweXpect.Reflection.Collections.Filtered.Assemblies EntryAssembly() { }
+        public static aweXpect.Reflection.Collections.Filtered.Events Events(System.Collections.Generic.IEnumerable<System.Reflection.EventInfo> events) { }
         public static aweXpect.Reflection.Collections.Filtered.Assemblies ExecutingAssembly() { }
+        public static aweXpect.Reflection.Collections.Filtered.Fields Fields(System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo> fields) { }
+        public static aweXpect.Reflection.Collections.Filtered.Methods Methods(System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo> methods) { }
+        public static aweXpect.Reflection.Collections.Filtered.Properties Properties(System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo> properties) { }
         public static aweXpect.Reflection.Collections.Filtered.Types Type(System.Type type) { }
         public static aweXpect.Reflection.Collections.Filtered.Types Type<TType>() { }
-        public static aweXpect.Reflection.Collections.Filtered.Types Types(params System.Type[] types) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types Types(System.Collections.Generic.IEnumerable<System.Type> types) { }
         public static aweXpect.Reflection.Collections.Filtered.Types Types<TType1, TType2>() { }
         public static aweXpect.Reflection.Collections.Filtered.Types Types<TType1, TType2, TType3>() { }
     }
