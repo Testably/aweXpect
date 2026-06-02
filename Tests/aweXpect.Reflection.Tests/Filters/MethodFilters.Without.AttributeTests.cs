@@ -47,7 +47,7 @@ public sealed partial class MethodFilters
 				{
 				}
 
-				public void PlainMethod()
+				public static void PlainMethod()
 				{
 				}
 			}

@@ -48,11 +48,11 @@ public sealed partial class ThatMethod
 			private class TestClass
 			{
 				[Foo]
-				public void TestMethod()
+				public static void TestMethod()
 				{
 				}
 
-				public void NoAttributeMethod()
+				public static void NoAttributeMethod()
 				{
 				}
 			}
