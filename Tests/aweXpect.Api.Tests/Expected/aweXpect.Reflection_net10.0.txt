@@ -1782,11 +1782,11 @@ namespace aweXpect.Reflection.Collections
             public aweXpect.Reflection.Collections.IMemberSelectors Static { get; }
             public aweXpect.Reflection.Collections.Filtered.Assemblies Assemblies() { }
             public aweXpect.Reflection.Collections.Filtered.Constructors Constructors() { }
-            public aweXpect.Reflection.Collections.Filtered.Events Events() { }
-            public aweXpect.Reflection.Collections.Filtered.Fields Fields() { }
+            public aweXpect.Reflection.Collections.Filtered.Events Events(aweXpect.Reflection.Collections.MemberScope memberScope = 0) { }
+            public aweXpect.Reflection.Collections.Filtered.Fields Fields(aweXpect.Reflection.Collections.MemberScope memberScope = 0) { }
             public string GetDescription() { }
-            public aweXpect.Reflection.Collections.Filtered.Methods Methods() { }
-            public aweXpect.Reflection.Collections.Filtered.Properties Properties() { }
+            public aweXpect.Reflection.Collections.Filtered.Methods Methods(aweXpect.Reflection.Collections.MemberScope memberScope = 0) { }
+            public aweXpect.Reflection.Collections.Filtered.Properties Properties(aweXpect.Reflection.Collections.MemberScope memberScope = 0) { }
             public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Types
             {
                 public aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResult IgnoringCase(bool ignoreCase = true) { }
@@ -1828,9 +1828,9 @@ namespace aweXpect.Reflection.Collections
     }
     public interface ILimitedAbstractSealedMembers
     {
-        aweXpect.Reflection.Collections.Filtered.Events Events();
-        aweXpect.Reflection.Collections.Filtered.Methods Methods();
-        aweXpect.Reflection.Collections.Filtered.Properties Properties();
+        aweXpect.Reflection.Collections.Filtered.Events Events(aweXpect.Reflection.Collections.MemberScope memberScope = 0);
+        aweXpect.Reflection.Collections.Filtered.Methods Methods(aweXpect.Reflection.Collections.MemberScope memberScope = 0);
+        aweXpect.Reflection.Collections.Filtered.Properties Properties(aweXpect.Reflection.Collections.MemberScope memberScope = 0);
     }
     public interface ILimitedAbstractSealedTypeAssemblies
     {
@@ -1866,10 +1866,10 @@ namespace aweXpect.Reflection.Collections
     public interface IMemberSelectors
     {
         aweXpect.Reflection.Collections.Filtered.Constructors Constructors();
-        aweXpect.Reflection.Collections.Filtered.Events Events();
-        aweXpect.Reflection.Collections.Filtered.Fields Fields();
-        aweXpect.Reflection.Collections.Filtered.Methods Methods();
-        aweXpect.Reflection.Collections.Filtered.Properties Properties();
+        aweXpect.Reflection.Collections.Filtered.Events Events(aweXpect.Reflection.Collections.MemberScope memberScope = 0);
+        aweXpect.Reflection.Collections.Filtered.Fields Fields(aweXpect.Reflection.Collections.MemberScope memberScope = 0);
+        aweXpect.Reflection.Collections.Filtered.Methods Methods(aweXpect.Reflection.Collections.MemberScope memberScope = 0);
+        aweXpect.Reflection.Collections.Filtered.Properties Properties(aweXpect.Reflection.Collections.MemberScope memberScope = 0);
     }
     public interface IMembers : aweXpect.Reflection.Collections.IMemberSelectors
     {
@@ -1903,6 +1903,11 @@ namespace aweXpect.Reflection.Collections
         {
             aweXpect.Reflection.Collections.ITypeAssemblies Internal { get; }
         }
+    }
+    public enum MemberScope
+    {
+        DeclaredOnly = 0,
+        IncludingInherited = 1,
     }
 }
 namespace aweXpect.Reflection.Options

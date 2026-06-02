@@ -23,8 +23,9 @@ public static partial class Filtered
 		/// <summary>
 		///     Container for a filterable collection of <see cref="FieldInfo" />.
 		/// </summary>
-		internal Fields(Types types, string description) : base(types.SelectMany(type =>
-			type.GetDeclaredFields()))
+		internal Fields(Types types, string description,
+			MemberScope memberScope = MemberScope.DeclaredOnly) : base(types.SelectMany(type =>
+			type.GetDeclaredFields(memberScope)))
 		{
 			_types = types;
 			_description = description;

@@ -23,8 +23,9 @@ public static partial class Filtered
 		/// <summary>
 		///     Container for a filterable collection of <see cref="MethodInfo" />.
 		/// </summary>
-		internal Methods(Types types, string description) : base(types.SelectMany(type =>
-			type.GetDeclaredMethods()))
+		internal Methods(Types types, string description,
+			MemberScope memberScope = MemberScope.DeclaredOnly) : base(types.SelectMany(type =>
+			type.GetDeclaredMethods(memberScope)))
 		{
 			_types = types;
 			_description = description;

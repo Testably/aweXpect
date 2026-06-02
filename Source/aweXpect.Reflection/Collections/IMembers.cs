@@ -11,24 +11,28 @@ public interface IMemberSelectors
 	Filtered.Constructors Constructors();
 
 	/// <summary>
-	///     Get all methods matching the current member filter.
+	///     Get all methods matching the current member filter, including inherited members or only those
+	///     declared directly on the type according to the <paramref name="memberScope" />.
 	/// </summary>
-	Filtered.Methods Methods();
+	Filtered.Methods Methods(MemberScope memberScope = MemberScope.DeclaredOnly);
 
 	/// <summary>
-	///     Get all properties matching the current member filter.
+	///     Get all properties matching the current member filter, including inherited members or only those
+	///     declared directly on the type according to the <paramref name="memberScope" />.
 	/// </summary>
-	Filtered.Properties Properties();
+	Filtered.Properties Properties(MemberScope memberScope = MemberScope.DeclaredOnly);
 
 	/// <summary>
-	///     Get all fields matching the current member filter.
+	///     Get all fields matching the current member filter, including inherited members or only those
+	///     declared directly on the type according to the <paramref name="memberScope" />.
 	/// </summary>
-	Filtered.Fields Fields();
+	Filtered.Fields Fields(MemberScope memberScope = MemberScope.DeclaredOnly);
 
 	/// <summary>
-	///     Get all events matching the current member filter.
+	///     Get all events matching the current member filter, including inherited members or only those
+	///     declared directly on the type according to the <paramref name="memberScope" />.
 	/// </summary>
-	Filtered.Events Events();
+	Filtered.Events Events(MemberScope memberScope = MemberScope.DeclaredOnly);
 }
 
 /// <summary>
@@ -86,17 +90,20 @@ public interface IMembers : IMemberSelectors
 public interface ILimitedAbstractSealedMembers
 {
 	/// <summary>
-	///     Get all methods matching the current member filter.
+	///     Get all methods matching the current member filter, including inherited members or only those
+	///     declared directly on the type according to the <paramref name="memberScope" />.
 	/// </summary>
-	Filtered.Methods Methods();
+	Filtered.Methods Methods(MemberScope memberScope = MemberScope.DeclaredOnly);
 
 	/// <summary>
-	///     Get all properties matching the current member filter.
+	///     Get all properties matching the current member filter, including inherited members or only those
+	///     declared directly on the type according to the <paramref name="memberScope" />.
 	/// </summary>
-	Filtered.Properties Properties();
+	Filtered.Properties Properties(MemberScope memberScope = MemberScope.DeclaredOnly);
 
 	/// <summary>
-	///     Get all events matching the current member filter.
+	///     Get all events matching the current member filter, including inherited members or only those
+	///     declared directly on the type according to the <paramref name="memberScope" />.
 	/// </summary>
-	Filtered.Events Events();
+	Filtered.Events Events(MemberScope memberScope = MemberScope.DeclaredOnly);
 }
