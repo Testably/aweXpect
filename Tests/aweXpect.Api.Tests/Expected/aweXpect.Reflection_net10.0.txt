@@ -510,6 +510,9 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreStatic(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreWritable(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreWriteOnly(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Properties WhichHaveAGetter(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Properties WhichHaveASetter(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Properties WhichHaveAnInitSetter(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.PropertyFilters.PropertiesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Properties @this, bool inherit = true)
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.PropertyFilters.PropertiesWith With<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Properties @this, System.Func<TAttribute, bool>? predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
@@ -1330,6 +1333,12 @@ namespace aweXpect.Reflection
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.PropertyInfo?, System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>>> HaveAGetter(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>>> HaveAGetter(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>>> HaveASetter(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>>> HaveASetter(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>>> HaveAnInitSetter(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.PropertyInfo?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>>> HaveAnInitSetter(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo?>> subject) { }
         public sealed class PropertiesOfTypeResult<TValue, TResult> : aweXpect.Results.AndOrResult<TValue, TResult>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.TypeFilterOptions>
             where TResult : aweXpect.Core.IThat<TValue>
         {
@@ -1348,6 +1357,9 @@ namespace aweXpect.Reflection
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HasAttributeResult<System.Reflection.PropertyInfo?> Has<TAttribute>(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
+        public static aweXpect.Results.AndOrResult<System.Reflection.PropertyInfo?, aweXpect.Core.IThat<System.Reflection.PropertyInfo?>> HasAGetter(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Reflection.PropertyInfo?, aweXpect.Core.IThat<System.Reflection.PropertyInfo?>> HasASetter(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Reflection.PropertyInfo?, aweXpect.Core.IThat<System.Reflection.PropertyInfo?>> HasAnInitSetter(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.PropertyInfo?, aweXpect.Core.IThat<System.Reflection.PropertyInfo?>> IsAbstract(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.PropertyInfo?, aweXpect.Core.IThat<System.Reflection.PropertyInfo?>> IsNotAbstract(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.PropertyInfo?, aweXpect.Core.IThat<System.Reflection.PropertyInfo?>> IsNotSealed(this aweXpect.Core.IThat<System.Reflection.PropertyInfo?> subject) { }

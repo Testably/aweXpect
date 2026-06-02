@@ -155,4 +155,27 @@ internal static class PropertyInfoHelpers
 	/// </summary>
 	public static bool IsWritable(this PropertyInfo? propertyInfo)
 		=> propertyInfo is { CanWrite: true, };
+
+	/// <summary>
+	///     Checks if the <paramref name="propertyInfo" /> has a getter.
+	/// </summary>
+	public static bool HasGetter(this PropertyInfo? propertyInfo)
+		=> propertyInfo?.GetMethod != null;
+
+	/// <summary>
+	///     Checks if the <paramref name="propertyInfo" /> has an init-only setter.
+	/// </summary>
+	/// <remarks>
+	///     A setter is init-only if its return parameter carries the
+	///     <c>System.Runtime.CompilerServices.IsExternalInit</c> required custom modifier.
+	/// </remarks>
+	public static bool HasInitSetter(this PropertyInfo? propertyInfo)
+		=> propertyInfo?.SetMethod?.ReturnParameter.GetRequiredCustomModifiers()
+			.Any(modifier => modifier.FullName == "System.Runtime.CompilerServices.IsExternalInit") == true;
+
+	/// <summary>
+	///     Checks if the <paramref name="propertyInfo" /> has a (regular, non-init) setter.
+	/// </summary>
+	public static bool HasSetter(this PropertyInfo? propertyInfo)
+		=> propertyInfo?.SetMethod != null && !propertyInfo.HasInitSetter();
 }
