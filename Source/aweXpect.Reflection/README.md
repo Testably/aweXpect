@@ -396,6 +396,12 @@ In addition to [access modifiers](#access-modifiers),
 | read-only *(properties only)*         | `.WhichAreReadOnly()`                       | `.IsReadOnly()`                 | `.AreReadOnly()`                  |
 | write-only *(properties only)*        | `.WhichAreWriteOnly()`                      | `.IsWriteOnly()`                | `.AreWriteOnly()`                 |
 | read-write *(properties only)*        | `.WhichAreReadWrite()`                      | `.IsReadWrite()`                | `.AreReadWrite()`                 |
+| indexer *(properties only)*           | `.WhichAreIndexers()`                       | `.IsAnIndexer()`                | `.AreIndexers()`                  |
+
+> **Negation:** the `static`, `abstract`, `sealed`, `virtual` and `indexer` rows have a negated form —
+> `WhichAreNot…` on filters and `IsNot…` / `AreNot…` on assertions (e.g. `WhichAreNotIndexers()`,
+> `IsNotAnIndexer()`, `AreNotIndexers()`); `override` uses `WhichDoNotOverride()` / `DoesNotOverride()` /
+> `DoNotOverride()`.
 
 Use `OrOfType<T>()` / `OrOfExactType<T>()` to allow several types.
 

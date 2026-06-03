@@ -147,6 +147,12 @@ internal static class PropertyInfoHelpers
 		   propertyInfo?.SetMethod?.IsStatic == true;
 
 	/// <summary>
+	///     Checks if the <paramref name="propertyInfo" /> is an indexer (has index parameters).
+	/// </summary>
+	public static bool IsIndexer(this PropertyInfo? propertyInfo)
+		=> propertyInfo?.GetIndexParameters().Length > 0;
+
+	/// <summary>
 	///     Checks if the <paramref name="propertyInfo" /> is read-only (can be read but not written).
 	/// </summary>
 	public static bool IsReadOnly(this PropertyInfo? propertyInfo)
