@@ -30,6 +30,21 @@ public static partial class ThatType
 			return "record";
 		}
 
+		if (type.IsDelegate())
+		{
+			return "delegate";
+		}
+
+		if (type.IsException())
+		{
+			return "exception";
+		}
+
+		if (type.IsAttribute())
+		{
+			return "attribute";
+		}
+
 		if (type.IsClass)
 		{
 			return "class";

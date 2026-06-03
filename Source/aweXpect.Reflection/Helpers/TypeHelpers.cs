@@ -564,6 +564,30 @@ internal static class TypeHelpers
 		!IsRecordStruct(type);
 
 	/// <summary>
+	///     Gets a value indicating whether the <see cref="Type" /> is a delegate
+	///     (derives from <see cref="MulticastDelegate" />).
+	/// </summary>
+	/// <param name="type">The <see cref="Type" />.</param>
+	public static bool IsDelegate(this Type? type)
+		=> type is not null && typeof(MulticastDelegate).IsAssignableFrom(type);
+
+	/// <summary>
+	///     Gets a value indicating whether the <see cref="Type" /> is an exception
+	///     (derives from <see cref="Exception" />).
+	/// </summary>
+	/// <param name="type">The <see cref="Type" />.</param>
+	public static bool IsException(this Type? type)
+		=> type is not null && typeof(Exception).IsAssignableFrom(type);
+
+	/// <summary>
+	///     Gets a value indicating whether the <see cref="Type" /> is an attribute
+	///     (derives from <see cref="Attribute" />).
+	/// </summary>
+	/// <param name="type">The <see cref="Type" />.</param>
+	public static bool IsAttribute(this Type? type)
+		=> type is not null && typeof(Attribute).IsAssignableFrom(type);
+
+	/// <summary>
 	///     Gets a value indicating whether the <see cref="Type" /> is a read-only struct
 	///     (declared with the <c>readonly</c> modifier).
 	/// </summary>

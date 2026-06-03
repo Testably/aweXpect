@@ -229,6 +229,9 @@ outside the namespace.
 | record struct    | `.WhichAreRecordStructs()` / `.RecordStructs()` | `.IsARecordStruct()` | `.AreRecordStructs()` |
 | readonly struct  | `.WhichAreReadOnly()`                           | `.IsReadOnly()`      | `.AreReadOnly()`      |
 | ref struct       | `.WhichAreRefStructs()`                         | `.IsARefStruct()`    | `.AreRefStructs()`    |
+| delegate         | `.WhichAreDelegates()`                          | `.IsADelegate()`     | `.AreDelegates()`     |
+| exception        | `.WhichAreExceptions()`                         | `.IsAnException()`   | `.AreExceptions()`    |
+| attribute        | `.WhichAreAttributes()`                         | `.IsAnAttribute()`   | `.AreAttributes()`    |
 | abstract         | `.WhichAreAbstract()` / `.Abstract`             | `.IsAbstract()`      | `.AreAbstract()`      |
 | sealed           | `.WhichAreSealed()` / `.Sealed`                 | `.IsSealed()`        | `.AreSealed()`        |
 | static           | `.WhichAreStatic()` / `.Static`                 | `.IsStatic()`        | `.AreStatic()`        |
