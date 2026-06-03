@@ -389,6 +389,8 @@ In addition to [access modifiers](#access-modifiers),
 | of exact type                         | `.OfExactType<T>()`                         | `.IsOfExactType<T>()`           | `.AreOfExactType<T>()`            |
 | static *(properties & fields)*        | `.WhichAreStatic()`                         | `.IsStatic()`                   | `.AreStatic()`                    |
 | abstract / sealed *(properties only)* | `.WhichAreAbstract()` / `.WhichAreSealed()` | `.IsAbstract()` / `.IsSealed()` | `.AreAbstract()` / `.AreSealed()` |
+| virtual *(properties only)*           | `.WhichAreVirtual()`                        | `.IsVirtual()`                  | `.AreVirtual()`                   |
+| override *(properties only)*          | `.WhichOverride()`                          | `.Overrides()`                  | `.Override()`                     |
 | readable *(properties only)*          | `.WhichAreReadable()`                       | `.IsReadable()`                 | `.AreReadable()`                  |
 | writable *(properties only)*          | `.WhichAreWritable()`                       | `.IsWritable()`                 | `.AreWritable()`                  |
 | read-only *(properties only)*         | `.WhichAreReadOnly()`                       | `.IsReadOnly()`                 | `.AreReadOnly()`                  |

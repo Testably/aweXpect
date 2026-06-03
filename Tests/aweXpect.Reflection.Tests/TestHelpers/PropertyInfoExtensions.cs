@@ -30,4 +30,24 @@ public static class PropertyInfoExtensions
 		this PropertyInfo? propertyInfo)
 		=> propertyInfo?.GetMethod?.IsStatic == true ||
 		   propertyInfo?.SetMethod?.IsStatic == true;
+
+	/// <summary>
+	///     Checks if the <paramref name="propertyInfo" /> is virtual (based on its accessor methods).
+	/// </summary>
+	/// <param name="propertyInfo">The <see cref="PropertyInfo" /> to check.</param>
+	public static bool IsReallyVirtual(this PropertyInfo? propertyInfo)
+		=> propertyInfo?.GetMethod?.IsVirtual == true ||
+		   propertyInfo?.SetMethod?.IsVirtual == true;
+
+	/// <summary>
+	///     Checks if the <paramref name="propertyInfo" /> overrides a base class property (based on its accessor methods).
+	/// </summary>
+	/// <param name="propertyInfo">The <see cref="PropertyInfo" /> to check.</param>
+	public static bool IsReallyOverride(this PropertyInfo? propertyInfo)
+		=> IsAccessorOverride(propertyInfo?.GetMethod) ||
+		   IsAccessorOverride(propertyInfo?.SetMethod);
+
+	private static bool IsAccessorOverride(MethodInfo? methodInfo)
+		=> methodInfo is not null &&
+		   methodInfo.GetBaseDefinition().DeclaringType != methodInfo.DeclaringType;
 }

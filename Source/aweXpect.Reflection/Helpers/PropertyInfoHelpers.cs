@@ -116,6 +116,26 @@ internal static class PropertyInfoHelpers
 		   propertyInfo?.SetMethod?.IsFinal == true;
 
 	/// <summary>
+	///     Checks if the <paramref name="propertyInfo" /> is virtual (based on its accessor methods).
+	/// </summary>
+	/// <remarks>
+	///     A property is considered virtual if its getter or setter method is virtual.
+	/// </remarks>
+	public static bool IsReallyVirtual(this PropertyInfo? propertyInfo)
+		=> propertyInfo?.GetMethod?.IsVirtual == true ||
+		   propertyInfo?.SetMethod?.IsVirtual == true;
+
+	/// <summary>
+	///     Checks if the <paramref name="propertyInfo" /> overrides a base class property (based on its accessor methods).
+	/// </summary>
+	/// <remarks>
+	///     A property is considered an override if its getter or setter method overrides a base class method.
+	/// </remarks>
+	public static bool IsOverride(this PropertyInfo? propertyInfo)
+		=> propertyInfo?.GetMethod.IsOverride() == true ||
+		   propertyInfo?.SetMethod.IsOverride() == true;
+
+	/// <summary>
 	///     Checks if the <paramref name="propertyInfo" /> is static.
 	/// </summary>
 	/// <remarks>
