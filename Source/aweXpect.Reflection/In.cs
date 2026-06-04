@@ -64,6 +64,18 @@ public static class In
 		=> new(Assembly.GetExecutingAssembly(), "in executing assembly");
 
 	/// <summary>
+	///     Defines expectations on all types within the <paramref name="namespace" /> (including sub-namespaces)
+	///     from all loaded assemblies of the current <see cref="System.AppDomain.CurrentDomain" />.
+	/// </summary>
+	/// <remarks>
+	///     This matches the <paramref name="namespace" /> and its sub-namespaces, but not namespaces that merely start
+	///     with the same text (e.g. <c>Foo.Bar</c> does not include <c>Foo.BarBaz</c>). The comparison is exact and
+	///     case-sensitive.
+	/// </remarks>
+	public static Filtered.Types Namespace(string @namespace)
+		=> AllLoadedAssemblies().Types().WithinNamespace(@namespace);
+
+	/// <summary>
 	///     Defines expectations on the type <typeparamref name="TType" />.
 	/// </summary>
 	public static Filtered.Types Type<TType>()

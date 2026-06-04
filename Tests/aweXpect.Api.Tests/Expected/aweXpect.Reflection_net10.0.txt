@@ -324,6 +324,7 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Assemblies ExecutingAssembly() { }
         public static aweXpect.Reflection.Collections.Filtered.Fields Fields(System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo> fields) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods Methods(System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo> methods) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types Namespace(string @namespace) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties Properties(System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo> properties) { }
         public static aweXpect.Reflection.Collections.Filtered.Types Type(System.Type type) { }
         public static aweXpect.Reflection.Collections.Filtered.Types Type<TType>() { }

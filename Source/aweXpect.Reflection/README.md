@@ -98,6 +98,7 @@ evaluated collection that you can navigate and filter further.
 | `In.ExecutingAssembly()`                                                                      | the executing assembly                                                               |
 | `In.Type<T>()` / `In.Type(typeof(T))`                                                         | a single type                                                                        |
 | `In.Types<T1, T2>()` / `In.Types<T1, T2, T3>()` / `In.Types(t1, t2, …)`                       | the given types                                                                      |
+| `In.Namespace("ns")`                                                                          | all types within a namespace and its sub-namespaces (across loaded assemblies)       |
 | `In.Constructors(…)` / `In.Events(…)` / `In.Fields(…)` / `In.Methods(…)` / `In.Properties(…)` | the given members                                                                    |
 
 ## Navigating to members
