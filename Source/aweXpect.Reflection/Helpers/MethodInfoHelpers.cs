@@ -157,4 +157,15 @@ internal static class MethodInfoHelpers
 	/// <param name="methodInfo">The <see cref="MethodInfo" />.</param>
 	public static bool IsAsync(this MethodInfo? methodInfo)
 		=> methodInfo?.GetCustomAttribute<AsyncStateMachineAttribute>() is not null;
+
+	/// <summary>
+	///     Gets a value indicating whether the <see cref="MethodInfo" /> is an extension method.
+	/// </summary>
+	/// <remarks>
+	///     Detection is based on the <see cref="ExtensionAttribute" /> which the compiler emits for methods whose first
+	///     parameter is declared with the <see langword="this" /> modifier.
+	/// </remarks>
+	/// <param name="methodInfo">The <see cref="MethodInfo" />.</param>
+	public static bool IsExtensionMethod(this MethodInfo? methodInfo)
+		=> methodInfo?.IsDefined(typeof(ExtensionAttribute), false) == true;
 }
