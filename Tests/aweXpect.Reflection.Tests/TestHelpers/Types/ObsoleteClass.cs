@@ -2,7 +2,7 @@ using System;
 
 namespace aweXpect.Reflection.Tests.TestHelpers.Types;
 
-[Obsolete]
+[Obsolete("This class is obsolete.")]
 public class ObsoleteClass
 {
 }

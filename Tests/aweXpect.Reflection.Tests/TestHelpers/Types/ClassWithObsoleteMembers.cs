@@ -4,19 +4,19 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Types;
 
 public class ClassWithObsoleteMembers
 {
-	[Obsolete]
+	[Obsolete("This field is obsolete.")]
 	public int ObsoleteField;
 
 	public int NonObsoleteField;
 
 #pragma warning disable CS0067 // Event is never used
-	[Obsolete]
+	[Obsolete("This event is obsolete.")]
 	public event EventHandler? ObsoleteEvent;
 
 	public event EventHandler? NonObsoleteEvent;
 #pragma warning restore CS0067
 
-	[Obsolete]
+	[Obsolete("This constructor is obsolete.")]
 	public ClassWithObsoleteMembers()
 	{
 	}
@@ -26,13 +26,13 @@ public class ClassWithObsoleteMembers
 		NonObsoleteField = value;
 	}
 
-	[Obsolete]
+	[Obsolete("This property is obsolete.")]
 	public int ObsoleteProperty { get; set; }
 
 	public int NonObsoleteProperty { get; set; }
 
 #pragma warning disable CA1822 // Mark members as static
-	[Obsolete]
+	[Obsolete("This method is obsolete.")]
 	public void ObsoleteMethod()
 	{
 	}
