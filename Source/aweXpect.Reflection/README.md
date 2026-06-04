@@ -17,7 +17,7 @@ or members you care about with `In`, then **assert** a rule on them with `Expect
 // "Every async method must end in 'Async'"
 await Expect.That(In.AssemblyContaining<MyClass>()    // ① pick a source
         .Methods()                                    // ② navigate to a member kind
-        .WhichReturn<Task>().OrReturn<ValueTask>())   // ③ filter it down
+        .WhichAreAsync())                             // ③ filter it down
     .HaveName("Async").AsSuffix();                    // ④ assert
 ```
 
@@ -54,7 +54,7 @@ await Expect.That(In.AllLoadedAssemblies()
 
 // Verify all async methods have an "Async" suffix
 await Expect.That(In.AssemblyContaining<MyClass>()
-        .Methods().WhichReturn<Task>().OrReturn<ValueTask>())
+        .Methods().WhichAreAsync())
     .HaveName("Async").AsSuffix();
 
 // Verify all methods with an "Async" suffix return Task or ValueTask
@@ -350,6 +350,7 @@ In addition to [access modifiers](#access-modifiers),
 |                                      | Filter                                              | Assert (single)                                                 | Assert (many)                |
 |--------------------------------------|-----------------------------------------------------|-----------------------------------------------------------------|------------------------------|
 | static / abstract / sealed / generic | `.WhichAreStatic()` …                               | `.IsStatic()` …                                                 | `.AreStatic()` …             |
+| async                                | `.WhichAreAsync()`                                  | `.IsAsync()`                                                    | `.AreAsync()`                |
 | virtual                              | `.WhichAreVirtual()`                                | `.IsVirtual()`                                                  | `.AreVirtual()`              |
 | overrides a base method              | `.WhichOverride()`                                  | `.Overrides()`                                                  | `.Override()`                |
 | returns type (or a subtype)          | `.WhichReturn<T>()`                                 | `.Returns<T>()`                                                 | `.Return<T>()`               |

@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using aweXpect.Reflection.Collections;
 
 namespace aweXpect.Reflection.Helpers;
@@ -143,4 +144,17 @@ internal static class MethodInfoHelpers
 	public static bool IsOverride(this MethodInfo? methodInfo)
 		=> methodInfo is not null
 		   && methodInfo.GetBaseDefinition().DeclaringType != methodInfo.DeclaringType;
+
+	/// <summary>
+	///     Gets a value indicating whether the <see cref="MethodInfo" /> is declared with the <see langword="async" />
+	///     keyword.
+	/// </summary>
+	/// <remarks>
+	///     Detection is based on the <see cref="AsyncStateMachineAttribute" /> which the compiler emits for methods
+	///     declared with the <see langword="async" /> keyword. This also covers <see langword="async" />
+	///     <see langword="void" /> methods and is more accurate than inspecting the return type.
+	/// </remarks>
+	/// <param name="methodInfo">The <see cref="MethodInfo" />.</param>
+	public static bool IsAsync(this MethodInfo? methodInfo)
+		=> methodInfo?.GetCustomAttribute<AsyncStateMachineAttribute>() is not null;
 }

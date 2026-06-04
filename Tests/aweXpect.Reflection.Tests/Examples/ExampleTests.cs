@@ -1,4 +1,4 @@
-﻿namespace aweXpect.Reflection.Tests.Examples;
+namespace aweXpect.Reflection.Tests.Examples;
 
 public sealed class ExampleTests
 {
@@ -6,7 +6,7 @@ public sealed class ExampleTests
 	[Fact(Skip = "Does not apply in this project")]
 	public async Task AllAsyncMethodsHaveAsyncSuffix()
 		=> await That(In.AssemblyContaining(typeof(In))
-				.Methods().WhichReturn<Task>().OrReturn<ValueTask>())
+				.Methods().WhichAreAsync())
 			.HaveName("Async").AsSuffix();
 #endif
 
