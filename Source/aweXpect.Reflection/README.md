@@ -254,6 +254,8 @@ outside the namespace.
 | generic          | `.WhichAreGeneric()` / `.Generic`               | `.IsGeneric()`       | `.AreGeneric()`       |
 | nested           | `.WhichAreNested()` / `.Nested`                 | `.IsNested()`        | `.AreNested()`        |
 | inherits from    | `.WhichInheritFrom<T>()`                        | `.InheritsFrom<T>()` | `.InheritFrom<T>()`   |
+| instantiable     | `.WhichAreInstantiable()`                       | `.IsInstantiable()`  | `.AreInstantiable()`  |
+| default constructor | `.WhichHaveADefaultConstructor()`            | `.HasADefaultConstructor()` | `.HaveADefaultConstructor()` |
 | custom predicate | `.Which(t => …)`                                | -                    | -                     |
 
 `WhichInheritFrom` / `InheritsFrom` accept a generic argument or a `Type`, plus an optional
@@ -269,8 +271,15 @@ In.AllLoadedAssemblies().Types()
 In.AllLoadedAssemblies().Public.Abstract.Classes()
 ```
 
-> **Negation:** every kind/modifier row above has a negated form: `WhichAreNot…` on filters and
-> `IsNot…` / `AreNot…` on assertions (e.g. `WhichAreNotSealed()`, `IsNotAClass()`, `AreNotStatic()`).
+A type is *instantiable* when it is a concrete type that is neither abstract, static nor an interface, and not
+an open generic type definition. *Default constructor* checks for an accessible parameterless constructor
+(value types always have one); this is independent of instantiability (e.g. a type with only a parameterized
+constructor is instantiable but has no default constructor).
+
+> **Negation:** every kind/modifier row above has a negated form. Most use `WhichAreNot…` on filters and
+> `IsNot…` / `AreNot…` on assertions (e.g. `WhichAreNotSealed()`, `IsNotAClass()`, `AreNotStatic()`,
+> `IsNotInstantiable()`). The *default constructor* row uses `WhichDoNotHaveADefaultConstructor()`,
+> `DoesNotHaveADefaultConstructor()` and `DoNotHaveADefaultConstructor()`.
 
 #### Types containing specific members
 

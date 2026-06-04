@@ -643,6 +643,30 @@ internal static class TypeHelpers
 		=> type is { IsAbstract: true, IsSealed: false, IsInterface: false, };
 
 	/// <summary>
+	///     Gets a value indicating whether the <see cref="Type" /> is instantiable, i.e. a concrete type that
+	///     can be instantiated.
+	/// </summary>
+	/// <param name="type">The <see cref="Type" />.</param>
+	/// <remarks>
+	///     A type is considered instantiable when it is neither abstract, static nor an interface (all of which have
+	///     <see cref="Type.IsAbstract" /> set to <see langword="true" />) and is not an open generic type definition.
+	/// </remarks>
+	public static bool IsReallyInstantiable(this Type? type)
+		=> type is { IsAbstract: false, IsGenericTypeDefinition: false, };
+
+	/// <summary>
+	///     Gets a value indicating whether the <see cref="Type" /> has an accessible parameterless (default) constructor.
+	/// </summary>
+	/// <param name="type">The <see cref="Type" />.</param>
+	/// <remarks>
+	///     Value types always have a parameterless constructor. For all other types a <see langword="public" />
+	///     parameterless constructor must be declared.
+	/// </remarks>
+	public static bool HasDefaultConstructor(this Type? type)
+		=> type is not null &&
+		   (type.IsValueType || type.GetConstructor(Type.EmptyTypes) is not null);
+
+	/// <summary>
 	///     Check if the generic types are compatible.<br />
 	///     Generic types are considered compatible, if either one or both are open generics or the generic argument types
 	///     themselves are equal.
