@@ -179,6 +179,22 @@ await Expect.That(type).Has<ObsoleteAttribute>(a => a.Message == "Use NewClass i
 await Expect.That(methods).Have<FactAttribute>();
 ```
 
+### Obsolete
+
+Shared by all types and members: a self-documenting shorthand for the `ObsoleteAttribute` (so that
+`.WhichAreObsolete()` reads better than `.With<ObsoleteAttribute>()` in architecture rules).
+
+|              | Filter                   | Assert (single)    | Assert (many)       |
+|--------------|--------------------------|--------------------|---------------------|
+| obsolete     | `.WhichAreObsolete()`    | `.IsObsolete()`    | `.AreObsolete()`    |
+| not obsolete | `.WhichAreNotObsolete()` | `.IsNotObsolete()` | `.AreNotObsolete()` |
+
+```csharp
+// Verify that nothing public is marked [Obsolete]
+await Expect.That(In.AssemblyContaining<MyClass>().Types().WhichArePublic())
+    .AreNotObsolete();
+```
+
 ### Names and namespaces
 
 Shared by all types and members.

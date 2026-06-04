@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using aweXpect.Reflection.Collections;
 
@@ -9,6 +9,13 @@ namespace aweXpect.Reflection.Helpers;
 /// </summary>
 internal static class MemberInfoHelpers
 {
+	/// <summary>
+	///     Checks if the <paramref name="memberInfo" /> is obsolete (marked with the <see cref="ObsoleteAttribute" />).
+	/// </summary>
+	public static bool IsObsolete(this MemberInfo? memberInfo)
+		=> memberInfo is not null &&
+		   Attribute.GetCustomAttributes(memberInfo, typeof(ObsoleteAttribute), inherit: true).Length > 0;
+
 	/// <summary>
 	///     Checks if the <paramref name="memberInfo" /> has the specified <paramref name="accessModifiers" />.
 	/// </summary>

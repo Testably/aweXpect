@@ -15,7 +15,7 @@ using aweXpect.Results;
 
 namespace aweXpect.Reflection;
 
-public static partial class ThatMember
+public static partial class ThatMembers
 {
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <typeparamref name="TMember" /> are private protected.

@@ -84,12 +84,14 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Constructors WhichAreInternal(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Constructors WhichAreNot(this aweXpect.Reflection.Collections.Filtered.Constructors @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
         public static aweXpect.Reflection.Collections.Filtered.Constructors WhichAreNotInternal(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Constructors WhichAreNotObsolete(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Constructors WhichAreNotPrivate(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Constructors WhichAreNotPrivateProtected(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Constructors WhichAreNotProtected(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Constructors WhichAreNotProtectedInternal(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Constructors WhichAreNotPublic(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Constructors WhichAreNotStatic(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Constructors WhichAreObsolete(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Constructors WhichArePrivate(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Constructors WhichArePrivateProtected(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Constructors WhichAreProtected(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
@@ -214,12 +216,14 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNot(this aweXpect.Reflection.Collections.Filtered.Events @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNotAbstract(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNotInternal(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNotObsolete(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNotPrivate(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNotPrivateProtected(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNotProtected(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNotProtectedInternal(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNotPublic(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNotSealed(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Events WhichAreObsolete(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichArePrivate(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichArePrivateProtected(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAreProtected(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
@@ -264,6 +268,7 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNot(this aweXpect.Reflection.Collections.Filtered.Fields @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNotConstant(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNotInternal(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNotObsolete(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNotPrivate(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNotPrivateProtected(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNotProtected(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
@@ -271,6 +276,7 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNotPublic(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNotReadOnly(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNotStatic(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreObsolete(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichArePrivate(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichArePrivateProtected(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreProtected(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
@@ -338,6 +344,7 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNotExtensionMethods(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNotGeneric(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNotInternal(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNotObsolete(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNotPrivate(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNotPrivateProtected(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNotProtected(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
@@ -346,6 +353,7 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNotSealed(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNotStatic(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNotVirtual(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreObsolete(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichArePrivate(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichArePrivateProtected(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreProtected(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
@@ -519,6 +527,7 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNotAbstract(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNotIndexers(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNotInternal(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNotObsolete(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNotPrivate(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNotPrivateProtected(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNotProtected(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
@@ -528,6 +537,7 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNotSealed(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNotStatic(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNotVirtual(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreObsolete(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichArePrivate(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichArePrivateProtected(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreProtected(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
@@ -899,30 +909,6 @@ namespace aweXpect.Reflection
     }
     public static class ThatMember
     {
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreInternal<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
-            where TMember : System.Reflection.MemberInfo? { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreNotInternal<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
-            where TMember : System.Reflection.MemberInfo? { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreNotPrivate<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
-            where TMember : System.Reflection.MemberInfo? { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreNotPrivateProtected<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
-            where TMember : System.Reflection.MemberInfo? { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreNotProtected<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
-            where TMember : System.Reflection.MemberInfo? { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreNotProtectedInternal<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
-            where TMember : System.Reflection.MemberInfo? { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreNotPublic<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
-            where TMember : System.Reflection.MemberInfo? { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> ArePrivate<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
-            where TMember : System.Reflection.MemberInfo? { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> ArePrivateProtected<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
-            where TMember : System.Reflection.MemberInfo? { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreProtected<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
-            where TMember : System.Reflection.MemberInfo? { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreProtectedInternal<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
-            where TMember : System.Reflection.MemberInfo? { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> ArePublic<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
-            where TMember : System.Reflection.MemberInfo? { }
         public static aweXpect.Results.StringEqualityTypeResult<TMember, aweXpect.Core.IThat<TMember>> DoesNotHaveName<TMember>(this aweXpect.Core.IThat<TMember> subject, string unexpected)
             where TMember : System.Reflection.MemberInfo? { }
         public static aweXpect.Results.StringEqualityTypeResult<TMember, aweXpect.Core.IThat<TMember>> HasName<TMember>(this aweXpect.Core.IThat<TMember> subject, string expected)
@@ -930,6 +916,8 @@ namespace aweXpect.Reflection
         public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsInternal<TMember>(this aweXpect.Core.IThat<TMember> subject)
             where TMember : System.Reflection.MemberInfo? { }
         public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsNotInternal<TMember>(this aweXpect.Core.IThat<TMember> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsNotObsolete<TMember>(this aweXpect.Core.IThat<TMember> subject)
             where TMember : System.Reflection.MemberInfo? { }
         public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsNotPrivate<TMember>(this aweXpect.Core.IThat<TMember> subject)
             where TMember : System.Reflection.MemberInfo? { }
@@ -940,6 +928,8 @@ namespace aweXpect.Reflection
         public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsNotProtectedInternal<TMember>(this aweXpect.Core.IThat<TMember> subject)
             where TMember : System.Reflection.MemberInfo? { }
         public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsNotPublic<TMember>(this aweXpect.Core.IThat<TMember> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsObsolete<TMember>(this aweXpect.Core.IThat<TMember> subject)
             where TMember : System.Reflection.MemberInfo? { }
         public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember>> IsPrivate<TMember>(this aweXpect.Core.IThat<TMember> subject)
             where TMember : System.Reflection.MemberInfo? { }
@@ -954,6 +944,34 @@ namespace aweXpect.Reflection
     }
     public static class ThatMembers
     {
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreInternal<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreNotInternal<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreNotObsolete<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreNotPrivate<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreNotPrivateProtected<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreNotProtected<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreNotProtectedInternal<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreNotPublic<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreObsolete<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> ArePrivate<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> ArePrivateProtected<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreProtected<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> AreProtectedInternal<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> ArePublic<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject)
+            where TMember : System.Reflection.MemberInfo? { }
         public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> DoNotHaveName<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject, string unexpected)
             where TMember : System.Reflection.MemberInfo? { }
         public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<TMember>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>>> HaveName<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember>> subject, string expected)
@@ -1381,6 +1399,7 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotInterfaces(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotInternal(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotNested(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotObsolete(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotPrivate(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotPrivateProtected(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotProtected(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
@@ -1393,6 +1412,7 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotSealed(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotStatic(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotStructs(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichAreObsolete(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichArePrivate(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichArePrivateProtected(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreProtected(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
