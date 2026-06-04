@@ -145,12 +145,18 @@ internal static class TypeHelpers
 	/// </summary>
 	public static MethodInfo[] GetDeclaredMethods(
 		this Type type,
-		MemberScope memberScope = MemberScope.DeclaredOnly)
+		MemberScope memberScope = MemberScope.DeclaredOnly,
+		bool includeOperators = false)
 	{
 		try
 		{
 			CompilerGeneratedMembers includedCompilerGenerated = IncludedCompilerGeneratedMembers;
 			SpecialNameMembers includedSpecialName = IncludedSpecialNameMembers;
+			if (includeOperators)
+			{
+				includedSpecialName |= SpecialNameMembers.Operators;
+			}
+
 			IEnumerable<MethodInfo> methods = type
 				.GetMethods(memberScope.ToBindingFlags() |
 				            BindingFlags.NonPublic |
@@ -819,6 +825,71 @@ internal static class TypeHelpers
 	public static bool HasDefaultConstructor(this Type? type)
 		=> type is not null &&
 		   (type.IsValueType || type.GetConstructor(Type.EmptyTypes) is not null);
+
+	/// <summary>
+	///     Gets the <see cref="BindingFlags" /> used to look up operator methods, optionally including operators
+	///     inherited from base types when <paramref name="inherit" /> is <see langword="true" />.
+	/// </summary>
+	/// <remarks>
+	///     Operators are always <see langword="public" /> <see langword="static" /> methods. Inherited static members are
+	///     only returned when <see cref="BindingFlags.FlattenHierarchy" /> is specified.
+	/// </remarks>
+	private static BindingFlags OperatorFlags(bool inherit)
+		=> BindingFlags.Public | BindingFlags.Static | (inherit ? BindingFlags.FlattenHierarchy : 0);
+
+	/// <summary>
+	///     Gets a value indicating whether the <paramref name="type" /> declares the <paramref name="operator" />.
+	/// </summary>
+	/// <param name="type">The <see cref="Type" />.</param>
+	/// <param name="operator">The <see cref="Operator" /> to look for.</param>
+	/// <param name="inherit">
+	///     <see langword="true" /> to also consider operators inherited from base types; otherwise,
+	///     <see langword="false" /> (the default).
+	/// </param>
+	public static bool HasOperator(this Type? type, Operator @operator, bool inherit = false)
+		=> type?.GetMethods(OperatorFlags(inherit)).Any(m => m.IsOperator(@operator)) == true;
+
+	/// <summary>
+	///     Gets a value indicating whether the <paramref name="type" /> declares the <paramref name="operator" /> with an
+	///     overload that takes the <paramref name="operand" /> as one of its parameters.
+	/// </summary>
+	/// <param name="type">The <see cref="Type" />.</param>
+	/// <param name="operator">The <see cref="Operator" /> to look for.</param>
+	/// <param name="operand">The operand type that one of the operator's parameters must match exactly.</param>
+	/// <param name="inherit">
+	///     <see langword="true" /> to also consider operators inherited from base types; otherwise,
+	///     <see langword="false" /> (the default).
+	/// </param>
+	public static bool HasOperator(this Type? type, Operator @operator, Type operand, bool inherit = false)
+		=> type?.GetMethods(OperatorFlags(inherit))
+			.Any(m => m.IsOperator(@operator) &&
+			          m.GetParameters().Any(p => p.ParameterType.IsEqualTo(operand))) == true;
+
+	/// <summary>
+	///     Gets the conversion operator on the <paramref name="type" /> that converts from <paramref name="source" /> to
+	///     <paramref name="target" />, or <see langword="null" /> if no such operator is declared.
+	/// </summary>
+	/// <param name="type">The <see cref="Type" />.</param>
+	/// <param name="isImplicit">
+	///     <see langword="true" /> to match an implicit (<c>op_Implicit</c>) conversion; <see langword="false" /> to match
+	///     an explicit (<c>op_Explicit</c>) conversion.
+	/// </param>
+	/// <param name="source">The source type (the single parameter of the conversion).</param>
+	/// <param name="target">The target type (the return type of the conversion).</param>
+	/// <param name="inherit">
+	///     <see langword="true" /> to also consider conversion operators inherited from base types; otherwise,
+	///     <see langword="false" /> (the default).
+	/// </param>
+	public static MethodInfo? GetConversionOperator(
+		this Type? type, bool isImplicit, Type source, Type target, bool inherit = false)
+		=> type?.GetMethods(OperatorFlags(inherit))
+			.FirstOrDefault(m =>
+			{
+				ParameterInfo[] parameters = m.GetParameters();
+				return string.Equals(m.Name, OperatorNames.Conversion(isImplicit), StringComparison.Ordinal) &&
+				       m.ReturnType == target &&
+				       parameters.Length == 1 && parameters[0].ParameterType == source;
+			});
 
 	/// <summary>
 	///     Check if the generic types are compatible.<br />

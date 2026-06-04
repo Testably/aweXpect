@@ -437,6 +437,52 @@ await Expect.That(method).HasParameter<int>("count");
 await Expect.That(methods).Return<Task>().OrReturn<ValueTask>();
 ```
 
+### Operators
+
+The `Operator` enum maps each C# operator to its compiler-emitted `op_*` metadata name (e.g.
+`Operator.Addition` ↔ `op_Addition`), so operator assertions are type-safe and discoverable instead of relying
+on magic strings. It covers unary, binary, comparison and conversion operators, including the C# 11 `checked`
+variants and `>>>` (`UnsignedRightShift`).
+
+| Scope               | Filter                         | Assert (single)                                      | Assert (many)                                         |
+|---------------------|--------------------------------|------------------------------------------------------|-------------------------------------------------------|
+| any operator method | `.WhichAreOperators()`         | `.IsAnOperator()`                                    | `.AreOperators()`                                     |
+| specific operator   | `.WhichAreOperators(Operator)` | `.IsAnOperator(Operator)`                            | —                                                     |
+| type has operator   | —                              | `.HasOperator(Operator)`                             | `.HaveOperator(Operator)`                             |
+| implicit conversion | —                              | `.HasImplicitConversionOperator<TSource, TTarget>()` | `.HaveImplicitConversionOperator<TSource, TTarget>()` |
+| explicit conversion | —                              | `.HasExplicitConversionOperator<TSource, TTarget>()` | `.HaveExplicitConversionOperator<TSource, TTarget>()` |
+
+```csharp
+// Method-level: narrow an operator method to a specific operator
+await Expect.That(methodInfo).IsAnOperator(Operator.Equality);
+
+// Type-level presence (op_* lookup); inherit: true also considers base-type operators
+await Expect.That(typeof(MyMoney)).HasOperator(Operator.Addition);
+await Expect.That(typeof(MyMoney)).DoesNotHaveOperator(Operator.Modulus);
+
+// Disambiguate overloads by operand type
+await Expect.That(typeof(MyMoney)).HasOperator<int>(Operator.Addition);
+
+// Conversion operators are keyed by their source → target signature
+await Expect.That(typeof(MyMoney)).HasImplicitConversionOperator<MyMoney, decimal>();
+await Expect.That(typeof(MyMoney)).HasExplicitConversionOperator(typeof(MyMoney), typeof(int));
+```
+
+`HasOperator` / conversion operators match operators declared on the type itself; pass `inherit: true` to also
+consider operators inherited from base types. Conversion source/target types are matched exactly.
+
+Operators are special-name members that are [hidden by default](#compiler-generated-members), so the
+plain `.Methods()` collection excludes them unless opted in via `IncludedSpecialNameMembers`. The
+`.WhichAreOperators(Operator)` filter implicitly re-includes operators for its query, so it works without
+that configuration. The negative `.WhichAreNotOperators(Operator)` filter deliberately does **not** re-include
+operators: a "not this operator" filter over `.Methods()` is meant to narrow regular methods, and force-including
+every *other* operator would surprise more than help. If you want the other operators in that result, opt in via
+`IncludedSpecialNameMembers`.
+
+> **Negation:** `IsNotAnOperator(Operator)`, `DoesNotHaveOperator(Operator)` / `DoNotHaveOperator(Operator)`
+> (including the operand overloads, e.g. `DoesNotHaveOperator<int>(Operator)`),
+> `DoesNotHave…ConversionOperator…` / `DoNotHave…ConversionOperator…` and `WhichAreNotOperators(Operator)`.
+
 ### Properties & Fields
 
 In addition to [access modifiers](#access-modifiers),

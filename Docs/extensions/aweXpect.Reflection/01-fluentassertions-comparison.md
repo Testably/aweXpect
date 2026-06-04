@@ -32,7 +32,8 @@ Legend: ✅ dedicated assertion · ⚠️ only via a general mechanism (selector
 | **Type**: name                                                                |        ⚠️        |          ✅          |
 | **Type**: attributes (incl. predicate)                                        |        ✅         |          ✅          |
 | **Type**: member presence by signature                                        |        ✅         |         ⚠️          |
-| **Type**: conversion operators by signature                                   |        ✅         |          ❌          |
+| **Type**: operator presence (by kind)                                         |        ⚠️        |          ✅          |
+| **Type**: conversion operators by signature                                   |        ✅         |          ✅          |
 | **Method**: virtual / async / return type                                     |        ✅         |          ✅          |
 | **Method**: static / abstract / sealed / generic / extension / operator       |        ❌         |          ✅          |
 | **Method**: override                                                          |        ❌         |          ✅          |
@@ -76,7 +77,7 @@ await Expect.That(In.AllLoadedAssemblies()).HaveName("System").AsPrefix();
 
 - **FluentAssertions** (`TypeAssertions`): `Be<T>`/`NotBe<T>`, `BeAssignableTo<T>`, `Implement<T>`/`NotImplement<T>`, `BeDerivedFrom<T>`, `BeAbstract`/`BeSealed`/`BeStatic`, `HaveAccessModifier(CSharpAccessModifier)`, `BeDecoratedWith<T>` (with attribute predicate and `OrInherit` variants), member presence (`HaveProperty`/`HaveMethod`/`HaveConstructor`/`HaveIndexer`/`HaveExplicit*`), and conversion operators. Type *kind* is available only as a selector filter (`ThatAreClasses()`), and namespace
   only on the selector (`BeInNamespace`); a single type's name/namespace use the string API.
-- **aweXpect.Reflection**: type-kind assertions (`IsAClass`, `IsAnInterface`, `IsAnEnum`, `IsAStruct`, `IsARecord`, `IsARecordStruct`, `IsARefStruct`, `IsADelegate`, `IsAnAttribute`, `IsAnException`), `IsAbstract`/`IsSealed`/`IsStatic`/`IsReadOnly`/`IsNested`/`IsGeneric`/`IsInstantiable`, access modifiers (`IsPublic`, …), `InheritsFrom<T>().Directly()`, `HasName`, `HasNamespace`/`IsWithinNamespace`, `Has<TAttribute>`, and quantified member containment (`ContainsMethods()`, …).
+- **aweXpect.Reflection**: type-kind assertions (`IsAClass`, `IsAnInterface`, `IsAnEnum`, `IsAStruct`, `IsARecord`, `IsARecordStruct`, `IsARefStruct`, `IsADelegate`, `IsAnAttribute`, `IsAnException`), `IsAbstract`/`IsSealed`/`IsStatic`/`IsReadOnly`/`IsNested`/`IsGeneric`/`IsInstantiable`, access modifiers (`IsPublic`, …), `InheritsFrom<T>().Directly()`, `HasName`, `HasNamespace`/`IsWithinNamespace`, `Has<TAttribute>`, quantified member containment (`ContainsMethods()`, …), operator presence by kind (`HasOperator(Operator)`, `HasOperator<TOperand>(Operator)`) and conversion operators by signature (`HasImplicitConversionOperator<TSource, TTarget>`, `HasExplicitConversionOperator<TSource, TTarget>`).
 
 ```csharp
 // FluentAssertions
@@ -99,6 +100,8 @@ await Expect.That(typeof(MyEnum)).IsAnEnum();
 await Expect.That(typeof(AbstractClass)).IsAbstract();
 await Expect.That(typeof(MyClass)).HasNamespace("MyNamespace");
 await Expect.That(typeof(MyClass)).Has<MyAttribute>(a => a.Value == 3);
+await Expect.That(typeof(Money)).HasOperator(Operator.Addition);
+await Expect.That(typeof(Money)).HasImplicitConversionOperator<Money, decimal>();
 
 await Expect.That(In.AllLoadedAssemblies()
         .Types().WhichAreClasses().WhichArePublic())
@@ -108,7 +111,7 @@ await Expect.That(In.AllLoadedAssemblies()
 ## Method
 
 - **FluentAssertions** (`MethodInfoAssertions`): `BeVirtual`/`NotBeVirtual`, `BeAsync`/`NotBeAsync`, `ReturnVoid`/`NotReturnVoid`, `Return<T>`/`NotReturn<T>`, `HaveAccessModifier(CSharpAccessModifier)`, `BeDecoratedWith<T>`. No assertions for `static`/`abstract`/`sealed`/`generic`/extension/operator/override, no parameter assertions, and no name assertion (use the string API on `method.Name`).
-- **aweXpect.Reflection**: the above plus `IsStatic`/`IsAbstract`/`IsSealed`/`IsGeneric`/`IsAnExtensionMethod`/`IsAnOperator`, `Overrides<T>`, `ReturnsExactly<T>`, `HasName`, and a parameter family: `HasParameter<T>`/`HasParameterCount`/`HasInParameter`/`HasOutParameter`/`HasRefParameter`/`HasOptionalParameter`/`HasParamsParameter` (with `AtIndex`/`FromEnd`/default-value refinements).
+- **aweXpect.Reflection**: the above plus `IsStatic`/`IsAbstract`/`IsSealed`/`IsGeneric`/`IsAnExtensionMethod`/`IsAnOperator` (incl. a specific `Operator`, e.g. `IsAnOperator(Operator.Equality)`), `Overrides<T>`, `ReturnsExactly<T>`, `HasName`, and a parameter family: `HasParameter<T>`/`HasParameterCount`/`HasInParameter`/`HasOutParameter`/`HasRefParameter`/`HasOptionalParameter`/`HasParamsParameter` (with `AtIndex`/`FromEnd`/default-value refinements).
 
 ```csharp
 // FluentAssertions

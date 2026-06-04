@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
 using Xunit.Sdk;
 
@@ -6,7 +6,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatMethod
 {
-	public sealed class IsNotAnOperator
+	public sealed partial class IsNotAnOperator
 	{
 		public sealed class Tests
 		{

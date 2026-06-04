@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -192,6 +192,16 @@ internal static class MethodInfoHelpers
 	public static bool IsOperator(this MethodInfo? methodInfo)
 		=> methodInfo is { IsSpecialName: true, }
 		   && methodInfo.Name.StartsWith("op_", StringComparison.Ordinal);
+
+	/// <summary>
+	///     Gets a value indicating whether the <see cref="MethodInfo" /> is the specific <paramref name="operator" />
+	///     (e.g. <see cref="Operator.Addition" /> matches <c>op_Addition</c>).
+	/// </summary>
+	/// <param name="methodInfo">The <see cref="MethodInfo" />.</param>
+	/// <param name="operator">The <see cref="Operator" /> to match.</param>
+	public static bool IsOperator(this MethodInfo? methodInfo, Operator @operator)
+		=> methodInfo is { IsSpecialName: true, }
+		   && string.Equals(methodInfo.Name, OperatorNames.Of(@operator), StringComparison.Ordinal);
 
 	/// <summary>
 	///     Gets a value indicating whether the <see cref="MethodInfo" /> is the public accessor implementation of an

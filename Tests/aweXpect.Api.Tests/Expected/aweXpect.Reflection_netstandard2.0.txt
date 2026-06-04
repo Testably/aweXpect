@@ -348,6 +348,7 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNotInternal(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNotObsolete(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNotOperators(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNotOperators(this aweXpect.Reflection.Collections.Filtered.Methods @this, aweXpect.Reflection.Operator @operator) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNotPrivate(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNotPrivateProtected(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNotProtected(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
@@ -358,6 +359,7 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNotVirtual(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreObsolete(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreOperators(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreOperators(this aweXpect.Reflection.Collections.Filtered.Methods @this, aweXpect.Reflection.Operator @operator) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichArePrivate(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichArePrivateProtected(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreProtected(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
@@ -515,6 +517,44 @@ namespace aweXpect.Reflection
             public MethodsWithParameterAtIndex(aweXpect.Reflection.Collections.Filtered.Methods inner, aweXpect.Options.CollectionIndexOptions collectionIndexOptions) { }
             public aweXpect.Reflection.MethodFilters.MethodsWithParameterAtIndex<T> FromEnd() { }
         }
+    }
+    public enum Operator
+    {
+        Implicit = 0,
+        Explicit = 1,
+        CheckedExplicit = 2,
+        UnaryPlus = 3,
+        UnaryNegation = 4,
+        LogicalNot = 5,
+        OnesComplement = 6,
+        Increment = 7,
+        Decrement = 8,
+        True = 9,
+        False = 10,
+        Addition = 11,
+        Subtraction = 12,
+        Multiply = 13,
+        Division = 14,
+        Modulus = 15,
+        BitwiseAnd = 16,
+        BitwiseOr = 17,
+        ExclusiveOr = 18,
+        LeftShift = 19,
+        RightShift = 20,
+        UnsignedRightShift = 21,
+        Equality = 22,
+        Inequality = 23,
+        LessThan = 24,
+        GreaterThan = 25,
+        LessThanOrEqual = 26,
+        GreaterThanOrEqual = 27,
+        CheckedAddition = 28,
+        CheckedSubtraction = 29,
+        CheckedMultiply = 30,
+        CheckedDivision = 31,
+        CheckedIncrement = 32,
+        CheckedDecrement = 33,
+        CheckedUnaryNegation = 34,
     }
     public static class PropertyFilters
     {
@@ -1062,11 +1102,13 @@ namespace aweXpect.Reflection
         public static aweXpect.Results.AndOrResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> IsAbstract(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> IsAnExtensionMethod(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> IsAnOperator(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> IsAnOperator(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject, aweXpect.Reflection.Operator @operator) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> IsAsync(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
         public static aweXpect.Reflection.Results.GenericArgumentCollectionResult<System.Reflection.MethodInfo?> IsGeneric(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> IsNotAbstract(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> IsNotAnExtensionMethod(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> IsNotAnOperator(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> IsNotAnOperator(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject, aweXpect.Reflection.Operator @operator) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> IsNotAsync(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> IsNotGeneric(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.MethodInfo?, aweXpect.Core.IThat<System.Reflection.MethodInfo?>> IsNotSealed(this aweXpect.Core.IThat<System.Reflection.MethodInfo?> subject) { }
@@ -1295,6 +1337,13 @@ namespace aweXpect.Reflection
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> DoesNotHave<TAttribute>(this aweXpect.Core.IThat<System.Type?> subject, bool inherit = true)
             where TAttribute : System.Attribute { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> DoesNotHaveADefaultConstructor(this aweXpect.Core.IThat<System.Type?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> DoesNotHaveExplicitConversionOperator(this aweXpect.Core.IThat<System.Type?> subject, System.Type source, System.Type target, bool inherit = false) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> DoesNotHaveExplicitConversionOperator<TSource, TTarget>(this aweXpect.Core.IThat<System.Type?> subject, bool inherit = false) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> DoesNotHaveImplicitConversionOperator(this aweXpect.Core.IThat<System.Type?> subject, System.Type source, System.Type target, bool inherit = false) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> DoesNotHaveImplicitConversionOperator<TSource, TTarget>(this aweXpect.Core.IThat<System.Type?> subject, bool inherit = false) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> DoesNotHaveOperator(this aweXpect.Core.IThat<System.Type?> subject, aweXpect.Reflection.Operator @operator, bool inherit = false) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> DoesNotHaveOperator(this aweXpect.Core.IThat<System.Type?> subject, aweXpect.Reflection.Operator @operator, System.Type operand, bool inherit = false) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> DoesNotHaveOperator<TOperand>(this aweXpect.Core.IThat<System.Type?> subject, aweXpect.Reflection.Operator @operator, bool inherit = false) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> DoesNotImplement(this aweXpect.Core.IThat<System.Type?> subject, System.Type interfaceType, bool forceDirect = false) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> DoesNotImplement<TInterface>(this aweXpect.Core.IThat<System.Type?> subject, bool forceDirect = false) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> DoesNotInheritFrom(this aweXpect.Core.IThat<System.Type?> subject, System.Type baseType, bool forceDirect = false) { }
@@ -1304,7 +1353,14 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Results.HasAttributeResult<System.Type?> Has<TAttribute>(this aweXpect.Core.IThat<System.Type?> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> HasADefaultConstructor(this aweXpect.Core.IThat<System.Type?> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> HasExplicitConversionOperator(this aweXpect.Core.IThat<System.Type?> subject, System.Type source, System.Type target, bool inherit = false) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> HasExplicitConversionOperator<TSource, TTarget>(this aweXpect.Core.IThat<System.Type?> subject, bool inherit = false) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> HasImplicitConversionOperator(this aweXpect.Core.IThat<System.Type?> subject, System.Type source, System.Type target, bool inherit = false) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> HasImplicitConversionOperator<TSource, TTarget>(this aweXpect.Core.IThat<System.Type?> subject, bool inherit = false) { }
         public static aweXpect.Results.StringEqualityTypeResult<System.Type?, aweXpect.Core.IThat<System.Type?>> HasNamespace(this aweXpect.Core.IThat<System.Type?> subject, string expected) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> HasOperator(this aweXpect.Core.IThat<System.Type?> subject, aweXpect.Reflection.Operator @operator, bool inherit = false) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> HasOperator(this aweXpect.Core.IThat<System.Type?> subject, aweXpect.Reflection.Operator @operator, System.Type operand, bool inherit = false) { }
+        public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> HasOperator<TOperand>(this aweXpect.Core.IThat<System.Type?> subject, aweXpect.Reflection.Operator @operator, bool inherit = false) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> Implements(this aweXpect.Core.IThat<System.Type?> subject, System.Type interfaceType, bool forceDirect = false) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> Implements<TInterface>(this aweXpect.Core.IThat<System.Type?> subject, bool forceDirect = false) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> InheritsFrom(this aweXpect.Core.IThat<System.Type?> subject, System.Type baseType, bool forceDirect = false) { }
@@ -1408,6 +1464,13 @@ namespace aweXpect.Reflection
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> DoNotHave<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, bool inherit = true)
             where TAttribute : System.Attribute { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> DoNotHaveADefaultConstructor(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> DoNotHaveExplicitConversionOperator(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Type source, System.Type target, bool inherit = false) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> DoNotHaveExplicitConversionOperator<TSource, TTarget>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, bool inherit = false) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> DoNotHaveImplicitConversionOperator(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Type source, System.Type target, bool inherit = false) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> DoNotHaveImplicitConversionOperator<TSource, TTarget>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, bool inherit = false) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> DoNotHaveOperator(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, aweXpect.Reflection.Operator @operator, bool inherit = false) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> DoNotHaveOperator(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, aweXpect.Reflection.Operator @operator, System.Type operand, bool inherit = false) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> DoNotHaveOperator<TOperand>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, aweXpect.Reflection.Operator @operator, bool inherit = false) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> DoNotImplement(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Type interfaceType, bool forceDirect = false) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> DoNotImplement<TInterface>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, bool forceDirect = false) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> DoNotInheritFrom(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Type baseType, bool forceDirect = false) { }
@@ -1417,7 +1480,14 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Type?, System.Collections.Generic.IEnumerable<System.Type?>> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> HaveADefaultConstructor(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> HaveExplicitConversionOperator(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Type source, System.Type target, bool inherit = false) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> HaveExplicitConversionOperator<TSource, TTarget>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, bool inherit = false) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> HaveImplicitConversionOperator(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Type source, System.Type target, bool inherit = false) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> HaveImplicitConversionOperator<TSource, TTarget>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, bool inherit = false) { }
         public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> HaveNamespace(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, string expected) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> HaveOperator(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, aweXpect.Reflection.Operator @operator, bool inherit = false) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> HaveOperator(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, aweXpect.Reflection.Operator @operator, System.Type operand, bool inherit = false) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> HaveOperator<TOperand>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, aweXpect.Reflection.Operator @operator, bool inherit = false) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> Implement(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Type interfaceType, bool forceDirect = false) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> Implement<TInterface>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, bool forceDirect = false) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> InheritFrom(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Type baseType, bool forceDirect = false) { }
