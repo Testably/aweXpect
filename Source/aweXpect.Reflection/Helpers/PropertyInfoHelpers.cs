@@ -147,6 +147,17 @@ internal static class PropertyInfoHelpers
 		   propertyInfo?.SetMethod?.IsStatic == true;
 
 	/// <summary>
+	///     Checks if the <paramref name="propertyInfo" /> is required (marked with the <c>required</c> modifier).
+	/// </summary>
+	/// <remarks>
+	///     A property is considered required if it carries the
+	///     <c>System.Runtime.CompilerServices.RequiredMemberAttribute</c>.
+	/// </remarks>
+	public static bool IsRequired(this PropertyInfo? propertyInfo)
+		=> propertyInfo != null && propertyInfo.GetCustomAttributes(true)
+			.Any(attribute => attribute.GetType().FullName == "System.Runtime.CompilerServices.RequiredMemberAttribute");
+
+	/// <summary>
 	///     Checks if the <paramref name="propertyInfo" /> is an indexer (has index parameters).
 	/// </summary>
 	public static bool IsIndexer(this PropertyInfo? propertyInfo)

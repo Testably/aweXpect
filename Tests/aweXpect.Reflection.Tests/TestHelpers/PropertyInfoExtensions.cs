@@ -1,9 +1,18 @@
-﻿using System.Reflection;
+﻿using System.Linq;
+using System.Reflection;
 
 namespace aweXpect.Reflection.Tests.TestHelpers;
 
 public static class PropertyInfoExtensions
 {
+	/// <summary>
+	///     Checks if the <paramref name="propertyInfo" /> is required (marked with the <c>required</c> modifier).
+	/// </summary>
+	/// <param name="propertyInfo">The <see cref="PropertyInfo" /> to check.</param>
+	public static bool IsRequired(this PropertyInfo? propertyInfo)
+		=> propertyInfo != null && propertyInfo.GetCustomAttributes(true)
+			.Any(attribute => attribute.GetType().FullName == "System.Runtime.CompilerServices.RequiredMemberAttribute");
+
 	/// <summary>
 	///     Checks if the <paramref name="propertyInfo" /> is abstract (based on its accessor methods).
 	/// </summary>
