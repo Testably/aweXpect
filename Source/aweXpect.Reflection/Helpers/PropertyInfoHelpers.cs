@@ -164,6 +164,20 @@ internal static class PropertyInfoHelpers
 		=> propertyInfo?.GetIndexParameters().Length > 0;
 
 	/// <summary>
+	///     Gets a value indicating whether the <see cref="PropertyInfo" /> is an extension property declared with the
+	///     C# extension block syntax.
+	/// </summary>
+	/// <remarks>
+	///     Extension properties (instance and static) are emitted onto the compiler-generated <c>&lt;G&gt;$…</c> grouping
+	///     type that backs the surrounding extension block; the public static class exposes only their (non-special-name)
+	///     accessor methods. A property is therefore an extension property exactly when its declaring type is such a
+	///     grouping type.
+	/// </remarks>
+	/// <param name="propertyInfo">The <see cref="PropertyInfo" />.</param>
+	public static bool IsExtensionProperty(this PropertyInfo? propertyInfo)
+		=> propertyInfo?.DeclaringType is { } declaringType && declaringType.IsExtensionGroupingType();
+
+	/// <summary>
 	///     Checks if the <paramref name="propertyInfo" /> is read-only (can be read but not written).
 	/// </summary>
 	public static bool IsReadOnly(this PropertyInfo? propertyInfo)

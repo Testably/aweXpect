@@ -461,13 +461,19 @@ In addition to [access modifiers](#access-modifiers),
 | has setter *(properties only)*        | `.WhichHaveASetter()`                       | `.HasASetter()`                 | `.HaveASetter()`                  |
 | has init setter *(properties only)*   | `.WhichHaveAnInitSetter()`                  | `.HasAnInitSetter()`            | `.HaveAnInitSetter()`             |
 | indexer *(properties only)*           | `.WhichAreIndexers()`                       | `.IsAnIndexer()`                | `.AreIndexers()`                  |
+| extension property *(properties only)* | `.WhichAreExtensionProperties()`           | `.IsAnExtensionProperty()`      | `.AreExtensionProperties()`       |
 | read-only *(fields only)*             | `.WhichAreReadOnly()`                       | `.IsReadOnly()`                 | `.AreReadOnly()`                  |
 | constant *(fields only)*              | `.WhichAreConstant()`                       | `.IsConstant()`                 | `.AreConstant()`                  |
 
-> **Negation:** the `static`, `abstract`, `sealed`, `virtual`, `required`, `indexer`, `read-only` *(fields)* and
-> `constant` rows have a negated form — `WhichAreNot…` on filters and `IsNot…` / `AreNot…` on assertions
-> (e.g. `WhichAreNotConstant()`, `IsNotConstant()`, `AreNotConstant()`); `override` uses
+> **Negation:** the `static`, `abstract`, `sealed`, `virtual`, `required`, `indexer`, `extension property`,
+> `read-only` *(fields)* and `constant` rows have a negated form — `WhichAreNot…` on filters and `IsNot…` /
+> `AreNot…` on assertions (e.g. `WhichAreNotConstant()`, `IsNotConstant()`, `AreNotConstant()`); `override` uses
 > `WhichDoNotOverride()` / `DoesNotOverride()` / `DoNotOverride()`.
+
+`WhichAreExtensionProperties()`, `IsAnExtensionProperty()` and `AreExtensionProperties()` match extension properties
+declared with the C# extension block syntax (`extension(...) { … }`), both instance and static. The real properties
+live on the compiler-generated grouping types backing the extension block, so they are surfaced from there, while the
+public accessor methods they emit are excluded from the reflected methods.
 
 Use `OrOfType<T>()` / `OrOfExactType<T>()` to allow several types.
 

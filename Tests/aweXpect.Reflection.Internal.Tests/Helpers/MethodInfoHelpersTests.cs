@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Reflection;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
@@ -134,6 +134,30 @@ public sealed class MethodInfoHelpersTests
 		await That(result2).IsFalse();
 	}
 
+	[Fact]
+	public async Task IsExtensionPropertyAccessor_WhenMethodHasNoDeclaringType_ShouldReturnFalse()
+	{
+		MethodInfo methodInfo = new System.Reflection.Emit.DynamicMethod("Dynamic", typeof(void), Type.EmptyTypes);
+
+		await That(methodInfo.IsExtensionPropertyAccessor()).IsFalse();
+	}
+
+	[Fact]
+	public async Task IsExtensionPropertyAccessor_WhenInstanceMethod_ShouldReturnFalse()
+	{
+		MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.Method2WithoutAttribute))!;
+
+		await That(methodInfo.IsExtensionPropertyAccessor()).IsFalse();
+	}
+
+	[Fact]
+	public async Task IsExtensionPropertyAccessor_WhenStaticMethodInNonExtensionClass_ShouldReturnFalse()
+	{
+		MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.StaticMethod))!;
+
+		await That(methodInfo.IsExtensionPropertyAccessor()).IsFalse();
+	}
+
 	[AttributeUsage(AttributeTargets.Method)]
 	private class DummyAttribute : Attribute
 	{
@@ -153,6 +177,8 @@ public sealed class MethodInfoHelpersTests
 
 		public void Method2WithoutAttribute()
 			=> throw new NotSupportedException();
+
+		public static int StaticMethod() => 0;
 
 		public override void MethodWithAttributeInBaseClass()
 			=> throw new NotSupportedException();

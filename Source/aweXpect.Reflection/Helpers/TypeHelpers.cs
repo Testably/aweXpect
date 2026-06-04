@@ -200,6 +200,7 @@ internal static class TypeHelpers
 				.Where(m => !m.IsSpecialName)
 				.Where(m => !m.IsCompilerGenerated() ||
 				            included.HasFlag(CompilerGeneratedMembers.Properties))
+				.Concat(type.GetExtensionProperties())
 				.ToArray();
 		}
 		catch (Exception exception) when (exception
@@ -294,6 +295,36 @@ internal static class TypeHelpers
 		=> type.Name.StartsWith("<", StringComparison.Ordinal) &&
 		   type.IsDefined(typeof(ExtensionAttribute), false);
 
+	/// <summary>
+	///     Collects the extension properties declared with the C# extension block syntax that the
+	///     <paramref name="type" /> owns.
+	/// </summary>
+	/// <remarks>
+	///     Extension properties are not visible on the public static class; the real <see cref="PropertyInfo" /> is held
+	///     by the compiler-generated <c>&lt;G&gt;$…</c> grouping types nested in the class. They are surfaced here so that
+	///     they appear alongside the regular properties of the owning type, even though the grouping types themselves are
+	///     excluded from type discovery.
+	/// </remarks>
+	private static IEnumerable<PropertyInfo> GetExtensionProperties(this Type type)
+	{
+		foreach (Type nestedType in type.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic))
+		{
+			if (!nestedType.IsExtensionGroupingType())
+			{
+				continue;
+			}
+
+			foreach (PropertyInfo property in nestedType.GetProperties(BindingFlags.Public |
+				         BindingFlags.NonPublic |
+				         BindingFlags.Static |
+				         BindingFlags.Instance |
+				         BindingFlags.DeclaredOnly))
+			{
+				yield return property;
+			}
+		}
+	}
+
 	private static bool IncludeMethod(
 		MethodInfo method,
 		CompilerGeneratedMembers includedCompilerGenerated,
@@ -311,6 +342,14 @@ internal static class TypeHelpers
 
 			return method.IsCompilerGenerated() &&
 			       includedCompilerGenerated.HasFlag(CompilerGeneratedMembers.Methods);
+		}
+
+		if (method.IsExtensionPropertyAccessor())
+		{
+			// The public accessor implementation of an extension property is not flagged as special-name (there is no
+			// property on the public class for it to be special-named against), so it would otherwise leak into the
+			// results. It is treated like a regular get_/set_ accessor: excluded by default, opt-in via Accessors.
+			return includedSpecialName.HasFlag(SpecialNameMembers.Accessors);
 		}
 
 		return !method.IsCompilerGenerated() ||

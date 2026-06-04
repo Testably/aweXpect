@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Reflection;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
@@ -184,6 +184,23 @@ public sealed class PropertyInfoHelpersTests
 		bool result = propertyInfo.IsReallyStatic();
 
 		await That(result).IsFalse();
+	}
+
+	[Fact]
+	public async Task IsExtensionProperty_WhenNull_ShouldReturnFalse()
+	{
+		PropertyInfo? propertyInfo = null;
+
+		await That(propertyInfo.IsExtensionProperty()).IsFalse();
+	}
+
+	[Fact]
+	public async Task IsExtensionProperty_WhenRegularProperty_ShouldReturnFalse()
+	{
+		PropertyInfo propertyInfo = typeof(AccessModifierTestClass)
+			.GetProperty(nameof(AccessModifierTestClass.PublicProperty))!;
+
+		await That(propertyInfo.IsExtensionProperty()).IsFalse();
 	}
 
 	[AttributeUsage(AttributeTargets.Property)]

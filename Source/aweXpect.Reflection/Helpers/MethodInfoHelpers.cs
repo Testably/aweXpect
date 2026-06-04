@@ -194,6 +194,57 @@ internal static class MethodInfoHelpers
 		   && methodInfo.Name.StartsWith("op_", StringComparison.Ordinal);
 
 	/// <summary>
+	///     Gets a value indicating whether the <see cref="MethodInfo" /> is the public accessor implementation of an
+	///     extension property declared with the C# extension block syntax (e.g. <c>get_IsBlank</c>, <c>set_Value</c>).
+	/// </summary>
+	/// <remarks>
+	///     These accessors are emitted onto the public static class but - unlike regular property accessors - are not
+	///     flagged as special-name (there is no property on the public class for them to be special-named against), so
+	///     they would otherwise leak into the method results. They are recognised by correlating the implementation with
+	///     the matching special-name skeleton in the <c>&lt;G&gt;$…</c> grouping type that the compiler emits for the
+	///     surrounding extension block.
+	/// </remarks>
+	/// <param name="methodInfo">The <see cref="MethodInfo" />.</param>
+	public static bool IsExtensionPropertyAccessor(this MethodInfo methodInfo)
+	{
+		// The public accessor implementation is always static; instance/static extension property accessors alike are
+		// emitted as static methods on the public class. Anything non-static cannot be such an accessor.
+		if (!methodInfo.IsStatic)
+		{
+			return false;
+		}
+
+		Type? declaringType = methodInfo.DeclaringType;
+		if (declaringType?.IsDefined(typeof(ExtensionAttribute), false) != true)
+		{
+			return false;
+		}
+
+		foreach (Type nestedType in declaringType.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic))
+		{
+			if (!nestedType.IsExtensionGroupingType())
+			{
+				continue;
+			}
+
+			foreach (MethodInfo skeleton in nestedType.GetMethods(BindingFlags.Public |
+			                                                      BindingFlags.NonPublic |
+			                                                      BindingFlags.Static |
+			                                                      BindingFlags.Instance |
+			                                                      BindingFlags.DeclaredOnly))
+			{
+				if (skeleton.IsSpecialName &&
+				    string.Equals(skeleton.Name, methodInfo.Name, StringComparison.Ordinal))
+				{
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/// <summary>
 	///     Detects static extension methods declared with the C# extension block syntax. Unlike instance extension
 	///     methods, their public implementation is not marked with the <see cref="ExtensionAttribute" />, so the
 	///     implementation is correlated with the matching skeleton in the <c>&lt;G&gt;$…</c> grouping type that the

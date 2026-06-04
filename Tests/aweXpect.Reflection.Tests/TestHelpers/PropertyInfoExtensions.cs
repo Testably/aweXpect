@@ -1,10 +1,41 @@
-﻿using System.Linq;
+using System;
+using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace aweXpect.Reflection.Tests.TestHelpers;
 
 public static class PropertyInfoExtensions
 {
+	/// <summary>
+	///     Checks if the <paramref name="propertyInfo" /> is an extension property declared with the C# extension block
+	///     syntax (i.e. its declaring type is a compiler-generated <c>&lt;G&gt;$…</c> grouping type).
+	/// </summary>
+	/// <remarks>
+	///     This is a parallel reference implementation used to derive the expected property set in the filter and
+	///     collection tests, so it must not call into the production code. The behaviour of individual properties is
+	///     pinned by the hard-coded assertions in <c>ThatProperty.IsAnExtensionProperty</c>.
+	/// </remarks>
+	/// <param name="propertyInfo">The <see cref="PropertyInfo" /> to check.</param>
+	public static bool IsReallyExtensionProperty(this PropertyInfo? propertyInfo)
+		=> propertyInfo?.DeclaringType is { } declaringType &&
+		   declaringType.Name.StartsWith("<", StringComparison.Ordinal) &&
+		   declaringType.IsDefined(typeof(ExtensionAttribute), false);
+
+#if NET10_0_OR_GREATER
+	/// <summary>
+	///     Fetches the extension property with the given <paramref name="name" /> from the <c>&lt;G&gt;$…</c> grouping
+	///     types nested in the <paramref name="owner" /> static class.
+	/// </summary>
+	public static PropertyInfo GetExtensionProperty(this Type owner, string name)
+		=> owner.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic)
+			.Where(t => t.Name.StartsWith("<", StringComparison.Ordinal) &&
+			            t.IsDefined(typeof(ExtensionAttribute), false))
+			.SelectMany(t => t.GetProperties(BindingFlags.Public | BindingFlags.NonPublic |
+			                                 BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly))
+			.Single(p => p.Name == name);
+#endif
+
 	/// <summary>
 	///     Checks if the <paramref name="propertyInfo" /> is required (marked with the <c>required</c> modifier).
 	/// </summary>
