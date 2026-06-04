@@ -22,7 +22,7 @@ public sealed partial class ThatType
 			}
 
 			[Fact]
-			public async Task WhenTypeImplementsInterface_ShouldFail()
+			public async Task WhenBaseTypeIsAnInterface_ShouldThrowArgumentException()
 			{
 				Type subject = typeof(ClassWithInterface);
 
@@ -31,12 +31,9 @@ public sealed partial class ThatType
 					await That(subject).DoesNotInheritFrom<ITestInterface>();
 				}
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             does not inherit from ThatType.ITestInterface,
-					             but it did inherit from ThatType.ITestInterface
-					             """);
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage(
+						"The type to check inheritance from must be a class, but it was the interface ThatType.ITestInterface. Use 'Implements' to check for interface implementations.");
 			}
 
 			[Fact]
@@ -54,6 +51,9 @@ public sealed partial class ThatType
 					             Expected that subject
 					             does not inherit from ThatType.BaseClass,
 					             but it did inherit from ThatType.BaseClass
+
+					             Actual:
+					             ThatType.DerivedClass
 					             """);
 			}
 
@@ -72,6 +72,9 @@ public sealed partial class ThatType
 					             Expected that subject
 					             does not inherit directly from ThatType.BaseClass,
 					             but it did inherit directly from ThatType.BaseClass
+
+					             Actual:
+					             ThatType.DerivedClass
 					             """);
 			}
 
@@ -90,6 +93,9 @@ public sealed partial class ThatType
 					             Expected that subject
 					             does not inherit from ThatType.BaseClass,
 					             but it did inherit from ThatType.BaseClass
+
+					             Actual:
+					             ThatType.GrandChildClass
 					             """);
 			}
 
@@ -124,7 +130,7 @@ public sealed partial class ThatType
 			}
 
 			[Fact]
-			public async Task WhenTypeImplementsInterface_ShouldFail()
+			public async Task WhenBaseTypeIsAnInterface_ShouldThrowArgumentException()
 			{
 				Type subject = typeof(ClassWithInterface);
 				Type interfaceType = typeof(ITestInterface);
@@ -134,12 +140,9 @@ public sealed partial class ThatType
 					await That(subject).DoesNotInheritFrom(interfaceType);
 				}
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             does not inherit from ThatType.ITestInterface,
-					             but it did inherit from ThatType.ITestInterface
-					             """);
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage(
+						"The type to check inheritance from must be a class, but it was the interface ThatType.ITestInterface. Use 'Implements' to check for interface implementations.");
 			}
 
 			[Fact]
@@ -158,6 +161,9 @@ public sealed partial class ThatType
 					             Expected that subject
 					             does not inherit from ThatType.BaseClass,
 					             but it did inherit from ThatType.BaseClass
+
+					             Actual:
+					             ThatType.DerivedClass
 					             """);
 			}
 
@@ -177,6 +183,9 @@ public sealed partial class ThatType
 					             Expected that subject
 					             does not inherit from ThatType.BaseClass,
 					             but it did inherit from ThatType.BaseClass
+
+					             Actual:
+					             ThatType.GrandChildClass
 					             """);
 			}
 		}
@@ -197,12 +206,15 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             inherits from ThatType.BaseClass,
-					             but it did not inherit from ThatType.BaseClass, but was ThatType.UnrelatedClass
+					             but it did not inherit from ThatType.BaseClass
+
+					             Actual:
+					             ThatType.UnrelatedClass
 					             """);
 			}
 
 			[Fact]
-			public async Task WhenTypeImplementsInterface_ShouldSucceed()
+			public async Task WhenBaseTypeIsAnInterface_ShouldThrowArgumentException()
 			{
 				Type subject = typeof(ClassWithInterface);
 
@@ -211,7 +223,9 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it.DoesNotInheritFrom<ITestInterface>());
 				}
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage(
+						"The type to check inheritance from must be a class, but it was the interface ThatType.ITestInterface. Use 'Implements' to check for interface implementations.");
 			}
 
 			[Fact]

@@ -11,7 +11,7 @@ public sealed partial class ThatTypes
 		public sealed class GenericTests
 		{
 			[Fact]
-			public async Task WhenAllTypesImplementInterface_ShouldSucceed()
+			public async Task WhenBaseTypeIsAnInterface_ShouldThrowArgumentException()
 			{
 				Filtered.Types subject = In.AssemblyContaining<GenericTests>()
 					.Types()
@@ -22,7 +22,9 @@ public sealed partial class ThatTypes
 					await That(subject).InheritFrom<ITestInterface>();
 				}
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage(
+						"The type to check inheritance from must be a class, but it was the interface ThatTypes.ITestInterface. Use 'Implements' to check for interface implementations.");
 			}
 
 			[Fact]
@@ -118,7 +120,7 @@ public sealed partial class ThatTypes
 		public sealed class TypeTests
 		{
 			[Fact]
-			public async Task WhenAllTypesImplementInterface_ShouldSucceed()
+			public async Task WhenBaseTypeIsAnInterface_ShouldThrowArgumentException()
 			{
 				IEnumerable<Type?> subject = new[]
 				{
@@ -131,7 +133,9 @@ public sealed partial class ThatTypes
 					await That(subject).InheritFrom(interfaceType);
 				}
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage(
+						"The type to check inheritance from must be a class, but it was the interface ThatTypes.ITestInterface. Use 'Implements' to check for interface implementations.");
 			}
 
 			[Fact]
@@ -220,7 +224,7 @@ public sealed partial class ThatTypes
 		public sealed class NegatedTests
 		{
 			[Fact]
-			public async Task WhenAllTypesImplementInterface_ShouldFail()
+			public async Task WhenBaseTypeIsAnInterface_ShouldThrowArgumentException()
 			{
 				Filtered.Types subject = In.AssemblyContaining<NegatedTests>()
 					.Types()
@@ -231,15 +235,9 @@ public sealed partial class ThatTypes
 					await That(subject).DoesNotComplyWith(they => they.InheritFrom<ITestInterface>());
 				}
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that types matching type => type == typeof(ClassWithInterface1) || type == typeof(ClassWithInterface2) in assembly containing type ThatTypes.InheritFrom.NegatedTests
-					             not all inherit from ThatTypes.ITestInterface,
-					             but it only contained types that inherit from ThatTypes.ITestInterface [
-					               ThatTypes.ClassWithInterface1,
-					               ThatTypes.ClassWithInterface2
-					             ]
-					             """);
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage(
+						"The type to check inheritance from must be a class, but it was the interface ThatTypes.ITestInterface. Use 'Implements' to check for interface implementations.");
 			}
 
 			[Fact]

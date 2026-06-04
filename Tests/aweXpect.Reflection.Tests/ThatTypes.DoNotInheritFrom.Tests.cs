@@ -11,7 +11,7 @@ public sealed partial class ThatTypes
 		public sealed class GenericTests
 		{
 			[Fact]
-			public async Task WhenAllTypesImplementInterface_ShouldFail()
+			public async Task WhenBaseTypeIsAnInterface_ShouldThrowArgumentException()
 			{
 				Filtered.Types subject = In.Types(typeof(ClassWithInterface1), typeof(ClassWithInterface2));
 
@@ -20,15 +20,9 @@ public sealed partial class ThatTypes
 					await That(subject).DoNotInheritFrom<ITestInterface>();
 				}
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that in types [ThatTypes.ClassWithInterface1, ThatTypes.ClassWithInterface2]
-					             all do not inherit from ThatTypes.ITestInterface,
-					             but it contained types that inherit from ThatTypes.ITestInterface [
-					               ThatTypes.ClassWithInterface1,
-					               ThatTypes.ClassWithInterface2
-					             ]
-					             """);
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage(
+						"The type to check inheritance from must be a class, but it was the interface ThatTypes.ITestInterface. Use 'Implements' to check for interface implementations.");
 			}
 
 			[Fact]
@@ -109,7 +103,7 @@ public sealed partial class ThatTypes
 		public sealed class TypeTests
 		{
 			[Fact]
-			public async Task WhenAllTypesImplementInterface_ShouldFail()
+			public async Task WhenBaseTypeIsAnInterface_ShouldThrowArgumentException()
 			{
 				IEnumerable<Type?> subject = new[]
 				{
@@ -122,15 +116,9 @@ public sealed partial class ThatTypes
 					await That(subject).DoNotInheritFrom(interfaceType);
 				}
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             all do not inherit from ThatTypes.ITestInterface,
-					             but it contained types that inherit from ThatTypes.ITestInterface [
-					               ThatTypes.ClassWithInterface1,
-					               ThatTypes.ClassWithInterface2
-					             ]
-					             """);
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage(
+						"The type to check inheritance from must be a class, but it was the interface ThatTypes.ITestInterface. Use 'Implements' to check for interface implementations.");
 			}
 
 			[Fact]
@@ -269,7 +257,7 @@ public sealed partial class ThatTypes
 			}
 
 			[Fact]
-			public async Task WhenAllTypesImplementInterface_ShouldSucceed()
+			public async Task WhenBaseTypeIsAnInterface_ShouldThrowArgumentException()
 			{
 				Filtered.Types subject = In.Types(typeof(ClassWithInterface1), typeof(ClassWithInterface2));
 
@@ -278,7 +266,9 @@ public sealed partial class ThatTypes
 					await That(subject).DoesNotComplyWith(they => they.DoNotInheritFrom<ITestInterface>());
 				}
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage(
+						"The type to check inheritance from must be a class, but it was the interface ThatTypes.ITestInterface. Use 'Implements' to check for interface implementations.");
 			}
 
 			[Fact]

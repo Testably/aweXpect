@@ -16,6 +16,8 @@ public sealed partial class ThatTypes
 
 	private class ClassWithInterface2 : ITestInterface;
 
+	private class DerivedFromClassWithInterface1 : ClassWithInterface1;
+
 	private interface ITestInterface;
 
 	private class GenericClassWithOneArgument<T>;

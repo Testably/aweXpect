@@ -187,6 +187,22 @@ public sealed class TypeHelpersTests
 	}
 
 	[Fact]
+	public async Task Implements_ClosedGenericInterface_WithMatchingTypeArgument_ShouldReturnTrue()
+	{
+		Type sut = typeof(ImplementsClosedGeneric);
+
+		await That(sut.Implements(typeof(IGenericInterface<int>))).IsTrue();
+	}
+
+	[Fact]
+	public async Task Implements_ClosedGenericInterface_WithDifferentTypeArgument_ShouldReturnFalse()
+	{
+		Type sut = typeof(ImplementsClosedGeneric);
+
+		await That(sut.Implements(typeof(IGenericInterface<string>))).IsFalse();
+	}
+
+	[Fact]
 	public async Task GetDeclaredMethods_WithOnlyOperatorsIncluded_ShouldContainOperatorButNotAccessor()
 	{
 		using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers()

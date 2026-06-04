@@ -259,12 +259,24 @@ outside the namespace.
 | generic             | `.WhichAreGeneric()` / `.Generic`               | `.IsGeneric()`              | `.AreGeneric()`              |
 | nested              | `.WhichAreNested()` / `.Nested`                 | `.IsNested()`               | `.AreNested()`               |
 | inherits from       | `.WhichInheritFrom<T>()`                        | `.InheritsFrom<T>()`        | `.InheritFrom<T>()`          |
+| implements          | `.WhichImplement<T>()`                          | `.Implements<T>()`          | `.Implement<T>()`            |
+| assignable to       | `.WhichAreAssignableTo<T>()`                    | `.IsAssignableTo<T>()`      | `.AreAssignableTo<T>()`      |
+| assignable from     | `.WhichAreAssignableFrom<T>()`                  | `.IsAssignableFrom<T>()`    | `.AreAssignableFrom<T>()`    |
 | instantiable        | `.WhichAreInstantiable()`                       | `.IsInstantiable()`         | `.AreInstantiable()`         |
 | default constructor | `.WhichHaveADefaultConstructor()`               | `.HasADefaultConstructor()` | `.HaveADefaultConstructor()` |
 | custom predicate    | `.Which(t => …)`                                | `.Satisfies(t => …)`        | `.All().Satisfy(t => …)`     |
 
-`WhichInheritFrom` / `InheritsFrom` accept a generic argument or a `Type`, plus an optional
-`forceDirect` flag to require *direct* inheritance.
+`WhichInheritFrom` / `InheritsFrom` consider only the **base-class chain** (not implemented interfaces) and
+accept a generic argument or a `Type`, plus an optional `forceDirect` flag to require *direct* inheritance.
+Passing an interface throws — use `Implements` for that.
+
+`WhichImplement` / `Implements` consider only implemented **interfaces** (also with an optional `forceDirect`
+flag); passing a non-interface throws. With `forceDirect`, an interface reached only through a base class or
+through another implemented interface does not count as *directly* implemented.
+
+`IsAssignableTo` / `IsAssignableFrom` (and their `WhichAre…` / `Are…` forms) use runtime assignability, which
+covers base classes *and* interfaces in one step, treats a type as assignable to itself, and honors closed
+generic variance. Open generic type definitions (e.g. `typeof(IFoo<>)`) are not supported and throw.
 
 ```csharp
 In.AllLoadedAssemblies().Types()
