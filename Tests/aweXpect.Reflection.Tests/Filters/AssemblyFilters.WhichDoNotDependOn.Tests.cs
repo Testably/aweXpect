@@ -5,7 +5,7 @@ namespace aweXpect.Reflection.Tests.Filters;
 
 public sealed partial class AssemblyFilters
 {
-	public sealed class WhichHaveNoDependencyOn
+	public sealed class WhichDoNotDependOn
 	{
 		public sealed class Tests
 		{
@@ -13,7 +13,7 @@ public sealed partial class AssemblyFilters
 			public async Task ShouldFilterForAssembliesWithoutDependency()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
-					.WhichHaveNoDependencyOn("NonExistentAssembly");
+					.WhichDoNotDependOn("NonExistentAssembly");
 
 				await That(assemblies).HasSingle().Which.IsEqualTo(typeof(AssemblyFilters).Assembly);
 				await That(assemblies.GetDescription())
@@ -25,7 +25,7 @@ public sealed partial class AssemblyFilters
 			public async Task ShouldSupportAsWildcard()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
-					.WhichHaveNoDependencyOn("aweXpect.*").AsWildcard();
+					.WhichDoNotDependOn("aweXpect.*").AsWildcard();
 
 				await That(assemblies).IsEmpty();
 			}
@@ -34,7 +34,7 @@ public sealed partial class AssemblyFilters
 			public async Task ShouldSupportIgnoringCase()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
-					.WhichHaveNoDependencyOn("NONEXISTENT").IgnoringCase();
+					.WhichDoNotDependOn("NONEXISTENT").IgnoringCase();
 
 				await That(assemblies).HasSingle().Which.IsEqualTo(typeof(AssemblyFilters).Assembly);
 				await That(assemblies.GetDescription())
@@ -46,7 +46,7 @@ public sealed partial class AssemblyFilters
 			public async Task WhenAssemblyHasTheDependency_ShouldBeFilteredOut()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
-					.WhichHaveNoDependencyOn("aweXpect.Core");
+					.WhichDoNotDependOn("aweXpect.Core");
 
 				await That(assemblies).IsEmpty();
 			}

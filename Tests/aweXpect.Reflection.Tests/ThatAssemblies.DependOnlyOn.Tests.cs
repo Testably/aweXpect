@@ -8,7 +8,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatAssemblies
 {
-	public sealed class HaveDependenciesOnlyOn
+	public sealed class DependOnlyOn
 	{
 		public sealed class Tests
 		{
@@ -19,7 +19,7 @@ public sealed partial class ThatAssemblies
 
 				async Task Act()
 				{
-					await That(subject).HaveDependenciesOnlyOn("aweXpect.Core");
+					await That(subject).DependOnlyOn("aweXpect.Core");
 				}
 
 				await That(Act).DoesNotThrow();
@@ -32,7 +32,7 @@ public sealed partial class ThatAssemblies
 
 				async Task Act()
 				{
-					await That(subject).HaveDependenciesOnlyOn("First", "Second");
+					await That(subject).DependOnlyOn("First", "Second");
 				}
 
 				await That(Act).Throws<XunitException>()
@@ -50,7 +50,7 @@ public sealed partial class ThatAssemblies
 
 				async Task Act()
 				{
-					await That(subject).HaveDependenciesOnlyOn("aweXpect.*").AsWildcard();
+					await That(subject).DependOnlyOn("aweXpect.*").AsWildcard();
 				}
 
 				await That(Act).DoesNotThrow();
@@ -63,7 +63,7 @@ public sealed partial class ThatAssemblies
 
 				async Task Act()
 				{
-					await That(subject).HaveDependenciesOnlyOn("aweXpect.Core");
+					await That(subject).DependOnlyOn("aweXpect.Core");
 				}
 
 				await That(Act).Throws<XunitException>()
@@ -86,7 +86,7 @@ public sealed partial class ThatAssemblies
 
 				async Task Act()
 				{
-					await That(subject).HaveDependenciesOnlyOn("aweXpect.Core");
+					await That(subject).DependOnlyOn("aweXpect.Core");
 				}
 
 				await That(Act).Throws<XunitException>()
@@ -106,7 +106,7 @@ public sealed partial class ThatAssemblies
 
 				async Task Act()
 				{
-					await That(subject).HaveDependenciesOnlyOn("NonExistentAssembly");
+					await That(subject).DependOnlyOn("NonExistentAssembly");
 				}
 
 				await That(Act).Throws<XunitException>()
@@ -127,7 +127,7 @@ public sealed partial class ThatAssemblies
 
 				async Task Act()
 				{
-					await That(subject).HaveDependenciesOnlyOn();
+					await That(subject).DependOnlyOn();
 				}
 
 				await That(Act).Throws<XunitException>()
@@ -148,7 +148,7 @@ public sealed partial class ThatAssemblies
 
 				async Task Act()
 				{
-					await That(subject).DoesNotComplyWith(they => they.HaveDependenciesOnlyOn("aweXpect.Core"));
+					await That(subject).DoesNotComplyWith(they => they.DependOnlyOn("aweXpect.Core"));
 				}
 
 				await That(Act).Throws<XunitException>()
@@ -168,7 +168,7 @@ public sealed partial class ThatAssemblies
 
 				async Task Act()
 				{
-					await That(subject).DoesNotComplyWith(they => they.HaveDependenciesOnlyOn("aweXpect.Core"));
+					await That(subject).DoesNotComplyWith(they => they.DependOnlyOn("aweXpect.Core"));
 				}
 
 				await That(Act).DoesNotThrow();

@@ -14,13 +14,13 @@ public static partial class ThatAssembly
 	/// <summary>
 	///     Verifies that the <see cref="Assembly" /> has no dependency on the <paramref name="unexpected" /> assembly.
 	/// </summary>
-	public static StringEqualityTypeResult<Assembly?, IThat<Assembly?>> HasNoDependencyOn(
+	public static StringEqualityTypeResult<Assembly?, IThat<Assembly?>> DoesNotDependOn(
 		this IThat<Assembly?> subject, string unexpected)
 	{
 		StringEqualityOptions options = new();
 		return new StringEqualityTypeResult<Assembly?, IThat<Assembly?>>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars)
-					=> new HasADependencyOnConstraint(it, grammars, unexpected, options).Invert()),
+					=> new DependsOnConstraint(it, grammars, unexpected, options).Invert()),
 			subject,
 			options);
 	}

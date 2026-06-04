@@ -6,7 +6,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatAssemblies
 {
-	public sealed class HaveNoDependencyOn
+	public sealed class DoNotDependOn
 	{
 		public sealed class Tests
 		{
@@ -17,7 +17,7 @@ public sealed partial class ThatAssemblies
 
 				async Task Act()
 				{
-					await That(subject).HaveNoDependencyOn("aweXpect.Core");
+					await That(subject).DoNotDependOn("aweXpect.Core");
 				}
 
 				await That(Act).Throws<XunitException>()
@@ -37,7 +37,7 @@ public sealed partial class ThatAssemblies
 
 				async Task Act()
 				{
-					await That(subject).HaveNoDependencyOn("NonExistentAssembly");
+					await That(subject).DoNotDependOn("NonExistentAssembly");
 				}
 
 				await That(Act).DoesNotThrow();
@@ -50,7 +50,7 @@ public sealed partial class ThatAssemblies
 
 				async Task Act()
 				{
-					await That(subject).HaveNoDependencyOn("System").AsPrefix();
+					await That(subject).DoNotDependOn("System").AsPrefix();
 				}
 
 				await That(Act).Throws<XunitException>()
@@ -70,7 +70,7 @@ public sealed partial class ThatAssemblies
 
 				async Task Act()
 				{
-					await That(subject).HaveNoDependencyOn("AWExPECT.cORE").IgnoringCase();
+					await That(subject).DoNotDependOn("AWExPECT.cORE").IgnoringCase();
 				}
 
 				await That(Act).Throws<XunitException>()
@@ -93,7 +93,7 @@ public sealed partial class ThatAssemblies
 
 				async Task Act()
 				{
-					await That(subject).DoesNotComplyWith(they => they.HaveNoDependencyOn("aweXpect.Core"));
+					await That(subject).DoesNotComplyWith(they => they.DoNotDependOn("aweXpect.Core"));
 				}
 
 				await That(Act).DoesNotThrow();
@@ -106,7 +106,7 @@ public sealed partial class ThatAssemblies
 
 				async Task Act()
 				{
-					await That(subject).DoesNotComplyWith(they => they.HaveNoDependencyOn("NonExistentAssembly"));
+					await That(subject).DoesNotComplyWith(they => they.DoNotDependOn("NonExistentAssembly"));
 				}
 
 				await That(Act).Throws<XunitException>()

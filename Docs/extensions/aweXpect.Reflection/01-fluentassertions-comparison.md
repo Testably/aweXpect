@@ -53,7 +53,7 @@ The sections below detail each target with side-by-side examples (FluentAssertio
 ## Assembly
 
 - **FluentAssertions** (`AssemblyAssertions`): `Reference`/`NotReference`, `BeSignedWithPublicKey`/`BeUnsigned`, `DefineType`. No assertion for assembly name, version, or target framework; use the string API on `assembly.GetName()`.
-- **aweXpect.Reflection**: `HasName`, `HasVersion`, `HasADependencyOn`/`HasNoDependencyOn`/`HasDependenciesOnlyOn`, `IsStrongNamed`, `Targets`, `Has<TAttribute>`; plural equivalents (`HaveName`, …) over collections.
+- **aweXpect.Reflection**: `HasName`, `HasVersion`, `DependsOn`/`DoesNotDependOn`/`DependsOnlyOn`, `IsStrongNamed`, `Targets`, `Has<TAttribute>`; plural equivalents (`HaveName`, …) over collections.
 
 ```csharp
 // FluentAssertions
@@ -66,8 +66,8 @@ assembly.GetName().Name.Should().Be("MyAssembly");          // name via string A
 ```csharp
 // aweXpect.Reflection
 await Expect.That(assembly).HasName("MyAssembly");
-await Expect.That(assembly).HasADependencyOn("System.Core");
-await Expect.That(assembly).HasNoDependencyOn("UnwantedDependency");
+await Expect.That(assembly).DependsOn("System.Core");
+await Expect.That(assembly).DoesNotDependOn("UnwantedDependency");
 await Expect.That(assembly).IsStrongNamed();
 
 await Expect.That(In.AllLoadedAssemblies()).HaveName("System").AsPrefix();
@@ -77,7 +77,8 @@ await Expect.That(In.AllLoadedAssemblies()).HaveName("System").AsPrefix();
 
 - **FluentAssertions** (`TypeAssertions`): `Be<T>`/`NotBe<T>`, `BeAssignableTo<T>`, `Implement<T>`/`NotImplement<T>`, `BeDerivedFrom<T>`, `BeAbstract`/`BeSealed`/`BeStatic`, `HaveAccessModifier(CSharpAccessModifier)`, `BeDecoratedWith<T>` (with attribute predicate and `OrInherit` variants), member presence (`HaveProperty`/`HaveMethod`/`HaveConstructor`/`HaveIndexer`/`HaveExplicit*`), and conversion operators. Type *kind* is available only as a selector filter (`ThatAreClasses()`), and namespace
   only on the selector (`BeInNamespace`); a single type's name/namespace use the string API.
-- **aweXpect.Reflection**: type-kind assertions (`IsAClass`, `IsAnInterface`, `IsAnEnum`, `IsAStruct`, `IsARecord`, `IsARecordStruct`, `IsARefStruct`, `IsADelegate`, `IsAnAttribute`, `IsAnException`), `IsAbstract`/`IsSealed`/`IsStatic`/`IsReadOnly`/`IsNested`/`IsGeneric`/`IsInstantiable`, access modifiers (`IsPublic`, …), `InheritsFrom<T>().Directly()`, `HasName`, `HasNamespace`/`IsWithinNamespace`, `Has<TAttribute>`, quantified member containment (`ContainsMethods()`, …), operator presence by kind (`HasOperator(Operator)`, `HasOperator<TOperand>(Operator)`) and conversion operators by signature (`HasImplicitConversionOperator<TSource, TTarget>`, `HasExplicitConversionOperator<TSource, TTarget>`).
+- **aweXpect.Reflection**: type-kind assertions (`IsAClass`, `IsAnInterface`, `IsAnEnum`, `IsAStruct`, `IsARecord`, `IsARecordStruct`, `IsARefStruct`, `IsADelegate`, `IsAnAttribute`, `IsAnException`), `IsAbstract`/`IsSealed`/`IsStatic`/`IsReadOnly`/`IsNested`/`IsGeneric`/`IsInstantiable`, access modifiers (`IsPublic`, …), `InheritsFrom<T>().Directly()`, `HasName`, `HasNamespace`/`IsWithinNamespace`, `Has<TAttribute>`, quantified member containment (`ContainsMethods()`, …), operator presence by
+  kind (`HasOperator(Operator)`, `HasOperator<TOperand>(Operator)`) and conversion operators by signature (`HasImplicitConversionOperator<TSource, TTarget>`, `HasExplicitConversionOperator<TSource, TTarget>`).
 
 ```csharp
 // FluentAssertions

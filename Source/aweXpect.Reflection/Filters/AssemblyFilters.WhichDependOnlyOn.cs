@@ -18,7 +18,7 @@ public static partial class AssemblyFilters
 	///     <see cref="AwexpectCustomization.ReflectionCustomizationValue.ExcludedAssemblyPrefixes" /> are ignored,
 	///     so that framework assemblies do not have to be listed explicitly.
 	/// </remarks>
-	public static Filtered.Assemblies.StringEqualityResultType WhichHaveDependenciesOnlyOn(
+	public static Filtered.Assemblies.StringEqualityResultType WhichDependOnlyOn(
 		this Filtered.Assemblies @this, params string[] allowed)
 	{
 		StringEqualityOptions options = new();

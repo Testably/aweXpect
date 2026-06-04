@@ -5,7 +5,7 @@ namespace aweXpect.Reflection.Tests.Filters;
 
 public sealed partial class AssemblyFilters
 {
-	public sealed class WhichHaveADependencyOn
+	public sealed class WhichDependOn
 	{
 		public sealed class Tests
 		{
@@ -13,7 +13,7 @@ public sealed partial class AssemblyFilters
 			public async Task ShouldFilterForAssembliesWithDependency()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
-					.WhichHaveADependencyOn("aweXpect.Core");
+					.WhichDependOn("aweXpect.Core");
 
 				await That(assemblies).HasSingle().Which.IsEqualTo(typeof(AssemblyFilters).Assembly);
 				await That(assemblies.GetDescription())
@@ -25,7 +25,7 @@ public sealed partial class AssemblyFilters
 			public async Task ShouldSupportAsPrefix()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
-					.WhichHaveADependencyOn("aweXpect.C").AsPrefix();
+					.WhichDependOn("aweXpect.C").AsPrefix();
 
 				await That(assemblies).HasSingle().Which.IsEqualTo(typeof(AssemblyFilters).Assembly);
 				await That(assemblies.GetDescription())
@@ -37,7 +37,7 @@ public sealed partial class AssemblyFilters
 			public async Task ShouldSupportAsWildcard()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
-					.WhichHaveADependencyOn("aweXpect.*").AsWildcard();
+					.WhichDependOn("aweXpect.*").AsWildcard();
 
 				await That(assemblies).HasSingle().Which.IsEqualTo(typeof(AssemblyFilters).Assembly);
 				await That(assemblies.GetDescription())
@@ -49,7 +49,7 @@ public sealed partial class AssemblyFilters
 			public async Task ShouldSupportIgnoringCase()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
-					.WhichHaveADependencyOn("awexpect.core").IgnoringCase();
+					.WhichDependOn("awexpect.core").IgnoringCase();
 
 				await That(assemblies).HasSingle().Which.IsEqualTo(typeof(AssemblyFilters).Assembly);
 				await That(assemblies.GetDescription())
@@ -61,7 +61,7 @@ public sealed partial class AssemblyFilters
 			public async Task WhenAssemblyHasNoSuchDependency_ShouldBeFilteredOut()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
-					.WhichHaveADependencyOn("NonExistentAssembly");
+					.WhichDependOn("NonExistentAssembly");
 
 				await That(assemblies).IsEmpty();
 			}

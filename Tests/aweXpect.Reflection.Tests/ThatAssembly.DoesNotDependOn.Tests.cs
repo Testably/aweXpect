@@ -6,7 +6,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatAssembly
 {
-	public sealed class HasNoDependencyOn
+	public sealed class DoesNotDependOn
 	{
 		public sealed class Tests
 		{
@@ -17,7 +17,7 @@ public sealed partial class ThatAssembly
 
 				async Task Act()
 				{
-					await That(subject).HasNoDependencyOn("NonExistentAssembly");
+					await That(subject).DoesNotDependOn("NonExistentAssembly");
 				}
 
 				await That(Act).DoesNotThrow();
@@ -30,7 +30,7 @@ public sealed partial class ThatAssembly
 
 				async Task Act()
 				{
-					await That(subject).HasNoDependencyOn("aweXpect.Core");
+					await That(subject).DoesNotDependOn("aweXpect.Core");
 				}
 
 				await That(Act).Throws<XunitException>()
@@ -48,7 +48,7 @@ public sealed partial class ThatAssembly
 
 				async Task Act()
 				{
-					await That(subject).HasNoDependencyOn("aweXpect.Core");
+					await That(subject).DoesNotDependOn("aweXpect.Core");
 				}
 
 				await That(Act).ThrowsException()
@@ -66,7 +66,7 @@ public sealed partial class ThatAssembly
 
 				async Task Act()
 				{
-					await That(subject).HasNoDependencyOn("System").AsPrefix();
+					await That(subject).DoesNotDependOn("System").AsPrefix();
 				}
 
 				await That(Act).Throws<XunitException>()
@@ -84,7 +84,7 @@ public sealed partial class ThatAssembly
 
 				async Task Act()
 				{
-					await That(subject).HasNoDependencyOn("AWExPECT.cORE").IgnoringCase();
+					await That(subject).DoesNotDependOn("AWExPECT.cORE").IgnoringCase();
 				}
 
 				await That(Act).Throws<XunitException>()
@@ -105,7 +105,7 @@ public sealed partial class ThatAssembly
 
 				async Task Act()
 				{
-					await That(subject).DoesNotComplyWith(it => it.HasNoDependencyOn("NonExistentAssembly"));
+					await That(subject).DoesNotComplyWith(it => it.DoesNotDependOn("NonExistentAssembly"));
 				}
 
 				await That(Act).Throws<XunitException>()
@@ -123,7 +123,7 @@ public sealed partial class ThatAssembly
 
 				async Task Act()
 				{
-					await That(subject).DoesNotComplyWith(it => it.HasNoDependencyOn("aweXpect.Core"));
+					await That(subject).DoesNotComplyWith(it => it.DoesNotDependOn("aweXpect.Core"));
 				}
 
 				await That(Act).DoesNotThrow();

@@ -11,7 +11,7 @@ public static partial class AssemblyFilters
 	/// <summary>
 	///     Filter for assemblies which have no dependency on the <paramref name="unexpected" /> assembly.
 	/// </summary>
-	public static Filtered.Assemblies.StringEqualityResultType WhichHaveNoDependencyOn(
+	public static Filtered.Assemblies.StringEqualityResultType WhichDoNotDependOn(
 		this Filtered.Assemblies @this, string unexpected)
 	{
 		StringEqualityOptions options = new();

@@ -27,13 +27,13 @@ public static partial class ThatAssemblies
 	///     <see cref="AwexpectCustomization.ReflectionCustomizationValue.ExcludedAssemblyPrefixes" /> are ignored,
 	///     so that framework assemblies do not have to be listed explicitly.
 	/// </remarks>
-	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>>> HaveDependenciesOnlyOn(
+	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>>> DependOnlyOn(
 		this IThat<IEnumerable<Assembly?>> subject, params string[] allowed)
 	{
 		StringEqualityOptions options = new();
 		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<IEnumerable<Assembly?>>((it, grammars)
-					=> new HaveDependenciesOnlyOnConstraint(it, grammars, allowed, options)),
+					=> new DependOnlyOnConstraint(it, grammars, allowed, options)),
 			subject,
 			options);
 	}
@@ -49,20 +49,20 @@ public static partial class ThatAssemblies
 	///     so that framework assemblies do not have to be listed explicitly.
 	/// </remarks>
 	public static StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>>>
-		HaveDependenciesOnlyOn(
+		DependOnlyOn(
 			this IThat<IAsyncEnumerable<Assembly?>> subject, params string[] allowed)
 	{
 		StringEqualityOptions options = new();
 		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>>>(subject
 				.Get()
 				.ExpectationBuilder.AddConstraint<IAsyncEnumerable<Assembly?>>((it, grammars)
-					=> new HaveDependenciesOnlyOnConstraint(it, grammars, allowed, options)),
+					=> new DependOnlyOnConstraint(it, grammars, allowed, options)),
 			subject,
 			options);
 	}
 #endif
 
-	private sealed class HaveDependenciesOnlyOnConstraint(
+	private sealed class DependOnlyOnConstraint(
 		string it,
 		ExpectationGrammars grammars,
 		string[] allowed,
@@ -78,16 +78,16 @@ public static partial class ThatAssemblies
 #if NET8_0_OR_GREATER
 		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual,
 			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, HasDependenciesOnlyOnAllowed);
+			=> await SetAsyncValue(actual, DependsOnlyOnAllowed);
 #endif
 
 		public async Task<ConstraintResult> IsMetBy(IEnumerable<Assembly?> actual, CancellationToken cancellationToken)
-			=> await SetValue(actual, HasDependenciesOnlyOnAllowed);
+			=> await SetValue(actual, DependsOnlyOnAllowed);
 
 #if NET8_0_OR_GREATER
-		private async ValueTask<bool> HasDependenciesOnlyOnAllowed(Assembly? assembly)
+		private async ValueTask<bool> DependsOnlyOnAllowed(Assembly? assembly)
 #else
-		private async Task<bool> HasDependenciesOnlyOnAllowed(Assembly? assembly)
+		private async Task<bool> DependsOnlyOnAllowed(Assembly? assembly)
 #endif
 		{
 			if (assembly is null)

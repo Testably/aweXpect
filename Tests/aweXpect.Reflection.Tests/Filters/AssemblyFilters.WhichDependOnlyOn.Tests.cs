@@ -5,7 +5,7 @@ namespace aweXpect.Reflection.Tests.Filters;
 
 public sealed partial class AssemblyFilters
 {
-	public sealed class WhichHaveDependenciesOnlyOn
+	public sealed class WhichDependOnlyOn
 	{
 		public sealed class Tests
 		{
@@ -13,7 +13,7 @@ public sealed partial class AssemblyFilters
 			public async Task ShouldDescribeTheFilterForASingleAllowedAssembly()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
-					.WhichHaveDependenciesOnlyOn("aweXpect.Core");
+					.WhichDependOnlyOn("aweXpect.Core");
 
 				await That(assemblies.GetDescription())
 					.IsEqualTo(
@@ -24,7 +24,7 @@ public sealed partial class AssemblyFilters
 			public async Task ShouldDescribeTheFilterForMultipleAllowedAssemblies()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
-					.WhichHaveDependenciesOnlyOn("aweXpect.Core", "aweXpect");
+					.WhichDependOnlyOn("aweXpect.Core", "aweXpect");
 
 				await That(assemblies.GetDescription())
 					.IsEqualTo(
@@ -35,7 +35,7 @@ public sealed partial class AssemblyFilters
 			public async Task ShouldDescribeTheFilterForNoAllowedAssemblies()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
-					.WhichHaveDependenciesOnlyOn();
+					.WhichDependOnlyOn();
 
 				await That(assemblies.GetDescription())
 					.IsEqualTo(
@@ -46,7 +46,7 @@ public sealed partial class AssemblyFilters
 			public async Task ShouldFilterForAssembliesDependingOnlyOnAllowed()
 			{
 				Filtered.Assemblies assemblies = In.Assemblies(typeof(In).Assembly)
-					.WhichHaveDependenciesOnlyOn("aweXpect.Core");
+					.WhichDependOnlyOn("aweXpect.Core");
 
 				await That(assemblies).HasSingle().Which.IsEqualTo(typeof(In).Assembly);
 			}
@@ -55,7 +55,7 @@ public sealed partial class AssemblyFilters
 			public async Task ShouldSupportAsWildcard()
 			{
 				Filtered.Assemblies assemblies = In.Assemblies(typeof(In).Assembly)
-					.WhichHaveDependenciesOnlyOn("aweXpect.*").AsWildcard();
+					.WhichDependOnlyOn("aweXpect.*").AsWildcard();
 
 				await That(assemblies).HasSingle().Which.IsEqualTo(typeof(In).Assembly);
 			}
@@ -64,7 +64,7 @@ public sealed partial class AssemblyFilters
 			public async Task ShouldSupportIgnoringCase()
 			{
 				Filtered.Assemblies assemblies = In.Assemblies(typeof(In).Assembly)
-					.WhichHaveDependenciesOnlyOn("awexpect.core").IgnoringCase();
+					.WhichDependOnlyOn("awexpect.core").IgnoringCase();
 
 				await That(assemblies).HasSingle().Which.IsEqualTo(typeof(In).Assembly);
 			}
@@ -73,7 +73,7 @@ public sealed partial class AssemblyFilters
 			public async Task WhenAssemblyDependsOnDisallowedAssembly_ShouldBeFilteredOut()
 			{
 				Filtered.Assemblies assemblies = In.AssemblyContaining<PublicAbstractClass>()
-					.WhichHaveDependenciesOnlyOn("aweXpect.Core");
+					.WhichDependOnlyOn("aweXpect.Core");
 
 				await That(assemblies).IsEmpty();
 			}

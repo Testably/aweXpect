@@ -11,7 +11,7 @@ public static partial class AssemblyFilters
 	/// <summary>
 	///     Filter for assemblies which have a dependency on the <paramref name="expected" /> assembly.
 	/// </summary>
-	public static Filtered.Assemblies.StringEqualityResultType WhichHaveADependencyOn(
+	public static Filtered.Assemblies.StringEqualityResultType WhichDependOn(
 		this Filtered.Assemblies @this, string expected)
 	{
 		StringEqualityOptions options = new();

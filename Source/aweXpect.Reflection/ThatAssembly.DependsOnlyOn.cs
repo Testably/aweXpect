@@ -26,18 +26,18 @@ public static partial class ThatAssembly
 	///     <see cref="AwexpectCustomization.ReflectionCustomizationValue.ExcludedAssemblyPrefixes" /> are ignored,
 	///     so that framework assemblies do not have to be listed explicitly.
 	/// </remarks>
-	public static StringEqualityTypeResult<Assembly?, IThat<Assembly?>> HasDependenciesOnlyOn(
+	public static StringEqualityTypeResult<Assembly?, IThat<Assembly?>> DependsOnlyOn(
 		this IThat<Assembly?> subject, params string[] allowed)
 	{
 		StringEqualityOptions options = new();
 		return new StringEqualityTypeResult<Assembly?, IThat<Assembly?>>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars)
-					=> new HasDependenciesOnlyOnConstraint(it, grammars, allowed, options)),
+					=> new DependsOnlyOnConstraint(it, grammars, allowed, options)),
 			subject,
 			options);
 	}
 
-	private sealed class HasDependenciesOnlyOnConstraint(
+	private sealed class DependsOnlyOnConstraint(
 		string it,
 		ExpectationGrammars grammars,
 		string[] allowed,
