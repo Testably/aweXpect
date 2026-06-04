@@ -25,9 +25,9 @@ public sealed partial class ThatType
 			[Fact]
 			public async Task WhenTypeIsObsolete_ShouldFail()
 			{
-#pragma warning disable CS0612
+#pragma warning disable CS0612, CS0618
 				Type subject = typeof(ObsoleteClass);
-#pragma warning restore CS0612
+#pragma warning restore CS0612, CS0618
 
 				async Task Act()
 				{
@@ -84,9 +84,9 @@ public sealed partial class ThatType
 			[Fact]
 			public async Task WhenTypeIsObsolete_ShouldSucceed()
 			{
-#pragma warning disable CS0612
+#pragma warning disable CS0612, CS0618
 				Type subject = typeof(ObsoleteClass);
-#pragma warning restore CS0612
+#pragma warning restore CS0612, CS0618
 
 				async Task Act()
 				{

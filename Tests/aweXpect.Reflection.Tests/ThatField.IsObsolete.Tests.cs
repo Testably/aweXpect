@@ -4,7 +4,7 @@ using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
-#pragma warning disable CS0612 // Intentional reference to an obsolete test fixture member
+#pragma warning disable CS0612, CS0618 // Intentional reference to an obsolete test fixture member
 public sealed partial class ThatField
 {
 	public sealed class IsObsolete

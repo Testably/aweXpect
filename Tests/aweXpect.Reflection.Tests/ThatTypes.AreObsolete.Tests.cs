@@ -13,12 +13,12 @@ public sealed partial class ThatTypes
 			[Fact]
 			public async Task WhenAllTypesAreObsolete_ShouldSucceed()
 			{
-#pragma warning disable CS0612
+#pragma warning disable CS0612, CS0618
 				IEnumerable<Type> subject =
 				[
 					typeof(ObsoleteClass),
 				];
-#pragma warning restore CS0612
+#pragma warning restore CS0612, CS0618
 
 				async Task Act()
 				{
@@ -31,13 +31,13 @@ public sealed partial class ThatTypes
 			[Fact]
 			public async Task WhenTypesContainNonObsoleteTypes_ShouldFail()
 			{
-#pragma warning disable CS0612
+#pragma warning disable CS0612, CS0618
 				IEnumerable<Type> subject =
 				[
 					typeof(ObsoleteClass),
 					typeof(ClassWithObsoleteMembers),
 				];
-#pragma warning restore CS0612
+#pragma warning restore CS0612, CS0618
 
 				async Task Act()
 				{
@@ -60,12 +60,12 @@ public sealed partial class ThatTypes
 			[Fact]
 			public async Task WhenAllTypesAreObsolete_ShouldFail()
 			{
-#pragma warning disable CS0612
+#pragma warning disable CS0612, CS0618
 				IEnumerable<Type> subject =
 				[
 					typeof(ObsoleteClass),
 				];
-#pragma warning restore CS0612
+#pragma warning restore CS0612, CS0618
 
 				async Task Act()
 				{
@@ -85,13 +85,13 @@ public sealed partial class ThatTypes
 			[Fact]
 			public async Task WhenTypesContainNonObsoleteTypes_ShouldSucceed()
 			{
-#pragma warning disable CS0612
+#pragma warning disable CS0612, CS0618
 				IEnumerable<Type> subject =
 				[
 					typeof(ObsoleteClass),
 					typeof(ClassWithObsoleteMembers),
 				];
-#pragma warning restore CS0612
+#pragma warning restore CS0612, CS0618
 
 				async Task Act()
 				{
@@ -108,13 +108,13 @@ public sealed partial class ThatTypes
 			[Fact]
 			public async Task WhenAllTypesAreObsolete_ShouldSucceed()
 			{
-#pragma warning disable CS0612
+#pragma warning disable CS0612, CS0618
 				IAsyncEnumerable<Type?> subject = new[]
 					{
 						typeof(ObsoleteClass),
 					}
 					.ToTestAsyncEnumerable<Type?>();
-#pragma warning restore CS0612
+#pragma warning restore CS0612, CS0618
 
 				async Task Act()
 				{
@@ -127,14 +127,14 @@ public sealed partial class ThatTypes
 			[Fact]
 			public async Task WhenTypesContainNonObsoleteTypes_ShouldFail()
 			{
-#pragma warning disable CS0612
+#pragma warning disable CS0612, CS0618
 				IAsyncEnumerable<Type?> subject = new[]
 					{
 						typeof(ObsoleteClass),
 						typeof(ClassWithObsoleteMembers),
 					}
 					.ToTestAsyncEnumerable<Type?>();
-#pragma warning restore CS0612
+#pragma warning restore CS0612, CS0618
 
 				async Task Act()
 				{
@@ -154,13 +154,13 @@ public sealed partial class ThatTypes
 			[Fact]
 			public async Task WhenAllTypesAreObsolete_Negated_ShouldFail()
 			{
-#pragma warning disable CS0612
+#pragma warning disable CS0612, CS0618
 				IAsyncEnumerable<Type?> subject = new[]
 					{
 						typeof(ObsoleteClass),
 					}
 					.ToTestAsyncEnumerable<Type?>();
-#pragma warning restore CS0612
+#pragma warning restore CS0612, CS0618
 
 				async Task Act()
 				{

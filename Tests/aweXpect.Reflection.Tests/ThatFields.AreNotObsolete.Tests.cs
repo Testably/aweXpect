@@ -5,7 +5,7 @@ using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests;
 
-#pragma warning disable CS0612 // Intentional reference to an obsolete test fixture member
+#pragma warning disable CS0612, CS0618 // Intentional reference to an obsolete test fixture member
 public sealed partial class ThatFields
 {
 	public sealed class AreNotObsolete
