@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -58,13 +58,15 @@ internal static class TypeHelpers
 				.GetEvents(memberScope.ToBindingFlags() |
 				           BindingFlags.NonPublic |
 				           BindingFlags.Public |
-				           BindingFlags.Instance);
+				           BindingFlags.Instance |
+				           BindingFlags.Static);
 			if (memberScope == MemberScope.IncludingInherited)
 			{
 				events = events.Concat(type.GetInheritedPrivateMembers(
 					baseType => baseType.GetEvents(BindingFlags.DeclaredOnly |
 					                               BindingFlags.NonPublic |
-					                               BindingFlags.Instance),
+					                               BindingFlags.Instance |
+					                               BindingFlags.Static),
 					@event => @event.AddMethod is not { IsPrivate: false, } &&
 					          @event.RemoveMethod is not { IsPrivate: false, }));
 			}

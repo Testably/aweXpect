@@ -101,4 +101,12 @@ internal static class EventInfoHelpers
 	/// <returns><see langword="true" /> if the event is sealed; otherwise, <see langword="false" />.</returns>
 	public static bool IsReallySealed(this EventInfo? eventInfo)
 		=> eventInfo?.AddMethod?.IsFinal == true;
+
+	/// <summary>
+	///     Checks if the <paramref name="eventInfo" /> is static (based on its accessor methods).
+	/// </summary>
+	/// <param name="eventInfo">The <see cref="EventInfo" /> to check.</param>
+	/// <returns><see langword="true" /> if the event is static; otherwise, <see langword="false" />.</returns>
+	public static bool IsReallyStatic(this EventInfo? eventInfo)
+		=> eventInfo?.AddMethod?.IsStatic == true;
 }

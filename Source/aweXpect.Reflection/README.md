@@ -448,12 +448,13 @@ In addition to [access modifiers](#access-modifiers),
 | handler of type (or a subtype)        | `.OfType<T>()`                              | `.IsOfType<T>()`                | `.AreOfType<T>()`                 |
 | handler of exact type                 | `.OfExactType<T>()`                         | `.IsOfExactType<T>()`           | `.AreOfExactType<T>()`            |
 | abstract / sealed                     | `.WhichAreAbstract()` / `.WhichAreSealed()` | `.IsAbstract()` / `.IsSealed()` | `.AreAbstract()` / `.AreSealed()` |
+| static                                | `.WhichAreStatic()`                         | `.IsStatic()`                   | `.AreStatic()`                    |
 
 The `OfType` / `IsOfType` / `AreOfType` filters and assertions match the event's handler type (its
 `EventHandlerType`, e.g. `EventHandler<T>`); the `…ExactType` variants match only the exact handler type.
 Use `OrOfType<T>()` / `OrOfExactType<T>()` to allow several handler types.
 
-> **Negation:** the `abstract` and `sealed` rows have a negated form — `WhichAreNot…` on filters and
+> **Negation:** the `abstract`, `sealed` and `static` rows have a negated form — `WhichAreNot…` on filters and
 > `IsNot…` / `AreNot…` on assertions (e.g. `WhichAreNotSealed()`, `IsNotSealed()`, `AreNotSealed()`).
 
 ```csharp
