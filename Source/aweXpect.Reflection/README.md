@@ -399,11 +399,13 @@ In addition to [access modifiers](#access-modifiers),
 | write-only *(properties only)*        | `.WhichAreWriteOnly()`                      | `.IsWriteOnly()`                | `.AreWriteOnly()`                 |
 | read-write *(properties only)*        | `.WhichAreReadWrite()`                      | `.IsReadWrite()`                | `.AreReadWrite()`                 |
 | indexer *(properties only)*           | `.WhichAreIndexers()`                       | `.IsAnIndexer()`                | `.AreIndexers()`                  |
+| read-only *(fields only)*             | `.WhichAreReadOnly()`                       | `.IsReadOnly()`                 | `.AreReadOnly()`                  |
+| constant *(fields only)*              | `.WhichAreConstant()`                       | `.IsConstant()`                 | `.AreConstant()`                  |
 
-> **Negation:** the `static`, `abstract`, `sealed`, `virtual`, `required` and `indexer` rows have a negated form —
-> `WhichAreNot…` on filters and `IsNot…` / `AreNot…` on assertions (e.g. `WhichAreNotIndexers()`,
-> `IsNotAnIndexer()`, `AreNotIndexers()`); `override` uses `WhichDoNotOverride()` / `DoesNotOverride()` /
-> `DoNotOverride()`.
+> **Negation:** the `static`, `abstract`, `sealed`, `virtual`, `required`, `indexer`, `read-only` *(fields)* and
+> `constant` rows have a negated form — `WhichAreNot…` on filters and `IsNot…` / `AreNot…` on assertions
+> (e.g. `WhichAreNotConstant()`, `IsNotConstant()`, `AreNotConstant()`); `override` uses
+> `WhichDoNotOverride()` / `DoesNotOverride()` / `DoNotOverride()`.
 
 Use `OrOfType<T>()` / `OrOfExactType<T>()` to allow several types.
 
