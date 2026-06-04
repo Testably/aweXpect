@@ -1,6 +1,8 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
+#if NET8_0_OR_GREATER
+using aweXpect.Reflection.Tests.TestHelpers;
+#endif
 
 namespace aweXpect.Reflection.Tests;
 
@@ -16,10 +18,31 @@ public sealed partial class ThatTypes
 				Filtered.Types subject = In.Types<ClassWithMarkedEvent, ClassWithTwoMarkedEvents>();
 
 				async Task Act()
-					=> await That(subject).ContainEvents(events => events.With<MarkerAttribute>());
+				{
+					await That(subject).ContainEvents(events => events.With<MarkerAttribute>());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task WhenAsyncEnumerableTypesOnlyContainInheritedEvent_WithIncludingInherited_ShouldSucceed()
+			{
+				IAsyncEnumerable<Type?> subject = new[]
+				{
+					typeof(DerivedClassWithInheritedMarkedEvent),
+				}.ToTestAsyncEnumerable();
+
+				async Task Act()
+				{
+					await That(subject).ContainEvents(events => events.With<MarkerAttribute>(),
+						MemberScope.IncludingInherited);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+#endif
 
 			[Fact]
 			public async Task WhenSomeTypeContainsNoMatchingEvent_ShouldFail()
@@ -27,7 +50,9 @@ public sealed partial class ThatTypes
 				Filtered.Types subject = In.Types<ClassWithMarkedEvent, ClassWithoutMarkedEvent>();
 
 				async Task Act()
-					=> await That(subject).ContainEvents(events => events.With<MarkerAttribute>());
+				{
+					await That(subject).ContainEvents(events => events.With<MarkerAttribute>());
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -37,6 +62,42 @@ public sealed partial class ThatTypes
 					               ThatTypes.ContainEvents.ClassWithoutMarkedEvent
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenTypeOnlyContainsInheritedEvent_WithDeclaredOnly_ShouldFail()
+			{
+				Filtered.Types subject =
+					In.Types<DerivedClassWithInheritedMarkedEvent, BaseClassWithMarkedEvent>();
+
+				async Task Act()
+				{
+					await That(subject).ContainEvents(events => events.With<MarkerAttribute>());
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that in types ThatTypes.ContainEvents.DerivedClassWithInheritedMarkedEvent and ThatTypes.ContainEvents.BaseClassWithMarkedEvent
+					             all contain events with ThatTypes.ContainEvents.MarkerAttribute at least once,
+					             but it contained not matching types [
+					               ThatTypes.ContainEvents.DerivedClassWithInheritedMarkedEvent
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenTypesOnlyContainInheritedEvent_WithIncludingInherited_ShouldSucceed()
+			{
+				Filtered.Types subject =
+					In.Types<DerivedClassWithInheritedMarkedEvent, BaseClassWithMarkedEvent>();
+
+				async Task Act()
+				{
+					await That(subject).ContainEvents(events => events.With<MarkerAttribute>(),
+						MemberScope.IncludingInherited);
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 
@@ -48,8 +109,10 @@ public sealed partial class ThatTypes
 				Filtered.Types subject = In.Types<ClassWithMarkedEvent, ClassWithoutMarkedEvent>();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they
+				{
+					await That(subject).DoesNotComplyWith(they
 						=> they.ContainEvents(events => events.With<MarkerAttribute>()));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -82,6 +145,17 @@ public sealed partial class ThatTypes
 			public event EventHandler? Something;
 
 			protected virtual void OnSomething() => Something?.Invoke(this, EventArgs.Empty);
+		}
+
+		private class BaseClassWithMarkedEvent
+		{
+			[Marker] public event EventHandler? Inherited;
+
+			protected virtual void OnInherited() => Inherited?.Invoke(this, EventArgs.Empty);
+		}
+
+		private class DerivedClassWithInheritedMarkedEvent : BaseClassWithMarkedEvent
+		{
 		}
 	}
 }

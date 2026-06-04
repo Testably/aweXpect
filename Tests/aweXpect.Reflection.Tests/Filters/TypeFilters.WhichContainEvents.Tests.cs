@@ -28,6 +28,25 @@ public sealed partial class TypeFilters
 						"types which contain events with TypeFilters.WhichContainEvents.MarkerAttribute at least once ")
 					.AsPrefix();
 			}
+
+			[Fact]
+			public async Task WithDeclaredOnly_ShouldNotIncludeTypesWithOnlyInheritedMatchingEvent()
+			{
+				Filtered.Types types = In.Type<DerivedClassWithInheritedMarkedEvent>()
+					.WhichContainEvents(events => events.With<MarkerAttribute>());
+
+				await That(types).IsEmpty();
+			}
+
+			[Fact]
+			public async Task WithIncludingInherited_ShouldIncludeTypesWithInheritedMatchingEvent()
+			{
+				Filtered.Types types = In.Type<DerivedClassWithInheritedMarkedEvent>()
+					.WhichContainEvents(events => events.With<MarkerAttribute>(),
+						MemberScope.IncludingInherited);
+
+				await That(types).IsEqualTo([typeof(DerivedClassWithInheritedMarkedEvent),]).InAnyOrder();
+			}
 		}
 
 		[AttributeUsage(AttributeTargets.Event)]
@@ -47,6 +66,17 @@ public sealed partial class TypeFilters
 #pragma warning disable CS0067 // The event is never used
 			public event EventHandler? Changed;
 #pragma warning restore CS0067
+		}
+
+		private class BaseClassWithMarkedEvent
+		{
+#pragma warning disable CS0067 // The event is never used
+			[Marker] public event EventHandler? Inherited;
+#pragma warning restore CS0067
+		}
+
+		private class DerivedClassWithInheritedMarkedEvent : BaseClassWithMarkedEvent
+		{
 		}
 	}
 }

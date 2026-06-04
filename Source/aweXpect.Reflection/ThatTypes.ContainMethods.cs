@@ -23,12 +23,14 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     By default each type must contain at least one matching method. Append a quantifier
-	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.
+	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.<br />
+	///     The <paramref name="memberScope" /> controls whether inherited methods are considered.
 	/// </remarks>
 	public static TypeContainingMembersResult<IEnumerable<Type?>> ContainMethods(
 		this IThat<IEnumerable<Type?>> subject,
-		Func<Filtered.Methods, Filtered.Methods> filter)
-		=> Contain<MethodInfo, Filtered.Methods>(subject, types => types.Methods(), filter);
+		Func<Filtered.Methods, Filtered.Methods> filter,
+		MemberScope memberScope = MemberScope.DeclaredOnly)
+		=> Contain<MethodInfo, Filtered.Methods>(subject, types => types.Methods(memberScope), filter);
 
 #if NET8_0_OR_GREATER
 	/// <summary>
@@ -37,12 +39,14 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     By default each type must contain at least one matching method. Append a quantifier
-	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.
+	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.<br />
+	///     The <paramref name="memberScope" /> controls whether inherited methods are considered.
 	/// </remarks>
 	public static TypeContainingMembersResult<IAsyncEnumerable<Type?>> ContainMethods(
 		this IThat<IAsyncEnumerable<Type?>> subject,
-		Func<Filtered.Methods, Filtered.Methods> filter)
-		=> Contain<MethodInfo, Filtered.Methods>(subject, types => types.Methods(), filter);
+		Func<Filtered.Methods, Filtered.Methods> filter,
+		MemberScope memberScope = MemberScope.DeclaredOnly)
+		=> Contain<MethodInfo, Filtered.Methods>(subject, types => types.Methods(memberScope), filter);
 #endif
 
 	private static TypeContainingMembersResult<IEnumerable<Type?>> Contain<TMember, TFiltered>(

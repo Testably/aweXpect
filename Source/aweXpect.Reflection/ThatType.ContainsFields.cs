@@ -13,10 +13,12 @@ public static partial class ThatType
 	/// </summary>
 	/// <remarks>
 	///     By default the assertion succeeds when the type contains at least one matching field. Append a quantifier
-	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.
+	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.<br />
+	///     The <paramref name="memberScope" /> controls whether inherited fields are considered.
 	/// </remarks>
 	public static TypeContainingMembersResult<Type?> ContainsFields(
 		this IThat<Type?> subject,
-		Func<Filtered.Fields, Filtered.Fields> filter)
-		=> Contains<FieldInfo, Filtered.Fields>(subject, types => types.Fields(), filter);
+		Func<Filtered.Fields, Filtered.Fields> filter,
+		MemberScope memberScope = MemberScope.DeclaredOnly)
+		=> Contains<FieldInfo, Filtered.Fields>(subject, types => types.Fields(memberScope), filter);
 }

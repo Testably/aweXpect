@@ -37,6 +37,25 @@ public sealed partial class TypeFilters
 						"types which contain properties with TypeFilters.WhichContainProperties.MarkerAttribute at least once ")
 					.AsPrefix();
 			}
+
+			[Fact]
+			public async Task WithDeclaredOnly_ShouldNotIncludeTypesWithOnlyInheritedMatchingProperty()
+			{
+				Filtered.Types types = In.Type<DerivedClassWithInheritedMarkedProperty>()
+					.WhichContainProperties(properties => properties.With<MarkerAttribute>());
+
+				await That(types).IsEmpty();
+			}
+
+			[Fact]
+			public async Task WithIncludingInherited_ShouldIncludeTypesWithInheritedMatchingProperty()
+			{
+				Filtered.Types types = In.Type<DerivedClassWithInheritedMarkedProperty>()
+					.WhichContainProperties(properties => properties.With<MarkerAttribute>(),
+						MemberScope.IncludingInherited);
+
+				await That(types).IsEqualTo([typeof(DerivedClassWithInheritedMarkedProperty),]).InAnyOrder();
+			}
 		}
 
 		[AttributeUsage(AttributeTargets.Property)]
@@ -52,6 +71,15 @@ public sealed partial class TypeFilters
 		private class UntaggedClass
 		{
 			public int Id { get; set; }
+		}
+
+		private class BaseClassWithMarkedProperty
+		{
+			[Marker] public int Inherited { get; set; }
+		}
+
+		private class DerivedClassWithInheritedMarkedProperty : BaseClassWithMarkedProperty
+		{
 		}
 	}
 }

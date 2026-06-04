@@ -1,4 +1,5 @@
-﻿using Xunit.Sdk;
+﻿using aweXpect.Reflection.Collections;
+using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -17,6 +18,38 @@ public sealed partial class ThatType
 				{
 					await That(subject).ContainsProperties(properties => properties.With<MarkerAttribute>())
 						.Exactly(2);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenInheritedPropertyMatches_WithDeclaredOnly_ShouldFail()
+			{
+				Type subject = typeof(DerivedClassWithInheritedMarkedProperty);
+
+				async Task Act()
+				{
+					await That(subject).ContainsProperties(properties => properties.With<MarkerAttribute>());
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             contains properties with ThatType.ContainsProperties.MarkerAttribute at least once,
+					             but it contained 0 matching members in ThatType.ContainsProperties.DerivedClassWithInheritedMarkedProperty
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenInheritedPropertyMatches_WithIncludingInherited_ShouldSucceed()
+			{
+				Type subject = typeof(DerivedClassWithInheritedMarkedProperty);
+
+				async Task Act()
+				{
+					await That(subject).ContainsProperties(properties => properties.With<MarkerAttribute>(),
+						MemberScope.IncludingInherited);
 				}
 
 				await That(Act).DoesNotThrow();
@@ -96,6 +129,15 @@ public sealed partial class ThatType
 		private class ClassWithoutMarkedProperty
 		{
 			public int Id { get; set; }
+		}
+
+		private class BaseClassWithMarkedProperty
+		{
+			[Marker] public int Inherited { get; set; }
+		}
+
+		private class DerivedClassWithInheritedMarkedProperty : BaseClassWithMarkedProperty
+		{
 		}
 	}
 }

@@ -1,5 +1,8 @@
-﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
+﻿using System.Collections.Generic;
+using aweXpect.Reflection.Collections;
+#if NET8_0_OR_GREATER
+using aweXpect.Reflection.Tests.TestHelpers;
+#endif
 
 namespace aweXpect.Reflection.Tests;
 
@@ -15,10 +18,31 @@ public sealed partial class ThatTypes
 				Filtered.Types subject = In.Types<ClassWithMarkedField, ClassWithTwoMarkedFields>();
 
 				async Task Act()
-					=> await That(subject).ContainFields(fields => fields.With<MarkerAttribute>());
+				{
+					await That(subject).ContainFields(fields => fields.With<MarkerAttribute>());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task WhenAsyncEnumerableTypesOnlyContainInheritedField_WithIncludingInherited_ShouldSucceed()
+			{
+				IAsyncEnumerable<Type?> subject = new[]
+				{
+					typeof(DerivedClassWithInheritedMarkedField),
+				}.ToTestAsyncEnumerable();
+
+				async Task Act()
+				{
+					await That(subject).ContainFields(fields => fields.With<MarkerAttribute>(),
+						MemberScope.IncludingInherited);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+#endif
 
 			[Fact]
 			public async Task WhenSomeTypeContainsNoMatchingField_ShouldFail()
@@ -26,7 +50,9 @@ public sealed partial class ThatTypes
 				Filtered.Types subject = In.Types<ClassWithMarkedField, ClassWithoutMarkedField>();
 
 				async Task Act()
-					=> await That(subject).ContainFields(fields => fields.With<MarkerAttribute>());
+				{
+					await That(subject).ContainFields(fields => fields.With<MarkerAttribute>());
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -36,6 +62,42 @@ public sealed partial class ThatTypes
 					               ThatTypes.ContainFields.ClassWithoutMarkedField
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenTypeOnlyContainsInheritedField_WithDeclaredOnly_ShouldFail()
+			{
+				Filtered.Types subject =
+					In.Types<DerivedClassWithInheritedMarkedField, BaseClassWithMarkedField>();
+
+				async Task Act()
+				{
+					await That(subject).ContainFields(fields => fields.With<MarkerAttribute>());
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that in types ThatTypes.ContainFields.DerivedClassWithInheritedMarkedField and ThatTypes.ContainFields.BaseClassWithMarkedField
+					             all contain fields with ThatTypes.ContainFields.MarkerAttribute at least once,
+					             but it contained not matching types [
+					               ThatTypes.ContainFields.DerivedClassWithInheritedMarkedField
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenTypesOnlyContainInheritedField_WithIncludingInherited_ShouldSucceed()
+			{
+				Filtered.Types subject =
+					In.Types<DerivedClassWithInheritedMarkedField, BaseClassWithMarkedField>();
+
+				async Task Act()
+				{
+					await That(subject).ContainFields(fields => fields.With<MarkerAttribute>(),
+						MemberScope.IncludingInherited);
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 
@@ -47,8 +109,10 @@ public sealed partial class ThatTypes
 				Filtered.Types subject = In.Types<ClassWithMarkedField, ClassWithoutMarkedField>();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they
+				{
+					await That(subject).DoesNotComplyWith(they
 						=> they.ContainFields(fields => fields.With<MarkerAttribute>()));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -80,6 +144,17 @@ public sealed partial class ThatTypes
 #pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
 			public int Value;
 #pragma warning restore CS0649
+		}
+
+		private class BaseClassWithMarkedField
+		{
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
+			[Marker] public int Inherited;
+#pragma warning restore CS0649
+		}
+
+		private class DerivedClassWithInheritedMarkedField : BaseClassWithMarkedField
+		{
 		}
 	}
 }

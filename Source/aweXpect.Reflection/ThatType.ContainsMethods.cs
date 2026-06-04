@@ -21,12 +21,14 @@ public static partial class ThatType
 	///     The <paramref name="filter" /> receives the methods declared on the type and may use the full method-filter
 	///     DSL (e.g. <c>methods.With&lt;FactAttribute&gt;().OrWith&lt;TheoryAttribute&gt;()</c>).<br />
 	///     By default the assertion succeeds when the type contains at least one matching method. Append a quantifier
-	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.
+	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.<br />
+	///     The <paramref name="memberScope" /> controls whether inherited methods are considered.
 	/// </remarks>
 	public static TypeContainingMembersResult<Type?> ContainsMethods(
 		this IThat<Type?> subject,
-		Func<Filtered.Methods, Filtered.Methods> filter)
-		=> Contains<MethodInfo, Filtered.Methods>(subject, types => types.Methods(), filter);
+		Func<Filtered.Methods, Filtered.Methods> filter,
+		MemberScope memberScope = MemberScope.DeclaredOnly)
+		=> Contains<MethodInfo, Filtered.Methods>(subject, types => types.Methods(memberScope), filter);
 
 	private static TypeContainingMembersResult<Type?> Contains<TMember, TFiltered>(
 		IThat<Type?> subject,

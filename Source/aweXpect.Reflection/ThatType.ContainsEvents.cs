@@ -13,10 +13,12 @@ public static partial class ThatType
 	/// </summary>
 	/// <remarks>
 	///     By default the assertion succeeds when the type contains at least one matching event. Append a quantifier
-	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.
+	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.<br />
+	///     The <paramref name="memberScope" /> controls whether inherited events are considered.
 	/// </remarks>
 	public static TypeContainingMembersResult<Type?> ContainsEvents(
 		this IThat<Type?> subject,
-		Func<Filtered.Events, Filtered.Events> filter)
-		=> Contains<EventInfo, Filtered.Events>(subject, types => types.Events(), filter);
+		Func<Filtered.Events, Filtered.Events> filter,
+		MemberScope memberScope = MemberScope.DeclaredOnly)
+		=> Contains<EventInfo, Filtered.Events>(subject, types => types.Events(memberScope), filter);
 }

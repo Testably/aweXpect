@@ -15,12 +15,14 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     By default each type must contain at least one matching property. Append a quantifier
-	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.
+	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.<br />
+	///     The <paramref name="memberScope" /> controls whether inherited properties are considered.
 	/// </remarks>
 	public static TypeContainingMembersResult<IEnumerable<Type?>> ContainProperties(
 		this IThat<IEnumerable<Type?>> subject,
-		Func<Filtered.Properties, Filtered.Properties> filter)
-		=> Contain<PropertyInfo, Filtered.Properties>(subject, types => types.Properties(), filter);
+		Func<Filtered.Properties, Filtered.Properties> filter,
+		MemberScope memberScope = MemberScope.DeclaredOnly)
+		=> Contain<PropertyInfo, Filtered.Properties>(subject, types => types.Properties(memberScope), filter);
 
 #if NET8_0_OR_GREATER
 	/// <summary>
@@ -29,11 +31,13 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     By default each type must contain at least one matching property. Append a quantifier
-	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.
+	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.<br />
+	///     The <paramref name="memberScope" /> controls whether inherited properties are considered.
 	/// </remarks>
 	public static TypeContainingMembersResult<IAsyncEnumerable<Type?>> ContainProperties(
 		this IThat<IAsyncEnumerable<Type?>> subject,
-		Func<Filtered.Properties, Filtered.Properties> filter)
-		=> Contain<PropertyInfo, Filtered.Properties>(subject, types => types.Properties(), filter);
+		Func<Filtered.Properties, Filtered.Properties> filter,
+		MemberScope memberScope = MemberScope.DeclaredOnly)
+		=> Contain<PropertyInfo, Filtered.Properties>(subject, types => types.Properties(memberScope), filter);
 #endif
 }

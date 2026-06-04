@@ -28,6 +28,25 @@ public sealed partial class TypeFilters
 						"types which contain fields with TypeFilters.WhichContainFields.MarkerAttribute at least once ")
 					.AsPrefix();
 			}
+
+			[Fact]
+			public async Task WithDeclaredOnly_ShouldNotIncludeTypesWithOnlyInheritedMatchingField()
+			{
+				Filtered.Types types = In.Type<DerivedClassWithInheritedMarkedField>()
+					.WhichContainFields(fields => fields.With<MarkerAttribute>());
+
+				await That(types).IsEmpty();
+			}
+
+			[Fact]
+			public async Task WithIncludingInherited_ShouldIncludeTypesWithInheritedMatchingField()
+			{
+				Filtered.Types types = In.Type<DerivedClassWithInheritedMarkedField>()
+					.WhichContainFields(fields => fields.With<MarkerAttribute>(),
+						MemberScope.IncludingInherited);
+
+				await That(types).IsEqualTo([typeof(DerivedClassWithInheritedMarkedField),]).InAnyOrder();
+			}
 		}
 
 		[AttributeUsage(AttributeTargets.Field)]
@@ -47,6 +66,17 @@ public sealed partial class TypeFilters
 #pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
 			public int? PlainField;
 #pragma warning restore CS0649
+		}
+
+		private class BaseClassWithMarkedField
+		{
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
+			[Marker] public int? Inherited;
+#pragma warning restore CS0649
+		}
+
+		private class DerivedClassWithInheritedMarkedField : BaseClassWithMarkedField
+		{
 		}
 	}
 }

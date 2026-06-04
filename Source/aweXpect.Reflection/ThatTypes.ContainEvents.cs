@@ -15,12 +15,14 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     By default each type must contain at least one matching event. Append a quantifier
-	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.
+	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.<br />
+	///     The <paramref name="memberScope" /> controls whether inherited events are considered.
 	/// </remarks>
 	public static TypeContainingMembersResult<IEnumerable<Type?>> ContainEvents(
 		this IThat<IEnumerable<Type?>> subject,
-		Func<Filtered.Events, Filtered.Events> filter)
-		=> Contain<EventInfo, Filtered.Events>(subject, types => types.Events(), filter);
+		Func<Filtered.Events, Filtered.Events> filter,
+		MemberScope memberScope = MemberScope.DeclaredOnly)
+		=> Contain<EventInfo, Filtered.Events>(subject, types => types.Events(memberScope), filter);
 
 #if NET8_0_OR_GREATER
 	/// <summary>
@@ -29,11 +31,13 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     By default each type must contain at least one matching event. Append a quantifier
-	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.
+	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.<br />
+	///     The <paramref name="memberScope" /> controls whether inherited events are considered.
 	/// </remarks>
 	public static TypeContainingMembersResult<IAsyncEnumerable<Type?>> ContainEvents(
 		this IThat<IAsyncEnumerable<Type?>> subject,
-		Func<Filtered.Events, Filtered.Events> filter)
-		=> Contain<EventInfo, Filtered.Events>(subject, types => types.Events(), filter);
+		Func<Filtered.Events, Filtered.Events> filter,
+		MemberScope memberScope = MemberScope.DeclaredOnly)
+		=> Contain<EventInfo, Filtered.Events>(subject, types => types.Events(memberScope), filter);
 #endif
 }

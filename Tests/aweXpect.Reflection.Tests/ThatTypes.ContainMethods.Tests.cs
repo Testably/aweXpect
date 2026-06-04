@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Reflection.Collections;
 using Xunit.Sdk;
+#if NET8_0_OR_GREATER
+using aweXpect.Reflection.Tests.TestHelpers;
+#endif
 
 namespace aweXpect.Reflection.Tests;
 
@@ -19,7 +22,9 @@ public sealed partial class ThatTypes
 				};
 
 				async Task Act()
-					=> await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>());
+				{
+					await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -33,7 +38,9 @@ public sealed partial class ThatTypes
 				};
 
 				async Task Act()
-					=> await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>());
+				{
+					await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -54,7 +61,9 @@ public sealed partial class ThatTypes
 				};
 
 				async Task Act()
-					=> await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>());
+				{
+					await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -70,15 +79,62 @@ public sealed partial class ThatTypes
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task Exactly_WhenAllCountsMatch_ShouldSucceed()
+			{
+				Filtered.Types subject = In.Type<ClassWithTwoMarkedMethods>();
+
+				async Task Act()
+				{
+					await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>()).Exactly(2);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task Never_WhenNoTypeContainsMatchingMethod_ShouldSucceed()
+			{
+				Filtered.Types subject = In.Type<ClassWithoutMarkedMethod>();
+
+				async Task Act()
+				{
+					await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>()).Never();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenAllTypesContainMatchingMethod_ShouldSucceed()
 			{
 				Filtered.Types subject = In.Types<ClassWithMarkedMethod, ClassWithTwoMarkedMethods>();
 
 				async Task Act()
-					=> await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>());
+				{
+					await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task WhenAsyncEnumerableTypesOnlyContainInheritedMethod_WithIncludingInherited_ShouldSucceed()
+			{
+				IAsyncEnumerable<Type?> subject = new[]
+				{
+					typeof(DerivedClassWithInheritedMarkedMethod),
+				}.ToTestAsyncEnumerable();
+
+				async Task Act()
+				{
+					await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>(),
+						MemberScope.IncludingInherited);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+#endif
 
 			[Fact]
 			public async Task WhenSomeTypeContainsNoMatchingMethod_ShouldFail()
@@ -86,7 +142,9 @@ public sealed partial class ThatTypes
 				Filtered.Types subject = In.Types<ClassWithMarkedMethod, ClassWithoutMarkedMethod>();
 
 				async Task Act()
-					=> await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>());
+				{
+					await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>());
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -99,23 +157,37 @@ public sealed partial class ThatTypes
 			}
 
 			[Fact]
-			public async Task Exactly_WhenAllCountsMatch_ShouldSucceed()
+			public async Task WhenTypeOnlyContainsInheritedMethod_WithDeclaredOnly_ShouldFail()
 			{
-				Filtered.Types subject = In.Type<ClassWithTwoMarkedMethods>();
+				Filtered.Types subject =
+					In.Types<DerivedClassWithInheritedMarkedMethod, BaseClassWithMarkedMethod>();
 
 				async Task Act()
-					=> await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>()).Exactly(2);
+				{
+					await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>());
+				}
 
-				await That(Act).DoesNotThrow();
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that in types ThatTypes.ContainMethods.DerivedClassWithInheritedMarkedMethod and ThatTypes.ContainMethods.BaseClassWithMarkedMethod
+					             all contain methods with ThatTypes.ContainMethods.MarkerAttribute at least once,
+					             but it contained not matching types [
+					               ThatTypes.ContainMethods.DerivedClassWithInheritedMarkedMethod
+					             ]
+					             """);
 			}
 
 			[Fact]
-			public async Task Never_WhenNoTypeContainsMatchingMethod_ShouldSucceed()
+			public async Task WhenTypesOnlyContainInheritedMethod_WithIncludingInherited_ShouldSucceed()
 			{
-				Filtered.Types subject = In.Type<ClassWithoutMarkedMethod>();
+				Filtered.Types subject =
+					In.Types<DerivedClassWithInheritedMarkedMethod, BaseClassWithMarkedMethod>();
 
 				async Task Act()
-					=> await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>()).Never();
+				{
+					await That(subject).ContainMethods(methods => methods.With<MarkerAttribute>(),
+						MemberScope.IncludingInherited);
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -129,8 +201,10 @@ public sealed partial class ThatTypes
 				Filtered.Types subject = In.Types<ClassWithMarkedMethod, ClassWithTwoMarkedMethods>();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they
+				{
+					await That(subject).DoesNotComplyWith(they
 						=> they.ContainMethods(methods => methods.With<MarkerAttribute>()));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -149,8 +223,10 @@ public sealed partial class ThatTypes
 				Filtered.Types subject = In.Types<ClassWithMarkedMethod, ClassWithoutMarkedMethod>();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they
+				{
+					await That(subject).DoesNotComplyWith(they
 						=> they.ContainMethods(methods => methods.With<MarkerAttribute>()));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -187,6 +263,20 @@ public sealed partial class ThatTypes
 			public static void Untagged()
 			{
 			}
+		}
+
+		private class BaseClassWithMarkedMethod
+		{
+#pragma warning disable CA1822 // Mark members as static
+			[Marker]
+			public void Inherited()
+			{
+			}
+#pragma warning restore CA1822
+		}
+
+		private class DerivedClassWithInheritedMarkedMethod : BaseClassWithMarkedMethod
+		{
 		}
 	}
 }
