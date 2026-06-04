@@ -409,6 +409,11 @@ The `ref` / `out` / `in` / `params` / optional parameter filters and assertions 
 each also has `<T>()`, `(Type)`, `<T>("name")` and `…Exactly<T>()` overloads to constrain the parameter's type
 and name (e.g. `.WithRefParameter<int>("count")`, `.HasOutParameterExactly<string>()`).
 
+`WhichAreExtensionMethods()`, `IsAnExtensionMethod()` and `AreExtensionMethods()` match both classic `this`-parameter
+extension methods and extension methods declared with the C# extension block syntax (`extension(...) { … }`), including
+static extension methods. The compiler-generated grouping types backing the extension block syntax are excluded from the
+reflected members.
+
 ```csharp
 In.AllLoadedAssemblies().Methods()
     .WhichArePublic()

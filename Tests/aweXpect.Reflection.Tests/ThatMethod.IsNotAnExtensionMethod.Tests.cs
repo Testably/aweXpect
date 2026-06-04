@@ -1,3 +1,6 @@
+#if NET10_0_OR_GREATER
+using System;
+#endif
 using System.Reflection;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
 using Xunit.Sdk;
@@ -101,5 +104,65 @@ public sealed partial class ThatMethod
 					              """);
 			}
 		}
+
+#if NET10_0_OR_GREATER
+		public sealed class NewSyntaxTests
+		{
+			[Fact]
+			public async Task WhenMethodIsAStaticExtensionMethod_ShouldFail()
+			{
+				MethodInfo subject =
+					typeof(StaticClassWithNewExtensionMethods).GetMethod(
+						nameof(StaticClassWithNewExtensionMethods.Create), Type.EmptyTypes)!;
+
+				async Task Act()
+				{
+					await That(subject).IsNotAnExtensionMethod();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage($"""
+					              Expected that subject
+					              is not an extension method,
+					              but it was an extension method {Formatter.Format(subject)}
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenMethodIsANewSyntaxInstanceExtensionMethod_ShouldFail()
+			{
+				MethodInfo subject =
+					typeof(StaticClassWithNewExtensionMethods).GetMethod(
+						nameof(StaticClassWithNewExtensionMethods.IsLongText))!;
+
+				async Task Act()
+				{
+					await That(subject).IsNotAnExtensionMethod();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage($"""
+					              Expected that subject
+					              is not an extension method,
+					              but it was an extension method {Formatter.Format(subject)}
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenMethodIsARegularStaticMethodInExtensionClass_ShouldSucceed()
+			{
+				MethodInfo subject =
+					typeof(StaticClassWithNewExtensionMethods).GetMethod(
+						nameof(StaticClassWithNewExtensionMethods.RegularStaticMethod))!;
+
+				async Task Act()
+				{
+					await That(subject).IsNotAnExtensionMethod();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+#endif
 	}
 }

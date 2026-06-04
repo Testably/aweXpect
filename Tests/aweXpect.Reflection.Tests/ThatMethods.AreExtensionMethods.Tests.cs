@@ -1,3 +1,6 @@
+#if NET10_0_OR_GREATER
+using System;
+#endif
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -147,6 +150,58 @@ public sealed partial class ThatMethods
 					             Expected that subject
 					             are not all extension methods,
 					             but it only contained extension methods [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+		}
+#endif
+
+#if NET10_0_OR_GREATER
+		public sealed class NewSyntaxTests
+		{
+			[Fact]
+			public async Task WhenAllAreNewSyntaxExtensionMethods_ShouldSucceed()
+			{
+				IEnumerable<MethodInfo> subject =
+				[
+					typeof(StaticClassWithNewExtensionMethods).GetMethod(
+						nameof(StaticClassWithNewExtensionMethods.IsLongText))!,
+					typeof(StaticClassWithNewExtensionMethods).GetMethod(
+						nameof(StaticClassWithNewExtensionMethods.Create), Type.EmptyTypes)!,
+					typeof(StaticClassWithNewExtensionMethods).GetMethod(
+						nameof(StaticClassWithNewExtensionMethods.Combine), [typeof(int),])!,
+				];
+
+				async Task Act()
+				{
+					await That(subject).AreExtensionMethods();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenContainingARegularStaticMethod_ShouldFail()
+			{
+				IEnumerable<MethodInfo> subject =
+				[
+					typeof(StaticClassWithNewExtensionMethods).GetMethod(
+						nameof(StaticClassWithNewExtensionMethods.Create), Type.EmptyTypes)!,
+					typeof(StaticClassWithNewExtensionMethods).GetMethod(
+						nameof(StaticClassWithNewExtensionMethods.RegularStaticMethod))!,
+				];
+
+				async Task Act()
+				{
+					await That(subject).AreExtensionMethods();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             are all extension methods,
+					             but it contained non-extension methods [
 					               *
 					             ]
 					             """).AsWildcard();

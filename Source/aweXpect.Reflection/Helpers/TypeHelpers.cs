@@ -272,7 +272,8 @@ internal static class TypeHelpers
 		     type is not null;
 		     type = type.DeclaringType)
 		{
-			if (type.IsDefined(typeof(CompilerGeneratedAttribute), false))
+			if (type.IsDefined(typeof(CompilerGeneratedAttribute), false) ||
+			    type.IsExtensionGroupingType())
 			{
 				return true;
 			}
@@ -280,6 +281,18 @@ internal static class TypeHelpers
 
 		return member.IsDefined(typeof(CompilerGeneratedAttribute), false);
 	}
+
+	/// <summary>
+	///     Determines whether the <paramref name="type" /> is a compiler-generated grouping type that backs the C#
+	///     extension block syntax (the unspeakable <c>&lt;G&gt;$…</c> container emitted for the new extension members).
+	/// </summary>
+	/// <remarks>
+	///     These types are not marked with <see cref="CompilerGeneratedAttribute" />, but they always carry the
+	///     <see cref="ExtensionAttribute" /> and have an unspeakable name (which a source identifier can never have).
+	/// </remarks>
+	internal static bool IsExtensionGroupingType(this Type type)
+		=> type.Name.StartsWith("<", StringComparison.Ordinal) &&
+		   type.IsDefined(typeof(ExtensionAttribute), false);
 
 	private static bool IncludeMethod(
 		MethodInfo method,
