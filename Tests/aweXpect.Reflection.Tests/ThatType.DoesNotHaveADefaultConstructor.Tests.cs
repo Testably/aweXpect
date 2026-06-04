@@ -10,35 +10,6 @@ public sealed partial class ThatType
 		public sealed class Tests
 		{
 			[Theory]
-			[MemberData(nameof(TypesWithDefaultConstructor))]
-			public async Task WhenTypeHasADefaultConstructor_ShouldFail(Type subject)
-			{
-				async Task Act()
-				{
-					await That(subject).DoesNotHaveADefaultConstructor();
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage($"""
-					              Expected that subject
-					              does not have a default constructor,
-					              but it had a default constructor {Formatter.Format(subject)}
-					              """);
-			}
-
-			[Theory]
-			[MemberData(nameof(TypesWithDefaultConstructor))]
-			public async Task WhenTypeHasADefaultConstructor_ShouldSucceedWithNegatedAssertion(Type subject)
-			{
-				async Task Act()
-				{
-					await That(subject).DoesNotComplyWith(it => it.DoesNotHaveADefaultConstructor());
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Theory]
 			[MemberData(nameof(TypesWithoutDefaultConstructor))]
 			public async Task WhenTypeDoesNotHaveADefaultConstructor_ShouldFailWithNegatedAssertion(Type subject)
 			{
@@ -62,6 +33,35 @@ public sealed partial class ThatType
 				async Task Act()
 				{
 					await That(subject).DoesNotHaveADefaultConstructor();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Theory]
+			[MemberData(nameof(TypesWithDefaultConstructor))]
+			public async Task WhenTypeHasADefaultConstructor_ShouldFail(Type subject)
+			{
+				async Task Act()
+				{
+					await That(subject).DoesNotHaveADefaultConstructor();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage($"""
+					              Expected that subject
+					              does not have a default constructor,
+					              but it had a default constructor {Formatter.Format(subject)}
+					              """);
+			}
+
+			[Theory]
+			[MemberData(nameof(TypesWithDefaultConstructor))]
+			public async Task WhenTypeHasADefaultConstructor_ShouldSucceedWithNegatedAssertion(Type subject)
+			{
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(it => it.DoesNotHaveADefaultConstructor());
 				}
 
 				await That(Act).DoesNotThrow();

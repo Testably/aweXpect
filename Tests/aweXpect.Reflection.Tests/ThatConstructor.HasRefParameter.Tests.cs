@@ -11,19 +11,6 @@ public sealed partial class ThatConstructor
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenConstructorHasRefParameter_ShouldSucceed()
-			{
-				ConstructorInfo constructorInfo = typeof(ClassWithRefParameter).GetConstructors().Single();
-
-				async Task Act()
-				{
-					await That(constructorInfo).HasRefParameter();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenConstructorHasNoRefParameter_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
@@ -39,6 +26,19 @@ public sealed partial class ThatConstructor
 					             has a ref parameter,
 					             but it did not
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenConstructorHasRefParameter_ShouldSucceed()
+			{
+				ConstructorInfo constructorInfo = typeof(ClassWithRefParameter).GetConstructors().Single();
+
+				async Task Act()
+				{
+					await That(constructorInfo).HasRefParameter();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[Fact]
@@ -62,6 +62,42 @@ public sealed partial class ThatConstructor
 
 		public sealed class TypedOverloadsTests
 		{
+			[Fact]
+			public async Task GenericExactType_WhenParameterIsNotRef_ShouldFail()
+			{
+				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
+
+				async Task Act()
+				{
+					await That(constructorInfo).HasRefParameterExactly<int>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructorInfo
+					             has parameter of exact type int with ref modifier,
+					             but it did not
+					             """);
+			}
+
+			[Fact]
+			public async Task GenericExactTypeAndName_WhenParameterIsNotRef_ShouldFail()
+			{
+				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
+
+				async Task Act()
+				{
+					await That(constructorInfo).HasRefParameterExactly<int>("value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructorInfo
+					             has parameter of exact type int with name "value" with ref modifier,
+					             but it did not
+					             """);
+			}
+
 			[Fact]
 			public async Task GenericType_WhenParameterIsNotRef_ShouldFail()
 			{
@@ -117,39 +153,16 @@ public sealed partial class ThatConstructor
 			}
 
 			[Fact]
-			public async Task GenericExactType_WhenParameterIsNotRef_ShouldFail()
+			public async Task WhenOnlySomeParametersAreRef_ShouldSucceed()
 			{
-				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
+				ConstructorInfo constructorInfo = typeof(ClassWithMixedParameters).GetConstructors().Single();
 
 				async Task Act()
 				{
-					await That(constructorInfo).HasRefParameterExactly<int>();
+					await That(constructorInfo).HasRefParameter();
 				}
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that constructorInfo
-					             has parameter of exact type int with ref modifier,
-					             but it did not
-					             """);
-			}
-
-			[Fact]
-			public async Task GenericExactTypeAndName_WhenParameterIsNotRef_ShouldFail()
-			{
-				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
-
-				async Task Act()
-				{
-					await That(constructorInfo).HasRefParameterExactly<int>("value");
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that constructorInfo
-					             has parameter of exact type int with name "value" with ref modifier,
-					             but it did not
-					             """);
+				await That(Act).DoesNotThrow();
 			}
 
 #pragma warning disable CA2263
@@ -225,23 +238,23 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 #pragma warning restore CA2263
-
-			[Fact]
-			public async Task WhenOnlySomeParametersAreRef_ShouldSucceed()
-			{
-				ConstructorInfo constructorInfo = typeof(ClassWithMixedParameters).GetConstructors().Single();
-
-				async Task Act()
-				{
-					await That(constructorInfo).HasRefParameter();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
 		}
 
 		public sealed class NegatedTests
 		{
+			[Fact]
+			public async Task WhenConstructorHasNoRefParameter_ShouldSucceed()
+			{
+				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
+
+				async Task Act()
+				{
+					await That(constructorInfo).DoesNotComplyWith(it => it.HasRefParameter());
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[Fact]
 			public async Task WhenConstructorHasRefParameter_ShouldFail()
 			{
@@ -258,19 +271,6 @@ public sealed partial class ThatConstructor
 					             does not have a ref parameter,
 					             but it did
 					             """);
-			}
-
-			[Fact]
-			public async Task WhenConstructorHasNoRefParameter_ShouldSucceed()
-			{
-				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
-
-				async Task Act()
-				{
-					await That(constructorInfo).DoesNotComplyWith(it => it.HasRefParameter());
-				}
-
-				await That(Act).DoesNotThrow();
 			}
 		}
 

@@ -8,6 +8,15 @@ public sealed partial class ConstructorFilters
 {
 	public sealed class WithOptionalParameter
 	{
+		private static ConstructorInfo? OptionalParameterConstructor()
+			=> typeof(ClassWithOptionalParameterConstructor).GetConstructors().Single();
+
+		private static ConstructorInfo? PlainConstructor()
+			=> typeof(ClassWithPlainConstructor).GetConstructors().Single();
+
+		private static ConstructorInfo? MixedConstructor()
+			=> typeof(ClassWithMixedConstructor).GetConstructors().Single();
+
 		public sealed class Tests
 		{
 			[Fact]
@@ -62,33 +71,6 @@ public sealed partial class ConstructorFilters
 		public sealed class DescriptionTests
 		{
 			[Fact]
-			public async Task ParameterlessFilter_ShouldMatchConstructorWithOnlySomeOptionalParameters()
-			{
-				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
-					.Constructors().WithOptionalParameter();
-
-				await That(constructors).Contains(MixedConstructor());
-			}
-
-			[Fact]
-			public async Task OfType_ShouldDescribeWithOptionalModifier()
-			{
-				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
-					.Constructors().WithOptionalParameter<int>();
-
-				await That(constructors.GetDescription()).Contains("with optional modifier");
-			}
-
-			[Fact]
-			public async Task OfTypeWithName_ShouldDescribeWithOptionalModifier()
-			{
-				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
-					.Constructors().WithOptionalParameter<int>("value");
-
-				await That(constructors.GetDescription()).Contains("with optional modifier");
-			}
-
-			[Fact]
 			public async Task ByName_ShouldDescribeWithOptionalModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -113,6 +95,33 @@ public sealed partial class ConstructorFilters
 					.Constructors().WithOptionalParameterExactly<int>("value");
 
 				await That(constructors.GetDescription()).Contains("with optional modifier");
+			}
+
+			[Fact]
+			public async Task OfType_ShouldDescribeWithOptionalModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithOptionalParameter<int>();
+
+				await That(constructors.GetDescription()).Contains("with optional modifier");
+			}
+
+			[Fact]
+			public async Task OfTypeWithName_ShouldDescribeWithOptionalModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithOptionalParameter<int>("value");
+
+				await That(constructors.GetDescription()).Contains("with optional modifier");
+			}
+
+			[Fact]
+			public async Task ParameterlessFilter_ShouldMatchConstructorWithOnlySomeOptionalParameters()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithOptionalParameter();
+
+				await That(constructors).Contains(MixedConstructor());
 			}
 
 #pragma warning disable CA2263
@@ -153,15 +162,6 @@ public sealed partial class ConstructorFilters
 			}
 #pragma warning restore CA2263
 		}
-
-		private static ConstructorInfo? OptionalParameterConstructor()
-			=> typeof(ClassWithOptionalParameterConstructor).GetConstructors().Single();
-
-		private static ConstructorInfo? PlainConstructor()
-			=> typeof(ClassWithPlainConstructor).GetConstructors().Single();
-
-		private static ConstructorInfo? MixedConstructor()
-			=> typeof(ClassWithMixedConstructor).GetConstructors().Single();
 
 		// ReSharper disable UnusedMember.Local
 		// ReSharper disable UnusedParameter.Local

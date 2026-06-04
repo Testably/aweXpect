@@ -100,22 +100,6 @@ public sealed partial class ThatProperties
 		public sealed class AsyncEnumerableTests
 		{
 			[Fact]
-			public async Task ShouldSucceedWhenAllPropertiesAreOfExactType()
-			{
-				IAsyncEnumerable<PropertyInfo?> subject = new[]
-				{
-					typeof(TestClass).GetProperty(nameof(TestClass.DummyBaseProperty))!,
-				}.ToTestAsyncEnumerable<PropertyInfo?>();
-
-				async Task Act()
-				{
-					await That(subject).AreOfExactType<DummyBase>();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task ShouldFailWhenPropertiesInheritFromType()
 			{
 				IAsyncEnumerable<PropertyInfo?> subject = new[]
@@ -136,6 +120,22 @@ public sealed partial class ThatProperties
 					               *
 					             ]
 					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task ShouldSucceedWhenAllPropertiesAreOfExactType()
+			{
+				IAsyncEnumerable<PropertyInfo?> subject = new[]
+				{
+					typeof(TestClass).GetProperty(nameof(TestClass.DummyBaseProperty))!,
+				}.ToTestAsyncEnumerable<PropertyInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).AreOfExactType<DummyBase>();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 #endif

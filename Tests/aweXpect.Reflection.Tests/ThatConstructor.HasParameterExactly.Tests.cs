@@ -94,24 +94,6 @@ public sealed partial class ThatConstructor
 			}
 
 			[Fact]
-			public async Task WithType_WhenParameterIsSubtypeWithMatchingName_ShouldFail()
-			{
-				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(Stream),])!;
-
-				async Task Act()
-				{
-					await That(constructorInfo).HasParameterExactly(typeof(IDisposable), "stream");
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that constructorInfo
-					             has parameter of exact type IDisposable with name "stream",
-					             but it did not
-					             """);
-			}
-
-			[Fact]
 			public async Task WhenParameterNameDoesNotMatch_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(Stream),])!;
@@ -187,6 +169,24 @@ public sealed partial class ThatConstructor
 					.WithMessage("""
 					             Expected that constructorInfo
 					             has parameter of exact type IDisposable,
+					             but it did not
+					             """);
+			}
+
+			[Fact]
+			public async Task WithType_WhenParameterIsSubtypeWithMatchingName_ShouldFail()
+			{
+				ConstructorInfo constructorInfo = typeof(TestClass).GetConstructor([typeof(Stream),])!;
+
+				async Task Act()
+				{
+					await That(constructorInfo).HasParameterExactly(typeof(IDisposable), "stream");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructorInfo
+					             has parameter of exact type IDisposable with name "stream",
 					             but it did not
 					             """);
 			}

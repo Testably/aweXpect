@@ -30,20 +30,6 @@ public sealed partial class ThatMethod
 			}
 
 			[Fact]
-			public async Task WhenMethodReturnsTaskButIsNotAsync_ShouldSucceed()
-			{
-				MethodInfo subject =
-					typeof(ClassWithAsyncMembers).GetMethod(nameof(ClassWithAsyncMembers.NonAsyncTaskMethod))!;
-
-				async Task Act()
-				{
-					await That(subject).IsNotAsync();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenMethodIsNotAsync_ShouldSucceed()
 			{
 				MethodInfo subject =
@@ -73,6 +59,20 @@ public sealed partial class ThatMethod
 					             is not async,
 					             but it was <null>
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenMethodReturnsTaskButIsNotAsync_ShouldSucceed()
+			{
+				MethodInfo subject =
+					typeof(ClassWithAsyncMembers).GetMethod(nameof(ClassWithAsyncMembers.NonAsyncTaskMethod))!;
+
+				async Task Act()
+				{
+					await That(subject).IsNotAsync();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 

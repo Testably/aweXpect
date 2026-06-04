@@ -29,7 +29,9 @@ public class FormatterRegistrationTests
 		FormatterRegistration fresh = new();
 
 		void Act()
-			=> fresh.Dispose();
+		{
+			fresh.Dispose();
+		}
 
 		try
 		{

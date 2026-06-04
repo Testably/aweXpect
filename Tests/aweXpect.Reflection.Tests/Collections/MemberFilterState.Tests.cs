@@ -1,4 +1,3 @@
-using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests.Collections;
@@ -83,6 +82,15 @@ public sealed class MemberFilterStateTests
 	public sealed class StaticTests
 	{
 		[Fact]
+		public async Task Constructors_ShouldIncludeStaticAndExcludeNonStatic()
+		{
+			Reflection.Collections.Filtered.Constructors constructors =
+				In.Type<TestClassWithStaticMembers>().Static.Constructors();
+
+			await That(constructors).All().Satisfy(c => c.IsStatic).And.IsNotEmpty();
+		}
+
+		[Fact]
 		public async Task Fields_ShouldIncludeStaticAndExcludeNonStatic()
 		{
 			Reflection.Collections.Filtered.Fields fields =
@@ -115,48 +123,17 @@ public sealed class MemberFilterStateTests
 				.Satisfy(p => p.Name == nameof(TestClassWithStaticMembers.NonStaticProperty));
 			await That(properties).All().Satisfy(p => p.GetMethod?.IsStatic == true).And.IsNotEmpty();
 		}
-
-		[Fact]
-		public async Task Constructors_ShouldIncludeStaticAndExcludeNonStatic()
-		{
-			Reflection.Collections.Filtered.Constructors constructors =
-				In.Type<TestClassWithStaticMembers>().Static.Constructors();
-
-			await That(constructors).All().Satisfy(c => c.IsStatic).And.IsNotEmpty();
-		}
 	}
 
 	public sealed class AccessTests
 	{
 		[Fact]
-		public async Task Methods_ShouldIncludePublicAndExcludeNonPublic()
+		public async Task Constructors_ShouldIncludePublicAndExcludeNonPublic()
 		{
-			Reflection.Collections.Filtered.Methods methods =
-				In.Type<TestClassWithStaticMembers>().Public.Methods();
+			Reflection.Collections.Filtered.Constructors constructors =
+				In.Type<TestClassWithStaticMembers>().Public.Constructors();
 
-			await That(methods).Contains(m => m.Name == nameof(TestClassWithStaticMembers.StaticMethod));
-			await That(methods).All().Satisfy(m => m.IsPublic).And.IsNotEmpty();
-		}
-
-		[Fact]
-		public async Task Fields_ShouldIncludePublicAndExcludeNonPublic()
-		{
-			Reflection.Collections.Filtered.Fields fields =
-				In.Type<TestClassWithStaticMembers>().Public.Fields();
-
-			await That(fields).Contains(f => f.Name == nameof(TestClassWithStaticMembers.StaticField));
-			await That(fields).All().Satisfy(f => f.IsPublic).And.IsNotEmpty();
-		}
-
-		[Fact]
-		public async Task Properties_ShouldIncludePublicAndExcludeNonPublic()
-		{
-			Reflection.Collections.Filtered.Properties properties =
-				In.Type<TestClassWithStaticMembers>().Public.Properties();
-
-			await That(properties).Contains(p => p.Name == nameof(TestClassWithStaticMembers.StaticProperty));
-			await That(properties).All()
-				.Satisfy(p => p.GetMethod?.IsPublic == true || p.SetMethod?.IsPublic == true).And.IsNotEmpty();
+			await That(constructors).All().Satisfy(c => c.IsPublic).And.IsNotEmpty();
 		}
 
 		[Fact]
@@ -170,12 +147,33 @@ public sealed class MemberFilterStateTests
 		}
 
 		[Fact]
-		public async Task Constructors_ShouldIncludePublicAndExcludeNonPublic()
+		public async Task Fields_ShouldIncludePublicAndExcludeNonPublic()
 		{
-			Reflection.Collections.Filtered.Constructors constructors =
-				In.Type<TestClassWithStaticMembers>().Public.Constructors();
+			Reflection.Collections.Filtered.Fields fields =
+				In.Type<TestClassWithStaticMembers>().Public.Fields();
 
-			await That(constructors).All().Satisfy(c => c.IsPublic).And.IsNotEmpty();
+			await That(fields).Contains(f => f.Name == nameof(TestClassWithStaticMembers.StaticField));
+			await That(fields).All().Satisfy(f => f.IsPublic).And.IsNotEmpty();
+		}
+
+		[Fact]
+		public async Task Fields_WithoutModifier_ShouldReturnNullFilterAndIncludeAll()
+		{
+			Reflection.Collections.Filtered.Fields fields =
+				In.Type<TestClassWithStaticMembers>().Fields();
+
+			await That(fields).Contains(f => f.Name == nameof(TestClassWithStaticMembers.StaticField));
+			await That(fields).Contains(f => f.Name == nameof(TestClassWithStaticMembers.NonStaticField));
+		}
+
+		[Fact]
+		public async Task Methods_ShouldIncludePublicAndExcludeNonPublic()
+		{
+			Reflection.Collections.Filtered.Methods methods =
+				In.Type<TestClassWithStaticMembers>().Public.Methods();
+
+			await That(methods).Contains(m => m.Name == nameof(TestClassWithStaticMembers.StaticMethod));
+			await That(methods).All().Satisfy(m => m.IsPublic).And.IsNotEmpty();
 		}
 
 		[Fact]
@@ -189,13 +187,14 @@ public sealed class MemberFilterStateTests
 		}
 
 		[Fact]
-		public async Task Fields_WithoutModifier_ShouldReturnNullFilterAndIncludeAll()
+		public async Task Properties_ShouldIncludePublicAndExcludeNonPublic()
 		{
-			Reflection.Collections.Filtered.Fields fields =
-				In.Type<TestClassWithStaticMembers>().Fields();
+			Reflection.Collections.Filtered.Properties properties =
+				In.Type<TestClassWithStaticMembers>().Public.Properties();
 
-			await That(fields).Contains(f => f.Name == nameof(TestClassWithStaticMembers.StaticField));
-			await That(fields).Contains(f => f.Name == nameof(TestClassWithStaticMembers.NonStaticField));
+			await That(properties).Contains(p => p.Name == nameof(TestClassWithStaticMembers.StaticProperty));
+			await That(properties).All()
+				.Satisfy(p => p.GetMethod?.IsPublic == true || p.SetMethod?.IsPublic == true).And.IsNotEmpty();
 		}
 	}
 }

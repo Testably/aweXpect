@@ -1,5 +1,6 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 
@@ -80,6 +81,28 @@ public sealed class MethodInfoHelpersTests
 	}
 
 	[Fact]
+	public async Task HasAttribute_WithAttributeType_WithoutPredicate_ShouldReturnTrue()
+	{
+		MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.Method1WithAttribute))!;
+
+		bool result = methodInfo.HasAttribute(typeof(DummyAttribute));
+
+		await That(result).IsTrue();
+	}
+
+	[Fact]
+	public async Task HasAttribute_WithAttributeType_WithPredicate_ShouldReturnPredicateResult()
+	{
+		MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.Method1WithAttribute))!;
+
+		bool result1 = methodInfo.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 1);
+		bool result2 = methodInfo.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 2);
+
+		await That(result1).IsTrue();
+		await That(result2).IsFalse();
+	}
+
+	[Fact]
 	public async Task HasAttribute_WithInheritedAttribute_ShouldReturnTrue()
 	{
 		MethodInfo methodInfo =
@@ -113,39 +136,17 @@ public sealed class MethodInfoHelpersTests
 	}
 
 	[Fact]
-	public async Task HasAttribute_WithAttributeType_WithoutPredicate_ShouldReturnTrue()
+	public async Task IsExtensionPropertyAccessor_WhenInstanceMethod_ShouldReturnFalse()
 	{
-		MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.Method1WithAttribute))!;
-
-		bool result = methodInfo.HasAttribute(typeof(DummyAttribute));
-
-		await That(result).IsTrue();
-	}
-
-	[Fact]
-	public async Task HasAttribute_WithAttributeType_WithPredicate_ShouldReturnPredicateResult()
-	{
-		MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.Method1WithAttribute))!;
-
-		bool result1 = methodInfo.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 1);
-		bool result2 = methodInfo.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 2);
-
-		await That(result1).IsTrue();
-		await That(result2).IsFalse();
-	}
-
-	[Fact]
-	public async Task IsExtensionPropertyAccessor_WhenMethodHasNoDeclaringType_ShouldReturnFalse()
-	{
-		MethodInfo methodInfo = new System.Reflection.Emit.DynamicMethod("Dynamic", typeof(void), Type.EmptyTypes);
+		MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.Method2WithoutAttribute))!;
 
 		await That(methodInfo.IsExtensionPropertyAccessor()).IsFalse();
 	}
 
 	[Fact]
-	public async Task IsExtensionPropertyAccessor_WhenInstanceMethod_ShouldReturnFalse()
+	public async Task IsExtensionPropertyAccessor_WhenMethodHasNoDeclaringType_ShouldReturnFalse()
 	{
-		MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.Method2WithoutAttribute))!;
+		MethodInfo methodInfo = new DynamicMethod("Dynamic", typeof(void), Type.EmptyTypes);
 
 		await That(methodInfo.IsExtensionPropertyAccessor()).IsFalse();
 	}

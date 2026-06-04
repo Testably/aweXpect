@@ -117,8 +117,7 @@ public static partial class ThatMethods
 	{
 		StringEqualityOptions stringEqualityOptions = new();
 		CollectionIndexOptions collectionIndexOptions = new();
-		ParameterFilterOptions parameterFilterOptions = new(
-			p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
+		ParameterFilterOptions parameterFilterOptions = new(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
 		return new NamedParameterCollectionResult<IEnumerable<MethodInfo?>, object?>(subject.Get()
 				.ExpectationBuilder
 				.AddConstraint<IEnumerable<MethodInfo?>>((_, grammars)

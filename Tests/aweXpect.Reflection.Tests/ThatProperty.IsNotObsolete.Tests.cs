@@ -26,6 +26,24 @@ public sealed partial class ThatProperty
 			}
 
 			[Fact]
+			public async Task WhenPropertyIsNull_ShouldFail()
+			{
+				PropertyInfo? subject = null;
+
+				async Task Act()
+				{
+					await That(subject).IsNotObsolete();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             is not obsolete,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenPropertyIsObsolete_ShouldFail()
 			{
 				PropertyInfo subject =
@@ -42,24 +60,6 @@ public sealed partial class ThatProperty
 					              is not obsolete,
 					              but it was obsolete {Formatter.Format(subject)}
 					              """);
-			}
-
-			[Fact]
-			public async Task WhenPropertyIsNull_ShouldFail()
-			{
-				PropertyInfo? subject = null;
-
-				async Task Act()
-				{
-					await That(subject).IsNotObsolete();
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             is not obsolete,
-					             but it was <null>
-					             """);
 			}
 		}
 

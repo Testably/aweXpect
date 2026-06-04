@@ -1,9 +1,9 @@
 using System.Reflection;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
+using Xunit.Sdk;
 #if NET10_0_OR_GREATER
 using aweXpect.Reflection.Tests.TestHelpers;
 #endif
-using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 

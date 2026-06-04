@@ -100,22 +100,6 @@ public sealed partial class ThatFields
 		public sealed class AsyncEnumerableTests
 		{
 			[Fact]
-			public async Task ShouldSucceedWhenAllFieldsAreOfExactType()
-			{
-				IAsyncEnumerable<FieldInfo?> subject = new[]
-				{
-					typeof(TestClass).GetField(nameof(TestClass.DummyBaseField))!,
-				}.ToTestAsyncEnumerable<FieldInfo?>();
-
-				async Task Act()
-				{
-					await That(subject).AreOfExactType<DummyBase>();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task ShouldFailWhenFieldsInheritFromType()
 			{
 				IAsyncEnumerable<FieldInfo?> subject = new[]
@@ -136,6 +120,22 @@ public sealed partial class ThatFields
 					               *
 					             ]
 					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task ShouldSucceedWhenAllFieldsAreOfExactType()
+			{
+				IAsyncEnumerable<FieldInfo?> subject = new[]
+				{
+					typeof(TestClass).GetField(nameof(TestClass.DummyBaseField))!,
+				}.ToTestAsyncEnumerable<FieldInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).AreOfExactType<DummyBase>();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 #endif

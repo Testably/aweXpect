@@ -92,6 +92,29 @@ public sealed partial class ThatMethods
 		public sealed class AsyncEnumerableTests
 		{
 			[Fact]
+			public async Task WhenFilteringOnlyOperators_Negated_ShouldFail()
+			{
+				IAsyncEnumerable<MethodInfo?> subject = typeof(ClassWithOperators)
+					.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
+					.Where(m => m.IsReallyOperator())
+					.ToTestAsyncEnumerable<MethodInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreOperators());
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             are not all operators,
+					             but it only contained operators [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Fact]
 			public async Task WhenFilteringOnlyOperators_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo?> subject = typeof(ClassWithOperators)
@@ -124,29 +147,6 @@ public sealed partial class ThatMethods
 					             Expected that subject
 					             are all operators,
 					             but it contained non-operators [
-					               *
-					             ]
-					             """).AsWildcard();
-			}
-
-			[Fact]
-			public async Task WhenFilteringOnlyOperators_Negated_ShouldFail()
-			{
-				IAsyncEnumerable<MethodInfo?> subject = typeof(ClassWithOperators)
-					.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
-					.Where(m => m.IsReallyOperator())
-					.ToTestAsyncEnumerable<MethodInfo?>();
-
-				async Task Act()
-				{
-					await That(subject).DoesNotComplyWith(they => they.AreOperators());
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             are not all operators,
-					             but it only contained operators [
 					               *
 					             ]
 					             """).AsWildcard();

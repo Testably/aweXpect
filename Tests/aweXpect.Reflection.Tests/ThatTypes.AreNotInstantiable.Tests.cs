@@ -121,22 +121,6 @@ public sealed partial class ThatTypes
 			}
 
 			[Fact]
-			public async Task WhenNoTypeIsInstantiable_ShouldSucceed()
-			{
-				IAsyncEnumerable<Type?> subject = new[]
-				{
-					typeof(PublicAbstractClass), typeof(IPublicInterface),
-				}.ToTestAsyncEnumerable<Type?>();
-
-				async Task Act()
-				{
-					await That(subject).AreNotInstantiable();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenNoTypeIsInstantiable_Negated_ShouldFail()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -157,6 +141,22 @@ public sealed partial class ThatTypes
 					               *
 					             ]
 					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenNoTypeIsInstantiable_ShouldSucceed()
+			{
+				IAsyncEnumerable<Type?> subject = new[]
+				{
+					typeof(PublicAbstractClass), typeof(IPublicInterface),
+				}.ToTestAsyncEnumerable<Type?>();
+
+				async Task Act()
+				{
+					await That(subject).AreNotInstantiable();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 #endif

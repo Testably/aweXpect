@@ -121,22 +121,6 @@ public sealed partial class ThatTypes
 			}
 
 			[Fact]
-			public async Task WhenNoTypeHasADefaultConstructor_ShouldSucceed()
-			{
-				IAsyncEnumerable<Type?> subject = new[]
-				{
-					typeof(ClassWithoutDefaultConstructor), typeof(IPublicInterface),
-				}.ToTestAsyncEnumerable<Type?>();
-
-				async Task Act()
-				{
-					await That(subject).DoNotHaveADefaultConstructor();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenNoTypeHasADefaultConstructor_Negated_ShouldFail()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -157,6 +141,22 @@ public sealed partial class ThatTypes
 					               *
 					             ]
 					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenNoTypeHasADefaultConstructor_ShouldSucceed()
+			{
+				IAsyncEnumerable<Type?> subject = new[]
+				{
+					typeof(ClassWithoutDefaultConstructor), typeof(IPublicInterface),
+				}.ToTestAsyncEnumerable<Type?>();
+
+				async Task Act()
+				{
+					await That(subject).DoNotHaveADefaultConstructor();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 #endif

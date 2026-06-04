@@ -8,6 +8,15 @@ public sealed partial class ConstructorFilters
 {
 	public sealed class WithInParameter
 	{
+		private static ConstructorInfo? InParameterConstructor()
+			=> typeof(ClassWithInParameterConstructor).GetConstructors().Single();
+
+		private static ConstructorInfo? PlainConstructor()
+			=> typeof(ClassWithPlainConstructor).GetConstructors().Single();
+
+		private static ConstructorInfo? MixedConstructor()
+			=> typeof(ClassWithMixedConstructor).GetConstructors().Single();
+
 		public sealed class Tests
 		{
 			[Fact]
@@ -62,33 +71,6 @@ public sealed partial class ConstructorFilters
 		public sealed class DescriptionTests
 		{
 			[Fact]
-			public async Task ParameterlessFilter_ShouldMatchConstructorWithOnlySomeInParameters()
-			{
-				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
-					.Constructors().WithInParameter();
-
-				await That(constructors).Contains(MixedConstructor());
-			}
-
-			[Fact]
-			public async Task OfType_ShouldDescribeWithInModifier()
-			{
-				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
-					.Constructors().WithInParameter<int>();
-
-				await That(constructors.GetDescription()).Contains("with in modifier");
-			}
-
-			[Fact]
-			public async Task OfTypeWithName_ShouldDescribeWithInModifier()
-			{
-				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
-					.Constructors().WithInParameter<int>("value");
-
-				await That(constructors.GetDescription()).Contains("with in modifier");
-			}
-
-			[Fact]
 			public async Task ByName_ShouldDescribeWithInModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -113,6 +95,33 @@ public sealed partial class ConstructorFilters
 					.Constructors().WithInParameterExactly<int>("value");
 
 				await That(constructors.GetDescription()).Contains("with in modifier");
+			}
+
+			[Fact]
+			public async Task OfType_ShouldDescribeWithInModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithInParameter<int>();
+
+				await That(constructors.GetDescription()).Contains("with in modifier");
+			}
+
+			[Fact]
+			public async Task OfTypeWithName_ShouldDescribeWithInModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithInParameter<int>("value");
+
+				await That(constructors.GetDescription()).Contains("with in modifier");
+			}
+
+			[Fact]
+			public async Task ParameterlessFilter_ShouldMatchConstructorWithOnlySomeInParameters()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithInParameter();
+
+				await That(constructors).Contains(MixedConstructor());
 			}
 
 #pragma warning disable CA2263
@@ -153,15 +162,6 @@ public sealed partial class ConstructorFilters
 			}
 #pragma warning restore CA2263
 		}
-
-		private static ConstructorInfo? InParameterConstructor()
-			=> typeof(ClassWithInParameterConstructor).GetConstructors().Single();
-
-		private static ConstructorInfo? PlainConstructor()
-			=> typeof(ClassWithPlainConstructor).GetConstructors().Single();
-
-		private static ConstructorInfo? MixedConstructor()
-			=> typeof(ClassWithMixedConstructor).GetConstructors().Single();
 
 		// ReSharper disable UnusedMember.Local
 		// ReSharper disable UnusedParameter.Local

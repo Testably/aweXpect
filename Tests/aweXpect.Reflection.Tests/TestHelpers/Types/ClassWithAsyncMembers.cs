@@ -1,5 +1,3 @@
-using System.Threading.Tasks;
-
 namespace aweXpect.Reflection.Tests.TestHelpers.Types;
 
 public class ClassWithAsyncMembers

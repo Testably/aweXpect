@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using Xunit.Sdk;
 #if NET8_0_OR_GREATER
@@ -12,6 +11,8 @@ public sealed partial class ThatEvents
 {
 	public sealed class AreOfType
 	{
+		public delegate void CustomHandler();
+
 		public sealed class GenericTests
 		{
 			[Fact]
@@ -120,12 +121,34 @@ public sealed partial class ThatEvents
 		public sealed class AsyncEnumerableTests
 		{
 			[Fact]
+			public async Task ShouldFailWhenSomeEventsAreNotOfType()
+			{
+				IAsyncEnumerable<EventInfo?> subject = new[]
+				{
+					typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!, typeof(TestClass).GetEvent(nameof(TestClass.CustomHandlerEvent))!,
+				}.ToTestAsyncEnumerable<EventInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).AreOfType<EventHandler>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             all are of type EventHandler,
+					             but it contained not matching events [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Fact]
 			public async Task ShouldSucceedWhenAllEventsAreOfType()
 			{
 				IAsyncEnumerable<EventInfo?> subject = new[]
 				{
-					typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!,
-					typeof(TestClass).GetEvent(nameof(TestClass.OtherEventHandlerEvent))!,
+					typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!, typeof(TestClass).GetEvent(nameof(TestClass.OtherEventHandlerEvent))!,
 				}.ToTestAsyncEnumerable<EventInfo?>();
 
 				async Task Act()
@@ -151,34 +174,8 @@ public sealed partial class ThatEvents
 
 				await That(Act).DoesNotThrow();
 			}
-
-			[Fact]
-			public async Task ShouldFailWhenSomeEventsAreNotOfType()
-			{
-				IAsyncEnumerable<EventInfo?> subject = new[]
-				{
-					typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!,
-					typeof(TestClass).GetEvent(nameof(TestClass.CustomHandlerEvent))!,
-				}.ToTestAsyncEnumerable<EventInfo?>();
-
-				async Task Act()
-				{
-					await That(subject).AreOfType<EventHandler>();
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             all are of type EventHandler,
-					             but it contained not matching events [
-					               *
-					             ]
-					             """).AsWildcard();
-			}
 		}
 #endif
-
-		public delegate void CustomHandler();
 
 #pragma warning disable CS0067 // The event is never used
 		private class TestClass

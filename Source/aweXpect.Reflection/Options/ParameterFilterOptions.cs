@@ -92,10 +92,7 @@ public class ParameterFilterOptions
 	/// <summary>
 	///     Adds an additional <paramref name="predicate" />.
 	/// </summary>
-	internal void AddPredicate(Func<ParameterInfo, bool> predicate)
-	{
-		_predicates.Add(ToAsyncPredicate(predicate));
-	}
+	internal void AddPredicate(Func<ParameterInfo, bool> predicate) => _predicates.Add(ToAsyncPredicate(predicate));
 
 	/// <summary>
 	///     Adds an additional modifier <paramref name="predicate" /> with the <paramref name="description" />.

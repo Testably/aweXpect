@@ -9,59 +9,11 @@ public sealed partial class ThatConstructors
 {
 	public sealed class ParameterModifierTypedOverloads
 	{
+		private static ConstructorInfo Constructor<T>()
+			=> typeof(T).GetConstructors().Single();
+
 		public sealed class Tests
 		{
-			[Fact]
-			public async Task HaveRefParameterOfType_WhenAllMatch_ShouldSucceed()
-			{
-				IEnumerable<ConstructorInfo> constructors = new[]
-				{
-					Constructor<RefIntCtor>(),
-					Constructor<AnotherRefIntCtor>(),
-				};
-
-				async Task Act()
-				{
-					await That(constructors).HaveRefParameter<int>();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task HaveRefParameterOfType_WhenNotAllMatch_ShouldFail()
-			{
-				IEnumerable<ConstructorInfo> constructors = new[]
-				{
-					Constructor<RefIntCtor>(),
-					Constructor<PlainIntCtor>(),
-				};
-
-				async Task Act()
-				{
-					await That(constructors).HaveRefParameter<int>();
-				}
-
-				await That(Act).Throws<XunitException>();
-			}
-
-			[Fact]
-			public async Task HaveRefParameterOfTypeAndName_WhenAllMatch_ShouldSucceed()
-			{
-				IEnumerable<ConstructorInfo> constructors = new[]
-				{
-					Constructor<RefIntCtor>(),
-					Constructor<AnotherRefIntCtor>(),
-				};
-
-				async Task Act()
-				{
-					await That(constructors).HaveRefParameter<int>("value");
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
 			[Fact]
 			public async Task HaveParamsParameterOfType_WhenAllMatch_ShouldSucceed()
 			{
@@ -77,10 +29,55 @@ public sealed partial class ThatConstructors
 
 				await That(Act).DoesNotThrow();
 			}
-		}
 
-		private static ConstructorInfo Constructor<T>()
-			=> typeof(T).GetConstructors().Single();
+			[Fact]
+			public async Task HaveRefParameterOfType_WhenAllMatch_ShouldSucceed()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					Constructor<RefIntCtor>(), Constructor<AnotherRefIntCtor>(),
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveRefParameter<int>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task HaveRefParameterOfType_WhenNotAllMatch_ShouldFail()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					Constructor<RefIntCtor>(), Constructor<PlainIntCtor>(),
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveRefParameter<int>();
+				}
+
+				await That(Act).Throws<XunitException>();
+			}
+
+			[Fact]
+			public async Task HaveRefParameterOfTypeAndName_WhenAllMatch_ShouldSucceed()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					Constructor<RefIntCtor>(), Constructor<AnotherRefIntCtor>(),
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveRefParameter<int>("value");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+		}
 
 		// ReSharper disable UnusedParameter.Local
 		// ReSharper disable UnusedMember.Local

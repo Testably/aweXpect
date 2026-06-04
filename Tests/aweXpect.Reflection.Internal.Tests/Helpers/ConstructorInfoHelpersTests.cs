@@ -71,30 +71,6 @@ public sealed class ConstructorInfoHelpersTests
 	}
 
 	[Fact]
-	public async Task HasAttribute_WithoutAttribute_ShouldReturnFalse()
-	{
-		ConstructorInfo constructorInfo = typeof(TestClass).GetDeclaredConstructors()
-			.Single(c => c.GetParameters().Length == 3);
-
-		bool result = constructorInfo.HasAttribute<DummyAttribute>();
-
-		await That(result).IsFalse();
-	}
-
-	[Fact]
-	public async Task HasAttribute_WithPredicate_ShouldReturnPredicateResult()
-	{
-		ConstructorInfo constructorInfo = typeof(TestClass).GetDeclaredConstructors()
-			.Single(c => c.GetParameters().Length == 2);
-
-		bool result1 = constructorInfo.HasAttribute<DummyAttribute>(d => d.Value == 1);
-		bool result2 = constructorInfo.HasAttribute<DummyAttribute>(d => d.Value == 2);
-
-		await That(result1).IsTrue();
-		await That(result2).IsFalse();
-	}
-
-	[Fact]
 	public async Task HasAttribute_WithAttributeType_WithoutPredicate_ShouldReturnTrue()
 	{
 		ConstructorInfo constructorInfo = typeof(TestClass).GetDeclaredConstructors()
@@ -113,6 +89,30 @@ public sealed class ConstructorInfoHelpersTests
 
 		bool result1 = constructorInfo.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 1);
 		bool result2 = constructorInfo.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 2);
+
+		await That(result1).IsTrue();
+		await That(result2).IsFalse();
+	}
+
+	[Fact]
+	public async Task HasAttribute_WithoutAttribute_ShouldReturnFalse()
+	{
+		ConstructorInfo constructorInfo = typeof(TestClass).GetDeclaredConstructors()
+			.Single(c => c.GetParameters().Length == 3);
+
+		bool result = constructorInfo.HasAttribute<DummyAttribute>();
+
+		await That(result).IsFalse();
+	}
+
+	[Fact]
+	public async Task HasAttribute_WithPredicate_ShouldReturnPredicateResult()
+	{
+		ConstructorInfo constructorInfo = typeof(TestClass).GetDeclaredConstructors()
+			.Single(c => c.GetParameters().Length == 2);
+
+		bool result1 = constructorInfo.HasAttribute<DummyAttribute>(d => d.Value == 1);
+		bool result2 = constructorInfo.HasAttribute<DummyAttribute>(d => d.Value == 2);
 
 		await That(result1).IsTrue();
 		await That(result2).IsFalse();

@@ -44,6 +44,29 @@ public sealed partial class ThatAssemblies
 			}
 
 			[Fact]
+			public async Task WhenNegated_ShouldListMatchingAssemblies()
+			{
+				IEnumerable<Assembly> subjects = new[]
+				{
+					typeof(AttributeTests).Assembly,
+				};
+
+				async Task Act()
+				{
+					await That(subjects).DoesNotComplyWith(they => they.Have<AssemblyTitleAttribute>());
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subjects
+					             not all have AssemblyTitleAttribute,
+					             but it only contained matching assemblies [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Fact]
 			public async Task WhenNotAllAssembliesHaveAttribute_ShouldFail()
 			{
 				IEnumerable<Assembly> subjects = new[]
@@ -89,28 +112,8 @@ public sealed partial class ThatAssemblies
 					             """).AsWildcard();
 			}
 
-			[Fact]
-			public async Task WhenNegated_ShouldListMatchingAssemblies()
-			{
-				IEnumerable<Assembly> subjects = new[]
-				{
-					typeof(AttributeTests).Assembly,
-				};
-
-				async Task Act()
-				{
-					await That(subjects).DoesNotComplyWith(they => they.Have<AssemblyTitleAttribute>());
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subjects
-					             not all have AssemblyTitleAttribute,
-					             but it only contained matching assemblies [
-					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
-					             ]
-					             """).AsWildcard();
-			}
+			[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
+			private class TestAttribute : Attribute;
 
 #if NET8_0_OR_GREATER
 			[Fact]
@@ -194,9 +197,6 @@ public sealed partial class ThatAssemblies
 				await Task.CompletedTask;
 			}
 #endif
-
-			[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
-			private class TestAttribute : Attribute;
 		}
 
 		public sealed class OrHave

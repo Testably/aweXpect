@@ -1,4 +1,3 @@
-using System;
 using System.Reflection;
 using System.Reflection.Emit;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
@@ -12,6 +11,24 @@ public sealed partial class ThatMethod
 	{
 		public sealed class Tests
 		{
+			[Fact]
+			public async Task WhenMethodHasNoDeclaringType_ShouldFail()
+			{
+				MethodInfo subject = new DynamicMethod("Dynamic", typeof(void), Type.EmptyTypes);
+
+				async Task Act()
+				{
+					await That(subject).IsAnExtensionMethod();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage($"""
+					              Expected that subject
+					              is an extension method,
+					              but it was not an extension method {Formatter.Format(subject)}
+					              """);
+			}
+
 			[Fact]
 			public async Task WhenMethodIsAnExtensionMethod_ShouldSucceed()
 			{
@@ -63,24 +80,6 @@ public sealed partial class ThatMethod
 					             is an extension method,
 					             but it was <null>
 					             """);
-			}
-
-			[Fact]
-			public async Task WhenMethodHasNoDeclaringType_ShouldFail()
-			{
-				MethodInfo subject = new DynamicMethod("Dynamic", typeof(void), Type.EmptyTypes);
-
-				async Task Act()
-				{
-					await That(subject).IsAnExtensionMethod();
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage($"""
-					              Expected that subject
-					              is an extension method,
-					              but it was not an extension method {Formatter.Format(subject)}
-					              """);
 			}
 		}
 

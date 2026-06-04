@@ -7,11 +7,11 @@ public class TestClassWithFieldModifiers
 	// Constant field (IsLiteral)
 	public const int ConstantField = 42;
 
-	// Read-only field (IsInitOnly)
-	public readonly int ReadOnlyField;
-
 	// Static read-only field (IsInitOnly)
 	public static readonly int StaticReadOnlyField;
+
+	// Read-only field (IsInitOnly)
+	public readonly int ReadOnlyField;
 
 	// Mutable field (neither read-only nor constant)
 	public int MutableField;

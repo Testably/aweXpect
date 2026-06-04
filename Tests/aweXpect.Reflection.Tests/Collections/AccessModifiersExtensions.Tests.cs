@@ -10,7 +10,7 @@ public sealed class AccessModifiersExtensionsTests
 		public async Task Any_ShouldNotPrependAnyAccessModifierToDescription()
 		{
 			Reflection.Collections.Filtered.Types types =
-				In.AllLoadedAssemblies().Types(AccessModifiers.Any);
+				In.AllLoadedAssemblies().Types();
 
 			await That(types.GetDescription()).IsEqualTo("types in all loaded assemblies").AsPrefix();
 		}

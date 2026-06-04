@@ -119,12 +119,34 @@ public sealed partial class ThatProperties
 		public sealed class AsyncEnumerableTests
 		{
 			[Fact]
+			public async Task ShouldFailWhenSomePropertiesAreNotOfType()
+			{
+				IAsyncEnumerable<PropertyInfo?> subject = new[]
+				{
+					typeof(TestClass).GetProperty(nameof(TestClass.IntProperty))!, typeof(TestClass).GetProperty(nameof(TestClass.StringProperty))!,
+				}.ToTestAsyncEnumerable<PropertyInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).AreOfType<int>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             all are of type int,
+					             but it contained not matching properties [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Fact]
 			public async Task ShouldSucceedWhenAllPropertiesAreOfType()
 			{
 				IAsyncEnumerable<PropertyInfo?> subject = new[]
 				{
-					typeof(TestClass).GetProperty(nameof(TestClass.IntProperty))!,
-					typeof(TestClass).GetProperty(nameof(TestClass.OtherIntProperty))!,
+					typeof(TestClass).GetProperty(nameof(TestClass.IntProperty))!, typeof(TestClass).GetProperty(nameof(TestClass.OtherIntProperty))!,
 				}.ToTestAsyncEnumerable<PropertyInfo?>();
 
 				async Task Act()
@@ -149,30 +171,6 @@ public sealed partial class ThatProperties
 				}
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task ShouldFailWhenSomePropertiesAreNotOfType()
-			{
-				IAsyncEnumerable<PropertyInfo?> subject = new[]
-				{
-					typeof(TestClass).GetProperty(nameof(TestClass.IntProperty))!,
-					typeof(TestClass).GetProperty(nameof(TestClass.StringProperty))!,
-				}.ToTestAsyncEnumerable<PropertyInfo?>();
-
-				async Task Act()
-				{
-					await That(subject).AreOfType<int>();
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             all are of type int,
-					             but it contained not matching properties [
-					               *
-					             ]
-					             """).AsWildcard();
 			}
 		}
 #endif

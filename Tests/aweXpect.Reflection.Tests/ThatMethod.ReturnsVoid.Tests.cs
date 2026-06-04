@@ -62,6 +62,24 @@ public sealed partial class ThatMethod
 		public sealed class OrReturnsTests
 		{
 			[Fact]
+			public async Task WhenMethodReturnsNoneOfTheTypes_ShouldFail()
+			{
+				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
+
+				async Task Act()
+				{
+					await That(subject).ReturnsVoid().OrReturns<bool>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             returns void or bool,
+					             but it returned int
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenMethodReturnsOneOfTheTypes_ShouldSucceed()
 			{
 				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
@@ -85,24 +103,6 @@ public sealed partial class ThatMethod
 				}
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenMethodReturnsNoneOfTheTypes_ShouldFail()
-			{
-				MethodInfo subject = GetMethod(nameof(ClassWithMethods.PublicMethod))!;
-
-				async Task Act()
-				{
-					await That(subject).ReturnsVoid().OrReturns<bool>();
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             returns void or bool,
-					             but it returned int
-					             """);
 			}
 		}
 

@@ -1,5 +1,4 @@
-﻿using System;
-using aweXpect.Reflection.Collections;
+﻿using aweXpect.Reflection.Collections;
 
 namespace aweXpect.Reflection.Tests.Filters;
 
@@ -7,6 +6,8 @@ public sealed partial class EventFilters
 {
 	public sealed class OfType
 	{
+		public delegate void CustomHandler();
+
 		public sealed class GenericTests
 		{
 			[Fact]
@@ -38,6 +39,14 @@ public sealed partial class EventFilters
 					.AsPrefix();
 			}
 		}
+
+#pragma warning disable CS0067 // The event is never used
+		private class TestClass
+		{
+			public event EventHandler EventHandlerEvent = null!;
+			public event CustomHandler CustomHandlerEvent = null!;
+		}
+#pragma warning restore CS0067
 
 #pragma warning disable CA2263 // tests intentionally exercise the non-generic Type overload
 		public sealed class TypeTests
@@ -112,15 +121,5 @@ public sealed partial class EventFilters
 			}
 		}
 #pragma warning restore CA2263
-
-		public delegate void CustomHandler();
-
-#pragma warning disable CS0067 // The event is never used
-		private class TestClass
-		{
-			public event EventHandler EventHandlerEvent = null!;
-			public event CustomHandler CustomHandlerEvent = null!;
-		}
-#pragma warning restore CS0067
 	}
 }

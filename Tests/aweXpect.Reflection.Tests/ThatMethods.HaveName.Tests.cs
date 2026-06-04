@@ -28,23 +28,6 @@ public sealed partial class ThatMethods
 			}
 
 			[Fact]
-			public async Task WhenSelectorMatchesEachName_ShouldSucceed()
-			{
-				IEnumerable<MethodInfo> subject =
-				[
-					typeof(ClassWithMethods).GetMethod(nameof(ClassWithMethods.PublicMethod1))!,
-					typeof(ClassWithMethods).GetMethod(nameof(ClassWithMethods.PublicMethod2))!,
-				];
-
-				async Task Act()
-				{
-					await That(subject).HaveName(method => method.Name);
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenMultipleMethodsDoNotMatchSelector_ShouldListAllSeparatedByComma()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -90,6 +73,23 @@ public sealed partial class ThatMethods
 					               int ThatMethods.ClassWithMethods.PublicMethod1()
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenSelectorMatchesEachName_ShouldSucceed()
+			{
+				IEnumerable<MethodInfo> subject =
+				[
+					typeof(ClassWithMethods).GetMethod(nameof(ClassWithMethods.PublicMethod1))!,
+					typeof(ClassWithMethods).GetMethod(nameof(ClassWithMethods.PublicMethod2))!,
+				];
+
+				async Task Act()
+				{
+					await That(subject).HaveName(method => method.Name);
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 

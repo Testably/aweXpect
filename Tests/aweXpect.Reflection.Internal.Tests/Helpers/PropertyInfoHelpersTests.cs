@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
@@ -95,6 +95,30 @@ public sealed class PropertyInfoHelpersTests
 	}
 
 	[Fact]
+	public async Task HasAttribute_WithAttributeType_WithoutPredicate_ShouldReturnTrue()
+	{
+		PropertyInfo propertyInfo =
+			typeof(TestClass).GetProperty(nameof(TestClass.Property1WithAttribute))!;
+
+		bool result = propertyInfo.HasAttribute(typeof(DummyAttribute));
+
+		await That(result).IsTrue();
+	}
+
+	[Fact]
+	public async Task HasAttribute_WithAttributeType_WithPredicate_ShouldReturnPredicateResult()
+	{
+		PropertyInfo propertyInfo =
+			typeof(TestClass).GetProperty(nameof(TestClass.Property1WithAttribute))!;
+
+		bool result1 = propertyInfo.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 1);
+		bool result2 = propertyInfo.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 2);
+
+		await That(result1).IsTrue();
+		await That(result2).IsFalse();
+	}
+
+	[Fact]
 	public async Task HasAttribute_WithInheritedAttribute_ShouldReturnTrue()
 	{
 		PropertyInfo propertyInfo =
@@ -130,27 +154,31 @@ public sealed class PropertyInfoHelpersTests
 	}
 
 	[Fact]
-	public async Task HasAttribute_WithAttributeType_WithoutPredicate_ShouldReturnTrue()
+	public async Task IsExtensionProperty_WhenNull_ShouldReturnFalse()
 	{
-		PropertyInfo propertyInfo =
-			typeof(TestClass).GetProperty(nameof(TestClass.Property1WithAttribute))!;
+		PropertyInfo? propertyInfo = null;
 
-		bool result = propertyInfo.HasAttribute(typeof(DummyAttribute));
-
-		await That(result).IsTrue();
+		await That(propertyInfo.IsExtensionProperty()).IsFalse();
 	}
 
 	[Fact]
-	public async Task HasAttribute_WithAttributeType_WithPredicate_ShouldReturnPredicateResult()
+	public async Task IsExtensionProperty_WhenRegularProperty_ShouldReturnFalse()
 	{
-		PropertyInfo propertyInfo =
-			typeof(TestClass).GetProperty(nameof(TestClass.Property1WithAttribute))!;
+		PropertyInfo propertyInfo = typeof(AccessModifierTestClass)
+			.GetProperty(nameof(AccessModifierTestClass.PublicProperty))!;
 
-		bool result1 = propertyInfo.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 1);
-		bool result2 = propertyInfo.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 2);
+		await That(propertyInfo.IsExtensionProperty()).IsFalse();
+	}
 
-		await That(result1).IsTrue();
-		await That(result2).IsFalse();
+	[Fact]
+	public async Task IsReallyStatic_WhenInstanceProperty_ShouldReturnFalse()
+	{
+		PropertyInfo propertyInfo = typeof(StaticAccessorTestClass)
+			.GetProperty(nameof(StaticAccessorTestClass.InstanceProperty))!;
+
+		bool result = propertyInfo.IsReallyStatic();
+
+		await That(result).IsFalse();
 	}
 
 	[Fact]
@@ -173,34 +201,6 @@ public sealed class PropertyInfoHelpersTests
 		bool result = propertyInfo.IsReallyStatic();
 
 		await That(result).IsTrue();
-	}
-
-	[Fact]
-	public async Task IsReallyStatic_WhenInstanceProperty_ShouldReturnFalse()
-	{
-		PropertyInfo propertyInfo = typeof(StaticAccessorTestClass)
-			.GetProperty(nameof(StaticAccessorTestClass.InstanceProperty))!;
-
-		bool result = propertyInfo.IsReallyStatic();
-
-		await That(result).IsFalse();
-	}
-
-	[Fact]
-	public async Task IsExtensionProperty_WhenNull_ShouldReturnFalse()
-	{
-		PropertyInfo? propertyInfo = null;
-
-		await That(propertyInfo.IsExtensionProperty()).IsFalse();
-	}
-
-	[Fact]
-	public async Task IsExtensionProperty_WhenRegularProperty_ShouldReturnFalse()
-	{
-		PropertyInfo propertyInfo = typeof(AccessModifierTestClass)
-			.GetProperty(nameof(AccessModifierTestClass.PublicProperty))!;
-
-		await That(propertyInfo.IsExtensionProperty()).IsFalse();
 	}
 
 	[AttributeUsage(AttributeTargets.Property)]

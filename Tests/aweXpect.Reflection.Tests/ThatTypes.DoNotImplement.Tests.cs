@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using aweXpect.Reflection.Collections;
 using Xunit.Sdk;
 
@@ -11,35 +10,6 @@ public sealed partial class ThatTypes
 	{
 		public sealed class GenericTests
 		{
-			[Fact]
-			public async Task WhenNoTypeImplementsInterface_ShouldSucceed()
-			{
-				Filtered.Types subject = In.Types(typeof(UnrelatedClass), typeof(BaseClass));
-
-				async Task Act()
-				{
-					await That(subject).DoNotImplement<ITestInterface>();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenEnumerableTypesDoNotImplementInterface_ShouldSucceed()
-			{
-				IEnumerable<Type?> subject = new Type?[]
-				{
-					typeof(UnrelatedClass), typeof(BaseClass),
-				};
-
-				async Task Act()
-				{
-					await That(subject).DoNotImplement<ITestInterface>();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
 			[Fact]
 			public async Task WhenAllTypesImplementInterface_ShouldFail()
 			{
@@ -62,6 +32,35 @@ public sealed partial class ThatTypes
 			}
 
 			[Fact]
+			public async Task WhenEnumerableTypesDoNotImplementInterface_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(UnrelatedClass), typeof(BaseClass),
+				};
+
+				async Task Act()
+				{
+					await That(subject).DoNotImplement<ITestInterface>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenNoTypeImplementsInterface_ShouldSucceed()
+			{
+				Filtered.Types subject = In.Types(typeof(UnrelatedClass), typeof(BaseClass));
+
+				async Task Act()
+				{
+					await That(subject).DoNotImplement<ITestInterface>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenTypeImplementsIndirectly_WithForceDirect_ShouldSucceed()
 			{
 				Filtered.Types subject = In.Types(typeof(DerivedFromClassWithInterface1));
@@ -77,23 +76,6 @@ public sealed partial class ThatTypes
 
 		public sealed class TypeTests
 		{
-			[Fact]
-			public async Task WhenNoTypeImplementsInterface_ShouldSucceed()
-			{
-				IEnumerable<Type?> subject = new[]
-				{
-					typeof(UnrelatedClass), typeof(BaseClass),
-				};
-				Type interfaceType = typeof(ITestInterface);
-
-				async Task Act()
-				{
-					await That(subject).DoNotImplement(interfaceType);
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
 			[Fact]
 			public async Task WhenInterfaceTypeIsAClass_ShouldThrowArgumentException()
 			{
@@ -111,6 +93,23 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<ArgumentException>()
 					.WithMessage(
 						"The type to check implementation of must be an interface, but it was ThatTypes.BaseClass. Use 'InheritsFrom' to check for base-class inheritance.");
+			}
+
+			[Fact]
+			public async Task WhenNoTypeImplementsInterface_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(UnrelatedClass), typeof(BaseClass),
+				};
+				Type interfaceType = typeof(ITestInterface);
+
+				async Task Act()
+				{
+					await That(subject).DoNotImplement(interfaceType);
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using Xunit.Sdk;
 #if NET8_0_OR_GREATER
@@ -12,6 +11,8 @@ public sealed partial class ThatEvents
 {
 	public sealed class AreOfExactType
 	{
+		public delegate void CustomHandler();
+
 		public sealed class GenericTests
 		{
 			[Fact]
@@ -102,23 +103,6 @@ public sealed partial class ThatEvents
 		public sealed class AsyncEnumerableTests
 		{
 			[Fact]
-			public async Task ShouldSucceedWhenAllEventsAreOfExactType()
-			{
-				IAsyncEnumerable<EventInfo?> subject = new[]
-				{
-					typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!,
-					typeof(TestClass).GetEvent(nameof(TestClass.OtherEventHandlerEvent))!,
-				}.ToTestAsyncEnumerable<EventInfo?>();
-
-				async Task Act()
-				{
-					await That(subject).AreOfExactType<EventHandler>();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task ShouldFailWhenEventsInheritFromType()
 			{
 				IAsyncEnumerable<EventInfo?> subject = new[]
@@ -140,10 +124,24 @@ public sealed partial class ThatEvents
 					             ]
 					             """).AsWildcard();
 			}
+
+			[Fact]
+			public async Task ShouldSucceedWhenAllEventsAreOfExactType()
+			{
+				IAsyncEnumerable<EventInfo?> subject = new[]
+				{
+					typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!, typeof(TestClass).GetEvent(nameof(TestClass.OtherEventHandlerEvent))!,
+				}.ToTestAsyncEnumerable<EventInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).AreOfExactType<EventHandler>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
 		}
 #endif
-
-		public delegate void CustomHandler();
 
 #pragma warning disable CS0067 // The event is never used
 		private class TestClass

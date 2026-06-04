@@ -25,11 +25,10 @@ public sealed partial class ThatMethod
 			}
 
 			[Fact]
-			public async Task WhenMethodIsNotAnOperator_ShouldFail()
+			public async Task WhenMethodIsAPropertyAccessor_ShouldFail()
 			{
 				MethodInfo subject =
-					typeof(ClassWithOperators).GetMethod(
-						nameof(ClassWithOperators.RegularMethod))!;
+					typeof(ClassWithOperators).GetMethod("get_Value")!;
 
 				async Task Act()
 				{
@@ -45,10 +44,11 @@ public sealed partial class ThatMethod
 			}
 
 			[Fact]
-			public async Task WhenMethodIsAPropertyAccessor_ShouldFail()
+			public async Task WhenMethodIsNotAnOperator_ShouldFail()
 			{
 				MethodInfo subject =
-					typeof(ClassWithOperators).GetMethod("get_Value")!;
+					typeof(ClassWithOperators).GetMethod(
+						nameof(ClassWithOperators.RegularMethod))!;
 
 				async Task Act()
 				{

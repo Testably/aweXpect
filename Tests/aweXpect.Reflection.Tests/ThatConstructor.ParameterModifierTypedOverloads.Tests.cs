@@ -8,73 +8,11 @@ public sealed partial class ThatConstructor
 {
 	public sealed class ParameterModifierTypedOverloads
 	{
+		private static ConstructorInfo Constructor<T>()
+			=> typeof(T).GetConstructors().Single();
+
 		public sealed class Tests
 		{
-			[Fact]
-			public async Task HasRefParameterOfType_WhenMatching_ShouldSucceed()
-			{
-				ConstructorInfo constructorInfo = Constructor<RefIntCtor>();
-
-				async Task Act()
-				{
-					await That(constructorInfo).HasRefParameter<int>();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task HasRefParameterOfType_WhenWrongType_ShouldFail()
-			{
-				ConstructorInfo constructorInfo = Constructor<RefIntCtor>();
-
-				async Task Act()
-				{
-					await That(constructorInfo).HasRefParameter<string>();
-				}
-
-				await That(Act).Throws<XunitException>();
-			}
-
-			[Fact]
-			public async Task HasRefParameterOfType_WhenParameterIsNotRef_ShouldFail()
-			{
-				ConstructorInfo constructorInfo = Constructor<PlainIntCtor>();
-
-				async Task Act()
-				{
-					await That(constructorInfo).HasRefParameter<int>();
-				}
-
-				await That(Act).Throws<XunitException>();
-			}
-
-			[Fact]
-			public async Task HasRefParameterOfTypeAndName_WhenMatching_ShouldSucceed()
-			{
-				ConstructorInfo constructorInfo = Constructor<RefIntCtor>();
-
-				async Task Act()
-				{
-					await That(constructorInfo).HasRefParameter<int>("value");
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task HasRefParameterByName_WhenMatching_ShouldSucceed()
-			{
-				ConstructorInfo constructorInfo = Constructor<RefIntCtor>();
-
-				async Task Act()
-				{
-					await That(constructorInfo).HasRefParameter("value");
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
 			[Fact]
 			public async Task HasOptionalParameterOfType_WhenMatching_ShouldSucceed()
 			{
@@ -83,71 +21,6 @@ public sealed partial class ThatConstructor
 				async Task Act()
 				{
 					await That(constructorInfo).HasOptionalParameter<int>();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task HasParamsParameterOfType_WhenMatching_ShouldSucceed()
-			{
-				ConstructorInfo constructorInfo = Constructor<ParamsIntCtor>();
-
-				async Task Act()
-				{
-					await That(constructorInfo).HasParamsParameter<int[]>();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task HasRefParameterWithType_WhenMatching_ShouldSucceed()
-			{
-				ConstructorInfo constructorInfo = Constructor<RefIntCtor>();
-
-				async Task Act()
-				{
-					await That(constructorInfo).HasRefParameter(typeof(int));
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task HasRefParameterWithType_WhenWrongType_ShouldFail()
-			{
-				ConstructorInfo constructorInfo = Constructor<RefIntCtor>();
-
-				async Task Act()
-				{
-					await That(constructorInfo).HasRefParameter(typeof(string));
-				}
-
-				await That(Act).Throws<XunitException>();
-			}
-
-			[Fact]
-			public async Task HasRefParameterWithType_WhenParameterIsNotRef_ShouldFail()
-			{
-				ConstructorInfo constructorInfo = Constructor<PlainIntCtor>();
-
-				async Task Act()
-				{
-					await That(constructorInfo).HasRefParameter(typeof(int));
-				}
-
-				await That(Act).Throws<XunitException>();
-			}
-
-			[Fact]
-			public async Task HasRefParameterWithTypeAndName_WhenMatching_ShouldSucceed()
-			{
-				ConstructorInfo constructorInfo = Constructor<RefIntCtor>();
-
-				async Task Act()
-				{
-					await That(constructorInfo).HasRefParameter(typeof(int), "value");
 				}
 
 				await That(Act).DoesNotThrow();
@@ -167,6 +40,19 @@ public sealed partial class ThatConstructor
 			}
 
 			[Fact]
+			public async Task HasParamsParameterOfType_WhenMatching_ShouldSucceed()
+			{
+				ConstructorInfo constructorInfo = Constructor<ParamsIntCtor>();
+
+				async Task Act()
+				{
+					await That(constructorInfo).HasParamsParameter<int[]>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task HasParamsParameterWithType_WhenMatching_ShouldSucceed()
 			{
 				ConstructorInfo constructorInfo = Constructor<ParamsIntCtor>();
@@ -178,10 +64,124 @@ public sealed partial class ThatConstructor
 
 				await That(Act).DoesNotThrow();
 			}
-		}
 
-		private static ConstructorInfo Constructor<T>()
-			=> typeof(T).GetConstructors().Single();
+			[Fact]
+			public async Task HasRefParameterByName_WhenMatching_ShouldSucceed()
+			{
+				ConstructorInfo constructorInfo = Constructor<RefIntCtor>();
+
+				async Task Act()
+				{
+					await That(constructorInfo).HasRefParameter("value");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task HasRefParameterOfType_WhenMatching_ShouldSucceed()
+			{
+				ConstructorInfo constructorInfo = Constructor<RefIntCtor>();
+
+				async Task Act()
+				{
+					await That(constructorInfo).HasRefParameter<int>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task HasRefParameterOfType_WhenParameterIsNotRef_ShouldFail()
+			{
+				ConstructorInfo constructorInfo = Constructor<PlainIntCtor>();
+
+				async Task Act()
+				{
+					await That(constructorInfo).HasRefParameter<int>();
+				}
+
+				await That(Act).Throws<XunitException>();
+			}
+
+			[Fact]
+			public async Task HasRefParameterOfType_WhenWrongType_ShouldFail()
+			{
+				ConstructorInfo constructorInfo = Constructor<RefIntCtor>();
+
+				async Task Act()
+				{
+					await That(constructorInfo).HasRefParameter<string>();
+				}
+
+				await That(Act).Throws<XunitException>();
+			}
+
+			[Fact]
+			public async Task HasRefParameterOfTypeAndName_WhenMatching_ShouldSucceed()
+			{
+				ConstructorInfo constructorInfo = Constructor<RefIntCtor>();
+
+				async Task Act()
+				{
+					await That(constructorInfo).HasRefParameter<int>("value");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task HasRefParameterWithType_WhenMatching_ShouldSucceed()
+			{
+				ConstructorInfo constructorInfo = Constructor<RefIntCtor>();
+
+				async Task Act()
+				{
+					await That(constructorInfo).HasRefParameter(typeof(int));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task HasRefParameterWithType_WhenParameterIsNotRef_ShouldFail()
+			{
+				ConstructorInfo constructorInfo = Constructor<PlainIntCtor>();
+
+				async Task Act()
+				{
+					await That(constructorInfo).HasRefParameter(typeof(int));
+				}
+
+				await That(Act).Throws<XunitException>();
+			}
+
+			[Fact]
+			public async Task HasRefParameterWithType_WhenWrongType_ShouldFail()
+			{
+				ConstructorInfo constructorInfo = Constructor<RefIntCtor>();
+
+				async Task Act()
+				{
+					await That(constructorInfo).HasRefParameter(typeof(string));
+				}
+
+				await That(Act).Throws<XunitException>();
+			}
+
+			[Fact]
+			public async Task HasRefParameterWithTypeAndName_WhenMatching_ShouldSucceed()
+			{
+				ConstructorInfo constructorInfo = Constructor<RefIntCtor>();
+
+				async Task Act()
+				{
+					await That(constructorInfo).HasRefParameter(typeof(int), "value");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+		}
 
 		// ReSharper disable UnusedParameter.Local
 		// ReSharper disable UnusedMember.Local

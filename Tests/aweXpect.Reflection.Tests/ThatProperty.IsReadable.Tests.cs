@@ -10,6 +10,24 @@ public sealed partial class ThatProperty
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenPropertyIsNull_ShouldFail()
+			{
+				PropertyInfo? subject = null;
+
+				async Task Act()
+				{
+					await That(subject).IsReadable();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             is readable,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenPropertyIsReadable_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(TestClassWithReadWriteProperties)
@@ -40,24 +58,6 @@ public sealed partial class ThatProperty
 					              is readable,
 					              but it was not readable {Formatter.Format(subject)}
 					              """);
-			}
-
-			[Fact]
-			public async Task WhenPropertyIsNull_ShouldFail()
-			{
-				PropertyInfo? subject = null;
-
-				async Task Act()
-				{
-					await That(subject).IsReadable();
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             is readable,
-					             but it was <null>
-					             """);
 			}
 		}
 

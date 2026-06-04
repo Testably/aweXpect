@@ -10,7 +10,17 @@ public sealed partial class TypeFilters
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WithDefaultScope_ShouldOnlyIncludeDeclaredMembers()
+			public async Task WithDeclaredOnly_ShouldNotIncludeInheritedPrivateMembers()
+			{
+				Filtered.Events events =
+					In.Type<DerivedClassWithMembers>().Events()
+						.WhichArePrivate();
+
+				await That(events).None().Satisfy(e => e.Name == "BasePrivateEvent");
+			}
+
+			[Fact]
+			public async Task WithDeclaredOnly_ShouldOnlyIncludeDeclaredMembers()
 			{
 				Filtered.Events events =
 					In.Type<DerivedClassWithMembers>().Events();
@@ -20,10 +30,10 @@ public sealed partial class TypeFilters
 			}
 
 			[Fact]
-			public async Task WithDeclaredOnly_ShouldOnlyIncludeDeclaredMembers()
+			public async Task WithDefaultScope_ShouldOnlyIncludeDeclaredMembers()
 			{
 				Filtered.Events events =
-					In.Type<DerivedClassWithMembers>().Events(MemberScope.DeclaredOnly);
+					In.Type<DerivedClassWithMembers>().Events();
 
 				await That(events).Contains(e => e.Name == nameof(DerivedClassWithMembers.DerivedEvent));
 				await That(events).None().Satisfy(e => e.Name == nameof(BaseClassWithMembers.BaseEvent));
@@ -47,16 +57,6 @@ public sealed partial class TypeFilters
 						.WhichArePrivate();
 
 				await That(events).Contains(e => e.Name == "BasePrivateEvent");
-			}
-
-			[Fact]
-			public async Task WithDeclaredOnly_ShouldNotIncludeInheritedPrivateMembers()
-			{
-				Filtered.Events events =
-					In.Type<DerivedClassWithMembers>().Events(MemberScope.DeclaredOnly)
-						.WhichArePrivate();
-
-				await That(events).None().Satisfy(e => e.Name == "BasePrivateEvent");
 			}
 		}
 	}

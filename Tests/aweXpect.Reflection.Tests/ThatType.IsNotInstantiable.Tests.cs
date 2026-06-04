@@ -108,10 +108,18 @@ public sealed partial class ThatType
 			public static TheoryData<Type, string> NonInstantiableTypesWithReason()
 				=> new()
 				{
-					{ typeof(PublicAbstractClass), "abstract" },
-					{ typeof(PublicStaticClass), "static" },
-					{ typeof(IPublicInterface), "an interface" },
-					{ typeof(PublicGenericClass<>), "a generic type definition" },
+					{
+						typeof(PublicAbstractClass), "abstract"
+					},
+					{
+						typeof(PublicStaticClass), "static"
+					},
+					{
+						typeof(IPublicInterface), "an interface"
+					},
+					{
+						typeof(PublicGenericClass<>), "a generic type definition"
+					},
 				};
 		}
 	}

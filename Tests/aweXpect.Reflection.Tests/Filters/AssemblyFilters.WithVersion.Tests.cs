@@ -34,6 +34,62 @@ public sealed partial class AssemblyFilters
 		public sealed class ComponentTests
 		{
 			[Fact]
+			public async Task EqualTo_ShouldMatchOnlyTheExactValue()
+			{
+				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+				int major = assembly.GetName().Version!.Major;
+
+				Filtered.Assemblies included = In.Assemblies(assembly).WithVersion().WithMajor.EqualTo(major);
+				Filtered.Assemblies excluded = In.Assemblies(assembly).WithVersion().WithMajor.EqualTo(major + 1);
+
+				await That(included).HasSingle().Which.IsEqualTo(assembly);
+				await That(excluded).IsEmpty();
+			}
+
+			[Fact]
+			public async Task GreaterThan_ShouldNotMatchTheBoundaryValue()
+			{
+				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+				int major = assembly.GetName().Version!.Major;
+
+				Filtered.Assemblies excluded = In.Assemblies(assembly).WithVersion().WithMajor.GreaterThan(major);
+				Filtered.Assemblies included = In.Assemblies(assembly).WithVersion().WithMajor.GreaterThan(major - 1);
+
+				await That(excluded).IsEmpty();
+				await That(included).HasSingle().Which.IsEqualTo(assembly);
+			}
+
+			[Fact]
+			public async Task GreaterThanOrEqualTo_ShouldMatchTheBoundaryValue()
+			{
+				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+				int major = assembly.GetName().Version!.Major;
+
+				Filtered.Assemblies included =
+					In.Assemblies(assembly).WithVersion().WithMajor.GreaterThanOrEqualTo(major);
+				Filtered.Assemblies excluded =
+					In.Assemblies(assembly).WithVersion().WithMajor.GreaterThanOrEqualTo(major + 1);
+
+				await That(included).HasSingle().Which.IsEqualTo(assembly);
+				await That(excluded).IsEmpty();
+			}
+
+			[Fact]
+			public async Task LessThanOrEqualTo_ShouldMatchTheBoundaryValue()
+			{
+				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+				int major = assembly.GetName().Version!.Major;
+
+				Filtered.Assemblies included =
+					In.Assemblies(assembly).WithVersion().WithMajor.LessThanOrEqualTo(major);
+				Filtered.Assemblies excluded =
+					In.Assemblies(assembly).WithVersion().WithMajor.LessThanOrEqualTo(major - 1);
+
+				await That(included).HasSingle().Which.IsEqualTo(assembly);
+				await That(excluded).IsEmpty();
+			}
+
+			[Fact]
 			public async Task MultipleComponents_ShouldCombineWithAnd()
 			{
 				Filtered.Assemblies assemblies = In.AllLoadedAssemblies()
@@ -43,6 +99,19 @@ public sealed partial class AssemblyFilters
 				await That(assemblies.GetDescription())
 					.IsEqualTo(
 						"in all loaded assemblies with major version greater than or equal to 0 with minor version less than 100000");
+			}
+
+			[Fact]
+			public async Task NotEqualTo_ShouldMatchEverythingExceptTheExactValue()
+			{
+				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+				int major = assembly.GetName().Version!.Major;
+
+				Filtered.Assemblies excluded = In.Assemblies(assembly).WithVersion().WithMajor.NotEqualTo(major);
+				Filtered.Assemblies included = In.Assemblies(assembly).WithVersion().WithMajor.NotEqualTo(major + 1);
+
+				await That(excluded).IsEmpty();
+				await That(included).HasSingle().Which.IsEqualTo(assembly);
 			}
 
 			[Theory]
@@ -106,75 +175,6 @@ public sealed partial class AssemblyFilters
 					.WithVersion().WithMajor.GreaterThan(100000);
 
 				await That(assemblies).IsEmpty();
-			}
-
-			[Fact]
-			public async Task GreaterThan_ShouldNotMatchTheBoundaryValue()
-			{
-				Assembly assembly = typeof(PublicAbstractClass).Assembly;
-				int major = assembly.GetName().Version!.Major;
-
-				Filtered.Assemblies excluded = In.Assemblies(assembly).WithVersion().WithMajor.GreaterThan(major);
-				Filtered.Assemblies included = In.Assemblies(assembly).WithVersion().WithMajor.GreaterThan(major - 1);
-
-				await That(excluded).IsEmpty();
-				await That(included).HasSingle().Which.IsEqualTo(assembly);
-			}
-
-			[Fact]
-			public async Task GreaterThanOrEqualTo_ShouldMatchTheBoundaryValue()
-			{
-				Assembly assembly = typeof(PublicAbstractClass).Assembly;
-				int major = assembly.GetName().Version!.Major;
-
-				Filtered.Assemblies included =
-					In.Assemblies(assembly).WithVersion().WithMajor.GreaterThanOrEqualTo(major);
-				Filtered.Assemblies excluded =
-					In.Assemblies(assembly).WithVersion().WithMajor.GreaterThanOrEqualTo(major + 1);
-
-				await That(included).HasSingle().Which.IsEqualTo(assembly);
-				await That(excluded).IsEmpty();
-			}
-
-			[Fact]
-			public async Task LessThanOrEqualTo_ShouldMatchTheBoundaryValue()
-			{
-				Assembly assembly = typeof(PublicAbstractClass).Assembly;
-				int major = assembly.GetName().Version!.Major;
-
-				Filtered.Assemblies included =
-					In.Assemblies(assembly).WithVersion().WithMajor.LessThanOrEqualTo(major);
-				Filtered.Assemblies excluded =
-					In.Assemblies(assembly).WithVersion().WithMajor.LessThanOrEqualTo(major - 1);
-
-				await That(included).HasSingle().Which.IsEqualTo(assembly);
-				await That(excluded).IsEmpty();
-			}
-
-			[Fact]
-			public async Task EqualTo_ShouldMatchOnlyTheExactValue()
-			{
-				Assembly assembly = typeof(PublicAbstractClass).Assembly;
-				int major = assembly.GetName().Version!.Major;
-
-				Filtered.Assemblies included = In.Assemblies(assembly).WithVersion().WithMajor.EqualTo(major);
-				Filtered.Assemblies excluded = In.Assemblies(assembly).WithVersion().WithMajor.EqualTo(major + 1);
-
-				await That(included).HasSingle().Which.IsEqualTo(assembly);
-				await That(excluded).IsEmpty();
-			}
-
-			[Fact]
-			public async Task NotEqualTo_ShouldMatchEverythingExceptTheExactValue()
-			{
-				Assembly assembly = typeof(PublicAbstractClass).Assembly;
-				int major = assembly.GetName().Version!.Major;
-
-				Filtered.Assemblies excluded = In.Assemblies(assembly).WithVersion().WithMajor.NotEqualTo(major);
-				Filtered.Assemblies included = In.Assemblies(assembly).WithVersion().WithMajor.NotEqualTo(major + 1);
-
-				await That(excluded).IsEmpty();
-				await That(included).HasSingle().Which.IsEqualTo(assembly);
 			}
 
 			[Fact]

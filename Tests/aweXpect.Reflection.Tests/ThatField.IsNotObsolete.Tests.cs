@@ -26,6 +26,24 @@ public sealed partial class ThatField
 			}
 
 			[Fact]
+			public async Task WhenFieldIsNull_ShouldFail()
+			{
+				FieldInfo? subject = null;
+
+				async Task Act()
+				{
+					await That(subject).IsNotObsolete();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             is not obsolete,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenFieldIsObsolete_ShouldFail()
 			{
 				FieldInfo subject =
@@ -42,24 +60,6 @@ public sealed partial class ThatField
 					              is not obsolete,
 					              but it was obsolete {Formatter.Format(subject)}
 					              """);
-			}
-
-			[Fact]
-			public async Task WhenFieldIsNull_ShouldFail()
-			{
-				FieldInfo? subject = null;
-
-				async Task Act()
-				{
-					await That(subject).IsNotObsolete();
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             is not obsolete,
-					             but it was <null>
-					             """);
 			}
 		}
 

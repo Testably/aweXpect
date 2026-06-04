@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using aweXpect.Customization;
@@ -57,6 +56,32 @@ public sealed class TypeHelpersTests
 	}
 
 	[Fact]
+	public async Task GetDeclaredMethods_WithOnlyAccessorsIncluded_ShouldContainAccessorButNotOperator()
+	{
+		using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers()
+			       .Set(SpecialNameMembers.Accessors))
+		{
+			MethodInfo[] methods = typeof(OperatorAndAccessorTestClass).GetDeclaredMethods();
+
+			await That(methods).Contains(m => m.Name == "get_Value");
+			await That(methods).None().Satisfy(m => m.Name == "op_Addition");
+		}
+	}
+
+	[Fact]
+	public async Task GetDeclaredMethods_WithOnlyOperatorsIncluded_ShouldContainOperatorButNotAccessor()
+	{
+		using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers()
+			       .Set(SpecialNameMembers.Operators))
+		{
+			MethodInfo[] methods = typeof(OperatorAndAccessorTestClass).GetDeclaredMethods();
+
+			await That(methods).Contains(m => m.Name == "op_Addition");
+			await That(methods).None().Satisfy(m => m.Name == "get_Value");
+		}
+	}
+
+	[Fact]
 	public async Task HasAttribute_WithAttribute_ShouldReturnTrue()
 	{
 		Type type = typeof(TestClassWithAttribute);
@@ -64,6 +89,28 @@ public sealed class TypeHelpersTests
 		bool result = type.HasAttribute<DummyAttribute>();
 
 		await That(result).IsTrue();
+	}
+
+	[Fact]
+	public async Task HasAttribute_WithAttributeType_WithoutPredicate_ShouldReturnTrue()
+	{
+		Type type = typeof(TestClassWithAttribute);
+
+		bool result = type.HasAttribute(typeof(DummyAttribute));
+
+		await That(result).IsTrue();
+	}
+
+	[Fact]
+	public async Task HasAttribute_WithAttributeType_WithPredicate_ShouldReturnPredicateResult()
+	{
+		Type type = typeof(TestClassWithAttribute);
+
+		bool result1 = type.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 1);
+		bool result2 = type.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 2);
+
+		await That(result1).IsTrue();
+		await That(result2).IsFalse();
 	}
 
 	[Fact]
@@ -99,91 +146,11 @@ public sealed class TypeHelpersTests
 	}
 
 	[Fact]
-	public async Task HasAttribute_WithAttributeType_WithoutPredicate_ShouldReturnTrue()
-	{
-		Type type = typeof(TestClassWithAttribute);
-
-		bool result = type.HasAttribute(typeof(DummyAttribute));
-
-		await That(result).IsTrue();
-	}
-
-	[Fact]
-	public async Task HasAttribute_WithAttributeType_WithPredicate_ShouldReturnPredicateResult()
-	{
-		Type type = typeof(TestClassWithAttribute);
-
-		bool result1 = type.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 1);
-		bool result2 = type.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 2);
-
-		await That(result1).IsTrue();
-		await That(result2).IsFalse();
-	}
-
-	[Fact]
-	public async Task IsCompilerGenerated_ForNormalType_ShouldReturnFalse()
-	{
-		bool result = typeof(TestClassWithoutAttribute).IsCompilerGenerated();
-
-		await That(result).IsFalse();
-	}
-
-	[Fact]
-	public async Task IsCompilerGenerated_ForNormalMethod_ShouldReturnFalse()
-	{
-		MethodInfo method =
-			typeof(TestClassWithAttribute).GetMethod(nameof(TestClassWithAttribute.Method1WithoutAttribute))!;
-
-		bool result = method.IsCompilerGenerated();
-
-		await That(result).IsFalse();
-	}
-
-	[Fact]
-	public async Task IsCompilerGenerated_ForMethodMarkedCompilerGenerated_ShouldReturnTrue()
-	{
-		MethodInfo method =
-			typeof(TestClassWithoutAttribute).GetMethod(nameof(TestClassWithoutAttribute.MarkedMethod))!;
-
-		bool result = method.IsCompilerGenerated();
-
-		await That(result).IsTrue();
-	}
-
-	[Fact]
-	public async Task IsCompilerGenerated_ForMethodInCompilerGeneratedType_ShouldReturnTrue()
-	{
-		MethodInfo method =
-			typeof(CompilerGeneratedContainer).GetMethod(nameof(CompilerGeneratedContainer.UnmarkedMethod))!;
-
-		bool result = method.IsCompilerGenerated();
-
-		await That(result).IsTrue();
-	}
-
-	[Fact]
-	public async Task Implements_DirectInterface_ForceDirect_ShouldReturnTrue()
-	{
-		Type sut = typeof(BaseImplementingFoo);
-
-		await That(sut.Implements(typeof(IFooInterface), forceDirect: true)).IsTrue();
-	}
-
-	[Fact]
-	public async Task Implements_InheritedInterface_ForceDirect_ShouldReturnFalse()
-	{
-		Type sut = typeof(DerivedImplementingFoo);
-
-		await That(sut.Implements(typeof(IFooInterface), forceDirect: false)).IsTrue();
-		await That(sut.Implements(typeof(IFooInterface), forceDirect: true)).IsFalse();
-	}
-
-	[Fact]
-	public async Task Implements_OpenGenericInterface_ShouldReturnTrue()
+	public async Task Implements_ClosedGenericInterface_WithDifferentTypeArgument_ShouldReturnFalse()
 	{
 		Type sut = typeof(ImplementsClosedGeneric);
 
-		await That(sut.Implements(typeof(IGenericInterface<>))).IsTrue();
+		await That(sut.Implements(typeof(IGenericInterface<string>))).IsFalse();
 	}
 
 	[Fact]
@@ -195,37 +162,20 @@ public sealed class TypeHelpersTests
 	}
 
 	[Fact]
-	public async Task Implements_ClosedGenericInterface_WithDifferentTypeArgument_ShouldReturnFalse()
+	public async Task Implements_DirectInterface_ForceDirect_ShouldReturnTrue()
 	{
-		Type sut = typeof(ImplementsClosedGeneric);
+		Type sut = typeof(BaseImplementingFoo);
 
-		await That(sut.Implements(typeof(IGenericInterface<string>))).IsFalse();
+		await That(sut.Implements(typeof(IFooInterface), true)).IsTrue();
 	}
 
 	[Fact]
-	public async Task GetDeclaredMethods_WithOnlyOperatorsIncluded_ShouldContainOperatorButNotAccessor()
+	public async Task Implements_InheritedInterface_ForceDirect_ShouldReturnFalse()
 	{
-		using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers()
-			       .Set(SpecialNameMembers.Operators))
-		{
-			MethodInfo[] methods = typeof(OperatorAndAccessorTestClass).GetDeclaredMethods();
+		Type sut = typeof(DerivedImplementingFoo);
 
-			await That(methods).Contains(m => m.Name == "op_Addition");
-			await That(methods).None().Satisfy(m => m.Name == "get_Value");
-		}
-	}
-
-	[Fact]
-	public async Task GetDeclaredMethods_WithOnlyAccessorsIncluded_ShouldContainAccessorButNotOperator()
-	{
-		using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers()
-			       .Set(SpecialNameMembers.Accessors))
-		{
-			MethodInfo[] methods = typeof(OperatorAndAccessorTestClass).GetDeclaredMethods();
-
-			await That(methods).Contains(m => m.Name == "get_Value");
-			await That(methods).None().Satisfy(m => m.Name == "op_Addition");
-		}
+		await That(sut.Implements(typeof(IFooInterface), false)).IsTrue();
+		await That(sut.Implements(typeof(IFooInterface), true)).IsFalse();
 	}
 
 	[Theory]
@@ -241,11 +191,60 @@ public sealed class TypeHelpersTests
 	}
 
 	[Fact]
+	public async Task Implements_OpenGenericInterface_ShouldReturnTrue()
+	{
+		Type sut = typeof(ImplementsClosedGeneric);
+
+		await That(sut.Implements(typeof(IGenericInterface<>))).IsTrue();
+	}
+
+	[Fact]
 	public async Task InheritsFrom_SameType_ShouldReturnFalse()
 	{
 		Type sut = typeof(TestClassWithAttribute);
 
 		bool result = sut.InheritsFrom(typeof(TestClassWithAttribute));
+
+		await That(result).IsFalse();
+	}
+
+	[Fact]
+	public async Task IsCompilerGenerated_ForMethodInCompilerGeneratedType_ShouldReturnTrue()
+	{
+		MethodInfo method =
+			typeof(CompilerGeneratedContainer).GetMethod(nameof(CompilerGeneratedContainer.UnmarkedMethod))!;
+
+		bool result = method.IsCompilerGenerated();
+
+		await That(result).IsTrue();
+	}
+
+	[Fact]
+	public async Task IsCompilerGenerated_ForMethodMarkedCompilerGenerated_ShouldReturnTrue()
+	{
+		MethodInfo method =
+			typeof(TestClassWithoutAttribute).GetMethod(nameof(TestClassWithoutAttribute.MarkedMethod))!;
+
+		bool result = method.IsCompilerGenerated();
+
+		await That(result).IsTrue();
+	}
+
+	[Fact]
+	public async Task IsCompilerGenerated_ForNormalMethod_ShouldReturnFalse()
+	{
+		MethodInfo method =
+			typeof(TestClassWithAttribute).GetMethod(nameof(TestClassWithAttribute.Method1WithoutAttribute))!;
+
+		bool result = method.IsCompilerGenerated();
+
+		await That(result).IsFalse();
+	}
+
+	[Fact]
+	public async Task IsCompilerGenerated_ForNormalType_ShouldReturnFalse()
+	{
+		bool result = typeof(TestClassWithoutAttribute).IsCompilerGenerated();
 
 		await That(result).IsFalse();
 	}
@@ -385,7 +384,9 @@ public sealed class TypeHelpersTests
 
 		public static OperatorAndAccessorTestClass operator +(
 			OperatorAndAccessorTestClass left, OperatorAndAccessorTestClass right)
-			=> left;
+		{
+			return left;
+		}
 	}
 #pragma warning restore CA1822
 

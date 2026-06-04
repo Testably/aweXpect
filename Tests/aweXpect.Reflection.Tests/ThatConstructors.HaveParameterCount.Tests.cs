@@ -23,11 +23,11 @@ public sealed partial class ThatConstructors
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenNotAllHaveExpectedCount_ShouldListNotMatchingConstructors()
+			public async Task WhenAllHaveExpectedCount_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
 				{
-					typeof(TestClass).GetConstructor([typeof(int),])!,
+					typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!, typeof(TestClass).GetConstructor([typeof(string), typeof(int),])!,
 				};
 
 				async Task Act()
@@ -35,14 +35,7 @@ public sealed partial class ThatConstructors
 					await That(constructors).HaveParameterCount(2);
 				}
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that constructors
-					             all have 2 parameters,
-					             but it contained constructors with a different number of parameters [
-					               ThatConstructors.HaveParameterCount.TestClass(int value)
-					             ]
-					             """);
+				await That(Act).DoesNotThrow();
 			}
 
 			[Fact]
@@ -64,6 +57,50 @@ public sealed partial class ThatConstructors
 					             all have one parameter,
 					             but it contained constructors with a different number of parameters *
 					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenNotAllHaveExpectedCount_ShouldFail()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!, typeof(TestClass).GetConstructor([typeof(int),])!,
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveParameterCount(2);
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have 2 parameters,
+					             but it contained constructors with a different number of parameters *
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenNotAllHaveExpectedCount_ShouldListNotMatchingConstructors()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(TestClass).GetConstructor([typeof(int),])!,
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveParameterCount(2);
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have 2 parameters,
+					             but it contained constructors with a different number of parameters [
+					               ThatConstructors.HaveParameterCount.TestClass(int value)
+					             ]
+					             """);
 			}
 
 #if NET8_0_OR_GREATER
@@ -102,43 +139,6 @@ public sealed partial class ThatConstructors
 					             """).AsWildcard();
 			}
 #endif
-
-			[Fact]
-			public async Task WhenAllHaveExpectedCount_ShouldSucceed()
-			{
-				IEnumerable<ConstructorInfo> constructors = new[]
-				{
-					typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!, typeof(TestClass).GetConstructor([typeof(string), typeof(int),])!,
-				};
-
-				async Task Act()
-				{
-					await That(constructors).HaveParameterCount(2);
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenNotAllHaveExpectedCount_ShouldFail()
-			{
-				IEnumerable<ConstructorInfo> constructors = new[]
-				{
-					typeof(TestClass).GetConstructor([typeof(int), typeof(string),])!, typeof(TestClass).GetConstructor([typeof(int),])!,
-				};
-
-				async Task Act()
-				{
-					await That(constructors).HaveParameterCount(2);
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that constructors
-					             all have 2 parameters,
-					             but it contained constructors with a different number of parameters *
-					             """).AsWildcard();
-			}
 		}
 
 		public sealed class NegatedTests

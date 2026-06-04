@@ -13,6 +13,22 @@ public sealed partial class ThatTypes
 		public sealed class TypeTests
 		{
 			[Fact]
+			public async Task WhenEnumerableContainsNoRecordStructTypes_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(IPublicInterface),
+				};
+
+				async Task Act()
+				{
+					await That(subject).AreNotRecordStructs();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenEnumerableContainsRecordStructType_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -33,22 +49,6 @@ public sealed partial class ThatTypes
 					               *
 					             ]
 					             """).AsWildcard();
-			}
-
-			[Fact]
-			public async Task WhenEnumerableContainsNoRecordStructTypes_ShouldSucceed()
-			{
-				IEnumerable<Type?> subject = new[]
-				{
-					typeof(IPublicInterface),
-				};
-
-				async Task Act()
-				{
-					await That(subject).AreNotRecordStructs();
-				}
-
-				await That(Act).DoesNotThrow();
 			}
 		}
 

@@ -99,6 +99,30 @@ public sealed partial class ThatMethods
 		public sealed class AsyncEnumerableTests
 		{
 			[Fact]
+			public async Task WhenAllMethodsAreNotObsolete_Negated_ShouldFail()
+			{
+				IAsyncEnumerable<MethodInfo?> subject = new[]
+					{
+						typeof(ClassWithObsoleteMembers).GetMethod(nameof(ClassWithObsoleteMembers.NonObsoleteMethod))!,
+					}
+					.ToTestAsyncEnumerable<MethodInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotObsolete());
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             also contain an obsolete item,
+					             but it only contained non-obsolete items [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Fact]
 			public async Task WhenAllMethodsAreNotObsolete_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo?> subject = new[]
@@ -120,8 +144,7 @@ public sealed partial class ThatMethods
 			{
 				IAsyncEnumerable<MethodInfo?> subject = new[]
 					{
-						typeof(ClassWithObsoleteMembers).GetMethod(nameof(ClassWithObsoleteMembers.ObsoleteMethod))!,
-						typeof(ClassWithObsoleteMembers).GetMethod(nameof(ClassWithObsoleteMembers.NonObsoleteMethod))!,
+						typeof(ClassWithObsoleteMembers).GetMethod(nameof(ClassWithObsoleteMembers.ObsoleteMethod))!, typeof(ClassWithObsoleteMembers).GetMethod(nameof(ClassWithObsoleteMembers.NonObsoleteMethod))!,
 					}
 					.ToTestAsyncEnumerable<MethodInfo?>();
 
@@ -135,30 +158,6 @@ public sealed partial class ThatMethods
 					             Expected that subject
 					             are all not obsolete,
 					             but it contained obsolete items [
-					               *
-					             ]
-					             """).AsWildcard();
-			}
-
-			[Fact]
-			public async Task WhenAllMethodsAreNotObsolete_Negated_ShouldFail()
-			{
-				IAsyncEnumerable<MethodInfo?> subject = new[]
-					{
-						typeof(ClassWithObsoleteMembers).GetMethod(nameof(ClassWithObsoleteMembers.NonObsoleteMethod))!,
-					}
-					.ToTestAsyncEnumerable<MethodInfo?>();
-
-				async Task Act()
-				{
-					await That(subject).DoesNotComplyWith(they => they.AreNotObsolete());
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             also contain an obsolete item,
-					             but it only contained non-obsolete items [
 					               *
 					             ]
 					             """).AsWildcard();

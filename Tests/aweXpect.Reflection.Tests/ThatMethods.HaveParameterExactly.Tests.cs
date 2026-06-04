@@ -79,27 +79,6 @@ public sealed partial class ThatMethods
 			}
 
 			[Fact]
-			public async Task WithName_WhenSubtypeParameterMatchesName_ShouldFail()
-			{
-				IEnumerable<MethodInfo> methods = new[]
-				{
-					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithMemoryStream))!, // MemoryStream is not exactly Stream
-				};
-
-				async Task Act()
-				{
-					await That(methods).HaveParameterExactly<Stream>("stream");
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that methods
-					             all have parameter of exact type Stream with name "stream",
-					             but at least one did not
-					             """);
-			}
-
-			[Fact]
 			public async Task WithName_WhenExactTypeButNameDoesNotMatch_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -121,7 +100,7 @@ public sealed partial class ThatMethods
 			}
 
 			[Fact]
-			public async Task WithType_WhenSubtypeParameterMatchesName_ShouldFail()
+			public async Task WithName_WhenSubtypeParameterMatchesName_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
@@ -130,34 +109,13 @@ public sealed partial class ThatMethods
 
 				async Task Act()
 				{
-					await That(methods).HaveParameterExactly(typeof(Stream), "stream");
+					await That(methods).HaveParameterExactly<Stream>("stream");
 				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream with name "stream",
-					             but at least one did not
-					             """);
-			}
-
-			[Fact]
-			public async Task WithType_WhenExactTypeButNameDoesNotMatch_ShouldFail()
-			{
-				IEnumerable<MethodInfo> methods = new[]
-				{
-					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!, typeof(TestClass).GetMethod(nameof(TestClass.SecondMethodWithStream))!,
-				};
-
-				async Task Act()
-				{
-					await That(methods).HaveParameterExactly(typeof(Stream), "other");
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that methods
-					             all have parameter of exact type Stream with name "other",
 					             but at least one did not
 					             """);
 			}
@@ -195,6 +153,27 @@ public sealed partial class ThatMethods
 			}
 
 			[Fact]
+			public async Task WithType_WhenExactTypeButNameDoesNotMatch_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!, typeof(TestClass).GetMethod(nameof(TestClass.SecondMethodWithStream))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveParameterExactly(typeof(Stream), "other");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type Stream with name "other",
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
 			public async Task WithType_WhenNotAllHaveExactType_ShouldFail()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -211,6 +190,27 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task WithType_WhenSubtypeParameterMatchesName_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.FirstMethodWithStream))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithMemoryStream))!, // MemoryStream is not exactly Stream
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveParameterExactly(typeof(Stream), "stream");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type Stream with name "stream",
 					             but at least one did not
 					             """);
 			}

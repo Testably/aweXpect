@@ -10,7 +10,17 @@ public sealed partial class TypeFilters
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WithDefaultScope_ShouldOnlyIncludeDeclaredMembers()
+			public async Task WithDeclaredOnly_ShouldNotIncludeInheritedPrivateMembers()
+			{
+				Filtered.Methods methods =
+					In.Type<DerivedClassWithMembers>().Methods()
+						.WhichArePrivate();
+
+				await That(methods).None().Satisfy(m => m.Name == "BasePrivateMethod");
+			}
+
+			[Fact]
+			public async Task WithDeclaredOnly_ShouldOnlyIncludeDeclaredMembers()
 			{
 				Filtered.Methods methods =
 					In.Type<DerivedClassWithMembers>().Methods();
@@ -20,10 +30,10 @@ public sealed partial class TypeFilters
 			}
 
 			[Fact]
-			public async Task WithDeclaredOnly_ShouldOnlyIncludeDeclaredMembers()
+			public async Task WithDefaultScope_ShouldOnlyIncludeDeclaredMembers()
 			{
 				Filtered.Methods methods =
-					In.Type<DerivedClassWithMembers>().Methods(MemberScope.DeclaredOnly);
+					In.Type<DerivedClassWithMembers>().Methods();
 
 				await That(methods).Contains(m => m.Name == nameof(DerivedClassWithMembers.DerivedMethod));
 				await That(methods).None().Satisfy(m => m.Name == nameof(BaseClassWithMembers.BaseMethod));
@@ -47,16 +57,6 @@ public sealed partial class TypeFilters
 						.WhichArePrivate();
 
 				await That(methods).Contains(m => m.Name == "BasePrivateMethod");
-			}
-
-			[Fact]
-			public async Task WithDeclaredOnly_ShouldNotIncludeInheritedPrivateMembers()
-			{
-				Filtered.Methods methods =
-					In.Type<DerivedClassWithMembers>().Methods(MemberScope.DeclaredOnly)
-						.WhichArePrivate();
-
-				await That(methods).None().Satisfy(m => m.Name == "BasePrivateMethod");
 			}
 		}
 	}

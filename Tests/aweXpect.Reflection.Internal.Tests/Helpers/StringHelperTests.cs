@@ -30,6 +30,20 @@ public class StringHelperTests
 	}
 
 	[Fact]
+	public async Task WhenLaterLineEndsWithButDoesNotStartWithCommonWhiteSpace_ShouldTrimCommonPrefix()
+	{
+		// line[1] = "  bar" => common white-space is the two leading spaces.
+		// line[2] = "x  " starts with 'x' (not the common prefix) but ends with two spaces.
+		// The common prefix must be truncated based on a leading-character comparison
+		// (StartsWith), not a trailing one (EndsWith).
+		string input = "foo\n  bar\nx  ";
+
+		string result = input.TrimCommonWhiteSpace();
+
+		await That(result).IsEqualTo("foo\n  bar\nx  ");
+	}
+
+	[Fact]
 	public async Task WhenLinesHaveDifferentWhiteSpace_ShouldKeepAllWhiteSpace()
 	{
 		string input = """
@@ -45,20 +59,6 @@ public class StringHelperTests
 		                                 bar
 		                             	baz
 		                             """);
-	}
-
-	[Fact]
-	public async Task WhenLaterLineEndsWithButDoesNotStartWithCommonWhiteSpace_ShouldTrimCommonPrefix()
-	{
-		// line[1] = "  bar" => common white-space is the two leading spaces.
-		// line[2] = "x  " starts with 'x' (not the common prefix) but ends with two spaces.
-		// The common prefix must be truncated based on a leading-character comparison
-		// (StartsWith), not a trailing one (EndsWith).
-		string input = "foo\n  bar\nx  ";
-
-		string result = input.TrimCommonWhiteSpace();
-
-		await That(result).IsEqualTo("foo\n  bar\nx  ");
 	}
 
 	[Fact]

@@ -8,6 +8,15 @@ public sealed partial class ConstructorFilters
 {
 	public sealed class WithOutParameter
 	{
+		private static ConstructorInfo? OutParameterConstructor()
+			=> typeof(ClassWithOutParameterConstructor).GetConstructors().Single();
+
+		private static ConstructorInfo? PlainConstructor()
+			=> typeof(ClassWithPlainConstructor).GetConstructors().Single();
+
+		private static ConstructorInfo? MixedConstructor()
+			=> typeof(ClassWithMixedConstructor).GetConstructors().Single();
+
 		public sealed class Tests
 		{
 			[Fact]
@@ -62,33 +71,6 @@ public sealed partial class ConstructorFilters
 		public sealed class DescriptionTests
 		{
 			[Fact]
-			public async Task ParameterlessFilter_ShouldMatchConstructorWithOnlySomeOutParameters()
-			{
-				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
-					.Constructors().WithOutParameter();
-
-				await That(constructors).Contains(MixedConstructor());
-			}
-
-			[Fact]
-			public async Task OfType_ShouldDescribeWithOutModifier()
-			{
-				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
-					.Constructors().WithOutParameter<int>();
-
-				await That(constructors.GetDescription()).Contains("with out modifier");
-			}
-
-			[Fact]
-			public async Task OfTypeWithName_ShouldDescribeWithOutModifier()
-			{
-				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
-					.Constructors().WithOutParameter<int>("value");
-
-				await That(constructors.GetDescription()).Contains("with out modifier");
-			}
-
-			[Fact]
 			public async Task ByName_ShouldDescribeWithOutModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -113,6 +95,33 @@ public sealed partial class ConstructorFilters
 					.Constructors().WithOutParameterExactly<int>("value");
 
 				await That(constructors.GetDescription()).Contains("with out modifier");
+			}
+
+			[Fact]
+			public async Task OfType_ShouldDescribeWithOutModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithOutParameter<int>();
+
+				await That(constructors.GetDescription()).Contains("with out modifier");
+			}
+
+			[Fact]
+			public async Task OfTypeWithName_ShouldDescribeWithOutModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithOutParameter<int>("value");
+
+				await That(constructors.GetDescription()).Contains("with out modifier");
+			}
+
+			[Fact]
+			public async Task ParameterlessFilter_ShouldMatchConstructorWithOnlySomeOutParameters()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithOutParameter();
+
+				await That(constructors).Contains(MixedConstructor());
 			}
 
 #pragma warning disable CA2263
@@ -153,15 +162,6 @@ public sealed partial class ConstructorFilters
 			}
 #pragma warning restore CA2263
 		}
-
-		private static ConstructorInfo? OutParameterConstructor()
-			=> typeof(ClassWithOutParameterConstructor).GetConstructors().Single();
-
-		private static ConstructorInfo? PlainConstructor()
-			=> typeof(ClassWithPlainConstructor).GetConstructors().Single();
-
-		private static ConstructorInfo? MixedConstructor()
-			=> typeof(ClassWithMixedConstructor).GetConstructors().Single();
 
 		// ReSharper disable UnusedMember.Local
 		// ReSharper disable UnusedParameter.Local

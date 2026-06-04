@@ -14,22 +14,6 @@ public sealed partial class ThatMethods
 		public sealed class EnumerableTests
 		{
 			[Fact]
-			public async Task ShouldSucceedWhenAllMethodsReturnExactType()
-			{
-				IEnumerable<MethodInfo> subject =
-				[
-					typeof(TestClass).GetMethod(nameof(TestClass.GetString))!,
-				];
-
-				async Task Act()
-				{
-					await That(subject).ReturnExactly<string>();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task ShouldFailWhenMethodsReturnInheritedType()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -50,6 +34,22 @@ public sealed partial class ThatMethods
 					               *
 					             ]
 					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task ShouldSucceedWhenAllMethodsReturnExactType()
+			{
+				IEnumerable<MethodInfo> subject =
+				[
+					typeof(TestClass).GetMethod(nameof(TestClass.GetString))!,
+				];
+
+				async Task Act()
+				{
+					await That(subject).ReturnExactly<string>();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 

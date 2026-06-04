@@ -11,19 +11,6 @@ public sealed partial class ThatTypes
 		public sealed class AttributeTests
 		{
 			[Fact]
-			public async Task WhenNoTypeHasAttribute_ShouldSucceed()
-			{
-				List<Type?> subjects = [typeof(BarClass), null,];
-
-				async Task Act()
-				{
-					await That(subjects).DoNotHave<FooAttribute>();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenATypeHasAttribute_ShouldFail()
 			{
 				List<Type?> subjects = [typeof(FooClass2),];
@@ -76,6 +63,38 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
+			[Fact]
+			public async Task WhenNoTypeHasAttribute_ShouldSucceed()
+			{
+				List<Type?> subjects = [typeof(BarClass), null,];
+
+				async Task Act()
+				{
+					await That(subjects).DoNotHave<FooAttribute>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[AttributeUsage(AttributeTargets.Class)]
+			private class FooAttribute : Attribute
+			{
+				public int Value { get; set; }
+			}
+
+			[Foo(Value = 2)]
+			private class FooClass2
+			{
+			}
+
+			private class BarClass
+			{
+			}
+
+			private class FooChildClass2 : FooClass2
+			{
+			}
+
 #if NET8_0_OR_GREATER
 			[Fact]
 			public async Task AsyncEnumerable_WhenNoTypeHasAttribute_ShouldSucceed()
@@ -116,25 +135,6 @@ public sealed partial class ThatTypes
 					             """);
 			}
 #endif
-
-			[AttributeUsage(AttributeTargets.Class)]
-			private class FooAttribute : Attribute
-			{
-				public int Value { get; set; }
-			}
-
-			[Foo(Value = 2)]
-			private class FooClass2
-			{
-			}
-
-			private class BarClass
-			{
-			}
-
-			private class FooChildClass2 : FooClass2
-			{
-			}
 		}
 
 		public sealed class NegatedTests

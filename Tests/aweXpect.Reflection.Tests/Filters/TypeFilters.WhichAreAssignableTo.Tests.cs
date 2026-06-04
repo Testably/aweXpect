@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Xunit.Sdk;
+﻿using System.Collections.Generic;
 
 namespace aweXpect.Reflection.Tests.Filters;
 
@@ -10,31 +8,6 @@ public sealed partial class TypeFilters
 	{
 		public sealed class Tests
 		{
-			[Fact]
-			public async Task ShouldApplyFilterForAssignableTo()
-			{
-				async Task Act()
-				{
-					await That(In.AssemblyContaining<WhichAreAssignableTo>().Types().WhichAreAssignableTo<AssignableBase>())
-						.AreAssignableTo<AssignableBase>();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task ShouldApplyFilterForNotAssignableTo()
-			{
-				async Task Act()
-				{
-					await That(In.AssemblyContaining<WhichAreAssignableTo>().Types()
-							.WhichAreNotAssignableTo<AssignableBase>())
-						.AreNotAssignableTo<AssignableBase>();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
 			[Fact]
 			public async Task ShouldApplyFilterForAssignableFrom()
 			{
@@ -49,6 +22,18 @@ public sealed partial class TypeFilters
 			}
 
 			[Fact]
+			public async Task ShouldApplyFilterForAssignableTo()
+			{
+				async Task Act()
+				{
+					await That(In.AssemblyContaining<WhichAreAssignableTo>().Types().WhichAreAssignableTo<AssignableBase>())
+						.AreAssignableTo<AssignableBase>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task ShouldApplyFilterForNotAssignableFrom()
 			{
 				async Task Act()
@@ -56,6 +41,19 @@ public sealed partial class TypeFilters
 					await That(In.AssemblyContaining<WhichAreAssignableTo>().Types()
 							.WhichAreNotAssignableFrom<AssignableDerived>())
 						.AreNotAssignableFrom<AssignableDerived>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task ShouldApplyFilterForNotAssignableTo()
+			{
+				async Task Act()
+				{
+					await That(In.AssemblyContaining<WhichAreAssignableTo>().Types()
+							.WhichAreNotAssignableTo<AssignableBase>())
+						.AreNotAssignableTo<AssignableBase>();
 				}
 
 				await That(Act).DoesNotThrow();

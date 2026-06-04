@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using aweXpect.Reflection.Collections;
 using Xunit.Sdk;
 
@@ -27,7 +26,7 @@ public sealed partial class ThatTypes
 			[Fact]
 			public async Task WhenEnumerableTypesImplementInterface_ShouldSucceed()
 			{
-				IEnumerable<Type?> subject = new Type?[]
+				IEnumerable<Type?> subject = new[]
 				{
 					typeof(ClassWithInterface1), typeof(ClassWithInterface2),
 				};

@@ -1,4 +1,4 @@
-using System;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -104,7 +104,7 @@ public static class MethodInfoExtensions
 			int position = type.DeclaringMethod is null
 				? type.GenericParameterPosition
 				: type.GenericParameterPosition + methodGenericOffset;
-			return "!" + position.ToString(System.Globalization.CultureInfo.InvariantCulture);
+			return "!" + position.ToString(CultureInfo.InvariantCulture);
 		}
 
 		if (type.IsGenericType)
@@ -124,5 +124,5 @@ public static class MethodInfoExtensions
 	/// <param name="methodInfo">The <see cref="MethodInfo" /> to check.</param>
 	public static bool IsReallyOperator(this MethodInfo? methodInfo)
 		=> methodInfo is { IsSpecialName: true, }
-		   && methodInfo.Name.StartsWith("op_", System.StringComparison.Ordinal);
+		   && methodInfo.Name.StartsWith("op_", StringComparison.Ordinal);
 }

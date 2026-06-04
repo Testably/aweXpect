@@ -10,7 +10,17 @@ public sealed partial class TypeFilters
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WithDefaultScope_ShouldOnlyIncludeDeclaredMembers()
+			public async Task WithDeclaredOnly_ShouldNotIncludeInheritedPrivateMembers()
+			{
+				Filtered.Properties properties =
+					In.Type<DerivedClassWithMembers>().Properties()
+						.WhichArePrivate();
+
+				await That(properties).None().Satisfy(p => p.Name == "BasePrivateProperty");
+			}
+
+			[Fact]
+			public async Task WithDeclaredOnly_ShouldOnlyIncludeDeclaredMembers()
 			{
 				Filtered.Properties properties =
 					In.Type<DerivedClassWithMembers>().Properties();
@@ -20,23 +30,13 @@ public sealed partial class TypeFilters
 			}
 
 			[Fact]
-			public async Task WithDeclaredOnly_ShouldOnlyIncludeDeclaredMembers()
+			public async Task WithDefaultScope_ShouldOnlyIncludeDeclaredMembers()
 			{
 				Filtered.Properties properties =
-					In.Type<DerivedClassWithMembers>().Properties(MemberScope.DeclaredOnly);
+					In.Type<DerivedClassWithMembers>().Properties();
 
 				await That(properties).Contains(p => p.Name == nameof(DerivedClassWithMembers.DerivedProperty));
 				await That(properties).None().Satisfy(p => p.Name == nameof(BaseClassWithMembers.BaseProperty));
-			}
-
-			[Fact]
-			public async Task WithIncludingInherited_ShouldIncludeInheritedMembers()
-			{
-				Filtered.Properties properties =
-					In.Type<DerivedClassWithMembers>().Properties(MemberScope.IncludingInherited);
-
-				await That(properties).Contains(p => p.Name == nameof(DerivedClassWithMembers.DerivedProperty));
-				await That(properties).Contains(p => p.Name == nameof(BaseClassWithMembers.BaseProperty));
 			}
 
 			[Fact]
@@ -51,6 +51,16 @@ public sealed partial class TypeFilters
 			}
 
 			[Fact]
+			public async Task WithIncludingInherited_ShouldIncludeInheritedMembers()
+			{
+				Filtered.Properties properties =
+					In.Type<DerivedClassWithMembers>().Properties(MemberScope.IncludingInherited);
+
+				await That(properties).Contains(p => p.Name == nameof(DerivedClassWithMembers.DerivedProperty));
+				await That(properties).Contains(p => p.Name == nameof(BaseClassWithMembers.BaseProperty));
+			}
+
+			[Fact]
 			public async Task WithIncludingInherited_ShouldIncludeInheritedPrivateMembers()
 			{
 				Filtered.Properties properties =
@@ -58,16 +68,6 @@ public sealed partial class TypeFilters
 						.WhichArePrivate();
 
 				await That(properties).Contains(p => p.Name == "BasePrivateProperty");
-			}
-
-			[Fact]
-			public async Task WithDeclaredOnly_ShouldNotIncludeInheritedPrivateMembers()
-			{
-				Filtered.Properties properties =
-					In.Type<DerivedClassWithMembers>().Properties(MemberScope.DeclaredOnly)
-						.WhichArePrivate();
-
-				await That(properties).None().Satisfy(p => p.Name == "BasePrivateProperty");
 			}
 		}
 	}

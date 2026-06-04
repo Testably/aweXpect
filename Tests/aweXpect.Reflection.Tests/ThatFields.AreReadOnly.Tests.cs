@@ -107,10 +107,9 @@ public sealed partial class ThatFields
 			[Fact]
 			public async Task WhenFieldsContainNonReadOnlyFields_ShouldFail()
 			{
-				IAsyncEnumerable<FieldInfo?> subject = new FieldInfo[]
+				IAsyncEnumerable<FieldInfo?> subject = new[]
 				{
-					typeof(TestClassWithFieldModifiers).GetField(nameof(TestClassWithFieldModifiers.ReadOnlyField))!,
-					typeof(TestClassWithFieldModifiers).GetField(nameof(TestClassWithFieldModifiers.MutableField))!,
+					typeof(TestClassWithFieldModifiers).GetField(nameof(TestClassWithFieldModifiers.ReadOnlyField))!, typeof(TestClassWithFieldModifiers).GetField(nameof(TestClassWithFieldModifiers.MutableField))!,
 				}.ToTestAsyncEnumerable<FieldInfo?>();
 
 				async Task Act()
@@ -129,30 +128,11 @@ public sealed partial class ThatFields
 			}
 
 			[Fact]
-			public async Task WhenFilteringOnlyReadOnlyFields_ShouldSucceed()
-			{
-				IAsyncEnumerable<FieldInfo?> subject = new FieldInfo[]
-				{
-					typeof(TestClassWithFieldModifiers).GetField(nameof(TestClassWithFieldModifiers.ReadOnlyField))!,
-					typeof(TestClassWithFieldModifiers).GetField(nameof(TestClassWithFieldModifiers
-						.StaticReadOnlyField))!,
-				}.ToTestAsyncEnumerable<FieldInfo?>();
-
-				async Task Act()
-				{
-					await That(subject).AreReadOnly();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenFilteringOnlyReadOnlyFields_Negated_ShouldFail()
 			{
-				IAsyncEnumerable<FieldInfo?> subject = new FieldInfo[]
+				IAsyncEnumerable<FieldInfo?> subject = new[]
 				{
-					typeof(TestClassWithFieldModifiers).GetField(nameof(TestClassWithFieldModifiers.ReadOnlyField))!,
-					typeof(TestClassWithFieldModifiers).GetField(nameof(TestClassWithFieldModifiers
+					typeof(TestClassWithFieldModifiers).GetField(nameof(TestClassWithFieldModifiers.ReadOnlyField))!, typeof(TestClassWithFieldModifiers).GetField(nameof(TestClassWithFieldModifiers
 						.StaticReadOnlyField))!,
 				}.ToTestAsyncEnumerable<FieldInfo?>();
 
@@ -169,6 +149,23 @@ public sealed partial class ThatFields
 					               *
 					             ]
 					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenFilteringOnlyReadOnlyFields_ShouldSucceed()
+			{
+				IAsyncEnumerable<FieldInfo?> subject = new[]
+				{
+					typeof(TestClassWithFieldModifiers).GetField(nameof(TestClassWithFieldModifiers.ReadOnlyField))!, typeof(TestClassWithFieldModifiers).GetField(nameof(TestClassWithFieldModifiers
+						.StaticReadOnlyField))!,
+				}.ToTestAsyncEnumerable<FieldInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).AreReadOnly();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 #endif

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers;
 using Xunit.Sdk;
@@ -12,6 +11,22 @@ public sealed partial class ThatTypes
 	{
 		public sealed class Tests
 		{
+			[Fact]
+			public async Task Enumerable_WhenNoTypeHasName_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(DoNotHaveNameType), null,
+				};
+
+				async Task Act()
+				{
+					await That(subject).DoNotHaveName("SomeOtherClassName");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[Fact]
 			public async Task WhenNoTypeHasName_ShouldSucceed()
 			{
@@ -68,21 +83,7 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 
-			[Fact]
-			public async Task Enumerable_WhenNoTypeHasName_ShouldSucceed()
-			{
-				IEnumerable<Type?> subject = new[]
-				{
-					typeof(DoNotHaveNameType), null,
-				};
-
-				async Task Act()
-				{
-					await That(subject).DoNotHaveName("SomeOtherClassName");
-				}
-
-				await That(Act).DoesNotThrow();
-			}
+			private class DoNotHaveNameType;
 
 #if NET8_0_OR_GREATER
 			[Fact]
@@ -124,26 +125,10 @@ public sealed partial class ThatTypes
 					             """).AsWildcard();
 			}
 #endif
-
-			private class DoNotHaveNameType;
 		}
 
 		public sealed class NegatedTests
 		{
-			[Fact]
-			public async Task WhenTypeHasName_ShouldSucceed()
-			{
-				Filtered.Types subject = In.AssemblyContaining<Tests>()
-					.Types().WithName(nameof(DoNotHaveNameTypeNeg));
-
-				async Task Act()
-				{
-					await That(subject).DoesNotComplyWith(they => they.DoNotHaveName(nameof(DoNotHaveNameTypeNeg)));
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
 			[Fact]
 			public async Task WhenNoTypeHasName_ShouldFail()
 			{
@@ -163,6 +148,20 @@ public sealed partial class ThatTypes
 					               *DoNotHaveNameTypeNeg*
 					             ]
 					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenTypeHasName_ShouldSucceed()
+			{
+				Filtered.Types subject = In.AssemblyContaining<Tests>()
+					.Types().WithName(nameof(DoNotHaveNameTypeNeg));
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they.DoNotHaveName(nameof(DoNotHaveNameTypeNeg)));
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 
 			private class DoNotHaveNameTypeNeg;

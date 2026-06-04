@@ -11,45 +11,6 @@ public sealed partial class ThatEvents
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
-			public async Task WhenNoEventHasAttribute_ShouldSucceed()
-			{
-				IEnumerable<EventInfo?> subject = new[]
-				{
-					typeof(TestClass).GetEvent(nameof(TestClass.NoAttributeEvent)), null,
-				};
-
-				async Task Act()
-				{
-					await That(subject).DoNotHave<FooAttribute>();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenAnEventHasAttribute_ShouldFail()
-			{
-				IEnumerable<EventInfo?> subject = new[]
-				{
-					typeof(TestClass).GetEvent(nameof(TestClass.TestEvent)),
-				};
-
-				async Task Act()
-				{
-					await That(subject).DoNotHave<FooAttribute>();
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             all have no ThatEvents.DoNotHave.AttributeTests.FooAttribute,
-					             but it contained not matching events [
-					               event Action ThatEvents.DoNotHave.AttributeTests.TestClass.TestEvent
-					             ]
-					             """);
-			}
-
 #if NET8_0_OR_GREATER
 			[Fact]
 			public async Task AsyncEnumerable_WhenAnEventHasAttribute_ShouldFail()
@@ -96,6 +57,45 @@ public sealed partial class ThatEvents
 					               event Action ThatEvents.DoNotHave.AttributeTests.TestClass.NoAttributeEvent
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenAnEventHasAttribute_ShouldFail()
+			{
+				IEnumerable<EventInfo?> subject = new[]
+				{
+					typeof(TestClass).GetEvent(nameof(TestClass.TestEvent)),
+				};
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have no ThatEvents.DoNotHave.AttributeTests.FooAttribute,
+					             but it contained not matching events [
+					               event Action ThatEvents.DoNotHave.AttributeTests.TestClass.TestEvent
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNoEventHasAttribute_ShouldSucceed()
+			{
+				IEnumerable<EventInfo?> subject = new[]
+				{
+					typeof(TestClass).GetEvent(nameof(TestClass.NoAttributeEvent)), null,
+				};
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[AttributeUsage(AttributeTargets.Event)]

@@ -112,6 +112,22 @@ public sealed partial class ThatEvents
 				}
 
 				[Fact]
+				public async Task WhenAllEventsHaveMatchingAttribute_ShouldSucceed()
+				{
+					IAsyncEnumerable<EventInfo?> subject = new[]
+					{
+						typeof(TestClass).GetEvent("TestEvent1")!, typeof(TestClass).GetEvent("TestEvent2")!,
+					}.ToTestAsyncEnumerable<EventInfo?>();
+
+					async Task Act()
+					{
+						await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Event"));
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
 				public async Task WhenNotAllEventsHaveAttribute_ShouldFail()
 				{
 					IAsyncEnumerable<EventInfo?> subject = new[]
@@ -132,22 +148,6 @@ public sealed partial class ThatEvents
 						               event Action ThatEvents.Have.AttributeTests.TestClass.NoAttributeEvent
 						             ]
 						             """);
-				}
-
-				[Fact]
-				public async Task WhenAllEventsHaveMatchingAttribute_ShouldSucceed()
-				{
-					IAsyncEnumerable<EventInfo?> subject = new[]
-					{
-						typeof(TestClass).GetEvent("TestEvent1")!, typeof(TestClass).GetEvent("TestEvent2")!,
-					}.ToTestAsyncEnumerable<EventInfo?>();
-
-					async Task Act()
-					{
-						await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Event"));
-					}
-
-					await That(Act).DoesNotThrow();
 				}
 
 				[Fact]

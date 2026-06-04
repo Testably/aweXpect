@@ -11,6 +11,17 @@ public sealed partial class ThatMethods
 {
 	public sealed class HaveInParameter
 	{
+#if NET8_0_OR_GREATER
+		private static async IAsyncEnumerable<MethodInfo> ToAsyncEnumerable(params MethodInfo[] items)
+		{
+			foreach (MethodInfo item in items)
+			{
+				yield return item;
+			}
+
+			await Task.CompletedTask;
+		}
+#endif
 		public sealed class Tests
 		{
 			[Fact]
@@ -18,8 +29,7 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.AnotherMethodWithInParameter))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.AnotherMethodWithInParameter))!,
 				};
 
 				async Task Act()
@@ -35,8 +45,7 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
 				};
 
 				async Task Act()
@@ -73,8 +82,7 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
 				};
 
 				async Task Act()
@@ -106,8 +114,7 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
 				};
 
 				async Task Act()
@@ -139,8 +146,7 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
 				};
 
 				async Task Act()
@@ -206,8 +212,7 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.AnotherMethodWithInParameter))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.AnotherMethodWithInParameter))!,
 				};
 
 				async Task Act()
@@ -228,8 +233,7 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
 				};
 
 				async Task Act()
@@ -244,100 +248,11 @@ public sealed partial class ThatMethods
 		public sealed class ModifierMessageTests
 		{
 			[Fact]
-			public async Task Type_WhenNotAllHaveInParameter_ShouldFailWithModifierDescription()
-			{
-				IEnumerable<MethodInfo> methods = new[]
-				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
-				};
-
-				async Task Act()
-				{
-					await That(methods).HaveInParameter<int>();
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that methods
-					             all have parameter of type int with in modifier,
-					             but at least one did not
-					             """);
-			}
-
-			[Fact]
-			public async Task SystemType_WhenNotAllHaveInParameter_ShouldFailWithModifierDescription()
-			{
-				IEnumerable<MethodInfo> methods = new[]
-				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
-				};
-
-				async Task Act()
-				{
-					await That(methods).HaveInParameter(typeof(int));
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that methods
-					             all have parameter of type int with in modifier,
-					             but at least one did not
-					             """);
-			}
-
-			[Fact]
-			public async Task TypeAndName_WhenNotAllHaveInParameter_ShouldFailWithModifierDescription()
-			{
-				IEnumerable<MethodInfo> methods = new[]
-				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
-				};
-
-				async Task Act()
-				{
-					await That(methods).HaveInParameter<int>("value");
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that methods
-					             all have parameter of type int with name "value" with in modifier,
-					             but at least one did not
-					             """);
-			}
-
-			[Fact]
-			public async Task SystemTypeAndName_WhenNotAllHaveInParameter_ShouldFailWithModifierDescription()
-			{
-				IEnumerable<MethodInfo> methods = new[]
-				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
-				};
-
-				async Task Act()
-				{
-					await That(methods).HaveInParameter(typeof(int), "value");
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that methods
-					             all have parameter of type int with name "value" with in modifier,
-					             but at least one did not
-					             """);
-			}
-
-			[Fact]
 			public async Task Name_WhenNotAllHaveInParameter_ShouldFailWithModifierDescription()
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
 				};
 
 				async Task Act()
@@ -354,23 +269,43 @@ public sealed partial class ThatMethods
 			}
 
 			[Fact]
-			public async Task TypeExactly_WhenNotAllHaveInParameter_ShouldFailWithModifierDescription()
+			public async Task SystemType_WhenNotAllHaveInParameter_ShouldFailWithModifierDescription()
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
 				};
 
 				async Task Act()
 				{
-					await That(methods).HaveInParameterExactly<int>();
+					await That(methods).HaveInParameter(typeof(int));
 				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that methods
-					             all have parameter of exact type int with in modifier,
+					             all have parameter of type int with in modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task SystemTypeAndName_WhenNotAllHaveInParameter_ShouldFailWithModifierDescription()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveInParameter(typeof(int), "value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of type int with name "value" with in modifier,
 					             but at least one did not
 					             """);
 			}
@@ -380,8 +315,7 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
 				};
 
 				async Task Act()
@@ -398,34 +332,11 @@ public sealed partial class ThatMethods
 			}
 
 			[Fact]
-			public async Task TypeExactlyAndName_WhenNotAllHaveInParameter_ShouldFailWithModifierDescription()
-			{
-				IEnumerable<MethodInfo> methods = new[]
-				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
-				};
-
-				async Task Act()
-				{
-					await That(methods).HaveInParameterExactly<int>("value");
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that methods
-					             all have parameter of exact type int with name "value" with in modifier,
-					             but at least one did not
-					             """);
-			}
-
-			[Fact]
 			public async Task SystemTypeExactlyAndName_WhenNotAllHaveInParameter_ShouldFailWithModifierDescription()
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
 				};
 
 				async Task Act()
@@ -442,45 +353,87 @@ public sealed partial class ThatMethods
 			}
 
 			[Fact]
-			public async Task WhenSomeButNotAllParametersAreIn_ShouldStillSucceed()
+			public async Task Type_WhenNotAllHaveInParameter_ShouldFailWithModifierDescription()
 			{
-				// Kills the Any()->All() mutant: this method has an in parameter and a normal one,
-				// so Any(IsInParameter) is true but All(IsInParameter) is false.
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInAndNormalParameter))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
 				};
 
 				async Task Act()
 				{
-					await That(methods).HaveInParameter();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenNotAllHaveInParameter_ShouldListOffendingMethod()
-			{
-				// Kills the Formatter.Format(NotMatching) statement mutant: the offending
-				// method must appear in the result message.
-				IEnumerable<MethodInfo> methods = new[]
-				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
-				};
-
-				async Task Act()
-				{
-					await That(methods).HaveInParameter();
+					await That(methods).HaveInParameter<int>();
 				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that methods
-					             all have an in parameter,
-					             but it contained methods without an in parameter *MethodWithoutModifiers*
-					             """).AsWildcard();
+					             all have parameter of type int with in modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task TypeAndName_WhenNotAllHaveInParameter_ShouldFailWithModifierDescription()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveInParameter<int>("value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of type int with name "value" with in modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task TypeExactly_WhenNotAllHaveInParameter_ShouldFailWithModifierDescription()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveInParameterExactly<int>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type int with in modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task TypeExactlyAndName_WhenNotAllHaveInParameter_ShouldFailWithModifierDescription()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveInParameterExactly<int>("value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type int with name "value" with in modifier,
+					             but at least one did not
+					             """);
 			}
 
 			[Fact]
@@ -503,6 +456,47 @@ public sealed partial class ThatMethods
 					             not all have an in parameter,
 					             but it only contained methods with an in parameter *MethodWithInParameter*
 					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenNotAllHaveInParameter_ShouldListOffendingMethod()
+			{
+				// Kills the Formatter.Format(NotMatching) statement mutant: the offending
+				// method must appear in the result message.
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveInParameter();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have an in parameter,
+					             but it contained methods without an in parameter *MethodWithoutModifiers*
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenSomeButNotAllParametersAreIn_ShouldStillSucceed()
+			{
+				// Kills the Any()->All() mutant: this method has an in parameter and a normal one,
+				// so Any(IsInParameter) is true but All(IsInParameter) is false.
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInAndNormalParameter))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveInParameter();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 
 #if NET8_0_OR_GREATER
@@ -558,18 +552,6 @@ public sealed partial class ThatMethods
 			}
 #endif
 		}
-
-#if NET8_0_OR_GREATER
-		private static async IAsyncEnumerable<MethodInfo> ToAsyncEnumerable(params MethodInfo[] items)
-		{
-			foreach (MethodInfo item in items)
-			{
-				yield return item;
-			}
-
-			await Task.CompletedTask;
-		}
-#endif
 
 #pragma warning disable CA1822
 		// ReSharper disable UnusedParameter.Local

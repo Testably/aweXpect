@@ -112,6 +112,22 @@ public sealed partial class ThatFields
 				}
 
 				[Fact]
+				public async Task WhenAllFieldsHaveMatchingAttribute_ShouldSucceed()
+				{
+					IAsyncEnumerable<FieldInfo?> subject = new[]
+					{
+						typeof(TestClass).GetField("TestField1")!, typeof(TestClass).GetField("TestField2")!,
+					}.ToTestAsyncEnumerable<FieldInfo?>();
+
+					async Task Act()
+					{
+						await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Field"));
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
 				public async Task WhenNotAllFieldsHaveAttribute_ShouldFail()
 				{
 					IAsyncEnumerable<FieldInfo?> subject = new[]
@@ -132,22 +148,6 @@ public sealed partial class ThatFields
 						               string ThatFields.Have.AttributeTests.TestClass.NoAttributeField
 						             ]
 						             """);
-				}
-
-				[Fact]
-				public async Task WhenAllFieldsHaveMatchingAttribute_ShouldSucceed()
-				{
-					IAsyncEnumerable<FieldInfo?> subject = new[]
-					{
-						typeof(TestClass).GetField("TestField1")!, typeof(TestClass).GetField("TestField2")!,
-					}.ToTestAsyncEnumerable<FieldInfo?>();
-
-					async Task Act()
-					{
-						await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Field"));
-					}
-
-					await That(Act).DoesNotThrow();
 				}
 
 				[Fact]

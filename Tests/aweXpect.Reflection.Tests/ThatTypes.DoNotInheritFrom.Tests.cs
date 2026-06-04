@@ -11,21 +11,6 @@ public sealed partial class ThatTypes
 		public sealed class GenericTests
 		{
 			[Fact]
-			public async Task WhenBaseTypeIsAnInterface_ShouldThrowArgumentException()
-			{
-				Filtered.Types subject = In.Types(typeof(ClassWithInterface1), typeof(ClassWithInterface2));
-
-				async Task Act()
-				{
-					await That(subject).DoNotInheritFrom<ITestInterface>();
-				}
-
-				await That(Act).Throws<ArgumentException>()
-					.WithMessage(
-						"The type to check inheritance from must be a class, but it was the interface ThatTypes.ITestInterface. Use 'Implements' to check for interface implementations.");
-			}
-
-			[Fact]
 			public async Task WhenAllTypesInherit_ShouldFail()
 			{
 				Filtered.Types subject = In.Types(typeof(DerivedClass1), typeof(DerivedClass2));
@@ -87,6 +72,21 @@ public sealed partial class ThatTypes
 			}
 
 			[Fact]
+			public async Task WhenBaseTypeIsAnInterface_ShouldThrowArgumentException()
+			{
+				Filtered.Types subject = In.Types(typeof(ClassWithInterface1), typeof(ClassWithInterface2));
+
+				async Task Act()
+				{
+					await That(subject).DoNotInheritFrom<ITestInterface>();
+				}
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage(
+						"The type to check inheritance from must be a class, but it was the interface ThatTypes.ITestInterface. Use 'Implements' to check for interface implementations.");
+			}
+
+			[Fact]
 			public async Task WhenNoTypesInherit_ShouldSucceed()
 			{
 				Filtered.Types subject = In.Types(typeof(UnrelatedClass), typeof(GenericTests));
@@ -102,25 +102,6 @@ public sealed partial class ThatTypes
 
 		public sealed class TypeTests
 		{
-			[Fact]
-			public async Task WhenBaseTypeIsAnInterface_ShouldThrowArgumentException()
-			{
-				IEnumerable<Type?> subject = new[]
-				{
-					typeof(ClassWithInterface1), typeof(ClassWithInterface2),
-				};
-				Type interfaceType = typeof(ITestInterface);
-
-				async Task Act()
-				{
-					await That(subject).DoNotInheritFrom(interfaceType);
-				}
-
-				await That(Act).Throws<ArgumentException>()
-					.WithMessage(
-						"The type to check inheritance from must be a class, but it was the interface ThatTypes.ITestInterface. Use 'Implements' to check for interface implementations.");
-			}
-
 			[Fact]
 			public async Task WhenAllTypesInherit_ShouldFail()
 			{
@@ -195,6 +176,39 @@ public sealed partial class ThatTypes
 			}
 
 			[Fact]
+			public async Task WhenBaseTypeIsAnInterface_ShouldThrowArgumentException()
+			{
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(ClassWithInterface1), typeof(ClassWithInterface2),
+				};
+				Type interfaceType = typeof(ITestInterface);
+
+				async Task Act()
+				{
+					await That(subject).DoNotInheritFrom(interfaceType);
+				}
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage(
+						"The type to check inheritance from must be a class, but it was the interface ThatTypes.ITestInterface. Use 'Implements' to check for interface implementations.");
+			}
+
+			[Fact]
+			public async Task WhenNoTypesInherit_ShouldSucceed()
+			{
+				Filtered.Types subject = In.Types(typeof(UnrelatedClass), typeof(GenericTests));
+				Type baseType = typeof(BaseClass);
+
+				async Task Act()
+				{
+					await That(subject).DoNotInheritFrom(baseType);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenTypesInheritDirectly_WithForceDirect_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -216,20 +230,6 @@ public sealed partial class ThatTypes
 					               ThatTypes.DerivedClass1
 					             ]
 					             """);
-			}
-
-			[Fact]
-			public async Task WhenNoTypesInherit_ShouldSucceed()
-			{
-				Filtered.Types subject = In.Types(typeof(UnrelatedClass), typeof(GenericTests));
-				Type baseType = typeof(BaseClass);
-
-				async Task Act()
-				{
-					await That(subject).DoNotInheritFrom(baseType);
-				}
-
-				await That(Act).DoesNotThrow();
 			}
 		}
 
@@ -257,21 +257,6 @@ public sealed partial class ThatTypes
 			}
 
 			[Fact]
-			public async Task WhenBaseTypeIsAnInterface_ShouldThrowArgumentException()
-			{
-				Filtered.Types subject = In.Types(typeof(ClassWithInterface1), typeof(ClassWithInterface2));
-
-				async Task Act()
-				{
-					await That(subject).DoesNotComplyWith(they => they.DoNotInheritFrom<ITestInterface>());
-				}
-
-				await That(Act).Throws<ArgumentException>()
-					.WithMessage(
-						"The type to check inheritance from must be a class, but it was the interface ThatTypes.ITestInterface. Use 'Implements' to check for interface implementations.");
-			}
-
-			[Fact]
 			public async Task WhenAllTypesInherit_ShouldSucceed()
 			{
 				Filtered.Types subject = In.Types(typeof(DerivedClass1), typeof(DerivedClass2));
@@ -295,6 +280,21 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenBaseTypeIsAnInterface_ShouldThrowArgumentException()
+			{
+				Filtered.Types subject = In.Types(typeof(ClassWithInterface1), typeof(ClassWithInterface2));
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they.DoNotInheritFrom<ITestInterface>());
+				}
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage(
+						"The type to check inheritance from must be a class, but it was the interface ThatTypes.ITestInterface. Use 'Implements' to check for interface implementations.");
 			}
 		}
 	}

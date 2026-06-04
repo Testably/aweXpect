@@ -94,22 +94,6 @@ public sealed partial class ThatEvents
 		public sealed class AsyncEnumerableTests
 		{
 			[Fact]
-			public async Task WhenFilteringOnlyNonAbstractEvents_ShouldSucceed()
-			{
-				IAsyncEnumerable<EventInfo?> subject = typeof(AbstractClassWithMembers)
-					.GetEvents(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
-					.Where(e => e.Name == nameof(AbstractClassWithMembers.VirtualEvent))
-					.ToTestAsyncEnumerable<EventInfo?>();
-
-				async Task Act()
-				{
-					await That(subject).AreNotAbstract();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenEventsContainAbstractEvents_ShouldFail()
 			{
 				IAsyncEnumerable<EventInfo?> subject = typeof(AbstractClassWithMembers)
@@ -129,6 +113,22 @@ public sealed partial class ThatEvents
 					               *
 					             ]
 					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenFilteringOnlyNonAbstractEvents_ShouldSucceed()
+			{
+				IAsyncEnumerable<EventInfo?> subject = typeof(AbstractClassWithMembers)
+					.GetEvents(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+					.Where(e => e.Name == nameof(AbstractClassWithMembers.VirtualEvent))
+					.ToTestAsyncEnumerable<EventInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).AreNotAbstract();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 #endif

@@ -100,6 +100,30 @@ public sealed partial class ThatFields
 		public sealed class AsyncEnumerableTests
 		{
 			[Fact]
+			public async Task WhenAllFieldsAreNotObsolete_Negated_ShouldFail()
+			{
+				IAsyncEnumerable<FieldInfo?> subject = new[]
+					{
+						typeof(ClassWithObsoleteMembers).GetField(nameof(ClassWithObsoleteMembers.NonObsoleteField))!,
+					}
+					.ToTestAsyncEnumerable<FieldInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotObsolete());
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             also contain an obsolete item,
+					             but it only contained non-obsolete items [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Fact]
 			public async Task WhenAllFieldsAreNotObsolete_ShouldSucceed()
 			{
 				IAsyncEnumerable<FieldInfo?> subject = new[]
@@ -121,8 +145,7 @@ public sealed partial class ThatFields
 			{
 				IAsyncEnumerable<FieldInfo?> subject = new[]
 					{
-						typeof(ClassWithObsoleteMembers).GetField(nameof(ClassWithObsoleteMembers.ObsoleteField))!,
-						typeof(ClassWithObsoleteMembers).GetField(nameof(ClassWithObsoleteMembers.NonObsoleteField))!,
+						typeof(ClassWithObsoleteMembers).GetField(nameof(ClassWithObsoleteMembers.ObsoleteField))!, typeof(ClassWithObsoleteMembers).GetField(nameof(ClassWithObsoleteMembers.NonObsoleteField))!,
 					}
 					.ToTestAsyncEnumerable<FieldInfo?>();
 
@@ -136,30 +159,6 @@ public sealed partial class ThatFields
 					             Expected that subject
 					             are all not obsolete,
 					             but it contained obsolete items [
-					               *
-					             ]
-					             """).AsWildcard();
-			}
-
-			[Fact]
-			public async Task WhenAllFieldsAreNotObsolete_Negated_ShouldFail()
-			{
-				IAsyncEnumerable<FieldInfo?> subject = new[]
-					{
-						typeof(ClassWithObsoleteMembers).GetField(nameof(ClassWithObsoleteMembers.NonObsoleteField))!,
-					}
-					.ToTestAsyncEnumerable<FieldInfo?>();
-
-				async Task Act()
-				{
-					await That(subject).DoesNotComplyWith(they => they.AreNotObsolete());
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             also contain an obsolete item,
-					             but it only contained non-obsolete items [
 					               *
 					             ]
 					             """).AsWildcard();

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
+using Xunit.Sdk;
 #if NET8_0_OR_GREATER
 using aweXpect.Reflection.Tests.TestHelpers;
 #endif
-using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -56,7 +56,7 @@ public sealed partial class ThatTypes
 			[Fact]
 			public async Task WhenAsyncEnumerableAllTypesAreReadOnly_ShouldSucceed()
 			{
-				IAsyncEnumerable<Type?> subject = new Type?[]
+				IAsyncEnumerable<Type?> subject = new[]
 				{
 					typeof(PublicReadOnlyStruct),
 				}.ToTestAsyncEnumerable();
@@ -72,7 +72,7 @@ public sealed partial class ThatTypes
 			[Fact]
 			public async Task WhenAsyncEnumerableSomeTypesAreNotReadOnly_ShouldFail()
 			{
-				IAsyncEnumerable<Type?> subject = new Type?[]
+				IAsyncEnumerable<Type?> subject = new[]
 				{
 					typeof(PublicReadOnlyStruct), typeof(PublicStruct),
 				}.ToTestAsyncEnumerable();

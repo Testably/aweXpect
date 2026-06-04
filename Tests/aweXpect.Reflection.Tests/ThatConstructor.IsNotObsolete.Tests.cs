@@ -14,7 +14,10 @@ public sealed partial class ThatConstructor
 			public async Task WhenConstructorIsNotObsolete_ShouldSucceed()
 			{
 				ConstructorInfo subject =
-					typeof(ClassWithObsoleteMembers).GetConstructor(new[] { typeof(int) })!;
+					typeof(ClassWithObsoleteMembers).GetConstructor(new[]
+					{
+						typeof(int),
+					})!;
 
 				async Task Act()
 				{
@@ -22,6 +25,24 @@ public sealed partial class ThatConstructor
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenConstructorIsNull_ShouldFail()
+			{
+				ConstructorInfo? subject = null;
+
+				async Task Act()
+				{
+					await That(subject).IsNotObsolete();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             is not obsolete,
+					             but it was <null>
+					             """);
 			}
 
 			[Fact]
@@ -42,24 +63,6 @@ public sealed partial class ThatConstructor
 					              but it was obsolete {Formatter.Format(subject)}
 					              """);
 			}
-
-			[Fact]
-			public async Task WhenConstructorIsNull_ShouldFail()
-			{
-				ConstructorInfo? subject = null;
-
-				async Task Act()
-				{
-					await That(subject).IsNotObsolete();
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             is not obsolete,
-					             but it was <null>
-					             """);
-			}
 		}
 
 		public sealed class NegatedTests
@@ -68,7 +71,10 @@ public sealed partial class ThatConstructor
 			public async Task WhenConstructorIsNotObsolete_ShouldFail()
 			{
 				ConstructorInfo subject =
-					typeof(ClassWithObsoleteMembers).GetConstructor(new[] { typeof(int) })!;
+					typeof(ClassWithObsoleteMembers).GetConstructor(new[]
+					{
+						typeof(int),
+					})!;
 
 				async Task Act()
 				{

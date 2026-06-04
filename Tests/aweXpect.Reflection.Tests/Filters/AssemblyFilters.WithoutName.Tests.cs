@@ -40,7 +40,7 @@ public sealed partial class AssemblyFilters
 
 				await That(assemblies).All()
 					.Satisfy(a => !string.Equals(a!.GetName().Name, "aweXpect.Reflection.Tests",
-						System.StringComparison.OrdinalIgnoreCase))
+						StringComparison.OrdinalIgnoreCase))
 					.And.IsNotEmpty();
 				await That(assemblies.GetDescription())
 					.IsEqualTo(

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using aweXpect.Customization;
 
 namespace aweXpect.Reflection.Tests;
@@ -110,7 +108,7 @@ public sealed class CompilerGeneratedFilteringTests
 		=> await ToList(In.Type<T>().Constructors());
 
 #if NET8_0_OR_GREATER
-	private static async Task<List<T>> ToList<T>(System.Collections.Generic.IAsyncEnumerable<T> source)
+	private static async Task<List<T>> ToList<T>(IAsyncEnumerable<T> source)
 	{
 		List<T> result = new();
 		await foreach (T item in source)
@@ -132,7 +130,11 @@ public sealed class CompilerGeneratedFilteringTests
 		public int UsesLocalFunction()
 		{
 			return Local();
-			int Local() => 42;
+
+			int Local()
+			{
+				return 42;
+			}
 		}
 
 		public async Task<int> AsyncMethod()

@@ -11,20 +11,6 @@ public sealed partial class ThatEvent
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenEventIsObsolete_ShouldSucceed()
-			{
-				EventInfo subject =
-					typeof(ClassWithObsoleteMembers).GetEvent(nameof(ClassWithObsoleteMembers.ObsoleteEvent))!;
-
-				async Task Act()
-				{
-					await That(subject).IsObsolete();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenEventIsNotObsolete_ShouldFail()
 			{
 				EventInfo subject =
@@ -60,10 +46,38 @@ public sealed partial class ThatEvent
 					             but it was <null>
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenEventIsObsolete_ShouldSucceed()
+			{
+				EventInfo subject =
+					typeof(ClassWithObsoleteMembers).GetEvent(nameof(ClassWithObsoleteMembers.ObsoleteEvent))!;
+
+				async Task Act()
+				{
+					await That(subject).IsObsolete();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
 		}
 
 		public sealed class NegatedTests
 		{
+			[Fact]
+			public async Task WhenEventIsNotObsolete_ShouldSucceed()
+			{
+				EventInfo subject =
+					typeof(ClassWithObsoleteMembers).GetEvent(nameof(ClassWithObsoleteMembers.NonObsoleteEvent))!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsObsolete());
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[Fact]
 			public async Task WhenEventIsObsolete_ShouldFail()
 			{
@@ -81,20 +95,6 @@ public sealed partial class ThatEvent
 					              is not obsolete,
 					              but it was obsolete {Formatter.Format(subject)}
 					              """);
-			}
-
-			[Fact]
-			public async Task WhenEventIsNotObsolete_ShouldSucceed()
-			{
-				EventInfo subject =
-					typeof(ClassWithObsoleteMembers).GetEvent(nameof(ClassWithObsoleteMembers.NonObsoleteEvent))!;
-
-				async Task Act()
-				{
-					await That(subject).DoesNotComplyWith(it => it.IsObsolete());
-				}
-
-				await That(Act).DoesNotThrow();
 			}
 		}
 	}

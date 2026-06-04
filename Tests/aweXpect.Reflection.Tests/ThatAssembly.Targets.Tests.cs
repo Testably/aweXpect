@@ -37,6 +37,24 @@ public sealed partial class ThatAssembly
 			}
 
 			[Fact]
+			public async Task WhenAssemblyIsNull_ShouldFail()
+			{
+				Assembly? subject = null;
+
+				async Task Act()
+				{
+					await That(subject).Targets("net8.0");
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             targets equal to "net8.0",
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenAssemblyMatchesIgnoringCase_ShouldSucceed()
 			{
 				Assembly subject = typeof(PublicAbstractClass).Assembly;
@@ -60,24 +78,6 @@ public sealed partial class ThatAssembly
 				}
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenAssemblyIsNull_ShouldFail()
-			{
-				Assembly? subject = null;
-
-				async Task Act()
-				{
-					await That(subject).Targets("net8.0");
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             targets equal to "net8.0",
-					             but it was <null>
-					             """);
 			}
 		}
 
@@ -108,10 +108,10 @@ public sealed partial class ThatAssembly
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
-					             Expected that subject
-					             targets not equal to "{CurrentTarget}",
-					             but it *
-					             """).AsWildcard();
+					              Expected that subject
+					              targets not equal to "{CurrentTarget}",
+					              but it *
+					              """).AsWildcard();
 			}
 		}
 	}

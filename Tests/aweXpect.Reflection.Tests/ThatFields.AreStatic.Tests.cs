@@ -116,21 +116,6 @@ public sealed partial class ThatFields
 			}
 
 			[Fact]
-			public async Task WhenFilteringOnlyStaticFields_ShouldSucceed()
-			{
-				IAsyncEnumerable<FieldInfo?> subject = typeof(TestClassWithStaticMembers)
-					.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly)
-					.ToTestAsyncEnumerable<FieldInfo?>();
-
-				async Task Act()
-				{
-					await That(subject).AreStatic();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenFilteringOnlyStaticFields_Negated_ShouldFail()
 			{
 				IAsyncEnumerable<FieldInfo?> subject = typeof(TestClassWithStaticMembers)
@@ -150,6 +135,21 @@ public sealed partial class ThatFields
 					               *
 					             ]
 					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenFilteringOnlyStaticFields_ShouldSucceed()
+			{
+				IAsyncEnumerable<FieldInfo?> subject = typeof(TestClassWithStaticMembers)
+					.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly)
+					.ToTestAsyncEnumerable<FieldInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).AreStatic();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 #endif

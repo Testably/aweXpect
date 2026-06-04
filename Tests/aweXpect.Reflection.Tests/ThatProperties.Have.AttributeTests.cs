@@ -112,12 +112,27 @@ public sealed partial class ThatProperties
 				}
 
 				[Fact]
+				public async Task WhenAllPropertiesHaveMatchingAttribute_ShouldSucceed()
+				{
+					IAsyncEnumerable<PropertyInfo?> subject = new[]
+					{
+						typeof(TestClass).GetProperty("TestProperty1")!, typeof(TestClass).GetProperty("TestProperty2")!,
+					}.ToTestAsyncEnumerable<PropertyInfo?>();
+
+					async Task Act()
+					{
+						await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Property"));
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
 				public async Task WhenNotAllPropertiesHaveAttribute_ShouldFail()
 				{
 					IAsyncEnumerable<PropertyInfo?> subject = new[]
 					{
-						typeof(TestClass).GetProperty("TestProperty1")!,
-						typeof(TestClass).GetProperty("NoAttributeProperty")!,
+						typeof(TestClass).GetProperty("TestProperty1")!, typeof(TestClass).GetProperty("NoAttributeProperty")!,
 					}.ToTestAsyncEnumerable<PropertyInfo?>();
 
 					async Task Act()
@@ -133,22 +148,6 @@ public sealed partial class ThatProperties
 						               public string ThatProperties.Have.AttributeTests.TestClass.NoAttributeProperty { get; set; }
 						             ]
 						             """);
-				}
-
-				[Fact]
-				public async Task WhenAllPropertiesHaveMatchingAttribute_ShouldSucceed()
-				{
-					IAsyncEnumerable<PropertyInfo?> subject = new[]
-					{
-						typeof(TestClass).GetProperty("TestProperty1")!, typeof(TestClass).GetProperty("TestProperty2")!,
-					}.ToTestAsyncEnumerable<PropertyInfo?>();
-
-					async Task Act()
-					{
-						await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Property"));
-					}
-
-					await That(Act).DoesNotThrow();
 				}
 
 				[Fact]

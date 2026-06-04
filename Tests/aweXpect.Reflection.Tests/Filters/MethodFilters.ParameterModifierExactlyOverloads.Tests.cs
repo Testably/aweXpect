@@ -24,6 +24,16 @@ public sealed partial class MethodFilters
 			}
 
 			[Fact]
+			public async Task WithInParameterExactly_UsingType_ShouldFilter()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithInParameterExactly(typeof(int));
+
+				await That(methods).Contains(Method(nameof(ModifierMethods.InInt)));
+				await That(methods).DoesNotContain(Method(nameof(ModifierMethods.RefInt)));
+			}
+
+			[Fact]
 			public async Task WithInParameterExactlyAndName_ShouldFilterByName()
 			{
 				Filtered.Methods matching = In.AssemblyContaining<AssemblyFilters>()
@@ -36,10 +46,32 @@ public sealed partial class MethodFilters
 			}
 
 			[Fact]
+			public async Task WithInParameterExactlyAndName_UsingType_ShouldFilterByName()
+			{
+				Filtered.Methods matching = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithInParameterExactly(typeof(int), "value");
+				Filtered.Methods wrongName = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithInParameterExactly(typeof(int), "wrong");
+
+				await That(matching).Contains(Method(nameof(ModifierMethods.InInt)));
+				await That(wrongName).DoesNotContain(Method(nameof(ModifierMethods.InInt)));
+			}
+
+			[Fact]
 			public async Task WithOptionalParameterExactly_ShouldFilter()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
 					.Methods().WithOptionalParameterExactly<int>();
+
+				await That(methods).Contains(Method(nameof(ModifierMethods.OptionalInt)));
+				await That(methods).DoesNotContain(Method(nameof(ModifierMethods.PlainInt)));
+			}
+
+			[Fact]
+			public async Task WithOptionalParameterExactly_UsingType_ShouldFilter()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithOptionalParameterExactly(typeof(int));
 
 				await That(methods).Contains(Method(nameof(ModifierMethods.OptionalInt)));
 				await That(methods).DoesNotContain(Method(nameof(ModifierMethods.PlainInt)));
@@ -58,10 +90,32 @@ public sealed partial class MethodFilters
 			}
 
 			[Fact]
+			public async Task WithOptionalParameterExactlyAndName_UsingType_ShouldFilterByName()
+			{
+				Filtered.Methods matching = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithOptionalParameterExactly(typeof(int), "value");
+				Filtered.Methods wrongName = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithOptionalParameterExactly(typeof(int), "wrong");
+
+				await That(matching).Contains(Method(nameof(ModifierMethods.OptionalInt)));
+				await That(wrongName).DoesNotContain(Method(nameof(ModifierMethods.OptionalInt)));
+			}
+
+			[Fact]
 			public async Task WithOutParameterExactly_ShouldFilter()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
 					.Methods().WithOutParameterExactly<int>();
+
+				await That(methods).Contains(Method(nameof(ModifierMethods.OutInt)));
+				await That(methods).DoesNotContain(Method(nameof(ModifierMethods.RefInt)));
+			}
+
+			[Fact]
+			public async Task WithOutParameterExactly_UsingType_ShouldFilter()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithOutParameterExactly(typeof(int));
 
 				await That(methods).Contains(Method(nameof(ModifierMethods.OutInt)));
 				await That(methods).DoesNotContain(Method(nameof(ModifierMethods.RefInt)));
@@ -80,10 +134,31 @@ public sealed partial class MethodFilters
 			}
 
 			[Fact]
+			public async Task WithOutParameterExactlyAndName_UsingType_ShouldFilterByName()
+			{
+				Filtered.Methods matching = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithOutParameterExactly(typeof(int), "value");
+				Filtered.Methods wrongName = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithOutParameterExactly(typeof(int), "wrong");
+
+				await That(matching).Contains(Method(nameof(ModifierMethods.OutInt)));
+				await That(wrongName).DoesNotContain(Method(nameof(ModifierMethods.OutInt)));
+			}
+
+			[Fact]
 			public async Task WithParamsParameterExactly_ShouldFilter()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
 					.Methods().WithParamsParameterExactly<int[]>();
+
+				await That(methods).Contains(Method(nameof(ModifierMethods.ParamsInt)));
+			}
+
+			[Fact]
+			public async Task WithParamsParameterExactly_UsingType_ShouldFilter()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithParamsParameterExactly(typeof(int[]));
 
 				await That(methods).Contains(Method(nameof(ModifierMethods.ParamsInt)));
 			}
@@ -95,6 +170,18 @@ public sealed partial class MethodFilters
 					.Methods().WithParamsParameterExactly<int[]>("values");
 				Filtered.Methods wrongName = In.AssemblyContaining<AssemblyFilters>()
 					.Methods().WithParamsParameterExactly<int[]>("wrong");
+
+				await That(matching).Contains(Method(nameof(ModifierMethods.ParamsInt)));
+				await That(wrongName).DoesNotContain(Method(nameof(ModifierMethods.ParamsInt)));
+			}
+
+			[Fact]
+			public async Task WithParamsParameterExactlyAndName_UsingType_ShouldFilterByName()
+			{
+				Filtered.Methods matching = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithParamsParameterExactly(typeof(int[]), "values");
+				Filtered.Methods wrongName = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithParamsParameterExactly(typeof(int[]), "wrong");
 
 				await That(matching).Contains(Method(nameof(ModifierMethods.ParamsInt)));
 				await That(wrongName).DoesNotContain(Method(nameof(ModifierMethods.ParamsInt)));
@@ -143,105 +230,6 @@ public sealed partial class MethodFilters
 			}
 
 			[Fact]
-			public async Task WithRefParameterExactlyAndName_ShouldFilterByName()
-			{
-				Filtered.Methods matching = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().WithRefParameterExactly<int>("value");
-				Filtered.Methods wrongName = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().WithRefParameterExactly<int>("wrong");
-
-				await That(matching).Contains(Method(nameof(ModifierMethods.RefInt)));
-				await That(wrongName).DoesNotContain(Method(nameof(ModifierMethods.RefInt)));
-			}
-
-			[Fact]
-			public async Task WithInParameterExactly_UsingType_ShouldFilter()
-			{
-				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().WithInParameterExactly(typeof(int));
-
-				await That(methods).Contains(Method(nameof(ModifierMethods.InInt)));
-				await That(methods).DoesNotContain(Method(nameof(ModifierMethods.RefInt)));
-			}
-
-			[Fact]
-			public async Task WithInParameterExactlyAndName_UsingType_ShouldFilterByName()
-			{
-				Filtered.Methods matching = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().WithInParameterExactly(typeof(int), "value");
-				Filtered.Methods wrongName = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().WithInParameterExactly(typeof(int), "wrong");
-
-				await That(matching).Contains(Method(nameof(ModifierMethods.InInt)));
-				await That(wrongName).DoesNotContain(Method(nameof(ModifierMethods.InInt)));
-			}
-
-			[Fact]
-			public async Task WithOptionalParameterExactly_UsingType_ShouldFilter()
-			{
-				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().WithOptionalParameterExactly(typeof(int));
-
-				await That(methods).Contains(Method(nameof(ModifierMethods.OptionalInt)));
-				await That(methods).DoesNotContain(Method(nameof(ModifierMethods.PlainInt)));
-			}
-
-			[Fact]
-			public async Task WithOptionalParameterExactlyAndName_UsingType_ShouldFilterByName()
-			{
-				Filtered.Methods matching = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().WithOptionalParameterExactly(typeof(int), "value");
-				Filtered.Methods wrongName = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().WithOptionalParameterExactly(typeof(int), "wrong");
-
-				await That(matching).Contains(Method(nameof(ModifierMethods.OptionalInt)));
-				await That(wrongName).DoesNotContain(Method(nameof(ModifierMethods.OptionalInt)));
-			}
-
-			[Fact]
-			public async Task WithOutParameterExactly_UsingType_ShouldFilter()
-			{
-				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().WithOutParameterExactly(typeof(int));
-
-				await That(methods).Contains(Method(nameof(ModifierMethods.OutInt)));
-				await That(methods).DoesNotContain(Method(nameof(ModifierMethods.RefInt)));
-			}
-
-			[Fact]
-			public async Task WithOutParameterExactlyAndName_UsingType_ShouldFilterByName()
-			{
-				Filtered.Methods matching = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().WithOutParameterExactly(typeof(int), "value");
-				Filtered.Methods wrongName = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().WithOutParameterExactly(typeof(int), "wrong");
-
-				await That(matching).Contains(Method(nameof(ModifierMethods.OutInt)));
-				await That(wrongName).DoesNotContain(Method(nameof(ModifierMethods.OutInt)));
-			}
-
-			[Fact]
-			public async Task WithParamsParameterExactly_UsingType_ShouldFilter()
-			{
-				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().WithParamsParameterExactly(typeof(int[]));
-
-				await That(methods).Contains(Method(nameof(ModifierMethods.ParamsInt)));
-			}
-
-			[Fact]
-			public async Task WithParamsParameterExactlyAndName_UsingType_ShouldFilterByName()
-			{
-				Filtered.Methods matching = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().WithParamsParameterExactly(typeof(int[]), "values");
-				Filtered.Methods wrongName = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().WithParamsParameterExactly(typeof(int[]), "wrong");
-
-				await That(matching).Contains(Method(nameof(ModifierMethods.ParamsInt)));
-				await That(wrongName).DoesNotContain(Method(nameof(ModifierMethods.ParamsInt)));
-			}
-
-			[Fact]
 			public async Task WithRefParameterExactly_UsingType_OfBaseType_ShouldNotMatchDerivedParameterType()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
@@ -271,6 +259,18 @@ public sealed partial class MethodFilters
 				await That(methods.GetDescription())
 					.IsEqualTo("methods with parameter of exact type int and with ref modifier in assembly")
 					.AsPrefix();
+			}
+
+			[Fact]
+			public async Task WithRefParameterExactlyAndName_ShouldFilterByName()
+			{
+				Filtered.Methods matching = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithRefParameterExactly<int>("value");
+				Filtered.Methods wrongName = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithRefParameterExactly<int>("wrong");
+
+				await That(matching).Contains(Method(nameof(ModifierMethods.RefInt)));
+				await That(wrongName).DoesNotContain(Method(nameof(ModifierMethods.RefInt)));
 			}
 
 			[Fact]

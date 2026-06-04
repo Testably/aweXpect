@@ -48,9 +48,8 @@ public sealed partial class ThatField
 #pragma warning disable CS0414 // Field is assigned but its value is never used
 			private class TestClass
 			{
-				[Foo] public string TestField = "";
-
 				public string NoAttributeField = "";
+				[Foo] public string TestField = "";
 			}
 #pragma warning restore CS0414
 		}

@@ -12,6 +12,20 @@ public sealed partial class ThatProperties
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenPropertiesContainNonExtensionProperties_Negated_ShouldSucceed()
+			{
+				IEnumerable<PropertyInfo> subject = typeof(ClassWithRequiredMembers)
+					.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreExtensionProperties());
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenPropertiesContainNonExtensionProperties_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subject = typeof(ClassWithRequiredMembers)
@@ -30,20 +44,6 @@ public sealed partial class ThatProperties
 					               *
 					             ]
 					             """).AsWildcard();
-			}
-
-			[Fact]
-			public async Task WhenPropertiesContainNonExtensionProperties_Negated_ShouldSucceed()
-			{
-				IEnumerable<PropertyInfo> subject = typeof(ClassWithRequiredMembers)
-					.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-
-				async Task Act()
-				{
-					await That(subject).DoesNotComplyWith(they => they.AreExtensionProperties());
-				}
-
-				await That(Act).DoesNotThrow();
 			}
 		}
 

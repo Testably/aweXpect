@@ -39,25 +39,6 @@ public sealed partial class ThatMethod
 			}
 
 			[Fact]
-			public async Task WhenMethodReturnsTaskButIsNotAsync_ShouldFail()
-			{
-				MethodInfo subject =
-					typeof(ClassWithAsyncMembers).GetMethod(nameof(ClassWithAsyncMembers.NonAsyncTaskMethod))!;
-
-				async Task Act()
-				{
-					await That(subject).IsAsync();
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage($"""
-					              Expected that subject
-					              is async,
-					              but it was non-async {Formatter.Format(subject)}
-					              """);
-			}
-
-			[Fact]
 			public async Task WhenMethodIsNotAsync_ShouldFail()
 			{
 				MethodInfo subject =
@@ -92,6 +73,25 @@ public sealed partial class ThatMethod
 					             is async,
 					             but it was <null>
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenMethodReturnsTaskButIsNotAsync_ShouldFail()
+			{
+				MethodInfo subject =
+					typeof(ClassWithAsyncMembers).GetMethod(nameof(ClassWithAsyncMembers.NonAsyncTaskMethod))!;
+
+				async Task Act()
+				{
+					await That(subject).IsAsync();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage($"""
+					              Expected that subject
+					              is async,
+					              but it was non-async {Formatter.Format(subject)}
+					              """);
 			}
 		}
 

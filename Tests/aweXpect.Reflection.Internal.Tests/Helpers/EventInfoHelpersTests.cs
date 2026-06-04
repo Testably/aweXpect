@@ -18,6 +18,28 @@ public sealed class EventInfoHelpersTests
 	}
 
 	[Fact]
+	public async Task HasAttribute_WithAttributeType_WithoutPredicate_ShouldReturnTrue()
+	{
+		EventInfo eventInfo = typeof(TestClass).GetEvent(nameof(TestClass.Event1WithAttribute))!;
+
+		bool result = eventInfo.HasAttribute(typeof(DummyAttribute));
+
+		await That(result).IsTrue();
+	}
+
+	[Fact]
+	public async Task HasAttribute_WithAttributeType_WithPredicate_ShouldReturnPredicateResult()
+	{
+		EventInfo eventInfo = typeof(TestClass).GetEvent(nameof(TestClass.Event1WithAttribute))!;
+
+		bool result1 = eventInfo.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 1);
+		bool result2 = eventInfo.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 2);
+
+		await That(result1).IsTrue();
+		await That(result2).IsFalse();
+	}
+
+	[Fact]
 	public async Task HasAttribute_WithInheritedAttribute_ShouldReturnTrue()
 	{
 		EventInfo eventInfo =
@@ -45,28 +67,6 @@ public sealed class EventInfoHelpersTests
 
 		bool result1 = eventInfo.HasAttribute<DummyAttribute>(d => d.Value == 1);
 		bool result2 = eventInfo.HasAttribute<DummyAttribute>(d => d.Value == 2);
-
-		await That(result1).IsTrue();
-		await That(result2).IsFalse();
-	}
-
-	[Fact]
-	public async Task HasAttribute_WithAttributeType_WithoutPredicate_ShouldReturnTrue()
-	{
-		EventInfo eventInfo = typeof(TestClass).GetEvent(nameof(TestClass.Event1WithAttribute))!;
-
-		bool result = eventInfo.HasAttribute(typeof(DummyAttribute));
-
-		await That(result).IsTrue();
-	}
-
-	[Fact]
-	public async Task HasAttribute_WithAttributeType_WithPredicate_ShouldReturnPredicateResult()
-	{
-		EventInfo eventInfo = typeof(TestClass).GetEvent(nameof(TestClass.Event1WithAttribute))!;
-
-		bool result1 = eventInfo.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 1);
-		bool result2 = eventInfo.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 2);
 
 		await That(result1).IsTrue();
 		await That(result2).IsFalse();

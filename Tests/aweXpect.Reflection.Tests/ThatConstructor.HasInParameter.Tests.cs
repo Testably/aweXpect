@@ -63,6 +63,42 @@ public sealed partial class ThatConstructor
 		public sealed class TypedOverloadsTests
 		{
 			[Fact]
+			public async Task GenericExactType_WhenParameterIsNotIn_ShouldFail()
+			{
+				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
+
+				async Task Act()
+				{
+					await That(constructorInfo).HasInParameterExactly<int>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructorInfo
+					             has parameter of exact type int with in modifier,
+					             but it did not
+					             """);
+			}
+
+			[Fact]
+			public async Task GenericExactTypeAndName_WhenParameterIsNotIn_ShouldFail()
+			{
+				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
+
+				async Task Act()
+				{
+					await That(constructorInfo).HasInParameterExactly<int>("value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructorInfo
+					             has parameter of exact type int with name "value" with in modifier,
+					             but it did not
+					             """);
+			}
+
+			[Fact]
 			public async Task GenericType_WhenParameterIsNotIn_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
@@ -117,39 +153,16 @@ public sealed partial class ThatConstructor
 			}
 
 			[Fact]
-			public async Task GenericExactType_WhenParameterIsNotIn_ShouldFail()
+			public async Task WhenOnlySomeParametersAreIn_ShouldSucceed()
 			{
-				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
+				ConstructorInfo constructorInfo = typeof(ClassWithMixedParameters).GetConstructors().Single();
 
 				async Task Act()
 				{
-					await That(constructorInfo).HasInParameterExactly<int>();
+					await That(constructorInfo).HasInParameter();
 				}
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that constructorInfo
-					             has parameter of exact type int with in modifier,
-					             but it did not
-					             """);
-			}
-
-			[Fact]
-			public async Task GenericExactTypeAndName_WhenParameterIsNotIn_ShouldFail()
-			{
-				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
-
-				async Task Act()
-				{
-					await That(constructorInfo).HasInParameterExactly<int>("value");
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that constructorInfo
-					             has parameter of exact type int with name "value" with in modifier,
-					             but it did not
-					             """);
+				await That(Act).DoesNotThrow();
 			}
 
 #pragma warning disable CA2263
@@ -225,23 +238,28 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 #pragma warning restore CA2263
-
-			[Fact]
-			public async Task WhenOnlySomeParametersAreIn_ShouldSucceed()
-			{
-				ConstructorInfo constructorInfo = typeof(ClassWithMixedParameters).GetConstructors().Single();
-
-				async Task Act()
-				{
-					await That(constructorInfo).HasInParameter();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
 		}
 
 		public sealed class NegatedTests
 		{
+			[Fact]
+			public async Task GenericType_WhenParameterIsIn_ShouldFail()
+			{
+				ConstructorInfo constructorInfo = typeof(ClassWithInParameter).GetConstructors().Single();
+
+				async Task Act()
+				{
+					await That(constructorInfo).DoesNotComplyWith(it => it.HasInParameter<int>());
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructorInfo
+					             does not have parameter of type int with in modifier,
+					             but it did
+					             """);
+			}
+
 			[Fact]
 			public async Task WhenConstructorHasInParameter_ShouldFail()
 			{
@@ -271,24 +289,6 @@ public sealed partial class ThatConstructor
 				}
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task GenericType_WhenParameterIsIn_ShouldFail()
-			{
-				ConstructorInfo constructorInfo = typeof(ClassWithInParameter).GetConstructors().Single();
-
-				async Task Act()
-				{
-					await That(constructorInfo).DoesNotComplyWith(it => it.HasInParameter<int>());
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that constructorInfo
-					             does not have parameter of type int with in modifier,
-					             but it did
-					             """);
 			}
 		}
 

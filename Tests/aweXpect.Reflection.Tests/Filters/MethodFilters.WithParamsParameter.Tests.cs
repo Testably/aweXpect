@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Reflection;
 using aweXpect.Reflection.Collections;
 
@@ -7,46 +8,34 @@ public sealed partial class MethodFilters
 {
 	public sealed class WithParamsParameter
 	{
+		private static MethodInfo? MixedParameterMethod()
+			=> typeof(ClassWithParamsParameterMethod)
+				.GetMethod(nameof(ClassWithParamsParameterMethod.MethodWithMixedParameters));
+
+		private static MethodInfo? ParamsParameterMethod()
+			=> typeof(ClassWithParamsParameterMethod)
+				.GetMethod(nameof(ClassWithParamsParameterMethod.MethodWithParamsParameter));
+
+		private static MethodInfo? ParamsCollectionParameterMethod()
+			=> typeof(ClassWithParamsParameterMethod)
+				.GetMethod(nameof(ClassWithParamsParameterMethod.MethodWithParamsCollectionParameter));
+
+		private static MethodInfo? PlainMethod()
+			=> typeof(ClassWithParamsParameterMethod)
+				.GetMethod(nameof(ClassWithParamsParameterMethod.MethodWithoutModifiers));
+
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task ShouldFilterForMethodsWithParamsParameter()
+			public async Task ByName_ShouldIncludeParamsModifierInDescription()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().WithParamsParameter();
+					.Methods().WithParamsParameter("values");
 
-				await That(methods).Contains(ParamsParameterMethod());
 				await That(methods.GetDescription())
-					.IsEqualTo("methods with params parameter in assembly")
+					.IsEqualTo(
+						"methods with parameter with name equal to \"values\" and with params modifier in assembly")
 					.AsPrefix();
-			}
-
-			[Fact]
-			public async Task ShouldFilterForMethodsWithParamsCollectionParameter()
-			{
-				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().WithParamsParameter();
-
-				await That(methods).Contains(ParamsCollectionParameterMethod());
-			}
-
-			[Fact]
-			public async Task ShouldNotIncludeMethodsWithoutParamsParameter()
-			{
-				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().WithParamsParameter();
-
-				await That(methods).DoesNotContain(PlainMethod());
-			}
-
-			[Fact]
-			public async Task ShouldIncludeMethodWhenOnlySomeButNotAllParametersAreParamsParameters()
-			{
-				Filtered.Methods methods = In.Type<ClassWithParamsParameterMethod>()
-					.Methods().WithParamsParameter();
-
-				await That(methods).Contains(MixedParameterMethod());
-				await That(methods).DoesNotContain(PlainMethod());
 			}
 
 			[Fact]
@@ -73,15 +62,66 @@ public sealed partial class MethodFilters
 			}
 
 			[Fact]
-			public async Task ByName_ShouldIncludeParamsModifierInDescription()
+			public async Task GenericExactly_ShouldIncludeParamsModifierInDescription()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().WithParamsParameter("values");
+					.Methods().WithParamsParameterExactly<int[]>();
+
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of exact type int[] and with params modifier in assembly")
+					.AsPrefix();
+			}
+
+			[Fact]
+			public async Task GenericExactly_WithName_ShouldIncludeParamsModifierInDescription()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithParamsParameterExactly<int[]>("values");
 
 				await That(methods.GetDescription())
 					.IsEqualTo(
-						"methods with parameter with name equal to \"values\" and with params modifier in assembly")
+						"methods with parameter of exact type int[] and name equal to \"values\" and with params modifier in assembly")
 					.AsPrefix();
+			}
+
+			[Fact]
+			public async Task ShouldFilterForMethodsWithParamsCollectionParameter()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithParamsParameter();
+
+				await That(methods).Contains(ParamsCollectionParameterMethod());
+			}
+
+			[Fact]
+			public async Task ShouldFilterForMethodsWithParamsParameter()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithParamsParameter();
+
+				await That(methods).Contains(ParamsParameterMethod());
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with params parameter in assembly")
+					.AsPrefix();
+			}
+
+			[Fact]
+			public async Task ShouldIncludeMethodWhenOnlySomeButNotAllParametersAreParamsParameters()
+			{
+				Filtered.Methods methods = In.Type<ClassWithParamsParameterMethod>()
+					.Methods().WithParamsParameter();
+
+				await That(methods).Contains(MixedParameterMethod());
+				await That(methods).DoesNotContain(PlainMethod());
+			}
+
+			[Fact]
+			public async Task ShouldNotIncludeMethodsWithoutParamsParameter()
+			{
+				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
+					.Methods().WithParamsParameter();
+
+				await That(methods).DoesNotContain(PlainMethod());
 			}
 
 #pragma warning disable CA2263
@@ -109,29 +149,6 @@ public sealed partial class MethodFilters
 			}
 #pragma warning restore CA2263
 
-			[Fact]
-			public async Task GenericExactly_ShouldIncludeParamsModifierInDescription()
-			{
-				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().WithParamsParameterExactly<int[]>();
-
-				await That(methods.GetDescription())
-					.IsEqualTo("methods with parameter of exact type int[] and with params modifier in assembly")
-					.AsPrefix();
-			}
-
-			[Fact]
-			public async Task GenericExactly_WithName_ShouldIncludeParamsModifierInDescription()
-			{
-				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().WithParamsParameterExactly<int[]>("values");
-
-				await That(methods.GetDescription())
-					.IsEqualTo(
-						"methods with parameter of exact type int[] and name equal to \"values\" and with params modifier in assembly")
-					.AsPrefix();
-			}
-
 #pragma warning disable CA2263
 			[Fact]
 			public async Task UsingTypeExactly_ShouldIncludeParamsModifierInDescription()
@@ -158,22 +175,6 @@ public sealed partial class MethodFilters
 #pragma warning restore CA2263
 		}
 
-		private static MethodInfo? MixedParameterMethod()
-			=> typeof(ClassWithParamsParameterMethod)
-				.GetMethod(nameof(ClassWithParamsParameterMethod.MethodWithMixedParameters));
-
-		private static MethodInfo? ParamsParameterMethod()
-			=> typeof(ClassWithParamsParameterMethod)
-				.GetMethod(nameof(ClassWithParamsParameterMethod.MethodWithParamsParameter));
-
-		private static MethodInfo? ParamsCollectionParameterMethod()
-			=> typeof(ClassWithParamsParameterMethod)
-				.GetMethod(nameof(ClassWithParamsParameterMethod.MethodWithParamsCollectionParameter));
-
-		private static MethodInfo? PlainMethod()
-			=> typeof(ClassWithParamsParameterMethod)
-				.GetMethod(nameof(ClassWithParamsParameterMethod.MethodWithoutModifiers));
-
 #pragma warning disable CA1822
 		// ReSharper disable UnusedMember.Local
 		// ReSharper disable UnusedParameter.Local
@@ -183,7 +184,7 @@ public sealed partial class MethodFilters
 			{
 			}
 
-			public void MethodWithParamsCollectionParameter(params System.Collections.Generic.List<int> values)
+			public void MethodWithParamsCollectionParameter(params List<int> values)
 			{
 			}
 

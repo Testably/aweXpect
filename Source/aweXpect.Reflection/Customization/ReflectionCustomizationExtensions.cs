@@ -18,7 +18,7 @@ public static class ReflectionCustomizationExtensions
 	public static ICustomizationValueSetter<CompilerGeneratedMembers> IncludedCompilerGeneratedMembers(
 		this AwexpectCustomization.ReflectionCustomization reflection)
 		=> new CustomizationValue<CompilerGeneratedMembers>(
-			(IAwexpectCustomization)Customize.aweXpect, CompilerGeneratedKey, CompilerGeneratedMembers.None);
+			Customize.aweXpect, CompilerGeneratedKey, CompilerGeneratedMembers.None);
 
 	/// <summary>
 	///     The special-name methods (operators and accessors) that are included when reflecting over methods.
@@ -29,7 +29,7 @@ public static class ReflectionCustomizationExtensions
 	public static ICustomizationValueSetter<SpecialNameMembers> IncludedSpecialNameMembers(
 		this AwexpectCustomization.ReflectionCustomization reflection)
 		=> new CustomizationValue<SpecialNameMembers>(
-			(IAwexpectCustomization)Customize.aweXpect, SpecialNameKey, SpecialNameMembers.None);
+			Customize.aweXpect, SpecialNameKey, SpecialNameMembers.None);
 
 	private sealed class CustomizationValue<TValue>(
 		IAwexpectCustomization customization,

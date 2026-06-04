@@ -11,20 +11,6 @@ public sealed partial class ThatMethod
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenMethodIsObsolete_ShouldSucceed()
-			{
-				MethodInfo subject =
-					typeof(ClassWithObsoleteMembers).GetMethod(nameof(ClassWithObsoleteMembers.ObsoleteMethod))!;
-
-				async Task Act()
-				{
-					await That(subject).IsObsolete();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenMethodIsNotObsolete_ShouldFail()
 			{
 				MethodInfo subject =
@@ -60,10 +46,38 @@ public sealed partial class ThatMethod
 					             but it was <null>
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenMethodIsObsolete_ShouldSucceed()
+			{
+				MethodInfo subject =
+					typeof(ClassWithObsoleteMembers).GetMethod(nameof(ClassWithObsoleteMembers.ObsoleteMethod))!;
+
+				async Task Act()
+				{
+					await That(subject).IsObsolete();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
 		}
 
 		public sealed class NegatedTests
 		{
+			[Fact]
+			public async Task WhenMethodIsNotObsolete_ShouldSucceed()
+			{
+				MethodInfo subject =
+					typeof(ClassWithObsoleteMembers).GetMethod(nameof(ClassWithObsoleteMembers.NonObsoleteMethod))!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsObsolete());
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[Fact]
 			public async Task WhenMethodIsObsolete_ShouldFail()
 			{
@@ -81,20 +95,6 @@ public sealed partial class ThatMethod
 					              is not obsolete,
 					              but it was obsolete {Formatter.Format(subject)}
 					              """);
-			}
-
-			[Fact]
-			public async Task WhenMethodIsNotObsolete_ShouldSucceed()
-			{
-				MethodInfo subject =
-					typeof(ClassWithObsoleteMembers).GetMethod(nameof(ClassWithObsoleteMembers.NonObsoleteMethod))!;
-
-				async Task Act()
-				{
-					await That(subject).DoesNotComplyWith(it => it.IsObsolete());
-				}
-
-				await That(Act).DoesNotThrow();
 			}
 		}
 	}

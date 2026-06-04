@@ -2,13 +2,20 @@
 
 public class BaseClassWithMembers
 {
-	// ReSharper disable once UnusedMember.Global
-	public int BaseProperty { get; set; }
+#pragma warning disable CS0169 // Field is never used
+	// ReSharper disable once UnusedMember.Local
+	private int _basePrivateField;
+#pragma warning restore CS0169
 
 #pragma warning disable CS0649 // Field is never assigned to
 	// ReSharper disable once UnusedMember.Global
 	public int BaseField;
 #pragma warning restore CS0649
+	// ReSharper disable once UnusedMember.Global
+	public int BaseProperty { get; set; }
+
+	// ReSharper disable once UnusedMember.Local
+	private int BasePrivateProperty { get; set; }
 
 #pragma warning disable CS0067 // Event is never used
 	// ReSharper disable once UnusedMember.Global
@@ -19,14 +26,6 @@ public class BaseClassWithMembers
 	// ReSharper disable once UnusedMember.Global
 	public void BaseMethod() { }
 #pragma warning restore CA1822
-
-	// ReSharper disable once UnusedMember.Local
-	private int BasePrivateProperty { get; set; }
-
-#pragma warning disable CS0169 // Field is never used
-	// ReSharper disable once UnusedMember.Local
-	private int _basePrivateField;
-#pragma warning restore CS0169
 
 #pragma warning disable CS0067 // Event is never used
 	// ReSharper disable once UnusedMember.Local
@@ -41,13 +40,12 @@ public class BaseClassWithMembers
 
 public class DerivedClassWithMembers : BaseClassWithMembers
 {
-	// ReSharper disable once UnusedMember.Global
-	public int DerivedProperty { get; set; }
-
 #pragma warning disable CS0649 // Field is never assigned to
 	// ReSharper disable once UnusedMember.Global
 	public int DerivedField;
 #pragma warning restore CS0649
+	// ReSharper disable once UnusedMember.Global
+	public int DerivedProperty { get; set; }
 
 #pragma warning disable CS0067 // Event is never used
 	// ReSharper disable once UnusedMember.Global

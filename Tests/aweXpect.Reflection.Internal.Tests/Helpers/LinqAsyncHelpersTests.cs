@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 #if NET8_0_OR_GREATER
-using System.Threading.Tasks;
 #endif
 
 namespace aweXpect.Reflection.Internal.Tests.Helpers;

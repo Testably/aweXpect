@@ -14,6 +14,30 @@ public sealed partial class ThatMethods
 		public sealed class EnumerableTests
 		{
 			[Fact]
+			public async Task ShouldFailWhenSomeMethodsDoNotReturnSpecifiedType()
+			{
+				IEnumerable<MethodInfo> subject =
+				[
+					typeof(TestClass).GetMethod(nameof(TestClass.GetString))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.GetInt))!,
+				];
+
+				async Task Act()
+				{
+					await That(subject).Return<string>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             all return string,
+					             but it contained not matching methods [
+					               int ThatMethods.TestClass.GetInt()
+					             ]
+					             """);
+			}
+
+			[Fact]
 			public async Task ShouldSucceedWhenAllMethodsReturnSpecifiedType()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -43,30 +67,6 @@ public sealed partial class ThatMethods
 				}
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task ShouldFailWhenSomeMethodsDoNotReturnSpecifiedType()
-			{
-				IEnumerable<MethodInfo> subject =
-				[
-					typeof(TestClass).GetMethod(nameof(TestClass.GetString))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.GetInt))!,
-				];
-
-				async Task Act()
-				{
-					await That(subject).Return<string>();
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             all return string,
-					             but it contained not matching methods [
-					               int ThatMethods.TestClass.GetInt()
-					             ]
-					             """);
 			}
 		}
 

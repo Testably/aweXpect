@@ -39,27 +39,6 @@ public sealed partial class ThatMethods
 			}
 
 			[Fact]
-			public async Task WhenNotAllHaveExpectedCount_ShouldFail()
-			{
-				IEnumerable<MethodInfo> methods = new[]
-				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInt))!,
-				};
-
-				async Task Act()
-				{
-					await That(methods).HaveParameterCount(2);
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that methods
-					             all have 2 parameters,
-					             but it contained methods with a different number of parameters *MethodWithInt(*
-					             """).AsWildcard();
-			}
-
-			[Fact]
 			public async Task WhenExpectingOneParameter_ShouldIncludeSingularDescription()
 			{
 				IEnumerable<MethodInfo> methods = new[]
@@ -77,6 +56,27 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have one parameter,
 					             but it contained methods with a different number of parameters *
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenNotAllHaveExpectedCount_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInt))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveParameterCount(2);
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have 2 parameters,
+					             but it contained methods with a different number of parameters *MethodWithInt(*
 					             """).AsWildcard();
 			}
 

@@ -24,9 +24,8 @@ public static partial class ThatEvent
 		AttributeFilterOptions<EventInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
-		return new AndOrResult<EventInfo?, IThat<EventInfo?>>(subject.Get().ExpectationBuilder.AddConstraint(
-				(it, grammars)
-					=> new HasAttributeConstraint(it, grammars, attributeFilterOptions).Invert()),
+		return new AndOrResult<EventInfo?, IThat<EventInfo?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions).Invert()),
 			subject);
 	}
 }

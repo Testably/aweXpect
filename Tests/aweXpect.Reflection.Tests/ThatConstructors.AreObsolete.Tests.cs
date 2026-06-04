@@ -33,7 +33,10 @@ public sealed partial class ThatConstructors
 				IEnumerable<ConstructorInfo> subject =
 				[
 					typeof(ClassWithObsoleteMembers).GetConstructor(Type.EmptyTypes)!,
-					typeof(ClassWithObsoleteMembers).GetConstructor(new[] { typeof(int) })!,
+					typeof(ClassWithObsoleteMembers).GetConstructor(new[]
+					{
+						typeof(int),
+					})!,
 				];
 
 				async Task Act()
@@ -83,7 +86,10 @@ public sealed partial class ThatConstructors
 				IEnumerable<ConstructorInfo> subject =
 				[
 					typeof(ClassWithObsoleteMembers).GetConstructor(Type.EmptyTypes)!,
-					typeof(ClassWithObsoleteMembers).GetConstructor(new[] { typeof(int) })!,
+					typeof(ClassWithObsoleteMembers).GetConstructor(new[]
+					{
+						typeof(int),
+					})!,
 				];
 
 				async Task Act()
@@ -98,6 +104,30 @@ public sealed partial class ThatConstructors
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
+			[Fact]
+			public async Task WhenAllConstructorsAreObsolete_Negated_ShouldFail()
+			{
+				IAsyncEnumerable<ConstructorInfo?> subject = new[]
+					{
+						typeof(ClassWithObsoleteMembers).GetConstructor(Type.EmptyTypes)!,
+					}
+					.ToTestAsyncEnumerable<ConstructorInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreObsolete());
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             are not all obsolete,
+					             but it only contained obsolete items [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+
 			[Fact]
 			public async Task WhenAllConstructorsAreObsolete_ShouldSucceed()
 			{
@@ -120,8 +150,10 @@ public sealed partial class ThatConstructors
 			{
 				IAsyncEnumerable<ConstructorInfo?> subject = new[]
 					{
-						typeof(ClassWithObsoleteMembers).GetConstructor(Type.EmptyTypes)!,
-						typeof(ClassWithObsoleteMembers).GetConstructor(new[] { typeof(int) })!,
+						typeof(ClassWithObsoleteMembers).GetConstructor(Type.EmptyTypes)!, typeof(ClassWithObsoleteMembers).GetConstructor(new[]
+						{
+							typeof(int),
+						})!,
 					}
 					.ToTestAsyncEnumerable<ConstructorInfo?>();
 
@@ -135,30 +167,6 @@ public sealed partial class ThatConstructors
 					             Expected that subject
 					             are all obsolete,
 					             but it contained non-obsolete items [
-					               *
-					             ]
-					             """).AsWildcard();
-			}
-
-			[Fact]
-			public async Task WhenAllConstructorsAreObsolete_Negated_ShouldFail()
-			{
-				IAsyncEnumerable<ConstructorInfo?> subject = new[]
-					{
-						typeof(ClassWithObsoleteMembers).GetConstructor(Type.EmptyTypes)!,
-					}
-					.ToTestAsyncEnumerable<ConstructorInfo?>();
-
-				async Task Act()
-				{
-					await That(subject).DoesNotComplyWith(they => they.AreObsolete());
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             are not all obsolete,
-					             but it only contained obsolete items [
 					               *
 					             ]
 					             """).AsWildcard();

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
@@ -8,8 +7,23 @@ public sealed partial class ThatEvent
 {
 	public sealed class IsOfType
 	{
+		public delegate void CustomHandler();
+
 		public sealed class GenericTests
 		{
+			[Fact]
+			public async Task WhenEventHandlerInheritsFromExpectedType_ShouldSucceed()
+			{
+				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!;
+
+				async Task Act()
+				{
+					await That(subject).IsOfType<MulticastDelegate>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[Fact]
 			public async Task WhenEventIsNull_ShouldFail()
 			{
@@ -54,19 +68,6 @@ public sealed partial class ThatEvent
 				async Task Act()
 				{
 					await That(subject).IsOfType<EventHandler>();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenEventHandlerInheritsFromExpectedType_ShouldSucceed()
-			{
-				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!;
-
-				async Task Act()
-				{
-					await That(subject).IsOfType<MulticastDelegate>();
 				}
 
 				await That(Act).DoesNotThrow();
@@ -140,8 +141,6 @@ public sealed partial class ThatEvent
 					             """);
 			}
 		}
-
-		public delegate void CustomHandler();
 
 #pragma warning disable CS0067 // The event is never used
 		private class TestClass

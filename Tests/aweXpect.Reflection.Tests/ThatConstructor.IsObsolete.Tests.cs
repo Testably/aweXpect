@@ -11,24 +11,13 @@ public sealed partial class ThatConstructor
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenConstructorIsObsolete_ShouldSucceed()
-			{
-				ConstructorInfo subject =
-					typeof(ClassWithObsoleteMembers).GetConstructor(Type.EmptyTypes)!;
-
-				async Task Act()
-				{
-					await That(subject).IsObsolete();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenConstructorIsNotObsolete_ShouldFail()
 			{
 				ConstructorInfo subject =
-					typeof(ClassWithObsoleteMembers).GetConstructor(new[] { typeof(int) })!;
+					typeof(ClassWithObsoleteMembers).GetConstructor(new[]
+					{
+						typeof(int),
+					})!;
 
 				async Task Act()
 				{
@@ -60,10 +49,41 @@ public sealed partial class ThatConstructor
 					             but it was <null>
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenConstructorIsObsolete_ShouldSucceed()
+			{
+				ConstructorInfo subject =
+					typeof(ClassWithObsoleteMembers).GetConstructor(Type.EmptyTypes)!;
+
+				async Task Act()
+				{
+					await That(subject).IsObsolete();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
 		}
 
 		public sealed class NegatedTests
 		{
+			[Fact]
+			public async Task WhenConstructorIsNotObsolete_ShouldSucceed()
+			{
+				ConstructorInfo subject =
+					typeof(ClassWithObsoleteMembers).GetConstructor(new[]
+					{
+						typeof(int),
+					})!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsObsolete());
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[Fact]
 			public async Task WhenConstructorIsObsolete_ShouldFail()
 			{
@@ -81,20 +101,6 @@ public sealed partial class ThatConstructor
 					              is not obsolete,
 					              but it was obsolete {Formatter.Format(subject)}
 					              """);
-			}
-
-			[Fact]
-			public async Task WhenConstructorIsNotObsolete_ShouldSucceed()
-			{
-				ConstructorInfo subject =
-					typeof(ClassWithObsoleteMembers).GetConstructor(new[] { typeof(int) })!;
-
-				async Task Act()
-				{
-					await That(subject).DoesNotComplyWith(it => it.IsObsolete());
-				}
-
-				await That(Act).DoesNotThrow();
 			}
 		}
 	}

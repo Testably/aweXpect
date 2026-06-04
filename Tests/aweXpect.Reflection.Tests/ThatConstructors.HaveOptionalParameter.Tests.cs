@@ -9,65 +9,19 @@ public sealed partial class ThatConstructors
 {
 	public sealed class HaveOptionalParameter
 	{
+#if NET8_0_OR_GREATER
+		private static async IAsyncEnumerable<ConstructorInfo> ToAsyncEnumerable(params ConstructorInfo[] items)
+		{
+			foreach (ConstructorInfo item in items)
+			{
+				yield return item;
+			}
+
+			await Task.CompletedTask;
+		}
+#endif
 		public sealed class Tests
 		{
-			[Fact]
-			public async Task WhenAllHaveOptionalParameter_ShouldSucceed()
-			{
-				IEnumerable<ConstructorInfo> constructors = new[]
-				{
-					typeof(ClassWithOptionalParameter).GetConstructors().Single(),
-					typeof(AnotherClassWithOptionalParameter).GetConstructors().Single(),
-				};
-
-				async Task Act()
-				{
-					await That(constructors).HaveOptionalParameter();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenNotAllHaveOptionalParameter_ShouldFail()
-			{
-				IEnumerable<ConstructorInfo> constructors = new[]
-				{
-					typeof(ClassWithOptionalParameter).GetConstructors().Single(),
-					typeof(ClassWithoutModifiers).GetConstructors().Single(),
-				};
-
-				async Task Act()
-				{
-					await That(constructors).HaveOptionalParameter();
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that constructors
-					             all have an optional parameter,
-					             but it contained constructors without an optional parameter [
-					               ThatConstructors.HaveOptionalParameter.ClassWithoutModifiers(int value)
-					             ]
-					             """);
-			}
-
-			[Fact]
-			public async Task WhenSomeButNotAllParametersAreOptional_ShouldSucceed()
-			{
-				IEnumerable<ConstructorInfo> constructors = new[]
-				{
-					typeof(ClassWithMixedOptionalParameter).GetConstructors().Single(),
-				};
-
-				async Task Act()
-				{
-					await That(constructors).HaveOptionalParameter();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
 			[Fact]
 			public async Task ByGenericType_WhenNotAllHaveOptionalParameter_ShouldFail()
 			{
@@ -111,48 +65,6 @@ public sealed partial class ThatConstructors
 			}
 
 			[Fact]
-			public async Task ByName_WhenNotAllHaveOptionalParameter_ShouldFail()
-			{
-				IEnumerable<ConstructorInfo> constructors = new[]
-				{
-					typeof(ClassWithoutModifiers).GetConstructors().Single(),
-				};
-
-				async Task Act()
-				{
-					await That(constructors).HaveOptionalParameter("value");
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that constructors
-					             all have parameter with name "value" with optional modifier,
-					             but at least one did not
-					             """);
-			}
-
-			[Fact]
-			public async Task ByTypeAndName_WhenNotAllHaveOptionalParameter_ShouldFail()
-			{
-				IEnumerable<ConstructorInfo> constructors = new[]
-				{
-					typeof(ClassWithoutModifiers).GetConstructors().Single(),
-				};
-
-				async Task Act()
-				{
-					await That(constructors).HaveOptionalParameter(typeof(int), "value");
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that constructors
-					             all have parameter of type int with name "value" with optional modifier,
-					             but at least one did not
-					             """);
-			}
-
-			[Fact]
 			public async Task ByGenericTypeExactly_WhenNotAllHaveOptionalParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -163,27 +75,6 @@ public sealed partial class ThatConstructors
 				async Task Act()
 				{
 					await That(constructors).HaveOptionalParameterExactly<int>();
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that constructors
-					             all have parameter of exact type int with optional modifier,
-					             but at least one did not
-					             """);
-			}
-
-			[Fact]
-			public async Task ByTypeExactly_WhenNotAllHaveOptionalParameter_ShouldFail()
-			{
-				IEnumerable<ConstructorInfo> constructors = new[]
-				{
-					typeof(ClassWithoutModifiers).GetConstructors().Single(),
-				};
-
-				async Task Act()
-				{
-					await That(constructors).HaveOptionalParameterExactly(typeof(int));
 				}
 
 				await That(Act).Throws<XunitException>()
@@ -216,7 +107,7 @@ public sealed partial class ThatConstructors
 			}
 
 			[Fact]
-			public async Task ByTypeExactlyAndName_WhenNotAllHaveOptionalParameter_ShouldFail()
+			public async Task ByName_WhenNotAllHaveOptionalParameter_ShouldFail()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
 				{
@@ -225,13 +116,13 @@ public sealed partial class ThatConstructors
 
 				async Task Act()
 				{
-					await That(constructors).HaveOptionalParameterExactly(typeof(int), "value");
+					await That(constructors).HaveOptionalParameter("value");
 				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that constructors
-					             all have parameter of exact type int with name "value" with optional modifier,
+					             all have parameter with name "value" with optional modifier,
 					             but at least one did not
 					             """);
 			}
@@ -257,8 +148,7 @@ public sealed partial class ThatConstructors
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
 				{
-					typeof(ClassWithOptionalParameter).GetConstructors().Single(),
-					typeof(ClassWithoutModifiers).GetConstructors().Single(),
+					typeof(ClassWithOptionalParameter).GetConstructors().Single(), typeof(ClassWithoutModifiers).GetConstructors().Single(),
 				};
 
 				async Task Act()
@@ -291,6 +181,27 @@ public sealed partial class ThatConstructors
 			}
 
 			[Fact]
+			public async Task ByTypeAndName_WhenNotAllHaveOptionalParameter_ShouldFail()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(ClassWithoutModifiers).GetConstructors().Single(),
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveOptionalParameter(typeof(int), "value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of type int with name "value" with optional modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
 			public async Task ByTypeExactly_WhenAllHaveOptionalParameter_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -307,6 +218,27 @@ public sealed partial class ThatConstructors
 			}
 
 			[Fact]
+			public async Task ByTypeExactly_WhenNotAllHaveOptionalParameter_ShouldFail()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(ClassWithoutModifiers).GetConstructors().Single(),
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveOptionalParameterExactly(typeof(int));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of exact type int with optional modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
 			public async Task ByTypeExactlyAndName_WhenAllHaveOptionalParameter_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
@@ -317,6 +249,82 @@ public sealed partial class ThatConstructors
 				async Task Act()
 				{
 					await That(constructors).HaveOptionalParameterExactly(typeof(int), "value");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task ByTypeExactlyAndName_WhenNotAllHaveOptionalParameter_ShouldFail()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(ClassWithoutModifiers).GetConstructors().Single(),
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveOptionalParameterExactly(typeof(int), "value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have parameter of exact type int with name "value" with optional modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenAllHaveOptionalParameter_ShouldSucceed()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(ClassWithOptionalParameter).GetConstructors().Single(), typeof(AnotherClassWithOptionalParameter).GetConstructors().Single(),
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveOptionalParameter();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenNotAllHaveOptionalParameter_ShouldFail()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(ClassWithOptionalParameter).GetConstructors().Single(), typeof(ClassWithoutModifiers).GetConstructors().Single(),
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveOptionalParameter();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructors
+					             all have an optional parameter,
+					             but it contained constructors without an optional parameter [
+					               ThatConstructors.HaveOptionalParameter.ClassWithoutModifiers(int value)
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSomeButNotAllParametersAreOptional_ShouldSucceed()
+			{
+				IEnumerable<ConstructorInfo> constructors = new[]
+				{
+					typeof(ClassWithMixedOptionalParameter).GetConstructors().Single(),
+				};
+
+				async Task Act()
+				{
+					await That(constructors).HaveOptionalParameter();
 				}
 
 				await That(Act).DoesNotThrow();
@@ -343,8 +351,7 @@ public sealed partial class ThatConstructors
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
 				{
-					typeof(ClassWithOptionalParameter).GetConstructors().Single(),
-					typeof(ClassWithoutModifiers).GetConstructors().Single(),
+					typeof(ClassWithOptionalParameter).GetConstructors().Single(), typeof(ClassWithoutModifiers).GetConstructors().Single(),
 				};
 
 				async Task Act()
@@ -376,8 +383,7 @@ public sealed partial class ThatConstructors
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
 				{
-					typeof(ClassWithOptionalParameter).GetConstructors().Single(),
-					typeof(ClassWithoutModifiers).GetConstructors().Single(),
+					typeof(ClassWithOptionalParameter).GetConstructors().Single(), typeof(ClassWithoutModifiers).GetConstructors().Single(),
 				};
 
 				async Task Act()
@@ -646,8 +652,7 @@ public sealed partial class ThatConstructors
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
 				{
-					typeof(ClassWithOptionalParameter).GetConstructors().Single(),
-					typeof(AnotherClassWithOptionalParameter).GetConstructors().Single(),
+					typeof(ClassWithOptionalParameter).GetConstructors().Single(), typeof(AnotherClassWithOptionalParameter).GetConstructors().Single(),
 				};
 
 				async Task Act()
@@ -671,8 +676,7 @@ public sealed partial class ThatConstructors
 			{
 				IEnumerable<ConstructorInfo> constructors = new[]
 				{
-					typeof(ClassWithOptionalParameter).GetConstructors().Single(),
-					typeof(ClassWithoutModifiers).GetConstructors().Single(),
+					typeof(ClassWithOptionalParameter).GetConstructors().Single(), typeof(ClassWithoutModifiers).GetConstructors().Single(),
 				};
 
 				async Task Act()
@@ -683,18 +687,6 @@ public sealed partial class ThatConstructors
 				await That(Act).DoesNotThrow();
 			}
 		}
-
-#if NET8_0_OR_GREATER
-		private static async IAsyncEnumerable<ConstructorInfo> ToAsyncEnumerable(params ConstructorInfo[] items)
-		{
-			foreach (ConstructorInfo item in items)
-			{
-				yield return item;
-			}
-
-			await Task.CompletedTask;
-		}
-#endif
 
 		// ReSharper disable UnusedParameter.Local
 		// ReSharper disable UnusedMember.Local

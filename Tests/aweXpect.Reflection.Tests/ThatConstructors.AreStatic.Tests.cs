@@ -116,21 +116,6 @@ public sealed partial class ThatConstructors
 			}
 
 			[Fact]
-			public async Task WhenFilteringOnlyStaticConstructors_ShouldSucceed()
-			{
-				IAsyncEnumerable<ConstructorInfo?> subject = typeof(TestClassWithStaticMembers)
-					.GetConstructors(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)
-					.ToTestAsyncEnumerable<ConstructorInfo?>();
-
-				async Task Act()
-				{
-					await That(subject).AreStatic();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenFilteringOnlyStaticConstructors_Negated_ShouldFail()
 			{
 				IAsyncEnumerable<ConstructorInfo?> subject = typeof(TestClassWithStaticMembers)
@@ -150,6 +135,21 @@ public sealed partial class ThatConstructors
 					               *
 					             ]
 					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenFilteringOnlyStaticConstructors_ShouldSucceed()
+			{
+				IAsyncEnumerable<ConstructorInfo?> subject = typeof(TestClassWithStaticMembers)
+					.GetConstructors(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)
+					.ToTestAsyncEnumerable<ConstructorInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).AreStatic();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 #endif

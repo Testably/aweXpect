@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using aweXpect.Reflection.Collections;
 using Xunit.Sdk;
 
@@ -27,7 +26,7 @@ public sealed partial class ThatTypes
 			[Fact]
 			public async Task WhenEnumerableTypesAreAssignable_ShouldSucceed()
 			{
-				IEnumerable<Type?> subject = new Type?[]
+				IEnumerable<Type?> subject = new[]
 				{
 					typeof(DerivedClass1), typeof(DerivedClass2),
 				};
@@ -110,9 +109,12 @@ public sealed partial class ThatTypes
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenNoTypeIsAssignable_ShouldSucceed()
+			public async Task WhenEnumerableTypesAreNotAssignable_ShouldSucceed()
 			{
-				Filtered.Types subject = In.Types(typeof(UnrelatedClass));
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(UnrelatedClass),
+				};
 
 				async Task Act()
 				{
@@ -123,12 +125,9 @@ public sealed partial class ThatTypes
 			}
 
 			[Fact]
-			public async Task WhenEnumerableTypesAreNotAssignable_ShouldSucceed()
+			public async Task WhenNoTypeIsAssignable_ShouldSucceed()
 			{
-				IEnumerable<Type?> subject = new Type?[]
-				{
-					typeof(UnrelatedClass),
-				};
+				Filtered.Types subject = In.Types(typeof(UnrelatedClass));
 
 				async Task Act()
 				{
@@ -203,7 +202,7 @@ public sealed partial class ThatTypes
 			[Fact]
 			public async Task WhenEnumerableTypesAreAssignableFromTarget_ShouldSucceed()
 			{
-				IEnumerable<Type?> subject = new Type?[]
+				IEnumerable<Type?> subject = new[]
 				{
 					typeof(BaseClass), typeof(DerivedClass1),
 				};
@@ -267,9 +266,12 @@ public sealed partial class ThatTypes
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenNoTypeIsAssignableFromTarget_ShouldSucceed()
+			public async Task WhenEnumerableTypesAreNotAssignableFromTarget_ShouldSucceed()
 			{
-				Filtered.Types subject = In.Types(typeof(UnrelatedClass));
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(UnrelatedClass),
+				};
 
 				async Task Act()
 				{
@@ -280,12 +282,9 @@ public sealed partial class ThatTypes
 			}
 
 			[Fact]
-			public async Task WhenEnumerableTypesAreNotAssignableFromTarget_ShouldSucceed()
+			public async Task WhenNoTypeIsAssignableFromTarget_ShouldSucceed()
 			{
-				IEnumerable<Type?> subject = new Type?[]
-				{
-					typeof(UnrelatedClass),
-				};
+				Filtered.Types subject = In.Types(typeof(UnrelatedClass));
 
 				async Task Act()
 				{

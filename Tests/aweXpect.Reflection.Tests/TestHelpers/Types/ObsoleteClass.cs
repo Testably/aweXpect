@@ -1,5 +1,3 @@
-using System;
-
 namespace aweXpect.Reflection.Tests.TestHelpers.Types;
 
 [Obsolete("This class is obsolete.")]

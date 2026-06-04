@@ -11,45 +11,6 @@ public sealed partial class ThatProperties
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
-			public async Task WhenNoPropertyHasAttribute_ShouldSucceed()
-			{
-				IEnumerable<PropertyInfo?> subject = new[]
-				{
-					typeof(TestClass).GetProperty(nameof(TestClass.NoAttributeProperty)), null,
-				};
-
-				async Task Act()
-				{
-					await That(subject).DoNotHave<FooAttribute>();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenAPropertyHasAttribute_ShouldFail()
-			{
-				IEnumerable<PropertyInfo?> subject = new[]
-				{
-					typeof(TestClass).GetProperty(nameof(TestClass.TestProperty)),
-				};
-
-				async Task Act()
-				{
-					await That(subject).DoNotHave<FooAttribute>();
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             all have no ThatProperties.DoNotHave.AttributeTests.FooAttribute,
-					             but it contained not matching properties [
-					               public string ThatProperties.DoNotHave.AttributeTests.TestClass.TestProperty { get; set; }
-					             ]
-					             """);
-			}
-
 #if NET8_0_OR_GREATER
 			[Fact]
 			public async Task AsyncEnumerable_WhenAPropertyHasAttribute_ShouldFail()
@@ -96,6 +57,45 @@ public sealed partial class ThatProperties
 					               public string ThatProperties.DoNotHave.AttributeTests.TestClass.NoAttributeProperty { get; set; }
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenAPropertyHasAttribute_ShouldFail()
+			{
+				IEnumerable<PropertyInfo?> subject = new[]
+				{
+					typeof(TestClass).GetProperty(nameof(TestClass.TestProperty)),
+				};
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have no ThatProperties.DoNotHave.AttributeTests.FooAttribute,
+					             but it contained not matching properties [
+					               public string ThatProperties.DoNotHave.AttributeTests.TestClass.TestProperty { get; set; }
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNoPropertyHasAttribute_ShouldSucceed()
+			{
+				IEnumerable<PropertyInfo?> subject = new[]
+				{
+					typeof(TestClass).GetProperty(nameof(TestClass.NoAttributeProperty)), null,
+				};
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[AttributeUsage(AttributeTargets.Property)]

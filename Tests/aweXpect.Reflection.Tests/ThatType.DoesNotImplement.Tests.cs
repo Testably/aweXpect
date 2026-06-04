@@ -1,5 +1,4 @@
-﻿using System;
-using Xunit.Sdk;
+﻿using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,6 +8,21 @@ public sealed partial class ThatType
 	{
 		public sealed class GenericTests
 		{
+			[Fact]
+			public async Task WhenInterfaceTypeIsAClass_ShouldThrowArgumentException()
+			{
+				Type subject = typeof(ClassWithInterface);
+
+				async Task Act()
+				{
+					await That(subject).DoesNotImplement<BaseClass>();
+				}
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage(
+						"The type to check implementation of must be an interface, but it was ThatType.BaseClass. Use 'InheritsFrom' to check for base-class inheritance.");
+			}
+
 			[Fact]
 			public async Task WhenTypeDoesNotImplementInterface_ShouldSucceed()
 			{
@@ -20,6 +34,27 @@ public sealed partial class ThatType
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTypeImplementsDirectly_WithForceDirect_ShouldFail()
+			{
+				Type subject = typeof(ClassWithInterface);
+
+				async Task Act()
+				{
+					await That(subject).DoesNotImplement<ITestInterface>(true);
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not directly implement ThatType.ITestInterface,
+					             but it did directly implement ThatType.ITestInterface
+
+					             Actual:
+					             ThatType.ClassWithInterface
+					             """);
 			}
 
 			[Fact]
@@ -55,46 +90,26 @@ public sealed partial class ThatType
 					             ThatType.ClassWithInterface
 					             """);
 			}
+		}
 
-			[Fact]
-			public async Task WhenTypeImplementsDirectly_WithForceDirect_ShouldFail()
-			{
-				Type subject = typeof(ClassWithInterface);
-
-				async Task Act()
-				{
-					await That(subject).DoesNotImplement<ITestInterface>(true);
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             does not directly implement ThatType.ITestInterface,
-					             but it did directly implement ThatType.ITestInterface
-
-					             Actual:
-					             ThatType.ClassWithInterface
-					             """);
-			}
-
+		public sealed class TypeTests
+		{
 			[Fact]
 			public async Task WhenInterfaceTypeIsAClass_ShouldThrowArgumentException()
 			{
 				Type subject = typeof(ClassWithInterface);
+				Type classType = typeof(BaseClass);
 
 				async Task Act()
 				{
-					await That(subject).DoesNotImplement<BaseClass>();
+					await That(subject).DoesNotImplement(classType);
 				}
 
 				await That(Act).Throws<ArgumentException>()
 					.WithMessage(
 						"The type to check implementation of must be an interface, but it was ThatType.BaseClass. Use 'InheritsFrom' to check for base-class inheritance.");
 			}
-		}
 
-		public sealed class TypeTests
-		{
 			[Fact]
 			public async Task WhenTypeDoesNotImplementInterface_ShouldSucceed()
 			{
@@ -130,39 +145,10 @@ public sealed partial class ThatType
 					             ThatType.ClassWithInterface
 					             """);
 			}
-
-			[Fact]
-			public async Task WhenInterfaceTypeIsAClass_ShouldThrowArgumentException()
-			{
-				Type subject = typeof(ClassWithInterface);
-				Type classType = typeof(BaseClass);
-
-				async Task Act()
-				{
-					await That(subject).DoesNotImplement(classType);
-				}
-
-				await That(Act).Throws<ArgumentException>()
-					.WithMessage(
-						"The type to check implementation of must be an interface, but it was ThatType.BaseClass. Use 'InheritsFrom' to check for base-class inheritance.");
-			}
 		}
 
 		public sealed class NegatedTests
 		{
-			[Fact]
-			public async Task WhenTypeImplements_ShouldSucceed()
-			{
-				Type subject = typeof(ClassWithInterface);
-
-				async Task Act()
-				{
-					await That(subject).DoesNotComplyWith(it => it.DoesNotImplement<ITestInterface>());
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
 			[Fact]
 			public async Task WhenTypeDoesNotImplement_ShouldFail()
 			{
@@ -182,6 +168,19 @@ public sealed partial class ThatType
 					             Actual:
 					             ThatType.UnrelatedClass
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenTypeImplements_ShouldSucceed()
+			{
+				Type subject = typeof(ClassWithInterface);
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(it => it.DoesNotImplement<ITestInterface>());
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 	}

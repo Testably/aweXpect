@@ -100,8 +100,7 @@ public sealed partial class ThatConstructors
 				{
 					IAsyncEnumerable<ConstructorInfo?> subject = new[]
 					{
-						typeof(TestClass).GetConstructor([typeof(string),])!,
-						typeof(TestClass).GetConstructor([typeof(int),])!,
+						typeof(TestClass).GetConstructor([typeof(string),])!, typeof(TestClass).GetConstructor([typeof(int),])!,
 					}.ToTestAsyncEnumerable<ConstructorInfo?>();
 
 					async Task Act()
@@ -113,12 +112,27 @@ public sealed partial class ThatConstructors
 				}
 
 				[Fact]
+				public async Task WhenAllConstructorsHaveMatchingAttribute_ShouldSucceed()
+				{
+					IAsyncEnumerable<ConstructorInfo?> subject = new[]
+					{
+						typeof(TestClass).GetConstructor([typeof(string),])!, typeof(TestClass).GetConstructor([typeof(int),])!,
+					}.ToTestAsyncEnumerable<ConstructorInfo?>();
+
+					async Task Act()
+					{
+						await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Constructor"));
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
 				public async Task WhenNotAllConstructorsHaveAttribute_ShouldFail()
 				{
 					IAsyncEnumerable<ConstructorInfo?> subject = new[]
 					{
-						typeof(TestClass).GetConstructor([typeof(string),])!,
-						typeof(TestClass).GetConstructor(Type.EmptyTypes)!,
+						typeof(TestClass).GetConstructor([typeof(string),])!, typeof(TestClass).GetConstructor(Type.EmptyTypes)!,
 					}.ToTestAsyncEnumerable<ConstructorInfo?>();
 
 					async Task Act()
@@ -137,29 +151,11 @@ public sealed partial class ThatConstructors
 				}
 
 				[Fact]
-				public async Task WhenAllConstructorsHaveMatchingAttribute_ShouldSucceed()
-				{
-					IAsyncEnumerable<ConstructorInfo?> subject = new[]
-					{
-						typeof(TestClass).GetConstructor([typeof(string),])!,
-						typeof(TestClass).GetConstructor([typeof(int),])!,
-					}.ToTestAsyncEnumerable<ConstructorInfo?>();
-
-					async Task Act()
-					{
-						await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Constructor"));
-					}
-
-					await That(Act).DoesNotThrow();
-				}
-
-				[Fact]
 				public async Task WhenNotAllConstructorsHaveMatchingAttribute_ShouldFail()
 				{
 					IAsyncEnumerable<ConstructorInfo?> subject = new[]
 					{
-						typeof(TestClass).GetConstructor([typeof(string),])!,
-						typeof(TestClass).GetConstructor([typeof(int),])!,
+						typeof(TestClass).GetConstructor([typeof(string),])!, typeof(TestClass).GetConstructor([typeof(int),])!,
 					}.ToTestAsyncEnumerable<ConstructorInfo?>();
 
 					async Task Act()

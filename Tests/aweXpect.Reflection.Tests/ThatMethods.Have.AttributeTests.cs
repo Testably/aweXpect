@@ -112,6 +112,22 @@ public sealed partial class ThatMethods
 				}
 
 				[Fact]
+				public async Task WhenAllMethodsHaveMatchingAttribute_ShouldSucceed()
+				{
+					IAsyncEnumerable<MethodInfo?> subject = new[]
+					{
+						typeof(TestClass).GetMethod("TestMethod1")!, typeof(TestClass).GetMethod("TestMethod2")!,
+					}.ToTestAsyncEnumerable<MethodInfo?>();
+
+					async Task Act()
+					{
+						await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Method"));
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
 				public async Task WhenNotAllMethodsHaveAttribute_ShouldFail()
 				{
 					IAsyncEnumerable<MethodInfo?> subject = new[]
@@ -132,22 +148,6 @@ public sealed partial class ThatMethods
 						               void ThatMethods.Have.AttributeTests.TestClass.NoAttributeMethod()
 						             ]
 						             """);
-				}
-
-				[Fact]
-				public async Task WhenAllMethodsHaveMatchingAttribute_ShouldSucceed()
-				{
-					IAsyncEnumerable<MethodInfo?> subject = new[]
-					{
-						typeof(TestClass).GetMethod("TestMethod1")!, typeof(TestClass).GetMethod("TestMethod2")!,
-					}.ToTestAsyncEnumerable<MethodInfo?>();
-
-					async Task Act()
-					{
-						await That(subject).Have<TestAttribute>(attr => attr.Value.StartsWith("Method"));
-					}
-
-					await That(Act).DoesNotThrow();
 				}
 
 				[Fact]

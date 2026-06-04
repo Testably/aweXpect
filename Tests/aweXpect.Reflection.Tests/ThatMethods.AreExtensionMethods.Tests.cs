@@ -95,6 +95,29 @@ public sealed partial class ThatMethods
 		public sealed class AsyncEnumerableTests
 		{
 			[Fact]
+			public async Task WhenFilteringOnlyExtensionMethods_Negated_ShouldFail()
+			{
+				IAsyncEnumerable<MethodInfo?> subject = typeof(StaticClassWithExtensionMethods)
+					.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
+					.Where(m => m.IsReallyExtensionMethod())
+					.ToTestAsyncEnumerable<MethodInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreExtensionMethods());
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             are not all extension methods,
+					             but it only contained extension methods [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Fact]
 			public async Task WhenFilteringOnlyExtensionMethods_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo?> subject = typeof(StaticClassWithExtensionMethods)
@@ -127,29 +150,6 @@ public sealed partial class ThatMethods
 					             Expected that subject
 					             are all extension methods,
 					             but it contained non-extension methods [
-					               *
-					             ]
-					             """).AsWildcard();
-			}
-
-			[Fact]
-			public async Task WhenFilteringOnlyExtensionMethods_Negated_ShouldFail()
-			{
-				IAsyncEnumerable<MethodInfo?> subject = typeof(StaticClassWithExtensionMethods)
-					.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
-					.Where(m => m.IsReallyExtensionMethod())
-					.ToTestAsyncEnumerable<MethodInfo?>();
-
-				async Task Act()
-				{
-					await That(subject).DoesNotComplyWith(they => they.AreExtensionMethods());
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             are not all extension methods,
-					             but it only contained extension methods [
 					               *
 					             ]
 					             """).AsWildcard();

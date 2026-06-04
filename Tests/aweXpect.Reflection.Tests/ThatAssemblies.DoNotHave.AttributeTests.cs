@@ -11,45 +11,6 @@ public sealed partial class ThatAssemblies
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
-			public async Task WhenNoAssemblyHasAttribute_ShouldSucceed()
-			{
-				IEnumerable<Assembly?> subjects = new[]
-				{
-					Assembly.GetExecutingAssembly(), null,
-				};
-
-				async Task Act()
-				{
-					await That(subjects).DoNotHave<TestAttribute>();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenAnAssemblyHasAttribute_ShouldFail()
-			{
-				IEnumerable<Assembly?> subjects = new[]
-				{
-					Assembly.GetExecutingAssembly(),
-				};
-
-				async Task Act()
-				{
-					await That(subjects).DoNotHave<AssemblyTitleAttribute>();
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subjects
-					             all have no AssemblyTitleAttribute,
-					             but it contained not matching assemblies [
-					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
-					             ]
-					             """).AsWildcard();
-			}
-
 #if NET8_0_OR_GREATER
 			[Fact]
 			public async Task AsyncEnumerable_WhenAnAssemblyHasAttribute_ShouldFail()
@@ -96,6 +57,45 @@ public sealed partial class ThatAssemblies
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
 					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenAnAssemblyHasAttribute_ShouldFail()
+			{
+				IEnumerable<Assembly?> subjects = new[]
+				{
+					Assembly.GetExecutingAssembly(),
+				};
+
+				async Task Act()
+				{
+					await That(subjects).DoNotHave<AssemblyTitleAttribute>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subjects
+					             all have no AssemblyTitleAttribute,
+					             but it contained not matching assemblies [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenNoAssemblyHasAttribute_ShouldSucceed()
+			{
+				IEnumerable<Assembly?> subjects = new[]
+				{
+					Assembly.GetExecutingAssembly(), null,
+				};
+
+				async Task Act()
+				{
+					await That(subjects).DoNotHave<TestAttribute>();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[AttributeUsage(AttributeTargets.Assembly)]

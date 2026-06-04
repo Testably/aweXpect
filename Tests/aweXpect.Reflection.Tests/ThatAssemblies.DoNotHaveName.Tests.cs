@@ -14,9 +14,12 @@ public sealed partial class ThatAssemblies
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenNoAssemblyHasName_ShouldSucceed()
+			public async Task Enumerable_WhenNoAssemblyHasName_ShouldSucceed()
 			{
-				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
+				IEnumerable<Assembly?> subject = new[]
+				{
+					typeof(PublicAbstractClass).Assembly, null,
+				};
 
 				async Task Act()
 				{
@@ -24,26 +27,6 @@ public sealed partial class ThatAssemblies
 				}
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenAssemblyHasName_ShouldFail()
-			{
-				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
-
-				async Task Act()
-				{
-					await That(subject).DoNotHaveName("aweXpect.Reflection.Tests");
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that in assembly containing type PublicAbstractClass
-					             all have name not equal to "aweXpect.Reflection.Tests",
-					             but it contained not matching types [
-					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
-					             ]
-					             """).AsWildcard();
 			}
 
 			[Fact]
@@ -60,6 +43,26 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have name not ending with ".Tests",
+					             but it contained not matching types [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenAssemblyHasName_ShouldFail()
+			{
+				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
+
+				async Task Act()
+				{
+					await That(subject).DoNotHaveName("aweXpect.Reflection.Tests");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that in assembly containing type PublicAbstractClass
+					             all have name not equal to "aweXpect.Reflection.Tests",
 					             but it contained not matching types [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
@@ -87,12 +90,9 @@ public sealed partial class ThatAssemblies
 			}
 
 			[Fact]
-			public async Task Enumerable_WhenNoAssemblyHasName_ShouldSucceed()
+			public async Task WhenNoAssemblyHasName_ShouldSucceed()
 			{
-				IEnumerable<Assembly?> subject = new Assembly?[]
-				{
-					typeof(PublicAbstractClass).Assembly, null,
-				};
+				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
 
 				async Task Act()
 				{
@@ -106,7 +106,7 @@ public sealed partial class ThatAssemblies
 			[Fact]
 			public async Task AsyncEnumerable_WhenNoAssemblyHasName_ShouldSucceed()
 			{
-				IAsyncEnumerable<Assembly?> subject = new Assembly?[]
+				IAsyncEnumerable<Assembly?> subject = new[]
 				{
 					typeof(PublicAbstractClass).Assembly, null,
 				}.ToTestAsyncEnumerable<Assembly?>();

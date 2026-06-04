@@ -8,15 +8,109 @@ public sealed partial class ThatMethods
 {
 	public sealed class HaveOptionalParameter
 	{
+#if NET8_0_OR_GREATER
+		private static async IAsyncEnumerable<MethodInfo> ToAsyncEnumerable(params MethodInfo[] items)
+		{
+			foreach (MethodInfo item in items)
+			{
+				yield return item;
+			}
+
+			await Task.CompletedTask;
+		}
+#endif
 		public sealed class Tests
 		{
+			[Fact]
+			public async Task Generic_WhenNotAllHaveOptionalParameterOfType_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveOptionalParameter<int>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of type int with optional modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task GenericExactly_WhenNotAllHaveOptionalParameterOfType_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveOptionalParameterExactly<int>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type int with optional modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task GenericExactlyWithName_WhenNotAllHaveOptionalParameterOfType_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveOptionalParameterExactly<int>("value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type int with name "value" with optional modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task GenericWithName_WhenNotAllHaveOptionalParameterOfType_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveOptionalParameter<int>("value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of type int with name "value" with optional modifier,
+					             but at least one did not
+					             """);
+			}
+
 			[Fact]
 			public async Task WhenAllHaveOptionalParameter_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.AnotherMethodWithOptionalParameter))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.AnotherMethodWithOptionalParameter))!,
 				};
 
 				async Task Act()
@@ -48,8 +142,7 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
 				};
 
 				async Task Act()
@@ -63,6 +156,27 @@ public sealed partial class ThatMethods
 					             all have an optional parameter,
 					             but it contained methods without an optional parameter *MethodWithoutModifiers(*
 					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WithName_WhenNotAllHaveOptionalParameterWithName_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveOptionalParameter("value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter with name "value" with optional modifier,
+					             but at least one did not
+					             """);
 			}
 
 			[Fact]
@@ -86,8 +200,7 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
 				};
 
 				async Task Act()
@@ -99,72 +212,6 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with optional modifier,
-					             but at least one did not
-					             """);
-			}
-
-			[Fact]
-			public async Task Generic_WhenNotAllHaveOptionalParameterOfType_ShouldFail()
-			{
-				IEnumerable<MethodInfo> methods = new[]
-				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
-				};
-
-				async Task Act()
-				{
-					await That(methods).HaveOptionalParameter<int>();
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that methods
-					             all have parameter of type int with optional modifier,
-					             but at least one did not
-					             """);
-			}
-
-			[Fact]
-			public async Task GenericWithName_WhenNotAllHaveOptionalParameterOfType_ShouldFail()
-			{
-				IEnumerable<MethodInfo> methods = new[]
-				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
-				};
-
-				async Task Act()
-				{
-					await That(methods).HaveOptionalParameter<int>("value");
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that methods
-					             all have parameter of type int with name "value" with optional modifier,
-					             but at least one did not
-					             """);
-			}
-
-			[Fact]
-			public async Task WithName_WhenNotAllHaveOptionalParameterWithName_ShouldFail()
-			{
-				IEnumerable<MethodInfo> methods = new[]
-				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
-				};
-
-				async Task Act()
-				{
-					await That(methods).HaveOptionalParameter("value");
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that methods
-					             all have parameter with name "value" with optional modifier,
 					             but at least one did not
 					             """);
 			}
@@ -190,8 +237,7 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
 				};
 
 				async Task Act()
@@ -228,8 +274,7 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
 				};
 
 				async Task Act()
@@ -241,72 +286,6 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type int with optional modifier,
-					             but at least one did not
-					             """);
-			}
-
-			[Fact]
-			public async Task GenericExactly_WhenNotAllHaveOptionalParameterOfType_ShouldFail()
-			{
-				IEnumerable<MethodInfo> methods = new[]
-				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
-				};
-
-				async Task Act()
-				{
-					await That(methods).HaveOptionalParameterExactly<int>();
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that methods
-					             all have parameter of exact type int with optional modifier,
-					             but at least one did not
-					             """);
-			}
-
-			[Fact]
-			public async Task GenericExactlyWithName_WhenNotAllHaveOptionalParameterOfType_ShouldFail()
-			{
-				IEnumerable<MethodInfo> methods = new[]
-				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
-				};
-
-				async Task Act()
-				{
-					await That(methods).HaveOptionalParameterExactly<int>("value");
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that methods
-					             all have parameter of exact type int with name "value" with optional modifier,
-					             but at least one did not
-					             """);
-			}
-
-			[Fact]
-			public async Task WithTypeExactlyAndName_WhenNotAllHaveOptionalParameterOfType_ShouldFail()
-			{
-				IEnumerable<MethodInfo> methods = new[]
-				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
-				};
-
-				async Task Act()
-				{
-					await That(methods).HaveOptionalParameterExactly(typeof(int), "value");
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that methods
-					             all have parameter of exact type int with name "value" with optional modifier,
 					             but at least one did not
 					             """);
 			}
@@ -325,6 +304,27 @@ public sealed partial class ThatMethods
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithTypeExactlyAndName_WhenNotAllHaveOptionalParameterOfType_ShouldFail()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveOptionalParameterExactly(typeof(int), "value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type int with name "value" with optional modifier,
+					             but at least one did not
+					             """);
 			}
 
 #if NET8_0_OR_GREATER
@@ -415,8 +415,7 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.AnotherMethodWithOptionalParameter))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.AnotherMethodWithOptionalParameter))!,
 				};
 
 				async Task Act()
@@ -437,8 +436,7 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOptionalParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
 				};
 
 				async Task Act()
@@ -449,18 +447,6 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 		}
-
-#if NET8_0_OR_GREATER
-		private static async IAsyncEnumerable<MethodInfo> ToAsyncEnumerable(params MethodInfo[] items)
-		{
-			foreach (MethodInfo item in items)
-			{
-				yield return item;
-			}
-
-			await Task.CompletedTask;
-		}
-#endif
 
 #pragma warning disable CA1822
 		// ReSharper disable UnusedParameter.Local

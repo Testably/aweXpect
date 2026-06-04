@@ -1,5 +1,4 @@
-﻿using System;
-using Xunit.Sdk;
+﻿using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,79 +8,6 @@ public sealed partial class ThatType
 	{
 		public sealed class GenericTests
 		{
-			[Fact]
-			public async Task WhenTypeImplementsInterfaceDirectly_ShouldSucceed()
-			{
-				Type subject = typeof(ClassWithInterface);
-
-				async Task Act()
-				{
-					await That(subject).Implements<ITestInterface>();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenTypeImplementsInterfaceIndirectly_ShouldSucceed()
-			{
-				Type subject = typeof(DerivedFromClassWithInterface);
-
-				async Task Act()
-				{
-					await That(subject).Implements<ITestInterface>();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenTypeImplementsDirectly_WithForceDirect_ShouldSucceed()
-			{
-				Type subject = typeof(ClassWithInterface);
-
-				async Task Act()
-				{
-					await That(subject).Implements<ITestInterface>(true);
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenTypeImplementsIndirectly_WithForceDirect_ShouldFail()
-			{
-				Type subject = typeof(DerivedFromClassWithInterface);
-
-				async Task Act()
-				{
-					await That(subject).Implements<ITestInterface>(true);
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             directly implements ThatType.ITestInterface,
-					             but it implemented ThatType.ITestInterface only indirectly
-
-					             Actual:
-					             ThatType.DerivedFromClassWithInterface
-					             """);
-			}
-
-			[Fact]
-			public async Task WhenTypeImplementsDerivedInterfaceDirectly_WithForceDirect_ShouldSucceed()
-			{
-				Type subject = typeof(ClassWithDerivedInterface);
-
-				async Task Act()
-				{
-					await That(subject).Implements<IDerivedTestInterface>(true);
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
 			[Fact]
 			public async Task WhenInterfaceIsInheritedViaAnotherInterface_WithForceDirect_ShouldFail()
 			{
@@ -114,6 +40,21 @@ public sealed partial class ThatType
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenInterfaceTypeIsAClass_ShouldThrowArgumentException()
+			{
+				Type subject = typeof(ClassWithInterface);
+
+				async Task Act()
+				{
+					await That(subject).Implements<BaseClass>();
+				}
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage(
+						"The type to check implementation of must be an interface, but it was ThatType.BaseClass. Use 'InheritsFrom' to check for base-class inheritance.");
 			}
 
 			[Fact]
@@ -159,35 +100,95 @@ public sealed partial class ThatType
 			}
 
 			[Fact]
-			public async Task WhenInterfaceTypeIsAClass_ShouldThrowArgumentException()
+			public async Task WhenTypeImplementsDerivedInterfaceDirectly_WithForceDirect_ShouldSucceed()
+			{
+				Type subject = typeof(ClassWithDerivedInterface);
+
+				async Task Act()
+				{
+					await That(subject).Implements<IDerivedTestInterface>(true);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTypeImplementsDirectly_WithForceDirect_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithInterface);
 
 				async Task Act()
 				{
-					await That(subject).Implements<BaseClass>();
+					await That(subject).Implements<ITestInterface>(true);
 				}
 
-				await That(Act).Throws<ArgumentException>()
-					.WithMessage(
-						"The type to check implementation of must be an interface, but it was ThatType.BaseClass. Use 'InheritsFrom' to check for base-class inheritance.");
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTypeImplementsIndirectly_WithForceDirect_ShouldFail()
+			{
+				Type subject = typeof(DerivedFromClassWithInterface);
+
+				async Task Act()
+				{
+					await That(subject).Implements<ITestInterface>(true);
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             directly implements ThatType.ITestInterface,
+					             but it implemented ThatType.ITestInterface only indirectly
+
+					             Actual:
+					             ThatType.DerivedFromClassWithInterface
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenTypeImplementsInterfaceDirectly_ShouldSucceed()
+			{
+				Type subject = typeof(ClassWithInterface);
+
+				async Task Act()
+				{
+					await That(subject).Implements<ITestInterface>();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTypeImplementsInterfaceIndirectly_ShouldSucceed()
+			{
+				Type subject = typeof(DerivedFromClassWithInterface);
+
+				async Task Act()
+				{
+					await That(subject).Implements<ITestInterface>();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 
 		public sealed class TypeTests
 		{
 			[Fact]
-			public async Task WhenTypeImplementsInterface_ShouldSucceed()
+			public async Task WhenInterfaceTypeIsAClass_ShouldThrowArgumentException()
 			{
 				Type subject = typeof(ClassWithInterface);
-				Type interfaceType = typeof(ITestInterface);
+				Type classType = typeof(BaseClass);
 
 				async Task Act()
 				{
-					await That(subject).Implements(interfaceType);
+					await That(subject).Implements(classType);
 				}
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage(
+						"The type to check implementation of must be an interface, but it was ThatType.BaseClass. Use 'InheritsFrom' to check for base-class inheritance.");
 			}
 
 			[Fact]
@@ -213,19 +214,17 @@ public sealed partial class ThatType
 			}
 
 			[Fact]
-			public async Task WhenInterfaceTypeIsAClass_ShouldThrowArgumentException()
+			public async Task WhenTypeImplementsInterface_ShouldSucceed()
 			{
 				Type subject = typeof(ClassWithInterface);
-				Type classType = typeof(BaseClass);
+				Type interfaceType = typeof(ITestInterface);
 
 				async Task Act()
 				{
-					await That(subject).Implements(classType);
+					await That(subject).Implements(interfaceType);
 				}
 
-				await That(Act).Throws<ArgumentException>()
-					.WithMessage(
-						"The type to check implementation of must be an interface, but it was ThatType.BaseClass. Use 'InheritsFrom' to check for base-class inheritance.");
+				await That(Act).DoesNotThrow();
 			}
 		}
 

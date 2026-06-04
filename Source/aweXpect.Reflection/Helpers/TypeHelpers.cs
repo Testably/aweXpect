@@ -16,6 +16,18 @@ namespace aweXpect.Reflection.Helpers;
 internal static class TypeHelpers
 {
 	/// <summary>
+	///     The compiler-generated members that are currently included via customization.
+	/// </summary>
+	private static CompilerGeneratedMembers IncludedCompilerGeneratedMembers
+		=> Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers().Get();
+
+	/// <summary>
+	///     The special-name methods that are currently included via customization.
+	/// </summary>
+	private static SpecialNameMembers IncludedSpecialNameMembers
+		=> Customize.aweXpect.Reflection().IncludedSpecialNameMembers().Get();
+
+	/// <summary>
 	///     Searches for constructors in the <paramref name="type" /> that were directly declared there.
 	/// </summary>
 	public static ConstructorInfo[] GetDeclaredConstructors(
@@ -253,18 +265,6 @@ internal static class TypeHelpers
 	}
 
 	/// <summary>
-	///     The compiler-generated members that are currently included via customization.
-	/// </summary>
-	private static CompilerGeneratedMembers IncludedCompilerGeneratedMembers
-		=> Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers().Get();
-
-	/// <summary>
-	///     The special-name methods that are currently included via customization.
-	/// </summary>
-	private static SpecialNameMembers IncludedSpecialNameMembers
-		=> Customize.aweXpect.Reflection().IncludedSpecialNameMembers().Get();
-
-	/// <summary>
 	///     Determines whether the <paramref name="member" /> (or any of its declaring types) is compiler-generated.
 	/// </summary>
 	public static bool IsCompilerGenerated(this MemberInfo member)
@@ -315,10 +315,10 @@ internal static class TypeHelpers
 			}
 
 			foreach (PropertyInfo property in nestedType.GetProperties(BindingFlags.Public |
-				         BindingFlags.NonPublic |
-				         BindingFlags.Static |
-				         BindingFlags.Instance |
-				         BindingFlags.DeclaredOnly))
+			                                                           BindingFlags.NonPublic |
+			                                                           BindingFlags.Static |
+			                                                           BindingFlags.Instance |
+			                                                           BindingFlags.DeclaredOnly))
 			{
 				yield return property;
 			}

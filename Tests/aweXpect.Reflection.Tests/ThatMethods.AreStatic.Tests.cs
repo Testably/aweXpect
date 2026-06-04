@@ -93,6 +93,28 @@ public sealed partial class ThatMethods
 		public sealed class AsyncEnumerableTests
 		{
 			[Fact]
+			public async Task WhenFilteringOnlyStaticMethods_Negated_ShouldFail()
+			{
+				IAsyncEnumerable<MethodInfo?> subject = typeof(TestClassWithStaticMembers)
+					.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly)
+					.ToTestAsyncEnumerable<MethodInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreStatic());
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             are not all static,
+					             but it only contained static methods [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Fact]
 			public async Task WhenFilteringOnlyStaticMethods_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo?> subject = typeof(TestClassWithStaticMembers)
@@ -125,28 +147,6 @@ public sealed partial class ThatMethods
 					             Expected that subject
 					             are all static,
 					             but it contained non-static methods [
-					               *
-					             ]
-					             """).AsWildcard();
-			}
-
-			[Fact]
-			public async Task WhenFilteringOnlyStaticMethods_Negated_ShouldFail()
-			{
-				IAsyncEnumerable<MethodInfo?> subject = typeof(TestClassWithStaticMembers)
-					.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly)
-					.ToTestAsyncEnumerable<MethodInfo?>();
-
-				async Task Act()
-				{
-					await That(subject).DoesNotComplyWith(they => they.AreStatic());
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             are not all static,
-					             but it only contained static methods [
 					               *
 					             ]
 					             """).AsWildcard();

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
+using aweXpect.Reflection.Tests.TestHelpers.Types;
+using Xunit.Sdk;
 #if NET8_0_OR_GREATER
 using aweXpect.Reflection.Tests.TestHelpers;
 #endif
-using aweXpect.Reflection.Tests.TestHelpers.Types;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -13,6 +13,22 @@ public sealed partial class ThatTypes
 	{
 		public sealed class Tests
 		{
+			[Fact]
+			public async Task WhenEnumerableContainsNoReadOnlyTypes_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(PublicStruct), typeof(PublicClass),
+				};
+
+				async Task Act()
+				{
+					await That(subject).AreNotReadOnly();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[Fact]
 			public async Task WhenEnumerableContainsReadOnlyType_ShouldFail()
 			{
@@ -36,27 +52,11 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
-			[Fact]
-			public async Task WhenEnumerableContainsNoReadOnlyTypes_ShouldSucceed()
-			{
-				IEnumerable<Type?> subject = new[]
-				{
-					typeof(PublicStruct), typeof(PublicClass),
-				};
-
-				async Task Act()
-				{
-					await That(subject).AreNotReadOnly();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
 #if NET8_0_OR_GREATER
 			[Fact]
 			public async Task WhenAsyncEnumerableContainsReadOnlyType_ShouldFail()
 			{
-				IAsyncEnumerable<Type?> subject = new Type?[]
+				IAsyncEnumerable<Type?> subject = new[]
 				{
 					typeof(PublicStruct), typeof(PublicReadOnlyStruct),
 				}.ToTestAsyncEnumerable();
@@ -79,7 +79,7 @@ public sealed partial class ThatTypes
 			[Fact]
 			public async Task WhenAsyncEnumerableContainsNoReadOnlyTypes_ShouldSucceed()
 			{
-				IAsyncEnumerable<Type?> subject = new Type?[]
+				IAsyncEnumerable<Type?> subject = new[]
 				{
 					typeof(PublicStruct), typeof(PublicClass),
 				}.ToTestAsyncEnumerable();

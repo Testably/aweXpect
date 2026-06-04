@@ -1,5 +1,4 @@
 ﻿using aweXpect.Reflection.Collections;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -15,7 +14,9 @@ public sealed partial class ThatTypes
 				Filtered.Types subject = In.Types<ClassWithMarkedConstructor, ClassWithTwoMarkedConstructors>();
 
 				async Task Act()
-					=> await That(subject).ContainConstructors(constructors => constructors.With<MarkerAttribute>());
+				{
+					await That(subject).ContainConstructors(constructors => constructors.With<MarkerAttribute>());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -26,7 +27,9 @@ public sealed partial class ThatTypes
 				Filtered.Types subject = In.Types<ClassWithMarkedConstructor, ClassWithoutMarkedConstructor>();
 
 				async Task Act()
-					=> await That(subject).ContainConstructors(constructors => constructors.With<MarkerAttribute>());
+				{
+					await That(subject).ContainConstructors(constructors => constructors.With<MarkerAttribute>());
+				}
 
 				await That(Act).ThrowsException()
 					.WithMessage("""
@@ -47,8 +50,10 @@ public sealed partial class ThatTypes
 				Filtered.Types subject = In.Types<ClassWithMarkedConstructor, ClassWithoutMarkedConstructor>();
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they
+				{
+					await That(subject).DoesNotComplyWith(they
 						=> they.ContainConstructors(constructors => constructors.With<MarkerAttribute>()));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -82,9 +87,6 @@ public sealed partial class ThatTypes
 
 		private class ClassWithoutMarkedConstructor
 		{
-			public ClassWithoutMarkedConstructor()
-			{
-			}
 		}
 	}
 }

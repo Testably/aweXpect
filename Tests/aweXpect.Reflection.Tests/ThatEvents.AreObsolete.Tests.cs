@@ -99,6 +99,30 @@ public sealed partial class ThatEvents
 		public sealed class AsyncEnumerableTests
 		{
 			[Fact]
+			public async Task WhenAllEventsAreObsolete_Negated_ShouldFail()
+			{
+				IAsyncEnumerable<EventInfo?> subject = new[]
+					{
+						typeof(ClassWithObsoleteMembers).GetEvent(nameof(ClassWithObsoleteMembers.ObsoleteEvent))!,
+					}
+					.ToTestAsyncEnumerable<EventInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreObsolete());
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             are not all obsolete,
+					             but it only contained obsolete items [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Fact]
 			public async Task WhenAllEventsAreObsolete_ShouldSucceed()
 			{
 				IAsyncEnumerable<EventInfo?> subject = new[]
@@ -120,8 +144,7 @@ public sealed partial class ThatEvents
 			{
 				IAsyncEnumerable<EventInfo?> subject = new[]
 					{
-						typeof(ClassWithObsoleteMembers).GetEvent(nameof(ClassWithObsoleteMembers.ObsoleteEvent))!,
-						typeof(ClassWithObsoleteMembers).GetEvent(nameof(ClassWithObsoleteMembers.NonObsoleteEvent))!,
+						typeof(ClassWithObsoleteMembers).GetEvent(nameof(ClassWithObsoleteMembers.ObsoleteEvent))!, typeof(ClassWithObsoleteMembers).GetEvent(nameof(ClassWithObsoleteMembers.NonObsoleteEvent))!,
 					}
 					.ToTestAsyncEnumerable<EventInfo?>();
 
@@ -135,30 +158,6 @@ public sealed partial class ThatEvents
 					             Expected that subject
 					             are all obsolete,
 					             but it contained non-obsolete items [
-					               *
-					             ]
-					             """).AsWildcard();
-			}
-
-			[Fact]
-			public async Task WhenAllEventsAreObsolete_Negated_ShouldFail()
-			{
-				IAsyncEnumerable<EventInfo?> subject = new[]
-					{
-						typeof(ClassWithObsoleteMembers).GetEvent(nameof(ClassWithObsoleteMembers.ObsoleteEvent))!,
-					}
-					.ToTestAsyncEnumerable<EventInfo?>();
-
-				async Task Act()
-				{
-					await That(subject).DoesNotComplyWith(they => they.AreObsolete());
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             are not all obsolete,
-					             but it only contained obsolete items [
 					               *
 					             ]
 					             """).AsWildcard();

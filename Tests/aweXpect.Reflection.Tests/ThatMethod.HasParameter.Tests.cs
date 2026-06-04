@@ -209,6 +209,58 @@ public sealed partial class ThatMethod
 			}
 
 			[Fact]
+			public async Task Type_AsPrefix_WhenParameterNameStartsWithPrefix_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter(typeof(int), "val").AsPrefix();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task Type_AsRegex_WhenParameterNameMatchesRegex_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter(typeof(string), "n[a-z]*e").AsRegex();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task Type_AsSuffix_WhenParameterNameEndsWithSuffix_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter(typeof(string), "ame").AsSuffix();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task Type_AsWildcard_WhenParameterNameMatchesWildcard_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter(typeof(string), "n??e").AsWildcard();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task Type_AtIndex_WhenParameterDoesNotExistAtSpecificIndex_ShouldFail()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
@@ -247,72 +299,6 @@ public sealed partial class ThatMethod
 				async Task Act()
 				{
 					await That(methodInfo).HasParameter(typeof(string)).AtIndex(0).FromEnd();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task Type_AsPrefix_WhenParameterNameStartsWithPrefix_ShouldSucceed()
-			{
-				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
-
-				async Task Act()
-				{
-					await That(methodInfo).HasParameter(typeof(int), "val").AsPrefix();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task Type_AsSuffix_WhenParameterNameEndsWithSuffix_ShouldSucceed()
-			{
-				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
-
-				async Task Act()
-				{
-					await That(methodInfo).HasParameter(typeof(string), "ame").AsSuffix();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task Type_AsRegex_WhenParameterNameMatchesRegex_ShouldSucceed()
-			{
-				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
-
-				async Task Act()
-				{
-					await That(methodInfo).HasParameter(typeof(string), "n[a-z]*e").AsRegex();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task Type_AsWildcard_WhenParameterNameMatchesWildcard_ShouldSucceed()
-			{
-				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
-
-				async Task Act()
-				{
-					await That(methodInfo).HasParameter(typeof(string), "n??e").AsWildcard();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task Type_Using_WhenParameterNameMatchesWithCustomComparer_ShouldSucceed()
-			{
-				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
-
-				async Task Act()
-				{
-					await That(methodInfo).HasParameter(typeof(string), "nAmE")
-						.Using(new IgnoreCaseForVocalsComparer());
 				}
 
 				await That(Act).DoesNotThrow();
@@ -425,6 +411,20 @@ public sealed partial class ThatMethod
 			}
 
 			[Fact]
+			public async Task Type_Using_WhenParameterNameMatchesWithCustomComparer_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter(typeof(string), "nAmE")
+						.Using(new IgnoreCaseForVocalsComparer());
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task Type_WithDefaultValue_WhenParameterHasDefault_ShouldSucceed()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithDefaults))!;
@@ -464,19 +464,6 @@ public sealed partial class ThatMethod
 			}
 
 			[Fact]
-			public async Task WithoutDefaultValue_WhenParameterHasNoDefault_ShouldSucceed()
-			{
-				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
-
-				async Task Act()
-				{
-					await That(methodInfo).HasParameter<int>().WithoutDefaultValue();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WithDefaultValue_WhenParameterHasNoDefault_ShouldFail()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
@@ -484,6 +471,55 @@ public sealed partial class ThatMethod
 				async Task Act()
 				{
 					await That(methodInfo).HasParameter<string>().WithDefaultValue();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type string,
+					             but it did not
+					             """);
+			}
+
+			[Fact]
+			public async Task WithDefaultValueOfValue_WhenParameterHasDifferentDefault_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithDefaults))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<string>().WithDefaultValue("other");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type string,
+					             but it did not
+					             """);
+			}
+
+			[Fact]
+			public async Task WithDefaultValueOfValue_WhenParameterHasMatchingDefault_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithDefaults))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<string>().WithDefaultValue("default");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithDefaultValueOfValue_WhenParameterHasNoDefault_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter<string>().WithDefaultValue("default");
 				}
 
 				await That(Act).Throws<XunitException>()
@@ -513,52 +549,16 @@ public sealed partial class ThatMethod
 			}
 
 			[Fact]
-			public async Task WithDefaultValueOfValue_WhenParameterHasMatchingDefault_ShouldSucceed()
-			{
-				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithDefaults))!;
-
-				async Task Act()
-				{
-					await That(methodInfo).HasParameter<string>().WithDefaultValue("default");
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WithDefaultValueOfValue_WhenParameterHasDifferentDefault_ShouldFail()
-			{
-				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithDefaults))!;
-
-				async Task Act()
-				{
-					await That(methodInfo).HasParameter<string>().WithDefaultValue("other");
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that methodInfo
-					             has parameter of type string,
-					             but it did not
-					             """);
-			}
-
-			[Fact]
-			public async Task WithDefaultValueOfValue_WhenParameterHasNoDefault_ShouldFail()
+			public async Task WithoutDefaultValue_WhenParameterHasNoDefault_ShouldSucceed()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;
 
 				async Task Act()
 				{
-					await That(methodInfo).HasParameter<string>().WithDefaultValue("default");
+					await That(methodInfo).HasParameter<int>().WithoutDefaultValue();
 				}
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that methodInfo
-					             has parameter of type string,
-					             but it did not
-					             """);
+				await That(Act).DoesNotThrow();
 			}
 
 #pragma warning disable CA1822

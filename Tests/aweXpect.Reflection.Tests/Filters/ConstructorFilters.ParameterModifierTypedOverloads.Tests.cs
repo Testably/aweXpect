@@ -8,8 +8,39 @@ public sealed partial class ConstructorFilters
 {
 	public sealed class ParameterModifierTypedOverloads
 	{
+		private static ConstructorInfo? Constructor<T>()
+			=> typeof(T).GetConstructors().Single();
+
 		public sealed class Tests
 		{
+			[Fact]
+			public async Task WithOptionalParameterOfType_ShouldFilter()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithOptionalParameter<int>();
+
+				await That(constructors).Contains(Constructor<OptionalIntCtor>());
+				await That(constructors).DoesNotContain(Constructor<PlainIntCtor>());
+			}
+
+			[Fact]
+			public async Task WithParamsParameterOfType_ShouldFilter()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithParamsParameter<int[]>();
+
+				await That(constructors).Contains(Constructor<ParamsIntCtor>());
+			}
+
+			[Fact]
+			public async Task WithRefParameterByName_ShouldFilter()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithRefParameter("value");
+
+				await That(constructors).Contains(Constructor<RefIntCtor>());
+			}
+
 			[Fact]
 			public async Task WithRefParameterOfType_ShouldFilterAndDescribe()
 			{
@@ -41,38 +72,7 @@ public sealed partial class ConstructorFilters
 
 				await That(constructors).Contains(Constructor<RefIntCtor>());
 			}
-
-			[Fact]
-			public async Task WithRefParameterByName_ShouldFilter()
-			{
-				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
-					.Constructors().WithRefParameter("value");
-
-				await That(constructors).Contains(Constructor<RefIntCtor>());
-			}
-
-			[Fact]
-			public async Task WithOptionalParameterOfType_ShouldFilter()
-			{
-				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
-					.Constructors().WithOptionalParameter<int>();
-
-				await That(constructors).Contains(Constructor<OptionalIntCtor>());
-				await That(constructors).DoesNotContain(Constructor<PlainIntCtor>());
-			}
-
-			[Fact]
-			public async Task WithParamsParameterOfType_ShouldFilter()
-			{
-				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
-					.Constructors().WithParamsParameter<int[]>();
-
-				await That(constructors).Contains(Constructor<ParamsIntCtor>());
-			}
 		}
-
-		private static ConstructorInfo? Constructor<T>()
-			=> typeof(T).GetConstructors().Single();
 
 		// ReSharper disable UnusedMember.Local
 		// ReSharper disable UnusedParameter.Local

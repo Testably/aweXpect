@@ -9,20 +9,6 @@ public sealed partial class MethodFilters
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task ShouldFilterForMethodsWhichReturnVoid()
-			{
-				Filtered.Methods methods = In.Type<TestClass>()
-					.Methods().WhichReturnVoid();
-
-				await That(methods).IsEqualTo([
-					typeof(TestClass).GetMethod(nameof(TestClass.VoidMethod))!,
-				]).InAnyOrder();
-				await That(methods.GetDescription())
-					.IsEqualTo("methods which return void in")
-					.AsPrefix();
-			}
-
-			[Fact]
 			public async Task ShouldAllowChainingAlternativeReturnType()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -34,6 +20,20 @@ public sealed partial class MethodFilters
 				]).InAnyOrder();
 				await That(methods.GetDescription())
 					.IsEqualTo("methods which return void or return string in")
+					.AsPrefix();
+			}
+
+			[Fact]
+			public async Task ShouldFilterForMethodsWhichReturnVoid()
+			{
+				Filtered.Methods methods = In.Type<TestClass>()
+					.Methods().WhichReturnVoid();
+
+				await That(methods).IsEqualTo([
+					typeof(TestClass).GetMethod(nameof(TestClass.VoidMethod))!,
+				]).InAnyOrder();
+				await That(methods.GetDescription())
+					.IsEqualTo("methods which return void in")
 					.AsPrefix();
 			}
 		}

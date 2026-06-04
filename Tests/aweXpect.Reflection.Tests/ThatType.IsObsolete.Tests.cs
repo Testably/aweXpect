@@ -10,21 +10,6 @@ public sealed partial class ThatType
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenTypeIsObsolete_ShouldSucceed()
-			{
-#pragma warning disable CS0612, CS0618
-				Type subject = typeof(ObsoleteClass);
-#pragma warning restore CS0612, CS0618
-
-				async Task Act()
-				{
-					await That(subject).IsObsolete();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenTypeIsNotObsolete_ShouldFail()
 			{
 				Type subject = typeof(ClassWithObsoleteMembers);
@@ -59,10 +44,38 @@ public sealed partial class ThatType
 					             but it was <null>
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenTypeIsObsolete_ShouldSucceed()
+			{
+#pragma warning disable CS0612, CS0618
+				Type subject = typeof(ObsoleteClass);
+#pragma warning restore CS0612, CS0618
+
+				async Task Act()
+				{
+					await That(subject).IsObsolete();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
 		}
 
 		public sealed class NegatedTests
 		{
+			[Fact]
+			public async Task WhenTypeIsNotObsolete_ShouldSucceed()
+			{
+				Type subject = typeof(ClassWithObsoleteMembers);
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsObsolete());
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[Fact]
 			public async Task WhenTypeIsObsolete_ShouldFail()
 			{
@@ -81,19 +94,6 @@ public sealed partial class ThatType
 					              is not obsolete,
 					              but it was obsolete {Formatter.Format(subject)}
 					              """);
-			}
-
-			[Fact]
-			public async Task WhenTypeIsNotObsolete_ShouldSucceed()
-			{
-				Type subject = typeof(ClassWithObsoleteMembers);
-
-				async Task Act()
-				{
-					await That(subject).DoesNotComplyWith(it => it.IsObsolete());
-				}
-
-				await That(Act).DoesNotThrow();
 			}
 		}
 	}

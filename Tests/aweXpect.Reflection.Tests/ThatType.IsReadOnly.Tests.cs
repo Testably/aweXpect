@@ -9,19 +9,6 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Fact]
-			public async Task WhenTypeIsReadOnly_ShouldSucceed()
-			{
-				Type subject = typeof(PublicReadOnlyStruct);
-
-				async Task Act()
-				{
-					await That(subject).IsReadOnly();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
 			[Theory]
 			[MemberData(nameof(NonReadOnlyTypes))]
 			public async Task WhenTypeIsNotReadOnly_ShouldFail(Type subject)
@@ -55,6 +42,19 @@ public sealed partial class ThatType
 					             is read-only,
 					             but it was <null>
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenTypeIsReadOnly_ShouldSucceed()
+			{
+				Type subject = typeof(PublicReadOnlyStruct);
+
+				async Task Act()
+				{
+					await That(subject).IsReadOnly();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 
 			public static TheoryData<Type> NonReadOnlyTypes() => new()

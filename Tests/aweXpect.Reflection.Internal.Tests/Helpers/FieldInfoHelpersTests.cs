@@ -79,28 +79,6 @@ public sealed class FieldInfoHelpersTests
 	}
 
 	[Fact]
-	public async Task HasAttribute_WithoutAttribute_ShouldReturnFalse()
-	{
-		FieldInfo fieldInfo = typeof(TestClass).GetField(nameof(TestClass.Field2WithoutAttribute))!;
-
-		bool result = fieldInfo.HasAttribute<DummyAttribute>();
-
-		await That(result).IsFalse();
-	}
-
-	[Fact]
-	public async Task HasAttribute_WithPredicate_ShouldReturnPredicateResult()
-	{
-		FieldInfo fieldInfo = typeof(TestClass).GetField(nameof(TestClass.Field1WithAttribute))!;
-
-		bool result1 = fieldInfo.HasAttribute<DummyAttribute>(d => d.Value == 1);
-		bool result2 = fieldInfo.HasAttribute<DummyAttribute>(d => d.Value == 2);
-
-		await That(result1).IsTrue();
-		await That(result2).IsFalse();
-	}
-
-	[Fact]
 	public async Task HasAttribute_WithAttributeType_WithoutPredicate_ShouldReturnTrue()
 	{
 		FieldInfo fieldInfo = typeof(TestClass).GetField(nameof(TestClass.Field1WithAttribute))!;
@@ -117,6 +95,28 @@ public sealed class FieldInfoHelpersTests
 
 		bool result1 = fieldInfo.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 1);
 		bool result2 = fieldInfo.HasAttribute(typeof(DummyAttribute), a => ((DummyAttribute)a).Value == 2);
+
+		await That(result1).IsTrue();
+		await That(result2).IsFalse();
+	}
+
+	[Fact]
+	public async Task HasAttribute_WithoutAttribute_ShouldReturnFalse()
+	{
+		FieldInfo fieldInfo = typeof(TestClass).GetField(nameof(TestClass.Field2WithoutAttribute))!;
+
+		bool result = fieldInfo.HasAttribute<DummyAttribute>();
+
+		await That(result).IsFalse();
+	}
+
+	[Fact]
+	public async Task HasAttribute_WithPredicate_ShouldReturnPredicateResult()
+	{
+		FieldInfo fieldInfo = typeof(TestClass).GetField(nameof(TestClass.Field1WithAttribute))!;
+
+		bool result1 = fieldInfo.HasAttribute<DummyAttribute>(d => d.Value == 1);
+		bool result2 = fieldInfo.HasAttribute<DummyAttribute>(d => d.Value == 2);
 
 		await That(result1).IsTrue();
 		await That(result2).IsFalse();

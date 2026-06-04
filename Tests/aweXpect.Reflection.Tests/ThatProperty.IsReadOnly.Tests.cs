@@ -10,6 +10,24 @@ public sealed partial class ThatProperty
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenPropertyIsNull_ShouldFail()
+			{
+				PropertyInfo? subject = null;
+
+				async Task Act()
+				{
+					await That(subject).IsReadOnly();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             is read-only,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenPropertyIsReadOnly_ShouldSucceed()
 			{
 				PropertyInfo subject = typeof(TestClassWithReadWriteProperties)
@@ -40,24 +58,6 @@ public sealed partial class ThatProperty
 					              is read-only,
 					              but it was not read-only {Formatter.Format(subject)}
 					              """);
-			}
-
-			[Fact]
-			public async Task WhenPropertyIsNull_ShouldFail()
-			{
-				PropertyInfo? subject = null;
-
-				async Task Act()
-				{
-					await That(subject).IsReadOnly();
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             is read-only,
-					             but it was <null>
-					             """);
 			}
 		}
 

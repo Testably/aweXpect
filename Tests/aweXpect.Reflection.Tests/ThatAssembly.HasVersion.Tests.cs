@@ -23,10 +23,10 @@ public sealed partial class ThatAssembly
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
-					             Expected that assembly
-					             has version matching version => version.Major < 0,
-					             but it had version {actualVersion}
-					             """);
+					              Expected that assembly
+					              has version matching version => version.Major < 0,
+					              but it had version {actualVersion}
+					              """);
 			}
 
 			[Fact]
@@ -46,6 +46,19 @@ public sealed partial class ThatAssembly
 		public sealed class NegatedTests
 		{
 			[Fact]
+			public async Task WhenVersionDoesNotMatch_ShouldSucceed()
+			{
+				Assembly assembly = typeof(PublicAbstractClass).Assembly;
+
+				async Task Act()
+				{
+					await That(assembly).DoesNotComplyWith(it => it.HasVersion(version => version.Major < 0));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenVersionMatches_ShouldFail()
 			{
 				Assembly assembly = typeof(PublicAbstractClass).Assembly;
@@ -58,46 +71,15 @@ public sealed partial class ThatAssembly
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
-					             Expected that assembly
-					             does not have version matching version => version.Major >= 0,
-					             but it had version {actualVersion}
-					             """);
-			}
-
-			[Fact]
-			public async Task WhenVersionDoesNotMatch_ShouldSucceed()
-			{
-				Assembly assembly = typeof(PublicAbstractClass).Assembly;
-
-				async Task Act()
-				{
-					await That(assembly).DoesNotComplyWith(it => it.HasVersion(version => version.Major < 0));
-				}
-
-				await That(Act).DoesNotThrow();
+					              Expected that assembly
+					              does not have version matching version => version.Major >= 0,
+					              but it had version {actualVersion}
+					              """);
 			}
 		}
 
 		public sealed class WithoutVersionTests
 		{
-			[Fact]
-			public async Task WithPredicate_WhenVersionIsNull_ShouldFail()
-			{
-				Assembly assembly = new VersionlessAssembly();
-
-				async Task Act()
-				{
-					await That(assembly).HasVersion(version => version.Major >= 0);
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that assembly
-					             has version matching version => version.Major >= 0,
-					             but it had version <null>
-					             """);
-			}
-
 			[Fact]
 			public async Task WithComponent_WhenVersionIsNull_ShouldFail()
 			{
@@ -131,6 +113,24 @@ public sealed partial class ThatAssembly
 					             Expected that assembly
 					             has a version,
 					             but it had no version
+					             """);
+			}
+
+			[Fact]
+			public async Task WithPredicate_WhenVersionIsNull_ShouldFail()
+			{
+				Assembly assembly = new VersionlessAssembly();
+
+				async Task Act()
+				{
+					await That(assembly).HasVersion(version => version.Major >= 0);
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that assembly
+					             has version matching version => version.Major >= 0,
+					             but it had version <null>
 					             """);
 			}
 
@@ -212,10 +212,10 @@ public sealed partial class ThatAssembly
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
-					             Expected that assembly
-					             has major version {wording} {expected},
-					             but it had major version {major}
-					             """);
+					              Expected that assembly
+					              has major version {wording} {expected},
+					              but it had major version {major}
+					              """);
 			}
 
 			[Theory]
@@ -304,10 +304,10 @@ public sealed partial class ThatAssembly
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
-					             Expected that assembly
-					             has {name} version greater than {actual},
-					             but it had {name} version {actual}
-					             """);
+					              Expected that assembly
+					              has {name} version greater than {actual},
+					              but it had {name} version {actual}
+					              """);
 			}
 
 			[Fact]
@@ -323,10 +323,10 @@ public sealed partial class ThatAssembly
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
-					             Expected that assembly
-					             has major version less than 0,
-					             but it had major version {major}
-					             """);
+					              Expected that assembly
+					              has major version less than 0,
+					              but it had major version {major}
+					              """);
 			}
 
 			[Fact]
@@ -357,10 +357,10 @@ public sealed partial class ThatAssembly
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
-					             Expected that assembly
-					             has major version equal to {version.Major} and minor version greater than {version.Minor},
-					             but it had minor version {version.Minor}
-					             """);
+					              Expected that assembly
+					              has major version equal to {version.Major} and minor version greater than {version.Minor},
+					              but it had minor version {version.Minor}
+					              """);
 			}
 
 			[Fact]
@@ -405,10 +405,10 @@ public sealed partial class ThatAssembly
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
-					             Expected that assembly
-					             does not have major version greater than or equal to 0,
-					             but it had version {version}
-					             """);
+					              Expected that assembly
+					              does not have major version greater than or equal to 0,
+					              but it had version {version}
+					              """);
 			}
 
 			[Fact]
@@ -424,10 +424,10 @@ public sealed partial class ThatAssembly
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
-					             Expected that assembly
-					             does not have a version,
-					             but it had version {version}
-					             """);
+					              Expected that assembly
+					              does not have a version,
+					              but it had version {version}
+					              """);
 			}
 		}
 	}

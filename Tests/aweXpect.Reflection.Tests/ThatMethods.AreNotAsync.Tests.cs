@@ -92,6 +92,29 @@ public sealed partial class ThatMethods
 		public sealed class AsyncEnumerableTests
 		{
 			[Fact]
+			public async Task WhenFilteringOnlyNonAsyncMethods_Negated_ShouldFail()
+			{
+				IAsyncEnumerable<MethodInfo?> subject = typeof(ClassWithAsyncMembers)
+					.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+					.Where(m => !m.IsReallyAsync())
+					.ToTestAsyncEnumerable<MethodInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotAsync());
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             also contain an async method,
+					             but it only contained non-async methods [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Fact]
 			public async Task WhenFilteringOnlyNonAsyncMethods_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo?> subject = typeof(ClassWithAsyncMembers)
@@ -124,29 +147,6 @@ public sealed partial class ThatMethods
 					             Expected that subject
 					             are all not async,
 					             but it contained async methods [
-					               *
-					             ]
-					             """).AsWildcard();
-			}
-
-			[Fact]
-			public async Task WhenFilteringOnlyNonAsyncMethods_Negated_ShouldFail()
-			{
-				IAsyncEnumerable<MethodInfo?> subject = typeof(ClassWithAsyncMembers)
-					.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
-					.Where(m => !m.IsReallyAsync())
-					.ToTestAsyncEnumerable<MethodInfo?>();
-
-				async Task Act()
-				{
-					await That(subject).DoesNotComplyWith(they => they.AreNotAsync());
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             also contain an async method,
-					             but it only contained non-async methods [
 					               *
 					             ]
 					             """).AsWildcard();

@@ -11,19 +11,6 @@ public sealed partial class ThatConstructor
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenConstructorHasOutParameter_ShouldSucceed()
-			{
-				ConstructorInfo constructorInfo = typeof(ClassWithOutParameter).GetConstructors().Single();
-
-				async Task Act()
-				{
-					await That(constructorInfo).HasOutParameter();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenConstructorHasNoOutParameter_ShouldFail()
 			{
 				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
@@ -39,6 +26,19 @@ public sealed partial class ThatConstructor
 					             has an out parameter,
 					             but it did not
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenConstructorHasOutParameter_ShouldSucceed()
+			{
+				ConstructorInfo constructorInfo = typeof(ClassWithOutParameter).GetConstructors().Single();
+
+				async Task Act()
+				{
+					await That(constructorInfo).HasOutParameter();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[Fact]
@@ -62,6 +62,42 @@ public sealed partial class ThatConstructor
 
 		public sealed class TypedOverloadsTests
 		{
+			[Fact]
+			public async Task GenericExactType_WhenParameterIsNotOut_ShouldFail()
+			{
+				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
+
+				async Task Act()
+				{
+					await That(constructorInfo).HasOutParameterExactly<int>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructorInfo
+					             has parameter of exact type int with out modifier,
+					             but it did not
+					             """);
+			}
+
+			[Fact]
+			public async Task GenericExactTypeAndName_WhenParameterIsNotOut_ShouldFail()
+			{
+				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
+
+				async Task Act()
+				{
+					await That(constructorInfo).HasOutParameterExactly<int>("value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that constructorInfo
+					             has parameter of exact type int with name "value" with out modifier,
+					             but it did not
+					             """);
+			}
+
 			[Fact]
 			public async Task GenericType_WhenParameterIsNotOut_ShouldFail()
 			{
@@ -117,39 +153,16 @@ public sealed partial class ThatConstructor
 			}
 
 			[Fact]
-			public async Task GenericExactType_WhenParameterIsNotOut_ShouldFail()
+			public async Task WhenOnlySomeParametersAreOut_ShouldSucceed()
 			{
-				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
+				ConstructorInfo constructorInfo = typeof(ClassWithMixedParameters).GetConstructors().Single();
 
 				async Task Act()
 				{
-					await That(constructorInfo).HasOutParameterExactly<int>();
+					await That(constructorInfo).HasOutParameter();
 				}
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that constructorInfo
-					             has parameter of exact type int with out modifier,
-					             but it did not
-					             """);
-			}
-
-			[Fact]
-			public async Task GenericExactTypeAndName_WhenParameterIsNotOut_ShouldFail()
-			{
-				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
-
-				async Task Act()
-				{
-					await That(constructorInfo).HasOutParameterExactly<int>("value");
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that constructorInfo
-					             has parameter of exact type int with name "value" with out modifier,
-					             but it did not
-					             """);
+				await That(Act).DoesNotThrow();
 			}
 
 #pragma warning disable CA2263
@@ -225,23 +238,23 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 #pragma warning restore CA2263
-
-			[Fact]
-			public async Task WhenOnlySomeParametersAreOut_ShouldSucceed()
-			{
-				ConstructorInfo constructorInfo = typeof(ClassWithMixedParameters).GetConstructors().Single();
-
-				async Task Act()
-				{
-					await That(constructorInfo).HasOutParameter();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
 		}
 
 		public sealed class NegatedTests
 		{
+			[Fact]
+			public async Task WhenConstructorHasNoOutParameter_ShouldSucceed()
+			{
+				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
+
+				async Task Act()
+				{
+					await That(constructorInfo).DoesNotComplyWith(it => it.HasOutParameter());
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[Fact]
 			public async Task WhenConstructorHasOutParameter_ShouldFail()
 			{
@@ -258,19 +271,6 @@ public sealed partial class ThatConstructor
 					             does not have an out parameter,
 					             but it did
 					             """);
-			}
-
-			[Fact]
-			public async Task WhenConstructorHasNoOutParameter_ShouldSucceed()
-			{
-				ConstructorInfo constructorInfo = typeof(ClassWithoutModifiers).GetConstructors().Single();
-
-				async Task Act()
-				{
-					await That(constructorInfo).DoesNotComplyWith(it => it.HasOutParameter());
-				}
-
-				await That(Act).DoesNotThrow();
 			}
 		}
 

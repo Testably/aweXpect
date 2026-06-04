@@ -25,6 +25,24 @@ public sealed partial class ThatMethod
 			}
 
 			[Fact]
+			public async Task WhenMethodIsNull_ShouldFail()
+			{
+				MethodInfo? subject = null;
+
+				async Task Act()
+				{
+					await That(subject).IsNotObsolete();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             is not obsolete,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenMethodIsObsolete_ShouldFail()
 			{
 				MethodInfo subject =
@@ -41,24 +59,6 @@ public sealed partial class ThatMethod
 					              is not obsolete,
 					              but it was obsolete {Formatter.Format(subject)}
 					              """);
-			}
-
-			[Fact]
-			public async Task WhenMethodIsNull_ShouldFail()
-			{
-				MethodInfo? subject = null;
-
-				async Task Act()
-				{
-					await That(subject).IsNotObsolete();
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             is not obsolete,
-					             but it was <null>
-					             """);
 			}
 		}
 

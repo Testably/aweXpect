@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
 using aweXpect.Reflection.Helpers;
 
 namespace aweXpect.Reflection.Internal.Tests.Helpers;
@@ -9,12 +8,15 @@ namespace aweXpect.Reflection.Internal.Tests.Helpers;
 public sealed class CollectionConstraintResultTests
 {
 	[Fact]
-	public async Task Matching_BeforeSettingValue_ShouldBeEmpty()
+	public async Task AppendResult_WhenOutcomeIsDecided_ShouldNotAppendCancelledMessage()
 	{
 		TestableResult sut = new(ExpectationGrammars.None);
+		sut.SetMatch([1,], []);
+		StringBuilder stringBuilder = new();
 
-		await That(sut.MatchingElements).IsEmpty();
-		await That(sut.NotMatchingElements).IsEmpty();
+		sut.AppendResult(stringBuilder);
+
+		await That(stringBuilder.ToString()).IsEqualTo("normal-result");
 	}
 
 	[Fact]
@@ -30,15 +32,12 @@ public sealed class CollectionConstraintResultTests
 	}
 
 	[Fact]
-	public async Task AppendResult_WhenOutcomeIsDecided_ShouldNotAppendCancelledMessage()
+	public async Task Matching_BeforeSettingValue_ShouldBeEmpty()
 	{
 		TestableResult sut = new(ExpectationGrammars.None);
-		sut.SetMatch([1,], []);
-		StringBuilder stringBuilder = new();
 
-		sut.AppendResult(stringBuilder);
-
-		await That(stringBuilder.ToString()).IsEqualTo("normal-result");
+		await That(sut.MatchingElements).IsEmpty();
+		await That(sut.NotMatchingElements).IsEmpty();
 	}
 
 	private sealed class TestableResult(ExpectationGrammars grammars)

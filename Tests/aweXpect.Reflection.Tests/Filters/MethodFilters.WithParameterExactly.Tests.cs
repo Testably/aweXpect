@@ -39,41 +39,6 @@ public sealed partial class MethodFilters
 			}
 
 			[Fact]
-			public async Task WithName_ShouldFilterForMethodsWithParameterOfExactTypeAndName()
-			{
-				Filtered.Methods methods = In.Type<TestClass>()
-					.Methods().WithParameterExactly<DummyBase>("parameter");
-
-				await That(methods).IsEqualTo([
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithDummyBase))!,
-				]).InAnyOrder();
-				await That(methods.GetDescription())
-					.IsEqualTo("methods with parameter of exact type ").AsPrefix();
-			}
-
-			[Fact]
-			public async Task WithName_ShouldIncludeNameInDescription()
-			{
-				Filtered.Methods methods = In.Type<TestClassWithIntParameters>()
-					.Methods().WithParameterExactly<int>("value");
-
-				await That(methods.GetDescription())
-					.IsEqualTo("methods with parameter of exact type int and name equal to \"value\" in").AsPrefix();
-			}
-
-#pragma warning disable CA2263
-			[Fact]
-			public async Task UsingType_WithName_ShouldIncludeNameInDescription()
-			{
-				Filtered.Methods methods = In.Type<TestClassWithIntParameters>()
-					.Methods().WithParameterExactly(typeof(int), "value");
-
-				await That(methods.GetDescription())
-					.IsEqualTo("methods with parameter of exact type int and name equal to \"value\" in").AsPrefix();
-			}
-#pragma warning restore CA2263
-
-			[Fact]
 			public async Task UsingType_ShouldFilterForMethodsWithParameterOfExactType()
 			{
 				Filtered.Methods methods = In.Type<TestClass>()
@@ -115,6 +80,49 @@ public sealed partial class MethodFilters
 				await That(methods.GetDescription())
 					.IsEqualTo("methods with parameter of exact type ").AsPrefix();
 			}
+
+#pragma warning disable CA2263
+			[Fact]
+			public async Task UsingType_WithName_ShouldIncludeNameInDescription()
+			{
+				Filtered.Methods methods = In.Type<TestClassWithIntParameters>()
+					.Methods().WithParameterExactly(typeof(int), "value");
+
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of exact type int and name equal to \"value\" in").AsPrefix();
+			}
+#pragma warning restore CA2263
+
+			[Fact]
+			public async Task WithName_ShouldFilterForMethodsWithParameterOfExactTypeAndName()
+			{
+				Filtered.Methods methods = In.Type<TestClass>()
+					.Methods().WithParameterExactly<DummyBase>("parameter");
+
+				await That(methods).IsEqualTo([
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithDummyBase))!,
+				]).InAnyOrder();
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of exact type ").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WithName_ShouldIncludeNameInDescription()
+			{
+				Filtered.Methods methods = In.Type<TestClassWithIntParameters>()
+					.Methods().WithParameterExactly<int>("value");
+
+				await That(methods.GetDescription())
+					.IsEqualTo("methods with parameter of exact type int and name equal to \"value\" in").AsPrefix();
+			}
+		}
+
+		private class DummyBase
+		{
+		}
+
+		private class Dummy : DummyBase
+		{
 		}
 
 #pragma warning disable CA1822
@@ -132,13 +140,5 @@ public sealed partial class MethodFilters
 		}
 		// ReSharper restore UnusedParameter.Local
 #pragma warning restore CA1822
-
-		private class DummyBase
-		{
-		}
-
-		private class Dummy : DummyBase
-		{
-		}
 	}
 }

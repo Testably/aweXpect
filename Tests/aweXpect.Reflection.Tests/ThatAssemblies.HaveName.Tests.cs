@@ -11,6 +11,27 @@ public sealed partial class ThatAssemblies
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenMultipleAssembliesDoNotMatchSelector_ShouldSeparateWithComma()
+			{
+				Filtered.Assemblies subject = In.Assemblies(typeof(In).Assembly, typeof(ThatAssemblies).Assembly);
+
+				async Task Act()
+				{
+					await That(subject).HaveName(_ => "WrongName");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that in the assemblies *
+					             all have name matching _ => "WrongName",
+					             but it contained not matching types [
+					               aweXpect.Reflection, Version=* with name "aweXpect.Reflection" instead of "WrongName",
+					               aweXpect.Reflection.Tests, Version=* with name "aweXpect.Reflection.Tests" instead of "WrongName"
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Fact]
 			public async Task WhenSelectorMatchesIgnoringCase_ShouldSucceed()
 			{
 				Filtered.Assemblies subject = In.AssemblyContaining<PublicAbstractClass>();
@@ -39,27 +60,6 @@ public sealed partial class ThatAssemblies
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have name matching _ => "WrongName",
 					             but it contained not matching types [
-					               aweXpect.Reflection.Tests, Version=* with name "aweXpect.Reflection.Tests" instead of "WrongName"
-					             ]
-					             """).AsWildcard();
-			}
-
-			[Fact]
-			public async Task WhenMultipleAssembliesDoNotMatchSelector_ShouldSeparateWithComma()
-			{
-				Filtered.Assemblies subject = In.Assemblies(typeof(In).Assembly, typeof(ThatAssemblies).Assembly);
-
-				async Task Act()
-				{
-					await That(subject).HaveName(_ => "WrongName");
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that in the assemblies *
-					             all have name matching _ => "WrongName",
-					             but it contained not matching types [
-					               aweXpect.Reflection, Version=* with name "aweXpect.Reflection" instead of "WrongName",
 					               aweXpect.Reflection.Tests, Version=* with name "aweXpect.Reflection.Tests" instead of "WrongName"
 					             ]
 					             """).AsWildcard();

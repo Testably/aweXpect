@@ -105,10 +105,9 @@ public sealed partial class ThatFields
 			[Fact]
 			public async Task WhenFieldsContainReadOnlyFields_ShouldFail()
 			{
-				IAsyncEnumerable<FieldInfo?> subject = new FieldInfo[]
+				IAsyncEnumerable<FieldInfo?> subject = new[]
 				{
-					typeof(TestClassWithFieldModifiers).GetField(nameof(TestClassWithFieldModifiers.ReadOnlyField))!,
-					typeof(TestClassWithFieldModifiers).GetField(nameof(TestClassWithFieldModifiers.MutableField))!,
+					typeof(TestClassWithFieldModifiers).GetField(nameof(TestClassWithFieldModifiers.ReadOnlyField))!, typeof(TestClassWithFieldModifiers).GetField(nameof(TestClassWithFieldModifiers.MutableField))!,
 				}.ToTestAsyncEnumerable<FieldInfo?>();
 
 				async Task Act()
@@ -129,10 +128,9 @@ public sealed partial class ThatFields
 			[Fact]
 			public async Task WhenFilteringOnlyNonReadOnlyFields_ShouldSucceed()
 			{
-				IAsyncEnumerable<FieldInfo?> subject = new FieldInfo[]
+				IAsyncEnumerable<FieldInfo?> subject = new[]
 				{
-					typeof(TestClassWithFieldModifiers).GetField(nameof(TestClassWithFieldModifiers.MutableField))!,
-					typeof(TestClassWithFieldModifiers).GetField(nameof(TestClassWithFieldModifiers.ConstantField))!,
+					typeof(TestClassWithFieldModifiers).GetField(nameof(TestClassWithFieldModifiers.MutableField))!, typeof(TestClassWithFieldModifiers).GetField(nameof(TestClassWithFieldModifiers.ConstantField))!,
 				}.ToTestAsyncEnumerable<FieldInfo?>();
 
 				async Task Act()

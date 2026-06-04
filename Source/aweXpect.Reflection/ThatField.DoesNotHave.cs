@@ -19,9 +19,8 @@ public static partial class ThatField
 		AttributeFilterOptions<FieldInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(true);
-		return new AndOrResult<FieldInfo?, IThat<FieldInfo?>>(subject.Get().ExpectationBuilder.AddConstraint(
-				(it, grammars)
-					=> new HasAttributeConstraint(it, grammars, attributeFilterOptions).Invert()),
+		return new AndOrResult<FieldInfo?, IThat<FieldInfo?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions).Invert()),
 			subject);
 	}
 }

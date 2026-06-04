@@ -12,6 +12,25 @@ public sealed partial class ThatType
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenNamespaceDiffersOnlyByCase_ShouldFail()
+			{
+				Type subject = typeof(ClassInNestedNamespaceScope);
+
+				async Task Act()
+				{
+					await That(subject)
+						.IsWithinNamespace("AWEXPECT.REFLECTION.TESTS.TESTHELPERS.TYPES.NAMESPACESCOPE");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is within namespace "AWEXPECT.REFLECTION.TESTS.TESTHELPERS.TYPES.NAMESPACESCOPE",
+					             but it was in namespace "aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope.Nested"
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenTypeHasExactNamespace_ShouldSucceed()
 			{
 				Type subject = typeof(ClassInNamespaceScope);
@@ -54,25 +73,6 @@ public sealed partial class ThatType
 					             Expected that subject
 					             is within namespace "foo",
 					             but it was <null>
-					             """);
-			}
-
-			[Fact]
-			public async Task WhenNamespaceDiffersOnlyByCase_ShouldFail()
-			{
-				Type subject = typeof(ClassInNestedNamespaceScope);
-
-				async Task Act()
-				{
-					await That(subject)
-						.IsWithinNamespace("AWEXPECT.REFLECTION.TESTS.TESTHELPERS.TYPES.NAMESPACESCOPE");
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is within namespace "AWEXPECT.REFLECTION.TESTS.TESTHELPERS.TYPES.NAMESPACESCOPE",
-					             but it was in namespace "aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope.Nested"
 					             """);
 			}
 

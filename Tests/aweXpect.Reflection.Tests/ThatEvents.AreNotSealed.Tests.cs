@@ -91,21 +91,6 @@ public sealed partial class ThatEvents
 		public sealed class AsyncEnumerableTests
 		{
 			[Fact]
-			public async Task WhenFilteringOnlyNonSealedEvents_ShouldSucceed()
-			{
-				IAsyncEnumerable<EventInfo?> subject = typeof(AbstractClassWithMembers)
-					.GetEvents(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
-					.ToTestAsyncEnumerable<EventInfo?>();
-
-				async Task Act()
-				{
-					await That(subject).AreNotSealed();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenEventsContainSealedEvents_ShouldFail()
 			{
 				IAsyncEnumerable<EventInfo?> subject = typeof(ClassWithSealedMembers)
@@ -125,6 +110,21 @@ public sealed partial class ThatEvents
 					               *
 					             ]
 					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenFilteringOnlyNonSealedEvents_ShouldSucceed()
+			{
+				IAsyncEnumerable<EventInfo?> subject = typeof(AbstractClassWithMembers)
+					.GetEvents(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+					.ToTestAsyncEnumerable<EventInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).AreNotSealed();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 #endif

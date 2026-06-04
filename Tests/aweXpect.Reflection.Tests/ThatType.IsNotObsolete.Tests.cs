@@ -23,6 +23,24 @@ public sealed partial class ThatType
 			}
 
 			[Fact]
+			public async Task WhenTypeIsNull_ShouldFail()
+			{
+				Type? subject = null;
+
+				async Task Act()
+				{
+					await That(subject).IsNotObsolete();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             is not obsolete,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenTypeIsObsolete_ShouldFail()
 			{
 #pragma warning disable CS0612, CS0618
@@ -40,24 +58,6 @@ public sealed partial class ThatType
 					              is not obsolete,
 					              but it was obsolete {Formatter.Format(subject)}
 					              """);
-			}
-
-			[Fact]
-			public async Task WhenTypeIsNull_ShouldFail()
-			{
-				Type? subject = null;
-
-				async Task Act()
-				{
-					await That(subject).IsNotObsolete();
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             is not obsolete,
-					             but it was <null>
-					             """);
 			}
 		}
 

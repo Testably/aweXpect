@@ -8,6 +8,15 @@ public sealed partial class ConstructorFilters
 {
 	public sealed class WithRefParameter
 	{
+		private static ConstructorInfo? RefParameterConstructor()
+			=> typeof(ClassWithRefParameterConstructor).GetConstructors().Single();
+
+		private static ConstructorInfo? PlainConstructor()
+			=> typeof(ClassWithPlainConstructor).GetConstructors().Single();
+
+		private static ConstructorInfo? MixedConstructor()
+			=> typeof(ClassWithMixedConstructor).GetConstructors().Single();
+
 		public sealed class Tests
 		{
 			[Fact]
@@ -62,33 +71,6 @@ public sealed partial class ConstructorFilters
 		public sealed class DescriptionTests
 		{
 			[Fact]
-			public async Task ParameterlessFilter_ShouldMatchConstructorWithOnlySomeRefParameters()
-			{
-				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
-					.Constructors().WithRefParameter();
-
-				await That(constructors).Contains(MixedConstructor());
-			}
-
-			[Fact]
-			public async Task OfType_ShouldDescribeWithRefModifier()
-			{
-				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
-					.Constructors().WithRefParameter<int>();
-
-				await That(constructors.GetDescription()).Contains("with ref modifier");
-			}
-
-			[Fact]
-			public async Task OfTypeWithName_ShouldDescribeWithRefModifier()
-			{
-				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
-					.Constructors().WithRefParameter<int>("value");
-
-				await That(constructors.GetDescription()).Contains("with ref modifier");
-			}
-
-			[Fact]
 			public async Task ByName_ShouldDescribeWithRefModifier()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -113,6 +95,33 @@ public sealed partial class ConstructorFilters
 					.Constructors().WithRefParameterExactly<int>("value");
 
 				await That(constructors.GetDescription()).Contains("with ref modifier");
+			}
+
+			[Fact]
+			public async Task OfType_ShouldDescribeWithRefModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithRefParameter<int>();
+
+				await That(constructors.GetDescription()).Contains("with ref modifier");
+			}
+
+			[Fact]
+			public async Task OfTypeWithName_ShouldDescribeWithRefModifier()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithRefParameter<int>("value");
+
+				await That(constructors.GetDescription()).Contains("with ref modifier");
+			}
+
+			[Fact]
+			public async Task ParameterlessFilter_ShouldMatchConstructorWithOnlySomeRefParameters()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithRefParameter();
+
+				await That(constructors).Contains(MixedConstructor());
 			}
 
 #pragma warning disable CA2263
@@ -153,15 +162,6 @@ public sealed partial class ConstructorFilters
 			}
 #pragma warning restore CA2263
 		}
-
-		private static ConstructorInfo? RefParameterConstructor()
-			=> typeof(ClassWithRefParameterConstructor).GetConstructors().Single();
-
-		private static ConstructorInfo? PlainConstructor()
-			=> typeof(ClassWithPlainConstructor).GetConstructors().Single();
-
-		private static ConstructorInfo? MixedConstructor()
-			=> typeof(ClassWithMixedConstructor).GetConstructors().Single();
 
 		// ReSharper disable UnusedMember.Local
 		// ReSharper disable UnusedParameter.Local

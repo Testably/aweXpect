@@ -95,6 +95,29 @@ public sealed partial class ThatMethods
 		public sealed class AsyncEnumerableTests
 		{
 			[Fact]
+			public async Task WhenFilteringOnlyNonExtensionMethods_Negated_ShouldFail()
+			{
+				IAsyncEnumerable<MethodInfo?> subject = typeof(StaticClassWithExtensionMethods)
+					.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
+					.Where(m => !m.IsReallyExtensionMethod())
+					.ToTestAsyncEnumerable<MethodInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotExtensionMethods());
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             also contain an extension method,
+					             but it only contained non-extension methods [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Fact]
 			public async Task WhenFilteringOnlyNonExtensionMethods_ShouldSucceed()
 			{
 				IAsyncEnumerable<MethodInfo?> subject = typeof(StaticClassWithExtensionMethods)
@@ -127,29 +150,6 @@ public sealed partial class ThatMethods
 					             Expected that subject
 					             are all not extension methods,
 					             but it contained extension methods [
-					               *
-					             ]
-					             """).AsWildcard();
-			}
-
-			[Fact]
-			public async Task WhenFilteringOnlyNonExtensionMethods_Negated_ShouldFail()
-			{
-				IAsyncEnumerable<MethodInfo?> subject = typeof(StaticClassWithExtensionMethods)
-					.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
-					.Where(m => !m.IsReallyExtensionMethod())
-					.ToTestAsyncEnumerable<MethodInfo?>();
-
-				async Task Act()
-				{
-					await That(subject).DoesNotComplyWith(they => they.AreNotExtensionMethods());
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             also contain an extension method,
-					             but it only contained non-extension methods [
 					               *
 					             ]
 					             """).AsWildcard();

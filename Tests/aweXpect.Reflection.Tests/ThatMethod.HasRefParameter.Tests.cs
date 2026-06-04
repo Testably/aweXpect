@@ -10,16 +10,145 @@ public sealed partial class ThatMethod
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenMethodHasRefParameter_ShouldSucceed()
+			public async Task Name_WhenMethodHasNoRefParameter_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasRefParameter("value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter with name "value" with ref modifier,
+					             but it did not
+					             """);
+			}
+
+			[Fact]
+			public async Task Type_WhenMethodHasNoRefParameter_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasRefParameter(typeof(int));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type int with ref modifier,
+					             but it did not
+					             """);
+			}
+
+			[Fact]
+			public async Task Type_WhenMethodHasRefParameterOfType_ShouldSucceed()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefParameter))!;
 
 				async Task Act()
 				{
-					await That(methodInfo).HasRefParameter();
+					await That(methodInfo).HasRefParameter(typeof(int));
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task Type_WhenMethodHasRefParameterOfTypeWithName_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefParameter))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasRefParameter(typeof(int), "value");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task TypeExactly_WhenMethodHasNoRefParameter_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasRefParameterExactly(typeof(int));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of exact type int with ref modifier,
+					             but it did not
+					             """);
+			}
+
+			[Fact]
+			public async Task TypeExactly_WhenMethodHasRefParameterOfExactType_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefParameter))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasRefParameterExactly(typeof(int));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task TypeExactly_WhenMethodHasRefParameterOfExactTypeWithName_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefParameter))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasRefParameterExactly(typeof(int), "value");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task TypeExactlyWithName_WhenMethodHasNoRefParameter_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasRefParameterExactly(typeof(int), "value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of exact type int with name "value" with ref modifier,
+					             but it did not
+					             """);
+			}
+
+			[Fact]
+			public async Task TypeWithName_WhenMethodHasNoRefParameter_ShouldFail()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasRefParameter(typeof(int), "value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter of type int with name "value" with ref modifier,
+					             but it did not
+					             """);
 			}
 
 			[Fact]
@@ -38,6 +167,19 @@ public sealed partial class ThatMethod
 					             has a ref parameter,
 					             but it did not
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenMethodHasRefParameter_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefParameter))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasRefParameter();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[Fact]
@@ -70,152 +212,23 @@ public sealed partial class ThatMethod
 
 				await That(Act).DoesNotThrow();
 			}
-
-			[Fact]
-			public async Task TypeWithName_WhenMethodHasNoRefParameter_ShouldFail()
-			{
-				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
-
-				async Task Act()
-				{
-					await That(methodInfo).HasRefParameter(typeof(int), "value");
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that methodInfo
-					             has parameter of type int with name "value" with ref modifier,
-					             but it did not
-					             """);
-			}
-
-			[Fact]
-			public async Task Name_WhenMethodHasNoRefParameter_ShouldFail()
-			{
-				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
-
-				async Task Act()
-				{
-					await That(methodInfo).HasRefParameter("value");
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that methodInfo
-					             has parameter with name "value" with ref modifier,
-					             but it did not
-					             """);
-			}
-
-			[Fact]
-			public async Task TypeExactly_WhenMethodHasNoRefParameter_ShouldFail()
-			{
-				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
-
-				async Task Act()
-				{
-					await That(methodInfo).HasRefParameterExactly(typeof(int));
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that methodInfo
-					             has parameter of exact type int with ref modifier,
-					             but it did not
-					             """);
-			}
-
-			[Fact]
-			public async Task TypeExactlyWithName_WhenMethodHasNoRefParameter_ShouldFail()
-			{
-				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
-
-				async Task Act()
-				{
-					await That(methodInfo).HasRefParameterExactly(typeof(int), "value");
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that methodInfo
-					             has parameter of exact type int with name "value" with ref modifier,
-					             but it did not
-					             """);
-			}
-
-			[Fact]
-			public async Task Type_WhenMethodHasRefParameterOfType_ShouldSucceed()
-			{
-				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefParameter))!;
-
-				async Task Act()
-				{
-					await That(methodInfo).HasRefParameter(typeof(int));
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task Type_WhenMethodHasNoRefParameter_ShouldFail()
-			{
-				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
-
-				async Task Act()
-				{
-					await That(methodInfo).HasRefParameter(typeof(int));
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that methodInfo
-					             has parameter of type int with ref modifier,
-					             but it did not
-					             """);
-			}
-
-			[Fact]
-			public async Task Type_WhenMethodHasRefParameterOfTypeWithName_ShouldSucceed()
-			{
-				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefParameter))!;
-
-				async Task Act()
-				{
-					await That(methodInfo).HasRefParameter(typeof(int), "value");
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task TypeExactly_WhenMethodHasRefParameterOfExactType_ShouldSucceed()
-			{
-				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefParameter))!;
-
-				async Task Act()
-				{
-					await That(methodInfo).HasRefParameterExactly(typeof(int));
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task TypeExactly_WhenMethodHasRefParameterOfExactTypeWithName_ShouldSucceed()
-			{
-				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithRefParameter))!;
-
-				async Task Act()
-				{
-					await That(methodInfo).HasRefParameterExactly(typeof(int), "value");
-				}
-
-				await That(Act).DoesNotThrow();
-			}
 		}
 
 		public sealed class NegatedTests
 		{
+			[Fact]
+			public async Task WhenMethodHasNoRefParameter_ShouldSucceed()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).DoesNotComplyWith(it => it.HasRefParameter());
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[Fact]
 			public async Task WhenMethodHasRefParameter_ShouldFail()
 			{
@@ -233,19 +246,6 @@ public sealed partial class ThatMethod
 					             but it did
 					             """);
 			}
-
-			[Fact]
-			public async Task WhenMethodHasNoRefParameter_ShouldSucceed()
-			{
-				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!;
-
-				async Task Act()
-				{
-					await That(methodInfo).DoesNotComplyWith(it => it.HasRefParameter());
-				}
-
-				await That(Act).DoesNotThrow();
-			}
 		}
 
 #pragma warning disable CA1822
@@ -253,15 +253,9 @@ public sealed partial class ThatMethod
 		// ReSharper disable UnusedMember.Local
 		private class TestClass
 		{
-			public void MethodWithRefParameter(ref int value)
-			{
-				value = 0;
-			}
+			public void MethodWithRefParameter(ref int value) => value = 0;
 
-			public void MethodWithMixedParameters(ref int value, string other)
-			{
-				value = 0;
-			}
+			public void MethodWithMixedParameters(ref int value, string other) => value = 0;
 
 			public void MethodWithoutModifiers(int value)
 			{

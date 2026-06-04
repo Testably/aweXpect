@@ -14,20 +14,6 @@ public sealed partial class ThatProperties
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenPropertiesContainNoIndexers_ShouldSucceed()
-			{
-				IEnumerable<PropertyInfo> subject = typeof(TestClassWithReadWriteProperties)
-					.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-
-				async Task Act()
-				{
-					await That(subject).AreNotIndexers();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenPropertiesContainIndexers_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subject = typeof(TestClassWithOnlyIndexers)
@@ -47,10 +33,38 @@ public sealed partial class ThatProperties
 					             ]
 					             """).AsWildcard();
 			}
+
+			[Fact]
+			public async Task WhenPropertiesContainNoIndexers_ShouldSucceed()
+			{
+				IEnumerable<PropertyInfo> subject = typeof(TestClassWithReadWriteProperties)
+					.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+
+				async Task Act()
+				{
+					await That(subject).AreNotIndexers();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
 		}
 
 		public sealed class NegatedTests
 		{
+			[Fact]
+			public async Task WhenPropertiesContainIndexers_ShouldSucceed()
+			{
+				IEnumerable<PropertyInfo> subject = typeof(TestClassWithOnlyIndexers)
+					.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotIndexers());
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[Fact]
 			public async Task WhenPropertiesContainNoIndexers_ShouldFail()
 			{
@@ -71,40 +85,11 @@ public sealed partial class ThatProperties
 					             ]
 					             """).AsWildcard();
 			}
-
-			[Fact]
-			public async Task WhenPropertiesContainIndexers_ShouldSucceed()
-			{
-				IEnumerable<PropertyInfo> subject = typeof(TestClassWithOnlyIndexers)
-					.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-
-				async Task Act()
-				{
-					await That(subject).DoesNotComplyWith(they => they.AreNotIndexers());
-				}
-
-				await That(Act).DoesNotThrow();
-			}
 		}
 
 #if NET8_0_OR_GREATER
 		public sealed class AsyncEnumerableTests
 		{
-			[Fact]
-			public async Task WhenPropertiesContainNoIndexers_ShouldSucceed()
-			{
-				IAsyncEnumerable<PropertyInfo?> subject = typeof(TestClassWithReadWriteProperties)
-					.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
-					.ToTestAsyncEnumerable<PropertyInfo?>();
-
-				async Task Act()
-				{
-					await That(subject).AreNotIndexers();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
 			[Fact]
 			public async Task WhenPropertiesContainIndexers_ShouldFail()
 			{
@@ -125,6 +110,21 @@ public sealed partial class ThatProperties
 					               *
 					             ]
 					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenPropertiesContainNoIndexers_ShouldSucceed()
+			{
+				IAsyncEnumerable<PropertyInfo?> subject = typeof(TestClassWithReadWriteProperties)
+					.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+					.ToTestAsyncEnumerable<PropertyInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).AreNotIndexers();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 #endif

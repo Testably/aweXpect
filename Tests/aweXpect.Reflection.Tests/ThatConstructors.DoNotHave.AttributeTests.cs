@@ -11,45 +11,6 @@ public sealed partial class ThatConstructors
 	{
 		public sealed class AttributeTests
 		{
-			[Fact]
-			public async Task WhenNoConstructorHasAttribute_ShouldSucceed()
-			{
-				IEnumerable<ConstructorInfo?> subject = new[]
-				{
-					typeof(TestClass).GetConstructor(Type.EmptyTypes), null,
-				};
-
-				async Task Act()
-				{
-					await That(subject).DoNotHave<FooAttribute>();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenAConstructorHasAttribute_ShouldFail()
-			{
-				IEnumerable<ConstructorInfo?> subject = new[]
-				{
-					typeof(TestClass).GetConstructor([typeof(string),]),
-				};
-
-				async Task Act()
-				{
-					await That(subject).DoNotHave<FooAttribute>();
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             all have no ThatConstructors.DoNotHave.AttributeTests.FooAttribute,
-					             but it contained not matching constructors [
-					               ThatConstructors.DoNotHave.AttributeTests.TestClass(string value)
-					             ]
-					             """);
-			}
-
 #if NET8_0_OR_GREATER
 			[Fact]
 			public async Task AsyncEnumerable_WhenAConstructorHasAttribute_ShouldFail()
@@ -96,6 +57,45 @@ public sealed partial class ThatConstructors
 					               ThatConstructors.DoNotHave.AttributeTests.TestClass()
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenAConstructorHasAttribute_ShouldFail()
+			{
+				IEnumerable<ConstructorInfo?> subject = new[]
+				{
+					typeof(TestClass).GetConstructor([typeof(string),]),
+				};
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have no ThatConstructors.DoNotHave.AttributeTests.FooAttribute,
+					             but it contained not matching constructors [
+					               ThatConstructors.DoNotHave.AttributeTests.TestClass(string value)
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNoConstructorHasAttribute_ShouldSucceed()
+			{
+				IEnumerable<ConstructorInfo?> subject = new[]
+				{
+					typeof(TestClass).GetConstructor(Type.EmptyTypes), null,
+				};
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[AttributeUsage(AttributeTargets.Constructor)]

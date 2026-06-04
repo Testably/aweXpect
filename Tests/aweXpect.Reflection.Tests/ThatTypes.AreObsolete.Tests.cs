@@ -106,6 +106,32 @@ public sealed partial class ThatTypes
 		public sealed class AsyncEnumerableTests
 		{
 			[Fact]
+			public async Task WhenAllTypesAreObsolete_Negated_ShouldFail()
+			{
+#pragma warning disable CS0612, CS0618
+				IAsyncEnumerable<Type?> subject = new[]
+					{
+						typeof(ObsoleteClass),
+					}
+					.ToTestAsyncEnumerable<Type?>();
+#pragma warning restore CS0612, CS0618
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreObsolete());
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             are not all obsolete,
+					             but it only contained obsolete items [
+					               *
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Fact]
 			public async Task WhenAllTypesAreObsolete_ShouldSucceed()
 			{
 #pragma warning disable CS0612, CS0618
@@ -130,8 +156,7 @@ public sealed partial class ThatTypes
 #pragma warning disable CS0612, CS0618
 				IAsyncEnumerable<Type?> subject = new[]
 					{
-						typeof(ObsoleteClass),
-						typeof(ClassWithObsoleteMembers),
+						typeof(ObsoleteClass), typeof(ClassWithObsoleteMembers),
 					}
 					.ToTestAsyncEnumerable<Type?>();
 #pragma warning restore CS0612, CS0618
@@ -146,32 +171,6 @@ public sealed partial class ThatTypes
 					             Expected that subject
 					             are all obsolete,
 					             but it contained non-obsolete items [
-					               *
-					             ]
-					             """).AsWildcard();
-			}
-
-			[Fact]
-			public async Task WhenAllTypesAreObsolete_Negated_ShouldFail()
-			{
-#pragma warning disable CS0612, CS0618
-				IAsyncEnumerable<Type?> subject = new[]
-					{
-						typeof(ObsoleteClass),
-					}
-					.ToTestAsyncEnumerable<Type?>();
-#pragma warning restore CS0612, CS0618
-
-				async Task Act()
-				{
-					await That(subject).DoesNotComplyWith(they => they.AreObsolete());
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             are not all obsolete,
-					             but it only contained obsolete items [
 					               *
 					             ]
 					             """).AsWildcard();

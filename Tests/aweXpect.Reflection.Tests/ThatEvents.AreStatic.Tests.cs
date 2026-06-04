@@ -116,21 +116,6 @@ public sealed partial class ThatEvents
 			}
 
 			[Fact]
-			public async Task WhenFilteringOnlyStaticEvents_ShouldSucceed()
-			{
-				IAsyncEnumerable<EventInfo?> subject = typeof(TestClassWithStaticMembers)
-					.GetEvents(BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly)
-					.ToTestAsyncEnumerable<EventInfo?>();
-
-				async Task Act()
-				{
-					await That(subject).AreStatic();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenFilteringOnlyStaticEvents_Negated_ShouldFail()
 			{
 				IAsyncEnumerable<EventInfo?> subject = typeof(TestClassWithStaticMembers)
@@ -150,6 +135,21 @@ public sealed partial class ThatEvents
 					               *
 					             ]
 					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenFilteringOnlyStaticEvents_ShouldSucceed()
+			{
+				IAsyncEnumerable<EventInfo?> subject = typeof(TestClassWithStaticMembers)
+					.GetEvents(BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly)
+					.ToTestAsyncEnumerable<EventInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).AreStatic();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 #endif

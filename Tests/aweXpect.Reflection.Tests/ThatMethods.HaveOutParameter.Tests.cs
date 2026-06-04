@@ -11,6 +11,17 @@ public sealed partial class ThatMethods
 {
 	public sealed class HaveOutParameter
 	{
+#if NET8_0_OR_GREATER
+		private static async IAsyncEnumerable<MethodInfo> ToAsyncEnumerable(params MethodInfo[] items)
+		{
+			foreach (MethodInfo item in items)
+			{
+				yield return item;
+			}
+
+			await Task.CompletedTask;
+		}
+#endif
 		public sealed class Tests
 		{
 			[Fact]
@@ -18,8 +29,7 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.AnotherMethodWithOutParameter))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.AnotherMethodWithOutParameter))!,
 				};
 
 				async Task Act()
@@ -35,8 +45,7 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
 				};
 
 				async Task Act()
@@ -73,8 +82,7 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
 				};
 
 				async Task Act()
@@ -106,8 +114,7 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
 				};
 
 				async Task Act()
@@ -139,8 +146,7 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
 				};
 
 				async Task Act()
@@ -206,8 +212,7 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.AnotherMethodWithOutParameter))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.AnotherMethodWithOutParameter))!,
 				};
 
 				async Task Act()
@@ -228,8 +233,7 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
 				};
 
 				async Task Act()
@@ -244,100 +248,11 @@ public sealed partial class ThatMethods
 		public sealed class ModifierMessageTests
 		{
 			[Fact]
-			public async Task Type_WhenNotAllHaveOutParameter_ShouldFailWithModifierDescription()
-			{
-				IEnumerable<MethodInfo> methods = new[]
-				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
-				};
-
-				async Task Act()
-				{
-					await That(methods).HaveOutParameter<int>();
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that methods
-					             all have parameter of type int with out modifier,
-					             but at least one did not
-					             """);
-			}
-
-			[Fact]
-			public async Task SystemType_WhenNotAllHaveOutParameter_ShouldFailWithModifierDescription()
-			{
-				IEnumerable<MethodInfo> methods = new[]
-				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
-				};
-
-				async Task Act()
-				{
-					await That(methods).HaveOutParameter(typeof(int));
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that methods
-					             all have parameter of type int with out modifier,
-					             but at least one did not
-					             """);
-			}
-
-			[Fact]
-			public async Task TypeAndName_WhenNotAllHaveOutParameter_ShouldFailWithModifierDescription()
-			{
-				IEnumerable<MethodInfo> methods = new[]
-				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
-				};
-
-				async Task Act()
-				{
-					await That(methods).HaveOutParameter<int>("value");
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that methods
-					             all have parameter of type int with name "value" with out modifier,
-					             but at least one did not
-					             """);
-			}
-
-			[Fact]
-			public async Task SystemTypeAndName_WhenNotAllHaveOutParameter_ShouldFailWithModifierDescription()
-			{
-				IEnumerable<MethodInfo> methods = new[]
-				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
-				};
-
-				async Task Act()
-				{
-					await That(methods).HaveOutParameter(typeof(int), "value");
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that methods
-					             all have parameter of type int with name "value" with out modifier,
-					             but at least one did not
-					             """);
-			}
-
-			[Fact]
 			public async Task Name_WhenNotAllHaveOutParameter_ShouldFailWithModifierDescription()
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
 				};
 
 				async Task Act()
@@ -354,23 +269,43 @@ public sealed partial class ThatMethods
 			}
 
 			[Fact]
-			public async Task TypeExactly_WhenNotAllHaveOutParameter_ShouldFailWithModifierDescription()
+			public async Task SystemType_WhenNotAllHaveOutParameter_ShouldFailWithModifierDescription()
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
 				};
 
 				async Task Act()
 				{
-					await That(methods).HaveOutParameterExactly<int>();
+					await That(methods).HaveOutParameter(typeof(int));
 				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that methods
-					             all have parameter of exact type int with out modifier,
+					             all have parameter of type int with out modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task SystemTypeAndName_WhenNotAllHaveOutParameter_ShouldFailWithModifierDescription()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveOutParameter(typeof(int), "value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of type int with name "value" with out modifier,
 					             but at least one did not
 					             """);
 			}
@@ -380,8 +315,7 @@ public sealed partial class ThatMethods
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
 				};
 
 				async Task Act()
@@ -398,34 +332,11 @@ public sealed partial class ThatMethods
 			}
 
 			[Fact]
-			public async Task TypeExactlyAndName_WhenNotAllHaveOutParameter_ShouldFailWithModifierDescription()
-			{
-				IEnumerable<MethodInfo> methods = new[]
-				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
-				};
-
-				async Task Act()
-				{
-					await That(methods).HaveOutParameterExactly<int>("value");
-				}
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that methods
-					             all have parameter of exact type int with name "value" with out modifier,
-					             but at least one did not
-					             """);
-			}
-
-			[Fact]
 			public async Task SystemTypeExactlyAndName_WhenNotAllHaveOutParameter_ShouldFailWithModifierDescription()
 			{
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
 				};
 
 				async Task Act()
@@ -442,45 +353,87 @@ public sealed partial class ThatMethods
 			}
 
 			[Fact]
-			public async Task WhenSomeButNotAllParametersAreOut_ShouldStillSucceed()
+			public async Task Type_WhenNotAllHaveOutParameter_ShouldFailWithModifierDescription()
 			{
-				// Kills the Any()->All() mutant: this method has an out parameter and a normal one,
-				// so Any(IsOutParameter) is true but All(IsOutParameter) is false.
 				IEnumerable<MethodInfo> methods = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutAndNormalParameter))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
 				};
 
 				async Task Act()
 				{
-					await That(methods).HaveOutParameter();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenNotAllHaveOutParameter_ShouldListOffendingMethod()
-			{
-				// Kills the Formatter.Format(NotMatching) statement mutant: the offending
-				// method must appear in the result message.
-				IEnumerable<MethodInfo> methods = new[]
-				{
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!,
-					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
-				};
-
-				async Task Act()
-				{
-					await That(methods).HaveOutParameter();
+					await That(methods).HaveOutParameter<int>();
 				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that methods
-					             all have an out parameter,
-					             but it contained methods without an out parameter *MethodWithoutModifiers*
-					             """).AsWildcard();
+					             all have parameter of type int with out modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task TypeAndName_WhenNotAllHaveOutParameter_ShouldFailWithModifierDescription()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveOutParameter<int>("value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of type int with name "value" with out modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task TypeExactly_WhenNotAllHaveOutParameter_ShouldFailWithModifierDescription()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveOutParameterExactly<int>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type int with out modifier,
+					             but at least one did not
+					             """);
+			}
+
+			[Fact]
+			public async Task TypeExactlyAndName_WhenNotAllHaveOutParameter_ShouldFailWithModifierDescription()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveOutParameterExactly<int>("value");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter of exact type int with name "value" with out modifier,
+					             but at least one did not
+					             """);
 			}
 
 			[Fact]
@@ -503,6 +456,47 @@ public sealed partial class ThatMethods
 					             not all have an out parameter,
 					             but it only contained methods with an out parameter *MethodWithOutParameter*
 					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenNotAllHaveOutParameter_ShouldListOffendingMethod()
+			{
+				// Kills the Formatter.Format(NotMatching) statement mutant: the offending
+				// method must appear in the result message.
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutParameter))!, typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutModifiers))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveOutParameter();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have an out parameter,
+					             but it contained methods without an out parameter *MethodWithoutModifiers*
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenSomeButNotAllParametersAreOut_ShouldStillSucceed()
+			{
+				// Kills the Any()->All() mutant: this method has an out parameter and a normal one,
+				// so Any(IsOutParameter) is true but All(IsOutParameter) is false.
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithOutAndNormalParameter))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveOutParameter();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 
 #if NET8_0_OR_GREATER
@@ -559,41 +553,20 @@ public sealed partial class ThatMethods
 #endif
 		}
 
-#if NET8_0_OR_GREATER
-		private static async IAsyncEnumerable<MethodInfo> ToAsyncEnumerable(params MethodInfo[] items)
-		{
-			foreach (MethodInfo item in items)
-			{
-				yield return item;
-			}
-
-			await Task.CompletedTask;
-		}
-#endif
-
 #pragma warning disable CA1822
 		// ReSharper disable UnusedParameter.Local
 		// ReSharper disable UnusedMember.Local
 		private class TestClass
 		{
-			public void MethodWithOutParameter(out int value)
-			{
-				value = 0;
-			}
+			public void MethodWithOutParameter(out int value) => value = 0;
 
-			public void AnotherMethodWithOutParameter(out string text)
-			{
-				text = string.Empty;
-			}
+			public void AnotherMethodWithOutParameter(out string text) => text = string.Empty;
 
 			public void MethodWithoutModifiers(int value)
 			{
 			}
 
-			public void MethodWithOutAndNormalParameter(out int value, string text)
-			{
-				value = 0;
-			}
+			public void MethodWithOutAndNormalParameter(out int value, string text) => value = 0;
 		}
 		// ReSharper restore UnusedMember.Local
 		// ReSharper restore UnusedParameter.Local

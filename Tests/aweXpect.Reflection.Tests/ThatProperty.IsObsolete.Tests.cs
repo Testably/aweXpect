@@ -12,20 +12,6 @@ public sealed partial class ThatProperty
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenPropertyIsObsolete_ShouldSucceed()
-			{
-				PropertyInfo subject =
-					typeof(ClassWithObsoleteMembers).GetProperty(nameof(ClassWithObsoleteMembers.ObsoleteProperty))!;
-
-				async Task Act()
-				{
-					await That(subject).IsObsolete();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenPropertyIsNotObsolete_ShouldFail()
 			{
 				PropertyInfo subject =
@@ -61,10 +47,38 @@ public sealed partial class ThatProperty
 					             but it was <null>
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenPropertyIsObsolete_ShouldSucceed()
+			{
+				PropertyInfo subject =
+					typeof(ClassWithObsoleteMembers).GetProperty(nameof(ClassWithObsoleteMembers.ObsoleteProperty))!;
+
+				async Task Act()
+				{
+					await That(subject).IsObsolete();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
 		}
 
 		public sealed class NegatedTests
 		{
+			[Fact]
+			public async Task WhenPropertyIsNotObsolete_ShouldSucceed()
+			{
+				PropertyInfo subject =
+					typeof(ClassWithObsoleteMembers).GetProperty(nameof(ClassWithObsoleteMembers.NonObsoleteProperty))!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(it => it.IsObsolete());
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[Fact]
 			public async Task WhenPropertyIsObsolete_ShouldFail()
 			{
@@ -82,20 +96,6 @@ public sealed partial class ThatProperty
 					              is not obsolete,
 					              but it was obsolete {Formatter.Format(subject)}
 					              """);
-			}
-
-			[Fact]
-			public async Task WhenPropertyIsNotObsolete_ShouldSucceed()
-			{
-				PropertyInfo subject =
-					typeof(ClassWithObsoleteMembers).GetProperty(nameof(ClassWithObsoleteMembers.NonObsoleteProperty))!;
-
-				async Task Act()
-				{
-					await That(subject).DoesNotComplyWith(it => it.IsObsolete());
-				}
-
-				await That(Act).DoesNotThrow();
 			}
 		}
 	}

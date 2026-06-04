@@ -12,6 +12,22 @@ public sealed partial class ThatTypes
 		public sealed class TypeTests
 		{
 			[Fact]
+			public async Task WhenEnumerableContainsNoStaticTypes_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(PublicSealedClass),
+				};
+
+				async Task Act()
+				{
+					await That(subject).AreNotStatic();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenEnumerableContainsStaticType_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -32,22 +48,6 @@ public sealed partial class ThatTypes
 					               *
 					             ]
 					             """).AsWildcard();
-			}
-
-			[Fact]
-			public async Task WhenEnumerableContainsNoStaticTypes_ShouldSucceed()
-			{
-				IEnumerable<Type?> subject = new[]
-				{
-					typeof(PublicSealedClass),
-				};
-
-				async Task Act()
-				{
-					await That(subject).AreNotStatic();
-				}
-
-				await That(Act).DoesNotThrow();
 			}
 		}
 

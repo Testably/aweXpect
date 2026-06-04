@@ -25,6 +25,24 @@ public sealed partial class ThatEvent
 			}
 
 			[Fact]
+			public async Task WhenEventIsNull_ShouldFail()
+			{
+				EventInfo? subject = null;
+
+				async Task Act()
+				{
+					await That(subject).IsNotObsolete();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             is not obsolete,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenEventIsObsolete_ShouldFail()
 			{
 				EventInfo subject =
@@ -41,24 +59,6 @@ public sealed partial class ThatEvent
 					              is not obsolete,
 					              but it was obsolete {Formatter.Format(subject)}
 					              """);
-			}
-
-			[Fact]
-			public async Task WhenEventIsNull_ShouldFail()
-			{
-				EventInfo? subject = null;
-
-				async Task Act()
-				{
-					await That(subject).IsNotObsolete();
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             is not obsolete,
-					             but it was <null>
-					             """);
 			}
 		}
 

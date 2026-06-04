@@ -8,34 +8,26 @@ public sealed partial class ConstructorFilters
 {
 	public sealed class WithParameterModifier
 	{
+		private static ConstructorInfo? RefIntConstructor()
+			=> typeof(ClassWithRefIntConstructor).GetConstructors().Single();
+
+		private static ConstructorInfo? OutIntConstructor()
+			=> typeof(ClassWithOutIntConstructor).GetConstructors().Single();
+
+		private static ConstructorInfo? InIntConstructor()
+			=> typeof(ClassWithInIntConstructor).GetConstructors().Single();
+
+		private static ConstructorInfo? OptionalIntConstructor()
+			=> typeof(ClassWithOptionalIntConstructor).GetConstructors().Single();
+
+		private static ConstructorInfo? ParamsIntConstructor()
+			=> typeof(ClassWithParamsIntConstructor).GetConstructors().Single();
+
+		private static ConstructorInfo? PlainIntConstructor()
+			=> typeof(ClassWithPlainIntConstructor).GetConstructors().Single();
+
 		public sealed class Tests
 		{
-			[Fact]
-			public async Task WithRefModifier_ShouldFilterForRefParameterOfType()
-			{
-				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
-					.Constructors().WithParameter<int>().WithRefModifier();
-
-				await That(constructors).Contains(RefIntConstructor());
-				await That(constructors).DoesNotContain(PlainIntConstructor());
-				await That(constructors.GetDescription())
-					.IsEqualTo("constructors with parameter of type int and with ref modifier in assembly")
-					.AsPrefix();
-			}
-
-			[Fact]
-			public async Task WithOutModifier_ShouldFilterForOutParameterOfType()
-			{
-				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
-					.Constructors().WithParameter<int>().WithOutModifier();
-
-				await That(constructors).Contains(OutIntConstructor());
-				await That(constructors).DoesNotContain(PlainIntConstructor());
-				await That(constructors.GetDescription())
-					.IsEqualTo("constructors with parameter of type int and with out modifier in assembly")
-					.AsPrefix();
-			}
-
 			[Fact]
 			public async Task WithInModifier_ShouldFilterForInParameterOfType()
 			{
@@ -63,6 +55,19 @@ public sealed partial class ConstructorFilters
 			}
 
 			[Fact]
+			public async Task WithOutModifier_ShouldFilterForOutParameterOfType()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithParameter<int>().WithOutModifier();
+
+				await That(constructors).Contains(OutIntConstructor());
+				await That(constructors).DoesNotContain(PlainIntConstructor());
+				await That(constructors.GetDescription())
+					.IsEqualTo("constructors with parameter of type int and with out modifier in assembly")
+					.AsPrefix();
+			}
+
+			[Fact]
 			public async Task WithParamsModifier_ShouldFilterForParamsParameterOfType()
 			{
 				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
@@ -73,25 +78,20 @@ public sealed partial class ConstructorFilters
 					.IsEqualTo("constructors with parameter of type int[] and with params modifier in assembly")
 					.AsPrefix();
 			}
+
+			[Fact]
+			public async Task WithRefModifier_ShouldFilterForRefParameterOfType()
+			{
+				Filtered.Constructors constructors = In.AssemblyContaining<AssemblyFilters>()
+					.Constructors().WithParameter<int>().WithRefModifier();
+
+				await That(constructors).Contains(RefIntConstructor());
+				await That(constructors).DoesNotContain(PlainIntConstructor());
+				await That(constructors.GetDescription())
+					.IsEqualTo("constructors with parameter of type int and with ref modifier in assembly")
+					.AsPrefix();
+			}
 		}
-
-		private static ConstructorInfo? RefIntConstructor()
-			=> typeof(ClassWithRefIntConstructor).GetConstructors().Single();
-
-		private static ConstructorInfo? OutIntConstructor()
-			=> typeof(ClassWithOutIntConstructor).GetConstructors().Single();
-
-		private static ConstructorInfo? InIntConstructor()
-			=> typeof(ClassWithInIntConstructor).GetConstructors().Single();
-
-		private static ConstructorInfo? OptionalIntConstructor()
-			=> typeof(ClassWithOptionalIntConstructor).GetConstructors().Single();
-
-		private static ConstructorInfo? ParamsIntConstructor()
-			=> typeof(ClassWithParamsIntConstructor).GetConstructors().Single();
-
-		private static ConstructorInfo? PlainIntConstructor()
-			=> typeof(ClassWithPlainIntConstructor).GetConstructors().Single();
 
 		// ReSharper disable UnusedMember.Local
 		// ReSharper disable UnusedParameter.Local
