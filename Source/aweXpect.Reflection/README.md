@@ -377,6 +377,7 @@ In addition to [access modifiers](#access-modifiers),
 | static / abstract / sealed / generic | `.WhichAreStatic()` …                               | `.IsStatic()` …                                                 | `.AreStatic()` …             |
 | async                                | `.WhichAreAsync()`                                  | `.IsAsync()`                                                    | `.AreAsync()`                |
 | extension method                     | `.WhichAreExtensionMethods()`                       | `.IsAnExtensionMethod()`                                        | `.AreExtensionMethods()`     |
+| operator                             | `.WhichAreOperators()`                              | `.IsAnOperator()`                                               | `.AreOperators()`            |
 | virtual                              | `.WhichAreVirtual()`                                | `.IsVirtual()`                                                  | `.AreVirtual()`              |
 | overrides a base method              | `.WhichOverride()`                                  | `.Overrides()`                                                  | `.Override()`                |
 | returns type (or a subtype)          | `.WhichReturn<T>()`                                 | `.Returns<T>()`                                                 | `.Return<T>()`               |

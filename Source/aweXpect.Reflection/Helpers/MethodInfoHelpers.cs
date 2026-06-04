@@ -168,4 +168,17 @@ internal static class MethodInfoHelpers
 	/// <param name="methodInfo">The <see cref="MethodInfo" />.</param>
 	public static bool IsExtensionMethod(this MethodInfo? methodInfo)
 		=> methodInfo?.IsDefined(typeof(ExtensionAttribute), false) == true;
+
+	/// <summary>
+	///     Gets a value indicating whether the <see cref="MethodInfo" /> is an operator (e.g. <c>op_Addition</c>,
+	///     <c>op_Equality</c>, …).
+	/// </summary>
+	/// <remarks>
+	///     Detection is based on the special-name flag combined with the <c>op_</c> name prefix which the compiler emits for
+	///     operator overloads.
+	/// </remarks>
+	/// <param name="methodInfo">The <see cref="MethodInfo" />.</param>
+	public static bool IsOperator(this MethodInfo? methodInfo)
+		=> methodInfo is { IsSpecialName: true, }
+		   && methodInfo.Name.StartsWith("op_", StringComparison.Ordinal);
 }

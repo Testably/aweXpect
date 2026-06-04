@@ -19,4 +19,12 @@ public static class MethodInfoExtensions
 	/// <param name="methodInfo">The <see cref="MethodInfo" /> to check.</param>
 	public static bool IsReallyExtensionMethod(this MethodInfo? methodInfo)
 		=> methodInfo?.IsDefined(typeof(ExtensionAttribute), false) == true;
+
+	/// <summary>
+	///     Checks if the <paramref name="methodInfo" /> is an operator (e.g. <c>op_Addition</c>, <c>op_Equality</c>, …).
+	/// </summary>
+	/// <param name="methodInfo">The <see cref="MethodInfo" /> to check.</param>
+	public static bool IsReallyOperator(this MethodInfo? methodInfo)
+		=> methodInfo is { IsSpecialName: true, }
+		   && methodInfo.Name.StartsWith("op_", System.StringComparison.Ordinal);
 }
