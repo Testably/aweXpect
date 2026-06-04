@@ -1,4 +1,5 @@
-﻿using aweXpect.Reflection.Collections;
+﻿using System.Reflection;
+using aweXpect.Reflection.Collections;
 
 namespace aweXpect.Reflection;
 
@@ -7,4 +8,9 @@ namespace aweXpect.Reflection;
 /// </summary>
 public static partial class EventFilters
 {
+	/// <summary>
+	///     Additional filters on events with a handler of a specific type.
+	/// </summary>
+	public partial class EventsOfType(Filtered.Events inner, IChangeableFilter<EventInfo> filter)
+		: Filtered.Events(inner);
 }

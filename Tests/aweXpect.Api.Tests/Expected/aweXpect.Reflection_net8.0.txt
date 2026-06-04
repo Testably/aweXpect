@@ -203,6 +203,10 @@ namespace aweXpect.Reflection
     }
     public static class EventFilters
     {
+        public static aweXpect.Reflection.EventFilters.EventsOfType OfExactType(this aweXpect.Reflection.Collections.Filtered.Events @this, System.Type handlerType) { }
+        public static aweXpect.Reflection.EventFilters.EventsOfType OfExactType<THandler>(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
+        public static aweXpect.Reflection.EventFilters.EventsOfType OfType(this aweXpect.Reflection.Collections.Filtered.Events @this, System.Type handlerType) { }
+        public static aweXpect.Reflection.EventFilters.EventsOfType OfType<THandler>(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Events Which(this aweXpect.Reflection.Collections.Filtered.Events @this, System.Func<System.Reflection.EventInfo, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAre(this aweXpect.Reflection.Collections.Filtered.Events @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAreAbstract(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
@@ -230,6 +234,14 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Events Without<TAttribute>(this aweXpect.Reflection.Collections.Filtered.Events @this, bool inherit = true)
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Collections.Filtered.Events.StringEqualityResultType WithoutName(this aweXpect.Reflection.Collections.Filtered.Events @this, string unexpected) { }
+        public class EventsOfType : aweXpect.Reflection.Collections.Filtered.Events
+        {
+            public EventsOfType(aweXpect.Reflection.Collections.Filtered.Events inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Reflection.EventInfo> filter) { }
+            public aweXpect.Reflection.EventFilters.EventsOfType OrOfExactType(System.Type handlerType) { }
+            public aweXpect.Reflection.EventFilters.EventsOfType OrOfExactType<THandler>() { }
+            public aweXpect.Reflection.EventFilters.EventsOfType OrOfType(System.Type handlerType) { }
+            public aweXpect.Reflection.EventFilters.EventsOfType OrOfType<THandler>() { }
+        }
         public class EventsWith : aweXpect.Reflection.Collections.Filtered.Events
         {
             public EventsWith(aweXpect.Reflection.Collections.Filtered.Events inner, aweXpect.Reflection.Collections.IChangeableFilter<System.Reflection.EventInfo> filter) { }
@@ -872,7 +884,20 @@ namespace aweXpect.Reflection
         public static aweXpect.Results.AndOrResult<System.Reflection.EventInfo?, aweXpect.Core.IThat<System.Reflection.EventInfo?>> IsAbstract(this aweXpect.Core.IThat<System.Reflection.EventInfo?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.EventInfo?, aweXpect.Core.IThat<System.Reflection.EventInfo?>> IsNotAbstract(this aweXpect.Core.IThat<System.Reflection.EventInfo?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.EventInfo?, aweXpect.Core.IThat<System.Reflection.EventInfo?>> IsNotSealed(this aweXpect.Core.IThat<System.Reflection.EventInfo?> subject) { }
+        public static aweXpect.Reflection.ThatEvent.EventOfTypeResult<System.Reflection.EventInfo?, aweXpect.Core.IThat<System.Reflection.EventInfo?>> IsOfExactType(this aweXpect.Core.IThat<System.Reflection.EventInfo?> subject, System.Type handlerType) { }
+        public static aweXpect.Reflection.ThatEvent.EventOfTypeResult<System.Reflection.EventInfo?, aweXpect.Core.IThat<System.Reflection.EventInfo?>> IsOfExactType<THandler>(this aweXpect.Core.IThat<System.Reflection.EventInfo?> subject) { }
+        public static aweXpect.Reflection.ThatEvent.EventOfTypeResult<System.Reflection.EventInfo?, aweXpect.Core.IThat<System.Reflection.EventInfo?>> IsOfType(this aweXpect.Core.IThat<System.Reflection.EventInfo?> subject, System.Type handlerType) { }
+        public static aweXpect.Reflection.ThatEvent.EventOfTypeResult<System.Reflection.EventInfo?, aweXpect.Core.IThat<System.Reflection.EventInfo?>> IsOfType<THandler>(this aweXpect.Core.IThat<System.Reflection.EventInfo?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Reflection.EventInfo?, aweXpect.Core.IThat<System.Reflection.EventInfo?>> IsSealed(this aweXpect.Core.IThat<System.Reflection.EventInfo?> subject) { }
+        public sealed class EventOfTypeResult<TValue, TResult> : aweXpect.Results.AndOrResult<TValue, TResult>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.TypeFilterOptions>
+            where TResult : aweXpect.Core.IThat<TValue>
+        {
+            public EventOfTypeResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TResult subject, aweXpect.Reflection.Options.TypeFilterOptions typeFilterOptions) { }
+            public aweXpect.Reflection.ThatEvent.EventOfTypeResult<TValue, TResult> OrOfExactType(System.Type handlerType) { }
+            public aweXpect.Reflection.ThatEvent.EventOfTypeResult<TValue, TResult> OrOfExactType<THandler>() { }
+            public aweXpect.Reflection.ThatEvent.EventOfTypeResult<TValue, TResult> OrOfType(System.Type handlerType) { }
+            public aweXpect.Reflection.ThatEvent.EventOfTypeResult<TValue, TResult> OrOfType<THandler>() { }
+        }
     }
     public static class ThatEvents
     {
@@ -882,6 +907,14 @@ namespace aweXpect.Reflection
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>>> AreNotAbstract(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.EventInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.EventInfo?>>> AreNotSealed(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.EventInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>>> AreNotSealed(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>> subject) { }
+        public static aweXpect.Reflection.ThatEvents.EventsOfTypeResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.EventInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.EventInfo?>>> AreOfExactType(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.EventInfo?>> subject, System.Type handlerType) { }
+        public static aweXpect.Reflection.ThatEvents.EventsOfTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>>> AreOfExactType(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>> subject, System.Type handlerType) { }
+        public static aweXpect.Reflection.ThatEvents.EventsOfTypeResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.EventInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.EventInfo?>>> AreOfExactType<THandler>(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.EventInfo?>> subject) { }
+        public static aweXpect.Reflection.ThatEvents.EventsOfTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>>> AreOfExactType<THandler>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>> subject) { }
+        public static aweXpect.Reflection.ThatEvents.EventsOfTypeResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.EventInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.EventInfo?>>> AreOfType(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.EventInfo?>> subject, System.Type handlerType) { }
+        public static aweXpect.Reflection.ThatEvents.EventsOfTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>>> AreOfType(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>> subject, System.Type handlerType) { }
+        public static aweXpect.Reflection.ThatEvents.EventsOfTypeResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.EventInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.EventInfo?>>> AreOfType<THandler>(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.EventInfo?>> subject) { }
+        public static aweXpect.Reflection.ThatEvents.EventsOfTypeResult<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>>> AreOfType<THandler>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.EventInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.EventInfo?>>> AreSealed(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.EventInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>>> AreSealed(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<System.Reflection.EventInfo?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.EventInfo?>>> DoNotHave<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Reflection.EventInfo?>> subject, bool inherit = true)
@@ -896,6 +929,15 @@ namespace aweXpect.Reflection
             where TAttribute : System.Attribute { }
         public static aweXpect.Reflection.Results.HaveAttributeResult<System.Reflection.EventInfo?, System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>> Have<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Reflection.EventInfo?>> subject, System.Func<TAttribute, bool> predicate, bool inherit = true, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TAttribute : System.Attribute { }
+        public sealed class EventsOfTypeResult<TValue, TResult> : aweXpect.Results.AndOrResult<TValue, TResult>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.TypeFilterOptions>
+            where TResult : aweXpect.Core.IThat<TValue>
+        {
+            public EventsOfTypeResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TResult subject, aweXpect.Reflection.Options.TypeFilterOptions typeFilterOptions) { }
+            public aweXpect.Reflection.ThatEvents.EventsOfTypeResult<TValue, TResult> OrOfExactType(System.Type handlerType) { }
+            public aweXpect.Reflection.ThatEvents.EventsOfTypeResult<TValue, TResult> OrOfExactType<THandler>() { }
+            public aweXpect.Reflection.ThatEvents.EventsOfTypeResult<TValue, TResult> OrOfType(System.Type handlerType) { }
+            public aweXpect.Reflection.ThatEvents.EventsOfTypeResult<TValue, TResult> OrOfType<THandler>() { }
+        }
     }
     public static class ThatField
     {

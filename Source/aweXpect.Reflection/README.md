@@ -422,13 +422,30 @@ In.AllLoadedAssemblies().Private.Fields()
 
 ### Events
 
-Events support [access modifiers](#access-modifiers),
-[attributes](#attributes),
-[names](#names-and-namespaces) and the `abstract` / `sealed` modifiers
-(`.WhichAreAbstract()` / `.IsAbstract()` / `.AreAbstract()`, likewise for `sealed`).
+In addition to [access modifiers](#access-modifiers),
+[attributes](#attributes) and
+[names](#names-and-namespaces):
+
+|                                       | Filter                                      | Assert (single)                 | Assert (many)                     |
+|---------------------------------------|---------------------------------------------|---------------------------------|-----------------------------------|
+| handler of type (or a subtype)        | `.OfType<T>()`                              | `.IsOfType<T>()`                | `.AreOfType<T>()`                 |
+| handler of exact type                 | `.OfExactType<T>()`                         | `.IsOfExactType<T>()`           | `.AreOfExactType<T>()`            |
+| abstract / sealed                     | `.WhichAreAbstract()` / `.WhichAreSealed()` | `.IsAbstract()` / `.IsSealed()` | `.AreAbstract()` / `.AreSealed()` |
+
+The `OfType` / `IsOfType` / `AreOfType` filters and assertions match the event's handler type (its
+`EventHandlerType`, e.g. `EventHandler<T>`); the `…ExactType` variants match only the exact handler type.
+Use `OrOfType<T>()` / `OrOfExactType<T>()` to allow several handler types.
+
+> **Negation:** the `abstract` and `sealed` rows have a negated form — `WhichAreNot…` on filters and
+> `IsNot…` / `AreNot…` on assertions (e.g. `WhichAreNotSealed()`, `IsNotSealed()`, `AreNotSealed()`).
 
 ```csharp
+// Every event must use the generic EventHandler<T> pattern
+await Expect.That(In.AllLoadedAssemblies().Public.Events())
+    .AreOfType(typeof(EventHandler<>));
+
 In.AllLoadedAssemblies().Public.Events()
+    .OfType<EventHandler>()
     .WithName("Changed").AsSuffix()
     .With<ObsoleteAttribute>()
 ```
