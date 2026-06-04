@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Versioning;
@@ -83,6 +83,15 @@ internal static class AssemblyHelpers
 	/// </remarks>
 	public static string? GetTargetFramework(this Assembly? assembly)
 		=> MapFrameworkName(assembly?.GetCustomAttribute<TargetFrameworkAttribute>()?.FrameworkName);
+
+	/// <summary>
+	///     Checks if the <paramref name="assembly" /> is strong named.
+	/// </summary>
+	/// <remarks>
+	///     An assembly is considered strong named if its name carries a non-empty public key token.
+	/// </remarks>
+	public static bool IsStrongNamed(this Assembly? assembly)
+		=> assembly?.GetName().GetPublicKeyToken() is { Length: > 0, };
 
 	/// <summary>
 	///     Maps a <see cref="TargetFrameworkAttribute.FrameworkName" /> (e.g. <c>.NETCoreApp,Version=v8.0</c>)

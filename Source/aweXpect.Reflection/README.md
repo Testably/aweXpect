@@ -461,6 +461,8 @@ on them directly:
 | by name                     | `.WithName("x")`                       | `.HasName("x")`                  | `.HaveName("x")`                  |
 | not by name                 | `.WithoutName("x")`                    | `.DoesNotHaveName("x")`          | `.DoNotHaveName("x")`             |
 | by target framework         | `.WhichTarget("net8.0")`               | `.Targets("net8.0")`             | `.Target("net8.0")`               |
+| strong named                | `.WhichAreStrongNamed()`               | `.IsStrongNamed()`               | `.AreStrongNamed()`               |
+| not strong named            | `.WhichAreNotStrongNamed()`            | `.IsNotStrongNamed()`            | `.AreNotStrongNamed()`            |
 | has attribute               | `.With<TAttribute>()`                  | `.Has<TAttribute>()`             | `.Have<TAttribute>()`             |
 | does not have attribute     | `.Without<TAttribute>()`               | `.DoesNotHave<TAttribute>()`     | `.DoNotHave<TAttribute>()`        |
 | depends on assembly         | `.WhichHaveADependencyOn("x")`         | `.HasADependencyOn("x")`         | `.HaveADependencyOn("x")`         |
@@ -483,6 +485,8 @@ await Expect.That(subject).Targets("net8.0");
 The target framework is matched against the short moniker form (e.g. `net8.0`, `netstandard2.0`, `net48`),
 derived from the assembly's `[TargetFramework]` attribute. Assemblies without that attribute are treated as
 having no target framework and never match.
+
+An assembly is considered strong named when its name carries a non-empty public key token.
 
 ## Combining filters
 
