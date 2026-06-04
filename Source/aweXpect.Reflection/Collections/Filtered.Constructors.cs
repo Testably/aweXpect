@@ -40,11 +40,19 @@ public static partial class Filtered
 		/// <summary>
 		///     Container for a filterable collection of <see cref="ConstructorInfo" />.
 		/// </summary>
-		protected Constructors(Constructors inner) : base(inner, inner.Filters)
+		protected Constructors(Constructors inner) : this(inner, inner.Filters)
+		{
+		}
+
+		private Constructors(Constructors inner, List<IFilter<ConstructorInfo>> filters) : base(inner, filters)
 		{
 			_description = inner._description;
 			_types = inner._types;
 		}
+
+		/// <inheritdoc />
+		private protected override Constructors CloneWith(List<IFilter<ConstructorInfo>> filters)
+			=> new(this, filters);
 
 		/// <inheritdoc />
 		public string GetDescription()

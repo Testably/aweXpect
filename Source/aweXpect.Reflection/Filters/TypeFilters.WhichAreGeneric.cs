@@ -39,12 +39,9 @@ public static partial class TypeFilters
 		///     …with the <paramref name="expected" /> number of generic arguments.
 		/// </summary>
 		public GenericTypes WithArgumentCount(int expected)
-		{
-			Which(Filter.Suffix<Type>(
+			=> new(Which(Filter.Suffix<Type>(
 				type => type.GetGenericArguments().Length == expected,
-				() => $"with {expected} generic {(expected == 1 ? "argument" : "arguments")} "));
-			return this;
-		}
+				() => $"with {expected} generic {(expected == 1 ? "argument" : "arguments")} ")));
 
 		/// <summary>
 		///     …with a generic argument constrained to type <typeparamref name="T" />.
@@ -74,8 +71,8 @@ public static partial class TypeFilters
 				},
 				()
 					=> $"with argument {genericArgumentFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
-			Which(filter);
-			return new GenericTypesWithArgument(this, collectionIndexOptions);
+			Filtered.Types filtered = Which(filter);
+			return new GenericTypesWithArgument(new GenericTypes(filtered), collectionIndexOptions);
 		}
 
 		/// <summary>
@@ -110,8 +107,8 @@ public static partial class TypeFilters
 				},
 				()
 					=> $"with argument {genericArgumentFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
-			Which(filter);
-			return new GenericTypesWithNamedArgument(this, collectionIndexOptions, stringEqualityOptions);
+			Filtered.Types filtered = Which(filter);
+			return new GenericTypesWithNamedArgument(new GenericTypes(filtered), collectionIndexOptions, stringEqualityOptions);
 		}
 
 		/// <summary>
@@ -142,8 +139,8 @@ public static partial class TypeFilters
 				},
 				()
 					=> $"with argument {genericArgumentFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
-			Which(filter);
-			return new GenericTypesWithNamedArgument(this, collectionIndexOptions, stringEqualityOptions);
+			Filtered.Types filtered = Which(filter);
+			return new GenericTypesWithNamedArgument(new GenericTypes(filtered), collectionIndexOptions, stringEqualityOptions);
 		}
 
 		/// <summary>

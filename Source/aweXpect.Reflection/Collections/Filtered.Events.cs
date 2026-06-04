@@ -43,11 +43,19 @@ public static partial class Filtered
 		/// <summary>
 		///     Container for a filterable collection of <see cref="EventInfo" />.
 		/// </summary>
-		protected Events(Events inner) : base(inner, inner.Filters)
+		protected Events(Events inner) : this(inner, inner.Filters)
+		{
+		}
+
+		private Events(Events inner, List<IFilter<EventInfo>> filters) : base(inner, filters)
 		{
 			_description = inner._description;
 			_types = inner._types;
 		}
+
+		/// <inheritdoc />
+		private protected override Events CloneWith(List<IFilter<EventInfo>> filters)
+			=> new(this, filters);
 
 		/// <inheritdoc />
 		public string GetDescription()

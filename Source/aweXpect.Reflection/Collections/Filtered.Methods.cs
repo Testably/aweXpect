@@ -52,13 +52,21 @@ public static partial class Filtered
 		/// <summary>
 		///     Container for a filterable collection of <see cref="MethodInfo" />.
 		/// </summary>
-		protected Methods(Methods inner) : base(inner, inner.Filters)
+		protected Methods(Methods inner) : this(inner, inner.Filters)
+		{
+		}
+
+		private Methods(Methods inner, List<IFilter<MethodInfo>> filters) : base(inner, filters)
 		{
 			_description = inner._description;
 			_types = inner._types;
 			_memberScope = inner._memberScope;
 			_includeOperators = inner._includeOperators;
 		}
+
+		/// <inheritdoc />
+		private protected override Methods CloneWith(List<IFilter<MethodInfo>> filters)
+			=> new(this, filters);
 
 		/// <inheritdoc />
 		public string GetDescription()
@@ -95,12 +103,7 @@ public static partial class Filtered
 			}
 
 			Methods rebuilt = new(_types, _description, _memberScope, includeOperators: true);
-			foreach (IFilter<MethodInfo> filter in Filters)
-			{
-				rebuilt.Which(filter);
-			}
-
-			return rebuilt;
+			return rebuilt.CloneWith([.. Filters,]);
 		}
 
 		/// <summary>

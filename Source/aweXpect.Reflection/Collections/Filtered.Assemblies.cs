@@ -50,10 +50,18 @@ public static partial class Filtered
 		/// <summary>
 		///     Container for a filterable collection of <see cref="Assembly" />.
 		/// </summary>
-		protected Assemblies(Assemblies inner) : base(inner, inner.Filters)
+		protected Assemblies(Assemblies inner) : this(inner, inner.Filters)
+		{
+		}
+
+		private Assemblies(Assemblies inner, List<IFilter<Assembly>> filters) : base(inner, filters)
 		{
 			_description = inner._description;
 		}
+
+		/// <inheritdoc />
+		private protected override Assemblies CloneWith(List<IFilter<Assembly>> filters)
+			=> new(this, filters);
 
 		/// <summary>
 		///     Filters for public types.

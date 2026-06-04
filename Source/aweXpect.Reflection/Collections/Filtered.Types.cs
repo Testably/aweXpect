@@ -105,11 +105,19 @@ public static partial class Filtered
 		/// <summary>
 		///     Container for a filterable collection of <see cref="Type" />.
 		/// </summary>
-		protected Types(Types inner) : base(inner, inner.Filters)
+		protected Types(Types inner) : this(inner, inner.Filters)
+		{
+		}
+
+		private Types(Types inner, List<IFilter<Type>> filters) : base(inner, filters)
 		{
 			_description = inner._description;
 			_assemblies = inner._assemblies;
 		}
+
+		/// <inheritdoc />
+		private protected override Types CloneWith(List<IFilter<Type>> filters)
+			=> new(this, filters);
 
 		/// <summary>
 		///     Filters for public members.

@@ -40,12 +40,9 @@ public static partial class MethodFilters
 		///     …with the <paramref name="expected" /> number of generic arguments.
 		/// </summary>
 		public GenericMethods WithArgumentCount(int expected)
-		{
-			Which(Filter.Suffix<MethodInfo>(
+			=> new(Which(Filter.Suffix<MethodInfo>(
 				method => method.GetGenericArguments().Length == expected,
-				() => $"with {expected} generic {(expected == 1 ? "argument" : "arguments")} "));
-			return this;
-		}
+				() => $"with {expected} generic {(expected == 1 ? "argument" : "arguments")} ")));
 
 		/// <summary>
 		///     …with a generic argument constrained to type <typeparamref name="T" />.
@@ -75,8 +72,8 @@ public static partial class MethodFilters
 				},
 				()
 					=> $"with argument {genericArgumentFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
-			Which(filter);
-			return new GenericMethodsWithArgument(this, collectionIndexOptions);
+			Filtered.Methods filtered = Which(filter);
+			return new GenericMethodsWithArgument(new GenericMethods(filtered), collectionIndexOptions);
 		}
 
 		/// <summary>
@@ -111,8 +108,8 @@ public static partial class MethodFilters
 				},
 				()
 					=> $"with argument {genericArgumentFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
-			Which(filter);
-			return new GenericMethodsWithNamedArgument(this, collectionIndexOptions, stringEqualityOptions);
+			Filtered.Methods filtered = Which(filter);
+			return new GenericMethodsWithNamedArgument(new GenericMethods(filtered), collectionIndexOptions, stringEqualityOptions);
 		}
 
 		/// <summary>
@@ -143,8 +140,8 @@ public static partial class MethodFilters
 				},
 				()
 					=> $"with argument {genericArgumentFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
-			Which(filter);
-			return new GenericMethodsWithNamedArgument(this, collectionIndexOptions, stringEqualityOptions);
+			Filtered.Methods filtered = Which(filter);
+			return new GenericMethodsWithNamedArgument(new GenericMethods(filtered), collectionIndexOptions, stringEqualityOptions);
 		}
 	}
 
