@@ -89,15 +89,16 @@ await Expect.That(In.AllLoadedAssemblies()
 `In` builds the collection of reflection objects you want to reason about. Every source returns a lazily
 evaluated collection that you can navigate and filter further.
 
-| Source                                                                  | Returns                                                                              |
-|-------------------------------------------------------------------------|--------------------------------------------------------------------------------------|
-| `In.AllLoadedAssemblies()`                                              | all currently loaded assemblies (system assemblies [excluded](#assembly-exclusions)) |
-| `In.Assemblies(a1, a2, …)` / `In.Assemblies(collection)`                | the given assemblies                                                                 |
-| `In.AssemblyContaining<T>()` / `In.AssemblyContaining(typeof(T))`       | the assembly that declares `T`                                                       |
-| `In.EntryAssembly()`                                                    | the entry assembly                                                                   |
-| `In.ExecutingAssembly()`                                                | the executing assembly                                                               |
-| `In.Type<T>()` / `In.Type(typeof(T))`                                   | a single type                                                                        |
-| `In.Types<T1, T2>()` / `In.Types<T1, T2, T3>()` / `In.Types(t1, t2, …)` | the given types                                                                      |
+| Source                                                                                        | Returns                                                                              |
+|-----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|
+| `In.AllLoadedAssemblies()`                                                                    | all currently loaded assemblies (system assemblies [excluded](#assembly-exclusions)) |
+| `In.Assemblies(a1, a2, …)` / `In.Assemblies(collection)`                                      | the given assemblies                                                                 |
+| `In.AssemblyContaining<T>()` / `In.AssemblyContaining(typeof(T))`                             | the assembly that declares `T`                                                       |
+| `In.EntryAssembly()`                                                                          | the entry assembly                                                                   |
+| `In.ExecutingAssembly()`                                                                      | the executing assembly                                                               |
+| `In.Type<T>()` / `In.Type(typeof(T))`                                                         | a single type                                                                        |
+| `In.Types<T1, T2>()` / `In.Types<T1, T2, T3>()` / `In.Types(t1, t2, …)`                       | the given types                                                                      |
+| `In.Constructors(…)` / `In.Events(…)` / `In.Fields(…)` / `In.Methods(…)` / `In.Properties(…)` | the given members                                                                    |
 
 ## Navigating to members
 
@@ -133,6 +134,10 @@ each other: a filter has an `Is…`/`Are…` assertion counterpart for the same 
 
 The tables below pair them up. The **Filter** column is used inside `In.…`; the **Assert (single)**
 column applies to one subject; the **Assert (many)** column applies to a collection.
+
+The custom `.Which(…)` filter has a universal assertion counterpart that works for **every** subject kind
+(types, members and assemblies): use aweXpect's `.Satisfies(…)` on a single subject and `.All().Satisfy(…)`
+(or `.Any().Satisfy(…)`) on a collection. See [Collections and quantifiers](#collections-and-quantifiers).
 
 ### Access modifiers
 
@@ -235,28 +240,28 @@ outside the namespace.
 
 ### Types
 
-| Kind             | Filter                                          | Assert (single)      | Assert (many)         |
-|------------------|-------------------------------------------------|----------------------|-----------------------|
-| class            | `.WhichAreClasses()` / `.Classes()`             | `.IsAClass()`        | `.AreClasses()`       |
-| interface        | `.WhichAreInterfaces()` / `.Interfaces()`       | `.IsAnInterface()`   | `.AreInterfaces()`    |
-| enum             | `.WhichAreEnums()` / `.Enums()`                 | `.IsAnEnum()`        | `.AreEnums()`         |
-| struct           | `.WhichAreStructs()` / `.Structs()`             | `.IsAStruct()`       | `.AreStructs()`       |
-| record           | `.WhichAreRecords()` / `.Records()`             | `.IsARecord()`       | `.AreRecords()`       |
-| record struct    | `.WhichAreRecordStructs()` / `.RecordStructs()` | `.IsARecordStruct()` | `.AreRecordStructs()` |
-| readonly struct  | `.WhichAreReadOnly()`                           | `.IsReadOnly()`      | `.AreReadOnly()`      |
-| ref struct       | `.WhichAreRefStructs()`                         | `.IsARefStruct()`    | `.AreRefStructs()`    |
-| delegate         | `.WhichAreDelegates()`                          | `.IsADelegate()`     | `.AreDelegates()`     |
-| exception        | `.WhichAreExceptions()`                         | `.IsAnException()`   | `.AreExceptions()`    |
-| attribute        | `.WhichAreAttributes()`                         | `.IsAnAttribute()`   | `.AreAttributes()`    |
-| abstract         | `.WhichAreAbstract()` / `.Abstract`             | `.IsAbstract()`      | `.AreAbstract()`      |
-| sealed           | `.WhichAreSealed()` / `.Sealed`                 | `.IsSealed()`        | `.AreSealed()`        |
-| static           | `.WhichAreStatic()` / `.Static`                 | `.IsStatic()`        | `.AreStatic()`        |
-| generic          | `.WhichAreGeneric()` / `.Generic`               | `.IsGeneric()`       | `.AreGeneric()`       |
-| nested           | `.WhichAreNested()` / `.Nested`                 | `.IsNested()`        | `.AreNested()`        |
-| inherits from    | `.WhichInheritFrom<T>()`                        | `.InheritsFrom<T>()` | `.InheritFrom<T>()`   |
-| instantiable     | `.WhichAreInstantiable()`                       | `.IsInstantiable()`  | `.AreInstantiable()`  |
-| default constructor | `.WhichHaveADefaultConstructor()`            | `.HasADefaultConstructor()` | `.HaveADefaultConstructor()` |
-| custom predicate | `.Which(t => …)`                                | -                    | -                     |
+| Kind                | Filter                                          | Assert (single)             | Assert (many)                |
+|---------------------|-------------------------------------------------|-----------------------------|------------------------------|
+| class               | `.WhichAreClasses()` / `.Classes()`             | `.IsAClass()`               | `.AreClasses()`              |
+| interface           | `.WhichAreInterfaces()` / `.Interfaces()`       | `.IsAnInterface()`          | `.AreInterfaces()`           |
+| enum                | `.WhichAreEnums()` / `.Enums()`                 | `.IsAnEnum()`               | `.AreEnums()`                |
+| struct              | `.WhichAreStructs()` / `.Structs()`             | `.IsAStruct()`              | `.AreStructs()`              |
+| record              | `.WhichAreRecords()` / `.Records()`             | `.IsARecord()`              | `.AreRecords()`              |
+| record struct       | `.WhichAreRecordStructs()` / `.RecordStructs()` | `.IsARecordStruct()`        | `.AreRecordStructs()`        |
+| readonly struct     | `.WhichAreReadOnly()`                           | `.IsReadOnly()`             | `.AreReadOnly()`             |
+| ref struct          | `.WhichAreRefStructs()`                         | `.IsARefStruct()`           | `.AreRefStructs()`           |
+| delegate            | `.WhichAreDelegates()`                          | `.IsADelegate()`            | `.AreDelegates()`            |
+| exception           | `.WhichAreExceptions()`                         | `.IsAnException()`          | `.AreExceptions()`           |
+| attribute           | `.WhichAreAttributes()`                         | `.IsAnAttribute()`          | `.AreAttributes()`           |
+| abstract            | `.WhichAreAbstract()` / `.Abstract`             | `.IsAbstract()`             | `.AreAbstract()`             |
+| sealed              | `.WhichAreSealed()` / `.Sealed`                 | `.IsSealed()`               | `.AreSealed()`               |
+| static              | `.WhichAreStatic()` / `.Static`                 | `.IsStatic()`               | `.AreStatic()`               |
+| generic             | `.WhichAreGeneric()` / `.Generic`               | `.IsGeneric()`              | `.AreGeneric()`              |
+| nested              | `.WhichAreNested()` / `.Nested`                 | `.IsNested()`               | `.AreNested()`               |
+| inherits from       | `.WhichInheritFrom<T>()`                        | `.InheritsFrom<T>()`        | `.InheritFrom<T>()`          |
+| instantiable        | `.WhichAreInstantiable()`                       | `.IsInstantiable()`         | `.AreInstantiable()`         |
+| default constructor | `.WhichHaveADefaultConstructor()`               | `.HasADefaultConstructor()` | `.HaveADefaultConstructor()` |
+| custom predicate    | `.Which(t => …)`                                | `.Satisfies(t => …)`        | `.All().Satisfy(t => …)`     |
 
 `WhichInheritFrom` / `InheritsFrom` accept a generic argument or a `Type`, plus an optional
 `forceDirect` flag to require *direct* inheritance.
@@ -387,12 +392,22 @@ In addition to [access modifiers](#access-modifiers),
 | parameter of type (or subtype)       | `.WithParameter<T>()` / `.WithParameter<T>("name")` | `.HasParameter<T>()` / `.HasParameter<T>("name")`               | `.HaveParameter<T>()`        |
 | parameter of exact type              | `.WithParameterExactly<T>()`                        | `.HasParameterExactly<T>()` / `.HasParameterExactly<T>("name")` | `.HaveParameterExactly<T>()` |
 | parameter count                      | `.WithParameterCount(n)`                            | `.HasParameterCount(n)`                                         | `.HaveParameterCount(n)`     |
+| `ref` parameter                      | `.WithRefParameter()`                               | `.HasRefParameter()`                                            | `.HaveRefParameter()`        |
+| `out` parameter                      | `.WithOutParameter()`                               | `.HasOutParameter()`                                            | `.HaveOutParameter()`        |
+| `in` parameter                       | `.WithInParameter()`                                | `.HasInParameter()`                                             | `.HaveInParameter()`         |
+| `params` parameter                   | `.WithParamsParameter()`                            | `.HasParamsParameter()`                                         | `.HaveParamsParameter()`     |
+| optional parameter                   | `.WithOptionalParameter()`                          | `.HasOptionalParameter()`                                       | `.HaveOptionalParameter()`   |
 | custom predicate                     | `.Which(m => …)`                                    | `.Satisfies(m => …)`                                            | `.All().Satisfy(m => …)`     |
 
 `WhichReturn<Task>()` and `Returns<Task>()` also match `Task<T>`; the `…Exactly` variants match only the
-exact type. Use `OrReturn<T>()` / `OrReturnExactly<T>()` to allow several return types. Since `void` cannot be
+exact type. Use `OrReturn(s)<T>()` / `OrReturn(s)Exactly<T>()` to allow several return types (the single-subject
+assertion is `OrReturns…`, the filter and collection assertion are `OrReturn…`). Since `void` cannot be
 used as a generic type argument, use `WhichReturnVoid()` / `ReturnsVoid()` / `ReturnVoid()` to match
 void-returning methods.
+
+The `ref` / `out` / `in` / `params` / optional parameter filters and assertions mirror `WithParameter`:
+each also has `<T>()`, `(Type)`, `<T>("name")` and `…Exactly<T>()` overloads to constrain the parameter's type
+and name (e.g. `.WithRefParameter<int>("count")`, `.HasOutParameterExactly<string>()`).
 
 ```csharp
 In.AllLoadedAssemblies().Methods()
@@ -425,6 +440,9 @@ In addition to [access modifiers](#access-modifiers),
 | read-only *(properties only)*         | `.WhichAreReadOnly()`                       | `.IsReadOnly()`                 | `.AreReadOnly()`                  |
 | write-only *(properties only)*        | `.WhichAreWriteOnly()`                      | `.IsWriteOnly()`                | `.AreWriteOnly()`                 |
 | read-write *(properties only)*        | `.WhichAreReadWrite()`                      | `.IsReadWrite()`                | `.AreReadWrite()`                 |
+| has getter *(properties only)*        | `.WhichHaveAGetter()`                       | `.HasAGetter()`                 | `.HaveAGetter()`                  |
+| has setter *(properties only)*        | `.WhichHaveASetter()`                       | `.HasASetter()`                 | `.HaveASetter()`                  |
+| has init setter *(properties only)*   | `.WhichHaveAnInitSetter()`                  | `.HasAnInitSetter()`            | `.HaveAnInitSetter()`             |
 | indexer *(properties only)*           | `.WhichAreIndexers()`                       | `.IsAnIndexer()`                | `.AreIndexers()`                  |
 | read-only *(fields only)*             | `.WhichAreReadOnly()`                       | `.IsReadOnly()`                 | `.AreReadOnly()`                  |
 | constant *(fields only)*              | `.WhichAreConstant()`                       | `.IsConstant()`                 | `.AreConstant()`                  |
@@ -453,12 +471,12 @@ In addition to [access modifiers](#access-modifiers),
 [attributes](#attributes) and
 [names](#names-and-namespaces):
 
-|                                       | Filter                                      | Assert (single)                 | Assert (many)                     |
-|---------------------------------------|---------------------------------------------|---------------------------------|-----------------------------------|
-| handler of type (or a subtype)        | `.OfType<T>()`                              | `.IsOfType<T>()`                | `.AreOfType<T>()`                 |
-| handler of exact type                 | `.OfExactType<T>()`                         | `.IsOfExactType<T>()`           | `.AreOfExactType<T>()`            |
-| abstract / sealed                     | `.WhichAreAbstract()` / `.WhichAreSealed()` | `.IsAbstract()` / `.IsSealed()` | `.AreAbstract()` / `.AreSealed()` |
-| static                                | `.WhichAreStatic()`                         | `.IsStatic()`                   | `.AreStatic()`                    |
+|                                | Filter                                      | Assert (single)                 | Assert (many)                     |
+|--------------------------------|---------------------------------------------|---------------------------------|-----------------------------------|
+| handler of type (or a subtype) | `.OfType<T>()`                              | `.IsOfType<T>()`                | `.AreOfType<T>()`                 |
+| handler of exact type          | `.OfExactType<T>()`                         | `.IsOfExactType<T>()`           | `.AreOfExactType<T>()`            |
+| abstract / sealed              | `.WhichAreAbstract()` / `.WhichAreSealed()` | `.IsAbstract()` / `.IsSealed()` | `.AreAbstract()` / `.AreSealed()` |
+| static                         | `.WhichAreStatic()`                         | `.IsStatic()`                   | `.AreStatic()`                    |
 
 The `OfType` / `IsOfType` / `AreOfType` filters and assertions match the event's handler type (its
 `EventHandlerType`, e.g. `EventHandler<T>`); the `…ExactType` variants match only the exact handler type.
@@ -490,6 +508,14 @@ In addition to [access modifiers](#access-modifiers) and
 | parameter of type (or subtype) | `.WithParameter<T>()` / `.WithParameter<T>("name")` | `.HasParameter<T>()` / `.HasParameter<T>("name")`               | `.HaveParameter<T>()`        |
 | parameter of exact type        | `.WithParameterExactly<T>()`                        | `.HasParameterExactly<T>()` / `.HasParameterExactly<T>("name")` | `.HaveParameterExactly<T>()` |
 | parameter count                | `.WithParameterCount(n)`                            | `.HasParameterCount(n)`                                         | `.HaveParameterCount(n)`     |
+| `ref` parameter                | `.WithRefParameter()`                               | `.HasRefParameter()`                                            | `.HaveRefParameter()`        |
+| `out` parameter                | `.WithOutParameter()`                               | `.HasOutParameter()`                                            | `.HaveOutParameter()`        |
+| `in` parameter                 | `.WithInParameter()`                                | `.HasInParameter()`                                             | `.HaveInParameter()`         |
+| `params` parameter             | `.WithParamsParameter()`                            | `.HasParamsParameter()`                                         | `.HaveParamsParameter()`     |
+| optional parameter             | `.WithOptionalParameter()`                          | `.HasOptionalParameter()`                                       | `.HaveOptionalParameter()`   |
+
+The `ref` / `out` / `in` / `params` / optional parameter filters and assertions accept the same
+`<T>()`, `(Type)`, `<T>("name")` and `…Exactly<T>()` overloads as `WithParameter` (see [Methods](#methods)).
 
 ```csharp
 In.AllLoadedAssemblies().Public.Constructors()
@@ -508,6 +534,7 @@ on them directly:
 | by name                     | `.WithName("x")`                       | `.HasName("x")`                  | `.HaveName("x")`                  |
 | not by name                 | `.WithoutName("x")`                    | `.DoesNotHaveName("x")`          | `.DoNotHaveName("x")`             |
 | by target framework         | `.WhichTarget("net8.0")`               | `.Targets("net8.0")`             | `.Target("net8.0")`               |
+| by version                  | `.WithVersion(…)`                      | `.HasVersion(…)`                 | `.HaveVersion(…)`                 |
 | strong named                | `.WhichAreStrongNamed()`               | `.IsStrongNamed()`               | `.AreStrongNamed()`               |
 | not strong named            | `.WhichAreNotStrongNamed()`            | `.IsNotStrongNamed()`            | `.AreNotStrongNamed()`            |
 | has attribute               | `.With<TAttribute>()`                  | `.Has<TAttribute>()`             | `.Have<TAttribute>()`             |
@@ -515,7 +542,7 @@ on them directly:
 | depends on assembly         | `.WhichHaveADependencyOn("x")`         | `.HasADependencyOn("x")`         | `.HaveADependencyOn("x")`         |
 | does not depend on assembly | `.WhichHaveNoDependencyOn("x")`        | `.HasNoDependencyOn("x")`        | `.HaveNoDependencyOn("x")`        |
 | depends only on set         | `.WhichHaveDependenciesOnlyOn("x", …)` | `.HasDependenciesOnlyOn("x", …)` | `.HaveDependenciesOnlyOn("x", …)` |
-| custom predicate            | `.Which(a => …)`                       | -                                | -                                 |
+| custom predicate            | `.Which(a => …)`                       | `.Satisfies(a => …)`             | `.All().Satisfy(a => …)`          |
 
 ```csharp
 Assembly subject = Assembly.GetEntryAssembly();
@@ -534,6 +561,23 @@ derived from the assembly's `[TargetFramework]` attribute. Assemblies without th
 having no target framework and never match.
 
 An assembly is considered strong named when its name carries a non-empty public key token.
+
+The version filter and assertions come in two forms. Pass a `Func<Version, bool>` predicate to match the whole
+version, or omit it to compare individual components (`WithMajor`, `WithMinor`, `WithBuild`, `WithRevision`)
+with `GreaterThan`, `GreaterThanOrEqualTo`, `LessThan`, `LessThanOrEqualTo`, `EqualTo` and `NotEqualTo`.
+Component comparisons chain (all must hold), and an assembly without a version never matches. The `Build` and
+`Revision` components are `-1` when absent from the version.
+
+```csharp
+// Predicate form
+In.AllLoadedAssemblies().WithVersion(version => version.Major >= 2)
+await Expect.That(subject).HasVersion(version => version.Major >= 2);
+
+// Component form
+In.AllLoadedAssemblies().WithVersion().WithMajor.GreaterThanOrEqualTo(2).WithMinor.EqualTo(0)
+await Expect.That(subject).HasVersion().WithMajor.GreaterThanOrEqualTo(2);
+await Expect.That(subjects).HaveVersion().WithMajor.EqualTo(1);
+```
 
 ## Combining filters
 
@@ -581,12 +625,15 @@ await Expect.That(methods).HaveName("Get*Async").AsWildcard().IgnoringCase();
 
 Every expectation works with both a single item and a collection. A collection can be an array,
 any `IEnumerable<T?>` or — on .NET 8 and later — an `IAsyncEnumerable<T?>`. The plural assertions already
-require **every** item to match; for ad-hoc predicates use aweXpect's `All()` / `Any()` quantifiers with
-`Satisfy(…)`, and combine selections with LINQ:
+require **every** item to match; for ad-hoc predicates use aweXpect's `Satisfies(…)` (single subject) and
+`All()` / `Any()` quantifiers with `Satisfy(…)` (collections), and combine selections with LINQ:
 
 ```csharp
 // The plural assertion already means "every item":
 await Expect.That(types).ArePublic();
+
+// Ad-hoc predicate on a single subject:
+await Expect.That(type).Satisfies(type => type.IsSealed);
 
 // Ad-hoc predicate across the whole collection:
 await Expect.That(types).All().Satisfy(type => type.IsSealed);
@@ -606,7 +653,8 @@ await Expect.That(managers).HaveName("Manager").AsSuffix();
 By default, assemblies whose name starts with one of the following prefixes are excluded from
 `In.AllLoadedAssemblies()`:
 
-`mscorlib`, `System`, `Microsoft`, `JetBrains`, `xunit`, `Castle`, `DynamicProxyGenAssembly2`.
+`mscorlib`, `System`, `Microsoft`, `netstandard`, `WindowsBase`, `JetBrains`, `xunit`, `Castle`,
+`DynamicProxyGenAssembly2`.
 
 Customize this via `Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes`. `Set(…)` replaces the
 list and returns a scope that restores the previous value when disposed:
