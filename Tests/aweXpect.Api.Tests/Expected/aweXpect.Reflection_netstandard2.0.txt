@@ -17,6 +17,7 @@ namespace aweXpect.Customization
     }
     public static class ReflectionCustomizationExtensions
     {
+        public static aweXpect.Customization.ICustomizationValueSetter<string[]> ExcludedAttributeTypes(this aweXpect.Customization.AwexpectCustomization.ReflectionCustomization reflection) { }
         public static aweXpect.Customization.ICustomizationValueSetter<aweXpect.Customization.CompilerGeneratedMembers> IncludedCompilerGeneratedMembers(this aweXpect.Customization.AwexpectCustomization.ReflectionCustomization reflection) { }
         public static aweXpect.Customization.ICustomizationValueSetter<aweXpect.Customization.SpecialNameMembers> IncludedSpecialNameMembers(this aweXpect.Customization.AwexpectCustomization.ReflectionCustomization reflection) { }
     }
@@ -1341,6 +1342,13 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Results.TypeContainingMembersResult<System.Type?> ContainsFields(this aweXpect.Core.IThat<System.Type?> subject, System.Func<aweXpect.Reflection.Collections.Filtered.Fields, aweXpect.Reflection.Collections.Filtered.Fields> filter, aweXpect.Reflection.Collections.MemberScope memberScope = 0) { }
         public static aweXpect.Reflection.Results.TypeContainingMembersResult<System.Type?> ContainsMethods(this aweXpect.Core.IThat<System.Type?> subject, System.Func<aweXpect.Reflection.Collections.Filtered.Methods, aweXpect.Reflection.Collections.Filtered.Methods> filter, aweXpect.Reflection.Collections.MemberScope memberScope = 0) { }
         public static aweXpect.Reflection.Results.TypeContainingMembersResult<System.Type?> ContainsProperties(this aweXpect.Core.IThat<System.Type?> subject, System.Func<aweXpect.Reflection.Collections.Filtered.Properties, aweXpect.Reflection.Collections.Filtered.Properties> filter, aweXpect.Reflection.Collections.MemberScope memberScope = 0) { }
+        public static aweXpect.Reflection.Results.NamespaceDependencyResult<System.Type?> DependsOn(this aweXpect.Core.IThat<System.Type?> subject, System.Collections.Generic.IEnumerable<string> namespaces) { }
+        public static aweXpect.Reflection.Results.TypeDependencyResult<System.Type?> DependsOn(this aweXpect.Core.IThat<System.Type?> subject, System.Type type) { }
+        public static aweXpect.Reflection.Results.TypeDependencyResult<System.Type?> DependsOn<T>(this aweXpect.Core.IThat<System.Type?> subject) { }
+        public static aweXpect.Reflection.Results.NamespaceDependencyOnlyOnResult<System.Type?> DependsOnlyOn(this aweXpect.Core.IThat<System.Type?> subject, System.Collections.Generic.IEnumerable<string> namespaces) { }
+        public static aweXpect.Reflection.Results.NamespaceDependencyResult<System.Type?> DoesNotDependOn(this aweXpect.Core.IThat<System.Type?> subject, System.Collections.Generic.IEnumerable<string> namespaces) { }
+        public static aweXpect.Reflection.Results.TypeDependencyResult<System.Type?> DoesNotDependOn(this aweXpect.Core.IThat<System.Type?> subject, System.Type type) { }
+        public static aweXpect.Reflection.Results.TypeDependencyResult<System.Type?> DoesNotDependOn<T>(this aweXpect.Core.IThat<System.Type?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> DoesNotHave<TAttribute>(this aweXpect.Core.IThat<System.Type?> subject, bool inherit = true)
             where TAttribute : System.Attribute { }
         public static aweXpect.Results.AndOrResult<System.Type?, aweXpect.Core.IThat<System.Type?>> DoesNotHaveADefaultConstructor(this aweXpect.Core.IThat<System.Type?> subject) { }
@@ -1468,6 +1476,9 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Results.TypeContainingMembersResult<System.Collections.Generic.IEnumerable<System.Type?>> ContainFields(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Func<aweXpect.Reflection.Collections.Filtered.Fields, aweXpect.Reflection.Collections.Filtered.Fields> filter, aweXpect.Reflection.Collections.MemberScope memberScope = 0) { }
         public static aweXpect.Reflection.Results.TypeContainingMembersResult<System.Collections.Generic.IEnumerable<System.Type?>> ContainMethods(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Func<aweXpect.Reflection.Collections.Filtered.Methods, aweXpect.Reflection.Collections.Filtered.Methods> filter, aweXpect.Reflection.Collections.MemberScope memberScope = 0) { }
         public static aweXpect.Reflection.Results.TypeContainingMembersResult<System.Collections.Generic.IEnumerable<System.Type?>> ContainProperties(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Func<aweXpect.Reflection.Collections.Filtered.Properties, aweXpect.Reflection.Collections.Filtered.Properties> filter, aweXpect.Reflection.Collections.MemberScope memberScope = 0) { }
+        public static aweXpect.Reflection.Results.NamespaceDependencyResult<System.Collections.Generic.IEnumerable<System.Type?>> DependOn(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Collections.Generic.IEnumerable<string> namespaces) { }
+        public static aweXpect.Reflection.Results.NamespaceDependencyOnlyOnResult<System.Collections.Generic.IEnumerable<System.Type?>> DependOnlyOn(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Collections.Generic.IEnumerable<string> namespaces) { }
+        public static aweXpect.Reflection.Results.NamespaceDependencyResult<System.Collections.Generic.IEnumerable<System.Type?>> DoNotDependOn(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, System.Collections.Generic.IEnumerable<string> namespaces) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> DoNotHave<TAttribute>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, bool inherit = true)
             where TAttribute : System.Attribute { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> DoNotHaveADefaultConstructor(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
@@ -1569,6 +1580,9 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.TypeFilters.TypesContainingMembers WhichContainFields(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<aweXpect.Reflection.Collections.Filtered.Fields, aweXpect.Reflection.Collections.Filtered.Fields> filter, aweXpect.Reflection.Collections.MemberScope memberScope = 0) { }
         public static aweXpect.Reflection.TypeFilters.TypesContainingMembers WhichContainMethods(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<aweXpect.Reflection.Collections.Filtered.Methods, aweXpect.Reflection.Collections.Filtered.Methods> filter, aweXpect.Reflection.Collections.MemberScope memberScope = 0) { }
         public static aweXpect.Reflection.TypeFilters.TypesContainingMembers WhichContainProperties(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<aweXpect.Reflection.Collections.Filtered.Properties, aweXpect.Reflection.Collections.Filtered.Properties> filter, aweXpect.Reflection.Collections.MemberScope memberScope = 0) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types.NamespaceDependencyFilterResult WhichDependOn(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Collections.Generic.IEnumerable<string> namespaces) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types.NamespaceDependencyOnlyOnFilterResult WhichDependOnlyOn(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Collections.Generic.IEnumerable<string> namespaces) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types.NamespaceDependencyFilterResult WhichDoNotDependOn(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Collections.Generic.IEnumerable<string> namespaces) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichDoNotHaveADefaultConstructor(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichDoNotImplement(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Type interfaceType, bool forceDirect = false) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichDoNotImplement<TInterface>(this aweXpect.Reflection.Collections.Filtered.Types @this, bool forceDirect = false) { }
@@ -1809,6 +1823,17 @@ namespace aweXpect.Reflection.Collections
             public string GetDescription() { }
             public aweXpect.Reflection.Collections.Filtered.Methods Methods(aweXpect.Reflection.Collections.MemberScope memberScope = 0) { }
             public aweXpect.Reflection.Collections.Filtered.Properties Properties(aweXpect.Reflection.Collections.MemberScope memberScope = 0) { }
+            public sealed class NamespaceDependencyFilterResult : aweXpect.Reflection.Collections.Filtered.Types
+            {
+                public aweXpect.Reflection.Collections.Filtered.Types.NamespaceDependencyFilterResult ExcludingSubNamespaces() { }
+                public aweXpect.Reflection.Collections.Filtered.Types.NamespaceDependencyFilterResult OrOn(System.Collections.Generic.IEnumerable<string> namespaces) { }
+            }
+            public sealed class NamespaceDependencyOnlyOnFilterResult : aweXpect.Reflection.Collections.Filtered.Types
+            {
+                public aweXpect.Reflection.Collections.Filtered.Types.NamespaceDependencyOnlyOnFilterResult ExcludingOwnSubNamespaces() { }
+                public aweXpect.Reflection.Collections.Filtered.Types.NamespaceDependencyOnlyOnFilterResult ExcludingSubNamespaces() { }
+                public aweXpect.Reflection.Collections.Filtered.Types.NamespaceDependencyOnlyOnFilterResult OrOn(System.Collections.Generic.IEnumerable<string> namespaces) { }
+            }
             public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Types
             {
                 public aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResult IgnoringCase(bool ignoreCase = true) { }
@@ -2052,6 +2077,17 @@ namespace aweXpect.Reflection.Results
         public aweXpect.Reflection.Results.NamedParameterCollectionResult<TThat, TParameter> IgnoringCase(bool ignoreCase = true) { }
         public aweXpect.Reflection.Results.NamedParameterCollectionResult<TThat, TParameter> Using(System.Collections.Generic.IEqualityComparer<string> comparer) { }
     }
+    public sealed class NamespaceDependencyOnlyOnResult<TThat> : aweXpect.Results.AndOrResult<TThat, aweXpect.Core.IThat<TThat>>
+    {
+        public aweXpect.Reflection.Results.NamespaceDependencyOnlyOnResult<TThat> ExcludingOwnSubNamespaces() { }
+        public aweXpect.Reflection.Results.NamespaceDependencyOnlyOnResult<TThat> ExcludingSubNamespaces() { }
+        public aweXpect.Reflection.Results.NamespaceDependencyOnlyOnResult<TThat> OrOn(System.Collections.Generic.IEnumerable<string> namespaces) { }
+    }
+    public sealed class NamespaceDependencyResult<TThat> : aweXpect.Results.AndOrResult<TThat, aweXpect.Core.IThat<TThat>>
+    {
+        public aweXpect.Reflection.Results.NamespaceDependencyResult<TThat> ExcludingSubNamespaces() { }
+        public aweXpect.Reflection.Results.NamespaceDependencyResult<TThat> OrOn(System.Collections.Generic.IEnumerable<string> namespaces) { }
+    }
     public class ParameterCollectionAtIndexResult<TThat, TParameter> : aweXpect.Results.AndOrResult<TThat, aweXpect.Core.IThat<TThat>>
     {
         public ParameterCollectionAtIndexResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TThat> subject, aweXpect.Options.CollectionIndexOptions collectionIndexOptions) { }
@@ -2082,5 +2118,10 @@ namespace aweXpect.Reflection.Results
         public aweXpect.Reflection.Results.TypeContainingMembersResult<TThat> Never() { }
         public aweXpect.Reflection.Results.TypeContainingMembersResult<TThat> Once() { }
         public aweXpect.Reflection.Results.TypeContainingMembersResult<TThat> Twice() { }
+    }
+    public sealed class TypeDependencyResult<TThat> : aweXpect.Results.AndOrResult<TThat, aweXpect.Core.IThat<TThat>>
+    {
+        public aweXpect.Reflection.Results.TypeDependencyResult<TThat> OrOn(System.Type type) { }
+        public aweXpect.Reflection.Results.TypeDependencyResult<TThat> OrOn<T>() { }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -23,8 +22,10 @@ public static partial class ThatAssemblies
 	///     the <paramref name="allowed" /> assemblies.
 	/// </summary>
 	/// <remarks>
-	///     References to assemblies whose name starts with one of the
-	///     <see cref="AwexpectCustomization.ReflectionCustomizationValue.ExcludedAssemblyPrefixes" /> are ignored,
+	///     References to assemblies whose name matches one of the
+	///     <see cref="AwexpectCustomization.ReflectionCustomizationValue.ExcludedAssemblyPrefixes" /> at a
+	///     name-segment boundary (<c>System</c> covers <c>System.Text.Json</c>, but not
+	///     <c>SystemsBiology.Core</c>) are ignored,
 	///     so that framework assemblies do not have to be listed explicitly.
 	/// </remarks>
 	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>>> DependOnlyOn(
@@ -44,8 +45,10 @@ public static partial class ThatAssemblies
 	///     the <paramref name="allowed" /> assemblies.
 	/// </summary>
 	/// <remarks>
-	///     References to assemblies whose name starts with one of the
-	///     <see cref="AwexpectCustomization.ReflectionCustomizationValue.ExcludedAssemblyPrefixes" /> are ignored,
+	///     References to assemblies whose name matches one of the
+	///     <see cref="AwexpectCustomization.ReflectionCustomizationValue.ExcludedAssemblyPrefixes" /> at a
+	///     name-segment boundary (<c>System</c> covers <c>System.Text.Json</c>, but not
+	///     <c>SystemsBiology.Core</c>) are ignored,
 	///     so that framework assemblies do not have to be listed explicitly.
 	/// </remarks>
 	public static StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>>>
@@ -95,55 +98,22 @@ public static partial class ThatAssemblies
 				return false;
 			}
 
-			string[] prefixes = Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes.Get();
-			List<string?> violations = [];
-			foreach (AssemblyName dependency in assembly.GetReferencedAssemblies())
+			string?[] violations = await assembly.GetDisallowedAssemblyDependencies(allowed, options);
+			if (violations.Length > 0)
 			{
-				if (prefixes.Any(prefix => dependency.Name?.StartsWith(prefix, StringComparison.Ordinal) == true))
-				{
-					continue;
-				}
-
-				if (!await allowed.AnyAsync(expected => options.AreConsideredEqual(dependency.Name, expected)))
-				{
-					violations.Add(dependency.Name);
-				}
+				_disallowedDependencies[assembly] = violations;
 			}
 
-			if (violations.Count > 0)
-			{
-				_disallowedDependencies[assembly] = violations.ToArray();
-			}
-
-			return violations.Count == 0;
+			return violations.Length == 0;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all have dependencies only on ").Append(DescribeAllowed());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			string itemIndentation = (indentation ?? string.Empty) + "  ";
-			stringBuilder.Append(it).Append(" contained assemblies with disallowed dependencies [");
-			for (int index = 0; index < NotMatching.Length; index++)
-			{
-				Assembly? assembly = NotMatching[index];
-				string?[] violations =
-					assembly is not null && _disallowedDependencies.TryGetValue(assembly, out string?[]? value)
-						? value
-						: [];
-				stringBuilder.Append(Environment.NewLine).Append(itemIndentation)
-					.Append(Formatter.Format(assembly))
-					.Append(" depends on ")
-					.Append(Formatter.Format(violations));
-				if (index < NotMatching.Length - 1)
-				{
-					stringBuilder.Append(',');
-				}
-			}
-
-			stringBuilder.Append(Environment.NewLine).Append(indentation).Append(']');
-		}
+			=> DependencyViolationRenderer.AppendItemsWithDisallowedDependencies(stringBuilder, it,
+				" contained assemblies with disallowed dependencies ", NotMatching, _disallowedDependencies,
+				indentation);
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("not all have dependencies only on ").Append(DescribeAllowed());

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using aweXpect.Customization;
 using aweXpect.Reflection.Collections;
+using aweXpect.Reflection.Helpers;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -17,12 +18,16 @@ public static class In
 	/// <summary>
 	///     Defines expectations on all loaded assemblies from the current <see cref="System.AppDomain.CurrentDomain" />.
 	/// </summary>
+	/// <remarks>
+	///     Assemblies whose name matches one of the <c>ExcludedAssemblyPrefixes</c> at a name-segment boundary
+	///     are skipped — the same matching the dependency assertions use, so one customization value has one
+	///     meaning everywhere.
+	/// </remarks>
 	public static Filtered.Assemblies AllLoadedAssemblies()
 	{
 		IEnumerable<Assembly> assemblies = AppDomain.CurrentDomain.GetAssemblies();
 		string[] prefixes = Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes.Get();
-		assemblies = assemblies.Where(assembly =>
-			prefixes.All(prefix => !assembly.FullName?.StartsWith(prefix) == true));
+		assemblies = assemblies.Where(assembly => !assembly.GetName().Name.IsExcludedAssemblyName(prefixes));
 
 		return new Filtered.Assemblies(assemblies, "in all loaded assemblies");
 	}

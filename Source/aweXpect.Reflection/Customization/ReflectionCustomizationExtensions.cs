@@ -8,6 +8,20 @@ public static class ReflectionCustomizationExtensions
 {
 	private const string CompilerGeneratedKey = "Reflection.IncludedCompilerGeneratedMembers";
 	private const string SpecialNameKey = "Reflection.IncludedSpecialNameMembers";
+	private const string ExcludedAttributeTypesKey = "Reflection.ExcludedAttributeTypes";
+
+	/// <summary>
+	///     The full names of additional attribute types that the type-level dependency assertions treat as
+	///     compiler-emitted, i.e. that never count as signature dependencies.
+	/// </summary>
+	/// <remarks>
+	///     Defaults to an empty list. Extends the built-in set (nullability metadata, state machines, …), so that
+	///     e.g. a marker attribute of a future compiler version can be excluded without a library update.
+	/// </remarks>
+	public static ICustomizationValueSetter<string[]> ExcludedAttributeTypes(
+		this AwexpectCustomization.ReflectionCustomization reflection)
+		=> new CustomizationValue<string[]>(
+			Customize.aweXpect, ExcludedAttributeTypesKey, []);
 
 	/// <summary>
 	///     The compiler-generated members that are included when reflecting over types and members.

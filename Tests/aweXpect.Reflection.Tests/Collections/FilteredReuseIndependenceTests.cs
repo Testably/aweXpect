@@ -1,5 +1,6 @@
 using System.Reflection;
 using aweXpect.Reflection.Collections;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers;
 
 // ReSharper disable UnusedMember.Local
 // ReSharper disable EventNeverSubscribedTo.Local
@@ -151,6 +152,25 @@ public sealed class FilteredReuseIndependenceTests
 			typeof(SampleGenericArgumentMethods).GetMethod(nameof(SampleGenericArgumentMethods.ArgumentOfBaseB))!,
 		]).InAnyOrder();
 		await That(@base).HasCount(2);
+	}
+
+	[Fact]
+	public async Task TypesWhichDependOn_WidenedWithOrOn_ShouldNotAffectBranchedView()
+	{
+		const string layer1 = "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1";
+		const string layer2 = "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer2";
+		const string consumers = "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers";
+
+		Filtered.Types.NamespaceDependencyFilterResult @base = In.Namespace(consumers).WhichDependOn(layer1);
+
+		// Branch a separate view off the base, then widen the base. The branch must not see the widening.
+		Filtered.Types branch = @base.Which(_ => true);
+		Filtered.Types widened = @base.OrOn(layer2);
+
+		await That(branch).Contains(typeof(OnlyLayer1));
+		await That(branch).DoesNotContain(typeof(OnlyLayer2));
+		await That(widened).Contains(typeof(OnlyLayer1));
+		await That(widened).Contains(typeof(OnlyLayer2));
 	}
 
 	[Fact]

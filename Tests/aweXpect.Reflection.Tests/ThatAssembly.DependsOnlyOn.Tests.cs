@@ -1,4 +1,5 @@
 using System.Reflection;
+using aweXpect.Customization;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
 using Xunit.Sdk;
 
@@ -65,6 +66,23 @@ public sealed partial class ThatAssembly
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenCustomizedPrefixEndsWithDot_ShouldExcludeMatchingAssemblies()
+			{
+				Assembly subject = typeof(In).Assembly;
+
+				// A customized prefix in the natural trailing-dot form ("aweXpect.") must exclude the
+				// aweXpect.Core reference at the (then explicit) name-segment boundary.
+				using (Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes
+					       .Set(["System", "netstandard", "mscorlib", "Microsoft", "aweXpect.",]))
+				{
+					async Task Act()
+						=> await That(subject).DependsOnlyOn();
+
+					await That(Act).DoesNotThrow();
+				}
 			}
 
 			[Fact]

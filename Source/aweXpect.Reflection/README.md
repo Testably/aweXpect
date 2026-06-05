@@ -389,6 +389,98 @@ In.AllLoadedAssemblies().Methods()
     .WhichAreGeneric().WithArgument("TKey").AtIndex(0)
 ```
 
+### Type dependencies
+
+Layering and architecture rules over the types a type references **in its signature**:
+
+|                          | Filter                       | Assert (single)         | Assert (many)          |
+|--------------------------|------------------------------|-------------------------|------------------------|
+| depends on namespace     | `.WhichDependOn("x", …)`     | `.DependsOn("x", …)`    | `.DependOn("x", …)`    |
+| does not depend on       | `.WhichDoNotDependOn("x", …)`| `.DoesNotDependOn("x", …)` | `.DoNotDependOn("x", …)` |
+| depends only on set      | `.WhichDependOnlyOn("x", …)` | `.DependsOnlyOn("x", …)`| `.DependOnlyOn("x", …)`|
+
+```csharp
+// Presentation must not reference the data layer
+await Expect.That(In.Namespace("MyApp.Presentation"))
+    .DoNotDependOn("MyApp.Data");
+
+// The API layer may only reference the application and domain layers
+await Expect.That(In.Namespace("MyApp.Api"))
+    .DependOnlyOn("MyApp.Application", "MyApp.Domain");
+
+// Filter for the types that depend on a namespace
+In.AllLoadedAssemblies().Types().WhichDependOn("System.Data")
+```
+
+A type *depends on* every type referenced in its **declared signature**: the base type and directly
+implemented interfaces, generic arguments and parameter constraints, field/property/event types, indexer
+parameters, method return/parameter/generic-argument types, constructor parameters and the types of attributes
+applied to the type, its members, their parameters and return values (including `typeof(…)` and enum attribute
+arguments). Element types of
+arrays/pointers/by-ref and generic type arguments are unwrapped (`List<Infra.Foo>` depends on `List<Infra.Foo>`
+— which also matches a `List<>` target — and on `Infra.Foo`; a closed-generic target like `List<Infra.Bar>`
+only matches that exact construction). Purely synthetic references that you never wrote are ignored:
+compiler-generated members, the implicit `object`/`ValueType`/`Enum` base type, interfaces inherited from the
+base type, records' synthesized `IEquatable<T>`, delegates' runtime infrastructure (only the `Invoke`
+signature counts), enums' underlying-value plumbing and the attributes the compiler emits onto authored code
+(nullability metadata, required members, async/iterator state machines, …) — so the compiler's own plumbing
+never counts. Should a future compiler version emit a marker attribute this library does not know about yet,
+exclude it yourself via `Customize.aweXpect.Reflection().ExcludedAttributeTypes()` (full attribute type names;
+extends the built-in set). Types you write in authored signatures always do count, including primitives and
+`void` return types (namespace `System`) — in practice, almost every type with members *does* depend on
+`System`.
+
+> **Signature-level only:** dependencies are computed from reflection metadata, so body-level references such
+> as `new Infra.Foo()`, static calls and local variables are **not** detected. Function-pointer signatures
+> (`delegate*<…>`) are not decomposed either — the types inside them are invisible to dependency assertions.
+> Nested types are separate types with their own dependency surface: asserting on `typeof(Outer)` does not
+> include what `Outer.Inner` references. The collection-based assertions (e.g. over `In.Namespace(…)`)
+> enumerate nested types as their own items and therefore cover them.
+
+Namespace matching is ordinal and case-sensitive and, like `WithinNamespace`, includes sub-namespaces by
+default (so `Foo.Bar` matches `Foo.Bar.Baz` but not `Foo.BarBaz`). A dependency in the **global namespace**
+can be targeted or allowed with an empty string (`""`). Each result is chainable:
+
+```csharp
+// Widen the set with .OrOn(…)
+await Expect.That(In.Namespace("MyApp.Api"))
+    .DependOnlyOn("MyApp.Application").OrOn("MyApp.Domain");
+
+// Opt out of sub-namespace matching for the whole expression
+await Expect.That(types).DoNotDependOn("MyApp.Data").ExcludingSubNamespaces();
+```
+
+For `DependsOnlyOn` a type's own namespace is always allowed, and by default so are its sub-namespaces. Use
+`.ExcludingOwnSubNamespaces()` (only available on the *only-on* family) to also forbid references into a
+type's own sub-namespaces:
+
+```csharp
+await Expect.That(In.Namespace("MyApp.Domain"))
+    .DependOnlyOn("MyApp.Domain").ExcludingSubNamespaces().ExcludingOwnSubNamespaces();
+```
+
+`DependsOn` and `DoesNotDependOn` (single types only) also accept a **specific type** via `<T>()` or
+`(Type)`, with `.OrOn<T>()` / `.OrOn(Type)` to widen:
+
+```csharp
+await Expect.That(typeof(MyDomainType)).DoesNotDependOn<DbContext>().OrOn<SqlConnection>();
+```
+
+> **Framework dependencies are ignored unless you name one explicitly.** `DependOnlyOn` ignores dependencies
+> whose assembly name matches one of the
+> [`ExcludedAssemblyPrefixes`](#assembly-exclusions) at a name-segment boundary — `System` covers `System`
+> and `System.Text.Json`, but not an assembly named `SystemsBiology` (so you never have to whitelist
+> `System.*` and unrelated assemblies are never swallowed by a prefix), while a
+> type's **own namespace** is always allowed. `DependsOn` / `DoesNotDependOn` / `WhichDependOn` still match a
+> framework namespace when you name it explicitly (e.g. `DoesNotDependOn("System.Data")`).
+>
+> ⚠️ The default prefixes include `Microsoft`, so `DependOnlyOn` also ignores dependencies on e.g.
+> `Microsoft.EntityFrameworkCore`, `Microsoft.AspNetCore` and `Microsoft.Extensions.*` — a domain entity
+> inheriting `DbContext` does **not** fail `DependOnlyOn("MyApp.Domain")`. To forbid such dependencies, name
+> them explicitly (`DoesNotDependOn<DbContext>()` or `DoNotDependOn("Microsoft.EntityFrameworkCore")`) or
+> customize the [`ExcludedAssemblyPrefixes`](#assembly-exclusions). Note that the customization also affects
+> assembly scanning and assembly-level dependency assertions.
+
 ### Methods
 
 In addition to [access modifiers](#access-modifiers),
@@ -725,11 +817,17 @@ await Expect.That(managers).HaveName("Manager").AsSuffix();
 
 ### Assembly exclusions
 
-By default, assemblies whose name starts with one of the following prefixes are excluded from
+By default, assemblies whose name matches one of the following prefixes are excluded from
 `In.AllLoadedAssemblies()`:
 
 `mscorlib`, `System`, `Microsoft`, `netstandard`, `WindowsBase`, `JetBrains`, `xunit`, `Castle`,
 `DynamicProxyGenAssembly2`.
+
+Both the assembly scanning and the dependency assertions (`DependsOnlyOn` / `DependOnlyOn` /
+`WhichDependOnlyOn`, on both assemblies and types) use the same prefixes with the same matching: a prefix
+matches at a name-segment boundary, so `System` covers `System` and `System.Text.Json`, but not an assembly
+named `SystemsBiology`. A prefix written with a trailing dot (e.g. `MyCompany.`) is boundary-safe by
+construction and covers everything starting with it. Empty prefixes are ignored.
 
 Customize this via `Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes`. `Set(…)` replaces the
 list and returns a scope that restores the previous value when disposed:

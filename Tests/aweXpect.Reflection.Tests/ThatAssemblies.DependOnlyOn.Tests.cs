@@ -94,7 +94,7 @@ public sealed partial class ThatAssemblies
 					             Expected that subject
 					             all have dependencies only on assemblies equal to "aweXpect.Core",
 					             but it contained assemblies with disallowed dependencies [
-					               <null> depends on []
+					               <null>
 					             ]
 					             """).AsWildcard();
 			}

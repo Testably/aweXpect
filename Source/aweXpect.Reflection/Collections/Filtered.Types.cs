@@ -7,6 +7,7 @@ using aweXpect.Core;
 using aweXpect.Customization;
 using aweXpect.Options;
 using aweXpect.Reflection.Helpers;
+using aweXpect.Reflection.Options;
 
 // ReSharper disable MemberHidesStaticFromOuterClass
 
@@ -362,6 +363,124 @@ public static partial class Filtered
 			{
 				_options.AsWildcard();
 				return this;
+			}
+		}
+
+		/// <summary>
+		///     A filtered collection of <see cref="System.Type" /> from a namespace-based dependency filter, allowing
+		///     to widen the targeted/allowed namespaces and to opt out of sub-namespace matching.
+		/// </summary>
+		/// <remarks>
+		///     Like all filtered collections, this is an immutable value object: <see cref="OrOn" /> and
+		///     <see cref="ExcludingSubNamespaces" /> do not mutate this instance but rebuild a fresh filter from the
+		///     original base collection, so deriving multiple views from the same instance cannot corrupt each other.
+		/// </remarks>
+		public sealed class NamespaceDependencyFilterResult : Types
+		{
+			private readonly Func<NamespaceDependencyOptions, Types> _build;
+			private readonly NamespaceDependencyOptions _options;
+
+			internal NamespaceDependencyFilterResult(
+				NamespaceDependencyOptions options,
+				Func<NamespaceDependencyOptions, Types> build)
+				: base(build(options))
+			{
+				_options = options;
+				_build = build;
+			}
+
+			/// <summary>
+			///     Widens the filter by the given <paramref name="namespaces" /> (including sub-namespaces unless
+			///     <see cref="ExcludingSubNamespaces" /> is used).
+			/// </summary>
+			public NamespaceDependencyFilterResult OrOn(params IEnumerable<string> namespaces)
+			{
+				NamespaceDependencyOptions widened = _options.Copy();
+				widened.OrOn(namespaces);
+				return new NamespaceDependencyFilterResult(widened, _build);
+			}
+
+			/// <summary>
+			///     Excludes sub-namespaces from matching for the whole filter (including any <see cref="OrOn" /> additions).
+			/// </summary>
+			/// <remarks>
+			///     Without this call, a namespace matches itself and all its sub-namespaces (so <c>Foo.Bar</c> includes
+			///     <c>Foo.Bar.Baz</c> but not <c>Foo.BarBaz</c>).
+			/// </remarks>
+			public NamespaceDependencyFilterResult ExcludingSubNamespaces()
+			{
+				NamespaceDependencyOptions refined = _options.Copy();
+				refined.ExcludingSubNamespaces();
+				return new NamespaceDependencyFilterResult(refined, _build);
+			}
+		}
+
+		/// <summary>
+		///     A filtered collection of <see cref="System.Type" /> from a namespace-based depends-only-on filter,
+		///     allowing to widen the allowed namespaces and to opt out of sub-namespace matching — for the allowed
+		///     namespaces and for the type's own namespace.
+		/// </summary>
+		/// <remarks>
+		///     Like all filtered collections, this is an immutable value object: <see cref="OrOn" />,
+		///     <see cref="ExcludingSubNamespaces" /> and <see cref="ExcludingOwnSubNamespaces" /> do not mutate this
+		///     instance but rebuild a fresh filter from the original base collection, so deriving multiple views from
+		///     the same instance cannot corrupt each other.
+		/// </remarks>
+		public sealed class NamespaceDependencyOnlyOnFilterResult : Types
+		{
+			private readonly Func<NamespaceDependencyOptions, Types> _build;
+			private readonly NamespaceDependencyOptions _options;
+
+			internal NamespaceDependencyOnlyOnFilterResult(
+				NamespaceDependencyOptions options,
+				Func<NamespaceDependencyOptions, Types> build)
+				: base(build(options))
+			{
+				_options = options;
+				_build = build;
+			}
+
+			/// <summary>
+			///     Widens the filter by the given <paramref name="namespaces" /> (including sub-namespaces unless
+			///     <see cref="ExcludingSubNamespaces" /> is used).
+			/// </summary>
+			public NamespaceDependencyOnlyOnFilterResult OrOn(params IEnumerable<string> namespaces)
+			{
+				NamespaceDependencyOptions widened = _options.Copy();
+				widened.OrOn(namespaces);
+				return new NamespaceDependencyOnlyOnFilterResult(widened, _build);
+			}
+
+			/// <summary>
+			///     Excludes sub-namespaces of the allowed namespaces from matching for the whole filter (including any
+			///     <see cref="OrOn" /> additions).
+			/// </summary>
+			/// <remarks>
+			///     Without this call, a namespace matches itself and all its sub-namespaces (so <c>Foo.Bar</c> includes
+			///     <c>Foo.Bar.Baz</c> but not <c>Foo.BarBaz</c>).
+			///     <para />
+			///     The type's own namespace is always allowed, and its sub-namespaces stay allowed unless
+			///     <see cref="ExcludingOwnSubNamespaces" /> is also used.
+			/// </remarks>
+			public NamespaceDependencyOnlyOnFilterResult ExcludingSubNamespaces()
+			{
+				NamespaceDependencyOptions refined = _options.Copy();
+				refined.ExcludingSubNamespaces();
+				return new NamespaceDependencyOnlyOnFilterResult(refined, _build);
+			}
+
+			/// <summary>
+			///     Excludes sub-namespaces of the type's own namespace from being implicitly allowed (so a <c>Foo</c>
+			///     type referencing <c>Foo.Bar</c> is filtered out unless <c>Foo.Bar</c> is explicitly allowed).
+			/// </summary>
+			/// <remarks>
+			///     The type's own namespace itself is always allowed.
+			/// </remarks>
+			public NamespaceDependencyOnlyOnFilterResult ExcludingOwnSubNamespaces()
+			{
+				NamespaceDependencyOptions refined = _options.Copy();
+				refined.ExcludingOwnSubNamespaces();
+				return new NamespaceDependencyOnlyOnFilterResult(refined, _build);
 			}
 		}
 	}
