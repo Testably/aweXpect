@@ -1,4 +1,8 @@
-﻿namespace aweXpect.Customization;
+﻿using System;
+using System.Collections.Generic;
+using aweXpect.Reflection.Helpers;
+
+namespace aweXpect.Customization;
 
 /// <summary>
 ///     Extensions for <see cref="AwexpectCustomization.ReflectionCustomization" /> to control which
@@ -9,6 +13,25 @@ public static class ReflectionCustomizationExtensions
 	private const string CompilerGeneratedKey = "Reflection.IncludedCompilerGeneratedMembers";
 	private const string SpecialNameKey = "Reflection.IncludedSpecialNameMembers";
 	private const string ExcludedAttributeTypesKey = "Reflection.ExcludedAttributeTypes";
+	private const string DependencyResolverKey = "Reflection.DependencyResolver";
+
+	/// <summary>
+	///     The resolver that determines which types a given type depends on.
+	/// </summary>
+	/// <remarks>
+	///     Defaults to a built-in signature-level resolver (base type, interfaces, field/property/event types,
+	///     method/constructor signatures, generic arguments and applied attributes). Method-body references are not
+	///     detected by the default; supply a custom resolver (e.g. backed by Mono.Cecil) for IL/body-level accuracy.
+	///     Setting <see langword="null" /> reverts to the built-in default, e.g. to opt a single test out of a
+	///     globally configured resolver; <c>Get()</c> always returns the resolver currently in effect.
+	///     The resolver's output is unwrapped, de-duplicated and cached per type for the lifetime of the resolver
+	///     delegate, so it needs no caching of its own. It must, however, be pure, i.e. deterministic for a given
+	///     <see cref="Type" /> within its scope.
+	/// </remarks>
+	public static ICustomizationValueSetter<Func<Type, IEnumerable<Type>>?> DependencyResolver(
+		this AwexpectCustomization.ReflectionCustomization reflection)
+		=> new NullableCustomizationValue<Func<Type, IEnumerable<Type>>>(
+			Customize.aweXpect, DependencyResolverKey, TypeHelpers.SignatureDependencies);
 
 	/// <summary>
 	///     The full names of additional attribute types that the type-level dependency assertions treat as
@@ -56,5 +79,24 @@ public static class ReflectionCustomizationExtensions
 
 		/// <inheritdoc cref="ICustomizationValueSetter{TValue}.Set(TValue)" />
 		public CustomizationLifetime Set(TValue value) => customization.Set(key, value);
+	}
+
+	/// <summary>
+	///     Like <see cref="CustomizationValue{TValue}" />, but accepts <see langword="null" /> to revert to the
+	///     <paramref name="defaultValue" /> within the scope: <see langword="null" /> is stored as the default
+	///     itself, so <c>Get()</c> always returns the value in effect (never <see langword="null" />).
+	/// </summary>
+	private sealed class NullableCustomizationValue<TValue>(
+		IAwexpectCustomization customization,
+		string key,
+		TValue defaultValue)
+		: ICustomizationValueSetter<TValue?>
+		where TValue : class
+	{
+		/// <inheritdoc cref="ICustomizationValueSetter{TValue}.Get()" />
+		public TValue? Get() => customization.Get(key, defaultValue);
+
+		/// <inheritdoc cref="ICustomizationValueSetter{TValue}.Set(TValue)" />
+		public CustomizationLifetime Set(TValue? value) => customization.Set(key, value ?? defaultValue);
 	}
 }

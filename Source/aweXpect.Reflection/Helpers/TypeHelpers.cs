@@ -18,6 +18,40 @@ namespace aweXpect.Reflection.Helpers;
 internal static class TypeHelpers
 {
 	/// <summary>
+	///     The display text for the global namespace in expectation and failure messages.
+	/// </summary>
+	internal const string GlobalNamespaceDisplay = "<global namespace>";
+
+	/// <summary>
+	///     Caches the simple assembly name per <see cref="Assembly" />: <see cref="Assembly.GetName()" /> parses a
+	///     fresh <see cref="AssemblyName" /> on every call, but the framework check runs per dependency of every
+	///     asserted type (outside the <see cref="ResolvedDependencies" /> memoization), while the dependencies
+	///     cluster into a handful of distinct assemblies whose name cannot change.
+	/// </summary>
+	private static readonly ConditionalWeakTable<Assembly, string> AssemblyNames = new();
+
+	/// <summary>
+	///     The built-in signature-level dependency resolver (see <see cref="GetSignatureDependencies" />), exposed
+	///     as a stable singleton delegate: it is the default of the <c>DependencyResolver</c> customization, and
+	///     because <see cref="ResolvedDependencies" /> is keyed by the resolver delegate, the default must be the
+	///     same instance on every <c>Get()</c> for its cache bucket to be stable.
+	/// </summary>
+	internal static readonly Func<Type, IEnumerable<Type>> SignatureDependencies =
+		static type => type.GetSignatureDependencies(
+			Customize.aweXpect.Reflection().ExcludedAttributeTypes().Get());
+
+	/// <summary>
+	///     Caches the resolved dependencies per resolver and <see cref="Type" />: the outer table is keyed weakly
+	///     by the resolver delegate, so each <c>DependencyResolver</c> customization scope has its own bucket
+	///     (changing the resolver can never surface another resolver's results) and the bucket of a transient
+	///     resolver is collected with it; the inner table is keyed weakly by the type, so types from collectible
+	///     <c>AssemblyLoadContext</c>s are not pinned. Caching assumes resolvers are pure, i.e. deterministic for
+	///     a given <see cref="Type" /> within their scope.
+	/// </summary>
+	private static readonly ConditionalWeakTable<Func<Type, IEnumerable<Type>>, ConditionalWeakTable<Type, Type[]>>
+		ResolvedDependencies = new();
+
+	/// <summary>
 	///     The compiler-generated members that are currently included via customization.
 	/// </summary>
 	private static CompilerGeneratedMembers IncludedCompilerGeneratedMembers
@@ -696,7 +730,7 @@ internal static class TypeHelpers
 	///     character after the match must be a namespace separator (<c>.</c>) or the end of the namespace.
 	/// </remarks>
 	public static bool IsWithinNamespace(this Type? type, string expected)
-		=> type?.Namespace is { } @namespace && NamespaceMatches(@namespace, expected, includeSubNamespaces: true);
+		=> type?.Namespace is { } @namespace && NamespaceMatches(@namespace, expected, true);
 
 	/// <summary>
 	///     Checks whether the <paramref name="actualNamespace" /> matches the <paramref name="expectedNamespace" />,
@@ -754,7 +788,7 @@ internal static class TypeHelpers
 	///     element type.
 	/// </summary>
 	/// <remarks>
-	///     Shared between dependency collection (<c>SignatureDependencyCollector.Unwrap</c>) and target matching
+	///     Shared between dependency unwrapping (<see cref="Unwrap" />) and target matching
 	///     (<see cref="MatchesType" />), so that the two sides of the documented symmetry cannot drift apart.
 	/// </remarks>
 	private static Type StripElementTypes(Type type)
@@ -768,17 +802,47 @@ internal static class TypeHelpers
 	}
 
 	/// <summary>
-	///     The display text for the global namespace in expectation and failure messages.
+	///     Unwraps the <paramref name="type" />: array/by-ref/pointer element types and generic type arguments are
+	///     flattened and open generic parameters are skipped. Constructed generic types are kept as written
+	///     (e.g. <c>List&lt;Foo&gt;</c>), so that they can be matched exactly; their generic type arguments are
+	///     additionally contributed as separate dependencies.
 	/// </summary>
-	internal const string GlobalNamespaceDisplay = "<global namespace>";
+	/// <remarks>
+	///     Known limitation: function-pointer types (<c>delegate*&lt;…&gt;</c>) are yielded as-is; the
+	///     parameter and return types inside their signature are not collected, because
+	///     <c>Type.GetFunctionPointerParameterTypes()</c> only exists on .NET 8+ and the unwrap must behave
+	///     identically on all target frameworks.
+	/// </remarks>
+	private static IEnumerable<Type> Unwrap(Type? type)
+	{
+		if (type is null)
+		{
+			yield break;
+		}
 
-	/// <summary>
-	///     Caches the simple assembly name per <see cref="Assembly" />: <see cref="Assembly.GetName()" /> parses a
-	///     fresh <see cref="AssemblyName" /> on every call, but the framework check runs per dependency of every
-	///     asserted type (outside the <see cref="ResolvedDependencies" /> memoization), while the dependencies
-	///     cluster into a handful of distinct assemblies whose name cannot change.
-	/// </summary>
-	private static readonly ConditionalWeakTable<Assembly, string> AssemblyNames = new();
+		type = StripElementTypes(type);
+
+		if (type.IsGenericParameter)
+		{
+			yield break;
+		}
+
+		if (type.IsGenericType)
+		{
+			yield return type;
+			foreach (Type argument in Safe(type.GetGenericArguments))
+			{
+				foreach (Type unwrapped in Unwrap(argument))
+				{
+					yield return unwrapped;
+				}
+			}
+		}
+		else
+		{
+			yield return type;
+		}
+	}
 
 	/// <summary>
 	///     Determines whether the <paramref name="type" /> belongs to a framework assembly, i.e. its assembly name
@@ -870,34 +934,54 @@ internal static class TypeHelpers
 			: NamespaceMatches(dependencyNamespace, ownNamespace, includeSubNamespaces);
 
 	/// <summary>
-	///     Caches the resolved dependencies per <see cref="Type" />: the signature surface of a type cannot change
-	///     at runtime and the raw dependency set is independent of any customization (the
-	///     <c>ExcludedAssemblyPrefixes</c> are applied on top of it by the callers, and a customized
-	///     <c>ExcludedAttributeTypes</c> set bypasses the cache), so chained filters and
-	///     assertions do not have to repeat the reflection walk. The weak table does not pin types from
-	///     collectible <c>AssemblyLoadContext</c>s.
-	/// </summary>
-	private static readonly ConditionalWeakTable<Type, Type[]> ResolvedDependencies = new();
-
-	/// <summary>
-	///     Resolves the dependencies of the <paramref name="type" /> through which all assertions and filters go.
+	///     Resolves the dependencies of the <paramref name="type" /> through which all assertions and filters go,
+	///     using the resolver configured via the <c>DependencyResolver</c> customization
+	///     (the <see cref="SignatureDependencies" /> built-in by default).
 	/// </summary>
 	/// <remarks>
-	///     This is a seam: it currently materializes the (unwrapped and de-duplicated)
-	///     <see cref="GetSignatureDependencies" /> with per-type memoization, but is the single place a later,
-	///     configurable resolver can hook into. Callers must not mutate the returned array.
+	///     Every resolver's output is normalized uniformly (see <see cref="NormalizeDependencies" />) and memoized
+	///     per (resolver, type), so a custom resolver needs no unwrapping or caching of its own. Only this
+	///     customization-independent part is cached: framework exclusion (<c>ExcludedAssemblyPrefixes</c>) and
+	///     namespace matching stay per-call in the assertions, so mutable customization is always honored.
+	///     Callers must not mutate the returned array.
 	/// </remarks>
 	internal static Type[] ResolveDependencies(this Type type)
 	{
-		string[] excludedAttributeTypes = Customize.aweXpect.Reflection().ExcludedAttributeTypes().Get();
-		if (excludedAttributeTypes.Length > 0)
+		Func<Type, IEnumerable<Type>> resolver =
+			Customize.aweXpect.Reflection().DependencyResolver().Get() ?? SignatureDependencies;
+		if (ReferenceEquals(resolver, SignatureDependencies) &&
+		    Customize.aweXpect.Reflection().ExcludedAttributeTypes().Get().Length > 0)
 		{
-			// A customized attribute exclusion changes the dependency set, so it must not be baked into the
-			// customization-independent cache; the (rare) customized path recomputes instead.
-			return type.GetSignatureDependencies(excludedAttributeTypes).ToArray();
+			// A customized attribute exclusion changes the built-in dependency set, so it must not be baked into
+			// the customization-independent cache; the (rare) customized path recomputes instead.
+			return NormalizeDependencies(type, resolver(type));
 		}
 
-		return ResolvedDependencies.GetValue(type, static t => t.GetSignatureDependencies([]).ToArray());
+		return ResolvedDependencies.GetOrCreateValue(resolver)
+			.GetValue(type, t => NormalizeDependencies(t, resolver(t)));
+	}
+
+	/// <summary>
+	///     Normalizes a resolver's output: array/by-ref/pointer element types and generic type arguments are
+	///     unwrapped recursively (see <see cref="Unwrap" />), the result is de-duplicated and the
+	///     <paramref name="type" /> itself is removed. A <see langword="null" /> result and <see langword="null" />
+	///     elements are treated as empty, so a custom resolver does not have to guard them.
+	/// </summary>
+	private static Type[] NormalizeDependencies(Type type, IEnumerable<Type?>? dependencies)
+	{
+		if (dependencies is null)
+		{
+			return [];
+		}
+
+		HashSet<Type> normalized = [];
+		foreach (Type? dependency in dependencies)
+		{
+			normalized.UnionWith(Unwrap(dependency));
+		}
+
+		normalized.Remove(type);
+		return normalized.ToArray();
 	}
 
 	/// <summary>
@@ -945,6 +1029,7 @@ internal static class TypeHelpers
 		{
 			collector.Add(baseType);
 		}
+
 		collector.AddAll(GetDeclaredInterfaces(type));
 		collector.AddGenericArguments(Safe(type.GetGenericArguments));
 		collector.AddAttributes(type);
@@ -1003,516 +1088,6 @@ internal static class TypeHelpers
 		return argument == type ||
 		       (argument.IsGenericType && type.IsGenericTypeDefinition &&
 		        argument.GetGenericTypeDefinition() == type);
-	}
-
-	/// <summary>
-	///     Accumulates the (unwrapped, de-duplicated) signature dependencies of a type, one member kind at a time.
-	/// </summary>
-	/// <remarks>
-	///     Extracted from <see cref="GetSignatureDependencies" /> so that each member kind is collected in its own
-	///     small method instead of one large one.
-	/// </remarks>
-	private sealed class SignatureDependencyCollector(string[] excludedAttributeTypes)
-	{
-		private const BindingFlags Flags = BindingFlags.Public |
-		                                    BindingFlags.NonPublic |
-		                                    BindingFlags.Instance |
-		                                    BindingFlags.Static |
-		                                    BindingFlags.DeclaredOnly;
-
-		private readonly HashSet<Type> _dependencies = [];
-
-		public void Add(Type? candidate)
-		{
-			foreach (Type unwrapped in Unwrap(candidate))
-			{
-				_dependencies.Add(unwrapped);
-			}
-		}
-
-		public void AddAll(IEnumerable<Type> candidates)
-		{
-			foreach (Type candidate in candidates)
-			{
-				Add(candidate);
-			}
-		}
-
-		public void AddGenericArguments(IEnumerable<Type> arguments)
-		{
-			foreach (Type argument in arguments)
-			{
-				if (argument.IsGenericParameter)
-				{
-					// `where T : struct` / `where T : unmanaged` compile into a System.ValueType constraint
-					// the author can never write directly (CS0702); an authored `where T : Enum` (C# 7.3+)
-					// still counts.
-					AddAll(Safe(argument.GetGenericParameterConstraints)
-						.Where(constraint => constraint != typeof(object) && constraint != typeof(ValueType)));
-				}
-				else
-				{
-					Add(argument);
-				}
-			}
-		}
-
-		public void AddAttributes(MemberInfo member)
-		{
-			IEnumerable<CustomAttributeData> attributes = SafeAttributes(member);
-
-			// For required members, the compiler pairs an [Obsolete] carrying a fixed marker message with
-			// [CompilerFeatureRequired(nameof(RequiredMembers))] on the constructor; only that compiler-emitted
-			// [Obsolete] is skipped, an authored one (even on the same constructor) still counts.
-			bool hasCompilerFeatureRequired = attributes.Any(data
-				=> data.AttributeType.FullName == "System.Runtime.CompilerServices.CompilerFeatureRequiredAttribute" &&
-				   IsRequiredMembersFeature(data));
-
-			// The compiler emits [DefaultMember("Item")] onto every type declaring an indexer; an authored
-			// [DefaultMember] cannot coexist with an indexer (CS0646), so it is only skipped in that case.
-			bool hasIndexer = member is Type type && HasIndexer(type);
-
-			bool skipDebuggerStepThrough = IsCompilerEmittedDebuggerStepThrough(member, attributes);
-
-			AddAttributes(attributes, data
-				=> (hasCompilerFeatureRequired && IsRequiredMembersObsolete(data)) ||
-				   (hasIndexer && data.AttributeType.FullName == "System.Reflection.DefaultMemberAttribute") ||
-				   (skipDebuggerStepThrough &&
-				    data.AttributeType.FullName == "System.Diagnostics.DebuggerStepThroughAttribute"));
-		}
-
-		public void AddAttributes(ParameterInfo parameter)
-			=> AddAttributes(SafeAttributes(parameter), null);
-
-		private void AddAttributes(IEnumerable<CustomAttributeData> attributes,
-			Func<CustomAttributeData, bool>? isCompilerEmittedPairing)
-		{
-			// Neither compiler-generated/embedded attributes nor the BCL attributes the compiler emits onto
-			// authored code (nullability, required members, async/iterator state machines, ...) are
-			// dependencies the author wrote.
-			foreach (CustomAttributeData attribute in attributes
-				         .Where(data => !data.AttributeType.IsCompilerGenerated() &&
-				                        !IsCompilerEmittedAttribute(data.AttributeType) &&
-				                        isCompilerEmittedPairing?.Invoke(data) != true))
-			{
-				Add(attribute.AttributeType);
-
-				// A typeof(...) used as a constructor or named argument is a real signature dependency
-				// (e.g. [JsonConverter(typeof(FooConverter))] depends on FooConverter).
-				foreach (CustomAttributeTypedArgument argument in SafeAttributeArguments(attribute))
-				{
-					AddAttributeArgument(argument);
-				}
-			}
-		}
-
-		/// <summary>
-		///     Determines whether a <c>[DebuggerStepThrough]</c> on the <paramref name="member" /> is
-		///     compiler-emitted and must therefore be skipped.
-		/// </summary>
-		/// <remarks>
-		///     In Debug builds the compiler emits <c>[DebuggerStepThrough]</c> onto the kickoff method of
-		///     authored async methods (next to the state machine attribute); in Release builds it emits none.
-		///     An authored <c>[DebuggerStepThrough]</c> therefore shows up as a duplicate in Debug builds and
-		///     as the only occurrence in Release builds — only a single occurrence in a Debug-built assembly
-		///     is (indistinguishably) compiler-emitted. An authored <c>[DebuggerStepThrough]</c> on a
-		///     non-async member always counts.
-		/// </remarks>
-		private static bool IsCompilerEmittedDebuggerStepThrough(MemberInfo member,
-			IEnumerable<CustomAttributeData> attributes)
-		{
-			bool hasAsyncStateMachine = attributes.Any(data => data.AttributeType.FullName
-				is "System.Runtime.CompilerServices.AsyncStateMachineAttribute"
-				or "System.Runtime.CompilerServices.AsyncIteratorStateMachineAttribute");
-			if (!hasAsyncStateMachine)
-			{
-				return false;
-			}
-
-			int debuggerStepThroughCount = attributes.Count(data
-				=> data.AttributeType.FullName == "System.Diagnostics.DebuggerStepThroughAttribute");
-			return debuggerStepThroughCount == 1 && IsDebugBuilt(SafeOrNull(() => member.Module.Assembly));
-		}
-
-		/// <summary>
-		///     Caches the Debug-built verdict per <see cref="Assembly" />: in a Debug-built assembly the check
-		///     runs for every authored async method (each kickoff carries a compiler-emitted
-		///     <c>[DebuggerStepThrough]</c>), but the build configuration of an assembly cannot change.
-		/// </summary>
-		private static readonly ConditionalWeakTable<Assembly, object> DebugBuilt = new();
-
-		/// <summary>
-		///     Checks whether the <paramref name="assembly" /> was compiled in Debug configuration, i.e. carries
-		///     a <c>[Debuggable]</c> attribute with the
-		///     <see cref="DebuggableAttribute.DebuggingModes.DisableOptimizations" /> flag.
-		/// </summary>
-		/// <remarks>
-		///     When this cannot be determined, a Debug build is assumed, so that the (then ambiguous) single
-		///     <c>[DebuggerStepThrough]</c> keeps being treated as compiler-emitted.
-		/// </remarks>
-		private static bool IsDebugBuilt(Assembly? assembly)
-		{
-			if (assembly is null)
-			{
-				return true;
-			}
-
-			return (bool)DebugBuilt.GetValue(assembly, static a => DetermineIsDebugBuilt(a));
-		}
-
-		private static bool DetermineIsDebugBuilt(Assembly assembly)
-		{
-			try
-			{
-				foreach (CustomAttributeData data in assembly.GetCustomAttributesData())
-				{
-					if (data.AttributeType.FullName != "System.Diagnostics.DebuggableAttribute")
-					{
-						continue;
-					}
-
-					IList<CustomAttributeTypedArgument> arguments = data.ConstructorArguments;
-					if (arguments.Count == 1 && arguments[0].Value is int debuggingModes)
-					{
-						return (debuggingModes &
-						        (int)DebuggableAttribute.DebuggingModes.DisableOptimizations) != 0;
-					}
-
-					if (arguments.Count == 2 && arguments[1].Value is bool isJitOptimizerDisabled)
-					{
-						return isJitOptimizerDisabled;
-					}
-				}
-
-				return false;
-			}
-			catch (Exception exception) when (IsUnresolvable(exception))
-			{
-				return true;
-			}
-		}
-
-		public void AddFields(Type type)
-		{
-			// Special-name fields are runtime-supplied, not authored: most importantly every enum's `value__`
-			// instance field (typed as the underlying integral type), which would otherwise make every enum
-			// trivially "depend on" System.
-			foreach (FieldInfo field in Safe(() => type.GetFields(Flags))
-				         .Where(m => !m.IsCompilerGenerated() && !m.IsSpecialName))
-			{
-				// Member signature types are resolved lazily on first access and can throw when the defining
-				// assembly is missing, so each access is guarded individually to skip only the unresolvable member.
-				AddSafe(() => field.FieldType);
-				AddAttributes(field);
-			}
-		}
-
-		public void AddProperties(Type type)
-		{
-			foreach (PropertyInfo property in Safe(() => type.GetProperties(Flags)).Where(m => !m.IsCompilerGenerated()))
-			{
-				AddSafe(() => property.PropertyType);
-				AddParameters(Safe(property.GetIndexParameters));
-				AddAttributes(property);
-			}
-		}
-
-		public void AddEvents(Type type)
-		{
-			foreach (EventInfo @event in Safe(() => type.GetEvents(Flags)).Where(m => !m.IsCompilerGenerated()))
-			{
-				AddSafe(() => @event.EventHandlerType);
-				AddAttributes(@event);
-			}
-		}
-
-		public void AddMethods(Type type)
-		{
-			foreach (MethodInfo method in Safe(() => type.GetMethods(Flags)).Where(m => !m.IsCompilerGenerated()))
-			{
-				AddSafe(() => method.ReturnType);
-				AddReturnValueAttributes(method);
-				AddParameters(Safe(method.GetParameters));
-				AddGenericArguments(Safe(method.GetGenericArguments));
-				AddAttributes(method);
-			}
-		}
-
-		public void AddConstructors(Type type)
-		{
-			foreach (ConstructorInfo constructor in Safe(() => type.GetConstructors(Flags))
-				         .Where(m => !m.IsCompilerGenerated()))
-			{
-				AddParameters(Safe(constructor.GetParameters));
-				AddAttributes(constructor);
-			}
-		}
-
-		public void AddDelegateInvoke(Type type)
-		{
-			if (SafeOrNull(() => type.GetMethod("Invoke", Flags)) is { } invoke)
-			{
-				AddSafe(() => invoke.ReturnType);
-				AddReturnValueAttributes(invoke);
-				AddParameters(Safe(invoke.GetParameters));
-				AddAttributes(invoke);
-			}
-		}
-
-		private void AddParameters(IEnumerable<ParameterInfo> parameters)
-		{
-			foreach (ParameterInfo parameter in parameters)
-			{
-				// Member signature types are resolved lazily on first access and can throw when the defining
-				// assembly is missing, so each access is guarded individually to skip only the unresolvable member.
-				AddSafe(() => parameter.ParameterType);
-
-				// Attributes applied to a parameter (e.g. [Layer1.Target] int value) are authored signature
-				// text just like the parameter type itself.
-				AddAttributes(parameter);
-			}
-		}
-
-		private void AddReturnValueAttributes(MethodInfo method)
-		{
-			// [return: ...] attributes are authored signature text just like parameter attributes.
-			if (SafeOrNull(() => method.ReturnParameter) is { } returnParameter)
-			{
-				AddAttributes(returnParameter);
-			}
-		}
-
-		private void AddSafe(Func<Type?> get)
-		{
-			try
-			{
-				Add(get());
-			}
-			catch (Exception exception) when (IsUnresolvable(exception))
-			{
-				// The member's signature type could not be resolved, for example when its assembly is not
-				// deployed, so this member is skipped, consistent with GetDeclaredFields/Methods/Properties.
-			}
-		}
-
-		public HashSet<Type> Build(Type type)
-		{
-			_dependencies.Remove(type);
-			return _dependencies;
-		}
-
-		/// <summary>
-		///     Attributes the C# compiler emits onto authored code, which are therefore not dependencies the
-		///     author wrote: nullability metadata, required members, async/iterator state machines,
-		///     covariant-return overrides, extension methods, readonly/ref structs, fixed buffers, tuple names,
-		///     <c>params</c> arrays, <c>dynamic</c> and <c>decimal</c> constants, <c>ref readonly</c> parameters
-		///     and the parameter pseudo-attributes.
-		/// </summary>
-		/// <remarks>
-		///     Only attribute types the author can never legally apply in the same situation belong here.
-		///     Attributes that can also be authored ([Obsolete], [DebuggerStepThrough], [DefaultMember]) are
-		///     instead skipped conditionally in <see cref="AddAttributes(MemberInfo)" />, based on the
-		///     co-occurrence pattern the compiler produces.
-		///     <para />
-		///     The parameter pseudo-attributes ([In], [Out], [Optional]) are metadata flags, not attribute
-		///     blobs: reflection surfaces the flags the compiler sets for <c>in</c>/<c>ref readonly</c>,
-		///     <c>out</c> and optional parameters as these attributes, indistinguishably from authored ones,
-		///     so they never count.
-		/// </remarks>
-		private static readonly HashSet<string> CompilerEmittedAttributes = new(StringComparer.Ordinal)
-		{
-			"System.Runtime.CompilerServices.NullableAttribute",
-			"System.Runtime.CompilerServices.NullableContextAttribute",
-			"System.Runtime.CompilerServices.RequiredMemberAttribute",
-			"System.Runtime.CompilerServices.CompilerFeatureRequiredAttribute",
-			"System.Runtime.CompilerServices.AsyncStateMachineAttribute",
-			"System.Runtime.CompilerServices.IteratorStateMachineAttribute",
-			"System.Runtime.CompilerServices.AsyncIteratorStateMachineAttribute",
-			"System.Runtime.CompilerServices.PreserveBaseOverridesAttribute",
-			"System.Runtime.CompilerServices.ExtensionAttribute",
-			"System.Runtime.CompilerServices.IsReadOnlyAttribute",
-			"System.Runtime.CompilerServices.IsByRefLikeAttribute",
-			"System.Runtime.CompilerServices.IsUnmanagedAttribute",
-			"System.Runtime.CompilerServices.RequiresLocationAttribute",
-			"System.Runtime.CompilerServices.ScopedRefAttribute",
-			"System.Runtime.CompilerServices.ParamCollectionAttribute",
-			"System.Runtime.CompilerServices.TupleElementNamesAttribute",
-			"System.Runtime.CompilerServices.DynamicAttribute",
-			"System.Runtime.CompilerServices.DecimalConstantAttribute",
-			"System.Runtime.CompilerServices.FixedBufferAttribute",
-			"System.ParamArrayAttribute",
-			"System.Runtime.InteropServices.InAttribute",
-			"System.Runtime.InteropServices.OutAttribute",
-			"System.Runtime.InteropServices.OptionalAttribute",
-		};
-
-		private bool IsCompilerEmittedAttribute(Type attributeType)
-			=> attributeType.FullName is { } fullName &&
-			   (CompilerEmittedAttributes.Contains(fullName) ||
-			    excludedAttributeTypes.Contains(fullName, StringComparer.Ordinal));
-
-		/// <summary>
-		///     The marker message Roslyn puts into the <see cref="ObsoleteAttribute" /> it emits (next to
-		///     <c>[CompilerFeatureRequired]</c>) onto constructors of types with required members.
-		/// </summary>
-		private const string RequiredMembersObsoleteMessage =
-			"Constructors of types with required members are not supported in this version of your compiler.";
-
-		private static bool IsRequiredMembersObsolete(CustomAttributeData data)
-		{
-			if (data.AttributeType != typeof(ObsoleteAttribute))
-			{
-				return false;
-			}
-
-			try
-			{
-				// The compiler emits [Obsolete(message, error: true)]; requiring the error flag keeps an
-				// authored [Obsolete] counting even if it should repeat the marker message verbatim.
-				return data.ConstructorArguments.Count == 2 &&
-				       data.ConstructorArguments[0].Value is RequiredMembersObsoleteMessage &&
-				       data.ConstructorArguments[1].Value is true;
-			}
-			catch (Exception exception) when (IsUnresolvable(exception))
-			{
-				// When the arguments cannot be resolved, the compiler-emitted pairing is assumed.
-				return true;
-			}
-		}
-
-		/// <summary>
-		///     Checks whether the <c>[CompilerFeatureRequired]</c> names the <c>RequiredMembers</c> feature, so
-		///     that the gate for the paired <c>[Obsolete]</c> does not react to other compiler features.
-		/// </summary>
-		private static bool IsRequiredMembersFeature(CustomAttributeData data)
-		{
-			try
-			{
-				return data.ConstructorArguments.Count == 1 &&
-				       data.ConstructorArguments[0].Value is "RequiredMembers";
-			}
-			catch (Exception exception) when (IsUnresolvable(exception))
-			{
-				// When the arguments cannot be resolved, the compiler-emitted pairing is assumed.
-				return true;
-			}
-		}
-
-		private static bool HasIndexer(Type type)
-			=> Safe(() => type.GetProperties(Flags))
-				.Any(property => Safe(property.GetIndexParameters).Length > 0);
-
-		private void AddAttributeArgument(CustomAttributeTypedArgument argument)
-		{
-			if (argument.Value is Type typeArgument)
-			{
-				// A typeof(...) referencing a compiler-generated type (e.g. the state machine in
-				// [AsyncStateMachine(typeof(<M>d__0))]) is not a dependency the author wrote.
-				if (!typeArgument.IsCompilerGenerated())
-				{
-					Add(typeArgument);
-				}
-			}
-			else if (argument.Value is IReadOnlyList<CustomAttributeTypedArgument> arrayArgument)
-			{
-				foreach (CustomAttributeTypedArgument element in arrayArgument)
-				{
-					AddAttributeArgument(element);
-				}
-			}
-			else if (argument.ArgumentType.IsEnum)
-			{
-				// An enum constant in an attribute application (e.g. [Configured(Severity.High)]) is a
-				// verbatim authored reference to the enum type, even though its value is boxed as the
-				// underlying integral type.
-				Add(argument.ArgumentType);
-			}
-		}
-
-		/// <summary>
-		///     Unwraps the <paramref name="type" />: array/by-ref/pointer element types and generic type arguments are
-		///     flattened and open generic parameters are skipped. Constructed generic types are kept as written
-		///     (e.g. <c>List&lt;Foo&gt;</c>), so that they can be matched exactly; their generic type arguments are
-		///     additionally contributed as separate dependencies.
-		/// </summary>
-		/// <remarks>
-		///     Known limitation: function-pointer types (<c>delegate*&lt;…&gt;</c>) are yielded as-is; the
-		///     parameter and return types inside their signature are not collected, because
-		///     <c>Type.GetFunctionPointerParameterTypes()</c> only exists on .NET 8+ and the unwrap must behave
-		///     identically on all target frameworks.
-		/// </remarks>
-		private static IEnumerable<Type> Unwrap(Type? type)
-		{
-			if (type is null)
-			{
-				yield break;
-			}
-
-			type = StripElementTypes(type);
-
-			if (type.IsGenericParameter)
-			{
-				yield break;
-			}
-
-			if (type.IsGenericType)
-			{
-				yield return type;
-				foreach (Type argument in Safe(type.GetGenericArguments))
-				{
-					foreach (Type unwrapped in Unwrap(argument))
-					{
-						yield return unwrapped;
-					}
-				}
-			}
-			else
-			{
-				yield return type;
-			}
-		}
-
-		private static IEnumerable<CustomAttributeData> SafeAttributes(MemberInfo member)
-		{
-			try
-			{
-				return member.GetCustomAttributesData();
-			}
-			catch (Exception exception) when (IsUnresolvable(exception))
-			{
-				return [];
-			}
-		}
-
-		private static IEnumerable<CustomAttributeData> SafeAttributes(ParameterInfo parameter)
-		{
-			try
-			{
-				return parameter.GetCustomAttributesData();
-			}
-			catch (Exception exception) when (IsUnresolvable(exception))
-			{
-				return [];
-			}
-		}
-
-		private static List<CustomAttributeTypedArgument> SafeAttributeArguments(CustomAttributeData attribute)
-		{
-			try
-			{
-				List<CustomAttributeTypedArgument> arguments = [..attribute.ConstructorArguments,];
-				foreach (CustomAttributeNamedArgument namedArgument in attribute.NamedArguments)
-				{
-					arguments.Add(namedArgument.TypedValue);
-				}
-
-				return arguments;
-			}
-			catch (Exception exception) when (IsUnresolvable(exception))
-			{
-				return [];
-			}
-		}
 	}
 
 	/// <summary>
@@ -1847,5 +1422,472 @@ internal static class TypeHelpers
 		}
 
 		return false;
+	}
+
+	/// <summary>
+	///     Accumulates the (unwrapped, de-duplicated) signature dependencies of a type, one member kind at a time.
+	/// </summary>
+	/// <remarks>
+	///     Extracted from <see cref="GetSignatureDependencies" /> so that each member kind is collected in its own
+	///     small method instead of one large one.
+	/// </remarks>
+	private sealed class SignatureDependencyCollector(string[] excludedAttributeTypes)
+	{
+		private const BindingFlags Flags = BindingFlags.Public |
+		                                   BindingFlags.NonPublic |
+		                                   BindingFlags.Instance |
+		                                   BindingFlags.Static |
+		                                   BindingFlags.DeclaredOnly;
+
+		/// <summary>
+		///     The marker message Roslyn puts into the <see cref="ObsoleteAttribute" /> it emits (next to
+		///     <c>[CompilerFeatureRequired]</c>) onto constructors of types with required members.
+		/// </summary>
+		private const string RequiredMembersObsoleteMessage =
+			"Constructors of types with required members are not supported in this version of your compiler.";
+
+		/// <summary>
+		///     Caches the Debug-built verdict per <see cref="Assembly" />: in a Debug-built assembly the check
+		///     runs for every authored async method (each kickoff carries a compiler-emitted
+		///     <c>[DebuggerStepThrough]</c>), but the build configuration of an assembly cannot change.
+		/// </summary>
+		private static readonly ConditionalWeakTable<Assembly, object> DebugBuilt = new();
+
+		/// <summary>
+		///     Attributes the C# compiler emits onto authored code, which are therefore not dependencies the
+		///     author wrote: nullability metadata, required members, async/iterator state machines,
+		///     covariant-return overrides, extension methods, readonly/ref structs, fixed buffers, tuple names,
+		///     <c>params</c> arrays, <c>dynamic</c> and <c>decimal</c> constants, <c>ref readonly</c> parameters
+		///     and the parameter pseudo-attributes.
+		/// </summary>
+		/// <remarks>
+		///     Only attribute types the author can never legally apply in the same situation belong here.
+		///     Attributes that can also be authored ([Obsolete], [DebuggerStepThrough], [DefaultMember]) are
+		///     instead skipped conditionally in <see cref="AddAttributes(MemberInfo)" />, based on the
+		///     co-occurrence pattern the compiler produces.
+		///     <para />
+		///     The parameter pseudo-attributes ([In], [Out], [Optional]) are metadata flags, not attribute
+		///     blobs: reflection surfaces the flags the compiler sets for <c>in</c>/<c>ref readonly</c>,
+		///     <c>out</c> and optional parameters as these attributes, indistinguishably from authored ones,
+		///     so they never count.
+		/// </remarks>
+		private static readonly HashSet<string> CompilerEmittedAttributes = new(StringComparer.Ordinal)
+		{
+			"System.Runtime.CompilerServices.NullableAttribute",
+			"System.Runtime.CompilerServices.NullableContextAttribute",
+			"System.Runtime.CompilerServices.RequiredMemberAttribute",
+			"System.Runtime.CompilerServices.CompilerFeatureRequiredAttribute",
+			"System.Runtime.CompilerServices.AsyncStateMachineAttribute",
+			"System.Runtime.CompilerServices.IteratorStateMachineAttribute",
+			"System.Runtime.CompilerServices.AsyncIteratorStateMachineAttribute",
+			"System.Runtime.CompilerServices.PreserveBaseOverridesAttribute",
+			"System.Runtime.CompilerServices.ExtensionAttribute",
+			"System.Runtime.CompilerServices.IsReadOnlyAttribute",
+			"System.Runtime.CompilerServices.IsByRefLikeAttribute",
+			"System.Runtime.CompilerServices.IsUnmanagedAttribute",
+			"System.Runtime.CompilerServices.RequiresLocationAttribute",
+			"System.Runtime.CompilerServices.ScopedRefAttribute",
+			"System.Runtime.CompilerServices.ParamCollectionAttribute",
+			"System.Runtime.CompilerServices.TupleElementNamesAttribute",
+			"System.Runtime.CompilerServices.DynamicAttribute",
+			"System.Runtime.CompilerServices.DecimalConstantAttribute",
+			"System.Runtime.CompilerServices.FixedBufferAttribute",
+			"System.ParamArrayAttribute",
+			"System.Runtime.InteropServices.InAttribute",
+			"System.Runtime.InteropServices.OutAttribute",
+			"System.Runtime.InteropServices.OptionalAttribute",
+		};
+
+		private readonly HashSet<Type> _dependencies = [];
+
+		public void Add(Type? candidate)
+		{
+			foreach (Type unwrapped in Unwrap(candidate))
+			{
+				_dependencies.Add(unwrapped);
+			}
+		}
+
+		public void AddAll(IEnumerable<Type> candidates)
+		{
+			foreach (Type candidate in candidates)
+			{
+				Add(candidate);
+			}
+		}
+
+		public void AddGenericArguments(IEnumerable<Type> arguments)
+		{
+			foreach (Type argument in arguments)
+			{
+				if (argument.IsGenericParameter)
+				{
+					// `where T : struct` / `where T : unmanaged` compile into a System.ValueType constraint
+					// the author can never write directly (CS0702); an authored `where T : Enum` (C# 7.3+)
+					// still counts.
+					AddAll(Safe(argument.GetGenericParameterConstraints)
+						.Where(constraint => constraint != typeof(object) && constraint != typeof(ValueType)));
+				}
+				else
+				{
+					Add(argument);
+				}
+			}
+		}
+
+		public void AddAttributes(MemberInfo member)
+		{
+			IEnumerable<CustomAttributeData> attributes = SafeAttributes(member);
+
+			// For required members, the compiler pairs an [Obsolete] carrying a fixed marker message with
+			// [CompilerFeatureRequired(nameof(RequiredMembers))] on the constructor; only that compiler-emitted
+			// [Obsolete] is skipped, an authored one (even on the same constructor) still counts.
+			bool hasCompilerFeatureRequired = attributes.Any(data
+				=> data.AttributeType.FullName == "System.Runtime.CompilerServices.CompilerFeatureRequiredAttribute" &&
+				   IsRequiredMembersFeature(data));
+
+			// The compiler emits [DefaultMember("Item")] onto every type declaring an indexer; an authored
+			// [DefaultMember] cannot coexist with an indexer (CS0646), so it is only skipped in that case.
+			bool hasIndexer = member is Type type && HasIndexer(type);
+
+			bool skipDebuggerStepThrough = IsCompilerEmittedDebuggerStepThrough(member, attributes);
+
+			AddAttributes(attributes, data
+				=> (hasCompilerFeatureRequired && IsRequiredMembersObsolete(data)) ||
+				   (hasIndexer && data.AttributeType.FullName == "System.Reflection.DefaultMemberAttribute") ||
+				   (skipDebuggerStepThrough &&
+				    data.AttributeType.FullName == "System.Diagnostics.DebuggerStepThroughAttribute"));
+		}
+
+		public void AddAttributes(ParameterInfo parameter)
+			=> AddAttributes(SafeAttributes(parameter), null);
+
+		private void AddAttributes(IEnumerable<CustomAttributeData> attributes,
+			Func<CustomAttributeData, bool>? isCompilerEmittedPairing)
+		{
+			// Neither compiler-generated/embedded attributes nor the BCL attributes the compiler emits onto
+			// authored code (nullability, required members, async/iterator state machines, ...) are
+			// dependencies the author wrote.
+			foreach (CustomAttributeData attribute in attributes
+				         .Where(data => !data.AttributeType.IsCompilerGenerated() &&
+				                        !IsCompilerEmittedAttribute(data.AttributeType) &&
+				                        isCompilerEmittedPairing?.Invoke(data) != true))
+			{
+				Add(attribute.AttributeType);
+
+				// A typeof(...) used as a constructor or named argument is a real signature dependency
+				// (e.g. [JsonConverter(typeof(FooConverter))] depends on FooConverter).
+				foreach (CustomAttributeTypedArgument argument in SafeAttributeArguments(attribute))
+				{
+					AddAttributeArgument(argument);
+				}
+			}
+		}
+
+		/// <summary>
+		///     Determines whether a <c>[DebuggerStepThrough]</c> on the <paramref name="member" /> is
+		///     compiler-emitted and must therefore be skipped.
+		/// </summary>
+		/// <remarks>
+		///     In Debug builds the compiler emits <c>[DebuggerStepThrough]</c> onto the kickoff method of
+		///     authored async methods (next to the state machine attribute); in Release builds it emits none.
+		///     An authored <c>[DebuggerStepThrough]</c> therefore shows up as a duplicate in Debug builds and
+		///     as the only occurrence in Release builds — only a single occurrence in a Debug-built assembly
+		///     is (indistinguishably) compiler-emitted. An authored <c>[DebuggerStepThrough]</c> on a
+		///     non-async member always counts.
+		/// </remarks>
+		private static bool IsCompilerEmittedDebuggerStepThrough(MemberInfo member,
+			IEnumerable<CustomAttributeData> attributes)
+		{
+			bool hasAsyncStateMachine = attributes.Any(data => data.AttributeType.FullName
+				is "System.Runtime.CompilerServices.AsyncStateMachineAttribute"
+				or "System.Runtime.CompilerServices.AsyncIteratorStateMachineAttribute");
+			if (!hasAsyncStateMachine)
+			{
+				return false;
+			}
+
+			int debuggerStepThroughCount = attributes.Count(data
+				=> data.AttributeType.FullName == "System.Diagnostics.DebuggerStepThroughAttribute");
+			return debuggerStepThroughCount == 1 && IsDebugBuilt(SafeOrNull(() => member.Module.Assembly));
+		}
+
+		/// <summary>
+		///     Checks whether the <paramref name="assembly" /> was compiled in Debug configuration, i.e. carries
+		///     a <c>[Debuggable]</c> attribute with the
+		///     <see cref="DebuggableAttribute.DebuggingModes.DisableOptimizations" /> flag.
+		/// </summary>
+		/// <remarks>
+		///     When this cannot be determined, a Debug build is assumed, so that the (then ambiguous) single
+		///     <c>[DebuggerStepThrough]</c> keeps being treated as compiler-emitted.
+		/// </remarks>
+		private static bool IsDebugBuilt(Assembly? assembly)
+		{
+			if (assembly is null)
+			{
+				return true;
+			}
+
+			return (bool)DebugBuilt.GetValue(assembly, static a => DetermineIsDebugBuilt(a));
+		}
+
+		private static bool DetermineIsDebugBuilt(Assembly assembly)
+		{
+			try
+			{
+				foreach (CustomAttributeData data in assembly.GetCustomAttributesData())
+				{
+					if (data.AttributeType.FullName != "System.Diagnostics.DebuggableAttribute")
+					{
+						continue;
+					}
+
+					IList<CustomAttributeTypedArgument> arguments = data.ConstructorArguments;
+					if (arguments.Count == 1 && arguments[0].Value is int debuggingModes)
+					{
+						return (debuggingModes &
+						        (int)DebuggableAttribute.DebuggingModes.DisableOptimizations) != 0;
+					}
+
+					if (arguments.Count == 2 && arguments[1].Value is bool isJitOptimizerDisabled)
+					{
+						return isJitOptimizerDisabled;
+					}
+				}
+
+				return false;
+			}
+			catch (Exception exception) when (IsUnresolvable(exception))
+			{
+				return true;
+			}
+		}
+
+		public void AddFields(Type type)
+		{
+			// Special-name fields are runtime-supplied, not authored: most importantly every enum's `value__`
+			// instance field (typed as the underlying integral type), which would otherwise make every enum
+			// trivially "depend on" System.
+			foreach (FieldInfo field in Safe(() => type.GetFields(Flags))
+				         .Where(m => !m.IsCompilerGenerated() && !m.IsSpecialName))
+			{
+				// Member signature types are resolved lazily on first access and can throw when the defining
+				// assembly is missing, so each access is guarded individually to skip only the unresolvable member.
+				AddSafe(() => field.FieldType);
+				AddAttributes(field);
+			}
+		}
+
+		public void AddProperties(Type type)
+		{
+			foreach (PropertyInfo property in Safe(() => type.GetProperties(Flags)).Where(m => !m.IsCompilerGenerated()))
+			{
+				AddSafe(() => property.PropertyType);
+				AddParameters(Safe(property.GetIndexParameters));
+				AddAttributes(property);
+			}
+		}
+
+		public void AddEvents(Type type)
+		{
+			foreach (EventInfo @event in Safe(() => type.GetEvents(Flags)).Where(m => !m.IsCompilerGenerated()))
+			{
+				AddSafe(() => @event.EventHandlerType);
+				AddAttributes(@event);
+			}
+		}
+
+		public void AddMethods(Type type)
+		{
+			foreach (MethodInfo method in Safe(() => type.GetMethods(Flags)).Where(m => !m.IsCompilerGenerated()))
+			{
+				AddSafe(() => method.ReturnType);
+				AddReturnValueAttributes(method);
+				AddParameters(Safe(method.GetParameters));
+				AddGenericArguments(Safe(method.GetGenericArguments));
+				AddAttributes(method);
+			}
+		}
+
+		public void AddConstructors(Type type)
+		{
+			foreach (ConstructorInfo constructor in Safe(() => type.GetConstructors(Flags))
+				         .Where(m => !m.IsCompilerGenerated()))
+			{
+				AddParameters(Safe(constructor.GetParameters));
+				AddAttributes(constructor);
+			}
+		}
+
+		public void AddDelegateInvoke(Type type)
+		{
+			if (SafeOrNull(() => type.GetMethod("Invoke", Flags)) is { } invoke)
+			{
+				AddSafe(() => invoke.ReturnType);
+				AddReturnValueAttributes(invoke);
+				AddParameters(Safe(invoke.GetParameters));
+				AddAttributes(invoke);
+			}
+		}
+
+		private void AddParameters(IEnumerable<ParameterInfo> parameters)
+		{
+			foreach (ParameterInfo parameter in parameters)
+			{
+				// Member signature types are resolved lazily on first access and can throw when the defining
+				// assembly is missing, so each access is guarded individually to skip only the unresolvable member.
+				AddSafe(() => parameter.ParameterType);
+
+				// Attributes applied to a parameter (e.g. [Layer1.Target] int value) are authored signature
+				// text just like the parameter type itself.
+				AddAttributes(parameter);
+			}
+		}
+
+		private void AddReturnValueAttributes(MethodInfo method)
+		{
+			// [return: ...] attributes are authored signature text just like parameter attributes.
+			if (SafeOrNull(() => method.ReturnParameter) is { } returnParameter)
+			{
+				AddAttributes(returnParameter);
+			}
+		}
+
+		private void AddSafe(Func<Type?> get)
+		{
+			try
+			{
+				Add(get());
+			}
+			catch (Exception exception) when (IsUnresolvable(exception))
+			{
+				// The member's signature type could not be resolved, for example when its assembly is not
+				// deployed, so this member is skipped, consistent with GetDeclaredFields/Methods/Properties.
+			}
+		}
+
+		public HashSet<Type> Build(Type type)
+		{
+			_dependencies.Remove(type);
+			return _dependencies;
+		}
+
+		private bool IsCompilerEmittedAttribute(Type attributeType)
+			=> attributeType.FullName is { } fullName &&
+			   (CompilerEmittedAttributes.Contains(fullName) ||
+			    excludedAttributeTypes.Contains(fullName, StringComparer.Ordinal));
+
+		private static bool IsRequiredMembersObsolete(CustomAttributeData data)
+		{
+			if (data.AttributeType != typeof(ObsoleteAttribute))
+			{
+				return false;
+			}
+
+			try
+			{
+				// The compiler emits [Obsolete(message, error: true)]; requiring the error flag keeps an
+				// authored [Obsolete] counting even if it should repeat the marker message verbatim.
+				return data.ConstructorArguments.Count == 2 &&
+				       data.ConstructorArguments[0].Value is RequiredMembersObsoleteMessage &&
+				       data.ConstructorArguments[1].Value is true;
+			}
+			catch (Exception exception) when (IsUnresolvable(exception))
+			{
+				// When the arguments cannot be resolved, the compiler-emitted pairing is assumed.
+				return true;
+			}
+		}
+
+		/// <summary>
+		///     Checks whether the <c>[CompilerFeatureRequired]</c> names the <c>RequiredMembers</c> feature, so
+		///     that the gate for the paired <c>[Obsolete]</c> does not react to other compiler features.
+		/// </summary>
+		private static bool IsRequiredMembersFeature(CustomAttributeData data)
+		{
+			try
+			{
+				return data.ConstructorArguments.Count == 1 &&
+				       data.ConstructorArguments[0].Value is "RequiredMembers";
+			}
+			catch (Exception exception) when (IsUnresolvable(exception))
+			{
+				// When the arguments cannot be resolved, the compiler-emitted pairing is assumed.
+				return true;
+			}
+		}
+
+		private static bool HasIndexer(Type type)
+			=> Safe(() => type.GetProperties(Flags))
+				.Any(property => Safe(property.GetIndexParameters).Length > 0);
+
+		private void AddAttributeArgument(CustomAttributeTypedArgument argument)
+		{
+			if (argument.Value is Type typeArgument)
+			{
+				// A typeof(...) referencing a compiler-generated type (e.g. the state machine in
+				// [AsyncStateMachine(typeof(<M>d__0))]) is not a dependency the author wrote.
+				if (!typeArgument.IsCompilerGenerated())
+				{
+					Add(typeArgument);
+				}
+			}
+			else if (argument.Value is IReadOnlyList<CustomAttributeTypedArgument> arrayArgument)
+			{
+				foreach (CustomAttributeTypedArgument element in arrayArgument)
+				{
+					AddAttributeArgument(element);
+				}
+			}
+			else if (argument.ArgumentType.IsEnum)
+			{
+				// An enum constant in an attribute application (e.g. [Configured(Severity.High)]) is a
+				// verbatim authored reference to the enum type, even though its value is boxed as the
+				// underlying integral type.
+				Add(argument.ArgumentType);
+			}
+		}
+
+		private static IEnumerable<CustomAttributeData> SafeAttributes(MemberInfo member)
+		{
+			try
+			{
+				return member.GetCustomAttributesData();
+			}
+			catch (Exception exception) when (IsUnresolvable(exception))
+			{
+				return [];
+			}
+		}
+
+		private static IEnumerable<CustomAttributeData> SafeAttributes(ParameterInfo parameter)
+		{
+			try
+			{
+				return parameter.GetCustomAttributesData();
+			}
+			catch (Exception exception) when (IsUnresolvable(exception))
+			{
+				return [];
+			}
+		}
+
+		private static List<CustomAttributeTypedArgument> SafeAttributeArguments(CustomAttributeData attribute)
+		{
+			try
+			{
+				List<CustomAttributeTypedArgument> arguments = [..attribute.ConstructorArguments,];
+				foreach (CustomAttributeNamedArgument namedArgument in attribute.NamedArguments)
+				{
+					arguments.Add(namedArgument.TypedValue);
+				}
+
+				return arguments;
+			}
+			catch (Exception exception) when (IsUnresolvable(exception))
+			{
+				return [];
+			}
+		}
 	}
 }

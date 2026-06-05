@@ -8,6 +8,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers.OwnSub;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1.Sub;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer2;
 
 namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1
 {
@@ -25,9 +28,9 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1
 	}
 
 	[AttributeUsage(AttributeTargets.All)]
-	public sealed class TargetSeverityAttribute(Layer2.TargetSeverity severity) : Attribute
+	public sealed class TargetSeverityAttribute(TargetSeverity severity) : Attribute
 	{
-		public Layer2.TargetSeverity Severity { get; } = severity;
+		public TargetSeverity Severity { get; } = severity;
 	}
 
 	public delegate void TargetEventHandler();
@@ -53,8 +56,8 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer2
 
 namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers
 {
-	using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1;
-	using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer2;
+	using Layer1;
+	using Layer2;
 
 	public class ViaBaseType : TargetA;
 
@@ -110,7 +113,7 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers
 
 	public class ViaSubNamespace
 	{
-		private Layer1.Sub.SubTarget _target;
+		private SubTarget _target;
 	}
 
 	public class OnlyLayer1
@@ -136,13 +139,13 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers
 
 	public class ReferencesOwnSubNamespace
 	{
-		private OwnSub.OwnSubTarget _target;
+		private OwnSubTarget _target;
 	}
 
 	public class FrameworkConsumer
 	{
-		private List<int> _values;
 		private StringBuilder _builder;
+		private List<int> _values;
 	}
 
 	public class ReferencesGlobal
@@ -163,7 +166,7 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Synthetic
 {
 	using System.Diagnostics;
 	using System.Threading.Tasks;
-	using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1;
+	using Layer1;
 
 	public class WithRequiredProperty
 	{
@@ -188,11 +191,22 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Synthetic
 
 	public record RecordWithLayer1Target(TargetA Target);
 
-	public delegate TargetA TargetProviderDelegate(Layer2.TargetB input);
+	public delegate TargetA TargetProviderDelegate(TargetB input);
 
 	public class WithArrayField
 	{
 		private TargetA[] _targets;
+	}
+
+	// Layer1's TargetA is referenced ONLY inside the method body; the signature-level default resolver
+	// cannot see it, an IL-based resolver (e.g. the Mono.Cecil example) can.
+	public class ViaMethodBodyOnly
+	{
+		public static void Run()
+		{
+			TargetA target = new();
+			target.ToString();
+		}
 	}
 
 	// Layer1 is referenced ONLY inside the nested type; nested types are separate types with their own
@@ -207,7 +221,7 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Synthetic
 
 	// Layer2's TargetSeverity is referenced ONLY through the attribute's enum argument; the attribute
 	// type TargetSeverityAttribute itself lives in Layer1.
-	[TargetSeverity(Layer2.TargetSeverity.High)]
+	[TargetSeverity(TargetSeverity.High)]
 	public class ViaEnumAttributeArgument;
 
 	public class WithAsyncMethod

@@ -17,6 +17,7 @@ namespace aweXpect.Customization
     }
     public static class ReflectionCustomizationExtensions
     {
+        public static aweXpect.Customization.ICustomizationValueSetter<System.Func<System.Type, System.Collections.Generic.IEnumerable<System.Type>>?> DependencyResolver(this aweXpect.Customization.AwexpectCustomization.ReflectionCustomization reflection) { }
         public static aweXpect.Customization.ICustomizationValueSetter<string[]> ExcludedAttributeTypes(this aweXpect.Customization.AwexpectCustomization.ReflectionCustomization reflection) { }
         public static aweXpect.Customization.ICustomizationValueSetter<aweXpect.Customization.CompilerGeneratedMembers> IncludedCompilerGeneratedMembers(this aweXpect.Customization.AwexpectCustomization.ReflectionCustomization reflection) { }
         public static aweXpect.Customization.ICustomizationValueSetter<aweXpect.Customization.SpecialNameMembers> IncludedSpecialNameMembers(this aweXpect.Customization.AwexpectCustomization.ReflectionCustomization reflection) { }

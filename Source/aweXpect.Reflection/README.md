@@ -435,7 +435,9 @@ extends the built-in set). Types you write in authored signatures always do coun
 > (`delegate*<…>`) are not decomposed either — the types inside them are invisible to dependency assertions.
 > Nested types are separate types with their own dependency surface: asserting on `typeof(Outer)` does not
 > include what `Outer.Inner` references. The collection-based assertions (e.g. over `In.Namespace(…)`)
-> enumerate nested types as their own items and therefore cover them.
+> enumerate nested types as their own items and therefore cover them. For IL/body-level accuracy, plug in
+> your own resolver via `Customize.aweXpect.Reflection().DependencyResolver()` (see
+> [Configuration](#dependency-resolver)).
 
 Namespace matching is ordinal and case-sensitive and, like `WithinNamespace`, includes sub-namespaces by
 default (so `Foo.Bar` matches `Foo.Bar.Baz` but not `Foo.BarBaz`). A dependency in the **global namespace**
@@ -870,3 +872,61 @@ using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers()
     // operator methods are now visible in .Methods()
 }
 ```
+
+### Dependency resolver
+
+The type-level dependency assertions compute a type's dependencies with a built-in signature-level
+resolver (base type, interfaces, field/property/event types, method/constructor signatures, generic
+arguments and applied attributes). Method-body references are not detected by the default; supply a
+custom resolver, e.g. backed by [Mono.Cecil](https://github.com/jbevain/cecil) (this library takes no
+dependency on it; reference the package yourself), for IL/body-level accuracy:
+
+```csharp
+// Replace the resolver within a scope
+using (Customize.aweXpect.Reflection().DependencyResolver()
+    .Set(type => MyCecilResolver.GetUsedTypes(type)))
+{
+    // body-level references now count as dependencies
+}
+
+// Or augment instead of replace: compose on the current default
+var resolver = Customize.aweXpect.Reflection().DependencyResolver();
+var builtin = resolver.Get()!;
+using (resolver.Set(type => builtin(type).Concat(MyCecilResolver.GetBodyTypes(type))))
+{
+    // built-in signature dependencies plus the body-level extras
+}
+
+// Setting null reverts to the built-in default, e.g. to opt a single test out
+// of a globally configured resolver
+using (Customize.aweXpect.Reflection().DependencyResolver().Set(null))
+{
+    // the signature-level default applies within this scope
+}
+```
+
+`Get()` always returns the resolver currently in effect (the built-in default when none is configured),
+so composing on it works regardless of what an outer scope has set up.
+
+A Mono.Cecil-backed resolver boils down to reading the type's assembly and mapping the IL references
+back to runtime types:
+
+```csharp
+public static IEnumerable<Type> GetUsedTypes(Type type)
+{
+    using var assembly = Mono.Cecil.AssemblyDefinition.ReadAssembly(type.Assembly.Location);
+    var definition = assembly.MainModule.GetType(type.FullName!.Replace('+', '/'));
+    foreach (var instruction in definition.Methods
+                 .Where(method => method.HasBody)
+                 .SelectMany(method => method.Body.Instructions))
+    {
+        // map the method/field/type references in instruction.Operand back to System.Type
+        // (and also walk the signature surface: base type, interfaces, fields, …)
+    }
+}
+```
+
+Every resolver's output is normalized like the built-in's (array/by-ref/pointer element types and
+generic arguments are unwrapped, the result is de-duplicated) and cached per type for the lifetime of
+the resolver delegate, so a custom resolver needs no caching of its own. It must, however, be **pure**:
+deterministic for a given `Type` within its scope; that is what makes the caching safe.

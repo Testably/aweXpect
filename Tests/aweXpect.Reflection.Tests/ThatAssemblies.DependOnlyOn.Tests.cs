@@ -71,7 +71,7 @@ public sealed partial class ThatAssemblies
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have dependencies only on assemblies equal to "aweXpect.Core",
 					             but it contained assemblies with disallowed dependencies [
-					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null depends on ["aweXpect.Reflection", "aweXpect"]
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null depends on ["aweXpect.Reflection", "Mono.Cecil", "aweXpect"]
 					             ]
 					             """).AsWildcard();
 			}
