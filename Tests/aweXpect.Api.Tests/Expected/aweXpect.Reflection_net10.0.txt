@@ -1856,6 +1856,10 @@ namespace aweXpect.Reflection
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> HaveImplicitConversionOperator<TSource, TTarget>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, bool inherit = false) { }
         public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IAsyncEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Type?>>> HaveNamespace(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Type?>> subject, string expected) { }
         public static aweXpect.Results.StringEqualityTypeResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> HaveNamespace(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, string expected) { }
+        public static aweXpect.Reflection.Results.DependencyCyclesResult<System.Collections.Generic.IAsyncEnumerable<System.Type?>> HaveNoDependencyCycles(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Type?>> subject) { }
+        public static aweXpect.Reflection.Results.DependencyCyclesResult<System.Collections.Generic.IEnumerable<System.Type?>> HaveNoDependencyCycles(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject) { }
+        public static aweXpect.Reflection.Results.DependencyCyclesResult<System.Collections.Generic.IAsyncEnumerable<System.Type?>> HaveNoDependencyCycles(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Type?>> subject, string sliceRoot) { }
+        public static aweXpect.Reflection.Results.DependencyCyclesResult<System.Collections.Generic.IEnumerable<System.Type?>> HaveNoDependencyCycles(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, string sliceRoot) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Type?>>> HaveOperator(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Type?>> subject, aweXpect.Reflection.Operator @operator, bool inherit = false) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>>> HaveOperator(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>> subject, aweXpect.Reflection.Operator @operator, bool inherit = false) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Type?>>> HaveOperator(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Type?>> subject, aweXpect.Reflection.Operator @operator, System.Type operand, bool inherit = false) { }
@@ -2368,6 +2372,10 @@ namespace aweXpect.Reflection.Options
 }
 namespace aweXpect.Reflection.Results
 {
+    public sealed class DependencyCyclesResult<TThat> : aweXpect.Results.AndOrResult<TThat, aweXpect.Core.IThat<TThat>>
+    {
+        public aweXpect.Reflection.Results.DependencyCyclesResult<TThat> ExcludingSubNamespaces() { }
+    }
     public class GenericArgumentCollectionResult<TThat> : aweXpect.Results.AndOrResult<TThat, aweXpect.Core.IThat<TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Reflection.Options.GenericArgumentsFilterOptions>
     {
         public GenericArgumentCollectionResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<TThat> subject, aweXpect.Reflection.Options.GenericArgumentsFilterOptions genericArgumentsFilterOptions) { }
