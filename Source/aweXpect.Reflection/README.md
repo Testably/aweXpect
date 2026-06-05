@@ -140,6 +140,11 @@ The custom `.Which(…)` filter has a universal assertion counterpart that works
 (types, members and assemblies): use aweXpect's `.Satisfies(…)` on a single subject and `.All().Satisfy(…)`
 (or `.Any().Satisfy(…)`) on a collection. See [Collections and quantifiers](#collections-and-quantifiers).
 
+The custom `.Except(…)` filter is the inverse of `.Which(…)`: it **removes** the items that match the
+predicate. This is handy for defining exemptions to a rule (e.g. *all async methods except this one*). Like
+`.Which(…)` it is available on **every** collection (assemblies, types and members). For types there is also a
+typed `.Except<T>()` overload that excludes exactly the type `T`.
+
 ### Access modifiers
 
 Shared by all types and members: these names are identical for types, methods, properties, fields,
