@@ -174,9 +174,9 @@ There is no separate rule engine: a "layer" is just a reusable `Filtered.Types` 
 filter vocabulary at your disposal), and an architecture rule is just an expectation on it.
 
 ```csharp
-Filtered.Types domain         = Types.InNamespace("MyApp.Domain");
-Filtered.Types infrastructure = Types.InNamespace("MyApp.Infrastructure");
-Filtered.Types repositories   = Types.InNamespace("MyApp.Data").WithName("Repository").AsSuffix();
+Filtered.Types domainTypes         = Types.InNamespace("MyApp.Domain");
+Filtered.Types infrastructureTypes = Types.InNamespace("MyApp.Infrastructure");
+Filtered.Types repositoryTypes     = Types.InNamespace("MyApp.Data").WithName("Repository").AsSuffix();
 ```
 
 The dependency assertions and filters accept such a selection as a **target**, alongside the namespace and
@@ -195,13 +195,13 @@ matched normally by `DependsOn` / `DoesNotDependOn`.
 
 ```csharp
 // Outgoing rule with a selection as target:
-await Expect.That(domain).DoNotDependOn(infrastructure);
+await Expect.That(domainTypes).DoNotDependOn(infrastructureTypes);
 
 // Incoming rules are written explicitly from the other side:
-await Expect.That(infrastructure).DoNotDependOn(domain);
+await Expect.That(infrastructureTypes).DoNotDependOn(domainTypes);
 
 // Allowed set as union of selections (own namespace + framework stay allowed):
-await Expect.That(domain).DependOnlyOn(repositories).OrOn(infrastructure);
+await Expect.That(domainTypes).DependOnlyOn(repositoryTypes).OrOn(infrastructureTypes);
 ```
 
 Combine several rules into a single verification with aweXpect's `Expect.ThatAll(…)` (see
@@ -211,17 +211,17 @@ dependency ones, so naming conventions or sealing rules live in the same check:
 
 ```csharp
 await Expect.ThatAll(
-    Expect.That(domain).DoNotDependOn(infrastructure),
-    Expect.That(domain).DependOnlyOn(repositories).OrOn(infrastructure),
-    Expect.That(domain).AreSealed());
+    Expect.That(domainTypes).DoNotDependOn(infrastructureTypes),
+    Expect.That(domainTypes).DependOnlyOn(repositoryTypes).OrOn(infrastructureTypes),
+    Expect.That(domainTypes).AreSealed());
 ```
 
 A failing rule reports all violations, numbered per expectation:
 
 ```
 Expected all of the following to succeed:
- [01] Expected that domain all do not depend on types within namespace "MyApp.Infrastructure" in all loaded assemblies
- [02] Expected that domain are all sealed
+ [01] Expected that domainTypes all do not depend on types within namespace "MyApp.Infrastructure" in all loaded assemblies
+ [02] Expected that domainTypes are all sealed
 but
  [01] it contained types with the dependency [
   OrderService
@@ -235,8 +235,8 @@ but
 Exemptions to a rule use the [`Except` filter](./02-filters.md) on the subject selection:
 
 ```csharp
-await Expect.That(domain.Except<LegacyService>()).DoNotDependOn(infrastructure);
-await Expect.That(domain.Except(type => type.Name.StartsWith("Generated"))).AreSealed();
+await Expect.That(domainTypes.Except<LegacyService>()).DoNotDependOn(infrastructureTypes);
+await Expect.That(domainTypes.Except(type => type.Name.StartsWith("Generated"))).AreSealed();
 ```
 
 A layer spanning several namespaces is built by widening a dependency *target* with additional selections

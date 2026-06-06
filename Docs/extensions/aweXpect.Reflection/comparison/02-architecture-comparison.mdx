@@ -22,7 +22,8 @@ approaches against each other.
 
 ```csharp
 await Expect.That(Types.InNamespace("MyApp.Presentation"))
-    .DoNotDependOn("MyApp.Data");
+    .DoNotDependOn("MyApp.Data")
+    .Because("the presentation layer is decoupled from persistence");
 ```
 
 No separate loader or result handling: the selection scans the loaded assemblies, and a violation fails
@@ -162,30 +163,54 @@ type-to-type references behind each edge.
 
 ## Failure messages
 
-What you see when a rule is violated:
+What failure of [the rule from the top of this page](#the-same-rule-in-all-three-libraries) looks like in
+each library, when `OrderService` in the presentation layer references `OrderRepository` in the data layer:
 
-- **NetArchTest** returns the failing type names, and nothing else. The test failure message is whatever
-  you build out of `result.FailingTypeNames`; there is no description of *which rule* failed or *why* a
-  type matched.
-- **ArchUnitNET** throws an exception whose message names the rule (including a custom `Because(…)` reason)
-  and lists each violating object with a failure description.
-- **aweXpect.Reflection** reports every violation with the expectation text, and
-  [`Expect.ThatAll`](../03-architecture-rules.md#layers-as-type-selections) groups several rules into a
-  single verification that lists all failures together:
+<Tabs groupId="architecture-library">
+<TabItem value="awexpect" label="aweXpect.Reflection" default>
 
 ```
-Expected all of the following to succeed:
- [01] Expected that domain all do not depend on types within namespace "MyApp.Infrastructure" in all loaded assemblies
- [02] Expected that domain are all sealed
-but
- [01] it contained types with the dependency [
+Expected that types within namespace "MyApp.Presentation" in all loaded assemblies
+all do not depend on namespace "MyApp.Data", because the presentation layer is decoupled from persistence,
+but it contained types with the dependency [
   OrderService
 ]
- [02] it contained non-sealed types [
-  Order,
-  Invoice
-]
 ```
+
+The selection and the rule describe themselves in the message, including the `Because(…)` reason,
+followed by the violating types.
+
+</TabItem>
+<TabItem value="netarchtest" label="NetArchTest">
+
+```
+Assert.True() Failure
+Expected: True
+Actual:   False
+```
+
+Neither the rule nor the violators are part of the message: `Assert.True(result.IsSuccessful)` reports
+only the boolean (and a custom user message replaces even that). A useful failure message has to be built
+by hand from `result.FailingTypeNames`.
+
+</TabItem>
+<TabItem value="archunitnet" label="ArchUnitNET">
+
+```
+"Types that reside in namespace with full name "MyApp.Presentation" should not depend on any Types that reside in namespace with full name "MyApp.Data" because the presentation layer is decoupled from persistence" failed:
+	MyApp.Presentation.OrderService does depend on "MyApp.Data.OrderRepository"
+```
+
+The `FailedArchRuleException` message quotes the rule, including the `Because(…)` reason, and lists each
+violating object with a failure description.
+
+</TabItem>
+</Tabs>
+
+Several aweXpect rules combine into one verification with `Expect.ThatAll(…)`, which numbers each rule
+and reports all failures together; see
+[layers as type selections](../03-architecture-rules.md#layers-as-type-selections) for a full example
+with output.
 
 ## Beyond architecture rules
 

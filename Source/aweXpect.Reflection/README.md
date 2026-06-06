@@ -89,20 +89,20 @@ There is no separate rule engine: a "layer" is just a reusable type selection, a
 just an expectation on it. Combine several rules into a single verification with `Expect.ThatAll`:
 
 ```csharp
-Filtered.Types domain         = Types.InNamespace("MyApp.Domain");
-Filtered.Types infrastructure = Types.InNamespace("MyApp.Infrastructure");
+Filtered.Types domainTypes         = Types.InNamespace("MyApp.Domain");
+Filtered.Types infrastructureTypes = Types.InNamespace("MyApp.Infrastructure");
 
 await Expect.ThatAll(
-    Expect.That(domain).DoNotDependOn(infrastructure),
-    Expect.That(domain).AreSealed());
+    Expect.That(domainTypes).DoNotDependOn(infrastructureTypes),
+    Expect.That(domainTypes).AreSealed());
 ```
 
 A failing rule reports all violations, numbered per expectation:
 
 ```
 Expected all of the following to succeed:
- [01] Expected that domain all do not depend on types within namespace "MyApp.Infrastructure" in all loaded assemblies
- [02] Expected that domain are all sealed
+ [01] Expected that domainTypes all do not depend on types within namespace "MyApp.Infrastructure" in all loaded assemblies
+ [02] Expected that domainTypes are all sealed
 but
  [01] it contained types with the dependency [
   OrderService
