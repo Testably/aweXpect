@@ -324,9 +324,7 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Assemblies AssemblyContaining(System.Type type) { }
         public static aweXpect.Reflection.Collections.Filtered.Assemblies AssemblyContaining<TType>() { }
         public static aweXpect.Reflection.Collections.Filtered.Constructors Constructors(System.Collections.Generic.IEnumerable<System.Reflection.ConstructorInfo> constructors) { }
-        public static aweXpect.Reflection.Collections.Filtered.Assemblies EntryAssembly() { }
         public static aweXpect.Reflection.Collections.Filtered.Events Events(System.Collections.Generic.IEnumerable<System.Reflection.EventInfo> events) { }
-        public static aweXpect.Reflection.Collections.Filtered.Assemblies ExecutingAssembly() { }
         public static aweXpect.Reflection.Collections.Filtered.Fields Fields(System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo> fields) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods Methods(System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo> methods) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties Properties(System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo> properties) { }
@@ -1672,8 +1670,6 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Types InAssemblies(System.Collections.Generic.IEnumerable<System.Reflection.Assembly?> assemblies) { }
         public static aweXpect.Reflection.Collections.Filtered.Types InAssemblyContaining(System.Type type) { }
         public static aweXpect.Reflection.Collections.Filtered.Types InAssemblyContaining<TType>() { }
-        public static aweXpect.Reflection.Collections.Filtered.Types InEntryAssembly() { }
-        public static aweXpect.Reflection.Collections.Filtered.Types InExecutingAssembly() { }
         public static aweXpect.Reflection.Collections.Filtered.Types.InNamespaceResult InNamespace(string @namespace) { }
     }
 }
@@ -1849,8 +1845,6 @@ namespace aweXpect.Reflection.Collections
                 public aweXpect.Reflection.Collections.Filtered.Types InAssemblies(System.Collections.Generic.IEnumerable<System.Reflection.Assembly?> assemblies) { }
                 public aweXpect.Reflection.Collections.Filtered.Types InAssemblyContaining(System.Type type) { }
                 public aweXpect.Reflection.Collections.Filtered.Types InAssemblyContaining<TType>() { }
-                public aweXpect.Reflection.Collections.Filtered.Types InEntryAssembly() { }
-                public aweXpect.Reflection.Collections.Filtered.Types InExecutingAssembly() { }
             }
             public sealed class NamespaceDependencyFilterResult : aweXpect.Reflection.Collections.Filtered.Types
             {

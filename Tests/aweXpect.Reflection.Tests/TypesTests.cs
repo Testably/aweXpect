@@ -66,24 +66,6 @@ public sealed class TypesTests
 	}
 
 	[Fact]
-	public async Task InEntryAssembly_ShouldUseEntryAssemblyAsSource()
-	{
-		Filtered.Types sut = Types.InEntryAssembly();
-
-		await That(sut).DoesNotContain(typeof(TypesTests));
-		await That(sut.GetDescription()).IsEqualTo("types in entry assembly");
-	}
-
-	[Fact]
-	public async Task InExecutingAssembly_ShouldContainTypesFromExecutingAssembly()
-	{
-		Filtered.Types sut = Types.InExecutingAssembly();
-
-		await That(sut).Contains(typeof(In));
-		await That(sut.GetDescription()).IsEqualTo("types in executing assembly");
-	}
-
-	[Fact]
 	public async Task InNamespace_ShouldContainTypesWithinNamespaceIncludingSubNamespaces()
 	{
 		Filtered.Types sut = Types.InNamespace(NamespaceScope);
@@ -194,26 +176,6 @@ public sealed class TypesTests
 		await That(sut).IsEmpty();
 		await That(sut.GetDescription())
 			.IsEqualTo($"types within namespace \"{NamespaceScope}\" in assembly containing type In");
-	}
-
-	[Fact]
-	public async Task InNamespace_InEntryAssembly_ShouldUseEntryAssemblyAsSource()
-	{
-		Filtered.Types sut = Types.InNamespace(NamespaceScope).InEntryAssembly();
-
-		await That(sut).IsEmpty();
-		await That(sut.GetDescription())
-			.IsEqualTo($"types within namespace \"{NamespaceScope}\" in entry assembly");
-	}
-
-	[Fact]
-	public async Task InNamespace_InExecutingAssembly_ShouldUseExecutingAssemblyAsSource()
-	{
-		Filtered.Types sut = Types.InNamespace(NamespaceScope).InExecutingAssembly();
-
-		await That(sut).IsEmpty();
-		await That(sut.GetDescription())
-			.IsEqualTo($"types within namespace \"{NamespaceScope}\" in executing assembly");
 	}
 
 	[Fact]

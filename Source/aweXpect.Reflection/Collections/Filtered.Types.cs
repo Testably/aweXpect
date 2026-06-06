@@ -507,41 +507,30 @@ public static partial class Filtered
 			///     current <see cref="System.AppDomain.CurrentDomain" /> (the default).
 			/// </summary>
 			public Types InAllLoadedAssemblies()
-				=> In.AllLoadedAssemblies().Types().WithinNamespace(_namespace);
+				=> From(In.AllLoadedAssemblies());
 
 			/// <summary>
 			///     Clarifies that the types within the namespace are searched in the given <paramref name="assemblies" />.
 			/// </summary>
 			public Types InAssemblies(params IEnumerable<Assembly?> assemblies)
-				=> new Assemblies(assemblies, $"in the assemblies {Formatter.Format(assemblies)}").Types()
-					.WithinNamespace(_namespace);
+				=> From(In.Assemblies(assemblies));
 
 			/// <summary>
 			///     Clarifies that the types within the namespace are searched in the assembly that contains
 			///     the <typeparamref name="TType" />.
 			/// </summary>
 			public Types InAssemblyContaining<TType>()
-				=> In.AssemblyContaining<TType>().Types().WithinNamespace(_namespace);
+				=> From(In.AssemblyContaining<TType>());
 
 			/// <summary>
 			///     Clarifies that the types within the namespace are searched in the assembly that contains
 			///     the <paramref name="type" />.
 			/// </summary>
 			public Types InAssemblyContaining(Type type)
-				=> In.AssemblyContaining(type).Types().WithinNamespace(_namespace);
+				=> From(In.AssemblyContaining(type));
 
-			/// <summary>
-			///     Clarifies that the types within the namespace are searched in the <see cref="Assembly.GetEntryAssembly()" />.
-			/// </summary>
-			public Types InEntryAssembly()
-				=> In.EntryAssembly().Types().WithinNamespace(_namespace);
-
-			/// <summary>
-			///     Clarifies that the types within the namespace are searched in the
-			///     <see cref="Assembly.GetExecutingAssembly()" />.
-			/// </summary>
-			public Types InExecutingAssembly()
-				=> In.ExecutingAssembly().Types().WithinNamespace(_namespace);
+			private Types From(Assemblies assemblies)
+				=> assemblies.Types().WithinNamespace(_namespace);
 		}
 
 		/// <summary>

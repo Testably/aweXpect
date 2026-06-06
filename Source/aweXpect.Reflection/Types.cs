@@ -8,6 +8,12 @@ namespace aweXpect.Reflection;
 /// <summary>
 ///     Static entry point for selecting types by criteria.
 /// </summary>
+/// <remarks>
+///     The <c>In*</c> methods mirror the assembly sources on <see cref="In" /> (each is the corresponding
+///     <c>In.*(…).Types()</c>) and are mirrored again as source clarifiers on
+///     <see cref="Filtered.Types.InNamespaceResult" />. When adding a new assembly source, keep all three
+///     surfaces in sync.
+/// </remarks>
 public static class Types
 {
 	/// <summary>
@@ -39,18 +45,6 @@ public static class Types
 	/// </summary>
 	public static Filtered.Types InAssemblyContaining(Type type)
 		=> In.AssemblyContaining(type).Types();
-
-	/// <summary>
-	///     Defines expectations on all types in the <see cref="Assembly.GetEntryAssembly()" />.
-	/// </summary>
-	public static Filtered.Types InEntryAssembly()
-		=> In.EntryAssembly().Types();
-
-	/// <summary>
-	///     Defines expectations on all types in the <see cref="Assembly.GetExecutingAssembly()" />.
-	/// </summary>
-	public static Filtered.Types InExecutingAssembly()
-		=> In.ExecutingAssembly().Types();
 
 	/// <summary>
 	///     Defines expectations on all types within the <paramref name="namespace" /> (including sub-namespaces).

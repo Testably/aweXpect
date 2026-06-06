@@ -94,8 +94,6 @@ evaluated collection that you can navigate and filter further.
 | `In.AllLoadedAssemblies()`                                                                    | all currently loaded assemblies (system assemblies [excluded](#assembly-exclusions)) |
 | `In.Assemblies(a1, a2, …)` / `In.Assemblies(collection)`                                      | the given assemblies                                                                 |
 | `In.AssemblyContaining<T>()` / `In.AssemblyContaining(typeof(T))`                             | the assembly that declares `T`                                                       |
-| `In.EntryAssembly()`                                                                          | the entry assembly                                                                   |
-| `In.ExecutingAssembly()`                                                                      | the executing assembly                                                               |
 | `In.Type<T>()` / `In.Type(typeof(T))`                                                         | a single type                                                                        |
 | `In.Types<T1, T2>()` / `In.Types<T1, T2, T3>()` / `In.Types(t1, t2, …)`                       | the given types                                                                      |
 | `In.Constructors(…)` / `In.Events(…)` / `In.Fields(…)` / `In.Methods(…)` / `In.Properties(…)` | the given members                                                                    |
@@ -111,7 +109,6 @@ point for architecture rules:
 | `Types.InAllLoadedAssemblies()`                                 | all types in all currently loaded assemblies                                   |
 | `Types.InAssemblies(a1, a2, …)`                                 | all types in the given assemblies                                              |
 | `Types.InAssemblyContaining<T>()` / `…(typeof(T))`              | all types in the assembly that declares `T`                                    |
-| `Types.InEntryAssembly()` / `Types.InExecutingAssembly()`       | all types in the entry / executing assembly                                    |
 
 `Types.InNamespace(…)` searches all loaded assemblies by default; chain one of the same `In*` methods directly
 after it to clarify the assembly source (it can only be specified once, before any further filters):

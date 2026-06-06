@@ -85,22 +85,6 @@ public sealed class InTests
 	}
 
 	[Fact]
-	public async Task EntryAssembly_ShouldContainExpectedAssembly()
-	{
-		Assembly? expectedAssembly = Assembly.GetEntryAssembly();
-
-		Filtered.Assemblies sut = In.EntryAssembly();
-
-#if NET8_0_OR_GREATER
-		await That(sut).HasSingle().Which
-			.IsEqualTo(expectedAssembly);
-#else
-		await That(sut).IsEmpty();
-#endif
-		await That(sut.GetDescription()).IsEqualTo("in entry assembly");
-	}
-
-	[Fact]
 	public async Task Events_WithEnumerable_ShouldContainProvidedEvents()
 	{
 		IEnumerable<EventInfo> events = typeof(BaseClassWithMembers).GetEvents();
@@ -109,18 +93,6 @@ public sealed class InTests
 
 		await That(sut).IsEqualTo(events).InAnyOrder();
 		await That(sut.GetDescription()).IsEqualTo("in the events ").AsPrefix();
-	}
-
-	[Fact]
-	public async Task ExecutingAssembly_ShouldContainExpectedAssembly()
-	{
-		Assembly expectedAssembly = typeof(In).Assembly;
-
-		Filtered.Assemblies sut = In.ExecutingAssembly();
-
-		await That(sut).HasSingle().Which
-			.IsEqualTo(expectedAssembly);
-		await That(sut.GetDescription()).IsEqualTo("in executing assembly");
 	}
 
 	[Fact]

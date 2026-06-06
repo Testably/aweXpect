@@ -11,8 +11,11 @@ using aweXpect.Reflection.Helpers;
 namespace aweXpect.Reflection;
 
 /// <summary>
-///     Static entry point for assemblies.
+///     Static entry point for selecting assemblies, types and members from concrete reflection objects.
 /// </summary>
+/// <remarks>
+///     To select types <em>by criteria</em> (e.g. by namespace), use <see cref="aweXpect.Reflection.Types" /> instead.
+/// </remarks>
 public static class In
 {
 	/// <summary>
@@ -49,18 +52,6 @@ public static class In
 	/// </summary>
 	public static Filtered.Assemblies AssemblyContaining(Type type)
 		=> new(type.Assembly, $"in assembly containing type {Formatter.Format(type)}");
-
-	/// <summary>
-	///     Defines expectations on the <see cref="Assembly.GetEntryAssembly()" />.
-	/// </summary>
-	public static Filtered.Assemblies EntryAssembly()
-		=> new(Assembly.GetEntryAssembly(), "in entry assembly");
-
-	/// <summary>
-	///     Defines expectations on the <see cref="Assembly.GetExecutingAssembly()" />.
-	/// </summary>
-	public static Filtered.Assemblies ExecutingAssembly()
-		=> new(Assembly.GetExecutingAssembly(), "in executing assembly");
 
 	/// <summary>
 	///     Defines expectations on the type <typeparamref name="TType" />.
