@@ -1,0 +1,211 @@
+---
+sidebar_label: NetArchTest & ArchUnitNET
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Feature Comparison with NetArchTest and ArchUnitNET
+
+[NetArchTest](https://github.com/BenMorris/NetArchTest) and
+[ArchUnitNET](https://github.com/TNG/ArchUnitNET) are the two established open-source libraries for
+architecture tests in .NET. aweXpect.Reflection covers the same ground (dependency rules, naming
+conventions, cycle detection) as part of a general reflection assertion library. This page maps the three
+approaches against each other.
+
+## The same rule in all three libraries
+
+*"The presentation layer must not reference the data layer":*
+
+<Tabs groupId="architecture-library">
+<TabItem value="awexpect" label="aweXpect.Reflection" default>
+
+```csharp
+await Expect.That(Types.InNamespace("MyApp.Presentation"))
+    .DoNotDependOn("MyApp.Data");
+```
+
+No separate loader or result handling: the selection scans the loaded assemblies, and a violation fails
+the test with a message listing the offending types.
+
+</TabItem>
+<TabItem value="netarchtest" label="NetArchTest">
+
+```csharp
+var result = Types.InAssembly(typeof(MyService).Assembly)
+    .That().ResideInNamespace("MyApp.Presentation")
+    .ShouldNot().HaveDependencyOn("MyApp.Data")
+    .GetResult();
+
+Assert.True(result.IsSuccessful);   // violations are in result.FailingTypeNames
+```
+
+`GetResult()` returns a `TestResult` with `IsSuccessful` and the failing types; turning that into a useful
+test failure (assertion + message) is left to you.
+
+</TabItem>
+<TabItem value="archunitnet" label="ArchUnitNET">
+
+```csharp
+private static readonly Architecture Architecture =
+    new ArchLoader().LoadAssemblies(typeof(MyService).Assembly).Build();
+
+IArchRule rule = Types().That().ResideInNamespace("MyApp.Presentation")
+    .Should().NotDependOnAny(Types().That().ResideInNamespace("MyApp.Data"))
+    .Because("the presentation layer is decoupled from persistence");
+
+rule.Check(Architecture);           // throws with the violations listed
+```
+
+The architecture is loaded explicitly (and cached statically); `Check` comes from a test-framework
+integration package and throws a `FailedArchRuleException` describing each violation.
+
+</TabItem>
+</Tabs>
+
+## Conceptual model
+
+- **NetArchTest** (`NetArchTest.Rules`) is a deliberately small, type-level rule engine:
+  `Types.InAssembly(…)` → `.That()` predicates → `.Should()`/`.ShouldNot()` conditions → `.GetResult()`.
+  It reads assemblies with Mono.Cecil and evaluates everything against `TypeDefinition`s. There are no
+  member-level rules and no assertion integration: you check `IsSuccessful` yourself.
+- **ArchUnitNET** (`TngTech.ArchUnitNET`) is the .NET port of Java's ArchUnit. It loads assemblies into its
+  own `Architecture` model (also via Mono.Cecil), on which rules from `ArchRuleDefinition`
+  (`Types()`, `Classes()`, `MethodMembers()`, …) are checked through per-framework integration packages
+  (xUnit, NUnit, MSTest, TUnit). It is the most feature-rich of the three for pure architecture testing:
+  slices, cycle rules and PlantUML import/export.
+- **aweXpect.Reflection** works directly on `System.Reflection` objects inside the
+  [aweXpect](https://docs.testably.org/aweXpect) assertion model: a "layer" is a reusable
+  [`Filtered.Types` selection](../03-architecture-rules.md#layers-as-type-selections), an architecture rule
+  is an ordinary `await Expect.That(…)` expectation, and the same vocabulary extends to methods,
+  properties, fields, events, constructors and assemblies for convention tests.
+
+## Coverage overview
+
+Legend: ✅ built-in · ⚠️ partial or via a general mechanism · ❌ not available.
+
+| Capability                                       |     NetArchTest      |        ArchUnitNET         |        aweXpect.Reflection         |
+|---------------------------------------------------|:--------------------:|:--------------------------:|:----------------------------------:|
+| Rule subjects                                     |    types only     | types + members | assemblies, types + all member kinds |
+| Selection by assembly / namespace                 |          ✅           |             ✅              |                 ✅                  |
+| Naming rules (prefix/suffix/regex)                |          ✅           |             ✅              |    ✅ (plus wildcard, custom comparer)     |
+| Type kinds                                        | ⚠️ classes, interfaces | ✅ classes, interfaces, enums, structs, records | ✅ plus delegates, exceptions, attributes, ref structs, record structs |
+| Access modifiers                                  |  ⚠️ public, nested   |             ✅              |                 ✅                  |
+| Attribute rules                                   |     ✅ presence      | ✅ incl. argument values | ✅ incl. typed predicate on the attribute instance |
+| Member-level rules (methods, properties, fields)  |          ❌           |             ✅              | ✅ plus events, constructors, parameter modifiers, async, extension methods, operators |
+| Immutability / nullability rules                  |          ✅           |        ⚠️ immutability         |                 ✅                  |
+| Dependency rules (on / not on / only on)          |          ✅           |             ✅              |                 ✅                  |
+| Body-level (IL) dependency detection              |          ✅           |             ✅              | ⚠️ signature-level default, IL via [custom resolver](../04-configuration.md#dependency-resolver) |
+| Dependency cycle detection                        |          ❌           |        ✅ via slices        | ✅ via namespaces / [slice roots](../03-architecture-rules.md#dependency-cycles) |
+| Failure messages explain the violation            | ❌ failing types only |             ✅              | ✅ all violations, grouped per rule |
+| Combine rules in one verification                 |     ✅ policies      |        ✅ `And`/`Or`        |        ✅ `Expect.ThatAll`         |
+| Exemptions to a rule                              |  ⚠️ custom rule  |       ⚠️ predicates        |    ✅ `Except(…)` / `Except<T>()`     |
+| Test-framework integration                        |  ❌ assert manually   | ✅ xUnit / NUnit / MSTest / TUnit packages | ✅ framework-agnostic (aweXpect core) |
+| PlantUML diagrams (import/export)                 |          ❌           |             ✅              |                 ❌                  |
+
+## Dependency detection depth
+
+The most important technical difference is **where dependencies are read from**:
+
+:::warning[Signature-level vs. IL-level]
+NetArchTest and ArchUnitNET parse assemblies with **Mono.Cecil** and walk **method bodies**: an
+instantiation (`new Foo()`), a static call or a cast inside a method counts as a dependency.
+aweXpect.Reflection's default resolver works on **reflection metadata** and sees only the **declared
+signatures** (base type, interfaces, member/parameter/return types, attributes; see
+[type dependencies](../03-architecture-rules.md#type-dependencies)). Body-only references are invisible to
+it unless you plug in an IL-level
+[custom dependency resolver](../04-configuration.md#dependency-resolver), e.g. backed by Mono.Cecil.
+:::
+
+In return, the signature-level default needs no assembly file on disk, never diverges from the runtime
+types, and filters out compiler plumbing (state machines, synthesized records members, nullability
+attributes, …) so rules only see code you actually wrote.
+
+## Cycle detection
+
+<Tabs groupId="architecture-library">
+<TabItem value="awexpect" label="aweXpect.Reflection" default>
+
+```csharp
+// Namespaces under MyApp must be free of (transitive) cycles,
+// grouped into one slice per direct sub-namespace of MyApp
+await Expect.That(Types.InNamespace("MyApp"))
+    .HaveNoDependencyCycles("MyApp");
+```
+
+Cycles are reported as namespace chains (e.g. `MyApp.Orders -> MyApp.Billing -> MyApp.Orders`); see
+[dependency cycles](../03-architecture-rules.md#dependency-cycles) for the namespace-family and slice-root
+semantics.
+
+</TabItem>
+<TabItem value="netarchtest" label="NetArchTest">
+
+```csharp
+// Not supported: NetArchTest has no cycle detection or slice concept.
+```
+
+</TabItem>
+<TabItem value="archunitnet" label="ArchUnitNET">
+
+```csharp
+SliceRuleDefinition.Slices()
+    .Matching("MyApp.(*)")
+    .Should().BeFreeOfCycles()
+    .Check(Architecture);
+```
+
+Slices are matched with `(*)`/`(**)` namespace patterns; cycle output lists the slice chain and the
+type-to-type references behind each edge.
+
+</TabItem>
+</Tabs>
+
+## Failure messages
+
+What you see when a rule is violated:
+
+- **NetArchTest** returns the failing type names, and nothing else. The test failure message is whatever
+  you build out of `result.FailingTypeNames`; there is no description of *which rule* failed or *why* a
+  type matched.
+- **ArchUnitNET** throws an exception whose message names the rule (including a custom `Because(…)` reason)
+  and lists each violating object with a failure description.
+- **aweXpect.Reflection** reports every violation with the expectation text, and
+  [`Expect.ThatAll`](../03-architecture-rules.md#layers-as-type-selections) groups several rules into a
+  single verification that lists all failures together:
+
+```
+Expected all of the following to succeed:
+ [01] Expected that domain all do not depend on types within namespace "MyApp.Infrastructure" in all loaded assemblies
+ [02] Expected that domain are all sealed
+but
+ [01] it contained types with the dependency [
+  OrderService
+]
+ [02] it contained non-sealed types [
+  Order,
+  Invoice
+]
+```
+
+## Beyond architecture rules
+
+NetArchTest stops at types, and ArchUnitNET's member rules cover names, visibility and a few modifiers.
+Convention tests over *member details* are where aweXpect.Reflection's
+[filter and assertion vocabulary](../02-filters.md) goes further; the same fluent style covers e.g.:
+
+```csharp
+// All async methods end in "Async"
+await Expect.That(In.AssemblyContaining<MyClass>()
+        .Methods().WhichAreAsync())
+    .HaveName("Async").AsSuffix();
+
+// Every public method with an [HttpGet] or [HttpPost] attribute accepts a CancellationToken
+await Expect.That(In.AssemblyContaining<MyController>()
+        .Public.Methods().With<HttpGetAttribute>().OrWith<HttpPostAttribute>())
+    .HaveParameter<CancellationToken>();
+
+// Serializable types have exactly one parameterless constructor
+await Expect.That(In.AllLoadedAssemblies()
+        .Types().With<SerializableAttribute>())
+    .ContainConstructors(c => c.WithoutParameters()).Exactly(1.Times());
+```
