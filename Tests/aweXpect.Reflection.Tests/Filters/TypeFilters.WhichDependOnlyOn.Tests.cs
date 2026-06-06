@@ -15,7 +15,7 @@ public sealed partial class TypeFilters
 			[Fact]
 			public async Task ShouldFilterForTypesDependingOnlyOnAllowedNamespaces()
 			{
-				Filtered.Types types = In.Namespace(ConsumersNamespace).WhichDependOnlyOn(Layer1Namespace);
+				Filtered.Types types = Types.InNamespace(ConsumersNamespace).WhichDependOnlyOn(Layer1Namespace);
 
 				await That(types).Contains(typeof(OnlyLayer1));
 				await That(types).Contains(typeof(FrameworkConsumer));

@@ -15,7 +15,7 @@ public sealed partial class TypeFilters
 			[Fact]
 			public async Task ShouldFilterForTypesDependingOnNamespace()
 			{
-				Filtered.Types types = In.Namespace(ConsumersNamespace).WhichDependOn(Layer1Namespace);
+				Filtered.Types types = Types.InNamespace(ConsumersNamespace).WhichDependOn(Layer1Namespace);
 
 				await That(types).Contains(typeof(ViaField));
 				await That(types).Contains(typeof(ViaSubNamespace));
@@ -25,7 +25,7 @@ public sealed partial class TypeFilters
 			[Fact]
 			public async Task WhenExcludingSubNamespaces_ShouldNotMatchSubNamespace()
 			{
-				Filtered.Types types = In.Namespace(ConsumersNamespace)
+				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
 					.WhichDependOn(Layer1Namespace).ExcludingSubNamespaces();
 
 				await That(types).Contains(typeof(ViaField));
@@ -35,7 +35,7 @@ public sealed partial class TypeFilters
 			[Fact]
 			public async Task WhenWidenedWithOrOn_ShouldMatchEither()
 			{
-				Filtered.Types types = In.Namespace(ConsumersNamespace)
+				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
 					.WhichDependOn("Non.Existent.Namespace").OrOn(Layer1Namespace);
 
 				await That(types).Contains(typeof(ViaField));
@@ -44,7 +44,7 @@ public sealed partial class TypeFilters
 			[Fact]
 			public async Task WhenNoNamespaceIsSpecified_ShouldThrowArgumentException()
 			{
-				void Act() => _ = In.Namespace(ConsumersNamespace).WhichDependOn();
+				void Act() => _ = Types.InNamespace(ConsumersNamespace).WhichDependOn();
 
 				await That(Act).Throws<ArgumentException>()
 					.WithMessage("At least one namespace must be specified.");

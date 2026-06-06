@@ -108,7 +108,7 @@ public static partial class ThatTypes
 
 		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
 		{
-			// Materialize once: the source (e.g. In.Namespace(...)) may be lazy and re-scan assemblies on every
+			// Materialize once: the source (e.g. Types.InNamespace(...)) may be lazy and re-scan assemblies on every
 			// enumeration, while both the cycle detection and the later result formatting read Actual.
 			List<Type?> materialized = [.. actual];
 			Actual = materialized;

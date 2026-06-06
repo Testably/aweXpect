@@ -9,7 +9,7 @@
 Expectations for reflection types for [aweXpect](https://github.com/Testably/aweXpect).
 
 Write architecture and convention tests as plain, readable assertions: **select** the assemblies, types
-or members you care about with `In`, then **assert** a rule on them with `Expect.That`.
+or members you care about with `In` or `Types`, then **assert** a rule on them with `Expect.That`.
 
 ## At a glance
 
@@ -98,8 +98,32 @@ evaluated collection that you can navigate and filter further.
 | `In.ExecutingAssembly()`                                                                      | the executing assembly                                                               |
 | `In.Type<T>()` / `In.Type(typeof(T))`                                                         | a single type                                                                        |
 | `In.Types<T1, T2>()` / `In.Types<T1, T2, T3>()` / `In.Types(t1, t2, …)`                       | the given types                                                                      |
-| `In.Namespace("ns")`                                                                          | all types within a namespace and its sub-namespaces (across loaded assemblies)       |
 | `In.Constructors(…)` / `In.Events(…)` / `In.Fields(…)` / `In.Methods(…)` / `In.Properties(…)` | the given members                                                                    |
+
+## Sources: the `Types` helper
+
+While `In` starts from concrete reflection objects, `Types` selects types *by criteria* — the natural entry
+point for architecture rules:
+
+| Source                                                          | Returns                                                                         |
+|-----------------------------------------------------------------|---------------------------------------------------------------------------------|
+| `Types.InNamespace("ns")`                                       | all types within a namespace and its sub-namespaces (across loaded assemblies) |
+| `Types.InAllLoadedAssemblies()`                                 | all types in all currently loaded assemblies                                   |
+| `Types.InAssemblies(a1, a2, …)`                                 | all types in the given assemblies                                              |
+| `Types.InAssemblyContaining<T>()` / `…(typeof(T))`              | all types in the assembly that declares `T`                                    |
+| `Types.InEntryAssembly()` / `Types.InExecutingAssembly()`       | all types in the entry / executing assembly                                    |
+
+`Types.InNamespace(…)` searches all loaded assemblies by default; chain one of the same `In*` methods directly
+after it to clarify the assembly source (it can only be specified once, before any further filters):
+
+```csharp
+// Defaults to all loaded assemblies
+await Expect.That(Types.InNamespace("MyApp.Domain")).AreSealed();
+
+// Clarify the assembly source
+await Expect.That(Types.InNamespace("MyApp.Domain").InAssemblyContaining<MyApp.Startup>())
+    .AreSealed();
+```
 
 ## Navigating to members
 
@@ -401,11 +425,11 @@ Layering and architecture rules over the types a type references **in its signat
 
 ```csharp
 // Presentation must not reference the data layer
-await Expect.That(In.Namespace("MyApp.Presentation"))
+await Expect.That(Types.InNamespace("MyApp.Presentation"))
     .DoNotDependOn("MyApp.Data");
 
 // The API layer may only reference the application and domain layers
-await Expect.That(In.Namespace("MyApp.Api"))
+await Expect.That(Types.InNamespace("MyApp.Api"))
     .DependOnlyOn("MyApp.Application", "MyApp.Domain");
 
 // Filter for the types that depend on a namespace
@@ -434,7 +458,7 @@ extends the built-in set). Types you write in authored signatures always do coun
 > as `new Infra.Foo()`, static calls and local variables are **not** detected. Function-pointer signatures
 > (`delegate*<…>`) are not decomposed either; the types inside them are invisible to dependency assertions.
 > Nested types are separate types with their own dependency surface: asserting on `typeof(Outer)` does not
-> include what `Outer.Inner` references. The collection-based assertions (e.g. over `In.Namespace(…)`)
+> include what `Outer.Inner` references. The collection-based assertions (e.g. over `Types.InNamespace(…)`)
 > enumerate nested types as their own items and therefore cover them. For IL/body-level accuracy, plug in
 > your own resolver via `Customize.aweXpect.Reflection().DependencyResolver()` (see
 > [Configuration](#dependency-resolver)).
@@ -445,7 +469,7 @@ can be targeted or allowed with an empty string (`""`). Each result is chainable
 
 ```csharp
 // Widen the set with .OrOn(…)
-await Expect.That(In.Namespace("MyApp.Api"))
+await Expect.That(Types.InNamespace("MyApp.Api"))
     .DependOnlyOn("MyApp.Application").OrOn("MyApp.Domain");
 
 // Opt out of sub-namespace matching for the whole expression
@@ -457,7 +481,7 @@ For `DependsOnlyOn` a type's own namespace is always allowed, and by default so 
 type's own sub-namespaces:
 
 ```csharp
-await Expect.That(In.Namespace("MyApp.Domain"))
+await Expect.That(Types.InNamespace("MyApp.Domain"))
     .DependOnlyOn("MyApp.Domain").ExcludingSubNamespaces().ExcludingOwnSubNamespaces();
 ```
 
@@ -490,7 +514,7 @@ The "slices should be free of cycles" architecture rule: assert that the namespa
 
 ```csharp
 // No dependency cycles among the namespaces under MyApp
-await Expect.That(In.Namespace("MyApp"))
+await Expect.That(Types.InNamespace("MyApp"))
     .HaveNoDependencyCycles();
 ```
 
@@ -512,7 +536,7 @@ parent/child reference becomes an edge (and can form a cycle):
 
 ```csharp
 // Treat every namespace as its own node (MyApp.Orders ↔ MyApp.Orders.Domain can now form a cycle)
-await Expect.That(In.Namespace("MyApp"))
+await Expect.That(Types.InNamespace("MyApp"))
     .HaveNoDependencyCycles().ExcludingSubNamespaces();
 ```
 
@@ -522,7 +546,7 @@ into the single slice `MyApp.Orders`:
 
 ```csharp
 // Group MyApp.Orders.* / MyApp.Billing.* / … into one slice each before looking for cycles
-await Expect.That(In.Namespace("MyApp"))
+await Expect.That(Types.InNamespace("MyApp"))
     .HaveNoDependencyCycles("MyApp");
 ```
 

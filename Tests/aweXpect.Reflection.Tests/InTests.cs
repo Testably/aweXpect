@@ -2,10 +2,6 @@
 using System.Reflection;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
-using aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope;
-using aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope.Nested;
-using aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScopeSibling;
-using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -161,79 +157,6 @@ public sealed class InTests
 		Filtered.Methods sut = In.Methods(method);
 
 		await That(sut).HasSingle().Which.IsEqualTo(method);
-	}
-
-	[Fact]
-	public async Task Namespace_ShouldContainTypesWithinNamespaceIncludingSubNamespaces()
-	{
-		Filtered.Types sut = In.Namespace("aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope");
-
-		await That(sut).Contains(typeof(ClassInNamespaceScope));
-		await That(sut).Contains(typeof(ClassInNestedNamespaceScope));
-		await That(sut).DoesNotContain(typeof(ClassInSiblingNamespaceScope));
-		await That(sut.GetDescription())
-			.IsEqualTo(
-				"types within namespace \"aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope\" in all loaded assemblies");
-	}
-
-	[Fact]
-	public async Task Namespace_ShouldSelectTypesThatCanBeAsserted()
-	{
-		Filtered.Types sut = In.Namespace("aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope");
-
-		async Task Act()
-			=> await That(sut)
-				.AreWithinNamespace("aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope");
-
-		await That(Act).DoesNotThrow();
-	}
-
-	[Fact]
-	public async Task Namespace_WhenAssertionFails_ShouldReportFullMessage()
-	{
-		Filtered.Types sut = In.Namespace("aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope");
-
-		async Task Act()
-			=> await That(sut)
-				.AreWithinNamespace("aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScopeSibling");
-
-		await That(Act).Throws<XunitException>()
-			.WithMessage("""
-			             Expected that types within namespace "aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope" in all loaded assemblies
-			             are all within namespace "aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScopeSibling",
-			             but it contained not matching types [
-			               *
-			             ]
-			             """).AsWildcard();
-	}
-
-	[Fact]
-	public async Task Namespace_WhenNegatingMatchingAssertion_ShouldReportFullMessage()
-	{
-		Filtered.Types sut = In.Namespace("aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope");
-
-		async Task Act()
-			=> await That(sut).DoesNotComplyWith(they
-				=> they.AreWithinNamespace("aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope"));
-
-		await That(Act).Throws<XunitException>()
-			.WithMessage("""
-			             Expected that types within namespace "aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope" in all loaded assemblies
-			             are not all within namespace "aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope",
-			             but it only contained matching types [
-			               *
-			             ]
-			             """).AsWildcard();
-	}
-
-	[Fact]
-	public async Task Namespace_WhenNoTypesAreInNamespace_ShouldBeEmpty()
-	{
-		Filtered.Types sut = In.Namespace("Non.Existent.Namespace");
-
-		await That(sut).IsEmpty();
-		await That(sut.GetDescription())
-			.IsEqualTo("types within namespace \"Non.Existent.Namespace\" in all loaded assemblies");
 	}
 
 	[Fact]

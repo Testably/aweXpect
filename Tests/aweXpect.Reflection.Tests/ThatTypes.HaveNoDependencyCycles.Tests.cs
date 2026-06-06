@@ -126,7 +126,7 @@ public sealed partial class ThatTypes
 			public async Task WhenUsingNamespaceSource_ShouldDetectCycle()
 			{
 				async Task Act()
-					=> await That(In.Namespace($"{Prefix}.Two")).HaveNoDependencyCycles();
+					=> await That(Types.InNamespace($"{Prefix}.Two")).HaveNoDependencyCycles();
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("*had a dependency cycle*").AsWildcard();

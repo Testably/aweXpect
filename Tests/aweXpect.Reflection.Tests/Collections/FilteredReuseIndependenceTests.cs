@@ -161,7 +161,7 @@ public sealed class FilteredReuseIndependenceTests
 		const string layer2 = "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer2";
 		const string consumers = "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers";
 
-		Filtered.Types.NamespaceDependencyFilterResult @base = In.Namespace(consumers).WhichDependOn(layer1);
+		Filtered.Types.NamespaceDependencyFilterResult @base = Types.InNamespace(consumers).WhichDependOn(layer1);
 
 		// Branch a separate view off the base, then widen the base. The branch must not see the widening.
 		Filtered.Types branch = @base.Which(_ => true);

@@ -329,7 +329,6 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Assemblies ExecutingAssembly() { }
         public static aweXpect.Reflection.Collections.Filtered.Fields Fields(System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo> fields) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods Methods(System.Collections.Generic.IEnumerable<System.Reflection.MethodInfo> methods) { }
-        public static aweXpect.Reflection.Collections.Filtered.Types Namespace(string @namespace) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties Properties(System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo> properties) { }
         public static aweXpect.Reflection.Collections.Filtered.Types Type(System.Type type) { }
         public static aweXpect.Reflection.Collections.Filtered.Types Type<TType>() { }
@@ -1658,6 +1657,16 @@ namespace aweXpect.Reflection
                 where TAttribute : System.Attribute { }
         }
     }
+    public static class Types
+    {
+        public static aweXpect.Reflection.Collections.Filtered.Types InAllLoadedAssemblies() { }
+        public static aweXpect.Reflection.Collections.Filtered.Types InAssemblies(System.Collections.Generic.IEnumerable<System.Reflection.Assembly?> assemblies) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types InAssemblyContaining(System.Type type) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types InAssemblyContaining<TType>() { }
+        public static aweXpect.Reflection.Collections.Filtered.Types InEntryAssembly() { }
+        public static aweXpect.Reflection.Collections.Filtered.Types InExecutingAssembly() { }
+        public static aweXpect.Reflection.Collections.Filtered.Types.InNamespaceResult InNamespace(string @namespace) { }
+    }
 }
 namespace aweXpect.Reflection.Collections
 {
@@ -1825,6 +1834,15 @@ namespace aweXpect.Reflection.Collections
             public string GetDescription() { }
             public aweXpect.Reflection.Collections.Filtered.Methods Methods(aweXpect.Reflection.Collections.MemberScope memberScope = 0) { }
             public aweXpect.Reflection.Collections.Filtered.Properties Properties(aweXpect.Reflection.Collections.MemberScope memberScope = 0) { }
+            public sealed class InNamespaceResult : aweXpect.Reflection.Collections.Filtered.Types
+            {
+                public aweXpect.Reflection.Collections.Filtered.Types InAllLoadedAssemblies() { }
+                public aweXpect.Reflection.Collections.Filtered.Types InAssemblies(System.Collections.Generic.IEnumerable<System.Reflection.Assembly?> assemblies) { }
+                public aweXpect.Reflection.Collections.Filtered.Types InAssemblyContaining(System.Type type) { }
+                public aweXpect.Reflection.Collections.Filtered.Types InAssemblyContaining<TType>() { }
+                public aweXpect.Reflection.Collections.Filtered.Types InEntryAssembly() { }
+                public aweXpect.Reflection.Collections.Filtered.Types InExecutingAssembly() { }
+            }
             public sealed class NamespaceDependencyFilterResult : aweXpect.Reflection.Collections.Filtered.Types
             {
                 public aweXpect.Reflection.Collections.Filtered.Types.NamespaceDependencyFilterResult ExcludingSubNamespaces() { }

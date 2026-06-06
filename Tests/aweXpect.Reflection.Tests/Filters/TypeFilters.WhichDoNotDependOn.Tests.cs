@@ -15,7 +15,7 @@ public sealed partial class TypeFilters
 			[Fact]
 			public async Task ShouldFilterForTypesNotDependingOnNamespace()
 			{
-				Filtered.Types types = In.Namespace(ConsumersNamespace).WhichDoNotDependOn(Layer1Namespace);
+				Filtered.Types types = Types.InNamespace(ConsumersNamespace).WhichDoNotDependOn(Layer1Namespace);
 
 				await That(types).Contains(typeof(FrameworkConsumer));
 				await That(types).DoesNotContain(typeof(ViaField));
