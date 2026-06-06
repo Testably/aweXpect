@@ -1312,6 +1312,32 @@ internal static class TypeHelpers
 		=> type is { IsAbstract: false, IsGenericTypeDefinition: false, };
 
 	/// <summary>
+	///     Gets a value indicating whether the <see cref="Type" /> is immutable.
+	/// </summary>
+	/// <param name="type">The <see cref="Type" />.</param>
+	/// <remarks>
+	///     A type is considered immutable when all instance fields (including inherited ones) are
+	///     <see langword="readonly" /> and all instance properties (including inherited ones) have no setter
+	///     or an init-only setter.
+	/// </remarks>
+	public static bool IsImmutable(this Type? type)
+		=> type is not null && type.GetMutableMembers().Length == 0;
+
+	/// <summary>
+	///     Gets the mutable instance members of the <paramref name="type" />: fields (including inherited ones)
+	///     that are not <see langword="readonly" /> and properties (including inherited ones) with a regular
+	///     (non-init) setter.
+	/// </summary>
+	/// <param name="type">The <see cref="Type" />.</param>
+	public static MemberInfo[] GetMutableMembers(this Type type)
+		=> type.GetDeclaredFields(MemberScope.IncludingInherited)
+			.Where(field => field is { IsStatic: false, IsInitOnly: false, })
+			.OfType<MemberInfo>()
+			.Concat(type.GetDeclaredProperties(MemberScope.IncludingInherited)
+				.Where(property => !property.IsReallyStatic() && property.HasSetter()))
+			.ToArray();
+
+	/// <summary>
 	///     Gets a value indicating whether the <see cref="Type" /> has an accessible parameterless (default) constructor.
 	/// </summary>
 	/// <param name="type">The <see cref="Type" />.</param>

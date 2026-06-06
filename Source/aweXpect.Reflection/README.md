@@ -290,6 +290,7 @@ outside the namespace.
 | assignable to       | `.WhichAreAssignableTo<T>()`                    | `.IsAssignableTo<T>()`      | `.AreAssignableTo<T>()`      |
 | assignable from     | `.WhichAreAssignableFrom<T>()`                  | `.IsAssignableFrom<T>()`    | `.AreAssignableFrom<T>()`    |
 | instantiable        | `.WhichAreInstantiable()`                       | `.IsInstantiable()`         | `.AreInstantiable()`         |
+| immutable           | `.WhichAreImmutable()`                          | `.IsImmutable()`            | `.AreImmutable()`            |
 | default constructor | `.WhichHaveADefaultConstructor()`               | `.HasADefaultConstructor()` | `.HaveADefaultConstructor()` |
 | custom predicate    | `.Which(t => …)`                                | `.Satisfies(t => …)`        | `.All().Satisfy(t => …)`     |
 
@@ -319,6 +320,10 @@ A type is *instantiable* when it is a concrete type that is neither abstract, st
 an open generic type definition. *Default constructor* checks for an accessible parameterless constructor
 (value types always have one); this is independent of instantiability (e.g. a type with only a parameterized
 constructor is instantiable but has no default constructor).
+
+A type is *immutable* when all instance fields (including inherited ones) are `readonly` and all instance
+properties (including inherited ones) have no setter or an `init`-only setter. Static members do not affect
+immutability. Failure messages list the offending mutable members for actionable feedback.
 
 > **Negation:** every kind/modifier row above has a negated form. Most use `WhichAreNot…` on filters and
 > `IsNot…` / `AreNot…` on assertions (e.g. `WhichAreNotSealed()`, `IsNotAClass()`, `AreNotStatic()`,
