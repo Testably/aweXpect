@@ -35,13 +35,7 @@ public static class In
 	/// <summary>
 	///     Defines expectations on the given <paramref name="assemblies" />.
 	/// </summary>
-	public static Filtered.Assemblies Assemblies(params Assembly?[] assemblies)
-		=> new(assemblies, $"in the assemblies {Formatter.Format(assemblies)}");
-
-	/// <summary>
-	///     Defines expectations on the given <paramref name="assemblies" />.
-	/// </summary>
-	public static Filtered.Assemblies Assemblies(IEnumerable<Assembly> assemblies)
+	public static Filtered.Assemblies Assemblies(params IEnumerable<Assembly?> assemblies)
 		=> new(assemblies, $"in the assemblies {Formatter.Format(assemblies)}");
 
 	/// <summary>

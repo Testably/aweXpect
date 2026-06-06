@@ -320,8 +320,7 @@ namespace aweXpect.Reflection
     public static class In
     {
         public static aweXpect.Reflection.Collections.Filtered.Assemblies AllLoadedAssemblies() { }
-        public static aweXpect.Reflection.Collections.Filtered.Assemblies Assemblies(System.Collections.Generic.IEnumerable<System.Reflection.Assembly> assemblies) { }
-        public static aweXpect.Reflection.Collections.Filtered.Assemblies Assemblies(params System.Reflection.Assembly?[] assemblies) { }
+        public static aweXpect.Reflection.Collections.Filtered.Assemblies Assemblies(System.Collections.Generic.IEnumerable<System.Reflection.Assembly?> assemblies) { }
         public static aweXpect.Reflection.Collections.Filtered.Assemblies AssemblyContaining(System.Type type) { }
         public static aweXpect.Reflection.Collections.Filtered.Assemblies AssemblyContaining<TType>() { }
         public static aweXpect.Reflection.Collections.Filtered.Constructors Constructors(System.Collections.Generic.IEnumerable<System.Reflection.ConstructorInfo> constructors) { }
