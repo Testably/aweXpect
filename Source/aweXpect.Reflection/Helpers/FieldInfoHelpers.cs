@@ -128,4 +128,15 @@ internal static class FieldInfoHelpers
 
 		return false;
 	}
+
+	/// <summary>
+	///     Checks if the <paramref name="fieldInfo" /> is required (marked with the <c>required</c> modifier).
+	/// </summary>
+	/// <remarks>
+	///     A field is considered required if it carries the
+	///     <c>System.Runtime.CompilerServices.RequiredMemberAttribute</c>.
+	/// </remarks>
+	public static bool IsRequired(this FieldInfo? fieldInfo)
+		=> fieldInfo != null && fieldInfo.GetCustomAttributes(true)
+			.Any(attribute => attribute.GetType().FullName == "System.Runtime.CompilerServices.RequiredMemberAttribute");
 }

@@ -400,7 +400,7 @@ In addition to [access modifiers](#access-modifiers),
 | abstract / sealed *(properties only)*  | `.WhichAreAbstract()` / `.WhichAreSealed()` | `.IsAbstract()` / `.IsSealed()` | `.AreAbstract()` / `.AreSealed()` |
 | virtual *(properties only)*            | `.WhichAreVirtual()`                        | `.IsVirtual()`                  | `.AreVirtual()`                   |
 | override *(properties only)*           | `.WhichOverride()`                          | `.Overrides()`                  | `.Override()`                     |
-| required *(properties only)*           | `.WhichAreRequired()`                       | `.IsRequired()`                 | `.AreRequired()`                  |
+| required *(properties & fields)*       | `.WhichAreRequired()`                       | `.IsRequired()`                 | `.AreRequired()`                  |
 | readable *(properties only)*           | `.WhichAreReadable()`                       | `.IsReadable()`                 | `.AreReadable()`                  |
 | writable *(properties only)*           | `.WhichAreWritable()`                       | `.IsWritable()`                 | `.AreWritable()`                  |
 | read-only *(properties only)*          | `.WhichAreReadOnly()`                       | `.IsReadOnly()`                 | `.AreReadOnly()`                  |

@@ -93,8 +93,8 @@ Legend: ✅ built-in · ⚠️ partial or via a general mechanism · ❌ not ava
 | Type kinds                                        | ⚠️ classes, interfaces | ✅ classes, interfaces, enums, structs, records | ✅ plus delegates, exceptions, attributes, ref structs, record structs |
 | Access modifiers                                  |  ⚠️ public, nested   |             ✅              |                 ✅                  |
 | Attribute rules                                   |     ✅ presence      | ✅ incl. argument values | ✅ incl. typed predicate on the attribute instance |
-| Member-level rules (methods, properties, fields)  |          ❌           |             ✅              | ✅ plus events, constructors, parameter modifiers, async, extension methods, operators |
-| Immutability / nullability rules                  |          ✅           |        ⚠️ immutability         |                 ✅                  |
+| Member-level rules (methods, properties, fields)  |          ❌           |             ✅              | ✅ plus events, constructors, parameter modifiers, async, extension methods, operators, required / nullable members |
+| Immutability / nullability rules                  |          ✅           |        ⚠️ immutability         |     ✅ type- and member-level      |
 | Dependency rules (on / not on / only on)          |          ✅           |             ✅              |                 ✅                  |
 | Body-level (IL) dependency detection              |          ✅           |             ✅              | ⚠️ signature-level default, IL via [custom resolver](../04-configuration.md#dependency-resolver) |
 | Dependency cycle detection                        |          ❌           |        ✅ via slices        | ✅ via namespaces / [slice roots](../03-architecture-rules.md#dependency-cycles) |
