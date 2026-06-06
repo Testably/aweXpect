@@ -72,6 +72,99 @@ public sealed class EventInfoHelpersTests
 		await That(result2).IsFalse();
 	}
 
+	[Fact]
+	public async Task IsOverride_WhenAddMethodIsNull_ShouldReturnFalse()
+	{
+		EventInfo eventInfo = new EventInfoWithoutAddMethod();
+
+		bool result = eventInfo.IsOverride();
+
+		await That(result).IsFalse();
+	}
+
+	[Fact]
+	public async Task IsOverride_WhenEventInfoIsNull_ShouldReturnFalse()
+	{
+		EventInfo? eventInfo = null;
+
+		bool result = eventInfo.IsOverride();
+
+		await That(result).IsFalse();
+	}
+
+	[Theory]
+	[InlineData(nameof(DerivedEventClass.AbstractEvent), true)]
+	[InlineData(nameof(DerivedEventClass.VirtualEvent), true)]
+	[InlineData(nameof(DerivedEventClass.DerivedPlainEvent), false)]
+	public async Task IsOverride_WhenEventIsDeclaredOnDerivedClass_ShouldReturnExpectedResult(
+		string eventName, bool expectedResult)
+	{
+		EventInfo eventInfo = typeof(DerivedEventClass).GetEvent(eventName)!;
+
+		bool result = eventInfo.IsOverride();
+
+		await That(result).IsEqualTo(expectedResult);
+	}
+
+	[Theory]
+	[InlineData(nameof(BaseEventClass.AbstractEvent))]
+	[InlineData(nameof(BaseEventClass.VirtualEvent))]
+	public async Task IsOverride_WhenEventIsDeclaredOnBaseClass_ShouldReturnFalse(string eventName)
+	{
+		EventInfo eventInfo = typeof(BaseEventClass).GetEvent(eventName)!;
+
+		bool result = eventInfo.IsOverride();
+
+		await That(result).IsFalse();
+	}
+
+	[Fact]
+	public async Task IsReallyVirtual_WhenAddMethodIsNull_ShouldReturnFalse()
+	{
+		EventInfo eventInfo = new EventInfoWithoutAddMethod();
+
+		bool result = eventInfo.IsReallyVirtual();
+
+		await That(result).IsFalse();
+	}
+
+	[Fact]
+	public async Task IsReallyVirtual_WhenEventInfoIsNull_ShouldReturnFalse()
+	{
+		EventInfo? eventInfo = null;
+
+		bool result = eventInfo.IsReallyVirtual();
+
+		await That(result).IsFalse();
+	}
+
+	[Theory]
+	[InlineData(nameof(BaseEventClass.AbstractEvent), true)]
+	[InlineData(nameof(BaseEventClass.VirtualEvent), true)]
+	[InlineData(nameof(BaseEventClass.PlainEvent), false)]
+	[InlineData(nameof(BaseEventClass.StaticEvent), false)]
+	public async Task IsReallyVirtual_WhenEventIsDeclaredOnBaseClass_ShouldReturnExpectedResult(
+		string eventName, bool expectedResult)
+	{
+		EventInfo eventInfo = typeof(BaseEventClass).GetEvent(eventName)!;
+
+		bool result = eventInfo.IsReallyVirtual();
+
+		await That(result).IsEqualTo(expectedResult);
+	}
+
+	[Theory]
+	[InlineData(nameof(DerivedEventClass.AbstractEvent))]
+	[InlineData(nameof(DerivedEventClass.VirtualEvent))]
+	public async Task IsReallyVirtual_WhenEventIsDeclaredOnDerivedClass_ShouldReturnTrue(string eventName)
+	{
+		EventInfo eventInfo = typeof(DerivedEventClass).GetEvent(eventName)!;
+
+		bool result = eventInfo.IsReallyVirtual();
+
+		await That(result).IsTrue();
+	}
+
 	[AttributeUsage(AttributeTargets.Event)]
 	private class DummyAttribute : Attribute
 	{
@@ -98,6 +191,41 @@ public sealed class EventInfoHelpersTests
 	private class TestClassBase
 	{
 		[Dummy(1)] public virtual event Dummy EventWithAttributeInBaseClass;
+	}
+
+	private abstract class BaseEventClass
+	{
+		public abstract event Dummy AbstractEvent;
+		public virtual event Dummy VirtualEvent;
+		public event Dummy PlainEvent;
+		public static event Dummy StaticEvent;
+	}
+
+	private class DerivedEventClass : BaseEventClass
+	{
+		public override event Dummy AbstractEvent;
+		public sealed override event Dummy VirtualEvent;
+		public event Dummy DerivedPlainEvent;
+	}
+
+	private sealed class EventInfoWithoutAddMethod : EventInfo
+	{
+		public override EventAttributes Attributes => EventAttributes.None;
+		public override Type? DeclaringType => typeof(EventInfoHelpersTests);
+		public override string Name => nameof(EventInfoWithoutAddMethod);
+		public override Type? ReflectedType => typeof(EventInfoHelpersTests);
+
+		public override MethodInfo? GetAddMethod(bool nonPublic) => null;
+
+		public override object[] GetCustomAttributes(bool inherit) => [];
+
+		public override object[] GetCustomAttributes(Type attributeType, bool inherit) => [];
+
+		public override MethodInfo? GetRaiseMethod(bool nonPublic) => null;
+
+		public override MethodInfo? GetRemoveMethod(bool nonPublic) => null;
+
+		public override bool IsDefined(Type attributeType, bool inherit) => false;
 	}
 #pragma warning restore CS0067
 #pragma warning restore CS8618

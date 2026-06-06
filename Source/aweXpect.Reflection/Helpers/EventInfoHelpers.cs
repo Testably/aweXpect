@@ -103,6 +103,22 @@ internal static class EventInfoHelpers
 		=> eventInfo?.AddMethod?.IsFinal == true;
 
 	/// <summary>
+	///     Checks if the <paramref name="eventInfo" /> is virtual (based on its accessor methods).
+	/// </summary>
+	/// <param name="eventInfo">The <see cref="EventInfo" /> to check.</param>
+	/// <returns><see langword="true" /> if the event is virtual; otherwise, <see langword="false" />.</returns>
+	public static bool IsReallyVirtual(this EventInfo? eventInfo)
+		=> eventInfo?.AddMethod?.IsVirtual == true;
+
+	/// <summary>
+	///     Checks if the <paramref name="eventInfo" /> overrides a base class event (based on its accessor methods).
+	/// </summary>
+	/// <param name="eventInfo">The <see cref="EventInfo" /> to check.</param>
+	/// <returns><see langword="true" /> if the event overrides a base class event; otherwise, <see langword="false" />.</returns>
+	public static bool IsOverride(this EventInfo? eventInfo)
+		=> eventInfo?.AddMethod.IsOverride() == true;
+
+	/// <summary>
 	///     Checks if the <paramref name="eventInfo" /> is static (based on its accessor methods).
 	/// </summary>
 	/// <param name="eventInfo">The <see cref="EventInfo" /> to check.</param>

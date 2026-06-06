@@ -468,14 +468,17 @@ In addition to [access modifiers](#access-modifiers),
 | handler of exact type          | `.OfExactType<T>()`                         | `.IsOfExactType<T>()`           | `.AreOfExactType<T>()`            |
 | abstract / sealed              | `.WhichAreAbstract()` / `.WhichAreSealed()` | `.IsAbstract()` / `.IsSealed()` | `.AreAbstract()` / `.AreSealed()` |
 | static                         | `.WhichAreStatic()`                         | `.IsStatic()`                   | `.AreStatic()`                    |
+| virtual                        | `.WhichAreVirtual()`                        | `.IsVirtual()`                  | `.AreVirtual()`                   |
+| override                       | `.WhichOverride()`                          | `.Overrides()`                  | `.Override()`                     |
 
 The `OfType` / `IsOfType` / `AreOfType` filters and assertions match the event's handler type (its
 `EventHandlerType`, e.g. `EventHandler<T>`); the `…ExactType` variants match only the exact handler type.
 Use `OrOfType<T>()` / `OrOfExactType<T>()` to allow several handler types.
 
 :::note[Negation]
-The `abstract`, `sealed` and `static` rows have a negated form: `WhichAreNot…` on filters and
-`IsNot…` / `AreNot…` on assertions (e.g. `WhichAreNotSealed()`, `IsNotSealed()`, `AreNotSealed()`).
+The `abstract`, `sealed`, `static` and `virtual` rows have a negated form: `WhichAreNot…` on filters and
+`IsNot…` / `AreNot…` on assertions (e.g. `WhichAreNotSealed()`, `IsNotSealed()`, `AreNotSealed()`);
+`override` uses `WhichDoNotOverride()` / `DoesNotOverride()` / `DoNotOverride()`.
 :::
 
 ```csharp
