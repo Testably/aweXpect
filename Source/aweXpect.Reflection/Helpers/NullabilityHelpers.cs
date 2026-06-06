@@ -68,7 +68,25 @@ internal static class NullabilityHelpers
 	}
 
 	/// <summary>
-	///     Returns the nullable fields and properties of the <paramref name="type" />, including inherited
+	///     Checks if the <paramref name="eventInfo" /> is nullable.
+	/// </summary>
+	/// <remarks>
+	///     An event is considered nullable if its handler type is annotated as nullable (according to the
+	///     nullable reference type metadata). Event handler types are always delegate (reference) types,
+	///     so the <see cref="Nullable{T}" /> value type check does not apply.
+	/// </remarks>
+	public static bool IsNullable(this EventInfo? eventInfo)
+	{
+		if (eventInfo is null)
+		{
+			return false;
+		}
+
+		return IsNullableReferenceType(eventInfo);
+	}
+
+	/// <summary>
+	///     Returns the nullable fields, properties and events of the <paramref name="type" />, including inherited
 	///     members or only those declared directly on the type according to the <paramref name="memberScope" />.
 	/// </summary>
 	public static MemberInfo[] GetNullableMembers(this Type type,
@@ -76,7 +94,7 @@ internal static class NullabilityHelpers
 		=> type.GetMembersByNullability(memberScope).Nullable;
 
 	/// <summary>
-	///     Returns the non-nullable fields and properties of the <paramref name="type" />, including inherited
+	///     Returns the non-nullable fields, properties and events of the <paramref name="type" />, including inherited
 	///     members or only those declared directly on the type according to the <paramref name="memberScope" />.
 	/// </summary>
 	public static MemberInfo[] GetNotNullableMembers(this Type type,
@@ -84,7 +102,7 @@ internal static class NullabilityHelpers
 		=> type.GetMembersByNullability(memberScope).NotNullable;
 
 	/// <summary>
-	///     Partitions the fields and properties of the <paramref name="type" /> into nullable and
+	///     Partitions the fields, properties and events of the <paramref name="type" /> into nullable and
 	///     non-nullable members in a single pass, including inherited members or only those declared
 	///     directly on the type according to the <paramref name="memberScope" />.
 	/// </summary>
@@ -101,6 +119,11 @@ internal static class NullabilityHelpers
 		foreach (PropertyInfo property in type.GetDeclaredProperties(memberScope))
 		{
 			(property.IsNullable() ? nullable : notNullable).Add(property);
+		}
+
+		foreach (EventInfo @event in type.GetDeclaredEvents(memberScope))
+		{
+			(@event.IsNullable() ? nullable : notNullable).Add(@event);
 		}
 
 		return (nullable.ToArray(), notNullable.ToArray());
@@ -250,6 +273,7 @@ internal static class NullabilityHelpers
 				{
 					FieldInfo fieldInfo => fieldInfo.FieldType,
 					PropertyInfo propertyInfo => propertyInfo.PropertyType,
+					EventInfo eventInfo => eventInfo.EventHandlerType,
 					_ => null,
 				};
 			}

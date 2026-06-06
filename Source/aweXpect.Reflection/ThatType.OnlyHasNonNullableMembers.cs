@@ -12,8 +12,9 @@ namespace aweXpect.Reflection;
 public static partial class ThatType
 {
 	/// <summary>
-	///     Verifies that all fields and properties of the <see cref="Type" /> are non-nullable, including inherited
-	///     members or only those declared directly on the type according to the <paramref name="memberScope" />.
+	///     Verifies that all fields, properties and events of the <see cref="Type" /> are non-nullable, including
+	///     inherited members or only those declared directly on the type according to the
+	///     <paramref name="memberScope" />.
 	/// </summary>
 	/// <remarks>
 	///     A member is considered nullable if its type is a <see cref="Nullable{T}" /> value type or a

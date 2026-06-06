@@ -9,7 +9,7 @@ namespace aweXpect.Reflection.Internal.Tests.Helpers;
 public sealed class NullabilityHelpersTests
 {
 	[Fact]
-	public async Task GetNotNullableMembers_ShouldReturnNonNullableFieldsAndProperties()
+	public async Task GetNotNullableMembers_ShouldReturnNonNullableFieldsPropertiesAndEvents()
 	{
 		MemberInfo[] notNullableMembers = typeof(NullabilityTestClass).GetNotNullableMembers();
 
@@ -20,11 +20,13 @@ public sealed class NullabilityHelpersTests
 			nameof(NullabilityTestClass.NonNullableValueProperty),
 			nameof(NullabilityTestClass.NonNullableReferenceProperty),
 			nameof(NullabilityTestClass.NonNullableGenericProperty),
+			nameof(NullabilityTestClass.NonNullableEvent),
+			nameof(NullabilityTestClass.NonNullableGenericEvent),
 		]).InAnyOrder();
 	}
 
 	[Fact]
-	public async Task GetNullableMembers_ShouldReturnNullableFieldsAndProperties()
+	public async Task GetNullableMembers_ShouldReturnNullableFieldsPropertiesAndEvents()
 	{
 		MemberInfo[] nullableMembers = typeof(NullabilityTestClass).GetNullableMembers();
 
@@ -36,6 +38,8 @@ public sealed class NullabilityHelpersTests
 			nameof(NullabilityTestClass.NullableReferenceProperty),
 			nameof(NullabilityTestClass.NullableGenericProperty),
 			nameof(NullabilityTestClass.NullableWriteOnlyProperty),
+			nameof(NullabilityTestClass.NullableEvent),
+			nameof(NullabilityTestClass.NullableGenericEvent),
 		]).InAnyOrder();
 	}
 
@@ -51,6 +55,18 @@ public sealed class NullabilityHelpersTests
 		FieldInfo fieldInfo = typeof(NullabilityTestClass).GetField(fieldName)!;
 
 		await That(fieldInfo.IsNullable()).IsEqualTo(expectNullable);
+	}
+
+	[Theory]
+	[InlineData(nameof(NullabilityTestClass.NullableEvent), true)]
+	[InlineData(nameof(NullabilityTestClass.NonNullableEvent), false)]
+	[InlineData(nameof(NullabilityTestClass.NullableGenericEvent), true)]
+	[InlineData(nameof(NullabilityTestClass.NonNullableGenericEvent), false)]
+	public async Task IsNullable_ShouldEvaluateEventNullability(string eventName, bool expectNullable)
+	{
+		EventInfo eventInfo = typeof(NullabilityTestClass).GetEvent(eventName)!;
+
+		await That(eventInfo.IsNullable()).IsEqualTo(expectNullable);
 	}
 
 	[Theory]
@@ -82,6 +98,14 @@ public sealed class NullabilityHelpersTests
 			: ((PropertyInfo)memberInfo).IsNullable();
 
 		await That(result).IsEqualTo(expectNullable);
+	}
+
+	[Fact]
+	public async Task IsNullable_WhenEventIsOblivious_ShouldReturnFalse()
+	{
+		EventInfo eventInfo = typeof(ObliviousTestClass).GetEvent(nameof(ObliviousTestClass.ObliviousEvent))!;
+
+		await That(eventInfo.IsNullable()).IsFalse();
 	}
 
 	[Theory]
@@ -222,6 +246,25 @@ public sealed class NullabilityHelpersTests
 	}
 
 	[Fact]
+	public async Task IsNullable_WithNonNullableEventInConstructedGenericType_ShouldReturnFalse()
+	{
+		// Events cannot be declared as a bare generic type parameter, so resolving the member type
+		// through the generic type definition always yields the (non generic-parameter) handler type.
+		EventInfo eventInfo = typeof(GenericTestClass<string>)
+			.GetEvent(nameof(GenericTestClass<string>.UnannotatedEvent))!;
+
+		await That(eventInfo.IsNullable()).IsFalse();
+	}
+
+	[Fact]
+	public async Task IsNullable_WithNullEventInfo_ShouldReturnFalse()
+	{
+		EventInfo? eventInfo = null;
+
+		await That(eventInfo.IsNullable()).IsFalse();
+	}
+
+	[Fact]
 	public async Task IsNullable_WithNullFieldInfo_ShouldReturnFalse()
 	{
 		FieldInfo? fieldInfo = null;
@@ -248,6 +291,7 @@ public sealed class NullabilityHelpersTests
 	}
 
 #pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
+#pragma warning disable CS0067 // Event is never used
 	public class NullabilityTestClass
 	{
 		public List<string?> NonNullableGenericField = [];
@@ -256,6 +300,10 @@ public sealed class NullabilityHelpersTests
 		public List<string>? NullableGenericField;
 		public string? NullableReferenceField;
 		public int? NullableValueField;
+		public event EventHandler? NullableEvent;
+		public event EventHandler NonNullableEvent = delegate { };
+		public event EventHandler<string>? NullableGenericEvent;
+		public event EventHandler<string?> NonNullableGenericEvent = delegate { };
 		public int? NullableValueProperty { get; set; }
 		public int NonNullableValueProperty { get; set; }
 		public string? NullableReferenceProperty { get; set; }
@@ -297,6 +345,7 @@ public sealed class NullabilityHelpersTests
 	{
 		public T? AnnotatedField;
 		public T UnannotatedField = default!;
+		public event EventHandler UnannotatedEvent = delegate { };
 		public T UnannotatedProperty { get; set; } = default!;
 		public T? AnnotatedProperty { get; set; }
 	}
@@ -322,6 +371,7 @@ public sealed class NullabilityHelpersTests
 	{
 		public string ObliviousField;
 		public string ObliviousProperty { get; set; }
+		public event EventHandler ObliviousEvent;
 
 		public class NestedObliviousTestClass
 		{
@@ -329,5 +379,6 @@ public sealed class NullabilityHelpersTests
 			public string NestedObliviousProperty { get; set; }
 		}
 	}
+#pragma warning restore CS0067
 #pragma warning restore CS0649
 }

@@ -19,7 +19,7 @@ namespace aweXpect.Reflection;
 public static partial class ThatTypes
 {
 	/// <summary>
-	///     Verifies that all fields and properties of all items in the filtered collection of <see cref="Type" />
+	///     Verifies that all fields, properties and events of all items in the filtered collection of <see cref="Type" />
 	///     are nullable, including inherited members or only those declared directly on the type according to
 	///     the <paramref name="memberScope" />.
 	/// </summary>
@@ -35,7 +35,7 @@ public static partial class ThatTypes
 
 #if NET8_0_OR_GREATER
 	/// <summary>
-	///     Verifies that all fields and properties of all items in the filtered collection of <see cref="Type" />
+	///     Verifies that all fields, properties and events of all items in the filtered collection of <see cref="Type" />
 	///     are nullable, including inherited members or only those declared directly on the type according to
 	///     the <paramref name="memberScope" />.
 	/// </summary>

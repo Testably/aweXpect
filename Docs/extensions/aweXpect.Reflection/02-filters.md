@@ -181,8 +181,8 @@ properties (including inherited ones) have no setter or an `init`-only setter. S
 immutability. Failure messages list the offending mutable members for actionable feedback.
 
 `OnlyHasNullableMembers` / `OnlyHaveNullableMembers` (and the non-nullable counterparts) verify the
-[nullability](#nullability) of all declared fields and properties of the type; the failure message lists the
-non-compliant members per type:
+[nullability](#nullability) of all declared fields, properties and events of the type; the failure message
+lists the non-compliant members per type:
 
 ```csharp
 await Expect.That(In.AssemblyContaining<MyRequest>()
@@ -425,7 +425,8 @@ and `IsNot…` / `AreNot…` on assertions (e.g. `WhichAreNotConstant()`, `IsNot
 
 A property or field counts as *nullable* when its type is a `Nullable<T>` value type (e.g. `int?`) or a
 reference type annotated as nullable (e.g. `string?`, based on the nullable reference type metadata emitted
-by the compiler). The check follows the declared annotation on every target framework: reference types
+by the compiler). The same applies to [events](#events), whose handler type is always a delegate (reference)
+type. The check follows the declared annotation on every target framework: reference types
 without nullability annotations (oblivious code compiled without `<Nullable>enable</Nullable>`) and
 unconstrained generic type parameters (`T`, as opposed to `T?`) count as non-nullable, and post-condition
 attributes like `[AllowNull]` or `[MaybeNull]` are ignored.
@@ -470,15 +471,20 @@ In addition to [access modifiers](#access-modifiers),
 | static                         | `.WhichAreStatic()`                         | `.IsStatic()`                   | `.AreStatic()`                    |
 | virtual                        | `.WhichAreVirtual()`                        | `.IsVirtual()`                  | `.AreVirtual()`                   |
 | override                       | `.WhichOverride()`                          | `.Overrides()`                  | `.Override()`                     |
+| nullable                       | `.WhichAreNullable()`                       | `.IsNullable()`                 | `.AreNullable()`                  |
 
 The `OfType` / `IsOfType` / `AreOfType` filters and assertions match the event's handler type (its
 `EventHandlerType`, e.g. `EventHandler<T>`); the `…ExactType` variants match only the exact handler type.
 Use `OrOfType<T>()` / `OrOfExactType<T>()` to allow several handler types.
 
+An event counts as *nullable* when its handler type is annotated as nullable
+(e.g. `event EventHandler? Changed;`), following the same [nullability](#nullability) rules as
+properties and fields.
+
 :::note[Negation]
-The `abstract`, `sealed`, `static` and `virtual` rows have a negated form: `WhichAreNot…` on filters and
-`IsNot…` / `AreNot…` on assertions (e.g. `WhichAreNotSealed()`, `IsNotSealed()`, `AreNotSealed()`);
-`override` uses `WhichDoNotOverride()` / `DoesNotOverride()` / `DoNotOverride()`.
+The `abstract`, `sealed`, `static`, `virtual` and `nullable` rows have a negated form: `WhichAreNot…` on
+filters and `IsNot…` / `AreNot…` on assertions (e.g. `WhichAreNotSealed()`, `IsNotSealed()`,
+`AreNotSealed()`); `override` uses `WhichDoNotOverride()` / `DoesNotOverride()` / `DoNotOverride()`.
 :::
 
 ```csharp
