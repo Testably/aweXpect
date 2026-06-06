@@ -46,7 +46,8 @@ internal sealed class TypeSetDependencyOptions
 	}
 
 	/// <summary>
-	///     Indicates whether sub-namespaces of the type's own namespace are still allowed (for depends-only-on).
+	///     Indicates whether sub-namespaces of the type's own namespace are still allowed (for depends-only-on
+	///     and has-dependencies-outside).
 	/// </summary>
 	/// <remarks>
 	///     The type's own namespace is always allowed; its sub-namespaces stay allowed unless the caller opted into
@@ -79,7 +80,8 @@ internal sealed class TypeSetDependencyOptions
 	}
 
 	/// <summary>
-	///     Excludes sub-namespaces of the type's own namespace from being implicitly allowed (for depends-only-on).
+	///     Excludes sub-namespaces of the type's own namespace from being implicitly allowed (for depends-only-on
+	///     and has-dependencies-outside).
 	/// </summary>
 	/// <remarks>
 	///     Only the exemption rule changes, not the resolved target set, so a previously resolved set stays valid.

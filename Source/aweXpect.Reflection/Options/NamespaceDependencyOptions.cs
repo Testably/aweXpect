@@ -47,7 +47,8 @@ internal sealed class NamespaceDependencyOptions
 	public bool ExcludeSubNamespaces => _excludeSubNamespaces;
 
 	/// <summary>
-	///     Indicates whether sub-namespaces of the type's own namespace are still allowed (for depends-only-on).
+	///     Indicates whether sub-namespaces of the type's own namespace are still allowed (for depends-only-on
+	///     and has-dependencies-outside).
 	/// </summary>
 	/// <remarks>
 	///     The type's own namespace is always allowed; its sub-namespaces stay allowed unless the caller opted into
@@ -123,7 +124,8 @@ internal sealed class NamespaceDependencyOptions
 		=> _excludeSubNamespaces = true;
 
 	/// <summary>
-	///     Excludes sub-namespaces of the type's own namespace from being implicitly allowed (for depends-only-on).
+	///     Excludes sub-namespaces of the type's own namespace from being implicitly allowed (for depends-only-on
+	///     and has-dependencies-outside).
 	/// </summary>
 	public void ExcludingOwnSubNamespaces()
 		=> _excludeOwnSubNamespaces = true;

@@ -6,8 +6,8 @@ using aweXpect.Core;
 namespace aweXpect.Reflection.Helpers;
 
 /// <summary>
-///     Renders the grouped failure output of the depend-only-on constraints: one indented line per failing
-///     item, each followed by its list of disallowed dependencies.
+///     Renders the grouped failure output of the depend-only-on and has-dependencies-outside constraints: one
+///     indented line per failing item, each followed by its list of dependencies outside the allowed set.
 /// </summary>
 /// <remarks>
 ///     Shared between the assembly-level and the type-level constraints, so that the formatting (indentation,

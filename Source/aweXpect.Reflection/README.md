@@ -763,6 +763,7 @@ The dependency filters and assertions follow the familiar filter/assert pairing:
 | depends on namespace     | `.WhichDependOn("x", …)`     | `.DependsOn("x", …)`    | `.DependOn("x", …)`    |
 | does not depend on       | `.WhichDoNotDependOn("x", …)`| `.DoesNotDependOn("x", …)` | `.DoNotDependOn("x", …)` |
 | depends only on set      | `.WhichDependOnlyOn("x", …)` | `.DependsOnlyOn("x", …)`| `.DependOnlyOn("x", …)`|
+| has dependencies outside set | `.WhichHaveDependenciesOutside("x", …)` | `.HasDependenciesOutside("x", …)` | `.HaveDependenciesOutside("x", …)` |
 
 ```csharp
 // Presentation must not reference the data layer
@@ -818,12 +819,26 @@ await Expect.That(types).DoNotDependOn("MyApp.Data").ExcludingSubNamespaces();
 ```
 
 For `DependsOnlyOn` a type's own namespace is always allowed, and by default so are its sub-namespaces. Use
-`.ExcludingOwnSubNamespaces()` (only available on the *only-on* family) to also forbid references into a
-type's own sub-namespaces:
+`.ExcludingOwnSubNamespaces()` (only available on the *only-on* and *outside* families) to also forbid
+references into a type's own sub-namespaces:
 
 ```csharp
 await Expect.That(Types.InNamespace("MyApp.Domain"))
     .DependOnlyOn("MyApp.Domain").ExcludingSubNamespaces().ExcludingOwnSubNamespaces();
+```
+
+`HasDependenciesOutside` is the **positive counterpart** of `DependsOnlyOn` for finding the violators of an
+allowed set — without a double-negated "does not depend only on". The allowed set follows the same rules
+(sub-namespaces included, the own namespace and framework assemblies never count as outside, the same
+chainable refinements):
+
+```csharp
+// Select the current violators of an architecture rule (e.g. for a baseline)
+In.AllLoadedAssemblies().Types().WhichHaveDependenciesOutside("MyApp.Application", "MyApp.Domain")
+
+// Assert that a known legacy type still has its external dependency
+await Expect.That(typeof(LegacyImportService))
+    .HasDependenciesOutside("MyApp.Application", "MyApp.Domain");
 ```
 
 `DependsOn` and `DoesNotDependOn` (single types only) also accept a **specific type** via `<T>()` or
@@ -833,7 +848,7 @@ await Expect.That(Types.InNamespace("MyApp.Domain"))
 await Expect.That(typeof(MyDomainType)).DoesNotDependOn<DbContext>().OrOn<SqlConnection>();
 ```
 
-All three dependency families additionally accept a reusable `Filtered.Types` selection as target; see
+All dependency families additionally accept a reusable `Filtered.Types` selection as target; see
 [Layers as type selections](#layers-as-type-selections).
 
 > **Framework dependencies are ignored unless you name one explicitly.** `DependOnlyOn` ignores dependencies
@@ -910,15 +925,16 @@ Filtered.Types repositories   = Types.InNamespace("MyApp.Data").WithName("Reposi
 ```
 
 The dependency assertions and filters accept such a selection as a **target**, alongside the namespace and
-specific-type forms: `DependsOn` / `DoesNotDependOn` / `DependsOnlyOn` (and the plural `DependOn` /
-`DoNotDependOn` / `DependOnlyOn` and the `WhichDependOn` / `WhichDoNotDependOn` / `WhichDependOnlyOn`
+specific-type forms: `DependsOn` / `DoesNotDependOn` / `DependsOnlyOn` / `HasDependenciesOutside` (and the
+plural `DependOn` / `DoNotDependOn` / `DependOnlyOn` / `HaveDependenciesOutside` and the `WhichDependOn` /
+`WhichDoNotDependOn` / `WhichDependOnlyOn` / `WhichHaveDependenciesOutside`
 filters) take one or more `Filtered.Types` arguments. Each target selection is resolved once per assertion;
 a dependency matches when it is a member of the union of the resolved selections. Matching is by type
 identity, where a generic type definition in the selection (e.g. a scanned `Repository<>`) matches any of
 its constructions.
-Multiple targets and `.OrOn(…)` mean *any of*; for the *only-on* family the union is the allowed set, while
-the own-namespace and framework rules apply unchanged, including the `.ExcludingOwnSubNamespaces()` opt-out
-(an empty selection thus allows only the own namespace
+Multiple targets and `.OrOn(…)` mean *any of*; for the *only-on* and *outside* families the union is the
+allowed set, while the own-namespace and framework rules apply unchanged, including the
+`.ExcludingOwnSubNamespaces()` opt-out (an empty selection thus allows only the own namespace
 and framework dependencies). A selection is an explicit target, so framework types contained in it are
 matched normally by `DependsOn` / `DoesNotDependOn`.
 

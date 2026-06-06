@@ -485,6 +485,76 @@ public static partial class Filtered
 		}
 
 		/// <summary>
+		///     A filtered collection of <see cref="System.Type" /> from a namespace-based has-dependencies-outside
+		///     filter, allowing to widen the allowed namespaces and to opt out of sub-namespace matching — for the
+		///     allowed namespaces and for the type's own namespace.
+		/// </summary>
+		/// <remarks>
+		///     Like all filtered collections, this is an immutable value object: <see cref="OrOn" />,
+		///     <see cref="ExcludingSubNamespaces" /> and <see cref="ExcludingOwnSubNamespaces" /> do not mutate this
+		///     instance but rebuild a fresh filter from the original base collection, so deriving multiple views from
+		///     the same instance cannot corrupt each other.
+		/// </remarks>
+		public sealed class NamespaceDependencyOutsideFilterResult : Types
+		{
+			private readonly Func<NamespaceDependencyOptions, Types> _build;
+			private readonly NamespaceDependencyOptions _options;
+
+			internal NamespaceDependencyOutsideFilterResult(
+				NamespaceDependencyOptions options,
+				Func<NamespaceDependencyOptions, Types> build)
+				: base(build(options))
+			{
+				_options = options;
+				_build = build;
+			}
+
+			/// <summary>
+			///     Widens the allowed set by the given <paramref name="namespaces" /> (including sub-namespaces unless
+			///     <see cref="ExcludingSubNamespaces" /> is used), so that dependencies on them no longer count as
+			///     outside.
+			/// </summary>
+			public NamespaceDependencyOutsideFilterResult OrOn(params IEnumerable<string> namespaces)
+			{
+				NamespaceDependencyOptions widened = _options.Copy();
+				widened.OrOn(namespaces);
+				return new NamespaceDependencyOutsideFilterResult(widened, _build);
+			}
+
+			/// <summary>
+			///     Excludes sub-namespaces of the allowed namespaces from matching for the whole filter (including any
+			///     <see cref="OrOn" /> additions), so that dependencies on them count as outside.
+			/// </summary>
+			/// <remarks>
+			///     Without this call, a namespace matches itself and all its sub-namespaces (so <c>Foo.Bar</c> includes
+			///     <c>Foo.Bar.Baz</c> but not <c>Foo.BarBaz</c>).
+			///     <para />
+			///     The type's own namespace never counts as outside, and neither do its sub-namespaces unless
+			///     <see cref="ExcludingOwnSubNamespaces" /> is also used.
+			/// </remarks>
+			public NamespaceDependencyOutsideFilterResult ExcludingSubNamespaces()
+			{
+				NamespaceDependencyOptions refined = _options.Copy();
+				refined.ExcludingSubNamespaces();
+				return new NamespaceDependencyOutsideFilterResult(refined, _build);
+			}
+
+			/// <summary>
+			///     Excludes sub-namespaces of the type's own namespace from being implicitly allowed (so a <c>Foo</c>
+			///     type referencing <c>Foo.Bar</c> is selected unless <c>Foo.Bar</c> is explicitly allowed).
+			/// </summary>
+			/// <remarks>
+			///     The type's own namespace itself never counts as outside.
+			/// </remarks>
+			public NamespaceDependencyOutsideFilterResult ExcludingOwnSubNamespaces()
+			{
+				NamespaceDependencyOptions refined = _options.Copy();
+				refined.ExcludingOwnSubNamespaces();
+				return new NamespaceDependencyOutsideFilterResult(refined, _build);
+			}
+		}
+
+		/// <summary>
 		///     A filtered collection of <see cref="System.Type" /> within a namespace, that also allows clarifying
 		///     the assembly source once (it defaults to all loaded assemblies).
 		/// </summary>
@@ -615,6 +685,58 @@ public static partial class Filtered
 				TypeSetDependencyOptions refined = _options.Copy();
 				refined.ExcludingOwnSubNamespaces();
 				return new TypeSetDependencyOnlyOnFilterResult(refined, _build);
+			}
+		}
+
+		/// <summary>
+		///     A filtered collection of <see cref="System.Type" /> from a has-dependencies-outside filter whose
+		///     allowed targets are filtered collections of types, allowing to widen the allowed collections and to
+		///     opt out of the implicit allowance of the type's own sub-namespaces.
+		/// </summary>
+		/// <remarks>
+		///     Like all filtered collections, this is an immutable value object: <see cref="OrOn" /> and
+		///     <see cref="ExcludingOwnSubNamespaces" /> do not mutate this instance but rebuild a fresh filter from
+		///     the original base collection, so deriving multiple views from the same instance cannot corrupt each
+		///     other.
+		/// </remarks>
+		public sealed class TypeSetDependencyOutsideFilterResult : Types
+		{
+			private readonly Func<TypeSetDependencyOptions, Types> _build;
+			private readonly TypeSetDependencyOptions _options;
+
+			internal TypeSetDependencyOutsideFilterResult(
+				TypeSetDependencyOptions options,
+				Func<TypeSetDependencyOptions, Types> build)
+				: base(build(options))
+			{
+				_options = options;
+				_build = build;
+			}
+
+			/// <summary>
+			///     Widens the allowed set by the given <paramref name="targets" />, so that dependencies on their
+			///     types no longer count as outside.
+			/// </summary>
+			public TypeSetDependencyOutsideFilterResult OrOn(params Filtered.Types[] targets)
+			{
+				TypeSetDependencyOptions widened = _options.Copy();
+				widened.OrOn(targets);
+				return new TypeSetDependencyOutsideFilterResult(widened, _build);
+			}
+
+			/// <summary>
+			///     Excludes sub-namespaces of the type's own namespace from being implicitly allowed (so a <c>Foo</c>
+			///     type referencing <c>Foo.Bar</c> is selected unless <c>Foo.Bar</c> types are part of an allowed
+			///     collection).
+			/// </summary>
+			/// <remarks>
+			///     The type's own namespace itself never counts as outside.
+			/// </remarks>
+			public TypeSetDependencyOutsideFilterResult ExcludingOwnSubNamespaces()
+			{
+				TypeSetDependencyOptions refined = _options.Copy();
+				refined.ExcludingOwnSubNamespaces();
+				return new TypeSetDependencyOutsideFilterResult(refined, _build);
 			}
 		}
 	}
