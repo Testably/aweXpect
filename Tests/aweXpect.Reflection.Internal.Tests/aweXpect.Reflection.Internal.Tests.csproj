@@ -10,6 +10,9 @@
 
 	<PropertyGroup>
 		<SignAssembly>True</SignAssembly>
+		<!-- CS0436: on net48 the Nullable polyfill attributes are compiled into this project and are also visible
+		     from aweXpect.Reflection via InternalsVisibleTo; both copies are identical (same package version). -->
+		<NoWarn>$(NoWarn);CS0436</NoWarn>
 	</PropertyGroup>
 
 </Project>

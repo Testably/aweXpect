@@ -292,6 +292,8 @@ outside the namespace.
 | instantiable        | `.WhichAreInstantiable()`                       | `.IsInstantiable()`         | `.AreInstantiable()`         |
 | immutable           | `.WhichAreImmutable()`                          | `.IsImmutable()`            | `.AreImmutable()`            |
 | default constructor | `.WhichHaveADefaultConstructor()`               | `.HasADefaultConstructor()` | `.HaveADefaultConstructor()` |
+| only nullable members | `.WhichOnlyHaveNullableMembers()`             | `.OnlyHasNullableMembers()` | `.OnlyHaveNullableMembers()` |
+| only non-nullable members | `.WhichOnlyHaveNonNullableMembers()`      | `.OnlyHasNonNullableMembers()` | `.OnlyHaveNonNullableMembers()` |
 | custom predicate    | `.Which(t => …)`                                | `.Satisfies(t => …)`        | `.All().Satisfy(t => …)`     |
 
 `WhichInheritFrom` / `InheritsFrom` consider only the **base-class chain** (not implemented interfaces) and
@@ -324,6 +326,16 @@ constructor is instantiable but has no default constructor).
 A type is *immutable* when all instance fields (including inherited ones) are `readonly` and all instance
 properties (including inherited ones) have no setter or an `init`-only setter. Static members do not affect
 immutability. Failure messages list the offending mutable members for actionable feedback.
+
+`OnlyHasNullableMembers` / `OnlyHaveNullableMembers` (and the non-nullable counterparts) verify the
+[nullability](#nullability) of all declared fields and properties of the type; the failure message lists the
+non-compliant members per type:
+
+```csharp
+await Expect.That(In.AssemblyContaining<MyRequest>()
+        .Types().WithName("Request").AsSuffix())
+    .OnlyHaveNullableMembers();
+```
 
 > **Negation:** every kind/modifier row above has a negated form. Most use `WhichAreNot…` on filters and
 > `IsNot…` / `AreNot…` on assertions (e.g. `WhichAreNotSealed()`, `IsNotAClass()`, `AreNotStatic()`,
@@ -526,6 +538,7 @@ In addition to [access modifiers](#access-modifiers),
 | of type (or a subtype)                 | `.OfType<T>()`                              | `.IsOfType<T>()`                | `.AreOfType<T>()`                 |
 | of exact type                          | `.OfExactType<T>()`                         | `.IsOfExactType<T>()`           | `.AreOfExactType<T>()`            |
 | static *(properties & fields)*         | `.WhichAreStatic()`                         | `.IsStatic()`                   | `.AreStatic()`                    |
+| nullable *(properties & fields)*       | `.WhichAreNullable()`                       | `.IsNullable()`                 | `.AreNullable()`                  |
 | abstract / sealed *(properties only)*  | `.WhichAreAbstract()` / `.WhichAreSealed()` | `.IsAbstract()` / `.IsSealed()` | `.AreAbstract()` / `.AreSealed()` |
 | virtual *(properties only)*            | `.WhichAreVirtual()`                        | `.IsVirtual()`                  | `.AreVirtual()`                   |
 | override *(properties only)*           | `.WhichOverride()`                          | `.Overrides()`                  | `.Override()`                     |
@@ -543,10 +556,27 @@ In addition to [access modifiers](#access-modifiers),
 | read-only *(fields only)*              | `.WhichAreReadOnly()`                       | `.IsReadOnly()`                 | `.AreReadOnly()`                  |
 | constant *(fields only)*               | `.WhichAreConstant()`                       | `.IsConstant()`                 | `.AreConstant()`                  |
 
-> **Negation:** the `static`, `abstract`, `sealed`, `virtual`, `required`, `indexer`, `extension property`,
-> `read-only` *(fields)* and `constant` rows have a negated form: `WhichAreNot…` on filters and `IsNot…` /
-> `AreNot…` on assertions (e.g. `WhichAreNotConstant()`, `IsNotConstant()`, `AreNotConstant()`); `override` uses
-> `WhichDoNotOverride()` / `DoesNotOverride()` / `DoNotOverride()`.
+> **Negation:** the `static`, `nullable`, `abstract`, `sealed`, `virtual`, `required`, `indexer`,
+> `extension property`, `read-only` *(fields)* and `constant` rows have a negated form: `WhichAreNot…` on filters
+> and `IsNot…` / `AreNot…` on assertions (e.g. `WhichAreNotConstant()`, `IsNotConstant()`, `AreNotConstant()`);
+> `override` uses `WhichDoNotOverride()` / `DoesNotOverride()` / `DoNotOverride()`.
+
+#### Nullability
+
+A property or field counts as *nullable* when its type is a `Nullable<T>` value type (e.g. `int?`) or a
+reference type annotated as nullable (e.g. `string?`, based on the nullable reference type metadata emitted
+by the compiler). The check follows the declared annotation on every target framework: reference types
+without nullability annotations (oblivious code compiled without `<Nullable>enable</Nullable>`) and
+unconstrained generic type parameters (`T`, as opposed to `T?`) count as non-nullable, and post-condition
+attributes like `[AllowNull]` or `[MaybeNull]` are ignored.
+
+```csharp
+// All properties and fields of the request types must be nullable
+await Expect.That(In.AssemblyContaining<MyRequest>()
+        .Types().WithName("Request").AsSuffix()
+        .Properties())
+    .AreNullable();
+```
 
 `WhichAreExtensionProperties()`, `IsAnExtensionProperty()` and `AreExtensionProperties()` match extension properties
 declared with the C# extension block syntax (`extension(...) { … }`), both instance and static. The real properties
