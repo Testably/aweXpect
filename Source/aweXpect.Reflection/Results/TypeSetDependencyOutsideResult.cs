@@ -20,7 +20,9 @@ public sealed class TypeSetDependencyOutsideResult<TThat>
 		IThat<TThat> subject,
 		TypeSetDependencyOptions options)
 		: base(expectationBuilder, subject)
-		=> _options = options;
+	{
+		_options = options;
+	}
 
 	/// <summary>
 	///     Widens the allowed set by the given <paramref name="targets" />, so that dependencies on their types no

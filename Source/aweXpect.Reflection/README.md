@@ -103,12 +103,12 @@ evaluated collection that you can navigate and filter further.
 While `In` starts from concrete reflection objects, `Types` selects types *by criteria* — the natural entry
 point for architecture rules:
 
-| Source                                                          | Returns                                                                         |
-|-----------------------------------------------------------------|---------------------------------------------------------------------------------|
-| `Types.InNamespace("ns")`                                       | all types within a namespace and its sub-namespaces (across loaded assemblies) |
-| `Types.InAllLoadedAssemblies()`                                 | all types in all currently loaded assemblies                                   |
-| `Types.InAssemblies(a1, a2, …)`                                 | all types in the given assemblies                                              |
-| `Types.InAssemblyContaining<T>()` / `…(typeof(T))`              | all types in the assembly that declares `T`                                    |
+| Source                                             | Returns                                                                        |
+|----------------------------------------------------|--------------------------------------------------------------------------------|
+| `Types.InNamespace("ns")`                          | all types within a namespace and its sub-namespaces (across loaded assemblies) |
+| `Types.InAllLoadedAssemblies()`                    | all types in all currently loaded assemblies                                   |
+| `Types.InAssemblies(a1, a2, …)`                    | all types in the given assemblies                                              |
+| `Types.InAssemblyContaining<T>()` / `…(typeof(T))` | all types in the assembly that declares `T`                                    |
 
 `Types.InNamespace(…)` searches all loaded assemblies by default; chain one of the same `In*` methods directly
 after it to clarify the assembly source (it can only be specified once, before any further filters):
@@ -267,34 +267,34 @@ outside the namespace.
 
 ### Types
 
-| Kind                | Filter                                          | Assert (single)             | Assert (many)                |
-|---------------------|-------------------------------------------------|-----------------------------|------------------------------|
-| class               | `.WhichAreClasses()` / `.Classes()`             | `.IsAClass()`               | `.AreClasses()`              |
-| interface           | `.WhichAreInterfaces()` / `.Interfaces()`       | `.IsAnInterface()`          | `.AreInterfaces()`           |
-| enum                | `.WhichAreEnums()` / `.Enums()`                 | `.IsAnEnum()`               | `.AreEnums()`                |
-| struct              | `.WhichAreStructs()` / `.Structs()`             | `.IsAStruct()`              | `.AreStructs()`              |
-| record              | `.WhichAreRecords()` / `.Records()`             | `.IsARecord()`              | `.AreRecords()`              |
-| record struct       | `.WhichAreRecordStructs()` / `.RecordStructs()` | `.IsARecordStruct()`        | `.AreRecordStructs()`        |
-| readonly struct     | `.WhichAreReadOnly()`                           | `.IsReadOnly()`             | `.AreReadOnly()`             |
-| ref struct          | `.WhichAreRefStructs()`                         | `.IsARefStruct()`           | `.AreRefStructs()`           |
-| delegate            | `.WhichAreDelegates()`                          | `.IsADelegate()`            | `.AreDelegates()`            |
-| exception           | `.WhichAreExceptions()`                         | `.IsAnException()`          | `.AreExceptions()`           |
-| attribute           | `.WhichAreAttributes()`                         | `.IsAnAttribute()`          | `.AreAttributes()`           |
-| abstract            | `.WhichAreAbstract()` / `.Abstract`             | `.IsAbstract()`             | `.AreAbstract()`             |
-| sealed              | `.WhichAreSealed()` / `.Sealed`                 | `.IsSealed()`               | `.AreSealed()`               |
-| static              | `.WhichAreStatic()` / `.Static`                 | `.IsStatic()`               | `.AreStatic()`               |
-| generic             | `.WhichAreGeneric()` / `.Generic`               | `.IsGeneric()`              | `.AreGeneric()`              |
-| nested              | `.WhichAreNested()` / `.Nested`                 | `.IsNested()`               | `.AreNested()`               |
-| inherits from       | `.WhichInheritFrom<T>()`                        | `.InheritsFrom<T>()`        | `.InheritFrom<T>()`          |
-| implements          | `.WhichImplement<T>()`                          | `.Implements<T>()`          | `.Implement<T>()`            |
-| assignable to       | `.WhichAreAssignableTo<T>()`                    | `.IsAssignableTo<T>()`      | `.AreAssignableTo<T>()`      |
-| assignable from     | `.WhichAreAssignableFrom<T>()`                  | `.IsAssignableFrom<T>()`    | `.AreAssignableFrom<T>()`    |
-| instantiable        | `.WhichAreInstantiable()`                       | `.IsInstantiable()`         | `.AreInstantiable()`         |
-| immutable           | `.WhichAreImmutable()`                          | `.IsImmutable()`            | `.AreImmutable()`            |
-| default constructor | `.WhichHaveADefaultConstructor()`               | `.HasADefaultConstructor()` | `.HaveADefaultConstructor()` |
-| only nullable members | `.WhichOnlyHaveNullableMembers()`             | `.OnlyHasNullableMembers()` | `.OnlyHaveNullableMembers()` |
-| only non-nullable members | `.WhichOnlyHaveNonNullableMembers()`      | `.OnlyHasNonNullableMembers()` | `.OnlyHaveNonNullableMembers()` |
-| custom predicate    | `.Which(t => …)`                                | `.Satisfies(t => …)`        | `.All().Satisfy(t => …)`     |
+| Kind                      | Filter                                          | Assert (single)                | Assert (many)                   |
+|---------------------------|-------------------------------------------------|--------------------------------|---------------------------------|
+| class                     | `.WhichAreClasses()` / `.Classes()`             | `.IsAClass()`                  | `.AreClasses()`                 |
+| interface                 | `.WhichAreInterfaces()` / `.Interfaces()`       | `.IsAnInterface()`             | `.AreInterfaces()`              |
+| enum                      | `.WhichAreEnums()` / `.Enums()`                 | `.IsAnEnum()`                  | `.AreEnums()`                   |
+| struct                    | `.WhichAreStructs()` / `.Structs()`             | `.IsAStruct()`                 | `.AreStructs()`                 |
+| record                    | `.WhichAreRecords()` / `.Records()`             | `.IsARecord()`                 | `.AreRecords()`                 |
+| record struct             | `.WhichAreRecordStructs()` / `.RecordStructs()` | `.IsARecordStruct()`           | `.AreRecordStructs()`           |
+| readonly struct           | `.WhichAreReadOnly()`                           | `.IsReadOnly()`                | `.AreReadOnly()`                |
+| ref struct                | `.WhichAreRefStructs()`                         | `.IsARefStruct()`              | `.AreRefStructs()`              |
+| delegate                  | `.WhichAreDelegates()`                          | `.IsADelegate()`               | `.AreDelegates()`               |
+| exception                 | `.WhichAreExceptions()`                         | `.IsAnException()`             | `.AreExceptions()`              |
+| attribute                 | `.WhichAreAttributes()`                         | `.IsAnAttribute()`             | `.AreAttributes()`              |
+| abstract                  | `.WhichAreAbstract()` / `.Abstract`             | `.IsAbstract()`                | `.AreAbstract()`                |
+| sealed                    | `.WhichAreSealed()` / `.Sealed`                 | `.IsSealed()`                  | `.AreSealed()`                  |
+| static                    | `.WhichAreStatic()` / `.Static`                 | `.IsStatic()`                  | `.AreStatic()`                  |
+| generic                   | `.WhichAreGeneric()` / `.Generic`               | `.IsGeneric()`                 | `.AreGeneric()`                 |
+| nested                    | `.WhichAreNested()` / `.Nested`                 | `.IsNested()`                  | `.AreNested()`                  |
+| inherits from             | `.WhichInheritFrom<T>()`                        | `.InheritsFrom<T>()`           | `.InheritFrom<T>()`             |
+| implements                | `.WhichImplement<T>()`                          | `.Implements<T>()`             | `.Implement<T>()`               |
+| assignable to             | `.WhichAreAssignableTo<T>()`                    | `.IsAssignableTo<T>()`         | `.AreAssignableTo<T>()`         |
+| assignable from           | `.WhichAreAssignableFrom<T>()`                  | `.IsAssignableFrom<T>()`       | `.AreAssignableFrom<T>()`       |
+| instantiable              | `.WhichAreInstantiable()`                       | `.IsInstantiable()`            | `.AreInstantiable()`            |
+| immutable                 | `.WhichAreImmutable()`                          | `.IsImmutable()`               | `.AreImmutable()`               |
+| default constructor       | `.WhichHaveADefaultConstructor()`               | `.HasADefaultConstructor()`    | `.HaveADefaultConstructor()`    |
+| only nullable members     | `.WhichOnlyHaveNullableMembers()`               | `.OnlyHasNullableMembers()`    | `.OnlyHaveNullableMembers()`    |
+| only non-nullable members | `.WhichOnlyHaveNonNullableMembers()`            | `.OnlyHasNonNullableMembers()` | `.OnlyHaveNonNullableMembers()` |
+| custom predicate          | `.Which(t => …)`                                | `.Satisfies(t => …)`           | `.All().Satisfy(t => …)`        |
 
 `WhichInheritFrom` / `InheritsFrom` consider only the **base-class chain** (not implemented interfaces) and
 accept a generic argument or a `Type`, plus an optional `forceDirect` flag to require *direct* inheritance.
@@ -788,11 +788,11 @@ how to combine them with reusable type selections into a full architecture test 
 
 The dependency filters and assertions follow the familiar filter/assert pairing:
 
-|                          | Filter                       | Assert (single)         | Assert (many)          |
-|--------------------------|------------------------------|-------------------------|------------------------|
-| depends on namespace     | `.WhichDependOn("x", …)`     | `.DependsOn("x", …)`    | `.DependOn("x", …)`    |
-| does not depend on       | `.WhichDoNotDependOn("x", …)`| `.DoesNotDependOn("x", …)` | `.DoNotDependOn("x", …)` |
-| depends only on set      | `.WhichDependOnlyOn("x", …)` | `.DependsOnlyOn("x", …)`| `.DependOnlyOn("x", …)`|
+|                              | Filter                                  | Assert (single)                   | Assert (many)                      |
+|------------------------------|-----------------------------------------|-----------------------------------|------------------------------------|
+| depends on namespace         | `.WhichDependOn("x", …)`                | `.DependsOn("x", …)`              | `.DependOn("x", …)`                |
+| does not depend on           | `.WhichDoNotDependOn("x", …)`           | `.DoesNotDependOn("x", …)`        | `.DoNotDependOn("x", …)`           |
+| depends only on set          | `.WhichDependOnlyOn("x", …)`            | `.DependsOnlyOn("x", …)`          | `.DependOnlyOn("x", …)`            |
 | has dependencies outside set | `.WhichHaveDependenciesOutside("x", …)` | `.HasDependenciesOutside("x", …)` | `.HaveDependenciesOutside("x", …)` |
 
 ```csharp

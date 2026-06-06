@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using aweXpect.Reflection.Collections;
 using Xunit.Sdk;

@@ -1,7 +1,9 @@
-using System.Reflection;
-using aweXpect.Reflection.Tests.TestHelpers;
+﻿using System.Reflection;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
+#if NET10_0_OR_GREATER
+using aweXpect.Reflection.Tests.TestHelpers;
 using Xunit.Sdk;
+#endif
 
 namespace aweXpect.Reflection.Tests;
 
@@ -70,53 +72,43 @@ public sealed partial class ThatProperty
 		public sealed class NewSyntaxTests
 		{
 			[Fact]
-			public async Task WhenPropertyIsAnInstanceExtensionProperty_ShouldSucceed()
+			public async Task WhenPropertyIsAGenericStaticExtensionProperty_ShouldSucceed()
+			{
+				PropertyInfo subject =
+					typeof(GenericClassWithNewExtensionProperties).GetExtensionProperty("Capacity");
+
+				async Task Act()
+				{
+					await That(subject).IsAnExtensionProperty();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenPropertyIsAnInstanceExtensionProperty_Negated_ShouldFail()
 			{
 				PropertyInfo subject =
 					typeof(StaticClassWithNewExtensionProperties).GetExtensionProperty("IsBlankText");
 
 				async Task Act()
 				{
-					await That(subject).IsAnExtensionProperty();
+					await That(subject).DoesNotComplyWith(it => it.IsAnExtensionProperty());
 				}
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not an extension property,
+					              but it was an extension property {Formatter.Format(subject)}
+					              """);
 			}
 
 			[Fact]
-			public async Task WhenPropertyIsAStaticExtensionProperty_ShouldSucceed()
+			public async Task WhenPropertyIsAnInstanceExtensionProperty_ShouldSucceed()
 			{
 				PropertyInfo subject =
-					typeof(StaticClassWithNewExtensionProperties).GetExtensionProperty("DefaultValue");
-
-				async Task Act()
-				{
-					await That(subject).IsAnExtensionProperty();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenPropertyIsASettableStaticExtensionProperty_ShouldSucceed()
-			{
-				PropertyInfo subject =
-					typeof(StaticClassWithNewExtensionProperties).GetExtensionProperty("MutableDefault");
-
-				async Task Act()
-				{
-					await That(subject).IsAnExtensionProperty();
-				}
-
-				await That(Act).DoesNotThrow();
-				await That(subject.CanWrite).IsTrue();
-			}
-
-			[Fact]
-			public async Task WhenPropertyIsAGenericStaticExtensionProperty_ShouldSucceed()
-			{
-				PropertyInfo subject =
-					typeof(GenericClassWithNewExtensionProperties).GetExtensionProperty("Capacity");
+					typeof(StaticClassWithNewExtensionProperties).GetExtensionProperty("IsBlankText");
 
 				async Task Act()
 				{
@@ -147,22 +139,32 @@ public sealed partial class ThatProperty
 			}
 
 			[Fact]
-			public async Task WhenPropertyIsAnInstanceExtensionProperty_Negated_ShouldFail()
+			public async Task WhenPropertyIsASettableStaticExtensionProperty_ShouldSucceed()
 			{
 				PropertyInfo subject =
-					typeof(StaticClassWithNewExtensionProperties).GetExtensionProperty("IsBlankText");
+					typeof(StaticClassWithNewExtensionProperties).GetExtensionProperty("MutableDefault");
 
 				async Task Act()
 				{
-					await That(subject).DoesNotComplyWith(it => it.IsAnExtensionProperty());
+					await That(subject).IsAnExtensionProperty();
 				}
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              is not an extension property,
-					              but it was an extension property {Formatter.Format(subject)}
-					              """);
+				await That(Act).DoesNotThrow();
+				await That(subject.CanWrite).IsTrue();
+			}
+
+			[Fact]
+			public async Task WhenPropertyIsAStaticExtensionProperty_ShouldSucceed()
+			{
+				PropertyInfo subject =
+					typeof(StaticClassWithNewExtensionProperties).GetExtensionProperty("DefaultValue");
+
+				async Task Act()
+				{
+					await That(subject).IsAnExtensionProperty();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 #endif

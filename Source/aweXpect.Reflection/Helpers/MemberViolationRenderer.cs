@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using aweXpect.Core;
 
 namespace aweXpect.Reflection.Helpers;
 

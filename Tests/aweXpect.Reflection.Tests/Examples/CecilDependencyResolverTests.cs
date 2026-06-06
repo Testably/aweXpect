@@ -1,4 +1,4 @@
-using aweXpect.Customization;
+﻿using aweXpect.Customization;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Synthetic;
 
 namespace aweXpect.Reflection.Tests.Examples;

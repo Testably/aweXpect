@@ -33,6 +33,18 @@ public sealed partial class TypeFilters
 			}
 
 			[Fact]
+			public async Task WhenNoNamespaceIsSpecified_ShouldThrowArgumentException()
+			{
+				void Act()
+				{
+					_ = Types.InNamespace(ConsumersNamespace).WhichDependOn();
+				}
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("At least one namespace must be specified.");
+			}
+
+			[Fact]
 			public async Task WhenWidenedWithOrOn_ShouldMatchEither()
 			{
 				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
@@ -40,40 +52,10 @@ public sealed partial class TypeFilters
 
 				await That(types).Contains(typeof(ViaField));
 			}
-
-			[Fact]
-			public async Task WhenNoNamespaceIsSpecified_ShouldThrowArgumentException()
-			{
-				void Act() => _ = Types.InNamespace(ConsumersNamespace).WhichDependOn();
-
-				await That(Act).Throws<ArgumentException>()
-					.WithMessage("At least one namespace must be specified.");
-			}
 		}
 
 		public sealed class FilteredTypesTargetTests
 		{
-			[Fact]
-			public async Task ShouldFilterForTypesDependingOnTargetCollection()
-			{
-				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
-					.WhichDependOn(Types.InNamespace(Layer1Namespace));
-
-				await That(types).Contains(typeof(ViaField));
-				await That(types).Contains(typeof(ViaSubNamespace));
-				await That(types).DoesNotContain(typeof(FrameworkConsumer));
-			}
-
-			[Fact]
-			public async Task WhenWidenedWithOrOn_ShouldMatchEither()
-			{
-				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
-					.WhichDependOn(Types.InNamespace("Non.Existent.Namespace"))
-					.OrOn(Types.InNamespace(Layer1Namespace));
-
-				await That(types).Contains(typeof(ViaField));
-			}
-
 			[Fact]
 			public async Task OrOn_ShouldNotAffectOriginalFilter()
 			{
@@ -96,6 +78,27 @@ public sealed partial class TypeFilters
 					$"types within namespace \"{ConsumersNamespace}\" which depend on " +
 					$"(types within namespace \"{Layer1Namespace}\" in all loaded assemblies) " +
 					"in all loaded assemblies");
+			}
+
+			[Fact]
+			public async Task ShouldFilterForTypesDependingOnTargetCollection()
+			{
+				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
+					.WhichDependOn(Types.InNamespace(Layer1Namespace));
+
+				await That(types).Contains(typeof(ViaField));
+				await That(types).Contains(typeof(ViaSubNamespace));
+				await That(types).DoesNotContain(typeof(FrameworkConsumer));
+			}
+
+			[Fact]
+			public async Task WhenWidenedWithOrOn_ShouldMatchEither()
+			{
+				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
+					.WhichDependOn(Types.InNamespace("Non.Existent.Namespace"))
+					.OrOn(Types.InNamespace(Layer1Namespace));
+
+				await That(types).Contains(typeof(ViaField));
 			}
 		}
 	}

@@ -10,59 +10,41 @@ public sealed partial class ThatField
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenFieldIsNullableReferenceType_ShouldSucceed()
+			public async Task WhenFieldIsNonNullableGenericType_ShouldFail()
 			{
-				FieldInfo subject = typeof(ClassWithNullableMembers)
-					.GetField(nameof(ClassWithNullableMembers.NullableField))!;
+				FieldInfo subject = typeof(ClassWithNonNullableMembers)
+					.GetField(nameof(ClassWithNonNullableMembers.NonNullableGenericField))!;
 
 				async Task Act()
 				{
 					await That(subject).IsNullable();
 				}
 
-				await That(Act).DoesNotThrow();
+				await That(Act).ThrowsException()
+					.WithMessage($"""
+					              Expected that subject
+					              is nullable,
+					              but it was non-nullable {Formatter.Format(subject)}
+					              """);
 			}
 
 			[Fact]
-			public async Task WhenFieldIsNullableValueType_ShouldSucceed()
+			public async Task WhenFieldIsNonNullableInMostlyNullableClass_ShouldFail()
 			{
-				FieldInfo subject = typeof(ClassWithNullableMembers)
-					.GetField(nameof(ClassWithNullableMembers.NullableValueField))!;
+				FieldInfo subject = typeof(ClassWithMostlyNullableMembers)
+					.GetField(nameof(ClassWithMostlyNullableMembers.NonNullableField))!;
 
 				async Task Act()
 				{
 					await That(subject).IsNullable();
 				}
 
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenFieldIsNullableGenericType_ShouldSucceed()
-			{
-				FieldInfo subject = typeof(ClassWithNullableMembers)
-					.GetField(nameof(ClassWithNullableMembers.NullableGenericField))!;
-
-				async Task Act()
-				{
-					await That(subject).IsNullable();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenFieldIsNullableInMixedClass_ShouldSucceed()
-			{
-				FieldInfo subject = typeof(ClassWithMixedNullableMembers)
-					.GetField(nameof(ClassWithMixedNullableMembers.NullableField))!;
-
-				async Task Act()
-				{
-					await That(subject).IsNullable();
-				}
-
-				await That(Act).DoesNotThrow();
+				await That(Act).ThrowsException()
+					.WithMessage($"""
+					              Expected that subject
+					              is nullable,
+					              but it was non-nullable {Formatter.Format(subject)}
+					              """);
 			}
 
 			[Fact]
@@ -104,10 +86,9 @@ public sealed partial class ThatField
 			}
 
 			[Fact]
-			public async Task WhenFieldIsNonNullableGenericType_ShouldFail()
+			public async Task WhenFieldIsNull_ShouldFail()
 			{
-				FieldInfo subject = typeof(ClassWithNonNullableMembers)
-					.GetField(nameof(ClassWithNonNullableMembers.NonNullableGenericField))!;
+				FieldInfo? subject = null;
 
 				async Task Act()
 				{
@@ -115,30 +96,67 @@ public sealed partial class ThatField
 				}
 
 				await That(Act).ThrowsException()
-					.WithMessage($"""
-					              Expected that subject
-					              is nullable,
-					              but it was non-nullable {Formatter.Format(subject)}
-					              """);
+					.WithMessage("""
+					             Expected that subject
+					             is nullable,
+					             but it was <null>
+					             """);
 			}
 
 			[Fact]
-			public async Task WhenFieldIsNonNullableInMostlyNullableClass_ShouldFail()
+			public async Task WhenFieldIsNullableGenericType_ShouldSucceed()
 			{
-				FieldInfo subject = typeof(ClassWithMostlyNullableMembers)
-					.GetField(nameof(ClassWithMostlyNullableMembers.NonNullableField))!;
+				FieldInfo subject = typeof(ClassWithNullableMembers)
+					.GetField(nameof(ClassWithNullableMembers.NullableGenericField))!;
 
 				async Task Act()
 				{
 					await That(subject).IsNullable();
 				}
 
-				await That(Act).ThrowsException()
-					.WithMessage($"""
-					              Expected that subject
-					              is nullable,
-					              but it was non-nullable {Formatter.Format(subject)}
-					              """);
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenFieldIsNullableInMixedClass_ShouldSucceed()
+			{
+				FieldInfo subject = typeof(ClassWithMixedNullableMembers)
+					.GetField(nameof(ClassWithMixedNullableMembers.NullableField))!;
+
+				async Task Act()
+				{
+					await That(subject).IsNullable();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenFieldIsNullableReferenceType_ShouldSucceed()
+			{
+				FieldInfo subject = typeof(ClassWithNullableMembers)
+					.GetField(nameof(ClassWithNullableMembers.NullableField))!;
+
+				async Task Act()
+				{
+					await That(subject).IsNullable();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenFieldIsNullableValueType_ShouldSucceed()
+			{
+				FieldInfo subject = typeof(ClassWithNullableMembers)
+					.GetField(nameof(ClassWithNullableMembers.NullableValueField))!;
+
+				async Task Act()
+				{
+					await That(subject).IsNullable();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[Fact]
@@ -158,24 +176,6 @@ public sealed partial class ThatField
 					              is nullable,
 					              but it was non-nullable {Formatter.Format(subject)}
 					              """);
-			}
-
-			[Fact]
-			public async Task WhenFieldIsNull_ShouldFail()
-			{
-				FieldInfo? subject = null;
-
-				async Task Act()
-				{
-					await That(subject).IsNullable();
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             is nullable,
-					             but it was <null>
-					             """);
 			}
 		}
 

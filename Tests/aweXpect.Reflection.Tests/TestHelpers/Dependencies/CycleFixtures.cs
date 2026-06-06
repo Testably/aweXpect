@@ -1,4 +1,4 @@
-// ReSharper disable All
+﻿// ReSharper disable All
 
 #pragma warning disable CS0169 // field is never used
 #pragma warning disable CS0649 // field is never assigned
@@ -6,6 +6,21 @@
 
 using System.Collections.Generic;
 using System.Text;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Acyclic.Low;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Family.Inner;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.GlobalRing;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Grouped.Orders.Api;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Grouped.Orders.Domain;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Indirect.Other;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Indirect.Parent.Child;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Resolver.B;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Sliced.Module.Part1;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Sliced.Module.Part2;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Three.A;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Three.B;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Three.C;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Two.Billing;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Two.Orders;
 
 // Fixtures for namespace dependency cycle detection. Each type references the next via a private field, which is a
 // signature-level dependency, so the namespaces form the intended directed graph.
@@ -14,7 +29,7 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Acyclic.High
 {
 	public class HighType
 	{
-		private Low.LowType _low;
+		private LowType _low;
 	}
 }
 
@@ -27,7 +42,7 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Two.Orders
 {
 	public class Order
 	{
-		private Billing.Invoice _invoice;
+		private Invoice _invoice;
 	}
 }
 
@@ -35,7 +50,7 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Two.Billing
 {
 	public class Invoice
 	{
-		private Orders.Order _order;
+		private Order _order;
 	}
 }
 
@@ -43,7 +58,7 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Three.A
 {
 	public class TypeA
 	{
-		private B.TypeB _b;
+		private TypeB _b;
 	}
 }
 
@@ -51,7 +66,7 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Three.B
 {
 	public class TypeB
 	{
-		private C.TypeC _c;
+		private TypeC _c;
 	}
 }
 
@@ -59,7 +74,7 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Three.C
 {
 	public class TypeC
 	{
-		private A.TypeA _a;
+		private TypeA _a;
 	}
 }
 
@@ -69,7 +84,7 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Sliced.Modul
 {
 	public class Part1Type
 	{
-		private Part2.Part2Type _other;
+		private Part2Type _other;
 	}
 }
 
@@ -77,7 +92,7 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Sliced.Modul
 {
 	public class Part2Type
 	{
-		private Part1.Part1Type _other;
+		private Part1Type _other;
 	}
 }
 
@@ -95,7 +110,7 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Grouped.Orde
 {
 	public class OrderApi
 	{
-		private Domain.OrderDomain _domain;
+		private OrderDomain _domain;
 	}
 }
 
@@ -103,7 +118,7 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Grouped.Bill
 {
 	public class Invoice
 	{
-		private Orders.Api.OrderApi _api;
+		private OrderApi _api;
 	}
 }
 
@@ -124,7 +139,7 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Resolver.A
 {
 	public class ResolverA
 	{
-		private B.ResolverB _b;
+		private ResolverB _b;
 	}
 }
 
@@ -139,7 +154,7 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.GlobalRing
 {
 	public class GlobalRingType
 	{
-		private global::GlobalCycleType _global;
+		private GlobalCycleType _global;
 	}
 }
 
@@ -149,7 +164,7 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Family
 {
 	public class FamilyParent
 	{
-		private Inner.FamilyChild _child;
+		private FamilyChild _child;
 	}
 }
 
@@ -169,7 +184,7 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Indirect.Par
 {
 	public class IndirectParentType
 	{
-		private Other.IndirectOtherType _other;
+		private IndirectOtherType _other;
 	}
 }
 
@@ -182,7 +197,7 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Indirect.Oth
 {
 	public class IndirectOtherType
 	{
-		private Parent.Child.IndirectChildType _child;
+		private IndirectChildType _child;
 	}
 }
 
@@ -191,5 +206,5 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Indirect.Oth
 // This type intentionally lives in the global namespace to exercise global-namespace cycle rendering.
 public class GlobalCycleType
 {
-	private aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.GlobalRing.GlobalRingType _ring;
+	private GlobalRingType _ring;
 }

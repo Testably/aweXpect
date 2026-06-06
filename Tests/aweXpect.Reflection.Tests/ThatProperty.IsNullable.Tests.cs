@@ -10,73 +10,41 @@ public sealed partial class ThatProperty
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenPropertyIsNullableReferenceType_ShouldSucceed()
+			public async Task WhenPropertyIsNonNullableGenericType_ShouldFail()
 			{
-				PropertyInfo subject = typeof(ClassWithNullableMembers)
-					.GetProperty(nameof(ClassWithNullableMembers.NullableProperty))!;
+				PropertyInfo subject = typeof(ClassWithNonNullableMembers)
+					.GetProperty(nameof(ClassWithNonNullableMembers.NonNullableGenericProperty))!;
 
 				async Task Act()
 				{
 					await That(subject).IsNullable();
 				}
 
-				await That(Act).DoesNotThrow();
+				await That(Act).ThrowsException()
+					.WithMessage($"""
+					              Expected that subject
+					              is nullable,
+					              but it was non-nullable {Formatter.Format(subject)}
+					              """);
 			}
 
 			[Fact]
-			public async Task WhenPropertyIsNullableValueType_ShouldSucceed()
+			public async Task WhenPropertyIsNonNullableInMostlyNullableClass_ShouldFail()
 			{
-				PropertyInfo subject = typeof(ClassWithNullableMembers)
-					.GetProperty(nameof(ClassWithNullableMembers.NullableValueProperty))!;
+				PropertyInfo subject = typeof(ClassWithMostlyNullableMembers)
+					.GetProperty(nameof(ClassWithMostlyNullableMembers.NonNullableProperty))!;
 
 				async Task Act()
 				{
 					await That(subject).IsNullable();
 				}
 
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenPropertyIsNullableGenericType_ShouldSucceed()
-			{
-				PropertyInfo subject = typeof(ClassWithNullableMembers)
-					.GetProperty(nameof(ClassWithNullableMembers.NullableGenericProperty))!;
-
-				async Task Act()
-				{
-					await That(subject).IsNullable();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenPropertyIsWriteOnlyNullable_ShouldSucceed()
-			{
-				PropertyInfo subject = typeof(ClassWithNullableMembers)
-					.GetProperty(nameof(ClassWithNullableMembers.NullableWriteOnlyProperty))!;
-
-				async Task Act()
-				{
-					await That(subject).IsNullable();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenPropertyIsNullableInMixedClass_ShouldSucceed()
-			{
-				PropertyInfo subject = typeof(ClassWithMixedNullableMembers)
-					.GetProperty(nameof(ClassWithMixedNullableMembers.NullableProperty))!;
-
-				async Task Act()
-				{
-					await That(subject).IsNullable();
-				}
-
-				await That(Act).DoesNotThrow();
+				await That(Act).ThrowsException()
+					.WithMessage($"""
+					              Expected that subject
+					              is nullable,
+					              but it was non-nullable {Formatter.Format(subject)}
+					              """);
 			}
 
 			[Fact]
@@ -118,10 +86,9 @@ public sealed partial class ThatProperty
 			}
 
 			[Fact]
-			public async Task WhenPropertyIsNonNullableGenericType_ShouldFail()
+			public async Task WhenPropertyIsNull_ShouldFail()
 			{
-				PropertyInfo subject = typeof(ClassWithNonNullableMembers)
-					.GetProperty(nameof(ClassWithNonNullableMembers.NonNullableGenericProperty))!;
+				PropertyInfo? subject = null;
 
 				async Task Act()
 				{
@@ -129,30 +96,67 @@ public sealed partial class ThatProperty
 				}
 
 				await That(Act).ThrowsException()
-					.WithMessage($"""
-					              Expected that subject
-					              is nullable,
-					              but it was non-nullable {Formatter.Format(subject)}
-					              """);
+					.WithMessage("""
+					             Expected that subject
+					             is nullable,
+					             but it was <null>
+					             """);
 			}
 
 			[Fact]
-			public async Task WhenPropertyIsNonNullableInMostlyNullableClass_ShouldFail()
+			public async Task WhenPropertyIsNullableGenericType_ShouldSucceed()
 			{
-				PropertyInfo subject = typeof(ClassWithMostlyNullableMembers)
-					.GetProperty(nameof(ClassWithMostlyNullableMembers.NonNullableProperty))!;
+				PropertyInfo subject = typeof(ClassWithNullableMembers)
+					.GetProperty(nameof(ClassWithNullableMembers.NullableGenericProperty))!;
 
 				async Task Act()
 				{
 					await That(subject).IsNullable();
 				}
 
-				await That(Act).ThrowsException()
-					.WithMessage($"""
-					              Expected that subject
-					              is nullable,
-					              but it was non-nullable {Formatter.Format(subject)}
-					              """);
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenPropertyIsNullableInMixedClass_ShouldSucceed()
+			{
+				PropertyInfo subject = typeof(ClassWithMixedNullableMembers)
+					.GetProperty(nameof(ClassWithMixedNullableMembers.NullableProperty))!;
+
+				async Task Act()
+				{
+					await That(subject).IsNullable();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenPropertyIsNullableReferenceType_ShouldSucceed()
+			{
+				PropertyInfo subject = typeof(ClassWithNullableMembers)
+					.GetProperty(nameof(ClassWithNullableMembers.NullableProperty))!;
+
+				async Task Act()
+				{
+					await That(subject).IsNullable();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenPropertyIsNullableValueType_ShouldSucceed()
+			{
+				PropertyInfo subject = typeof(ClassWithNullableMembers)
+					.GetProperty(nameof(ClassWithNullableMembers.NullableValueProperty))!;
+
+				async Task Act()
+				{
+					await That(subject).IsNullable();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[Fact]
@@ -175,21 +179,17 @@ public sealed partial class ThatProperty
 			}
 
 			[Fact]
-			public async Task WhenPropertyIsNull_ShouldFail()
+			public async Task WhenPropertyIsWriteOnlyNullable_ShouldSucceed()
 			{
-				PropertyInfo? subject = null;
+				PropertyInfo subject = typeof(ClassWithNullableMembers)
+					.GetProperty(nameof(ClassWithNullableMembers.NullableWriteOnlyProperty))!;
 
 				async Task Act()
 				{
 					await That(subject).IsNullable();
 				}
 
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             is nullable,
-					             but it was <null>
-					             """);
+				await That(Act).DoesNotThrow();
 			}
 		}
 

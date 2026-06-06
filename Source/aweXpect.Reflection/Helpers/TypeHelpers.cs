@@ -888,9 +888,8 @@ internal static class TypeHelpers
 	{
 		List<string> violations = [];
 		HashSet<string> seen = new(StringComparer.Ordinal);
-		foreach (Type dependency in type.GetDependencyViolations(
-			         (dependency, ownNamespace, excludedPrefixes)
-				         => IsDependencyViolation(dependency, ownNamespace, allowed, excludedPrefixes)))
+		foreach (Type dependency in type.GetDependencyViolations((dependency, ownNamespace, excludedPrefixes)
+			         => IsDependencyViolation(dependency, ownNamespace, allowed, excludedPrefixes)))
 		{
 			string display = dependency.Namespace ?? GlobalNamespaceDisplay;
 			if (seen.Add(display))
@@ -912,9 +911,8 @@ internal static class TypeHelpers
 	///     a verdict and not the violation list.
 	/// </remarks>
 	internal static bool HasDependencyNamespaceViolations(this Type type, NamespaceDependencyOptions allowed)
-		=> type.GetDependencyViolations(
-			(dependency, ownNamespace, excludedPrefixes)
-				=> IsDependencyViolation(dependency, ownNamespace, allowed, excludedPrefixes)).Any();
+		=> type.GetDependencyViolations((dependency, ownNamespace, excludedPrefixes)
+			=> IsDependencyViolation(dependency, ownNamespace, allowed, excludedPrefixes)).Any();
 
 	private static bool IsDependencyViolation(
 		Type dependency, string? ownNamespace, NamespaceDependencyOptions allowed, string[] excludedPrefixes)
@@ -972,9 +970,8 @@ internal static class TypeHelpers
 		this Type type, ResolvedTypeSet allowed)
 	{
 		List<string> violations = [];
-		foreach (IGrouping<string, Type> sameName in type.GetDependencyViolations(
-				         (dependency, ownNamespace, excludedPrefixes)
-					         => IsDependencyTypeSetViolation(dependency, ownNamespace, allowed, excludedPrefixes))
+		foreach (IGrouping<string, Type> sameName in type.GetDependencyViolations((dependency, ownNamespace, excludedPrefixes)
+				         => IsDependencyTypeSetViolation(dependency, ownNamespace, allowed, excludedPrefixes))
 			         .GroupBy(dependency => Formatter.Format(dependency), StringComparer.Ordinal))
 		{
 			Type[] violators = sameName.ToArray();
@@ -1003,9 +1000,8 @@ internal static class TypeHelpers
 	///     a verdict and not the violation list.
 	/// </remarks>
 	internal static bool HasDependencyTypeSetViolations(this Type type, ResolvedTypeSet allowed)
-		=> type.GetDependencyViolations(
-			(dependency, ownNamespace, excludedPrefixes)
-				=> IsDependencyTypeSetViolation(dependency, ownNamespace, allowed, excludedPrefixes)).Any();
+		=> type.GetDependencyViolations((dependency, ownNamespace, excludedPrefixes)
+			=> IsDependencyTypeSetViolation(dependency, ownNamespace, allowed, excludedPrefixes)).Any();
 
 	private static bool IsDependencyTypeSetViolation(
 		Type dependency, string? ownNamespace, ResolvedTypeSet allowed, string[] excludedPrefixes)

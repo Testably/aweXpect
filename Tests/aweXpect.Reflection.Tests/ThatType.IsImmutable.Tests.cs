@@ -9,58 +9,6 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[MemberData(nameof(ImmutableTypes))]
-			public async Task WhenTypeIsImmutable_ShouldSucceed(Type subject)
-			{
-				async Task Act()
-				{
-					await That(subject).IsImmutable();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenTypeHasMutableField_ShouldFail()
-			{
-				Type subject = typeof(ClassWithMutableField);
-
-				async Task Act()
-				{
-					await That(subject).IsImmutable();
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             is immutable,
-					             but it was mutable ClassWithMutableField with mutable members [
-					               int ClassWithMutableField.Value
-					             ]
-					             """);
-			}
-
-			[Fact]
-			public async Task WhenTypeHasSettableProperty_ShouldFail()
-			{
-				Type subject = typeof(ClassWithSettableProperty);
-
-				async Task Act()
-				{
-					await That(subject).IsImmutable();
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             is immutable,
-					             but it was mutable ClassWithSettableProperty with mutable members [
-					               public int ClassWithSettableProperty.Value { get; set; }
-					             ]
-					             """);
-			}
-
 			[Fact]
 			public async Task WhenTypeHasMultipleMutableMembers_ShouldFail()
 			{
@@ -83,9 +31,9 @@ public sealed partial class ThatType
 			}
 
 			[Fact]
-			public async Task WhenTypeInheritsMutableField_ShouldFail()
+			public async Task WhenTypeHasMutableField_ShouldFail()
 			{
-				Type subject = typeof(ClassInheritingMutableField);
+				Type subject = typeof(ClassWithMutableField);
 
 				async Task Act()
 				{
@@ -96,28 +44,8 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             is immutable,
-					             but it was mutable ClassInheritingMutableField with mutable members [
-					               int MutableBaseClass._value
-					             ]
-					             """);
-			}
-
-			[Fact]
-			public async Task WhenTypeHasSettableIndexer_ShouldFail()
-			{
-				Type subject = typeof(ClassWithSettableIndexer);
-
-				async Task Act()
-				{
-					await That(subject).IsImmutable();
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             is immutable,
-					             but it was mutable ClassWithSettableIndexer with mutable members [
-					               public int ClassWithSettableIndexer.Item { get; set; }
+					             but it was mutable ClassWithMutableField with mutable members [
+					               int ClassWithMutableField.Value
 					             ]
 					             """);
 			}
@@ -143,6 +71,66 @@ public sealed partial class ThatType
 			}
 
 			[Fact]
+			public async Task WhenTypeHasSettableIndexer_ShouldFail()
+			{
+				Type subject = typeof(ClassWithSettableIndexer);
+
+				async Task Act()
+				{
+					await That(subject).IsImmutable();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             is immutable,
+					             but it was mutable ClassWithSettableIndexer with mutable members [
+					               public int ClassWithSettableIndexer.Item { get; set; }
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenTypeHasSettableProperty_ShouldFail()
+			{
+				Type subject = typeof(ClassWithSettableProperty);
+
+				async Task Act()
+				{
+					await That(subject).IsImmutable();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             is immutable,
+					             but it was mutable ClassWithSettableProperty with mutable members [
+					               public int ClassWithSettableProperty.Value { get; set; }
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenTypeInheritsMutableField_ShouldFail()
+			{
+				Type subject = typeof(ClassInheritingMutableField);
+
+				async Task Act()
+				{
+					await That(subject).IsImmutable();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             is immutable,
+					             but it was mutable ClassInheritingMutableField with mutable members [
+					               int MutableBaseClass._value
+					             ]
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenTypeInheritsProtectedMutableField_ShouldFail()
 			{
 				Type subject = typeof(ClassInheritingProtectedMutableField);
@@ -159,6 +147,36 @@ public sealed partial class ThatType
 					             but it was mutable ClassInheritingProtectedMutableField with mutable members [
 					               int MutableBaseClassWithProtectedField.ProtectedValue
 					             ]
+					             """);
+			}
+
+			[Theory]
+			[MemberData(nameof(ImmutableTypes))]
+			public async Task WhenTypeIsImmutable_ShouldSucceed(Type subject)
+			{
+				async Task Act()
+				{
+					await That(subject).IsImmutable();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTypeIsNull_ShouldFail()
+			{
+				Type? subject = null;
+
+				async Task Act()
+				{
+					await That(subject).IsImmutable();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             is immutable,
+					             but it was <null>
 					             """);
 			}
 
@@ -179,24 +197,6 @@ public sealed partial class ThatType
 					             but it was mutable MutableRecordStruct with mutable members [
 					               public int MutableRecordStruct.Value { get; set; }
 					             ]
-					             """);
-			}
-
-			[Fact]
-			public async Task WhenTypeIsNull_ShouldFail()
-			{
-				Type? subject = null;
-
-				async Task Act()
-				{
-					await That(subject).IsImmutable();
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             is immutable,
-					             but it was <null>
 					             """);
 			}
 

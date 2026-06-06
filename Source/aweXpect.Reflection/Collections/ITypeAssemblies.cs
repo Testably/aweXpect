@@ -1,4 +1,4 @@
-namespace aweXpect.Reflection.Collections;
+﻿namespace aweXpect.Reflection.Collections;
 
 /// <summary>
 ///     An interface to allow filtering for types in assemblies.

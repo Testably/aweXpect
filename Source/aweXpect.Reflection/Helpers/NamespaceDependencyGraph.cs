@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -29,7 +29,9 @@ namespace aweXpect.Reflection.Helpers;
 internal sealed class NamespaceDependencyGraph
 {
 	private NamespaceDependencyGraph(IReadOnlyList<IReadOnlyList<string>> cycles)
-		=> Cycles = cycles;
+	{
+		Cycles = cycles;
+	}
 
 	/// <summary>
 	///     The detected dependency cycles, each as an ordered list of node names that returns to its first node
@@ -133,7 +135,7 @@ internal sealed class NamespaceDependencyGraph
 			foreach (string candidate in present)
 			{
 				if (candidate.Length < representative.Length &&
-				    TypeHelpers.NamespaceMatches(key, candidate, includeSubNamespaces: true))
+				    TypeHelpers.NamespaceMatches(key, candidate, true))
 				{
 					representative = candidate;
 				}
@@ -157,7 +159,7 @@ internal sealed class NamespaceDependencyGraph
 		}
 
 		if (sliceRoot is null ||
-		    !TypeHelpers.NamespaceMatches(@namespace, sliceRoot, includeSubNamespaces: true) ||
+		    !TypeHelpers.NamespaceMatches(@namespace, sliceRoot, true) ||
 		    string.Equals(@namespace, sliceRoot, StringComparison.Ordinal))
 		{
 			return @namespace;
@@ -199,7 +201,10 @@ internal sealed class NamespaceDependencyGraph
 	{
 		string start = component.OrderBy(node => node, StringComparer.Ordinal).First();
 		Dictionary<string, string> predecessor = new(StringComparer.Ordinal);
-		HashSet<string> visited = new(StringComparer.Ordinal) { start, };
+		HashSet<string> visited = new(StringComparer.Ordinal)
+		{
+			start,
+		};
 		Queue<string> queue = new();
 		queue.Enqueue(start);
 
@@ -253,11 +258,11 @@ internal sealed class NamespaceDependencyGraph
 	/// </summary>
 	private sealed class TarjanScc(Dictionary<string, HashSet<string>> adjacency)
 	{
+		private readonly List<HashSet<string>> _components = [];
 		private readonly Dictionary<string, int> _indices = new(StringComparer.Ordinal);
 		private readonly Dictionary<string, int> _lowLinks = new(StringComparer.Ordinal);
 		private readonly HashSet<string> _onStack = new(StringComparer.Ordinal);
 		private readonly Stack<string> _stack = new();
-		private readonly List<HashSet<string>> _components = [];
 		private int _nextIndex;
 
 		public List<HashSet<string>> StronglyConnectedComponents()

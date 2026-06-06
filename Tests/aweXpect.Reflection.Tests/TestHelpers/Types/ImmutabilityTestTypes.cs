@@ -6,10 +6,9 @@ public class ImmutableClass
 	public const int ConstantField = 4;
 	private static int _staticMutableField = 1;
 	public readonly int ReadOnlyField = 2;
-	private readonly string _privateReadOnlyField = "";
 	public static int StaticSettableProperty { get; set; }
 	public int GetOnlyProperty { get; }
-	public string ComputedProperty => _privateReadOnlyField;
+	public string ComputedProperty { get; } = "";
 }
 #pragma warning restore CS0414
 

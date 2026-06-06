@@ -1,4 +1,4 @@
-namespace aweXpect.Reflection.Tests.Examples;
+﻿namespace aweXpect.Reflection.Tests.Examples;
 
 public sealed class ExampleTests
 {

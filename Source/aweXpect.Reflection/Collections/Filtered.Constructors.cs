@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using aweXpect.Core;
@@ -51,10 +51,6 @@ public static partial class Filtered
 		}
 
 		/// <inheritdoc />
-		private protected override Constructors CloneWith(List<IFilter<ConstructorInfo>> filters)
-			=> new(this, filters);
-
-		/// <inheritdoc />
 		public string GetDescription()
 		{
 			string description = _description;
@@ -70,6 +66,10 @@ public static partial class Filtered
 
 			return description;
 		}
+
+		/// <inheritdoc />
+		private protected override Constructors CloneWith(List<IFilter<ConstructorInfo>> filters)
+			=> new(this, filters);
 
 		/// <summary>
 		///     Get all declaring types of the filtered constructors.

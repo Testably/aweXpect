@@ -1,4 +1,4 @@
-using aweXpect.Reflection.Tests.TestHelpers.Types;
+﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
 using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;

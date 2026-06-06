@@ -14,6 +14,32 @@ public sealed partial class ThatTypes
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenCollectionContainsNull_ShouldFail()
+			{
+				// A null item's dependencies cannot be verified, so it fails the negative assertion just
+				// like it fails DependOn and DependOnlyOn, instead of slipping through.
+				IEnumerable<Type?> subject =
+				[
+					typeof(OnlyLayer1),
+					null,
+				];
+
+				async Task Act()
+				{
+					await That(subject).DoNotDependOn(Layer2Namespace);
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              all do not depend on namespace "{Layer2Namespace}",
+					              but it contained types with the dependency [
+					                <null>
+					              ]
+					              """);
+			}
+
+			[Fact]
 			public async Task WhenNoTypeDependsOnNamespace_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject =
@@ -23,7 +49,9 @@ public sealed partial class ThatTypes
 				];
 
 				async Task Act()
-					=> await That(subject).DoNotDependOn(Layer2Namespace);
+				{
+					await That(subject).DoNotDependOn(Layer2Namespace);
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -38,7 +66,9 @@ public sealed partial class ThatTypes
 				];
 
 				async Task Act()
-					=> await That(subject).DoNotDependOn(Layer2Namespace);
+				{
+					await That(subject).DoNotDependOn(Layer2Namespace);
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -46,30 +76,6 @@ public sealed partial class ThatTypes
 					              all do not depend on namespace "{Layer2Namespace}",
 					              but it contained types with the dependency [
 					                Layer1AndLayer2
-					              ]
-					              """);
-			}
-
-			[Fact]
-			public async Task WhenCollectionContainsNull_ShouldFail()
-			{
-				// A null item's dependencies cannot be verified, so it fails the negative assertion just
-				// like it fails DependOn and DependOnlyOn, instead of slipping through.
-				IEnumerable<Type?> subject =
-				[
-					typeof(OnlyLayer1),
-					null,
-				];
-
-				async Task Act()
-					=> await That(subject).DoNotDependOn(Layer2Namespace);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              all do not depend on namespace "{Layer2Namespace}",
-					              but it contained types with the dependency [
-					                <null>
 					              ]
 					              """);
 			}
@@ -87,7 +93,9 @@ public sealed partial class ThatTypes
 				];
 
 				async Task Act()
-					=> await That(subject).DoNotDependOn(Types.InNamespace(Layer2Namespace));
+				{
+					await That(subject).DoNotDependOn(Types.InNamespace(Layer2Namespace));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -102,7 +110,9 @@ public sealed partial class ThatTypes
 				];
 
 				async Task Act()
-					=> await That(subject).DoNotDependOn(Types.InNamespace(Layer2Namespace));
+				{
+					await That(subject).DoNotDependOn(Types.InNamespace(Layer2Namespace));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -125,7 +135,9 @@ public sealed partial class ThatTypes
 				];
 
 				async Task Act()
-					=> await That(subject).DoNotDependOn(Types.InNamespace("Non.Existent.Namespace"));
+				{
+					await That(subject).DoNotDependOn(Types.InNamespace("Non.Existent.Namespace"));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -139,8 +151,10 @@ public sealed partial class ThatTypes
 				];
 
 				async Task Act()
-					=> await That(subject).DoNotDependOn(Types.InNamespace(Layer2Namespace))
+				{
+					await That(subject).DoNotDependOn(Types.InNamespace(Layer2Namespace))
 						.OrOn(Types.InNamespace(Layer1Namespace));
+				}
 
 				await That(Act).Throws<XunitException>();
 			}

@@ -1,4 +1,4 @@
-#if NET10_0_OR_GREATER
+﻿#if NET10_0_OR_GREATER
 namespace aweXpect.Reflection.Tests.TestHelpers.Types;
 
 /// <summary>

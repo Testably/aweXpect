@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using aweXpect.Reflection.Collections;
 
 namespace aweXpect.Reflection;

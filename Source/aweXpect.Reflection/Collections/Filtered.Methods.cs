@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -27,7 +27,7 @@ public static partial class Filtered
 		/// </summary>
 		internal Methods(Types types, string description,
 			MemberScope memberScope = MemberScope.DeclaredOnly)
-			: this(types, description, memberScope, includeOperators: false)
+			: this(types, description, memberScope, false)
 		{
 		}
 
@@ -65,10 +65,6 @@ public static partial class Filtered
 		}
 
 		/// <inheritdoc />
-		private protected override Methods CloneWith(List<IFilter<MethodInfo>> filters)
-			=> new(this, filters);
-
-		/// <inheritdoc />
 		public string GetDescription()
 		{
 			string description = _description;
@@ -84,6 +80,10 @@ public static partial class Filtered
 
 			return description;
 		}
+
+		/// <inheritdoc />
+		private protected override Methods CloneWith(List<IFilter<MethodInfo>> filters)
+			=> new(this, filters);
 
 		/// <summary>
 		///     Returns a copy of this collection that additionally includes operator special-name members, so that operator
@@ -102,7 +102,7 @@ public static partial class Filtered
 				return this;
 			}
 
-			Methods rebuilt = new(_types, _description, _memberScope, includeOperators: true);
+			Methods rebuilt = new(_types, _description, _memberScope, true);
 			return rebuilt.CloneWith([.. Filters,]);
 		}
 

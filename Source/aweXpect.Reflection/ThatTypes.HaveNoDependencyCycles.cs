@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -110,7 +110,7 @@ public static partial class ThatTypes
 		{
 			// Materialize once: the source (e.g. Types.InNamespace(...)) may be lazy and re-scan assemblies on every
 			// enumeration, while both the cycle detection and the later result formatting read Actual.
-			List<Type?> materialized = [.. actual];
+			List<Type?> materialized = [.. actual,];
 			Actual = materialized;
 			return SetResult(materialized);
 		}

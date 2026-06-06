@@ -173,29 +173,6 @@ public sealed partial class ThatTypes
 			}
 
 			[Fact]
-			public async Task WhenSomeTypeHasTheOperatorWithTypeOperand_ShouldFail()
-			{
-				IEnumerable<Type?> subject = new[]
-				{
-					typeof(Money), typeof(ClassWithoutOperators),
-				};
-
-				async Task Act()
-				{
-					await That(subject).DoNotHaveOperator(Operator.Addition, typeof(Money));
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage($"""
-					              Expected that subject
-					              all do not have the operator Addition with operand {Formatter.Format(typeof(Money))},
-					              but it contained types with the operator Addition with operand {Formatter.Format(typeof(Money))} [
-					                *
-					              ]
-					              """).AsWildcard();
-			}
-
-			[Fact]
 			public async Task WhenSomeTypeHasTheOperatorWithOperand_ShouldFail()
 			{
 				IEnumerable<Type?> subject = new[]
@@ -213,6 +190,29 @@ public sealed partial class ThatTypes
 					              Expected that subject
 					              all do not have the operator Addition with operand {Formatter.Format(typeof(int))},
 					              but it contained types with the operator Addition with operand {Formatter.Format(typeof(int))} [
+					                *
+					              ]
+					              """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenSomeTypeHasTheOperatorWithTypeOperand_ShouldFail()
+			{
+				IEnumerable<Type?> subject = new[]
+				{
+					typeof(Money), typeof(ClassWithoutOperators),
+				};
+
+				async Task Act()
+				{
+					await That(subject).DoNotHaveOperator(Operator.Addition, typeof(Money));
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage($"""
+					              Expected that subject
+					              all do not have the operator Addition with operand {Formatter.Format(typeof(Money))},
+					              but it contained types with the operator Addition with operand {Formatter.Format(typeof(Money))} [
 					                *
 					              ]
 					              """).AsWildcard();
@@ -320,6 +320,22 @@ public sealed partial class ThatTypes
 			}
 
 			[Fact]
+			public async Task WhenNoTypeHasTheOperatorWithOperand_ShouldSucceed()
+			{
+				IAsyncEnumerable<Type?> subject = new[]
+				{
+					typeof(Money),
+				}.ToTestAsyncEnumerable<Type?>();
+
+				async Task Act()
+				{
+					await That(subject).DoNotHaveOperator<string>(Operator.Addition);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenSomeTypeDoesNotHaveTheOperator_ShouldFail()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -340,22 +356,6 @@ public sealed partial class ThatTypes
 					               *
 					             ]
 					             """).AsWildcard();
-			}
-
-			[Fact]
-			public async Task WhenNoTypeHasTheOperatorWithOperand_ShouldSucceed()
-			{
-				IAsyncEnumerable<Type?> subject = new[]
-				{
-					typeof(Money),
-				}.ToTestAsyncEnumerable<Type?>();
-
-				async Task Act()
-				{
-					await That(subject).DoNotHaveOperator<string>(Operator.Addition);
-				}
-
-				await That(Act).DoesNotThrow();
 			}
 
 			[Fact]

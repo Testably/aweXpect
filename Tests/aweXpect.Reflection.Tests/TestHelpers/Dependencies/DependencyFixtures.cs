@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.AmbiguousA;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers.OwnSub;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1.Sub;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer2;
@@ -150,7 +151,7 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers
 
 	public class ReferencesGlobal
 	{
-		private global::GlobalNamespaceTarget _target;
+		private GlobalNamespaceTarget _target;
 	}
 }
 
@@ -235,7 +236,7 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Synthetic
 	// must keep them apart by qualifying each with its namespace.
 	public class WithSameNamedDependencies
 	{
-		private AmbiguousA.AmbiguousTarget _a;
+		private AmbiguousTarget _a;
 		private AmbiguousB.AmbiguousTarget _b;
 	}
 

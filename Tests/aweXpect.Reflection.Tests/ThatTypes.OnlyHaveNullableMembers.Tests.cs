@@ -32,15 +32,13 @@ public sealed partial class ThatTypes
 			}
 
 			[Fact]
-			public async Task WhenTypesContainTypeWithNonNullableMembers_ShouldFail()
+			public async Task WhenCollectionContainsNull_ShouldListNullWithoutViolations()
 			{
 				IEnumerable<Type?> subject =
 				[
 					typeof(ClassWithNullableMembers),
-					typeof(ClassWithSingleNonNullableProperty),
+					null,
 				];
-				PropertyInfo property = typeof(ClassWithSingleNonNullableProperty)
-					.GetProperty(nameof(ClassWithSingleNonNullableProperty.NonNullableProperty))!;
 
 				async Task Act()
 				{
@@ -48,13 +46,13 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).ThrowsException()
-					.WithMessage($"""
-					              Expected that subject
-					              only have nullable members,
-					              but it contained types with non-nullable members [
-					                ClassWithSingleNonNullableProperty with non-nullable members [{Formatter.Format(property)}]
-					              ]
-					              """);
+					.WithMessage("""
+					             Expected that subject
+					             only have nullable members,
+					             but it contained types with non-nullable members [
+					               <null>
+					             ]
+					             """);
 			}
 
 			[Fact]
@@ -85,13 +83,15 @@ public sealed partial class ThatTypes
 			}
 
 			[Fact]
-			public async Task WhenCollectionContainsNull_ShouldListNullWithoutViolations()
+			public async Task WhenTypesContainTypeWithNonNullableMembers_ShouldFail()
 			{
 				IEnumerable<Type?> subject =
 				[
 					typeof(ClassWithNullableMembers),
-					null,
+					typeof(ClassWithSingleNonNullableProperty),
 				];
+				PropertyInfo property = typeof(ClassWithSingleNonNullableProperty)
+					.GetProperty(nameof(ClassWithSingleNonNullableProperty.NonNullableProperty))!;
 
 				async Task Act()
 				{
@@ -99,13 +99,13 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             only have nullable members,
-					             but it contained types with non-nullable members [
-					               <null>
-					             ]
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              only have nullable members,
+					              but it contained types with non-nullable members [
+					                ClassWithSingleNonNullableProperty with non-nullable members [{Formatter.Format(property)}]
+					              ]
+					              """);
 			}
 		}
 
@@ -160,8 +160,7 @@ public sealed partial class ThatTypes
 			{
 				IAsyncEnumerable<Type?> subject = new[]
 					{
-						typeof(ClassWithNullableMembers),
-						typeof(ClassWithSingleNullableProperty),
+						typeof(ClassWithNullableMembers), typeof(ClassWithSingleNullableProperty),
 					}
 					.ToTestAsyncEnumerable<Type?>();
 
@@ -178,8 +177,7 @@ public sealed partial class ThatTypes
 			{
 				IAsyncEnumerable<Type?> subject = new[]
 					{
-						typeof(ClassWithNullableMembers),
-						typeof(ClassWithSingleNonNullableProperty),
+						typeof(ClassWithNullableMembers), typeof(ClassWithSingleNonNullableProperty),
 					}
 					.ToTestAsyncEnumerable<Type?>();
 

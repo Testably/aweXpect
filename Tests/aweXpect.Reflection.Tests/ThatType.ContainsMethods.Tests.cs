@@ -1,4 +1,4 @@
-using aweXpect.Reflection.Collections;
+﻿using aweXpect.Reflection.Collections;
 using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;

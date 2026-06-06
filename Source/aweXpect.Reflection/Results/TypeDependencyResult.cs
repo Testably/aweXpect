@@ -18,7 +18,9 @@ public sealed class TypeDependencyResult<TThat>
 		IThat<TThat> subject,
 		TypeDependencyOptions options)
 		: base(expectationBuilder, subject)
-		=> _options = options;
+	{
+		_options = options;
+	}
 
 	/// <summary>
 	///     Widens the expression by the type <typeparamref name="T" />.

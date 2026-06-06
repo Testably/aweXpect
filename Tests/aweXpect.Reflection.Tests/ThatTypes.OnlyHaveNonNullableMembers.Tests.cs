@@ -32,6 +32,30 @@ public sealed partial class ThatTypes
 			}
 
 			[Fact]
+			public async Task WhenCollectionContainsNull_ShouldListNullWithoutViolations()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(ClassWithNonNullableMembers),
+					null,
+				];
+
+				async Task Act()
+				{
+					await That(subject).OnlyHaveNonNullableMembers();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             only have non-nullable members,
+					             but it contained types with nullable members [
+					               <null>
+					             ]
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenTypesContainTypeWithNullableMembers_ShouldFail()
 			{
 				IEnumerable<Type?> subject =
@@ -55,30 +79,6 @@ public sealed partial class ThatTypes
 					                ClassWithSingleNullableProperty with nullable members [{Formatter.Format(property)}]
 					              ]
 					              """);
-			}
-
-			[Fact]
-			public async Task WhenCollectionContainsNull_ShouldListNullWithoutViolations()
-			{
-				IEnumerable<Type?> subject =
-				[
-					typeof(ClassWithNonNullableMembers),
-					null,
-				];
-
-				async Task Act()
-				{
-					await That(subject).OnlyHaveNonNullableMembers();
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             only have non-nullable members,
-					             but it contained types with nullable members [
-					               <null>
-					             ]
-					             """);
 			}
 		}
 
@@ -133,8 +133,7 @@ public sealed partial class ThatTypes
 			{
 				IAsyncEnumerable<Type?> subject = new[]
 					{
-						typeof(ClassWithNonNullableMembers),
-						typeof(ClassWithSingleNonNullableProperty),
+						typeof(ClassWithNonNullableMembers), typeof(ClassWithSingleNonNullableProperty),
 					}
 					.ToTestAsyncEnumerable<Type?>();
 
@@ -151,8 +150,7 @@ public sealed partial class ThatTypes
 			{
 				IAsyncEnumerable<Type?> subject = new[]
 					{
-						typeof(ClassWithNonNullableMembers),
-						typeof(ClassWithSingleNullableProperty),
+						typeof(ClassWithNonNullableMembers), typeof(ClassWithSingleNullableProperty),
 					}
 					.ToTestAsyncEnumerable<Type?>();
 

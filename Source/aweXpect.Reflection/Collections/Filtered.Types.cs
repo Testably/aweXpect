@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -116,10 +116,6 @@ public static partial class Filtered
 			_assemblies = inner._assemblies;
 		}
 
-		/// <inheritdoc />
-		private protected override Types CloneWith(List<IFilter<Type>> filters)
-			=> new(this, filters);
-
 		/// <summary>
 		///     Filters for public members.
 		/// </summary>
@@ -217,6 +213,10 @@ public static partial class Filtered
 		/// <inheritdoc cref="IMembers.IProtected.Internal" />
 		IMembers IMembers.IProtected.Internal
 			=> new TypesMemberBuilder(this, MemberFilterState.Empty.WithAccess(AccessModifiers.ProtectedInternal));
+
+		/// <inheritdoc />
+		private protected override Types CloneWith(List<IFilter<Type>> filters)
+			=> new(this, filters);
 
 		/// <summary>
 		///     Gets the types of the <paramref name="assembly" />, ignoring those that fail to load.
@@ -629,7 +629,7 @@ public static partial class Filtered
 			/// <summary>
 			///     Widens the filter by the given <paramref name="targets" />.
 			/// </summary>
-			public TypeSetDependencyFilterResult OrOn(params Filtered.Types[] targets)
+			public TypeSetDependencyFilterResult OrOn(params Types[] targets)
 			{
 				TypeSetDependencyOptions widened = _options.Copy();
 				widened.OrOn(targets);
@@ -665,7 +665,7 @@ public static partial class Filtered
 			/// <summary>
 			///     Widens the filter by the given <paramref name="targets" />.
 			/// </summary>
-			public TypeSetDependencyOnlyOnFilterResult OrOn(params Filtered.Types[] targets)
+			public TypeSetDependencyOnlyOnFilterResult OrOn(params Types[] targets)
 			{
 				TypeSetDependencyOptions widened = _options.Copy();
 				widened.OrOn(targets);
@@ -717,7 +717,7 @@ public static partial class Filtered
 			///     Widens the allowed set by the given <paramref name="targets" />, so that dependencies on their
 			///     types no longer count as outside.
 			/// </summary>
-			public TypeSetDependencyOutsideFilterResult OrOn(params Filtered.Types[] targets)
+			public TypeSetDependencyOutsideFilterResult OrOn(params Types[] targets)
 			{
 				TypeSetDependencyOptions widened = _options.Copy();
 				widened.OrOn(targets);

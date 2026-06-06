@@ -125,19 +125,6 @@ public sealed partial class ThatType
 			}
 
 			[Fact]
-			public async Task WhenTypeHasTheOperatorWithTypeOperand_ShouldSucceed()
-			{
-				Type subject = typeof(Money);
-
-				async Task Act()
-				{
-					await That(subject).HasOperator(Operator.Addition, typeof(Money));
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenTypeHasTheOperatorWithOpenGenericOperand_ShouldSucceed()
 			{
 				Type subject = typeof(GenericBox<int>);
@@ -145,6 +132,19 @@ public sealed partial class ThatType
 				async Task Act()
 				{
 					await That(subject).HasOperator(Operator.Addition, typeof(GenericBox<>));
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTypeHasTheOperatorWithTypeOperand_ShouldSucceed()
+			{
+				Type subject = typeof(Money);
+
+				async Task Act()
+				{
+					await That(subject).HasOperator(Operator.Addition, typeof(Money));
 				}
 
 				await That(Act).DoesNotThrow();

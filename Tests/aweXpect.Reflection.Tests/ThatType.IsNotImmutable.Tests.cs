@@ -9,18 +9,6 @@ public sealed partial class ThatType
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[MemberData(nameof(MutableTypes))]
-			public async Task WhenTypeIsMutable_ShouldSucceed(Type subject)
-			{
-				async Task Act()
-				{
-					await That(subject).IsNotImmutable();
-				}
-
-				await That(Act).DoesNotThrow();
-			}
-
 			[Fact]
 			public async Task WhenTypeIsImmutable_ShouldFail()
 			{
@@ -37,6 +25,18 @@ public sealed partial class ThatType
 					             is not immutable,
 					             but it was immutable ImmutableClass
 					             """);
+			}
+
+			[Theory]
+			[MemberData(nameof(MutableTypes))]
+			public async Task WhenTypeIsMutable_ShouldSucceed(Type subject)
+			{
+				async Task Act()
+				{
+					await That(subject).IsNotImmutable();
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[Fact]

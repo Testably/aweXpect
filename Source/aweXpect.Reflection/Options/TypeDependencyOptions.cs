@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using aweXpect.Core;
 using aweXpect.Reflection.Helpers;
 
 namespace aweXpect.Reflection.Options;
@@ -18,7 +17,9 @@ internal sealed class TypeDependencyOptions
 	private readonly List<Type> _types = [];
 
 	public TypeDependencyOptions(Type type)
-		=> _types.Add(type ?? throw new ArgumentNullException(nameof(type)));
+	{
+		_types.Add(type ?? throw new ArgumentNullException(nameof(type)));
+	}
 
 	/// <summary>
 	///     The targeted types.

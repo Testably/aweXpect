@@ -1,4 +1,4 @@
-using aweXpect.Core;
+﻿using aweXpect.Core;
 using aweXpect.Reflection.Options;
 using aweXpect.Results;
 
@@ -18,7 +18,9 @@ public sealed class DependencyCyclesResult<TThat>
 		IThat<TThat> subject,
 		DependencyCyclesOptions options)
 		: base(expectationBuilder, subject)
-		=> _options = options;
+	{
+		_options = options;
+	}
 
 	/// <summary>
 	///     Treats every namespace as its own node, so that a reference between a namespace and one of its sub-namespaces

@@ -1,4 +1,4 @@
-using System.Text;
+﻿using System.Text;
 using aweXpect.Formatting;
 
 namespace aweXpect.Reflection.Internal.Tests.TestHelpers;

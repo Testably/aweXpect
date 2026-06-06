@@ -28,6 +28,26 @@ public sealed partial class ThatFields
 			}
 
 			[Fact]
+			public async Task WhenFieldsContainNull_ShouldFail()
+			{
+				IEnumerable<FieldInfo?> subject = [null,];
+
+				async Task Act()
+				{
+					await That(subject).AreNotNullable();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             are all not nullable,
+					             but it contained nullable fields [
+					               <null>
+					             ]
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenFieldsContainNullableFields_ShouldFail()
 			{
 				IEnumerable<FieldInfo> subject = typeof(ClassWithMixedNullableMembers)
@@ -46,26 +66,6 @@ public sealed partial class ThatFields
 					               *
 					             ]
 					             """).AsWildcard();
-			}
-
-			[Fact]
-			public async Task WhenFieldsContainNull_ShouldFail()
-			{
-				IEnumerable<FieldInfo?> subject = [null,];
-
-				async Task Act()
-				{
-					await That(subject).AreNotNullable();
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             are all not nullable,
-					             but it contained nullable fields [
-					               <null>
-					             ]
-					             """);
 			}
 		}
 

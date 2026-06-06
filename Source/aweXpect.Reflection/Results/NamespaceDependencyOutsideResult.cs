@@ -20,7 +20,9 @@ public sealed class NamespaceDependencyOutsideResult<TThat>
 		IThat<TThat> subject,
 		NamespaceDependencyOptions options)
 		: base(expectationBuilder, subject)
-		=> _options = options;
+	{
+		_options = options;
+	}
 
 	/// <summary>
 	///     Widens the allowed set by the given <paramref name="namespaces" /> (including sub-namespaces unless

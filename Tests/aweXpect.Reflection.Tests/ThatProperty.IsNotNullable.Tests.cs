@@ -38,17 +38,21 @@ public sealed partial class ThatProperty
 			}
 
 			[Fact]
-			public async Task WhenPropertyIsOblivious_ShouldSucceed()
+			public async Task WhenPropertyIsNull_ShouldFail()
 			{
-				PropertyInfo subject = typeof(ClassWithObliviousMembers)
-					.GetProperty(nameof(ClassWithObliviousMembers.ObliviousProperty))!;
+				PropertyInfo? subject = null;
 
 				async Task Act()
 				{
 					await That(subject).IsNotNullable();
 				}
 
-				await That(Act).DoesNotThrow();
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             is not nullable,
+					             but it was <null>
+					             """);
 			}
 
 			[Fact]
@@ -90,21 +94,17 @@ public sealed partial class ThatProperty
 			}
 
 			[Fact]
-			public async Task WhenPropertyIsNull_ShouldFail()
+			public async Task WhenPropertyIsOblivious_ShouldSucceed()
 			{
-				PropertyInfo? subject = null;
+				PropertyInfo subject = typeof(ClassWithObliviousMembers)
+					.GetProperty(nameof(ClassWithObliviousMembers.ObliviousProperty))!;
 
 				async Task Act()
 				{
 					await That(subject).IsNotNullable();
 				}
 
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             is not nullable,
-					             but it was <null>
-					             """);
+				await That(Act).DoesNotThrow();
 			}
 		}
 

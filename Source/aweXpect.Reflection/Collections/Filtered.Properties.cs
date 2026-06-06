@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -54,10 +54,6 @@ public static partial class Filtered
 		}
 
 		/// <inheritdoc />
-		private protected override Properties CloneWith(List<IFilter<PropertyInfo>> filters)
-			=> new(this, filters);
-
-		/// <inheritdoc />
 		public string GetDescription()
 		{
 			string description = _description;
@@ -73,6 +69,10 @@ public static partial class Filtered
 
 			return description;
 		}
+
+		/// <inheritdoc />
+		private protected override Properties CloneWith(List<IFilter<PropertyInfo>> filters)
+			=> new(this, filters);
 
 		/// <summary>
 		///     Get all declaring types of the filtered properties.

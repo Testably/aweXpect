@@ -1,4 +1,4 @@
-using aweXpect.Core;
+﻿using aweXpect.Core;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Options;
 using aweXpect.Results;
@@ -19,7 +19,9 @@ public sealed class TypeSetDependencyResult<TThat>
 		IThat<TThat> subject,
 		TypeSetDependencyOptions options)
 		: base(expectationBuilder, subject)
-		=> _options = options;
+	{
+		_options = options;
+	}
 
 	/// <summary>
 	///     Widens the expression by the given <paramref name="targets" />.

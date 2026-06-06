@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 #if NET8_0_OR_GREATER
 #endif
@@ -127,7 +127,7 @@ public sealed class LinqAsyncHelpersTests
 		int[] source = [1, 1, 2, 3, 3, 3,];
 
 		List<int> result = new();
-		await foreach (int item in LinqAsyncHelpers.Distinct(ToAsync(source)))
+		await foreach (int item in ToAsync(source).Distinct())
 		{
 			result.Add(item);
 		}

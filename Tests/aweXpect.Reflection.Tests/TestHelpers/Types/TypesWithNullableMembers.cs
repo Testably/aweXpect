@@ -21,8 +21,8 @@ public class ClassWithNullableMembers
 
 public class ClassWithNonNullableMembers
 {
-	public List<string?> NonNullableGenericField = [];
 	public string NonNullableField = "";
+	public List<string?> NonNullableGenericField = [];
 	public int NonNullableValueField;
 	public string NonNullableProperty { get; set; } = "";
 	public List<string?> NonNullableGenericProperty { get; set; } = [];
@@ -31,10 +31,10 @@ public class ClassWithNonNullableMembers
 
 public class ClassWithMixedNullableMembers
 {
-	public string? NullableField;
 	public string NonNullableField = "";
-	public int? NullableValueField;
 	public int NonNullableValueField;
+	public string? NullableField;
+	public int? NullableValueField;
 	public string? NullableProperty { get; set; }
 	public string NonNullableProperty { get; set; } = "";
 	public int? NullableValueProperty { get; set; }
@@ -44,9 +44,9 @@ public class ClassWithMixedNullableMembers
 public class ClassWithMostlyNullableMembers
 {
 	public string? FirstNullableField;
+	public string NonNullableField = "";
 	public string? SecondNullableField;
 	public string? ThirdNullableField;
-	public string NonNullableField = "";
 	public string? FirstNullableProperty { get; set; }
 	public string? SecondNullableProperty { get; set; }
 	public string? ThirdNullableProperty { get; set; }
@@ -77,5 +77,4 @@ public class ClassWithObliviousMembers
 	public string ObliviousField;
 	public string ObliviousProperty { get; set; }
 }
-#nullable restore
 #pragma warning restore CS0649

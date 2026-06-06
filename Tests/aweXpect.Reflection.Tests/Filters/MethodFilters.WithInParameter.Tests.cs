@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using aweXpect.Reflection.Collections;
 
 namespace aweXpect.Reflection.Tests.Filters;

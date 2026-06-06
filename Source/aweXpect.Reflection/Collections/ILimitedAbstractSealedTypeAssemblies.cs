@@ -1,4 +1,4 @@
-namespace aweXpect.Reflection.Collections;
+﻿namespace aweXpect.Reflection.Collections;
 
 /// <summary>
 ///     A limited interface for filtering types in assemblies after an <c>Abstract</c> or <c>Sealed</c> modifier.

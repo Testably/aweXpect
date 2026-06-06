@@ -1,3 +1,3 @@
-namespace aweXpect.Reflection.Tests.TestHelpers.Types;
+﻿namespace aweXpect.Reflection.Tests.TestHelpers.Types;
 
 internal struct InternalGenericStruct<T>;

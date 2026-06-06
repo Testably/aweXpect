@@ -1,4 +1,4 @@
-namespace aweXpect.Reflection.Collections;
+﻿namespace aweXpect.Reflection.Collections;
 
 /// <summary>
 ///     A terminal interface that exposes the five member-kind selectors.

@@ -26,18 +26,6 @@ public sealed partial class MethodFilters
 		public sealed class WithOperatorTests
 		{
 			[Fact]
-			public async Task ShouldKeepOtherOperatorsWithoutCustomization()
-			{
-				Filtered.Methods methods = In.Type<ClassWithOperators>()
-					.Methods().WhichAreNotOperators(Operator.Addition);
-
-				await That(methods).All().Satisfy(x => x!.Name != "op_Addition").And.IsNotEmpty();
-				await That(methods).Contains(x => x.Name == "op_Subtraction");
-				await That(methods.GetDescription())
-					.IsEqualTo("non-Addition operator methods in").AsPrefix();
-			}
-
-			[Fact]
 			public async Task ShouldExcludeTheSpecificOperatorButKeepOthers()
 			{
 				using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers()
@@ -51,6 +39,18 @@ public sealed partial class MethodFilters
 					await That(methods.GetDescription())
 						.IsEqualTo("non-Addition operator methods in").AsPrefix();
 				}
+			}
+
+			[Fact]
+			public async Task ShouldKeepOtherOperatorsWithoutCustomization()
+			{
+				Filtered.Methods methods = In.Type<ClassWithOperators>()
+					.Methods().WhichAreNotOperators(Operator.Addition);
+
+				await That(methods).All().Satisfy(x => x!.Name != "op_Addition").And.IsNotEmpty();
+				await That(methods).Contains(x => x.Name == "op_Subtraction");
+				await That(methods.GetDescription())
+					.IsEqualTo("non-Addition operator methods in").AsPrefix();
 			}
 		}
 	}

@@ -11,9 +11,9 @@ public sealed partial class ThatType
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenTypeOnlyHasNullableMembers_ShouldSucceed()
+			public async Task WhenBaseTypeHasNonNullableMembers_ShouldSucceed()
 			{
-				Type subject = typeof(ClassWithNullableMembers);
+				Type subject = typeof(DerivedClassWithNullableMembers);
 
 				async Task Act()
 				{
@@ -21,6 +21,26 @@ public sealed partial class ThatType
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTypeHasMixedMembers_ShouldFail()
+			{
+				Type subject = typeof(ClassWithMixedNullableMembers);
+
+				async Task Act()
+				{
+					await That(subject).OnlyHasNullableMembers();
+				}
+
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             only has nullable members,
+					             but it contained non-nullable members [
+					               *
+					             ]
+					             """).AsWildcard();
 			}
 
 			[Fact]
@@ -59,9 +79,9 @@ public sealed partial class ThatType
 			}
 
 			[Fact]
-			public async Task WhenTypeHasMixedMembers_ShouldFail()
+			public async Task WhenTypeIsNull_ShouldFail()
 			{
-				Type subject = typeof(ClassWithMixedNullableMembers);
+				Type? subject = null;
 
 				async Task Act()
 				{
@@ -72,16 +92,14 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             only has nullable members,
-					             but it contained non-nullable members [
-					               *
-					             ]
-					             """).AsWildcard();
+					             but it was <null>
+					             """);
 			}
 
 			[Fact]
-			public async Task WhenBaseTypeHasNonNullableMembers_ShouldSucceed()
+			public async Task WhenTypeOnlyHasNullableMembers_ShouldSucceed()
 			{
-				Type subject = typeof(DerivedClassWithNullableMembers);
+				Type subject = typeof(ClassWithNullableMembers);
 
 				async Task Act()
 				{
@@ -109,24 +127,6 @@ public sealed partial class ThatType
 					               *
 					             ]
 					             """).AsWildcard();
-			}
-
-			[Fact]
-			public async Task WhenTypeIsNull_ShouldFail()
-			{
-				Type? subject = null;
-
-				async Task Act()
-				{
-					await That(subject).OnlyHasNullableMembers();
-				}
-
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             only has nullable members,
-					             but it was <null>
-					             """);
 			}
 		}
 

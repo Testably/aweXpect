@@ -38,17 +38,21 @@ public sealed partial class ThatField
 			}
 
 			[Fact]
-			public async Task WhenFieldIsOblivious_ShouldSucceed()
+			public async Task WhenFieldIsNull_ShouldFail()
 			{
-				FieldInfo subject = typeof(ClassWithObliviousMembers)
-					.GetField(nameof(ClassWithObliviousMembers.ObliviousField))!;
+				FieldInfo? subject = null;
 
 				async Task Act()
 				{
 					await That(subject).IsNotNullable();
 				}
 
-				await That(Act).DoesNotThrow();
+				await That(Act).ThrowsException()
+					.WithMessage("""
+					             Expected that subject
+					             is not nullable,
+					             but it was <null>
+					             """);
 			}
 
 			[Fact]
@@ -90,21 +94,17 @@ public sealed partial class ThatField
 			}
 
 			[Fact]
-			public async Task WhenFieldIsNull_ShouldFail()
+			public async Task WhenFieldIsOblivious_ShouldSucceed()
 			{
-				FieldInfo? subject = null;
+				FieldInfo subject = typeof(ClassWithObliviousMembers)
+					.GetField(nameof(ClassWithObliviousMembers.ObliviousField))!;
 
 				async Task Act()
 				{
 					await That(subject).IsNotNullable();
 				}
 
-				await That(Act).ThrowsException()
-					.WithMessage("""
-					             Expected that subject
-					             is not nullable,
-					             but it was <null>
-					             """);
+				await That(Act).DoesNotThrow();
 			}
 		}
 

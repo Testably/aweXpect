@@ -23,9 +23,25 @@ public sealed partial class ThatTypes
 				];
 
 				async Task Act()
-					=> await That(subject).DependOn(Layer1Namespace);
+				{
+					await That(subject).DependOn(Layer1Namespace);
+				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenNoNamespaceIsSpecified_ShouldThrowArgumentException()
+			{
+				IEnumerable<Type?> subject = [typeof(OnlyLayer1),];
+
+				async Task Act()
+				{
+					await That(subject).DependOn();
+				}
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("At least one namespace must be specified.");
 			}
 
 			[Fact]
@@ -38,7 +54,9 @@ public sealed partial class ThatTypes
 				];
 
 				async Task Act()
-					=> await That(subject).DependOn(Layer1Namespace);
+				{
+					await That(subject).DependOn(Layer1Namespace);
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -51,18 +69,6 @@ public sealed partial class ThatTypes
 			}
 
 			[Fact]
-			public async Task WhenNoNamespaceIsSpecified_ShouldThrowArgumentException()
-			{
-				IEnumerable<Type?> subject = [typeof(OnlyLayer1),];
-
-				async Task Act()
-					=> await That(subject).DependOn();
-
-				await That(Act).Throws<ArgumentException>()
-					.WithMessage("At least one namespace must be specified.");
-			}
-
-			[Fact]
 			public async Task WhenWidenedWithOrOn_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject =
@@ -72,7 +78,9 @@ public sealed partial class ThatTypes
 				];
 
 				async Task Act()
-					=> await That(subject).DependOn("Non.Existent.Namespace").OrOn(Layer1Namespace);
+				{
+					await That(subject).DependOn("Non.Existent.Namespace").OrOn(Layer1Namespace);
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -91,7 +99,9 @@ public sealed partial class ThatTypes
 				];
 
 				async Task Act()
-					=> await That(subject).DependOn(Types.InNamespace(Layer1Namespace));
+				{
+					await That(subject).DependOn(Types.InNamespace(Layer1Namespace));
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -106,7 +116,9 @@ public sealed partial class ThatTypes
 				];
 
 				async Task Act()
-					=> await That(subject).DependOn(Types.InNamespace(Layer1Namespace));
+				{
+					await That(subject).DependOn(Types.InNamespace(Layer1Namespace));
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -128,8 +140,10 @@ public sealed partial class ThatTypes
 				];
 
 				async Task Act()
-					=> await That(subject).DependOn(Types.InNamespace("Non.Existent.Namespace"))
+				{
+					await That(subject).DependOn(Types.InNamespace("Non.Existent.Namespace"))
 						.OrOn(Types.InNamespace(Layer1Namespace));
+				}
 
 				await That(Act).DoesNotThrow();
 			}

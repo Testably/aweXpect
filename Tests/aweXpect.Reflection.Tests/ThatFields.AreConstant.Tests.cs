@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
 #if NET8_0_OR_GREATER

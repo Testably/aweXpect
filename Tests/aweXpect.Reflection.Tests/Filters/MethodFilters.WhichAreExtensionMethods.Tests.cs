@@ -1,4 +1,4 @@
-using aweXpect.Reflection.Collections;
+﻿using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers;
 #if NET10_0_OR_GREATER
 using aweXpect.Reflection.Tests.TestHelpers.Types;

@@ -174,7 +174,7 @@ public sealed class TypeHelpersTests
 	{
 		Type sut = typeof(DerivedImplementingFoo);
 
-		await That(sut.Implements(typeof(IFooInterface), false)).IsTrue();
+		await That(sut.Implements(typeof(IFooInterface))).IsTrue();
 		await That(sut.Implements(typeof(IFooInterface), true)).IsFalse();
 	}
 

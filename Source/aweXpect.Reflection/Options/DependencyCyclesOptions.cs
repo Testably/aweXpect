@@ -1,4 +1,4 @@
-namespace aweXpect.Reflection.Options;
+﻿namespace aweXpect.Reflection.Options;
 
 /// <summary>
 ///     Options for a namespace dependency cycle assertion.

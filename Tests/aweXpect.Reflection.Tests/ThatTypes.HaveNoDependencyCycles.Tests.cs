@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using aweXpect.Customization;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Cycles.Acyclic.High;
@@ -35,21 +35,6 @@ public sealed partial class ThatTypes
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenSetIsAcyclic_ShouldSucceed()
-			{
-				IEnumerable<Type?> subject =
-				[
-					typeof(HighType),
-					typeof(LowType),
-				];
-
-				async Task Act()
-					=> await That(subject).HaveNoDependencyCycles();
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
 			public async Task WhenCollectionContainsNull_ShouldIgnoreNull()
 			{
 				IEnumerable<Type?> subject =
@@ -60,76 +45,11 @@ public sealed partial class ThatTypes
 				];
 
 				async Task Act()
-					=> await That(subject).HaveNoDependencyCycles();
+				{
+					await That(subject).HaveNoDependencyCycles();
+				}
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenTwoNamespacesFormCycle_ShouldFailAndListBothNamespaces()
-			{
-				IEnumerable<Type?> subject =
-				[
-					typeof(TwoOrders.Order),
-					typeof(TwoBilling.Invoice),
-				];
-
-				async Task Act()
-					=> await That(subject).HaveNoDependencyCycles();
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              have no dependency cycles,
-					              but it had a dependency cycle:
-					                {Prefix}.Two.Billing -> {Prefix}.Two.Orders -> {Prefix}.Two.Billing
-					              """);
-			}
-
-			[Fact]
-			public async Task WhenThreeNamespacesFormCycle_ShouldDetectTheLongerCycle()
-			{
-				IEnumerable<Type?> subject =
-				[
-					typeof(ThreeA.TypeA),
-					typeof(ThreeB.TypeB),
-					typeof(ThreeC.TypeC),
-				];
-
-				async Task Act()
-					=> await That(subject).HaveNoDependencyCycles();
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              have no dependency cycles,
-					              but it had a dependency cycle:
-					                {Prefix}.Three.A -> {Prefix}.Three.B -> {Prefix}.Three.C -> {Prefix}.Three.A
-					              """);
-			}
-
-			[Fact]
-			public async Task WhenOnlyDependingOnFrameworkTypes_ShouldSucceed()
-			{
-				IEnumerable<Type?> subject =
-				[
-					typeof(Service),
-				];
-
-				async Task Act()
-					=> await That(subject).HaveNoDependencyCycles();
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenUsingNamespaceSource_ShouldDetectCycle()
-			{
-				async Task Act()
-					=> await That(Types.InNamespace($"{Prefix}.Two")).HaveNoDependencyCycles();
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("*had a dependency cycle*").AsWildcard();
 			}
 
 			[Fact]
@@ -142,9 +62,34 @@ public sealed partial class ThatTypes
 				];
 
 				async Task Act()
-					=> await That(subject).HaveNoDependencyCycles();
+				{
+					await That(subject).HaveNoDependencyCycles();
+				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenGlobalNamespaceIsInACycle_ShouldRenderGlobalNamespace()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(GlobalCycleType),
+					typeof(GlobalRingType),
+				];
+
+				async Task Act()
+				{
+					await That(subject).HaveNoDependencyCycles();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              have no dependency cycles,
+					              but it had a dependency cycle:
+					                <global namespace> -> {Prefix}.GlobalRing -> <global namespace>
+					              """);
 			}
 
 			[Fact]
@@ -160,7 +105,9 @@ public sealed partial class ThatTypes
 				];
 
 				async Task Act()
-					=> await That(subject).HaveNoDependencyCycles();
+				{
+					await That(subject).HaveNoDependencyCycles();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -173,24 +120,95 @@ public sealed partial class ThatTypes
 			}
 
 			[Fact]
-			public async Task WhenGlobalNamespaceIsInACycle_ShouldRenderGlobalNamespace()
+			public async Task WhenOnlyDependingOnFrameworkTypes_ShouldSucceed()
 			{
 				IEnumerable<Type?> subject =
 				[
-					typeof(GlobalCycleType),
-					typeof(GlobalRingType),
+					typeof(Service),
 				];
 
 				async Task Act()
-					=> await That(subject).HaveNoDependencyCycles();
+				{
+					await That(subject).HaveNoDependencyCycles();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSetIsAcyclic_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(HighType),
+					typeof(LowType),
+				];
+
+				async Task Act()
+				{
+					await That(subject).HaveNoDependencyCycles();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenThreeNamespacesFormCycle_ShouldDetectTheLongerCycle()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(ThreeA.TypeA),
+					typeof(ThreeB.TypeB),
+					typeof(ThreeC.TypeC),
+				];
+
+				async Task Act()
+				{
+					await That(subject).HaveNoDependencyCycles();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
 					              have no dependency cycles,
 					              but it had a dependency cycle:
-					                <global namespace> -> {Prefix}.GlobalRing -> <global namespace>
+					                {Prefix}.Three.A -> {Prefix}.Three.B -> {Prefix}.Three.C -> {Prefix}.Three.A
 					              """);
+			}
+
+			[Fact]
+			public async Task WhenTwoNamespacesFormCycle_ShouldFailAndListBothNamespaces()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(TwoOrders.Order),
+					typeof(TwoBilling.Invoice),
+				];
+
+				async Task Act()
+				{
+					await That(subject).HaveNoDependencyCycles();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              have no dependency cycles,
+					              but it had a dependency cycle:
+					                {Prefix}.Two.Billing -> {Prefix}.Two.Orders -> {Prefix}.Two.Billing
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenUsingNamespaceSource_ShouldDetectCycle()
+			{
+				async Task Act()
+				{
+					await That(Types.InNamespace($"{Prefix}.Two")).HaveNoDependencyCycles();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("*had a dependency cycle*").AsWildcard();
 			}
 		}
 
@@ -206,7 +224,9 @@ public sealed partial class ThatTypes
 				];
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.HaveNoDependencyCycles());
+				{
+					await That(subject).DoesNotComplyWith(they => they.HaveNoDependencyCycles());
+				}
 
 				await That(Act).DoesNotThrow();
 			}
@@ -221,7 +241,9 @@ public sealed partial class ThatTypes
 				];
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(they => they.HaveNoDependencyCycles());
+				{
+					await That(subject).DoesNotComplyWith(they => they.HaveNoDependencyCycles());
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -234,22 +256,6 @@ public sealed partial class ThatTypes
 
 		public sealed class ResolverTests
 		{
-			[Fact]
-			public async Task WithSignatureResolver_ABodyOnlyEdge_ShouldNotFormACycle()
-			{
-				IEnumerable<Type?> subject =
-				[
-					typeof(ResolverA.ResolverA),
-					typeof(ResolverB.ResolverB),
-				];
-
-				async Task Act()
-					=> await That(subject).HaveNoDependencyCycles();
-
-				// Only the signature edge A -> B is visible, so there is no cycle.
-				await That(Act).DoesNotThrow();
-			}
-
 			[Fact]
 			public async Task WhenAResolverSuppliesTheReverseEdge_ShouldDetectTheCycle()
 			{
@@ -269,31 +275,58 @@ public sealed partial class ThatTypes
 					       : builtin(type)))
 				{
 					async Task Act()
-						=> await That(subject).HaveNoDependencyCycles();
+					{
+						await That(subject).HaveNoDependencyCycles();
+					}
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("*had a dependency cycle*").AsWildcard();
 				}
 			}
+
+			[Fact]
+			public async Task WithSignatureResolver_ABodyOnlyEdge_ShouldNotFormACycle()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(ResolverA.ResolverA),
+					typeof(ResolverB.ResolverB),
+				];
+
+				async Task Act()
+				{
+					await That(subject).HaveNoDependencyCycles();
+				}
+
+				// Only the signature edge A -> B is visible, so there is no cycle.
+				await That(Act).DoesNotThrow();
+			}
 		}
 
 		public sealed class SliceTests
 		{
-			private const string Prefix = HaveNoDependencyCycles.Prefix;
-
 			[Fact]
-			public async Task WhenSubNamespacesShareSlice_ShouldCollapseAndSucceed()
+			public async Task WhenGroupingCollapsesNamespacesIntoSlices_ShouldReportSliceNames()
 			{
 				IEnumerable<Type?> subject =
 				[
-					typeof(SlicedPart1.Part1Type),
-					typeof(SlicedPart2.Part2Type),
+					typeof(GroupedOrdersDomain.OrderDomain),
+					typeof(GroupedOrdersApi.OrderApi),
+					typeof(GroupedBilling.Invoice),
 				];
 
 				async Task Act()
-					=> await That(subject).HaveNoDependencyCycles($"{Prefix}.Sliced");
+				{
+					await That(subject).HaveNoDependencyCycles($"{Prefix}.Grouped");
+				}
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              have no dependency cycles when grouped into slices under "{Prefix}.Grouped",
+					              but it had a dependency cycle:
+					                {Prefix}.Grouped.Billing -> {Prefix}.Grouped.Orders -> {Prefix}.Grouped.Billing
+					              """);
 			}
 
 			[Fact]
@@ -306,7 +339,9 @@ public sealed partial class ThatTypes
 				];
 
 				async Task Act()
-					=> await That(subject).HaveNoDependencyCycles();
+				{
+					await That(subject).HaveNoDependencyCycles();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -318,69 +353,27 @@ public sealed partial class ThatTypes
 			}
 
 			[Fact]
-			public async Task WhenGroupingCollapsesNamespacesIntoSlices_ShouldReportSliceNames()
+			public async Task WhenSubNamespacesShareSlice_ShouldCollapseAndSucceed()
 			{
 				IEnumerable<Type?> subject =
 				[
-					typeof(GroupedOrdersDomain.OrderDomain),
-					typeof(GroupedOrdersApi.OrderApi),
-					typeof(GroupedBilling.Invoice),
+					typeof(SlicedPart1.Part1Type),
+					typeof(SlicedPart2.Part2Type),
 				];
 
 				async Task Act()
-					=> await That(subject).HaveNoDependencyCycles($"{Prefix}.Grouped");
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              have no dependency cycles when grouped into slices under "{Prefix}.Grouped",
-					              but it had a dependency cycle:
-					                {Prefix}.Grouped.Billing -> {Prefix}.Grouped.Orders -> {Prefix}.Grouped.Billing
-					              """);
-			}
-		}
-
-		public sealed class SubNamespaceTests
-		{
-			private const string Prefix = HaveNoDependencyCycles.Prefix;
-
-			[Fact]
-			public async Task WhenParentAndChildReferenceEachOther_ShouldSucceedByDefault()
-			{
-				// By default a namespace and its sub-namespaces are one family, so the references do not form a cycle.
-				IEnumerable<Type?> subject =
-				[
-					typeof(FamilyParent),
-					typeof(FamilyChild),
-				];
-
-				async Task Act()
-					=> await That(subject).HaveNoDependencyCycles();
+				{
+					await That(subject).HaveNoDependencyCycles($"{Prefix}.Sliced");
+				}
 
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
-			public async Task WhenExcludingSubNamespaces_ShouldDetectTheFamilyCycle()
-			{
-				IEnumerable<Type?> subject =
-				[
-					typeof(FamilyParent),
-					typeof(FamilyChild),
-				];
+			private const string Prefix = HaveNoDependencyCycles.Prefix;
+		}
 
-				async Task Act()
-					=> await That(subject).HaveNoDependencyCycles().ExcludingSubNamespaces();
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              have no dependency cycles,
-					              but it had a dependency cycle:
-					                {Prefix}.Family -> {Prefix}.Family.Inner -> {Prefix}.Family
-					              """);
-			}
-
+		public sealed class SubNamespaceTests
+		{
 			[Fact]
 			public async Task WhenCycleReentersFamilyThroughSubNamespace_ShouldDetectItByDefault()
 			{
@@ -394,7 +387,9 @@ public sealed partial class ThatTypes
 				];
 
 				async Task Act()
-					=> await That(subject).HaveNoDependencyCycles();
+				{
+					await That(subject).HaveNoDependencyCycles();
+				}
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -402,6 +397,29 @@ public sealed partial class ThatTypes
 					              have no dependency cycles,
 					              but it had a dependency cycle:
 					                {Prefix}.Indirect.Other -> {Prefix}.Indirect.Parent -> {Prefix}.Indirect.Other
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenExcludingSubNamespaces_ShouldDetectTheFamilyCycle()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(FamilyParent),
+					typeof(FamilyChild),
+				];
+
+				async Task Act()
+				{
+					await That(subject).HaveNoDependencyCycles().ExcludingSubNamespaces();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              have no dependency cycles,
+					              but it had a dependency cycle:
+					                {Prefix}.Family -> {Prefix}.Family.Inner -> {Prefix}.Family
 					              """);
 			}
 
@@ -418,10 +436,32 @@ public sealed partial class ThatTypes
 				];
 
 				async Task Act()
-					=> await That(subject).HaveNoDependencyCycles().ExcludingSubNamespaces();
+				{
+					await That(subject).HaveNoDependencyCycles().ExcludingSubNamespaces();
+				}
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenParentAndChildReferenceEachOther_ShouldSucceedByDefault()
+			{
+				// By default a namespace and its sub-namespaces are one family, so the references do not form a cycle.
+				IEnumerable<Type?> subject =
+				[
+					typeof(FamilyParent),
+					typeof(FamilyChild),
+				];
+
+				async Task Act()
+				{
+					await That(subject).HaveNoDependencyCycles();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			private const string Prefix = HaveNoDependencyCycles.Prefix;
 		}
 	}
 }

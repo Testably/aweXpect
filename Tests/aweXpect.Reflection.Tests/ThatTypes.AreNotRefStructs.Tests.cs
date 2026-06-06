@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
 using Xunit.Sdk;
 #if NET8_0_OR_GREATER

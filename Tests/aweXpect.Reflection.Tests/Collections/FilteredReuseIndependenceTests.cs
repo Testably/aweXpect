@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers;
 
@@ -92,6 +92,41 @@ public sealed class FilteredReuseIndependenceTests
 	}
 
 	[Fact]
+	public async Task MethodsWhichAreGenericWithArgument_BranchingFromSharedBase_ShouldBeIndependent()
+	{
+		MethodFilters.GenericMethods @base = In.Type<SampleGenericArgumentMethods>().Methods()
+			.WhichAreGeneric();
+
+		Filtered.Methods view1 = @base.WithArgument<BaseA>();
+		Filtered.Methods view2 = @base.WithArgument<BaseB>();
+
+		await That(view1).IsEqualTo([
+			typeof(SampleGenericArgumentMethods).GetMethod(nameof(SampleGenericArgumentMethods.ArgumentOfBaseA))!,
+		]).InAnyOrder();
+		await That(view2).IsEqualTo([
+			typeof(SampleGenericArgumentMethods).GetMethod(nameof(SampleGenericArgumentMethods.ArgumentOfBaseB))!,
+		]).InAnyOrder();
+		await That(@base).HasCount(2);
+	}
+
+	[Fact]
+	public async Task MethodsWhichAreGenericWithArgumentCount_BranchingFromSharedBase_ShouldBeIndependent()
+	{
+		MethodFilters.GenericMethods @base = In.Type<SampleGenericMethods>().Methods()
+			.WhichAreGeneric();
+
+		Filtered.Methods view1 = @base.WithArgumentCount(1);
+		Filtered.Methods view2 = @base.WithArgumentCount(2);
+
+		await That(view1).All().Satisfy(m => m.GetGenericArguments().Length == 1);
+		await That(view1).HasCount(1);
+		await That(view2).All().Satisfy(m => m.GetGenericArguments().Length == 2);
+		await That(view2).HasCount(1);
+		await That(@base).All().Satisfy(m => m.IsGenericMethod);
+		await That(@base).HasCount(2);
+	}
+
+	[Fact]
 	public async Task Properties_BranchingFromSharedBase_ShouldBeIndependent()
 	{
 		PropertyInfo propertyA = typeof(SampleWithMembers).GetProperty(nameof(SampleWithMembers.PropA))!;
@@ -120,38 +155,19 @@ public sealed class FilteredReuseIndependenceTests
 	}
 
 	[Fact]
-	public async Task MethodsWhichAreGenericWithArgumentCount_BranchingFromSharedBase_ShouldBeIndependent()
+	public async Task TypesWhichAreGenericWithArgumentCount_BranchingFromSharedBase_ShouldBeIndependent()
 	{
-		MethodFilters.GenericMethods @base = In.Type<SampleGenericMethods>().Methods()
+		TypeFilters.GenericTypes @base = In.Types<SampleGenericType1<int>, SampleGenericType2<int, int>>()
 			.WhichAreGeneric();
 
-		Filtered.Methods view1 = @base.WithArgumentCount(1);
-		Filtered.Methods view2 = @base.WithArgumentCount(2);
+		Filtered.Types view1 = @base.WithArgumentCount(1);
+		Filtered.Types view2 = @base.WithArgumentCount(2);
 
-		await That(view1).All().Satisfy(m => m.GetGenericArguments().Length == 1);
-		await That(view1).HasCount(1);
-		await That(view2).All().Satisfy(m => m.GetGenericArguments().Length == 2);
-		await That(view2).HasCount(1);
-		await That(@base).All().Satisfy(m => m.IsGenericMethod);
-		await That(@base).HasCount(2);
-	}
-
-	[Fact]
-	public async Task MethodsWhichAreGenericWithArgument_BranchingFromSharedBase_ShouldBeIndependent()
-	{
-		MethodFilters.GenericMethods @base = In.Type<SampleGenericArgumentMethods>().Methods()
-			.WhichAreGeneric();
-
-		Filtered.Methods view1 = @base.WithArgument<BaseA>();
-		Filtered.Methods view2 = @base.WithArgument<BaseB>();
-
-		await That(view1).IsEqualTo([
-			typeof(SampleGenericArgumentMethods).GetMethod(nameof(SampleGenericArgumentMethods.ArgumentOfBaseA))!,
+		await That(view1).IsEqualTo([typeof(SampleGenericType1<int>),]).InAnyOrder();
+		await That(view2).IsEqualTo([typeof(SampleGenericType2<int, int>),]).InAnyOrder();
+		await That(@base).IsEqualTo([
+			typeof(SampleGenericType1<int>), typeof(SampleGenericType2<int, int>),
 		]).InAnyOrder();
-		await That(view2).IsEqualTo([
-			typeof(SampleGenericArgumentMethods).GetMethod(nameof(SampleGenericArgumentMethods.ArgumentOfBaseB))!,
-		]).InAnyOrder();
-		await That(@base).HasCount(2);
 	}
 
 	[Fact]
@@ -171,22 +187,6 @@ public sealed class FilteredReuseIndependenceTests
 		await That(branch).DoesNotContain(typeof(OnlyLayer2));
 		await That(widened).Contains(typeof(OnlyLayer1));
 		await That(widened).Contains(typeof(OnlyLayer2));
-	}
-
-	[Fact]
-	public async Task TypesWhichAreGenericWithArgumentCount_BranchingFromSharedBase_ShouldBeIndependent()
-	{
-		TypeFilters.GenericTypes @base = In.Types<SampleGenericType1<int>, SampleGenericType2<int, int>>()
-			.WhichAreGeneric();
-
-		Filtered.Types view1 = @base.WithArgumentCount(1);
-		Filtered.Types view2 = @base.WithArgumentCount(2);
-
-		await That(view1).IsEqualTo([typeof(SampleGenericType1<int>),]).InAnyOrder();
-		await That(view2).IsEqualTo([typeof(SampleGenericType2<int, int>),]).InAnyOrder();
-		await That(@base).IsEqualTo([
-			typeof(SampleGenericType1<int>), typeof(SampleGenericType2<int, int>),
-		]).InAnyOrder();
 	}
 
 	private class BaseA;
@@ -237,11 +237,11 @@ public sealed class FilteredReuseIndependenceTests
 			FieldA = value;
 		}
 
-		public event EventHandler? EventA;
-		public event EventHandler? EventB;
-
 		public int PropA { get; set; }
 		public int PropB { get; set; }
+
+		public event EventHandler? EventA;
+		public event EventHandler? EventB;
 
 		public static void DoA()
 		{

@@ -14,6 +14,16 @@ public sealed partial class TypeFilters
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task ExcludingOwnSubNamespaces_ShouldNotAffectOriginalFilter()
+			{
+				Filtered.Types.NamespaceDependencyOutsideFilterResult original =
+					Types.InNamespace(ConsumersNamespace).WhichHaveDependenciesOutside(Layer1Namespace);
+				_ = original.ExcludingOwnSubNamespaces();
+
+				await That(original).DoesNotContain(typeof(ReferencesOwnSubNamespace));
+			}
+
+			[Fact]
 			public async Task ShouldFilterForTypesWithDependenciesOutsideAllowedNamespaces()
 			{
 				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
@@ -37,23 +47,13 @@ public sealed partial class TypeFilters
 			}
 
 			[Fact]
-			public async Task WhenWidenedWithOrOn_ShouldFilterOutTypesDependingOnEither()
+			public async Task WhenExcludingOwnSubNamespaces_ShouldSelectTypesReferencingOwnSubNamespace()
 			{
 				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
 					.WhichHaveDependenciesOutside(Layer1Namespace)
-					.OrOn(Layer2Namespace);
+					.ExcludingOwnSubNamespaces();
 
-				await That(types).DoesNotContain(typeof(Layer1AndLayer2));
-				await That(types).DoesNotContain(typeof(OnlyLayer2));
-			}
-
-			[Fact]
-			public async Task WhenNotExcludingSubNamespaces_SubNamespaceDependencyStaysInside()
-			{
-				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
-					.WhichHaveDependenciesOutside(Layer1Namespace);
-
-				await That(types).DoesNotContain(typeof(ViaSubNamespace));
+				await That(types).Contains(typeof(ReferencesOwnSubNamespace));
 			}
 
 			[Fact]
@@ -67,16 +67,6 @@ public sealed partial class TypeFilters
 			}
 
 			[Fact]
-			public async Task WhenExcludingOwnSubNamespaces_ShouldSelectTypesReferencingOwnSubNamespace()
-			{
-				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
-					.WhichHaveDependenciesOutside(Layer1Namespace)
-					.ExcludingOwnSubNamespaces();
-
-				await That(types).Contains(typeof(ReferencesOwnSubNamespace));
-			}
-
-			[Fact]
 			public async Task WhenNotExcludingOwnSubNamespaces_OwnSubNamespaceStaysInside()
 			{
 				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
@@ -86,18 +76,39 @@ public sealed partial class TypeFilters
 			}
 
 			[Fact]
-			public async Task ExcludingOwnSubNamespaces_ShouldNotAffectOriginalFilter()
+			public async Task WhenNotExcludingSubNamespaces_SubNamespaceDependencyStaysInside()
 			{
-				Filtered.Types.NamespaceDependencyOutsideFilterResult original =
-					Types.InNamespace(ConsumersNamespace).WhichHaveDependenciesOutside(Layer1Namespace);
-				_ = original.ExcludingOwnSubNamespaces();
+				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
+					.WhichHaveDependenciesOutside(Layer1Namespace);
 
-				await That(original).DoesNotContain(typeof(ReferencesOwnSubNamespace));
+				await That(types).DoesNotContain(typeof(ViaSubNamespace));
+			}
+
+			[Fact]
+			public async Task WhenWidenedWithOrOn_ShouldFilterOutTypesDependingOnEither()
+			{
+				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
+					.WhichHaveDependenciesOutside(Layer1Namespace)
+					.OrOn(Layer2Namespace);
+
+				await That(types).DoesNotContain(typeof(Layer1AndLayer2));
+				await That(types).DoesNotContain(typeof(OnlyLayer2));
 			}
 		}
 
 		public sealed class FilteredTypesTargetTests
 		{
+			[Fact]
+			public async Task ExcludingOwnSubNamespaces_ShouldNotAffectOriginalFilter()
+			{
+				Filtered.Types.TypeSetDependencyOutsideFilterResult original =
+					Types.InNamespace(ConsumersNamespace)
+						.WhichHaveDependenciesOutside(Types.InNamespace(Layer1Namespace));
+				_ = original.ExcludingOwnSubNamespaces();
+
+				await That(original).DoesNotContain(typeof(ReferencesOwnSubNamespace));
+			}
+
 			[Fact]
 			public async Task ShouldFilterForTypesWithDependenciesOutsideTargetCollection()
 			{
@@ -123,17 +134,6 @@ public sealed partial class TypeFilters
 			}
 
 			[Fact]
-			public async Task WhenWidenedWithOrOn_ShouldFilterOutTypesDependingOnEither()
-			{
-				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
-					.WhichHaveDependenciesOutside(Types.InNamespace(Layer1Namespace))
-					.OrOn(Types.InNamespace(Layer2Namespace));
-
-				await That(types).DoesNotContain(typeof(Layer1AndLayer2));
-				await That(types).DoesNotContain(typeof(OnlyLayer2));
-			}
-
-			[Fact]
 			public async Task WhenExcludingOwnSubNamespaces_ShouldSelectTypesReferencingOwnSubNamespace()
 			{
 				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
@@ -144,14 +144,14 @@ public sealed partial class TypeFilters
 			}
 
 			[Fact]
-			public async Task ExcludingOwnSubNamespaces_ShouldNotAffectOriginalFilter()
+			public async Task WhenWidenedWithOrOn_ShouldFilterOutTypesDependingOnEither()
 			{
-				Filtered.Types.TypeSetDependencyOutsideFilterResult original =
-					Types.InNamespace(ConsumersNamespace)
-						.WhichHaveDependenciesOutside(Types.InNamespace(Layer1Namespace));
-				_ = original.ExcludingOwnSubNamespaces();
+				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
+					.WhichHaveDependenciesOutside(Types.InNamespace(Layer1Namespace))
+					.OrOn(Types.InNamespace(Layer2Namespace));
 
-				await That(original).DoesNotContain(typeof(ReferencesOwnSubNamespace));
+				await That(types).DoesNotContain(typeof(Layer1AndLayer2));
+				await That(types).DoesNotContain(typeof(OnlyLayer2));
 			}
 		}
 	}

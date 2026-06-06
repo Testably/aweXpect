@@ -1,4 +1,4 @@
-namespace aweXpect.Reflection.Tests.TestHelpers.Types;
+﻿namespace aweXpect.Reflection.Tests.TestHelpers.Types;
 
 public partial class Container
 {

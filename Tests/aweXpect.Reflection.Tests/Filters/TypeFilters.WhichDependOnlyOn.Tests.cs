@@ -26,6 +26,16 @@ public sealed partial class TypeFilters
 		public sealed class FilteredTypesTargetTests
 		{
 			[Fact]
+			public async Task ExcludingOwnSubNamespaces_ShouldNotAffectOriginalFilter()
+			{
+				Filtered.Types.TypeSetDependencyOnlyOnFilterResult original = Types.InNamespace(ConsumersNamespace)
+					.WhichDependOnlyOn(Types.InNamespace(Layer1Namespace));
+				_ = original.ExcludingOwnSubNamespaces();
+
+				await That(original).Contains(typeof(ReferencesOwnSubNamespace));
+			}
+
+			[Fact]
 			public async Task ShouldFilterForTypesDependingOnlyOnTargetCollection()
 			{
 				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
@@ -35,17 +45,6 @@ public sealed partial class TypeFilters
 				await That(types).Contains(typeof(FrameworkConsumer));
 				await That(types).Contains(typeof(ReferencesOwnNamespace));
 				await That(types).DoesNotContain(typeof(Layer1AndLayer2));
-			}
-
-			[Fact]
-			public async Task WhenWidenedWithOrOn_ShouldAllowEither()
-			{
-				const string layer2Namespace = "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer2";
-				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
-					.WhichDependOnlyOn(Types.InNamespace(Layer1Namespace))
-					.OrOn(Types.InNamespace(layer2Namespace));
-
-				await That(types).Contains(typeof(Layer1AndLayer2));
 			}
 
 			[Fact]
@@ -60,13 +59,14 @@ public sealed partial class TypeFilters
 			}
 
 			[Fact]
-			public async Task ExcludingOwnSubNamespaces_ShouldNotAffectOriginalFilter()
+			public async Task WhenWidenedWithOrOn_ShouldAllowEither()
 			{
-				Filtered.Types.TypeSetDependencyOnlyOnFilterResult original = Types.InNamespace(ConsumersNamespace)
-					.WhichDependOnlyOn(Types.InNamespace(Layer1Namespace));
-				_ = original.ExcludingOwnSubNamespaces();
+				const string layer2Namespace = "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer2";
+				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
+					.WhichDependOnlyOn(Types.InNamespace(Layer1Namespace))
+					.OrOn(Types.InNamespace(layer2Namespace));
 
-				await That(original).Contains(typeof(ReferencesOwnSubNamespace));
+				await That(types).Contains(typeof(Layer1AndLayer2));
 			}
 		}
 	}

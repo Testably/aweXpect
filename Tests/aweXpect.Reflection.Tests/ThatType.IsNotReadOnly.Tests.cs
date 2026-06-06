@@ -1,4 +1,4 @@
-using aweXpect.Reflection.Tests.TestHelpers.Types;
+﻿using aweXpect.Reflection.Tests.TestHelpers.Types;
 
 namespace aweXpect.Reflection.Tests;
 
