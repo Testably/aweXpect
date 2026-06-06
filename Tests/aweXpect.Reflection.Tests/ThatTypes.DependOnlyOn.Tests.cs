@@ -88,5 +88,100 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class FilteredTypesTargetTests
+		{
+			[Fact]
+			public async Task WhenAllDependenciesAreInTargetCollection_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(OnlyLayer1),
+					typeof(FrameworkConsumer),
+					typeof(ReferencesOwnNamespace),
+				];
+
+				async Task Act()
+					=> await That(subject).DependOnlyOn(Types.InNamespace(Layer1Namespace));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSomeTypeDependsOnTypeOutsideTargetCollections_ShouldFail()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(OnlyLayer1),
+					typeof(Layer1AndLayer2),
+				];
+
+				async Task Act()
+					=> await That(subject).DependOnlyOn(Types.InNamespace(Layer1Namespace));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              all depend only on types within namespace "{Layer1Namespace}" in all loaded assemblies,
+					              but it contained types with disallowed dependencies [
+					                Layer1AndLayer2 depends on ["TargetB"]
+					              ]
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenTargetCollectionIsEmpty_ShouldStillAllowOwnNamespaceAndFramework()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(FrameworkConsumer),
+					typeof(ReferencesOwnNamespace),
+				];
+
+				async Task Act()
+					=> await That(subject).DependOnlyOn(Types.InNamespace("Non.Existent.Namespace"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenWidenedWithOrOn_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(OnlyLayer1),
+					typeof(Layer1AndLayer2),
+				];
+
+				async Task Act()
+					=> await That(subject).DependOnlyOn(Types.InNamespace(Layer1Namespace))
+						.OrOn(Types.InNamespace(Layer2Namespace));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenExcludingOwnSubNamespaces_OwnSubNamespaceBecomesViolation()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(OnlyLayer1),
+					typeof(ReferencesOwnSubNamespace),
+				];
+
+				async Task Act()
+					=> await That(subject).DependOnlyOn(Types.InNamespace(Layer1Namespace))
+						.ExcludingOwnSubNamespaces();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              all depend only on types within namespace "{Layer1Namespace}" in all loaded assemblies,
+					              but it contained types with disallowed dependencies [
+					                ReferencesOwnSubNamespace depends on ["OwnSubTarget"]
+					              ]
+					              """);
+			}
+		}
 	}
 }

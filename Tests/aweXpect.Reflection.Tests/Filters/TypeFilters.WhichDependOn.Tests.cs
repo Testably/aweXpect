@@ -50,5 +50,53 @@ public sealed partial class TypeFilters
 					.WithMessage("At least one namespace must be specified.");
 			}
 		}
+
+		public sealed class FilteredTypesTargetTests
+		{
+			[Fact]
+			public async Task ShouldFilterForTypesDependingOnTargetCollection()
+			{
+				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
+					.WhichDependOn(Types.InNamespace(Layer1Namespace));
+
+				await That(types).Contains(typeof(ViaField));
+				await That(types).Contains(typeof(ViaSubNamespace));
+				await That(types).DoesNotContain(typeof(FrameworkConsumer));
+			}
+
+			[Fact]
+			public async Task WhenWidenedWithOrOn_ShouldMatchEither()
+			{
+				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
+					.WhichDependOn(Types.InNamespace("Non.Existent.Namespace"))
+					.OrOn(Types.InNamespace(Layer1Namespace));
+
+				await That(types).Contains(typeof(ViaField));
+			}
+
+			[Fact]
+			public async Task OrOn_ShouldNotAffectOriginalFilter()
+			{
+				Filtered.Types.TypeSetDependencyFilterResult original = Types.InNamespace(ConsumersNamespace)
+					.WhichDependOn(Types.InNamespace("Non.Existent.Namespace"));
+				_ = original.OrOn(Types.InNamespace(Layer1Namespace));
+
+				await That(original).DoesNotContain(typeof(ViaField));
+			}
+
+			[Fact]
+			public async Task ShouldDelimitTargetDescriptionFromSourceSuffix()
+			{
+				// The parentheses keep the target's trailing source scope apart from the subject collection's
+				// own source suffix, so the two "in all loaded assemblies" do not run into each other.
+				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
+					.WhichDependOn(Types.InNamespace(Layer1Namespace));
+
+				await That(types.GetDescription()).IsEqualTo(
+					$"types within namespace \"{ConsumersNamespace}\" which depend on " +
+					$"(types within namespace \"{Layer1Namespace}\" in all loaded assemblies) " +
+					"in all loaded assemblies");
+			}
+		}
 	}
 }

@@ -543,5 +543,90 @@ public static partial class Filtered
 			public Types InExecutingAssembly()
 				=> In.ExecutingAssembly().Types().WithinNamespace(_namespace);
 		}
+
+		/// <summary>
+		///     A filtered collection of <see cref="System.Type" /> from a dependency filter whose targets are filtered
+		///     collections of types, allowing to widen the targeted/allowed collections.
+		/// </summary>
+		/// <remarks>
+		///     Like all filtered collections, this is an immutable value object: <see cref="OrOn" /> does not mutate
+		///     this instance but rebuilds a fresh filter from the original base collection, so deriving multiple views
+		///     from the same instance cannot corrupt each other.
+		/// </remarks>
+		public sealed class TypeSetDependencyFilterResult : Types
+		{
+			private readonly Func<TypeSetDependencyOptions, Types> _build;
+			private readonly TypeSetDependencyOptions _options;
+
+			internal TypeSetDependencyFilterResult(
+				TypeSetDependencyOptions options,
+				Func<TypeSetDependencyOptions, Types> build)
+				: base(build(options))
+			{
+				_options = options;
+				_build = build;
+			}
+
+			/// <summary>
+			///     Widens the filter by the given <paramref name="targets" />.
+			/// </summary>
+			public TypeSetDependencyFilterResult OrOn(params Filtered.Types[] targets)
+			{
+				TypeSetDependencyOptions widened = _options.Copy();
+				widened.OrOn(targets);
+				return new TypeSetDependencyFilterResult(widened, _build);
+			}
+		}
+
+		/// <summary>
+		///     A filtered collection of <see cref="System.Type" /> from a depends-only-on filter whose allowed
+		///     targets are filtered collections of types, allowing to widen the allowed collections and to opt out
+		///     of the implicit allowance of the type's own sub-namespaces.
+		/// </summary>
+		/// <remarks>
+		///     Like all filtered collections, this is an immutable value object: <see cref="OrOn" /> and
+		///     <see cref="ExcludingOwnSubNamespaces" /> do not mutate this instance but rebuild a fresh filter from
+		///     the original base collection, so deriving multiple views from the same instance cannot corrupt each
+		///     other.
+		/// </remarks>
+		public sealed class TypeSetDependencyOnlyOnFilterResult : Types
+		{
+			private readonly Func<TypeSetDependencyOptions, Types> _build;
+			private readonly TypeSetDependencyOptions _options;
+
+			internal TypeSetDependencyOnlyOnFilterResult(
+				TypeSetDependencyOptions options,
+				Func<TypeSetDependencyOptions, Types> build)
+				: base(build(options))
+			{
+				_options = options;
+				_build = build;
+			}
+
+			/// <summary>
+			///     Widens the filter by the given <paramref name="targets" />.
+			/// </summary>
+			public TypeSetDependencyOnlyOnFilterResult OrOn(params Filtered.Types[] targets)
+			{
+				TypeSetDependencyOptions widened = _options.Copy();
+				widened.OrOn(targets);
+				return new TypeSetDependencyOnlyOnFilterResult(widened, _build);
+			}
+
+			/// <summary>
+			///     Excludes sub-namespaces of the type's own namespace from being implicitly allowed (so a <c>Foo</c>
+			///     type referencing <c>Foo.Bar</c> is filtered out unless <c>Foo.Bar</c> types are part of an allowed
+			///     collection).
+			/// </summary>
+			/// <remarks>
+			///     The type's own namespace itself is always allowed.
+			/// </remarks>
+			public TypeSetDependencyOnlyOnFilterResult ExcludingOwnSubNamespaces()
+			{
+				TypeSetDependencyOptions refined = _options.Copy();
+				refined.ExcludingOwnSubNamespaces();
+				return new TypeSetDependencyOnlyOnFilterResult(refined, _build);
+			}
+		}
 	}
 }

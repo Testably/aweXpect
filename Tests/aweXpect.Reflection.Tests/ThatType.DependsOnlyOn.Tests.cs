@@ -1,4 +1,5 @@
 ﻿using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Synthetic;
 using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
@@ -178,6 +179,149 @@ public sealed partial class ThatType
 
 				async Task Act()
 					=> await That(subject).DependsOnlyOn(Layer1Namespace);
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
+		public sealed class FilteredTypesTargetTests
+		{
+			[Fact]
+			public async Task WhenAllDependenciesAreInTargetCollection_ShouldSucceed()
+			{
+				Type subject = typeof(OnlyLayer1);
+
+				async Task Act()
+					=> await That(subject).DependsOnlyOn(Types.InNamespace(Layer1Namespace));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenDependingOnTypeOutsideTargetCollections_ShouldFail()
+			{
+				Type subject = typeof(Layer1AndLayer2);
+
+				async Task Act()
+					=> await That(subject).DependsOnlyOn(Types.InNamespace(Layer1Namespace));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              depends only on types within namespace "{Layer1Namespace}" in all loaded assemblies,
+					              but it also depended on ["TargetB"]
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenWidenedWithOrOn_ShouldSucceed()
+			{
+				Type subject = typeof(Layer1AndLayer2);
+
+				async Task Act()
+					=> await That(subject).DependsOnlyOn(Types.InNamespace(Layer1Namespace))
+						.OrOn(Types.InNamespace(Layer2Namespace));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenDistinctViolatorsShareTheSimpleName_ShouldQualifyThemByNamespace()
+			{
+				// Both AmbiguousTarget dependencies are disallowed; they must stay apart in the message
+				// instead of collapsing into one indistinguishable "AmbiguousTarget" entry.
+				Type subject = typeof(WithSameNamedDependencies);
+
+				async Task Act()
+					=> await That(subject).DependsOnlyOn(Types.InNamespace(Layer1Namespace));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("*AmbiguousA.AmbiguousTarget*AmbiguousB.AmbiguousTarget*").AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenTargetCollectionIsEmpty_ShouldStillAllowFrameworkDependencies()
+			{
+				Type subject = typeof(FrameworkConsumer);
+
+				async Task Act()
+					=> await That(subject).DependsOnlyOn(Types.InNamespace("Non.Existent.Namespace"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTargetCollectionIsEmpty_ShouldStillAllowOwnNamespace()
+			{
+				Type subject = typeof(ReferencesOwnNamespace);
+
+				async Task Act()
+					=> await That(subject).DependsOnlyOn(Types.InNamespace("Non.Existent.Namespace"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTargetCollectionIsEmpty_DisallowedDependencyShouldFail()
+			{
+				Type subject = typeof(OnlyLayer1);
+
+				async Task Act()
+					=> await That(subject).DependsOnlyOn(Types.InNamespace("Non.Existent.Namespace"));
+
+				await That(Act).Throws<XunitException>();
+			}
+
+			[Fact]
+			public async Task WhenNegated_ShouldSucceedForDisallowedDependency()
+			{
+				Type subject = typeof(Layer1AndLayer2);
+
+				async Task Act()
+					=> await That(subject)
+						.DoesNotComplyWith(it => it.DependsOnlyOn(Types.InNamespace(Layer1Namespace)));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenReferencingOwnSubNamespace_ShouldSucceedByDefault()
+			{
+				Type subject = typeof(ReferencesOwnSubNamespace);
+
+				async Task Act()
+					=> await That(subject).DependsOnlyOn(Types.InNamespace(Layer1Namespace));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenExcludingOwnSubNamespaces_OwnSubNamespaceBecomesViolation()
+			{
+				Type subject = typeof(ReferencesOwnSubNamespace);
+
+				async Task Act()
+					=> await That(subject).DependsOnlyOn(Types.InNamespace(Layer1Namespace))
+						.ExcludingOwnSubNamespaces();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              depends only on types within namespace "{Layer1Namespace}" in all loaded assemblies,
+					              but it also depended on ["OwnSubTarget"]
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenExcludingOwnSubNamespaces_TargetCollectionCoveringTheSubNamespaceStillAllowsIt()
+			{
+				// The own sub-namespace is no longer implicitly allowed, but the target collection contains the
+				// referenced OwnSub type, which covers it explicitly.
+				Type subject = typeof(ReferencesOwnSubNamespace);
+
+				async Task Act()
+					=> await That(subject).DependsOnlyOn(Types.InNamespace(ConsumersNamespace))
+						.ExcludingOwnSubNamespaces();
 
 				await That(Act).DoesNotThrow();
 			}

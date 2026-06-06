@@ -341,6 +341,64 @@ public sealed partial class ThatType
 			}
 		}
 
+		public sealed class FilteredTypesTargetTests
+		{
+			[Fact]
+			public async Task WhenTypeDoesNotDependOnAnyTypeInTargetCollection_ShouldSucceed()
+			{
+				Type subject = typeof(OnlyLayer1);
+
+				async Task Act()
+					=> await That(subject).DoesNotDependOn(Types.InNamespace(Layer2Namespace));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTypeDependsOnTypeInTargetCollection_ShouldFail()
+			{
+				Type subject = typeof(ViaField);
+
+				async Task Act()
+					=> await That(subject).DoesNotDependOn(Types.InNamespace(Layer1Namespace));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              does not depend on types within namespace "{Layer1Namespace}" in all loaded assemblies,
+					              but it depended on [TargetA]
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenTargetCollectionIsEmpty_ShouldSucceedTrivially()
+			{
+				Type subject = typeof(ViaField);
+
+				async Task Act()
+					=> await That(subject).DoesNotDependOn(Types.InNamespace("Non.Existent.Namespace"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenWidenedWithOrOn_ShouldFailIfAnyMatches()
+			{
+				Type subject = typeof(Layer1AndLayer2);
+
+				async Task Act()
+					=> await That(subject).DoesNotDependOn(Types.InNamespace(Layer2Namespace))
+						.OrOn(Types.InNamespace(Layer1Namespace));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              does not depend on types within namespace "{Layer2Namespace}" in all loaded assemblies or types within namespace "{Layer1Namespace}" in all loaded assemblies,
+					              but it depended on [TargetA, TargetB]
+					              """);
+			}
+		}
+
 		public sealed class NegatedTests
 		{
 			[Fact]

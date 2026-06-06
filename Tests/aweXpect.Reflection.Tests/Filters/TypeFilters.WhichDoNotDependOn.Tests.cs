@@ -21,5 +21,28 @@ public sealed partial class TypeFilters
 				await That(types).DoesNotContain(typeof(ViaField));
 			}
 		}
+
+		public sealed class FilteredTypesTargetTests
+		{
+			[Fact]
+			public async Task ShouldFilterForTypesNotDependingOnTargetCollection()
+			{
+				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
+					.WhichDoNotDependOn(Types.InNamespace(Layer1Namespace));
+
+				await That(types).Contains(typeof(FrameworkConsumer));
+				await That(types).DoesNotContain(typeof(ViaField));
+			}
+
+			[Fact]
+			public async Task WhenTargetCollectionIsEmpty_ShouldKeepAllTypes()
+			{
+				Filtered.Types types = Types.InNamespace(ConsumersNamespace)
+					.WhichDoNotDependOn(Types.InNamespace("Non.Existent.Namespace"));
+
+				await That(types).Contains(typeof(ViaField));
+				await That(types).Contains(typeof(FrameworkConsumer));
+			}
+		}
 	}
 }

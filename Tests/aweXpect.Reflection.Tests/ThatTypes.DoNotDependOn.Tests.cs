@@ -74,5 +74,76 @@ public sealed partial class ThatTypes
 					              """);
 			}
 		}
+
+		public sealed class FilteredTypesTargetTests
+		{
+			[Fact]
+			public async Task WhenNoTypeDependsOnTargetCollection_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(ViaField),
+					typeof(OnlyLayer1),
+				];
+
+				async Task Act()
+					=> await That(subject).DoNotDependOn(Types.InNamespace(Layer2Namespace));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSomeTypeDependsOnTargetCollection_ShouldFail()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(OnlyLayer1),
+					typeof(Layer1AndLayer2),
+				];
+
+				async Task Act()
+					=> await That(subject).DoNotDependOn(Types.InNamespace(Layer2Namespace));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              all do not depend on types within namespace "{Layer2Namespace}" in all loaded assemblies,
+					              but it contained types with the dependency [
+					                Layer1AndLayer2
+					              ]
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenTargetCollectionIsEmpty_ShouldSucceedTrivially()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(ViaField),
+					typeof(Layer1AndLayer2),
+					typeof(FrameworkConsumer),
+				];
+
+				async Task Act()
+					=> await That(subject).DoNotDependOn(Types.InNamespace("Non.Existent.Namespace"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenWidenedWithOrOn_ShouldFailIfAnyMatches()
+			{
+				IEnumerable<Type?> subject =
+				[
+					typeof(OnlyLayer1),
+				];
+
+				async Task Act()
+					=> await That(subject).DoNotDependOn(Types.InNamespace(Layer2Namespace))
+						.OrOn(Types.InNamespace(Layer1Namespace));
+
+				await That(Act).Throws<XunitException>();
+			}
+		}
 	}
 }

@@ -224,6 +224,21 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Synthetic
 	[TargetSeverity(TargetSeverity.High)]
 	public class ViaEnumAttributeArgument;
 
+	// Layer1's TargetGeneric<T> is referenced ONLY as the constructed TargetGeneric<TargetB>; a scanned
+	// target collection contains the open definition, which must match the construction.
+	public class ViaLayer1GenericConstruction
+	{
+		private TargetGeneric<TargetB> _target;
+	}
+
+	// Two distinct disallowed dependencies share the simple name "AmbiguousTarget"; the violation list
+	// must keep them apart by qualifying each with its namespace.
+	public class WithSameNamedDependencies
+	{
+		private AmbiguousA.AmbiguousTarget _a;
+		private AmbiguousB.AmbiguousTarget _b;
+	}
+
 	public class WithAsyncMethod
 	{
 		public static async void MethodAsync() => await Task.CompletedTask;
@@ -321,4 +336,16 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Synthetic
 		public override CovariantReturnDerived Self() => this;
 	}
 #endif
+}
+
+// Two namespaces deliberately declaring the same simple type name, so that violation messages must
+// disambiguate (see WithSameNamedDependencies above).
+namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.AmbiguousA
+{
+	public class AmbiguousTarget;
+}
+
+namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.AmbiguousB
+{
+	public class AmbiguousTarget;
 }

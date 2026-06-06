@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer2;
@@ -466,6 +467,191 @@ public sealed partial class ThatType
 				await That(Act).Throws<ArgumentException>()
 					.WithMessage(
 						"The namespaces must not contain empty segments or whitespace (such a namespace could never match).");
+			}
+		}
+
+		public sealed class FilteredTypesTargetTests
+		{
+			[Fact]
+			public async Task WhenTypeDependsOnTypeInTargetCollection_ShouldSucceed()
+			{
+				Type subject = typeof(ViaField);
+
+				async Task Act()
+					=> await That(subject).DependsOn(Types.InNamespace(Layer1Namespace));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTypeDoesNotDependOnAnyTypeInTargetCollection_ShouldFail()
+			{
+				Type subject = typeof(OnlyLayer1);
+
+				async Task Act()
+					=> await That(subject).DependsOn(Types.InNamespace(Layer2Namespace));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              depends on types within namespace "{Layer2Namespace}" in all loaded assemblies,
+					              but it did not
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenAnyTargetCollectionMatches_ShouldSucceed()
+			{
+				Type subject = typeof(OnlyLayer1);
+
+				async Task Act()
+					=> await That(subject).DependsOn(Types.InNamespace(Layer2Namespace), Types.InNamespace(Layer1Namespace));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenWidenedWithOrOn_ShouldSucceed()
+			{
+				Type subject = typeof(OnlyLayer1);
+
+				async Task Act()
+					=> await That(subject).DependsOn(Types.InNamespace(Layer2Namespace)).OrOn(Types.InNamespace(Layer1Namespace));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenGenericTypeDefinitionIsInTargetCollection_ShouldMatchConstruction()
+			{
+				// ViaLayer1GenericConstruction references the constructed TargetGeneric<TargetB>; the scanned
+				// target collection contains the open definition TargetGeneric<>.
+				Type subject = typeof(ViaLayer1GenericConstruction);
+
+				async Task Act()
+					=> await That(subject).DependsOn(In.Type(typeof(TargetGeneric<>)));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTargetCollectionContainsArrayType_ShouldMatchElementTypeDependency()
+			{
+				// Dependencies are stored element-stripped, so an array target matches like its element
+				// type, mirroring the specific-type overload DependsOn(typeof(TargetA[])).
+				Type subject = typeof(ViaField);
+
+				async Task Act()
+					=> await That(subject).DependsOn(In.Type(typeof(TargetA[])));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTargetCollectionContainsFrameworkTypes_ShouldMatchThem()
+			{
+				// A filtered collection is an explicit target, so framework types in it are checked normally.
+				Type subject = typeof(FrameworkConsumer);
+
+				async Task Act()
+					=> await That(subject).DependsOn(In.Type<System.Text.StringBuilder>());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTargetCollectionIsEmpty_ShouldFail()
+			{
+				Type subject = typeof(ViaField);
+
+				async Task Act()
+					=> await That(subject).DependsOn(Types.InNamespace("Non.Existent.Namespace"));
+
+				await That(Act).Throws<XunitException>();
+			}
+
+			[Fact]
+			public async Task WhenTypeIsNull_ShouldFail()
+			{
+				Type? subject = null;
+
+				async Task Act()
+					=> await That(subject).DependsOn(Types.InNamespace(Layer1Namespace));
+
+				await That(Act).ThrowsException()
+					.WithMessage($"""
+					              Expected that subject
+					              depends on types within namespace "{Layer1Namespace}" in all loaded assemblies,
+					              but it was <null>
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenTargetIsNull_ShouldThrowArgumentNullException()
+			{
+				Type subject = typeof(OnlyLayer1);
+
+				async Task Act()
+					=> await That(subject).DependsOn((Filtered.Types)null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithMessage("The target collection of types must not be null.*").AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenAdditionalTargetsArrayIsNull_ShouldThrowArgumentNullException()
+			{
+				Type subject = typeof(OnlyLayer1);
+
+				async Task Act()
+					=> await That(subject).DependsOn(Types.InNamespace(Layer1Namespace), null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithMessage("The additional target collections of types must not be null.*").AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenAdditionalTargetIsNull_ShouldThrowArgumentNullException()
+			{
+				Type subject = typeof(OnlyLayer1);
+
+				async Task Act()
+					=> await That(subject)
+						.DependsOn(Types.InNamespace(Layer1Namespace), (Filtered.Types)null!, (Filtered.Types)null!);
+
+				// The localized paramName suffix differs between frameworks ("(Parameter 'additional')" vs
+				// "Parametername: additional"), so only the shared part is matched.
+				await That(Act).Throws<ArgumentNullException>()
+					.WithMessage("The target collections of types must not contain null.*additional*")
+					.AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenWidenedWithoutTargets_ShouldThrowArgumentException()
+			{
+				Type subject = typeof(OnlyLayer1);
+
+				async Task Act()
+					=> await That(subject).DependsOn(Types.InNamespace(Layer1Namespace)).OrOn();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("At least one collection of types must be specified.");
+			}
+
+			[Fact]
+			public async Task WhenNegated_ShouldListMatchingDependencies()
+			{
+				Type subject = typeof(ViaField);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.DependsOn(Types.InNamespace(Layer1Namespace)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              does not depend on types within namespace "{Layer1Namespace}" in all loaded assemblies,
+					              but it depended on [TargetA]
+					              """);
 			}
 		}
 
