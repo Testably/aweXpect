@@ -3192,6 +3192,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:23 2026 \u002B0200",
         "message": "chore: Bump SharpCompress from 0.48.1 to 0.49.1 (#979)"
+      },
+      {
+        "sha": "084e1ad1198fbca36f98c7e0138332ca9acef071",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Jun 8 09:06:21 2026 \u002B0200",
+        "message": "refactor: fix build warnings due to nullable string in becauseTask (#980)"
       }
     ],
     "labels": [
@@ -3726,7 +3732,8 @@ window.BENCHMARK_DATA = {
       "e8b14795",
       "46415067",
       "6c18515c",
-      "6bc20b7e"
+      "6bc20b7e",
+      "084e1ad1"
     ],
     "datasets": [
       {
@@ -4264,7 +4271,8 @@ window.BENCHMARK_DATA = {
           259.96589612960815,
           256.0928372969994,
           282.1564817061791,
-          253.21568053109306
+          253.21568053109306,
+          270.32417484692166
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4737,6 +4745,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5353,7 +5362,8 @@ window.BENCHMARK_DATA = {
           256.0557377888606,
           255.2791819205651,
           263.04726182497467,
-          238.7115925380162
+          238.7115925380162,
+          240.24807112557548
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5546,6 +5556,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -8640,6 +8651,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:23 2026 \u002B0200",
         "message": "chore: Bump SharpCompress from 0.48.1 to 0.49.1 (#979)"
+      },
+      {
+        "sha": "084e1ad1198fbca36f98c7e0138332ca9acef071",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Jun 8 09:06:21 2026 \u002B0200",
+        "message": "refactor: fix build warnings due to nullable string in becauseTask (#980)"
       }
     ],
     "labels": [
@@ -9097,7 +9114,8 @@ window.BENCHMARK_DATA = {
       "e8b14795",
       "46415067",
       "6c18515c",
-      "6bc20b7e"
+      "6bc20b7e",
+      "084e1ad1"
     ],
     "datasets": [
       {
@@ -9558,7 +9576,8 @@ window.BENCHMARK_DATA = {
           309851.21736653644,
           294966.1259765625,
           329631.25432477676,
-          328205.43907877605
+          328205.43907877605,
+          331844.7231933594
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10005,6 +10024,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335442,
+          335444,
           335444,
           335444,
           335444,
@@ -10493,7 +10513,8 @@ window.BENCHMARK_DATA = {
           2497785.16015625,
           2501607.2766927085,
           2784649.585677083,
-          2713961.901785714
+          2713961.901785714,
+          2647382.0906808036
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10958,6 +10979,7 @@ window.BENCHMARK_DATA = {
           4841635,
           4841651,
           4841647,
+          4841651,
           4841651,
           4841651
         ],
@@ -14165,6 +14187,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:23 2026 \u002B0200",
         "message": "chore: Bump SharpCompress from 0.48.1 to 0.49.1 (#979)"
+      },
+      {
+        "sha": "084e1ad1198fbca36f98c7e0138332ca9acef071",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Jun 8 09:06:21 2026 \u002B0200",
+        "message": "refactor: fix build warnings due to nullable string in becauseTask (#980)"
       }
     ],
     "labels": [
@@ -14699,7 +14727,8 @@ window.BENCHMARK_DATA = {
       "e8b14795",
       "46415067",
       "6c18515c",
-      "6bc20b7e"
+      "6bc20b7e",
+      "084e1ad1"
     ],
     "datasets": [
       {
@@ -15237,7 +15266,8 @@ window.BENCHMARK_DATA = {
           536.2258410771688,
           478.7303355534871,
           516.4213751475016,
-          481.5078296661377
+          481.5078296661377,
+          476.0209849561964
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15710,6 +15740,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -16326,7 +16357,8 @@ window.BENCHMARK_DATA = {
           527.0402784347534,
           485.23961067199707,
           557.749834060669,
-          466.15099004336764
+          466.15099004336764,
+          458.40288200378416
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16519,6 +16551,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -20075,6 +20108,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:23 2026 \u002B0200",
         "message": "chore: Bump SharpCompress from 0.48.1 to 0.49.1 (#979)"
+      },
+      {
+        "sha": "084e1ad1198fbca36f98c7e0138332ca9acef071",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Jun 8 09:06:21 2026 \u002B0200",
+        "message": "refactor: fix build warnings due to nullable string in becauseTask (#980)"
       }
     ],
     "labels": [
@@ -20609,7 +20648,8 @@ window.BENCHMARK_DATA = {
       "e8b14795",
       "46415067",
       "6c18515c",
-      "6bc20b7e"
+      "6bc20b7e",
+      "084e1ad1"
     ],
     "datasets": [
       {
@@ -21147,7 +21187,8 @@ window.BENCHMARK_DATA = {
           281.7966275555747,
           273.84272623062134,
           293.45759709676105,
-          261.29021479288735
+          261.29021479288735,
+          266.10511245727537
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21661,6 +21702,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -22236,7 +22278,8 @@ window.BENCHMARK_DATA = {
           253.69892297472273,
           244.54132541020712,
           280.1825347582499,
-          237.4627223748427
+          237.4627223748427,
+          237.5357260386149
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22429,6 +22472,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -25985,6 +26029,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:23 2026 \u002B0200",
         "message": "chore: Bump SharpCompress from 0.48.1 to 0.49.1 (#979)"
+      },
+      {
+        "sha": "084e1ad1198fbca36f98c7e0138332ca9acef071",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Jun 8 09:06:21 2026 \u002B0200",
+        "message": "refactor: fix build warnings due to nullable string in becauseTask (#980)"
       }
     ],
     "labels": [
@@ -26519,7 +26569,8 @@ window.BENCHMARK_DATA = {
       "e8b14795",
       "46415067",
       "6c18515c",
-      "6bc20b7e"
+      "6bc20b7e",
+      "084e1ad1"
     ],
     "datasets": [
       {
@@ -27057,7 +27108,8 @@ window.BENCHMARK_DATA = {
           510.8510365852943,
           448.8942344005291,
           499.98754079001293,
-          470.50855016708374
+          470.50855016708374,
+          466.88463988670935
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27530,6 +27582,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -28146,7 +28199,8 @@ window.BENCHMARK_DATA = {
           1266.2381830215454,
           1134.4644299915858,
           1321.0904105050224,
-          1304.9174096425375
+          1304.9174096425375,
+          1260.6103978474935
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28575,6 +28629,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -31895,6 +31950,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:23 2026 \u002B0200",
         "message": "chore: Bump SharpCompress from 0.48.1 to 0.49.1 (#979)"
+      },
+      {
+        "sha": "084e1ad1198fbca36f98c7e0138332ca9acef071",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Jun 8 09:06:21 2026 \u002B0200",
+        "message": "refactor: fix build warnings due to nullable string in becauseTask (#980)"
       }
     ],
     "labels": [
@@ -32429,7 +32490,8 @@ window.BENCHMARK_DATA = {
       "e8b14795",
       "46415067",
       "6c18515c",
-      "6bc20b7e"
+      "6bc20b7e",
+      "084e1ad1"
     ],
     "datasets": [
       {
@@ -32967,7 +33029,8 @@ window.BENCHMARK_DATA = {
           1994.0278645833334,
           1924.9877545674642,
           2025.7895299471343,
-          1903.0714449201312
+          1903.0714449201312,
+          1877.9876047770183
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33440,6 +33503,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -34056,7 +34120,8 @@ window.BENCHMARK_DATA = {
           1408.166918209621,
           1296.0140084584555,
           1412.711854426066,
-          1301.6897384325664
+          1301.6897384325664,
+          1295.562139638265
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34249,6 +34314,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -37805,6 +37871,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:23 2026 \u002B0200",
         "message": "chore: Bump SharpCompress from 0.48.1 to 0.49.1 (#979)"
+      },
+      {
+        "sha": "084e1ad1198fbca36f98c7e0138332ca9acef071",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Jun 8 09:06:21 2026 \u002B0200",
+        "message": "refactor: fix build warnings due to nullable string in becauseTask (#980)"
       }
     ],
     "labels": [
@@ -38339,7 +38411,8 @@ window.BENCHMARK_DATA = {
       "e8b14795",
       "46415067",
       "6c18515c",
-      "6bc20b7e"
+      "6bc20b7e",
+      "084e1ad1"
     ],
     "datasets": [
       {
@@ -38877,7 +38950,8 @@ window.BENCHMARK_DATA = {
           2551.065022604806,
           2498.2422691345214,
           2716.806147166661,
-          2519.3573422749837
+          2519.3573422749837,
+          2520.1292994181317
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -39350,6 +39424,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -39966,7 +40041,8 @@ window.BENCHMARK_DATA = {
           20514.311822509764,
           20802.61471048991,
           28353.41301167806,
-          26611.878204345703
+          26611.878204345703,
+          26943.38064793178
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40506,6 +40582,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471,
           33471,
