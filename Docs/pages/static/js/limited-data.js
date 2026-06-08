@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "0f9789f55d09b225c34fe50edd9cdba2a14a129f",
-        "author": "dependabot[bot]",
-        "date": "Wed Apr 1 10:08:20 2026 \u002B0200",
-        "message": "chore: Bump FluentAssertions from 8.8.0 to 8.9.0 (#914)"
-      },
-      {
         "sha": "33ff4d659368285ca7bfd1f2b2ec98a70a1894ad",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Apr 4 15:07:44 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:00 2026 \u002B0200",
         "message": "chore: Bump the nunit group with 1 update (#976)"
+      },
+      {
+        "sha": "0927987f6b6cfad295e6bb811812f97b3f001efe",
+        "author": "dependabot[bot]",
+        "date": "Mon Jun 8 09:07:13 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.5.1 to 18.6.0 (#978)"
       }
     ],
     "labels": [
-      "0f9789f5",
       "33ff4d65",
       "13ae6d2e",
       "2990f5e0",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "6c18515c",
       "6bc20b7e",
       "084e1ad1",
-      "5b710f7f"
+      "5b710f7f",
+      "0927987f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          251.38871068954467,
           247.01689154307047,
           266.2969425405775,
           271.1530883652823,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           282.1564817061791,
           253.21568053109306,
           270.32417484692166,
-          260.181368748347
+          260.181368748347,
+          244.476037135491
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          242.9310405070965,
           233.82985033988953,
           258.68744155338834,
           252.99936056137085,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           263.04726182497467,
           238.7115925380162,
           240.24807112557548,
-          241.4171945254008
+          241.4171945254008,
+          237.37615286509197
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "0f9789f55d09b225c34fe50edd9cdba2a14a129f",
-        "author": "dependabot[bot]",
-        "date": "Wed Apr 1 10:08:20 2026 \u002B0200",
-        "message": "chore: Bump FluentAssertions from 8.8.0 to 8.9.0 (#914)"
-      },
-      {
         "sha": "33ff4d659368285ca7bfd1f2b2ec98a70a1894ad",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Apr 4 15:07:44 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:00 2026 \u002B0200",
         "message": "chore: Bump the nunit group with 1 update (#976)"
+      },
+      {
+        "sha": "0927987f6b6cfad295e6bb811812f97b3f001efe",
+        "author": "dependabot[bot]",
+        "date": "Mon Jun 8 09:07:13 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.5.1 to 18.6.0 (#978)"
       }
     ],
     "labels": [
-      "0f9789f5",
       "33ff4d65",
       "13ae6d2e",
       "2990f5e0",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "6c18515c",
       "6bc20b7e",
       "084e1ad1",
-      "5b710f7f"
+      "5b710f7f",
+      "0927987f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          306580.2018229167,
           295828.3948692909,
           306320.3705403646,
           309191.59329659597,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           329631.25432477676,
           328205.43907877605,
           331844.7231933594,
-          323882.5665039063
+          323882.5665039063,
+          316276.7185384115
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          335444,
           335444,
           335444,
           335444,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
+          335444,
           335444
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2608338.4241071427,
           2690390.7544270833,
           2599897.3625,
           2742604.640066964,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2784649.585677083,
           2713961.901785714,
           2647382.0906808036,
-          2751218.3953125
+          2751218.3953125,
+          2721342.6646634615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4804906,
           4804906,
           4804906,
           4804906,
@@ -1202,6 +1201,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "0f9789f55d09b225c34fe50edd9cdba2a14a129f",
-        "author": "dependabot[bot]",
-        "date": "Wed Apr 1 10:08:20 2026 \u002B0200",
-        "message": "chore: Bump FluentAssertions from 8.8.0 to 8.9.0 (#914)"
-      },
       {
         "sha": "33ff4d659368285ca7bfd1f2b2ec98a70a1894ad",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:00 2026 \u002B0200",
         "message": "chore: Bump the nunit group with 1 update (#976)"
+      },
+      {
+        "sha": "0927987f6b6cfad295e6bb811812f97b3f001efe",
+        "author": "dependabot[bot]",
+        "date": "Mon Jun 8 09:07:13 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.5.1 to 18.6.0 (#978)"
       }
     ],
     "labels": [
-      "0f9789f5",
       "33ff4d65",
       "13ae6d2e",
       "2990f5e0",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "6c18515c",
       "6bc20b7e",
       "084e1ad1",
-      "5b710f7f"
+      "5b710f7f",
+      "0927987f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          530.7397397994995,
           494.03237122755786,
           496.8649320602417,
           492.3057597705296,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           516.4213751475016,
           481.5078296661377,
           476.0209849561964,
-          497.45273984273274
+          497.45273984273274,
+          460.82882738113403
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          490.29199167887367,
           493.95643263596753,
           496.9368233998617,
           537.5483888626098,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           557.749834060669,
           466.15099004336764,
           458.40288200378416,
-          467.8260079111372
+          467.8260079111372,
+          463.22075010935464
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "0f9789f55d09b225c34fe50edd9cdba2a14a129f",
-        "author": "dependabot[bot]",
-        "date": "Wed Apr 1 10:08:20 2026 \u002B0200",
-        "message": "chore: Bump FluentAssertions from 8.8.0 to 8.9.0 (#914)"
-      },
-      {
         "sha": "33ff4d659368285ca7bfd1f2b2ec98a70a1894ad",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Apr 4 15:07:44 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:00 2026 \u002B0200",
         "message": "chore: Bump the nunit group with 1 update (#976)"
+      },
+      {
+        "sha": "0927987f6b6cfad295e6bb811812f97b3f001efe",
+        "author": "dependabot[bot]",
+        "date": "Mon Jun 8 09:07:13 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.5.1 to 18.6.0 (#978)"
       }
     ],
     "labels": [
-      "0f9789f5",
       "33ff4d65",
       "13ae6d2e",
       "2990f5e0",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "6c18515c",
       "6bc20b7e",
       "084e1ad1",
-      "5b710f7f"
+      "5b710f7f",
+      "0927987f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          253.5041307449341,
           246.61869209153312,
           245.47875680242265,
           260.6599381128947,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           293.45759709676105,
           261.29021479288735,
           266.10511245727537,
-          263.8962922732035
+          263.8962922732035,
+          261.12085257257735
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2261,7 +2261,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
-          808,
+          864,
           864,
           864,
           864,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          244.96448500951132,
           240.18964398701985,
           247.40992552893502,
           269.4070638509897,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           280.1825347582499,
           237.4627223748427,
           237.5357260386149,
-          242.4834464708964
+          242.4834464708964,
+          237.16833070346289
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "0f9789f55d09b225c34fe50edd9cdba2a14a129f",
-        "author": "dependabot[bot]",
-        "date": "Wed Apr 1 10:08:20 2026 \u002B0200",
-        "message": "chore: Bump FluentAssertions from 8.8.0 to 8.9.0 (#914)"
-      },
-      {
         "sha": "33ff4d659368285ca7bfd1f2b2ec98a70a1894ad",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Apr 4 15:07:44 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:00 2026 \u002B0200",
         "message": "chore: Bump the nunit group with 1 update (#976)"
+      },
+      {
+        "sha": "0927987f6b6cfad295e6bb811812f97b3f001efe",
+        "author": "dependabot[bot]",
+        "date": "Mon Jun 8 09:07:13 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.5.1 to 18.6.0 (#978)"
       }
     ],
     "labels": [
-      "0f9789f5",
       "33ff4d65",
       "13ae6d2e",
       "2990f5e0",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "6c18515c",
       "6bc20b7e",
       "084e1ad1",
-      "5b710f7f"
+      "5b710f7f",
+      "0927987f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          456.25001430511475,
           453.0842537562052,
           502.7252906799316,
           496.77405745188395,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           499.98754079001293,
           470.50855016708374,
           466.88463988670935,
-          444.59003131730213
+          444.59003131730213,
+          456.75095513888766
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1178.812040056501,
           1219.3546211242676,
           1211.9035541827861,
           1279.2930216471354,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1321.0904105050224,
           1304.9174096425375,
           1260.6103978474935,
-          1203.018761698405
+          1203.018761698405,
+          1190.8403115590413
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "0f9789f55d09b225c34fe50edd9cdba2a14a129f",
-        "author": "dependabot[bot]",
-        "date": "Wed Apr 1 10:08:20 2026 \u002B0200",
-        "message": "chore: Bump FluentAssertions from 8.8.0 to 8.9.0 (#914)"
-      },
-      {
         "sha": "33ff4d659368285ca7bfd1f2b2ec98a70a1894ad",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Apr 4 15:07:44 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:00 2026 \u002B0200",
         "message": "chore: Bump the nunit group with 1 update (#976)"
+      },
+      {
+        "sha": "0927987f6b6cfad295e6bb811812f97b3f001efe",
+        "author": "dependabot[bot]",
+        "date": "Mon Jun 8 09:07:13 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.5.1 to 18.6.0 (#978)"
       }
     ],
     "labels": [
-      "0f9789f5",
       "33ff4d65",
       "13ae6d2e",
       "2990f5e0",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "6c18515c",
       "6bc20b7e",
       "084e1ad1",
-      "5b710f7f"
+      "5b710f7f",
+      "0927987f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1978.0412147521972,
           1837.5042481055627,
           1901.1095701853435,
           2042.3155853271485,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2025.7895299471343,
           1903.0714449201312,
           1877.9876047770183,
-          1934.8650651659284
+          1934.8650651659284,
+          1876.9502340044294
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1282.6236000061035,
           1364.3199944814046,
           1377.5556783676147,
           1363.8280398505074,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1412.711854426066,
           1301.6897384325664,
           1295.562139638265,
-          1363.536735670907
+          1363.536735670907,
+          1248.9447863442558
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "0f9789f55d09b225c34fe50edd9cdba2a14a129f",
-        "author": "dependabot[bot]",
-        "date": "Wed Apr 1 10:08:20 2026 \u002B0200",
-        "message": "chore: Bump FluentAssertions from 8.8.0 to 8.9.0 (#914)"
-      },
-      {
         "sha": "33ff4d659368285ca7bfd1f2b2ec98a70a1894ad",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Apr 4 15:07:44 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:00 2026 \u002B0200",
         "message": "chore: Bump the nunit group with 1 update (#976)"
+      },
+      {
+        "sha": "0927987f6b6cfad295e6bb811812f97b3f001efe",
+        "author": "dependabot[bot]",
+        "date": "Mon Jun 8 09:07:13 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.5.1 to 18.6.0 (#978)"
       }
     ],
     "labels": [
-      "0f9789f5",
       "33ff4d65",
       "13ae6d2e",
       "2990f5e0",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "6c18515c",
       "6bc20b7e",
       "084e1ad1",
-      "5b710f7f"
+      "5b710f7f",
+      "0927987f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2634.1716435750327,
           2496.673701731364,
           2489.4116404215497,
           2558.7981918334963,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2716.806147166661,
           2519.3573422749837,
           2520.1292994181317,
-          2555.927008115328
+          2555.927008115328,
+          2460.4072761535645
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          90774.72347005208,
           89676.46330378606,
           65326.66466346154,
           93161.18085186298,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           28353.41301167806,
           26611.878204345703,
           26943.38064793178,
-          27329.210042317707
+          27329.210042317707,
+          26063.039310709635
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          57480,
           57481,
           57481,
           56986,
@@ -4237,6 +4236,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471,
           33471,
