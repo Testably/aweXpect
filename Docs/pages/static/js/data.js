@@ -3198,6 +3198,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Jun 8 09:06:21 2026 \u002B0200",
         "message": "refactor: fix build warnings due to nullable string in becauseTask (#980)"
+      },
+      {
+        "sha": "5b710f7f20e8c047245b18065fbeb73285516f51",
+        "author": "dependabot[bot]",
+        "date": "Mon Jun 8 09:07:00 2026 \u002B0200",
+        "message": "chore: Bump the nunit group with 1 update (#976)"
       }
     ],
     "labels": [
@@ -3733,7 +3739,8 @@ window.BENCHMARK_DATA = {
       "46415067",
       "6c18515c",
       "6bc20b7e",
-      "084e1ad1"
+      "084e1ad1",
+      "5b710f7f"
     ],
     "datasets": [
       {
@@ -4272,7 +4279,8 @@ window.BENCHMARK_DATA = {
           256.0928372969994,
           282.1564817061791,
           253.21568053109306,
-          270.32417484692166
+          270.32417484692166,
+          260.181368748347
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4745,6 +4753,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5363,7 +5372,8 @@ window.BENCHMARK_DATA = {
           255.2791819205651,
           263.04726182497467,
           238.7115925380162,
-          240.24807112557548
+          240.24807112557548,
+          241.4171945254008
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5556,6 +5566,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -8657,6 +8668,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Jun 8 09:06:21 2026 \u002B0200",
         "message": "refactor: fix build warnings due to nullable string in becauseTask (#980)"
+      },
+      {
+        "sha": "5b710f7f20e8c047245b18065fbeb73285516f51",
+        "author": "dependabot[bot]",
+        "date": "Mon Jun 8 09:07:00 2026 \u002B0200",
+        "message": "chore: Bump the nunit group with 1 update (#976)"
       }
     ],
     "labels": [
@@ -9115,7 +9132,8 @@ window.BENCHMARK_DATA = {
       "46415067",
       "6c18515c",
       "6bc20b7e",
-      "084e1ad1"
+      "084e1ad1",
+      "5b710f7f"
     ],
     "datasets": [
       {
@@ -9577,7 +9595,8 @@ window.BENCHMARK_DATA = {
           294966.1259765625,
           329631.25432477676,
           328205.43907877605,
-          331844.7231933594
+          331844.7231933594,
+          323882.5665039063
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10024,6 +10043,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335442,
+          335444,
           335444,
           335444,
           335444,
@@ -10514,7 +10534,8 @@ window.BENCHMARK_DATA = {
           2501607.2766927085,
           2784649.585677083,
           2713961.901785714,
-          2647382.0906808036
+          2647382.0906808036,
+          2751218.3953125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10979,6 +11000,7 @@ window.BENCHMARK_DATA = {
           4841635,
           4841651,
           4841647,
+          4841651,
           4841651,
           4841651,
           4841651
@@ -14193,6 +14215,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Jun 8 09:06:21 2026 \u002B0200",
         "message": "refactor: fix build warnings due to nullable string in becauseTask (#980)"
+      },
+      {
+        "sha": "5b710f7f20e8c047245b18065fbeb73285516f51",
+        "author": "dependabot[bot]",
+        "date": "Mon Jun 8 09:07:00 2026 \u002B0200",
+        "message": "chore: Bump the nunit group with 1 update (#976)"
       }
     ],
     "labels": [
@@ -14728,7 +14756,8 @@ window.BENCHMARK_DATA = {
       "46415067",
       "6c18515c",
       "6bc20b7e",
-      "084e1ad1"
+      "084e1ad1",
+      "5b710f7f"
     ],
     "datasets": [
       {
@@ -15267,7 +15296,8 @@ window.BENCHMARK_DATA = {
           478.7303355534871,
           516.4213751475016,
           481.5078296661377,
-          476.0209849561964
+          476.0209849561964,
+          497.45273984273274
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15740,6 +15770,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -16358,7 +16389,8 @@ window.BENCHMARK_DATA = {
           485.23961067199707,
           557.749834060669,
           466.15099004336764,
-          458.40288200378416
+          458.40288200378416,
+          467.8260079111372
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16551,6 +16583,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -20114,6 +20147,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Jun 8 09:06:21 2026 \u002B0200",
         "message": "refactor: fix build warnings due to nullable string in becauseTask (#980)"
+      },
+      {
+        "sha": "5b710f7f20e8c047245b18065fbeb73285516f51",
+        "author": "dependabot[bot]",
+        "date": "Mon Jun 8 09:07:00 2026 \u002B0200",
+        "message": "chore: Bump the nunit group with 1 update (#976)"
       }
     ],
     "labels": [
@@ -20649,7 +20688,8 @@ window.BENCHMARK_DATA = {
       "46415067",
       "6c18515c",
       "6bc20b7e",
-      "084e1ad1"
+      "084e1ad1",
+      "5b710f7f"
     ],
     "datasets": [
       {
@@ -21188,7 +21228,8 @@ window.BENCHMARK_DATA = {
           273.84272623062134,
           293.45759709676105,
           261.29021479288735,
-          266.10511245727537
+          266.10511245727537,
+          263.8962922732035
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21702,6 +21743,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -22279,7 +22321,8 @@ window.BENCHMARK_DATA = {
           244.54132541020712,
           280.1825347582499,
           237.4627223748427,
-          237.5357260386149
+          237.5357260386149,
+          242.4834464708964
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22472,6 +22515,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -26035,6 +26079,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Jun 8 09:06:21 2026 \u002B0200",
         "message": "refactor: fix build warnings due to nullable string in becauseTask (#980)"
+      },
+      {
+        "sha": "5b710f7f20e8c047245b18065fbeb73285516f51",
+        "author": "dependabot[bot]",
+        "date": "Mon Jun 8 09:07:00 2026 \u002B0200",
+        "message": "chore: Bump the nunit group with 1 update (#976)"
       }
     ],
     "labels": [
@@ -26570,7 +26620,8 @@ window.BENCHMARK_DATA = {
       "46415067",
       "6c18515c",
       "6bc20b7e",
-      "084e1ad1"
+      "084e1ad1",
+      "5b710f7f"
     ],
     "datasets": [
       {
@@ -27109,7 +27160,8 @@ window.BENCHMARK_DATA = {
           448.8942344005291,
           499.98754079001293,
           470.50855016708374,
-          466.88463988670935
+          466.88463988670935,
+          444.59003131730213
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27582,6 +27634,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -28200,7 +28253,8 @@ window.BENCHMARK_DATA = {
           1134.4644299915858,
           1321.0904105050224,
           1304.9174096425375,
-          1260.6103978474935
+          1260.6103978474935,
+          1203.018761698405
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28629,6 +28683,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -31956,6 +32011,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Jun 8 09:06:21 2026 \u002B0200",
         "message": "refactor: fix build warnings due to nullable string in becauseTask (#980)"
+      },
+      {
+        "sha": "5b710f7f20e8c047245b18065fbeb73285516f51",
+        "author": "dependabot[bot]",
+        "date": "Mon Jun 8 09:07:00 2026 \u002B0200",
+        "message": "chore: Bump the nunit group with 1 update (#976)"
       }
     ],
     "labels": [
@@ -32491,7 +32552,8 @@ window.BENCHMARK_DATA = {
       "46415067",
       "6c18515c",
       "6bc20b7e",
-      "084e1ad1"
+      "084e1ad1",
+      "5b710f7f"
     ],
     "datasets": [
       {
@@ -33030,7 +33092,8 @@ window.BENCHMARK_DATA = {
           1924.9877545674642,
           2025.7895299471343,
           1903.0714449201312,
-          1877.9876047770183
+          1877.9876047770183,
+          1934.8650651659284
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33503,6 +33566,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -34121,7 +34185,8 @@ window.BENCHMARK_DATA = {
           1296.0140084584555,
           1412.711854426066,
           1301.6897384325664,
-          1295.562139638265
+          1295.562139638265,
+          1363.536735670907
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34314,6 +34379,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -37877,6 +37943,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Jun 8 09:06:21 2026 \u002B0200",
         "message": "refactor: fix build warnings due to nullable string in becauseTask (#980)"
+      },
+      {
+        "sha": "5b710f7f20e8c047245b18065fbeb73285516f51",
+        "author": "dependabot[bot]",
+        "date": "Mon Jun 8 09:07:00 2026 \u002B0200",
+        "message": "chore: Bump the nunit group with 1 update (#976)"
       }
     ],
     "labels": [
@@ -38412,7 +38484,8 @@ window.BENCHMARK_DATA = {
       "46415067",
       "6c18515c",
       "6bc20b7e",
-      "084e1ad1"
+      "084e1ad1",
+      "5b710f7f"
     ],
     "datasets": [
       {
@@ -38951,7 +39024,8 @@ window.BENCHMARK_DATA = {
           2498.2422691345214,
           2716.806147166661,
           2519.3573422749837,
-          2520.1292994181317
+          2520.1292994181317,
+          2555.927008115328
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -39424,6 +39498,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -40042,7 +40117,8 @@ window.BENCHMARK_DATA = {
           20802.61471048991,
           28353.41301167806,
           26611.878204345703,
-          26943.38064793178
+          26943.38064793178,
+          27329.210042317707
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40582,6 +40658,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471,
           33471,
