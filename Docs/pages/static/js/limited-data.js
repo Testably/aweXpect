@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "33ff4d659368285ca7bfd1f2b2ec98a70a1894ad",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Apr 4 15:07:44 2026 \u002B0200",
-        "message": "chore: upgrade docusaurus dependencies (#915)"
-      },
-      {
         "sha": "13ae6d2ed0a410f1ed1ed84854341f8d8a6ea8da",
         "author": "dependabot[bot]",
         "date": "Sat May 2 12:20:57 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:13 2026 \u002B0200",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.5.1 to 18.6.0 (#978)"
+      },
+      {
+        "sha": "6920f4570f43885f3d4b29e7c3e9be97d6c72558",
+        "author": "dependabot[bot]",
+        "date": "Sat Jun 20 11:52:19 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.7.0 to 18.8.0 (#982)"
       }
     ],
     "labels": [
-      "33ff4d65",
       "13ae6d2e",
       "2990f5e0",
       "fcab6cc8",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "6bc20b7e",
       "084e1ad1",
       "5b710f7f",
-      "0927987f"
+      "0927987f",
+      "6920f457"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          247.01689154307047,
           266.2969425405775,
           271.1530883652823,
           251.29293285097395,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           253.21568053109306,
           270.32417484692166,
           260.181368748347,
-          244.476037135491
+          244.476037135491,
+          269.24019278798784
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          233.82985033988953,
           258.68744155338834,
           252.99936056137085,
           249.43486084256853,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           238.7115925380162,
           240.24807112557548,
           241.4171945254008,
-          237.37615286509197
+          237.37615286509197,
+          247.11946545328414
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "33ff4d659368285ca7bfd1f2b2ec98a70a1894ad",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Apr 4 15:07:44 2026 \u002B0200",
-        "message": "chore: upgrade docusaurus dependencies (#915)"
-      },
-      {
         "sha": "13ae6d2ed0a410f1ed1ed84854341f8d8a6ea8da",
         "author": "dependabot[bot]",
         "date": "Sat May 2 12:20:57 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:13 2026 \u002B0200",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.5.1 to 18.6.0 (#978)"
+      },
+      {
+        "sha": "6920f4570f43885f3d4b29e7c3e9be97d6c72558",
+        "author": "dependabot[bot]",
+        "date": "Sat Jun 20 11:52:19 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.7.0 to 18.8.0 (#982)"
       }
     ],
     "labels": [
-      "33ff4d65",
       "13ae6d2e",
       "2990f5e0",
       "fcab6cc8",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "6bc20b7e",
       "084e1ad1",
       "5b710f7f",
-      "0927987f"
+      "0927987f",
+      "6920f457"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          295828.3948692909,
           306320.3705403646,
           309191.59329659597,
           309507.34633091517,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           328205.43907877605,
           331844.7231933594,
           323882.5665039063,
-          316276.7185384115
+          316276.7185384115,
+          293878.3318196615
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          335444,
           335444,
           335444,
           335444,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
+          335444,
           335444
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2690390.7544270833,
           2599897.3625,
           2742604.640066964,
           2531989.426339286,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2713961.901785714,
           2647382.0906808036,
           2751218.3953125,
-          2721342.6646634615
+          2721342.6646634615,
+          2326466.11953125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4804906,
           4804906,
           4804906,
           4804902,
@@ -1202,6 +1201,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "33ff4d659368285ca7bfd1f2b2ec98a70a1894ad",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Apr 4 15:07:44 2026 \u002B0200",
-        "message": "chore: upgrade docusaurus dependencies (#915)"
-      },
       {
         "sha": "13ae6d2ed0a410f1ed1ed84854341f8d8a6ea8da",
         "author": "dependabot[bot]",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:13 2026 \u002B0200",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.5.1 to 18.6.0 (#978)"
+      },
+      {
+        "sha": "6920f4570f43885f3d4b29e7c3e9be97d6c72558",
+        "author": "dependabot[bot]",
+        "date": "Sat Jun 20 11:52:19 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.7.0 to 18.8.0 (#982)"
       }
     ],
     "labels": [
-      "33ff4d65",
       "13ae6d2e",
       "2990f5e0",
       "fcab6cc8",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "6bc20b7e",
       "084e1ad1",
       "5b710f7f",
-      "0927987f"
+      "0927987f",
+      "6920f457"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          494.03237122755786,
           496.8649320602417,
           492.3057597705296,
           472.0799520492554,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           481.5078296661377,
           476.0209849561964,
           497.45273984273274,
-          460.82882738113403
+          460.82882738113403,
+          465.5516929626465
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          493.95643263596753,
           496.9368233998617,
           537.5483888626098,
           473.1987294038137,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           466.15099004336764,
           458.40288200378416,
           467.8260079111372,
-          463.22075010935464
+          463.22075010935464,
+          473.96773140771046
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "33ff4d659368285ca7bfd1f2b2ec98a70a1894ad",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Apr 4 15:07:44 2026 \u002B0200",
-        "message": "chore: upgrade docusaurus dependencies (#915)"
-      },
-      {
         "sha": "13ae6d2ed0a410f1ed1ed84854341f8d8a6ea8da",
         "author": "dependabot[bot]",
         "date": "Sat May 2 12:20:57 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:13 2026 \u002B0200",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.5.1 to 18.6.0 (#978)"
+      },
+      {
+        "sha": "6920f4570f43885f3d4b29e7c3e9be97d6c72558",
+        "author": "dependabot[bot]",
+        "date": "Sat Jun 20 11:52:19 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.7.0 to 18.8.0 (#982)"
       }
     ],
     "labels": [
-      "33ff4d65",
       "13ae6d2e",
       "2990f5e0",
       "fcab6cc8",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "6bc20b7e",
       "084e1ad1",
       "5b710f7f",
-      "0927987f"
+      "0927987f",
+      "6920f457"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          246.61869209153312,
           245.47875680242265,
           260.6599381128947,
           240.8555198987325,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           261.29021479288735,
           266.10511245727537,
           263.8962922732035,
-          261.12085257257735
+          261.12085257257735,
+          250.9371336868831
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2260,7 +2260,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
-          808,
+          864,
           864,
           864,
           864,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          240.18964398701985,
           247.40992552893502,
           269.4070638509897,
           245.11609716415404,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           237.4627223748427,
           237.5357260386149,
           242.4834464708964,
-          237.16833070346289
+          237.16833070346289,
+          240.50881153742472
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "33ff4d659368285ca7bfd1f2b2ec98a70a1894ad",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Apr 4 15:07:44 2026 \u002B0200",
-        "message": "chore: upgrade docusaurus dependencies (#915)"
-      },
-      {
         "sha": "13ae6d2ed0a410f1ed1ed84854341f8d8a6ea8da",
         "author": "dependabot[bot]",
         "date": "Sat May 2 12:20:57 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:13 2026 \u002B0200",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.5.1 to 18.6.0 (#978)"
+      },
+      {
+        "sha": "6920f4570f43885f3d4b29e7c3e9be97d6c72558",
+        "author": "dependabot[bot]",
+        "date": "Sat Jun 20 11:52:19 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.7.0 to 18.8.0 (#982)"
       }
     ],
     "labels": [
-      "33ff4d65",
       "13ae6d2e",
       "2990f5e0",
       "fcab6cc8",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "6bc20b7e",
       "084e1ad1",
       "5b710f7f",
-      "0927987f"
+      "0927987f",
+      "6920f457"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          453.0842537562052,
           502.7252906799316,
           496.77405745188395,
           467.20627002716066,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           470.50855016708374,
           466.88463988670935,
           444.59003131730213,
-          456.75095513888766
+          456.75095513888766,
+          463.41466464996336
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1219.3546211242676,
           1211.9035541827861,
           1279.2930216471354,
           1130.1894224802652,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1304.9174096425375,
           1260.6103978474935,
           1203.018761698405,
-          1190.8403115590413
+          1190.8403115590413,
+          1101.3260318211146
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "33ff4d659368285ca7bfd1f2b2ec98a70a1894ad",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Apr 4 15:07:44 2026 \u002B0200",
-        "message": "chore: upgrade docusaurus dependencies (#915)"
-      },
-      {
         "sha": "13ae6d2ed0a410f1ed1ed84854341f8d8a6ea8da",
         "author": "dependabot[bot]",
         "date": "Sat May 2 12:20:57 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:13 2026 \u002B0200",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.5.1 to 18.6.0 (#978)"
+      },
+      {
+        "sha": "6920f4570f43885f3d4b29e7c3e9be97d6c72558",
+        "author": "dependabot[bot]",
+        "date": "Sat Jun 20 11:52:19 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.7.0 to 18.8.0 (#982)"
       }
     ],
     "labels": [
-      "33ff4d65",
       "13ae6d2e",
       "2990f5e0",
       "fcab6cc8",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "6bc20b7e",
       "084e1ad1",
       "5b710f7f",
-      "0927987f"
+      "0927987f",
+      "6920f457"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1837.5042481055627,
           1901.1095701853435,
           2042.3155853271485,
           1864.9442280360631,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1903.0714449201312,
           1877.9876047770183,
           1934.8650651659284,
-          1876.9502340044294
+          1876.9502340044294,
+          1880.7159954071044
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1364.3199944814046,
           1377.5556783676147,
           1363.8280398505074,
           1292.2264111382622,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1301.6897384325664,
           1295.562139638265,
           1363.536735670907,
-          1248.9447863442558
+          1248.9447863442558,
+          1255.5963723318916
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "33ff4d659368285ca7bfd1f2b2ec98a70a1894ad",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Apr 4 15:07:44 2026 \u002B0200",
-        "message": "chore: upgrade docusaurus dependencies (#915)"
-      },
-      {
         "sha": "13ae6d2ed0a410f1ed1ed84854341f8d8a6ea8da",
         "author": "dependabot[bot]",
         "date": "Sat May 2 12:20:57 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:13 2026 \u002B0200",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.5.1 to 18.6.0 (#978)"
+      },
+      {
+        "sha": "6920f4570f43885f3d4b29e7c3e9be97d6c72558",
+        "author": "dependabot[bot]",
+        "date": "Sat Jun 20 11:52:19 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.7.0 to 18.8.0 (#982)"
       }
     ],
     "labels": [
-      "33ff4d65",
       "13ae6d2e",
       "2990f5e0",
       "fcab6cc8",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "6bc20b7e",
       "084e1ad1",
       "5b710f7f",
-      "0927987f"
+      "0927987f",
+      "6920f457"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2496.673701731364,
           2489.4116404215497,
           2558.7981918334963,
           2423.3802020733174,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2519.3573422749837,
           2520.1292994181317,
           2555.927008115328,
-          2460.4072761535645
+          2460.4072761535645,
+          2462.123188273112
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          89676.46330378606,
           65326.66466346154,
           93161.18085186298,
           61502.32177734375,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           26611.878204345703,
           26943.38064793178,
           27329.210042317707,
-          26063.039310709635
+          26063.039310709635,
+          20179.390925816126
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          57481,
           57481,
           56986,
           57481,
@@ -4236,6 +4235,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471,
           33471,
