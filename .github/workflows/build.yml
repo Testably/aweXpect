@@ -14,7 +14,7 @@ jobs:
                 os: [ ubuntu-latest, windows-latest, macos-latest ]
         runs-on: ${{ matrix.os }}
         steps:
-            -   uses: actions/checkout@v6
+            -   uses: actions/checkout@v7
                 with:
                     fetch-depth: 0
             -   name: Setup .NET SDKs
@@ -44,7 +44,7 @@ jobs:
         env:
             DOTNET_NOLOGO: true
         steps:
-            -   uses: actions/checkout@v6
+            -   uses: actions/checkout@v7
                 with:
                     fetch-depth: 0
             -   name: Setup .NET SDKs
@@ -71,7 +71,7 @@ jobs:
             STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
             DOTNET_NOLOGO: true
         steps:
-            -   uses: actions/checkout@v6
+            -   uses: actions/checkout@v7
                 with:
                     fetch-depth: 0
             -   name: Setup .NET SDKs
@@ -96,7 +96,7 @@ jobs:
             STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
             DOTNET_NOLOGO: true
         steps:
-            -   uses: actions/checkout@v6
+            -   uses: actions/checkout@v7
                 with:
                     fetch-depth: 0
             -   name: Setup .NET SDKs
@@ -122,7 +122,7 @@ jobs:
             STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
             DOTNET_NOLOGO: true
         steps:
-            -   uses: actions/checkout@v6
+            -   uses: actions/checkout@v7
                 with:
                     fetch-depth: 0
             -   name: Setup .NET SDKs
@@ -144,7 +144,7 @@ jobs:
         env:
             DOTNET_NOLOGO: true
         steps:
-            -   uses: actions/checkout@v6
+            -   uses: actions/checkout@v7
                 with:
                     fetch-depth: 0
             -   name: Setup .NET SDKs
@@ -166,7 +166,7 @@ jobs:
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
             DOTNET_NOLOGO: true
         steps:
-            -   uses: actions/checkout@v6
+            -   uses: actions/checkout@v7
                 with:
                     fetch-depth: 0
             -   name: Setup .NET SDKs
@@ -203,7 +203,7 @@ jobs:
         env:
             DOTNET_NOLOGO: true
         steps:
-            -   uses: actions/checkout@v6
+            -   uses: actions/checkout@v7
                 with:
                     fetch-depth: 0
             -   name: Setup .NET SDKs
