@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "2990f5e024889880cba3b43decee40cdd0581472",
-        "author": "dependabot[bot]",
-        "date": "Sat May 2 12:21:11 2026 \u002B0200",
-        "message": "chore: Bump softprops/action-gh-release from 2 to 3 (#919)"
-      },
-      {
         "sha": "fcab6cc8c6ff7d728764463fcc8e408f69d5a949",
         "author": "dependabot[bot]",
         "date": "Sat May 2 12:21:23 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sat Jun 20 11:52:31 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 3 updates (#981)"
+      },
+      {
+        "sha": "44ed09de7f267ce3bed8b8eedf73f543de4ecbe9",
+        "author": "dependabot[bot]",
+        "date": "Mon Jun 29 12:22:04 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.6.0 to 18.7.0 (#986)"
       }
     ],
     "labels": [
-      "2990f5e0",
       "fcab6cc8",
       "72cc22d3",
       "6dfb8970",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "5b710f7f",
       "0927987f",
       "6920f457",
-      "bc6c799f"
+      "bc6c799f",
+      "44ed09de"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          271.1530883652823,
           251.29293285097395,
           243.98802202088493,
           266.001049382346,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           260.181368748347,
           244.476037135491,
           269.24019278798784,
-          248.99433843906112
+          248.99433843906112,
+          241.350377591451
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          252.99936056137085,
           249.43486084256853,
           231.5416271136357,
           239.7456165093642,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           241.4171945254008,
           237.37615286509197,
           247.11946545328414,
-          247.04331152779716
+          247.04331152779716,
+          246.6118438584464
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "2990f5e024889880cba3b43decee40cdd0581472",
-        "author": "dependabot[bot]",
-        "date": "Sat May 2 12:21:11 2026 \u002B0200",
-        "message": "chore: Bump softprops/action-gh-release from 2 to 3 (#919)"
-      },
-      {
         "sha": "fcab6cc8c6ff7d728764463fcc8e408f69d5a949",
         "author": "dependabot[bot]",
         "date": "Sat May 2 12:21:23 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sat Jun 20 11:52:31 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 3 updates (#981)"
+      },
+      {
+        "sha": "44ed09de7f267ce3bed8b8eedf73f543de4ecbe9",
+        "author": "dependabot[bot]",
+        "date": "Mon Jun 29 12:22:04 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.6.0 to 18.7.0 (#986)"
       }
     ],
     "labels": [
-      "2990f5e0",
       "fcab6cc8",
       "72cc22d3",
       "6dfb8970",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "5b710f7f",
       "0927987f",
       "6920f457",
-      "bc6c799f"
+      "bc6c799f",
+      "44ed09de"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          309191.59329659597,
           309507.34633091517,
           297022.89878627233,
           309609.5467998798,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           323882.5665039063,
           316276.7185384115,
           293878.3318196615,
-          296727.05210658483
+          296727.05210658483,
+          293305.36258370534
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          335444,
           335444,
           335444,
           335444,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
+          335444,
           335444
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2742604.640066964,
           2531989.426339286,
           2678833.5027901786,
           2654064.1588541665,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2751218.3953125,
           2721342.6646634615,
           2326466.11953125,
-          2473659.553125
+          2473659.553125,
+          2346473.274832589
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4804906,
           4804902,
           4804906,
           4804906,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841651
+          4841651,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "2990f5e024889880cba3b43decee40cdd0581472",
-        "author": "dependabot[bot]",
-        "date": "Sat May 2 12:21:11 2026 \u002B0200",
-        "message": "chore: Bump softprops/action-gh-release from 2 to 3 (#919)"
-      },
       {
         "sha": "fcab6cc8c6ff7d728764463fcc8e408f69d5a949",
         "author": "dependabot[bot]",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sat Jun 20 11:52:31 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 3 updates (#981)"
+      },
+      {
+        "sha": "44ed09de7f267ce3bed8b8eedf73f543de4ecbe9",
+        "author": "dependabot[bot]",
+        "date": "Mon Jun 29 12:22:04 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.6.0 to 18.7.0 (#986)"
       }
     ],
     "labels": [
-      "2990f5e0",
       "fcab6cc8",
       "72cc22d3",
       "6dfb8970",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "5b710f7f",
       "0927987f",
       "6920f457",
-      "bc6c799f"
+      "bc6c799f",
+      "44ed09de"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          492.3057597705296,
           472.0799520492554,
           470.2426012357076,
           506.29579343795774,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           497.45273984273274,
           460.82882738113403,
           465.5516929626465,
-          465.1508773290194
+          465.1508773290194,
+          471.57978766759237
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          537.5483888626098,
           473.1987294038137,
           458.4377720832825,
           512.2665049235026,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           467.8260079111372,
           463.22075010935464,
           473.96773140771046,
-          489.85448201497394
+          489.85448201497394,
+          503.10617173512776
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "2990f5e024889880cba3b43decee40cdd0581472",
-        "author": "dependabot[bot]",
-        "date": "Sat May 2 12:21:11 2026 \u002B0200",
-        "message": "chore: Bump softprops/action-gh-release from 2 to 3 (#919)"
-      },
-      {
         "sha": "fcab6cc8c6ff7d728764463fcc8e408f69d5a949",
         "author": "dependabot[bot]",
         "date": "Sat May 2 12:21:23 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sat Jun 20 11:52:31 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 3 updates (#981)"
+      },
+      {
+        "sha": "44ed09de7f267ce3bed8b8eedf73f543de4ecbe9",
+        "author": "dependabot[bot]",
+        "date": "Mon Jun 29 12:22:04 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.6.0 to 18.7.0 (#986)"
       }
     ],
     "labels": [
-      "2990f5e0",
       "fcab6cc8",
       "72cc22d3",
       "6dfb8970",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "5b710f7f",
       "0927987f",
       "6920f457",
-      "bc6c799f"
+      "bc6c799f",
+      "44ed09de"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          260.6599381128947,
           240.8555198987325,
           239.44222489992777,
           245.86462208429973,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           263.8962922732035,
           261.12085257257735,
           250.9371336868831,
-          285.6682287362906
+          285.6682287362906,
+          254.16477779241708
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2258,7 +2258,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
-          808,
+          864,
           864,
           864,
           864,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          269.4070638509897,
           245.11609716415404,
           229.3851644039154,
           251.27897256215414,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           242.4834464708964,
           237.16833070346289,
           240.50881153742472,
-          244.60649277369183
+          244.60649277369183,
+          249.66078751427787
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "2990f5e024889880cba3b43decee40cdd0581472",
-        "author": "dependabot[bot]",
-        "date": "Sat May 2 12:21:11 2026 \u002B0200",
-        "message": "chore: Bump softprops/action-gh-release from 2 to 3 (#919)"
-      },
-      {
         "sha": "fcab6cc8c6ff7d728764463fcc8e408f69d5a949",
         "author": "dependabot[bot]",
         "date": "Sat May 2 12:21:23 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sat Jun 20 11:52:31 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 3 updates (#981)"
+      },
+      {
+        "sha": "44ed09de7f267ce3bed8b8eedf73f543de4ecbe9",
+        "author": "dependabot[bot]",
+        "date": "Mon Jun 29 12:22:04 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.6.0 to 18.7.0 (#986)"
       }
     ],
     "labels": [
-      "2990f5e0",
       "fcab6cc8",
       "72cc22d3",
       "6dfb8970",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "5b710f7f",
       "0927987f",
       "6920f457",
-      "bc6c799f"
+      "bc6c799f",
+      "44ed09de"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          496.77405745188395,
           467.20627002716066,
           464.14828589757286,
           469.28736241658527,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           444.59003131730213,
           456.75095513888766,
           463.41466464996336,
-          457.68718519210813
+          457.68718519210813,
+          482.74196853637693
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1279.2930216471354,
           1130.1894224802652,
           1181.8798191887993,
           1140.3187061309814,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1203.018761698405,
           1190.8403115590413,
           1101.3260318211146,
-          1162.6957606633505
+          1162.6957606633505,
+          1128.9691250664848
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "2990f5e024889880cba3b43decee40cdd0581472",
-        "author": "dependabot[bot]",
-        "date": "Sat May 2 12:21:11 2026 \u002B0200",
-        "message": "chore: Bump softprops/action-gh-release from 2 to 3 (#919)"
-      },
-      {
         "sha": "fcab6cc8c6ff7d728764463fcc8e408f69d5a949",
         "author": "dependabot[bot]",
         "date": "Sat May 2 12:21:23 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sat Jun 20 11:52:31 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 3 updates (#981)"
+      },
+      {
+        "sha": "44ed09de7f267ce3bed8b8eedf73f543de4ecbe9",
+        "author": "dependabot[bot]",
+        "date": "Mon Jun 29 12:22:04 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.6.0 to 18.7.0 (#986)"
       }
     ],
     "labels": [
-      "2990f5e0",
       "fcab6cc8",
       "72cc22d3",
       "6dfb8970",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "5b710f7f",
       "0927987f",
       "6920f457",
-      "bc6c799f"
+      "bc6c799f",
+      "44ed09de"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2042.3155853271485,
           1864.9442280360631,
           1914.142994562785,
           1866.6009905497233,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1934.8650651659284,
           1876.9502340044294,
           1880.7159954071044,
-          1833.4658897399902
+          1833.4658897399902,
+          1890.0597494761148
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1363.8280398505074,
           1292.2264111382622,
           1216.431070582072,
           1378.3238087972006,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1363.536735670907,
           1248.9447863442558,
           1255.5963723318916,
-          1342.7128648122152
+          1342.7128648122152,
+          1311.7862465722221
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "2990f5e024889880cba3b43decee40cdd0581472",
-        "author": "dependabot[bot]",
-        "date": "Sat May 2 12:21:11 2026 \u002B0200",
-        "message": "chore: Bump softprops/action-gh-release from 2 to 3 (#919)"
-      },
-      {
         "sha": "fcab6cc8c6ff7d728764463fcc8e408f69d5a949",
         "author": "dependabot[bot]",
         "date": "Sat May 2 12:21:23 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sat Jun 20 11:52:31 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 3 updates (#981)"
+      },
+      {
+        "sha": "44ed09de7f267ce3bed8b8eedf73f543de4ecbe9",
+        "author": "dependabot[bot]",
+        "date": "Mon Jun 29 12:22:04 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.6.0 to 18.7.0 (#986)"
       }
     ],
     "labels": [
-      "2990f5e0",
       "fcab6cc8",
       "72cc22d3",
       "6dfb8970",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "5b710f7f",
       "0927987f",
       "6920f457",
-      "bc6c799f"
+      "bc6c799f",
+      "44ed09de"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2558.7981918334963,
           2423.3802020733174,
           2507.998802439372,
           2629.043854268392,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2555.927008115328,
           2460.4072761535645,
           2462.123188273112,
-          2455.8785621643065
+          2455.8785621643065,
+          2546.2303230285643
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          93161.18085186298,
           61502.32177734375,
           88445.533203125,
           92762.04544270833,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           27329.210042317707,
           26063.039310709635,
           20179.390925816126,
-          20153.355488368445
+          20153.355488368445,
+          20737.411871337892
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          56986,
           57481,
           57481,
           57957,
@@ -4234,6 +4233,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471,
           33471,
