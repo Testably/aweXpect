@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "6dfb8970b65ac551a0512b171882d4ecd8b28898",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 3 11:49:27 2026 \u002B0200",
-        "message": "docs: Add Benchmarks landing page and update CI triggers (#931)"
-      },
-      {
         "sha": "28700bbcdfeed8785bb3bc90e6c595f7de035ca9",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 3 12:08:05 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun Jul 5 16:57:27 2026 \u002B0200",
         "message": "chore: Bump actions/checkout from 6 to 7 (#983)"
+      },
+      {
+        "sha": "a431a77127448fe0541c29af8d2a42df104fa01c",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 6 16:33:45 2026 \u002B0200",
+        "message": "chore: Bump the tunit group with 2 updates (#988)"
       }
     ],
     "labels": [
-      "6dfb8970",
       "28700bbc",
       "dda64b57",
       "94537f66",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "bc6c799f",
       "44ed09de",
       "95ef6b5c",
-      "9a5e940f"
+      "9a5e940f",
+      "a431a771"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          266.001049382346,
           258.9470479147775,
           247.81100317637126,
           256.35084547315324,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           248.99433843906112,
           241.350377591451,
           250.72195428212484,
-          265.5275889805385
+          265.5275889805385,
+          254.1256928077111
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          239.7456165093642,
           266.5029978752136,
           251.77768891198295,
           239.61329537171585,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           247.04331152779716,
           246.6118438584464,
           235.77647287505013,
-          264.8482259750366
+          264.8482259750366,
+          247.2462817600795
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "6dfb8970b65ac551a0512b171882d4ecd8b28898",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 3 11:49:27 2026 \u002B0200",
-        "message": "docs: Add Benchmarks landing page and update CI triggers (#931)"
-      },
-      {
         "sha": "28700bbcdfeed8785bb3bc90e6c595f7de035ca9",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 3 12:08:05 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun Jul 5 16:57:27 2026 \u002B0200",
         "message": "chore: Bump actions/checkout from 6 to 7 (#983)"
+      },
+      {
+        "sha": "a431a77127448fe0541c29af8d2a42df104fa01c",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 6 16:33:45 2026 \u002B0200",
+        "message": "chore: Bump the tunit group with 2 updates (#988)"
       }
     ],
     "labels": [
-      "6dfb8970",
       "28700bbc",
       "dda64b57",
       "94537f66",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "bc6c799f",
       "44ed09de",
       "95ef6b5c",
-      "9a5e940f"
+      "9a5e940f",
+      "a431a771"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          309609.5467998798,
           308170.7322126116,
           305068.6729817708,
           316949.8802408854,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           296727.05210658483,
           293305.36258370534,
           317781.9690880409,
-          312988.6269205729
+          312988.6269205729,
+          282828.55787760415
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          335444,
           335444,
           335444,
           335444,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
+          335444,
           335444
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2654064.1588541665,
           2366964.4307291666,
           2372584.743582589,
           2618535.659598214,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2473659.553125,
           2346473.274832589,
           2747542.05859375,
-          2815038.0403645835
+          2815038.0403645835,
+          2421132.736197917
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4804906,
           4804887,
           4804887,
           4804906,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841647,
           4841651,
-          4841651
+          4841651,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "6dfb8970b65ac551a0512b171882d4ecd8b28898",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 3 11:49:27 2026 \u002B0200",
-        "message": "docs: Add Benchmarks landing page and update CI triggers (#931)"
-      },
       {
         "sha": "28700bbcdfeed8785bb3bc90e6c595f7de035ca9",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun Jul 5 16:57:27 2026 \u002B0200",
         "message": "chore: Bump actions/checkout from 6 to 7 (#983)"
+      },
+      {
+        "sha": "a431a77127448fe0541c29af8d2a42df104fa01c",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 6 16:33:45 2026 \u002B0200",
+        "message": "chore: Bump the tunit group with 2 updates (#988)"
       }
     ],
     "labels": [
-      "6dfb8970",
       "28700bbc",
       "dda64b57",
       "94537f66",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "bc6c799f",
       "44ed09de",
       "95ef6b5c",
-      "9a5e940f"
+      "9a5e940f",
+      "a431a771"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          506.29579343795774,
           498.31762816111245,
           498.41546058654785,
           521.2500436646598,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           465.1508773290194,
           471.57978766759237,
           480.2384469692524,
-          514.7213216781616
+          514.7213216781616,
+          470.8345993848947
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          512.2665049235026,
           516.6299363454183,
           485.56329917907715,
           471.965553633372,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           489.85448201497394,
           503.10617173512776,
           456.0809893948691,
-          491.939611026219
+          491.939611026219,
+          493.87994399437537
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "6dfb8970b65ac551a0512b171882d4ecd8b28898",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 3 11:49:27 2026 \u002B0200",
-        "message": "docs: Add Benchmarks landing page and update CI triggers (#931)"
-      },
-      {
         "sha": "28700bbcdfeed8785bb3bc90e6c595f7de035ca9",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 3 12:08:05 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun Jul 5 16:57:27 2026 \u002B0200",
         "message": "chore: Bump actions/checkout from 6 to 7 (#983)"
+      },
+      {
+        "sha": "a431a77127448fe0541c29af8d2a42df104fa01c",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 6 16:33:45 2026 \u002B0200",
+        "message": "chore: Bump the tunit group with 2 updates (#988)"
       }
     ],
     "labels": [
-      "6dfb8970",
       "28700bbc",
       "dda64b57",
       "94537f66",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "bc6c799f",
       "44ed09de",
       "95ef6b5c",
-      "9a5e940f"
+      "9a5e940f",
+      "a431a771"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          245.86462208429973,
           260.5479956070582,
           240.75905667032515,
           245.37836481730145,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           285.6682287362906,
           254.16477779241708,
           266.79638926188153,
-          283.1361319541931
+          283.1361319541931,
+          262.61892363003324
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2255,7 +2255,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
-          808,
+          864,
           864,
           864,
           864,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          251.27897256215414,
           272.8696369024423,
           269.01371339162193,
           251.70466130574545,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           244.60649277369183,
           249.66078751427787,
           243.84770464897156,
-          258.05092646280923
+          258.05092646280923,
+          246.32795023918152
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "6dfb8970b65ac551a0512b171882d4ecd8b28898",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 3 11:49:27 2026 \u002B0200",
-        "message": "docs: Add Benchmarks landing page and update CI triggers (#931)"
-      },
-      {
         "sha": "28700bbcdfeed8785bb3bc90e6c595f7de035ca9",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 3 12:08:05 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun Jul 5 16:57:27 2026 \u002B0200",
         "message": "chore: Bump actions/checkout from 6 to 7 (#983)"
+      },
+      {
+        "sha": "a431a77127448fe0541c29af8d2a42df104fa01c",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 6 16:33:45 2026 \u002B0200",
+        "message": "chore: Bump the tunit group with 2 updates (#988)"
       }
     ],
     "labels": [
-      "6dfb8970",
       "28700bbc",
       "dda64b57",
       "94537f66",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "bc6c799f",
       "44ed09de",
       "95ef6b5c",
-      "9a5e940f"
+      "9a5e940f",
+      "a431a771"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          469.28736241658527,
           489.1470923423767,
           463.26679337819417,
           452.64798099654064,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           457.68718519210813,
           482.74196853637693,
           458.547548191888,
-          483.3902147293091
+          483.3902147293091,
+          473.13833872477215
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1140.3187061309814,
           1303.2125753675189,
           1188.4073860168457,
           1250.132508468628,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1162.6957606633505,
           1128.9691250664848,
           1150.2959679921469,
-          1195.426530710856
+          1195.426530710856,
+          1139.6234017780848
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "6dfb8970b65ac551a0512b171882d4ecd8b28898",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 3 11:49:27 2026 \u002B0200",
-        "message": "docs: Add Benchmarks landing page and update CI triggers (#931)"
-      },
-      {
         "sha": "28700bbcdfeed8785bb3bc90e6c595f7de035ca9",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 3 12:08:05 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun Jul 5 16:57:27 2026 \u002B0200",
         "message": "chore: Bump actions/checkout from 6 to 7 (#983)"
+      },
+      {
+        "sha": "a431a77127448fe0541c29af8d2a42df104fa01c",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 6 16:33:45 2026 \u002B0200",
+        "message": "chore: Bump the tunit group with 2 updates (#988)"
       }
     ],
     "labels": [
-      "6dfb8970",
       "28700bbc",
       "dda64b57",
       "94537f66",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "bc6c799f",
       "44ed09de",
       "95ef6b5c",
-      "9a5e940f"
+      "9a5e940f",
+      "a431a771"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1866.6009905497233,
           1712.941248957316,
           1676.6080019632975,
           1845.5254409790039,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1833.4658897399902,
           1890.0597494761148,
           1943.644634791783,
-          1942.4335873921711
+          1942.4335873921711,
+          1896.8186955085168
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1378.3238087972006,
           1399.0749597549438,
           1374.7919801076252,
           1288.216135152181,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1342.7128648122152,
           1311.7862465722221,
           1266.5787974766322,
-          1459.0090315500895
+          1459.0090315500895,
+          1314.5717296600342
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "6dfb8970b65ac551a0512b171882d4ecd8b28898",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 3 11:49:27 2026 \u002B0200",
-        "message": "docs: Add Benchmarks landing page and update CI triggers (#931)"
-      },
-      {
         "sha": "28700bbcdfeed8785bb3bc90e6c595f7de035ca9",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 3 12:08:05 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun Jul 5 16:57:27 2026 \u002B0200",
         "message": "chore: Bump actions/checkout from 6 to 7 (#983)"
+      },
+      {
+        "sha": "a431a77127448fe0541c29af8d2a42df104fa01c",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 6 16:33:45 2026 \u002B0200",
+        "message": "chore: Bump the tunit group with 2 updates (#988)"
       }
     ],
     "labels": [
-      "6dfb8970",
       "28700bbc",
       "dda64b57",
       "94537f66",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "bc6c799f",
       "44ed09de",
       "95ef6b5c",
-      "9a5e940f"
+      "9a5e940f",
+      "a431a771"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2629.043854268392,
           2260.5176442464194,
           2227.7644963582356,
           2537.6324912479945,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2455.8785621643065,
           2546.2303230285643,
           2545.9524711608888,
-          2635.852321624756
+          2635.852321624756,
+          2467.304022380284
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          92762.04544270833,
           69521.52768179086,
           69865.80070612981,
           90587.52008928571,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           20153.355488368445,
           20737.411871337892,
           26395.47559407552,
-          27497.987331136068
+          27497.987331136068,
+          19844.512142944335
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          57957,
           57488,
           57489,
           57481,
@@ -4231,6 +4230,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471,
           33471,
