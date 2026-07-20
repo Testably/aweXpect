@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "31ec2c165a33ab6da17f6ba677e81d8a7ef7bc76",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 3 20:48:51 2026 \u002B0200",
-        "message": "fix: correct URI casing in documentation links (#936)"
-      },
-      {
         "sha": "443165cb709564354d1dd7bc35ea0f60dc6fb7d7",
         "author": "dependabot[bot]",
         "date": "Mon May 4 15:19:48 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:16 2026 \u002B0200",
         "message": "chore: Bump the mstest group with 2 updates (#994)"
+      },
+      {
+        "sha": "05a05906a37c2901708ef62e4730331377e9a981",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 20 16:13:32 2026 \u002B0200",
+        "message": "chore: Bump the tunit group with 3 updates (#995)"
       }
     ],
     "labels": [
-      "31ec2c16",
       "443165cb",
       "29eca80a",
       "ddd9528a",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "4404211b",
       "76cf6952",
       "be73df5a",
-      "c69bdc71"
+      "c69bdc71",
+      "05a05906"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          269.79958724975586,
           252.4533190727234,
           293.6308441480001,
           275.110637029012,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           282.11799686295643,
           267.02068818410237,
           262.0750855377742,
-          293.3556893030802
+          293.3556893030802,
+          251.0237106543321
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          269.46816228230796,
           261.65092894236244,
           260.7189357439677,
           263.8557269732157,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           265.8475589071001,
           243.31778945241655,
           260.1815192858378,
-          247.1360973578233
+          247.1360973578233,
+          262.84639611611
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "31ec2c165a33ab6da17f6ba677e81d8a7ef7bc76",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 3 20:48:51 2026 \u002B0200",
-        "message": "fix: correct URI casing in documentation links (#936)"
-      },
-      {
         "sha": "443165cb709564354d1dd7bc35ea0f60dc6fb7d7",
         "author": "dependabot[bot]",
         "date": "Mon May 4 15:19:48 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:16 2026 \u002B0200",
         "message": "chore: Bump the mstest group with 2 updates (#994)"
+      },
+      {
+        "sha": "05a05906a37c2901708ef62e4730331377e9a981",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 20 16:13:32 2026 \u002B0200",
+        "message": "chore: Bump the tunit group with 3 updates (#995)"
       }
     ],
     "labels": [
-      "31ec2c16",
       "443165cb",
       "29eca80a",
       "ddd9528a",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "4404211b",
       "76cf6952",
       "be73df5a",
-      "c69bdc71"
+      "c69bdc71",
+      "05a05906"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          322908.5329915365,
           301925.8316080729,
           311981.2226969401,
           319975.9797200521,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           326184.2515055339,
           312643.49459635414,
           305725.0335223858,
-          353954.05228097097
+          353954.05228097097,
+          294355.8103190104
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          335444,
           335444,
           335444,
           335444,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
+          335444,
           335444
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2795256.38984375,
           2341530.219010417,
           2704617.4330729167,
           2937670.0501302085,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2914131.455208333,
           2738318.605769231,
           2560062.257552083,
-          2843068.539322917
+          2843068.539322917,
+          2543407.78515625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4804906,
           4804891,
           4804906,
           4804906,
@@ -1202,6 +1201,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841647,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "31ec2c165a33ab6da17f6ba677e81d8a7ef7bc76",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 3 20:48:51 2026 \u002B0200",
-        "message": "fix: correct URI casing in documentation links (#936)"
-      },
       {
         "sha": "443165cb709564354d1dd7bc35ea0f60dc6fb7d7",
         "author": "dependabot[bot]",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:16 2026 \u002B0200",
         "message": "chore: Bump the mstest group with 2 updates (#994)"
+      },
+      {
+        "sha": "05a05906a37c2901708ef62e4730331377e9a981",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 20 16:13:32 2026 \u002B0200",
+        "message": "chore: Bump the tunit group with 3 updates (#995)"
       }
     ],
     "labels": [
-      "31ec2c16",
       "443165cb",
       "29eca80a",
       "ddd9528a",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "4404211b",
       "76cf6952",
       "be73df5a",
-      "c69bdc71"
+      "c69bdc71",
+      "05a05906"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          505.6039227076939,
           501.26384313901264,
           500.64108344486783,
           544.4871906916301,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           527.4903234481811,
           489.31808439890546,
           524.2387333552043,
-          506.16048785618375
+          506.16048785618375,
+          504.3686113993327
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          522.6490805308024,
           487.7186327775319,
           538.0864246232169,
           546.1708667119344,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           526.5757371266683,
           506.4021090825399,
           553.3017815272013,
-          497.3670150121053
+          497.3670150121053,
+          542.1279582659404
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "31ec2c165a33ab6da17f6ba677e81d8a7ef7bc76",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 3 20:48:51 2026 \u002B0200",
-        "message": "fix: correct URI casing in documentation links (#936)"
-      },
-      {
         "sha": "443165cb709564354d1dd7bc35ea0f60dc6fb7d7",
         "author": "dependabot[bot]",
         "date": "Mon May 4 15:19:48 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:16 2026 \u002B0200",
         "message": "chore: Bump the mstest group with 2 updates (#994)"
+      },
+      {
+        "sha": "05a05906a37c2901708ef62e4730331377e9a981",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 20 16:13:32 2026 \u002B0200",
+        "message": "chore: Bump the tunit group with 3 updates (#995)"
       }
     ],
     "labels": [
-      "31ec2c16",
       "443165cb",
       "29eca80a",
       "ddd9528a",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "4404211b",
       "76cf6952",
       "be73df5a",
-      "c69bdc71"
+      "c69bdc71",
+      "05a05906"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          261.298777614321,
           255.44322522481283,
           258.5103355554434,
           273.82608989079796,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           286.9235668500265,
           281.9353145452646,
           280.99974727630615,
-          278.2655808766683
+          278.2655808766683,
+          280.6270829518636
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2250,7 +2250,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
-          808,
+          864,
           864,
           864,
           864,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          272.7409262975057,
           271.2964104016622,
           269.3243320465088,
           280.77064650853475,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           273.4973823865255,
           263.03640667597455,
           269.398565864563,
-          265.0189107577006
+          265.0189107577006,
+          250.30743398666382
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "31ec2c165a33ab6da17f6ba677e81d8a7ef7bc76",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 3 20:48:51 2026 \u002B0200",
-        "message": "fix: correct URI casing in documentation links (#936)"
-      },
-      {
         "sha": "443165cb709564354d1dd7bc35ea0f60dc6fb7d7",
         "author": "dependabot[bot]",
         "date": "Mon May 4 15:19:48 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:16 2026 \u002B0200",
         "message": "chore: Bump the mstest group with 2 updates (#994)"
+      },
+      {
+        "sha": "05a05906a37c2901708ef62e4730331377e9a981",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 20 16:13:32 2026 \u002B0200",
+        "message": "chore: Bump the tunit group with 3 updates (#995)"
       }
     ],
     "labels": [
-      "31ec2c16",
       "443165cb",
       "29eca80a",
       "ddd9528a",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "4404211b",
       "76cf6952",
       "be73df5a",
-      "c69bdc71"
+      "c69bdc71",
+      "05a05906"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          484.41091543833414,
           494.9349738756816,
           496.84803167978924,
           528.2129118783133,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           501.55909046759973,
           492.769399370466,
           498.28256839116415,
-          538.090622584025
+          538.090622584025,
+          519.445053918021
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1247.1319697062174,
           1341.947005589803,
           1309.8175061543782,
           1345.0313563028972,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1388.2218990325928,
           1273.9693211873373,
           1339.9412716456823,
-          1377.729123878479
+          1377.729123878479,
+          1255.2289052690778
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "31ec2c165a33ab6da17f6ba677e81d8a7ef7bc76",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 3 20:48:51 2026 \u002B0200",
-        "message": "fix: correct URI casing in documentation links (#936)"
-      },
-      {
         "sha": "443165cb709564354d1dd7bc35ea0f60dc6fb7d7",
         "author": "dependabot[bot]",
         "date": "Mon May 4 15:19:48 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:16 2026 \u002B0200",
         "message": "chore: Bump the mstest group with 2 updates (#994)"
+      },
+      {
+        "sha": "05a05906a37c2901708ef62e4730331377e9a981",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 20 16:13:32 2026 \u002B0200",
+        "message": "chore: Bump the tunit group with 3 updates (#995)"
       }
     ],
     "labels": [
-      "31ec2c16",
       "443165cb",
       "29eca80a",
       "ddd9528a",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "4404211b",
       "76cf6952",
       "be73df5a",
-      "c69bdc71"
+      "c69bdc71",
+      "05a05906"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1930.993352762858,
           1708.920198694865,
           2010.3406911214192,
           2066.6249555860245,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2049.9512934003556,
           2030.5790064493815,
           2015.482980455671,
-          2032.7376618018518
+          2032.7376618018518,
+          1980.6558148520332
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1369.4476226806642,
           1448.7898471832275,
           1354.2864144189018,
           1423.9157687595912,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1387.4574742998395,
           1389.8721147264753,
           1493.766656112671,
-          1432.0199657167707
+          1432.0199657167707,
+          1425.6334269387382
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "31ec2c165a33ab6da17f6ba677e81d8a7ef7bc76",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 3 20:48:51 2026 \u002B0200",
-        "message": "fix: correct URI casing in documentation links (#936)"
-      },
-      {
         "sha": "443165cb709564354d1dd7bc35ea0f60dc6fb7d7",
         "author": "dependabot[bot]",
         "date": "Mon May 4 15:19:48 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:16 2026 \u002B0200",
         "message": "chore: Bump the mstest group with 2 updates (#994)"
+      },
+      {
+        "sha": "05a05906a37c2901708ef62e4730331377e9a981",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 20 16:13:32 2026 \u002B0200",
+        "message": "chore: Bump the tunit group with 3 updates (#995)"
       }
     ],
     "labels": [
-      "31ec2c16",
       "443165cb",
       "29eca80a",
       "ddd9528a",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "4404211b",
       "76cf6952",
       "be73df5a",
-      "c69bdc71"
+      "c69bdc71",
+      "05a05906"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2597.639559427897,
           2245.071430751256,
           2661.832149212177,
           2669.543800626482,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2721.93341217041,
           2649.0480904212363,
           2681.2109008202187,
-          2642.61529897054
+          2642.61529897054,
+          2554.021547589983
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          93330.00110677084,
           69262.82958984375,
           90789.94447544643,
           92114.36903599331,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           28064.67578125,
           26888.33899143764,
           21290.862158203126,
-          28536.718900408065
+          28536.718900408065,
+          21455.21271870931
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          57481,
           56977,
           57481,
           57481,
@@ -4226,6 +4225,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471,
           33471,
