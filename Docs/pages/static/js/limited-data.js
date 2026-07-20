@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "d830c1d7a942ccc4fe3512b78439aeacf122378b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 3 20:37:47 2026 \u002B0200",
-        "message": "chore: move SonarCloud project to Testably organization (#935)"
-      },
-      {
         "sha": "31ec2c165a33ab6da17f6ba677e81d8a7ef7bc76",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 3 20:48:51 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:02 2026 \u002B0200",
         "message": "chore: Bump actions/setup-dotnet from 5 to 6 (#993)"
+      },
+      {
+        "sha": "c69bdc71685505157843e329076fb043f2ffbdf8",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 20 16:13:16 2026 \u002B0200",
+        "message": "chore: Bump the mstest group with 2 updates (#994)"
       }
     ],
     "labels": [
-      "d830c1d7",
       "31ec2c16",
       "443165cb",
       "29eca80a",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "a431a771",
       "4404211b",
       "76cf6952",
-      "be73df5a"
+      "be73df5a",
+      "c69bdc71"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          272.328241280147,
           269.79958724975586,
           252.4533190727234,
           293.6308441480001,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           254.1256928077111,
           282.11799686295643,
           267.02068818410237,
-          262.0750855377742
+          262.0750855377742,
+          293.3556893030802
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          245.23186742342435,
           269.46816228230796,
           261.65092894236244,
           260.7189357439677,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           247.2462817600795,
           265.8475589071001,
           243.31778945241655,
-          260.1815192858378
+          260.1815192858378,
+          247.1360973578233
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "d830c1d7a942ccc4fe3512b78439aeacf122378b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 3 20:37:47 2026 \u002B0200",
-        "message": "chore: move SonarCloud project to Testably organization (#935)"
-      },
-      {
         "sha": "31ec2c165a33ab6da17f6ba677e81d8a7ef7bc76",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 3 20:48:51 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:02 2026 \u002B0200",
         "message": "chore: Bump actions/setup-dotnet from 5 to 6 (#993)"
+      },
+      {
+        "sha": "c69bdc71685505157843e329076fb043f2ffbdf8",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 20 16:13:16 2026 \u002B0200",
+        "message": "chore: Bump the mstest group with 2 updates (#994)"
       }
     ],
     "labels": [
-      "d830c1d7",
       "31ec2c16",
       "443165cb",
       "29eca80a",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "a431a771",
       "4404211b",
       "76cf6952",
-      "be73df5a"
+      "be73df5a",
+      "c69bdc71"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          284859.67145647324,
           322908.5329915365,
           301925.8316080729,
           311981.2226969401,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           282828.55787760415,
           326184.2515055339,
           312643.49459635414,
-          305725.0335223858
+          305725.0335223858,
+          353954.05228097097
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          335444,
           335444,
           335444,
           335444,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
+          335444,
           335444
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2365733.591796875,
           2795256.38984375,
           2341530.219010417,
           2704617.4330729167,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2421132.736197917,
           2914131.455208333,
           2738318.605769231,
-          2560062.257552083
+          2560062.257552083,
+          2843068.539322917
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4804902,
           4804906,
           4804891,
           4804906,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841647,
           4841651,
           4841651,
-          4841647
+          4841647,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "d830c1d7a942ccc4fe3512b78439aeacf122378b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 3 20:37:47 2026 \u002B0200",
-        "message": "chore: move SonarCloud project to Testably organization (#935)"
-      },
       {
         "sha": "31ec2c165a33ab6da17f6ba677e81d8a7ef7bc76",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:02 2026 \u002B0200",
         "message": "chore: Bump actions/setup-dotnet from 5 to 6 (#993)"
+      },
+      {
+        "sha": "c69bdc71685505157843e329076fb043f2ffbdf8",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 20 16:13:16 2026 \u002B0200",
+        "message": "chore: Bump the mstest group with 2 updates (#994)"
       }
     ],
     "labels": [
-      "d830c1d7",
       "31ec2c16",
       "443165cb",
       "29eca80a",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "a431a771",
       "4404211b",
       "76cf6952",
-      "be73df5a"
+      "be73df5a",
+      "c69bdc71"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          480.7665318761553,
           505.6039227076939,
           501.26384313901264,
           500.64108344486783,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           470.8345993848947,
           527.4903234481811,
           489.31808439890546,
-          524.2387333552043
+          524.2387333552043,
+          506.16048785618375
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          481.95388011932374,
           522.6490805308024,
           487.7186327775319,
           538.0864246232169,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           493.87994399437537,
           526.5757371266683,
           506.4021090825399,
-          553.3017815272013
+          553.3017815272013,
+          497.3670150121053
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "d830c1d7a942ccc4fe3512b78439aeacf122378b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 3 20:37:47 2026 \u002B0200",
-        "message": "chore: move SonarCloud project to Testably organization (#935)"
-      },
-      {
         "sha": "31ec2c165a33ab6da17f6ba677e81d8a7ef7bc76",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 3 20:48:51 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:02 2026 \u002B0200",
         "message": "chore: Bump actions/setup-dotnet from 5 to 6 (#993)"
+      },
+      {
+        "sha": "c69bdc71685505157843e329076fb043f2ffbdf8",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 20 16:13:16 2026 \u002B0200",
+        "message": "chore: Bump the mstest group with 2 updates (#994)"
       }
     ],
     "labels": [
-      "d830c1d7",
       "31ec2c16",
       "443165cb",
       "29eca80a",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "a431a771",
       "4404211b",
       "76cf6952",
-      "be73df5a"
+      "be73df5a",
+      "c69bdc71"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          244.0580334322793,
           261.298777614321,
           255.44322522481283,
           258.5103355554434,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           262.61892363003324,
           286.9235668500265,
           281.9353145452646,
-          280.99974727630615
+          280.99974727630615,
+          278.2655808766683
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2251,7 +2251,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
-          808,
+          864,
           864,
           864,
           864,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          243.62761691411336,
           272.7409262975057,
           271.2964104016622,
           269.3243320465088,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           246.32795023918152,
           273.4973823865255,
           263.03640667597455,
-          269.398565864563
+          269.398565864563,
+          265.0189107577006
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "d830c1d7a942ccc4fe3512b78439aeacf122378b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 3 20:37:47 2026 \u002B0200",
-        "message": "chore: move SonarCloud project to Testably organization (#935)"
-      },
-      {
         "sha": "31ec2c165a33ab6da17f6ba677e81d8a7ef7bc76",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 3 20:48:51 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:02 2026 \u002B0200",
         "message": "chore: Bump actions/setup-dotnet from 5 to 6 (#993)"
+      },
+      {
+        "sha": "c69bdc71685505157843e329076fb043f2ffbdf8",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 20 16:13:16 2026 \u002B0200",
+        "message": "chore: Bump the mstest group with 2 updates (#994)"
       }
     ],
     "labels": [
-      "d830c1d7",
       "31ec2c16",
       "443165cb",
       "29eca80a",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "a431a771",
       "4404211b",
       "76cf6952",
-      "be73df5a"
+      "be73df5a",
+      "c69bdc71"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          466.98622366098255,
           484.41091543833414,
           494.9349738756816,
           496.84803167978924,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           473.13833872477215,
           501.55909046759973,
           492.769399370466,
-          498.28256839116415
+          498.28256839116415,
+          538.090622584025
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1179.6568423679896,
           1247.1319697062174,
           1341.947005589803,
           1309.8175061543782,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1139.6234017780848,
           1388.2218990325928,
           1273.9693211873373,
-          1339.9412716456823
+          1339.9412716456823,
+          1377.729123878479
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "d830c1d7a942ccc4fe3512b78439aeacf122378b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 3 20:37:47 2026 \u002B0200",
-        "message": "chore: move SonarCloud project to Testably organization (#935)"
-      },
-      {
         "sha": "31ec2c165a33ab6da17f6ba677e81d8a7ef7bc76",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 3 20:48:51 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:02 2026 \u002B0200",
         "message": "chore: Bump actions/setup-dotnet from 5 to 6 (#993)"
+      },
+      {
+        "sha": "c69bdc71685505157843e329076fb043f2ffbdf8",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 20 16:13:16 2026 \u002B0200",
+        "message": "chore: Bump the mstest group with 2 updates (#994)"
       }
     ],
     "labels": [
-      "d830c1d7",
       "31ec2c16",
       "443165cb",
       "29eca80a",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "a431a771",
       "4404211b",
       "76cf6952",
-      "be73df5a"
+      "be73df5a",
+      "c69bdc71"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1947.0963312784831,
           1930.993352762858,
           1708.920198694865,
           2010.3406911214192,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1896.8186955085168,
           2049.9512934003556,
           2030.5790064493815,
-          2015.482980455671
+          2015.482980455671,
+          2032.7376618018518
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1272.6552062715803,
           1369.4476226806642,
           1448.7898471832275,
           1354.2864144189018,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1314.5717296600342,
           1387.4574742998395,
           1389.8721147264753,
-          1493.766656112671
+          1493.766656112671,
+          1432.0199657167707
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "d830c1d7a942ccc4fe3512b78439aeacf122378b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 3 20:37:47 2026 \u002B0200",
-        "message": "chore: move SonarCloud project to Testably organization (#935)"
-      },
-      {
         "sha": "31ec2c165a33ab6da17f6ba677e81d8a7ef7bc76",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 3 20:48:51 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:02 2026 \u002B0200",
         "message": "chore: Bump actions/setup-dotnet from 5 to 6 (#993)"
+      },
+      {
+        "sha": "c69bdc71685505157843e329076fb043f2ffbdf8",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 20 16:13:16 2026 \u002B0200",
+        "message": "chore: Bump the mstest group with 2 updates (#994)"
       }
     ],
     "labels": [
-      "d830c1d7",
       "31ec2c16",
       "443165cb",
       "29eca80a",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "a431a771",
       "4404211b",
       "76cf6952",
-      "be73df5a"
+      "be73df5a",
+      "c69bdc71"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2473.7866023381553,
           2597.639559427897,
           2245.071430751256,
           2661.832149212177,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2467.304022380284,
           2721.93341217041,
           2649.0480904212363,
-          2681.2109008202187
+          2681.2109008202187,
+          2642.61529897054
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          60600.19071451823,
           93330.00110677084,
           69262.82958984375,
           90789.94447544643,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           19844.512142944335,
           28064.67578125,
           26888.33899143764,
-          21290.862158203126
+          21290.862158203126,
+          28536.718900408065
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          56986,
           57481,
           56977,
           57481,
@@ -4227,6 +4226,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471,
           33471,
