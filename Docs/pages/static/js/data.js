@@ -3264,6 +3264,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:02 2026 \u002B0200",
         "message": "chore: Bump actions/setup-dotnet from 5 to 6 (#993)"
+      },
+      {
+        "sha": "c69bdc71685505157843e329076fb043f2ffbdf8",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 20 16:13:16 2026 \u002B0200",
+        "message": "chore: Bump the mstest group with 2 updates (#994)"
       }
     ],
     "labels": [
@@ -3810,7 +3816,8 @@ window.BENCHMARK_DATA = {
       "a431a771",
       "4404211b",
       "76cf6952",
-      "be73df5a"
+      "be73df5a",
+      "c69bdc71"
     ],
     "datasets": [
       {
@@ -4360,7 +4367,8 @@ window.BENCHMARK_DATA = {
           254.1256928077111,
           282.11799686295643,
           267.02068818410237,
-          262.0750855377742
+          262.0750855377742,
+          293.3556893030802
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4833,6 +4841,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5473,7 +5482,8 @@ window.BENCHMARK_DATA = {
           247.2462817600795,
           265.8475589071001,
           243.31778945241655,
-          260.1815192858378
+          260.1815192858378,
+          247.1360973578233
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5666,6 +5676,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -8844,6 +8855,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:02 2026 \u002B0200",
         "message": "chore: Bump actions/setup-dotnet from 5 to 6 (#993)"
+      },
+      {
+        "sha": "c69bdc71685505157843e329076fb043f2ffbdf8",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 20 16:13:16 2026 \u002B0200",
+        "message": "chore: Bump the mstest group with 2 updates (#994)"
       }
     ],
     "labels": [
@@ -9313,7 +9330,8 @@ window.BENCHMARK_DATA = {
       "a431a771",
       "4404211b",
       "76cf6952",
-      "be73df5a"
+      "be73df5a",
+      "c69bdc71"
     ],
     "datasets": [
       {
@@ -9786,7 +9804,8 @@ window.BENCHMARK_DATA = {
           282828.55787760415,
           326184.2515055339,
           312643.49459635414,
-          305725.0335223858
+          305725.0335223858,
+          353954.05228097097
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10233,6 +10252,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335442,
+          335444,
           335444,
           335444,
           335444,
@@ -10745,7 +10765,8 @@ window.BENCHMARK_DATA = {
           2421132.736197917,
           2914131.455208333,
           2738318.605769231,
-          2560062.257552083
+          2560062.257552083,
+          2843068.539322917
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11223,7 +11244,8 @@ window.BENCHMARK_DATA = {
           4841647,
           4841651,
           4841651,
-          4841647
+          4841647,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14501,6 +14523,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:02 2026 \u002B0200",
         "message": "chore: Bump actions/setup-dotnet from 5 to 6 (#993)"
+      },
+      {
+        "sha": "c69bdc71685505157843e329076fb043f2ffbdf8",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 20 16:13:16 2026 \u002B0200",
+        "message": "chore: Bump the mstest group with 2 updates (#994)"
       }
     ],
     "labels": [
@@ -15047,7 +15075,8 @@ window.BENCHMARK_DATA = {
       "a431a771",
       "4404211b",
       "76cf6952",
-      "be73df5a"
+      "be73df5a",
+      "c69bdc71"
     ],
     "datasets": [
       {
@@ -15597,7 +15626,8 @@ window.BENCHMARK_DATA = {
           470.8345993848947,
           527.4903234481811,
           489.31808439890546,
-          524.2387333552043
+          524.2387333552043,
+          506.16048785618375
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16070,6 +16100,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -16710,7 +16741,8 @@ window.BENCHMARK_DATA = {
           493.87994399437537,
           526.5757371266683,
           506.4021090825399,
-          553.3017815272013
+          553.3017815272013,
+          497.3670150121053
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16903,6 +16935,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -20543,6 +20576,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:02 2026 \u002B0200",
         "message": "chore: Bump actions/setup-dotnet from 5 to 6 (#993)"
+      },
+      {
+        "sha": "c69bdc71685505157843e329076fb043f2ffbdf8",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 20 16:13:16 2026 \u002B0200",
+        "message": "chore: Bump the mstest group with 2 updates (#994)"
       }
     ],
     "labels": [
@@ -21089,7 +21128,8 @@ window.BENCHMARK_DATA = {
       "a431a771",
       "4404211b",
       "76cf6952",
-      "be73df5a"
+      "be73df5a",
+      "c69bdc71"
     ],
     "datasets": [
       {
@@ -21639,7 +21679,8 @@ window.BENCHMARK_DATA = {
           262.61892363003324,
           286.9235668500265,
           281.9353145452646,
-          280.99974727630615
+          280.99974727630615,
+          278.2655808766683
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22153,6 +22194,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -22752,7 +22794,8 @@ window.BENCHMARK_DATA = {
           246.32795023918152,
           273.4973823865255,
           263.03640667597455,
-          269.398565864563
+          269.398565864563,
+          265.0189107577006
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22945,6 +22988,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -26585,6 +26629,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:02 2026 \u002B0200",
         "message": "chore: Bump actions/setup-dotnet from 5 to 6 (#993)"
+      },
+      {
+        "sha": "c69bdc71685505157843e329076fb043f2ffbdf8",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 20 16:13:16 2026 \u002B0200",
+        "message": "chore: Bump the mstest group with 2 updates (#994)"
       }
     ],
     "labels": [
@@ -27131,7 +27181,8 @@ window.BENCHMARK_DATA = {
       "a431a771",
       "4404211b",
       "76cf6952",
-      "be73df5a"
+      "be73df5a",
+      "c69bdc71"
     ],
     "datasets": [
       {
@@ -27681,7 +27732,8 @@ window.BENCHMARK_DATA = {
           473.13833872477215,
           501.55909046759973,
           492.769399370466,
-          498.28256839116415
+          498.28256839116415,
+          538.090622584025
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28154,6 +28206,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -28794,7 +28847,8 @@ window.BENCHMARK_DATA = {
           1139.6234017780848,
           1388.2218990325928,
           1273.9693211873373,
-          1339.9412716456823
+          1339.9412716456823,
+          1377.729123878479
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29223,6 +29277,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -32627,6 +32682,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:02 2026 \u002B0200",
         "message": "chore: Bump actions/setup-dotnet from 5 to 6 (#993)"
+      },
+      {
+        "sha": "c69bdc71685505157843e329076fb043f2ffbdf8",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 20 16:13:16 2026 \u002B0200",
+        "message": "chore: Bump the mstest group with 2 updates (#994)"
       }
     ],
     "labels": [
@@ -33173,7 +33234,8 @@ window.BENCHMARK_DATA = {
       "a431a771",
       "4404211b",
       "76cf6952",
-      "be73df5a"
+      "be73df5a",
+      "c69bdc71"
     ],
     "datasets": [
       {
@@ -33723,7 +33785,8 @@ window.BENCHMARK_DATA = {
           1896.8186955085168,
           2049.9512934003556,
           2030.5790064493815,
-          2015.482980455671
+          2015.482980455671,
+          2032.7376618018518
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34196,6 +34259,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -34836,7 +34900,8 @@ window.BENCHMARK_DATA = {
           1314.5717296600342,
           1387.4574742998395,
           1389.8721147264753,
-          1493.766656112671
+          1493.766656112671,
+          1432.0199657167707
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35029,6 +35094,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -38669,6 +38735,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:02 2026 \u002B0200",
         "message": "chore: Bump actions/setup-dotnet from 5 to 6 (#993)"
+      },
+      {
+        "sha": "c69bdc71685505157843e329076fb043f2ffbdf8",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 20 16:13:16 2026 \u002B0200",
+        "message": "chore: Bump the mstest group with 2 updates (#994)"
       }
     ],
     "labels": [
@@ -39215,7 +39287,8 @@ window.BENCHMARK_DATA = {
       "a431a771",
       "4404211b",
       "76cf6952",
-      "be73df5a"
+      "be73df5a",
+      "c69bdc71"
     ],
     "datasets": [
       {
@@ -39765,7 +39838,8 @@ window.BENCHMARK_DATA = {
           2467.304022380284,
           2721.93341217041,
           2649.0480904212363,
-          2681.2109008202187
+          2681.2109008202187,
+          2642.61529897054
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -40238,6 +40312,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -40878,7 +40953,8 @@ window.BENCHMARK_DATA = {
           19844.512142944335,
           28064.67578125,
           26888.33899143764,
-          21290.862158203126
+          21290.862158203126,
+          28536.718900408065
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -41418,6 +41494,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471,
           33471,
