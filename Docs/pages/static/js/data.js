@@ -3258,6 +3258,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 13 11:02:36 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 4 updates (#990)"
+      },
+      {
+        "sha": "be73df5aa2faa84dcfa5f8d6efb4ba18c3e2120e",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 20 16:13:02 2026 \u002B0200",
+        "message": "chore: Bump actions/setup-dotnet from 5 to 6 (#993)"
       }
     ],
     "labels": [
@@ -3803,7 +3809,8 @@ window.BENCHMARK_DATA = {
       "9a5e940f",
       "a431a771",
       "4404211b",
-      "76cf6952"
+      "76cf6952",
+      "be73df5a"
     ],
     "datasets": [
       {
@@ -4352,7 +4359,8 @@ window.BENCHMARK_DATA = {
           265.5275889805385,
           254.1256928077111,
           282.11799686295643,
-          267.02068818410237
+          267.02068818410237,
+          262.0750855377742
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4825,6 +4833,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5463,7 +5472,8 @@ window.BENCHMARK_DATA = {
           264.8482259750366,
           247.2462817600795,
           265.8475589071001,
-          243.31778945241655
+          243.31778945241655,
+          260.1815192858378
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5656,6 +5666,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -8827,6 +8838,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 13 11:02:36 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 4 updates (#990)"
+      },
+      {
+        "sha": "be73df5aa2faa84dcfa5f8d6efb4ba18c3e2120e",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 20 16:13:02 2026 \u002B0200",
+        "message": "chore: Bump actions/setup-dotnet from 5 to 6 (#993)"
       }
     ],
     "labels": [
@@ -9295,7 +9312,8 @@ window.BENCHMARK_DATA = {
       "9a5e940f",
       "a431a771",
       "4404211b",
-      "76cf6952"
+      "76cf6952",
+      "be73df5a"
     ],
     "datasets": [
       {
@@ -9767,7 +9785,8 @@ window.BENCHMARK_DATA = {
           312988.6269205729,
           282828.55787760415,
           326184.2515055339,
-          312643.49459635414
+          312643.49459635414,
+          305725.0335223858
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10214,6 +10233,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335442,
+          335444,
           335444,
           335444,
           335444,
@@ -10724,7 +10744,8 @@ window.BENCHMARK_DATA = {
           2815038.0403645835,
           2421132.736197917,
           2914131.455208333,
-          2738318.605769231
+          2738318.605769231,
+          2560062.257552083
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11201,7 +11222,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841647,
           4841651,
-          4841651
+          4841651,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14473,6 +14495,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 13 11:02:36 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 4 updates (#990)"
+      },
+      {
+        "sha": "be73df5aa2faa84dcfa5f8d6efb4ba18c3e2120e",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 20 16:13:02 2026 \u002B0200",
+        "message": "chore: Bump actions/setup-dotnet from 5 to 6 (#993)"
       }
     ],
     "labels": [
@@ -15018,7 +15046,8 @@ window.BENCHMARK_DATA = {
       "9a5e940f",
       "a431a771",
       "4404211b",
-      "76cf6952"
+      "76cf6952",
+      "be73df5a"
     ],
     "datasets": [
       {
@@ -15567,7 +15596,8 @@ window.BENCHMARK_DATA = {
           514.7213216781616,
           470.8345993848947,
           527.4903234481811,
-          489.31808439890546
+          489.31808439890546,
+          524.2387333552043
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16040,6 +16070,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -16678,7 +16709,8 @@ window.BENCHMARK_DATA = {
           491.939611026219,
           493.87994399437537,
           526.5757371266683,
-          506.4021090825399
+          506.4021090825399,
+          553.3017815272013
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16871,6 +16903,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -20504,6 +20537,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 13 11:02:36 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 4 updates (#990)"
+      },
+      {
+        "sha": "be73df5aa2faa84dcfa5f8d6efb4ba18c3e2120e",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 20 16:13:02 2026 \u002B0200",
+        "message": "chore: Bump actions/setup-dotnet from 5 to 6 (#993)"
       }
     ],
     "labels": [
@@ -21049,7 +21088,8 @@ window.BENCHMARK_DATA = {
       "9a5e940f",
       "a431a771",
       "4404211b",
-      "76cf6952"
+      "76cf6952",
+      "be73df5a"
     ],
     "datasets": [
       {
@@ -21598,7 +21638,8 @@ window.BENCHMARK_DATA = {
           283.1361319541931,
           262.61892363003324,
           286.9235668500265,
-          281.9353145452646
+          281.9353145452646,
+          280.99974727630615
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22112,6 +22153,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -22709,7 +22751,8 @@ window.BENCHMARK_DATA = {
           258.05092646280923,
           246.32795023918152,
           273.4973823865255,
-          263.03640667597455
+          263.03640667597455,
+          269.398565864563
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22902,6 +22945,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -26535,6 +26579,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 13 11:02:36 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 4 updates (#990)"
+      },
+      {
+        "sha": "be73df5aa2faa84dcfa5f8d6efb4ba18c3e2120e",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 20 16:13:02 2026 \u002B0200",
+        "message": "chore: Bump actions/setup-dotnet from 5 to 6 (#993)"
       }
     ],
     "labels": [
@@ -27080,7 +27130,8 @@ window.BENCHMARK_DATA = {
       "9a5e940f",
       "a431a771",
       "4404211b",
-      "76cf6952"
+      "76cf6952",
+      "be73df5a"
     ],
     "datasets": [
       {
@@ -27629,7 +27680,8 @@ window.BENCHMARK_DATA = {
           483.3902147293091,
           473.13833872477215,
           501.55909046759973,
-          492.769399370466
+          492.769399370466,
+          498.28256839116415
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28102,6 +28154,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -28740,7 +28793,8 @@ window.BENCHMARK_DATA = {
           1195.426530710856,
           1139.6234017780848,
           1388.2218990325928,
-          1273.9693211873373
+          1273.9693211873373,
+          1339.9412716456823
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29169,6 +29223,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -32566,6 +32621,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 13 11:02:36 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 4 updates (#990)"
+      },
+      {
+        "sha": "be73df5aa2faa84dcfa5f8d6efb4ba18c3e2120e",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 20 16:13:02 2026 \u002B0200",
+        "message": "chore: Bump actions/setup-dotnet from 5 to 6 (#993)"
       }
     ],
     "labels": [
@@ -33111,7 +33172,8 @@ window.BENCHMARK_DATA = {
       "9a5e940f",
       "a431a771",
       "4404211b",
-      "76cf6952"
+      "76cf6952",
+      "be73df5a"
     ],
     "datasets": [
       {
@@ -33660,7 +33722,8 @@ window.BENCHMARK_DATA = {
           1942.4335873921711,
           1896.8186955085168,
           2049.9512934003556,
-          2030.5790064493815
+          2030.5790064493815,
+          2015.482980455671
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34133,6 +34196,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -34771,7 +34835,8 @@ window.BENCHMARK_DATA = {
           1459.0090315500895,
           1314.5717296600342,
           1387.4574742998395,
-          1389.8721147264753
+          1389.8721147264753,
+          1493.766656112671
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34964,6 +35029,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -38597,6 +38663,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 13 11:02:36 2026 \u002B0200",
         "message": "chore: Bump the tunit group with 4 updates (#990)"
+      },
+      {
+        "sha": "be73df5aa2faa84dcfa5f8d6efb4ba18c3e2120e",
+        "author": "dependabot[bot]",
+        "date": "Mon Jul 20 16:13:02 2026 \u002B0200",
+        "message": "chore: Bump actions/setup-dotnet from 5 to 6 (#993)"
       }
     ],
     "labels": [
@@ -39142,7 +39214,8 @@ window.BENCHMARK_DATA = {
       "9a5e940f",
       "a431a771",
       "4404211b",
-      "76cf6952"
+      "76cf6952",
+      "be73df5a"
     ],
     "datasets": [
       {
@@ -39691,7 +39764,8 @@ window.BENCHMARK_DATA = {
           2635.852321624756,
           2467.304022380284,
           2721.93341217041,
-          2649.0480904212363
+          2649.0480904212363,
+          2681.2109008202187
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -40164,6 +40238,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -40802,7 +40877,8 @@ window.BENCHMARK_DATA = {
           27497.987331136068,
           19844.512142944335,
           28064.67578125,
-          26888.33899143764
+          26888.33899143764,
+          21290.862158203126
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -41342,6 +41418,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471,
           33471,
