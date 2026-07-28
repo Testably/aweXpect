@@ -3288,6 +3288,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:14:02 2026 \u002B0200",
         "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.1 to 2.3.2 (#997)"
+      },
+      {
+        "sha": "665303713c8888b4a8f6e41ef61ca354e7e7b433",
+        "author": "dependabot[bot]",
+        "date": "Tue Jul 28 22:43:55 2026 \u002B0200",
+        "message": "chore: Bump LibGit2Sharp from 0.31.0 to 0.32.0 (#999)"
       }
     ],
     "labels": [
@@ -3838,7 +3844,8 @@ window.BENCHMARK_DATA = {
       "c69bdc71",
       "05a05906",
       "9ed9eb99",
-      "6852ae85"
+      "6852ae85",
+      "66530371"
     ],
     "datasets": [
       {
@@ -4392,7 +4399,8 @@ window.BENCHMARK_DATA = {
           293.3556893030802,
           251.0237106543321,
           261.29992993672687,
-          280.499692099435
+          280.499692099435,
+          255.48705085118613
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4865,6 +4873,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5513,7 +5522,8 @@ window.BENCHMARK_DATA = {
           247.1360973578233,
           262.84639611611,
           255.45859234673637,
-          248.15291047096252
+          248.15291047096252,
+          254.406210454305
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5706,6 +5716,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -8912,6 +8923,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:14:02 2026 \u002B0200",
         "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.1 to 2.3.2 (#997)"
+      },
+      {
+        "sha": "665303713c8888b4a8f6e41ef61ca354e7e7b433",
+        "author": "dependabot[bot]",
+        "date": "Tue Jul 28 22:43:55 2026 \u002B0200",
+        "message": "chore: Bump LibGit2Sharp from 0.31.0 to 0.32.0 (#999)"
       }
     ],
     "labels": [
@@ -9385,7 +9402,8 @@ window.BENCHMARK_DATA = {
       "c69bdc71",
       "05a05906",
       "9ed9eb99",
-      "6852ae85"
+      "6852ae85",
+      "66530371"
     ],
     "datasets": [
       {
@@ -9862,7 +9880,8 @@ window.BENCHMARK_DATA = {
           353954.05228097097,
           294355.8103190104,
           310771.8503580729,
-          302191.66252790176
+          302191.66252790176,
+          323283.2626604353
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10309,6 +10328,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335442,
+          335444,
           335444,
           335444,
           335444,
@@ -10829,7 +10849,8 @@ window.BENCHMARK_DATA = {
           2843068.539322917,
           2543407.78515625,
           2384567.625,
-          2363770.5853365385
+          2363770.5853365385,
+          2800057.7682291665
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11311,7 +11332,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841647,
-          4841647
+          4841647,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14613,6 +14635,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:14:02 2026 \u002B0200",
         "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.1 to 2.3.2 (#997)"
+      },
+      {
+        "sha": "665303713c8888b4a8f6e41ef61ca354e7e7b433",
+        "author": "dependabot[bot]",
+        "date": "Tue Jul 28 22:43:55 2026 \u002B0200",
+        "message": "chore: Bump LibGit2Sharp from 0.31.0 to 0.32.0 (#999)"
       }
     ],
     "labels": [
@@ -15163,7 +15191,8 @@ window.BENCHMARK_DATA = {
       "c69bdc71",
       "05a05906",
       "9ed9eb99",
-      "6852ae85"
+      "6852ae85",
+      "66530371"
     ],
     "datasets": [
       {
@@ -15717,7 +15746,8 @@ window.BENCHMARK_DATA = {
           506.16048785618375,
           504.3686113993327,
           520.5315689086914,
-          492.0809488296509
+          492.0809488296509,
+          523.8340864817302
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16190,6 +16220,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -16838,7 +16869,8 @@ window.BENCHMARK_DATA = {
           497.3670150121053,
           542.1279582659404,
           513.0179195721944,
-          485.3975423812866
+          485.3975423812866,
+          501.37619635264076
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17031,6 +17063,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -20699,6 +20732,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:14:02 2026 \u002B0200",
         "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.1 to 2.3.2 (#997)"
+      },
+      {
+        "sha": "665303713c8888b4a8f6e41ef61ca354e7e7b433",
+        "author": "dependabot[bot]",
+        "date": "Tue Jul 28 22:43:55 2026 \u002B0200",
+        "message": "chore: Bump LibGit2Sharp from 0.31.0 to 0.32.0 (#999)"
       }
     ],
     "labels": [
@@ -21249,7 +21288,8 @@ window.BENCHMARK_DATA = {
       "c69bdc71",
       "05a05906",
       "9ed9eb99",
-      "6852ae85"
+      "6852ae85",
+      "66530371"
     ],
     "datasets": [
       {
@@ -21803,7 +21843,8 @@ window.BENCHMARK_DATA = {
           278.2655808766683,
           280.6270829518636,
           278.8900069236755,
-          263.2455927644457
+          263.2455927644457,
+          292.6164258003235
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22317,6 +22358,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -22924,7 +22966,8 @@ window.BENCHMARK_DATA = {
           265.0189107577006,
           250.30743398666382,
           249.70486201558793,
-          244.24100610188074
+          244.24100610188074,
+          263.79900544484457
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -23117,6 +23160,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -26785,6 +26829,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:14:02 2026 \u002B0200",
         "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.1 to 2.3.2 (#997)"
+      },
+      {
+        "sha": "665303713c8888b4a8f6e41ef61ca354e7e7b433",
+        "author": "dependabot[bot]",
+        "date": "Tue Jul 28 22:43:55 2026 \u002B0200",
+        "message": "chore: Bump LibGit2Sharp from 0.31.0 to 0.32.0 (#999)"
       }
     ],
     "labels": [
@@ -27335,7 +27385,8 @@ window.BENCHMARK_DATA = {
       "c69bdc71",
       "05a05906",
       "9ed9eb99",
-      "6852ae85"
+      "6852ae85",
+      "66530371"
     ],
     "datasets": [
       {
@@ -27889,7 +27940,8 @@ window.BENCHMARK_DATA = {
           538.090622584025,
           519.445053918021,
           491.6327314376831,
-          475.70042683283486
+          475.70042683283486,
+          497.8442200342814
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28362,6 +28414,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -29010,7 +29063,8 @@ window.BENCHMARK_DATA = {
           1377.729123878479,
           1255.2289052690778,
           1253.2510492960612,
-          1165.2784207207817
+          1165.2784207207817,
+          1271.0447240193685
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29439,6 +29493,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -32871,6 +32926,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:14:02 2026 \u002B0200",
         "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.1 to 2.3.2 (#997)"
+      },
+      {
+        "sha": "665303713c8888b4a8f6e41ef61ca354e7e7b433",
+        "author": "dependabot[bot]",
+        "date": "Tue Jul 28 22:43:55 2026 \u002B0200",
+        "message": "chore: Bump LibGit2Sharp from 0.31.0 to 0.32.0 (#999)"
       }
     ],
     "labels": [
@@ -33421,7 +33482,8 @@ window.BENCHMARK_DATA = {
       "c69bdc71",
       "05a05906",
       "9ed9eb99",
-      "6852ae85"
+      "6852ae85",
+      "66530371"
     ],
     "datasets": [
       {
@@ -33975,7 +34037,8 @@ window.BENCHMARK_DATA = {
           2032.7376618018518,
           1980.6558148520332,
           1940.3627637227376,
-          1945.322928873698
+          1945.322928873698,
+          2016.0552400861468
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34448,6 +34511,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -35096,7 +35160,8 @@ window.BENCHMARK_DATA = {
           1432.0199657167707,
           1425.6334269387382,
           1427.4992933273315,
-          1313.703686441694
+          1313.703686441694,
+          1432.1969587961833
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35289,6 +35354,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -38957,6 +39023,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:14:02 2026 \u002B0200",
         "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.1 to 2.3.2 (#997)"
+      },
+      {
+        "sha": "665303713c8888b4a8f6e41ef61ca354e7e7b433",
+        "author": "dependabot[bot]",
+        "date": "Tue Jul 28 22:43:55 2026 \u002B0200",
+        "message": "chore: Bump LibGit2Sharp from 0.31.0 to 0.32.0 (#999)"
       }
     ],
     "labels": [
@@ -39507,7 +39579,8 @@ window.BENCHMARK_DATA = {
       "c69bdc71",
       "05a05906",
       "9ed9eb99",
-      "6852ae85"
+      "6852ae85",
+      "66530371"
     ],
     "datasets": [
       {
@@ -40061,7 +40134,8 @@ window.BENCHMARK_DATA = {
           2642.61529897054,
           2554.021547589983,
           2480.318051746913,
-          2487.963728841146
+          2487.963728841146,
+          2625.639323679606
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -40534,6 +40608,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -41182,7 +41257,8 @@ window.BENCHMARK_DATA = {
           28536.718900408065,
           21455.21271870931,
           20192.224662272136,
-          20807.0376953125
+          20807.0376953125,
+          27280.6028376988
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -41722,6 +41798,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471,
           33471,
