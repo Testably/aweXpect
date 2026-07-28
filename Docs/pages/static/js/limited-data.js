@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "ddd9528a8ebec012b6a465bbd0ebd4c1e4c9c0fc",
-        "author": "dependabot[bot]",
-        "date": "Mon May 4 15:20:03 2026 \u002B0200",
-        "message": "chore: Bump peter-evans/repository-dispatch from 3 to 4 (#937)"
-      },
-      {
         "sha": "6a4e11a2e47a91ce0e37539cca62667650303467",
         "author": "Valentin Breu\u00DF",
         "date": "Mon May 4 17:40:15 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:14:02 2026 \u002B0200",
         "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.1 to 2.3.2 (#997)"
+      },
+      {
+        "sha": "665303713c8888b4a8f6e41ef61ca354e7e7b433",
+        "author": "dependabot[bot]",
+        "date": "Tue Jul 28 22:43:55 2026 \u002B0200",
+        "message": "chore: Bump LibGit2Sharp from 0.31.0 to 0.32.0 (#999)"
       }
     ],
     "labels": [
-      "ddd9528a",
       "6a4e11a2",
       "44a5e726",
       "6c190736",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "c69bdc71",
       "05a05906",
       "9ed9eb99",
-      "6852ae85"
+      "6852ae85",
+      "66530371"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          275.110637029012,
           264.114764213562,
           291.55724267959596,
           255.5263029416402,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           293.3556893030802,
           251.0237106543321,
           261.29992993672687,
-          280.499692099435
+          280.499692099435,
+          255.48705085118613
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          263.8557269732157,
           238.03739060674394,
           244.9257495743888,
           237.95945050166205,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           247.1360973578233,
           262.84639611611,
           255.45859234673637,
-          248.15291047096252
+          248.15291047096252,
+          254.406210454305
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "ddd9528a8ebec012b6a465bbd0ebd4c1e4c9c0fc",
-        "author": "dependabot[bot]",
-        "date": "Mon May 4 15:20:03 2026 \u002B0200",
-        "message": "chore: Bump peter-evans/repository-dispatch from 3 to 4 (#937)"
-      },
-      {
         "sha": "6a4e11a2e47a91ce0e37539cca62667650303467",
         "author": "Valentin Breu\u00DF",
         "date": "Mon May 4 17:40:15 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:14:02 2026 \u002B0200",
         "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.1 to 2.3.2 (#997)"
+      },
+      {
+        "sha": "665303713c8888b4a8f6e41ef61ca354e7e7b433",
+        "author": "dependabot[bot]",
+        "date": "Tue Jul 28 22:43:55 2026 \u002B0200",
+        "message": "chore: Bump LibGit2Sharp from 0.31.0 to 0.32.0 (#999)"
       }
     ],
     "labels": [
-      "ddd9528a",
       "6a4e11a2",
       "44a5e726",
       "6c190736",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "c69bdc71",
       "05a05906",
       "9ed9eb99",
-      "6852ae85"
+      "6852ae85",
+      "66530371"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          319975.9797200521,
           302834.5935546875,
           308668.54440104164,
           305138.9784179687,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           353954.05228097097,
           294355.8103190104,
           310771.8503580729,
-          302191.66252790176
+          302191.66252790176,
+          323283.2626604353
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1040,8 +1040,8 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
+          335444,
           335444,
           335444,
           335444,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2937670.0501302085,
           2580748.37265625,
           2763431.616629464,
           2621686.4469866073,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2843068.539322917,
           2543407.78515625,
           2384567.625,
-          2363770.5853365385
+          2363770.5853365385,
+          2800057.7682291665
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4804906,
           4804906,
           4804906,
           4804906,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841647,
-          4841647
+          4841647,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "ddd9528a8ebec012b6a465bbd0ebd4c1e4c9c0fc",
-        "author": "dependabot[bot]",
-        "date": "Mon May 4 15:20:03 2026 \u002B0200",
-        "message": "chore: Bump peter-evans/repository-dispatch from 3 to 4 (#937)"
-      },
       {
         "sha": "6a4e11a2e47a91ce0e37539cca62667650303467",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:14:02 2026 \u002B0200",
         "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.1 to 2.3.2 (#997)"
+      },
+      {
+        "sha": "665303713c8888b4a8f6e41ef61ca354e7e7b433",
+        "author": "dependabot[bot]",
+        "date": "Tue Jul 28 22:43:55 2026 \u002B0200",
+        "message": "chore: Bump LibGit2Sharp from 0.31.0 to 0.32.0 (#999)"
       }
     ],
     "labels": [
-      "ddd9528a",
       "6a4e11a2",
       "44a5e726",
       "6c190736",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "c69bdc71",
       "05a05906",
       "9ed9eb99",
-      "6852ae85"
+      "6852ae85",
+      "66530371"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          544.4871906916301,
           485.213325881958,
           515.0589843896719,
           464.7895871162415,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           506.16048785618375,
           504.3686113993327,
           520.5315689086914,
-          492.0809488296509
+          492.0809488296509,
+          523.8340864817302
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          546.1708667119344,
           519.3114194869995,
           509.6996270588466,
           474.2149072647095,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           497.3670150121053,
           542.1279582659404,
           513.0179195721944,
-          485.3975423812866
+          485.3975423812866,
+          501.37619635264076
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "ddd9528a8ebec012b6a465bbd0ebd4c1e4c9c0fc",
-        "author": "dependabot[bot]",
-        "date": "Mon May 4 15:20:03 2026 \u002B0200",
-        "message": "chore: Bump peter-evans/repository-dispatch from 3 to 4 (#937)"
-      },
-      {
         "sha": "6a4e11a2e47a91ce0e37539cca62667650303467",
         "author": "Valentin Breu\u00DF",
         "date": "Mon May 4 17:40:15 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:14:02 2026 \u002B0200",
         "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.1 to 2.3.2 (#997)"
+      },
+      {
+        "sha": "665303713c8888b4a8f6e41ef61ca354e7e7b433",
+        "author": "dependabot[bot]",
+        "date": "Tue Jul 28 22:43:55 2026 \u002B0200",
+        "message": "chore: Bump LibGit2Sharp from 0.31.0 to 0.32.0 (#999)"
       }
     ],
     "labels": [
-      "ddd9528a",
       "6a4e11a2",
       "44a5e726",
       "6c190736",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "c69bdc71",
       "05a05906",
       "9ed9eb99",
-      "6852ae85"
+      "6852ae85",
+      "66530371"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          273.82608989079796,
           238.74584555625916,
           260.87515014012655,
           242.59774278004963,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           278.2655808766683,
           280.6270829518636,
           278.8900069236755,
-          263.2455927644457
+          263.2455927644457,
+          292.6164258003235
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2247,7 +2247,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
-          808,
+          864,
           864,
           864,
           864,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          280.77064650853475,
           246.82492923736572,
           268.16616710027057,
           254.1082486152649,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           265.0189107577006,
           250.30743398666382,
           249.70486201558793,
-          244.24100610188074
+          244.24100610188074,
+          263.79900544484457
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "ddd9528a8ebec012b6a465bbd0ebd4c1e4c9c0fc",
-        "author": "dependabot[bot]",
-        "date": "Mon May 4 15:20:03 2026 \u002B0200",
-        "message": "chore: Bump peter-evans/repository-dispatch from 3 to 4 (#937)"
-      },
-      {
         "sha": "6a4e11a2e47a91ce0e37539cca62667650303467",
         "author": "Valentin Breu\u00DF",
         "date": "Mon May 4 17:40:15 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:14:02 2026 \u002B0200",
         "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.1 to 2.3.2 (#997)"
+      },
+      {
+        "sha": "665303713c8888b4a8f6e41ef61ca354e7e7b433",
+        "author": "dependabot[bot]",
+        "date": "Tue Jul 28 22:43:55 2026 \u002B0200",
+        "message": "chore: Bump LibGit2Sharp from 0.31.0 to 0.32.0 (#999)"
       }
     ],
     "labels": [
-      "ddd9528a",
       "6a4e11a2",
       "44a5e726",
       "6c190736",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "c69bdc71",
       "05a05906",
       "9ed9eb99",
-      "6852ae85"
+      "6852ae85",
+      "66530371"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          528.2129118783133,
           472.6876197179159,
           496.8072699819292,
           456.47035996119183,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           538.090622584025,
           519.445053918021,
           491.6327314376831,
-          475.70042683283486
+          475.70042683283486,
+          497.8442200342814
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1345.0313563028972,
           1235.909156926473,
           1356.0351581573486,
           1245.6930731455484,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1377.729123878479,
           1255.2289052690778,
           1253.2510492960612,
-          1165.2784207207817
+          1165.2784207207817,
+          1271.0447240193685
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "ddd9528a8ebec012b6a465bbd0ebd4c1e4c9c0fc",
-        "author": "dependabot[bot]",
-        "date": "Mon May 4 15:20:03 2026 \u002B0200",
-        "message": "chore: Bump peter-evans/repository-dispatch from 3 to 4 (#937)"
-      },
-      {
         "sha": "6a4e11a2e47a91ce0e37539cca62667650303467",
         "author": "Valentin Breu\u00DF",
         "date": "Mon May 4 17:40:15 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:14:02 2026 \u002B0200",
         "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.1 to 2.3.2 (#997)"
+      },
+      {
+        "sha": "665303713c8888b4a8f6e41ef61ca354e7e7b433",
+        "author": "dependabot[bot]",
+        "date": "Tue Jul 28 22:43:55 2026 \u002B0200",
+        "message": "chore: Bump LibGit2Sharp from 0.31.0 to 0.32.0 (#999)"
       }
     ],
     "labels": [
-      "ddd9528a",
       "6a4e11a2",
       "44a5e726",
       "6c190736",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "c69bdc71",
       "05a05906",
       "9ed9eb99",
-      "6852ae85"
+      "6852ae85",
+      "66530371"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2066.6249555860245,
           1959.8867716471354,
           2069.748091016497,
           1880.2078690162073,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2032.7376618018518,
           1980.6558148520332,
           1940.3627637227376,
-          1945.322928873698
+          1945.322928873698,
+          2016.0552400861468
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1423.9157687595912,
           1321.959544999259,
           1409.825442450387,
           1257.122516495841,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1432.0199657167707,
           1425.6334269387382,
           1427.4992933273315,
-          1313.703686441694
+          1313.703686441694,
+          1432.1969587961833
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "ddd9528a8ebec012b6a465bbd0ebd4c1e4c9c0fc",
-        "author": "dependabot[bot]",
-        "date": "Mon May 4 15:20:03 2026 \u002B0200",
-        "message": "chore: Bump peter-evans/repository-dispatch from 3 to 4 (#937)"
-      },
-      {
         "sha": "6a4e11a2e47a91ce0e37539cca62667650303467",
         "author": "Valentin Breu\u00DF",
         "date": "Mon May 4 17:40:15 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:14:02 2026 \u002B0200",
         "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.1 to 2.3.2 (#997)"
+      },
+      {
+        "sha": "665303713c8888b4a8f6e41ef61ca354e7e7b433",
+        "author": "dependabot[bot]",
+        "date": "Tue Jul 28 22:43:55 2026 \u002B0200",
+        "message": "chore: Bump LibGit2Sharp from 0.31.0 to 0.32.0 (#999)"
       }
     ],
     "labels": [
-      "ddd9528a",
       "6a4e11a2",
       "44a5e726",
       "6c190736",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "c69bdc71",
       "05a05906",
       "9ed9eb99",
-      "6852ae85"
+      "6852ae85",
+      "66530371"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2669.543800626482,
           2533.7583590189615,
           2720.7809628804525,
           2512.2336551121302,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2642.61529897054,
           2554.021547589983,
           2480.318051746913,
-          2487.963728841146
+          2487.963728841146,
+          2625.639323679606
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          92114.36903599331,
           90008.21904296875,
           92348.97192382812,
           91880.99539620536,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           28536.718900408065,
           21455.21271870931,
           20192.224662272136,
-          20807.0376953125
+          20807.0376953125,
+          27280.6028376988
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          57481,
           57481,
           57481,
           57481,
@@ -4223,6 +4222,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471,
           33471,
