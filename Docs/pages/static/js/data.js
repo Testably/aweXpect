@@ -3294,6 +3294,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Jul 28 22:43:55 2026 \u002B0200",
         "message": "chore: Bump LibGit2Sharp from 0.31.0 to 0.32.0 (#999)"
+      },
+      {
+        "sha": "8283fcea6eaec136bf0c94927521b33a364f7400",
+        "author": "dependabot[bot]",
+        "date": "Tue Jul 28 22:43:39 2026 \u002B0200",
+        "message": "chore: Bump the tunit group with 2 updates (#998)"
       }
     ],
     "labels": [
@@ -3845,7 +3851,8 @@ window.BENCHMARK_DATA = {
       "05a05906",
       "9ed9eb99",
       "6852ae85",
-      "66530371"
+      "66530371",
+      "8283fcea"
     ],
     "datasets": [
       {
@@ -4400,7 +4407,8 @@ window.BENCHMARK_DATA = {
           251.0237106543321,
           261.29992993672687,
           280.499692099435,
-          255.48705085118613
+          255.48705085118613,
+          251.88145289054285
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4873,6 +4881,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5523,7 +5532,8 @@ window.BENCHMARK_DATA = {
           262.84639611611,
           255.45859234673637,
           248.15291047096252,
-          254.406210454305
+          254.406210454305,
+          244.47806106294905
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5716,6 +5726,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -8929,6 +8940,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Jul 28 22:43:55 2026 \u002B0200",
         "message": "chore: Bump LibGit2Sharp from 0.31.0 to 0.32.0 (#999)"
+      },
+      {
+        "sha": "8283fcea6eaec136bf0c94927521b33a364f7400",
+        "author": "dependabot[bot]",
+        "date": "Tue Jul 28 22:43:39 2026 \u002B0200",
+        "message": "chore: Bump the tunit group with 2 updates (#998)"
       }
     ],
     "labels": [
@@ -9403,7 +9420,8 @@ window.BENCHMARK_DATA = {
       "05a05906",
       "9ed9eb99",
       "6852ae85",
-      "66530371"
+      "66530371",
+      "8283fcea"
     ],
     "datasets": [
       {
@@ -9881,7 +9899,8 @@ window.BENCHMARK_DATA = {
           294355.8103190104,
           310771.8503580729,
           302191.66252790176,
-          323283.2626604353
+          323283.2626604353,
+          302768.747000558
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10328,6 +10347,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335442,
+          335444,
           335444,
           335444,
           335444,
@@ -10850,7 +10870,8 @@ window.BENCHMARK_DATA = {
           2543407.78515625,
           2384567.625,
           2363770.5853365385,
-          2800057.7682291665
+          2800057.7682291665,
+          2636195.4044471155
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11333,6 +11354,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841647,
           4841647,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -14641,6 +14663,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Jul 28 22:43:55 2026 \u002B0200",
         "message": "chore: Bump LibGit2Sharp from 0.31.0 to 0.32.0 (#999)"
+      },
+      {
+        "sha": "8283fcea6eaec136bf0c94927521b33a364f7400",
+        "author": "dependabot[bot]",
+        "date": "Tue Jul 28 22:43:39 2026 \u002B0200",
+        "message": "chore: Bump the tunit group with 2 updates (#998)"
       }
     ],
     "labels": [
@@ -15192,7 +15220,8 @@ window.BENCHMARK_DATA = {
       "05a05906",
       "9ed9eb99",
       "6852ae85",
-      "66530371"
+      "66530371",
+      "8283fcea"
     ],
     "datasets": [
       {
@@ -15747,7 +15776,8 @@ window.BENCHMARK_DATA = {
           504.3686113993327,
           520.5315689086914,
           492.0809488296509,
-          523.8340864817302
+          523.8340864817302,
+          472.30581566492714
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16220,6 +16250,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -16870,7 +16901,8 @@ window.BENCHMARK_DATA = {
           542.1279582659404,
           513.0179195721944,
           485.3975423812866,
-          501.37619635264076
+          501.37619635264076,
+          463.01733786265055
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17063,6 +17095,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -20738,6 +20771,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Jul 28 22:43:55 2026 \u002B0200",
         "message": "chore: Bump LibGit2Sharp from 0.31.0 to 0.32.0 (#999)"
+      },
+      {
+        "sha": "8283fcea6eaec136bf0c94927521b33a364f7400",
+        "author": "dependabot[bot]",
+        "date": "Tue Jul 28 22:43:39 2026 \u002B0200",
+        "message": "chore: Bump the tunit group with 2 updates (#998)"
       }
     ],
     "labels": [
@@ -21289,7 +21328,8 @@ window.BENCHMARK_DATA = {
       "05a05906",
       "9ed9eb99",
       "6852ae85",
-      "66530371"
+      "66530371",
+      "8283fcea"
     ],
     "datasets": [
       {
@@ -21844,7 +21884,8 @@ window.BENCHMARK_DATA = {
           280.6270829518636,
           278.8900069236755,
           263.2455927644457,
-          292.6164258003235
+          292.6164258003235,
+          259.14284918858453
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22358,6 +22399,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -22967,7 +23009,8 @@ window.BENCHMARK_DATA = {
           250.30743398666382,
           249.70486201558793,
           244.24100610188074,
-          263.79900544484457
+          263.79900544484457,
+          239.86527779897054
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -23160,6 +23203,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -26835,6 +26879,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Jul 28 22:43:55 2026 \u002B0200",
         "message": "chore: Bump LibGit2Sharp from 0.31.0 to 0.32.0 (#999)"
+      },
+      {
+        "sha": "8283fcea6eaec136bf0c94927521b33a364f7400",
+        "author": "dependabot[bot]",
+        "date": "Tue Jul 28 22:43:39 2026 \u002B0200",
+        "message": "chore: Bump the tunit group with 2 updates (#998)"
       }
     ],
     "labels": [
@@ -27386,7 +27436,8 @@ window.BENCHMARK_DATA = {
       "05a05906",
       "9ed9eb99",
       "6852ae85",
-      "66530371"
+      "66530371",
+      "8283fcea"
     ],
     "datasets": [
       {
@@ -27941,7 +27992,8 @@ window.BENCHMARK_DATA = {
           519.445053918021,
           491.6327314376831,
           475.70042683283486,
-          497.8442200342814
+          497.8442200342814,
+          443.885150941213
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28414,6 +28466,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -29064,7 +29117,8 @@ window.BENCHMARK_DATA = {
           1255.2289052690778,
           1253.2510492960612,
           1165.2784207207817,
-          1271.0447240193685
+          1271.0447240193685,
+          1188.6415425709315
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29493,6 +29547,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -32932,6 +32987,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Jul 28 22:43:55 2026 \u002B0200",
         "message": "chore: Bump LibGit2Sharp from 0.31.0 to 0.32.0 (#999)"
+      },
+      {
+        "sha": "8283fcea6eaec136bf0c94927521b33a364f7400",
+        "author": "dependabot[bot]",
+        "date": "Tue Jul 28 22:43:39 2026 \u002B0200",
+        "message": "chore: Bump the tunit group with 2 updates (#998)"
       }
     ],
     "labels": [
@@ -33483,7 +33544,8 @@ window.BENCHMARK_DATA = {
       "05a05906",
       "9ed9eb99",
       "6852ae85",
-      "66530371"
+      "66530371",
+      "8283fcea"
     ],
     "datasets": [
       {
@@ -34038,7 +34100,8 @@ window.BENCHMARK_DATA = {
           1980.6558148520332,
           1940.3627637227376,
           1945.322928873698,
-          2016.0552400861468
+          2016.0552400861468,
+          1905.3482880910237
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34511,6 +34574,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -35161,7 +35225,8 @@ window.BENCHMARK_DATA = {
           1425.6334269387382,
           1427.4992933273315,
           1313.703686441694,
-          1432.1969587961833
+          1432.1969587961833,
+          1270.7210006713867
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35354,6 +35419,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -39029,6 +39095,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Jul 28 22:43:55 2026 \u002B0200",
         "message": "chore: Bump LibGit2Sharp from 0.31.0 to 0.32.0 (#999)"
+      },
+      {
+        "sha": "8283fcea6eaec136bf0c94927521b33a364f7400",
+        "author": "dependabot[bot]",
+        "date": "Tue Jul 28 22:43:39 2026 \u002B0200",
+        "message": "chore: Bump the tunit group with 2 updates (#998)"
       }
     ],
     "labels": [
@@ -39580,7 +39652,8 @@ window.BENCHMARK_DATA = {
       "05a05906",
       "9ed9eb99",
       "6852ae85",
-      "66530371"
+      "66530371",
+      "8283fcea"
     ],
     "datasets": [
       {
@@ -40135,7 +40208,8 @@ window.BENCHMARK_DATA = {
           2554.021547589983,
           2480.318051746913,
           2487.963728841146,
-          2625.639323679606
+          2625.639323679606,
+          2503.2055353800456
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -40608,6 +40682,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -41258,7 +41333,8 @@ window.BENCHMARK_DATA = {
           21455.21271870931,
           20192.224662272136,
           20807.0376953125,
-          27280.6028376988
+          27280.6028376988,
+          25860.80059712728
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -41798,6 +41874,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471,
           33471,
