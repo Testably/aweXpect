@@ -3312,6 +3312,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun Aug 16 17:27:34 2026 \u002B0200",
         "message": "chore: Bump the mstest group with 2 updates (#1001)"
+      },
+      {
+        "sha": "efbe5c0acc628f150ac4a76f24b7c0e1a7a987c1",
+        "author": "dependabot[bot]",
+        "date": "Sun Aug 16 17:27:47 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.2 to 2.3.3 (#1003)"
       }
     ],
     "labels": [
@@ -3866,7 +3872,8 @@ window.BENCHMARK_DATA = {
       "66530371",
       "8283fcea",
       "97537941",
-      "37f4afa3"
+      "37f4afa3",
+      "efbe5c0a"
     ],
     "datasets": [
       {
@@ -4424,7 +4431,8 @@ window.BENCHMARK_DATA = {
           255.48705085118613,
           251.88145289054285,
           265.0856841723124,
-          256.0554825919015
+          256.0554825919015,
+          256.2644588470459
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4897,6 +4905,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5553,7 +5562,8 @@ window.BENCHMARK_DATA = {
           254.406210454305,
           244.47806106294905,
           240.2802174250285,
-          248.7102222442627
+          248.7102222442627,
+          238.15933547701155
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5746,6 +5756,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -8980,6 +8991,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun Aug 16 17:27:34 2026 \u002B0200",
         "message": "chore: Bump the mstest group with 2 updates (#1001)"
+      },
+      {
+        "sha": "efbe5c0acc628f150ac4a76f24b7c0e1a7a987c1",
+        "author": "dependabot[bot]",
+        "date": "Sun Aug 16 17:27:47 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.2 to 2.3.3 (#1003)"
       }
     ],
     "labels": [
@@ -9457,7 +9474,8 @@ window.BENCHMARK_DATA = {
       "66530371",
       "8283fcea",
       "97537941",
-      "37f4afa3"
+      "37f4afa3",
+      "efbe5c0a"
     ],
     "datasets": [
       {
@@ -9938,7 +9956,8 @@ window.BENCHMARK_DATA = {
           323283.2626604353,
           302768.747000558,
           319641.47196138825,
-          297547.96955217636
+          297547.96955217636,
+          301459.13895089284
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10385,6 +10404,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335442,
+          335444,
           335444,
           335444,
           335444,
@@ -10913,7 +10933,8 @@ window.BENCHMARK_DATA = {
           2800057.7682291665,
           2636195.4044471155,
           2800566.6703125,
-          2319945.7200520835
+          2319945.7200520835,
+          2689759.6598772323
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11396,6 +11417,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841647,
           4841647,
+          4841651,
           4841651,
           4841651,
           4841651,
@@ -14725,6 +14747,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun Aug 16 17:27:34 2026 \u002B0200",
         "message": "chore: Bump the mstest group with 2 updates (#1001)"
+      },
+      {
+        "sha": "efbe5c0acc628f150ac4a76f24b7c0e1a7a987c1",
+        "author": "dependabot[bot]",
+        "date": "Sun Aug 16 17:27:47 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.2 to 2.3.3 (#1003)"
       }
     ],
     "labels": [
@@ -15279,7 +15307,8 @@ window.BENCHMARK_DATA = {
       "66530371",
       "8283fcea",
       "97537941",
-      "37f4afa3"
+      "37f4afa3",
+      "efbe5c0a"
     ],
     "datasets": [
       {
@@ -15837,7 +15866,8 @@ window.BENCHMARK_DATA = {
           523.8340864817302,
           472.30581566492714,
           513.6521787643433,
-          483.4518507639567
+          483.4518507639567,
+          463.1489292553493
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16310,6 +16340,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -16966,7 +16997,8 @@ window.BENCHMARK_DATA = {
           501.37619635264076,
           463.01733786265055,
           499.82895054136003,
-          489.51873747507733
+          489.51873747507733,
+          485.5276449067252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17159,6 +17191,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -20855,6 +20888,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun Aug 16 17:27:34 2026 \u002B0200",
         "message": "chore: Bump the mstest group with 2 updates (#1001)"
+      },
+      {
+        "sha": "efbe5c0acc628f150ac4a76f24b7c0e1a7a987c1",
+        "author": "dependabot[bot]",
+        "date": "Sun Aug 16 17:27:47 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.2 to 2.3.3 (#1003)"
       }
     ],
     "labels": [
@@ -21409,7 +21448,8 @@ window.BENCHMARK_DATA = {
       "66530371",
       "8283fcea",
       "97537941",
-      "37f4afa3"
+      "37f4afa3",
+      "efbe5c0a"
     ],
     "datasets": [
       {
@@ -21967,7 +22007,8 @@ window.BENCHMARK_DATA = {
           292.6164258003235,
           259.14284918858453,
           265.1438490663256,
-          254.10089457829793
+          254.10089457829793,
+          267.5967062541417
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22481,6 +22522,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -23096,7 +23138,8 @@ window.BENCHMARK_DATA = {
           263.79900544484457,
           239.86527779897054,
           255.93087975184122,
-          265.5314603805542
+          265.5314603805542,
+          241.64932530266898
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -23289,6 +23332,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -26985,6 +27029,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun Aug 16 17:27:34 2026 \u002B0200",
         "message": "chore: Bump the mstest group with 2 updates (#1001)"
+      },
+      {
+        "sha": "efbe5c0acc628f150ac4a76f24b7c0e1a7a987c1",
+        "author": "dependabot[bot]",
+        "date": "Sun Aug 16 17:27:47 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.2 to 2.3.3 (#1003)"
       }
     ],
     "labels": [
@@ -27539,7 +27589,8 @@ window.BENCHMARK_DATA = {
       "66530371",
       "8283fcea",
       "97537941",
-      "37f4afa3"
+      "37f4afa3",
+      "efbe5c0a"
     ],
     "datasets": [
       {
@@ -28097,7 +28148,8 @@ window.BENCHMARK_DATA = {
           497.8442200342814,
           443.885150941213,
           492.81332336153304,
-          491.1146069208781
+          491.1146069208781,
+          469.32736294086163
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28570,6 +28622,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -29226,7 +29279,8 @@ window.BENCHMARK_DATA = {
           1271.0447240193685,
           1188.6415425709315,
           1269.4671895345052,
-          1160.6543505532402
+          1160.6543505532402,
+          1330.9443862915039
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29655,6 +29709,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -33115,6 +33170,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun Aug 16 17:27:34 2026 \u002B0200",
         "message": "chore: Bump the mstest group with 2 updates (#1001)"
+      },
+      {
+        "sha": "efbe5c0acc628f150ac4a76f24b7c0e1a7a987c1",
+        "author": "dependabot[bot]",
+        "date": "Sun Aug 16 17:27:47 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.2 to 2.3.3 (#1003)"
       }
     ],
     "labels": [
@@ -33669,7 +33730,8 @@ window.BENCHMARK_DATA = {
       "66530371",
       "8283fcea",
       "97537941",
-      "37f4afa3"
+      "37f4afa3",
+      "efbe5c0a"
     ],
     "datasets": [
       {
@@ -34227,7 +34289,8 @@ window.BENCHMARK_DATA = {
           2016.0552400861468,
           1905.3482880910237,
           2038.3470326741538,
-          1951.8924947102864
+          1951.8924947102864,
+          1928.834142957415
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34700,6 +34763,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -35356,7 +35420,8 @@ window.BENCHMARK_DATA = {
           1432.1969587961833,
           1270.7210006713867,
           1344.3312196095785,
-          1343.2441444396973
+          1343.2441444396973,
+          1326.3457829793294
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35549,6 +35614,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -39245,6 +39311,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Sun Aug 16 17:27:34 2026 \u002B0200",
         "message": "chore: Bump the mstest group with 2 updates (#1001)"
+      },
+      {
+        "sha": "efbe5c0acc628f150ac4a76f24b7c0e1a7a987c1",
+        "author": "dependabot[bot]",
+        "date": "Sun Aug 16 17:27:47 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.2 to 2.3.3 (#1003)"
       }
     ],
     "labels": [
@@ -39799,7 +39871,8 @@ window.BENCHMARK_DATA = {
       "66530371",
       "8283fcea",
       "97537941",
-      "37f4afa3"
+      "37f4afa3",
+      "efbe5c0a"
     ],
     "datasets": [
       {
@@ -40357,7 +40430,8 @@ window.BENCHMARK_DATA = {
           2625.639323679606,
           2503.2055353800456,
           2697.9083592732745,
-          2531.6891387939454
+          2531.6891387939454,
+          2607.2419998168943
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -40830,6 +40904,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -41486,7 +41561,8 @@ window.BENCHMARK_DATA = {
           27280.6028376988,
           25860.80059712728,
           28346.396923828124,
-          20057.27074105399
+          20057.27074105399,
+          27195.259106953938
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -42026,6 +42102,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471,
           33471,
