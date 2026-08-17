@@ -3330,6 +3330,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Aug 17 12:51:00 2026 \u002B0200",
         "message": "chore: Bump the xunit group with 3 updates (#1006)"
+      },
+      {
+        "sha": "956eadd61443687e65db1ea1137ff0a5ba3e0681",
+        "author": "dependabot[bot]",
+        "date": "Mon Aug 17 12:51:10 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.9.0 to 18.10.0 (#1008)"
       }
     ],
     "labels": [
@@ -3887,7 +3893,8 @@ window.BENCHMARK_DATA = {
       "37f4afa3",
       "efbe5c0a",
       "a2cd8a35",
-      "d6d2b3d2"
+      "d6d2b3d2",
+      "956eadd6"
     ],
     "datasets": [
       {
@@ -4448,7 +4455,8 @@ window.BENCHMARK_DATA = {
           256.0554825919015,
           256.2644588470459,
           254.05494383403234,
-          251.71505771364485
+          251.71505771364485,
+          246.84150862693787
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4921,6 +4929,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5583,7 +5592,8 @@ window.BENCHMARK_DATA = {
           248.7102222442627,
           238.15933547701155,
           245.09986426280096,
-          266.93660954066684
+          266.93660954066684,
+          249.61967541621283
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5776,6 +5786,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -9031,6 +9042,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Aug 17 12:51:00 2026 \u002B0200",
         "message": "chore: Bump the xunit group with 3 updates (#1006)"
+      },
+      {
+        "sha": "956eadd61443687e65db1ea1137ff0a5ba3e0681",
+        "author": "dependabot[bot]",
+        "date": "Mon Aug 17 12:51:10 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.9.0 to 18.10.0 (#1008)"
       }
     ],
     "labels": [
@@ -9511,7 +9528,8 @@ window.BENCHMARK_DATA = {
       "37f4afa3",
       "efbe5c0a",
       "a2cd8a35",
-      "d6d2b3d2"
+      "d6d2b3d2",
+      "956eadd6"
     ],
     "datasets": [
       {
@@ -9995,7 +10013,8 @@ window.BENCHMARK_DATA = {
           297547.96955217636,
           301459.13895089284,
           292008.66573660716,
-          299549.37747395836
+          299549.37747395836,
+          294975.8651994978
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10442,6 +10461,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335442,
+          335444,
           335444,
           335444,
           335444,
@@ -10976,7 +10996,8 @@ window.BENCHMARK_DATA = {
           2319945.7200520835,
           2689759.6598772323,
           2351292.710379464,
-          2444080.3622395834
+          2444080.3622395834,
+          2363169.249441964
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11465,7 +11486,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841651
+          4841651,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14809,6 +14831,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Aug 17 12:51:00 2026 \u002B0200",
         "message": "chore: Bump the xunit group with 3 updates (#1006)"
+      },
+      {
+        "sha": "956eadd61443687e65db1ea1137ff0a5ba3e0681",
+        "author": "dependabot[bot]",
+        "date": "Mon Aug 17 12:51:10 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.9.0 to 18.10.0 (#1008)"
       }
     ],
     "labels": [
@@ -15366,7 +15394,8 @@ window.BENCHMARK_DATA = {
       "37f4afa3",
       "efbe5c0a",
       "a2cd8a35",
-      "d6d2b3d2"
+      "d6d2b3d2",
+      "956eadd6"
     ],
     "datasets": [
       {
@@ -15927,7 +15956,8 @@ window.BENCHMARK_DATA = {
           483.4518507639567,
           463.1489292553493,
           485.1151306629181,
-          474.23495664596555
+          474.23495664596555,
+          489.05501550038656
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16400,6 +16430,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -17062,7 +17093,8 @@ window.BENCHMARK_DATA = {
           489.51873747507733,
           485.5276449067252,
           473.09620780944823,
-          510.3519074757894
+          510.3519074757894,
+          501.6263490041097
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17255,6 +17287,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -20972,6 +21005,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Aug 17 12:51:00 2026 \u002B0200",
         "message": "chore: Bump the xunit group with 3 updates (#1006)"
+      },
+      {
+        "sha": "956eadd61443687e65db1ea1137ff0a5ba3e0681",
+        "author": "dependabot[bot]",
+        "date": "Mon Aug 17 12:51:10 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.9.0 to 18.10.0 (#1008)"
       }
     ],
     "labels": [
@@ -21529,7 +21568,8 @@ window.BENCHMARK_DATA = {
       "37f4afa3",
       "efbe5c0a",
       "a2cd8a35",
-      "d6d2b3d2"
+      "d6d2b3d2",
+      "956eadd6"
     ],
     "datasets": [
       {
@@ -22090,7 +22130,8 @@ window.BENCHMARK_DATA = {
           254.10089457829793,
           267.5967062541417,
           248.1609696660723,
-          263.4916341645377
+          263.4916341645377,
+          255.30838574681962
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22604,6 +22645,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -23225,7 +23267,8 @@ window.BENCHMARK_DATA = {
           265.5314603805542,
           241.64932530266898,
           238.2086463891543,
-          257.3656890551249
+          257.3656890551249,
+          248.93196236292522
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -23418,6 +23461,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -27135,6 +27179,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Aug 17 12:51:00 2026 \u002B0200",
         "message": "chore: Bump the xunit group with 3 updates (#1006)"
+      },
+      {
+        "sha": "956eadd61443687e65db1ea1137ff0a5ba3e0681",
+        "author": "dependabot[bot]",
+        "date": "Mon Aug 17 12:51:10 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.9.0 to 18.10.0 (#1008)"
       }
     ],
     "labels": [
@@ -27692,7 +27742,8 @@ window.BENCHMARK_DATA = {
       "37f4afa3",
       "efbe5c0a",
       "a2cd8a35",
-      "d6d2b3d2"
+      "d6d2b3d2",
+      "956eadd6"
     ],
     "datasets": [
       {
@@ -28253,7 +28304,8 @@ window.BENCHMARK_DATA = {
           491.1146069208781,
           469.32736294086163,
           457.0840086619059,
-          473.729869445165
+          473.729869445165,
+          474.2024907430013
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28726,6 +28778,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -29388,7 +29441,8 @@ window.BENCHMARK_DATA = {
           1160.6543505532402,
           1330.9443862915039,
           1145.1624849864415,
-          1211.4821085248675
+          1211.4821085248675,
+          1194.762306213379
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29817,6 +29871,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -33298,6 +33353,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Aug 17 12:51:00 2026 \u002B0200",
         "message": "chore: Bump the xunit group with 3 updates (#1006)"
+      },
+      {
+        "sha": "956eadd61443687e65db1ea1137ff0a5ba3e0681",
+        "author": "dependabot[bot]",
+        "date": "Mon Aug 17 12:51:10 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.9.0 to 18.10.0 (#1008)"
       }
     ],
     "labels": [
@@ -33855,7 +33916,8 @@ window.BENCHMARK_DATA = {
       "37f4afa3",
       "efbe5c0a",
       "a2cd8a35",
-      "d6d2b3d2"
+      "d6d2b3d2",
+      "956eadd6"
     ],
     "datasets": [
       {
@@ -34416,7 +34478,8 @@ window.BENCHMARK_DATA = {
           1951.8924947102864,
           1928.834142957415,
           1882.4668922424316,
-          1855.15222461407
+          1855.15222461407,
+          1917.4381256103516
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34889,6 +34952,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -35551,7 +35615,8 @@ window.BENCHMARK_DATA = {
           1343.2441444396973,
           1326.3457829793294,
           1281.9057956695556,
-          1365.7781730651855
+          1365.7781730651855,
+          1360.8156960805256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35744,6 +35809,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -39461,6 +39527,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Aug 17 12:51:00 2026 \u002B0200",
         "message": "chore: Bump the xunit group with 3 updates (#1006)"
+      },
+      {
+        "sha": "956eadd61443687e65db1ea1137ff0a5ba3e0681",
+        "author": "dependabot[bot]",
+        "date": "Mon Aug 17 12:51:10 2026 \u002B0200",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.9.0 to 18.10.0 (#1008)"
       }
     ],
     "labels": [
@@ -40018,7 +40090,8 @@ window.BENCHMARK_DATA = {
       "37f4afa3",
       "efbe5c0a",
       "a2cd8a35",
-      "d6d2b3d2"
+      "d6d2b3d2",
+      "956eadd6"
     ],
     "datasets": [
       {
@@ -40579,7 +40652,8 @@ window.BENCHMARK_DATA = {
           2531.6891387939454,
           2607.2419998168943,
           2524.2784502665204,
-          2441.176905118502
+          2441.176905118502,
+          2525.806895446777
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -41052,6 +41126,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -41714,7 +41789,8 @@ window.BENCHMARK_DATA = {
           20057.27074105399,
           27195.259106953938,
           20087.33641924177,
-          20258.23517150879
+          20258.23517150879,
+          21029.074384416854
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -42254,6 +42330,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471,
           33471,
