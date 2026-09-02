@@ -50,6 +50,17 @@ public partial class ConstraintResultTests
 			await That(sb.ToString()).IsEqualTo("it did throw an ArgumentException");
 		}
 
+		[Fact]
+		public async Task FailureCause_ShouldBeTheException()
+		{
+			DummyConstraintResult inner = new(Outcome.Success, "foo");
+			Exception exception = new("bar");
+			DummyExpectationBuilder expectationBuilder = new();
+			ConstraintResult sut = new ConstraintResult.FromException(inner, exception, expectationBuilder);
+
+			await That(sut.FailureCause).IsSameAs(exception);
+		}
+
 		[Theory]
 		[InlineData(Outcome.Failure, Outcome.Success)]
 		[InlineData(Outcome.Success, Outcome.Failure)]

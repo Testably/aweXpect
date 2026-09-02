@@ -172,7 +172,8 @@ internal static class AweXpectInitialization
 		/// </summary>
 		/// <param name="message">The failure message.</param>
 		/// <param name="innerException">
-		///     The exception that caused the failure. It is only forwarded when the test framework adapter supports it.
+		///     The optional exception that caused the failure. When not <see langword="null" />, it is forwarded to the
+		///     test framework adapter as inner exception of the framework-specific assertion exception.
 		/// </param>
 		[DoesNotReturn]
 		[StackTraceHidden]

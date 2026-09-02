@@ -668,9 +668,13 @@ namespace aweXpect
         [System.Diagnostics.CodeAnalysis.DoesNotReturn]
         public static void Inconclusive(string reason) { }
         [System.Diagnostics.CodeAnalysis.DoesNotReturn]
-        public static void Test(string reason, System.Exception? innerException = null) { }
-        public static void Unless([System.Diagnostics.CodeAnalysis.DoesNotReturnIf(false)] bool condition, string reason, System.Exception? innerException = null) { }
-        public static void When([System.Diagnostics.CodeAnalysis.DoesNotReturnIf(true)] bool condition, string reason, System.Exception? innerException = null) { }
+        public static void Test(string reason) { }
+        [System.Diagnostics.CodeAnalysis.DoesNotReturn]
+        public static void Test(string reason, System.Exception? innerException) { }
+        public static void Unless([System.Diagnostics.CodeAnalysis.DoesNotReturnIf(false)] bool condition, string reason) { }
+        public static void Unless([System.Diagnostics.CodeAnalysis.DoesNotReturnIf(false)] bool condition, string reason, System.Exception? innerException) { }
+        public static void When([System.Diagnostics.CodeAnalysis.DoesNotReturnIf(true)] bool condition, string reason) { }
+        public static void When([System.Diagnostics.CodeAnalysis.DoesNotReturnIf(true)] bool condition, string reason, System.Exception? innerException) { }
     }
     public class FailException : System.Exception
     {

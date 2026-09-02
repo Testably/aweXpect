@@ -24,7 +24,7 @@ public interface ITestFrameworkAdapter
 	/// </summary>
 	[DoesNotReturn]
 	void Fail(string message);
-	
+
 	/// <summary>
 	///     Throws a framework-specific exception to indicate a failing unit test, using the
 	///     <paramref name="innerException" /> as cause of the failure.

@@ -186,6 +186,43 @@ public sealed class AndNodeTests
 		await That(result).IsFalse();
 	}
 
+	[Fact]
+	public async Task FailureCause_WhenLeftFailedDueToException_ShouldForwardException()
+	{
+		Exception exception = new("foo");
+		AndNode node = new(new DummyNode("", () => new ConstraintResult.FromException(
+			new DummyConstraintResult(Outcome.Failure, "left"), exception, new DummyExpectationBuilder())));
+		node.AddNode(new DummyNode("", () => new DummyConstraintResult(Outcome.Success, "right")));
+
+		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
+
+		await That(result.FailureCause).IsSameAs(exception);
+	}
+
+	[Fact]
+	public async Task FailureCause_WhenRightFailedDueToException_ShouldForwardException()
+	{
+		Exception exception = new("foo");
+		AndNode node = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Success, "left")));
+		node.AddNode(new DummyNode("", () => new ConstraintResult.FromException(
+			new DummyConstraintResult(Outcome.Failure, "right"), exception, new DummyExpectationBuilder())));
+
+		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
+
+		await That(result.FailureCause).IsSameAs(exception);
+	}
+
+	[Fact]
+	public async Task FailureCause_WhenSuccessful_ShouldBeNull()
+	{
+		AndNode node = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Success, "left")));
+		node.AddNode(new DummyNode("", () => new DummyConstraintResult(Outcome.Success, "right")));
+
+		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
+
+		await That(result.FailureCause).IsNull();
+	}
+
 	[Theory]
 	[InlineData(Outcome.Success, Outcome.Success, Outcome.Failure)]
 	[InlineData(Outcome.Failure, Outcome.Success, Outcome.Success)]
