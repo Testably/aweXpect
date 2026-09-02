@@ -20,7 +20,7 @@ partial class Build : FalloutBuild
 	///     <para />
 	///     Afterward, you can update the package reference in `Directory.Packages.props` and reset this flag.
 	/// </summary>
-	readonly BuildScope BuildScope = BuildScope.CoreOnly;
+	readonly BuildScope BuildScope = BuildScope.MainOnly;
 
 	[Parameter("Github Token")] readonly string GithubToken;
 	[GitRepository] readonly GitRepository Repository;
