@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using aweXpect.Chronology;
+﻿using aweXpect.Chronology;
 using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Core.Tests.Delegates;
@@ -106,7 +105,7 @@ public sealed class ThatDelegateTests
 			Exception exception = new MyException();
 			Action @delegate = () =>
 			{
-				Thread.Sleep(50);
+				Task.Delay(50.Milliseconds()).Wait();
 				throw exception;
 			};
 
