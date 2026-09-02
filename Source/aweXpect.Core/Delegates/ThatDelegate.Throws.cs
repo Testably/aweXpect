@@ -82,6 +82,10 @@ public abstract partial class ThatDelegate
 		private DelegateValue? _actual;
 		private bool _tookTooLong;
 
+		/// <inheritdoc cref="ConstraintResult.FailureCause" />
+		public override Exception? FailureCause
+			=> Outcome == Outcome.Failure && !_tookTooLong ? _actual?.Exception : null;
+
 		public ConstraintResult IsMetBy(DelegateValue value)
 		{
 			_actual = value;
@@ -192,6 +196,9 @@ public abstract partial class ThatDelegate
 			IValueConstraint<Exception?>
 	{
 		private Exception? _actual;
+
+		/// <inheritdoc cref="ConstraintResult.FailureCause" />
+		public override Exception? FailureCause => Outcome == Outcome.Failure ? _actual : null;
 
 		/// <inheritdoc />
 		public ConstraintResult IsMetBy(Exception? value)

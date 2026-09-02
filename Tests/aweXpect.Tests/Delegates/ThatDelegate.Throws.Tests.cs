@@ -86,6 +86,20 @@ public sealed partial class ThatDelegate
 					              """);
 			}
 
+			[Theory]
+			[AutoData]
+			public async Task WhenOtherExceptionIsThrown_ShouldForwardExceptionAsInnerException(string message)
+			{
+				Exception exception = new OtherException(message);
+				Action action = () => throw exception;
+
+				async Task<CustomException> Act()
+					=> await That(action).Throws<CustomException>();
+
+				await That(Act).ThrowsException()
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+			}
+
 			[Fact]
 			public async Task WhenSubCustomExceptionIsThrown_ShouldSucceed()
 			{

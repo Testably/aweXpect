@@ -72,6 +72,8 @@ public static class ConstraintResultExtensions
 			_value = value;
 		}
 
+		public override Exception? FailureCause => _inner.FailureCause;
+
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> _inner.AppendExpectation(stringBuilder, indentation);
 
@@ -113,6 +115,8 @@ public static class ConstraintResultExtensions
 			_value = value;
 		}
 
+		public override Exception? FailureCause => _inner.FailureCause;
+
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> _inner.AppendExpectation(stringBuilder, indentation);
 
@@ -152,6 +156,8 @@ public static class ConstraintResultExtensions
 			_suffix = suffix;
 			_includeInnerExpectation = includeInnerExpectation;
 		}
+
+		public override Exception? FailureCause => _inner.FailureCause;
 
 		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
 			=> _inner.TryGetValue(out value);

@@ -38,6 +38,20 @@ public sealed partial class ThatDelegate
 
 			[Theory]
 			[AutoData]
+			public async Task WhenDelegateThrowsMatchingException_ShouldForwardExceptionAsInnerException(string message)
+			{
+				Exception exception = new CustomException(message);
+				Action @delegate = () => throw exception;
+
+				async Task Act()
+					=> await That(@delegate).DoesNotThrowExactly<CustomException>();
+
+				await That(Act).ThrowsException()
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+			}
+
+			[Theory]
+			[AutoData]
 			public async Task WhenDelegateThrowsOtherException_ShouldFail(string message)
 			{
 				Exception exception = new OtherException(message);

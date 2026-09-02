@@ -192,6 +192,9 @@ internal class WhichNode<TSource, TMember> : Node
 			Outcome = And(left.Outcome, right.Outcome);
 		}
 
+		public override Exception? FailureCause
+			=> Outcome == Outcome.Failure ? _left.FailureCause ?? _right.FailureCause : null;
+
 		private static Outcome And(Outcome left, Outcome right)
 			=> (left, right) switch
 			{

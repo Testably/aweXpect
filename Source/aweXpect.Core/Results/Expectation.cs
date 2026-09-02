@@ -131,6 +131,7 @@ public abstract class Expectation
 		{
 			StringBuilder expectationTexts = new();
 			StringBuilder failureTexts = new();
+			Exception? failureCause = null;
 			Outcome? outcome = null;
 			foreach (Expectation? expectation in _expectations)
 			{
@@ -156,6 +157,7 @@ public abstract class Expectation
 
 				if (result.ConstraintResult.Outcome == Outcome.Failure)
 				{
+					failureCause ??= result.ConstraintResult.FailureCause;
 					if (failureTexts.Length > 0)
 					{
 						failureTexts.AppendLine();
@@ -177,7 +179,8 @@ public abstract class Expectation
 			if (outcome != Outcome.Success)
 			{
 				return new Result(index, GetSubjectLine(),
-					new CombinationResult(Outcome.Failure, expectationTexts.ToString(), failureTexts.ToString()));
+					new CombinationResult(Outcome.Failure, expectationTexts.ToString(), failureTexts.ToString(),
+						failureCause));
 			}
 
 			return new Result(index, GetSubjectLine(),
@@ -241,7 +244,7 @@ public abstract class Expectation
 				sb.Append(content);
 			}
 
-			Fail.Test(sb.ToString());
+			Fail.Test(sb.ToString(), result.ConstraintResult.FailureCause);
 		}
 
 		private sealed class CombinationResult : ConstraintResult
@@ -249,13 +252,18 @@ public abstract class Expectation
 			private readonly string _expectationTexts;
 			private readonly string? _failureTexts;
 
-			public CombinationResult(Outcome outcome, string expectationTexts, string? failureTexts = null) : base(
-				ExpectationGrammars.None)
+			public CombinationResult(Outcome outcome, string expectationTexts, string? failureTexts = null,
+				Exception? failureCause = null)
+				: base(ExpectationGrammars.None)
 			{
 				_expectationTexts = expectationTexts;
 				_failureTexts = failureTexts;
+				FailureCause = failureCause;
 				Outcome = outcome;
 			}
+
+			/// <inheritdoc cref="ConstraintResult.FailureCause" />
+			public override Exception? FailureCause { get; }
 
 			public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 				=> stringBuilder.Append(_expectationTexts.Indent(indentation, false));

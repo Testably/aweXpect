@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace aweXpect.Frameworks.NUnit3.Tests;
@@ -13,6 +14,18 @@ public sealed class NUnit3TestFrameworkTests
 
 		await Expect.That(Act).Throws<AssertionException>()
 			.WithMessage("my message");
+	}
+
+	[Test]
+	public async Task OnFailWithCause_WhenUsingNUnit3AsTestFramework_ShouldForwardTheCauseAsInnerException()
+	{
+		Exception cause = new InvalidOperationException("my cause");
+
+		void Act()
+			=> Fail.Test("my message", cause);
+
+		await Expect.That(Act).Throws<AssertionException>()
+			.Whose(e => e.InnerException, i => i.IsSameAs(cause));
 	}
 
 	[Test]

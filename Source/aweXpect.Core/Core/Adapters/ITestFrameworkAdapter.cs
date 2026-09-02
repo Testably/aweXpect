@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace aweXpect.Core.Adapters;
 
@@ -23,6 +24,13 @@ public interface ITestFrameworkAdapter
 	/// </summary>
 	[DoesNotReturn]
 	void Fail(string message);
+	
+	/// <summary>
+	///     Throws a framework-specific exception to indicate a failing unit test, using the
+	///     <paramref name="innerException" /> as cause of the failure.
+	/// </summary>
+	[DoesNotReturn]
+	void Fail(string message, Exception innerException);
 
 	/// <summary>
 	///     Throws a framework-specific exception to indicate an inconclusive unit test.

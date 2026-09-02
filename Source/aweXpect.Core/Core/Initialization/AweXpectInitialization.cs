@@ -170,13 +170,24 @@ internal static class AweXpectInitialization
 		/// <summary>
 		///     Throws a framework-specific exception to indicate a failing unit test.
 		/// </summary>
+		/// <param name="message">The failure message.</param>
+		/// <param name="innerException">
+		///     The exception that caused the failure. It is only forwarded when the test framework adapter supports it.
+		/// </param>
 		[DoesNotReturn]
 		[StackTraceHidden]
-		public void Fail(string message)
+		public void Fail(string message, Exception? innerException = null)
 		{
 			try
 			{
-				testFramework.Fail(message);
+				if (innerException is not null)
+				{
+					testFramework.Fail(message, innerException);
+				}
+				else
+				{
+					testFramework.Fail(message);
+				}
 			}
 			catch (Exception ex)
 			{
@@ -214,6 +225,11 @@ internal static class AweXpectInitialization
 		[StackTraceHidden]
 		public void Fail(string message)
 			=> throw new FailException(message);
+
+		[DoesNotReturn]
+		[StackTraceHidden]
+		public void Fail(string message, Exception innerException)
+			=> throw new FailException(message, innerException);
 
 		[DoesNotReturn]
 		[StackTraceHidden]

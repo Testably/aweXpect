@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
@@ -36,6 +37,9 @@ public class DelegateWithValueResult<T>(ExpectationBuilder expectationBuilder)
 			IValueConstraint<DelegateValue<T>>
 	{
 		private DelegateValue<T>? _actual;
+
+		public override Exception? FailureCause
+			=> Outcome == Outcome.Failure ? _actual?.Exception : null;
 
 		/// <inheritdoc />
 		public ConstraintResult IsMetBy(DelegateValue<T> value)

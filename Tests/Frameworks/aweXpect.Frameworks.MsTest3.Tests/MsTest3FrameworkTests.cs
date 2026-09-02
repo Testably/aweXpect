@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace aweXpect.Frameworks.MsTest3.Tests;
@@ -14,6 +15,18 @@ public sealed class MsTestFrameworkTests
 
 		await Expect.That(Act).Throws<AssertFailedException>()
 			.WithMessage("my message");
+	}
+
+	[TestMethod]
+	public async Task OnFailWithCause_WhenUsingMsTestAsTestFramework_ShouldForwardTheCauseAsInnerException()
+	{
+		Exception cause = new InvalidOperationException("my cause");
+
+		void Act()
+			=> Fail.Test("my message", cause);
+
+		await Expect.That(Act).Throws<AssertFailedException>()
+			.Whose(e => e.InnerException, i => i.IsSameAs(cause));
 	}
 
 	[TestMethod]
