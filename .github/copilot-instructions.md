@@ -8,7 +8,7 @@ Always reference these instructions first and fallback to search or bash command
 
 ### Bootstrap and Build Requirements
 - **Required SDK**: .NET SDK as specified in `global.json`
-- **Build System**: NUKE build automation system
+- **Build System**: Fallout build automation system
 - **Git Requirements**: Full git history required (`git fetch --unshallow` if shallow clone)
 
 ### Primary Build Commands
@@ -25,8 +25,8 @@ Always reference these instructions first and fallback to search or bash command
 #### Fallback Build Process (when GitVersion fails):
 When encountering GitVersion issues (common with branch refs), use direct dotnet commands:
 ```bash
-# Use the NUKE-installed SDK for correct version
-export DOTNET_PATH="/home/runner/work/aweXpect/aweXpect/.nuke/temp/dotnet-unix/dotnet"
+# Use the Fallout-installed SDK for correct version
+export DOTNET_PATH="/home/runner/work/aweXpect/aweXpect/.fallout/temp/dotnet-unix/dotnet"
 
 # Build the solution
 $DOTNET_PATH build aweXpect.slnx --configuration Release  # Takes 1m20s. NEVER CANCEL. Set timeout to 3+ minutes.
@@ -35,7 +35,7 @@ $DOTNET_PATH build aweXpect.slnx --configuration Release  # Takes 1m20s. NEVER C
 $DOTNET_PATH test aweXpect.slnx --configuration Release --no-build --framework net8.0  # Takes 30s. NEVER CANCEL. Set timeout to 2+ minutes.
 ```
 
-### Available NUKE Build Targets
+### Available Fallout Build Targets
 Use `./build.sh --help` to see all targets. Key targets:
 - `ApiChecks` - API compatibility validation
 - `Compile` - Full solution build with versioning
@@ -126,7 +126,7 @@ To communicate intent to the consumers of your library, the title of the pull re
 - **global.json**: SDK version requirements (.NET 8.0.407)
 - **Directory.Packages.props**: Centralized package management
 - **aweXpect.slnx**: Main solution file
-- **Pipeline/Build.cs**: NUKE build configuration
+- **Pipeline/Build.cs**: Fallout build configuration
 
 ## Extension Development
 

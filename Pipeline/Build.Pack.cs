@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.IO;
-using Nuke.Common;
-using Nuke.Common.IO;
-using Nuke.Common.ProjectModel;
-using Nuke.Common.Utilities.Collections;
+using Fallout.Common;
+using Fallout.Common.IO;
+using Fallout.Solutions;
+using Fallout.Common.Utilities.Collections;
 using static Serilog.Log;
 
 // ReSharper disable UnusedMember.Local
