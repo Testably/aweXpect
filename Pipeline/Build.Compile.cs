@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Nuke.Common;
-using Nuke.Common.IO;
-using Nuke.Common.ProjectModel;
-using Nuke.Common.Tooling;
-using Nuke.Common.Tools.DotNet;
-using Nuke.Common.Tools.GitVersion;
-using Nuke.Common.Utilities;
-using Nuke.Common.Utilities.Collections;
+using Fallout.Common;
+using Fallout.Common.IO;
+using Fallout.Solutions;
+using Fallout.Common.Tooling;
+using Fallout.Common.Tools.DotNet;
+using Fallout.Common.Tools.GitVersion;
+using Fallout.Common.Utilities;
+using Fallout.Common.Utilities.Collections;
 using Serilog;
-using static Nuke.Common.Tools.DotNet.DotNetTasks;
+using static Fallout.Common.Tools.DotNet.DotNetTasks;
 
 // ReSharper disable UnusedMember.Local
 // ReSharper disable AllUnderscoreLocalParameterName

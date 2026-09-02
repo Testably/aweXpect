@@ -3,7 +3,7 @@
 /TestResults
 
 # Build tool cache and temp directories  
-./.nuke/temp/
+.fallout/temp/
 
 ## Common IntelliJ Platform excludes
 ##

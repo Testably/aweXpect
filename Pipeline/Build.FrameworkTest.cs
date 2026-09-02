@@ -1,9 +1,9 @@
 using System.Linq;
-using Nuke.Common;
-using Nuke.Common.ProjectModel;
-using Nuke.Common.Tooling;
-using Nuke.Common.Tools.DotNet;
-using static Nuke.Common.Tools.DotNet.DotNetTasks;
+using Fallout.Common;
+using Fallout.Solutions;
+using Fallout.Common.Tooling;
+using Fallout.Common.Tools.DotNet;
+using static Fallout.Common.Tools.DotNet.DotNetTasks;
 
 // ReSharper disable UnusedMember.Local
 // ReSharper disable AllUnderscoreLocalParameterName
@@ -127,7 +127,7 @@ partial class Build
 					framework,
 				};
 
-			DotNetTest(s => s
+			DotNetRun(s => s
 				.SetConfiguration(Configuration)
 				.SetProcessEnvironmentVariable("DOTNET_CLI_UI_LANGUAGE", "en-US")
 				.EnableNoBuild()

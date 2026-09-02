@@ -7,14 +7,14 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Nuke.Common;
-using Nuke.Common.IO;
-using Nuke.Common.Tooling;
-using Nuke.Common.Tools.DotNet;
-using Nuke.Common.Tools.Git;
+using Fallout.Common;
+using Fallout.Common.IO;
+using Fallout.Common.Tooling;
+using Fallout.Common.Tools.DotNet;
+using Fallout.Common.Tools.Git;
 using Octokit;
 using Serilog;
-using static Nuke.Common.Tools.DotNet.DotNetTasks;
+using static Fallout.Common.Tools.DotNet.DotNetTasks;
 using ProductHeaderValue = Octokit.ProductHeaderValue;
 
 // ReSharper disable UnusedMember.Local
@@ -72,7 +72,7 @@ partial class Build
 			Log.Debug("Pull request number: {PullRequestId}", prNumber);
 			if (int.TryParse(prNumber, out int prId))
 			{
-				GitHubClient gitHubClient = new(new ProductHeaderValue("Nuke"));
+				GitHubClient gitHubClient = new(new ProductHeaderValue("Fallout"));
 				Credentials tokenAuth = new(GithubToken);
 				gitHubClient.Credentials = tokenAuth;
 				IReadOnlyList<IssueComment> comments =

@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Nuke.Common.CI.GitHubActions;
-using Nuke.Common.Tools.SonarScanner;
+using Fallout.Common.CI.GitHubActions;
+using Fallout.Common.Tools.SonarScanner;
 using Serilog;
 
 namespace Build;

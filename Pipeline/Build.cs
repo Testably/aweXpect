@@ -1,8 +1,8 @@
-using Nuke.Common;
-using Nuke.Common.CI.GitHubActions;
-using Nuke.Common.Git;
-using Nuke.Common.IO;
-using Nuke.Common.ProjectModel;
+using Fallout.Common;
+using Fallout.Common.CI.GitHubActions;
+using Fallout.Common.Git;
+using Fallout.Common.IO;
+using Fallout.Solutions;
 
 namespace Build;
 
@@ -12,7 +12,7 @@ namespace Build;
 	AutoGenerate = false,
 	ImportSecrets = [nameof(GithubToken),]
 )]
-partial class Build : NukeBuild
+partial class Build : FalloutBuild
 {
 	/// <summary>
 	///     Set this flag temporarily when you introduce breaking changes in the core library.
