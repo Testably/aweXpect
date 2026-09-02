@@ -72,7 +72,7 @@ partial class Build
 			Log.Debug("Pull request number: {PullRequestId}", prNumber);
 			if (int.TryParse(prNumber, out int prId))
 			{
-				GitHubClient gitHubClient = new(new ProductHeaderValue("Nuke"));
+				GitHubClient gitHubClient = new(new ProductHeaderValue("Fallout"));
 				Credentials tokenAuth = new(GithubToken);
 				gitHubClient.Credentials = tokenAuth;
 				IReadOnlyList<IssueComment> comments =
