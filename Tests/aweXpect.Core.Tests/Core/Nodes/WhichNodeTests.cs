@@ -215,6 +215,34 @@ public sealed class WhichNodeTests
 	}
 
 	[Fact]
+	public async Task FailureCause_WhenLeftFailedDueToException_ShouldForwardException()
+	{
+		Exception exception = new("foo");
+		DummyNode node1 = new("", () => new ConstraintResult.FromException(
+			new DummyConstraintResult(Outcome.Failure, "1"), exception, new DummyExpectationBuilder()));
+		DummyNode node2 = new("", () => new DummyConstraintResult(Outcome.Success, "2"));
+		WhichNode<string, int> whichNode = new(node1, s => s.Length);
+		whichNode.AddNode(node2);
+
+		ConstraintResult result = await whichNode.IsMetBy("", null!, CancellationToken.None);
+
+		await That(result.FailureCause).IsSameAs(exception);
+	}
+
+	[Fact]
+	public async Task FailureCause_WhenSuccessful_ShouldBeNull()
+	{
+		DummyNode node1 = new("", () => new DummyConstraintResult(Outcome.Success, "1"));
+		DummyNode node2 = new("", () => new DummyConstraintResult(Outcome.Success, "2"));
+		WhichNode<string, int> whichNode = new(node1, s => s.Length);
+		whichNode.AddNode(node2);
+
+		ConstraintResult result = await whichNode.IsMetBy("", null!, CancellationToken.None);
+
+		await That(result.FailureCause).IsNull();
+	}
+
+	[Fact]
 	public async Task GetResult_WhenBothFailed_ShouldUseOnlyFirst()
 	{
 		DummyNode node1 = new("", () => new DummyConstraintResult(Outcome.Failure, "1", "r1"));

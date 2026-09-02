@@ -88,6 +88,23 @@ public sealed partial class ThatDelegate
 				}
 
 				[Fact]
+				public async Task WhenExactExceptionTypeIsThrownTooLate_ShouldNotForwardExceptionAsInnerException()
+				{
+					Exception exception = new CustomException();
+					Action action = () =>
+					{
+						Task.Delay(50.Milliseconds()).Wait();
+						throw exception;
+					};
+
+					async Task<CustomException> Act()
+						=> await That(action).Throws<CustomException>().Within(5.Milliseconds());
+
+					await That(Act).ThrowsException()
+						.Whose(e => e.InnerException, i => i.IsNull());
+				}
+
+				[Fact]
 				public async Task WhenNoExceptionIsThrownAndExecutionTimeIsTooLarge_ShouldFail()
 				{
 					Action action = () =>

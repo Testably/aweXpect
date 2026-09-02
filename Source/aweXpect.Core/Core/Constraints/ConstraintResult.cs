@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace aweXpect.Core.Constraints;
@@ -40,6 +41,16 @@ public abstract partial class ConstraintResult
 	///     Specifies if further processing of chained constraints should be ignored.
 	/// </summary>
 	public FurtherProcessingStrategy FurtherProcessingStrategy { get; protected set; }
+
+	/// <summary>
+	///     The <see cref="Exception" /> that caused the failure, or <see langword="null" /> when the failure was not caused
+	///     by an exception.
+	/// </summary>
+	/// <remarks>
+	///     It is forwarded as inner exception of the framework-specific assertion exception, so that the original stack trace
+	///     remains available.
+	/// </remarks>
+	public virtual Exception? FailureCause => null;
 
 	/// <summary>
 	///     Appends the expectation to the <paramref name="stringBuilder" />.

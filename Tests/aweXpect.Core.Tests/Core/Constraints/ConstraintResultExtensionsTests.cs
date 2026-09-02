@@ -46,6 +46,26 @@ public sealed class ConstraintResultExtensionsTests
 			await That(value).IsNull();
 		}
 
+		[Fact]
+		public async Task FailureCause_ShouldBeForwardedFromInner()
+		{
+			Exception exception = new("foo");
+			ConstraintResult inner = new ConstraintResult.FromException(
+				new DummyConstraintResult(Outcome.Failure, "foo"), exception, new DummyExpectationBuilder());
+			ConstraintResult sut = inner.Fail("bar", 1);
+
+			await That(sut.FailureCause).IsSameAs(exception);
+		}
+
+		[Fact]
+		public async Task FailureCause_WhenInnerHasNoFailureCause_ShouldBeNull()
+		{
+			ConstraintResult inner = new DummyConstraintResult(Outcome.Failure, "foo");
+			ConstraintResult sut = inner.Fail("bar", 1);
+
+			await That(sut.FailureCause).IsNull();
+		}
+
 		[Theory]
 		[InlineData(Outcome.Failure, Outcome.Success)]
 		[InlineData(Outcome.Success, Outcome.Failure)]
@@ -100,6 +120,17 @@ public sealed class ConstraintResultExtensionsTests
 			await That(value).IsNull();
 		}
 
+		[Fact]
+		public async Task FailureCause_ShouldBeForwardedFromInner()
+		{
+			Exception exception = new("foo");
+			ConstraintResult inner = new ConstraintResult.FromException(
+				new DummyConstraintResult(Outcome.Failure, "foo"), exception, new DummyExpectationBuilder());
+			ConstraintResult sut = inner.UseValue(1);
+
+			await That(sut.FailureCause).IsSameAs(exception);
+		}
+
 		[Theory]
 		[InlineData(Outcome.Failure, Outcome.Success)]
 		[InlineData(Outcome.Success, Outcome.Failure)]
@@ -118,6 +149,17 @@ public sealed class ConstraintResultExtensionsTests
 
 	public sealed class AppendExpectationTextTests
 	{
+		[Fact]
+		public async Task FailureCause_ShouldBeForwardedFromInner()
+		{
+			Exception exception = new("foo");
+			ConstraintResult inner = new ConstraintResult.FromException(
+				new DummyConstraintResult(Outcome.Failure, "foo"), exception, new DummyExpectationBuilder());
+			ConstraintResult sut = inner.AppendExpectationText(s => s.Append("bar"));
+
+			await That(sut.FailureCause).IsSameAs(exception);
+		}
+
 		[Theory]
 		[InlineData(Outcome.Failure, Outcome.Success)]
 		[InlineData(Outcome.Success, Outcome.Failure)]

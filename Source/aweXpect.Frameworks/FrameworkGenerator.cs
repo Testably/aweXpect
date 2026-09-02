@@ -1,4 +1,4 @@
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 
 namespace aweXpect.Frameworks;
 
@@ -102,6 +102,10 @@ public class FrameworkGenerator : IIncrementalGenerator
 		  	{{attributes}}public void Fail(string message)
 		  		=> throw new Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException(message);
 
+		  	/// <inheritdoc cref="ITestFrameworkAdapter.Fail(string, System.Exception)" />
+		  	{{attributes}}public void Fail(string message, System.Exception innerException)
+		  		=> throw new Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException(message, innerException);
+
 		  	/// <inheritdoc cref="ITestFrameworkAdapter.Inconclusive(string)" />
 		  	{{attributes}}public void Inconclusive(string message)
 		  		=> throw new Microsoft.VisualStudio.TestTools.UnitTesting.AssertInconclusiveException(message);
@@ -126,6 +130,10 @@ public class FrameworkGenerator : IIncrementalGenerator
 		  	/// <inheritdoc cref="ITestFrameworkAdapter.Fail(string)" />
 		  	{{attributes}}public void Fail(string message)
 		  		=> throw new NUnit.Framework.AssertionException(message);
+
+		  	/// <inheritdoc cref="ITestFrameworkAdapter.Fail(string, System.Exception)" />
+		  	{{attributes}}public void Fail(string message, System.Exception innerException)
+		  		=> throw new NUnit.Framework.AssertionException(message, innerException);
 
 		  	/// <inheritdoc cref="ITestFrameworkAdapter.Inconclusive(string)" />
 		  	{{attributes}}public void Inconclusive(string message)
@@ -152,6 +160,10 @@ public class FrameworkGenerator : IIncrementalGenerator
 		  	{{attributes}}public void Fail(string message)
 		  		=> throw new TUnit.Assertions.Exceptions.AssertionException(message);
 
+		  	/// <inheritdoc cref="ITestFrameworkAdapter.Fail(string, System.Exception)" />
+		  	{{attributes}}public void Fail(string message, System.Exception innerException)
+		  		=> throw new TUnit.Assertions.Exceptions.AssertionException(message, innerException);
+
 		  	/// <inheritdoc cref="ITestFrameworkAdapter.Inconclusive(string)" />
 		  	{{attributes}}public void Inconclusive(string message)
 		  		=> throw new TUnit.Core.Exceptions.InconclusiveTestException(message, null);
@@ -176,6 +188,10 @@ public class FrameworkGenerator : IIncrementalGenerator
 		  	/// <inheritdoc cref="ITestFrameworkAdapter.Fail(string)" />
 		  	{{attributes}}public void Fail(string message)
 		  		=> throw new Xunit.Sdk.XunitException(message);
+
+		  	/// <inheritdoc cref="ITestFrameworkAdapter.Fail(string, System.Exception)" />
+		  	{{attributes}}public void Fail(string message, System.Exception innerException)
+		  		=> throw new Xunit.Sdk.XunitException(message, innerException);
 
 		  	/// <inheritdoc cref="ITestFrameworkAdapter.Inconclusive(string)" />
 		  	{{attributes}}public void Inconclusive(string message)
@@ -204,6 +220,10 @@ public class FrameworkGenerator : IIncrementalGenerator
 		  	{{attributes}}public void Fail(string message)
 		  		=> throw new XunitException(message);
 
+		  	/// <inheritdoc cref="ITestFrameworkAdapter.Fail(string, System.Exception)" />
+		  	{{attributes}}public void Fail(string message, System.Exception innerException)
+		  		=> throw new XunitException(message, innerException);
+
 		  	/// <inheritdoc cref="ITestFrameworkAdapter.Inconclusive(string)" />
 		  	{{attributes}}public void Inconclusive(string message)
 		  		=> throw new XunitTimeoutException(message);
@@ -214,8 +234,12 @@ public class FrameworkGenerator : IIncrementalGenerator
 		  	private interface IAssertionException;
 
 		  #pragma warning disable S3871 // Exception types should be "public"
-		  	private sealed class XunitException(string message)
-		  		: Exception(message), IAssertionException;
+		  	private sealed class XunitException : Exception, IAssertionException
+		  	{
+		  		public XunitException(string message) : base(message) { }
+
+		  		public XunitException(string message, Exception innerException) : base(message, innerException) { }
+		  	}
 		  #pragma warning restore S3871 // Exception types should be "public"
 
 		  #pragma warning disable S3871 // Exception types should be "public"
@@ -246,6 +270,10 @@ public class FrameworkGenerator : IIncrementalGenerator
 		  	/// <inheritdoc cref="ITestFrameworkAdapter.Fail(string)" />
 		  	{{attributes}}public void Fail(string message)
 		  		=> throw new Xunit.Sdk.XunitException(message);
+
+		  	/// <inheritdoc cref="ITestFrameworkAdapter.Fail(string, System.Exception)" />
+		  	{{attributes}}public void Fail(string message, System.Exception innerException)
+		  		=> throw new Xunit.Sdk.XunitException(message, innerException);
 
 		  	/// <inheritdoc cref="ITestFrameworkAdapter.Inconclusive(string)" />
 		  	{{attributes}}public void Inconclusive(string message)

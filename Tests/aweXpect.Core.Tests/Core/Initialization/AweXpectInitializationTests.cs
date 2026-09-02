@@ -51,6 +51,9 @@ public sealed class AweXpectInitializationTests
 		public void Fail(string message) => throw new NotSupportedException();
 
 		[DoesNotReturn]
+		public void Fail(string message, Exception innerException) => throw new NotSupportedException();
+
+		[DoesNotReturn]
 		public void Inconclusive(string message) => throw new NotSupportedException();
 
 		[DoesNotReturn]
@@ -65,6 +68,9 @@ public sealed class AweXpectInitializationTests
 #pragma warning disable CS0436
 		[DoesNotReturn]
 		public void Fail(string message) => throw new NotSupportedException();
+
+		[DoesNotReturn]
+		public void Fail(string message, Exception innerException) => throw new NotSupportedException();
 
 		[DoesNotReturn]
 		public void Inconclusive(string message) => throw new NotSupportedException();

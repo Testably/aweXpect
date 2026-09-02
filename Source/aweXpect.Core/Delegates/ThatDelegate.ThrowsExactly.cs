@@ -52,6 +52,9 @@ public abstract partial class ThatDelegate
 	{
 		private Exception? _actual;
 
+		/// <inheritdoc cref="ConstraintResult.FailureCause" />
+		public override Exception? FailureCause => Outcome == Outcome.Failure ? _actual : null;
+
 		/// <inheritdoc />
 		public ConstraintResult IsMetBy(Exception? value)
 		{

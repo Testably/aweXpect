@@ -40,6 +40,9 @@ public abstract partial class ConstraintResult
 			protected set => _inner.Outcome = value;
 		}
 
+		/// <inheritdoc cref="ConstraintResult.FailureCause" />
+		public override Exception? FailureCause => _exception;
+
 		/// <inheritdoc cref="ConstraintResult.AppendExpectation(StringBuilder, string?)" />
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> _inner.AppendExpectation(stringBuilder, indentation);

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Xunit;
 using Xunit.Sdk;
 
@@ -13,6 +14,18 @@ public sealed class Xunit2TestFrameworkTests
 			=> Fail.Test("my message");
 
 		await Expect.That(Act).Throws<XunitException>();
+	}
+
+	[Fact]
+	public async Task OnFailWithCause_WhenUsingXunit2AsTestFramework_ShouldForwardTheCauseAsInnerException()
+	{
+		Exception cause = new InvalidOperationException("my cause");
+
+		void Act()
+			=> Fail.Test("my message", cause);
+
+		await Expect.That(Act).Throws<XunitException>()
+			.Whose(e => e.InnerException, i => i.IsSameAs(cause));
 	}
 
 	[Fact]

@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 
 namespace aweXpect.Frameworks.Fallback.Tests;
 
@@ -12,6 +13,19 @@ public sealed class FallbackTests
 
 		FailException? exception = Assert.Throws<FailException>(Act);
 		Assert.That(exception!.Message, Is.EqualTo("my message"));
+	}
+
+	[Test]
+	public void OnFailWithCause_WhenNotSpecifyingAnyTestFramework_ShouldForwardTheCauseAsInnerException()
+	{
+		Exception cause = new InvalidOperationException("my cause");
+
+		void Act()
+			=> Fail.Test("my message", cause);
+
+		FailException? exception = Assert.Throws<FailException>(Act);
+		Assert.That(exception!.Message, Is.EqualTo("my message"));
+		Assert.That(exception.InnerException, Is.SameAs(cause));
 	}
 
 	[Test]

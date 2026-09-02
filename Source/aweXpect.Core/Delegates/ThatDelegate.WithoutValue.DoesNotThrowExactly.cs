@@ -35,6 +35,10 @@ public abstract partial class ThatDelegate
 			private DelegateValue? _actual;
 			private bool _isNegated;
 
+			/// <inheritdoc cref="ConstraintResult.FailureCause" />
+			public override Exception? FailureCause
+				=> Outcome == Outcome.Failure ? _actual?.Exception : null;
+
 			/// <inheritdoc />
 			public ConstraintResult IsMetBy(DelegateValue value)
 			{

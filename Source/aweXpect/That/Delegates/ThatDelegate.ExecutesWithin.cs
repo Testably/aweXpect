@@ -57,6 +57,10 @@ public static partial class ThatDelegate
 		private DelegateValue<T>? _actual;
 		private bool _isNegated;
 
+		/// <inheritdoc cref="ConstraintResult.FailureCause" />
+		public override Exception? FailureCause
+			=> Outcome == Outcome.Failure ? _actual?.Exception : null;
+
 		public ConstraintResult IsMetBy(DelegateValue<T> actual)
 		{
 			_actual = actual;
@@ -141,6 +145,10 @@ public static partial class ThatDelegate
 	{
 		private DelegateValue? _actual;
 		private bool _isNegated;
+
+		/// <inheritdoc cref="ConstraintResult.FailureCause" />
+		public override Exception? FailureCause
+			=> Outcome == Outcome.Failure ? _actual?.Exception : null;
 
 		public ConstraintResult IsMetBy(DelegateValue actual)
 		{

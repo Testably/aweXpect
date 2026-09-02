@@ -20,6 +20,18 @@ public class Xunit3TestFrameworkTests
 	}
 
 	[Fact]
+	public async Task OnFailWithCause_WhenUsingXunit3AsTestFramework_ShouldForwardTheCauseAsInnerException()
+	{
+		Exception cause = new InvalidOperationException("my cause");
+
+		void Act()
+			=> Fail.Test("my message", cause);
+
+		await Expect.That(Act).ThrowsException()
+			.Whose(e => e.InnerException, i => i.IsSameAs(cause));
+	}
+
+	[Fact]
 	public async Task OnInconclusive_WhenUsingXunit3AsTestFramework_ShouldThrowXunitException()
 	{
 		void Act()
