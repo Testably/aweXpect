@@ -127,7 +127,7 @@ partial class Build
 					framework,
 				};
 
-			DotNetTest(s => s
+			DotNetRun(s => s
 				.SetConfiguration(Configuration)
 				.SetProcessEnvironmentVariable("DOTNET_CLI_UI_LANGUAGE", "en-US")
 				.EnableNoBuild()
