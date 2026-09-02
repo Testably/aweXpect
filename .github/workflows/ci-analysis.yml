@@ -23,7 +23,7 @@ jobs:
                 uses: actions/setup-dotnet@v6
                 with:
                     dotnet-version: |
-                        10.0.x
+                        10.0.3xx
             -   name: Upload mutation dashboard and create comment
                 run: ./build.sh MutationTestsComment
                 env:
@@ -44,7 +44,7 @@ jobs:
                 uses: actions/setup-dotnet@v6
                 with:
                     dotnet-version: |
-                        10.0.x
+                        10.0.3xx
             -   name: Create benchmark comment
                 run: ./build.sh BenchmarkComment
                 env:
