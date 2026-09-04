@@ -6,7 +6,136 @@ on:
         branches: [ main ]
         tags: [ 'v[0-9]+.[0-9]+.[0-9]+*', 'core/v[0-9]+.[0-9]+.[0-9]+*' ]
 
-jobs:    
+jobs:
+    unit-tests:
+        name: "Unit tests"
+        strategy:
+            matrix:
+                os: [ ubuntu-latest, windows-latest, macos-latest ]
+        runs-on: ${{ matrix.os }}
+        steps:
+            -   uses: actions/checkout@v7
+                with:
+                    fetch-depth: 0
+            -   name: Setup .NET SDKs
+                uses: actions/setup-dotnet@v6
+                with:
+                    dotnet-version: |
+                        8.0.x
+                        10.0.3xx
+            -   name: Run unit tests (windows)
+                if: matrix.os == 'windows-latest'
+                run: ./build.ps1 CodeCoverage
+            -   name: Run unit tests (ubuntu|macos)
+                if: matrix.os != 'windows-latest'
+                run: ./build.sh CodeCoverage
+            -   name: Upload artifacts
+                if: always()
+                uses: actions/upload-artifact@v7
+                with:
+                    name: ${{ runner.os }}-artifacts
+                    path: |
+                        ./Artifacts/*
+                        ./TestResults/*.trx
+    
+    api-tests:
+        name: "API tests"
+        runs-on: ubuntu-latest
+        env:
+            DOTNET_NOLOGO: true
+        steps:
+            -   uses: actions/checkout@v7
+                with:
+                    fetch-depth: 0
+            -   name: Setup .NET SDKs
+                uses: actions/setup-dotnet@v6
+                with:
+                    dotnet-version: |
+                        8.0.x
+                        10.0.3xx
+            -   name: API checks
+                run: ./build.sh ApiChecks
+            -   name: Upload artifacts
+                if: always()
+                uses: actions/upload-artifact@v7
+                with:
+                    name: API-tests
+                    path: |
+                        ./Artifacts/*
+                        ./TestResults/*.trx
+    
+    mutation-tests-core:
+        name: "Mutation tests (aweXpect.Core)"
+        runs-on: ubuntu-latest
+        env:
+            STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
+            DOTNET_NOLOGO: true
+        steps:
+            -   uses: actions/checkout@v7
+                with:
+                    fetch-depth: 0
+            -   name: Setup .NET SDKs
+                uses: actions/setup-dotnet@v6
+                with:
+                    dotnet-version: |
+                        10.0.3xx
+            -   name: Run mutation tests
+                run: ./build.sh MutationTestsCore
+            -   name: Upload artifacts
+                if: always()
+                uses: actions/upload-artifact@v7
+                with:
+                    name: MutationTestsCore
+                    path: |
+                        ./Artifacts/*
+    
+    mutation-tests-main:
+        name: "Mutation tests (aweXpect)"
+        runs-on: ubuntu-latest
+        env:
+            STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
+            DOTNET_NOLOGO: true
+        steps:
+            -   uses: actions/checkout@v7
+                with:
+                    fetch-depth: 0
+            -   name: Setup .NET SDKs
+                uses: actions/setup-dotnet@v6
+                with:
+                    dotnet-version: |
+                        10.0.3xx
+            -   name: Run mutation tests
+                run: ./build.sh MutationTestsMain
+            -   name: Upload artifacts
+                if: always()
+                uses: actions/upload-artifact@v7
+                with:
+                    name: MutationTestsMain
+                    path: |
+                        ./Artifacts/*
+    
+    mutation-tests-dashboard:
+        name: "Mutation tests Dashboard"
+        needs: [ mutation-tests-main, mutation-tests-core ]
+        runs-on: ubuntu-latest
+        env:
+            STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
+            DOTNET_NOLOGO: true
+        steps:
+            -   uses: actions/checkout@v7
+                with:
+                    fetch-depth: 0
+            -   name: Setup .NET SDKs
+                uses: actions/setup-dotnet@v6
+                with:
+                    dotnet-version: |
+                        10.0.3xx
+            -   name: Run mutation tests
+                run: ./build.sh MutationTestsDashboard
+                env:
+                    GithubToken: ${{ secrets.GITHUB_TOKEN }}
+                    WorkflowRunId: ${{ github.run_id }}
+    
     benchmarks:
         name: "Benchmarks"
         runs-on: ubuntu-latest
@@ -51,6 +180,7 @@ jobs:
     
     publish-test-results:
         name: "Publish Tests Results"
+        needs: [ api-tests, unit-tests ]
         runs-on: ubuntu-latest
         permissions:
             checks: write
@@ -96,7 +226,7 @@ jobs:
         if: ${{ startsWith(github.ref, 'refs/tags/v') }}
         runs-on: macos-latest
         environment: production
-        needs: [ pack ]
+        needs: [ pack, publish-test-results, static-code-analysis, mutation-tests-dashboard ]
         permissions:
             contents: write
         steps:
