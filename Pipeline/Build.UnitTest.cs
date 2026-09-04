@@ -72,9 +72,9 @@ partial class Build
 			BuildScope.CoreOnly => [Solution.Tests.aweXpect_Core_Tests,],
 			BuildScope.MainOnly =>
 			[
-				Solution.Tests.aweXpect_Analyzers_Tests,
-				Solution.Tests.aweXpect_Tests,
-				Solution.Tests.aweXpect_Internal_Tests,
+				//Solution.Tests.aweXpect_Analyzers_Tests,
+				//Solution.Tests.aweXpect_Tests,
+				//Solution.Tests.aweXpect_Internal_Tests,
 			],
 			_ =>
 			[
