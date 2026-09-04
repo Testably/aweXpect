@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "0d5b1a9511c35f013df80add1cb449e036aed763",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat May 16 19:04:29 2026 \u002B0200",
-        "message": "fix: pluralize item suffix in \u0060ComplyWith\u0060 failure messages (#951)"
-      },
-      {
         "sha": "2e3e0f0e27e7ed539cb4758dc90214ae1bce12d2",
         "author": "Valentin Breu\u00DF",
         "date": "Sat May 16 19:42:47 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Aug 17 12:51:19 2026 \u002B0200",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.8.1 to 18.9.0 (#1007)"
+      },
+      {
+        "sha": "300993a915965cb639a77cc2ea2bfe89c22f6f56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 4 18:35:53 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v2.36.0 (#1019)"
       }
     ],
     "labels": [
-      "0d5b1a95",
       "2e3e0f0e",
       "9e78cad2",
       "891b1b70",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "a2cd8a35",
       "d6d2b3d2",
       "956eadd6",
-      "24dc08d9"
+      "24dc08d9",
+      "300993a9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          263.74906460444134,
           254.63417393820626,
           257.2480085690816,
           244.25682302883692,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           254.05494383403234,
           251.71505771364485,
           246.84150862693787,
-          271.3400662626539
+          271.3400662626539,
+          260.6101592268263
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          234.34768841816827,
           253.0220613846412,
           260.5485079447428,
           231.991211107799,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           245.09986426280096,
           266.93660954066684,
           249.61967541621283,
-          244.4677336215973
+          244.4677336215973,
+          250.41821381251017
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "0d5b1a9511c35f013df80add1cb449e036aed763",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat May 16 19:04:29 2026 \u002B0200",
-        "message": "fix: pluralize item suffix in \u0060ComplyWith\u0060 failure messages (#951)"
-      },
-      {
         "sha": "2e3e0f0e27e7ed539cb4758dc90214ae1bce12d2",
         "author": "Valentin Breu\u00DF",
         "date": "Sat May 16 19:42:47 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Aug 17 12:51:19 2026 \u002B0200",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.8.1 to 18.9.0 (#1007)"
+      },
+      {
+        "sha": "300993a915965cb639a77cc2ea2bfe89c22f6f56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 4 18:35:53 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v2.36.0 (#1019)"
       }
     ],
     "labels": [
-      "0d5b1a95",
       "2e3e0f0e",
       "9e78cad2",
       "891b1b70",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "a2cd8a35",
       "d6d2b3d2",
       "956eadd6",
-      "24dc08d9"
+      "24dc08d9",
+      "300993a9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          299013.83621651784,
           328639.2407877604,
           307924.8183942522,
           311299.91650390625,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           292008.66573660716,
           299549.37747395836,
           294975.8651994978,
-          309869.0206380208
+          309869.0206380208,
+          329961.2967354911
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1031,8 +1031,8 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
+          335444,
           335444,
           335444,
           335444,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2548547.8702566964,
           2430546.505989583,
           2489009.7388020833,
           2552441.5973772323,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2351292.710379464,
           2444080.3622395834,
           2363169.249441964,
-          2796549.349158654
+          2796549.349158654,
+          2681717.0424479167
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4804906,
           4804906,
           4804906,
           4804906,
@@ -1202,6 +1201,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841647,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "0d5b1a9511c35f013df80add1cb449e036aed763",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat May 16 19:04:29 2026 \u002B0200",
-        "message": "fix: pluralize item suffix in \u0060ComplyWith\u0060 failure messages (#951)"
-      },
       {
         "sha": "2e3e0f0e27e7ed539cb4758dc90214ae1bce12d2",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Aug 17 12:51:19 2026 \u002B0200",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.8.1 to 18.9.0 (#1007)"
+      },
+      {
+        "sha": "300993a915965cb639a77cc2ea2bfe89c22f6f56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 4 18:35:53 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v2.36.0 (#1019)"
       }
     ],
     "labels": [
-      "0d5b1a95",
       "2e3e0f0e",
       "9e78cad2",
       "891b1b70",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "a2cd8a35",
       "d6d2b3d2",
       "956eadd6",
-      "24dc08d9"
+      "24dc08d9",
+      "300993a9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          482.29411381941577,
           486.32153536478677,
           521.8121624628703,
           469.4192423184713,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           485.1151306629181,
           474.23495664596555,
           489.05501550038656,
-          508.41381093433927
+          508.41381093433927,
+          544.7505034128825
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          465.22883943716687,
           474.5699833539816,
           536.6702416102091,
           467.0827213287354,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           473.09620780944823,
           510.3519074757894,
           501.6263490041097,
-          537.9235699971517
+          537.9235699971517,
+          497.77142899831136
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "0d5b1a9511c35f013df80add1cb449e036aed763",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat May 16 19:04:29 2026 \u002B0200",
-        "message": "fix: pluralize item suffix in \u0060ComplyWith\u0060 failure messages (#951)"
-      },
-      {
         "sha": "2e3e0f0e27e7ed539cb4758dc90214ae1bce12d2",
         "author": "Valentin Breu\u00DF",
         "date": "Sat May 16 19:42:47 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Aug 17 12:51:19 2026 \u002B0200",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.8.1 to 18.9.0 (#1007)"
+      },
+      {
+        "sha": "300993a915965cb639a77cc2ea2bfe89c22f6f56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 4 18:35:53 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v2.36.0 (#1019)"
       }
     ],
     "labels": [
-      "0d5b1a95",
       "2e3e0f0e",
       "9e78cad2",
       "891b1b70",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "a2cd8a35",
       "d6d2b3d2",
       "956eadd6",
-      "24dc08d9"
+      "24dc08d9",
+      "300993a9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          256.3235088030497,
           262.6412694454193,
           268.359963621412,
           254.4930282320295,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           248.1609696660723,
           263.4916341645377,
           255.30838574681962,
-          286.87845315933225
+          286.87845315933225,
+          271.17682282129925
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          251.34436041514078,
           256.59832350413006,
           276.8941360473633,
           235.0635022799174,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           238.2086463891543,
           257.3656890551249,
           248.93196236292522,
-          279.25633927753995
+          279.25633927753995,
+          259.80303284327186
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "0d5b1a9511c35f013df80add1cb449e036aed763",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat May 16 19:04:29 2026 \u002B0200",
-        "message": "fix: pluralize item suffix in \u0060ComplyWith\u0060 failure messages (#951)"
-      },
-      {
         "sha": "2e3e0f0e27e7ed539cb4758dc90214ae1bce12d2",
         "author": "Valentin Breu\u00DF",
         "date": "Sat May 16 19:42:47 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Aug 17 12:51:19 2026 \u002B0200",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.8.1 to 18.9.0 (#1007)"
+      },
+      {
+        "sha": "300993a915965cb639a77cc2ea2bfe89c22f6f56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 4 18:35:53 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v2.36.0 (#1019)"
       }
     ],
     "labels": [
-      "0d5b1a95",
       "2e3e0f0e",
       "9e78cad2",
       "891b1b70",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "a2cd8a35",
       "d6d2b3d2",
       "956eadd6",
-      "24dc08d9"
+      "24dc08d9",
+      "300993a9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          475.7153709411621,
           471.90136366624097,
           481.8471424420675,
           465.8563095410665,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           457.0840086619059,
           473.729869445165,
           474.2024907430013,
-          489.05617464505707
+          489.05617464505707,
+          486.1496162414551
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1185.6244538170952,
           1128.6523996499868,
           1276.5654972394307,
           1206.3605616251627,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1145.1624849864415,
           1211.4821085248675,
           1194.762306213379,
-          1319.9606152943202
+          1319.9606152943202,
+          1253.156853357951
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "0d5b1a9511c35f013df80add1cb449e036aed763",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat May 16 19:04:29 2026 \u002B0200",
-        "message": "fix: pluralize item suffix in \u0060ComplyWith\u0060 failure messages (#951)"
-      },
-      {
         "sha": "2e3e0f0e27e7ed539cb4758dc90214ae1bce12d2",
         "author": "Valentin Breu\u00DF",
         "date": "Sat May 16 19:42:47 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Aug 17 12:51:19 2026 \u002B0200",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.8.1 to 18.9.0 (#1007)"
+      },
+      {
+        "sha": "300993a915965cb639a77cc2ea2bfe89c22f6f56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 4 18:35:53 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v2.36.0 (#1019)"
       }
     ],
     "labels": [
-      "0d5b1a95",
       "2e3e0f0e",
       "9e78cad2",
       "891b1b70",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "a2cd8a35",
       "d6d2b3d2",
       "956eadd6",
-      "24dc08d9"
+      "24dc08d9",
+      "300993a9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1920.984299468994,
           1908.151171024029,
           2018.7297785622734,
           2016.6996198018392,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1882.4668922424316,
           1855.15222461407,
           1917.4381256103516,
-          2153.836298806327
+          2153.836298806327,
+          1905.213739267985
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1244.610304260254,
           1235.9358866373698,
           1498.877787399292,
           1403.9941674550375,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1281.9057956695556,
           1365.7781730651855,
           1360.8156960805256,
-          1436.160674902109
+          1436.160674902109,
+          1324.521998723348
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "0d5b1a9511c35f013df80add1cb449e036aed763",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat May 16 19:04:29 2026 \u002B0200",
-        "message": "fix: pluralize item suffix in \u0060ComplyWith\u0060 failure messages (#951)"
-      },
-      {
         "sha": "2e3e0f0e27e7ed539cb4758dc90214ae1bce12d2",
         "author": "Valentin Breu\u00DF",
         "date": "Sat May 16 19:42:47 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Aug 17 12:51:19 2026 \u002B0200",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.8.1 to 18.9.0 (#1007)"
+      },
+      {
+        "sha": "300993a915965cb639a77cc2ea2bfe89c22f6f56",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 4 18:35:53 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v2.36.0 (#1019)"
       }
     ],
     "labels": [
-      "0d5b1a95",
       "2e3e0f0e",
       "9e78cad2",
       "891b1b70",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "a2cd8a35",
       "d6d2b3d2",
       "956eadd6",
-      "24dc08d9"
+      "24dc08d9",
+      "300993a9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2539.419913973127,
           2504.0617779323034,
           2623.5803386143275,
           2673.3710471561976,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2524.2784502665204,
           2441.176905118502,
           2525.806895446777,
-          2770.208013974703
+          2770.208013974703,
+          2535.344251759847
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          89274.11682942709,
           62079.916748046875,
           63488.736328125,
           93535.61938476562,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           20087.33641924177,
           20258.23517150879,
           21029.074384416854,
-          28797.18398030599
+          28797.18398030599,
+          26631.96302141462
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          56986,
           57481,
           57481,
           57957,
@@ -4214,6 +4213,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471,
           33471,
