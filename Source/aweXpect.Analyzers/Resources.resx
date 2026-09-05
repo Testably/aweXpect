@@ -46,4 +46,7 @@
 	<data name="aweXpect0002Title" xml:space="preserve">
 		<value>Replace "Equals" with "IsEqualTo"</value>
 	</data>
+	<data name="IsNotNullSuppressionJustification" xml:space="preserve">
+		<value>The subject was verified to be not null by a preceding expectation.</value>
+	</data>
 </root>

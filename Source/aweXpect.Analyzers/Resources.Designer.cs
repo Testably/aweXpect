@@ -121,5 +121,14 @@ namespace aweXpect.Analyzers {
                 return ResourceManager.GetString("aweXpect0002Title", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The subject was verified to be not null by a preceding expectation..
+        /// </summary>
+        internal static string IsNotNullSuppressionJustification {
+            get {
+                return ResourceManager.GetString("IsNotNullSuppressionJustification", resourceCulture);
+            }
+        }
     }
 }
