@@ -3348,6 +3348,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 4 18:35:53 2026 \u002B0200",
         "message": "chore: bump aweXpect to v2.36.0 (#1019)"
+      },
+      {
+        "sha": "f37799d9463485c16a57bc1e164b8aa50637a0dd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 5 08:41:06 2026 \u002B0200",
+        "message": "chore: add mergify auto-merge for dependabot PRs (#1020)"
       }
     ],
     "labels": [
@@ -3908,7 +3914,8 @@ window.BENCHMARK_DATA = {
       "d6d2b3d2",
       "956eadd6",
       "24dc08d9",
-      "300993a9"
+      "300993a9",
+      "f37799d9"
     ],
     "datasets": [
       {
@@ -4472,7 +4479,8 @@ window.BENCHMARK_DATA = {
           251.71505771364485,
           246.84150862693787,
           271.3400662626539,
-          260.6101592268263
+          260.6101592268263,
+          261.8702751159668
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4945,6 +4953,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5613,7 +5622,8 @@ window.BENCHMARK_DATA = {
           266.93660954066684,
           249.61967541621283,
           244.4677336215973,
-          250.41821381251017
+          250.41821381251017,
+          240.63339359419686
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5806,6 +5816,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -9082,6 +9093,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 4 18:35:53 2026 \u002B0200",
         "message": "chore: bump aweXpect to v2.36.0 (#1019)"
+      },
+      {
+        "sha": "f37799d9463485c16a57bc1e164b8aa50637a0dd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 5 08:41:06 2026 \u002B0200",
+        "message": "chore: add mergify auto-merge for dependabot PRs (#1020)"
       }
     ],
     "labels": [
@@ -9565,7 +9582,8 @@ window.BENCHMARK_DATA = {
       "d6d2b3d2",
       "956eadd6",
       "24dc08d9",
-      "300993a9"
+      "300993a9",
+      "f37799d9"
     ],
     "datasets": [
       {
@@ -10052,7 +10070,8 @@ window.BENCHMARK_DATA = {
           299549.37747395836,
           294975.8651994978,
           309869.0206380208,
-          329961.2967354911
+          329961.2967354911,
+          312238.31331380206
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10499,6 +10518,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335442,
+          335444,
           335444,
           335444,
           335444,
@@ -11039,7 +11059,8 @@ window.BENCHMARK_DATA = {
           2444080.3622395834,
           2363169.249441964,
           2796549.349158654,
-          2681717.0424479167
+          2681717.0424479167,
+          2727141.603645833
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11530,6 +11551,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841647,
+          4841651,
           4841651,
           4841651
         ],
@@ -14893,6 +14915,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 4 18:35:53 2026 \u002B0200",
         "message": "chore: bump aweXpect to v2.36.0 (#1019)"
+      },
+      {
+        "sha": "f37799d9463485c16a57bc1e164b8aa50637a0dd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 5 08:41:06 2026 \u002B0200",
+        "message": "chore: add mergify auto-merge for dependabot PRs (#1020)"
       }
     ],
     "labels": [
@@ -15453,7 +15481,8 @@ window.BENCHMARK_DATA = {
       "d6d2b3d2",
       "956eadd6",
       "24dc08d9",
-      "300993a9"
+      "300993a9",
+      "f37799d9"
     ],
     "datasets": [
       {
@@ -16017,7 +16046,8 @@ window.BENCHMARK_DATA = {
           474.23495664596555,
           489.05501550038656,
           508.41381093433927,
-          544.7505034128825
+          544.7505034128825,
+          492.20544007619225
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16490,6 +16520,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -17158,7 +17189,8 @@ window.BENCHMARK_DATA = {
           510.3519074757894,
           501.6263490041097,
           537.9235699971517,
-          497.77142899831136
+          497.77142899831136,
+          528.7770683924357
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17351,6 +17383,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -21089,6 +21122,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 4 18:35:53 2026 \u002B0200",
         "message": "chore: bump aweXpect to v2.36.0 (#1019)"
+      },
+      {
+        "sha": "f37799d9463485c16a57bc1e164b8aa50637a0dd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 5 08:41:06 2026 \u002B0200",
+        "message": "chore: add mergify auto-merge for dependabot PRs (#1020)"
       }
     ],
     "labels": [
@@ -21649,7 +21688,8 @@ window.BENCHMARK_DATA = {
       "d6d2b3d2",
       "956eadd6",
       "24dc08d9",
-      "300993a9"
+      "300993a9",
+      "f37799d9"
     ],
     "datasets": [
       {
@@ -22213,7 +22253,8 @@ window.BENCHMARK_DATA = {
           263.4916341645377,
           255.30838574681962,
           286.87845315933225,
-          271.17682282129925
+          271.17682282129925,
+          263.992242370333
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22727,6 +22768,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -23354,7 +23396,8 @@ window.BENCHMARK_DATA = {
           257.3656890551249,
           248.93196236292522,
           279.25633927753995,
-          259.80303284327186
+          259.80303284327186,
+          252.77559280395508
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -23547,6 +23590,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -27285,6 +27329,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 4 18:35:53 2026 \u002B0200",
         "message": "chore: bump aweXpect to v2.36.0 (#1019)"
+      },
+      {
+        "sha": "f37799d9463485c16a57bc1e164b8aa50637a0dd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 5 08:41:06 2026 \u002B0200",
+        "message": "chore: add mergify auto-merge for dependabot PRs (#1020)"
       }
     ],
     "labels": [
@@ -27845,7 +27895,8 @@ window.BENCHMARK_DATA = {
       "d6d2b3d2",
       "956eadd6",
       "24dc08d9",
-      "300993a9"
+      "300993a9",
+      "f37799d9"
     ],
     "datasets": [
       {
@@ -28409,7 +28460,8 @@ window.BENCHMARK_DATA = {
           473.729869445165,
           474.2024907430013,
           489.05617464505707,
-          486.1496162414551
+          486.1496162414551,
+          468.5110655512129
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28882,6 +28934,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -29550,7 +29603,8 @@ window.BENCHMARK_DATA = {
           1211.4821085248675,
           1194.762306213379,
           1319.9606152943202,
-          1253.156853357951
+          1253.156853357951,
+          1206.7439642588297
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29979,6 +30033,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -33481,6 +33536,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 4 18:35:53 2026 \u002B0200",
         "message": "chore: bump aweXpect to v2.36.0 (#1019)"
+      },
+      {
+        "sha": "f37799d9463485c16a57bc1e164b8aa50637a0dd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 5 08:41:06 2026 \u002B0200",
+        "message": "chore: add mergify auto-merge for dependabot PRs (#1020)"
       }
     ],
     "labels": [
@@ -34041,7 +34102,8 @@ window.BENCHMARK_DATA = {
       "d6d2b3d2",
       "956eadd6",
       "24dc08d9",
-      "300993a9"
+      "300993a9",
+      "f37799d9"
     ],
     "datasets": [
       {
@@ -34605,7 +34667,8 @@ window.BENCHMARK_DATA = {
           1855.15222461407,
           1917.4381256103516,
           2153.836298806327,
-          1905.213739267985
+          1905.213739267985,
+          1951.43681640625
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35078,6 +35141,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -35746,7 +35810,8 @@ window.BENCHMARK_DATA = {
           1365.7781730651855,
           1360.8156960805256,
           1436.160674902109,
-          1324.521998723348
+          1324.521998723348,
+          1341.0697611490884
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35939,6 +36004,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -39677,6 +39743,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 4 18:35:53 2026 \u002B0200",
         "message": "chore: bump aweXpect to v2.36.0 (#1019)"
+      },
+      {
+        "sha": "f37799d9463485c16a57bc1e164b8aa50637a0dd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 5 08:41:06 2026 \u002B0200",
+        "message": "chore: add mergify auto-merge for dependabot PRs (#1020)"
       }
     ],
     "labels": [
@@ -40237,7 +40309,8 @@ window.BENCHMARK_DATA = {
       "d6d2b3d2",
       "956eadd6",
       "24dc08d9",
-      "300993a9"
+      "300993a9",
+      "f37799d9"
     ],
     "datasets": [
       {
@@ -40801,7 +40874,8 @@ window.BENCHMARK_DATA = {
           2441.176905118502,
           2525.806895446777,
           2770.208013974703,
-          2535.344251759847
+          2535.344251759847,
+          2598.736553464617
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -41274,6 +41348,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -41942,7 +42017,8 @@ window.BENCHMARK_DATA = {
           20258.23517150879,
           21029.074384416854,
           28797.18398030599,
-          26631.96302141462
+          26631.96302141462,
+          27103.36249593099
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -42482,6 +42558,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471,
           33471,
