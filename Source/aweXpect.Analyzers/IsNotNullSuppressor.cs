@@ -269,7 +269,7 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 			ExpressionSyntax? target = descendant switch
 			{
 				AssignmentExpressionSyntax assignment => assignment.Left,
-				ArgumentSyntax argument when !argument.RefKindKeyword.IsKind(SyntaxKind.None) => argument.Expression,
+				ArgumentSyntax argument when argument.RefKindKeyword.IsKind(SyntaxKind.RefKeyword) || argument.RefKindKeyword.IsKind(SyntaxKind.OutKeyword) => argument.Expression,
 				_ => null,
 			};
 
