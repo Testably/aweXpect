@@ -136,7 +136,8 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 
 			// Branching statements are not necessarily evaluated and might write to the subject, so neither an
 			// expectation inside them nor an expectation before them can be relied upon.
-			if (statement is not (ExpressionStatementSyntax or LocalDeclarationStatementSyntax))
+			if (statement is IfStatementSyntax or SwitchStatementSyntax or TryStatementSyntax or ForStatementSyntax
+			    or CommonForEachStatementSyntax or WhileStatementSyntax or DoStatementSyntax)
 			{
 				return Verification.Invalidated;
 			}
