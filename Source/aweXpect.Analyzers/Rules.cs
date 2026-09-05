@@ -14,7 +14,7 @@ internal static class Rules
 		CreateDescriptor("aweXpect0002", UsageCategory, DiagnosticSeverity.Error);
 
 	/// <summary>
-	///     The nullability warnings that are suppressed after an <c>IsNotNull</c> expectation.
+	///     The nullability warnings that are suppressed after an expectation that guarantees a not-null subject.
 	/// </summary>
 	public static readonly ImmutableArray<SuppressionDescriptor> IsNotNullSuppressions =
 	[
@@ -23,7 +23,6 @@ internal static class Rules
 		CreateSuppression("aweXpect1003", "CS8604"),
 		CreateSuppression("aweXpect1004", "CS8629"),
 	];
-
 
 	private static SuppressionDescriptor CreateSuppression(string suppressionId, string suppressedDiagnosticId) => new(
 		suppressionId,

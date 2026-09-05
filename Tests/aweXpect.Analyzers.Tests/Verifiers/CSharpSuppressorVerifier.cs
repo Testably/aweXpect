@@ -19,6 +19,8 @@ public static class CSharpSuppressorVerifier<TSuppressor>
 		Test test = new()
 		{
 			TestCode = source,
+			// Unlike the other verifiers, all warnings are validated below, so the reference assemblies must match
+			// the ones that aweXpect.Core was compiled against to avoid CS1701 assembly binding warnings.
 			ReferenceAssemblies = ReferenceAssemblies.Net.Net80,
 			TestState =
 			{
