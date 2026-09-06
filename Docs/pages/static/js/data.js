@@ -3384,6 +3384,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
         "message": "feat: support \u0060IgnoringIndentation()\u0060 in the string expectations (#1032)"
+      },
+      {
+        "sha": "affdbc378d700ce40d2bfe4621501abb2368882f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 19:22:42 2026 \u002B0200",
+        "message": "feat: add \u0060Eventually()\u0060 to retry an expectation on a delegate (#1033)"
       }
     ],
     "labels": [
@@ -3950,7 +3956,8 @@ window.BENCHMARK_DATA = {
       "964906fc",
       "520b2403",
       "b54cc8e6",
-      "11994e6d"
+      "11994e6d",
+      "affdbc37"
     ],
     "datasets": [
       {
@@ -4520,7 +4527,8 @@ window.BENCHMARK_DATA = {
           187.39688928922018,
           263.55120881398517,
           287.9791279157003,
-          286.4416621843974
+          286.4416621843974,
+          191.0487357934316
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4993,6 +5001,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5673,7 +5682,8 @@ window.BENCHMARK_DATA = {
           207.76081890719277,
           249.12790355682372,
           301.0684215863546,
-          262.62074750264486
+          262.62074750264486,
+          208.36846761703492
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5866,6 +5876,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -9184,6 +9195,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
         "message": "feat: support \u0060IgnoringIndentation()\u0060 in the string expectations (#1032)"
+      },
+      {
+        "sha": "affdbc378d700ce40d2bfe4621501abb2368882f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 19:22:42 2026 \u002B0200",
+        "message": "feat: add \u0060Eventually()\u0060 to retry an expectation on a delegate (#1033)"
       }
     ],
     "labels": [
@@ -9673,7 +9690,8 @@ window.BENCHMARK_DATA = {
       "964906fc",
       "520b2403",
       "b54cc8e6",
-      "11994e6d"
+      "11994e6d",
+      "affdbc37"
     ],
     "datasets": [
       {
@@ -10166,7 +10184,8 @@ window.BENCHMARK_DATA = {
           236163.94596354166,
           327566.77659254806,
           273489.1768624442,
-          323745.7591271034
+          323745.7591271034,
+          238487.37515694756
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10664,7 +10683,8 @@ window.BENCHMARK_DATA = {
           335442,
           335444,
           335444,
-          335444
+          335444,
+          335442
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11165,7 +11185,8 @@ window.BENCHMARK_DATA = {
           1887719.546595982,
           2708150.0167410714,
           2296891.5299479165,
-          2773380.45625
+          2773380.45625,
+          1946460.4822265625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11663,7 +11684,8 @@ window.BENCHMARK_DATA = {
           4841647,
           4841651,
           4841613,
-          4841651
+          4841651,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15061,6 +15083,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
         "message": "feat: support \u0060IgnoringIndentation()\u0060 in the string expectations (#1032)"
+      },
+      {
+        "sha": "affdbc378d700ce40d2bfe4621501abb2368882f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 19:22:42 2026 \u002B0200",
+        "message": "feat: add \u0060Eventually()\u0060 to retry an expectation on a delegate (#1033)"
       }
     ],
     "labels": [
@@ -15627,7 +15655,8 @@ window.BENCHMARK_DATA = {
       "964906fc",
       "520b2403",
       "b54cc8e6",
-      "11994e6d"
+      "11994e6d",
+      "affdbc37"
     ],
     "datasets": [
       {
@@ -16197,7 +16226,8 @@ window.BENCHMARK_DATA = {
           372.76982164382935,
           503.7450442314148,
           490.6649518330892,
-          521.6060015814645
+          521.6060015814645,
+          421.632573668162
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16670,6 +16700,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -17350,7 +17381,8 @@ window.BENCHMARK_DATA = {
           394.07516254697526,
           487.83619356155396,
           533.8596198399862,
-          517.7070039113363
+          517.7070039113363,
+          427.9677768389384
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17543,6 +17575,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -21323,6 +21356,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
         "message": "feat: support \u0060IgnoringIndentation()\u0060 in the string expectations (#1032)"
+      },
+      {
+        "sha": "affdbc378d700ce40d2bfe4621501abb2368882f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 19:22:42 2026 \u002B0200",
+        "message": "feat: add \u0060Eventually()\u0060 to retry an expectation on a delegate (#1033)"
       }
     ],
     "labels": [
@@ -21889,7 +21928,8 @@ window.BENCHMARK_DATA = {
       "964906fc",
       "520b2403",
       "b54cc8e6",
-      "11994e6d"
+      "11994e6d",
+      "affdbc37"
     ],
     "datasets": [
       {
@@ -22459,7 +22499,8 @@ window.BENCHMARK_DATA = {
           195.24499454498292,
           266.67754578590393,
           291.6615239143372,
-          274.26365219751995
+          274.26365219751995,
+          199.57252311706543
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22973,6 +23014,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -23612,7 +23654,8 @@ window.BENCHMARK_DATA = {
           202.3700886408488,
           252.25035781126755,
           295.32209663391114,
-          267.2180280049642
+          267.2180280049642,
+          209.31265878677368
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -23805,6 +23848,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -27585,6 +27629,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
         "message": "feat: support \u0060IgnoringIndentation()\u0060 in the string expectations (#1032)"
+      },
+      {
+        "sha": "affdbc378d700ce40d2bfe4621501abb2368882f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 19:22:42 2026 \u002B0200",
+        "message": "feat: add \u0060Eventually()\u0060 to retry an expectation on a delegate (#1033)"
       }
     ],
     "labels": [
@@ -28151,7 +28201,8 @@ window.BENCHMARK_DATA = {
       "964906fc",
       "520b2403",
       "b54cc8e6",
-      "11994e6d"
+      "11994e6d",
+      "affdbc37"
     ],
     "datasets": [
       {
@@ -28721,7 +28772,8 @@ window.BENCHMARK_DATA = {
           381.2699041366577,
           476.6364890416463,
           445.5378861745199,
-          498.9076719965254
+          498.9076719965254,
+          391.83385581970214
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29194,6 +29246,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -29874,7 +29927,8 @@ window.BENCHMARK_DATA = {
           955.3100690841675,
           1237.353496424357,
           1273.3620643615723,
-          1381.4389188130697
+          1381.4389188130697,
+          975.4726434071858
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30303,6 +30357,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -33847,6 +33902,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
         "message": "feat: support \u0060IgnoringIndentation()\u0060 in the string expectations (#1032)"
+      },
+      {
+        "sha": "affdbc378d700ce40d2bfe4621501abb2368882f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 19:22:42 2026 \u002B0200",
+        "message": "feat: add \u0060Eventually()\u0060 to retry an expectation on a delegate (#1033)"
       }
     ],
     "labels": [
@@ -34413,7 +34474,8 @@ window.BENCHMARK_DATA = {
       "964906fc",
       "520b2403",
       "b54cc8e6",
-      "11994e6d"
+      "11994e6d",
+      "affdbc37"
     ],
     "datasets": [
       {
@@ -34983,7 +35045,8 @@ window.BENCHMARK_DATA = {
           1527.452621459961,
           2047.8017865498862,
           1420.962323888143,
-          1961.5972730000815
+          1961.5972730000815,
+          1528.6663879394532
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35456,6 +35519,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -36136,7 +36200,8 @@ window.BENCHMARK_DATA = {
           1078.9776429396409,
           1399.8545087178547,
           1401.9845397949218,
-          1419.2282477787562
+          1419.2282477787562,
+          1101.0765909467425
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36329,6 +36394,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -40109,6 +40175,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
         "message": "feat: support \u0060IgnoringIndentation()\u0060 in the string expectations (#1032)"
+      },
+      {
+        "sha": "affdbc378d700ce40d2bfe4621501abb2368882f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 19:22:42 2026 \u002B0200",
+        "message": "feat: add \u0060Eventually()\u0060 to retry an expectation on a delegate (#1033)"
       }
     ],
     "labels": [
@@ -40675,7 +40747,8 @@ window.BENCHMARK_DATA = {
       "964906fc",
       "520b2403",
       "b54cc8e6",
-      "11994e6d"
+      "11994e6d",
+      "affdbc37"
     ],
     "datasets": [
       {
@@ -41245,7 +41318,8 @@ window.BENCHMARK_DATA = {
           2052.6709531148276,
           2712.830554707845,
           1855.2125802721296,
-          2662.4832257588705
+          2662.4832257588705,
+          2038.1347600496733
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -41718,6 +41792,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -42398,7 +42473,8 @@ window.BENCHMARK_DATA = {
           16551.361726888023,
           28598.32417515346,
           17947.528975423178,
-          27737.258825683595
+          27737.258825683595,
+          16199.068056233724
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -42973,6 +43049,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
