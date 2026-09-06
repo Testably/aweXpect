@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "a7143ffe3d0126d97f36f76f57521fef8804476b",
-        "author": "dependabot[bot]",
-        "date": "Mon May 18 16:04:39 2026 \u002B0200",
-        "message": "chore: Bump the mstest group with 2 updates (#961)"
-      },
-      {
         "sha": "695339ab55e47ed029a403c4cc125117d165b130",
         "author": "dependabot[bot]",
         "date": "Mon May 18 16:05:06 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 21:23:57 2026 \u002B0200",
         "message": "test: make the eventually tests independent of the agent speed (#1035)"
+      },
+      {
+        "sha": "17158c05cc8ec097c2b8552a9a980c7ae6c8d0e7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 21:28:08 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v2.35.0 (#1036)"
       }
     ],
     "labels": [
-      "a7143ffe",
       "695339ab",
       "a9e05ce1",
       "d5f54ae4",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "affdbc37",
       "aed9d35c",
       "eef3e6a3",
-      "24a17c1c"
+      "24a17c1c",
+      "17158c05"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          255.77837548937117,
           238.8254194577535,
           251.92092113494874,
           248.4225470860799,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           191.0487357934316,
           220.6771111647288,
           222.33497150739035,
-          251.6664425055186
+          251.6664425055186,
+          273.690616162618
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          251.82736268410315,
           250.92081941877092,
           236.78602307183402,
           247.2772104581197,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           208.36846761703492,
           218.34737292925516,
           201.06839975288935,
-          253.91424544652304
+          253.91424544652304,
+          272.7523417790731
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "a7143ffe3d0126d97f36f76f57521fef8804476b",
-        "author": "dependabot[bot]",
-        "date": "Mon May 18 16:04:39 2026 \u002B0200",
-        "message": "chore: Bump the mstest group with 2 updates (#961)"
-      },
-      {
         "sha": "695339ab55e47ed029a403c4cc125117d165b130",
         "author": "dependabot[bot]",
         "date": "Mon May 18 16:05:06 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 21:23:57 2026 \u002B0200",
         "message": "test: make the eventually tests independent of the agent speed (#1035)"
+      },
+      {
+        "sha": "17158c05cc8ec097c2b8552a9a980c7ae6c8d0e7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 21:28:08 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v2.35.0 (#1036)"
       }
     ],
     "labels": [
-      "a7143ffe",
       "695339ab",
       "a9e05ce1",
       "d5f54ae4",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "affdbc37",
       "aed9d35c",
       "eef3e6a3",
-      "24a17c1c"
+      "24a17c1c",
+      "17158c05"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          303773.33639322914,
           296890.3802408854,
           298966.8494140625,
           314822.47265625,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           238487.37515694756,
           242433.01806640625,
           243159.89986979167,
-          321485.473828125
+          321485.473828125,
+          317531.7226911272
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1069,12 +1069,12 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
           335444,
           335444,
           335444,
           335442,
+          335444,
           335444,
           335444,
           335444
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2616952.1244791667,
           2469620.8059895835,
           2506167.606026786,
           2721793.542708333,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           1946460.4822265625,
           2066123.7115885417,
           1905257.0578962055,
-          2868241.325
+          2868241.325,
+          2723807.4057291667
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4804906,
           4804906,
           4841651,
           4841651,
@@ -1202,6 +1201,7 @@ window.BENCHMARK_DATA = {
           4841647,
           4841648,
           4841647,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "a7143ffe3d0126d97f36f76f57521fef8804476b",
-        "author": "dependabot[bot]",
-        "date": "Mon May 18 16:04:39 2026 \u002B0200",
-        "message": "chore: Bump the mstest group with 2 updates (#961)"
-      },
       {
         "sha": "695339ab55e47ed029a403c4cc125117d165b130",
         "author": "dependabot[bot]",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 21:23:57 2026 \u002B0200",
         "message": "test: make the eventually tests independent of the agent speed (#1035)"
+      },
+      {
+        "sha": "17158c05cc8ec097c2b8552a9a980c7ae6c8d0e7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 21:28:08 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v2.35.0 (#1036)"
       }
     ],
     "labels": [
-      "a7143ffe",
       "695339ab",
       "a9e05ce1",
       "d5f54ae4",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "affdbc37",
       "aed9d35c",
       "eef3e6a3",
-      "24a17c1c"
+      "24a17c1c",
+      "17158c05"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          497.5992493947347,
           482.30627117156985,
           466.29830408096313,
           493.37997512817384,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           421.632573668162,
           408.61175231933595,
           384.1228542327881,
-          509.5957601411002
+          509.5957601411002,
+          487.83896595637003
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          513.9540702819825,
           488.19118172327677,
           454.54766511917114,
           475.0375202383314,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           427.9677768389384,
           453.5224277496338,
           425.5202818552653,
-          523.6554533004761
+          523.6554533004761,
+          527.3543803532918
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "a7143ffe3d0126d97f36f76f57521fef8804476b",
-        "author": "dependabot[bot]",
-        "date": "Mon May 18 16:04:39 2026 \u002B0200",
-        "message": "chore: Bump the mstest group with 2 updates (#961)"
-      },
-      {
         "sha": "695339ab55e47ed029a403c4cc125117d165b130",
         "author": "dependabot[bot]",
         "date": "Mon May 18 16:05:06 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 21:23:57 2026 \u002B0200",
         "message": "test: make the eventually tests independent of the agent speed (#1035)"
+      },
+      {
+        "sha": "17158c05cc8ec097c2b8552a9a980c7ae6c8d0e7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 21:28:08 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v2.35.0 (#1036)"
       }
     ],
     "labels": [
-      "a7143ffe",
       "695339ab",
       "a9e05ce1",
       "d5f54ae4",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "affdbc37",
       "aed9d35c",
       "eef3e6a3",
-      "24a17c1c"
+      "24a17c1c",
+      "17158c05"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          286.583234723409,
           249.57111711502074,
           255.2972011566162,
           279.3821127573649,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           199.57252311706543,
           229.3678126970927,
           203.26784507433572,
-          277.4515934944153
+          277.4515934944153,
+          274.0059195200602
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          251.24291484696525,
           247.27812787464686,
           242.3993557049678,
           267.3096298535665,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           209.31265878677368,
           233.34098466237387,
           203.78753784724645,
-          274.7266558579036
+          274.7266558579036,
+          267.3532590866089
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "a7143ffe3d0126d97f36f76f57521fef8804476b",
-        "author": "dependabot[bot]",
-        "date": "Mon May 18 16:04:39 2026 \u002B0200",
-        "message": "chore: Bump the mstest group with 2 updates (#961)"
-      },
-      {
         "sha": "695339ab55e47ed029a403c4cc125117d165b130",
         "author": "dependabot[bot]",
         "date": "Mon May 18 16:05:06 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 21:23:57 2026 \u002B0200",
         "message": "test: make the eventually tests independent of the agent speed (#1035)"
+      },
+      {
+        "sha": "17158c05cc8ec097c2b8552a9a980c7ae6c8d0e7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 21:28:08 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v2.35.0 (#1036)"
       }
     ],
     "labels": [
-      "a7143ffe",
       "695339ab",
       "a9e05ce1",
       "d5f54ae4",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "affdbc37",
       "aed9d35c",
       "eef3e6a3",
-      "24a17c1c"
+      "24a17c1c",
+      "17158c05"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          498.7164555867513,
           457.5987121899923,
           469.0115102018629,
           457.5411386489868,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           391.83385581970214,
           392.44809595743817,
           390.11140654881797,
-          471.7250687394823
+          471.7250687394823,
+          473.303697903951
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1218.8710580190022,
           1189.5655532836913,
           1197.790695063273,
           1311.036827214559,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           975.4726434071858,
           1043.9087708791096,
           935.6467853546143,
-          1321.9363451004028
+          1321.9363451004028,
+          1205.141513824463
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "a7143ffe3d0126d97f36f76f57521fef8804476b",
-        "author": "dependabot[bot]",
-        "date": "Mon May 18 16:04:39 2026 \u002B0200",
-        "message": "chore: Bump the mstest group with 2 updates (#961)"
-      },
-      {
         "sha": "695339ab55e47ed029a403c4cc125117d165b130",
         "author": "dependabot[bot]",
         "date": "Mon May 18 16:05:06 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 21:23:57 2026 \u002B0200",
         "message": "test: make the eventually tests independent of the agent speed (#1035)"
+      },
+      {
+        "sha": "17158c05cc8ec097c2b8552a9a980c7ae6c8d0e7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 21:28:08 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v2.35.0 (#1036)"
       }
     ],
     "labels": [
-      "a7143ffe",
       "695339ab",
       "a9e05ce1",
       "d5f54ae4",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "affdbc37",
       "aed9d35c",
       "eef3e6a3",
-      "24a17c1c"
+      "24a17c1c",
+      "17158c05"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1957.9539733886718,
           2011.6034900120326,
           1858.8217960357665,
           2077.406628417969,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1528.6663879394532,
           1549.8642019907634,
           1520.8064758300782,
-          2006.229408009847
+          2006.229408009847,
+          1968.0141832987467
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1374.953965250651,
           1296.8864002227783,
           1320.8793548583985,
           1513.755392074585,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1101.0765909467425,
           1157.9394217173258,
           1091.960484822591,
-          1464.9938775380454
+          1464.9938775380454,
+          1311.0715756734212
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "a7143ffe3d0126d97f36f76f57521fef8804476b",
-        "author": "dependabot[bot]",
-        "date": "Mon May 18 16:04:39 2026 \u002B0200",
-        "message": "chore: Bump the mstest group with 2 updates (#961)"
-      },
-      {
         "sha": "695339ab55e47ed029a403c4cc125117d165b130",
         "author": "dependabot[bot]",
         "date": "Mon May 18 16:05:06 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 21:23:57 2026 \u002B0200",
         "message": "test: make the eventually tests independent of the agent speed (#1035)"
+      },
+      {
+        "sha": "17158c05cc8ec097c2b8552a9a980c7ae6c8d0e7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 21:28:08 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v2.35.0 (#1036)"
       }
     ],
     "labels": [
-      "a7143ffe",
       "695339ab",
       "a9e05ce1",
       "d5f54ae4",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "affdbc37",
       "aed9d35c",
       "eef3e6a3",
-      "24a17c1c"
+      "24a17c1c",
+      "17158c05"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2595.122526041667,
           2542.2298736572266,
           2500.5137016296385,
           2658.722917175293,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2038.1347600496733,
           2030.3624051411946,
           2029.514542388916,
-          2628.0233812967936
+          2628.0233812967936,
+          2600.125273777888
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          91340.0798688616,
           63397.70445963542,
           27218.916241455077,
           27746.698482259115,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           16199.068056233724,
           16905.009329223634,
           16022.333467610677,
-          27760.519110543388
+          27760.519110543388,
+          27066.304311116535
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          57481,
           57480,
           33471,
           33471,
@@ -4238,6 +4237,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
