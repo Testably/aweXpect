@@ -31,8 +31,18 @@ public sealed partial class ThatString
 					=> await That(subject).HasLines(lines => lines.Contains("Error"));
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("*Expected that subject*has lines which contains*Error*")
-					.AsWildcard();
+					.WithMessage("""
+					             Expected that subject
+					             has lines which contains "Error" at least once,
+					             but it did not contain it
+
+					             Collection:
+					             [
+					               "Starting up",
+					               "Connected to database",
+					               "Ready"
+					             ]
+					             """);
 			}
 
 			[Fact]
@@ -71,12 +81,22 @@ public sealed partial class ThatString
 			[Fact]
 			public async Task WhenSubstringMatchesButLineDoesNot_ShouldFail()
 			{
-				string subject = "AlreadyRunning";
+				string subject = "Ready steady go";
 
 				async Task Act()
 					=> await That(subject).HasLines(lines => lines.Contains("Ready"));
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has lines which contains "Ready" at least once,
+					             but it did not contain it
+
+					             Collection:
+					             [
+					               "Ready steady go"
+					             ]
+					             """);
 			}
 
 			[Theory]
@@ -131,8 +151,11 @@ public sealed partial class ThatString
 						.HasLines(lines => lines.Contains("Ready")));
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("*Expected that subject*does not have lines*Ready*")
-					.AsWildcard();
+					.WithMessage("""
+					             Expected that subject
+					             does not have lines which contains "Ready" at least once,
+					             but it had
+					             """);
 			}
 		}
 	}

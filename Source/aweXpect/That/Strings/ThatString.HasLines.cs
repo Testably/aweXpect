@@ -62,7 +62,8 @@ public static partial class ThatString
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			// The result is appended by the nested expectations on the lines.
+			stringBuilder.Append(It).Append(" was ");
+			Formatter.Format(stringBuilder, Actual, FormattingOptions.SingleLine);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -82,6 +83,6 @@ public static partial class ThatString
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalResult(stringBuilder, indentation);
+			=> stringBuilder.Append(It).Append(" had");
 	}
 }
