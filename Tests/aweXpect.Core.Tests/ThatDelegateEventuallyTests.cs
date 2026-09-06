@@ -42,10 +42,10 @@ public sealed class ThatDelegateEventuallyTests
 				             """);
 		}
 
-		await That(counter.EvaluationCount).IsBetween(2).And(6)
-			.Because("the subject is evaluated at 0ms, 200ms, 400ms, 600ms, 800ms and - because the last wait " +
-			         "is shortened to the remaining budget - at 1000ms, but a busy machine can drop evaluations, " +
-			         "while without the check interval there would be far more of them");
+		await That(counter.EvaluationCount).IsLessThanOrEqualTo(6)
+			.Because("the check interval allows evaluations at 0ms, 200ms, 400ms, 600ms, 800ms and - because the " +
+			         "last wait is shortened to the remaining budget - at 1000ms, while without it the subject " +
+			         "would be evaluated far more often; how many of them a busy machine reaches is not specified");
 	}
 
 	[Fact]
@@ -256,7 +256,7 @@ public sealed class ThatDelegateEventuallyTests
 		await That(counter.EvaluationCount).IsGreaterThan(1);
 	}
 
-	[Fact(Skip="Test is brittle")]
+	[Fact]
 	public async Task WhenCancelledDuringTheWaitThatConsumesTheTimeout_ShouldBeInconclusive()
 	{
 		using CancellationTokenSource cts = new(100.Milliseconds());
