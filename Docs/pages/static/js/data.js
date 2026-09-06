@@ -3366,6 +3366,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 07:49:16 2026 \u002B0200",
         "message": "feat: add line-based string expectations (#1025)"
+      },
+      {
+        "sha": "520b24032f8868f48867bacf41f6ab153527a2d5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 08:14:45 2026 \u002B0200",
+        "message": "fix: report the negated result of \u0060HasRecursiveInnerExceptions\u0060 (#1028)"
       }
     ],
     "labels": [
@@ -3929,7 +3935,8 @@ window.BENCHMARK_DATA = {
       "300993a9",
       "f37799d9",
       "99b68991",
-      "964906fc"
+      "964906fc",
+      "520b2403"
     ],
     "datasets": [
       {
@@ -4496,7 +4503,8 @@ window.BENCHMARK_DATA = {
           260.6101592268263,
           261.8702751159668,
           260.8233981927236,
-          187.39688928922018
+          187.39688928922018,
+          263.55120881398517
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4969,6 +4977,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5643,7 +5652,8 @@ window.BENCHMARK_DATA = {
           250.41821381251017,
           240.63339359419686,
           253.01398871739704,
-          207.76081890719277
+          207.76081890719277,
+          249.12790355682372
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5836,6 +5846,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -9133,6 +9144,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 07:49:16 2026 \u002B0200",
         "message": "feat: add line-based string expectations (#1025)"
+      },
+      {
+        "sha": "520b24032f8868f48867bacf41f6ab153527a2d5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 08:14:45 2026 \u002B0200",
+        "message": "fix: report the negated result of \u0060HasRecursiveInnerExceptions\u0060 (#1028)"
       }
     ],
     "labels": [
@@ -9619,7 +9636,8 @@ window.BENCHMARK_DATA = {
       "300993a9",
       "f37799d9",
       "99b68991",
-      "964906fc"
+      "964906fc",
+      "520b2403"
     ],
     "datasets": [
       {
@@ -10109,7 +10127,8 @@ window.BENCHMARK_DATA = {
           329961.2967354911,
           312238.31331380206,
           298965.4108886719,
-          236163.94596354166
+          236163.94596354166,
+          327566.77659254806
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10604,7 +10623,8 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335442
+          335442,
+          335444
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11102,7 +11122,8 @@ window.BENCHMARK_DATA = {
           2681717.0424479167,
           2727141.603645833,
           2374673.901785714,
-          1887719.546595982
+          1887719.546595982,
+          2708150.0167410714
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11597,7 +11618,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841648,
-          4841647
+          4841647,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14977,6 +14999,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 07:49:16 2026 \u002B0200",
         "message": "feat: add line-based string expectations (#1025)"
+      },
+      {
+        "sha": "520b24032f8868f48867bacf41f6ab153527a2d5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 08:14:45 2026 \u002B0200",
+        "message": "fix: report the negated result of \u0060HasRecursiveInnerExceptions\u0060 (#1028)"
       }
     ],
     "labels": [
@@ -15540,7 +15568,8 @@ window.BENCHMARK_DATA = {
       "300993a9",
       "f37799d9",
       "99b68991",
-      "964906fc"
+      "964906fc",
+      "520b2403"
     ],
     "datasets": [
       {
@@ -16107,7 +16136,8 @@ window.BENCHMARK_DATA = {
           544.7505034128825,
           492.20544007619225,
           509.43494784037273,
-          372.76982164382935
+          372.76982164382935,
+          503.7450442314148
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16580,6 +16610,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -17254,7 +17285,8 @@ window.BENCHMARK_DATA = {
           497.77142899831136,
           528.7770683924357,
           492.5379686355591,
-          394.07516254697526
+          394.07516254697526,
+          487.83619356155396
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17447,6 +17479,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -21206,6 +21239,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 07:49:16 2026 \u002B0200",
         "message": "feat: add line-based string expectations (#1025)"
+      },
+      {
+        "sha": "520b24032f8868f48867bacf41f6ab153527a2d5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 08:14:45 2026 \u002B0200",
+        "message": "fix: report the negated result of \u0060HasRecursiveInnerExceptions\u0060 (#1028)"
       }
     ],
     "labels": [
@@ -21769,7 +21808,8 @@ window.BENCHMARK_DATA = {
       "300993a9",
       "f37799d9",
       "99b68991",
-      "964906fc"
+      "964906fc",
+      "520b2403"
     ],
     "datasets": [
       {
@@ -22336,7 +22376,8 @@ window.BENCHMARK_DATA = {
           271.17682282129925,
           263.992242370333,
           262.85993460246493,
-          195.24499454498292
+          195.24499454498292,
+          266.67754578590393
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22850,6 +22891,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -23483,7 +23525,8 @@ window.BENCHMARK_DATA = {
           259.80303284327186,
           252.77559280395508,
           246.28508731297083,
-          202.3700886408488
+          202.3700886408488,
+          252.25035781126755
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -23676,6 +23719,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -27435,6 +27479,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 07:49:16 2026 \u002B0200",
         "message": "feat: add line-based string expectations (#1025)"
+      },
+      {
+        "sha": "520b24032f8868f48867bacf41f6ab153527a2d5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 08:14:45 2026 \u002B0200",
+        "message": "fix: report the negated result of \u0060HasRecursiveInnerExceptions\u0060 (#1028)"
       }
     ],
     "labels": [
@@ -27998,7 +28048,8 @@ window.BENCHMARK_DATA = {
       "300993a9",
       "f37799d9",
       "99b68991",
-      "964906fc"
+      "964906fc",
+      "520b2403"
     ],
     "datasets": [
       {
@@ -28565,7 +28616,8 @@ window.BENCHMARK_DATA = {
           486.1496162414551,
           468.5110655512129,
           481.9711998939514,
-          381.2699041366577
+          381.2699041366577,
+          476.6364890416463
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29038,6 +29090,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -29712,7 +29765,8 @@ window.BENCHMARK_DATA = {
           1253.156853357951,
           1206.7439642588297,
           1252.2308293751307,
-          955.3100690841675
+          955.3100690841675,
+          1237.353496424357
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30141,6 +30195,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -33664,6 +33719,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 07:49:16 2026 \u002B0200",
         "message": "feat: add line-based string expectations (#1025)"
+      },
+      {
+        "sha": "520b24032f8868f48867bacf41f6ab153527a2d5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 08:14:45 2026 \u002B0200",
+        "message": "fix: report the negated result of \u0060HasRecursiveInnerExceptions\u0060 (#1028)"
       }
     ],
     "labels": [
@@ -34227,7 +34288,8 @@ window.BENCHMARK_DATA = {
       "300993a9",
       "f37799d9",
       "99b68991",
-      "964906fc"
+      "964906fc",
+      "520b2403"
     ],
     "datasets": [
       {
@@ -34794,7 +34856,8 @@ window.BENCHMARK_DATA = {
           1905.213739267985,
           1951.43681640625,
           1964.588737487793,
-          1527.452621459961
+          1527.452621459961,
+          2047.8017865498862
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35267,6 +35330,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -35941,7 +36005,8 @@ window.BENCHMARK_DATA = {
           1324.521998723348,
           1341.0697611490884,
           1359.1450143178304,
-          1078.9776429396409
+          1078.9776429396409,
+          1399.8545087178547
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36134,6 +36199,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -39893,6 +39959,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 07:49:16 2026 \u002B0200",
         "message": "feat: add line-based string expectations (#1025)"
+      },
+      {
+        "sha": "520b24032f8868f48867bacf41f6ab153527a2d5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 08:14:45 2026 \u002B0200",
+        "message": "fix: report the negated result of \u0060HasRecursiveInnerExceptions\u0060 (#1028)"
       }
     ],
     "labels": [
@@ -40456,7 +40528,8 @@ window.BENCHMARK_DATA = {
       "300993a9",
       "f37799d9",
       "99b68991",
-      "964906fc"
+      "964906fc",
+      "520b2403"
     ],
     "datasets": [
       {
@@ -41023,7 +41096,8 @@ window.BENCHMARK_DATA = {
           2535.344251759847,
           2598.736553464617,
           2612.8094171796524,
-          2052.6709531148276
+          2052.6709531148276,
+          2712.830554707845
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -41496,6 +41570,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -42170,7 +42245,8 @@ window.BENCHMARK_DATA = {
           26631.96302141462,
           27103.36249593099,
           20963.565364583334,
-          16551.361726888023
+          16551.361726888023,
+          28598.32417515346
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -42710,6 +42786,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471,
           33471,
