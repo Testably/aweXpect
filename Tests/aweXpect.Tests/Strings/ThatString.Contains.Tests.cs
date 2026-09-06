@@ -130,6 +130,108 @@ public sealed partial class ThatString
 			}
 		}
 
+		public sealed class IgnoringIndentationTests
+		{
+			[Fact]
+			public async Task ShouldIncludeSettingInExpectationText()
+			{
+				string subject = "foo";
+				string expected = "bar";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).IgnoringIndentation();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains "bar" at least once ignoring indentation,
+					             but it did not contain "bar" in "foo"
+
+					             Actual:
+					             foo
+
+					             Expected:
+					             bar
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenCombinedWithIgnoringCase_ShouldIgnoreBoth()
+			{
+				string subject = "foo\n    BAR";
+				string expected = "foo\nbar";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).IgnoringIndentation().IgnoringCase();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSnippetIsIndentedDifferently_ShouldSucceed()
+			{
+				string subject = """
+				                 public class Foo
+				                 {
+				                     public int Bar
+				                     {
+				                         get;
+				                     }
+				                 }
+				                 """;
+				string expected = """
+				                  public int Bar
+				                  {
+				                      get;
+				                  }
+				                  """;
+
+				async Task Act()
+					=> await That(subject).Contains(expected).IgnoringIndentation();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSnippetOccursWithDifferentIndentations_ShouldCountAllOccurrences()
+			{
+				string subject = "  a\n  b\nx\na\nb";
+				string expected = "a\nb";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).Twice().IgnoringIndentation();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectUsesADifferentNewlineStyle_ShouldSucceed()
+			{
+				string subject = "foo\r\n    bar";
+				string expected = "foo\nbar";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).IgnoringIndentation();
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
+		public sealed class IgnoringNewlineStyleTests
+		{
+			[Fact]
+			public async Task WhenSubjectUsesADifferentNewlineStyle_ShouldFindAllOccurrences()
+			{
+				string subject = "x\r\na\r\nb\r\ny\r\na\r\nb";
+				string expected = "a\nb";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).Twice().IgnoringNewlineStyle();
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
 		public sealed class UsingTests
 		{
 			[Fact]

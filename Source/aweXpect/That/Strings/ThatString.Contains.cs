@@ -82,7 +82,7 @@ public static partial class ThatString
 				return this;
 			}
 
-			_actualCount = await CountOccurrences(actual, expected, options);
+			_actualCount = await options.CountOccurrences(actual, expected);
 			Outcome = quantifier.Check(_actualCount, true) ?? _isNegated ? Outcome.Success : Outcome.Failure;
 			if (Outcome != Outcome.Success && !string.IsNullOrEmpty(actual))
 			{
@@ -130,34 +130,6 @@ public static partial class ThatString
 
 			value = default;
 			return typeof(TValue).IsAssignableFrom(typeof(string));
-		}
-
-		private static async Task<int> CountOccurrences(string actual, string expected,
-			StringEqualityOptions comparer)
-		{
-			if (expected.Length > actual.Length)
-			{
-				return 0;
-			}
-
-			int count = 0;
-			int index = 0;
-			while (index < actual.Length)
-			{
-				if (await comparer.AreConsideredEqual(
-					    actual.Substring(index, Math.Min(expected.Length, actual.Length - index)),
-					    expected))
-				{
-					count++;
-					index += expected.Length;
-				}
-				else
-				{
-					index++;
-				}
-			}
-
-			return count;
 		}
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)

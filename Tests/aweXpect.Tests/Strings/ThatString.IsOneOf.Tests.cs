@@ -81,6 +81,17 @@ public sealed partial class ThatString
 					              """);
 			}
 
+			[Fact]
+			public async Task WhenValueIsEqualToAnyExpectedExceptForTheIndentation_ShouldSucceed()
+			{
+				string subject = "  foo\n    bar";
+
+				async Task Act()
+					=> await That(subject).IsOneOf("baz", "foo\nbar").IgnoringIndentation();
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[Theory]
 			[InlineData("foo", "bar", "foo", "baz")]
 			public async Task WhenValueIsEqualToAnyExpected_ShouldSucceed(
