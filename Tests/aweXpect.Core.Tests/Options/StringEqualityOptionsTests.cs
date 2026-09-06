@@ -19,6 +19,17 @@ public sealed partial class StringEqualityOptionsTests
 			await That(result).IsFalse();
 		}
 
+		[Fact]
+		public async Task AreConsideredEqual_WhenIndentationIsIgnored_ShouldEmptyWhiteSpaceOnlyLines()
+		{
+			StringEqualityOptions sut = new();
+			sut.IgnoringIndentation();
+
+			bool result = await sut.AreConsideredEqual("foo\n    ", "foo\n");
+
+			await That(result).IsTrue();
+		}
+
 		[Theory]
 		[InlineData("foo", "foo")]
 		[InlineData("    foo", "foo")]
@@ -39,17 +50,6 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Fact]
-		public async Task AreConsideredEqual_WhenIndentationIsIgnored_ShouldEmptyWhiteSpaceOnlyLines()
-		{
-			StringEqualityOptions sut = new();
-			sut.IgnoringIndentation();
-
-			bool result = await sut.AreConsideredEqual("foo\n    ", "foo\n");
-
-			await That(result).IsTrue();
-		}
-
-		[Fact]
 		public async Task AreConsideredEqual_WhenIndentationIsIgnored_ShouldStillConsiderTrailingWhiteSpace()
 		{
 			StringEqualityOptions sut = new();
@@ -61,12 +61,12 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Fact]
-		public async Task CountOccurrences_WhenIndentationIsIgnored_ShouldFindNestedMultiLineSnippet()
+		public async Task CountOccurrences_WhenExpectedIsLongerThanActual_ShouldStillApplyTheOptions()
 		{
 			StringEqualityOptions sut = new();
-			sut.IgnoringIndentation();
+			sut.IgnoringTrailingWhiteSpace();
 
-			int result = await sut.CountOccurrences("class C\n{\n    Foo();\n    Bar();\n}", "Foo();\nBar();");
+			int result = await sut.CountOccurrences("ab", "ab ");
 
 			await That(result).IsEqualTo(1);
 		}
@@ -83,6 +83,28 @@ public sealed partial class StringEqualityOptionsTests
 			int result = await sut.CountOccurrences("some text", expected);
 
 			await That(result).IsEqualTo(0);
+		}
+
+		[Fact]
+		public async Task CountOccurrences_WhenIndentationIsIgnored_ShouldFindNestedMultiLineSnippet()
+		{
+			StringEqualityOptions sut = new();
+			sut.IgnoringIndentation();
+
+			int result = await sut.CountOccurrences("class C\n{\n    Foo();\n    Bar();\n}", "Foo();\nBar();");
+
+			await That(result).IsEqualTo(1);
+		}
+
+		[Fact]
+		public async Task CountOccurrences_WhenMatchingAsRegex_ShouldNotLimitTheWindowToThePatternLength()
+		{
+			StringEqualityOptions sut = new();
+			sut.AsRegex();
+
+			int result = await sut.CountOccurrences("ab", "^.*$");
+
+			await That(result).IsEqualTo(1);
 		}
 
 		[Fact]
@@ -185,6 +207,17 @@ public sealed partial class StringEqualityOptionsTests
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "foo\n    baz", "foo\nbar");
 
 			await That(result).Contains("differs on line 2 and column 7:");
+		}
+
+		[Fact]
+		public async Task GetExtendedFailure_WhenLeadingWhiteSpaceIsIgnored_ShouldNotShiftColumnsOnLaterLines()
+		{
+			StringEqualityOptions sut = new();
+			sut.IgnoringLeadingWhiteSpace();
+
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  a\nbcd", "a\nbXd");
+
+			await That(result).Contains("differs on line 2 and column 2:");
 		}
 
 		[Fact]

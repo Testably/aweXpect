@@ -167,9 +167,7 @@ public sealed class StringDifference(
 			lineNumber += settings.IgnoredTrailingLines;
 		}
 
-		int column = settings?.IgnoredColumnsPerLine is { } ignoredColumnsPerLine
-			? lineNumber < ignoredColumnsPerLine.Count ? ignoredColumnsPerLine[lineNumber] : 0
-			: settings?.IgnoredTrailingColumns ?? 0;
+		int column = GetIgnoredColumns(settings, lineNumber);
 
 		if (settings?.IgnoredTrailingLines > 0 || actual.Any(c => c == '\n'))
 		{
@@ -216,6 +214,19 @@ public sealed class StringDifference(
 		}
 
 		return sb.ToString();
+	}
+
+	/// <summary>
+	///     Gets the number of columns that are ignored in the line with the given <paramref name="lineNumber" />.
+	/// </summary>
+	private static int GetIgnoredColumns(StringDifferenceSettings? settings, int lineNumber)
+	{
+		if (settings?.IgnoredColumnsPerLine is not { } ignoredColumnsPerLine)
+		{
+			return settings?.IgnoredTrailingColumns ?? 0;
+		}
+
+		return lineNumber < ignoredColumnsPerLine.Count ? ignoredColumnsPerLine[lineNumber] : 0;
 	}
 
 	private static string ToPatternString(MatchType matchType, string prefix, string actual, string expected)

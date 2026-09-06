@@ -58,7 +58,8 @@ public class StringHasItemResult<TCollection, TSelf>(
 	/// <remarks>
 	///     Enabling this option will remove the leading white-space from every line and replace all occurrences of
 	///     <c>\r\n</c> and <c>\r</c> with <c>\n</c> in the strings before comparing them, which makes
-	///     <see cref="IgnoringNewlineStyle(bool)" /> redundant.
+	///     <see cref="IgnoringNewlineStyle(bool)" /> redundant.<br />
+	///     Any Unicode white-space counts as indentation, e.g. also a non-breaking space.
 	/// </remarks>
 	public TSelf IgnoringIndentation(bool ignoreIndentation = true)
 	{

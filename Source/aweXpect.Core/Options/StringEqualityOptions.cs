@@ -50,7 +50,9 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	/// <remarks>
 	///     Both strings are normalized once before the comparison, so that options which change the length of the
 	///     strings (<see cref="IgnoringNewlineStyle(bool)" /> and <see cref="IgnoringIndentation(bool)" />) are
-	///     applied to the complete strings and not to the individual substrings that are compared.
+	///     applied to the complete strings and not to the individual substrings that are compared.<br />
+	///     Returns <c>0</c> when the <paramref name="expected" /> <see langword="string" /> is empty after the
+	///     normalization.
 	/// </remarks>
 #if NET8_0_OR_GREATER
 	public async ValueTask<int> CountOccurrences(string actual, string expected)
@@ -60,7 +62,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	{
 		actual = Normalize(actual);
 		expected = Normalize(expected);
-		if (expected.Length == 0 || expected.Length > actual.Length)
+		if (expected.Length == 0)
 		{
 			return 0;
 		}
@@ -106,53 +108,20 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 			return $"{it} was {Formatter.Format(actual)}";
 		}
 
-		int[]? ignoredColumnsPerLine = null;
-		if (_ignoreIndentation)
-		{
-			if (actual is not null)
-			{
-				ignoredColumnsPerLine = GetIgnoredColumnsPerLine(actual);
-			}
+		int[]? ignoredColumnsPerLine = GetIgnoredColumnsPerLine(actual);
+		actual = Normalize(actual);
+		expected = Normalize(expected);
 
-			actual = actual.RemoveIndentation();
-			expected = expected.RemoveIndentation();
-		}
-
-		StringDifferenceSettings? settings = null;
-		if (ignoredColumnsPerLine is not null)
-		{
-			settings = new StringDifferenceSettings(0, 0, ignoredColumnsPerLine);
-		}
-
+		int ignoredLineCount = 0;
 		if (_ignoreLeadingWhiteSpace && actual is not null)
 		{
-			int ignoredLineCount = 0;
-			int ignoredColumnCount = 0;
-			foreach (char c in actual)
-			{
-				if (c == '\n')
-				{
-					ignoredLineCount++;
-					ignoredColumnCount = 0;
-				}
-				else if (char.IsWhiteSpace(c))
-				{
-					ignoredColumnCount++;
-				}
-				else
-				{
-					break;
-				}
-			}
-
-			settings = new StringDifferenceSettings(ignoredLineCount, ignoredColumnCount, ignoredColumnsPerLine);
+			(ignoredLineCount, int ignoredColumnCount) = CountLeadingWhiteSpace(actual);
+			ignoredColumnsPerLine![ignoredLineCount] += ignoredColumnCount;
 		}
 
-		if (_ignoreNewlineStyle)
-		{
-			actual = actual.RemoveNewlineStyle();
-			expected = expected.RemoveNewlineStyle();
-		}
+		StringDifferenceSettings? settings = ignoredColumnsPerLine is null
+			? null
+			: new StringDifferenceSettings(ignoredLineCount, 0, ignoredColumnsPerLine);
 
 		if (_ignoreLeadingWhiteSpace)
 		{
@@ -188,6 +157,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     Enabling this option will remove the leading white-space from every line and replace all occurrences of
 	///     <c>\r\n</c> and <c>\r</c> with <c>\n</c> in the strings before comparing them, which makes
 	///     <see cref="IgnoringNewlineStyle(bool)" /> redundant.<br />
+	///     Any Unicode white-space counts as indentation, e.g. also a non-breaking space.<br />
 	///     Trailing white-space within a line is kept, but a line that consists only of white-space becomes empty.<br />
 	///     The expected value is transformed as well, which also applies to wildcard and regex patterns.
 	/// </remarks>
@@ -296,15 +266,56 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	}
 
 	/// <summary>
-	///     Counts the leading white-space characters of every line in the <paramref name="value" />.
+	///     Counts the lines and the columns in the last of these lines that are covered by the leading white-space
+	///     of the <paramref name="value" />.
 	/// </summary>
-	private static int[] GetIgnoredColumnsPerLine(string value)
+	private static (int Lines, int Columns) CountLeadingWhiteSpace(string value)
 	{
+		int lines = 0;
+		int columns = 0;
+		foreach (char c in value)
+		{
+			if (c == '\n')
+			{
+				lines++;
+				columns = 0;
+			}
+			else if (char.IsWhiteSpace(c))
+			{
+				columns++;
+			}
+			else
+			{
+				break;
+			}
+		}
+
+		return (lines, columns);
+	}
+
+	/// <summary>
+	///     Counts the white-space characters that <see cref="Normalize" /> removes at the start of every line in the
+	///     <paramref name="value" />, or <see langword="null" /> when no white-space is removed at all.
+	/// </summary>
+	/// <remarks>
+	///     The result is indexed by the line number, so that a position in the normalized value can be mapped back
+	///     to the position in the original <paramref name="value" />.
+	/// </remarks>
+	private int[]? GetIgnoredColumnsPerLine(string? value)
+	{
+		if (value is null || (!_ignoreIndentation && !_ignoreLeadingWhiteSpace))
+		{
+			return null;
+		}
+
 		string[] lines = value.RemoveNewlineStyle().Split('\n');
 		int[] result = new int[lines.Length];
-		for (int i = 0; i < lines.Length; i++)
+		if (_ignoreIndentation)
 		{
-			result[i] = lines[i].Length - lines[i].TrimStart().Length;
+			for (int i = 0; i < lines.Length; i++)
+			{
+				result[i] = lines[i].Length - lines[i].TrimStart().Length;
+			}
 		}
 
 		return result;
@@ -345,9 +356,14 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 
 		StringBuilder sb = new();
 		sb.Append(initialString);
-		sb.Append(initialString.Contains("ignoring")
-			? tokens.Count == 1 ? " and" : ","
-			: " ignoring");
+		if (!initialString.Contains("ignoring"))
+		{
+			sb.Append(" ignoring");
+		}
+		else
+		{
+			sb.Append(tokens.Count == 1 ? " and" : ",");
+		}
 
 		for (int i = 0; i < tokens.Count; i++)
 		{
