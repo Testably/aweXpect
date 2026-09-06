@@ -73,7 +73,7 @@ public static partial class ThatEnumerable
 			_it = it;
 			_options = options;
 
-			_itemExpectationBuilder = new ManualExpectationBuilder<TItem>(null, Grammars);
+			_itemExpectationBuilder = new ManualExpectationBuilder<TItem>(null, Grammars & ~ExpectationGrammars.Plural);
 			expectations.Invoke(new ThatSubject<TItem>(_itemExpectationBuilder));
 		}
 
@@ -133,7 +133,7 @@ public static partial class ThatEnumerable
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("has item that ");
+			stringBuilder.Append(Grammars.Verb("has item that ", "have item that "));
 			_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
 			stringBuilder.Append(_options.Match.GetDescription());
 		}
@@ -142,7 +142,7 @@ public static partial class ThatEnumerable
 		{
 			if (Actual is null)
 			{
-				stringBuilder.ItWasNull(_it);
+				stringBuilder.ItWasNull(_it, Grammars);
 			}
 			else if (_hasIndex)
 			{
@@ -158,7 +158,7 @@ public static partial class ThatEnumerable
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("does not have item that ");
+			stringBuilder.Append(Grammars.Verb("does not have item that ", "do not have item that "));
 			_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
 			stringBuilder.Append(_options.Match.GetDescription());
 		}
@@ -189,7 +189,7 @@ public static partial class ThatEnumerable
 			_it = it;
 			_options = options;
 
-			_itemExpectationBuilder = new ManualExpectationBuilder<TItem>(null, Grammars);
+			_itemExpectationBuilder = new ManualExpectationBuilder<TItem>(null, Grammars & ~ExpectationGrammars.Plural);
 			expectations.Invoke(new ThatSubject<TItem>(_itemExpectationBuilder));
 		}
 
@@ -247,7 +247,7 @@ public static partial class ThatEnumerable
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("has item that ");
+			stringBuilder.Append(Grammars.Verb("has item that ", "have item that "));
 			_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
 			stringBuilder.Append(_options.Match.GetDescription());
 		}
@@ -256,7 +256,7 @@ public static partial class ThatEnumerable
 		{
 			if (Actual is null)
 			{
-				stringBuilder.ItWasNull(_it);
+				stringBuilder.ItWasNull(_it, Grammars);
 			}
 			else if (_actual is not null)
 			{
@@ -272,7 +272,7 @@ public static partial class ThatEnumerable
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("does not have item that ");
+			stringBuilder.Append(Grammars.Verb("does not have item that ", "do not have item that "));
 			_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
 			stringBuilder.Append(_options.Match.GetDescription());
 		}

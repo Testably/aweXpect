@@ -105,17 +105,20 @@ public static partial class ThatAsyncEnumerable
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has a single item").Append(options.GetDescription());
+			=> stringBuilder.Append(Grammars.Verb("has a single item", "have a single item"))
+				.Append(options.GetDescription());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			if (_actual is null)
 			{
-				stringBuilder.ItWasNull(it);
+				stringBuilder.ItWasNull(it, Grammars);
 			}
 			else if (_count == 0)
 			{
-				stringBuilder.Append(it).Append(_isEmpty ? " was empty" : " did not contain any matching item");
+				stringBuilder.Append(it).Append(_isEmpty
+					? Grammars.SubjectVerb(it, " was empty", " were empty")
+					: " did not contain any matching item");
 			}
 			else
 			{
@@ -124,13 +127,14 @@ public static partial class ThatAsyncEnumerable
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have a single item").Append(options.GetDescription());
+			=> stringBuilder.Append(Grammars.Verb("does not have a single item", "do not have a single item"))
+				.Append(options.GetDescription());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			if (_actual is null)
 			{
-				stringBuilder.ItWasNull(it);
+				stringBuilder.ItWasNull(it, Grammars);
 			}
 			else
 			{

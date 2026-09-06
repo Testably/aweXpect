@@ -28,7 +28,7 @@ public static partial class ThatException
 				.Validate((it, grammars) => new HasRecursiveInnerExceptionsConstraint(it, grammars))
 				.AddExpectations(e => expectations(
 						new ThatSubject<IEnumerable<Exception>>(e)),
-					grammars => grammars | ExpectationGrammars.Nested),
+					grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural),
 			source);
 
 	internal class HasRecursiveInnerExceptionsConstraint(

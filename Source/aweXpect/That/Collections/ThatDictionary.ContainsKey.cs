@@ -100,7 +100,7 @@ public static partial class ThatDictionary
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("contains key ");
+			stringBuilder.Append(Grammars.Verb("contains key ", "contain key "));
 			Formatter.Format(stringBuilder, expected);
 		}
 
@@ -112,7 +112,7 @@ public static partial class ThatDictionary
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("does not contain key ");
+			stringBuilder.Append(Grammars.Verb("does not contain key ", "do not contain key "));
 			Formatter.Format(stringBuilder, expected);
 		}
 

@@ -39,16 +39,15 @@ public static partial class ThatEnumerable
 						expectationBuilder,
 						it, grammars,
 						_quantifier,
-						g => (g.HasAnyFlag(ExpectationGrammars.Nested, ExpectationGrammars.Plural),
-								g.IsNegated()) switch
-							{
-								(true, false) => $"are equivalent to {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-								(false, false) => $"is equivalent to {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-								(true, true) =>
-									$"are not equivalent to {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-								(false, true) =>
-									$"is not equivalent to {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-							},
+						g => (g.IsPlural(), g.IsNegated()) switch
+						{
+							(true, false) => $"are equivalent to {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
+							(false, false) => $"is equivalent to {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
+							(true, true) =>
+								$"are not equivalent to {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
+							(false, true) =>
+								$"is not equivalent to {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
+						},
 						a => equalityOptions.AreConsideredEqual(a, expected),
 						"were")),
 				_subject,
@@ -83,16 +82,15 @@ public static partial class ThatEnumerable
 						expectationBuilder,
 						it, grammars,
 						_quantifier,
-						g => (g.HasAnyFlag(ExpectationGrammars.Nested, ExpectationGrammars.Plural),
-								g.IsNegated()) switch
-							{
-								(true, false) => $"are equivalent to {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-								(false, false) => $"is equivalent to {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-								(true, true) =>
-									$"are not equivalent to {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-								(false, true) =>
-									$"is not equivalent to {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-							},
+						g => (g.IsPlural(), g.IsNegated()) switch
+						{
+							(true, false) => $"are equivalent to {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
+							(false, false) => $"is equivalent to {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
+							(true, true) =>
+								$"are not equivalent to {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
+							(false, true) =>
+								$"is not equivalent to {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
+						},
 						a => equalityOptions.AreConsideredEqual(a, expected),
 						"were")),
 				_subject,
@@ -127,16 +125,15 @@ public static partial class ThatEnumerable
 						expectationBuilder,
 						it, grammars,
 						_quantifier,
-						g => (g.HasAnyFlag(ExpectationGrammars.Nested, ExpectationGrammars.Plural),
-								g.IsNegated()) switch
-							{
-								(true, false) => $"are equivalent to {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-								(false, false) => $"is equivalent to {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-								(true, true) =>
-									$"are not equivalent to {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-								(false, true) =>
-									$"is not equivalent to {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-							},
+						g => (g.IsPlural(), g.IsNegated()) switch
+						{
+							(true, false) => $"are equivalent to {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
+							(false, false) => $"is equivalent to {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
+							(true, true) =>
+								$"are not equivalent to {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
+							(false, true) =>
+								$"is not equivalent to {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
+						},
 						a => equalityOptions.AreConsideredEqual((TItem)a!, expected),
 						"were")),
 				_subject,

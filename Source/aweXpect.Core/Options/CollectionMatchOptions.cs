@@ -152,23 +152,27 @@ public partial class CollectionMatchOptions(
 		=> (equivalenceRelation, grammars.IsNegated()) switch
 		{
 			(EquivalenceRelations.Contains, false)
-				=> $"contains collection {expectedExpression}",
+				=> $"{grammars.Verb("contains", "contain")} collection {expectedExpression}",
 			(EquivalenceRelations.Contains, true)
-				=> $"does not contain collection {expectedExpression}",
+				=> $"{grammars.Verb("does not contain", "do not contain")} collection {expectedExpression}",
 			(EquivalenceRelations.ContainsProperly, false)
-				=> $"contains collection {expectedExpression} and at least one additional item",
+				=> $"{grammars.Verb("contains", "contain")} collection {expectedExpression} " +
+				   "and at least one additional item",
 			(EquivalenceRelations.ContainsProperly, true)
-				=> $"does not contain collection {expectedExpression} and at least one additional item",
+				=> $"{grammars.Verb("does not contain", "do not contain")} collection {expectedExpression} " +
+				   "and at least one additional item",
 			(EquivalenceRelations.IsContainedIn, false)
-				=> $"is contained in collection {expectedExpression}",
+				=> $"{grammars.Verb("is", "are")} contained in collection {expectedExpression}",
 			(EquivalenceRelations.IsContainedIn, true)
-				=> $"is not contained in collection {expectedExpression}",
+				=> $"{grammars.Verb("is", "are")} not contained in collection {expectedExpression}",
 			(EquivalenceRelations.IsContainedInProperly, false)
-				=> $"is contained in collection {expectedExpression} which has at least one additional item",
+				=> $"{grammars.Verb("is", "are")} contained in collection {expectedExpression} " +
+				   "which has at least one additional item",
 			(EquivalenceRelations.IsContainedInProperly, true)
-				=> $"is not contained in collection {expectedExpression} which has at least one additional item",
-			(_, false) => $"matches collection {expectedExpression}",
-			(_, true) => $"does not match collection {expectedExpression}",
+				=> $"{grammars.Verb("is", "are")} not contained in collection {expectedExpression} " +
+				   "which has at least one additional item",
+			(_, false) => $"{grammars.Verb("matches", "match")} collection {expectedExpression}",
+			(_, true) => $"{grammars.Verb("does not match", "do not match")} collection {expectedExpression}",
 		};
 
 	private static string? ReturnErrorString(string it, List<string> errors)
@@ -374,7 +378,7 @@ public partial class CollectionMatchOptions(
 		{
 			_context = context;
 			_cancellationToken = cancellationToken;
-			ItemExpectationBuilder = new ManualExpectationBuilder<TItem>(null, grammars);
+			ItemExpectationBuilder = new ManualExpectationBuilder<TItem>(null, grammars & ~ExpectationGrammars.Plural);
 			expectation.Invoke(new ThatSubject<TItem?>(ItemExpectationBuilder));
 		}
 

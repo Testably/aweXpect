@@ -120,7 +120,7 @@ public static partial class ThatDictionary
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("contains values ");
+			stringBuilder.Append(Grammars.Verb("contains values ", "contain values "));
 			Formatter.Format(stringBuilder, expected);
 		}
 
@@ -134,7 +134,7 @@ public static partial class ThatDictionary
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("does not contain values ");
+			stringBuilder.Append(Grammars.Verb("does not contain values ", "do not contain values "));
 			Formatter.Format(stringBuilder, expected);
 		}
 

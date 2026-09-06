@@ -28,7 +28,7 @@ public static partial class ThatEnumerable
 						expectationBuilder,
 						it, grammars,
 						_quantifier,
-						g => (g.IsNested(), g.IsNegated()) switch
+						g => (g.IsPlural(), g.IsNegated()) switch
 						{
 							(true, false) => $"satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
 							(false, false) => $"satisfies {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
@@ -60,14 +60,13 @@ public static partial class ThatEnumerable
 						expectationBuilder,
 						it, grammars,
 						_quantifier,
-						g => (g.HasAnyFlag(ExpectationGrammars.Nested, ExpectationGrammars.Plural),
-								g.IsNegated()) switch
-							{
-								(true, false) => $"satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-								(false, false) => $"satisfies {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-								(true, true) => $"do not satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-								(false, true) => $"does not satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-							},
+						g => (g.IsPlural(), g.IsNegated()) switch
+						{
+							(true, false) => $"satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
+							(false, false) => $"satisfies {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
+							(true, true) => $"do not satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
+							(false, true) => $"does not satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
+						},
 						predicate,
 						"did")),
 				_subject);
@@ -93,14 +92,13 @@ public static partial class ThatEnumerable
 						expectationBuilder,
 						it, grammars,
 						_quantifier,
-						g => (g.HasAnyFlag(ExpectationGrammars.Nested, ExpectationGrammars.Plural),
-								g.IsNegated()) switch
-							{
-								(true, false) => $"satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-								(false, false) => $"satisfies {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-								(true, true) => $"do not satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-								(false, true) => $"does not satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-							},
+						g => (g.IsPlural(), g.IsNegated()) switch
+						{
+							(true, false) => $"satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
+							(false, false) => $"satisfies {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
+							(true, true) => $"do not satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
+							(false, true) => $"does not satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
+						},
 						predicate,
 						"did")),
 				_subject);
@@ -126,14 +124,13 @@ public static partial class ThatEnumerable
 						expectationBuilder,
 						it, grammars,
 						_quantifier,
-						g => (g.HasAnyFlag(ExpectationGrammars.Nested, ExpectationGrammars.Plural),
-								g.IsNegated()) switch
-							{
-								(true, false) => $"satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-								(false, false) => $"satisfies {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-								(true, true) => $"do not satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-								(false, true) => $"does not satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-							},
+						g => (g.IsPlural(), g.IsNegated()) switch
+						{
+							(true, false) => $"satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
+							(false, false) => $"satisfies {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
+							(true, true) => $"do not satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
+							(false, true) => $"does not satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
+						},
 						v => predicate((TItem)v!),
 						"did")),
 				_subject);
@@ -159,14 +156,13 @@ public static partial class ThatEnumerable
 						expectationBuilder,
 						it, grammars,
 						_quantifier,
-						g => (g.HasAnyFlag(ExpectationGrammars.Nested, ExpectationGrammars.Plural),
-								g.IsNegated()) switch
-							{
-								(true, false) => $"satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-								(false, false) => $"satisfies {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-								(true, true) => $"do not satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-								(false, true) => $"does not satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-							},
+						g => (g.IsPlural(), g.IsNegated()) switch
+						{
+							(true, false) => $"satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
+							(false, false) => $"satisfies {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
+							(true, true) => $"do not satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
+							(false, true) => $"does not satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
+						},
 						v => predicate((string?)v),
 						"did")),
 				_subject);

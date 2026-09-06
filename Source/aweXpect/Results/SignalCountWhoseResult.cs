@@ -24,5 +24,6 @@ public class SignalCountWhoseResult<TParameter>(
 		=> new ThatSubject<IEnumerable<TParameter>>(
 			_expectationBuilder.ForWhich<Signaler<TParameter>, IEnumerable<TParameter>>(
 				x => x.Wait(timeout: TimeSpan.Zero).Parameters,
-				" and whose parameters ", null, grammars => grammars | ExpectationGrammars.Nested));
+				" and whose parameters ", null,
+				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural));
 }

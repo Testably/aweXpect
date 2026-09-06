@@ -35,9 +35,9 @@ public static partial class ThatAsyncEnumerable
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AsyncContainConstraint<TItem>(
 					expectationBuilder, it, grammars,
-					q => q.IsNever
-						? $"does not contain {Formatter.Format(expected)}{options}"
-						: $"contains {Formatter.Format(expected)}{options} {q}",
+					(q, g) => q.IsNever
+						? $"{g.Verb("does not contain", "do not contain")} {Formatter.Format(expected)}{options}"
+						: $"{g.Verb("contains", "contain")} {Formatter.Format(expected)}{options} {q}",
 					a => options.AreConsideredEqual(a, expected),
 					quantifier)),
 			source,
@@ -60,9 +60,9 @@ public static partial class ThatAsyncEnumerable
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AsyncContainConstraint<string?>(
 					expectationBuilder, it, grammars,
-					q => q.IsNever
-						? $"does not contain {Formatter.Format(expected)}{options}"
-						: $"contains {Formatter.Format(expected)}{options} {q}",
+					(q, g) => q.IsNever
+						? $"{g.Verb("does not contain", "do not contain")} {Formatter.Format(expected)}{options}"
+						: $"{g.Verb("contains", "contain")} {Formatter.Format(expected)}{options} {q}",
 					a => options.AreConsideredEqual(a, expected),
 					quantifier)),
 			source,
@@ -87,9 +87,9 @@ public static partial class ThatAsyncEnumerable
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new ContainConstraint<TItem>(
 					expectationBuilder, it, grammars,
-					q => q.IsNever
-						? $"does not contain item matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}"
-						: $"contains item matching {doNotPopulateThisValue.TrimCommonWhiteSpace()} {q}",
+					(q, g) => q.IsNever
+						? $"{g.Verb("does not contain", "do not contain")} item matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}"
+						: $"{g.Verb("contains", "contain")} item matching {doNotPopulateThisValue.TrimCommonWhiteSpace()} {q}",
 					predicate,
 					quantifier)),
 			source,
@@ -201,9 +201,9 @@ public static partial class ThatAsyncEnumerable
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AsyncContainConstraint<TItem>(
 					expectationBuilder, it, grammars,
-					q => q.IsNever
-						? $"does not contain {Formatter.Format(unexpected)}{options}"
-						: $"does not contain {Formatter.Format(unexpected)}{options} {q.ToNegatedString()}",
+					(q, g) => q.IsNever
+						? $"{g.Verb("does not contain", "do not contain")} {Formatter.Format(unexpected)}{options}"
+						: $"{g.Verb("does not contain", "do not contain")} {Formatter.Format(unexpected)}{options} {q.ToNegatedString()}",
 					a => options.AreConsideredEqual(a, unexpected),
 					quantifier).Invert()),
 			source,
@@ -226,9 +226,9 @@ public static partial class ThatAsyncEnumerable
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AsyncContainConstraint<string?>(
 					expectationBuilder, it, grammars,
-					q => q.IsNever
-						? $"does not contain {Formatter.Format(unexpected)}{options}"
-						: $"does not contain {Formatter.Format(unexpected)}{options} {q.ToNegatedString()}",
+					(q, g) => q.IsNever
+						? $"{g.Verb("does not contain", "do not contain")} {Formatter.Format(unexpected)}{options}"
+						: $"{g.Verb("does not contain", "do not contain")} {Formatter.Format(unexpected)}{options} {q.ToNegatedString()}",
 					a => options.AreConsideredEqual(a, unexpected),
 					quantifier).Invert()),
 			source,
@@ -253,9 +253,9 @@ public static partial class ThatAsyncEnumerable
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new ContainConstraint<TItem>(
 					expectationBuilder, it, grammars,
-					q => q.IsNever
-						? $"does not contain item matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}"
-						: $"does not contain item matching {doNotPopulateThisValue.TrimCommonWhiteSpace()} {q.ToNegatedString()}",
+					(q, g) => q.IsNever
+						? $"{g.Verb("does not contain", "do not contain")} item matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}"
+						: $"{g.Verb("does not contain", "do not contain")} item matching {doNotPopulateThisValue.TrimCommonWhiteSpace()} {q.ToNegatedString()}",
 					predicate,
 					quantifier).Invert()),
 			source,
@@ -356,7 +356,7 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
-		Func<Quantifier, string> expectationText,
+		Func<Quantifier, ExpectationGrammars, string> expectationText,
 		Func<TItem, bool> predicate,
 		Quantifier quantifier)
 		: ConstraintResult(grammars),
@@ -428,13 +428,13 @@ public static partial class ThatAsyncEnumerable
 		}
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(expectationText.Invoke(quantifier));
+			=> stringBuilder.Append(expectationText.Invoke(quantifier, Grammars));
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			if (_actual == null)
 			{
-				stringBuilder.Append(it).Append(" was <null>");
+				stringBuilder.ItWasNull(it, Grammars);
 			}
 			else if (_isFinished)
 			{
@@ -504,7 +504,7 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
-		Func<Quantifier, string> expectationText,
+		Func<Quantifier, ExpectationGrammars, string> expectationText,
 #if NET8_0_OR_GREATER
 		Func<TItem, ValueTask<bool>> predicate,
 #else
@@ -580,13 +580,13 @@ public static partial class ThatAsyncEnumerable
 		}
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(expectationText.Invoke(quantifier));
+			=> stringBuilder.Append(expectationText.Invoke(quantifier, Grammars));
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			if (_actual == null)
 			{
-				stringBuilder.Append(it).Append(" was <null>");
+				stringBuilder.ItWasNull(it, Grammars);
 			}
 			else if (_isFinished)
 			{

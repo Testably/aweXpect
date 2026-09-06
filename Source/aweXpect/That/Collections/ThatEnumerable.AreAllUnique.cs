@@ -275,7 +275,7 @@ public static partial class ThatEnumerable
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("only has unique items");
+			stringBuilder.Append(Grammars.Verb("only has unique items", "only have unique items"));
 			stringBuilder.Append(options);
 		}
 
@@ -284,7 +284,7 @@ public static partial class ThatEnumerable
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("has duplicate items");
+			stringBuilder.Append(Grammars.Verb("has duplicate items", "have duplicate items"));
 			stringBuilder.Append(options);
 		}
 
@@ -339,7 +339,8 @@ public static partial class ThatEnumerable
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("only has unique items for ").Append(memberAccessorExpression);
+			stringBuilder.Append(Grammars.Verb("only has unique items for ", "only have unique items for "))
+				.Append(memberAccessorExpression);
 			stringBuilder.Append(options);
 		}
 
@@ -348,7 +349,8 @@ public static partial class ThatEnumerable
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("has duplicate items for ").Append(memberAccessorExpression);
+			stringBuilder.Append(Grammars.Verb("has duplicate items for ", "have duplicate items for "))
+				.Append(memberAccessorExpression);
 			stringBuilder.Append(options);
 		}
 
@@ -400,7 +402,7 @@ public static partial class ThatEnumerable
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("only has unique items");
+			stringBuilder.Append(Grammars.Verb("only has unique items", "only have unique items"));
 			stringBuilder.Append(options);
 		}
 
@@ -409,7 +411,7 @@ public static partial class ThatEnumerable
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("has duplicate items");
+			stringBuilder.Append(Grammars.Verb("has duplicate items", "have duplicate items"));
 			stringBuilder.Append(options);
 		}
 
@@ -464,7 +466,8 @@ public static partial class ThatEnumerable
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("only has unique items for ").Append(memberAccessorExpression);
+			stringBuilder.Append(Grammars.Verb("only has unique items for ", "only have unique items for "))
+				.Append(memberAccessorExpression);
 			stringBuilder.Append(options);
 		}
 
@@ -473,7 +476,8 @@ public static partial class ThatEnumerable
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("has duplicate items for ").Append(memberAccessorExpression);
+			stringBuilder.Append(Grammars.Verb("has duplicate items for ", "have duplicate items for "))
+				.Append(memberAccessorExpression);
 			stringBuilder.Append(options);
 		}
 

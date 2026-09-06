@@ -66,7 +66,7 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that action
 					             throws an exception with recursive inner exceptions which are empty,
-					             but recursive inner exceptions was [
+					             but recursive inner exceptions were [
 					               aweXpect.Tests.ThatDelegate+CustomException: WhenExpectingInnerExceptionsToBeEmpty_ShouldFail
 					             ]
 					             """);

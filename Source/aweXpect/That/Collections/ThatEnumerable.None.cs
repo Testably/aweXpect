@@ -16,16 +16,14 @@ public static partial class ThatEnumerable
 	/// </summary>
 	public static Elements<TItem> None<TItem>(
 		this IThat<IEnumerable<TItem>?> subject)
-		=> new(subject, EnumerableQuantifier.None(subject.Get().ExpectationBuilder.ExpectationGrammars |
-		                                          ExpectationGrammars.Plural));
+		=> new(subject, EnumerableQuantifier.None(subject.Get().ExpectationBuilder.ExpectationGrammars));
 
 	/// <summary>
 	///     Verifies that in the collection no items…
 	/// </summary>
 	public static Elements None(
 		this IThat<IEnumerable<string?>?> subject)
-		=> new(subject, EnumerableQuantifier.None(subject.Get().ExpectationBuilder.ExpectationGrammars |
-		                                          ExpectationGrammars.Plural));
+		=> new(subject, EnumerableQuantifier.None(subject.Get().ExpectationBuilder.ExpectationGrammars));
 
 	/// <summary>
 	///     Verifies that in the collection no items…
@@ -33,8 +31,7 @@ public static partial class ThatEnumerable
 	[OverloadResolutionPriority(-1)]
 	public static ElementsForEnumerable<IEnumerable> None(
 		this IThat<IEnumerable> subject)
-		=> new(subject, EnumerableQuantifier.None(subject.Get().ExpectationBuilder.ExpectationGrammars |
-		                                          ExpectationGrammars.Plural));
+		=> new(subject, EnumerableQuantifier.None(subject.Get().ExpectationBuilder.ExpectationGrammars));
 
 #if NET8_0_OR_GREATER
 	/// <summary>
@@ -42,8 +39,7 @@ public static partial class ThatEnumerable
 	/// </summary>
 	public static ElementsForStructEnumerable<ImmutableArray<TItem>, TItem> None<TItem>(
 		this IThat<ImmutableArray<TItem>> subject)
-		=> new(subject, EnumerableQuantifier.None(subject.Get().ExpectationBuilder.ExpectationGrammars |
-		                                          ExpectationGrammars.Plural));
+		=> new(subject, EnumerableQuantifier.None(subject.Get().ExpectationBuilder.ExpectationGrammars));
 #endif
 
 #if NET8_0_OR_GREATER
@@ -52,7 +48,6 @@ public static partial class ThatEnumerable
 	/// </summary>
 	public static ElementsForStructEnumerable<ImmutableArray<string?>> None(
 		this IThat<ImmutableArray<string?>> subject)
-		=> new(subject, EnumerableQuantifier.None(subject.Get().ExpectationBuilder.ExpectationGrammars |
-		                                          ExpectationGrammars.Plural));
+		=> new(subject, EnumerableQuantifier.None(subject.Get().ExpectationBuilder.ExpectationGrammars));
 #endif
 }

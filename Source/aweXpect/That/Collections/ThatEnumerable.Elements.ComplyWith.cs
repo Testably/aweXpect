@@ -53,7 +53,7 @@ public static partial class ThatEnumerable
 			{
 				_expectationBuilder = expectationBuilder;
 				_quantifier = quantifier;
-				_itemExpectationBuilder = new ManualExpectationBuilder<TItem>(null, grammars);
+				_itemExpectationBuilder = new ManualExpectationBuilder<TItem>(null, grammars & ~ExpectationGrammars.Plural);
 				expectations.Invoke(new ThatSubject<TItem>(_itemExpectationBuilder));
 			}
 
@@ -201,7 +201,7 @@ public static partial class ThatEnumerable
 			{
 				_expectationBuilder = expectationBuilder;
 				_quantifier = quantifier;
-				_itemExpectationBuilder = new ManualExpectationBuilder<string?>(null, grammars);
+				_itemExpectationBuilder = new ManualExpectationBuilder<string?>(null, grammars & ~ExpectationGrammars.Plural);
 				expectations.Invoke(new ThatSubject<string?>(_itemExpectationBuilder));
 			}
 
@@ -351,7 +351,7 @@ public static partial class ThatEnumerable
 			{
 				_expectationBuilder = expectationBuilder;
 				_quantifier = quantifier;
-				_itemExpectationBuilder = new ManualExpectationBuilder<object?>(null, grammars);
+				_itemExpectationBuilder = new ManualExpectationBuilder<object?>(null, grammars & ~ExpectationGrammars.Plural);
 				expectations.Invoke(new ThatSubject<object?>(_itemExpectationBuilder));
 			}
 
@@ -505,7 +505,7 @@ public static partial class ThatEnumerable
 			{
 				_expectationBuilder = expectationBuilder;
 				_quantifier = quantifier;
-				_itemExpectationBuilder = new ManualExpectationBuilder<TItem>(null, grammars);
+				_itemExpectationBuilder = new ManualExpectationBuilder<TItem>(null, grammars & ~ExpectationGrammars.Plural);
 				expectations.Invoke(new ThatSubject<TItem>(_itemExpectationBuilder));
 			}
 

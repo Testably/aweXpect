@@ -24,7 +24,7 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has recorded the callback at least twice with x => x > 0 and whose parameters only has unique items,
+					             has recorded the callback at least twice with x => x > 0 and whose parameters only have unique items,
 					             but it was never recorded
 					             
 					             Collection:
@@ -43,7 +43,7 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has recorded the callback at least once and whose parameters has exactly 0 items,
+					             has recorded the callback at least once and whose parameters have exactly 0 items,
 					             but it was <null>
 					             """);
 			}

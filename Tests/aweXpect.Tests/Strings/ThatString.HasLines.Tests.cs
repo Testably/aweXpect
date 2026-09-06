@@ -17,7 +17,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has lines which has exactly 0 items,
+					             has lines which have exactly 0 items,
 					             but it was <null>
 					             """);
 			}
@@ -33,7 +33,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has lines which contains "Error" at least once,
+					             has lines which contain "Error" at least once,
 					             but it did not contain it
 
 					             Collection:
@@ -111,7 +111,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has lines which contains "Ready" at least once,
+					             has lines which contain "Ready" at least once,
 					             but it did not contain it
 
 					             Collection:
@@ -191,7 +191,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have lines which contains "Ready" at least once,
+					             does not have lines which contain "Ready" at least once,
 					             but it had
 					             """);
 			}

@@ -72,7 +72,7 @@ public static partial class ThatAsyncEnumerable
 			_it = it;
 			_grammars = grammars;
 			_quantifier = quantifier;
-			_itemExpectationBuilder = new ManualExpectationBuilder<TItem>(null, grammars);
+			_itemExpectationBuilder = new ManualExpectationBuilder<TItem>(null, grammars & ~ExpectationGrammars.Plural);
 			expectations.Invoke(new ThatSubject<TItem>(_itemExpectationBuilder));
 		}
 
@@ -150,7 +150,7 @@ public static partial class ThatAsyncEnumerable
 		{
 			if (Actual is null)
 			{
-				stringBuilder.ItWasNull(_it);
+				stringBuilder.ItWasNull(_it, Grammars);
 			}
 			else
 			{
@@ -171,7 +171,7 @@ public static partial class ThatAsyncEnumerable
 		{
 			if (Actual is null)
 			{
-				stringBuilder.ItWasNull(_it);
+				stringBuilder.ItWasNull(_it, Grammars);
 			}
 			else
 			{

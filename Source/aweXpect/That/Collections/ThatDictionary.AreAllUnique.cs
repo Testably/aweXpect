@@ -251,7 +251,7 @@ public static partial class ThatDictionary
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("only has unique values");
+			stringBuilder.Append(Grammars.Verb("only has unique values", "only have unique values"));
 			stringBuilder.Append(options);
 		}
 
@@ -260,7 +260,7 @@ public static partial class ThatDictionary
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("has duplicate values");
+			stringBuilder.Append(Grammars.Verb("has duplicate values", "have duplicate values"));
 			stringBuilder.Append(options);
 		}
 
@@ -314,7 +314,8 @@ public static partial class ThatDictionary
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("only has unique values for ").Append(memberAccessorExpression);
+			stringBuilder.Append(Grammars.Verb("only has unique values for ", "only have unique values for "))
+				.Append(memberAccessorExpression);
 			stringBuilder.Append(options);
 		}
 
@@ -323,7 +324,8 @@ public static partial class ThatDictionary
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("has duplicate values for ").Append(memberAccessorExpression);
+			stringBuilder.Append(Grammars.Verb("has duplicate values for ", "have duplicate values for "))
+				.Append(memberAccessorExpression);
 			stringBuilder.Append(options);
 		}
 

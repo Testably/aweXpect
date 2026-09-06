@@ -130,7 +130,7 @@ public static partial class ThatReadOnlyDictionary
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("contains keys ");
+			stringBuilder.Append(Grammars.Verb("contains keys ", "contain keys "));
 			Formatter.Format(stringBuilder, expected);
 		}
 
@@ -144,7 +144,7 @@ public static partial class ThatReadOnlyDictionary
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("does not contain keys ");
+			stringBuilder.Append(Grammars.Verb("does not contain keys ", "do not contain keys "));
 			Formatter.Format(stringBuilder, expected);
 		}
 
