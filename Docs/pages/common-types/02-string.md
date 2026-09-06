@@ -5,8 +5,8 @@ Describes the possible expectations for strings.
 ## Equality
 
 You can verify that the `string` is equal to another one.  
-This expectation can be configured to ignore case, ignore newline style, ignoring leading or trailing white-space, or
-use a custom `IEqualityComparer<string>`:
+This expectation can be configured to ignore case, ignore newline style, ignore the indentation, ignoring leading or
+trailing white-space, or use a custom `IEqualityComparer<string>`:
 
 ```csharp
 string subject = "Abbey Road";
@@ -17,6 +17,8 @@ await Expect.That(subject).IsEqualTo("ABBEY ROAD").IgnoringCase()
   .Because("we ignored the casing");
 await Expect.That("Abbey\r\nRoad").IsEqualTo("Abbey\nRoad").IgnoringNewlineStyle()
   .Because("we ignored the newline style");
+await Expect.That("  Abbey\n    Road").IsEqualTo("Abbey\nRoad").IgnoringIndentation()
+  .Because("we ignored the indentation of every line");
 await Expect.That(subject).IsEqualTo("  Abbey Road").IgnoringLeadingWhiteSpace()
   .Because("we ignored leading white-space");
 await Expect.That(subject).IsEqualTo("Abbey Road \t").IgnoringTrailingWhiteSpace()
@@ -24,6 +26,29 @@ await Expect.That(subject).IsEqualTo("Abbey Road \t").IgnoringTrailingWhiteSpace
 await Expect.That(subject).IsEqualTo("ABBEY ROAD").Using(StringComparer.OrdinalIgnoreCase)
   .Because("the comparer ignored the casing");
 ```
+
+### Indentation
+
+While `IgnoringLeadingWhiteSpace` only trims the start of the complete `string`, `IgnoringIndentation` removes the
+leading white-space from *every* line. This allows comparing against a raw string literal that is indented differently
+than the subject:
+
+```csharp
+string subject = """
+                 public class Beatles
+                 {
+                     public string Album => "Abbey Road";
+                 }
+                 """;
+
+await Expect.That(subject).Contains("""
+                                    public string Album => "Abbey Road";
+                                    """).IgnoringIndentation();
+```
+
+As the lines are split on `\r\n`, `\n` and `\r`, this also normalizes the newline style, which makes
+`IgnoringNewlineStyle` redundant.  
+Trailing white-space within a line is kept, but a line that consists only of white-space becomes empty.
 
 ### Wildcards
 
@@ -73,8 +98,8 @@ await Expect.That(subject).IsEqualTo("Road").AsSuffix();
 ## One of
 
 You can verify that the `string` is one of many alternatives.  
-This expectation can be configured to ignore case, ignore newline style, ignoring leading or trailing white-space, or
-use a custom `IEqualityComparer<string>`:
+This expectation can be configured to ignore case, ignore newline style, ignore the indentation, ignoring leading or
+trailing white-space, or use a custom `IEqualityComparer<string>`:
 
 ```csharp
 string subject = "Abbey Road";
@@ -163,8 +188,8 @@ await Expect.That("Come together\n\n").HasLineCount().EqualTo(2);
 ## String start / end
 
 You can verify that the `string` starts or ends with a given string.  
-These expectations can be configured to ignore case, ignore newline style, ignoring leading or trailing white-space, or
-use a custom `IEqualityComparer<string>`:
+These expectations can be configured to ignore case, ignore newline style, ignore the indentation, ignoring leading or
+trailing white-space, or use a custom `IEqualityComparer<string>`:
 
 ```csharp
 string subject = "Abbey Road";
@@ -185,8 +210,8 @@ await Expect.That(subject).EndsWith("ROAD").Using(StringComparer.OrdinalIgnoreCa
 ## Contains
 
 You can verify that the `string` contains a given substring.  
-These expectations can be configured to ignore case, ignore newline style, ignoring leading or trailing white-space, or
-use a custom `IEqualityComparer<string>`:
+These expectations can be configured to ignore case, ignore newline style, ignore the indentation, ignoring leading or
+trailing white-space, or use a custom `IEqualityComparer<string>`:
 
 ```csharp
 string subject = "Strawberry Fields Forever";

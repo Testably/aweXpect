@@ -68,6 +68,19 @@ public sealed partial class ThatString
 
 			[Fact]
 			public async Task
+				IgnoringIndentation_WhenSubjectEndsWithDifferentlyIndentedFooter_ShouldSucceed()
+			{
+				string subject = "some arbitrary\n    text";
+				string expected = "arbitrary\ntext";
+
+				async Task Act()
+					=> await That(subject).EndsWith(expected).IgnoringIndentation();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task
 				Using_WhenSubjectEndsWithIncorrectMatchAccordingToComparer_ShouldIncludeComparerInMessage()
 			{
 				string subject = "some arbitrary text";

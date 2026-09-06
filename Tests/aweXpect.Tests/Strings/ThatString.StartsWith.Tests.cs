@@ -69,6 +69,47 @@ public sealed partial class ThatString
 
 			[Fact]
 			public async Task
+				IgnoringIndentation_WhenSubjectStartsWithDifferentlyIndentedHeader_ShouldSucceed()
+			{
+				string subject = "    some arbitrary\n        text";
+				string expected = "some arbitrary\ntext";
+
+				async Task Act()
+					=> await That(subject).StartsWith(expected).IgnoringIndentation();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task
+				IgnoringIndentation_WhenSubjectStartsWithDifferentString_ShouldReportOriginalPosition()
+			{
+				string subject = "    some arbitrary text";
+				string expected = "other";
+
+				async Task Act()
+					=> await That(subject).StartsWith(expected).IgnoringIndentation();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             starts with "other" ignoring indentation,
+					             but it was "some arbitrary text" which differs at index 4:
+					                ↓ (actual)
+					               "some arbitrary text"
+					               "other"
+					                ↑ (expected prefix)
+
+					             Actual:
+					                 some arbitrary text
+
+					             Expected:
+					             other
+					             """);
+			}
+
+			[Fact]
+			public async Task
 				Using_WhenSubjectStartsWithIncorrectMatchAccordingToComparer_ShouldIncludeComparerInMessage()
 			{
 				string subject = "some arbitrary text";

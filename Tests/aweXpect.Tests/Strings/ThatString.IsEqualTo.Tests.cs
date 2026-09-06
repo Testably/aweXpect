@@ -256,6 +256,122 @@ public sealed partial class ThatString
 			}
 		}
 
+		public sealed class IgnoringIndentationTests
+		{
+			[Fact]
+			public async Task ShouldIncludeCorrectLineAndColumnInMessage()
+			{
+				string subject = "foo\n    baz";
+				string expected = "foo\nbar";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).IgnoringIndentation();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to "foo\nbar" ignoring indentation,
+					              but it was "foo\nbaz" which differs on line 2 and column 7:
+					                        ↓ (actual)
+					                "foo\nbaz"
+					                "foo\nbar"
+					                        ↑ (expected)
+
+					              Actual:
+					              {subject}
+
+					              Expected:
+					              {expected}
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenLineOnlyConsistsOfWhiteSpace_ShouldBecomeEmpty()
+			{
+				string subject = "foo\n   \nbar";
+				string expected = "foo\n\nbar";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).IgnoringIndentation();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Theory]
+			[InlineData("    foo", "foo")]
+			[InlineData("\tfoo", "foo")]
+			[InlineData("class C\n{\n    Foo();\n}", "class C\n{\nFoo();\n}")]
+			[InlineData("class C\r\n{\r\n    Foo();\r\n}", "class C\n{\nFoo();\n}")]
+			public async Task WhenStringsDifferOnlyInIndentation_ShouldSucceed(
+				string subject, string expected)
+			{
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).IgnoringIndentation();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTrailingWhiteSpaceDiffers_ShouldFail()
+			{
+				string subject = "foo  \nbar";
+				string expected = "foo\nbar";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).IgnoringIndentation();
+
+				await That(Act).Throws<XunitException>();
+			}
+
+			[Fact]
+			public async Task WhenUsedAsPrefix_ShouldIgnoreIndentation()
+			{
+				string subject = "    some arbitrary\n        text";
+				string expected = "some arbitrary\ntext";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).AsPrefix().IgnoringIndentation();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenUsedAsRegex_ShouldIgnoreIndentation()
+			{
+				string subject = "    some arbitrary text";
+				string expected = "some .* text";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).AsRegex().IgnoringIndentation();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenUsedAsSuffix_ShouldIgnoreIndentation()
+			{
+				string subject = "some arbitrary\n    text";
+				string expected = "arbitrary\ntext";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).AsSuffix().IgnoringIndentation();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenUsedAsWildcard_ShouldIgnoreIndentation()
+			{
+				string subject = "    some arbitrary text";
+				string expected = "some * text";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).AsWildcard().IgnoringIndentation();
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
 		public sealed class IgnoringLeadingWhiteSpaceTests
 		{
 			[Theory]
