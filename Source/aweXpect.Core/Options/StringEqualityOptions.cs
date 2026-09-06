@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading.Tasks;
 using aweXpect.Core;
@@ -17,6 +18,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	private static readonly TimeSpan RegexTimeout = TimeSpan.FromMilliseconds(1000);
 	private IEqualityComparer<string>? _comparer;
 	private bool _ignoreCase;
+	private bool _ignoreIndentation;
 	private bool _ignoreLeadingWhiteSpace;
 	private bool _ignoreNewlineStyle;
 	private bool _ignoreTrailingWhiteSpace;
@@ -37,26 +39,50 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 			return result;
 		}
 
-		if (_ignoreNewlineStyle)
-		{
-			actual = actual.RemoveNewlineStyle();
-			expectedString = expectedString.RemoveNewlineStyle();
-		}
-
-		if (_ignoreLeadingWhiteSpace)
-		{
-			actual = actual?.TrimStart();
-			expectedString = expectedString.TrimStart();
-		}
-
-		if (_ignoreTrailingWhiteSpace)
-		{
-			actual = actual?.TrimEnd();
-			expectedString = expectedString.TrimEnd();
-		}
-
-		result = await _matchType.AreConsideredEqual(actual, expectedString, _ignoreCase, _comparer);
+		result = await AreConsideredEqualNormalized(Normalize(actual), Normalize(expectedString));
 		return result;
+	}
+
+	/// <summary>
+	///     Counts how often the <paramref name="expected" /> <see langword="string" /> occurs
+	///     in the <paramref name="actual" /> <see langword="string" />.
+	/// </summary>
+	/// <remarks>
+	///     Both strings are normalized once before the comparison, so that options which change the length of the
+	///     strings (<see cref="IgnoringNewlineStyle(bool)" /> and <see cref="IgnoringIndentation(bool)" />) are
+	///     applied to the complete strings and not to the individual substrings that are compared.
+	/// </remarks>
+#if NET8_0_OR_GREATER
+	public async ValueTask<int> CountOccurrences(string actual, string expected)
+#else
+	public async Task<int> CountOccurrences(string actual, string expected)
+#endif
+	{
+		actual = Normalize(actual);
+		expected = Normalize(expected);
+		if (expected.Length == 0 || expected.Length > actual.Length)
+		{
+			return 0;
+		}
+
+		int count = 0;
+		int index = 0;
+		while (index < actual.Length)
+		{
+			if (await AreConsideredEqualNormalized(
+				    actual.Substring(index, Math.Min(expected.Length, actual.Length - index)),
+				    expected))
+			{
+				count++;
+				index += expected.Length;
+			}
+			else
+			{
+				index++;
+			}
+		}
+
+		return count;
 	}
 
 	/// <summary>
@@ -80,7 +106,24 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 			return $"{it} was {Formatter.Format(actual)}";
 		}
 
+		int[]? ignoredColumnsPerLine = null;
+		if (_ignoreIndentation)
+		{
+			if (actual is not null)
+			{
+				ignoredColumnsPerLine = GetIgnoredColumnsPerLine(actual);
+			}
+
+			actual = actual.RemoveIndentation();
+			expected = expected.RemoveIndentation();
+		}
+
 		StringDifferenceSettings? settings = null;
+		if (ignoredColumnsPerLine is not null)
+		{
+			settings = new StringDifferenceSettings(0, 0, ignoredColumnsPerLine);
+		}
+
 		if (_ignoreLeadingWhiteSpace && actual is not null)
 		{
 			int ignoredLineCount = 0;
@@ -102,7 +145,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 				}
 			}
 
-			settings = new StringDifferenceSettings(ignoredLineCount, ignoredColumnCount);
+			settings = new StringDifferenceSettings(ignoredLineCount, ignoredColumnCount, ignoredColumnsPerLine);
 		}
 
 		if (_ignoreNewlineStyle)
@@ -134,6 +177,23 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	public StringEqualityOptions IgnoringCase(bool ignoreCase = true)
 	{
 		_ignoreCase = ignoreCase;
+		return this;
+	}
+
+	/// <summary>
+	///     Ignores the indentation when comparing <see langword="string" />s,
+	///     according to the <paramref name="ignoreIndentation" /> parameter.
+	/// </summary>
+	/// <remarks>
+	///     Enabling this option will remove the leading white-space from every line and replace all occurrences of
+	///     <c>\r\n</c> and <c>\r</c> with <c>\n</c> in the strings before comparing them, which makes
+	///     <see cref="IgnoringNewlineStyle(bool)" /> redundant.<br />
+	///     Trailing white-space within a line is kept, but a line that consists only of white-space becomes empty.<br />
+	///     The expected value is transformed as well, which also applies to wildcard and regex patterns.
+	/// </remarks>
+	public StringEqualityOptions IgnoringIndentation(bool ignoreIndentation = true)
+	{
+		_ignoreIndentation = ignoreIndentation;
 		return this;
 	}
 
@@ -193,50 +253,110 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	private static StringComparer UseDefaultComparer(bool ignoreCase)
 		=> ignoreCase ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal;
 
+	/// <summary>
+	///     Applies the options that transform the <paramref name="value" /> as a whole.
+	/// </summary>
+	/// <remarks>
+	///     Removing the indentation also normalizes the newline style, so it supersedes
+	///     <see cref="IgnoringNewlineStyle(bool)" />.
+	/// </remarks>
+	[return: NotNullIfNotNull(nameof(value))]
+	private string? Normalize(string? value)
+	{
+		if (_ignoreIndentation)
+		{
+			return value.RemoveIndentation();
+		}
+
+		return _ignoreNewlineStyle ? value.RemoveNewlineStyle() : value;
+	}
+
+	/// <summary>
+	///     Compares two strings that were already passed through <see cref="Normalize" />.
+	/// </summary>
+#if NET8_0_OR_GREATER
+	private async ValueTask<bool> AreConsideredEqualNormalized(string? actual, string? expected)
+#else
+	private async Task<bool> AreConsideredEqualNormalized(string? actual, string? expected)
+#endif
+	{
+		if (_ignoreLeadingWhiteSpace)
+		{
+			actual = actual?.TrimStart();
+			expected = expected?.TrimStart();
+		}
+
+		if (_ignoreTrailingWhiteSpace)
+		{
+			actual = actual?.TrimEnd();
+			expected = expected?.TrimEnd();
+		}
+
+		return await _matchType.AreConsideredEqual(actual, expected, _ignoreCase, _comparer);
+	}
+
+	/// <summary>
+	///     Counts the leading white-space characters of every line in the <paramref name="value" />.
+	/// </summary>
+	private static int[] GetIgnoredColumnsPerLine(string value)
+	{
+		string[] lines = value.RemoveNewlineStyle().Split('\n');
+		int[] result = new int[lines.Length];
+		for (int i = 0; i < lines.Length; i++)
+		{
+			result[i] = lines[i].Length - lines[i].TrimStart().Length;
+		}
+
+		return result;
+	}
 
 	private string GetOptionString()
 	{
-		if (!_ignoreLeadingWhiteSpace && !_ignoreTrailingWhiteSpace && !_ignoreNewlineStyle)
+		string initialString = _matchType.GetOptionString(_ignoreCase, _comparer);
+		if (!_ignoreLeadingWhiteSpace && !_ignoreTrailingWhiteSpace && !_ignoreNewlineStyle &&
+		    !_ignoreIndentation)
 		{
-			return _matchType.GetOptionString(_ignoreCase, _comparer);
+			return initialString;
 		}
 
-		string? whiteSpaceToken = (_ignoreLeadingWhiteSpace, _ignoreTrailingWhiteSpace) switch
+		List<string> tokens = [];
+		switch (_ignoreLeadingWhiteSpace, _ignoreTrailingWhiteSpace)
 		{
-			(true, true) => " white-space",
-			(true, false) => " leading white-space",
-			(false, true) => " trailing white-space",
-			(false, false) => null,
-		};
+			case (true, true):
+				tokens.Add("white-space");
+				break;
+			case (true, false):
+				tokens.Add("leading white-space");
+				break;
+			case (false, true):
+				tokens.Add("trailing white-space");
+				break;
+		}
 
-		string? newlineStyleToken = _ignoreNewlineStyle
-			? " newline style"
-			: null;
+		if (_ignoreNewlineStyle)
+		{
+			tokens.Add("newline style");
+		}
+
+		if (_ignoreIndentation)
+		{
+			tokens.Add("indentation");
+		}
 
 		StringBuilder sb = new();
-		string initialString = _matchType.GetOptionString(_ignoreCase, _comparer);
 		sb.Append(initialString);
-		if (initialString.Contains("ignoring"))
-		{
-			sb.Append(whiteSpaceToken == null || newlineStyleToken == null ? " and" : ",");
-		}
-		else
-		{
-			sb.Append(" ignoring");
-		}
+		sb.Append(initialString.Contains("ignoring")
+			? tokens.Count == 1 ? " and" : ","
+			: " ignoring");
 
-		if (whiteSpaceToken != null)
+		for (int i = 0; i < tokens.Count; i++)
 		{
-			sb.Append(whiteSpaceToken);
-			if (newlineStyleToken != null)
+			if (i > 0)
 			{
-				sb.Append(" and");
+				sb.Append(i == tokens.Count - 1 ? " and" : ",");
 			}
-		}
 
-		if (newlineStyleToken != null)
-		{
-			sb.Append(newlineStyleToken);
+			sb.Append(' ').Append(tokens[i]);
 		}
 
 		return sb.ToString();

@@ -338,7 +338,8 @@ namespace aweXpect.Core
     }
     public class StringDifferenceSettings
     {
-        public StringDifferenceSettings(int ignoredTrailingLines, int ignoredTrailingColumns) { }
+        public StringDifferenceSettings(int ignoredTrailingLines, int ignoredTrailingColumns, System.Collections.Generic.IReadOnlyList<int>? ignoredColumnsPerLine = null) { }
+        public System.Collections.Generic.IReadOnlyList<int>? IgnoredColumnsPerLine { get; }
         public int IgnoredTrailingColumns { get; }
         public int IgnoredTrailingLines { get; }
         public aweXpect.Core.StringDifference.MatchType MatchType { get; }
@@ -981,10 +982,12 @@ namespace aweXpect.Options
         public aweXpect.Options.StringEqualityOptions AsSuffix() { }
         public aweXpect.Options.StringEqualityOptions AsWildcard() { }
         public aweXpect.Options.StringEqualityOptions Containing() { }
+        public System.Threading.Tasks.ValueTask<int> CountOccurrences(string actual, string expected) { }
         public aweXpect.Options.StringEqualityOptions Exactly() { }
         public string GetExpectation(string? expected, aweXpect.Core.ExpectationGrammars grammars) { }
         public string GetExtendedFailure(string it, aweXpect.Core.ExpectationGrammars grammars, string? actual, string? expected) { }
         public aweXpect.Options.StringEqualityOptions IgnoringCase(bool ignoreCase = true) { }
+        public aweXpect.Options.StringEqualityOptions IgnoringIndentation(bool ignoreIndentation = true) { }
         public aweXpect.Options.StringEqualityOptions IgnoringLeadingWhiteSpace(bool ignoreLeadingWhiteSpace = true) { }
         public aweXpect.Options.StringEqualityOptions IgnoringNewlineStyle(bool ignoreNewlineStyle = true) { }
         public aweXpect.Options.StringEqualityOptions IgnoringTrailingWhiteSpace(bool ignoreTrailingWhiteSpace = true) { }
@@ -1334,6 +1337,7 @@ namespace aweXpect.Results
     {
         public StringCountResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier quantifier, aweXpect.Options.StringEqualityOptions options) { }
         public TSelf IgnoringCase(bool ignoreCase = true) { }
+        public TSelf IgnoringIndentation(bool ignoreIndentation = true) { }
         public TSelf IgnoringNewlineStyle(bool ignoreNewlineStyle = true) { }
         public TSelf Using(System.Collections.Generic.IEqualityComparer<string> comparer) { }
     }
@@ -1346,6 +1350,7 @@ namespace aweXpect.Results
     {
         public StringEqualityResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.StringEqualityOptions options) { }
         public TSelf IgnoringCase(bool ignoreCase = true) { }
+        public TSelf IgnoringIndentation(bool ignoreIndentation = true) { }
         public TSelf IgnoringLeadingWhiteSpace(bool ignoreLeadingWhiteSpace = true) { }
         public TSelf IgnoringNewlineStyle(bool ignoreNewlineStyle = true) { }
         public TSelf IgnoringTrailingWhiteSpace(bool ignoreTrailingWhiteSpace = true) { }
@@ -1387,6 +1392,7 @@ namespace aweXpect.Results
         public TSelf AsSuffix() { }
         public TSelf AsWildcard() { }
         public TSelf IgnoringCase(bool ignoreCase = true) { }
+        public TSelf IgnoringIndentation(bool ignoreIndentation = true) { }
         public TSelf IgnoringLeadingWhiteSpace(bool ignoreLeadingWhiteSpace = true) { }
         public TSelf IgnoringNewlineStyle(bool ignoreNewlineStyle = true) { }
         public TSelf IgnoringTrailingWhiteSpace(bool ignoreTrailingWhiteSpace = true) { }

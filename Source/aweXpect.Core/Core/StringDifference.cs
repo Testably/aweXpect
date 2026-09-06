@@ -144,7 +144,6 @@ public sealed class StringDifference(
 			return prefix;
 		}
 
-		int column = settings?.IgnoredTrailingColumns ?? 0;
 		int indexFromEnd = actual.Length - indexOfFirstMismatch;
 		StringBuilder sb = new();
 		int trimStart = settings?.MatchType == MatchType.Suffix
@@ -167,6 +166,10 @@ public sealed class StringDifference(
 		{
 			lineNumber += settings.IgnoredTrailingLines;
 		}
+
+		int column = settings?.IgnoredColumnsPerLine is { } ignoredColumnsPerLine
+			? lineNumber < ignoredColumnsPerLine.Count ? ignoredColumnsPerLine[lineNumber] : 0
+			: settings?.IgnoredTrailingColumns ?? 0;
 
 		if (settings?.IgnoredTrailingLines > 0 || actual.Any(c => c == '\n'))
 		{
