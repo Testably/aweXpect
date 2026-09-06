@@ -3360,6 +3360,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 5 16:40:11 2026 \u002B0200",
         "message": "feat: suppress nullability warnings after an \u0060IsNotNull\u0060 expectation (#1021)"
+      },
+      {
+        "sha": "964906fcee605bbf03f7ebdb6dca0c49a63a4197",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 07:49:16 2026 \u002B0200",
+        "message": "feat: add line-based string expectations (#1025)"
       }
     ],
     "labels": [
@@ -3922,7 +3928,8 @@ window.BENCHMARK_DATA = {
       "24dc08d9",
       "300993a9",
       "f37799d9",
-      "99b68991"
+      "99b68991",
+      "964906fc"
     ],
     "datasets": [
       {
@@ -4488,7 +4495,8 @@ window.BENCHMARK_DATA = {
           271.3400662626539,
           260.6101592268263,
           261.8702751159668,
-          260.8233981927236
+          260.8233981927236,
+          187.39688928922018
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4961,6 +4969,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5633,7 +5642,8 @@ window.BENCHMARK_DATA = {
           244.4677336215973,
           250.41821381251017,
           240.63339359419686,
-          253.01398871739704
+          253.01398871739704,
+          207.76081890719277
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5826,6 +5836,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -9116,6 +9127,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 5 16:40:11 2026 \u002B0200",
         "message": "feat: suppress nullability warnings after an \u0060IsNotNull\u0060 expectation (#1021)"
+      },
+      {
+        "sha": "964906fcee605bbf03f7ebdb6dca0c49a63a4197",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 07:49:16 2026 \u002B0200",
+        "message": "feat: add line-based string expectations (#1025)"
       }
     ],
     "labels": [
@@ -9601,7 +9618,8 @@ window.BENCHMARK_DATA = {
       "24dc08d9",
       "300993a9",
       "f37799d9",
-      "99b68991"
+      "99b68991",
+      "964906fc"
     ],
     "datasets": [
       {
@@ -10090,7 +10108,8 @@ window.BENCHMARK_DATA = {
           309869.0206380208,
           329961.2967354911,
           312238.31331380206,
-          298965.4108886719
+          298965.4108886719,
+          236163.94596354166
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10584,7 +10603,8 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444
+          335444,
+          335442
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11081,7 +11101,8 @@ window.BENCHMARK_DATA = {
           2796549.349158654,
           2681717.0424479167,
           2727141.603645833,
-          2374673.901785714
+          2374673.901785714,
+          1887719.546595982
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11575,7 +11596,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841648
+          4841648,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14949,6 +14971,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 5 16:40:11 2026 \u002B0200",
         "message": "feat: suppress nullability warnings after an \u0060IsNotNull\u0060 expectation (#1021)"
+      },
+      {
+        "sha": "964906fcee605bbf03f7ebdb6dca0c49a63a4197",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 07:49:16 2026 \u002B0200",
+        "message": "feat: add line-based string expectations (#1025)"
       }
     ],
     "labels": [
@@ -15511,7 +15539,8 @@ window.BENCHMARK_DATA = {
       "24dc08d9",
       "300993a9",
       "f37799d9",
-      "99b68991"
+      "99b68991",
+      "964906fc"
     ],
     "datasets": [
       {
@@ -16077,7 +16106,8 @@ window.BENCHMARK_DATA = {
           508.41381093433927,
           544.7505034128825,
           492.20544007619225,
-          509.43494784037273
+          509.43494784037273,
+          372.76982164382935
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16550,6 +16580,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -17222,7 +17253,8 @@ window.BENCHMARK_DATA = {
           537.9235699971517,
           497.77142899831136,
           528.7770683924357,
-          492.5379686355591
+          492.5379686355591,
+          394.07516254697526
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17415,6 +17447,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -21167,6 +21200,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 5 16:40:11 2026 \u002B0200",
         "message": "feat: suppress nullability warnings after an \u0060IsNotNull\u0060 expectation (#1021)"
+      },
+      {
+        "sha": "964906fcee605bbf03f7ebdb6dca0c49a63a4197",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 07:49:16 2026 \u002B0200",
+        "message": "feat: add line-based string expectations (#1025)"
       }
     ],
     "labels": [
@@ -21729,7 +21768,8 @@ window.BENCHMARK_DATA = {
       "24dc08d9",
       "300993a9",
       "f37799d9",
-      "99b68991"
+      "99b68991",
+      "964906fc"
     ],
     "datasets": [
       {
@@ -22295,7 +22335,8 @@ window.BENCHMARK_DATA = {
           286.87845315933225,
           271.17682282129925,
           263.992242370333,
-          262.85993460246493
+          262.85993460246493,
+          195.24499454498292
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22809,6 +22850,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -23440,7 +23482,8 @@ window.BENCHMARK_DATA = {
           279.25633927753995,
           259.80303284327186,
           252.77559280395508,
-          246.28508731297083
+          246.28508731297083,
+          202.3700886408488
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -23633,6 +23676,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -27385,6 +27429,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 5 16:40:11 2026 \u002B0200",
         "message": "feat: suppress nullability warnings after an \u0060IsNotNull\u0060 expectation (#1021)"
+      },
+      {
+        "sha": "964906fcee605bbf03f7ebdb6dca0c49a63a4197",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 07:49:16 2026 \u002B0200",
+        "message": "feat: add line-based string expectations (#1025)"
       }
     ],
     "labels": [
@@ -27947,7 +27997,8 @@ window.BENCHMARK_DATA = {
       "24dc08d9",
       "300993a9",
       "f37799d9",
-      "99b68991"
+      "99b68991",
+      "964906fc"
     ],
     "datasets": [
       {
@@ -28513,7 +28564,8 @@ window.BENCHMARK_DATA = {
           489.05617464505707,
           486.1496162414551,
           468.5110655512129,
-          481.9711998939514
+          481.9711998939514,
+          381.2699041366577
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28986,6 +29038,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -29658,7 +29711,8 @@ window.BENCHMARK_DATA = {
           1319.9606152943202,
           1253.156853357951,
           1206.7439642588297,
-          1252.2308293751307
+          1252.2308293751307,
+          955.3100690841675
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30087,6 +30141,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -33603,6 +33658,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 5 16:40:11 2026 \u002B0200",
         "message": "feat: suppress nullability warnings after an \u0060IsNotNull\u0060 expectation (#1021)"
+      },
+      {
+        "sha": "964906fcee605bbf03f7ebdb6dca0c49a63a4197",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 07:49:16 2026 \u002B0200",
+        "message": "feat: add line-based string expectations (#1025)"
       }
     ],
     "labels": [
@@ -34165,7 +34226,8 @@ window.BENCHMARK_DATA = {
       "24dc08d9",
       "300993a9",
       "f37799d9",
-      "99b68991"
+      "99b68991",
+      "964906fc"
     ],
     "datasets": [
       {
@@ -34731,7 +34793,8 @@ window.BENCHMARK_DATA = {
           2153.836298806327,
           1905.213739267985,
           1951.43681640625,
-          1964.588737487793
+          1964.588737487793,
+          1527.452621459961
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35204,6 +35267,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -35876,7 +35940,8 @@ window.BENCHMARK_DATA = {
           1436.160674902109,
           1324.521998723348,
           1341.0697611490884,
-          1359.1450143178304
+          1359.1450143178304,
+          1078.9776429396409
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36069,6 +36134,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -39821,6 +39887,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 5 16:40:11 2026 \u002B0200",
         "message": "feat: suppress nullability warnings after an \u0060IsNotNull\u0060 expectation (#1021)"
+      },
+      {
+        "sha": "964906fcee605bbf03f7ebdb6dca0c49a63a4197",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 07:49:16 2026 \u002B0200",
+        "message": "feat: add line-based string expectations (#1025)"
       }
     ],
     "labels": [
@@ -40383,7 +40455,8 @@ window.BENCHMARK_DATA = {
       "24dc08d9",
       "300993a9",
       "f37799d9",
-      "99b68991"
+      "99b68991",
+      "964906fc"
     ],
     "datasets": [
       {
@@ -40949,7 +41022,8 @@ window.BENCHMARK_DATA = {
           2770.208013974703,
           2535.344251759847,
           2598.736553464617,
-          2612.8094171796524
+          2612.8094171796524,
+          2052.6709531148276
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -41422,6 +41496,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -42094,7 +42169,8 @@ window.BENCHMARK_DATA = {
           28797.18398030599,
           26631.96302141462,
           27103.36249593099,
-          20963.565364583334
+          20963.565364583334,
+          16551.361726888023
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -42634,6 +42710,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471,
           33471,
