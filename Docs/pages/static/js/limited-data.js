@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "e66001e4fbfb0d7dd3262989c9ad40c089600c88",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 17 11:59:59 2026 \u002B0200",
-        "message": "chore: bump aweXpect.Core to v2.31.1 (#957)"
-      },
-      {
         "sha": "6b4e94455f40d1371c560c17f23567a6402672e5",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 17 12:05:32 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
         "message": "feat: support \u0060IgnoringIndentation()\u0060 in the string expectations (#1032)"
+      },
+      {
+        "sha": "affdbc378d700ce40d2bfe4621501abb2368882f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 19:22:42 2026 \u002B0200",
+        "message": "feat: add \u0060Eventually()\u0060 to retry an expectation on a delegate (#1033)"
       }
     ],
     "labels": [
-      "e66001e4",
       "6b4e9445",
       "85829d9b",
       "7d61bd7f",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "964906fc",
       "520b2403",
       "b54cc8e6",
-      "11994e6d"
+      "11994e6d",
+      "affdbc37"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          282.7335612590496,
           268.70427735646564,
           237.4230009828295,
           259.0494612375895,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           187.39688928922018,
           263.55120881398517,
           287.9791279157003,
-          286.4416621843974
+          286.4416621843974,
+          191.0487357934316
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          287.0162956237793,
           265.210053062439,
           246.33136133352914,
           265.56048842838834,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           207.76081890719277,
           249.12790355682372,
           301.0684215863546,
-          262.62074750264486
+          262.62074750264486,
+          208.36846761703492
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "e66001e4fbfb0d7dd3262989c9ad40c089600c88",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 17 11:59:59 2026 \u002B0200",
-        "message": "chore: bump aweXpect.Core to v2.31.1 (#957)"
-      },
-      {
         "sha": "6b4e94455f40d1371c560c17f23567a6402672e5",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 17 12:05:32 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
         "message": "feat: support \u0060IgnoringIndentation()\u0060 in the string expectations (#1032)"
+      },
+      {
+        "sha": "affdbc378d700ce40d2bfe4621501abb2368882f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 19:22:42 2026 \u002B0200",
+        "message": "feat: add \u0060Eventually()\u0060 to retry an expectation on a delegate (#1033)"
       }
     ],
     "labels": [
-      "e66001e4",
       "6b4e9445",
       "85829d9b",
       "7d61bd7f",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "964906fc",
       "520b2403",
       "b54cc8e6",
-      "11994e6d"
+      "11994e6d",
+      "affdbc37"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          324214.9382324219,
           301004.5183454241,
           302280.16071428574,
           312724.05810546875,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           236163.94596354166,
           327566.77659254806,
           273489.1768624442,
-          323745.7591271034
+          323745.7591271034,
+          238487.37515694756
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1073,11 +1073,11 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
           335444,
           335444,
-          335444
+          335444,
+          335442
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2523500.0549665177,
           2389638.21328125,
           2348583.0646033655,
           2417831.9322916665,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           1887719.546595982,
           2708150.0167410714,
           2296891.5299479165,
-          2773380.45625
+          2773380.45625,
+          1946460.4822265625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4804887,
           4804887,
           4804906,
           4804891,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841647,
           4841651,
           4841613,
-          4841651
+          4841651,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "e66001e4fbfb0d7dd3262989c9ad40c089600c88",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 17 11:59:59 2026 \u002B0200",
-        "message": "chore: bump aweXpect.Core to v2.31.1 (#957)"
-      },
       {
         "sha": "6b4e94455f40d1371c560c17f23567a6402672e5",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
         "message": "feat: support \u0060IgnoringIndentation()\u0060 in the string expectations (#1032)"
+      },
+      {
+        "sha": "affdbc378d700ce40d2bfe4621501abb2368882f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 19:22:42 2026 \u002B0200",
+        "message": "feat: add \u0060Eventually()\u0060 to retry an expectation on a delegate (#1033)"
       }
     ],
     "labels": [
-      "e66001e4",
       "6b4e9445",
       "85829d9b",
       "7d61bd7f",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "964906fc",
       "520b2403",
       "b54cc8e6",
-      "11994e6d"
+      "11994e6d",
+      "affdbc37"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          514.4281489054362,
           490.6153142929077,
           448.98505452963025,
           504.8283741633097,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           372.76982164382935,
           503.7450442314148,
           490.6649518330892,
-          521.6060015814645
+          521.6060015814645,
+          421.632573668162
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          565.151062520345,
           521.0802545547485,
           474.35661142213,
           497.13243865966797,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           394.07516254697526,
           487.83619356155396,
           533.8596198399862,
-          517.7070039113363
+          517.7070039113363,
+          427.9677768389384
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "e66001e4fbfb0d7dd3262989c9ad40c089600c88",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 17 11:59:59 2026 \u002B0200",
-        "message": "chore: bump aweXpect.Core to v2.31.1 (#957)"
-      },
-      {
         "sha": "6b4e94455f40d1371c560c17f23567a6402672e5",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 17 12:05:32 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
         "message": "feat: support \u0060IgnoringIndentation()\u0060 in the string expectations (#1032)"
+      },
+      {
+        "sha": "affdbc378d700ce40d2bfe4621501abb2368882f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 19:22:42 2026 \u002B0200",
+        "message": "feat: add \u0060Eventually()\u0060 to retry an expectation on a delegate (#1033)"
       }
     ],
     "labels": [
-      "e66001e4",
       "6b4e9445",
       "85829d9b",
       "7d61bd7f",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "964906fc",
       "520b2403",
       "b54cc8e6",
-      "11994e6d"
+      "11994e6d",
+      "affdbc37"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          294.5753111521403,
           266.6199170430501,
           252.91675303777058,
           269.2381171158382,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           195.24499454498292,
           266.67754578590393,
           291.6615239143372,
-          274.26365219751995
+          274.26365219751995,
+          199.57252311706543
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          320.9762630144755,
           276.4317260742188,
           246.13310197194417,
           272.71939734050204,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           202.3700886408488,
           252.25035781126755,
           295.32209663391114,
-          267.2180280049642
+          267.2180280049642,
+          209.31265878677368
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "e66001e4fbfb0d7dd3262989c9ad40c089600c88",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 17 11:59:59 2026 \u002B0200",
-        "message": "chore: bump aweXpect.Core to v2.31.1 (#957)"
-      },
-      {
         "sha": "6b4e94455f40d1371c560c17f23567a6402672e5",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 17 12:05:32 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
         "message": "feat: support \u0060IgnoringIndentation()\u0060 in the string expectations (#1032)"
+      },
+      {
+        "sha": "affdbc378d700ce40d2bfe4621501abb2368882f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 19:22:42 2026 \u002B0200",
+        "message": "feat: add \u0060Eventually()\u0060 to retry an expectation on a delegate (#1033)"
       }
     ],
     "labels": [
-      "e66001e4",
       "6b4e9445",
       "85829d9b",
       "7d61bd7f",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "964906fc",
       "520b2403",
       "b54cc8e6",
-      "11994e6d"
+      "11994e6d",
+      "affdbc37"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          507.17106711069744,
           492.00367908477784,
           480.8208510194506,
           486.5856046676636,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           381.2699041366577,
           476.6364890416463,
           445.5378861745199,
-          498.9076719965254
+          498.9076719965254,
+          391.83385581970214
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1371.2025916235787,
           1231.9606870015461,
           1141.5442563465663,
           1264.411087290446,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           955.3100690841675,
           1237.353496424357,
           1273.3620643615723,
-          1381.4389188130697
+          1381.4389188130697,
+          975.4726434071858
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "e66001e4fbfb0d7dd3262989c9ad40c089600c88",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 17 11:59:59 2026 \u002B0200",
-        "message": "chore: bump aweXpect.Core to v2.31.1 (#957)"
-      },
-      {
         "sha": "6b4e94455f40d1371c560c17f23567a6402672e5",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 17 12:05:32 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
         "message": "feat: support \u0060IgnoringIndentation()\u0060 in the string expectations (#1032)"
+      },
+      {
+        "sha": "affdbc378d700ce40d2bfe4621501abb2368882f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 19:22:42 2026 \u002B0200",
+        "message": "feat: add \u0060Eventually()\u0060 to retry an expectation on a delegate (#1033)"
       }
     ],
     "labels": [
-      "e66001e4",
       "6b4e9445",
       "85829d9b",
       "7d61bd7f",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "964906fc",
       "520b2403",
       "b54cc8e6",
-      "11994e6d"
+      "11994e6d",
+      "affdbc37"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1778.3158333642143,
           1703.5914309183756,
           1879.4010169165474,
           1923.3706199101039,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1527.452621459961,
           2047.8017865498862,
           1420.962323888143,
-          1961.5972730000815
+          1961.5972730000815,
+          1528.6663879394532
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1518.6698633829753,
           1370.8832670847576,
           1284.857862218221,
           1436.0171778361002,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1078.9776429396409,
           1399.8545087178547,
           1401.9845397949218,
-          1419.2282477787562
+          1419.2282477787562,
+          1101.0765909467425
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "e66001e4fbfb0d7dd3262989c9ad40c089600c88",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 17 11:59:59 2026 \u002B0200",
-        "message": "chore: bump aweXpect.Core to v2.31.1 (#957)"
-      },
-      {
         "sha": "6b4e94455f40d1371c560c17f23567a6402672e5",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 17 12:05:32 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
         "message": "feat: support \u0060IgnoringIndentation()\u0060 in the string expectations (#1032)"
+      },
+      {
+        "sha": "affdbc378d700ce40d2bfe4621501abb2368882f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 19:22:42 2026 \u002B0200",
+        "message": "feat: add \u0060Eventually()\u0060 to retry an expectation on a delegate (#1033)"
       }
     ],
     "labels": [
-      "e66001e4",
       "6b4e9445",
       "85829d9b",
       "7d61bd7f",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "964906fc",
       "520b2403",
       "b54cc8e6",
-      "11994e6d"
+      "11994e6d",
+      "affdbc37"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2172.7669953566333,
           2245.68141784668,
           2479.450833892822,
           2286.5064811706543,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2052.6709531148276,
           2712.830554707845,
           1855.2125802721296,
-          2662.4832257588705
+          2662.4832257588705,
+          2038.1347600496733
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          70406.93802584134,
           70462.63976111778,
           61951.423302283656,
           69898.10595703125,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           16551.361726888023,
           28598.32417515346,
           17947.528975423178,
-          27737.258825683595
+          27737.258825683595,
+          16199.068056233724
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          57488,
           57952,
           56986,
           57488,
@@ -4242,6 +4241,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
