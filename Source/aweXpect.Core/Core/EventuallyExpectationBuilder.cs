@@ -13,13 +13,13 @@ using aweXpect.Customization;
 namespace aweXpect.Core;
 
 /// <summary>
-///     An <see cref="ExpectationBuilder" /> that repeatedly re-evaluates the <paramref name="subject" />
-///     until the expectations are met or the timeout expires.
+///     The retry constants of <see cref="EventuallyExpectationBuilder{TValue}" />.
 /// </summary>
-internal class EventuallyExpectationBuilder<TValue>(
-	Func<CancellationToken, Task<TValue>>? subject,
-	string subjectExpression)
-	: ExpectationBuilder(subjectExpression)
+/// <remarks>
+///     They do not depend on the value type, so they are kept outside of the generic type to have a single instance
+///     instead of one per closed constructed type.
+/// </remarks>
+internal static class EventuallyExpectationBuilder
 {
 	/// <summary>
 	///     How close to the end of the retry budget a cancellation still counts as the budget having elapsed.
@@ -29,14 +29,23 @@ internal class EventuallyExpectationBuilder<TValue>(
 	///     not share the clock of the stopwatch that measures the retry budget, so a wait that consumed the whole
 	///     budget can be cancelled a fraction of a millisecond before the stopwatch agrees.
 	/// </remarks>
-	private static readonly TimeSpan CancellationTolerance = TimeSpan.FromMilliseconds(2);
+	public static readonly TimeSpan CancellationTolerance = TimeSpan.FromMilliseconds(2);
 
 	/// <summary>
 	///     The largest interval that <see cref="Task.Delay(TimeSpan, CancellationToken)" /> accepts.
 	/// </summary>
-	private static readonly TimeSpan MaximumInterval = TimeSpan.FromMilliseconds(int.MaxValue);
+	public static readonly TimeSpan MaximumInterval = TimeSpan.FromMilliseconds(int.MaxValue);
+}
 
-
+/// <summary>
+///     An <see cref="ExpectationBuilder" /> that repeatedly re-evaluates the <paramref name="subject" />
+///     until the expectations are met or the timeout expires.
+/// </summary>
+internal class EventuallyExpectationBuilder<TValue>(
+	Func<CancellationToken, Task<TValue>>? subject,
+	string subjectExpression)
+	: ExpectationBuilder(subjectExpression)
+{
 	/// <inheritdoc />
 	internal override async Task<ConstraintResult> IsMet(Node rootNode,
 		EvaluationContext.EvaluationContext context,
@@ -134,7 +143,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 			}
 			catch (OperationCanceledException)
 			{
-				isLastAttempt = retryTimeout - stopwatch.Elapsed < CancellationTolerance;
+				isLastAttempt = retryTimeout - stopwatch.Elapsed < EventuallyExpectationBuilder.CancellationTolerance;
 			}
 
 			currentContext = new EvaluationContext.EvaluationContext();
@@ -147,8 +156,9 @@ internal class EventuallyExpectationBuilder<TValue>(
 	///     <paramref name="interval" /> re-evaluates the subject as fast as possible.
 	/// </summary>
 	/// <remarks>
-	///     The result is capped at <see cref="MaximumInterval" />, because an unlimited retry budget does not
-	///     limit the interval and <see cref="Task.Delay(TimeSpan, CancellationToken)" /> rejects larger values.
+	///     The result is capped at <see cref="EventuallyExpectationBuilder.MaximumInterval" />, because an unlimited
+	///     retry budget does not limit the interval and
+	///     <see cref="Task.Delay(TimeSpan, CancellationToken)" /> rejects larger values.
 	/// </remarks>
 	private static TimeSpan NextInterval(TimeSpan interval, TimeSpan remaining)
 	{
@@ -157,8 +167,9 @@ internal class EventuallyExpectationBuilder<TValue>(
 			return TimeSpan.Zero;
 		}
 
+		TimeSpan maximum = EventuallyExpectationBuilder.MaximumInterval;
 		TimeSpan next = interval < remaining ? interval : remaining;
-		return next < MaximumInterval ? next : MaximumInterval;
+		return next < maximum ? next : maximum;
 	}
 
 	/// <summary>
@@ -197,10 +208,9 @@ internal class EventuallyExpectationBuilder<TValue>(
 		public override Outcome Outcome
 		{
 			get => Outcome.Undecided;
-			protected set
-			{
-				// The outcome of a cancelled expectation is always undecided.
-			}
+
+			// The outcome of a cancelled expectation is always undecided, so the value is discarded.
+			protected set => _ = value;
 		}
 
 		/// <inheritdoc cref="ConstraintResult.AppendExpectation(StringBuilder, string?)" />

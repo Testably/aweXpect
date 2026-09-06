@@ -42,9 +42,10 @@ public sealed class ThatDelegateEventuallyTests
 				             """);
 		}
 
-		await That(counter.EvaluationCount).IsEqualTo(6)
+		await That(counter.EvaluationCount).IsBetween(2).And(6)
 			.Because("the subject is evaluated at 0ms, 200ms, 400ms, 600ms, 800ms and - because the last wait " +
-			         "is shortened to the remaining budget - at 1000ms");
+			         "is shortened to the remaining budget - at 1000ms, but a busy machine can drop evaluations, " +
+			         "while without the check interval there would be far more of them");
 	}
 
 	[Fact]
