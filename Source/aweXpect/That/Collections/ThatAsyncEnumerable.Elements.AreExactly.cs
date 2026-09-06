@@ -26,14 +26,7 @@ public static partial class ThatAsyncEnumerable
 						expectationBuilder,
 						it, grammars,
 						_quantifier,
-						g => (g.IsPlural(),
-								g.IsNegated()) switch
-							{
-								(true, false) => $"are exactly of type {Formatter.Format(typeof(TType))}",
-								(false, false) => $"is exactly of type {Formatter.Format(typeof(TType))}",
-								(true, true) => $"are not exactly of type {Formatter.Format(typeof(TType))}",
-								(false, true) => $"is not exactly of type {Formatter.Format(typeof(TType))}",
-							},
+						g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(typeof(TType))),
 						a => a?.GetType() == typeof(TType),
 						"were")),
 				_subject,
@@ -55,14 +48,7 @@ public static partial class ThatAsyncEnumerable
 						expectationBuilder,
 						it, grammars,
 						_quantifier,
-						g => (g.IsPlural(),
-								g.IsNegated()) switch
-							{
-								(true, false) => $"are exactly of type {Formatter.Format(type)}",
-								(false, false) => $"is exactly of type {Formatter.Format(type)}",
-								(true, true) => $"are not exactly of type {Formatter.Format(type)}",
-								(false, true) => $"is not exactly of type {Formatter.Format(type)}",
-							},
+						g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(type)),
 						a => a?.GetType() == type,
 						"were")),
 				_subject,

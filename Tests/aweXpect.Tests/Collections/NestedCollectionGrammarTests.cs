@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace aweXpect.Tests;
 
@@ -197,4 +198,234 @@ public sealed class NestedCollectionGrammar
 				.WithMessage("*but it was empty*").AsWildcard();
 		}
 	}
+
+	/// <summary>
+	///     The negated and the <see langword="null" /> subject forms of the expectations that select their verb.
+	/// </summary>
+	public sealed class NegatedTests
+	{
+		[Fact]
+		public async Task AreAllUniqueForDictionary_ShouldUseSingularVerb()
+		{
+			Dictionary<int, string> subject = new() { [0] = "a", [1] = "b", };
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(it => it.AreAllUnique());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*has duplicate values,*").AsWildcard();
+		}
+
+		[Fact]
+		public async Task AreAllUniqueForDictionaryWithMemberAccessor_ShouldUseSingularVerb()
+		{
+			Dictionary<int, string> subject = new() { [0] = "a", [1] = "bb", };
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(it => it.AreAllUnique(v => v.Length));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*has duplicate values for v => v.Length,*").AsWildcard();
+		}
+
+		[Fact]
+		public async Task AreAllUniqueForReadOnlyDictionary_ShouldUseSingularVerb()
+		{
+			IReadOnlyDictionary<int, string> subject = new Dictionary<int, string> { [0] = "a", [1] = "b", };
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(it => it.AreAllUnique());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*has duplicate values,*").AsWildcard();
+		}
+
+		[Fact]
+		public async Task AreAllUniqueForReadOnlyDictionaryWithMemberAccessor_ShouldUseSingularVerb()
+		{
+			IReadOnlyDictionary<int, string> subject = new Dictionary<int, string> { [0] = "a", [1] = "bb", };
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(it => it.AreAllUnique(v => v.Length));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*has duplicate values for v => v.Length,*").AsWildcard();
+		}
+
+		[Fact]
+		public async Task ContainsForEnumerableWithNullSubject_ShouldUseSingularVerb()
+		{
+			IEnumerable? subject = null;
+
+			async Task Act()
+				=> await That(subject!).Contains((object?)1);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*but it was <null>*").AsWildcard();
+		}
+
+		[Fact]
+		public async Task HasItemThatWithNullSubject_ShouldUseSingularVerb()
+		{
+			IEnumerable<int>? subject = null;
+
+			async Task Act()
+				=> await That(subject!).HasItemThat(i => i.IsEqualTo(1));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*but it was <null>*").AsWildcard();
+		}
+
+		[Fact]
+		public async Task IsEmptyForEnumerable_ShouldUseSingularVerb()
+		{
+			IEnumerable subject = Array.Empty<int>();
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(it => it.IsEmpty());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*is not empty,*but it was*").AsWildcard();
+		}
+
+		[Fact]
+		public async Task NotHasItemWithExpected_ShouldUseSingularVerb()
+		{
+			IEnumerable<int> subject = [1, 2,];
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(it => it.HasItem(1));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*does not have item*").AsWildcard();
+		}
+
+		[Fact]
+		public async Task NotHasItemWithPredicate_ShouldUseSingularVerb()
+		{
+			IEnumerable<int> subject = [1, 2,];
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(it => it.HasItem(x => x == 1));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*does not have item*").AsWildcard();
+		}
+
+		[Fact]
+		public async Task NotHasItemWithString_ShouldUseSingularVerb()
+		{
+			IEnumerable<string?> subject = ["a", "b",];
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(it => it.HasItem("a"));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*does not have item*").AsWildcard();
+		}
+
+		[Fact]
+		public async Task NotHasItemForEnumerable_ShouldUseSingularVerb()
+		{
+			IEnumerable subject = new[] { 1, 2, };
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(it => it.HasItem((object?)1));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*does not have item*").AsWildcard();
+		}
+
+		[Fact]
+		public async Task NotHasItemThat_ShouldUseSingularVerb()
+		{
+			IEnumerable<int> subject = [1, 2,];
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(it => it.HasItemThat(i => i.IsEqualTo(1)));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*does not have item that*").AsWildcard();
+		}
+
+		[Fact]
+		public async Task NotHasItemWithPredicateForEnumerable_ShouldUseSingularVerb()
+		{
+			IEnumerable subject = new[] { 1, 2, };
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(it => it.HasItem(x => Equals(x, 1)));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*does not have item*").AsWildcard();
+		}
+	}
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     The same expectations on an <see cref="IAsyncEnumerable{T}" /> subject.
+	/// </summary>
+	public sealed class AsyncTests
+	{
+		[Fact]
+		public async Task HasCountWithNullSubject_ShouldUseSingularVerb()
+		{
+			IAsyncEnumerable<int>? subject = null;
+
+			async Task Act()
+				=> await That(subject!).HasCount(1);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*but it was <null>*").AsWildcard();
+		}
+
+		[Fact]
+		public async Task NotHasItem_ShouldUseSingularVerb()
+		{
+			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable([1, 2,]);
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(it => it.HasItem(1));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*does not have item*").AsWildcard();
+		}
+
+		[Fact]
+		public async Task NotHasItemThat_ShouldUseSingularVerb()
+		{
+			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable([1, 2,]);
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(it => it.HasItemThat(i => i.IsEqualTo(1)));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*does not have item that*").AsWildcard();
+		}
+
+		[Fact]
+		public async Task NotHasItemWithPredicate_ShouldUseSingularVerb()
+		{
+			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable([1, 2,]);
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(it => it.HasItem(x => x == 1));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*does not have item*").AsWildcard();
+		}
+
+		[Fact]
+		public async Task NotHasSingle_ShouldUseSingularVerb()
+		{
+			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable([1,]);
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(it => it.HasSingle());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*does not have a single item*").AsWildcard();
+		}
+	}
+#endif
 }

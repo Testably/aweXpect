@@ -29,13 +29,7 @@ public static partial class ThatAsyncEnumerable
 						expectationBuilder,
 						it, grammars,
 						_quantifier,
-						g => (g.IsPlural(), g.IsNegated()) switch
-						{
-							(true, false) => $"satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-							(false, false) => $"satisfies {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-							(true, true) => $"do not satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-							(false, true) => $"does not satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-						},
+						g => ElementExpectations.Satisfies(g, doNotPopulateThisValue.TrimCommonWhiteSpace()),
 						predicate,
 						"did")),
 				_subject);
@@ -61,14 +55,7 @@ public static partial class ThatAsyncEnumerable
 						expectationBuilder,
 						it, grammars,
 						_quantifier,
-						g => (g.IsPlural(),
-								g.IsNegated()) switch
-							{
-								(true, false) => $"satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-								(false, false) => $"satisfies {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-								(true, true) => $"do not satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-								(false, true) => $"does not satisfy {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-							},
+						g => ElementExpectations.Satisfies(g, doNotPopulateThisValue.TrimCommonWhiteSpace()),
 						predicate,
 						"did")),
 				_subject);

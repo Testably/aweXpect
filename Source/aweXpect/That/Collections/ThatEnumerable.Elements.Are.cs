@@ -24,14 +24,7 @@ public static partial class ThatEnumerable
 					=> new CollectionConstraint<TItem>(
 						expectationBuilder, it, grammars,
 						_quantifier,
-						g => (g.IsPlural(),
-								g.IsNegated()) switch
-							{
-								(true, false) => $"are of type {Formatter.Format(typeof(TType))}",
-								(false, false) => $"is of type {Formatter.Format(typeof(TType))}",
-								(true, true) => $"are not of type {Formatter.Format(typeof(TType))}",
-								(false, true) => $"is not of type {Formatter.Format(typeof(TType))}",
-							},
+						g => ElementExpectations.IsOfType(g, Formatter.Format(typeof(TType))),
 						a => a is TType,
 						"were")),
 				_subject,
@@ -52,14 +45,7 @@ public static partial class ThatEnumerable
 					=> new CollectionConstraint<TItem>(
 						expectationBuilder, it, grammars,
 						_quantifier,
-						g => (g.IsPlural(),
-								g.IsNegated()) switch
-							{
-								(true, false) => $"are of type {Formatter.Format(type)}",
-								(false, false) => $"is of type {Formatter.Format(type)}",
-								(true, true) => $"are not of type {Formatter.Format(type)}",
-								(false, true) => $"is not of type {Formatter.Format(type)}",
-							},
+						g => ElementExpectations.IsOfType(g, Formatter.Format(type)),
 						a => type.IsInstanceOfType(a),
 						"were")),
 				_subject,
@@ -82,14 +68,7 @@ public static partial class ThatEnumerable
 					=> new CollectionForEnumerableConstraint<TEnumerable>(
 						expectationBuilder, it, grammars,
 						_quantifier,
-						g => (g.IsPlural(),
-								g.IsNegated()) switch
-							{
-								(true, false) => $"are of type {Formatter.Format(typeof(TType))}",
-								(false, false) => $"is of type {Formatter.Format(typeof(TType))}",
-								(true, true) => $"are not of type {Formatter.Format(typeof(TType))}",
-								(false, true) => $"is not of type {Formatter.Format(typeof(TType))}",
-							},
+						g => ElementExpectations.IsOfType(g, Formatter.Format(typeof(TType))),
 						a => a is TType,
 						"were")),
 				_subject,
@@ -110,14 +89,7 @@ public static partial class ThatEnumerable
 					=> new CollectionForEnumerableConstraint<TEnumerable>(
 						expectationBuilder, it, grammars,
 						_quantifier,
-						g => (g.IsPlural(),
-								g.IsNegated()) switch
-							{
-								(true, false) => $"are of type {Formatter.Format(type)}",
-								(false, false) => $"is of type {Formatter.Format(type)}",
-								(true, true) => $"are not of type {Formatter.Format(type)}",
-								(false, true) => $"is not of type {Formatter.Format(type)}",
-							},
+						g => ElementExpectations.IsOfType(g, Formatter.Format(type)),
 						a => type.IsInstanceOfType(a),
 						"were")),
 				_subject,
@@ -140,14 +112,7 @@ public static partial class ThatEnumerable
 					=> new CollectionForEnumerableConstraint<TEnumerable>(
 						expectationBuilder, it, grammars,
 						_quantifier,
-						g => (g.IsPlural(),
-								g.IsNegated()) switch
-							{
-								(true, false) => $"are of type {Formatter.Format(typeof(TType))}",
-								(false, false) => $"is of type {Formatter.Format(typeof(TType))}",
-								(true, true) => $"are not of type {Formatter.Format(typeof(TType))}",
-								(false, true) => $"is not of type {Formatter.Format(typeof(TType))}",
-							},
+						g => ElementExpectations.IsOfType(g, Formatter.Format(typeof(TType))),
 						a => a is TType,
 						"were")),
 				_subject,
@@ -168,14 +133,7 @@ public static partial class ThatEnumerable
 					=> new CollectionForEnumerableConstraint<TEnumerable>(
 						expectationBuilder, it, grammars,
 						_quantifier,
-						g => (g.IsPlural(),
-								g.IsNegated()) switch
-							{
-								(true, false) => $"are of type {Formatter.Format(type)}",
-								(false, false) => $"is of type {Formatter.Format(type)}",
-								(true, true) => $"are not of type {Formatter.Format(type)}",
-								(false, true) => $"is not of type {Formatter.Format(type)}",
-							},
+						g => ElementExpectations.IsOfType(g, Formatter.Format(type)),
 						a => type.IsInstanceOfType(a),
 						"were")),
 				_subject,

@@ -40,16 +40,7 @@ public static partial class ThatAsyncEnumerable
 						expectationBuilder,
 						it, grammars,
 						_quantifier,
-						g => (g.IsPlural(),
-								g.IsNegated()) switch
-							{
-								(true, false) => $"are equivalent to {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-								(false, false) => $"is equivalent to {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-								(true, true) =>
-									$"are not equivalent to {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-								(false, true) =>
-									$"is not equivalent to {doNotPopulateThisValue.TrimCommonWhiteSpace()}",
-							},
+						g => ElementExpectations.IsEquivalentTo(g, doNotPopulateThisValue.TrimCommonWhiteSpace()),
 						a => equalityOptions.AreConsideredEqual(a, expected),
 						"were")),
 				_subject,
