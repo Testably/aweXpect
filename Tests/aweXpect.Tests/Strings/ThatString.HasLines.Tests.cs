@@ -79,6 +79,17 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
+			public async Task WhenSubjectIsEmpty_ShouldHaveNoLines()
+			{
+				string subject = "";
+
+				async Task Act()
+					=> await That(subject).HasLines(lines => lines.IsEmpty());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenSubstringMatchesButLineDoesNot_ShouldFail()
 			{
 				string subject = "Ready steady go";
@@ -106,6 +117,10 @@ public sealed partial class ThatString
 			[InlineData("a\nb\n", 2)]
 			[InlineData("a\nb\n\n", 3)]
 			[InlineData("\n", 1)]
+			[InlineData("a\r\n", 1)]
+			[InlineData("a\r\nb\r\n", 2)]
+			[InlineData("\r\n", 1)]
+			[InlineData("\r", 1)]
 			[InlineData("one\r\ntwo\nthree\rfour", 4)]
 			public async Task WhenUsingDifferentNewlineStyles_ShouldSplitConsistently(string subject, int lineCount)
 			{
@@ -129,6 +144,18 @@ public sealed partial class ThatString
 
 		public sealed class NegatedTests
 		{
+			[Fact]
+			public async Task WhenActualIsNull_ShouldSucceed()
+			{
+				string? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it
+						.HasLines(lines => lines.Contains("Ready")));
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[Fact]
 			public async Task WhenLinesDoNotSatisfyTheExpectations_ShouldSucceed()
 			{

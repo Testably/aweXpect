@@ -20,9 +20,11 @@ internal static class StringExtensions
 			return [];
 		}
 
-		string?[] lines = value!.Split(["\r\n", "\n", "\r",], StringSplitOptions.None);
+		// Split matches the earliest separator and, on ties, the first one listed,
+		// so "\r\n" is never split into two lines.
+		string[] lines = value!.Split(["\r\n", "\n", "\r",], StringSplitOptions.None);
 		int count = lines.Length;
-		if (lines[count - 1]?.Length == 0)
+		if (lines[count - 1].Length == 0)
 		{
 			count--;
 		}

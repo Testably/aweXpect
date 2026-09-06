@@ -6,22 +6,6 @@ public sealed partial class ThatString
 	{
 		public sealed class EqualToTests
 		{
-			[Theory]
-			[InlineData("", 0)]
-			[InlineData("a", 1)]
-			[InlineData("a\nb", 2)]
-			[InlineData("a\nb\n", 2)]
-			[InlineData("a\nb\n\n", 3)]
-			[InlineData("\n", 1)]
-			[InlineData("one\r\ntwo\nthree\rfour", 4)]
-			public async Task WhenLineCountMatches_ShouldSucceed(string subject, int lineCount)
-			{
-				async Task Act()
-					=> await That(subject).HasLineCount().EqualTo(lineCount);
-
-				await That(Act).DoesNotThrow();
-			}
-
 			[Fact]
 			public async Task WhenActualIsNull_ShouldFail()
 			{
@@ -66,6 +50,26 @@ public sealed partial class ThatString
 					              has line count equal to {lineCount},
 					              but it had line count 2
 					              """);
+			}
+
+			[Theory]
+			[InlineData("", 0)]
+			[InlineData("a", 1)]
+			[InlineData("a\nb", 2)]
+			[InlineData("a\nb\n", 2)]
+			[InlineData("a\nb\n\n", 3)]
+			[InlineData("\n", 1)]
+			[InlineData("a\r\n", 1)]
+			[InlineData("a\r\nb\r\n", 2)]
+			[InlineData("\r\n", 1)]
+			[InlineData("\r", 1)]
+			[InlineData("one\r\ntwo\nthree\rfour", 4)]
+			public async Task WhenLineCountMatches_ShouldSucceed(string subject, int lineCount)
+			{
+				async Task Act()
+					=> await That(subject).HasLineCount().EqualTo(lineCount);
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 
