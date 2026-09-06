@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
@@ -6,6 +7,29 @@ namespace aweXpect.Helpers;
 
 internal static class StringExtensions
 {
+	/// <summary>
+	///     Splits the <paramref name="value" /> into lines, separated by <c>\r\n</c>, <c>\n</c> or <c>\r</c>.
+	/// </summary>
+	/// <remarks>
+	///     A single trailing line terminator does not start a new line, so <c>"a\nb\n"</c> has two lines.
+	/// </remarks>
+	public static IEnumerable<string?> GetLines(this string? value)
+	{
+		if (string.IsNullOrEmpty(value))
+		{
+			return [];
+		}
+
+		string?[] lines = value!.Split(["\r\n", "\n", "\r",], StringSplitOptions.None);
+		int count = lines.Length;
+		if (lines[count - 1]?.Length == 0)
+		{
+			count--;
+		}
+
+		return lines.Take(count);
+	}
+
 	[return: NotNullIfNotNull(nameof(value))]
 	public static string? Indent(this string? value, string? indentation = "  ",
 		bool indentFirstLine = true)

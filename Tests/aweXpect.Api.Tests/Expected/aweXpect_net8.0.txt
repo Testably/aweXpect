@@ -1179,6 +1179,8 @@ namespace aweXpect
         public static aweXpect.Results.StringEqualityResult<string?, aweXpect.Core.IThat<string?>> DoesNotStartWith(this aweXpect.Core.IThat<string?> source, string unexpected) { }
         public static aweXpect.Results.StringEqualityResult<string?, aweXpect.Core.IThat<string?>> EndsWith(this aweXpect.Core.IThat<string?> source, string expected) { }
         public static aweXpect.Results.PropertyResult.Int<string?> HasLength(this aweXpect.Core.IThat<string?> source) { }
+        public static aweXpect.Results.PropertyResult.Int<string?> HasLineCount(this aweXpect.Core.IThat<string?> source) { }
+        public static aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>> HasLines(this aweXpect.Core.IThat<string?> source, System.Action<aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<string?>>> expectations) { }
         public static aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>> IsEmpty(this aweXpect.Core.IThat<string?> source) { }
         public static aweXpect.Results.StringEqualityTypeResult<string?, aweXpect.Core.IThat<string?>> IsEqualTo(this aweXpect.Core.IThat<string?> source, string? expected) { }
         public static aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>> IsLowerCased(this aweXpect.Core.IThat<string?> source) { }

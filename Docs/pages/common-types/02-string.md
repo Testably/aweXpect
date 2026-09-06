@@ -122,6 +122,44 @@ await Expect.That(subject).HasLength().LessThanOrEqualTo(11);
 await Expect.That(subject).HasLength().LessThan(12);
 ```
 
+## Lines
+
+You can verify how many lines the `string` has:
+
+```csharp
+string subject = """
+                 Come together
+                 Right now
+                 Over me
+                 """;
+
+await Expect.That(subject).HasLineCount().EqualTo(3);
+await Expect.That(subject).HasLineCount().NotEqualTo(4);
+await Expect.That(subject).HasLineCount().GreaterThan(2);
+await Expect.That(subject).HasLineCount().LessThanOrEqualTo(3);
+```
+
+You can also verify the lines themselves. `HasLines` applies the expectations on the lines as a
+collection, so all collection expectations are available:
+
+```csharp
+await Expect.That(subject).HasLines(lines => lines.Contains("Right now"));
+await Expect.That(subject).HasLines(lines => lines.DoesNotContain("Something"));
+await Expect.That(subject).HasLines(lines => lines.StartsWith("Come together"));
+await Expect.That(subject).HasLines(lines => lines.All().Satisfy(line => line?.Length < 20));
+```
+
+Lines are separated by `\r\n`, `\n` or `\r`, which are all treated equivalently.  
+A single trailing line terminator does not start a new line, so `"Come together\n"` has one line and
+`""` has none — matching how `File.ReadLines` counts the lines of a file:
+
+```csharp
+await Expect.That("").HasLineCount().EqualTo(0);
+await Expect.That("Come together").HasLineCount().EqualTo(1);
+await Expect.That("Come together\n").HasLineCount().EqualTo(1);
+await Expect.That("Come together\n\n").HasLineCount().EqualTo(2);
+```
+
 ## String start / end
 
 You can verify that the `string` starts or ends with a given string.  
