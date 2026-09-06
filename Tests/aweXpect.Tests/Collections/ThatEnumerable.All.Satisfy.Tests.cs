@@ -277,9 +277,6 @@ public sealed partial class ThatEnumerable
 						             does not satisfy x => x == 0 for all items,
 						             but all 0 did
 
-						             Not matching items:
-						             []
-
 						             Collection:
 						             []
 						             """);
@@ -299,9 +296,6 @@ public sealed partial class ThatEnumerable
 						             Expected that subject
 						             does not satisfy x => x == 1 for all items,
 						             but all 7 did
-
-						             Not matching items:
-						             []
 
 						             Collection:
 						             [1, 1, 1, 1, 1, 1, 1]
@@ -355,9 +349,6 @@ public sealed partial class ThatEnumerable
 						             does not satisfy x => x == "" for all items,
 						             but all 0 did
 
-						             Not matching items:
-						             []
-
 						             Collection:
 						             []
 						             """);
@@ -377,9 +368,6 @@ public sealed partial class ThatEnumerable
 						             Expected that subject
 						             does not satisfy x => x?.Length == 3 for all items,
 						             but all 3 did
-
-						             Not matching items:
-						             []
 
 						             Collection:
 						             [

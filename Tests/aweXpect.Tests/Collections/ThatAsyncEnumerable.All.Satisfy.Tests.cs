@@ -258,10 +258,7 @@ public sealed partial class ThatAsyncEnumerable
 						             Expected that subject
 						             does not satisfy x => x == constantValue for all items,
 						             but all 20 did
-						             
-						             Not matching items:
-						             []
-						             
+
 						             Collection:
 						             [
 						               42,
@@ -339,10 +336,7 @@ public sealed partial class ThatAsyncEnumerable
 						             Expected that subject
 						             does not satisfy x => x == "" for all items,
 						             but all 0 did
-						             
-						             Not matching items:
-						             []
-						             
+
 						             Collection:
 						             []
 						             """);
@@ -362,10 +356,7 @@ public sealed partial class ThatAsyncEnumerable
 						             Expected that subject
 						             does not satisfy x => x?.Length == 3 for all items,
 						             but all 3 did
-						             
-						             Not matching items:
-						             []
-						             
+
 						             Collection:
 						             [
 						               "foo",

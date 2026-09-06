@@ -158,7 +158,8 @@ public static partial class ThatAsyncEnumerable
 		private void AppendContexts(bool isIncomplete)
 		{
 			EnumerableQuantifier.QuantifierContexts quantifierContexts = _quantifier.GetQuantifierContext();
-			if (quantifierContexts.HasFlag(EnumerableQuantifier.QuantifierContexts.MatchingItems))
+			if (quantifierContexts.HasFlag(EnumerableQuantifier.QuantifierContexts.MatchingItems) &&
+			    _matchingItems?.Count > 0)
 			{
 				_expectationBuilder.AddContext(new ResultContext.SyncCallback("Matching items",
 						() => Formatter.Format(_matchingItems,
@@ -167,7 +168,8 @@ public static partial class ThatAsyncEnumerable
 						int.MaxValue));
 			}
 
-			if (quantifierContexts.HasFlag(EnumerableQuantifier.QuantifierContexts.NotMatchingItems))
+			if (quantifierContexts.HasFlag(EnumerableQuantifier.QuantifierContexts.NotMatchingItems) &&
+			    _notMatchingItems?.Count > 0)
 			{
 				_expectationBuilder.AddContext(new ResultContext.SyncCallback("Not matching items",
 						() => Formatter.Format(_notMatchingItems,
@@ -347,7 +349,8 @@ public static partial class ThatAsyncEnumerable
 		private void AppendContexts(bool isIncomplete)
 		{
 			EnumerableQuantifier.QuantifierContexts quantifierContexts = _quantifier.GetQuantifierContext();
-			if (quantifierContexts.HasFlag(EnumerableQuantifier.QuantifierContexts.MatchingItems))
+			if (quantifierContexts.HasFlag(EnumerableQuantifier.QuantifierContexts.MatchingItems) &&
+			    _matchingItems?.Count > 0)
 			{
 				_expectationBuilder.AddContext(new ResultContext.SyncCallback("Matching items",
 						() => Formatter.Format(_matchingItems,
@@ -356,7 +359,8 @@ public static partial class ThatAsyncEnumerable
 						int.MaxValue));
 			}
 
-			if (quantifierContexts.HasFlag(EnumerableQuantifier.QuantifierContexts.NotMatchingItems))
+			if (quantifierContexts.HasFlag(EnumerableQuantifier.QuantifierContexts.NotMatchingItems) &&
+			    _notMatchingItems?.Count > 0)
 			{
 				_expectationBuilder.AddContext(new ResultContext.SyncCallback("Not matching items",
 						() => Formatter.Format(_notMatchingItems,

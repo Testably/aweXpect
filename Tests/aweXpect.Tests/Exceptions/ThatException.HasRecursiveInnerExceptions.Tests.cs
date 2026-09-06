@@ -130,10 +130,7 @@ public sealed partial class ThatException
 					             Expected that subject
 					             does not have recursive inner exceptions which all satisfy e => e.Message.StartsWith("inner"),
 					             but it had
-					             
-					             Not matching items:
-					             []
-					             
+
 					             Collection:
 					             [
 					               System.Exception: inner1*,
