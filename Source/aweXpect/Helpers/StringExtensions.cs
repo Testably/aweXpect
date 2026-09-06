@@ -8,6 +8,45 @@ namespace aweXpect.Helpers;
 internal static class StringExtensions
 {
 	/// <summary>
+	///     Counts the lines of the <paramref name="value" />, separated by <c>\r\n</c>, <c>\n</c> or <c>\r</c>.
+	/// </summary>
+	/// <remarks>
+	///     A single trailing line terminator does not start a new line, so <c>"a\nb\n"</c> has two lines.
+	/// </remarks>
+	public static int GetLineCount(this string? value)
+	{
+		if (string.IsNullOrEmpty(value))
+		{
+			return 0;
+		}
+
+		int count = 1;
+		for (int i = 0; i < value!.Length; i++)
+		{
+			if (value[i] == '\n')
+			{
+				count++;
+			}
+			else if (value[i] == '\r')
+			{
+				count++;
+				// "\r\n" is a single separator.
+				if (i + 1 < value.Length && value[i + 1] == '\n')
+				{
+					i++;
+				}
+			}
+		}
+
+		if (value[value.Length - 1] is '\n' or '\r')
+		{
+			count--;
+		}
+
+		return count;
+	}
+
+	/// <summary>
 	///     Splits the <paramref name="value" /> into lines, separated by <c>\r\n</c>, <c>\n</c> or <c>\r</c>.
 	/// </summary>
 	/// <remarks>

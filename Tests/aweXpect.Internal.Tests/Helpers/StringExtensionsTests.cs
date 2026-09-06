@@ -1,9 +1,41 @@
-﻿using aweXpect.Helpers;
+﻿using System.Linq;
+using aweXpect.Helpers;
 
 namespace aweXpect.Internal.Tests.Helpers;
 
 public sealed class StringExtensionsTests
 {
+	public sealed class GetLineCountTests
+	{
+		[Theory]
+		[InlineData(null, 0)]
+		[InlineData("", 0)]
+		[InlineData("a", 1)]
+		[InlineData("\n", 1)]
+		[InlineData("\r", 1)]
+		[InlineData("\r\n", 1)]
+		[InlineData("a\n", 1)]
+		[InlineData("a\r", 1)]
+		[InlineData("a\r\n", 1)]
+		[InlineData("a\nb", 2)]
+		[InlineData("a\rb", 2)]
+		[InlineData("a\r\nb", 2)]
+		[InlineData("a\n\n", 2)]
+		[InlineData("a\n\r", 2)]
+		[InlineData("\r\n\r\n", 2)]
+		[InlineData("a\nb\n", 2)]
+		[InlineData("a\r\nb\r\n", 2)]
+		[InlineData("a\nb\rc\r\nd", 4)]
+		public async Task ShouldReturnExpectedLineCount(string? value, int expected)
+		{
+			int result = value.GetLineCount();
+
+			await That(result).IsEqualTo(expected);
+			// GetLineCount duplicates the line semantics of GetLines, so both must agree.
+			await That(result).IsEqualTo(value.GetLines().Count());
+		}
+	}
+
 	public sealed class IndentTests
 	{
 		[Fact]
