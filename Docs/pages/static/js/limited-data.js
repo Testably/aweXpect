@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "85829d9bd86df0fc8af9f08244d9e6f6ce53d94c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 17 15:17:41 2026 \u002B0200",
-        "message": "chore: bump aweXpect to v2.34.0 (#960)"
-      },
-      {
         "sha": "7d61bd7f61d64f7ace2f615c012fad94603f9695",
         "author": "dependabot[bot]",
         "date": "Mon May 18 16:04:52 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 20:31:05 2026 \u002B0200",
         "message": "fix: use plural verbs for nested collection expectations (#1031)"
+      },
+      {
+        "sha": "eef3e6a39c586b0fe855116d0007b47d8c2dfc17",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 20:46:18 2026 \u002B0200",
+        "message": "fix: record the cancellation time before the wait continues (#1034)"
       }
     ],
     "labels": [
-      "85829d9b",
       "7d61bd7f",
       "a7143ffe",
       "695339ab",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "b54cc8e6",
       "11994e6d",
       "affdbc37",
-      "aed9d35c"
+      "aed9d35c",
+      "eef3e6a3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          237.4230009828295,
           259.0494612375895,
           255.77837548937117,
           238.8254194577535,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           287.9791279157003,
           286.4416621843974,
           191.0487357934316,
-          220.6771111647288
+          220.6771111647288,
+          222.33497150739035
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          246.33136133352914,
           265.56048842838834,
           251.82736268410315,
           250.92081941877092,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           301.0684215863546,
           262.62074750264486,
           208.36846761703492,
-          218.34737292925516
+          218.34737292925516,
+          201.06839975288935
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "85829d9bd86df0fc8af9f08244d9e6f6ce53d94c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 17 15:17:41 2026 \u002B0200",
-        "message": "chore: bump aweXpect to v2.34.0 (#960)"
-      },
-      {
         "sha": "7d61bd7f61d64f7ace2f615c012fad94603f9695",
         "author": "dependabot[bot]",
         "date": "Mon May 18 16:04:52 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 20:31:05 2026 \u002B0200",
         "message": "fix: use plural verbs for nested collection expectations (#1031)"
+      },
+      {
+        "sha": "eef3e6a39c586b0fe855116d0007b47d8c2dfc17",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 20:46:18 2026 \u002B0200",
+        "message": "fix: record the cancellation time before the wait continues (#1034)"
       }
     ],
     "labels": [
-      "85829d9b",
       "7d61bd7f",
       "a7143ffe",
       "695339ab",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "b54cc8e6",
       "11994e6d",
       "affdbc37",
-      "aed9d35c"
+      "aed9d35c",
+      "eef3e6a3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          302280.16071428574,
           312724.05810546875,
           303773.33639322914,
           296890.3802408854,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           273489.1768624442,
           323745.7591271034,
           238487.37515694756,
-          242433.01806640625
+          242433.01806640625,
+          243159.89986979167
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1071,12 +1071,12 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
           335444,
           335444,
           335444,
           335442,
+          335444,
           335444
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2348583.0646033655,
           2417831.9322916665,
           2616952.1244791667,
           2469620.8059895835,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2296891.5299479165,
           2773380.45625,
           1946460.4822265625,
-          2066123.7115885417
+          2066123.7115885417,
+          1905257.0578962055
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4804906,
           4804891,
           4804906,
           4804906,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841613,
           4841651,
           4841647,
-          4841648
+          4841648,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "85829d9bd86df0fc8af9f08244d9e6f6ce53d94c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 17 15:17:41 2026 \u002B0200",
-        "message": "chore: bump aweXpect to v2.34.0 (#960)"
-      },
       {
         "sha": "7d61bd7f61d64f7ace2f615c012fad94603f9695",
         "author": "dependabot[bot]",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 20:31:05 2026 \u002B0200",
         "message": "fix: use plural verbs for nested collection expectations (#1031)"
+      },
+      {
+        "sha": "eef3e6a39c586b0fe855116d0007b47d8c2dfc17",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 20:46:18 2026 \u002B0200",
+        "message": "fix: record the cancellation time before the wait continues (#1034)"
       }
     ],
     "labels": [
-      "85829d9b",
       "7d61bd7f",
       "a7143ffe",
       "695339ab",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "b54cc8e6",
       "11994e6d",
       "affdbc37",
-      "aed9d35c"
+      "aed9d35c",
+      "eef3e6a3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          448.98505452963025,
           504.8283741633097,
           497.5992493947347,
           482.30627117156985,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           490.6649518330892,
           521.6060015814645,
           421.632573668162,
-          408.61175231933595
+          408.61175231933595,
+          384.1228542327881
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          474.35661142213,
           497.13243865966797,
           513.9540702819825,
           488.19118172327677,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           533.8596198399862,
           517.7070039113363,
           427.9677768389384,
-          453.5224277496338
+          453.5224277496338,
+          425.5202818552653
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "85829d9bd86df0fc8af9f08244d9e6f6ce53d94c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 17 15:17:41 2026 \u002B0200",
-        "message": "chore: bump aweXpect to v2.34.0 (#960)"
-      },
-      {
         "sha": "7d61bd7f61d64f7ace2f615c012fad94603f9695",
         "author": "dependabot[bot]",
         "date": "Mon May 18 16:04:52 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 20:31:05 2026 \u002B0200",
         "message": "fix: use plural verbs for nested collection expectations (#1031)"
+      },
+      {
+        "sha": "eef3e6a39c586b0fe855116d0007b47d8c2dfc17",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 20:46:18 2026 \u002B0200",
+        "message": "fix: record the cancellation time before the wait continues (#1034)"
       }
     ],
     "labels": [
-      "85829d9b",
       "7d61bd7f",
       "a7143ffe",
       "695339ab",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "b54cc8e6",
       "11994e6d",
       "affdbc37",
-      "aed9d35c"
+      "aed9d35c",
+      "eef3e6a3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          252.91675303777058,
           269.2381171158382,
           286.583234723409,
           249.57111711502074,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           291.6615239143372,
           274.26365219751995,
           199.57252311706543,
-          229.3678126970927
+          229.3678126970927,
+          203.26784507433572
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          246.13310197194417,
           272.71939734050204,
           251.24291484696525,
           247.27812787464686,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           295.32209663391114,
           267.2180280049642,
           209.31265878677368,
-          233.34098466237387
+          233.34098466237387,
+          203.78753784724645
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "85829d9bd86df0fc8af9f08244d9e6f6ce53d94c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 17 15:17:41 2026 \u002B0200",
-        "message": "chore: bump aweXpect to v2.34.0 (#960)"
-      },
-      {
         "sha": "7d61bd7f61d64f7ace2f615c012fad94603f9695",
         "author": "dependabot[bot]",
         "date": "Mon May 18 16:04:52 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 20:31:05 2026 \u002B0200",
         "message": "fix: use plural verbs for nested collection expectations (#1031)"
+      },
+      {
+        "sha": "eef3e6a39c586b0fe855116d0007b47d8c2dfc17",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 20:46:18 2026 \u002B0200",
+        "message": "fix: record the cancellation time before the wait continues (#1034)"
       }
     ],
     "labels": [
-      "85829d9b",
       "7d61bd7f",
       "a7143ffe",
       "695339ab",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "b54cc8e6",
       "11994e6d",
       "affdbc37",
-      "aed9d35c"
+      "aed9d35c",
+      "eef3e6a3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          480.8208510194506,
           486.5856046676636,
           498.7164555867513,
           457.5987121899923,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           445.5378861745199,
           498.9076719965254,
           391.83385581970214,
-          392.44809595743817
+          392.44809595743817,
+          390.11140654881797
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1141.5442563465663,
           1264.411087290446,
           1218.8710580190022,
           1189.5655532836913,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1273.3620643615723,
           1381.4389188130697,
           975.4726434071858,
-          1043.9087708791096
+          1043.9087708791096,
+          935.6467853546143
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "85829d9bd86df0fc8af9f08244d9e6f6ce53d94c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 17 15:17:41 2026 \u002B0200",
-        "message": "chore: bump aweXpect to v2.34.0 (#960)"
-      },
-      {
         "sha": "7d61bd7f61d64f7ace2f615c012fad94603f9695",
         "author": "dependabot[bot]",
         "date": "Mon May 18 16:04:52 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 20:31:05 2026 \u002B0200",
         "message": "fix: use plural verbs for nested collection expectations (#1031)"
+      },
+      {
+        "sha": "eef3e6a39c586b0fe855116d0007b47d8c2dfc17",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 20:46:18 2026 \u002B0200",
+        "message": "fix: record the cancellation time before the wait continues (#1034)"
       }
     ],
     "labels": [
-      "85829d9b",
       "7d61bd7f",
       "a7143ffe",
       "695339ab",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "b54cc8e6",
       "11994e6d",
       "affdbc37",
-      "aed9d35c"
+      "aed9d35c",
+      "eef3e6a3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1879.4010169165474,
           1923.3706199101039,
           1957.9539733886718,
           2011.6034900120326,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1420.962323888143,
           1961.5972730000815,
           1528.6663879394532,
-          1549.8642019907634
+          1549.8642019907634,
+          1520.8064758300782
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1284.857862218221,
           1436.0171778361002,
           1374.953965250651,
           1296.8864002227783,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1401.9845397949218,
           1419.2282477787562,
           1101.0765909467425,
-          1157.9394217173258
+          1157.9394217173258,
+          1091.960484822591
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "85829d9bd86df0fc8af9f08244d9e6f6ce53d94c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 17 15:17:41 2026 \u002B0200",
-        "message": "chore: bump aweXpect to v2.34.0 (#960)"
-      },
-      {
         "sha": "7d61bd7f61d64f7ace2f615c012fad94603f9695",
         "author": "dependabot[bot]",
         "date": "Mon May 18 16:04:52 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 20:31:05 2026 \u002B0200",
         "message": "fix: use plural verbs for nested collection expectations (#1031)"
+      },
+      {
+        "sha": "eef3e6a39c586b0fe855116d0007b47d8c2dfc17",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 20:46:18 2026 \u002B0200",
+        "message": "fix: record the cancellation time before the wait continues (#1034)"
       }
     ],
     "labels": [
-      "85829d9b",
       "7d61bd7f",
       "a7143ffe",
       "695339ab",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "b54cc8e6",
       "11994e6d",
       "affdbc37",
-      "aed9d35c"
+      "aed9d35c",
+      "eef3e6a3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2479.450833892822,
           2286.5064811706543,
           2595.122526041667,
           2542.2298736572266,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           1855.2125802721296,
           2662.4832257588705,
           2038.1347600496733,
-          2030.3624051411946
+          2030.3624051411946,
+          2029.514542388916
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          61951.423302283656,
           69898.10595703125,
           91340.0798688616,
           63397.70445963542,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           17947.528975423178,
           27737.258825683595,
           16199.068056233724,
-          16905.009329223634
+          16905.009329223634,
+          16022.333467610677
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          56986,
           57488,
           57481,
           57480,
@@ -4240,6 +4239,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471
