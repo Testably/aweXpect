@@ -305,7 +305,7 @@ public static partial class ThatAsyncEnumerable
 		{
 			if (Actual is null)
 			{
-				stringBuilder.ItWasNull(_it);
+				stringBuilder.ItWasNull(_it, _grammars);
 			}
 			else
 			{
@@ -337,7 +337,7 @@ public static partial class ThatAsyncEnumerable
 		{
 			if (Actual is null)
 			{
-				stringBuilder.ItWasNull(_it);
+				stringBuilder.ItWasNull(_it, _grammars);
 			}
 			else
 			{
@@ -438,7 +438,7 @@ public static partial class ThatAsyncEnumerable
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("has ");
+			stringBuilder.Append(Grammars.Verb("has ", "have "));
 			stringBuilder.Append(_quantifier);
 			stringBuilder.Append(' ');
 			stringBuilder.Append(_quantifier.GetItemString());
@@ -448,7 +448,7 @@ public static partial class ThatAsyncEnumerable
 		{
 			if (Actual is null)
 			{
-				stringBuilder.ItWasNull(It);
+				stringBuilder.ItWasNull(It, Grammars);
 			}
 			else
 			{
@@ -458,7 +458,7 @@ public static partial class ThatAsyncEnumerable
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("does not have ");
+			stringBuilder.Append(Grammars.Verb("does not have ", "do not have "));
 			stringBuilder.Append(_quantifier);
 			stringBuilder.Append(' ');
 			stringBuilder.Append(_quantifier.GetItemString());
@@ -468,7 +468,7 @@ public static partial class ThatAsyncEnumerable
 		{
 			if (Actual is null)
 			{
-				stringBuilder.ItWasNull(It);
+				stringBuilder.ItWasNull(It, Grammars);
 			}
 			else
 			{
@@ -917,7 +917,8 @@ public static partial class ThatAsyncEnumerable
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is in ").Append(sortOrder.ToString().ToLower()).Append(" order");
+			stringBuilder.Append(Grammars.Verb("is in ", "are in ")).Append(sortOrder.ToString().ToLower())
+				.Append(" order");
 			stringBuilder.Append(options).Append(memberExpression);
 		}
 
@@ -926,12 +927,13 @@ public static partial class ThatAsyncEnumerable
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is not in ").Append(sortOrder.ToString().ToLower()).Append(" order");
+			stringBuilder.Append(Grammars.Verb("is not in ", "are not in ")).Append(sortOrder.ToString().ToLower())
+				.Append(" order");
 			stringBuilder.Append(options).Append(memberExpression);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" was");
+			=> stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was", " were"));
 	}
 }
 #endif

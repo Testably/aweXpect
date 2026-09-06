@@ -320,13 +320,14 @@ public static partial class ThatEnumerable
 #pragma warning restore S3776
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has item ").Append(predicateDescription()).Append(options.Match.GetDescription());
+			=> stringBuilder.Append(Grammars.Verb("has item ", "have item ")).Append(predicateDescription())
+				.Append(options.Match.GetDescription());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			if (Actual is null)
 			{
-				stringBuilder.ItWasNull(it);
+				stringBuilder.ItWasNull(it, Grammars);
 			}
 			else if (_hasIndex)
 			{
@@ -354,14 +355,15 @@ public static partial class ThatEnumerable
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have item ").Append(predicateDescription())
+			=> stringBuilder.Append(Grammars.Verb("does not have item ", "do not have item "))
+				.Append(predicateDescription())
 				.Append(options.Match.GetDescription());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			if (_actual is null)
 			{
-				stringBuilder.ItWasNull(it);
+				stringBuilder.ItWasNull(it, Grammars);
 			}
 			else
 			{
@@ -441,13 +443,14 @@ public static partial class ThatEnumerable
 #pragma warning restore S3776
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has item ").Append(predicateDescription()).Append(options.Match.GetDescription());
+			=> stringBuilder.Append(Grammars.Verb("has item ", "have item ")).Append(predicateDescription())
+				.Append(options.Match.GetDescription());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			if (Actual is null)
 			{
-				stringBuilder.ItWasNull(it);
+				stringBuilder.ItWasNull(it, Grammars);
 			}
 			else if (_actual is not null)
 			{
@@ -475,14 +478,15 @@ public static partial class ThatEnumerable
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have item ").Append(predicateDescription())
+			=> stringBuilder.Append(Grammars.Verb("does not have item ", "do not have item "))
+				.Append(predicateDescription())
 				.Append(options.Match.GetDescription());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			if (_actual is null)
 			{
-				stringBuilder.ItWasNull(it);
+				stringBuilder.ItWasNull(it, Grammars);
 			}
 			else
 			{
@@ -559,13 +563,14 @@ public static partial class ThatEnumerable
 #pragma warning restore S3776
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has item ").Append(predicateDescription()).Append(options.Match.GetDescription());
+			=> stringBuilder.Append(Grammars.Verb("has item ", "have item ")).Append(predicateDescription())
+				.Append(options.Match.GetDescription());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			if (Actual is null)
 			{
-				stringBuilder.ItWasNull(it);
+				stringBuilder.ItWasNull(it, Grammars);
 			}
 			else if (_hasIndex)
 			{
@@ -593,14 +598,15 @@ public static partial class ThatEnumerable
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have item ").Append(predicateDescription())
+			=> stringBuilder.Append(Grammars.Verb("does not have item ", "do not have item "))
+				.Append(predicateDescription())
 				.Append(options.Match.GetDescription());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			if (_actual is null)
 			{
-				stringBuilder.ItWasNull(it);
+				stringBuilder.ItWasNull(it, Grammars);
 			}
 			else
 			{
@@ -675,13 +681,14 @@ public static partial class ThatEnumerable
 #pragma warning restore S3776
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has item ").Append(predicateDescription()).Append(options.Match.GetDescription());
+			=> stringBuilder.Append(Grammars.Verb("has item ", "have item ")).Append(predicateDescription())
+				.Append(options.Match.GetDescription());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			if (Actual is null)
 			{
-				stringBuilder.ItWasNull(it);
+				stringBuilder.ItWasNull(it, Grammars);
 			}
 			else if (_actual is not null)
 			{
@@ -709,14 +716,15 @@ public static partial class ThatEnumerable
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("does not have item ").Append(predicateDescription())
+			=> stringBuilder.Append(Grammars.Verb("does not have item ", "do not have item "))
+				.Append(predicateDescription())
 				.Append(options.Match.GetDescription());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			if (_actual is null)
 			{
-				stringBuilder.ItWasNull(it);
+				stringBuilder.ItWasNull(it, Grammars);
 			}
 			else
 			{

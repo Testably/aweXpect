@@ -278,6 +278,18 @@ public sealed class EnumerableQuantifierTests
 
 	public sealed class NoneTests
 	{
+		[Theory]
+		[InlineData(ExpectationGrammars.None, "no")]
+		[InlineData(ExpectationGrammars.Plural, "no")]
+		[InlineData(ExpectationGrammars.Nested, "none")]
+		[InlineData(ExpectationGrammars.Nested | ExpectationGrammars.Plural, "none")]
+		public async Task ShouldUseNoneOnlyWhenNested(ExpectationGrammars grammars, string expected)
+		{
+			EnumerableQuantifier sut = EnumerableQuantifier.None(grammars);
+
+			await That(sut.ToString()).IsEqualTo(expected);
+		}
+
 		[Fact]
 		public async Task WhenMatchingCountIsGreaterThanZero_ShouldReturnFailure()
 		{

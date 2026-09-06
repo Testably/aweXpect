@@ -153,7 +153,7 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have recursive inner exceptions which has exactly one item,
+					             does not have recursive inner exceptions which have exactly one item,
 					             but it had
 					             
 					             Collection:

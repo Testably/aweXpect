@@ -290,7 +290,7 @@ public static partial class ThatAsyncEnumerable
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("ends with ").Append(_expectedExpression);
+			stringBuilder.Append(Grammars.Verb("ends with ", "end with ")).Append(_expectedExpression);
 			stringBuilder.Append(_options);
 		}
 
@@ -313,7 +313,7 @@ public static partial class ThatAsyncEnumerable
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("does not end with ").Append(_expectedExpression);
+			stringBuilder.Append(Grammars.Verb("does not end with ", "do not end with ")).Append(_expectedExpression);
 			stringBuilder.Append(_options);
 		}
 
@@ -321,7 +321,7 @@ public static partial class ThatAsyncEnumerable
 		{
 			if (_expected.Length == 0)
 			{
-				stringBuilder.Append(_it).Append(" was ");
+				stringBuilder.Append(_it).Append(Grammars.SubjectVerb(_it, " was ", " were "));
 				Formatter.Format(stringBuilder, _foundValues, FormattingOptions.MultipleLines);
 			}
 			else

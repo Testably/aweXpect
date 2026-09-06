@@ -280,7 +280,7 @@ public static partial class ThatAsyncEnumerable
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("starts with ").Append(_expectedExpression);
+			stringBuilder.Append(Grammars.Verb("starts with ", "start with ")).Append(_expectedExpression);
 			stringBuilder.Append(_options);
 		}
 
@@ -303,7 +303,8 @@ public static partial class ThatAsyncEnumerable
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("does not start with ").Append(_expectedExpression);
+			stringBuilder.Append(Grammars.Verb("does not start with ", "do not start with "))
+				.Append(_expectedExpression);
 			stringBuilder.Append(_options);
 		}
 
@@ -311,7 +312,7 @@ public static partial class ThatAsyncEnumerable
 		{
 			if (_expected.Length == 0)
 			{
-				stringBuilder.Append(_it).Append(" was ");
+				stringBuilder.Append(_it).Append(Grammars.SubjectVerb(_it, " was ", " were "));
 				Formatter.Format(stringBuilder, _foundValues, FormattingOptions.MultipleLines);
 			}
 			else

@@ -113,7 +113,7 @@ public abstract partial class ConstraintResult
 		{
 			if (Actual is null)
 			{
-				stringBuilder.ItWasNull(It);
+				stringBuilder.ItWasNull(It, Grammars);
 			}
 			else if (Outcome == Outcome.Undecided)
 			{

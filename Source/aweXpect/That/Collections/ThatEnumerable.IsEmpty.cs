@@ -85,37 +85,19 @@ public static partial class ThatEnumerable
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Grammars.HasFlag(ExpectationGrammars.Nested))
-			{
-				stringBuilder.Append("are empty");
-			}
-			else
-			{
-				stringBuilder.Append("is empty");
-			}
-		}
+			=> stringBuilder.Append(Grammars.Verb("is empty", "are empty"));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, _materializedEnumerable, FormattingOptions.MultipleLines);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Grammars.HasFlag(ExpectationGrammars.Nested))
-			{
-				stringBuilder.Append("are not empty");
-			}
-			else
-			{
-				stringBuilder.Append("is not empty");
-			}
-		}
+			=> stringBuilder.Append(Grammars.Verb("is not empty", "are not empty"));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" was");
+			=> stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was", " were"));
 	}
 
 	private sealed class IsEmptyForEnumerableConstraint<TEnumerable>(string it, ExpectationGrammars grammars)
@@ -159,36 +141,18 @@ public static partial class ThatEnumerable
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Grammars.HasFlag(ExpectationGrammars.Nested))
-			{
-				stringBuilder.Append("are empty");
-			}
-			else
-			{
-				stringBuilder.Append("is empty");
-			}
-		}
+			=> stringBuilder.Append(Grammars.Verb("is empty", "are empty"));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, _materializedEnumerable, FormattingOptions.MultipleLines);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Grammars.HasFlag(ExpectationGrammars.Nested))
-			{
-				stringBuilder.Append("are not empty");
-			}
-			else
-			{
-				stringBuilder.Append("is not empty");
-			}
-		}
+			=> stringBuilder.Append(Grammars.Verb("is not empty", "are not empty"));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" was");
+			=> stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was", " were"));
 	}
 }
