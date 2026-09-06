@@ -19,7 +19,7 @@ namespace aweXpect.Core;
 /// </summary>
 public abstract class ExpectationBuilder
 {
-	internal const string DefaultCurrentSubject = "it";
+	private const string DefaultCurrentSubject = "it";
 
 	private ResultContexts? _contexts;
 

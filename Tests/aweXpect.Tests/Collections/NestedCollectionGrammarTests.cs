@@ -207,7 +207,7 @@ public sealed class NestedCollectionGrammar
 		[Fact]
 		public async Task AreAllUniqueForDictionary_ShouldUseSingularVerb()
 		{
-			Dictionary<int, string> subject = new() { [0] = "a", [1] = "b", };
+			Dictionary<int, string?> subject = new() { [0] = "a", [1] = "b", };
 
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(it => it.AreAllUnique());
@@ -219,19 +219,19 @@ public sealed class NestedCollectionGrammar
 		[Fact]
 		public async Task AreAllUniqueForDictionaryWithMemberAccessor_ShouldUseSingularVerb()
 		{
-			Dictionary<int, string> subject = new() { [0] = "a", [1] = "bb", };
+			Dictionary<int, string?> subject = new() { [0] = "a", [1] = "bb", };
 
 			async Task Act()
-				=> await That(subject).DoesNotComplyWith(it => it.AreAllUnique(v => v.Length));
+				=> await That(subject).DoesNotComplyWith(it => it.AreAllUnique(v => v!.Length));
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("*has duplicate values for v => v.Length,*").AsWildcard();
+				.WithMessage("*has duplicate values for v => v!.Length,*").AsWildcard();
 		}
 
 		[Fact]
 		public async Task AreAllUniqueForReadOnlyDictionary_ShouldUseSingularVerb()
 		{
-			IReadOnlyDictionary<int, string> subject = new Dictionary<int, string> { [0] = "a", [1] = "b", };
+			IReadOnlyDictionary<int, string?> subject = new Dictionary<int, string?> { [0] = "a", [1] = "b", };
 
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(it => it.AreAllUnique());
@@ -243,13 +243,13 @@ public sealed class NestedCollectionGrammar
 		[Fact]
 		public async Task AreAllUniqueForReadOnlyDictionaryWithMemberAccessor_ShouldUseSingularVerb()
 		{
-			IReadOnlyDictionary<int, string> subject = new Dictionary<int, string> { [0] = "a", [1] = "bb", };
+			IReadOnlyDictionary<int, string?> subject = new Dictionary<int, string?> { [0] = "a", [1] = "bb", };
 
 			async Task Act()
-				=> await That(subject).DoesNotComplyWith(it => it.AreAllUnique(v => v.Length));
+				=> await That(subject).DoesNotComplyWith(it => it.AreAllUnique(v => v!.Length));
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("*has duplicate values for v => v.Length,*").AsWildcard();
+				.WithMessage("*has duplicate values for v => v!.Length,*").AsWildcard();
 		}
 
 		[Fact]
