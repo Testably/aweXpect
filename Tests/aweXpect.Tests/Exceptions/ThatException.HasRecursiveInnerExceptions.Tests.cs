@@ -129,7 +129,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             does not have recursive inner exceptions which all satisfy e => e.Message.StartsWith("inner"),
-					             but 
+					             but it had
 					             
 					             Not matching items:
 					             []
@@ -142,6 +142,28 @@ public sealed partial class ThatException
 					               System.Exception: inner3B*
 					             ]
 					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenInnerExceptionCountMatches_ShouldFail()
+			{
+				Exception subject = new InvalidOperationException("outer", new ArgumentException("inner"));
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it
+						.HasRecursiveInnerExceptions(c => c.HasCount(1)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have recursive inner exceptions which has exactly one item,
+					             but it had
+					             
+					             Collection:
+					             [
+					               System.ArgumentException: inner
+					             ]
+					             """);
 			}
 
 			[Fact]

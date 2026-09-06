@@ -14,7 +14,7 @@ public class HasRecursiveInnerExceptionsConstraintTests
 	[InlineData(ExpectationGrammars.Active | ExpectationGrammars.Negated, "without recursive inner exceptions")]
 	public async Task AppendExpectation_ShouldAppendExpectedText(ExpectationGrammars grammar, string expected)
 	{
-		ThatException.HasRecursiveInnerExceptionsConstraint sut = new(grammar);
+		ThatException.HasRecursiveInnerExceptionsConstraint sut = new("it", grammar);
 		StringBuilder sb = new();
 
 		sut.AppendExpectation(sb, "");

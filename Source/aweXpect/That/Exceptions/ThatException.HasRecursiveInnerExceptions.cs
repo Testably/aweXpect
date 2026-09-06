@@ -25,16 +25,26 @@ public static partial class ThatException
 					e => e.GetInnerExceptions(),
 					" which ",
 					false)
-				.Validate((_, grammars) => new HasRecursiveInnerExceptionsConstraint(grammars))
+				.Validate((it, grammars) => new HasRecursiveInnerExceptionsConstraint(it, grammars))
 				.AddExpectations(e => expectations(
 						new ThatSubject<IEnumerable<Exception>>(e)),
 					grammars => grammars | ExpectationGrammars.Nested),
 			source);
 
 	internal class HasRecursiveInnerExceptionsConstraint(
+		string it,
 		ExpectationGrammars grammars)
-		: ConstraintResult.ExpectationOnly<Exception?>(grammars)
+		: ConstraintResult.WithNotNullValue<Exception>(it, grammars),
+			IValueConstraint<Exception?>
 	{
+		/// <inheritdoc />
+		public ConstraintResult IsMetBy(Exception? actual)
+		{
+			Actual = actual;
+			Outcome = actual is null ? Outcome.Failure : Outcome.Success;
+			return this;
+		}
+
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			if (Grammars.HasFlag(ExpectationGrammars.Active))
@@ -49,6 +59,12 @@ public static partial class ThatException
 			{
 				stringBuilder.Append("has recursive inner exceptions");
 			}
+		}
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+		{
+			stringBuilder.Append(It).Append(" was ");
+			stringBuilder.Append(Actual!.FormatForMessage());
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -66,5 +82,8 @@ public static partial class ThatException
 				stringBuilder.Append("does not have recursive inner exceptions");
 			}
 		}
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" had");
 	}
 }
