@@ -3396,6 +3396,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 20:31:05 2026 \u002B0200",
         "message": "fix: use plural verbs for nested collection expectations (#1031)"
+      },
+      {
+        "sha": "eef3e6a39c586b0fe855116d0007b47d8c2dfc17",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 20:46:18 2026 \u002B0200",
+        "message": "fix: record the cancellation time before the wait continues (#1034)"
       }
     ],
     "labels": [
@@ -3964,7 +3970,8 @@ window.BENCHMARK_DATA = {
       "b54cc8e6",
       "11994e6d",
       "affdbc37",
-      "aed9d35c"
+      "aed9d35c",
+      "eef3e6a3"
     ],
     "datasets": [
       {
@@ -4536,7 +4543,8 @@ window.BENCHMARK_DATA = {
           287.9791279157003,
           286.4416621843974,
           191.0487357934316,
-          220.6771111647288
+          220.6771111647288,
+          222.33497150739035
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5009,6 +5017,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5693,7 +5702,8 @@ window.BENCHMARK_DATA = {
           301.0684215863546,
           262.62074750264486,
           208.36846761703492,
-          218.34737292925516
+          218.34737292925516,
+          201.06839975288935
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5886,6 +5896,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -9218,6 +9229,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 20:31:05 2026 \u002B0200",
         "message": "fix: use plural verbs for nested collection expectations (#1031)"
+      },
+      {
+        "sha": "eef3e6a39c586b0fe855116d0007b47d8c2dfc17",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 20:46:18 2026 \u002B0200",
+        "message": "fix: record the cancellation time before the wait continues (#1034)"
       }
     ],
     "labels": [
@@ -9709,7 +9726,8 @@ window.BENCHMARK_DATA = {
       "b54cc8e6",
       "11994e6d",
       "affdbc37",
-      "aed9d35c"
+      "aed9d35c",
+      "eef3e6a3"
     ],
     "datasets": [
       {
@@ -10204,7 +10222,8 @@ window.BENCHMARK_DATA = {
           273489.1768624442,
           323745.7591271034,
           238487.37515694756,
-          242433.01806640625
+          242433.01806640625,
+          243159.89986979167
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10704,6 +10723,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335442,
+          335444,
           335444
         ],
         "borderColor": "#63A2AC",
@@ -11207,7 +11227,8 @@ window.BENCHMARK_DATA = {
           2296891.5299479165,
           2773380.45625,
           1946460.4822265625,
-          2066123.7115885417
+          2066123.7115885417,
+          1905257.0578962055
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11707,7 +11728,8 @@ window.BENCHMARK_DATA = {
           4841613,
           4841651,
           4841647,
-          4841648
+          4841648,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15117,6 +15139,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 20:31:05 2026 \u002B0200",
         "message": "fix: use plural verbs for nested collection expectations (#1031)"
+      },
+      {
+        "sha": "eef3e6a39c586b0fe855116d0007b47d8c2dfc17",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 20:46:18 2026 \u002B0200",
+        "message": "fix: record the cancellation time before the wait continues (#1034)"
       }
     ],
     "labels": [
@@ -15685,7 +15713,8 @@ window.BENCHMARK_DATA = {
       "b54cc8e6",
       "11994e6d",
       "affdbc37",
-      "aed9d35c"
+      "aed9d35c",
+      "eef3e6a3"
     ],
     "datasets": [
       {
@@ -16257,7 +16286,8 @@ window.BENCHMARK_DATA = {
           490.6649518330892,
           521.6060015814645,
           421.632573668162,
-          408.61175231933595
+          408.61175231933595,
+          384.1228542327881
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16730,6 +16760,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -17414,7 +17445,8 @@ window.BENCHMARK_DATA = {
           533.8596198399862,
           517.7070039113363,
           427.9677768389384,
-          453.5224277496338
+          453.5224277496338,
+          425.5202818552653
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17607,6 +17639,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -21401,6 +21434,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 20:31:05 2026 \u002B0200",
         "message": "fix: use plural verbs for nested collection expectations (#1031)"
+      },
+      {
+        "sha": "eef3e6a39c586b0fe855116d0007b47d8c2dfc17",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 20:46:18 2026 \u002B0200",
+        "message": "fix: record the cancellation time before the wait continues (#1034)"
       }
     ],
     "labels": [
@@ -21969,7 +22008,8 @@ window.BENCHMARK_DATA = {
       "b54cc8e6",
       "11994e6d",
       "affdbc37",
-      "aed9d35c"
+      "aed9d35c",
+      "eef3e6a3"
     ],
     "datasets": [
       {
@@ -22541,7 +22581,8 @@ window.BENCHMARK_DATA = {
           291.6615239143372,
           274.26365219751995,
           199.57252311706543,
-          229.3678126970927
+          229.3678126970927,
+          203.26784507433572
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -23055,6 +23096,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -23698,7 +23740,8 @@ window.BENCHMARK_DATA = {
           295.32209663391114,
           267.2180280049642,
           209.31265878677368,
-          233.34098466237387
+          233.34098466237387,
+          203.78753784724645
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -23891,6 +23934,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -27685,6 +27729,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 20:31:05 2026 \u002B0200",
         "message": "fix: use plural verbs for nested collection expectations (#1031)"
+      },
+      {
+        "sha": "eef3e6a39c586b0fe855116d0007b47d8c2dfc17",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 20:46:18 2026 \u002B0200",
+        "message": "fix: record the cancellation time before the wait continues (#1034)"
       }
     ],
     "labels": [
@@ -28253,7 +28303,8 @@ window.BENCHMARK_DATA = {
       "b54cc8e6",
       "11994e6d",
       "affdbc37",
-      "aed9d35c"
+      "aed9d35c",
+      "eef3e6a3"
     ],
     "datasets": [
       {
@@ -28825,7 +28876,8 @@ window.BENCHMARK_DATA = {
           445.5378861745199,
           498.9076719965254,
           391.83385581970214,
-          392.44809595743817
+          392.44809595743817,
+          390.11140654881797
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29298,6 +29350,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -29982,7 +30035,8 @@ window.BENCHMARK_DATA = {
           1273.3620643615723,
           1381.4389188130697,
           975.4726434071858,
-          1043.9087708791096
+          1043.9087708791096,
+          935.6467853546143
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30411,6 +30465,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -33969,6 +34024,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 20:31:05 2026 \u002B0200",
         "message": "fix: use plural verbs for nested collection expectations (#1031)"
+      },
+      {
+        "sha": "eef3e6a39c586b0fe855116d0007b47d8c2dfc17",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 20:46:18 2026 \u002B0200",
+        "message": "fix: record the cancellation time before the wait continues (#1034)"
       }
     ],
     "labels": [
@@ -34537,7 +34598,8 @@ window.BENCHMARK_DATA = {
       "b54cc8e6",
       "11994e6d",
       "affdbc37",
-      "aed9d35c"
+      "aed9d35c",
+      "eef3e6a3"
     ],
     "datasets": [
       {
@@ -35109,7 +35171,8 @@ window.BENCHMARK_DATA = {
           1420.962323888143,
           1961.5972730000815,
           1528.6663879394532,
-          1549.8642019907634
+          1549.8642019907634,
+          1520.8064758300782
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35582,6 +35645,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -36266,7 +36330,8 @@ window.BENCHMARK_DATA = {
           1401.9845397949218,
           1419.2282477787562,
           1101.0765909467425,
-          1157.9394217173258
+          1157.9394217173258,
+          1091.960484822591
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36459,6 +36524,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -40253,6 +40319,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 20:31:05 2026 \u002B0200",
         "message": "fix: use plural verbs for nested collection expectations (#1031)"
+      },
+      {
+        "sha": "eef3e6a39c586b0fe855116d0007b47d8c2dfc17",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 20:46:18 2026 \u002B0200",
+        "message": "fix: record the cancellation time before the wait continues (#1034)"
       }
     ],
     "labels": [
@@ -40821,7 +40893,8 @@ window.BENCHMARK_DATA = {
       "b54cc8e6",
       "11994e6d",
       "affdbc37",
-      "aed9d35c"
+      "aed9d35c",
+      "eef3e6a3"
     ],
     "datasets": [
       {
@@ -41393,7 +41466,8 @@ window.BENCHMARK_DATA = {
           1855.2125802721296,
           2662.4832257588705,
           2038.1347600496733,
-          2030.3624051411946
+          2030.3624051411946,
+          2029.514542388916
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -41866,6 +41940,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -42550,7 +42625,8 @@ window.BENCHMARK_DATA = {
           17947.528975423178,
           27737.258825683595,
           16199.068056233724,
-          16905.009329223634
+          16905.009329223634,
+          16022.333467610677
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -43125,6 +43201,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471
