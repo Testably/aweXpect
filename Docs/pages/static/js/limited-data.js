@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "891b1b70a652f813017e325684ffde8120627ec3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat May 16 23:07:27 2026 \u002B0200",
-        "message": "fix: enhance error messages for collection element expectations (#953)"
-      },
-      {
         "sha": "17f0b7ef89b1836128e3bcadf53547bf2ce4e7d7",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 17 06:28:02 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 5 16:40:11 2026 \u002B0200",
         "message": "feat: suppress nullability warnings after an \u0060IsNotNull\u0060 expectation (#1021)"
+      },
+      {
+        "sha": "964906fcee605bbf03f7ebdb6dca0c49a63a4197",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 07:49:16 2026 \u002B0200",
+        "message": "feat: add line-based string expectations (#1025)"
       }
     ],
     "labels": [
-      "891b1b70",
       "17f0b7ef",
       "3b2559e9",
       "ef8b9dda",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "24dc08d9",
       "300993a9",
       "f37799d9",
-      "99b68991"
+      "99b68991",
+      "964906fc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          244.25682302883692,
           243.7579882328327,
           256.03809175491335,
           254.0504708971296,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           271.3400662626539,
           260.6101592268263,
           261.8702751159668,
-          260.8233981927236
+          260.8233981927236,
+          187.39688928922018
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          231.991211107799,
           191.62189525824326,
           246.73004194895427,
           242.50485041936238,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           244.4677336215973,
           250.41821381251017,
           240.63339359419686,
-          253.01398871739704
+          253.01398871739704,
+          207.76081890719277
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "891b1b70a652f813017e325684ffde8120627ec3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat May 16 23:07:27 2026 \u002B0200",
-        "message": "fix: enhance error messages for collection element expectations (#953)"
-      },
-      {
         "sha": "17f0b7ef89b1836128e3bcadf53547bf2ce4e7d7",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 17 06:28:02 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 5 16:40:11 2026 \u002B0200",
         "message": "feat: suppress nullability warnings after an \u0060IsNotNull\u0060 expectation (#1021)"
+      },
+      {
+        "sha": "964906fcee605bbf03f7ebdb6dca0c49a63a4197",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 07:49:16 2026 \u002B0200",
+        "message": "feat: add line-based string expectations (#1025)"
       }
     ],
     "labels": [
-      "891b1b70",
       "17f0b7ef",
       "3b2559e9",
       "ef8b9dda",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "24dc08d9",
       "300993a9",
       "f37799d9",
-      "99b68991"
+      "99b68991",
+      "964906fc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          311299.91650390625,
           226209.35726492744,
           315863.78987630206,
           307699.7050083705,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           309869.0206380208,
           329961.2967354911,
           312238.31331380206,
-          298965.4108886719
+          298965.4108886719,
+          236163.94596354166
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          335444,
           335442,
           335444,
           335444,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444
+          335444,
+          335442
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2552441.5973772323,
           1857089.020703125,
           2662272.79140625,
           2663374.1692708335,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2796549.349158654,
           2681717.0424479167,
           2727141.603645833,
-          2374673.901785714
+          2374673.901785714,
+          1887719.546595982
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4804906,
           4804902,
           4804906,
           4804906,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841648
+          4841648,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "891b1b70a652f813017e325684ffde8120627ec3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat May 16 23:07:27 2026 \u002B0200",
-        "message": "fix: enhance error messages for collection element expectations (#953)"
-      },
       {
         "sha": "17f0b7ef89b1836128e3bcadf53547bf2ce4e7d7",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 5 16:40:11 2026 \u002B0200",
         "message": "feat: suppress nullability warnings after an \u0060IsNotNull\u0060 expectation (#1021)"
+      },
+      {
+        "sha": "964906fcee605bbf03f7ebdb6dca0c49a63a4197",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 07:49:16 2026 \u002B0200",
+        "message": "feat: add line-based string expectations (#1025)"
       }
     ],
     "labels": [
-      "891b1b70",
       "17f0b7ef",
       "3b2559e9",
       "ef8b9dda",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "24dc08d9",
       "300993a9",
       "f37799d9",
-      "99b68991"
+      "99b68991",
+      "964906fc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          469.4192423184713,
           369.7571702003479,
           490.3196488893949,
           542.4571160634358,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           508.41381093433927,
           544.7505034128825,
           492.20544007619225,
-          509.43494784037273
+          509.43494784037273,
+          372.76982164382935
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          467.0827213287354,
           374.9241320292155,
           520.6389963785807,
           488.3467140197754,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           537.9235699971517,
           497.77142899831136,
           528.7770683924357,
-          492.5379686355591
+          492.5379686355591,
+          394.07516254697526
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "891b1b70a652f813017e325684ffde8120627ec3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat May 16 23:07:27 2026 \u002B0200",
-        "message": "fix: enhance error messages for collection element expectations (#953)"
-      },
-      {
         "sha": "17f0b7ef89b1836128e3bcadf53547bf2ce4e7d7",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 17 06:28:02 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 5 16:40:11 2026 \u002B0200",
         "message": "feat: suppress nullability warnings after an \u0060IsNotNull\u0060 expectation (#1021)"
+      },
+      {
+        "sha": "964906fcee605bbf03f7ebdb6dca0c49a63a4197",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 07:49:16 2026 \u002B0200",
+        "message": "feat: add line-based string expectations (#1025)"
       }
     ],
     "labels": [
-      "891b1b70",
       "17f0b7ef",
       "3b2559e9",
       "ef8b9dda",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "24dc08d9",
       "300993a9",
       "f37799d9",
-      "99b68991"
+      "99b68991",
+      "964906fc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          254.4930282320295,
           198.6710093975067,
           261.219749101003,
           273.1513393719991,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           286.87845315933225,
           271.17682282129925,
           263.992242370333,
-          262.85993460246493
+          262.85993460246493,
+          195.24499454498292
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          235.0635022799174,
           196.30359431902568,
           237.55874942143757,
           264.0014883359273,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           279.25633927753995,
           259.80303284327186,
           252.77559280395508,
-          246.28508731297083
+          246.28508731297083,
+          202.3700886408488
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "891b1b70a652f813017e325684ffde8120627ec3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat May 16 23:07:27 2026 \u002B0200",
-        "message": "fix: enhance error messages for collection element expectations (#953)"
-      },
-      {
         "sha": "17f0b7ef89b1836128e3bcadf53547bf2ce4e7d7",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 17 06:28:02 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 5 16:40:11 2026 \u002B0200",
         "message": "feat: suppress nullability warnings after an \u0060IsNotNull\u0060 expectation (#1021)"
+      },
+      {
+        "sha": "964906fcee605bbf03f7ebdb6dca0c49a63a4197",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 07:49:16 2026 \u002B0200",
+        "message": "feat: add line-based string expectations (#1025)"
       }
     ],
     "labels": [
-      "891b1b70",
       "17f0b7ef",
       "3b2559e9",
       "ef8b9dda",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "24dc08d9",
       "300993a9",
       "f37799d9",
-      "99b68991"
+      "99b68991",
+      "964906fc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          465.8563095410665,
           372.336464881897,
           450.22876809193536,
           489.6001601219177,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           489.05617464505707,
           486.1496162414551,
           468.5110655512129,
-          481.9711998939514
+          481.9711998939514,
+          381.2699041366577
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1206.3605616251627,
           918.6929376920065,
           1172.8343648176926,
           1254.0886882781983,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1319.9606152943202,
           1253.156853357951,
           1206.7439642588297,
-          1252.2308293751307
+          1252.2308293751307,
+          955.3100690841675
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "891b1b70a652f813017e325684ffde8120627ec3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat May 16 23:07:27 2026 \u002B0200",
-        "message": "fix: enhance error messages for collection element expectations (#953)"
-      },
-      {
         "sha": "17f0b7ef89b1836128e3bcadf53547bf2ce4e7d7",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 17 06:28:02 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 5 16:40:11 2026 \u002B0200",
         "message": "feat: suppress nullability warnings after an \u0060IsNotNull\u0060 expectation (#1021)"
+      },
+      {
+        "sha": "964906fcee605bbf03f7ebdb6dca0c49a63a4197",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 07:49:16 2026 \u002B0200",
+        "message": "feat: add line-based string expectations (#1025)"
       }
     ],
     "labels": [
-      "891b1b70",
       "17f0b7ef",
       "3b2559e9",
       "ef8b9dda",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "24dc08d9",
       "300993a9",
       "f37799d9",
-      "99b68991"
+      "99b68991",
+      "964906fc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2016.6996198018392,
           1530.1763628550939,
           1888.2443939208983,
           2034.3483911241804,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2153.836298806327,
           1905.213739267985,
           1951.43681640625,
-          1964.588737487793
+          1964.588737487793,
+          1527.452621459961
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1403.9941674550375,
           1008.1714033762614,
           1335.0155604044596,
           1280.7277285712105,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1436.160674902109,
           1324.521998723348,
           1341.0697611490884,
-          1359.1450143178304
+          1359.1450143178304,
+          1078.9776429396409
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "891b1b70a652f813017e325684ffde8120627ec3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat May 16 23:07:27 2026 \u002B0200",
-        "message": "fix: enhance error messages for collection element expectations (#953)"
-      },
-      {
         "sha": "17f0b7ef89b1836128e3bcadf53547bf2ce4e7d7",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 17 06:28:02 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 5 16:40:11 2026 \u002B0200",
         "message": "feat: suppress nullability warnings after an \u0060IsNotNull\u0060 expectation (#1021)"
+      },
+      {
+        "sha": "964906fcee605bbf03f7ebdb6dca0c49a63a4197",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 07:49:16 2026 \u002B0200",
+        "message": "feat: add line-based string expectations (#1025)"
       }
     ],
     "labels": [
-      "891b1b70",
       "17f0b7ef",
       "3b2559e9",
       "ef8b9dda",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "24dc08d9",
       "300993a9",
       "f37799d9",
-      "99b68991"
+      "99b68991",
+      "964906fc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2673.3710471561976,
           2033.6847948710124,
           2490.499685160319,
           2624.996596472604,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2770.208013974703,
           2535.344251759847,
           2598.736553464617,
-          2612.8094171796524
+          2612.8094171796524,
+          2052.6709531148276
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          93535.61938476562,
           49280.53310546875,
           88718.86038643973,
           87920.5650390625,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           28797.18398030599,
           26631.96302141462,
           27103.36249593099,
-          20963.565364583334
+          20963.565364583334,
+          16551.361726888023
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          57957,
           57939,
           56986,
           57481,
@@ -4211,6 +4210,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471,
           33471,
