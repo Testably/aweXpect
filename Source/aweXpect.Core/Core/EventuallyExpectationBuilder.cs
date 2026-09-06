@@ -94,6 +94,12 @@ internal class EventuallyExpectationBuilder<TValue>(
 		EvaluationContext.EvaluationContext currentContext = context;
 		Stopwatch stopwatch = new();
 		stopwatch.Start();
+
+		TimeSpan? cancelledAt = null;
+		using CancellationTokenRegistration registration =
+			cancellationToken.Register(() => cancelledAt ??= stopwatch.Elapsed);
+		TimeSpan Elapsed() => cancelledAt ?? stopwatch.Elapsed;
+
 		bool isLastAttempt = false;
 		while (true)
 		{
@@ -121,7 +127,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 				}
 			}
 
-			TimeSpan remaining = retryTimeout - stopwatch.Elapsed;
+			TimeSpan remaining = retryTimeout - Elapsed();
 			if (isLastAttempt || remaining <= TimeSpan.Zero)
 			{
 				result ??= await rootNode.IsMetBy(data, currentContext, System.Threading.CancellationToken.None);
@@ -143,7 +149,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 			}
 			catch (OperationCanceledException)
 			{
-				isLastAttempt = retryTimeout - stopwatch.Elapsed < EventuallyExpectationBuilder.CancellationTolerance;
+				isLastAttempt = retryTimeout - Elapsed() < EventuallyExpectationBuilder.CancellationTolerance;
 			}
 
 			currentContext = new EvaluationContext.EvaluationContext();
