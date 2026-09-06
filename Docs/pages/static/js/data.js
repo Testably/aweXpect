@@ -3378,6 +3378,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 09:37:29 2026 \u002B0200",
         "message": "perf: count lines without splitting the string (#1029)"
+      },
+      {
+        "sha": "11994e6d2350c42fb2b19c2626e999a31a7aa891",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
+        "message": "feat: support \u0060IgnoringIndentation()\u0060 in the string expectations (#1032)"
       }
     ],
     "labels": [
@@ -3943,7 +3949,8 @@ window.BENCHMARK_DATA = {
       "99b68991",
       "964906fc",
       "520b2403",
-      "b54cc8e6"
+      "b54cc8e6",
+      "11994e6d"
     ],
     "datasets": [
       {
@@ -4512,7 +4519,8 @@ window.BENCHMARK_DATA = {
           260.8233981927236,
           187.39688928922018,
           263.55120881398517,
-          287.9791279157003
+          287.9791279157003,
+          286.4416621843974
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4985,6 +4993,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5663,7 +5672,8 @@ window.BENCHMARK_DATA = {
           253.01398871739704,
           207.76081890719277,
           249.12790355682372,
-          301.0684215863546
+          301.0684215863546,
+          262.62074750264486
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5856,6 +5866,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -9167,6 +9178,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 09:37:29 2026 \u002B0200",
         "message": "perf: count lines without splitting the string (#1029)"
+      },
+      {
+        "sha": "11994e6d2350c42fb2b19c2626e999a31a7aa891",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
+        "message": "feat: support \u0060IgnoringIndentation()\u0060 in the string expectations (#1032)"
       }
     ],
     "labels": [
@@ -9655,7 +9672,8 @@ window.BENCHMARK_DATA = {
       "99b68991",
       "964906fc",
       "520b2403",
-      "b54cc8e6"
+      "b54cc8e6",
+      "11994e6d"
     ],
     "datasets": [
       {
@@ -10147,7 +10165,8 @@ window.BENCHMARK_DATA = {
           298965.4108886719,
           236163.94596354166,
           327566.77659254806,
-          273489.1768624442
+          273489.1768624442,
+          323745.7591271034
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10643,6 +10662,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335442,
+          335444,
           335444,
           335444
         ],
@@ -11144,7 +11164,8 @@ window.BENCHMARK_DATA = {
           2374673.901785714,
           1887719.546595982,
           2708150.0167410714,
-          2296891.5299479165
+          2296891.5299479165,
+          2773380.45625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11641,7 +11662,8 @@ window.BENCHMARK_DATA = {
           4841648,
           4841647,
           4841651,
-          4841613
+          4841613,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15033,6 +15055,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 09:37:29 2026 \u002B0200",
         "message": "perf: count lines without splitting the string (#1029)"
+      },
+      {
+        "sha": "11994e6d2350c42fb2b19c2626e999a31a7aa891",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
+        "message": "feat: support \u0060IgnoringIndentation()\u0060 in the string expectations (#1032)"
       }
     ],
     "labels": [
@@ -15598,7 +15626,8 @@ window.BENCHMARK_DATA = {
       "99b68991",
       "964906fc",
       "520b2403",
-      "b54cc8e6"
+      "b54cc8e6",
+      "11994e6d"
     ],
     "datasets": [
       {
@@ -16167,7 +16196,8 @@ window.BENCHMARK_DATA = {
           509.43494784037273,
           372.76982164382935,
           503.7450442314148,
-          490.6649518330892
+          490.6649518330892,
+          521.6060015814645
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16640,6 +16670,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -17318,7 +17349,8 @@ window.BENCHMARK_DATA = {
           492.5379686355591,
           394.07516254697526,
           487.83619356155396,
-          533.8596198399862
+          533.8596198399862,
+          517.7070039113363
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17511,6 +17543,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -21284,6 +21317,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 09:37:29 2026 \u002B0200",
         "message": "perf: count lines without splitting the string (#1029)"
+      },
+      {
+        "sha": "11994e6d2350c42fb2b19c2626e999a31a7aa891",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
+        "message": "feat: support \u0060IgnoringIndentation()\u0060 in the string expectations (#1032)"
       }
     ],
     "labels": [
@@ -21849,7 +21888,8 @@ window.BENCHMARK_DATA = {
       "99b68991",
       "964906fc",
       "520b2403",
-      "b54cc8e6"
+      "b54cc8e6",
+      "11994e6d"
     ],
     "datasets": [
       {
@@ -22418,7 +22458,8 @@ window.BENCHMARK_DATA = {
           262.85993460246493,
           195.24499454498292,
           266.67754578590393,
-          291.6615239143372
+          291.6615239143372,
+          274.26365219751995
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22932,6 +22973,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -23569,7 +23611,8 @@ window.BENCHMARK_DATA = {
           246.28508731297083,
           202.3700886408488,
           252.25035781126755,
-          295.32209663391114
+          295.32209663391114,
+          267.2180280049642
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -23762,6 +23805,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -27535,6 +27579,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 09:37:29 2026 \u002B0200",
         "message": "perf: count lines without splitting the string (#1029)"
+      },
+      {
+        "sha": "11994e6d2350c42fb2b19c2626e999a31a7aa891",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
+        "message": "feat: support \u0060IgnoringIndentation()\u0060 in the string expectations (#1032)"
       }
     ],
     "labels": [
@@ -28100,7 +28150,8 @@ window.BENCHMARK_DATA = {
       "99b68991",
       "964906fc",
       "520b2403",
-      "b54cc8e6"
+      "b54cc8e6",
+      "11994e6d"
     ],
     "datasets": [
       {
@@ -28669,7 +28720,8 @@ window.BENCHMARK_DATA = {
           481.9711998939514,
           381.2699041366577,
           476.6364890416463,
-          445.5378861745199
+          445.5378861745199,
+          498.9076719965254
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29142,6 +29194,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -29820,7 +29873,8 @@ window.BENCHMARK_DATA = {
           1252.2308293751307,
           955.3100690841675,
           1237.353496424357,
-          1273.3620643615723
+          1273.3620643615723,
+          1381.4389188130697
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30249,6 +30303,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -33786,6 +33841,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 09:37:29 2026 \u002B0200",
         "message": "perf: count lines without splitting the string (#1029)"
+      },
+      {
+        "sha": "11994e6d2350c42fb2b19c2626e999a31a7aa891",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
+        "message": "feat: support \u0060IgnoringIndentation()\u0060 in the string expectations (#1032)"
       }
     ],
     "labels": [
@@ -34351,7 +34412,8 @@ window.BENCHMARK_DATA = {
       "99b68991",
       "964906fc",
       "520b2403",
-      "b54cc8e6"
+      "b54cc8e6",
+      "11994e6d"
     ],
     "datasets": [
       {
@@ -34920,7 +34982,8 @@ window.BENCHMARK_DATA = {
           1964.588737487793,
           1527.452621459961,
           2047.8017865498862,
-          1420.962323888143
+          1420.962323888143,
+          1961.5972730000815
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35393,6 +35456,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -36071,7 +36135,8 @@ window.BENCHMARK_DATA = {
           1359.1450143178304,
           1078.9776429396409,
           1399.8545087178547,
-          1401.9845397949218
+          1401.9845397949218,
+          1419.2282477787562
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36264,6 +36329,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -40037,6 +40103,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 09:37:29 2026 \u002B0200",
         "message": "perf: count lines without splitting the string (#1029)"
+      },
+      {
+        "sha": "11994e6d2350c42fb2b19c2626e999a31a7aa891",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
+        "message": "feat: support \u0060IgnoringIndentation()\u0060 in the string expectations (#1032)"
       }
     ],
     "labels": [
@@ -40602,7 +40674,8 @@ window.BENCHMARK_DATA = {
       "99b68991",
       "964906fc",
       "520b2403",
-      "b54cc8e6"
+      "b54cc8e6",
+      "11994e6d"
     ],
     "datasets": [
       {
@@ -41171,7 +41244,8 @@ window.BENCHMARK_DATA = {
           2612.8094171796524,
           2052.6709531148276,
           2712.830554707845,
-          1855.2125802721296
+          1855.2125802721296,
+          2662.4832257588705
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -41644,6 +41718,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -42322,7 +42397,8 @@ window.BENCHMARK_DATA = {
           20963.565364583334,
           16551.361726888023,
           28598.32417515346,
-          17947.528975423178
+          17947.528975423178,
+          27737.258825683595
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -42896,7 +42972,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33465
+          33465,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
