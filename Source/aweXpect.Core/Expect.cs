@@ -133,8 +133,10 @@ public static class Expect
 	public static ThatDelegate.WithValue<TValue> That<TValue>(Func<TValue> @delegate,
 		[CallerArgumentExpression("delegate")] string doNotPopulateThisValue = "")
 		=> new(new ExpectationBuilder<DelegateValue<TValue>>(
+				// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+				new DelegateValueSource<TValue>(@delegate is null ? null : _ => @delegate()), doNotPopulateThisValue),
 			// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-			new DelegateValueSource<TValue>(@delegate is null ? null : _ => @delegate()), doNotPopulateThisValue));
+			@delegate is null ? null : _ => Task.FromResult(@delegate()));
 
 	/// <summary>
 	///     Specify expectations for the current <see cref="Func{CancellationToken, TValue}" /> <paramref name="delegate" />.
@@ -142,7 +144,9 @@ public static class Expect
 	public static ThatDelegate.WithValue<TValue> That<TValue>(Func<CancellationToken, TValue> @delegate,
 		[CallerArgumentExpression("delegate")] string doNotPopulateThisValue = "")
 		=> new(new ExpectationBuilder<DelegateValue<TValue>>(
-			new DelegateValueSource<TValue>(@delegate), doNotPopulateThisValue));
+				new DelegateValueSource<TValue>(@delegate), doNotPopulateThisValue),
+			// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+			@delegate is null ? null : token => Task.FromResult(@delegate(token)));
 
 	/// <summary>
 	///     Specify expectations for the current <see cref="Func{T}" /> of <see cref="Task{TValue}" />
@@ -151,9 +155,11 @@ public static class Expect
 	public static ThatDelegate.WithValue<TValue> That<TValue>(Func<Task<TValue>> @delegate,
 		[CallerArgumentExpression("delegate")] string doNotPopulateThisValue = "")
 		=> new(new ExpectationBuilder<DelegateValue<TValue>>(
+				// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+				new DelegateAsyncValueSource<TValue>(@delegate is null ? null : _ => @delegate()),
+				doNotPopulateThisValue),
 			// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-			new DelegateAsyncValueSource<TValue>(@delegate is null ? null : _ => @delegate()),
-			doNotPopulateThisValue));
+			@delegate is null ? null : _ => @delegate());
 
 	/// <summary>
 	///     Specify expectations for the current <see cref="Func{CancellationToken, T}" /> of <see cref="Task{TValue}" />
@@ -163,7 +169,8 @@ public static class Expect
 		Func<CancellationToken, Task<TValue>> @delegate,
 		[CallerArgumentExpression("delegate")] string doNotPopulateThisValue = "")
 		=> new(new ExpectationBuilder<DelegateValue<TValue>>(
-			new DelegateAsyncValueSource<TValue>(@delegate), doNotPopulateThisValue));
+				new DelegateAsyncValueSource<TValue>(@delegate), doNotPopulateThisValue),
+			@delegate);
 
 #if NET8_0_OR_GREATER
 	/// <summary>
@@ -173,9 +180,11 @@ public static class Expect
 	public static ThatDelegate.WithValue<TValue> That<TValue>(Func<ValueTask<TValue>> @delegate,
 		[CallerArgumentExpression("delegate")] string doNotPopulateThisValue = "")
 		=> new(new ExpectationBuilder<DelegateValue<TValue>>(
+				// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+				new DelegateAsyncValueSource<TValue>(@delegate is null ? null : _ => @delegate().AsTask()),
+				doNotPopulateThisValue),
 			// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-			new DelegateAsyncValueSource<TValue>(@delegate is null ? null : _ => @delegate().AsTask()),
-			doNotPopulateThisValue));
+			@delegate is null ? null : _ => @delegate().AsTask());
 #endif
 
 #if NET8_0_OR_GREATER
@@ -187,9 +196,11 @@ public static class Expect
 		Func<CancellationToken, ValueTask<TValue>> @delegate,
 		[CallerArgumentExpression("delegate")] string doNotPopulateThisValue = "")
 		=> new(new ExpectationBuilder<DelegateValue<TValue>>(
+				// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+				new DelegateAsyncValueSource<TValue>(@delegate is null ? null : token => @delegate(token).AsTask()),
+				doNotPopulateThisValue),
 			// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-			new DelegateAsyncValueSource<TValue>(@delegate is null ? null : token => @delegate(token).AsTask()),
-			doNotPopulateThisValue));
+			@delegate is null ? null : token => @delegate(token).AsTask());
 #endif
 
 	/// <summary>

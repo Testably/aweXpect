@@ -1,0 +1,225 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using aweXpect.Core.Constraints;
+using aweXpect.Core.Nodes;
+using aweXpect.Core.TimeSystem;
+using aweXpect.Customization;
+
+namespace aweXpect.Core;
+
+/// <summary>
+///     An <see cref="ExpectationBuilder" /> that repeatedly re-evaluates the <paramref name="subject" />
+///     until the expectations are met or the timeout expires.
+/// </summary>
+internal class EventuallyExpectationBuilder<TValue>(
+	Func<CancellationToken, Task<TValue>>? subject,
+	string subjectExpression)
+	: ExpectationBuilder(subjectExpression)
+{
+	/// <summary>
+	///     How close to the end of the retry budget a cancellation still counts as the budget having elapsed.
+	/// </summary>
+	/// <remarks>
+	///     <see cref="Task.Delay(TimeSpan, CancellationToken)" /> truncates to whole milliseconds and its timer does
+	///     not share the clock of the stopwatch that measures the retry budget, so a wait that consumed the whole
+	///     budget can be cancelled a fraction of a millisecond before the stopwatch agrees.
+	/// </remarks>
+	private static readonly TimeSpan CancellationTolerance = TimeSpan.FromMilliseconds(2);
+
+	/// <summary>
+	///     The largest interval that <see cref="Task.Delay(TimeSpan, CancellationToken)" /> accepts.
+	/// </summary>
+	private static readonly TimeSpan MaximumInterval = TimeSpan.FromMilliseconds(int.MaxValue);
+
+
+	/// <inheritdoc />
+	internal override async Task<ConstraintResult> IsMet(Node rootNode,
+		EvaluationContext.EvaluationContext context,
+		ITimeSystem timeSystem,
+		TimeSpan? timeout,
+		CancellationToken cancellationToken)
+	{
+		if (subject is null)
+		{
+			ConstraintResult missingSubject = await rootNode.IsMetBy(default(TValue), context, cancellationToken);
+			return missingSubject.Fail("it was <null>", default(TValue));
+		}
+
+		TimeSpan retryTimeout = GetRetryTimeout();
+		TimeSpan? cancellationTimeout = Timeout is null ? timeout : null;
+		if (cancellationTimeout is null)
+		{
+			return await IsMetRepeatedly(subject, rootNode, context, retryTimeout, cancellationToken);
+		}
+
+		using CancellationTokenSource cancellationCts =
+			CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+		cancellationCts.CancelAfter(cancellationTimeout.Value);
+		return await IsMetRepeatedly(subject, rootNode, context, retryTimeout, cancellationCts.Token);
+	}
+
+	private TimeSpan GetRetryTimeout()
+	{
+		TimeSpan retryTimeout = Timeout ?? Customize.aweXpect.Settings().DefaultEventuallyTimeout.Get();
+		if (retryTimeout == System.Threading.Timeout.InfiniteTimeSpan)
+		{
+			return TimeSpan.MaxValue;
+		}
+
+		return retryTimeout < TimeSpan.Zero ? TimeSpan.Zero : retryTimeout;
+	}
+
+	private async Task<ConstraintResult> IsMetRepeatedly(Func<CancellationToken, Task<TValue>> subject,
+		Node rootNode,
+		EvaluationContext.EvaluationContext context,
+		TimeSpan retryTimeout,
+		CancellationToken cancellationToken)
+	{
+		TimeSpan interval = Customize.aweXpect.Settings().DefaultCheckInterval.Get();
+		List<ResultContext> initialContexts = new(GetContexts());
+		EvaluationContext.EvaluationContext currentContext = context;
+		Stopwatch stopwatch = new();
+		stopwatch.Start();
+		bool isLastAttempt = false;
+		while (true)
+		{
+			Exception? failure = null;
+			TValue? data = default;
+			try
+			{
+				data = await subject(cancellationToken);
+				Customize.aweXpect.TraceWriter.Value?.WriteMessage($"Checking expectation for {Subject} {data}");
+			}
+			catch (Exception exception)
+			{
+				failure = exception;
+				Customize.aweXpect.TraceWriter.Value?.WriteMessage(
+					$"Checking expectation for {Subject} threw an exception");
+			}
+
+			ConstraintResult? result = null;
+			if (failure is null)
+			{
+				result = await rootNode.IsMetBy(data, currentContext, cancellationToken);
+				if (result.Outcome == Outcome.Success)
+				{
+					return result;
+				}
+			}
+
+			TimeSpan remaining = retryTimeout - stopwatch.Elapsed;
+			if (isLastAttempt || remaining <= TimeSpan.Zero)
+			{
+				result ??= await rootNode.IsMetBy(data, currentContext, System.Threading.CancellationToken.None);
+				return AppendTimeout(WithFailureCause(result, failure), retryTimeout);
+			}
+
+			if (cancellationToken.IsCancellationRequested)
+			{
+				result ??= await rootNode.IsMetBy(data, currentContext,
+					System.Threading.CancellationToken.None);
+				return new UndecidedResult(WithFailureCause(result, failure));
+			}
+
+			TimeSpan wait = NextInterval(interval, remaining);
+			isLastAttempt = wait >= remaining;
+			try
+			{
+				await Task.Delay(wait, cancellationToken);
+			}
+			catch (OperationCanceledException)
+			{
+				isLastAttempt = retryTimeout - stopwatch.Elapsed < CancellationTolerance;
+			}
+
+			currentContext = new EvaluationContext.EvaluationContext();
+			RestoreContexts(initialContexts);
+		}
+	}
+
+	/// <summary>
+	///     Waits at most until the retry budget (<paramref name="remaining" />) is used up. A non-positive
+	///     <paramref name="interval" /> re-evaluates the subject as fast as possible.
+	/// </summary>
+	/// <remarks>
+	///     The result is capped at <see cref="MaximumInterval" />, because an unlimited retry budget does not
+	///     limit the interval and <see cref="Task.Delay(TimeSpan, CancellationToken)" /> rejects larger values.
+	/// </remarks>
+	private static TimeSpan NextInterval(TimeSpan interval, TimeSpan remaining)
+	{
+		if (interval <= TimeSpan.Zero)
+		{
+			return TimeSpan.Zero;
+		}
+
+		TimeSpan next = interval < remaining ? interval : remaining;
+		return next < MaximumInterval ? next : MaximumInterval;
+	}
+
+	/// <summary>
+	///     Appends the retry budget to the expectation of the failed <paramref name="result" />. An unlimited budget
+	///     is omitted, because it does not add any information to the failure message.
+	/// </summary>
+	private static ConstraintResult AppendTimeout(ConstraintResult result, TimeSpan timeout)
+	{
+		if (timeout == TimeSpan.MaxValue)
+		{
+			return result;
+		}
+
+		return result.AppendExpectationText(sb => sb.Append(" within ").Append(Formatter.Format(timeout)));
+	}
+
+	private ConstraintResult WithFailureCause(ConstraintResult result, Exception? failure)
+		=> failure is null ? result : new ConstraintResult.FromException(result, failure, this);
+
+	private void RestoreContexts(List<ResultContext> initialContexts)
+		=> UpdateContexts(contexts =>
+		{
+			contexts.Clear();
+			foreach (ResultContext resultContext in initialContexts)
+			{
+				contexts.Add(resultContext);
+			}
+		});
+
+	/// <summary>
+	///     A <see cref="ConstraintResult" /> for expectations that were cancelled before they could be verified.
+	/// </summary>
+	private sealed class UndecidedResult(ConstraintResult inner) : ConstraintResult(inner.Grammars)
+	{
+		/// <inheritdoc cref="ConstraintResult.Outcome" />
+		public override Outcome Outcome
+		{
+			get => Outcome.Undecided;
+			protected set
+			{
+				// The outcome of a cancelled expectation is always undecided.
+			}
+		}
+
+		/// <inheritdoc cref="ConstraintResult.AppendExpectation(StringBuilder, string?)" />
+		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> inner.AppendExpectation(stringBuilder, indentation);
+
+		/// <inheritdoc cref="ConstraintResult.AppendResult(StringBuilder, string?)" />
+		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("it could not be verified, because it was already cancelled");
+
+		/// <inheritdoc cref="ConstraintResult.TryGetValue{TValue}(out TValue)" />
+		public override bool TryGetValue<T>([NotNullWhen(true)] out T? value) where T : default
+			=> inner.TryGetValue(out value);
+
+		/// <inheritdoc cref="ConstraintResult.Negate()" />
+		public override ConstraintResult Negate()
+		{
+			inner.Negate();
+			return this;
+		}
+	}
+}

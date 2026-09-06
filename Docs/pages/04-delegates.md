@@ -161,3 +161,53 @@ await Expect.That(Task.Delay(200)).ExecutesWithin(TimeSpan.FromMilliseconds(300)
 await Expect.That(Task.Delay(200)).DoesNotExecuteWithin(TimeSpan.FromMilliseconds(100))
   .Because("it should take at least 200ms");
 ```
+
+## Eventually
+
+Some values only become correct after a short delay, e.g. because a background task is still running.
+Instead of waiting for a fixed amount of time, you can use `Eventually()` to re-evaluate the delegate
+until the expectations are met:
+
+```csharp
+await Expect.That(() => sut.MyProp).Eventually().IsGreaterThan(5);
+```
+
+Because only the subject is re-evaluated, all expectations work as usual, including `And`, `Or` and `Because`:
+
+```csharp
+await Expect.That(() => sut.Name).Eventually().IsNotNull().And.StartsWith("foo");
+```
+
+The delegate is re-evaluated every
+[`DefaultCheckInterval`](/docs/expectations/advanced/customization) (defaults to `100ms`) until the timeout
+configured in [`DefaultEventuallyTimeout`](/docs/expectations/advanced/customization) (defaults to `30s`)
+expires. The last wait is shortened so that it never exceeds the timeout, which means that an interval
+that is longer than the timeout results in exactly two evaluations. You can overwrite the timeout per
+expectation with `WithTimeout`:
+
+```csharp
+await Expect.That(() => sut.MyProp).Eventually().IsGreaterThan(5).WithTimeout(5.Seconds());
+// using aweXpect.Chronology
+```
+
+`WithTimeout(Timeout.InfiniteTimeSpan)` retries until the expectations are met or the expectation is
+cancelled.
+
+An exception thrown by the delegate counts as an unmet expectation and is retried. When the timeout expires
+while the delegate is still throwing, the expectation fails and the last exception is reported as the cause
+of the failure. If the expectation is cancelled before the timeout expires - via `WithCancellation` or via
+the global `TestCancellation` setting - it is reported as inconclusive instead of failed. As everywhere else,
+an explicit `WithTimeout` takes precedence over a global `TestCancellation` timeout.
+
+The timeout bounds how long the delegate is *retried*, not how long a single evaluation may take: it is only
+checked between evaluations, so a delegate that blocks for longer than the timeout still runs to completion.
+
+In addition to `Func<T>`, the asynchronous variant `Func<Task<T>>` is supported, and on .NET 8 or later also
+`Func<ValueTask<T>>`; each of them also accepts a `CancellationToken`. As for `Expect.That`, an `async` lambda
+is ambiguous between the `Task` and the `ValueTask` overload, so on .NET 8 or later its type must be stated
+explicitly:
+
+```csharp
+Func<Task<int>> subject = async () => await sut.GetCountAsync();
+await Expect.That(subject).Eventually().IsGreaterThan(5);
+```

@@ -31,6 +31,25 @@ public sealed class CustomizeSettingsTests
 	}
 
 	[Fact]
+	public async Task DefaultEventuallyTimeout_ShouldBeUsedInEventually()
+	{
+		await That(Customize.aweXpect.Settings().DefaultEventuallyTimeout.Get()).IsEqualTo(30.Seconds());
+		Stopwatch stopwatch = new();
+		using (IDisposable __ = Customize.aweXpect.Settings().DefaultEventuallyTimeout.Set(LowTimeout))
+		{
+			await That(Customize.aweXpect.Settings().DefaultEventuallyTimeout.Get()).IsEqualTo(LowTimeout);
+			stopwatch.Start();
+			async Task Act() => await That(() => 1).Eventually().IsEqualTo(2);
+			await That(Act).ThrowsException();
+			stopwatch.Stop();
+		}
+
+		await That(stopwatch.Elapsed).IsGreaterThanOrEqualTo(LowTimeout).Within(50.Milliseconds()).And
+			.IsLessThan(2.Seconds());
+		await That(Customize.aweXpect.Settings().DefaultEventuallyTimeout.Get()).IsEqualTo(30.Seconds());
+	}
+
+	[Fact]
 	public async Task DefaultSignalerTimeout_ShouldBeUsedInSignaler()
 	{
 		Signaler signaler = new();
