@@ -13,7 +13,7 @@ internal static class StringExtensions
 	/// <remarks>
 	///     A single trailing line terminator does not start a new line, so <c>"a\nb\n"</c> has two lines.
 	/// </remarks>
-	public static IEnumerable<string?> GetLines(this string? value)
+	public static IEnumerable<string> GetLines(this string? value)
 	{
 		if (string.IsNullOrEmpty(value))
 		{
