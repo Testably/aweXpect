@@ -96,8 +96,14 @@ internal class EventuallyExpectationBuilder<TValue>(
 		stopwatch.Start();
 
 		TimeSpan? cancelledAt = null;
-		using CancellationTokenRegistration registration =
-			cancellationToken.Register(() => cancelledAt ??= stopwatch.Elapsed);
+		TaskCompletionSource<bool> cancellation = new(TaskCreationOptions.RunContinuationsAsynchronously);
+		using CancellationTokenRegistration registration = cancellationToken.Register(() =>
+		{
+			// The time has to be recorded before the wait is released, so that the attempt that continues after
+			// the cancellation always observes it.
+			cancelledAt ??= stopwatch.Elapsed;
+			cancellation.TrySetResult(true);
+		});
 		TimeSpan Elapsed() => cancelledAt ?? stopwatch.Elapsed;
 
 		bool isLastAttempt = false;
@@ -143,13 +149,18 @@ internal class EventuallyExpectationBuilder<TValue>(
 
 			TimeSpan wait = NextInterval(interval, remaining);
 			isLastAttempt = wait >= remaining;
-			try
+
+			// The wait is not cancelled by the token itself: Task.Delay would register its own callback on it and
+			// the cancellation callbacks run in reverse order, so the wait could continue before the callback
+			// above recorded when the cancellation was requested.
+			using (CancellationTokenSource waitCts = new())
 			{
-				await Task.Delay(wait, cancellationToken);
-			}
-			catch (OperationCanceledException)
-			{
-				isLastAttempt = retryTimeout - Elapsed() < EventuallyExpectationBuilder.CancellationTolerance;
+				Task delay = Task.Delay(wait, waitCts.Token);
+				if (await Task.WhenAny(delay, cancellation.Task) != delay)
+				{
+					waitCts.Cancel();
+					isLastAttempt = retryTimeout - Elapsed() < EventuallyExpectationBuilder.CancellationTolerance;
+				}
 			}
 
 			currentContext = new EvaluationContext.EvaluationContext();
