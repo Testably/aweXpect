@@ -27,13 +27,14 @@ public static partial class ThatEnumerable
 					expectationBuilder,
 					it, grammars,
 					iElements.Quantifier,
-					g => (g.IsPlural(), g.IsNegated()) switch
-					{
-						(true, false) => $"are equal to {Formatter.Format(expected)}{options}",
-						(false, false) => $"is equal to {Formatter.Format(expected)}{options}",
-						(true, true) => $"are not equal to {Formatter.Format(expected)}{options}",
-						(false, true) => $"is not equal to {Formatter.Format(expected)}{options}",
-					},
+					g => (g.IsPlural(),
+							g.IsNegated()) switch
+						{
+							(true, false) => $"are equal to {Formatter.Format(expected)}{options}",
+							(false, false) => $"is equal to {Formatter.Format(expected)}{options}",
+							(true, true) => $"are not equal to {Formatter.Format(expected)}{options}",
+							(false, true) => $"is not equal to {Formatter.Format(expected)}{options}",
+						},
 					a => options.AreConsideredEqual(a, expected),
 					"were")),
 			iElements.Subject,
@@ -56,13 +57,14 @@ public static partial class ThatEnumerable
 					expectationBuilder,
 					it, grammars,
 					iElements.Quantifier,
-					g => (g.IsPlural(), g.IsNegated()) switch
-					{
-						(true, false) => $"are equal to {Formatter.Format(expected)}{options}",
-						(false, false) => $"is equal to {Formatter.Format(expected)}{options}",
-						(true, true) => $"are not equal to {Formatter.Format(expected)}{options}",
-						(false, true) => $"is not equal to {Formatter.Format(expected)}{options}",
-					},
+					g => (g.IsPlural(),
+							g.IsNegated()) switch
+						{
+							(true, false) => $"are equal to {Formatter.Format(expected)}{options}",
+							(false, false) => $"is equal to {Formatter.Format(expected)}{options}",
+							(true, true) => $"are not equal to {Formatter.Format(expected)}{options}",
+							(false, true) => $"is not equal to {Formatter.Format(expected)}{options}",
+						},
 					a => options.AreConsideredEqual(a, expected),
 					"were")),
 			iElements.Subject,
@@ -85,13 +87,14 @@ public static partial class ThatEnumerable
 					expectationBuilder,
 					it, grammars,
 					iElements.Quantifier,
-					g => (g.IsPlural(), g.IsNegated()) switch
-					{
-						(true, false) => $"are equal to {Formatter.Format(expected)}{options}",
-						(false, false) => $"is equal to {Formatter.Format(expected)}{options}",
-						(true, true) => $"are not equal to {Formatter.Format(expected)}{options}",
-						(false, true) => $"is not equal to {Formatter.Format(expected)}{options}",
-					},
+					g => (g.IsPlural(),
+							g.IsNegated()) switch
+						{
+							(true, false) => $"are equal to {Formatter.Format(expected)}{options}",
+							(false, false) => $"is equal to {Formatter.Format(expected)}{options}",
+							(true, true) => $"are not equal to {Formatter.Format(expected)}{options}",
+							(false, true) => $"is not equal to {Formatter.Format(expected)}{options}",
+						},
 					a => options.AreConsideredEqual(a, expected),
 					"were")),
 			iElements.Subject,
@@ -114,13 +117,14 @@ public static partial class ThatEnumerable
 					expectationBuilder,
 					it, grammars,
 					iElements.Quantifier,
-					g => (g.IsPlural(), g.IsNegated()) switch
-					{
-						(true, false) => $"are equal to {Formatter.Format(expected)}{options}",
-						(false, false) => $"is equal to {Formatter.Format(expected)}{options}",
-						(true, true) => $"are not equal to {Formatter.Format(expected)}{options}",
-						(false, true) => $"is not equal to {Formatter.Format(expected)}{options}",
-					},
+					g => (g.IsPlural(),
+							g.IsNegated()) switch
+						{
+							(true, false) => $"are equal to {Formatter.Format(expected)}{options}",
+							(false, false) => $"is equal to {Formatter.Format(expected)}{options}",
+							(true, true) => $"are not equal to {Formatter.Format(expected)}{options}",
+							(false, true) => $"is not equal to {Formatter.Format(expected)}{options}",
+						},
 					a => options.AreConsideredEqual(a, expected),
 					"were")),
 			iElements.Subject,
@@ -143,13 +147,14 @@ public static partial class ThatEnumerable
 					expectationBuilder,
 					it, grammars,
 					iElements.Quantifier,
-					g => (g.IsPlural(), g.IsNegated()) switch
-					{
-						(true, false) => $"are equal to {Formatter.Format(expected)}{options}",
-						(false, false) => $"is equal to {Formatter.Format(expected)}{options}",
-						(true, true) => $"are not equal to {Formatter.Format(expected)}{options}",
-						(false, true) => $"is not equal to {Formatter.Format(expected)}{options}",
-					},
+					g => (g.IsPlural(),
+							g.IsNegated()) switch
+						{
+							(true, false) => $"are equal to {Formatter.Format(expected)}{options}",
+							(false, false) => $"is equal to {Formatter.Format(expected)}{options}",
+							(true, true) => $"are not equal to {Formatter.Format(expected)}{options}",
+							(false, true) => $"is not equal to {Formatter.Format(expected)}{options}",
+						},
 					a => options.AreConsideredEqual(a, expected),
 					"were")),
 			iElements.Subject,
@@ -172,13 +177,14 @@ public static partial class ThatEnumerable
 					expectationBuilder,
 					it, grammars,
 					iElements.Quantifier,
-					g => (g.IsPlural(), g.IsNegated()) switch
-					{
-						(true, false) => $"are equal to {Formatter.Format(expected)}{options}",
-						(false, false) => $"is equal to {Formatter.Format(expected)}{options}",
-						(true, true) => $"are not equal to {Formatter.Format(expected)}{options}",
-						(false, true) => $"is not equal to {Formatter.Format(expected)}{options}",
-					},
+					g => (g.IsPlural(),
+							g.IsNegated()) switch
+						{
+							(true, false) => $"are equal to {Formatter.Format(expected)}{options}",
+							(false, false) => $"is equal to {Formatter.Format(expected)}{options}",
+							(true, true) => $"are not equal to {Formatter.Format(expected)}{options}",
+							(false, true) => $"is not equal to {Formatter.Format(expected)}{options}",
+						},
 					a => options.AreConsideredEqual(a, expected),
 					"were")),
 			iElements.Subject,
@@ -201,13 +207,14 @@ public static partial class ThatEnumerable
 					expectationBuilder,
 					it, grammars,
 					iElements.Quantifier,
-					g => (g.IsPlural(), g.IsNegated()) switch
-					{
-						(true, false) => $"are equal to {Formatter.Format(expected)}{options}",
-						(false, false) => $"is equal to {Formatter.Format(expected)}{options}",
-						(true, true) => $"are not equal to {Formatter.Format(expected)}{options}",
-						(false, true) => $"is not equal to {Formatter.Format(expected)}{options}",
-					},
+					g => (g.IsPlural(),
+							g.IsNegated()) switch
+						{
+							(true, false) => $"are equal to {Formatter.Format(expected)}{options}",
+							(false, false) => $"is equal to {Formatter.Format(expected)}{options}",
+							(true, true) => $"are not equal to {Formatter.Format(expected)}{options}",
+							(false, true) => $"is not equal to {Formatter.Format(expected)}{options}",
+						},
 					a => options.AreConsideredEqual(a, expected),
 					"were")),
 			iElements.Subject,
@@ -230,13 +237,14 @@ public static partial class ThatEnumerable
 					expectationBuilder,
 					it, grammars,
 					iElements.Quantifier,
-					g => (g.IsPlural(), g.IsNegated()) switch
-					{
-						(true, false) => $"are equal to {Formatter.Format(expected)}{options}",
-						(false, false) => $"is equal to {Formatter.Format(expected)}{options}",
-						(true, true) => $"are not equal to {Formatter.Format(expected)}{options}",
-						(false, true) => $"is not equal to {Formatter.Format(expected)}{options}",
-					},
+					g => (g.IsPlural(),
+							g.IsNegated()) switch
+						{
+							(true, false) => $"are equal to {Formatter.Format(expected)}{options}",
+							(false, false) => $"is equal to {Formatter.Format(expected)}{options}",
+							(true, true) => $"are not equal to {Formatter.Format(expected)}{options}",
+							(false, true) => $"is not equal to {Formatter.Format(expected)}{options}",
+						},
 					a => options.AreConsideredEqual(a, expected),
 					"were")),
 			iElements.Subject,
@@ -258,13 +266,14 @@ public static partial class ThatEnumerable
 					expectationBuilder,
 					it, grammars,
 					iElements.Quantifier,
-					g => (g.IsPlural(), g.IsNegated()) switch
-					{
-						(true, false) => $"are equal to {Formatter.Format(expected)}{options}",
-						(false, false) => $"is equal to {Formatter.Format(expected)}{options}",
-						(true, true) => $"are not equal to {Formatter.Format(expected)}{options}",
-						(false, true) => $"is not equal to {Formatter.Format(expected)}{options}",
-					},
+					g => (g.IsPlural(),
+							g.IsNegated()) switch
+						{
+							(true, false) => $"are equal to {Formatter.Format(expected)}{options}",
+							(false, false) => $"is equal to {Formatter.Format(expected)}{options}",
+							(true, true) => $"are not equal to {Formatter.Format(expected)}{options}",
+							(false, true) => $"is not equal to {Formatter.Format(expected)}{options}",
+						},
 					a => options.AreConsideredEqual(a, expected),
 					"were")),
 			iElements.Subject,
@@ -287,13 +296,14 @@ public static partial class ThatEnumerable
 					expectationBuilder,
 					it, grammars,
 					iElements.Quantifier,
-					g => (g.IsPlural(), g.IsNegated()) switch
-					{
-						(true, false) => $"are equal to {Formatter.Format(expected)}{options}",
-						(false, false) => $"is equal to {Formatter.Format(expected)}{options}",
-						(true, true) => $"are not equal to {Formatter.Format(expected)}{options}",
-						(false, true) => $"is not equal to {Formatter.Format(expected)}{options}",
-					},
+					g => (g.IsPlural(),
+							g.IsNegated()) switch
+						{
+							(true, false) => $"are equal to {Formatter.Format(expected)}{options}",
+							(false, false) => $"is equal to {Formatter.Format(expected)}{options}",
+							(true, true) => $"are not equal to {Formatter.Format(expected)}{options}",
+							(false, true) => $"is not equal to {Formatter.Format(expected)}{options}",
+						},
 					a => options.AreConsideredEqual(a, expected),
 					"were")),
 			iElements.Subject,
@@ -316,13 +326,14 @@ public static partial class ThatEnumerable
 					expectationBuilder,
 					it, grammars,
 					iElements.Quantifier,
-					g => (g.IsPlural(), g.IsNegated()) switch
-					{
-						(true, false) => $"are equal to {Formatter.Format(expected)}{options}",
-						(false, false) => $"is equal to {Formatter.Format(expected)}{options}",
-						(true, true) => $"are not equal to {Formatter.Format(expected)}{options}",
-						(false, true) => $"is not equal to {Formatter.Format(expected)}{options}",
-					},
+					g => (g.IsPlural(),
+							g.IsNegated()) switch
+						{
+							(true, false) => $"are equal to {Formatter.Format(expected)}{options}",
+							(false, false) => $"is equal to {Formatter.Format(expected)}{options}",
+							(true, true) => $"are not equal to {Formatter.Format(expected)}{options}",
+							(false, true) => $"is not equal to {Formatter.Format(expected)}{options}",
+						},
 					a => options.AreConsideredEqual(a, expected),
 					"were")),
 			iElements.Subject,
@@ -345,13 +356,14 @@ public static partial class ThatEnumerable
 					expectationBuilder,
 					it, grammars,
 					iElements.Quantifier,
-					g => (g.IsPlural(), g.IsNegated()) switch
-					{
-						(true, false) => $"are equal to {Formatter.Format(expected)}{options}",
-						(false, false) => $"is equal to {Formatter.Format(expected)}{options}",
-						(true, true) => $"are not equal to {Formatter.Format(expected)}{options}",
-						(false, true) => $"is not equal to {Formatter.Format(expected)}{options}",
-					},
+					g => (g.IsPlural(),
+							g.IsNegated()) switch
+						{
+							(true, false) => $"are equal to {Formatter.Format(expected)}{options}",
+							(false, false) => $"is equal to {Formatter.Format(expected)}{options}",
+							(true, true) => $"are not equal to {Formatter.Format(expected)}{options}",
+							(false, true) => $"is not equal to {Formatter.Format(expected)}{options}",
+						},
 					a => options.AreConsideredEqual(a, expected),
 					"were")),
 			iElements.Subject,
@@ -375,13 +387,14 @@ public static partial class ThatEnumerable
 					expectationBuilder,
 					it, grammars,
 					iElements.Quantifier,
-					g => (g.IsPlural(), g.IsNegated()) switch
-					{
-						(true, false) => $"are equal to {Formatter.Format(expected)}{options}",
-						(false, false) => $"is equal to {Formatter.Format(expected)}{options}",
-						(true, true) => $"are not equal to {Formatter.Format(expected)}{options}",
-						(false, true) => $"is not equal to {Formatter.Format(expected)}{options}",
-					},
+					g => (g.IsPlural(),
+							g.IsNegated()) switch
+						{
+							(true, false) => $"are equal to {Formatter.Format(expected)}{options}",
+							(false, false) => $"is equal to {Formatter.Format(expected)}{options}",
+							(true, true) => $"are not equal to {Formatter.Format(expected)}{options}",
+							(false, true) => $"is not equal to {Formatter.Format(expected)}{options}",
+						},
 					a => options.AreConsideredEqual((string?)a, expected),
 					"were")),
 			iElements.Subject,

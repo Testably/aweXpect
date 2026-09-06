@@ -25,13 +25,14 @@ public static partial class ThatEnumerable
 						expectationBuilder,
 						it, grammars,
 						_quantifier,
-						g => (g.IsPlural(), g.IsNegated()) switch
-						{
-							(true, false) => $"are exactly of type {Formatter.Format(typeof(TType))}",
-							(false, false) => $"is exactly of type {Formatter.Format(typeof(TType))}",
-							(true, true) => $"are not exactly of type {Formatter.Format(typeof(TType))}",
-							(false, true) => $"is not exactly of type {Formatter.Format(typeof(TType))}",
-						},
+						g => (g.IsPlural(),
+								g.IsNegated()) switch
+							{
+								(true, false) => $"are exactly of type {Formatter.Format(typeof(TType))}",
+								(false, false) => $"is exactly of type {Formatter.Format(typeof(TType))}",
+								(true, true) => $"are not exactly of type {Formatter.Format(typeof(TType))}",
+								(false, true) => $"is not exactly of type {Formatter.Format(typeof(TType))}",
+							},
 						a => a?.GetType() == typeof(TType),
 						"were")),
 				_subject,
@@ -53,13 +54,14 @@ public static partial class ThatEnumerable
 						expectationBuilder,
 						it, grammars,
 						_quantifier,
-						g => (g.IsPlural(), g.IsNegated()) switch
-						{
-							(true, false) => $"are exactly of type {Formatter.Format(type)}",
-							(false, false) => $"is exactly of type {Formatter.Format(type)}",
-							(true, true) => $"are not exactly of type {Formatter.Format(type)}",
-							(false, true) => $"is not exactly of type {Formatter.Format(type)}",
-						},
+						g => (g.IsPlural(),
+								g.IsNegated()) switch
+							{
+								(true, false) => $"are exactly of type {Formatter.Format(type)}",
+								(false, false) => $"is exactly of type {Formatter.Format(type)}",
+								(true, true) => $"are not exactly of type {Formatter.Format(type)}",
+								(false, true) => $"is not exactly of type {Formatter.Format(type)}",
+							},
 						a => a?.GetType() == type,
 						"were")),
 				_subject,
@@ -82,13 +84,14 @@ public static partial class ThatEnumerable
 					=> new CollectionForEnumerableConstraint<TEnumerable>(
 						expectationBuilder, it, grammars,
 						_quantifier,
-						g => (g.IsPlural(), g.IsNegated()) switch
-						{
-							(true, false) => $"are exactly of type {Formatter.Format(typeof(TType))}",
-							(false, false) => $"is exactly of type {Formatter.Format(typeof(TType))}",
-							(true, true) => $"are not exactly of type {Formatter.Format(typeof(TType))}",
-							(false, true) => $"is not exactly of type {Formatter.Format(typeof(TType))}",
-						},
+						g => (g.IsPlural(),
+								g.IsNegated()) switch
+							{
+								(true, false) => $"are exactly of type {Formatter.Format(typeof(TType))}",
+								(false, false) => $"is exactly of type {Formatter.Format(typeof(TType))}",
+								(true, true) => $"are not exactly of type {Formatter.Format(typeof(TType))}",
+								(false, true) => $"is not exactly of type {Formatter.Format(typeof(TType))}",
+							},
 						a => a?.GetType() == typeof(TType),
 						"were")),
 				_subject,
@@ -109,13 +112,14 @@ public static partial class ThatEnumerable
 					=> new CollectionForEnumerableConstraint<TEnumerable>(
 						expectationBuilder, it, grammars,
 						_quantifier,
-						g => (g.IsPlural(), g.IsNegated()) switch
-						{
-							(true, false) => $"are exactly of type {Formatter.Format(type)}",
-							(false, false) => $"is exactly of type {Formatter.Format(type)}",
-							(true, true) => $"are not exactly of type {Formatter.Format(type)}",
-							(false, true) => $"is not exactly of type {Formatter.Format(type)}",
-						},
+						g => (g.IsPlural(),
+								g.IsNegated()) switch
+							{
+								(true, false) => $"are exactly of type {Formatter.Format(type)}",
+								(false, false) => $"is exactly of type {Formatter.Format(type)}",
+								(true, true) => $"are not exactly of type {Formatter.Format(type)}",
+								(false, true) => $"is not exactly of type {Formatter.Format(type)}",
+							},
 						a => a?.GetType() == type,
 						"were")),
 				_subject,
@@ -138,13 +142,14 @@ public static partial class ThatEnumerable
 					=> new CollectionForEnumerableConstraint<TEnumerable>(
 						expectationBuilder, it, grammars,
 						_quantifier,
-						g => (g.IsPlural(), g.IsNegated()) switch
-						{
-							(true, false) => $"are exactly of type {Formatter.Format(typeof(TType))}",
-							(false, false) => $"is exactly of type {Formatter.Format(typeof(TType))}",
-							(true, true) => $"are not exactly of type {Formatter.Format(typeof(TType))}",
-							(false, true) => $"is not exactly of type {Formatter.Format(typeof(TType))}",
-						},
+						g => (g.IsPlural(),
+								g.IsNegated()) switch
+							{
+								(true, false) => $"are exactly of type {Formatter.Format(typeof(TType))}",
+								(false, false) => $"is exactly of type {Formatter.Format(typeof(TType))}",
+								(true, true) => $"are not exactly of type {Formatter.Format(typeof(TType))}",
+								(false, true) => $"is not exactly of type {Formatter.Format(typeof(TType))}",
+							},
 						a => a?.GetType() == typeof(TType),
 						"were")),
 				_subject,
@@ -165,13 +170,14 @@ public static partial class ThatEnumerable
 					=> new CollectionForEnumerableConstraint<TEnumerable>(
 						expectationBuilder, it, grammars,
 						_quantifier,
-						g => (g.IsPlural(), g.IsNegated()) switch
-						{
-							(true, false) => $"are exactly of type {Formatter.Format(type)}",
-							(false, false) => $"is exactly of type {Formatter.Format(type)}",
-							(true, true) => $"are not exactly of type {Formatter.Format(type)}",
-							(false, true) => $"is not exactly of type {Formatter.Format(type)}",
-						},
+						g => (g.IsPlural(),
+								g.IsNegated()) switch
+							{
+								(true, false) => $"are exactly of type {Formatter.Format(type)}",
+								(false, false) => $"is exactly of type {Formatter.Format(type)}",
+								(true, true) => $"are not exactly of type {Formatter.Format(type)}",
+								(false, true) => $"is not exactly of type {Formatter.Format(type)}",
+							},
 						a => a?.GetType() == type,
 						"were")),
 				_subject,

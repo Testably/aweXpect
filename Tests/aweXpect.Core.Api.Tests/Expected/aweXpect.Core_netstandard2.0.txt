@@ -195,6 +195,8 @@ namespace aweXpect.Core
         public static bool IsNested(this aweXpect.Core.ExpectationGrammars grammars) { }
         public static bool IsPlural(this aweXpect.Core.ExpectationGrammars grammars) { }
         public static aweXpect.Core.ExpectationGrammars Negate(this aweXpect.Core.ExpectationGrammars grammars) { }
+        public static string SubjectVerb(this aweXpect.Core.ExpectationGrammars grammars, string it, string singular, string plural) { }
+        public static string Verb(this aweXpect.Core.ExpectationGrammars grammars, string singular, string plural) { }
     }
     public interface ICollectionMatcher<in T, out T2>
         where in T : T2

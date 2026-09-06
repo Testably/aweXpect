@@ -26,13 +26,14 @@ public static partial class ThatAsyncEnumerable
 						expectationBuilder,
 						it, grammars,
 						_quantifier,
-						g => (g.IsPlural(), g.IsNegated()) switch
-						{
-							(true, false) => $"are of type {Formatter.Format(typeof(TType))}",
-							(false, false) => $"is of type {Formatter.Format(typeof(TType))}",
-							(true, true) => $"are not of type {Formatter.Format(typeof(TType))}",
-							(false, true) => $"is not of type {Formatter.Format(typeof(TType))}",
-						},
+						g => (g.IsPlural(),
+								g.IsNegated()) switch
+							{
+								(true, false) => $"are of type {Formatter.Format(typeof(TType))}",
+								(false, false) => $"is of type {Formatter.Format(typeof(TType))}",
+								(true, true) => $"are not of type {Formatter.Format(typeof(TType))}",
+								(false, true) => $"is not of type {Formatter.Format(typeof(TType))}",
+							},
 						a => typeof(TType).IsAssignableFrom(a?.GetType()),
 						"were")),
 				_subject,
@@ -54,13 +55,14 @@ public static partial class ThatAsyncEnumerable
 						expectationBuilder,
 						it, grammars,
 						_quantifier,
-						g => (g.IsPlural(), g.IsNegated()) switch
-						{
-							(true, false) => $"are of type {Formatter.Format(type)}",
-							(false, false) => $"is of type {Formatter.Format(type)}",
-							(true, true) => $"are not of type {Formatter.Format(type)}",
-							(false, true) => $"is not of type {Formatter.Format(type)}",
-						},
+						g => (g.IsPlural(),
+								g.IsNegated()) switch
+							{
+								(true, false) => $"are of type {Formatter.Format(type)}",
+								(false, false) => $"is of type {Formatter.Format(type)}",
+								(true, true) => $"are not of type {Formatter.Format(type)}",
+								(false, true) => $"is not of type {Formatter.Format(type)}",
+							},
 						a => type.IsAssignableFrom(a?.GetType()),
 						"were")),
 				_subject,
