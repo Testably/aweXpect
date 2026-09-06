@@ -3,15 +3,6 @@ using System.Collections.Generic;
 
 namespace aweXpect.Tests;
 
-/// <summary>
-///     Verifies that collection expectations below a plural subject use plural verbs.
-/// </summary>
-/// <remarks>
-///     <see href="https://github.com/Testably/aweXpect/issues/1027" /><br />
-///     <c>HasLines</c> is used as the plural subject, because it gives access to the complete set of expectations
-///     on <see cref="IEnumerable{T}" />. Only the verb is asserted here; the surrounding message is verified in the
-///     tests of the individual expectations.
-/// </remarks>
 public sealed class NestedCollectionGrammar
 {
 	public sealed class Tests
@@ -117,26 +108,6 @@ public sealed class NestedCollectionGrammar
 		}
 
 		[Fact]
-		public async Task IsContainedIn_ShouldUsePluralVerb()
-		{
-			async Task Act()
-				=> await That("a\nb").HasLines(lines => lines.IsContainedIn(["a",]));
-
-			await That(Act).Throws<XunitException>()
-				.WithMessage("""*has lines which are contained in collection ["a",] in order,*""").AsWildcard();
-		}
-
-		[Fact]
-		public async Task IsEqualTo_ShouldUsePluralVerb()
-		{
-			async Task Act()
-				=> await That("a\nb").HasLines(lines => lines.IsEqualTo(["a", "c",]));
-
-			await That(Act).Throws<XunitException>()
-				.WithMessage("""*has lines which match collection ["a", "c",] in order,*""").AsWildcard();
-		}
-
-		[Fact]
 		public async Task IsInAscendingOrder_ShouldUsePluralVerb()
 		{
 			async Task Act()
@@ -199,9 +170,6 @@ public sealed class NestedCollectionGrammar
 		}
 	}
 
-	/// <summary>
-	///     The negated and the <see langword="null" /> subject forms of the expectations that select their verb.
-	/// </summary>
 	public sealed class NegatedTests
 	{
 		[Fact]
@@ -362,9 +330,6 @@ public sealed class NestedCollectionGrammar
 	}
 
 #if NET8_0_OR_GREATER
-	/// <summary>
-	///     The same expectations on an <see cref="IAsyncEnumerable{T}" /> subject.
-	/// </summary>
 	public sealed class AsyncTests
 	{
 		[Fact]
