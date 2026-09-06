@@ -35,6 +35,20 @@ internal static class StringExtensions
 		return $"a {value}";
 	}
 
+	/// <summary>
+	///     Removes the leading white-space from every line and normalizes the newline style to <c>\n</c>.
+	/// </summary>
+	[return: NotNullIfNotNull(nameof(value))]
+	public static string? RemoveIndentation(this string? value)
+	{
+		if (value == null)
+		{
+			return null;
+		}
+
+		return string.Join("\n", value.RemoveNewlineStyle().Split('\n').Select(line => line.TrimStart()));
+	}
+
 	[return: NotNullIfNotNull(nameof(value))]
 	public static string? RemoveNewlineStyle(this string? value)
 	{
