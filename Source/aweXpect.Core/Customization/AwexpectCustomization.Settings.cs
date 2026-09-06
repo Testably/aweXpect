@@ -33,6 +33,12 @@ public partial class AwexpectCustomization
 				{
 					DefaultCheckInterval = v,
 				}));
+			DefaultEventuallyTimeout = new CustomizationValue<TimeSpan>(
+				() => Get().DefaultEventuallyTimeout,
+				v => Update(p => p with
+				{
+					DefaultEventuallyTimeout = v,
+				}));
 			DefaultSignalerTimeout = new CustomizationValue<TimeSpan>(
 				() => Get().DefaultSignalerTimeout,
 				v => Update(p => p with
@@ -55,6 +61,9 @@ public partial class AwexpectCustomization
 
 		/// <inheritdoc cref="SettingsCustomizationValue.DefaultCheckInterval" />
 		public ICustomizationValueSetter<TimeSpan> DefaultCheckInterval { get; }
+
+		/// <inheritdoc cref="SettingsCustomizationValue.DefaultEventuallyTimeout" />
+		public ICustomizationValueSetter<TimeSpan> DefaultEventuallyTimeout { get; }
 
 		/// <inheritdoc cref="SettingsCustomizationValue.DefaultSignalerTimeout" />
 		public ICustomizationValueSetter<TimeSpan> DefaultSignalerTimeout { get; }
@@ -89,6 +98,11 @@ public partial class AwexpectCustomization
 		///     The default interval for repeatedly checking the condition on an object.
 		/// </summary>
 		public TimeSpan DefaultCheckInterval { get; init; } = TimeSpan.FromMilliseconds(100);
+
+		/// <summary>
+		///     The default timeout until the expectations of <c>Eventually()</c> on a delegate must be met.
+		/// </summary>
+		public TimeSpan DefaultEventuallyTimeout { get; init; } = TimeSpan.FromSeconds(30);
 
 		/// <summary>
 		///     The default timeout for the <see cref="Signaler" />.

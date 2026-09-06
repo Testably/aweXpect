@@ -55,9 +55,8 @@ internal class AndNode : Node
 		IEvaluationContext context,
 		CancellationToken cancellationToken) where TValue : default
 	{
-		_nodes.Add((_currentSeparator ?? DefaultSeparator, Current));
 		ConstraintResult? combinedResult = null;
-		foreach ((string separator, Node node) in _nodes)
+		foreach ((string separator, Node node) in GetNodes())
 		{
 			if (node is ExpectationNode expectationNode && expectationNode.IsEmpty())
 			{
@@ -77,6 +76,23 @@ internal class AndNode : Node
 		return combinedResult!;
 	}
 
+	/// <summary>
+	///     All nodes, including the <see cref="Current" /> one.
+	/// </summary>
+	/// <remarks>
+	///     The <see cref="Current" /> node must not be added to <see cref="_nodes" /> here, because the expectation
+	///     can be evaluated multiple times (e.g. by <see cref="EventuallyExpectationBuilder{TValue}" />).
+	/// </remarks>
+	private IEnumerable<(string, Node)> GetNodes()
+	{
+		foreach ((string, Node) node in _nodes)
+		{
+			yield return node;
+		}
+
+		yield return (_currentSeparator ?? DefaultSeparator, Current);
+	}
+
 	/// <inheritdoc cref="Node.SetReason(IBecauseReason)" />
 	public override void SetReason(IBecauseReason becauseReason)
 	{
@@ -93,7 +109,7 @@ internal class AndNode : Node
 	/// <inheritdoc />
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{
-		foreach (Node node in _nodes.Select(n => n.Item2).Where(n => n != Current))
+		foreach (Node node in _nodes.Select(n => n.Item2))
 		{
 			node.AppendExpectation(stringBuilder, indentation);
 			stringBuilder.Append(DefaultSeparator);

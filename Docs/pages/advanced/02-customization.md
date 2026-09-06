@@ -48,6 +48,9 @@ Under `Customize.aweXpect.Settings()` you have:
 - **DefaultCheckInterval**  
   The default interval for repeatedly checking the condition on an object.
 
+- **DefaultEventuallyTimeout**  
+  The default timeout until the expectations of [`Eventually()`](/docs/expectations/delegates) on a delegate must be met.
+
 - **DefaultSignalerTimeout**  
   The default timeout for the [`Signaler`](/docs/expectations/advanced/callbacks).
 

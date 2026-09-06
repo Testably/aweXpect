@@ -448,6 +448,7 @@ namespace aweXpect.Customization
         public class SettingsCustomization : aweXpect.Customization.ICustomizationValueUpdater<aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue>
         {
             public aweXpect.Customization.ICustomizationValueSetter<System.TimeSpan> DefaultCheckInterval { get; }
+            public aweXpect.Customization.ICustomizationValueSetter<System.TimeSpan> DefaultEventuallyTimeout { get; }
             public aweXpect.Customization.ICustomizationValueSetter<System.TimeSpan> DefaultSignalerTimeout { get; }
             public aweXpect.Customization.ICustomizationValueSetter<System.TimeSpan> DefaultTimeComparisonTolerance { get; }
             public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Customization.TestCancellation?> TestCancellation { get; }
@@ -458,6 +459,7 @@ namespace aweXpect.Customization
         {
             public SettingsCustomizationValue() { }
             public System.TimeSpan DefaultCheckInterval { get; init; }
+            public System.TimeSpan DefaultEventuallyTimeout { get; init; }
             public System.TimeSpan DefaultSignalerTimeout { get; init; }
             public System.TimeSpan DefaultTimeComparisonTolerance { get; init; }
             public aweXpect.Customization.TestCancellation? TestCancellation { get; init; }
@@ -528,6 +530,7 @@ namespace aweXpect.Delegates
             public aweXpect.Results.DelegateWithValueResult<T> DoesNotThrowExactly(System.Type exceptionType) { }
             public aweXpect.Results.DelegateWithValueResult<T> DoesNotThrowExactly<TException>()
                 where TException : System.Exception { }
+            public aweXpect.Core.IThatSubject<T> Eventually() { }
             public aweXpect.Results.ExecutesInResult<aweXpect.Results.AndResult<aweXpect.Delegates.ThatDelegate.WithValue<T>>> ExecutesIn() { }
         }
         public sealed class WithoutValue : aweXpect.Delegates.ThatDelegate, aweXpect.Core.IExpectThat<aweXpect.Delegates.ThatDelegate.WithoutValue>, aweXpect.Core.IThat<aweXpect.Delegates.ThatDelegate.WithoutValue>
