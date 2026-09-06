@@ -39,7 +39,8 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 			return result;
 		}
 
-		result = await AreConsideredEqualNormalized(Normalize(actual), Normalize(expectedString));
+		result = await _matchType.AreConsideredEqual(Normalize(actual), Normalize(expectedString), _ignoreCase,
+			_comparer);
 		return result;
 	}
 
@@ -48,9 +49,8 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     in the <paramref name="actual" /> <see langword="string" />.
 	/// </summary>
 	/// <remarks>
-	///     Both strings are normalized once before the comparison, so that options which change the length of the
-	///     strings (<see cref="IgnoringNewlineStyle(bool)" /> and <see cref="IgnoringIndentation(bool)" />) are
-	///     applied to the complete strings and not to the individual substrings that are compared.<br />
+	///     Both strings are normalized once before the comparison, so that the options which change the length of the
+	///     strings are applied to the complete strings and not to the individual substrings that are compared.<br />
 	///     Returns <c>0</c> when the <paramref name="expected" /> <see langword="string" /> is empty after the
 	///     normalization.
 	/// </remarks>
@@ -71,9 +71,9 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		int index = 0;
 		while (index < actual.Length)
 		{
-			if (await AreConsideredEqualNormalized(
+			if (await _matchType.AreConsideredEqual(
 				    actual.Substring(index, Math.Min(expected.Length, actual.Length - index)),
-				    expected))
+				    expected, _ignoreCase, _comparer))
 			{
 				count++;
 				index += expected.Length;
@@ -109,32 +109,22 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		}
 
 		int[]? ignoredColumnsPerLine = GetIgnoredColumnsPerLine(actual);
-		actual = Normalize(actual);
-		expected = Normalize(expected);
+		actual = NormalizeLines(actual);
+		expected = NormalizeLines(expected);
 
 		int ignoredLineCount = 0;
-		if (_ignoreLeadingWhiteSpace && actual is not null)
+		if (_ignoreLeadingWhiteSpace && actual is not null && ignoredColumnsPerLine is not null)
 		{
 			(ignoredLineCount, int ignoredColumnCount) = CountLeadingWhiteSpace(actual);
-			ignoredColumnsPerLine![ignoredLineCount] += ignoredColumnCount;
+			ignoredColumnsPerLine[ignoredLineCount] += ignoredColumnCount;
 		}
 
 		StringDifferenceSettings? settings = ignoredColumnsPerLine is null
 			? null
 			: new StringDifferenceSettings(ignoredLineCount, 0, ignoredColumnsPerLine);
 
-		if (_ignoreLeadingWhiteSpace)
-		{
-			actual = actual?.TrimStart();
-			expected = expected?.TrimStart();
-		}
-
-		if (_ignoreTrailingWhiteSpace)
-		{
-			actual = actual?.TrimEnd();
-			expected = expected?.TrimEnd();
-		}
-
+		actual = TrimWhiteSpace(actual);
+		expected = TrimWhiteSpace(expected);
 
 		return _matchType.GetExtendedFailure(it, actual, expected, _ignoreCase,
 			_comparer ?? UseDefaultComparer(_ignoreCase), settings);
@@ -224,14 +214,25 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		=> ignoreCase ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal;
 
 	/// <summary>
-	///     Applies the options that transform the <paramref name="value" /> as a whole.
+	///     Applies all options that transform the <paramref name="value" /> as a whole.
+	/// </summary>
+	/// <remarks>
+	///     All these options change the length of the <paramref name="value" />, so they must never be applied to an
+	///     individual substring of an already normalized value.
+	/// </remarks>
+	[return: NotNullIfNotNull(nameof(value))]
+	private string? Normalize(string? value)
+		=> TrimWhiteSpace(NormalizeLines(value));
+
+	/// <summary>
+	///     Applies the options that transform the lines of the <paramref name="value" />.
 	/// </summary>
 	/// <remarks>
 	///     Removing the indentation also normalizes the newline style, so it supersedes
 	///     <see cref="IgnoringNewlineStyle(bool)" />.
 	/// </remarks>
 	[return: NotNullIfNotNull(nameof(value))]
-	private string? Normalize(string? value)
+	private string? NormalizeLines(string? value)
 	{
 		if (_ignoreIndentation)
 		{
@@ -242,27 +243,22 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	}
 
 	/// <summary>
-	///     Compares two strings that were already passed through <see cref="Normalize" />.
+	///     Removes the white-space at the start and the end of the <paramref name="value" />.
 	/// </summary>
-#if NET8_0_OR_GREATER
-	private async ValueTask<bool> AreConsideredEqualNormalized(string? actual, string? expected)
-#else
-	private async Task<bool> AreConsideredEqualNormalized(string? actual, string? expected)
-#endif
+	[return: NotNullIfNotNull(nameof(value))]
+	private string? TrimWhiteSpace(string? value)
 	{
 		if (_ignoreLeadingWhiteSpace)
 		{
-			actual = actual?.TrimStart();
-			expected = expected?.TrimStart();
+			value = value?.TrimStart();
 		}
 
 		if (_ignoreTrailingWhiteSpace)
 		{
-			actual = actual?.TrimEnd();
-			expected = expected?.TrimEnd();
+			value = value?.TrimEnd();
 		}
 
-		return await _matchType.AreConsideredEqual(actual, expected, _ignoreCase, _comparer);
+		return value;
 	}
 
 	/// <summary>
@@ -294,12 +290,13 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	}
 
 	/// <summary>
-	///     Counts the white-space characters that <see cref="Normalize" /> removes at the start of every line in the
-	///     <paramref name="value" />, or <see langword="null" /> when no white-space is removed at all.
+	///     Creates the table of ignored columns per line for the <paramref name="value" />, pre-filled with the width
+	///     of the ignored indentation, or <see langword="null" /> when no option shifts the reported positions.
 	/// </summary>
 	/// <remarks>
-	///     The result is indexed by the line number, so that a position in the normalized value can be mapped back
-	///     to the position in the original <paramref name="value" />.
+	///     The table is indexed by the line number of the value returned by <see cref="NormalizeLines" />, so that a
+	///     position in the normalized value can be mapped back to the position in the original
+	///     <paramref name="value" />.
 	/// </remarks>
 	private int[]? GetIgnoredColumnsPerLine(string? value)
 	{
@@ -308,7 +305,9 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 			return null;
 		}
 
-		string[] lines = value.RemoveNewlineStyle().Split('\n');
+		// When the indentation is ignored, the normalized value has the same lines as the newline normalized value,
+		// but still contains the indentation whose width is measured below.
+		string[] lines = (_ignoreIndentation ? value.RemoveNewlineStyle() : NormalizeLines(value)).Split('\n');
 		int[] result = new int[lines.Length];
 		if (_ignoreIndentation)
 		{

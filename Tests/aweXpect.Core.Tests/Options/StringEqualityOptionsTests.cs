@@ -71,6 +71,17 @@ public sealed partial class StringEqualityOptionsTests
 			await That(result).IsEqualTo(1);
 		}
 
+		[Fact]
+		public async Task CountOccurrences_WhenExpectedIsPaddedWithWhiteSpace_ShouldFindAllOccurrences()
+		{
+			StringEqualityOptions sut = new();
+			sut.IgnoringTrailingWhiteSpace();
+
+			int result = await sut.CountOccurrences("abab", "ab  ");
+
+			await That(result).IsEqualTo(2);
+		}
+
 		[Theory]
 		[InlineData(" ")]
 		[InlineData("   ")]

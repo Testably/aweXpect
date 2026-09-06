@@ -168,6 +168,30 @@ public class StringDifferenceTests
 		}
 
 		[Fact]
+		public async Task WhenIgnoringTrailingColumns_ShouldOnlyShiftTheFirstComparedLine()
+		{
+			StringDifference firstLine = new("abc\nd", "aXc\nd", null, new StringDifferenceSettings(0, 2));
+			StringDifference laterLine = new("a\nbcd", "a\nbXd", null, new StringDifferenceSettings(0, 2));
+
+			await That(firstLine.ToString()).IsEqualTo(
+				"""
+				differs on line 1 and column 4:
+				    ↓ (actual)
+				  "abc\nd"
+				  "aXc\nd"
+				    ↑ (expected)
+				""");
+			await That(laterLine.ToString()).IsEqualTo(
+				"""
+				differs on line 2 and column 2:
+				       ↓ (actual)
+				  "a\nbcd"
+				  "a\nbXd"
+				       ↑ (expected)
+				""");
+		}
+
+		[Fact]
 		public async Task WhenLongTextDiffers_ShouldCalculateIndexOfFirstMismatch()
 		{
 			const string actual = "this is a long text that differs in between two words";

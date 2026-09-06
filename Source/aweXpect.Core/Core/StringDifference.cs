@@ -221,12 +221,17 @@ public sealed class StringDifference(
 	/// </summary>
 	private static int GetIgnoredColumns(StringDifferenceSettings? settings, int lineNumber)
 	{
-		if (settings?.IgnoredColumnsPerLine is not { } ignoredColumnsPerLine)
+		if (settings is null)
 		{
-			return settings?.IgnoredTrailingColumns ?? 0;
+			return 0;
 		}
 
-		return lineNumber < ignoredColumnsPerLine.Count ? ignoredColumnsPerLine[lineNumber] : 0;
+		if (settings.IgnoredColumnsPerLine is { } ignoredColumnsPerLine)
+		{
+			return lineNumber < ignoredColumnsPerLine.Count ? ignoredColumnsPerLine[lineNumber] : 0;
+		}
+
+		return lineNumber == settings.IgnoredTrailingLines ? settings.IgnoredTrailingColumns : 0;
 	}
 
 	private static string ToPatternString(MatchType matchType, string prefix, string actual, string expected)
