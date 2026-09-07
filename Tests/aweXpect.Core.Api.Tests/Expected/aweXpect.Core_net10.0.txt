@@ -981,6 +981,7 @@ namespace aweXpect.Options
     {
         public StringEqualityOptions() { }
         public System.Threading.Tasks.ValueTask<bool> AreConsideredEqual<TExpected>(string? actual, TExpected expected) { }
+        public aweXpect.Options.StringEqualityOptions AsBlock() { }
         public aweXpect.Options.StringEqualityOptions AsPrefix() { }
         public aweXpect.Options.StringEqualityOptions AsRegex() { }
         public aweXpect.Options.StringEqualityOptions AsSuffix() { }
@@ -1332,6 +1333,12 @@ namespace aweXpect.Results
             public aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>> NotEqualTo(System.TimeSpan? unexpected) { }
         }
     }
+    public class StringBlockCountResult<TType, TThat> : aweXpect.Results.CountResult<TType, TThat, aweXpect.Results.StringBlockCountResult<TType, TThat>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>
+    {
+        public StringBlockCountResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier quantifier, aweXpect.Options.StringEqualityOptions options) { }
+        public aweXpect.Results.StringBlockCountResult<TType, TThat> IgnoringCase(bool ignoreCase = true) { }
+        public aweXpect.Results.StringBlockCountResult<TType, TThat> Using(System.Collections.Generic.IEqualityComparer<string> comparer) { }
+    }
     public class StringCountResult<TType, TThat> : aweXpect.Results.StringCountResult<TType, TThat, aweXpect.Results.StringCountResult<TType, TThat>>
     {
         public StringCountResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier quantifier, aweXpect.Options.StringEqualityOptions options) { }
@@ -1363,6 +1370,7 @@ namespace aweXpect.Results
     public class StringEqualityTypeCountResult<TType, TThat> : aweXpect.Results.StringCountResult<TType, TThat>
     {
         public StringEqualityTypeCountResult(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier quantifier, aweXpect.Options.StringEqualityOptions options) { }
+        public aweXpect.Results.StringBlockCountResult<TType, TThat> AsBlock() { }
         public aweXpect.Results.StringCountResult<TType, TThat> AsPrefix() { }
         public aweXpect.Results.StringCountResult<TType, TThat> AsRegex() { }
         public aweXpect.Results.StringCountResult<TType, TThat> AsSuffix() { }

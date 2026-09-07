@@ -14,7 +14,26 @@ public class StringEqualityTypeCountResult<TType, TThat>(
 	StringEqualityOptions options)
 	: StringCountResult<TType, TThat>(expectationBuilder, returnValue, quantifier, options)
 {
+	private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
 	private readonly StringEqualityOptions _options = options;
+	private readonly Quantifier _quantifier = quantifier;
+	private readonly TThat _returnValue = returnValue;
+
+	/// <summary>
+	///     Interprets the expected <see langword="string" /> as a block of lines, which may be indented as a whole.
+	/// </summary>
+	/// <remarks>
+	///     The block must start and end at line boundaries. All its lines must share the same white-space prefix in the
+	///     actual string, so the relative indentation within the block is still compared.<br />
+	///     A line that consists only of white-space matches any line that consists only of white-space.<br />
+	///     The newline style is always ignored, and a single trailing line terminator does not start a new line,
+	///     so <c>"a\nb\n"</c> has the same two lines as <c>"a\nb"</c>.
+	/// </remarks>
+	public StringBlockCountResult<TType, TThat> AsBlock()
+	{
+		_options.AsBlock();
+		return new StringBlockCountResult<TType, TThat>(_expectationBuilder, _returnValue, _quantifier, _options);
+	}
 
 	/// <summary>
 	///     Interprets the expected <see langword="string" /> to be exactly equal.
