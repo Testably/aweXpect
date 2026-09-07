@@ -25,7 +25,9 @@ public class StringEqualityTypeCountResult<TType, TThat>(
 	/// <remarks>
 	///     The block must start and end at line boundaries. All its lines must share the same white-space prefix in the
 	///     actual string, so the relative indentation within the block is still compared.<br />
-	///     As the lines are compared individually, the indentation and the newline style can no longer be ignored.
+	///     A line that consists only of white-space matches any line that consists only of white-space.<br />
+	///     The newline style is always ignored, and a single trailing line terminator does not start a new line,
+	///     so <c>"a\nb\n"</c> has the same two lines as <c>"a\nb"</c>.
 	/// </remarks>
 	public StringBlockCountResult<TType, TThat> AsBlock()
 	{

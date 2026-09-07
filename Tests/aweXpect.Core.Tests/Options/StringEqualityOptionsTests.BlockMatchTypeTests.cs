@@ -30,6 +30,23 @@ public sealed partial class StringEqualityOptionsTests
 			await That(result).IsFalse();
 		}
 
+		[Theory]
+		[InlineData("a\nb\n", "a\nb", true)]
+		[InlineData("a\nb", "a\nb\r\n", true)]
+		[InlineData("a\nb\n\n", "a\nb", false)]
+		[InlineData("", "", true)]
+		[InlineData("", "\n", false)]
+		public async Task AreConsideredEqual_ShouldIgnoreASingleTrailingLineTerminator(string actual,
+			string expected, bool expectedResult)
+		{
+			StringEqualityOptions sut = new();
+			sut.AsBlock();
+
+			bool result = await sut.AreConsideredEqual(actual, expected);
+
+			await That(result).IsEqualTo(expectedResult);
+		}
+
 		[Fact]
 		public async Task AreConsideredEqual_WhenActualHasAdditionalLines_ShouldReturnFalse()
 		{
@@ -62,6 +79,48 @@ public sealed partial class StringEqualityOptionsTests
 			await That(result).IsSameAs(sut);
 		}
 
+		[Fact]
+		public async Task CountOccurrences_ShouldCountNonOverlappingOccurrences()
+		{
+			StringEqualityOptions sut = new();
+			sut.AsBlock();
+
+			int result = await sut.CountOccurrences("a\nb\na\nb\na", "a\nb\na");
+
+			await That(result).IsEqualTo(1);
+		}
+
+		[Theory]
+		[InlineData("a\nb", "a\nb\n", 1)]
+		[InlineData("a\nb\n", "a\nb", 1)]
+		[InlineData("x\na\nb", "a\nb\n", 1)]
+		[InlineData("a\nb\n\n", "a\nb", 1)]
+		[InlineData("a\nb\n  ", "a\nb\n", 1)]
+		[InlineData("a\nb", "a\nb\n\n", 0)]
+		[InlineData("a\nb\n\n", "a\nb\n\n", 1)]
+		[InlineData("", "\n", 0)]
+		public async Task CountOccurrences_ShouldIgnoreASingleTrailingLineTerminator(string actual,
+			string expected, int expectedCount)
+		{
+			StringEqualityOptions sut = new();
+			sut.AsBlock();
+
+			int result = await sut.CountOccurrences(actual, expected);
+
+			await That(result).IsEqualTo(expectedCount);
+		}
+
+		[Fact]
+		public async Task CountOccurrences_ShouldNotMatchMidLine()
+		{
+			StringEqualityOptions sut = new();
+			sut.AsBlock();
+
+			int result = await sut.CountOccurrences("public int Foo;", "int Foo");
+
+			await That(result).IsEqualTo(0);
+		}
+
 		[Theory]
 		[InlineData("public int Foo\n{\n    get;\n}", 1)]
 		[InlineData("    public int Foo\n    {\n        get;\n    }", 1)]
@@ -83,28 +142,6 @@ public sealed partial class StringEqualityOptionsTests
 			int result = await sut.CountOccurrences(actual, "public int Foo\n{\n    get;\n}");
 
 			await That(result).IsEqualTo(expectedCount);
-		}
-
-		[Fact]
-		public async Task CountOccurrences_ShouldCountNonOverlappingOccurrences()
-		{
-			StringEqualityOptions sut = new();
-			sut.AsBlock();
-
-			int result = await sut.CountOccurrences("a\nb\na\nb\na", "a\nb\na");
-
-			await That(result).IsEqualTo(1);
-		}
-
-		[Fact]
-		public async Task CountOccurrences_ShouldNotMatchMidLine()
-		{
-			StringEqualityOptions sut = new();
-			sut.AsBlock();
-
-			int result = await sut.CountOccurrences("public int Foo;", "int Foo");
-
-			await That(result).IsEqualTo(0);
 		}
 
 		[Fact]
@@ -143,21 +180,6 @@ public sealed partial class StringEqualityOptionsTests
 			int result = await sut.CountOccurrences("a\nx\nb", "a\n\nb");
 
 			await That(result).IsEqualTo(0);
-		}
-
-		[Theory]
-		[InlineData("a\nb", 0)]
-		[InlineData("a\nb\n", 1)]
-		[InlineData("a\nb\n  ", 1)]
-		public async Task CountOccurrences_WhenBlockEndsWithNewline_ShouldRequireTrailingBlankLine(string actual,
-			int expectedCount)
-		{
-			StringEqualityOptions sut = new();
-			sut.AsBlock();
-
-			int result = await sut.CountOccurrences(actual, "a\nb\n");
-
-			await That(result).IsEqualTo(expectedCount);
 		}
 
 		[Fact]

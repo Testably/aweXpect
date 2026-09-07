@@ -16,7 +16,9 @@ public partial class StringEqualityOptions
 	/// <remarks>
 	///     The block must start and end at line boundaries. All its lines must share the same white-space prefix in the
 	///     actual string, so the relative indentation within the block is still compared.<br />
-	///     A line that consists only of white-space matches any line that consists only of white-space.
+	///     A line that consists only of white-space matches any line that consists only of white-space.<br />
+	///     The newline style is always ignored, and a single trailing line terminator does not start a new line,
+	///     so <c>"a\nb\n"</c> has the same two lines as <c>"a\nb"</c>.
 	/// </remarks>
 	public StringEqualityOptions AsBlock()
 	{
@@ -52,8 +54,25 @@ public partial class StringEqualityOptions
 			return count;
 		}
 
+		/// <summary>
+		///     Splits the <paramref name="value" /> into lines, using the same rule as <c>HasLines</c>:
+		///     a single trailing line terminator does not start a new line, so <c>"a\nb\n"</c> has two lines.
+		/// </summary>
 		private static string[] SplitLines(string value)
-			=> value.RemoveNewlineStyle().Split('\n');
+		{
+			if (value.Length == 0)
+			{
+				return [];
+			}
+
+			string[] lines = value.RemoveNewlineStyle().Split('\n');
+			if (lines.Length > 1 && lines[lines.Length - 1].Length == 0)
+			{
+				Array.Resize(ref lines, lines.Length - 1);
+			}
+
+			return lines;
+		}
 
 		/// <summary>
 		///     Checks whether the <paramref name="expectedLines" /> match the <paramref name="actualLines" /> starting
