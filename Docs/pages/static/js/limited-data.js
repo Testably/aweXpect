@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "d5f54ae420dc90ef67a7c179b69c61c154384779",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon May 18 18:42:33 2026 \u002B0200",
-        "message": "fix: use \u0060Environment.NewLine\u0060 in \u0060AppendIsIncomplete\u0060 failure messages (#966)"
-      },
-      {
         "sha": "5fb898f6dd59e474b188a611083541cbc0be1cf4",
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:07 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Sep 7 07:50:28 2026 \u002B0000",
         "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.3 to 2.4.0 (#1041)"
+      },
+      {
+        "sha": "1da713db658b62bda8746fa6595a0f58b30b759d",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 7 07:53:08 2026 \u002B0000",
+        "message": "chore: Bump the mstest group with 2 updates (#1038)"
       }
     ],
     "labels": [
-      "d5f54ae4",
       "5fb898f6",
       "d1b8256e",
       "eca352d8",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "24a17c1c",
       "17158c05",
       "6ed4d82c",
-      "719a9454"
+      "719a9454",
+      "1da713db"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          248.4225470860799,
           281.60268538338795,
           264.24082912717546,
           279.3069086710612,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           251.6664425055186,
           273.690616162618,
           294.47748397191367,
-          256.9228895187378
+          256.9228895187378,
+          287.4645160039266
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          247.2772104581197,
           270.7715315085191,
           248.43984563534076,
           246.36039815630232,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           253.91424544652304,
           272.7523417790731,
           251.42155241966248,
-          247.14513374964397
+          247.14513374964397,
+          256.9680477891649
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "d5f54ae420dc90ef67a7c179b69c61c154384779",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon May 18 18:42:33 2026 \u002B0200",
-        "message": "fix: use \u0060Environment.NewLine\u0060 in \u0060AppendIsIncomplete\u0060 failure messages (#966)"
-      },
-      {
         "sha": "5fb898f6dd59e474b188a611083541cbc0be1cf4",
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:07 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Sep 7 07:50:28 2026 \u002B0000",
         "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.3 to 2.4.0 (#1041)"
+      },
+      {
+        "sha": "1da713db658b62bda8746fa6595a0f58b30b759d",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 7 07:53:08 2026 \u002B0000",
+        "message": "chore: Bump the mstest group with 2 updates (#1038)"
       }
     ],
     "labels": [
-      "d5f54ae4",
       "5fb898f6",
       "d1b8256e",
       "eca352d8",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "24a17c1c",
       "17158c05",
       "6ed4d82c",
-      "719a9454"
+      "719a9454",
+      "1da713db"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          314822.47265625,
           338613.4191545759,
           322577.8310546875,
           305520.9623046875,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           321485.473828125,
           317531.7226911272,
           301359.532808744,
-          317686.2840820312
+          317686.2840820312,
+          315430.17843424476
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1066,12 +1066,12 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
           335444,
           335444,
           335444,
           335442,
+          335444,
           335444,
           335444,
           335444,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2721793.542708333,
           2971366.189322917,
           2807100.845833333,
           2396152.1788504464,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2868241.325,
           2723807.4057291667,
           2436414.806770833,
-          2685577.53515625
+          2685577.53515625,
+          2868417.1922433036
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841651,
           4841651,
           4841648,
@@ -1202,6 +1201,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "d5f54ae420dc90ef67a7c179b69c61c154384779",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon May 18 18:42:33 2026 \u002B0200",
-        "message": "fix: use \u0060Environment.NewLine\u0060 in \u0060AppendIsIncomplete\u0060 failure messages (#966)"
-      },
       {
         "sha": "5fb898f6dd59e474b188a611083541cbc0be1cf4",
         "author": "dependabot[bot]",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Sep 7 07:50:28 2026 \u002B0000",
         "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.3 to 2.4.0 (#1041)"
+      },
+      {
+        "sha": "1da713db658b62bda8746fa6595a0f58b30b759d",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 7 07:53:08 2026 \u002B0000",
+        "message": "chore: Bump the mstest group with 2 updates (#1038)"
       }
     ],
     "labels": [
-      "d5f54ae4",
       "5fb898f6",
       "d1b8256e",
       "eca352d8",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "24a17c1c",
       "17158c05",
       "6ed4d82c",
-      "719a9454"
+      "719a9454",
+      "1da713db"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          493.37997512817384,
           532.7778127034505,
           488.29805401393344,
           494.3127051762172,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           509.5957601411002,
           487.83896595637003,
           507.58375219198376,
-          476.70153372628346
+          476.70153372628346,
+          520.5406125613621
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          475.0375202383314,
           560.9847352981567,
           478.60503266652427,
           500.78588752746583,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           523.6554533004761,
           527.3543803532918,
           492.43233496802196,
-          530.0054939270019
+          530.0054939270019,
+          544.9716225941976
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "d5f54ae420dc90ef67a7c179b69c61c154384779",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon May 18 18:42:33 2026 \u002B0200",
-        "message": "fix: use \u0060Environment.NewLine\u0060 in \u0060AppendIsIncomplete\u0060 failure messages (#966)"
-      },
-      {
         "sha": "5fb898f6dd59e474b188a611083541cbc0be1cf4",
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:07 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Sep 7 07:50:28 2026 \u002B0000",
         "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.3 to 2.4.0 (#1041)"
+      },
+      {
+        "sha": "1da713db658b62bda8746fa6595a0f58b30b759d",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 7 07:53:08 2026 \u002B0000",
+        "message": "chore: Bump the mstest group with 2 updates (#1038)"
       }
     ],
     "labels": [
-      "d5f54ae4",
       "5fb898f6",
       "d1b8256e",
       "eca352d8",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "24a17c1c",
       "17158c05",
       "6ed4d82c",
-      "719a9454"
+      "719a9454",
+      "1da713db"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          279.3821127573649,
           293.83324213027953,
           272.31214714050293,
           260.2109740461622,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           277.4515934944153,
           274.0059195200602,
           259.15261329923356,
-          272.8763891969408
+          272.8763891969408,
+          290.7147014822279
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          267.3096298535665,
           292.9080077489217,
           246.19398107528687,
           256.84688316981,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           274.7266558579036,
           267.3532590866089,
           256.2115569795881,
-          261.5507885615031
+          261.5507885615031,
+          283.3468252182007
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "d5f54ae420dc90ef67a7c179b69c61c154384779",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon May 18 18:42:33 2026 \u002B0200",
-        "message": "fix: use \u0060Environment.NewLine\u0060 in \u0060AppendIsIncomplete\u0060 failure messages (#966)"
-      },
-      {
         "sha": "5fb898f6dd59e474b188a611083541cbc0be1cf4",
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:07 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Sep 7 07:50:28 2026 \u002B0000",
         "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.3 to 2.4.0 (#1041)"
+      },
+      {
+        "sha": "1da713db658b62bda8746fa6595a0f58b30b759d",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 7 07:53:08 2026 \u002B0000",
+        "message": "chore: Bump the mstest group with 2 updates (#1038)"
       }
     ],
     "labels": [
-      "d5f54ae4",
       "5fb898f6",
       "d1b8256e",
       "eca352d8",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "24a17c1c",
       "17158c05",
       "6ed4d82c",
-      "719a9454"
+      "719a9454",
+      "1da713db"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          457.5411386489868,
           494.96092816761563,
           469.9096125602722,
           487.77328910827634,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           471.7250687394823,
           473.303697903951,
           482.4130295239962,
-          478.21953665415447
+          478.21953665415447,
+          506.15128435407365
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1311.036827214559,
           1303.3011100769043,
           1248.5900349934896,
           1179.1341366449992,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1321.9363451004028,
           1205.141513824463,
           1165.5106554667154,
-          1266.7932704925538
+          1266.7932704925538,
+          1382.3267773848313
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "d5f54ae420dc90ef67a7c179b69c61c154384779",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon May 18 18:42:33 2026 \u002B0200",
-        "message": "fix: use \u0060Environment.NewLine\u0060 in \u0060AppendIsIncomplete\u0060 failure messages (#966)"
-      },
-      {
         "sha": "5fb898f6dd59e474b188a611083541cbc0be1cf4",
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:07 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Sep 7 07:50:28 2026 \u002B0000",
         "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.3 to 2.4.0 (#1041)"
+      },
+      {
+        "sha": "1da713db658b62bda8746fa6595a0f58b30b759d",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 7 07:53:08 2026 \u002B0000",
+        "message": "chore: Bump the mstest group with 2 updates (#1038)"
       }
     ],
     "labels": [
-      "d5f54ae4",
       "5fb898f6",
       "d1b8256e",
       "eca352d8",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "24a17c1c",
       "17158c05",
       "6ed4d82c",
-      "719a9454"
+      "719a9454",
+      "1da713db"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2077.406628417969,
           2010.5027500788372,
           1943.1482081095378,
           1975.9966021219889,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2006.229408009847,
           1968.0141832987467,
           1897.40666443961,
-          2016.4773431505475
+          2016.4773431505475,
+          2016.8341816493444
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1513.755392074585,
           1435.4089012145996,
           1318.7738965352376,
           1355.970089639936,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1464.9938775380454,
           1311.0715756734212,
           1338.767943246024,
-          1346.3890763600668
+          1346.3890763600668,
+          1434.101515197754
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "d5f54ae420dc90ef67a7c179b69c61c154384779",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon May 18 18:42:33 2026 \u002B0200",
-        "message": "fix: use \u0060Environment.NewLine\u0060 in \u0060AppendIsIncomplete\u0060 failure messages (#966)"
-      },
-      {
         "sha": "5fb898f6dd59e474b188a611083541cbc0be1cf4",
         "author": "dependabot[bot]",
         "date": "Sun May 31 07:28:07 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Sep 7 07:50:28 2026 \u002B0000",
         "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.3 to 2.4.0 (#1041)"
+      },
+      {
+        "sha": "1da713db658b62bda8746fa6595a0f58b30b759d",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 7 07:53:08 2026 \u002B0000",
+        "message": "chore: Bump the mstest group with 2 updates (#1038)"
       }
     ],
     "labels": [
-      "d5f54ae4",
       "5fb898f6",
       "d1b8256e",
       "eca352d8",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "24a17c1c",
       "17158c05",
       "6ed4d82c",
-      "719a9454"
+      "719a9454",
+      "1da713db"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2658.722917175293,
           2654.85319846017,
           2577.84052494594,
           2604.601530456543,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2628.0233812967936,
           2600.125273777888,
           2523.571538380214,
-          2720.7322338649205
+          2720.7322338649205,
+          2669.7825558980308
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27746.698482259115,
           28228.60042114258,
           28157.407215663367,
           20107.476479163535,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           27760.519110543388,
           27066.304311116535,
           20497.064522298177,
-          28483.61748453776
+          28483.61748453776,
+          28450.560705566408
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33471,
           33471,
           33471,
@@ -4235,6 +4234,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
