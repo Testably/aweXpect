@@ -37,6 +37,18 @@ public static partial class ThatObject
 	}
 
 	/// <summary>
+	///     Verifies that the subject is equivalent to the <paramref name="expected" /> value.
+	/// </summary>
+	/// <remarks>
+	///     This overload allows passing a literal <see langword="null" />, for which the generic type cannot be inferred.
+	/// </remarks>
+	public static AndOrResult<TSubject, IThat<TSubject>> IsEquivalentTo<TSubject>(
+		this IThat<TSubject> source,
+		object? expected,
+		Func<EquivalencyOptions<object?>, EquivalencyOptions>? options = null)
+		=> source.IsEquivalentTo<TSubject, object?>(expected, options);
+
+	/// <summary>
 	///     Verifies that the subject is not equivalent to the <paramref name="unexpected" /> value.
 	/// </summary>
 	public static AndOrResult<TSubject, IThat<TSubject>> IsNotEquivalentTo<TSubject, TExpected>(
@@ -60,4 +72,16 @@ public static partial class ThatObject
 				=> new IsEqualToConstraint<TSubject, TExpected>(it, grammars, unexpected, equalityOptions).Invert()),
 			source);
 	}
+
+	/// <summary>
+	///     Verifies that the subject is not equivalent to the <paramref name="unexpected" /> value.
+	/// </summary>
+	/// <remarks>
+	///     This overload allows passing a literal <see langword="null" />, for which the generic type cannot be inferred.
+	/// </remarks>
+	public static AndOrResult<TSubject, IThat<TSubject>> IsNotEquivalentTo<TSubject>(
+		this IThat<TSubject> source,
+		object? unexpected,
+		Func<EquivalencyOptions<object?>, EquivalencyOptions>? options = null)
+		=> source.IsNotEquivalentTo<TSubject, object?>(unexpected, options);
 }

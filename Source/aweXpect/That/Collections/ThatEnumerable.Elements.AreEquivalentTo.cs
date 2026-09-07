@@ -45,6 +45,18 @@ public static partial class ThatEnumerable
 				_subject,
 				equalityOptions);
 		}
+
+		/// <summary>
+		///     …are equivalent to the <paramref name="expected" /> value.
+		/// </summary>
+		/// <remarks>
+		///     This overload allows passing a literal <see langword="null" />, for which the generic type cannot be inferred.
+		/// </remarks>
+		public ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
+			AreEquivalentTo(object? expected,
+				Func<EquivalencyOptions<object?>, EquivalencyOptions>? options = null,
+				[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+			=> AreEquivalentTo<object?>(expected, options, doNotPopulateThisValue);
 	}
 
 	public partial class ElementsForEnumerable<TEnumerable>
@@ -80,6 +92,18 @@ public static partial class ThatEnumerable
 				_subject,
 				equalityOptions);
 		}
+
+		/// <summary>
+		///     …are equivalent to the <paramref name="expected" /> value.
+		/// </summary>
+		/// <remarks>
+		///     This overload allows passing a literal <see langword="null" />, for which the generic type cannot be inferred.
+		/// </remarks>
+		public ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, object?>
+			AreEquivalentTo(object? expected,
+				Func<EquivalencyOptions<object?>, EquivalencyOptions>? options = null,
+				[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+			=> AreEquivalentTo<object?>(expected, options, doNotPopulateThisValue);
 	}
 
 	public partial class ElementsForStructEnumerable<TEnumerable, TItem>
@@ -115,5 +139,17 @@ public static partial class ThatEnumerable
 				_subject,
 				equalityOptions);
 		}
+
+		/// <summary>
+		///     …are equivalent to the <paramref name="expected" /> value.
+		/// </summary>
+		/// <remarks>
+		///     This overload allows passing a literal <see langword="null" />, for which the generic type cannot be inferred.
+		/// </remarks>
+		public ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, TItem>
+			AreEquivalentTo(object? expected,
+				Func<EquivalencyOptions<object?>, EquivalencyOptions>? options = null,
+				[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+			=> AreEquivalentTo<object?>(expected, options, doNotPopulateThisValue);
 	}
 }

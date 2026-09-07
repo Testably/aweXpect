@@ -46,6 +46,18 @@ public static partial class ThatAsyncEnumerable
 				_subject,
 				equalityOptions);
 		}
+
+		/// <summary>
+		///     …are equivalent to the <paramref name="expected" /> value.
+		/// </summary>
+		/// <remarks>
+		///     This overload allows passing a literal <see langword="null" />, for which the generic type cannot be inferred.
+		/// </remarks>
+		public ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
+			AreEquivalentTo(object? expected,
+				Func<EquivalencyOptions<object?>, EquivalencyOptions>? options = null,
+				[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+			=> AreEquivalentTo<object?>(expected, options, doNotPopulateThisValue);
 	}
 }
 #endif
