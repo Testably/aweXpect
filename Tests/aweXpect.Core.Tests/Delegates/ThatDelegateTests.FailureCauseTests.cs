@@ -3,7 +3,7 @@ using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Core.Tests.Delegates;
 
-public sealed class ThatDelegateTests
+public sealed partial class ThatDelegateTests
 {
 	public sealed class FailureCauseTests
 	{
