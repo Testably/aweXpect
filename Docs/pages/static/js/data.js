@@ -3444,6 +3444,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 7 13:04:56 2026 \u002B0200",
         "message": "feat: support \u0060AsBlock()\u0060 in the string expectations (#1044)"
+      },
+      {
+        "sha": "4d0dab3602fbca26b40b66455b85d76da81b9c6b",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 7 11:15:30 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.10.0 to 18.11.0 (#1040)"
       }
     ],
     "labels": [
@@ -4020,7 +4026,8 @@ window.BENCHMARK_DATA = {
       "719a9454",
       "1da713db",
       "a065b682",
-      "082a6795"
+      "082a6795",
+      "4d0dab36"
     ],
     "datasets": [
       {
@@ -4600,7 +4607,8 @@ window.BENCHMARK_DATA = {
           256.9228895187378,
           287.4645160039266,
           257.5428523676736,
-          270.45566242081776
+          270.45566242081776,
+          256.6291039784749
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5073,6 +5081,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5773,7 +5782,8 @@ window.BENCHMARK_DATA = {
           247.14513374964397,
           256.9680477891649,
           242.96165249897882,
-          228.99347099891077
+          228.99347099891077,
+          242.52080263410295
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5966,6 +5976,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -9354,6 +9365,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 7 13:04:56 2026 \u002B0200",
         "message": "feat: support \u0060AsBlock()\u0060 in the string expectations (#1044)"
+      },
+      {
+        "sha": "4d0dab3602fbca26b40b66455b85d76da81b9c6b",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 7 11:15:30 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.10.0 to 18.11.0 (#1040)"
       }
     ],
     "labels": [
@@ -9853,7 +9870,8 @@ window.BENCHMARK_DATA = {
       "719a9454",
       "1da713db",
       "a065b682",
-      "082a6795"
+      "082a6795",
+      "4d0dab36"
     ],
     "datasets": [
       {
@@ -10356,7 +10374,8 @@ window.BENCHMARK_DATA = {
           317686.2840820312,
           315430.17843424476,
           325304.2374093192,
-          305770.0921875
+          305770.0921875,
+          325778.1329520089
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10856,6 +10875,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335442,
+          335444,
           335444,
           335444,
           335444,
@@ -11375,7 +11395,8 @@ window.BENCHMARK_DATA = {
           2685577.53515625,
           2868417.1922433036,
           2732500.082291667,
-          2555721.08203125
+          2555721.08203125,
+          2783075.2807291667
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11877,6 +11898,7 @@ window.BENCHMARK_DATA = {
           4841647,
           4841648,
           4841647,
+          4841651,
           4841651,
           4841651,
           4841651,
@@ -15341,6 +15363,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 7 13:04:56 2026 \u002B0200",
         "message": "feat: support \u0060AsBlock()\u0060 in the string expectations (#1044)"
+      },
+      {
+        "sha": "4d0dab3602fbca26b40b66455b85d76da81b9c6b",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 7 11:15:30 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.10.0 to 18.11.0 (#1040)"
       }
     ],
     "labels": [
@@ -15917,7 +15945,8 @@ window.BENCHMARK_DATA = {
       "719a9454",
       "1da713db",
       "a065b682",
-      "082a6795"
+      "082a6795",
+      "4d0dab36"
     ],
     "datasets": [
       {
@@ -16497,7 +16526,8 @@ window.BENCHMARK_DATA = {
           476.70153372628346,
           520.5406125613621,
           483.1710897854396,
-          455.0473243713379
+          455.0473243713379,
+          511.50231685638425
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16970,6 +17000,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -17670,7 +17701,8 @@ window.BENCHMARK_DATA = {
           530.0054939270019,
           544.9716225941976,
           534.531932762691,
-          470.4036148071289
+          470.4036148071289,
+          513.4317329406738
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17863,6 +17895,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -21713,6 +21746,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 7 13:04:56 2026 \u002B0200",
         "message": "feat: support \u0060AsBlock()\u0060 in the string expectations (#1044)"
+      },
+      {
+        "sha": "4d0dab3602fbca26b40b66455b85d76da81b9c6b",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 7 11:15:30 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.10.0 to 18.11.0 (#1040)"
       }
     ],
     "labels": [
@@ -22289,7 +22328,8 @@ window.BENCHMARK_DATA = {
       "719a9454",
       "1da713db",
       "a065b682",
-      "082a6795"
+      "082a6795",
+      "4d0dab36"
     ],
     "datasets": [
       {
@@ -22869,7 +22909,8 @@ window.BENCHMARK_DATA = {
           272.8763891969408,
           290.7147014822279,
           282.51821689605714,
-          257.3622921625773
+          257.3622921625773,
+          272.66313835779823
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -23383,6 +23424,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -24042,7 +24084,8 @@ window.BENCHMARK_DATA = {
           261.5507885615031,
           283.3468252182007,
           250.07380317052204,
-          239.15889861033514
+          239.15889861033514,
+          272.0863518374307
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -24235,6 +24278,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -28085,6 +28129,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 7 13:04:56 2026 \u002B0200",
         "message": "feat: support \u0060AsBlock()\u0060 in the string expectations (#1044)"
+      },
+      {
+        "sha": "4d0dab3602fbca26b40b66455b85d76da81b9c6b",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 7 11:15:30 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.10.0 to 18.11.0 (#1040)"
       }
     ],
     "labels": [
@@ -28661,7 +28711,8 @@ window.BENCHMARK_DATA = {
       "719a9454",
       "1da713db",
       "a065b682",
-      "082a6795"
+      "082a6795",
+      "4d0dab36"
     ],
     "datasets": [
       {
@@ -29241,7 +29292,8 @@ window.BENCHMARK_DATA = {
           478.21953665415447,
           506.15128435407365,
           466.43498471577965,
-          452.75008656183877
+          452.75008656183877,
+          479.2496374766032
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29714,6 +29766,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -30414,7 +30467,8 @@ window.BENCHMARK_DATA = {
           1266.7932704925538,
           1382.3267773848313,
           1217.093755976359,
-          1201.970852778508
+          1201.970852778508,
+          1240.3623783111573
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30843,6 +30897,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -34457,6 +34512,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 7 13:04:56 2026 \u002B0200",
         "message": "feat: support \u0060AsBlock()\u0060 in the string expectations (#1044)"
+      },
+      {
+        "sha": "4d0dab3602fbca26b40b66455b85d76da81b9c6b",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 7 11:15:30 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.10.0 to 18.11.0 (#1040)"
       }
     ],
     "labels": [
@@ -35033,7 +35094,8 @@ window.BENCHMARK_DATA = {
       "719a9454",
       "1da713db",
       "a065b682",
-      "082a6795"
+      "082a6795",
+      "4d0dab36"
     ],
     "datasets": [
       {
@@ -35613,7 +35675,8 @@ window.BENCHMARK_DATA = {
           2016.4773431505475,
           2016.8341816493444,
           1905.3962106704712,
-          1909.4487761179605
+          1909.4487761179605,
+          2054.7027384440103
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36086,6 +36149,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -36786,7 +36850,8 @@ window.BENCHMARK_DATA = {
           1346.3890763600668,
           1434.101515197754,
           1314.7438346862793,
-          1282.2141908918109
+          1282.2141908918109,
+          1368.0961346944173
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36979,6 +37044,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -40829,6 +40895,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 7 13:04:56 2026 \u002B0200",
         "message": "feat: support \u0060AsBlock()\u0060 in the string expectations (#1044)"
+      },
+      {
+        "sha": "4d0dab3602fbca26b40b66455b85d76da81b9c6b",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 7 11:15:30 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.10.0 to 18.11.0 (#1040)"
       }
     ],
     "labels": [
@@ -41405,7 +41477,8 @@ window.BENCHMARK_DATA = {
       "719a9454",
       "1da713db",
       "a065b682",
-      "082a6795"
+      "082a6795",
+      "4d0dab36"
     ],
     "datasets": [
       {
@@ -41985,7 +42058,8 @@ window.BENCHMARK_DATA = {
           2720.7322338649205,
           2669.7825558980308,
           2521.895532608032,
-          2478.2062553405763
+          2478.2062553405763,
+          2734.0682273864745
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -42458,6 +42532,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -43158,7 +43233,8 @@ window.BENCHMARK_DATA = {
           28483.61748453776,
           28450.560705566408,
           27628.447670491536,
-          26239.906803385416
+          26239.906803385416,
+          27511.36063058036
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -43733,6 +43809,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
