@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "a9e05ce14256621a3e1a9ca265fe3a2bdde27d9d",
-        "author": "dependabot[bot]",
-        "date": "Mon May 18 18:23:18 2026 \u002B0200",
-        "message": "chore: Bump FluentAssertions from 8.9.0 to 8.10.0 (#964)"
-      },
-      {
         "sha": "d5f54ae420dc90ef67a7c179b69c61c154384779",
         "author": "Valentin Breu\u00DF",
         "date": "Mon May 18 18:42:33 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 7 08:08:36 2026 \u002B0200",
         "message": "test: widen the retry budget of the cancellation test and nest the eventually tests (#1037)"
+      },
+      {
+        "sha": "719a9454ac10862a8e079a85f7e607dec7e83611",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 7 07:50:28 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.3 to 2.4.0 (#1041)"
       }
     ],
     "labels": [
-      "a9e05ce1",
       "d5f54ae4",
       "5fb898f6",
       "d1b8256e",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "eef3e6a3",
       "24a17c1c",
       "17158c05",
-      "6ed4d82c"
+      "6ed4d82c",
+      "719a9454"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          251.92092113494874,
           248.4225470860799,
           281.60268538338795,
           264.24082912717546,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           222.33497150739035,
           251.6664425055186,
           273.690616162618,
-          294.47748397191367
+          294.47748397191367,
+          256.9228895187378
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          236.78602307183402,
           247.2772104581197,
           270.7715315085191,
           248.43984563534076,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           201.06839975288935,
           253.91424544652304,
           272.7523417790731,
-          251.42155241966248
+          251.42155241966248,
+          247.14513374964397
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "a9e05ce14256621a3e1a9ca265fe3a2bdde27d9d",
-        "author": "dependabot[bot]",
-        "date": "Mon May 18 18:23:18 2026 \u002B0200",
-        "message": "chore: Bump FluentAssertions from 8.9.0 to 8.10.0 (#964)"
-      },
-      {
         "sha": "d5f54ae420dc90ef67a7c179b69c61c154384779",
         "author": "Valentin Breu\u00DF",
         "date": "Mon May 18 18:42:33 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 7 08:08:36 2026 \u002B0200",
         "message": "test: widen the retry budget of the cancellation test and nest the eventually tests (#1037)"
+      },
+      {
+        "sha": "719a9454ac10862a8e079a85f7e607dec7e83611",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 7 07:50:28 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.3 to 2.4.0 (#1041)"
       }
     ],
     "labels": [
-      "a9e05ce1",
       "d5f54ae4",
       "5fb898f6",
       "d1b8256e",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "eef3e6a3",
       "24a17c1c",
       "17158c05",
-      "6ed4d82c"
+      "6ed4d82c",
+      "719a9454"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          298966.8494140625,
           314822.47265625,
           338613.4191545759,
           322577.8310546875,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           243159.89986979167,
           321485.473828125,
           317531.7226911272,
-          301359.532808744
+          301359.532808744,
+          317686.2840820312
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1067,12 +1067,12 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
           335444,
           335444,
           335444,
           335442,
+          335444,
           335444,
           335444,
           335444,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2506167.606026786,
           2721793.542708333,
           2971366.189322917,
           2807100.845833333,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           1905257.0578962055,
           2868241.325,
           2723807.4057291667,
-          2436414.806770833
+          2436414.806770833,
+          2685577.53515625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841651,
           4841651,
           4841651,
@@ -1202,6 +1201,7 @@ window.BENCHMARK_DATA = {
           4841647,
           4841651,
           4841651,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "a9e05ce14256621a3e1a9ca265fe3a2bdde27d9d",
-        "author": "dependabot[bot]",
-        "date": "Mon May 18 18:23:18 2026 \u002B0200",
-        "message": "chore: Bump FluentAssertions from 8.9.0 to 8.10.0 (#964)"
-      },
       {
         "sha": "d5f54ae420dc90ef67a7c179b69c61c154384779",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 7 08:08:36 2026 \u002B0200",
         "message": "test: widen the retry budget of the cancellation test and nest the eventually tests (#1037)"
+      },
+      {
+        "sha": "719a9454ac10862a8e079a85f7e607dec7e83611",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 7 07:50:28 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.3 to 2.4.0 (#1041)"
       }
     ],
     "labels": [
-      "a9e05ce1",
       "d5f54ae4",
       "5fb898f6",
       "d1b8256e",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "eef3e6a3",
       "24a17c1c",
       "17158c05",
-      "6ed4d82c"
+      "6ed4d82c",
+      "719a9454"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          466.29830408096313,
           493.37997512817384,
           532.7778127034505,
           488.29805401393344,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           384.1228542327881,
           509.5957601411002,
           487.83896595637003,
-          507.58375219198376
+          507.58375219198376,
+          476.70153372628346
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          454.54766511917114,
           475.0375202383314,
           560.9847352981567,
           478.60503266652427,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           425.5202818552653,
           523.6554533004761,
           527.3543803532918,
-          492.43233496802196
+          492.43233496802196,
+          530.0054939270019
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "a9e05ce14256621a3e1a9ca265fe3a2bdde27d9d",
-        "author": "dependabot[bot]",
-        "date": "Mon May 18 18:23:18 2026 \u002B0200",
-        "message": "chore: Bump FluentAssertions from 8.9.0 to 8.10.0 (#964)"
-      },
-      {
         "sha": "d5f54ae420dc90ef67a7c179b69c61c154384779",
         "author": "Valentin Breu\u00DF",
         "date": "Mon May 18 18:42:33 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 7 08:08:36 2026 \u002B0200",
         "message": "test: widen the retry budget of the cancellation test and nest the eventually tests (#1037)"
+      },
+      {
+        "sha": "719a9454ac10862a8e079a85f7e607dec7e83611",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 7 07:50:28 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.3 to 2.4.0 (#1041)"
       }
     ],
     "labels": [
-      "a9e05ce1",
       "d5f54ae4",
       "5fb898f6",
       "d1b8256e",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "eef3e6a3",
       "24a17c1c",
       "17158c05",
-      "6ed4d82c"
+      "6ed4d82c",
+      "719a9454"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          255.2972011566162,
           279.3821127573649,
           293.83324213027953,
           272.31214714050293,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           203.26784507433572,
           277.4515934944153,
           274.0059195200602,
-          259.15261329923356
+          259.15261329923356,
+          272.8763891969408
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          242.3993557049678,
           267.3096298535665,
           292.9080077489217,
           246.19398107528687,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           203.78753784724645,
           274.7266558579036,
           267.3532590866089,
-          256.2115569795881
+          256.2115569795881,
+          261.5507885615031
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "a9e05ce14256621a3e1a9ca265fe3a2bdde27d9d",
-        "author": "dependabot[bot]",
-        "date": "Mon May 18 18:23:18 2026 \u002B0200",
-        "message": "chore: Bump FluentAssertions from 8.9.0 to 8.10.0 (#964)"
-      },
-      {
         "sha": "d5f54ae420dc90ef67a7c179b69c61c154384779",
         "author": "Valentin Breu\u00DF",
         "date": "Mon May 18 18:42:33 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 7 08:08:36 2026 \u002B0200",
         "message": "test: widen the retry budget of the cancellation test and nest the eventually tests (#1037)"
+      },
+      {
+        "sha": "719a9454ac10862a8e079a85f7e607dec7e83611",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 7 07:50:28 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.3 to 2.4.0 (#1041)"
       }
     ],
     "labels": [
-      "a9e05ce1",
       "d5f54ae4",
       "5fb898f6",
       "d1b8256e",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "eef3e6a3",
       "24a17c1c",
       "17158c05",
-      "6ed4d82c"
+      "6ed4d82c",
+      "719a9454"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          469.0115102018629,
           457.5411386489868,
           494.96092816761563,
           469.9096125602722,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           390.11140654881797,
           471.7250687394823,
           473.303697903951,
-          482.4130295239962
+          482.4130295239962,
+          478.21953665415447
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1197.790695063273,
           1311.036827214559,
           1303.3011100769043,
           1248.5900349934896,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           935.6467853546143,
           1321.9363451004028,
           1205.141513824463,
-          1165.5106554667154
+          1165.5106554667154,
+          1266.7932704925538
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "a9e05ce14256621a3e1a9ca265fe3a2bdde27d9d",
-        "author": "dependabot[bot]",
-        "date": "Mon May 18 18:23:18 2026 \u002B0200",
-        "message": "chore: Bump FluentAssertions from 8.9.0 to 8.10.0 (#964)"
-      },
-      {
         "sha": "d5f54ae420dc90ef67a7c179b69c61c154384779",
         "author": "Valentin Breu\u00DF",
         "date": "Mon May 18 18:42:33 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 7 08:08:36 2026 \u002B0200",
         "message": "test: widen the retry budget of the cancellation test and nest the eventually tests (#1037)"
+      },
+      {
+        "sha": "719a9454ac10862a8e079a85f7e607dec7e83611",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 7 07:50:28 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.3 to 2.4.0 (#1041)"
       }
     ],
     "labels": [
-      "a9e05ce1",
       "d5f54ae4",
       "5fb898f6",
       "d1b8256e",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "eef3e6a3",
       "24a17c1c",
       "17158c05",
-      "6ed4d82c"
+      "6ed4d82c",
+      "719a9454"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1858.8217960357665,
           2077.406628417969,
           2010.5027500788372,
           1943.1482081095378,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1520.8064758300782,
           2006.229408009847,
           1968.0141832987467,
-          1897.40666443961
+          1897.40666443961,
+          2016.4773431505475
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1320.8793548583985,
           1513.755392074585,
           1435.4089012145996,
           1318.7738965352376,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1091.960484822591,
           1464.9938775380454,
           1311.0715756734212,
-          1338.767943246024
+          1338.767943246024,
+          1346.3890763600668
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "a9e05ce14256621a3e1a9ca265fe3a2bdde27d9d",
-        "author": "dependabot[bot]",
-        "date": "Mon May 18 18:23:18 2026 \u002B0200",
-        "message": "chore: Bump FluentAssertions from 8.9.0 to 8.10.0 (#964)"
-      },
-      {
         "sha": "d5f54ae420dc90ef67a7c179b69c61c154384779",
         "author": "Valentin Breu\u00DF",
         "date": "Mon May 18 18:42:33 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 7 08:08:36 2026 \u002B0200",
         "message": "test: widen the retry budget of the cancellation test and nest the eventually tests (#1037)"
+      },
+      {
+        "sha": "719a9454ac10862a8e079a85f7e607dec7e83611",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 7 07:50:28 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.3 to 2.4.0 (#1041)"
       }
     ],
     "labels": [
-      "a9e05ce1",
       "d5f54ae4",
       "5fb898f6",
       "d1b8256e",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "eef3e6a3",
       "24a17c1c",
       "17158c05",
-      "6ed4d82c"
+      "6ed4d82c",
+      "719a9454"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2500.5137016296385,
           2658.722917175293,
           2654.85319846017,
           2577.84052494594,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2029.514542388916,
           2628.0233812967936,
           2600.125273777888,
-          2523.571538380214
+          2523.571538380214,
+          2720.7322338649205
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27218.916241455077,
           27746.698482259115,
           28228.60042114258,
           28157.407215663367,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           16022.333467610677,
           27760.519110543388,
           27066.304311116535,
-          20497.064522298177
+          20497.064522298177,
+          28483.61748453776
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33471,
           33471,
           33471,
@@ -4236,6 +4235,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
