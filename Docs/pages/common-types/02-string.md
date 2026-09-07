@@ -48,7 +48,8 @@ await Expect.That(subject).Contains("""
 
 As the lines are split on `\r\n`, `\n` and `\r`, this also normalizes the newline style, which makes
 `IgnoringNewlineStyle` redundant.  
-Trailing white-space within a line is kept, but a line that consists only of white-space becomes empty.
+Trailing white-space within a line is kept, but a line that consists only of white-space becomes empty.  
+To keep the relative indentation within the snippet, use [`AsBlock`](#blocks) instead.
 
 ### Wildcards
 
@@ -242,6 +243,37 @@ await Expect.That(subject).Contains("get").LessThan(5)
 await Expect.That(subject).Contains("get").Between(1).And(6)
   .Because("count should be '>= 1 AND <= 6'");
 ```
+
+### Blocks
+
+While `IgnoringIndentation` removes the leading white-space from every line, `AsBlock` keeps the relative
+indentation within the expected block and only allows the block as a whole to be indented in the subject.
+This is stricter, as a line that is indented differently from the rest of the block does not match:
+
+```csharp
+string subject = """
+                 public class Beatles
+                 {
+                     public string Album
+                     {
+                         get;
+                     }
+                 }
+                 """;
+
+await Expect.That(subject).Contains("""
+                                    public string Album
+                                    {
+                                        get;
+                                    }
+                                    """).AsBlock();
+```
+
+The block must start and end at line boundaries, and all its lines must share the same white-space prefix in the
+subject. A line that consists only of white-space matches any line that consists only of white-space.  
+The newline style is always ignored, and a single trailing line terminator does not start a new line, so
+`"a\nb\n"` has the same two lines as `"a\nb"` (as for [lines](#lines)).  
+`AsBlock` can be combined with `IgnoringCase`, `Using` and the count quantifiers.
 
 ## Character casing
 

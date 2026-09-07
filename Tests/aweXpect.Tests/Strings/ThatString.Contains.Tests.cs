@@ -79,13 +79,181 @@ public sealed partial class ThatString
 					             Expected that subject
 					             contains "not" at least once,
 					             but it did not contain "not" in "some text"
-					             
+
 					             Actual:
 					             some text
-					             
+
 					             Expected:
 					             not
 					             """);
+			}
+		}
+
+		public sealed class AsBlockTests
+		{
+			[Fact]
+			public async Task ShouldIncludeSettingInExpectationText()
+			{
+				string subject = "foo";
+				string expected = "bar";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsBlock();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains "bar" at least once as block,
+					             but it did not contain "bar" in "foo"
+
+					             Actual:
+					             foo
+
+					             Expected:
+					             bar
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenBlockIsIndentedAsAWhole_ShouldSucceed()
+			{
+				string subject = """
+				                 public class Foo
+				                 {
+				                     public int Bar
+				                     {
+				                         get;
+				                     }
+				                 }
+				                 """;
+				string expected = """
+				                  public int Bar
+				                  {
+				                      get;
+				                  }
+				                  """;
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsBlock();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenBlockOccursWithDifferentIndentations_ShouldCountAllOccurrences()
+			{
+				string subject = "  a\n  b\nx\na\nb";
+				string expected = "a\nb";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsBlock().Twice();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenCombinedWithIgnoringCase_ShouldIgnoreCase()
+			{
+				string subject = "  FOO\n  bar";
+				string expected = "foo\nBAR";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsBlock().IgnoringCase();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenExpectedEndsWithNewline_ShouldIgnoreTheTrailingLineTerminator()
+			{
+				string subject = "x\n  a\n  b";
+				string expected = "a\nb\n";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsBlock();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenExpectedMatchesMidLine_ShouldFail()
+			{
+				string subject = "public int Foo;";
+				string expected = "int Foo";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsBlock();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains "int Foo" at least once as block,
+					             but it did not contain "int Foo" in "public int Foo;"
+
+					             Actual:
+					             public int Foo;
+
+					             Expected:
+					             int Foo
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenLinesAreIndentedDifferently_ShouldFail()
+			{
+				string subject = "    a\nb";
+				string expected = "a\nb";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsBlock();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              contains "a\nb" at least once as block,
+					              but it did not contain "a\nb" in "    a\nb"
+
+					              Actual:
+					              {subject}
+
+					              Expected:
+					              {expected}
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectUsesADifferentNewlineStyle_ShouldSucceed()
+			{
+				string subject = "  foo\r\n  bar";
+				string expected = "foo\nbar";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsBlock();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenUsedWithDoesNotContain_ShouldFailWhenBlockIsContained()
+			{
+				string subject = "  a\n  b";
+				string expected = "a\nb";
+
+				async Task Act()
+					=> await That(subject).DoesNotContain(expected).AsBlock();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              does not contain "a\nb" as block,
+					              but it contained "a\nb" once in "  a\n  b"
+
+					              Actual:
+					              {subject}
+
+					              Expected:
+					              {expected}
+					              """);
 			}
 		}
 
@@ -106,10 +274,10 @@ public sealed partial class ThatString
 					             Expected that subject
 					             contains "in" at least 7 times ignoring case,
 					             but it contained "in" 5 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
-					             
+
 					             Actual:
 					             In this text in between the word an investigator should find the word 'IN' multiple times.
-					             
+
 					             Expected:
 					             in
 					             """);
@@ -266,10 +434,10 @@ public sealed partial class ThatString
 					             Expected that subject
 					             contains "in" exactly 5 times using IgnoreCaseForVocalsComparer,
 					             but it contained "in" 4 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
-					             
+
 					             Actual:
 					             In this text in between the word an investigator should find the word 'IN' multiple times.
-					             
+
 					             Expected:
 					             in
 					             """);

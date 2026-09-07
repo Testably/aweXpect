@@ -445,6 +445,32 @@ public sealed partial class ThatEnumerable
 		public sealed class StringItemTests
 		{
 			[Theory]
+			[InlineData("a\nb", true)]
+			[InlineData("a\nb\n", true)]
+			[InlineData("a\n  b", false)]
+			public async Task AsBlock_ShouldMatchItemsIndentedAsAWhole(string block, bool expectSuccess)
+			{
+				string[] subject = ["  a\n  b", "bar", "baz",];
+
+				async Task Act()
+					=> await That(subject).Contains(block).AsBlock();
+
+				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+					.WithMessage($"""
+					              Expected that subject
+					              contains "{block.Replace("\n", "\\n")}" as block at least once,
+					              but it did not contain it
+
+					              Collection:
+					              [
+					                "  a\n  b",
+					                "bar",
+					                "baz"
+					              ]
+					              """);
+			}
+
+			[Theory]
 			[InlineData("fo", true)]
 			[InlineData("oo", false)]
 			public async Task AsPrefix_ShouldUsePrefix(string prefix, bool expectSuccess)
