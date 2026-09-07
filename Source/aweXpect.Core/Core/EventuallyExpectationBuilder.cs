@@ -22,7 +22,8 @@ namespace aweXpect.Core;
 internal static class EventuallyExpectationBuilder
 {
 	/// <summary>
-	///     How close to the end of the retry budget a cancellation still counts as the budget having elapsed.
+	///     How close to the end of the retry budget a cancellation still counts as the budget having elapsed, and
+	///     how much of the budget may remain after a wait for that wait to still be the last one.
 	/// </summary>
 	/// <remarks>
 	///     <see cref="Task.Delay(TimeSpan, CancellationToken)" /> truncates to whole milliseconds and its timer does
@@ -148,7 +149,10 @@ internal class EventuallyExpectationBuilder<TValue>(
 			}
 
 			TimeSpan wait = NextInterval(interval, remaining);
-			isLastAttempt = wait >= remaining;
+			// The timer of the wait can complete a fraction of a millisecond before the stopwatch agrees, so an
+			// attempt that would only leave a sliver of the budget is the last one; otherwise the sliver becomes an
+			// additional wait and evaluation right at the deadline.
+			isLastAttempt = remaining - wait < EventuallyExpectationBuilder.CancellationTolerance;
 
 			// The wait is not cancelled by the token itself: Task.Delay would register its own callback on it and
 			// the cancellation callbacks run in reverse order, so the wait could continue before the callback
