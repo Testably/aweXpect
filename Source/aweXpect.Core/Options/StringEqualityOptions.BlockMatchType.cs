@@ -32,7 +32,7 @@ public partial class StringEqualityOptions
 		///     Counts the non-overlapping occurrences of the <paramref name="expected" /> block in the
 		///     <paramref name="actual" /> lines.
 		/// </summary>
-		public int CountOccurrences(string actual, string expected, IEqualityComparer<string> comparer)
+		public static int CountOccurrences(string actual, string expected, IEqualityComparer<string> comparer)
 		{
 			string[] actualLines = SplitLines(actual);
 			string[] expectedLines = SplitLines(expected);

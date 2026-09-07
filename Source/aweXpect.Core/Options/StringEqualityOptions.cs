@@ -68,9 +68,9 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		}
 
 		// A block spans whole lines, so its occurrences cannot be found with a window of the expected length.
-		if (_matchType is BlockMatchType blockMatchType)
+		if (_matchType is BlockMatchType)
 		{
-			return blockMatchType.CountOccurrences(actual, expected, _comparer ?? UseDefaultComparer(_ignoreCase));
+			return BlockMatchType.CountOccurrences(actual, expected, _comparer ?? UseDefaultComparer(_ignoreCase));
 		}
 
 		int count = 0;
