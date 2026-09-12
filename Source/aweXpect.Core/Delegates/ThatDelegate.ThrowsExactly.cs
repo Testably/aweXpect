@@ -13,6 +13,7 @@ public abstract partial class ThatDelegate
 	/// <summary>
 	///     Verifies that the delegate throws exactly an exception of type <typeparamref name="TException" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public ThatDelegateThrows<TException> ThrowsExactly<TException>()
 		where TException : Exception
 	{
@@ -30,6 +31,7 @@ public abstract partial class ThatDelegate
 	/// <summary>
 	///     Verifies that the delegate throws exactly an exception of type <paramref name="exceptionType" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public ThatDelegateThrows<Exception> ThrowsExactly(Type exceptionType)
 	{
 		ThrowsOption throwOptions = new();

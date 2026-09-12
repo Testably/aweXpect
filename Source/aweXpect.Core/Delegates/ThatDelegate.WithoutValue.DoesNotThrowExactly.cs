@@ -16,6 +16,7 @@ public abstract partial class ThatDelegate
 		/// <summary>
 		///     Verifies that the delegate does not throw an exception of type <typeparamref name="TException" />.
 		/// </summary>
+		[GuaranteesNotNull]
 		public ExpectationResult DoesNotThrowExactly<TException>()
 			where TException : Exception
 			=> new(ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -24,6 +25,7 @@ public abstract partial class ThatDelegate
 		/// <summary>
 		///     Verifies that the delegate does not throw an exception of type <paramref name="exceptionType" />.
 		/// </summary>
+		[GuaranteesNotNull]
 		public ExpectationResult DoesNotThrowExactly(Type exceptionType)
 			=> new(ExpectationBuilder.AddConstraint((it, grammars) =>
 				new DoesNotThrowExactlyConstraint(it, grammars, exceptionType)));

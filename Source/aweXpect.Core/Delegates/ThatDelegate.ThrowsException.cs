@@ -1,4 +1,5 @@
 ﻿using System;
+using aweXpect.Core;
 using aweXpect.Core.Sources;
 
 namespace aweXpect.Delegates;
@@ -8,6 +9,7 @@ public abstract partial class ThatDelegate
 	/// <summary>
 	///     Verifies that the delegate throws an exception.
 	/// </summary>
+	[GuaranteesNotNull]
 	public ThatDelegateThrows<Exception> ThrowsException()
 	{
 		ThrowsOption throwOptions = new();

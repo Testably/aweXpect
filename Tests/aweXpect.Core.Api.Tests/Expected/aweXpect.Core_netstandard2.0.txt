@@ -196,6 +196,11 @@ namespace aweXpect.Core
         public static bool IsPlural(this aweXpect.Core.ExpectationGrammars grammars) { }
         public static aweXpect.Core.ExpectationGrammars Negate(this aweXpect.Core.ExpectationGrammars grammars) { }
     }
+    [System.AttributeUsage(System.AttributeTargets.Method)]
+    public sealed class GuaranteesNotNullAttribute : System.Attribute
+    {
+        public GuaranteesNotNullAttribute() { }
+    }
     public interface ICollectionMatcher<in T, out T2>
         where in T : T2
     {
@@ -235,7 +240,9 @@ namespace aweXpect.Core
     public interface IThatDelegateThrows<out T> : aweXpect.Core.IExpectThat<T>, aweXpect.Core.IThat<T> { }
     public interface IThatSubject<T> : aweXpect.Core.IThat<T>
     {
+        [aweXpect.Core.GuaranteesNotNull]
         aweXpect.Results.AndOrWhoseResult<TType, aweXpect.Core.IThatSubject<T>> Is<TType>();
+        [aweXpect.Core.GuaranteesNotNull]
         aweXpect.Results.AndOrWhoseResult<TType, aweXpect.Core.IThatSubject<T>> IsExactly<TType>();
         aweXpect.Results.AndOrResult<T, aweXpect.Core.IThatSubject<T>> IsNot<TType>();
         aweXpect.Results.AndOrResult<T, aweXpect.Core.IThatSubject<T>> IsNotExactly<TType>();
@@ -346,7 +353,9 @@ namespace aweXpect.Core
     {
         public ThatSubject(aweXpect.Core.ExpectationBuilder expectationBuilder) { }
         public aweXpect.Core.ExpectationBuilder ExpectationBuilder { get; }
+        [aweXpect.Core.GuaranteesNotNull]
         public aweXpect.Results.AndOrWhoseResult<TType, aweXpect.Core.IThatSubject<T>> Is<TType>() { }
+        [aweXpect.Core.GuaranteesNotNull]
         public aweXpect.Results.AndOrWhoseResult<TType, aweXpect.Core.IThatSubject<T>> IsExactly<TType>() { }
         public aweXpect.Results.AndOrResult<T, aweXpect.Core.IThatSubject<T>> IsNot<TType>() { }
         public aweXpect.Results.AndOrResult<T, aweXpect.Core.IThatSubject<T>> IsNotExactly<TType>() { }
@@ -507,12 +516,17 @@ namespace aweXpect.Delegates
     {
         protected ThatDelegate(aweXpect.Core.ExpectationBuilder expectationBuilder) { }
         public aweXpect.Core.ExpectationBuilder ExpectationBuilder { get; }
+        [aweXpect.Core.GuaranteesNotNull]
         public aweXpect.Delegates.ThatDelegateThrows<System.Exception> Throws(System.Type exceptionType) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public aweXpect.Delegates.ThatDelegateThrows<TException> Throws<TException>()
             where TException : System.Exception { }
+        [aweXpect.Core.GuaranteesNotNull]
         public aweXpect.Delegates.ThatDelegateThrows<System.Exception> ThrowsExactly(System.Type exceptionType) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public aweXpect.Delegates.ThatDelegateThrows<TException> ThrowsExactly<TException>()
             where TException : System.Exception { }
+        [aweXpect.Core.GuaranteesNotNull]
         public aweXpect.Delegates.ThatDelegateThrows<System.Exception> ThrowsException() { }
         public class ThrowsOption
         {
@@ -523,26 +537,38 @@ namespace aweXpect.Delegates
         public sealed class WithValue<T> : aweXpect.Delegates.ThatDelegate, aweXpect.Core.IExpectThat<aweXpect.Delegates.ThatDelegate.WithValue<T>>, aweXpect.Core.IThat<aweXpect.Delegates.ThatDelegate.WithValue<T>>
         {
             public WithValue(aweXpect.Core.ExpectationBuilder expectationBuilder) { }
+            [aweXpect.Core.GuaranteesNotNull]
             public aweXpect.Results.DelegateWithValueResult<T> DoesNotThrow() { }
+            [aweXpect.Core.GuaranteesNotNull]
             public aweXpect.Results.DelegateWithValueResult<T> DoesNotThrow(System.Type exceptionType) { }
+            [aweXpect.Core.GuaranteesNotNull]
             public aweXpect.Results.DelegateWithValueResult<T> DoesNotThrow<TException>()
                 where TException : System.Exception { }
+            [aweXpect.Core.GuaranteesNotNull]
             public aweXpect.Results.DelegateWithValueResult<T> DoesNotThrowExactly(System.Type exceptionType) { }
+            [aweXpect.Core.GuaranteesNotNull]
             public aweXpect.Results.DelegateWithValueResult<T> DoesNotThrowExactly<TException>()
                 where TException : System.Exception { }
             public aweXpect.Core.IThatSubject<T> Eventually() { }
+            [aweXpect.Core.GuaranteesNotNull]
             public aweXpect.Results.ExecutesInResult<aweXpect.Results.AndResult<aweXpect.Delegates.ThatDelegate.WithValue<T>>> ExecutesIn() { }
         }
         public sealed class WithoutValue : aweXpect.Delegates.ThatDelegate, aweXpect.Core.IExpectThat<aweXpect.Delegates.ThatDelegate.WithoutValue>, aweXpect.Core.IThat<aweXpect.Delegates.ThatDelegate.WithoutValue>
         {
             public WithoutValue(aweXpect.Core.ExpectationBuilder expectationBuilder) { }
+            [aweXpect.Core.GuaranteesNotNull]
             public aweXpect.Results.ExpectationResult DoesNotThrow() { }
+            [aweXpect.Core.GuaranteesNotNull]
             public aweXpect.Results.ExpectationResult DoesNotThrow(System.Type exceptionType) { }
+            [aweXpect.Core.GuaranteesNotNull]
             public aweXpect.Results.ExpectationResult DoesNotThrow<TException>()
                 where TException : System.Exception { }
+            [aweXpect.Core.GuaranteesNotNull]
             public aweXpect.Results.ExpectationResult DoesNotThrowExactly(System.Type exceptionType) { }
+            [aweXpect.Core.GuaranteesNotNull]
             public aweXpect.Results.ExpectationResult DoesNotThrowExactly<TException>()
                 where TException : System.Exception { }
+            [aweXpect.Core.GuaranteesNotNull]
             public aweXpect.Results.ExecutesInResult<aweXpect.Results.AndResult<aweXpect.Delegates.ThatDelegate.WithoutValue>> ExecutesIn() { }
         }
     }

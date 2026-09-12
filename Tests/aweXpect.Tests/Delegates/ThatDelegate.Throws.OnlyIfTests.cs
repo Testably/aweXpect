@@ -80,6 +80,22 @@ public sealed partial class ThatDelegate
 				}
 
 				[Fact]
+				public async Task WhenSubjectIsNull_ShouldFail()
+				{
+					Action? action = null;
+
+					async Task Act()
+						=> await That(action!).Throws<Exception>().OnlyIf(false);
+
+					await That(Act).ThrowsException()
+						.WithMessage("""
+						             Expected that action
+						             does not throw any exception,
+						             but it was <null>
+						             """);
+				}
+
+				[Fact]
 				public async Task WhenTrue_ShouldFailWhenNoExceptionWasThrow()
 				{
 					Action action = () => { };
