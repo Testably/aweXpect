@@ -3456,6 +3456,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 7 16:40:23 2026 \u002B0200",
         "message": "feat: support \u0060null\u0060 in the equivalency expectations (#1045)"
+      },
+      {
+        "sha": "ef652c1fe7637944eb5f031119feb57a70786a40",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 16:30:15 2026 \u002B0200",
+        "message": "fix: do not throw when the subject of \u0060IsEquatableTo\u0060 is \u0060null\u0060 (#1047)"
       }
     ],
     "labels": [
@@ -4034,7 +4040,8 @@ window.BENCHMARK_DATA = {
       "a065b682",
       "082a6795",
       "4d0dab36",
-      "6b0b96ac"
+      "6b0b96ac",
+      "ef652c1f"
     ],
     "datasets": [
       {
@@ -4616,7 +4623,8 @@ window.BENCHMARK_DATA = {
           257.5428523676736,
           270.45566242081776,
           256.6291039784749,
-          310.57264550526935
+          310.57264550526935,
+          194.75820589065552
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5089,6 +5097,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5793,7 +5802,8 @@ window.BENCHMARK_DATA = {
           242.96165249897882,
           228.99347099891077,
           242.52080263410295,
-          236.56215605368982
+          236.56215605368982,
+          191.06551202705927
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5986,6 +5996,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -9388,6 +9399,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 7 16:40:23 2026 \u002B0200",
         "message": "feat: support \u0060null\u0060 in the equivalency expectations (#1045)"
+      },
+      {
+        "sha": "ef652c1fe7637944eb5f031119feb57a70786a40",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 16:30:15 2026 \u002B0200",
+        "message": "fix: do not throw when the subject of \u0060IsEquatableTo\u0060 is \u0060null\u0060 (#1047)"
       }
     ],
     "labels": [
@@ -9889,7 +9906,8 @@ window.BENCHMARK_DATA = {
       "a065b682",
       "082a6795",
       "4d0dab36",
-      "6b0b96ac"
+      "6b0b96ac",
+      "ef652c1f"
     ],
     "datasets": [
       {
@@ -10394,7 +10412,8 @@ window.BENCHMARK_DATA = {
           325304.2374093192,
           305770.0921875,
           325778.1329520089,
-          310226.8191080729
+          310226.8191080729,
+          219891.06270926338
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10904,7 +10923,8 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444
+          335444,
+          335442
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11417,7 +11437,8 @@ window.BENCHMARK_DATA = {
           2732500.082291667,
           2555721.08203125,
           2783075.2807291667,
-          2714964.474051339
+          2714964.474051339,
+          1795566.599233774
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11927,7 +11948,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841651
+          4841651,
+          4841648
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15397,6 +15419,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 7 16:40:23 2026 \u002B0200",
         "message": "feat: support \u0060null\u0060 in the equivalency expectations (#1045)"
+      },
+      {
+        "sha": "ef652c1fe7637944eb5f031119feb57a70786a40",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 16:30:15 2026 \u002B0200",
+        "message": "fix: do not throw when the subject of \u0060IsEquatableTo\u0060 is \u0060null\u0060 (#1047)"
       }
     ],
     "labels": [
@@ -15975,7 +16003,8 @@ window.BENCHMARK_DATA = {
       "a065b682",
       "082a6795",
       "4d0dab36",
-      "6b0b96ac"
+      "6b0b96ac",
+      "ef652c1f"
     ],
     "datasets": [
       {
@@ -16557,7 +16586,8 @@ window.BENCHMARK_DATA = {
           483.1710897854396,
           455.0473243713379,
           511.50231685638425,
-          497.5568639210292
+          497.5568639210292,
+          389.25706512587413
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17030,6 +17060,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -17734,7 +17765,8 @@ window.BENCHMARK_DATA = {
           534.531932762691,
           470.4036148071289,
           513.4317329406738,
-          486.24031861623126
+          486.24031861623126,
+          374.84017050266266
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17927,6 +17959,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -21791,6 +21824,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 7 16:40:23 2026 \u002B0200",
         "message": "feat: support \u0060null\u0060 in the equivalency expectations (#1045)"
+      },
+      {
+        "sha": "ef652c1fe7637944eb5f031119feb57a70786a40",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 16:30:15 2026 \u002B0200",
+        "message": "fix: do not throw when the subject of \u0060IsEquatableTo\u0060 is \u0060null\u0060 (#1047)"
       }
     ],
     "labels": [
@@ -22369,7 +22408,8 @@ window.BENCHMARK_DATA = {
       "a065b682",
       "082a6795",
       "4d0dab36",
-      "6b0b96ac"
+      "6b0b96ac",
+      "ef652c1f"
     ],
     "datasets": [
       {
@@ -22951,7 +22991,8 @@ window.BENCHMARK_DATA = {
           282.51821689605714,
           257.3622921625773,
           272.66313835779823,
-          285.00397532780966
+          285.00397532780966,
+          197.31578922271729
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -23465,6 +23506,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -24128,7 +24170,8 @@ window.BENCHMARK_DATA = {
           250.07380317052204,
           239.15889861033514,
           272.0863518374307,
-          245.95117333957128
+          245.95117333957128,
+          192.4854500611623
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -24321,6 +24364,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -28185,6 +28229,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 7 16:40:23 2026 \u002B0200",
         "message": "feat: support \u0060null\u0060 in the equivalency expectations (#1045)"
+      },
+      {
+        "sha": "ef652c1fe7637944eb5f031119feb57a70786a40",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 16:30:15 2026 \u002B0200",
+        "message": "fix: do not throw when the subject of \u0060IsEquatableTo\u0060 is \u0060null\u0060 (#1047)"
       }
     ],
     "labels": [
@@ -28763,7 +28813,8 @@ window.BENCHMARK_DATA = {
       "a065b682",
       "082a6795",
       "4d0dab36",
-      "6b0b96ac"
+      "6b0b96ac",
+      "ef652c1f"
     ],
     "datasets": [
       {
@@ -29345,7 +29396,8 @@ window.BENCHMARK_DATA = {
           466.43498471577965,
           452.75008656183877,
           479.2496374766032,
-          488.5589915684291
+          488.5589915684291,
+          356.45355892181396
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29818,6 +29870,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -30522,7 +30575,8 @@ window.BENCHMARK_DATA = {
           1217.093755976359,
           1201.970852778508,
           1240.3623783111573,
-          1292.6909257448638
+          1292.6909257448638,
+          877.4429955115685
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30951,6 +31005,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -34579,6 +34634,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 7 16:40:23 2026 \u002B0200",
         "message": "feat: support \u0060null\u0060 in the equivalency expectations (#1045)"
+      },
+      {
+        "sha": "ef652c1fe7637944eb5f031119feb57a70786a40",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 16:30:15 2026 \u002B0200",
+        "message": "fix: do not throw when the subject of \u0060IsEquatableTo\u0060 is \u0060null\u0060 (#1047)"
       }
     ],
     "labels": [
@@ -35157,7 +35218,8 @@ window.BENCHMARK_DATA = {
       "a065b682",
       "082a6795",
       "4d0dab36",
-      "6b0b96ac"
+      "6b0b96ac",
+      "ef652c1f"
     ],
     "datasets": [
       {
@@ -35739,7 +35801,8 @@ window.BENCHMARK_DATA = {
           1905.3962106704712,
           1909.4487761179605,
           2054.7027384440103,
-          2009.3522932870048
+          2009.3522932870048,
+          1431.4062286104474
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36212,6 +36275,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -36916,7 +36980,8 @@ window.BENCHMARK_DATA = {
           1314.7438346862793,
           1282.2141908918109,
           1368.0961346944173,
-          1342.263759771983
+          1342.263759771983,
+          1006.8457903544108
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37109,6 +37174,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -40973,6 +41039,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 7 16:40:23 2026 \u002B0200",
         "message": "feat: support \u0060null\u0060 in the equivalency expectations (#1045)"
+      },
+      {
+        "sha": "ef652c1fe7637944eb5f031119feb57a70786a40",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 16:30:15 2026 \u002B0200",
+        "message": "fix: do not throw when the subject of \u0060IsEquatableTo\u0060 is \u0060null\u0060 (#1047)"
       }
     ],
     "labels": [
@@ -41551,7 +41623,8 @@ window.BENCHMARK_DATA = {
       "a065b682",
       "082a6795",
       "4d0dab36",
-      "6b0b96ac"
+      "6b0b96ac",
+      "ef652c1f"
     ],
     "datasets": [
       {
@@ -42133,7 +42206,8 @@ window.BENCHMARK_DATA = {
           2521.895532608032,
           2478.2062553405763,
           2734.0682273864745,
-          2616.22804590861
+          2616.22804590861,
+          1879.5178239186605
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -42606,6 +42680,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -43310,7 +43385,8 @@ window.BENCHMARK_DATA = {
           27628.447670491536,
           26239.906803385416,
           27511.36063058036,
-          27923.317753092448
+          27923.317753092448,
+          15298.983383687337
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -43885,6 +43961,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
