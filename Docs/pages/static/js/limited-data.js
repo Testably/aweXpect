@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "6c18515c91f850b56a32366b68db392a99d788a3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 31 13:05:53 2026 \u002B0200",
-        "message": "chore: bump aweXpect.Core to 2.32.0 (#975)"
-      },
-      {
         "sha": "6bc20b7e9a22fc1e91481fed8641c2efb18c2eda",
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:23 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 19:13:15 2026 \u002B0200",
         "message": "fix: restore in \u0060Debug\u0060 before running the mutation tests (#1049)"
+      },
+      {
+        "sha": "2dfc2a933980f4270bed8a11bc6fdbd818bb25e6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 20:28:52 2026 \u002B0200",
+        "message": "feat: recognise expectations that guarantee a not-null subject by attribute (#1050)"
       }
     ],
     "labels": [
-      "6c18515c",
       "6bc20b7e",
       "084e1ad1",
       "5b710f7f",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "ef652c1f",
       "4bd75735",
       "1c48f221",
-      "ae28ac8b"
+      "ae28ac8b",
+      "2dfc2a93"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          282.1564817061791,
           253.21568053109306,
           270.32417484692166,
           260.181368748347,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           194.75820589065552,
           279.72621849605014,
           176.9221565246582,
-          251.45966777801513
+          251.45966777801513,
+          253.74554430643718
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          263.04726182497467,
           238.7115925380162,
           240.24807112557548,
           241.4171945254008,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           191.06551202705927,
           263.74817759650097,
           192.242506980896,
-          271.93721526009693
+          271.93721526009693,
+          255.67135229110718
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "6c18515c91f850b56a32366b68db392a99d788a3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 31 13:05:53 2026 \u002B0200",
-        "message": "chore: bump aweXpect.Core to 2.32.0 (#975)"
-      },
-      {
         "sha": "6bc20b7e9a22fc1e91481fed8641c2efb18c2eda",
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:23 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 19:13:15 2026 \u002B0200",
         "message": "fix: restore in \u0060Debug\u0060 before running the mutation tests (#1049)"
+      },
+      {
+        "sha": "2dfc2a933980f4270bed8a11bc6fdbd818bb25e6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 20:28:52 2026 \u002B0200",
+        "message": "feat: recognise expectations that guarantee a not-null subject by attribute (#1050)"
       }
     ],
     "labels": [
-      "6c18515c",
       "6bc20b7e",
       "084e1ad1",
       "5b710f7f",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "ef652c1f",
       "4bd75735",
       "1c48f221",
-      "ae28ac8b"
+      "ae28ac8b",
+      "2dfc2a93"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          329631.25432477676,
           328205.43907877605,
           331844.7231933594,
           323882.5665039063,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           219891.06270926338,
           330381.0539388021,
           201159.01329627403,
-          246182.51293945312
+          246182.51293945312,
+          314607.5203776042
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1057,7 +1057,6 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
           335444,
           335444,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           335442,
           335444,
           335442,
+          335444,
           335444
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2784649.585677083,
           2713961.901785714,
           2647382.0906808036,
           2751218.3953125,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           1795566.599233774,
           2754495.861328125,
           1632144.8722098214,
-          1975977.1479166667
+          1975977.1479166667,
+          2505769.34375
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841651,
           4841651,
           4841651,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841648,
           4841651,
           4841611,
-          4841613
+          4841613,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "6c18515c91f850b56a32366b68db392a99d788a3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 31 13:05:53 2026 \u002B0200",
-        "message": "chore: bump aweXpect.Core to 2.32.0 (#975)"
-      },
       {
         "sha": "6bc20b7e9a22fc1e91481fed8641c2efb18c2eda",
         "author": "dependabot[bot]",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 19:13:15 2026 \u002B0200",
         "message": "fix: restore in \u0060Debug\u0060 before running the mutation tests (#1049)"
+      },
+      {
+        "sha": "2dfc2a933980f4270bed8a11bc6fdbd818bb25e6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 20:28:52 2026 \u002B0200",
+        "message": "feat: recognise expectations that guarantee a not-null subject by attribute (#1050)"
       }
     ],
     "labels": [
-      "6c18515c",
       "6bc20b7e",
       "084e1ad1",
       "5b710f7f",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "ef652c1f",
       "4bd75735",
       "1c48f221",
-      "ae28ac8b"
+      "ae28ac8b",
+      "2dfc2a93"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          516.4213751475016,
           481.5078296661377,
           476.0209849561964,
           497.45273984273274,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           389.25706512587413,
           546.6029392242432,
           442.43858333996366,
-          460.4913195201329
+          460.4913195201329,
+          517.4517107009888
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          557.749834060669,
           466.15099004336764,
           458.40288200378416,
           467.8260079111372,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           374.84017050266266,
           557.0006458282471,
           377.8739272117615,
-          518.0169225692749
+          518.0169225692749,
+          520.8710504531861
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "6c18515c91f850b56a32366b68db392a99d788a3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 31 13:05:53 2026 \u002B0200",
-        "message": "chore: bump aweXpect.Core to 2.32.0 (#975)"
-      },
-      {
         "sha": "6bc20b7e9a22fc1e91481fed8641c2efb18c2eda",
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:23 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 19:13:15 2026 \u002B0200",
         "message": "fix: restore in \u0060Debug\u0060 before running the mutation tests (#1049)"
+      },
+      {
+        "sha": "2dfc2a933980f4270bed8a11bc6fdbd818bb25e6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 20:28:52 2026 \u002B0200",
+        "message": "feat: recognise expectations that guarantee a not-null subject by attribute (#1050)"
       }
     ],
     "labels": [
-      "6c18515c",
       "6bc20b7e",
       "084e1ad1",
       "5b710f7f",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "ef652c1f",
       "4bd75735",
       "1c48f221",
-      "ae28ac8b"
+      "ae28ac8b",
+      "2dfc2a93"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          293.45759709676105,
           261.29021479288735,
           266.10511245727537,
           263.8962922732035,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           197.31578922271729,
           299.5892717043559,
           196.72756666796548,
-          258.7793156305949
+          258.7793156305949,
+          264.43931474685667
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          280.1825347582499,
           237.4627223748427,
           237.5357260386149,
           242.4834464708964,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           192.4854500611623,
           277.9910137494405,
           205.07823863396277,
-          282.3623188654582
+          282.3623188654582,
+          263.38711411158243
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "6c18515c91f850b56a32366b68db392a99d788a3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 31 13:05:53 2026 \u002B0200",
-        "message": "chore: bump aweXpect.Core to 2.32.0 (#975)"
-      },
-      {
         "sha": "6bc20b7e9a22fc1e91481fed8641c2efb18c2eda",
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:23 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 19:13:15 2026 \u002B0200",
         "message": "fix: restore in \u0060Debug\u0060 before running the mutation tests (#1049)"
+      },
+      {
+        "sha": "2dfc2a933980f4270bed8a11bc6fdbd818bb25e6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 20:28:52 2026 \u002B0200",
+        "message": "feat: recognise expectations that guarantee a not-null subject by attribute (#1050)"
       }
     ],
     "labels": [
-      "6c18515c",
       "6bc20b7e",
       "084e1ad1",
       "5b710f7f",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "ef652c1f",
       "4bd75735",
       "1c48f221",
-      "ae28ac8b"
+      "ae28ac8b",
+      "2dfc2a93"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          499.98754079001293,
           470.50855016708374,
           466.88463988670935,
           444.59003131730213,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           356.45355892181396,
           488.67998450142994,
           374.4749781744821,
-          419.3198487917582
+          419.3198487917582,
+          492.94501726967945
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1321.0904105050224,
           1304.9174096425375,
           1260.6103978474935,
           1203.018761698405,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           877.4429955115685,
           1409.8203082765851,
           956.7152788798014,
-          1156.9683876037598
+          1156.9683876037598,
+          1268.5366074488713
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "6c18515c91f850b56a32366b68db392a99d788a3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 31 13:05:53 2026 \u002B0200",
-        "message": "chore: bump aweXpect.Core to 2.32.0 (#975)"
-      },
-      {
         "sha": "6bc20b7e9a22fc1e91481fed8641c2efb18c2eda",
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:23 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 19:13:15 2026 \u002B0200",
         "message": "fix: restore in \u0060Debug\u0060 before running the mutation tests (#1049)"
+      },
+      {
+        "sha": "2dfc2a933980f4270bed8a11bc6fdbd818bb25e6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 20:28:52 2026 \u002B0200",
+        "message": "feat: recognise expectations that guarantee a not-null subject by attribute (#1050)"
       }
     ],
     "labels": [
-      "6c18515c",
       "6bc20b7e",
       "084e1ad1",
       "5b710f7f",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "ef652c1f",
       "4bd75735",
       "1c48f221",
-      "ae28ac8b"
+      "ae28ac8b",
+      "2dfc2a93"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2025.7895299471343,
           1903.0714449201312,
           1877.9876047770183,
           1934.8650651659284,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1431.4062286104474,
           1956.8689994812012,
           1069.3930759429932,
-          1285.6932764053345
+          1285.6932764053345,
+          2048.7104324927695
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1412.711854426066,
           1301.6897384325664,
           1295.562139638265,
           1363.536735670907,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1006.8457903544108,
           1501.1235309328351,
           1063.036941019694,
-          1316.807714589437
+          1316.807714589437,
+          1482.3498956680298
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "6c18515c91f850b56a32366b68db392a99d788a3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 31 13:05:53 2026 \u002B0200",
-        "message": "chore: bump aweXpect.Core to 2.32.0 (#975)"
-      },
-      {
         "sha": "6bc20b7e9a22fc1e91481fed8641c2efb18c2eda",
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:23 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 19:13:15 2026 \u002B0200",
         "message": "fix: restore in \u0060Debug\u0060 before running the mutation tests (#1049)"
+      },
+      {
+        "sha": "2dfc2a933980f4270bed8a11bc6fdbd818bb25e6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 20:28:52 2026 \u002B0200",
+        "message": "feat: recognise expectations that guarantee a not-null subject by attribute (#1050)"
       }
     ],
     "labels": [
-      "6c18515c",
       "6bc20b7e",
       "084e1ad1",
       "5b710f7f",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "ef652c1f",
       "4bd75735",
       "1c48f221",
-      "ae28ac8b"
+      "ae28ac8b",
+      "2dfc2a93"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2716.806147166661,
           2519.3573422749837,
           2520.1292994181317,
           2555.927008115328,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           1879.5178239186605,
           2621.92692489624,
           1422.9330649058024,
-          1679.661682510376
+          1679.661682510376,
+          2617.6351503225474
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          28353.41301167806,
           26611.878204345703,
           26943.38064793178,
           27329.210042317707,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           15298.983383687337,
           27183.448396955217,
           14327.642207845052,
-          15854.894307454428
+          15854.894307454428,
+          21692.001957484656
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4224,7 +4224,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4242,7 +4241,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
-          33465
+          33465,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
