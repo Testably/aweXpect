@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using aweXpect.Core;
 using aweXpect.Results;
@@ -65,6 +66,224 @@ public sealed class GuaranteesNotNullTests
 		"ThatString.HasLines(IThat<String>,Action<IThatSubject<IEnumerable<String>>>)",
 	];
 
+	// Expectations that do not fail for a null subject today, one entry per expectation name and
+	// subject type. The rule is that a null subject fails, so every entry here is a deviation that
+	// the next major version either removes or documents.
+	private static readonly Dictionary<string, NullSubjectOutcome> ExpectationsThatDoNotFail =
+		new(StringComparer.Ordinal)
+		{
+			["IThatSubject<T>.IsNot(IThatSubject<T>)"] = NullSubjectOutcome.Passes,
+			["IThatSubject<T>.IsNotExactly(IThatSubject<T>)"] = NullSubjectOutcome.Passes,
+			["ThatAsyncEnumerable.DoesNotContain(IAsyncEnumerable<String>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatAsyncEnumerable.DoesNotContain(IAsyncEnumerable<TItem>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatAsyncEnumerable.IsNotContainedIn(IAsyncEnumerable<String>)"] = NullSubjectOutcome.Passes,
+			["ThatAsyncEnumerable.IsNotContainedIn(IAsyncEnumerable<TItem>)"] = NullSubjectOutcome.Passes,
+			["ThatAsyncEnumerable.IsNotEqualTo(IAsyncEnumerable<DateTime>)"] = NullSubjectOutcome.Passes,
+			["ThatAsyncEnumerable.IsNotEqualTo(IAsyncEnumerable<Decimal>)"] = NullSubjectOutcome.Passes,
+			["ThatAsyncEnumerable.IsNotEqualTo(IAsyncEnumerable<Double>)"] = NullSubjectOutcome.Passes,
+			["ThatAsyncEnumerable.IsNotEqualTo(IAsyncEnumerable<Nullable<DateTime>>)"] = NullSubjectOutcome.Passes,
+			["ThatAsyncEnumerable.IsNotEqualTo(IAsyncEnumerable<Nullable<Decimal>>)"] = NullSubjectOutcome.Passes,
+			["ThatAsyncEnumerable.IsNotEqualTo(IAsyncEnumerable<Nullable<Double>>)"] = NullSubjectOutcome.Passes,
+			["ThatAsyncEnumerable.IsNotEqualTo(IAsyncEnumerable<Nullable<Single>>)"] = NullSubjectOutcome.Passes,
+			["ThatAsyncEnumerable.IsNotEqualTo(IAsyncEnumerable<Single>)"] = NullSubjectOutcome.Passes,
+			["ThatAsyncEnumerable.IsNotEqualTo(IAsyncEnumerable<String>)"] = NullSubjectOutcome.Passes,
+			["ThatAsyncEnumerable.IsNotEqualTo(IAsyncEnumerable<TItem>)"] = NullSubjectOutcome.Passes,
+			["ThatBufferedStream.HasBufferSize(BufferedStream)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatEnumerable.AreAllUnique(Nullable<ImmutableArray<String>>)"] = NullSubjectOutcome.Throws,
+			["ThatEnumerable.DoesNotContain(IEnumerable)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatEnumerable.DoesNotContain(IEnumerable<String>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatEnumerable.DoesNotContain(IEnumerable<TItem>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatEnumerable.DoesNotContain(String[])"] = NullSubjectOutcome.Throws,
+			["ThatEnumerable.IsNotContainedIn(IEnumerable)"] = NullSubjectOutcome.Passes,
+			["ThatEnumerable.IsNotContainedIn(IEnumerable<String>)"] = NullSubjectOutcome.Passes,
+			["ThatEnumerable.IsNotContainedIn(IEnumerable<TItem>)"] = NullSubjectOutcome.Passes,
+			["ThatEnumerable.IsNotEqualTo(IEnumerable)"] = NullSubjectOutcome.Passes,
+			["ThatEnumerable.IsNotEqualTo(IEnumerable<DateTime>)"] = NullSubjectOutcome.Passes,
+			["ThatEnumerable.IsNotEqualTo(IEnumerable<Decimal>)"] = NullSubjectOutcome.Passes,
+			["ThatEnumerable.IsNotEqualTo(IEnumerable<Double>)"] = NullSubjectOutcome.Passes,
+			["ThatEnumerable.IsNotEqualTo(IEnumerable<Nullable<DateTime>>)"] = NullSubjectOutcome.Passes,
+			["ThatEnumerable.IsNotEqualTo(IEnumerable<Nullable<Decimal>>)"] = NullSubjectOutcome.Passes,
+			["ThatEnumerable.IsNotEqualTo(IEnumerable<Nullable<Double>>)"] = NullSubjectOutcome.Passes,
+			["ThatEnumerable.IsNotEqualTo(IEnumerable<Nullable<Single>>)"] = NullSubjectOutcome.Passes,
+			["ThatEnumerable.IsNotEqualTo(IEnumerable<Single>)"] = NullSubjectOutcome.Passes,
+			["ThatEnumerable.IsNotEqualTo(IEnumerable<String>)"] = NullSubjectOutcome.Passes,
+			["ThatEnumerable.IsNotEqualTo(IEnumerable<TItem>)"] = NullSubjectOutcome.Passes,
+			["ThatEventRecording.DidNotTriggerPropertyChangedFor(IEventRecording<TSubject>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.NotInvocable,
+			["ThatEventRecording.TriggeredPropertyChangedFor(IEventRecording<TSubject>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.NotInvocable,
+			["ThatException.HasInner(Exception)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Throws,
+			["ThatException.HasInnerException(Exception)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Throws,
+			["ThatException.HasRecursiveInnerExceptions(Exception)"] = NullSubjectOutcome.Throws,
+			["ThatGeneric.CompliesWith(T)"] = NullSubjectOutcome.Throws,
+			["ThatGeneric.DoesNotComplyWith(T)"] = NullSubjectOutcome.Throws,
+			["ThatGeneric.For(T)"] = NullSubjectOutcome.Throws,
+			["ThatGeneric.IsNotEquatableTo(TEquatable)"] = NullSubjectOutcome.Passes,
+			["ThatNullableBool.IsEqualTo(Nullable<Boolean>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableBool.IsNotEqualTo(Nullable<Boolean>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableBool.IsNotFalse(Nullable<Boolean>)"] = NullSubjectOutcome.Passes,
+			["ThatNullableBool.IsNotTrue(Nullable<Boolean>)"] = NullSubjectOutcome.Passes,
+			["ThatNullableBool.IsNull(Nullable<Boolean>)"] = NullSubjectOutcome.Passes,
+			["ThatNullableChar.IsEqualTo(Nullable<Char>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableChar.IsNotEqualTo(Nullable<Char>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableChar.IsNotOneOf(Nullable<Char>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableChar.IsOneOf(Nullable<Char>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateOnly.HasDay(Nullable<DateOnly>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateOnly.HasMonth(Nullable<DateOnly>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateOnly.HasYear(Nullable<DateOnly>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateOnly.IsEqualTo(Nullable<DateOnly>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateOnly.IsNotEqualTo(Nullable<DateOnly>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateOnly.IsNotOneOf(Nullable<DateOnly>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateOnly.IsOneOf(Nullable<DateOnly>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateTime.HasDay(Nullable<DateTime>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateTime.HasHour(Nullable<DateTime>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateTime.HasMillisecond(Nullable<DateTime>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateTime.HasMinute(Nullable<DateTime>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateTime.HasMonth(Nullable<DateTime>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateTime.HasSecond(Nullable<DateTime>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateTime.HasYear(Nullable<DateTime>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateTime.IsEqualTo(Nullable<DateTime>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateTime.IsNotEqualTo(Nullable<DateTime>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateTime.IsNotOneOf(Nullable<DateTime>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateTime.IsOneOf(Nullable<DateTime>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateTimeOffset.HasDay(Nullable<DateTimeOffset>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateTimeOffset.HasHour(Nullable<DateTimeOffset>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateTimeOffset.HasMillisecond(Nullable<DateTimeOffset>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateTimeOffset.HasMinute(Nullable<DateTimeOffset>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateTimeOffset.HasMonth(Nullable<DateTimeOffset>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateTimeOffset.HasOffset(Nullable<DateTimeOffset>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateTimeOffset.HasSecond(Nullable<DateTimeOffset>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateTimeOffset.HasYear(Nullable<DateTimeOffset>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateTimeOffset.IsEqualTo(Nullable<DateTimeOffset>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateTimeOffset.IsNotEqualTo(Nullable<DateTimeOffset>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateTimeOffset.IsNotOneOf(Nullable<DateTimeOffset>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableDateTimeOffset.IsOneOf(Nullable<DateTimeOffset>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableEnum.DoesNotHaveFlag(Nullable<TEnum>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableEnum.DoesNotHaveValue(Nullable<TEnum>)"] = NullSubjectOutcome.Passes,
+			["ThatNullableEnum.HasFlag(Nullable<TEnum>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableEnum.IsEqualTo(Nullable<TEnum>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableEnum.IsNotEqualTo(Nullable<TEnum>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableEnum.IsNotOneOf(Nullable<TEnum>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableEnum.IsOneOf(Nullable<TEnum>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableGuid.IsEqualTo(Nullable<Guid>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableGuid.IsNotEqualTo(Nullable<Guid>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableGuid.IsNullOrEmpty(Nullable<Guid>)"] = NullSubjectOutcome.Passes,
+			["ThatNullableTimeOnly.HasHour(Nullable<TimeOnly>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableTimeOnly.HasMillisecond(Nullable<TimeOnly>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableTimeOnly.HasMinute(Nullable<TimeOnly>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableTimeOnly.HasSecond(Nullable<TimeOnly>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableTimeOnly.IsEqualTo(Nullable<TimeOnly>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableTimeOnly.IsNotEqualTo(Nullable<TimeOnly>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableTimeOnly.IsNotOneOf(Nullable<TimeOnly>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableTimeOnly.IsOneOf(Nullable<TimeOnly>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableTimeSpan.IsEqualTo(Nullable<TimeSpan>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableTimeSpan.IsNotEqualTo(Nullable<TimeSpan>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableTimeSpan.IsNotOneOf(Nullable<TimeSpan>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNullableTimeSpan.IsOneOf(Nullable<TimeSpan>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsEqualTo(Nullable<TNumber>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotBetween(Nullable<TNumber>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotEqualTo(Nullable<TNumber>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotFinite(Nullable<TNumber>)"] = NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotInfinite(Nullable<TNumber>)"] = NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotNaN(Nullable<TNumber>)"] = NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotOneOf(Nullable<TNumber>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsOneOf(Nullable<TNumber>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatObject.IsEqualTo(Nullable<T>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatObject.IsEqualTo(Object)"] = NullSubjectOutcome.Passes,
+			["ThatObject.IsEquivalentTo(TSubject)"] = NullSubjectOutcome.Passes,
+			["ThatObject.IsNot(T)"] = NullSubjectOutcome.Passes,
+			["ThatObject.IsNotEqualTo(Nullable<T>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatObject.IsNotExactly(Object)"] = NullSubjectOutcome.Passes,
+			["ThatObject.IsNull(Nullable<T>)"] = NullSubjectOutcome.Passes,
+			["ThatObject.IsNull(T)"] = NullSubjectOutcome.Passes,
+			["ThatObject.IsOneOf(Object)"] = NullSubjectOutcome.Passes,
+			["ThatSpan.IsNotParsableInto(SpanWrapper<Byte>)"] = NullSubjectOutcome.Passes,
+			["ThatSpan.IsNotParsableInto(SpanWrapper<Char>)"] = NullSubjectOutcome.Passes,
+			["ThatStream.HasLength(Stream)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatStream.HasPosition(Stream)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatString.DoesNotEndWith(String)"] = NullSubjectOutcome.Passes,
+			["ThatString.DoesNotStartWith(String)"] = NullSubjectOutcome.Passes,
+			["ThatString.HasLength(String)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatString.HasLineCount(String)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatString.HasLines(String)"] = NullSubjectOutcome.Throws,
+			["ThatString.IsNotEmpty(String)"] = NullSubjectOutcome.Passes,
+			["ThatString.IsNotEqualTo(String)"] = NullSubjectOutcome.Passes,
+			["ThatString.IsNotOneOf(String)"] = NullSubjectOutcome.Passes,
+			["ThatString.IsNotParsableInto(String)"] = NullSubjectOutcome.Passes,
+			["ThatString.IsNull(String)"] = NullSubjectOutcome.Passes,
+			["ThatString.IsNullOrEmpty(String)"] = NullSubjectOutcome.Passes,
+			["ThatString.IsNullOrWhiteSpace(String)"] = NullSubjectOutcome.Passes,
+			["WithValue<T>.Eventually(WithValue<T>)"] = NullSubjectOutcome.NotInvocable,
+			// Without generic math, the numeric expectations exist once per numeric type instead of
+			// once for `TNumber`, so they are separate entries on the older target frameworks.
+#if !NET8_0_OR_GREATER
+			["ThatNumber.IsEqualTo(Nullable<Byte>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsEqualTo(Nullable<Decimal>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsEqualTo(Nullable<Double>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsEqualTo(Nullable<Int16>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsEqualTo(Nullable<Int32>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsEqualTo(Nullable<Int64>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsEqualTo(Nullable<SByte>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsEqualTo(Nullable<Single>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsEqualTo(Nullable<UInt16>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsEqualTo(Nullable<UInt32>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsEqualTo(Nullable<UInt64>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotBetween(Nullable<Byte>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotBetween(Nullable<Decimal>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotBetween(Nullable<Double>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotBetween(Nullable<Int16>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotBetween(Nullable<Int32>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotBetween(Nullable<Int64>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotBetween(Nullable<SByte>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotBetween(Nullable<Single>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotBetween(Nullable<UInt16>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotBetween(Nullable<UInt32>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotBetween(Nullable<UInt64>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotEqualTo(Nullable<Byte>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotEqualTo(Nullable<Decimal>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotEqualTo(Nullable<Double>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotEqualTo(Nullable<Int16>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotEqualTo(Nullable<Int32>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotEqualTo(Nullable<Int64>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotEqualTo(Nullable<SByte>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotEqualTo(Nullable<Single>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotEqualTo(Nullable<UInt16>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotEqualTo(Nullable<UInt32>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotEqualTo(Nullable<UInt64>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotFinite(Nullable<Double>)"] = NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotFinite(Nullable<Single>)"] = NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotInfinite(Nullable<Double>)"] = NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotInfinite(Nullable<Single>)"] = NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotNaN(Nullable<Double>)"] = NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotNaN(Nullable<Single>)"] = NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotOneOf(Nullable<Byte>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotOneOf(Nullable<Decimal>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotOneOf(Nullable<Double>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotOneOf(Nullable<Int16>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotOneOf(Nullable<Int32>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotOneOf(Nullable<Int64>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotOneOf(Nullable<SByte>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotOneOf(Nullable<Single>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotOneOf(Nullable<UInt16>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotOneOf(Nullable<UInt32>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsNotOneOf(Nullable<UInt64>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsOneOf(Nullable<Byte>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsOneOf(Nullable<Decimal>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsOneOf(Nullable<Double>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsOneOf(Nullable<Int16>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsOneOf(Nullable<Int32>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsOneOf(Nullable<Int64>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsOneOf(Nullable<SByte>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsOneOf(Nullable<Single>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsOneOf(Nullable<UInt16>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsOneOf(Nullable<UInt32>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+			["ThatNumber.IsOneOf(Nullable<UInt64>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
+#endif
+		};
+
+	private static Dictionary<string, NullSubjectOutcome>? _nullSubjectBehaviour;
+
+	private static Dictionary<string, NullSubjectOutcome> NullSubjectBehaviour
+		=> _nullSubjectBehaviour ??= DetermineNullSubjectBehaviour();
+
 	public static TheoryData<string> MarkedExpectations
 	{
 		get
@@ -81,6 +300,20 @@ public sealed class GuaranteesNotNullTests
 
 			return data;
 		}
+	}
+
+	[Fact]
+	public async Task EveryExpectation_ShouldFailForANullSubject()
+	{
+		List<string> deviations = NullSubjectBehaviour
+			.Where(entry => entry.Value != GetRecordedOutcome(entry.Key))
+			.Select(entry => $"{entry.Key} = {entry.Value}")
+			.OrderBy(entry => entry, StringComparer.Ordinal)
+			.ToList();
+
+		await That(deviations).IsEmpty()
+			.Because(
+				"a null subject must fail every expectation, unless ExpectationsThatDoNotFail records that it does not");
 	}
 
 	[Fact]
@@ -111,6 +344,14 @@ public sealed class GuaranteesNotNullTests
 		await That(ExcludedFromInvocation.Where(excluded => GetCoveringTests(excluded).Length == 0).ToList()).IsEmpty()
 			.Because("every excluded expectation needs a hand-written null-subject test instead");
 	}
+
+	[Fact]
+	public async Task RecordedExpectations_ShouldStillExist()
+	{
+		await That(ExpectationsThatDoNotFail.Keys.Where(key => !NullSubjectBehaviour.ContainsKey(key)).ToList())
+			.IsEmpty()
+			.Because("a recorded expectation that no longer exists is stale");
+	}
 #endif
 
 	[Fact]
@@ -136,6 +377,159 @@ public sealed class GuaranteesNotNullTests
 		await That(Act).Throws<XunitException>()
 			.Because($"{identifier} is marked with [GuaranteesNotNull]");
 	}
+
+	private static Dictionary<string, NullSubjectOutcome> DetermineNullSubjectBehaviour()
+	{
+		Dictionary<string, NullSubjectOutcome> behaviour = new(StringComparer.Ordinal);
+		foreach (MethodInfo method in GetAllExpectations())
+		{
+			if (DetermineOutcome(method) is not { } determined)
+			{
+				continue;
+			}
+
+			string key = GetKey(method);
+			behaviour.TryGetValue(key, out NullSubjectOutcome outcome);
+			behaviour[key] = outcome | determined;
+		}
+
+		return behaviour;
+	}
+
+	private static NullSubjectOutcome GetRecordedOutcome(string key)
+		=> ExpectationsThatDoNotFail.TryGetValue(key, out NullSubjectOutcome outcome)
+			? outcome
+			: NullSubjectOutcome.Fails;
+
+	private static NullSubjectOutcome? DetermineOutcome(MethodInfo method)
+	{
+		MethodInfo closedMethod;
+		Type subjectType;
+		try
+		{
+			closedMethod = CloseMethod(method);
+			if (!CanHaveNullSubject(closedMethod))
+			{
+				return null;
+			}
+
+			subjectType = GetSubjectType(closedMethod);
+			Invoke(closedMethod, CreateNullSubject(subjectType));
+		}
+		catch (NotInvocableException)
+		{
+			return NullSubjectOutcome.NotInvocable;
+		}
+		catch (Exception exception) when (exception is not XunitException)
+		{
+			return NullSubjectOutcome.Throws;
+		}
+
+		List<MethodInfo[]> paths =
+			DiscoverCompletions(() => Invoke(closedMethod, CreateNullSubject(subjectType)), [], 0);
+
+		NullSubjectOutcome outcome = default;
+		foreach (MethodInfo[] path in paths)
+		{
+			foreach (bool nullValues in new[] { false, true, })
+			{
+				try
+				{
+					Await(Follow(Invoke(closedMethod, CreateNullSubject(subjectType), nullValues), path, nullValues));
+					outcome |= NullSubjectOutcome.Passes;
+				}
+				catch (XunitException)
+				{
+					outcome |= NullSubjectOutcome.Fails;
+				}
+				catch (Exception)
+				{
+					outcome |= NullSubjectOutcome.Throws;
+				}
+			}
+		}
+
+		return outcome == default ? NullSubjectOutcome.NotInvocable : outcome;
+	}
+
+	private static List<MethodInfo[]> DiscoverCompletions(Func<object> create, MethodInfo[] prefix, int depth)
+	{
+		object expectation;
+		try
+		{
+			expectation = Follow(create(), prefix, false);
+		}
+		catch (Exception)
+		{
+			return [];
+		}
+
+		if (expectation.GetType().GetMethod("GetAwaiter") is not null)
+		{
+			return [prefix,];
+		}
+
+		if (depth >= 3)
+		{
+			return [];
+		}
+
+		List<MethodInfo[]> paths = [];
+		foreach (MethodInfo continuation in GetContinuations(expectation))
+		{
+			paths.AddRange(DiscoverCompletions(create, [..prefix, continuation,], depth + 1));
+		}
+
+		return paths;
+	}
+
+	private static object Follow(object expectation, MethodInfo[] path, bool nullValues)
+	{
+		object current = expectation;
+		foreach (MethodInfo continuation in path)
+		{
+			current = continuation.Invoke(current,
+				continuation.GetParameters().Select(parameter => CreateContinuationArgument(parameter, nullValues)).ToArray())!;
+		}
+
+		return current;
+	}
+
+	private static IEnumerable<MethodInfo> GetAllExpectations()
+		=> new[]
+			{
+				typeof(GuaranteesNotNullAttribute).Assembly, typeof(global::aweXpect.ThatString).Assembly,
+			}
+			.SelectMany(assembly => assembly.GetTypes())
+			.Where(type => type.IsPublic || type.IsNestedPublic)
+			.SelectMany(type => type.GetMethods(BindingFlags.Public | BindingFlags.Static |
+			                                    BindingFlags.Instance | BindingFlags.DeclaredOnly))
+			.Where(IsExpectation);
+
+	private static bool IsExpectation(MethodInfo method)
+	{
+		if (method.IsSpecialName || method.ReturnType == typeof(void) ||
+		    method.GetCustomAttribute<EditorBrowsableAttribute>()?.State == EditorBrowsableState.Never)
+		{
+			return false;
+		}
+
+		Type? receiver = method.IsStatic
+			? method.GetParameters().FirstOrDefault()?.ParameterType
+			: method.DeclaringType;
+		return receiver is not null && IsSupportedReceiver(receiver);
+	}
+
+	private static bool IsSupportedReceiver(Type receiver)
+	{
+		Type definition = receiver.IsGenericType ? receiver.GetGenericTypeDefinition() : receiver;
+		return definition == typeof(IThat<>) || definition == typeof(IThatSubject<>) ||
+		       definition == typeof(ThatSubject<>) || definition == typeof(CoreDelegate) ||
+		       definition == typeof(CoreDelegate.WithoutValue) || definition == typeof(CoreDelegate.WithValue<>);
+	}
+
+	private static string GetKey(MethodInfo method)
+		=> $"{FormatType(method.DeclaringType!)}.{method.Name}({FormatType(GetSubjectType(method))})";
 
 	private static IEnumerable<MethodInfo> GetMarkedExpectations()
 		=> new[]
@@ -195,12 +589,12 @@ public sealed class GuaranteesNotNullTests
 		Await(Complete(Invoke(closedMethod, subject)));
 	}
 
-	private static object Invoke(MethodInfo method, object subject)
+	private static object Invoke(MethodInfo method, object subject, bool nullValues = false)
 	{
 		object?[] arguments = method.GetParameters()
 			.Select(parameter => parameter.Position == 0 && method.IsStatic
 				? subject
-				: CreateArgument(parameter))
+				: CreateArgument(parameter, nullValues))
 			.ToArray();
 		try
 		{
@@ -303,7 +697,7 @@ public sealed class GuaranteesNotNullTests
 		Type? unresolved = genericArguments.FirstOrDefault(argument => !resolved.ContainsKey(argument));
 		if (unresolved is not null)
 		{
-			throw new NotSupportedException(
+			throw new NotInvocableException(
 				$"The test does not know which type argument satisfies '{unresolved}' of '{unresolved.DeclaringMethod?.ToString() ?? unresolved.DeclaringType?.ToString()}'. Extend {nameof(TypeArgumentCandidates)}.");
 		}
 
@@ -360,7 +754,7 @@ public sealed class GuaranteesNotNullTests
 			.ToArray());
 	}
 
-	private static object? CreateArgument(ParameterInfo parameter)
+	private static object? CreateArgument(ParameterInfo parameter, bool nullValues)
 	{
 		Type type = parameter.ParameterType;
 		if (type == typeof(Type))
@@ -371,6 +765,11 @@ public sealed class GuaranteesNotNullTests
 		if (parameter.IsOptional)
 		{
 			return parameter.DefaultValue;
+		}
+
+		if (Nullable.GetUnderlyingType(type) is { } underlyingType)
+		{
+			return nullValues ? null : Activator.CreateInstance(underlyingType);
 		}
 
 		if (type.IsValueType)
@@ -386,12 +785,43 @@ public sealed class GuaranteesNotNullTests
 
 		if (type.IsArray)
 		{
-			return Array.CreateInstance(type.GetElementType()!, 0);
+			return CreateSingleElementArray(type.GetElementType()!);
 		}
 
-		return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>)
-			? Array.CreateInstance(type.GetGenericArguments()[0], 0)
-			: null;
+		if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+		{
+			return CreateSingleElementArray(type.GetGenericArguments()[0]);
+		}
+
+		if (typeof(Expression).IsAssignableFrom(type))
+		{
+			throw new NotInvocableException(
+				$"The test cannot invent a '{type}' for parameter '{parameter.Name}'. Extend {nameof(CreateArgument)}.");
+		}
+
+		return typeof(Delegate).IsAssignableFrom(type) ? CreateDelegate(type) : null;
+	}
+
+	private static Delegate CreateDelegate(Type delegateType)
+	{
+		MethodInfo invoke = delegateType.GetMethod("Invoke")!;
+		ParameterExpression[] parameters = invoke.GetParameters()
+			.Select(parameter => Expression.Parameter(parameter.ParameterType, parameter.Name))
+			.ToArray();
+		Expression body = invoke.ReturnType == typeof(void)
+			? Expression.Empty()
+			: Expression.Default(invoke.ReturnType);
+		return Expression.Lambda(delegateType, body, parameters).Compile();
+	}
+
+	private static Array CreateSingleElementArray(Type elementType)
+	{
+		Array array = Array.CreateInstance(elementType, 1);
+		array.SetValue(
+			elementType == typeof(string) ? "a" :
+			elementType.IsValueType ? Activator.CreateInstance(elementType) : null,
+			0);
+		return array;
 	}
 
 	private static object Complete(object expectation, int depth = 0)
@@ -403,17 +833,13 @@ public sealed class GuaranteesNotNullTests
 
 		if (depth < 3)
 		{
-			foreach (MethodInfo continuation in expectation.GetType()
-				         .GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
-				         .Where(method => !method.IsSpecialName && !method.IsGenericMethodDefinition &&
-				                          method.ReturnType != typeof(void))
-				         .OrderBy(method => method.Name, StringComparer.Ordinal))
+			foreach (MethodInfo continuation in GetContinuations(expectation))
 			{
 				object? result;
 				try
 				{
 					result = continuation.Invoke(expectation,
-						continuation.GetParameters().Select(CreateContinuationArgument).ToArray());
+						continuation.GetParameters().Select(parameter => CreateContinuationArgument(parameter, false)).ToArray());
 				}
 				catch (Exception)
 				{
@@ -427,14 +853,21 @@ public sealed class GuaranteesNotNullTests
 			}
 		}
 
-		throw new NotSupportedException(
+		throw new NotInvocableException(
 			$"The test does not know how to await a '{expectation.GetType()}'. Extend {nameof(Complete)}.");
 	}
 
-	private static object? CreateContinuationArgument(ParameterInfo parameter)
+	private static IEnumerable<MethodInfo> GetContinuations(object expectation)
+		=> expectation.GetType()
+			.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+			.Where(method => !method.IsSpecialName && !method.IsGenericMethodDefinition &&
+			                 method.ReturnType != typeof(void))
+			.OrderBy(method => method.Name, StringComparer.Ordinal);
+
+	private static object? CreateContinuationArgument(ParameterInfo parameter, bool nullValues)
 		=> parameter.ParameterType == typeof(TimeSpan)
 			? TimeSpan.FromSeconds(1)
-			: CreateArgument(parameter);
+			: CreateArgument(parameter, nullValues);
 
 	private static void Await(object expectation)
 	{
@@ -448,6 +881,17 @@ public sealed class GuaranteesNotNullTests
 			throw exception.InnerException;
 		}
 	}
+
+	[Flags]
+	private enum NullSubjectOutcome
+	{
+		Fails = 1,
+		Passes = 2,
+		Throws = 4,
+		NotInvocable = 8,
+	}
+
+	private sealed class NotInvocableException(string message) : Exception(message);
 
 	private sealed class NotifyingSubject : INotifyPropertyChanged
 	{
