@@ -3498,6 +3498,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 21:42:07 2026 \u002B0200",
         "message": "test: record the \u0060null\u0060 subject behaviour of every expectation (#1057)"
+      },
+      {
+        "sha": "12db0a0c6aea5d4cf4521fd19ed08b7989c28e83",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 22:26:08 2026 \u002B0200",
+        "message": "feat: register the generated test framework adapter via a module initializer (#1054)"
       }
     ],
     "labels": [
@@ -4083,7 +4089,8 @@ window.BENCHMARK_DATA = {
       "ae28ac8b",
       "2dfc2a93",
       "f2c58efc",
-      "b40f1a29"
+      "b40f1a29",
+      "12db0a0c"
     ],
     "datasets": [
       {
@@ -4672,7 +4679,8 @@ window.BENCHMARK_DATA = {
           251.45966777801513,
           253.74554430643718,
           185.81431449254353,
-          207.99691574390118
+          207.99691574390118,
+          270.29099127451576
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5145,6 +5153,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5863,7 +5872,8 @@ window.BENCHMARK_DATA = {
           271.93721526009693,
           255.67135229110718,
           211.59095217500413,
-          220.3440454006195
+          220.3440454006195,
+          264.55369930267335
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6056,6 +6066,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -9507,6 +9518,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 21:42:07 2026 \u002B0200",
         "message": "test: record the \u0060null\u0060 subject behaviour of every expectation (#1057)"
+      },
+      {
+        "sha": "12db0a0c6aea5d4cf4521fd19ed08b7989c28e83",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 22:26:08 2026 \u002B0200",
+        "message": "feat: register the generated test framework adapter via a module initializer (#1054)"
       }
     ],
     "labels": [
@@ -10015,7 +10032,8 @@ window.BENCHMARK_DATA = {
       "ae28ac8b",
       "2dfc2a93",
       "f2c58efc",
-      "b40f1a29"
+      "b40f1a29",
+      "12db0a0c"
     ],
     "datasets": [
       {
@@ -10527,7 +10545,8 @@ window.BENCHMARK_DATA = {
           246182.51293945312,
           314607.5203776042,
           200805.07823768028,
-          222028.6263709435
+          222028.6263709435,
+          338345.6691545759
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11044,7 +11063,8 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335442,
-          335442
+          335442,
+          335444
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11564,7 +11584,8 @@ window.BENCHMARK_DATA = {
           1975977.1479166667,
           2505769.34375,
           1670276.2193080357,
-          1669236.4065504808
+          1669236.4065504808,
+          2951527.1751802885
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12081,7 +12102,8 @@ window.BENCHMARK_DATA = {
           4841613,
           4841651,
           4841611,
-          4841609
+          4841609,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15593,6 +15615,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 21:42:07 2026 \u002B0200",
         "message": "test: record the \u0060null\u0060 subject behaviour of every expectation (#1057)"
+      },
+      {
+        "sha": "12db0a0c6aea5d4cf4521fd19ed08b7989c28e83",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 22:26:08 2026 \u002B0200",
+        "message": "feat: register the generated test framework adapter via a module initializer (#1054)"
       }
     ],
     "labels": [
@@ -16178,7 +16206,8 @@ window.BENCHMARK_DATA = {
       "ae28ac8b",
       "2dfc2a93",
       "f2c58efc",
-      "b40f1a29"
+      "b40f1a29",
+      "12db0a0c"
     ],
     "datasets": [
       {
@@ -16767,7 +16796,8 @@ window.BENCHMARK_DATA = {
           460.4913195201329,
           517.4517107009888,
           411.3238247803279,
-          387.5515358606974
+          387.5515358606974,
+          517.3623763402303
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17240,6 +17270,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -17958,7 +17989,8 @@ window.BENCHMARK_DATA = {
           518.0169225692749,
           520.8710504531861,
           414.6723243077596,
-          420.1317024548849
+          420.1317024548849,
+          537.0394381205241
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18151,6 +18183,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -22064,6 +22097,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 21:42:07 2026 \u002B0200",
         "message": "test: record the \u0060null\u0060 subject behaviour of every expectation (#1057)"
+      },
+      {
+        "sha": "12db0a0c6aea5d4cf4521fd19ed08b7989c28e83",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 22:26:08 2026 \u002B0200",
+        "message": "feat: register the generated test framework adapter via a module initializer (#1054)"
       }
     ],
     "labels": [
@@ -22649,7 +22688,8 @@ window.BENCHMARK_DATA = {
       "ae28ac8b",
       "2dfc2a93",
       "f2c58efc",
-      "b40f1a29"
+      "b40f1a29",
+      "12db0a0c"
     ],
     "datasets": [
       {
@@ -23238,7 +23278,8 @@ window.BENCHMARK_DATA = {
           258.7793156305949,
           264.43931474685667,
           193.14304917199271,
-          209.47316687901815
+          209.47316687901815,
+          274.451362546285
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -23752,6 +23793,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -24429,7 +24471,8 @@ window.BENCHMARK_DATA = {
           282.3623188654582,
           263.38711411158243,
           215.79852714538575,
-          220.41122935368463
+          220.41122935368463,
+          270.03851222991943
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -24622,6 +24665,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -28535,6 +28579,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 21:42:07 2026 \u002B0200",
         "message": "test: record the \u0060null\u0060 subject behaviour of every expectation (#1057)"
+      },
+      {
+        "sha": "12db0a0c6aea5d4cf4521fd19ed08b7989c28e83",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 22:26:08 2026 \u002B0200",
+        "message": "feat: register the generated test framework adapter via a module initializer (#1054)"
       }
     ],
     "labels": [
@@ -29120,7 +29170,8 @@ window.BENCHMARK_DATA = {
       "ae28ac8b",
       "2dfc2a93",
       "f2c58efc",
-      "b40f1a29"
+      "b40f1a29",
+      "12db0a0c"
     ],
     "datasets": [
       {
@@ -29709,7 +29760,8 @@ window.BENCHMARK_DATA = {
           419.3198487917582,
           492.94501726967945,
           321.6662517865499,
-          355.84341993331907
+          355.84341993331907,
+          514.9620515823365
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30182,6 +30234,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -30900,7 +30953,8 @@ window.BENCHMARK_DATA = {
           1156.9683876037598,
           1268.5366074488713,
           899.8793354034424,
-          956.5905661949745
+          956.5905661949745,
+          1337.4001406351724
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31329,6 +31383,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -35006,6 +35061,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 21:42:07 2026 \u002B0200",
         "message": "test: record the \u0060null\u0060 subject behaviour of every expectation (#1057)"
+      },
+      {
+        "sha": "12db0a0c6aea5d4cf4521fd19ed08b7989c28e83",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 22:26:08 2026 \u002B0200",
+        "message": "feat: register the generated test framework adapter via a module initializer (#1054)"
       }
     ],
     "labels": [
@@ -35591,7 +35652,8 @@ window.BENCHMARK_DATA = {
       "ae28ac8b",
       "2dfc2a93",
       "f2c58efc",
-      "b40f1a29"
+      "b40f1a29",
+      "12db0a0c"
     ],
     "datasets": [
       {
@@ -36180,7 +36242,8 @@ window.BENCHMARK_DATA = {
           1285.6932764053345,
           2048.7104324927695,
           1024.7778945650373,
-          1172.1498559805063
+          1172.1498559805063,
+          2068.8246877034503
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36653,6 +36716,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -37371,7 +37435,8 @@ window.BENCHMARK_DATA = {
           1316.807714589437,
           1482.3498956680298,
           993.0315253917987,
-          1091.659278188433
+          1091.659278188433,
+          1426.1770524342855
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37564,6 +37629,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -41477,6 +41543,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 21:42:07 2026 \u002B0200",
         "message": "test: record the \u0060null\u0060 subject behaviour of every expectation (#1057)"
+      },
+      {
+        "sha": "12db0a0c6aea5d4cf4521fd19ed08b7989c28e83",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 22:26:08 2026 \u002B0200",
+        "message": "feat: register the generated test framework adapter via a module initializer (#1054)"
       }
     ],
     "labels": [
@@ -42062,7 +42134,8 @@ window.BENCHMARK_DATA = {
       "ae28ac8b",
       "2dfc2a93",
       "f2c58efc",
-      "b40f1a29"
+      "b40f1a29",
+      "12db0a0c"
     ],
     "datasets": [
       {
@@ -42651,7 +42724,8 @@ window.BENCHMARK_DATA = {
           1679.661682510376,
           2617.6351503225474,
           1325.9666979471842,
-          1539.817172563993
+          1539.817172563993,
+          2669.7861605326334
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -43124,6 +43198,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -43842,7 +43917,8 @@ window.BENCHMARK_DATA = {
           15854.894307454428,
           21692.001957484656,
           12251.25824519566,
-          14082.65697224935
+          14082.65697224935,
+          28076.470477764422
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -44436,7 +44512,8 @@ window.BENCHMARK_DATA = {
           33465,
           33471,
           33465,
-          33465
+          33465,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
