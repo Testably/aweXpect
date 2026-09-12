@@ -346,7 +346,7 @@ public sealed partial class ThatDateTime
 			public sealed class NotEqualToTests
 			{
 				[Fact]
-				public async Task WhenSubjectAndUnexpectedIsNull_ShouldSucceed()
+				public async Task WhenSubjectAndUnexpectedIsNull_ShouldFail()
 				{
 					DateTime? subject = null;
 					int? expected = null;
@@ -354,7 +354,12 @@ public sealed partial class ThatDateTime
 					async Task Act()
 						=> await That(subject).HasYear().NotEqualTo(expected);
 
-					await That(Act).DoesNotThrow();
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             has year not equal to <null>,
+						             but it was <null>
+						             """);
 				}
 
 				[Fact]

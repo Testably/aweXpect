@@ -3,7 +3,7 @@ using System.Text;
 namespace aweXpect.Core.Constraints;
 
 internal sealed class IsExactlyOfTypeConstraint<TActual, TType>(string it, ExpectationGrammars grammars)
-	: ConstraintResult.WithValue<TActual>(grammars),
+	: ConstraintResult.WithNotNullValue<TActual>(it, grammars),
 		IValueConstraint<TActual>
 {
 	public ConstraintResult IsMetBy(TActual actual)
@@ -21,7 +21,7 @@ internal sealed class IsExactlyOfTypeConstraint<TActual, TType>(string it, Expec
 
 	protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 	{
-		stringBuilder.Append(it).Append(" was ");
+		stringBuilder.Append(It).Append(" was ");
 		Formatter.Format(stringBuilder, Actual, FormattingOptions.Indented(indentation, true));
 	}
 

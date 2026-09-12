@@ -32,6 +32,22 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Fact]
+		public async Task EqualTo_WhenSubjectIsNull_ShouldFail()
+		{
+			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValueOfNullSubject();
+
+			async Task Act()
+				=> await sut.EqualTo(42);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has int value equal to 42,
+				             but it was <null>
+				             """);
+		}
+
+		[Fact]
 		public async Task GreaterThan_ShouldTriggerValidation()
 		{
 			Signaler<int?> signal = new();
@@ -149,6 +165,39 @@ public sealed partial class PropertyResultTests
 			MyClass? result = await sut.NotEqualTo(43);
 
 			await That(result?.IntValue).IsEqualTo(42);
+		}
+
+		[Fact]
+		public async Task NotEqualTo_WhenSubjectIsNullAndUnexpectedIsNull_ShouldFail()
+		{
+			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValueOfNullSubject();
+
+			async Task Act()
+				=> await sut.NotEqualTo(null);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has int value not equal to <null>,
+				             but it was <null>
+				             """)
+				.Because("a null subject has no int value to compare, whatever the unexpected value is");
+		}
+
+		[Fact]
+		public async Task NotEqualTo_WhenSubjectIsNull_ShouldFail()
+		{
+			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValueOfNullSubject();
+
+			async Task Act()
+				=> await sut.NotEqualTo(42);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has int value not equal to 42,
+				             but it was <null>
+				             """);
 		}
 	}
 }
