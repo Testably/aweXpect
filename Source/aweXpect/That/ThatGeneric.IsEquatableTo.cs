@@ -66,9 +66,6 @@ public static partial class ThatGeneric
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" was in ");
-			Formatter.Format(stringBuilder, Actual);
-		}
+			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }

@@ -18,7 +18,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             is not equatable to 1,
-					             but it was in ThatGeneric.IsNotEquatableTo.Wrapper {
+					             but it was ThatGeneric.IsNotEquatableTo.Wrapper {
 					               Value = 1
 					             }
 					             """);
@@ -39,7 +39,7 @@ public sealed partial class ThatGeneric
 					             is not equatable to ThatGeneric.IsNotEquatableTo.Wrapper {
 					               Value = 1
 					             },
-					             but it was in ThatGeneric.IsNotEquatableTo.Wrapper {
+					             but it was ThatGeneric.IsNotEquatableTo.Wrapper {
 					               Value = 1
 					             }
 					             """);
