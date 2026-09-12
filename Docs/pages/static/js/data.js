@@ -3468,6 +3468,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 16:40:11 2026 \u002B0200",
         "message": "fix: fail \u0060HasValue\u0060 on a \u0060null\u0060 enum subject (#1046)"
+      },
+      {
+        "sha": "1c48f221f8a52fd5de9024549ae3130e1a20f063",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 17:13:34 2026 \u002B0200",
+        "message": "feat: add a \u0060GuaranteesNotNull\u0060 attribute for expectations (#1048)"
       }
     ],
     "labels": [
@@ -4048,7 +4054,8 @@ window.BENCHMARK_DATA = {
       "4d0dab36",
       "6b0b96ac",
       "ef652c1f",
-      "4bd75735"
+      "4bd75735",
+      "1c48f221"
     ],
     "datasets": [
       {
@@ -4632,7 +4639,8 @@ window.BENCHMARK_DATA = {
           256.6291039784749,
           310.57264550526935,
           194.75820589065552,
-          279.72621849605014
+          279.72621849605014,
+          176.9221565246582
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5105,6 +5113,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5813,7 +5822,8 @@ window.BENCHMARK_DATA = {
           242.52080263410295,
           236.56215605368982,
           191.06551202705927,
-          263.74817759650097
+          263.74817759650097,
+          192.242506980896
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6006,6 +6016,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -9422,6 +9433,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 16:40:11 2026 \u002B0200",
         "message": "fix: fail \u0060HasValue\u0060 on a \u0060null\u0060 enum subject (#1046)"
+      },
+      {
+        "sha": "1c48f221f8a52fd5de9024549ae3130e1a20f063",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 17:13:34 2026 \u002B0200",
+        "message": "feat: add a \u0060GuaranteesNotNull\u0060 attribute for expectations (#1048)"
       }
     ],
     "labels": [
@@ -9925,7 +9942,8 @@ window.BENCHMARK_DATA = {
       "4d0dab36",
       "6b0b96ac",
       "ef652c1f",
-      "4bd75735"
+      "4bd75735",
+      "1c48f221"
     ],
     "datasets": [
       {
@@ -10432,7 +10450,8 @@ window.BENCHMARK_DATA = {
           325778.1329520089,
           310226.8191080729,
           219891.06270926338,
-          330381.0539388021
+          330381.0539388021,
+          201159.01329627403
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10944,7 +10963,8 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335442,
-          335444
+          335444,
+          335442
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11459,7 +11479,8 @@ window.BENCHMARK_DATA = {
           2783075.2807291667,
           2714964.474051339,
           1795566.599233774,
-          2754495.861328125
+          2754495.861328125,
+          1632144.8722098214
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11971,7 +11992,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841648,
-          4841651
+          4841651,
+          4841611
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15453,6 +15475,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 16:40:11 2026 \u002B0200",
         "message": "fix: fail \u0060HasValue\u0060 on a \u0060null\u0060 enum subject (#1046)"
+      },
+      {
+        "sha": "1c48f221f8a52fd5de9024549ae3130e1a20f063",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 17:13:34 2026 \u002B0200",
+        "message": "feat: add a \u0060GuaranteesNotNull\u0060 attribute for expectations (#1048)"
       }
     ],
     "labels": [
@@ -16033,7 +16061,8 @@ window.BENCHMARK_DATA = {
       "4d0dab36",
       "6b0b96ac",
       "ef652c1f",
-      "4bd75735"
+      "4bd75735",
+      "1c48f221"
     ],
     "datasets": [
       {
@@ -16617,7 +16646,8 @@ window.BENCHMARK_DATA = {
           511.50231685638425,
           497.5568639210292,
           389.25706512587413,
-          546.6029392242432
+          546.6029392242432,
+          442.43858333996366
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17090,6 +17120,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -17798,7 +17829,8 @@ window.BENCHMARK_DATA = {
           513.4317329406738,
           486.24031861623126,
           374.84017050266266,
-          557.0006458282471
+          557.0006458282471,
+          377.8739272117615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17991,6 +18023,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -21869,6 +21902,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 16:40:11 2026 \u002B0200",
         "message": "fix: fail \u0060HasValue\u0060 on a \u0060null\u0060 enum subject (#1046)"
+      },
+      {
+        "sha": "1c48f221f8a52fd5de9024549ae3130e1a20f063",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 17:13:34 2026 \u002B0200",
+        "message": "feat: add a \u0060GuaranteesNotNull\u0060 attribute for expectations (#1048)"
       }
     ],
     "labels": [
@@ -22449,7 +22488,8 @@ window.BENCHMARK_DATA = {
       "4d0dab36",
       "6b0b96ac",
       "ef652c1f",
-      "4bd75735"
+      "4bd75735",
+      "1c48f221"
     ],
     "datasets": [
       {
@@ -23033,7 +23073,8 @@ window.BENCHMARK_DATA = {
           272.66313835779823,
           285.00397532780966,
           197.31578922271729,
-          299.5892717043559
+          299.5892717043559,
+          196.72756666796548
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -23547,6 +23588,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -24214,7 +24256,8 @@ window.BENCHMARK_DATA = {
           272.0863518374307,
           245.95117333957128,
           192.4854500611623,
-          277.9910137494405
+          277.9910137494405,
+          205.07823863396277
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -24407,6 +24450,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -28285,6 +28329,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 16:40:11 2026 \u002B0200",
         "message": "fix: fail \u0060HasValue\u0060 on a \u0060null\u0060 enum subject (#1046)"
+      },
+      {
+        "sha": "1c48f221f8a52fd5de9024549ae3130e1a20f063",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 17:13:34 2026 \u002B0200",
+        "message": "feat: add a \u0060GuaranteesNotNull\u0060 attribute for expectations (#1048)"
       }
     ],
     "labels": [
@@ -28865,7 +28915,8 @@ window.BENCHMARK_DATA = {
       "4d0dab36",
       "6b0b96ac",
       "ef652c1f",
-      "4bd75735"
+      "4bd75735",
+      "1c48f221"
     ],
     "datasets": [
       {
@@ -29449,7 +29500,8 @@ window.BENCHMARK_DATA = {
           479.2496374766032,
           488.5589915684291,
           356.45355892181396,
-          488.67998450142994
+          488.67998450142994,
+          374.4749781744821
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29922,6 +29974,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -30630,7 +30683,8 @@ window.BENCHMARK_DATA = {
           1240.3623783111573,
           1292.6909257448638,
           877.4429955115685,
-          1409.8203082765851
+          1409.8203082765851,
+          956.7152788798014
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31059,6 +31113,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -34701,6 +34756,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 16:40:11 2026 \u002B0200",
         "message": "fix: fail \u0060HasValue\u0060 on a \u0060null\u0060 enum subject (#1046)"
+      },
+      {
+        "sha": "1c48f221f8a52fd5de9024549ae3130e1a20f063",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 17:13:34 2026 \u002B0200",
+        "message": "feat: add a \u0060GuaranteesNotNull\u0060 attribute for expectations (#1048)"
       }
     ],
     "labels": [
@@ -35281,7 +35342,8 @@ window.BENCHMARK_DATA = {
       "4d0dab36",
       "6b0b96ac",
       "ef652c1f",
-      "4bd75735"
+      "4bd75735",
+      "1c48f221"
     ],
     "datasets": [
       {
@@ -35865,7 +35927,8 @@ window.BENCHMARK_DATA = {
           2054.7027384440103,
           2009.3522932870048,
           1431.4062286104474,
-          1956.8689994812012
+          1956.8689994812012,
+          1069.3930759429932
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36338,6 +36401,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -37046,7 +37110,8 @@ window.BENCHMARK_DATA = {
           1368.0961346944173,
           1342.263759771983,
           1006.8457903544108,
-          1501.1235309328351
+          1501.1235309328351,
+          1063.036941019694
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37239,6 +37304,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -41117,6 +41183,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 16:40:11 2026 \u002B0200",
         "message": "fix: fail \u0060HasValue\u0060 on a \u0060null\u0060 enum subject (#1046)"
+      },
+      {
+        "sha": "1c48f221f8a52fd5de9024549ae3130e1a20f063",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 17:13:34 2026 \u002B0200",
+        "message": "feat: add a \u0060GuaranteesNotNull\u0060 attribute for expectations (#1048)"
       }
     ],
     "labels": [
@@ -41697,7 +41769,8 @@ window.BENCHMARK_DATA = {
       "4d0dab36",
       "6b0b96ac",
       "ef652c1f",
-      "4bd75735"
+      "4bd75735",
+      "1c48f221"
     ],
     "datasets": [
       {
@@ -42281,7 +42354,8 @@ window.BENCHMARK_DATA = {
           2734.0682273864745,
           2616.22804590861,
           1879.5178239186605,
-          2621.92692489624
+          2621.92692489624,
+          1422.9330649058024
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -42754,6 +42828,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -43462,7 +43537,8 @@ window.BENCHMARK_DATA = {
           27511.36063058036,
           27923.317753092448,
           15298.983383687337,
-          27183.448396955217
+          27183.448396955217,
+          14327.642207845052
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -44051,7 +44127,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471
+          33471,
+          33465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
