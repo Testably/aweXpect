@@ -39,7 +39,8 @@ public static partial class ThatNullableEnum
 		public ConstraintResult IsMetBy(TEnum? actual)
 		{
 			Actual = actual;
-			Outcome = Convert.ToInt64(actual, CultureInfo.InvariantCulture) == expectedValue
+			Outcome = actual is not null &&
+			          Convert.ToInt64(actual.Value, CultureInfo.InvariantCulture) == expectedValue
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;

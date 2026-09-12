@@ -55,20 +55,23 @@ public sealed partial class ThatEnum
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
-				public async Task WhenSubjectIsNull_ShouldFail()
+				[Theory]
+				[InlineData(null)]
+				[InlineData(0L)]
+				[InlineData(1L)]
+				public async Task WhenSubjectIsNull_ShouldFail(long? expected)
 				{
 					MyNumbers? subject = null;
 
 					async Task Act()
-						=> await That(subject).HasValue(1L);
+						=> await That(subject).HasValue(expected);
 
 					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that subject
-						             has value 1,
-						             but it was <null>
-						             """);
+						.WithMessage($"""
+						              Expected that subject
+						              has value {Formatter.Format(expected)},
+						              but it was <null>
+						              """);
 				}
 			}
 		}
