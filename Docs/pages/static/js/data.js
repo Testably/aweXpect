@@ -3486,6 +3486,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 20:28:52 2026 \u002B0200",
         "message": "feat: recognise expectations that guarantee a not-null subject by attribute (#1050)"
+      },
+      {
+        "sha": "f2c58efc36e206c8e0d6fa334b9c36461ac2e4d1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 20:33:15 2026 \u002B0200",
+        "message": "fix: fail instead of silently succeeding when equivalency finds no members (#1051)"
       }
     ],
     "labels": [
@@ -4069,7 +4075,8 @@ window.BENCHMARK_DATA = {
       "4bd75735",
       "1c48f221",
       "ae28ac8b",
-      "2dfc2a93"
+      "2dfc2a93",
+      "f2c58efc"
     ],
     "datasets": [
       {
@@ -4656,7 +4663,8 @@ window.BENCHMARK_DATA = {
           279.72621849605014,
           176.9221565246582,
           251.45966777801513,
-          253.74554430643718
+          253.74554430643718,
+          185.81431449254353
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5129,6 +5137,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5843,7 +5852,8 @@ window.BENCHMARK_DATA = {
           263.74817759650097,
           192.242506980896,
           271.93721526009693,
-          255.67135229110718
+          255.67135229110718,
+          211.59095217500413
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6036,6 +6046,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -9473,6 +9484,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 20:28:52 2026 \u002B0200",
         "message": "feat: recognise expectations that guarantee a not-null subject by attribute (#1050)"
+      },
+      {
+        "sha": "f2c58efc36e206c8e0d6fa334b9c36461ac2e4d1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 20:33:15 2026 \u002B0200",
+        "message": "fix: fail instead of silently succeeding when equivalency finds no members (#1051)"
       }
     ],
     "labels": [
@@ -9979,7 +9996,8 @@ window.BENCHMARK_DATA = {
       "4bd75735",
       "1c48f221",
       "ae28ac8b",
-      "2dfc2a93"
+      "2dfc2a93",
+      "f2c58efc"
     ],
     "datasets": [
       {
@@ -10489,7 +10507,8 @@ window.BENCHMARK_DATA = {
           330381.0539388021,
           201159.01329627403,
           246182.51293945312,
-          314607.5203776042
+          314607.5203776042,
+          200805.07823768028
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11004,7 +11023,8 @@ window.BENCHMARK_DATA = {
           335444,
           335442,
           335444,
-          335444
+          335444,
+          335442
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11522,7 +11542,8 @@ window.BENCHMARK_DATA = {
           2754495.861328125,
           1632144.8722098214,
           1975977.1479166667,
-          2505769.34375
+          2505769.34375,
+          1670276.2193080357
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12037,7 +12058,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841611,
           4841613,
-          4841651
+          4841651,
+          4841611
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15537,6 +15559,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 20:28:52 2026 \u002B0200",
         "message": "feat: recognise expectations that guarantee a not-null subject by attribute (#1050)"
+      },
+      {
+        "sha": "f2c58efc36e206c8e0d6fa334b9c36461ac2e4d1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 20:33:15 2026 \u002B0200",
+        "message": "fix: fail instead of silently succeeding when equivalency finds no members (#1051)"
       }
     ],
     "labels": [
@@ -16120,7 +16148,8 @@ window.BENCHMARK_DATA = {
       "4bd75735",
       "1c48f221",
       "ae28ac8b",
-      "2dfc2a93"
+      "2dfc2a93",
+      "f2c58efc"
     ],
     "datasets": [
       {
@@ -16707,7 +16736,8 @@ window.BENCHMARK_DATA = {
           546.6029392242432,
           442.43858333996366,
           460.4913195201329,
-          517.4517107009888
+          517.4517107009888,
+          411.3238247803279
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17180,6 +17210,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -17894,7 +17925,8 @@ window.BENCHMARK_DATA = {
           557.0006458282471,
           377.8739272117615,
           518.0169225692749,
-          520.8710504531861
+          520.8710504531861,
+          414.6723243077596
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18087,6 +18119,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -21986,6 +22019,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 20:28:52 2026 \u002B0200",
         "message": "feat: recognise expectations that guarantee a not-null subject by attribute (#1050)"
+      },
+      {
+        "sha": "f2c58efc36e206c8e0d6fa334b9c36461ac2e4d1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 20:33:15 2026 \u002B0200",
+        "message": "fix: fail instead of silently succeeding when equivalency finds no members (#1051)"
       }
     ],
     "labels": [
@@ -22569,7 +22608,8 @@ window.BENCHMARK_DATA = {
       "4bd75735",
       "1c48f221",
       "ae28ac8b",
-      "2dfc2a93"
+      "2dfc2a93",
+      "f2c58efc"
     ],
     "datasets": [
       {
@@ -23156,7 +23196,8 @@ window.BENCHMARK_DATA = {
           299.5892717043559,
           196.72756666796548,
           258.7793156305949,
-          264.43931474685667
+          264.43931474685667,
+          193.14304917199271
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -23670,6 +23711,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -24343,7 +24385,8 @@ window.BENCHMARK_DATA = {
           277.9910137494405,
           205.07823863396277,
           282.3623188654582,
-          263.38711411158243
+          263.38711411158243,
+          215.79852714538575
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -24536,6 +24579,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -28435,6 +28479,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 20:28:52 2026 \u002B0200",
         "message": "feat: recognise expectations that guarantee a not-null subject by attribute (#1050)"
+      },
+      {
+        "sha": "f2c58efc36e206c8e0d6fa334b9c36461ac2e4d1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 20:33:15 2026 \u002B0200",
+        "message": "fix: fail instead of silently succeeding when equivalency finds no members (#1051)"
       }
     ],
     "labels": [
@@ -29018,7 +29068,8 @@ window.BENCHMARK_DATA = {
       "4bd75735",
       "1c48f221",
       "ae28ac8b",
-      "2dfc2a93"
+      "2dfc2a93",
+      "f2c58efc"
     ],
     "datasets": [
       {
@@ -29605,7 +29656,8 @@ window.BENCHMARK_DATA = {
           488.67998450142994,
           374.4749781744821,
           419.3198487917582,
-          492.94501726967945
+          492.94501726967945,
+          321.6662517865499
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30078,6 +30130,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -30792,7 +30845,8 @@ window.BENCHMARK_DATA = {
           1409.8203082765851,
           956.7152788798014,
           1156.9683876037598,
-          1268.5366074488713
+          1268.5366074488713,
+          899.8793354034424
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31221,6 +31275,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -34884,6 +34939,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 20:28:52 2026 \u002B0200",
         "message": "feat: recognise expectations that guarantee a not-null subject by attribute (#1050)"
+      },
+      {
+        "sha": "f2c58efc36e206c8e0d6fa334b9c36461ac2e4d1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 20:33:15 2026 \u002B0200",
+        "message": "fix: fail instead of silently succeeding when equivalency finds no members (#1051)"
       }
     ],
     "labels": [
@@ -35467,7 +35528,8 @@ window.BENCHMARK_DATA = {
       "4bd75735",
       "1c48f221",
       "ae28ac8b",
-      "2dfc2a93"
+      "2dfc2a93",
+      "f2c58efc"
     ],
     "datasets": [
       {
@@ -36054,7 +36116,8 @@ window.BENCHMARK_DATA = {
           1956.8689994812012,
           1069.3930759429932,
           1285.6932764053345,
-          2048.7104324927695
+          2048.7104324927695,
+          1024.7778945650373
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36527,6 +36590,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -37241,7 +37305,8 @@ window.BENCHMARK_DATA = {
           1501.1235309328351,
           1063.036941019694,
           1316.807714589437,
-          1482.3498956680298
+          1482.3498956680298,
+          993.0315253917987
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37434,6 +37499,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -41333,6 +41399,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 20:28:52 2026 \u002B0200",
         "message": "feat: recognise expectations that guarantee a not-null subject by attribute (#1050)"
+      },
+      {
+        "sha": "f2c58efc36e206c8e0d6fa334b9c36461ac2e4d1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 20:33:15 2026 \u002B0200",
+        "message": "fix: fail instead of silently succeeding when equivalency finds no members (#1051)"
       }
     ],
     "labels": [
@@ -41916,7 +41988,8 @@ window.BENCHMARK_DATA = {
       "4bd75735",
       "1c48f221",
       "ae28ac8b",
-      "2dfc2a93"
+      "2dfc2a93",
+      "f2c58efc"
     ],
     "datasets": [
       {
@@ -42503,7 +42576,8 @@ window.BENCHMARK_DATA = {
           2621.92692489624,
           1422.9330649058024,
           1679.661682510376,
-          2617.6351503225474
+          2617.6351503225474,
+          1325.9666979471842
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -42976,6 +43050,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -43690,7 +43765,8 @@ window.BENCHMARK_DATA = {
           27183.448396955217,
           14327.642207845052,
           15854.894307454428,
-          21692.001957484656
+          21692.001957484656,
+          12251.25824519566
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -44282,7 +44358,8 @@ window.BENCHMARK_DATA = {
           33471,
           33465,
           33465,
-          33471
+          33471,
+          33465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
