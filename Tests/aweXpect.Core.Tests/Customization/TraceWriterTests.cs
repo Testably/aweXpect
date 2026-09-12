@@ -1,8 +1,8 @@
-﻿using aweXpect.Chronology;
+using aweXpect.Chronology;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
 
-namespace aweXpect.Core.Tests;
+namespace aweXpect.Core.Tests.Customization;
 
 public class TraceWriterTests
 {
