@@ -39,13 +39,16 @@ public sealed partial class ThatEnum
 						              """);
 				}
 
-				[Fact]
-				public async Task WhenSubjectIsNull_ShouldSucceed()
+				[Theory]
+				[InlineData(null)]
+				[InlineData(0L)]
+				[InlineData(2L)]
+				public async Task WhenSubjectIsNull_ShouldSucceed(long? unexpected)
 				{
 					MyColors? subject = null;
 
 					async Task Act()
-						=> await That(subject).DoesNotHaveValue(2);
+						=> await That(subject).DoesNotHaveValue(unexpected);
 
 					await That(Act).DoesNotThrow();
 				}
