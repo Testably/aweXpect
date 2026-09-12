@@ -67,6 +67,22 @@ public sealed partial class ThatGeneric
 					             }
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				NullableWrapper subject = null!;
+
+				async Task Act()
+					=> await That(subject).IsEquatableTo(1L);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equatable to 1,
+					             but it was <null>
+					             """);
+			}
 		}
 
 		public sealed class NegatedTests
@@ -132,6 +148,26 @@ public sealed partial class ThatGeneric
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldSucceed()
+			{
+				NullableWrapper subject = null!;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsEquatableTo(1L));
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
+		private sealed class NullableWrapper(long value) : IEquatable<long>
+		{
+			public long Value { get; } = value;
+
+			/// <inheritdoc cref="IEquatable{T}.Equals(T)" />
+			public bool Equals(long other)
+				=> Value == other;
 		}
 
 		private readonly struct Wrapper(long value)

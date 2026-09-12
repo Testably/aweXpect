@@ -36,14 +36,14 @@ public static partial class ThatGeneric
 		string it,
 		ExpectationGrammars grammars,
 		T expected)
-		: ConstraintResult.WithValue<IEquatable<T>>(grammars),
+		: ConstraintResult.WithValue<TEquatable>(grammars),
 			IValueConstraint<TEquatable>
 		where TEquatable : IEquatable<T>
 	{
 		public ConstraintResult IsMetBy(TEquatable actual)
 		{
 			Actual = actual;
-			Outcome = actual.Equals(expected) ? Outcome.Success : Outcome.Failure;
+			Outcome = actual is not null && actual.Equals(expected) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
