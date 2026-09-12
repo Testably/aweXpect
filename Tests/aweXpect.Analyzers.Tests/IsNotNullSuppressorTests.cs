@@ -72,6 +72,37 @@ public class IsNotNullSuppressorTests
 		);
 
 	[Fact]
+	public async Task WhenExpectationHasLookAlikeAttribute_ShouldNotSuppressWarning() => await Verifier
+		.VerifySuppressorAsync(
+			// The attribute must come from aweXpect itself, not from a look-alike in the user code.
+			"""
+			using System;
+			using System.Threading.Tasks;
+			using aweXpect;
+			using aweXpect.Core;
+
+			[AttributeUsage(AttributeTargets.Method)]
+			public sealed class GuaranteesNotNullAttribute : Attribute;
+
+			public static class MyExpectations
+			{
+			    [GuaranteesNotNull]
+			    public static IThat<string?> IsDefinitelyNotNull(this IThat<string?> source) => source;
+			}
+
+			public class MyClass
+			{
+			    public async Task MyTest(string? subject)
+			    {
+			        await Task.Yield();
+			        _ = Expect.That(subject).IsDefinitelyNotNull();
+			        _ = {|#0:subject|}.Length;
+			    }
+			}
+			""",
+			NotSuppressedNullabilityWarning()
+		);
+	[Fact]
 	public async Task WhenExpectationIsCombinedWithAnd_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -128,6 +159,25 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
+	[Fact]
+	public async Task WhenExpectationIsDeclaredInCore_ShouldSuppressWarning() => await Verifier
+		.VerifySuppressorAsync(
+			// `IsExactly` is an instance member of `IThatSubject<T>` rather than an `IThat<T>` extension.
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest(object? subject)
+			    {
+			        await Expect.That(subject).IsExactly<string>();
+			        _ = {|#0:subject|}.ToString();
+			    }
+			}
+			""",
+			SuppressedNullabilityWarning("CS8602")
+		);
 	[Fact]
 	public async Task WhenExpectationIsFollowedByOr_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
@@ -229,6 +279,24 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
+	[Fact]
+	public async Task WhenExpectationRequiresNotEmptyCollection_ShouldSuppressWarning() => await Verifier
+		.VerifySuppressorAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest(int[]? subject)
+			    {
+			        await Expect.That(subject).IsNotEmpty();
+			        _ = {|#0:subject|}.Length;
+			    }
+			}
+			""",
+			SuppressedNullabilityWarning("CS8602")
+		);
 	[Fact]
 	public async Task WhenExpectationRequiresNotNullOrEmpty_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(

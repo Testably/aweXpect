@@ -14,6 +14,7 @@ public static partial class ThatNullableTimeOnly
 	/// <summary>
 	///     Verifies that the subject is between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<TimeToleranceResult<TimeOnly?, IThat<TimeOnly?>>, TimeOnly?> IsBetween(
 		this IThat<TimeOnly?> source,
 		TimeOnly? minimum)

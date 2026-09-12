@@ -18,6 +18,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is in descending order.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionOrderResult<TItem, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
 		IsInDescendingOrder<TItem>(
 			this IThat<IEnumerable<TItem>?> source)
@@ -39,6 +40,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is in descending order.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionOrderResult<TMember, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
 		IsInDescendingOrder<
 			TItem, TMember>(
@@ -65,6 +67,7 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection is in descending order.
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
+	[GuaranteesNotNull]
 	public static CollectionOrderResult<object?, IEnumerable, IThat<IEnumerable>>
 		IsInDescendingOrder(this IThat<IEnumerable> source)
 	{
@@ -85,6 +88,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is in descending order.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionOrderResult<TMember, IEnumerable, IThat<IEnumerable>>
 		IsInDescendingOrder<TMember>(
 			this IThat<IEnumerable> source,
@@ -110,6 +114,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is in descending order.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionOrderResult<TItem, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>
 		IsInDescendingOrder<TItem>(
 			this IThat<ImmutableArray<TItem>> source)
@@ -133,6 +138,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is in descending order.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionOrderResult<TMember, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>
 		IsInDescendingOrder<
 			TItem, TMember>(
@@ -159,6 +165,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is not in descending order.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionOrderResult<TItem, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
 		IsNotInDescendingOrder<TItem>(
 			this IThat<IEnumerable<TItem>?> source)
@@ -180,6 +187,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is not in descending order.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionOrderResult<TMember, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
 		IsNotInDescendingOrder<
 			TItem, TMember>(
@@ -206,6 +214,7 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection is not in descending order.
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
+	[GuaranteesNotNull]
 	public static CollectionOrderResult<object?, IEnumerable, IThat<IEnumerable>>
 		IsNotInDescendingOrder(this IThat<IEnumerable> source)
 	{
@@ -226,6 +235,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is not in descending order.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionOrderResult<TMember, IEnumerable, IThat<IEnumerable>>
 		IsNotInDescendingOrder<TMember>(
 			this IThat<IEnumerable> source,
@@ -251,6 +261,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is not in descending order.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionOrderResult<TItem, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>
 		IsNotInDescendingOrder<TItem>(this IThat<ImmutableArray<TItem>> source)
 	{
@@ -273,6 +284,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is not in descending order.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionOrderResult<TMember, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>
 		IsNotInDescendingOrder<TItem, TMember>(
 			this IThat<ImmutableArray<TItem>> source,

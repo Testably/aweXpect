@@ -22,6 +22,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection ends with the provided <paramref name="expected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		EndsWith<TItem>(
 			this IThat<IAsyncEnumerable<TItem>?> source,
@@ -44,6 +45,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection ends with the provided <paramref name="expected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		EndsWith<TItem>(
 			this IThat<IAsyncEnumerable<TItem>?> source,
@@ -65,6 +67,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection ends with the provided <paramref name="expected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
 		EndsWith(
 			this IThat<IAsyncEnumerable<string?>?> source,
@@ -87,6 +90,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection ends with the provided <paramref name="expected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
 		EndsWith(
 			this IThat<IAsyncEnumerable<string?>?> source,
@@ -108,6 +112,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection does not end with the provided <paramref name="unexpected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		DoesNotEndWith<TItem>(
 			this IThat<IAsyncEnumerable<TItem>?> source,
@@ -131,6 +136,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection does not end with the provided <paramref name="unexpected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		DoesNotEndWith<TItem>(
 			this IThat<IAsyncEnumerable<TItem>?> source,
@@ -152,6 +158,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection does not end with the provided <paramref name="unexpected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
 		DoesNotEndWith(
 			this IThat<IAsyncEnumerable<string?>?> source,
@@ -175,6 +182,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection does not end with the provided <paramref name="unexpected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
 		DoesNotEndWith(
 			this IThat<IAsyncEnumerable<string?>?> source,

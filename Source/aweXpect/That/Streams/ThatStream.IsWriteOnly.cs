@@ -11,6 +11,7 @@ public static partial class ThatStream
 	/// <summary>
 	///     Verifies that the subject <see cref="Stream" /> is write-only.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<Stream?, IThat<Stream?>> IsWriteOnly(
 		this IThat<Stream?> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -20,6 +21,7 @@ public static partial class ThatStream
 	/// <summary>
 	///     Verifies that the subject <see cref="Stream" /> is not write-only.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<Stream?, IThat<Stream?>> IsNotWriteOnly(
 		this IThat<Stream?> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>

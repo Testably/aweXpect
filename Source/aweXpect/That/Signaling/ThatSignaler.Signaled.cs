@@ -18,6 +18,7 @@ public static partial class ThatSignaler
 	/// <summary>
 	///     Verifies that the expected callback was signaled at least once.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static SignalCountResult Signaled(
 		this IThat<Signaler> source)
 	{
@@ -31,6 +32,7 @@ public static partial class ThatSignaler
 	/// <summary>
 	///     Verifies that the expected callback with <typeparamref name="TParameter" /> was signaled at least once.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static SignalCountWhoseResult<TParameter> Signaled<TParameter>(
 		this IThat<Signaler<TParameter>> source)
 	{
@@ -45,6 +47,7 @@ public static partial class ThatSignaler
 	///     Verifies that the expected callback was signaled
 	///     at least the given number of <paramref name="times" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static SignalCountResult Signaled(
 		this IThat<Signaler> source,
 		Times times)
@@ -60,6 +63,7 @@ public static partial class ThatSignaler
 	///     Verifies that the expected callback with <typeparamref name="TParameter" /> was signaled
 	///     at least the given number of <paramref name="times" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static SignalCountWhoseResult<TParameter> Signaled<TParameter>(
 		this IThat<Signaler<TParameter>> source,
 		Times times)
@@ -74,6 +78,7 @@ public static partial class ThatSignaler
 	/// <summary>
 	///     Verifies that the expected callback was not signaled.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static SignalCountResult DidNotSignal(
 		this IThat<Signaler> source)
 	{
@@ -87,6 +92,7 @@ public static partial class ThatSignaler
 	/// <summary>
 	///     Verifies that the expected callback with <typeparamref name="TParameter" /> was not signaled.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static SignalCountResult<TParameter> DidNotSignal<TParameter>(
 		this IThat<Signaler<TParameter>> source)
 	{
@@ -101,6 +107,7 @@ public static partial class ThatSignaler
 	///     Verifies that the expected callback was not signaled
 	///     at least the given number of <paramref name="times" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static SignalCountResult DidNotSignal(
 		this IThat<Signaler> source,
 		Times times)
@@ -116,6 +123,7 @@ public static partial class ThatSignaler
 	///     Verifies that the expected callback with <typeparamref name="TParameter" /> was not signaled
 	///     at least the given number of <paramref name="times" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static SignalCountResult<TParameter> DidNotSignal<TParameter>(
 		this IThat<Signaler<TParameter>> source,
 		Times times)

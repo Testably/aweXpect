@@ -14,6 +14,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that in the collection exactly <paramref name="expected" /> items…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static Elements<TItem> Exactly<TItem>(
 		this IThat<IEnumerable<TItem>?> subject,
 		int expected)
@@ -23,6 +24,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that in the collection exactly <paramref name="expected" /> items…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static Elements Exactly(
 		this IThat<IEnumerable<string?>?> subject,
 		int expected)
@@ -33,6 +35,7 @@ public static partial class ThatEnumerable
 	///     Verifies that in the collection exactly <paramref name="expected" /> items…
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
+	[GuaranteesNotNull]
 	public static ElementsForEnumerable<IEnumerable> Exactly(
 		this IThat<IEnumerable> subject,
 		int expected)
@@ -42,6 +45,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that in the collection exactly <paramref name="expected" /> items…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ElementsForStructEnumerable<ImmutableArray<TItem>, TItem> Exactly<TItem>(
 		this IThat<ImmutableArray<TItem>> subject,
 		int expected)
@@ -52,6 +56,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that in the collection exactly <paramref name="expected" /> items…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ElementsForStructEnumerable<ImmutableArray<string?>> Exactly(
 		this IThat<ImmutableArray<string?>> subject,
 		int expected)

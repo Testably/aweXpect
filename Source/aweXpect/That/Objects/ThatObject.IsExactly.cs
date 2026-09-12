@@ -11,6 +11,7 @@ public static partial class ThatObject
 	/// <summary>
 	///     Verifies that the subject is exactly of type <paramref name="type" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<object?, IThat<object?>> IsExactly(
 		this IThat<object?> source,
 		Type type)

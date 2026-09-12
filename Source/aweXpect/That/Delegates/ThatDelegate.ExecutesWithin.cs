@@ -14,6 +14,7 @@ public static partial class ThatDelegate
 	///     Verifies that the delegate finishes execution within the given <paramref name="duration" />
 	///     without throwing an exception.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ExpectationResult<TValue> ExecutesWithin<TValue>(
 		this IThat<Delegates.ThatDelegate.WithValue<TValue>> source,
 		TimeSpan duration)
@@ -24,6 +25,7 @@ public static partial class ThatDelegate
 	///     Verifies that the delegate finishes execution within the given <paramref name="duration" />
 	///     without throwing an exception.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ExpectationResult ExecutesWithin(
 		this IThat<Delegates.ThatDelegate.WithoutValue> source,
 		TimeSpan duration)
@@ -34,6 +36,7 @@ public static partial class ThatDelegate
 	///     Verifies that the delegate does not finish execution within the given <paramref name="duration" />
 	///     or throws an exception.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ExpectationResult<TValue> DoesNotExecuteWithin<TValue>(
 		this IThat<Delegates.ThatDelegate.WithValue<TValue>> source,
 		TimeSpan duration)
@@ -44,6 +47,7 @@ public static partial class ThatDelegate
 	///     Verifies that the delegate does not finish execution within the given <paramref name="duration" />
 	///     or throws an exception.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ExpectationResult DoesNotExecuteWithin(
 		this IThat<Delegates.ThatDelegate.WithoutValue> source,
 		TimeSpan duration)

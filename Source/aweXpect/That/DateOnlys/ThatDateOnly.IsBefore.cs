@@ -14,6 +14,7 @@ public static partial class ThatDateOnly
 	/// <summary>
 	///     Verifies that the subject is before the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static TimeToleranceResult<DateOnly, IThat<DateOnly>> IsBefore(
 		this IThat<DateOnly> source,
 		DateOnly? expected)
@@ -29,6 +30,7 @@ public static partial class ThatDateOnly
 	/// <summary>
 	///     Verifies that the subject is not before the <paramref name="unexpected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static TimeToleranceResult<DateOnly, IThat<DateOnly>> IsNotBefore(
 		this IThat<DateOnly> source,
 		DateOnly? unexpected)

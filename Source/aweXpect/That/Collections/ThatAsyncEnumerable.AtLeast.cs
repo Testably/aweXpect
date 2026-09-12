@@ -10,6 +10,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that in the collection at least <paramref name="minimum" /> items…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static Elements<TItem> AtLeast<TItem>(
 		this IThat<IAsyncEnumerable<TItem>?> subject,
 		int minimum)
@@ -19,6 +20,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that in the collection at least <paramref name="minimum" /> items…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static Elements AtLeast(
 		this IThat<IAsyncEnumerable<string?>?> subject,
 		int minimum)

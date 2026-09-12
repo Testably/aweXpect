@@ -11,6 +11,7 @@ public static partial class ThatException
 	/// <summary>
 	///     Verifies that the actual <see cref="Exception" /> has an <paramref name="expected" /> HResult.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<TException, IThat<TException>> HasHResult<TException>(
 		this IThat<TException> source,
 		int expected)

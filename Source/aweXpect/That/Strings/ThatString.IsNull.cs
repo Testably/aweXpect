@@ -19,6 +19,7 @@ public static partial class ThatString
 	/// <summary>
 	///     Verifies that the subject is not <see langword="null" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<string, IThat<string?>> IsNotNull(
 		this IThat<string?> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>

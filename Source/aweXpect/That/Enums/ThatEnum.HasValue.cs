@@ -12,6 +12,7 @@ public static partial class ThatEnum
 	/// <summary>
 	///     Verifies that the subject has the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<TEnum, IThat<TEnum>> HasValue<TEnum>(
 		this IThat<TEnum> source,
 		long? expected)

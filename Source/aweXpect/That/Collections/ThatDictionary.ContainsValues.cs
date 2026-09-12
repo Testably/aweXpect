@@ -11,6 +11,7 @@ public static partial class ThatDictionary
 	/// <summary>
 	///     Verifies that the dictionary contains all <paramref name="expected" /> values.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>> ContainsValues<TKey,
 		TValue>(
 		this IThat<IDictionary<TKey, TValue>?> source,
@@ -27,6 +28,7 @@ public static partial class ThatDictionary
 	/// <summary>
 	///     Verifies that the dictionary contains all <paramref name="expected" /> values.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<Dictionary<TKey, TValue>, IThat<Dictionary<TKey, TValue>?>> ContainsValues<TKey,
 		TValue>(
 		this IThat<Dictionary<TKey, TValue>?> source,
@@ -44,6 +46,7 @@ public static partial class ThatDictionary
 	/// <summary>
 	///     Verifies that the dictionary contains none of the <paramref name="unexpected" /> values.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>>
 		DoesNotContainValues<TKey,
 			TValue>(
@@ -61,6 +64,7 @@ public static partial class ThatDictionary
 	/// <summary>
 	///     Verifies that the dictionary contains none of the <paramref name="unexpected" /> values.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<Dictionary<TKey, TValue>, IThat<Dictionary<TKey, TValue>?>>
 		DoesNotContainValues<TKey,
 			TValue>(

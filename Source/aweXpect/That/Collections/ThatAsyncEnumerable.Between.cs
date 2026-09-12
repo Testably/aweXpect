@@ -11,6 +11,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that in the collection between <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<Elements<TItem>> Between<TItem>(
 		this IThat<IAsyncEnumerable<TItem>?> subject,
 		int minimum)
@@ -20,6 +21,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that in the collection between <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<Elements> Between(
 		this IThat<IAsyncEnumerable<string?>?> subject,
 		int minimum)

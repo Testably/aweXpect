@@ -10,6 +10,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that in the collection less than <paramref name="maximum" /> items…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static Elements<TItem> LessThan<TItem>(
 		this IThat<IAsyncEnumerable<TItem>?> subject,
 		int maximum)
@@ -19,6 +20,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that in the collection less than <paramref name="maximum" /> items…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static Elements LessThan(
 		this IThat<IAsyncEnumerable<string?>?> subject,
 		int maximum)

@@ -16,6 +16,7 @@ public static partial class ThatSpan
 	///     The optional parameter <paramref name="formatProvider" /> provides culture-specific formatting information
 	///     in the call to <see cref="IParsable{TType}.Parse(string, IFormatProvider)" />.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static IsSpanParsableResult<TType> IsParsableInto<TType>(
 		this IThat<SpanWrapper<char>> source,
 		IFormatProvider? formatProvider = null)
@@ -32,6 +33,7 @@ public static partial class ThatSpan
 	///     The optional parameter <paramref name="formatProvider" /> provides culture-specific formatting information
 	///     in the call to <see cref="IParsable{TType}.Parse(string, IFormatProvider)" />.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static IsUtf8SpanParsableResult<TType> IsParsableInto<TType>(
 		this IThat<SpanWrapper<byte>> source,
 		IFormatProvider? formatProvider = null)

@@ -12,6 +12,7 @@ public static partial class ThatReadOnlyDictionary
 	/// <summary>
 	///     Verifies that the dictionary contains all <paramref name="expected" /> values.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>>
 		ContainsValues<TKey,
 			TValue>(
@@ -29,6 +30,7 @@ public static partial class ThatReadOnlyDictionary
 	/// <summary>
 	///     Verifies that the dictionary contains all <paramref name="expected" /> values.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<ReadOnlyDictionary<TKey, TValue>, IThat<ReadOnlyDictionary<TKey, TValue>?>>
 		ContainsValues<TKey,
 			TValue>(
@@ -47,6 +49,7 @@ public static partial class ThatReadOnlyDictionary
 	/// <summary>
 	///     Verifies that the dictionary contains none of the <paramref name="unexpected" /> values.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>>
 		DoesNotContainValues<TKey,
 			TValue>(
@@ -64,6 +67,7 @@ public static partial class ThatReadOnlyDictionary
 	/// <summary>
 	///     Verifies that the dictionary contains none of the <paramref name="unexpected" /> values.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<ReadOnlyDictionary<TKey, TValue>, IThat<ReadOnlyDictionary<TKey, TValue>?>>
 		DoesNotContainValues<TKey,
 			TValue>(

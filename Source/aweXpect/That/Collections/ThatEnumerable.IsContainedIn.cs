@@ -19,6 +19,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is contained in the provided <paramref name="expected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectCollectionBeContainedInResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		IsContainedIn<TItem>(
 			this IThat<IEnumerable<TItem>?> source,
@@ -43,6 +44,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is contained in the provided <paramref name="expected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringCollectionBeContainedInResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 		IsContainedIn(this IThat<IEnumerable<string?>?> source,
 			IEnumerable<string?> expected,
@@ -67,6 +69,7 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection is contained in the provided <paramref name="expected" /> collection.
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
+	[GuaranteesNotNull]
 	public static ObjectCollectionBeContainedInResult<IEnumerable, IThat<IEnumerable>, TItem>
 		IsContainedIn<TItem>(
 			this IThat<IEnumerable> source,
@@ -92,6 +95,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is contained in the provided <paramref name="expected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectCollectionBeContainedInResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
 		IsContainedIn<TItem>(
 			this IThat<ImmutableArray<TItem>> source,
@@ -119,6 +123,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is contained in the provided <paramref name="expected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringCollectionBeContainedInResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
 		IsContainedIn(this IThat<ImmutableArray<string?>> source,
 			IEnumerable<string?> expected,
@@ -144,6 +149,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is contained in the provided <paramref name="expected" /> collection of predicates.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionBeContainedInResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		IsContainedIn<TItem>(
 			this IThat<IEnumerable<TItem>?> source,
@@ -165,6 +171,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is contained in the provided <paramref name="expected" /> collection of expectations.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionBeContainedInResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		IsContainedIn<TItem>(
 			this IThat<IEnumerable<TItem>?> source,

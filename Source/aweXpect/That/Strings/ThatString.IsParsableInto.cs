@@ -16,6 +16,7 @@ public static partial class ThatString
 	///     The optional parameter <paramref name="formatProvider" /> provides culture-specific formatting information
 	///     in the call to <see cref="IParsable{TType}.Parse(string, IFormatProvider)" />.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static IsParsableResult<TType> IsParsableInto<TType>(
 		this IThat<string?> source,
 		IFormatProvider? formatProvider = null)

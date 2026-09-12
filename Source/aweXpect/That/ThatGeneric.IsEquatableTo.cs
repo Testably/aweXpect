@@ -12,6 +12,7 @@ public static partial class ThatGeneric
 	///     Verifies that the subject is equal to the <paramref name="expected" /> value
 	///     using the <see cref="IEquatable{T}.Equals(T)" /> method.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<TEquatable, IThat<TEquatable>> IsEquatableTo<T, TEquatable>(
 		this IThat<TEquatable> source,
 		T expected)

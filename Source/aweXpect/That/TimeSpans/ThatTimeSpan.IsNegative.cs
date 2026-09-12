@@ -11,6 +11,7 @@ public static partial class ThatTimeSpan
 	/// <summary>
 	///     Verifies that the subject is negative.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<TimeSpan, IThat<TimeSpan>> IsNegative(this IThat<TimeSpan> source)
 		=> new(
 			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -20,6 +21,7 @@ public static partial class ThatTimeSpan
 	/// <summary>
 	///     Verifies that the subject is not negative.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<TimeSpan, IThat<TimeSpan>> IsNotNegative(this IThat<TimeSpan> source)
 		=> new(
 			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>

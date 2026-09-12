@@ -18,6 +18,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is empty.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>> IsEmpty<TItem>(
 		this IThat<IEnumerable<TItem>?> source)
 		=> new(source.Get().ExpectationBuilder
@@ -27,6 +28,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is empty.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<TEnumerable, IThat<TEnumerable?>> IsEmpty<TEnumerable>(
 		this IThat<TEnumerable?> source)
 		where TEnumerable : IEnumerable
@@ -37,6 +39,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is not empty.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>> IsNotEmpty<TItem>(
 		this IThat<IEnumerable<TItem>?> source)
 		=> new(source.Get().ExpectationBuilder

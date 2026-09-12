@@ -19,6 +19,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection contains exactly one item.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static SingleItemResult<IAsyncEnumerable<TItem>, TItem>.Async HasSingle<TItem>(
 		this IThat<IAsyncEnumerable<TItem>?> source)
 	{

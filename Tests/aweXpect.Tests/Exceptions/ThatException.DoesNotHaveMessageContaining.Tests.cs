@@ -90,7 +90,16 @@ public sealed partial class ThatException
 
 				await That(Act).DoesNotThrow();
 			}
-		}
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				Exception? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveMessageContaining("foo");
+
+				await That(Act).Throws<XunitException>();
+			}		}
 
 		public sealed class NegatedTests
 		{

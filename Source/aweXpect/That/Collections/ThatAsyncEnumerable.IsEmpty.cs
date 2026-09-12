@@ -18,6 +18,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection is empty.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
 		IsEmpty<TItem>(
 			this IThat<IAsyncEnumerable<TItem>?> source)
@@ -28,6 +29,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection is not empty.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
 		IsNotEmpty<TItem>(
 			this IThat<IAsyncEnumerable<TItem>?> source)

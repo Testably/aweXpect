@@ -14,6 +14,7 @@ public static partial class ThatTimeOnly
 	/// <summary>
 	///     Verifies that the subject is on or before the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static TimeToleranceResult<TimeOnly, IThat<TimeOnly>> IsOnOrBefore(
 		this IThat<TimeOnly> source,
 		TimeOnly? expected)
@@ -29,6 +30,7 @@ public static partial class ThatTimeOnly
 	/// <summary>
 	///     Verifies that the subject is not on or before the <paramref name="unexpected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static TimeToleranceResult<TimeOnly, IThat<TimeOnly>> IsNotOnOrBefore(
 		this IThat<TimeOnly> source,
 		TimeOnly? unexpected)

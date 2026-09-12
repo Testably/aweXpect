@@ -13,6 +13,7 @@ public static partial class ThatString
 	/// <remarks>
 	///     That is, that the string could be the result of a call to <see cref="string.ToUpperInvariant()" />.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static AndOrResult<string?, IThat<string?>> IsUpperCased(
 		this IThat<string?> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -25,6 +26,7 @@ public static partial class ThatString
 	/// <remarks>
 	///     That is, that the string could not be the result of a call to <see cref="string.ToUpperInvariant()" />.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static AndOrResult<string, IThat<string?>> IsNotUpperCased(
 		this IThat<string?> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>

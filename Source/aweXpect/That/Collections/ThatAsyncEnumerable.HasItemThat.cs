@@ -19,6 +19,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection has an item that complies with the <paramref name="expectations" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static HasItemResult<IAsyncEnumerable<TItem>?> HasItemThat<TItem>(
 		this IThat<IAsyncEnumerable<TItem>?> source, Action<IThatSubject<TItem>> expectations)
 	{

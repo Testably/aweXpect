@@ -15,6 +15,7 @@ public static partial class ThatString
 	/// <summary>
 	///     Verifies that the subject contains the <paramref name="expected" /> <see langword="string" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeCountResult<string?, IThat<string?>> Contains(
 		this IThat<string?> source,
 		string expected)
@@ -38,6 +39,7 @@ public static partial class ThatString
 	/// <summary>
 	///     Verifies that the subject contains the <paramref name="unexpected" /> <see langword="string" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeCountResult<string?, IThat<string?>> DoesNotContain(
 		this IThat<string?> source,
 		string unexpected)

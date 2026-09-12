@@ -22,6 +22,7 @@ public static partial class ThatReadOnlyDictionary
 	/// <remarks>
 	///     This expectation completely ignores the dictionary keys, as they are unique by design.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>,
 			TValue>
 		AreAllUnique<TKey, TValue>(
@@ -43,6 +44,7 @@ public static partial class ThatReadOnlyDictionary
 	/// <remarks>
 	///     This expectation completely ignores the dictionary keys, as they are unique by design.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static StringEqualityResult<IReadOnlyDictionary<TKey, string?>, IThat<IReadOnlyDictionary<TKey, string?>?>>
 		AreAllUnique<TKey>(this IThat<IReadOnlyDictionary<TKey, string?>?> source)
 	{
@@ -62,6 +64,7 @@ public static partial class ThatReadOnlyDictionary
 	/// <remarks>
 	///     This expectation completely ignores the dictionary keys, as they are unique by design.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>,
 			TMember>
 		AreAllUnique<TKey,
@@ -93,6 +96,7 @@ public static partial class ThatReadOnlyDictionary
 	/// <remarks>
 	///     This expectation completely ignores the dictionary keys, as they are unique by design.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static StringEqualityResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>>
 		AreAllUnique<TKey,
 			TValue>(
@@ -121,6 +125,7 @@ public static partial class ThatReadOnlyDictionary
 	/// <remarks>
 	///     This expectation completely ignores the dictionary keys, as they are unique by design.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static ObjectEqualityResult<ReadOnlyDictionary<TKey, TValue>, IThat<ReadOnlyDictionary<TKey, TValue>?>,
 			TValue>
 		AreAllUnique<TKey, TValue>(
@@ -143,6 +148,7 @@ public static partial class ThatReadOnlyDictionary
 	/// <remarks>
 	///     This expectation completely ignores the dictionary keys, as they are unique by design.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static StringEqualityResult<ReadOnlyDictionary<TKey, string?>, IThat<ReadOnlyDictionary<TKey, string?>?>>
 		AreAllUnique<TKey>(this IThat<ReadOnlyDictionary<TKey, string?>?> source)
 		where TKey : notnull
@@ -163,6 +169,7 @@ public static partial class ThatReadOnlyDictionary
 	/// <remarks>
 	///     This expectation completely ignores the dictionary keys, as they are unique by design.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static ObjectEqualityResult<ReadOnlyDictionary<TKey, TValue>, IThat<ReadOnlyDictionary<TKey, TValue>?>,
 			TMember>
 		AreAllUnique<TKey,
@@ -195,6 +202,7 @@ public static partial class ThatReadOnlyDictionary
 	/// <remarks>
 	///     This expectation completely ignores the dictionary keys, as they are unique by design.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static StringEqualityResult<ReadOnlyDictionary<TKey, TValue>, IThat<ReadOnlyDictionary<TKey, TValue>?>>
 		AreAllUnique<TKey,
 			TValue>(

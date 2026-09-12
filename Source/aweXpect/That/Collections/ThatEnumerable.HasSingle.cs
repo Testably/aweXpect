@@ -22,6 +22,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection contains exactly one item.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static SingleItemResult<IEnumerable<TItem>, TItem> HasSingle<TItem>(
 		this IThat<IEnumerable<TItem>?> source)
 	{
@@ -39,6 +40,7 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection contains exactly one item.
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
+	[GuaranteesNotNull]
 	public static SingleItemResult<IEnumerable, object?> HasSingle(
 		this IThat<IEnumerable> source)
 	{
@@ -59,6 +61,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection contains exactly one item.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static SingleItemResult<ImmutableArray<TItem>, TItem> HasSingle<TItem>(
 		this IThat<ImmutableArray<TItem>> source)
 	{

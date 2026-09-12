@@ -10,6 +10,7 @@ public partial class ThatException
 	/// <summary>
 	///     Verifies that the actual exception has an inner exception.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<Exception?, IThat<Exception?>> HasInnerException(
 		this IThat<Exception?> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -19,6 +20,7 @@ public partial class ThatException
 	/// <summary>
 	///     Verifies that the actual exception has an inner exception which satisfies the <paramref name="expectations" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<Exception?, IThat<Exception?>> HasInnerException(
 		this IThat<Exception?> source,
 		Action<IThatSubject<Exception?>> expectations)

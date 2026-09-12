@@ -10,6 +10,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that in the collection exactly <paramref name="expected" /> items…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static Elements<TItem> Exactly<TItem>(
 		this IThat<IAsyncEnumerable<TItem>?> subject,
 		int expected)
@@ -19,6 +20,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that in the collection exactly <paramref name="expected" /> items…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static Elements Exactly(
 		this IThat<IAsyncEnumerable<string?>?> subject,
 		int expected)

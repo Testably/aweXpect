@@ -18,6 +18,7 @@ public static partial class ThatNullableBool
 	/// <summary>
 	///     Verifies that the subject is not <see langword="null" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<bool?, IThat<bool?>> IsNotNull(this IThat<bool?> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToConstraint(it, grammars, null).Invert()),

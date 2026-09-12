@@ -17,6 +17,7 @@ public static partial class ThatException
 	///     Recursively applies the expectations on the <see cref="Exception.InnerException" /> (if not <see langword="null" />
 	///     and for <see cref="AggregateException" /> also on the <see cref="AggregateException.InnerExceptions" />.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static AndOrResult<Exception?, IThat<Exception?>> HasRecursiveInnerExceptions(
 		this IThat<Exception?> source,
 		Action<IThatSubject<IEnumerable<Exception>>> expectations)

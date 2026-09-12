@@ -12,6 +12,7 @@ public static partial class ThatObject
 	/// <summary>
 	///     Verifies that the subject is of type <paramref name="type" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<T?, IThat<T?>> Is<T>(
 		this IThat<T?> source,
 		Type type)

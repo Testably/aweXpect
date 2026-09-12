@@ -14,6 +14,7 @@ public static partial class ThatException
 	/// <summary>
 	///     Verifies that the actual exception has a message containing the <paramref name="expected" /> pattern.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<Exception?, IThat<Exception?>> HasMessageContaining(
 		this IThat<Exception?> source,
 		string? expected)
@@ -30,6 +31,7 @@ public static partial class ThatException
 	/// <summary>
 	///     Verifies that the actual exception does not have a message containing the <paramref name="unexpected" /> pattern.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<Exception?, IThat<Exception?>> DoesNotHaveMessageContaining(
 		this IThat<Exception?> source,
 		string? unexpected)

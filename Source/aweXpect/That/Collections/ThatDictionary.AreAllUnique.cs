@@ -21,6 +21,7 @@ public static partial class ThatDictionary
 	/// <remarks>
 	///     This expectation completely ignores the dictionary keys, as they are unique by design.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>, TValue>
 		AreAllUnique<TKey, TValue>(
 			this IThat<IDictionary<TKey, TValue>?> source)
@@ -40,6 +41,7 @@ public static partial class ThatDictionary
 	/// <remarks>
 	///     This expectation completely ignores the dictionary keys, as they are unique by design.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static StringEqualityResult<IDictionary<TKey, string?>, IThat<IDictionary<TKey, string?>?>>
 		AreAllUnique<TKey>(this IThat<IDictionary<TKey, string?>?> source)
 	{
@@ -59,6 +61,7 @@ public static partial class ThatDictionary
 	/// <remarks>
 	///     This expectation completely ignores the dictionary keys, as they are unique by design.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>, TMember>
 		AreAllUnique<TKey,
 			TValue, TMember>(
@@ -88,6 +91,7 @@ public static partial class ThatDictionary
 	/// <remarks>
 	///     This expectation completely ignores the dictionary keys, as they are unique by design.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static StringEqualityResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>>
 		AreAllUnique<TKey,
 			TValue>(
@@ -116,6 +120,7 @@ public static partial class ThatDictionary
 	/// <remarks>
 	///     This expectation completely ignores the dictionary keys, as they are unique by design.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static ObjectEqualityResult<Dictionary<TKey, TValue>, IThat<Dictionary<TKey, TValue>?>, TValue>
 		AreAllUnique<TKey, TValue>(
 			this IThat<Dictionary<TKey, TValue>?> source)
@@ -136,6 +141,7 @@ public static partial class ThatDictionary
 	/// <remarks>
 	///     This expectation completely ignores the dictionary keys, as they are unique by design.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static StringEqualityResult<Dictionary<TKey, string?>, IThat<Dictionary<TKey, string?>?>>
 		AreAllUnique<TKey>(this IThat<Dictionary<TKey, string?>?> source)
 		where TKey : notnull
@@ -156,6 +162,7 @@ public static partial class ThatDictionary
 	/// <remarks>
 	///     This expectation completely ignores the dictionary keys, as they are unique by design.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static ObjectEqualityResult<Dictionary<TKey, TValue>, IThat<Dictionary<TKey, TValue>?>, TMember>
 		AreAllUnique<TKey,
 			TValue, TMember>(
@@ -186,6 +193,7 @@ public static partial class ThatDictionary
 	/// <remarks>
 	///     This expectation completely ignores the dictionary keys, as they are unique by design.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static StringEqualityResult<Dictionary<TKey, TValue>, IThat<Dictionary<TKey, TValue>?>>
 		AreAllUnique<TKey,
 			TValue>(

@@ -23,6 +23,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection has an item that complies with the <paramref name="expectations" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static HasItemResult<IEnumerable<TItem>?> HasItemThat<TItem>(
 		this IThat<IEnumerable<TItem>?> source, Action<IThatSubject<TItem>> expectations)
 	{
@@ -39,6 +40,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection has an item that complies with the <paramref name="expectations" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static HasItemResult<ImmutableArray<TItem>> HasItemThat<TItem>(
 		this IThat<ImmutableArray<TItem>> source, Action<IThatSubject<TItem>> expectations)
 	{
