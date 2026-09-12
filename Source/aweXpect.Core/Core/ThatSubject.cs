@@ -15,6 +15,7 @@ public readonly struct ThatSubject<T>(ExpectationBuilder expectationBuilder)
 	public ExpectationBuilder ExpectationBuilder { get; } = expectationBuilder;
 
 	/// <inheritdoc cref="IThatSubject{T}.Is{TType}" />
+	[GuaranteesNotNull]
 	public AndOrWhoseResult<TType, IThatSubject<T>> Is<TType>()
 		=> new(ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsOfTypeConstraint<T, TType>(it, grammars)),
@@ -27,6 +28,7 @@ public readonly struct ThatSubject<T>(ExpectationBuilder expectationBuilder)
 			this);
 
 	/// <inheritdoc cref="IThatSubject{T}.IsExactly{TType}" />
+	[GuaranteesNotNull]
 	public AndOrWhoseResult<TType, IThatSubject<T>> IsExactly<TType>()
 		=> new(ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsExactlyOfTypeConstraint<T, TType>(it, grammars)),

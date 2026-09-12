@@ -17,6 +17,7 @@ public abstract partial class ThatDelegate
 		/// <summary>
 		///     Verifies that the delegate executes in…
 		/// </summary>
+		[GuaranteesNotNull]
 		public ExecutesInResult<AndResult<WithoutValue>> ExecutesIn()
 		{
 			TimeSpanEqualityOptions options = new();

@@ -15,6 +15,7 @@ public interface IThatSubject<T> : IThat<T>
 	/// <summary>
 	///     Verifies that the subject is of type <typeparamref name="TType" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	AndOrWhoseResult<TType, IThatSubject<T>> Is<TType>();
 
 	/// <summary>
@@ -25,6 +26,7 @@ public interface IThatSubject<T> : IThat<T>
 	/// <summary>
 	///     Verifies that the subject is exactly of type <typeparamref name="TType" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	AndOrWhoseResult<TType, IThatSubject<T>> IsExactly<TType>();
 
 	/// <summary>
