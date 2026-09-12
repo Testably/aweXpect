@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "6bc20b7e9a22fc1e91481fed8641c2efb18c2eda",
-        "author": "dependabot[bot]",
-        "date": "Mon Jun 8 09:07:23 2026 \u002B0200",
-        "message": "chore: Bump SharpCompress from 0.48.1 to 0.49.1 (#979)"
-      },
-      {
         "sha": "084e1ad1198fbca36f98c7e0138332ca9acef071",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Jun 8 09:06:21 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 20:28:52 2026 \u002B0200",
         "message": "feat: recognise expectations that guarantee a not-null subject by attribute (#1050)"
+      },
+      {
+        "sha": "f2c58efc36e206c8e0d6fa334b9c36461ac2e4d1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 20:33:15 2026 \u002B0200",
+        "message": "fix: fail instead of silently succeeding when equivalency finds no members (#1051)"
       }
     ],
     "labels": [
-      "6bc20b7e",
       "084e1ad1",
       "5b710f7f",
       "0927987f",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "4bd75735",
       "1c48f221",
       "ae28ac8b",
-      "2dfc2a93"
+      "2dfc2a93",
+      "f2c58efc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          253.21568053109306,
           270.32417484692166,
           260.181368748347,
           244.476037135491,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           279.72621849605014,
           176.9221565246582,
           251.45966777801513,
-          253.74554430643718
+          253.74554430643718,
+          185.81431449254353
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          238.7115925380162,
           240.24807112557548,
           241.4171945254008,
           237.37615286509197,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           263.74817759650097,
           192.242506980896,
           271.93721526009693,
-          255.67135229110718
+          255.67135229110718,
+          211.59095217500413
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "6bc20b7e9a22fc1e91481fed8641c2efb18c2eda",
-        "author": "dependabot[bot]",
-        "date": "Mon Jun 8 09:07:23 2026 \u002B0200",
-        "message": "chore: Bump SharpCompress from 0.48.1 to 0.49.1 (#979)"
-      },
-      {
         "sha": "084e1ad1198fbca36f98c7e0138332ca9acef071",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Jun 8 09:06:21 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 20:28:52 2026 \u002B0200",
         "message": "feat: recognise expectations that guarantee a not-null subject by attribute (#1050)"
+      },
+      {
+        "sha": "f2c58efc36e206c8e0d6fa334b9c36461ac2e4d1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 20:33:15 2026 \u002B0200",
+        "message": "fix: fail instead of silently succeeding when equivalency finds no members (#1051)"
       }
     ],
     "labels": [
-      "6bc20b7e",
       "084e1ad1",
       "5b710f7f",
       "0927987f",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "4bd75735",
       "1c48f221",
       "ae28ac8b",
-      "2dfc2a93"
+      "2dfc2a93",
+      "f2c58efc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          328205.43907877605,
           331844.7231933594,
           323882.5665039063,
           316276.7185384115,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           330381.0539388021,
           201159.01329627403,
           246182.51293945312,
-          314607.5203776042
+          314607.5203776042,
+          200805.07823768028
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1056,7 +1056,6 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
           335444,
           335444,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           335444,
           335442,
           335444,
-          335444
+          335444,
+          335442
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2713961.901785714,
           2647382.0906808036,
           2751218.3953125,
           2721342.6646634615,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2754495.861328125,
           1632144.8722098214,
           1975977.1479166667,
-          2505769.34375
+          2505769.34375,
+          1670276.2193080357
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841651,
           4841651,
           4841651,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841611,
           4841613,
-          4841651
+          4841651,
+          4841611
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "6bc20b7e9a22fc1e91481fed8641c2efb18c2eda",
-        "author": "dependabot[bot]",
-        "date": "Mon Jun 8 09:07:23 2026 \u002B0200",
-        "message": "chore: Bump SharpCompress from 0.48.1 to 0.49.1 (#979)"
-      },
       {
         "sha": "084e1ad1198fbca36f98c7e0138332ca9acef071",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 20:28:52 2026 \u002B0200",
         "message": "feat: recognise expectations that guarantee a not-null subject by attribute (#1050)"
+      },
+      {
+        "sha": "f2c58efc36e206c8e0d6fa334b9c36461ac2e4d1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 20:33:15 2026 \u002B0200",
+        "message": "fix: fail instead of silently succeeding when equivalency finds no members (#1051)"
       }
     ],
     "labels": [
-      "6bc20b7e",
       "084e1ad1",
       "5b710f7f",
       "0927987f",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "4bd75735",
       "1c48f221",
       "ae28ac8b",
-      "2dfc2a93"
+      "2dfc2a93",
+      "f2c58efc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          481.5078296661377,
           476.0209849561964,
           497.45273984273274,
           460.82882738113403,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           546.6029392242432,
           442.43858333996366,
           460.4913195201329,
-          517.4517107009888
+          517.4517107009888,
+          411.3238247803279
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          466.15099004336764,
           458.40288200378416,
           467.8260079111372,
           463.22075010935464,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           557.0006458282471,
           377.8739272117615,
           518.0169225692749,
-          520.8710504531861
+          520.8710504531861,
+          414.6723243077596
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "6bc20b7e9a22fc1e91481fed8641c2efb18c2eda",
-        "author": "dependabot[bot]",
-        "date": "Mon Jun 8 09:07:23 2026 \u002B0200",
-        "message": "chore: Bump SharpCompress from 0.48.1 to 0.49.1 (#979)"
-      },
-      {
         "sha": "084e1ad1198fbca36f98c7e0138332ca9acef071",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Jun 8 09:06:21 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 20:28:52 2026 \u002B0200",
         "message": "feat: recognise expectations that guarantee a not-null subject by attribute (#1050)"
+      },
+      {
+        "sha": "f2c58efc36e206c8e0d6fa334b9c36461ac2e4d1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 20:33:15 2026 \u002B0200",
+        "message": "fix: fail instead of silently succeeding when equivalency finds no members (#1051)"
       }
     ],
     "labels": [
-      "6bc20b7e",
       "084e1ad1",
       "5b710f7f",
       "0927987f",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "4bd75735",
       "1c48f221",
       "ae28ac8b",
-      "2dfc2a93"
+      "2dfc2a93",
+      "f2c58efc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          261.29021479288735,
           266.10511245727537,
           263.8962922732035,
           261.12085257257735,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           299.5892717043559,
           196.72756666796548,
           258.7793156305949,
-          264.43931474685667
+          264.43931474685667,
+          193.14304917199271
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          237.4627223748427,
           237.5357260386149,
           242.4834464708964,
           237.16833070346289,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           277.9910137494405,
           205.07823863396277,
           282.3623188654582,
-          263.38711411158243
+          263.38711411158243,
+          215.79852714538575
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "6bc20b7e9a22fc1e91481fed8641c2efb18c2eda",
-        "author": "dependabot[bot]",
-        "date": "Mon Jun 8 09:07:23 2026 \u002B0200",
-        "message": "chore: Bump SharpCompress from 0.48.1 to 0.49.1 (#979)"
-      },
-      {
         "sha": "084e1ad1198fbca36f98c7e0138332ca9acef071",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Jun 8 09:06:21 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 20:28:52 2026 \u002B0200",
         "message": "feat: recognise expectations that guarantee a not-null subject by attribute (#1050)"
+      },
+      {
+        "sha": "f2c58efc36e206c8e0d6fa334b9c36461ac2e4d1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 20:33:15 2026 \u002B0200",
+        "message": "fix: fail instead of silently succeeding when equivalency finds no members (#1051)"
       }
     ],
     "labels": [
-      "6bc20b7e",
       "084e1ad1",
       "5b710f7f",
       "0927987f",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "4bd75735",
       "1c48f221",
       "ae28ac8b",
-      "2dfc2a93"
+      "2dfc2a93",
+      "f2c58efc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          470.50855016708374,
           466.88463988670935,
           444.59003131730213,
           456.75095513888766,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           488.67998450142994,
           374.4749781744821,
           419.3198487917582,
-          492.94501726967945
+          492.94501726967945,
+          321.6662517865499
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1304.9174096425375,
           1260.6103978474935,
           1203.018761698405,
           1190.8403115590413,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1409.8203082765851,
           956.7152788798014,
           1156.9683876037598,
-          1268.5366074488713
+          1268.5366074488713,
+          899.8793354034424
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "6bc20b7e9a22fc1e91481fed8641c2efb18c2eda",
-        "author": "dependabot[bot]",
-        "date": "Mon Jun 8 09:07:23 2026 \u002B0200",
-        "message": "chore: Bump SharpCompress from 0.48.1 to 0.49.1 (#979)"
-      },
-      {
         "sha": "084e1ad1198fbca36f98c7e0138332ca9acef071",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Jun 8 09:06:21 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 20:28:52 2026 \u002B0200",
         "message": "feat: recognise expectations that guarantee a not-null subject by attribute (#1050)"
+      },
+      {
+        "sha": "f2c58efc36e206c8e0d6fa334b9c36461ac2e4d1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 20:33:15 2026 \u002B0200",
+        "message": "fix: fail instead of silently succeeding when equivalency finds no members (#1051)"
       }
     ],
     "labels": [
-      "6bc20b7e",
       "084e1ad1",
       "5b710f7f",
       "0927987f",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "4bd75735",
       "1c48f221",
       "ae28ac8b",
-      "2dfc2a93"
+      "2dfc2a93",
+      "f2c58efc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1903.0714449201312,
           1877.9876047770183,
           1934.8650651659284,
           1876.9502340044294,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1956.8689994812012,
           1069.3930759429932,
           1285.6932764053345,
-          2048.7104324927695
+          2048.7104324927695,
+          1024.7778945650373
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1301.6897384325664,
           1295.562139638265,
           1363.536735670907,
           1248.9447863442558,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1501.1235309328351,
           1063.036941019694,
           1316.807714589437,
-          1482.3498956680298
+          1482.3498956680298,
+          993.0315253917987
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "6bc20b7e9a22fc1e91481fed8641c2efb18c2eda",
-        "author": "dependabot[bot]",
-        "date": "Mon Jun 8 09:07:23 2026 \u002B0200",
-        "message": "chore: Bump SharpCompress from 0.48.1 to 0.49.1 (#979)"
-      },
-      {
         "sha": "084e1ad1198fbca36f98c7e0138332ca9acef071",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Jun 8 09:06:21 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 20:28:52 2026 \u002B0200",
         "message": "feat: recognise expectations that guarantee a not-null subject by attribute (#1050)"
+      },
+      {
+        "sha": "f2c58efc36e206c8e0d6fa334b9c36461ac2e4d1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 20:33:15 2026 \u002B0200",
+        "message": "fix: fail instead of silently succeeding when equivalency finds no members (#1051)"
       }
     ],
     "labels": [
-      "6bc20b7e",
       "084e1ad1",
       "5b710f7f",
       "0927987f",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "4bd75735",
       "1c48f221",
       "ae28ac8b",
-      "2dfc2a93"
+      "2dfc2a93",
+      "f2c58efc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2519.3573422749837,
           2520.1292994181317,
           2555.927008115328,
           2460.4072761535645,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2621.92692489624,
           1422.9330649058024,
           1679.661682510376,
-          2617.6351503225474
+          2617.6351503225474,
+          1325.9666979471842
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          26611.878204345703,
           26943.38064793178,
           27329.210042317707,
           26063.039310709635,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           27183.448396955217,
           14327.642207845052,
           15854.894307454428,
-          21692.001957484656
+          21692.001957484656,
+          12251.25824519566
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4223,7 +4223,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4242,7 +4241,8 @@ window.BENCHMARK_DATA = {
           33471,
           33465,
           33465,
-          33471
+          33471,
+          33465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
