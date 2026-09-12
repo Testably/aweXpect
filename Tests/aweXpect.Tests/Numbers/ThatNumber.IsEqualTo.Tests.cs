@@ -279,6 +279,7 @@ public sealed partial class ThatNumber
 			[Theory]
 			[InlineData(1, 2, -1)]
 			[InlineData(3, 1, 2)]
+			[InlineData(int.MinValue, 0, int.MinValue)]
 			public async Task ForInt_WhenValueIsDifferentFromExpected_ShouldFail(
 				int subject, int? expected, int expectedDifference)
 			{
@@ -1131,6 +1132,24 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
+			[InlineData((sbyte)0, sbyte.MinValue)]
+			[InlineData(sbyte.MaxValue, sbyte.MinValue)]
+			public async Task ForSbyte_WhenDifferenceIsNotRepresentable_ShouldOmitTheDifference(
+				sbyte subject, sbyte? expected)
+			{
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)}
+					              """)
+					.Because("a difference above sbyte.MaxValue cannot be displayed as an sbyte");
+			}
+
+			[Theory]
 			[AutoData]
 			public async Task ForSbyte_WhenExpectedIsNull_ShouldFail(
 				sbyte subject)
@@ -1151,6 +1170,7 @@ public sealed partial class ThatNumber
 			[Theory]
 			[InlineData((sbyte)1, (sbyte)2, -1)]
 			[InlineData((sbyte)1, (sbyte)0, 1)]
+			[InlineData(sbyte.MinValue, (sbyte)0, -128)]
 			public async Task ForSbyte_WhenValueIsDifferentFromExpected_ShouldFail(
 				sbyte subject, sbyte? expected, int expectedDifference)
 			{
@@ -1197,6 +1217,7 @@ public sealed partial class ThatNumber
 			[Theory]
 			[InlineData((short)1, (short)2, -1)]
 			[InlineData((short)1, (short)0, 1)]
+			[InlineData(short.MinValue, (short)0, -32768)]
 			public async Task ForShort_WhenValueIsDifferentFromExpected_ShouldFail(
 				short subject, short? expected, int expectedDifference)
 			{
