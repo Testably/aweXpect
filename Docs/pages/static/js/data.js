@@ -3474,6 +3474,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 17:13:34 2026 \u002B0200",
         "message": "feat: add a \u0060GuaranteesNotNull\u0060 attribute for expectations (#1048)"
+      },
+      {
+        "sha": "ae28ac8bfc1408f37f394d2e7fb8d78a35f9d494",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 19:13:15 2026 \u002B0200",
+        "message": "fix: restore in \u0060Debug\u0060 before running the mutation tests (#1049)"
       }
     ],
     "labels": [
@@ -4055,7 +4061,8 @@ window.BENCHMARK_DATA = {
       "6b0b96ac",
       "ef652c1f",
       "4bd75735",
-      "1c48f221"
+      "1c48f221",
+      "ae28ac8b"
     ],
     "datasets": [
       {
@@ -4640,7 +4647,8 @@ window.BENCHMARK_DATA = {
           310.57264550526935,
           194.75820589065552,
           279.72621849605014,
-          176.9221565246582
+          176.9221565246582,
+          251.45966777801513
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5113,6 +5121,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5823,7 +5832,8 @@ window.BENCHMARK_DATA = {
           236.56215605368982,
           191.06551202705927,
           263.74817759650097,
-          192.242506980896
+          192.242506980896,
+          271.93721526009693
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6016,6 +6026,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -9439,6 +9450,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 17:13:34 2026 \u002B0200",
         "message": "feat: add a \u0060GuaranteesNotNull\u0060 attribute for expectations (#1048)"
+      },
+      {
+        "sha": "ae28ac8bfc1408f37f394d2e7fb8d78a35f9d494",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 19:13:15 2026 \u002B0200",
+        "message": "fix: restore in \u0060Debug\u0060 before running the mutation tests (#1049)"
       }
     ],
     "labels": [
@@ -9943,7 +9960,8 @@ window.BENCHMARK_DATA = {
       "6b0b96ac",
       "ef652c1f",
       "4bd75735",
-      "1c48f221"
+      "1c48f221",
+      "ae28ac8b"
     ],
     "datasets": [
       {
@@ -10451,7 +10469,8 @@ window.BENCHMARK_DATA = {
           310226.8191080729,
           219891.06270926338,
           330381.0539388021,
-          201159.01329627403
+          201159.01329627403,
+          246182.51293945312
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10964,7 +10983,8 @@ window.BENCHMARK_DATA = {
           335444,
           335442,
           335444,
-          335442
+          335442,
+          335444
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11480,7 +11500,8 @@ window.BENCHMARK_DATA = {
           2714964.474051339,
           1795566.599233774,
           2754495.861328125,
-          1632144.8722098214
+          1632144.8722098214,
+          1975977.1479166667
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11993,7 +12014,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841648,
           4841651,
-          4841611
+          4841611,
+          4841613
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15481,6 +15503,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 17:13:34 2026 \u002B0200",
         "message": "feat: add a \u0060GuaranteesNotNull\u0060 attribute for expectations (#1048)"
+      },
+      {
+        "sha": "ae28ac8bfc1408f37f394d2e7fb8d78a35f9d494",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 19:13:15 2026 \u002B0200",
+        "message": "fix: restore in \u0060Debug\u0060 before running the mutation tests (#1049)"
       }
     ],
     "labels": [
@@ -16062,7 +16090,8 @@ window.BENCHMARK_DATA = {
       "6b0b96ac",
       "ef652c1f",
       "4bd75735",
-      "1c48f221"
+      "1c48f221",
+      "ae28ac8b"
     ],
     "datasets": [
       {
@@ -16647,7 +16676,8 @@ window.BENCHMARK_DATA = {
           497.5568639210292,
           389.25706512587413,
           546.6029392242432,
-          442.43858333996366
+          442.43858333996366,
+          460.4913195201329
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17120,6 +17150,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -17830,7 +17861,8 @@ window.BENCHMARK_DATA = {
           486.24031861623126,
           374.84017050266266,
           557.0006458282471,
-          377.8739272117615
+          377.8739272117615,
+          518.0169225692749
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18023,6 +18055,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -21908,6 +21941,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 17:13:34 2026 \u002B0200",
         "message": "feat: add a \u0060GuaranteesNotNull\u0060 attribute for expectations (#1048)"
+      },
+      {
+        "sha": "ae28ac8bfc1408f37f394d2e7fb8d78a35f9d494",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 19:13:15 2026 \u002B0200",
+        "message": "fix: restore in \u0060Debug\u0060 before running the mutation tests (#1049)"
       }
     ],
     "labels": [
@@ -22489,7 +22528,8 @@ window.BENCHMARK_DATA = {
       "6b0b96ac",
       "ef652c1f",
       "4bd75735",
-      "1c48f221"
+      "1c48f221",
+      "ae28ac8b"
     ],
     "datasets": [
       {
@@ -23074,7 +23114,8 @@ window.BENCHMARK_DATA = {
           285.00397532780966,
           197.31578922271729,
           299.5892717043559,
-          196.72756666796548
+          196.72756666796548,
+          258.7793156305949
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -23588,6 +23629,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -24257,7 +24299,8 @@ window.BENCHMARK_DATA = {
           245.95117333957128,
           192.4854500611623,
           277.9910137494405,
-          205.07823863396277
+          205.07823863396277,
+          282.3623188654582
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -24450,6 +24493,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -28335,6 +28379,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 17:13:34 2026 \u002B0200",
         "message": "feat: add a \u0060GuaranteesNotNull\u0060 attribute for expectations (#1048)"
+      },
+      {
+        "sha": "ae28ac8bfc1408f37f394d2e7fb8d78a35f9d494",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 19:13:15 2026 \u002B0200",
+        "message": "fix: restore in \u0060Debug\u0060 before running the mutation tests (#1049)"
       }
     ],
     "labels": [
@@ -28916,7 +28966,8 @@ window.BENCHMARK_DATA = {
       "6b0b96ac",
       "ef652c1f",
       "4bd75735",
-      "1c48f221"
+      "1c48f221",
+      "ae28ac8b"
     ],
     "datasets": [
       {
@@ -29501,7 +29552,8 @@ window.BENCHMARK_DATA = {
           488.5589915684291,
           356.45355892181396,
           488.67998450142994,
-          374.4749781744821
+          374.4749781744821,
+          419.3198487917582
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29974,6 +30026,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -30684,7 +30737,8 @@ window.BENCHMARK_DATA = {
           1292.6909257448638,
           877.4429955115685,
           1409.8203082765851,
-          956.7152788798014
+          956.7152788798014,
+          1156.9683876037598
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31113,6 +31167,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -34762,6 +34817,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 17:13:34 2026 \u002B0200",
         "message": "feat: add a \u0060GuaranteesNotNull\u0060 attribute for expectations (#1048)"
+      },
+      {
+        "sha": "ae28ac8bfc1408f37f394d2e7fb8d78a35f9d494",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 19:13:15 2026 \u002B0200",
+        "message": "fix: restore in \u0060Debug\u0060 before running the mutation tests (#1049)"
       }
     ],
     "labels": [
@@ -35343,7 +35404,8 @@ window.BENCHMARK_DATA = {
       "6b0b96ac",
       "ef652c1f",
       "4bd75735",
-      "1c48f221"
+      "1c48f221",
+      "ae28ac8b"
     ],
     "datasets": [
       {
@@ -35928,7 +35990,8 @@ window.BENCHMARK_DATA = {
           2009.3522932870048,
           1431.4062286104474,
           1956.8689994812012,
-          1069.3930759429932
+          1069.3930759429932,
+          1285.6932764053345
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36401,6 +36464,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -37111,7 +37175,8 @@ window.BENCHMARK_DATA = {
           1342.263759771983,
           1006.8457903544108,
           1501.1235309328351,
-          1063.036941019694
+          1063.036941019694,
+          1316.807714589437
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37304,6 +37369,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -41189,6 +41255,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 17:13:34 2026 \u002B0200",
         "message": "feat: add a \u0060GuaranteesNotNull\u0060 attribute for expectations (#1048)"
+      },
+      {
+        "sha": "ae28ac8bfc1408f37f394d2e7fb8d78a35f9d494",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 19:13:15 2026 \u002B0200",
+        "message": "fix: restore in \u0060Debug\u0060 before running the mutation tests (#1049)"
       }
     ],
     "labels": [
@@ -41770,7 +41842,8 @@ window.BENCHMARK_DATA = {
       "6b0b96ac",
       "ef652c1f",
       "4bd75735",
-      "1c48f221"
+      "1c48f221",
+      "ae28ac8b"
     ],
     "datasets": [
       {
@@ -42355,7 +42428,8 @@ window.BENCHMARK_DATA = {
           2616.22804590861,
           1879.5178239186605,
           2621.92692489624,
-          1422.9330649058024
+          1422.9330649058024,
+          1679.661682510376
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -42828,6 +42902,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -43538,7 +43613,8 @@ window.BENCHMARK_DATA = {
           27923.317753092448,
           15298.983383687337,
           27183.448396955217,
-          14327.642207845052
+          14327.642207845052,
+          15854.894307454428
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -44128,6 +44204,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33465,
           33465
         ],
         "borderColor": "#FF671B",
