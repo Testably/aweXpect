@@ -48,7 +48,12 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotSatisfy(_ => false);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not satisfy _ => false,
+					             but it was <null>
+					             """);
 			}
 		}
 	}

@@ -97,19 +97,32 @@ public sealed class GuaranteesNotNullTests
 			.Because("both assemblies declare expectations that are marked");
 	}
 
+#if NET8_0_OR_GREATER
+	// Both assertions are statements about this repository rather than about runtime behaviour, so it is
+	// enough to make them where every expectation and every test class is present: neither the
+	// `IAsyncEnumerable` expectations nor their tests exist on the older target frameworks.
 	[Fact]
 	public async Task ExcludedExpectations_ShouldBeCovered()
 	{
 		List<string> identifiers = GetMarkedExpectations().Where(CanHaveNullSubject).Select(GetIdentifier).ToList();
 
-#if NET8_0_OR_GREATER
-		// Not every expectation exists on every target framework, so an exclusion can only be recognised
-		// as stale where all of them are present.
 		await That(ExcludedFromInvocation.Where(excluded => !identifiers.Contains(excluded)).ToList()).IsEmpty()
 			.Because("an exclusion that no longer matches a marked expectation is stale");
-#endif
 		await That(ExcludedFromInvocation.Where(excluded => GetCoveringTests(excluded).Length == 0).ToList()).IsEmpty()
 			.Because("every excluded expectation needs a hand-written null-subject test instead");
+	}
+#endif
+
+	[Fact]
+	public async Task SkippedExpectations_ShouldHaveASubjectThatCannotBeNull()
+	{
+		List<Type> skipped = GetMarkedExpectations().Where(method => !CanHaveNullSubject(method))
+			.Select(method => GetSubjectType(CloseMethod(method)))
+			.Distinct().ToList();
+
+		await That(skipped.Where(type => type.Assembly == typeof(GuaranteesNotNullTests).Assembly).ToList()).IsEmpty()
+			.Because(
+				"a skipped expectation is invisible — it is neither invoked nor excluded — so a subject that only looks non-nullable because it was closed to one of this test's own helper structs must not go unnoticed");
 	}
 
 	[Theory]
@@ -136,10 +149,10 @@ public sealed class GuaranteesNotNullTests
 
 	private static MethodInfo[] GetCoveringTests(string identifier)
 	{
-		string expectation = identifier.Substring(identifier.IndexOf('.') + 1);
-		expectation = expectation.Split('<', '(')[0];
+		string declaringType = identifier.Substring(0, identifier.IndexOf('.'));
+		string expectation = identifier.Substring(identifier.IndexOf('.') + 1).Split('<', '(')[0];
 		return typeof(GuaranteesNotNullTests).Assembly.GetTypes()
-			.Where(type => type.FullName?.Contains($"+{expectation}+") == true)
+			.Where(type => type.FullName?.Contains($"{declaringType}+{expectation}+") == true)
 			.SelectMany(type => type.GetMethods(BindingFlags.Public | BindingFlags.Instance |
 			                                    BindingFlags.DeclaredOnly))
 			.Where(method => method.Name is nameof(WhenSubjectIsNull_ShouldFail) or "WhenActualIsNull_ShouldFail")
@@ -420,7 +433,7 @@ public sealed class GuaranteesNotNullTests
 
 	private static object? CreateContinuationArgument(ParameterInfo parameter)
 		=> parameter.ParameterType == typeof(TimeSpan)
-			? TimeSpan.FromMinutes(1)
+			? TimeSpan.FromSeconds(1)
 			: CreateArgument(parameter);
 
 	private static void Await(object expectation)

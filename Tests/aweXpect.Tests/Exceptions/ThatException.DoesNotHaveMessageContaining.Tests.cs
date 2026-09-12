@@ -98,7 +98,12 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).DoesNotHaveMessageContaining("foo");
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain Message matching "foo",
+					             but it was <null>
+					             """);
 			}		}
 
 		public sealed class NegatedTests

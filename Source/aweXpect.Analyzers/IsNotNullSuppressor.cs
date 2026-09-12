@@ -395,10 +395,13 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 	///     expectations such as <c>Throws</c> or <c>IsExactly</c> as instance members of other types.
 	/// </remarks>
 	private static bool GuaranteesNotNull(IMethodSymbol methodSymbol, Compilation compilation)
-		=> (methodSymbol.ReducedFrom ?? methodSymbol).GetAttributes()
-			   .Any(attribute => attribute.AttributeClass is { Name: "GuaranteesNotNullAttribute", } attributeClass &&
-			                     IsAweXpectAssembly(attributeClass.ContainingAssembly, compilation)) &&
-		   IsAweXpectAssembly(methodSymbol.ContainingAssembly, compilation);
+		// The assembly check comes first: it is two string comparisons, while decoding the attributes
+		// of an arbitrary metadata symbol is not, and this runs for every invocation in every preceding
+		// statement that is scanned.
+		=> IsAweXpectAssembly(methodSymbol.ContainingAssembly, compilation) &&
+		   (methodSymbol.ReducedFrom ?? methodSymbol).GetAttributes()
+		   .Any(attribute => attribute.AttributeClass is { Name: "GuaranteesNotNullAttribute", } attributeClass &&
+		                     IsAweXpectAssembly(attributeClass.ContainingAssembly, compilation));
 
 	/// <summary>
 	///     Checks that the symbol originates from a referenced aweXpect assembly and not from a look-alike that is
