@@ -376,7 +376,7 @@ public sealed partial class ThatTimeOnly
 				}
 
 				[Fact]
-				public async Task WhenSubjectAndUnexpectedIsNull_ShouldSucceed()
+				public async Task WhenSubjectAndUnexpectedIsNull_ShouldFail()
 				{
 					TimeOnly? subject = null;
 					int? expected = null;
@@ -384,7 +384,12 @@ public sealed partial class ThatTimeOnly
 					async Task Act()
 						=> await That(subject).HasMinute().NotEqualTo(expected);
 
-					await That(Act).DoesNotThrow();
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             has minute not equal to <null>,
+						             but it was <null>
+						             """);
 				}
 
 				[Fact]

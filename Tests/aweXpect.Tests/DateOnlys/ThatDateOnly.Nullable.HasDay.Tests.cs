@@ -376,7 +376,7 @@ public sealed partial class ThatDateOnly
 				}
 
 				[Fact]
-				public async Task WhenSubjectAndUnexpectedIsNull_ShouldSucceed()
+				public async Task WhenSubjectAndUnexpectedIsNull_ShouldFail()
 				{
 					DateOnly? subject = null;
 					int? expected = null;
@@ -384,7 +384,12 @@ public sealed partial class ThatDateOnly
 					async Task Act()
 						=> await That(subject).HasDay().NotEqualTo(expected);
 
-					await That(Act).DoesNotThrow();
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             has day not equal to <null>,
+						             but it was <null>
+						             """);
 				}
 
 				[Fact]
