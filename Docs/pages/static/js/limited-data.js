@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "084e1ad1198fbca36f98c7e0138332ca9acef071",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Jun 8 09:06:21 2026 \u002B0200",
-        "message": "refactor: fix build warnings due to nullable string in becauseTask (#980)"
-      },
-      {
         "sha": "5b710f7f20e8c047245b18065fbeb73285516f51",
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:00 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 20:33:15 2026 \u002B0200",
         "message": "fix: fail instead of silently succeeding when equivalency finds no members (#1051)"
+      },
+      {
+        "sha": "b40f1a29a87f3bd6c188148b9dc904a7335ee5b7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 21:42:07 2026 \u002B0200",
+        "message": "test: record the \u0060null\u0060 subject behaviour of every expectation (#1057)"
       }
     ],
     "labels": [
-      "084e1ad1",
       "5b710f7f",
       "0927987f",
       "6920f457",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "1c48f221",
       "ae28ac8b",
       "2dfc2a93",
-      "f2c58efc"
+      "f2c58efc",
+      "b40f1a29"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          270.32417484692166,
           260.181368748347,
           244.476037135491,
           269.24019278798784,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           176.9221565246582,
           251.45966777801513,
           253.74554430643718,
-          185.81431449254353
+          185.81431449254353,
+          207.99691574390118
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          240.24807112557548,
           241.4171945254008,
           237.37615286509197,
           247.11946545328414,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           192.242506980896,
           271.93721526009693,
           255.67135229110718,
-          211.59095217500413
+          211.59095217500413,
+          220.3440454006195
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "084e1ad1198fbca36f98c7e0138332ca9acef071",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Jun 8 09:06:21 2026 \u002B0200",
-        "message": "refactor: fix build warnings due to nullable string in becauseTask (#980)"
-      },
-      {
         "sha": "5b710f7f20e8c047245b18065fbeb73285516f51",
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:00 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 20:33:15 2026 \u002B0200",
         "message": "fix: fail instead of silently succeeding when equivalency finds no members (#1051)"
+      },
+      {
+        "sha": "b40f1a29a87f3bd6c188148b9dc904a7335ee5b7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 21:42:07 2026 \u002B0200",
+        "message": "test: record the \u0060null\u0060 subject behaviour of every expectation (#1057)"
       }
     ],
     "labels": [
-      "084e1ad1",
       "5b710f7f",
       "0927987f",
       "6920f457",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "1c48f221",
       "ae28ac8b",
       "2dfc2a93",
-      "f2c58efc"
+      "f2c58efc",
+      "b40f1a29"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          331844.7231933594,
           323882.5665039063,
           316276.7185384115,
           293878.3318196615,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           201159.01329627403,
           246182.51293945312,
           314607.5203776042,
-          200805.07823768028
+          200805.07823768028,
+          222028.6263709435
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1055,7 +1055,6 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
           335444,
           335444,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           335442,
           335444,
           335444,
+          335442,
           335442
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2647382.0906808036,
           2751218.3953125,
           2721342.6646634615,
           2326466.11953125,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           1632144.8722098214,
           1975977.1479166667,
           2505769.34375,
-          1670276.2193080357
+          1670276.2193080357,
+          1669236.4065504808
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841651,
           4841651,
           4841651,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841611,
           4841613,
           4841651,
-          4841611
+          4841611,
+          4841609
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "084e1ad1198fbca36f98c7e0138332ca9acef071",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Jun 8 09:06:21 2026 \u002B0200",
-        "message": "refactor: fix build warnings due to nullable string in becauseTask (#980)"
-      },
       {
         "sha": "5b710f7f20e8c047245b18065fbeb73285516f51",
         "author": "dependabot[bot]",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 20:33:15 2026 \u002B0200",
         "message": "fix: fail instead of silently succeeding when equivalency finds no members (#1051)"
+      },
+      {
+        "sha": "b40f1a29a87f3bd6c188148b9dc904a7335ee5b7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 21:42:07 2026 \u002B0200",
+        "message": "test: record the \u0060null\u0060 subject behaviour of every expectation (#1057)"
       }
     ],
     "labels": [
-      "084e1ad1",
       "5b710f7f",
       "0927987f",
       "6920f457",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "1c48f221",
       "ae28ac8b",
       "2dfc2a93",
-      "f2c58efc"
+      "f2c58efc",
+      "b40f1a29"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          476.0209849561964,
           497.45273984273274,
           460.82882738113403,
           465.5516929626465,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           442.43858333996366,
           460.4913195201329,
           517.4517107009888,
-          411.3238247803279
+          411.3238247803279,
+          387.5515358606974
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          458.40288200378416,
           467.8260079111372,
           463.22075010935464,
           473.96773140771046,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           377.8739272117615,
           518.0169225692749,
           520.8710504531861,
-          414.6723243077596
+          414.6723243077596,
+          420.1317024548849
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "084e1ad1198fbca36f98c7e0138332ca9acef071",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Jun 8 09:06:21 2026 \u002B0200",
-        "message": "refactor: fix build warnings due to nullable string in becauseTask (#980)"
-      },
-      {
         "sha": "5b710f7f20e8c047245b18065fbeb73285516f51",
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:00 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 20:33:15 2026 \u002B0200",
         "message": "fix: fail instead of silently succeeding when equivalency finds no members (#1051)"
+      },
+      {
+        "sha": "b40f1a29a87f3bd6c188148b9dc904a7335ee5b7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 21:42:07 2026 \u002B0200",
+        "message": "test: record the \u0060null\u0060 subject behaviour of every expectation (#1057)"
       }
     ],
     "labels": [
-      "084e1ad1",
       "5b710f7f",
       "0927987f",
       "6920f457",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "1c48f221",
       "ae28ac8b",
       "2dfc2a93",
-      "f2c58efc"
+      "f2c58efc",
+      "b40f1a29"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          266.10511245727537,
           263.8962922732035,
           261.12085257257735,
           250.9371336868831,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           196.72756666796548,
           258.7793156305949,
           264.43931474685667,
-          193.14304917199271
+          193.14304917199271,
+          209.47316687901815
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          237.5357260386149,
           242.4834464708964,
           237.16833070346289,
           240.50881153742472,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           205.07823863396277,
           282.3623188654582,
           263.38711411158243,
-          215.79852714538575
+          215.79852714538575,
+          220.41122935368463
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "084e1ad1198fbca36f98c7e0138332ca9acef071",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Jun 8 09:06:21 2026 \u002B0200",
-        "message": "refactor: fix build warnings due to nullable string in becauseTask (#980)"
-      },
-      {
         "sha": "5b710f7f20e8c047245b18065fbeb73285516f51",
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:00 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 20:33:15 2026 \u002B0200",
         "message": "fix: fail instead of silently succeeding when equivalency finds no members (#1051)"
+      },
+      {
+        "sha": "b40f1a29a87f3bd6c188148b9dc904a7335ee5b7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 21:42:07 2026 \u002B0200",
+        "message": "test: record the \u0060null\u0060 subject behaviour of every expectation (#1057)"
       }
     ],
     "labels": [
-      "084e1ad1",
       "5b710f7f",
       "0927987f",
       "6920f457",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "1c48f221",
       "ae28ac8b",
       "2dfc2a93",
-      "f2c58efc"
+      "f2c58efc",
+      "b40f1a29"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          466.88463988670935,
           444.59003131730213,
           456.75095513888766,
           463.41466464996336,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           374.4749781744821,
           419.3198487917582,
           492.94501726967945,
-          321.6662517865499
+          321.6662517865499,
+          355.84341993331907
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1260.6103978474935,
           1203.018761698405,
           1190.8403115590413,
           1101.3260318211146,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           956.7152788798014,
           1156.9683876037598,
           1268.5366074488713,
-          899.8793354034424
+          899.8793354034424,
+          956.5905661949745
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "084e1ad1198fbca36f98c7e0138332ca9acef071",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Jun 8 09:06:21 2026 \u002B0200",
-        "message": "refactor: fix build warnings due to nullable string in becauseTask (#980)"
-      },
-      {
         "sha": "5b710f7f20e8c047245b18065fbeb73285516f51",
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:00 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 20:33:15 2026 \u002B0200",
         "message": "fix: fail instead of silently succeeding when equivalency finds no members (#1051)"
+      },
+      {
+        "sha": "b40f1a29a87f3bd6c188148b9dc904a7335ee5b7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 21:42:07 2026 \u002B0200",
+        "message": "test: record the \u0060null\u0060 subject behaviour of every expectation (#1057)"
       }
     ],
     "labels": [
-      "084e1ad1",
       "5b710f7f",
       "0927987f",
       "6920f457",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "1c48f221",
       "ae28ac8b",
       "2dfc2a93",
-      "f2c58efc"
+      "f2c58efc",
+      "b40f1a29"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1877.9876047770183,
           1934.8650651659284,
           1876.9502340044294,
           1880.7159954071044,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1069.3930759429932,
           1285.6932764053345,
           2048.7104324927695,
-          1024.7778945650373
+          1024.7778945650373,
+          1172.1498559805063
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1295.562139638265,
           1363.536735670907,
           1248.9447863442558,
           1255.5963723318916,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1063.036941019694,
           1316.807714589437,
           1482.3498956680298,
-          993.0315253917987
+          993.0315253917987,
+          1091.659278188433
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "084e1ad1198fbca36f98c7e0138332ca9acef071",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Jun 8 09:06:21 2026 \u002B0200",
-        "message": "refactor: fix build warnings due to nullable string in becauseTask (#980)"
-      },
-      {
         "sha": "5b710f7f20e8c047245b18065fbeb73285516f51",
         "author": "dependabot[bot]",
         "date": "Mon Jun 8 09:07:00 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 20:33:15 2026 \u002B0200",
         "message": "fix: fail instead of silently succeeding when equivalency finds no members (#1051)"
+      },
+      {
+        "sha": "b40f1a29a87f3bd6c188148b9dc904a7335ee5b7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 21:42:07 2026 \u002B0200",
+        "message": "test: record the \u0060null\u0060 subject behaviour of every expectation (#1057)"
       }
     ],
     "labels": [
-      "084e1ad1",
       "5b710f7f",
       "0927987f",
       "6920f457",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "1c48f221",
       "ae28ac8b",
       "2dfc2a93",
-      "f2c58efc"
+      "f2c58efc",
+      "b40f1a29"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2520.1292994181317,
           2555.927008115328,
           2460.4072761535645,
           2462.123188273112,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           1422.9330649058024,
           1679.661682510376,
           2617.6351503225474,
-          1325.9666979471842
+          1325.9666979471842,
+          1539.817172563993
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          26943.38064793178,
           27329.210042317707,
           26063.039310709635,
           20179.390925816126,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           14327.642207845052,
           15854.894307454428,
           21692.001957484656,
-          12251.25824519566
+          12251.25824519566,
+          14082.65697224935
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4222,7 +4222,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4242,6 +4241,7 @@ window.BENCHMARK_DATA = {
           33465,
           33465,
           33471,
+          33465,
           33465
         ],
         "borderColor": "#FF671B",
