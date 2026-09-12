@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "01e92402b7f917c52b44f1199eba7d72c1a03798",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 31 08:20:10 2026 \u002B0200",
-        "message": "refactor: anchor assembly-prefix exclusion at name boundaries (#972)"
-      },
-      {
         "sha": "e8b147950c865babea7d27d9e600eade0d95a15e",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 31 08:37:04 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 16:30:15 2026 \u002B0200",
         "message": "fix: do not throw when the subject of \u0060IsEquatableTo\u0060 is \u0060null\u0060 (#1047)"
+      },
+      {
+        "sha": "4bd75735126eb8c8619b6898302e169a845fe941",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 16:40:11 2026 \u002B0200",
+        "message": "fix: fail \u0060HasValue\u0060 on a \u0060null\u0060 enum subject (#1046)"
       }
     ],
     "labels": [
-      "01e92402",
       "e8b14795",
       "46415067",
       "6c18515c",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "082a6795",
       "4d0dab36",
       "6b0b96ac",
-      "ef652c1f"
+      "ef652c1f",
+      "4bd75735"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          265.64060691197716,
           259.96589612960815,
           256.0928372969994,
           282.1564817061791,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           270.45566242081776,
           256.6291039784749,
           310.57264550526935,
-          194.75820589065552
+          194.75820589065552,
+          279.72621849605014
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          273.71951723098755,
           256.0557377888606,
           255.2791819205651,
           263.04726182497467,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           228.99347099891077,
           242.52080263410295,
           236.56215605368982,
-          191.06551202705927
+          191.06551202705927,
+          263.74817759650097
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "01e92402b7f917c52b44f1199eba7d72c1a03798",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 31 08:20:10 2026 \u002B0200",
-        "message": "refactor: anchor assembly-prefix exclusion at name boundaries (#972)"
-      },
-      {
         "sha": "e8b147950c865babea7d27d9e600eade0d95a15e",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 31 08:37:04 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 16:30:15 2026 \u002B0200",
         "message": "fix: do not throw when the subject of \u0060IsEquatableTo\u0060 is \u0060null\u0060 (#1047)"
+      },
+      {
+        "sha": "4bd75735126eb8c8619b6898302e169a845fe941",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 16:40:11 2026 \u002B0200",
+        "message": "fix: fail \u0060HasValue\u0060 on a \u0060null\u0060 enum subject (#1046)"
       }
     ],
     "labels": [
-      "01e92402",
       "e8b14795",
       "46415067",
       "6c18515c",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "082a6795",
       "4d0dab36",
       "6b0b96ac",
-      "ef652c1f"
+      "ef652c1f",
+      "4bd75735"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          306960.026953125,
           309851.21736653644,
           294966.1259765625,
           329631.25432477676,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           305770.0921875,
           325778.1329520089,
           310226.8191080729,
-          219891.06270926338
+          219891.06270926338,
+          330381.0539388021
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1060,7 +1060,6 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
           335444,
           335444,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335442
+          335442,
+          335444
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2440085.4848958333,
           2497785.16015625,
           2501607.2766927085,
           2784649.585677083,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2555721.08203125,
           2783075.2807291667,
           2714964.474051339,
-          1795566.599233774
+          1795566.599233774,
+          2754495.861328125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841635,
           4841651,
           4841647,
           4841651,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841648
+          4841648,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "01e92402b7f917c52b44f1199eba7d72c1a03798",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 31 08:20:10 2026 \u002B0200",
-        "message": "refactor: anchor assembly-prefix exclusion at name boundaries (#972)"
-      },
       {
         "sha": "e8b147950c865babea7d27d9e600eade0d95a15e",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 16:30:15 2026 \u002B0200",
         "message": "fix: do not throw when the subject of \u0060IsEquatableTo\u0060 is \u0060null\u0060 (#1047)"
+      },
+      {
+        "sha": "4bd75735126eb8c8619b6898302e169a845fe941",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 16:40:11 2026 \u002B0200",
+        "message": "fix: fail \u0060HasValue\u0060 on a \u0060null\u0060 enum subject (#1046)"
       }
     ],
     "labels": [
-      "01e92402",
       "e8b14795",
       "46415067",
       "6c18515c",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "082a6795",
       "4d0dab36",
       "6b0b96ac",
-      "ef652c1f"
+      "ef652c1f",
+      "4bd75735"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          519.1855758666992,
           536.2258410771688,
           478.7303355534871,
           516.4213751475016,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           455.0473243713379,
           511.50231685638425,
           497.5568639210292,
-          389.25706512587413
+          389.25706512587413,
+          546.6029392242432
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          534.4196135203043,
           527.0402784347534,
           485.23961067199707,
           557.749834060669,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           470.4036148071289,
           513.4317329406738,
           486.24031861623126,
-          374.84017050266266
+          374.84017050266266,
+          557.0006458282471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "01e92402b7f917c52b44f1199eba7d72c1a03798",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 31 08:20:10 2026 \u002B0200",
-        "message": "refactor: anchor assembly-prefix exclusion at name boundaries (#972)"
-      },
-      {
         "sha": "e8b147950c865babea7d27d9e600eade0d95a15e",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 31 08:37:04 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 16:30:15 2026 \u002B0200",
         "message": "fix: do not throw when the subject of \u0060IsEquatableTo\u0060 is \u0060null\u0060 (#1047)"
+      },
+      {
+        "sha": "4bd75735126eb8c8619b6898302e169a845fe941",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 16:40:11 2026 \u002B0200",
+        "message": "fix: fail \u0060HasValue\u0060 on a \u0060null\u0060 enum subject (#1046)"
       }
     ],
     "labels": [
-      "01e92402",
       "e8b14795",
       "46415067",
       "6c18515c",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "082a6795",
       "4d0dab36",
       "6b0b96ac",
-      "ef652c1f"
+      "ef652c1f",
+      "4bd75735"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          270.79918734232587,
           281.7966275555747,
           273.84272623062134,
           293.45759709676105,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           257.3622921625773,
           272.66313835779823,
           285.00397532780966,
-          197.31578922271729
+          197.31578922271729,
+          299.5892717043559
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          287.6870683942522,
           253.69892297472273,
           244.54132541020712,
           280.1825347582499,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           239.15889861033514,
           272.0863518374307,
           245.95117333957128,
-          192.4854500611623
+          192.4854500611623,
+          277.9910137494405
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "01e92402b7f917c52b44f1199eba7d72c1a03798",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 31 08:20:10 2026 \u002B0200",
-        "message": "refactor: anchor assembly-prefix exclusion at name boundaries (#972)"
-      },
-      {
         "sha": "e8b147950c865babea7d27d9e600eade0d95a15e",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 31 08:37:04 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 16:30:15 2026 \u002B0200",
         "message": "fix: do not throw when the subject of \u0060IsEquatableTo\u0060 is \u0060null\u0060 (#1047)"
+      },
+      {
+        "sha": "4bd75735126eb8c8619b6898302e169a845fe941",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 16:40:11 2026 \u002B0200",
+        "message": "fix: fail \u0060HasValue\u0060 on a \u0060null\u0060 enum subject (#1046)"
       }
     ],
     "labels": [
-      "01e92402",
       "e8b14795",
       "46415067",
       "6c18515c",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "082a6795",
       "4d0dab36",
       "6b0b96ac",
-      "ef652c1f"
+      "ef652c1f",
+      "4bd75735"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          489.47474308013915,
           510.8510365852943,
           448.8942344005291,
           499.98754079001293,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           452.75008656183877,
           479.2496374766032,
           488.5589915684291,
-          356.45355892181396
+          356.45355892181396,
+          488.67998450142994
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1316.6445543924967,
           1266.2381830215454,
           1134.4644299915858,
           1321.0904105050224,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1201.970852778508,
           1240.3623783111573,
           1292.6909257448638,
-          877.4429955115685
+          877.4429955115685,
+          1409.8203082765851
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "01e92402b7f917c52b44f1199eba7d72c1a03798",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 31 08:20:10 2026 \u002B0200",
-        "message": "refactor: anchor assembly-prefix exclusion at name boundaries (#972)"
-      },
-      {
         "sha": "e8b147950c865babea7d27d9e600eade0d95a15e",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 31 08:37:04 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 16:30:15 2026 \u002B0200",
         "message": "fix: do not throw when the subject of \u0060IsEquatableTo\u0060 is \u0060null\u0060 (#1047)"
+      },
+      {
+        "sha": "4bd75735126eb8c8619b6898302e169a845fe941",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 16:40:11 2026 \u002B0200",
+        "message": "fix: fail \u0060HasValue\u0060 on a \u0060null\u0060 enum subject (#1046)"
       }
     ],
     "labels": [
-      "01e92402",
       "e8b14795",
       "46415067",
       "6c18515c",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "082a6795",
       "4d0dab36",
       "6b0b96ac",
-      "ef652c1f"
+      "ef652c1f",
+      "4bd75735"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1693.962996037801,
           1994.0278645833334,
           1924.9877545674642,
           2025.7895299471343,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1909.4487761179605,
           2054.7027384440103,
           2009.3522932870048,
-          1431.4062286104474
+          1431.4062286104474,
+          1956.8689994812012
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1415.400666509356,
           1408.166918209621,
           1296.0140084584555,
           1412.711854426066,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1282.2141908918109,
           1368.0961346944173,
           1342.263759771983,
-          1006.8457903544108
+          1006.8457903544108,
+          1501.1235309328351
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "01e92402b7f917c52b44f1199eba7d72c1a03798",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun May 31 08:20:10 2026 \u002B0200",
-        "message": "refactor: anchor assembly-prefix exclusion at name boundaries (#972)"
-      },
-      {
         "sha": "e8b147950c865babea7d27d9e600eade0d95a15e",
         "author": "Valentin Breu\u00DF",
         "date": "Sun May 31 08:37:04 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 16:30:15 2026 \u002B0200",
         "message": "fix: do not throw when the subject of \u0060IsEquatableTo\u0060 is \u0060null\u0060 (#1047)"
+      },
+      {
+        "sha": "4bd75735126eb8c8619b6898302e169a845fe941",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 16:40:11 2026 \u002B0200",
+        "message": "fix: fail \u0060HasValue\u0060 on a \u0060null\u0060 enum subject (#1046)"
       }
     ],
     "labels": [
-      "01e92402",
       "e8b14795",
       "46415067",
       "6c18515c",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "082a6795",
       "4d0dab36",
       "6b0b96ac",
-      "ef652c1f"
+      "ef652c1f",
+      "4bd75735"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2208.495192391532,
           2551.065022604806,
           2498.2422691345214,
           2716.806147166661,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2478.2062553405763,
           2734.0682273864745,
           2616.22804590861,
-          1879.5178239186605
+          1879.5178239186605,
+          2621.92692489624
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          23846.91423688616,
           20514.311822509764,
           20802.61471048991,
           28353.41301167806,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           26239.906803385416,
           27511.36063058036,
           27923.317753092448,
-          15298.983383687337
+          15298.983383687337,
+          27183.448396955217
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33468,
           33471,
           33471,
           33471,
@@ -4229,6 +4228,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
