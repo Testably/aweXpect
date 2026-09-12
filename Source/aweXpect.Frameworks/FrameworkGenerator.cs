@@ -10,78 +10,134 @@ public class FrameworkGenerator : IIncrementalGenerator
 {
 	void IIncrementalGenerator.Initialize(IncrementalGeneratorInitializationContext context)
 	{
-		IncrementalValueProvider<(
-			bool hasMsTest3,
-			bool hasMsTest4,
-			bool hasNunit,
-			bool hasTUnit,
-			bool hasXunit2,
-			bool hasXunit3Core,
-			bool hasXunit3Assert,
-			bool hasDoesNotReturn,
-			bool hasStackTraceHidden)> settings = context.CompilationProvider
-			.Select((c, _) =>
-			{
-				bool hasMsTest3 =
-					c.ReferencedAssemblyNames.Any(x => x.Name == "Microsoft.VisualStudio.TestPlatform.TestFramework");
-				bool hasMsTest4 =
-					c.ReferencedAssemblyNames.Any(x => x.Name == "MSTest.TestFramework");
-				bool hasNunit = c.ReferencedAssemblyNames.Any(x => x.Name == "nunit.framework");
-				bool hasTUnit = c.ReferencedAssemblyNames.Any(x => x.Name == "TUnit.Core") &&
-				                c.ReferencedAssemblyNames.Any(x => x.Name == "TUnit.Assertions");
-				bool hasXunit2 = c.ReferencedAssemblyNames.Any(x => x.Name == "xunit.assert");
-				bool hasXunit3Core = c.ReferencedAssemblyNames.Any(x => x.Name == "xunit.v3.core");
-				bool hasXunit3Assert = c.ReferencedAssemblyNames.Any(x => x.Name == "xunit.v3.assert");
-				bool hasDoesNotReturn = HasAttribute(c, "System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute");
-				bool hasStackTraceHidden = HasAttribute(c, "System.Diagnostics.StackTraceHiddenAttribute");
-				return (hasMsTest3, hasMsTest4, hasNunit, hasTUnit, hasXunit2, hasXunit3Core, hasXunit3Assert,
-					hasDoesNotReturn, hasStackTraceHidden);
-			});
+		IncrementalValueProvider<Settings> settings = context.CompilationProvider
+			.Select((c, _) => new Settings(
+				HasMsTest: References(c, "Microsoft.VisualStudio.TestPlatform.TestFramework") ||
+				           References(c, "MSTest.TestFramework"),
+				HasNunit: References(c, "nunit.framework"),
+				HasTUnit: References(c, "TUnit.Core") && References(c, "TUnit.Assertions"),
+				HasXunit2: References(c, "xunit.assert"),
+				HasXunit3Core: References(c, "xunit.v3.core"),
+				HasXunit3Assert: References(c, "xunit.v3.assert"),
+				HasDoesNotReturn: HasAttribute(c, "System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute"),
+				HasStackTraceHidden: HasAttribute(c, "System.Diagnostics.StackTraceHiddenAttribute"),
+				HasTestFrameworkRegistry: SupportsAdapterRegistration(c),
+				HasModuleInitializer: HasAttribute(c, "System.Runtime.CompilerServices.ModuleInitializerAttribute")));
 
-		// Generate the source from the captured values
-		context.RegisterSourceOutput(settings, static (spc, opts) =>
-		{
-			string attributes = string.Empty;
-			if (opts.hasDoesNotReturn)
-			{
-				attributes += "[System.Diagnostics.CodeAnalysis.DoesNotReturn]\n\t";
-			}
-
-			if (opts.hasStackTraceHidden)
-			{
-				attributes += "[System.Diagnostics.StackTraceHidden]\n\t";
-			}
-
-			if (opts.hasMsTest3 || opts.hasMsTest4)
-			{
-				spc.AddSource("MsTest.g.cs", MsTestAdapter(attributes));
-			}
-
-			if (opts.hasNunit)
-			{
-				spc.AddSource("Nunit.g.cs", NunitAdapter(attributes));
-			}
-
-			if (opts.hasTUnit)
-			{
-				spc.AddSource("TUnit.g.cs", TUnitAdapter(attributes));
-			}
-
-			if (opts.hasXunit2)
-			{
-				spc.AddSource("Xunit2.g.cs", Xunit2Adapter(attributes));
-			}
-
-			if (opts.hasXunit3Assert)
-			{
-				spc.AddSource("Xunit3.g.cs", Xunit3AssertAdapter(attributes));
-			}
-			else if (opts.hasXunit3Core)
-			{
-				spc.AddSource("Xunit3.g.cs", Xunit3CoreAdapter(attributes));
-			}
-		});
+		context.RegisterSourceOutput(settings, Emit);
 	}
+
+	private static void Emit(SourceProductionContext context, Settings settings)
+	{
+		string attributes = string.Empty;
+		if (settings.HasDoesNotReturn)
+		{
+			attributes += "[System.Diagnostics.CodeAnalysis.DoesNotReturn]\n\t";
+		}
+
+		if (settings.HasStackTraceHidden)
+		{
+			attributes += "[System.Diagnostics.StackTraceHidden]\n\t";
+		}
+
+		List<string> registeredAdapters = [];
+
+		if (settings.HasMsTest)
+		{
+			context.AddSource("MsTest.g.cs", MsTestAdapter(attributes));
+			registeredAdapters.Add("MsTestAdapter");
+		}
+
+		if (settings.HasNunit)
+		{
+			context.AddSource("Nunit.g.cs", NunitAdapter(attributes));
+			registeredAdapters.Add("NunitAdapter");
+		}
+
+		if (settings.HasTUnit)
+		{
+			context.AddSource("TUnit.g.cs", TUnitAdapter(attributes));
+			registeredAdapters.Add("TUnitAdapter");
+		}
+
+		if (settings.HasXunit2)
+		{
+			context.AddSource("Xunit2.g.cs", Xunit2Adapter(attributes));
+			registeredAdapters.Add("Xunit2Adapter");
+		}
+
+		if (settings.HasXunit3Assert)
+		{
+			context.AddSource("Xunit3.g.cs", Xunit3AssertAdapter(attributes));
+			registeredAdapters.Add("Xunit3Adapter");
+		}
+		else if (settings.HasXunit3Core)
+		{
+			context.AddSource("Xunit3.g.cs", Xunit3CoreAdapter(attributes));
+			registeredAdapters.Add("Xunit3Adapter");
+		}
+
+		// Without `ModuleInitializerAttribute` the target framework cannot be trimmed or AOT-published anyway,
+		// and emitting a polyfill would collide with generators like PolySharp, which are invisible here.
+		if (!settings.HasTestFrameworkRegistry || !settings.HasModuleInitializer || registeredAdapters.Count == 0)
+		{
+			return;
+		}
+
+		foreach (string adapter in registeredAdapters)
+		{
+			context.AddSource($"{adapter}.Registration.g.cs", AdapterRegistration(adapter));
+		}
+	}
+
+	private static bool References(Compilation compilation, string assemblyName)
+		=> compilation.ReferencedAssemblyNames.Any(x => x.Name == assemblyName);
+
+	/// <remarks>
+	///     Registering against an older aweXpect.Core would not compile, so anything but an exact match degrades to
+	///     the assembly scan.
+	/// </remarks>
+	private static bool SupportsAdapterRegistration(Compilation compilation)
+		=> compilation
+			.GetTypeByMetadataName("aweXpect.Core.Adapters.TestFrameworkRegistry")
+			?.GetMembers("Register")
+			.OfType<IMethodSymbol>()
+			.Any(x => x.IsStatic &&
+			          x.DeclaredAccessibility == Accessibility.Public &&
+			          x.Parameters.Length == 2 &&
+			          x.Parameters[1].Type.SpecialType == SpecialType.System_Boolean) == true;
+
+	private readonly record struct Settings(
+		bool HasMsTest,
+		bool HasNunit,
+		bool HasTUnit,
+		bool HasXunit2,
+		bool HasXunit3Core,
+		bool HasXunit3Assert,
+		bool HasDoesNotReturn,
+		bool HasStackTraceHidden,
+		bool HasTestFrameworkRegistry,
+		bool HasModuleInitializer);
+
+	private static string AdapterRegistration(string adapterName) =>
+		$$"""
+		  namespace aweXpect.Frameworks;
+
+		  internal static class {{adapterName}}Registration
+		  {
+		  	/// <summary>
+		  	///     Registers the <see cref="{{adapterName}}" /> when the assembly is loaded.
+		  	/// </summary>
+		  	/// <remarks>
+		  	///     Without this registration, the adapter could only be found by scanning the loaded assemblies, which
+		  	///     fails when the application is published with trimming or Native AOT enabled.<br />
+		  	///     It does not overwrite an explicitly registered adapter.
+		  	/// </remarks>
+		  	[System.Runtime.CompilerServices.ModuleInitializer]
+		  	internal static void Register()
+		  		=> aweXpect.Core.Adapters.TestFrameworkRegistry.Register(new {{adapterName}}(), overwrite: false);
+		  }
+		  """;
 
 	private static string MsTestAdapter(string attributes) =>
 		$$"""

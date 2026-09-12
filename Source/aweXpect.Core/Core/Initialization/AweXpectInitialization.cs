@@ -62,6 +62,21 @@ internal static class AweXpectInitialization
 	{
 		ExecuteCustomInitializers();
 
+		return new InitializationState(DetectTestFramework(TestFrameworkRegistry.Instance));
+	}
+
+	/// <summary>
+	///     Returns the registered <see cref="ITestFrameworkAdapter" />, or scans the loaded assemblies for one when
+	///     none was registered.
+	/// </summary>
+	internal static ITestFrameworkAdapter DetectTestFramework(TestFrameworkRegistry.Registration registration)
+	{
+		ITestFrameworkAdapter? registeredTestFramework = registration.TestFrameworkAdapter;
+		if (registeredTestFramework is not null)
+		{
+			return registeredTestFramework;
+		}
+
 		foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies()
 			         .Where(IsAssemblyIncluded))
 		{
@@ -71,7 +86,7 @@ internal static class AweXpectInitialization
 					assembly.GetTypes().Where(x => !x.IsNestedPrivate));
 				if (testFrameworkAdapter is not null)
 				{
-					return new InitializationState(testFrameworkAdapter);
+					return testFrameworkAdapter;
 				}
 			}
 			catch (ReflectionTypeLoadException ex)
@@ -82,7 +97,7 @@ internal static class AweXpectInitialization
 			}
 		}
 
-		return new InitializationState(new FallbackTestFramework());
+		return new FallbackTestFramework();
 	}
 
 	private static bool IsAssemblyIncluded(Assembly assembly)

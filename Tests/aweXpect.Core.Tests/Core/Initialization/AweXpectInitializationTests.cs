@@ -26,6 +26,30 @@ public sealed class AweXpectInitializationTests
 	}
 
 	[Fact]
+	public async Task DetectTestFramework_WhenAdapterIsRegistered_ShouldReturnRegisteredAdapter()
+	{
+		TestFrameworkRegistry.Registration registration = new();
+		RegisteredFrameworkAdapter registered = new();
+		registration.Add(registered, true);
+
+		ITestFrameworkAdapter result = AweXpectInitialization.DetectTestFramework(registration);
+
+		await That(result).IsSameAs(registered)
+			.Because("a registered adapter makes scanning the loaded assemblies unnecessary");
+	}
+
+	[Fact]
+	public async Task DetectTestFramework_WhenNothingIsRegistered_ShouldScanTheLoadedAssemblies()
+	{
+		TestFrameworkRegistry.Registration registration = new();
+
+		ITestFrameworkAdapter result = AweXpectInitialization.DetectTestFramework(registration);
+
+		await That(result.IsAvailable).IsTrue()
+			.Because("the scan should still find the test framework adapter of this test assembly");
+	}
+
+	[Fact]
 	public async Task ShouldInitializeCustomInitializerOnceBeforeExpectationIsEvaluated()
 	{
 		int result = CustomInitializer.InitializationCount;
@@ -45,6 +69,25 @@ public sealed class AweXpectInitializationTests
 	private sealed class UnavailableFrameworkAdapter : ITestFrameworkAdapter
 	{
 		public bool IsAvailable => false;
+
+#pragma warning disable CS0436
+		[DoesNotReturn]
+		public void Fail(string message) => throw new NotSupportedException();
+
+		[DoesNotReturn]
+		public void Fail(string message, Exception innerException) => throw new NotSupportedException();
+
+		[DoesNotReturn]
+		public void Inconclusive(string message) => throw new NotSupportedException();
+
+		[DoesNotReturn]
+		public void Skip(string message) => throw new NotSupportedException();
+#pragma warning restore CS0436
+	}
+
+	private sealed class RegisteredFrameworkAdapter : ITestFrameworkAdapter
+	{
+		public bool IsAvailable => true;
 
 #pragma warning disable CS0436
 		[DoesNotReturn]
