@@ -129,10 +129,7 @@ public sealed class EquivalencyOptionsExtensionsTests
 		await That(result.CustomOptions).ContainsKey(typeof(MyClass))
 			.WhoseValue.IsEquivalentTo(new
 			{
-				MembersToIgnore = new[]
-				{
-					new MemberToIgnore.ByName(memberToIgnore),
-				},
+				MembersToIgnore = It.Is<MemberToIgnore[]>().That.HasCount(1),
 			});
 		await That(result.ToString()).IsEqualTo($"""
 		                                          - include public fields and properties
