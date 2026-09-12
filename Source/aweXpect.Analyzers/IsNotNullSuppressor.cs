@@ -385,26 +385,23 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 	///     Checks if the method is an aweXpect expectation that a <see langword="null" /> subject cannot fulfil.
 	/// </summary>
 	/// <remarks>
-	///     The result type of an expectation cannot be used to detect this, although it often replaces the nullable
-	///     subject type of the <c>IThat&lt;TSubject?&gt;</c> it extends with its not-nullable counterpart: it also
-	///     does so for expectations that a <see langword="null" /> subject does fulfil, e.g. <c>IsNotEmpty</c> on a
-	///     string or <c>IsNotEqualTo</c> on a collection.
+	///     The expectations declare this themselves with the <c>aweXpect.Core.GuaranteesNotNullAttribute</c>, because
+	///     neither their name nor their result type can be used to detect it: overloads of the same name can differ,
+	///     and the result type often replaces the nullable subject type of the <c>IThat&lt;TSubject?&gt;</c> it extends
+	///     with its not-nullable counterpart even for expectations that a <see langword="null" /> subject does fulfil,
+	///     e.g. <c>IsNotEmpty</c> on a string or <c>IsNotEqualTo</c> on a collection.
+	///     <para />
+	///     The receiver is deliberately not restricted to <c>IThat&lt;TSubject&gt;</c>: <c>aweXpect.Core</c> declares
+	///     expectations such as <c>Throws</c> or <c>IsExactly</c> as instance members of other types.
 	/// </remarks>
 	private static bool GuaranteesNotNull(IMethodSymbol methodSymbol, Compilation compilation)
-		=> (methodSymbol.ReducedFrom ?? methodSymbol).Name
-		   is "IsNotNull" or "IsNotNullOrEmpty" or "IsNotNullOrWhiteSpace" &&
-		   IsAweXpectAssembly(methodSymbol.ContainingAssembly, compilation) &&
-		   methodSymbol.ReceiverType is INamedTypeSymbol receiver &&
-		   IsThatSubject(receiver);
-
-	/// <summary>
-	///     Checks if the type is the <c>aweXpect.Core.IThat&lt;TSubject&gt;</c> that all expectations extend.
-	/// </summary>
-	private static bool IsThatSubject(INamedTypeSymbol type)
-		=> type is { Name: "IThat", TypeArguments.Length: 1, } &&
-		   type.ContainingNamespace?.Name == "Core" &&
-		   type.ContainingNamespace?.ContainingNamespace?.Name == "aweXpect" &&
-		   type.ContainingNamespace?.ContainingNamespace?.ContainingNamespace?.IsGlobalNamespace == true;
+		// The assembly check comes first: it is two string comparisons, while decoding the attributes
+		// of an arbitrary metadata symbol is not, and this runs for every invocation in every preceding
+		// statement that is scanned.
+		=> IsAweXpectAssembly(methodSymbol.ContainingAssembly, compilation) &&
+		   (methodSymbol.ReducedFrom ?? methodSymbol).GetAttributes()
+		   .Any(attribute => attribute.AttributeClass is { Name: "GuaranteesNotNullAttribute", } attributeClass &&
+		                     IsAweXpectAssembly(attributeClass.ContainingAssembly, compilation));
 
 	/// <summary>
 	///     Checks that the symbol originates from a referenced aweXpect assembly and not from a look-alike that is

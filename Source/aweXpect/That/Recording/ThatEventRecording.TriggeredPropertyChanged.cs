@@ -12,6 +12,7 @@ public static partial class ThatEventRecording
 	/// <summary>
 	///     Verifies that the subject has triggered the <see cref="INotifyPropertyChanged.PropertyChanged" /> event.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static EventTriggerResult<TSubject> TriggeredPropertyChanged<TSubject>(
 		this IThat<IEventRecording<TSubject>> source)
 		where TSubject : INotifyPropertyChanged
@@ -34,6 +35,7 @@ public static partial class ThatEventRecording
 	/// <summary>
 	///     Verifies that the subject has not triggered the <see cref="INotifyPropertyChanged.PropertyChanged" /> event.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static EventTriggerResult<TSubject> DidNotTriggerPropertyChanged<TSubject>(
 		this IThat<IEventRecording<TSubject>> source)
 		where TSubject : INotifyPropertyChanged

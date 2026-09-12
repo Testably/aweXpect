@@ -39,6 +39,22 @@ public sealed partial class ThatGeneric
 					.WithParamName("predicate").And
 					.WithMessage("The predicate cannot be null.").AsPrefix();
 			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				Other? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotSatisfy(_ => false);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not satisfy _ => false,
+					             but it was <null>
+					             """);
+			}
 		}
 	}
 }

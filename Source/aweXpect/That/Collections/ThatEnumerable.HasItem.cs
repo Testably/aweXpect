@@ -24,6 +24,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection has an item…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static HasItemWithConditionResult<IEnumerable<TItem>?, TItem> HasItem<TItem>(
 		this IThat<IEnumerable<TItem>?> source)
 	{
@@ -44,6 +45,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection has an item matching the <paramref name="predicate" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static HasItemResult<IEnumerable<TItem>?> HasItem<TItem>(
 		this IThat<IEnumerable<TItem>?> source, Func<TItem, bool> predicate,
 		[CallerArgumentExpression("predicate")]
@@ -62,6 +64,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection has the <paramref name="expected" /> item…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectHasItemResult<IEnumerable<TItem>?, TItem> HasItem<TItem>(
 		this IThat<IEnumerable<TItem>?> source, TItem expected)
 	{
@@ -82,6 +85,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection has the <paramref name="expected" /> item…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringHasItemResult<IEnumerable<string?>?> HasItem(
 		this IThat<IEnumerable<string?>?> source, string? expected)
 	{
@@ -102,6 +106,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection has an item…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static HasItemWithConditionResult<IEnumerable?, object?> HasItem(
 		this IThat<IEnumerable?> source)
 	{
@@ -121,6 +126,7 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection has an item matching the <paramref name="predicate" />…
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
+	[GuaranteesNotNull]
 	public static HasItemResult<IEnumerable> HasItem(
 		this IThat<IEnumerable> source, Func<object?, bool> predicate,
 		[CallerArgumentExpression("predicate")]
@@ -141,6 +147,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection has the <paramref name="expected" /> item…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectHasItemResult<IEnumerable, object?> HasItem(
 		this IThat<IEnumerable> source, object? expected)
 	{
@@ -163,6 +170,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection has an item matching the <paramref name="predicate" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static HasItemResult<ImmutableArray<TItem>> HasItem<TItem>(
 		this IThat<ImmutableArray<TItem>> source, Func<TItem, bool> predicate,
 		[CallerArgumentExpression("predicate")]
@@ -185,6 +193,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection has an item…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static HasItemWithConditionResult<ImmutableArray<TItem>, TItem> HasItem<TItem>(
 		this IThat<ImmutableArray<TItem>> source)
 	{
@@ -205,6 +214,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection has the <paramref name="expected" /> item…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectHasItemResult<ImmutableArray<TItem>, TItem> HasItem<TItem>(
 		this IThat<ImmutableArray<TItem>> source, TItem expected)
 	{
@@ -228,6 +238,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection has the <paramref name="expected" /> item…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringHasItemResult<ImmutableArray<string?>> HasItem(
 		this IThat<ImmutableArray<string?>> source, string? expected)
 	{

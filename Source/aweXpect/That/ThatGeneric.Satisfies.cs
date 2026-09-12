@@ -16,6 +16,7 @@ public static partial class ThatGeneric
 	/// <summary>
 	///     Verifies the actual value to satisfy the <paramref name="predicate" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static RepeatedCheckResult<T, IThat<T>> Satisfies<T>(this IThat<T> source,
 		Func<T, bool> predicate,
 		[CallerArgumentExpression("predicate")]
@@ -38,6 +39,7 @@ public static partial class ThatGeneric
 	/// <summary>
 	///     Verifies the actual value to not satisfy the <paramref name="predicate" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<T, IThat<T>> DoesNotSatisfy<T>(this IThat<T> source,
 		Func<T, bool> predicate,
 		[CallerArgumentExpression("predicate")]

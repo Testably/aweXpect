@@ -24,6 +24,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection starts with the provided <paramref name="expected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		StartsWith<TItem>(
 			this IThat<IEnumerable<TItem>?> source,
@@ -45,6 +46,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection starts with the provided <paramref name="expected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		StartsWith<TItem>(
 			this IThat<IEnumerable<TItem>?> source,
@@ -66,6 +68,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection starts with the provided <paramref name="expected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 		StartsWith(
 			this IThat<IEnumerable<string?>?> source,
@@ -87,6 +90,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection starts with the provided <paramref name="expected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 		StartsWith(
 			this IThat<IEnumerable<string?>?> source,
@@ -109,6 +113,7 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection starts with the provided <paramref name="expected" /> collection.
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
+	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable>, TItem>
 		StartsWith<TItem>(
 			this IThat<IEnumerable> source,
@@ -130,6 +135,7 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection starts with the provided <paramref name="expected" /> collection.
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
+	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable>, TItem>
 		StartsWith<TItem>(
 			this IThat<IEnumerable> source,
@@ -152,6 +158,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection starts with the provided <paramref name="expected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
 		StartsWith<TItem>(
 			this IThat<ImmutableArray<TItem>> source,
@@ -175,6 +182,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection starts with the provided <paramref name="expected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
 		StartsWith<TItem>(
 			this IThat<ImmutableArray<TItem>> source,
@@ -198,6 +206,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection starts with the provided <paramref name="expected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
 		StartsWith(
 			this IThat<ImmutableArray<string?>> source,
@@ -221,6 +230,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection starts with the provided <paramref name="expected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
 		StartsWith(
 			this IThat<ImmutableArray<string?>> source,
@@ -244,6 +254,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection does not start with the provided <paramref name="unexpected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		DoesNotStartWith<TItem>(
 			this IThat<IEnumerable<TItem>?> source,
@@ -266,6 +277,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection does not start with the provided <paramref name="unexpected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		DoesNotStartWith<TItem>(
 			this IThat<IEnumerable<TItem>?> source,
@@ -287,6 +299,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection does not start with the provided <paramref name="unexpected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 		DoesNotStartWith(
 			this IThat<IEnumerable<string?>?> source,
@@ -309,6 +322,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection does not start with the provided <paramref name="unexpected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 		DoesNotStartWith(
 			this IThat<IEnumerable<string?>?> source,
@@ -331,6 +345,7 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection does not start with the provided <paramref name="unexpected" /> collection.
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
+	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable>, TItem>
 		DoesNotStartWith<TItem>(
 			this IThat<IEnumerable> source,
@@ -352,6 +367,7 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection does not start with the provided <paramref name="unexpected" /> collection.
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
+	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable>, TItem>
 		DoesNotStartWith<TItem>(
 			this IThat<IEnumerable> source,
@@ -374,6 +390,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection does not start with the provided <paramref name="unexpected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
 		DoesNotStartWith<TItem>(
 			this IThat<ImmutableArray<TItem>> source,
@@ -398,6 +415,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection does not start with the provided <paramref name="unexpected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
 		DoesNotStartWith<TItem>(
 			this IThat<ImmutableArray<TItem>> source,
@@ -421,6 +439,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection does not start with the provided <paramref name="unexpected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
 		DoesNotStartWith(
 			this IThat<ImmutableArray<string?>> source,
@@ -444,6 +463,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection does not start with the provided <paramref name="unexpected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
 		DoesNotStartWith(
 			this IThat<ImmutableArray<string?>> source,

@@ -30,6 +30,7 @@ public static partial class ThatObject
 	/// <summary>
 	///     Verifies that the subject is not <see langword="null" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<T, IThat<T?>> IsNotNull<T>(
 		this IThat<T?> source)
 		where T : class
@@ -40,6 +41,7 @@ public static partial class ThatObject
 	/// <summary>
 	///     Verifies that the subject is not <see langword="null" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<T, IThat<T?>> IsNotNull<T>(
 		this IThat<T?> source)
 		where T : struct

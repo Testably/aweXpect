@@ -43,6 +43,9 @@ internal readonly record struct ExpectationToGenerate
 				case "FailOnNull":
 					FailOnNull = namedArgument.Value.Value as bool? ?? true;
 					break;
+				case "NegatedFailsOnNull":
+					NegatedFailsOnNull = namedArgument.Value.Value as bool? ?? false;
+					break;
 				case "Using":
 					Usings =
 						namedArgument.Value.Values.Select(x => x.Value?.ToString()).Where(x => x != null).ToArray()!;
@@ -63,6 +66,7 @@ internal readonly record struct ExpectationToGenerate
 	}
 
 	public bool FailOnNull { get; } = true;
+	public bool NegatedFailsOnNull { get; }
 	public string[] Usings { get; } = [];
 	public string FileName { get; }
 	public bool IncludeNegated { get; }

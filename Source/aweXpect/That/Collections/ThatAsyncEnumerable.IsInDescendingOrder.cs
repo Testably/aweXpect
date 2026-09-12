@@ -17,6 +17,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection is in descending order.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionOrderResult<TItem, IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
 		IsInDescendingOrder<TItem>(
 			this IThat<IAsyncEnumerable<TItem>?> source)
@@ -35,6 +36,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection is in descending order.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionOrderResult<TMember, IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
 		IsInDescendingOrder<
 			TItem, TMember>(
@@ -58,6 +60,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection is not in descending order.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionOrderResult<TItem, IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
 		IsNotInDescendingOrder<TItem>(
 			this IThat<IAsyncEnumerable<TItem>?> source)
@@ -76,6 +79,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection is not in descending order.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionOrderResult<TMember, IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
 		IsNotInDescendingOrder<
 			TItem, TMember>(

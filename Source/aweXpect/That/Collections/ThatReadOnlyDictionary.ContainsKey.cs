@@ -12,6 +12,7 @@ public static partial class ThatReadOnlyDictionary
 	/// <summary>
 	///     Verifies that the dictionary contains the <paramref name="expected" /> key.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ContainsValueResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>, TKey
 			, TValue?>
 		ContainsKey<TKey, TValue>(
@@ -32,6 +33,7 @@ public static partial class ThatReadOnlyDictionary
 	/// <summary>
 	///     Verifies that the dictionary contains the <paramref name="expected" /> key.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ContainsValueResult<ReadOnlyDictionary<TKey, TValue>, IThat<ReadOnlyDictionary<TKey, TValue>?>, TKey,
 			TValue?>
 		ContainsKey<TKey, TValue>(
@@ -53,6 +55,7 @@ public static partial class ThatReadOnlyDictionary
 	/// <summary>
 	///     Verifies that the dictionary does not contain the <paramref name="unexpected" /> key.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>>
 		DoesNotContainKey<TKey, TValue>(
 			this IThat<IReadOnlyDictionary<TKey, TValue>?> source,
@@ -70,6 +73,7 @@ public static partial class ThatReadOnlyDictionary
 	/// <summary>
 	///     Verifies that the dictionary does not contain the <paramref name="unexpected" /> key.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<ReadOnlyDictionary<TKey, TValue>, IThat<ReadOnlyDictionary<TKey, TValue>?>>
 		DoesNotContainKey<TKey, TValue>(
 			this IThat<ReadOnlyDictionary<TKey, TValue>?> source,

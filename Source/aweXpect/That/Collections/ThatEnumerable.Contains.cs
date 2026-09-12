@@ -26,6 +26,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection contains the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectCountResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		Contains<TItem>(
 			this IThat<IEnumerable<TItem>?> source,
@@ -52,6 +53,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection contains the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeCountResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>> Contains(
 		this IThat<IEnumerable<string?>?> source,
 		string? expected)
@@ -76,6 +78,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection contains an item that satisfies the <paramref name="predicate" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CountResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
 		Contains<TItem>(
 			this IThat<IEnumerable<TItem>?> source,
@@ -103,6 +106,7 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection contains the <paramref name="expected" /> value.
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
+	[GuaranteesNotNull]
 	public static ObjectCountResult<IEnumerable, IThat<IEnumerable>, object?>
 		Contains(
 			this IThat<IEnumerable> source,
@@ -129,6 +133,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection contains an item that satisfies the <paramref name="predicate" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CountResult<IEnumerable, IThat<IEnumerable>>
 		Contains(
 			this IThat<IEnumerable> source,
@@ -156,6 +161,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection contains the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectCountResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
 		Contains<TItem>(
 			this IThat<ImmutableArray<TItem>> source,
@@ -184,6 +190,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection contains the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeCountResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>> Contains(
 		this IThat<ImmutableArray<string?>> source,
 		string? expected)
@@ -210,6 +217,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection contains an item that satisfies the <paramref name="predicate" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CountResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>
 		Contains<TItem>(
 			this IThat<ImmutableArray<TItem>> source,
@@ -237,6 +245,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection contains the provided <paramref name="expected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectCollectionContainResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		Contains<TItem>(
 			this IThat<IEnumerable<TItem>?> source,
@@ -260,6 +269,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection contains the provided <paramref name="expected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringCollectionContainResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 		Contains(this IThat<IEnumerable<string?>?> source,
 			IEnumerable<string?> expected,
@@ -281,6 +291,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection contains the provided <paramref name="expected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringCollectionContainResult<string?[], IThat<string?[]?>>
 		Contains(this IThat<string?[]?> source,
 			IEnumerable<string?> expected,
@@ -303,6 +314,7 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection contains the provided <paramref name="expected" /> collection.
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
+	[GuaranteesNotNull]
 	public static ObjectCollectionContainResult<IEnumerable, IThat<IEnumerable>, TItem>
 		Contains<TItem>(
 			this IThat<IEnumerable> source,
@@ -328,6 +340,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection contains the provided <paramref name="expected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectCollectionContainResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
 		Contains<TItem>(
 			this IThat<ImmutableArray<TItem>> source,
@@ -355,6 +368,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection contains the provided <paramref name="expected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringCollectionContainResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
 		Contains(this IThat<ImmutableArray<string?>> source,
 			IEnumerable<string?> expected,
@@ -380,6 +394,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection contains the provided <paramref name="expected" /> collection of predicates.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionContainResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		Contains<TItem>(
 			this IThat<IEnumerable<TItem>?> source,
@@ -401,6 +416,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection contains the provided <paramref name="expected" /> collection of expectations.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionContainResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		Contains<TItem>(
 			this IThat<IEnumerable<TItem>?> source,
@@ -422,6 +438,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection does not contain the <paramref name="unexpected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectCountResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		DoesNotContain<TItem>(
 			this IThat<IEnumerable<TItem>?> source,
@@ -446,6 +463,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection does not contain the <paramref name="unexpected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeCountResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 		DoesNotContain(
 			this IThat<IEnumerable<string?>?> source,
@@ -470,6 +488,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection contains no item that satisfies the <paramref name="predicate" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CountResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
 		DoesNotContain<TItem>(
 			this IThat<IEnumerable<TItem>?> source,
@@ -496,6 +515,7 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection does not contain the <paramref name="unexpected" /> value.
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
+	[GuaranteesNotNull]
 	public static ObjectCountResult<IEnumerable, IThat<IEnumerable>, object?>
 		DoesNotContain(
 			this IThat<IEnumerable> source,
@@ -522,6 +542,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection contains no item that satisfies the <paramref name="predicate" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CountResult<IEnumerable, IThat<IEnumerable>>
 		DoesNotContain(
 			this IThat<IEnumerable> source,
@@ -549,6 +570,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection does not contain the <paramref name="unexpected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectCountResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
 		DoesNotContain<TItem>(
 			this IThat<ImmutableArray<TItem>> source,
@@ -577,6 +599,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection does not contain the <paramref name="unexpected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeCountResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>> DoesNotContain(
 		this IThat<ImmutableArray<string?>> source,
 		string? unexpected)
@@ -603,6 +626,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection contains no item that satisfies the <paramref name="predicate" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CountResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>
 		DoesNotContain<TItem>(
 			this IThat<ImmutableArray<TItem>> source,

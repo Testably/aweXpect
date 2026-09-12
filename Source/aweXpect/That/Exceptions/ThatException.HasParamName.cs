@@ -14,6 +14,7 @@ public static partial class ThatException
 	/// <remarks>
 	///     If <paramref name="expected" /> is <see langword="null" />, does not verify anything.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static AndOrResult<TException, IThat<TException>> HasParamName<TException>(
 		this IThat<TException> source,
 		string? expected)

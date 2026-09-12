@@ -21,6 +21,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection only contains unique items.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		AreAllUnique<TItem>(
 			this IThat<IAsyncEnumerable<TItem>?> source)
@@ -37,6 +38,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection only contains unique items.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>> AreAllUnique(
 		this IThat<IAsyncEnumerable<string?>?> source)
 	{
@@ -53,6 +55,7 @@ public static partial class ThatAsyncEnumerable
 	///     Verifies that the collection only contains items with unique members specified by the
 	///     <paramref name="memberAccessor" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TMember>
 		AreAllUnique<TItem, TMember>(
 			this IThat<IAsyncEnumerable<TItem>?> source,
@@ -76,6 +79,7 @@ public static partial class ThatAsyncEnumerable
 	///     Verifies that the collection only contains items with unique members specified by the
 	///     <paramref name="memberAccessor" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
 		AreAllUnique<TItem>(
 			this IThat<IAsyncEnumerable<TItem>?> source,

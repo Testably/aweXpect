@@ -20,6 +20,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection has an item…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static HasItemWithConditionResult<IAsyncEnumerable<TItem>?, TItem> HasItem<TItem>(
 		this IThat<IAsyncEnumerable<TItem>?> source)
 	{
@@ -40,6 +41,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection has an item matching the <paramref name="predicate" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static HasItemResult<IAsyncEnumerable<TItem>?> HasItem<TItem>(
 		this IThat<IAsyncEnumerable<TItem>?> source, Func<TItem, bool> predicate,
 		[CallerArgumentExpression("predicate")]
@@ -58,6 +60,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection has the <paramref name="expected" /> item…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectHasItemResult<IAsyncEnumerable<TItem>?, TItem> HasItem<TItem>(
 		this IThat<IAsyncEnumerable<TItem>?> source, TItem expected)
 	{
@@ -78,6 +81,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection has the <paramref name="expected" /> item…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringHasItemResult<IAsyncEnumerable<string?>?> HasItem(
 		this IThat<IAsyncEnumerable<string?>?> source, string? expected)
 	{

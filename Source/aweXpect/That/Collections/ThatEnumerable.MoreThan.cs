@@ -14,6 +14,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that in the collection more than <paramref name="minimum" /> items…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static Elements<TItem> MoreThan<TItem>(
 		this IThat<IEnumerable<TItem>?> subject,
 		int minimum)
@@ -22,6 +23,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that in the collection more than <paramref name="minimum" /> items…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static Elements MoreThan(
 		this IThat<IEnumerable<string?>?> subject,
 		int minimum)
@@ -31,6 +33,7 @@ public static partial class ThatEnumerable
 	///     Verifies that in the collection more than <paramref name="minimum" /> items…
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
+	[GuaranteesNotNull]
 	public static ElementsForEnumerable<IEnumerable> MoreThan(
 		this IThat<IEnumerable> subject,
 		int minimum)
@@ -40,6 +43,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that in the collection more than <paramref name="minimum" /> items…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ElementsForStructEnumerable<ImmutableArray<TItem>, TItem> MoreThan<TItem>(
 		this IThat<ImmutableArray<TItem>> subject,
 		int minimum)
@@ -50,6 +54,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that in the collection more than <paramref name="minimum" /> items…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ElementsForStructEnumerable<ImmutableArray<string?>> MoreThan(
 		this IThat<ImmutableArray<string?>> subject,
 		int minimum)

@@ -11,6 +11,7 @@ public static partial class ThatException
 	///     Verifies that the actual exception has an inner exception of type <typeparamref name="TInnerException" /> which
 	///     satisfies the <paramref name="expectations" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<Exception?, IThat<Exception?>> HasInner<TInnerException>(
 		this IThat<Exception?> source,
 		Action<IThatSubject<TInnerException?>> expectations)
@@ -28,6 +29,7 @@ public static partial class ThatException
 	/// <summary>
 	///     Verifies that the actual exception has an inner exception of type <typeparamref name="TInnerException" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<Exception?, IThat<Exception?>> HasInner<TInnerException>(
 		this IThat<Exception?> source)
 		where TInnerException : Exception?
@@ -39,6 +41,7 @@ public static partial class ThatException
 	///     Verifies that the actual exception has an inner exception of type <paramref name="innerExceptionType" /> which
 	///     satisfies the <paramref name="expectations" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<Exception?, IThat<Exception?>> HasInner(
 		this IThat<Exception?> source,
 		Type innerExceptionType,
@@ -56,6 +59,7 @@ public static partial class ThatException
 	/// <summary>
 	///     Verifies that the actual exception has an inner exception of type <paramref name="innerExceptionType" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<Exception?, IThat<Exception?>> HasInner(
 		this IThat<Exception?> source,
 		Type innerExceptionType)

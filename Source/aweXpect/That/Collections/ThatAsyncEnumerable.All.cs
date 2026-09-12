@@ -10,6 +10,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that in the collection all items…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static Elements<TItem> All<TItem>(
 		this IThat<IAsyncEnumerable<TItem>?> subject)
 		=> new(subject,
@@ -18,6 +19,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that in the collection all items…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static Elements All(
 		this IThat<IAsyncEnumerable<string?>?> subject)
 		=> new(subject,

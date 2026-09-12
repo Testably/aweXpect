@@ -10,6 +10,7 @@ public static partial class ThatObject
 	/// <summary>
 	///     Verifies the actual value to be the same as the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<T?, IThat<T?>> IsSameAs<T>(this IThat<T?> source, object? expected)
 		where T : class
 		=> new(source.Get().ExpectationBuilder
@@ -20,6 +21,7 @@ public static partial class ThatObject
 	/// <summary>
 	///     Verifies the actual value to not be the same as the <paramref name="unexpected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<T?, IThat<T?>> IsNotSameAs<T>(this IThat<T?> source, object? unexpected)
 		where T : class
 		=> new(source.Get().ExpectationBuilder

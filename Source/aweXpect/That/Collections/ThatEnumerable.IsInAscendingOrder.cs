@@ -18,6 +18,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is in ascending order.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionOrderResult<TItem, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
 		IsInAscendingOrder<TItem>(
 			this IThat<IEnumerable<TItem>?> source)
@@ -39,6 +40,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is in ascending order.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionOrderResult<TMember, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
 		IsInAscendingOrder<
 			TItem, TMember>(
@@ -65,6 +67,7 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection is in ascending order.
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
+	[GuaranteesNotNull]
 	public static CollectionOrderResult<object?, IEnumerable, IThat<IEnumerable>>
 		IsInAscendingOrder(this IThat<IEnumerable> source)
 	{
@@ -85,6 +88,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is in ascending order.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionOrderResult<TMember, IEnumerable, IThat<IEnumerable>>
 		IsInAscendingOrder<TMember>(
 			this IThat<IEnumerable> source,
@@ -110,6 +114,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is in ascending order.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionOrderResult<TItem, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>
 		IsInAscendingOrder<TItem>(
 			this IThat<ImmutableArray<TItem>> source)
@@ -133,6 +138,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is in ascending order.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionOrderResult<TMember, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>
 		IsInAscendingOrder<
 			TItem, TMember>(
@@ -159,6 +165,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is not in ascending order.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionOrderResult<TItem, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
 		IsNotInAscendingOrder<TItem>(
 			this IThat<IEnumerable<TItem>?> source)
@@ -180,6 +187,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is not in ascending order.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionOrderResult<TMember, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
 		IsNotInAscendingOrder<
 			TItem, TMember>(
@@ -206,6 +214,7 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection is not in ascending order.
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
+	[GuaranteesNotNull]
 	public static CollectionOrderResult<object?, IEnumerable, IThat<IEnumerable>>
 		IsNotInAscendingOrder(this IThat<IEnumerable> source)
 	{
@@ -226,6 +235,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is not in ascending order.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionOrderResult<TMember, IEnumerable, IThat<IEnumerable>>
 		IsNotInAscendingOrder<TMember>(
 			this IThat<IEnumerable> source,
@@ -251,6 +261,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is not in ascending order.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionOrderResult<TItem, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>
 		IsNotInAscendingOrder<TItem>(this IThat<ImmutableArray<TItem>> source)
 	{
@@ -273,6 +284,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is not in ascending order.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionOrderResult<TMember, ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>
 		IsNotInAscendingOrder<TItem, TMember>(
 			this IThat<ImmutableArray<TItem>> source,

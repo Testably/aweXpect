@@ -16,6 +16,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the <paramref name="subject" /> has an item count of…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionCountResult<AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>> HasCount<TItem>(
 		this IThat<IEnumerable<TItem>?> subject)
 	{
@@ -30,6 +31,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the <paramref name="subject" /> has exactly <paramref name="expected" /> items.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>> HasCount<TItem>(
 		this IThat<IEnumerable<TItem>?> subject, int expected)
 	{
@@ -44,6 +46,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the <paramref name="subject" /> has an item count of…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionCountResult<AndOrResult<TItem[], IThat<TItem[]?>>> HasCount<TItem>(
 		this IThat<TItem[]?> subject)
 	{
@@ -58,6 +61,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the <paramref name="subject" /> has exactly <paramref name="expected" /> items.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<TItem[], IThat<TItem[]?>> HasCount<TItem>(
 		this IThat<TItem[]?> subject, int expected)
 	{
@@ -73,6 +77,7 @@ public static partial class ThatEnumerable
 	///     Verifies that the <paramref name="subject" /> has an item count of…
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
+	[GuaranteesNotNull]
 	public static CollectionCountResult<AndOrResult<IEnumerable, IThat<IEnumerable>>> HasCount(
 		this IThat<IEnumerable> subject)
 	{
@@ -88,6 +93,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the <paramref name="subject" /> has exactly <paramref name="expected" /> items.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable, IThat<IEnumerable>> HasCount(
 		this IThat<IEnumerable> subject, int expected)
 	{
@@ -103,6 +109,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the <paramref name="subject" /> has an item count of…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionCountResult<AndOrResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>>
 		HasCount<TItem>(
 			this IThat<ImmutableArray<TItem>> subject)
@@ -121,6 +128,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the <paramref name="subject" /> has exactly <paramref name="expected" /> items.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>> HasCount<TItem>(
 		this IThat<ImmutableArray<TItem>> subject, int expected)
 	{
@@ -137,6 +145,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the <paramref name="subject" /> does not have <paramref name="unexpected" /> items.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>> DoesNotHaveCount<TItem>(
 		this IThat<IEnumerable<TItem>?> subject, int unexpected)
 	{
@@ -151,6 +160,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the <paramref name="subject" /> does not have <paramref name="unexpected" /> items.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<TItem[], IThat<TItem[]?>> DoesNotHaveCount<TItem>(
 		this IThat<TItem[]?> subject, int unexpected)
 	{
@@ -166,6 +176,7 @@ public static partial class ThatEnumerable
 	///     Verifies that the <paramref name="subject" /> does not have <paramref name="unexpected" /> items.
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable, IThat<IEnumerable>> DoesNotHaveCount(
 		this IThat<IEnumerable> subject, int unexpected)
 	{
@@ -181,6 +192,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the <paramref name="subject" /> does not have <paramref name="unexpected" /> items.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>> DoesNotHaveCount<TItem>(
 		this IThat<ImmutableArray<TItem>> subject, int unexpected)
 	{

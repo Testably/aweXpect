@@ -16,6 +16,7 @@ public static partial class ThatEventRecording
 	///     Verifies that the subject has triggered the <see cref="INotifyPropertyChanged.PropertyChanged" /> event
 	///     for the property given by the <paramref name="propertyExpression" />
 	/// </summary>
+	[GuaranteesNotNull]
 	public static EventTriggerResult<TSubject> TriggeredPropertyChangedFor<TSubject, TProperty>(
 		this IThat<IEventRecording<TSubject>> source,
 		Expression<Func<TSubject, TProperty>> propertyExpression)
@@ -32,6 +33,7 @@ public static partial class ThatEventRecording
 	///     Verifies that the subject has triggered the <see cref="INotifyPropertyChanged.PropertyChanged" /> event
 	///     for the given <paramref name="propertyName" />
 	/// </summary>
+	[GuaranteesNotNull]
 	public static EventTriggerResult<TSubject> TriggeredPropertyChangedFor<TSubject>(
 		this IThat<IEventRecording<TSubject>> source,
 		string? propertyName)
@@ -59,6 +61,7 @@ public static partial class ThatEventRecording
 	///     Verifies that the subject has not triggered the <see cref="INotifyPropertyChanged.PropertyChanged" /> event
 	///     for the property given by the <paramref name="propertyExpression" />
 	/// </summary>
+	[GuaranteesNotNull]
 	public static EventTriggerResult<TSubject> DidNotTriggerPropertyChangedFor<TSubject, TProperty>(
 		this IThat<IEventRecording<TSubject>> source,
 		Expression<Func<TSubject, TProperty>> propertyExpression)
@@ -75,6 +78,7 @@ public static partial class ThatEventRecording
 	///     Verifies that the subject has not triggered the <see cref="INotifyPropertyChanged.PropertyChanged" /> event
 	///     for the given <paramref name="propertyName" />
 	/// </summary>
+	[GuaranteesNotNull]
 	public static EventTriggerResult<TSubject> DidNotTriggerPropertyChangedFor<TSubject>(
 		this IThat<IEventRecording<TSubject>> source,
 		string? propertyName)

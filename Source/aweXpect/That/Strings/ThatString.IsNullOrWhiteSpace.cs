@@ -21,6 +21,7 @@ public static partial class ThatString
 	///     Verifies that the subject is not <see langword="null" />, <see cref="string.Empty" /> or consists only of
 	///     white-space characters.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<string, IThat<string?>> IsNotNullOrWhiteSpace(
 		this IThat<string?> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>

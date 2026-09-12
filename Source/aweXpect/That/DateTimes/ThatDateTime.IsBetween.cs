@@ -13,6 +13,7 @@ public static partial class ThatDateTime
 	/// <summary>
 	///     Verifies that the subject is between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<TimeToleranceResult<DateTime, IThat<DateTime>>, DateTime?> IsBetween(
 		this IThat<DateTime> source,
 		DateTime? minimum)

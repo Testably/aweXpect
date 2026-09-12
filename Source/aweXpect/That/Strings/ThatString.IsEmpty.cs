@@ -10,6 +10,7 @@ public static partial class ThatString
 	/// <summary>
 	///     Verifies that the subject is empty.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<string?, IThat<string?>> IsEmpty(
 		this IThat<string?> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>

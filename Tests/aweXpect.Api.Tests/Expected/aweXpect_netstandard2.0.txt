@@ -39,10 +39,13 @@ namespace aweXpect
     }
     public static class ThatBool
     {
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<bool, aweXpect.Core.IThat<bool>> Implies(this aweXpect.Core.IThat<bool> source, bool consequent) { }
         public static aweXpect.Results.AndOrResult<bool, aweXpect.Core.IThat<bool>> IsEqualTo(this aweXpect.Core.IThat<bool> source, bool expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<bool, aweXpect.Core.IThat<bool>> IsFalse(this aweXpect.Core.IThat<bool> source) { }
         public static aweXpect.Results.AndOrResult<bool, aweXpect.Core.IThat<bool>> IsNotEqualTo(this aweXpect.Core.IThat<bool> source, bool unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<bool, aweXpect.Core.IThat<bool>> IsTrue(this aweXpect.Core.IThat<bool> source) { }
     }
     public static class ThatChar
@@ -74,20 +77,29 @@ namespace aweXpect
         public static aweXpect.Results.PropertyResult.Int<System.DateTime> HasMonth(this aweXpect.Core.IThat<System.DateTime> source) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTime> HasSecond(this aweXpect.Core.IThat<System.DateTime> source) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTime> HasYear(this aweXpect.Core.IThat<System.DateTime> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsAfter(this aweXpect.Core.IThat<System.DateTime> source, System.DateTime? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsBefore(this aweXpect.Core.IThat<System.DateTime> source, System.DateTime? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>>, System.DateTime?> IsBetween(this aweXpect.Core.IThat<System.DateTime> source, System.DateTime? minimum) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsEqualTo(this aweXpect.Core.IThat<System.DateTime> source, System.DateTime? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsNotAfter(this aweXpect.Core.IThat<System.DateTime> source, System.DateTime? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsNotBefore(this aweXpect.Core.IThat<System.DateTime> source, System.DateTime? unexpected) { }
         public static aweXpect.Results.BetweenResult<aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>>, System.DateTime?> IsNotBetween(this aweXpect.Core.IThat<System.DateTime> source, System.DateTime? minimum) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsNotEqualTo(this aweXpect.Core.IThat<System.DateTime> source, System.DateTime? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsNotOnOrAfter(this aweXpect.Core.IThat<System.DateTime> source, System.DateTime? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsNotOnOrBefore(this aweXpect.Core.IThat<System.DateTime> source, System.DateTime? unexpected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsNotOneOf(this aweXpect.Core.IThat<System.DateTime> source, System.Collections.Generic.IEnumerable<System.DateTime> unexpected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsNotOneOf(this aweXpect.Core.IThat<System.DateTime> source, System.Collections.Generic.IEnumerable<System.DateTime?> unexpected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsNotOneOf(this aweXpect.Core.IThat<System.DateTime> source, params System.DateTime?[] unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsOnOrAfter(this aweXpect.Core.IThat<System.DateTime> source, System.DateTime? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsOnOrBefore(this aweXpect.Core.IThat<System.DateTime> source, System.DateTime? expected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsOneOf(this aweXpect.Core.IThat<System.DateTime> source, System.Collections.Generic.IEnumerable<System.DateTime> expected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsOneOf(this aweXpect.Core.IThat<System.DateTime> source, System.Collections.Generic.IEnumerable<System.DateTime?> expected) { }
@@ -103,20 +115,29 @@ namespace aweXpect
         public static aweXpect.Results.PropertyResult.TimeSpan<System.DateTimeOffset> HasOffset(this aweXpect.Core.IThat<System.DateTimeOffset> source) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTimeOffset> HasSecond(this aweXpect.Core.IThat<System.DateTimeOffset> source) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTimeOffset> HasYear(this aweXpect.Core.IThat<System.DateTimeOffset> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsAfter(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.DateTimeOffset? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsBefore(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.DateTimeOffset? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>>, System.DateTimeOffset?> IsBetween(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.DateTimeOffset? minimum) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsEqualTo(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.DateTimeOffset? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsNotAfter(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.DateTimeOffset? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsNotBefore(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.DateTimeOffset? unexpected) { }
         public static aweXpect.Results.BetweenResult<aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>>, System.DateTimeOffset?> IsNotBetween(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.DateTimeOffset? minimum) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsNotEqualTo(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.DateTimeOffset? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsNotOnOrAfter(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.DateTimeOffset? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsNotOnOrBefore(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.DateTimeOffset? unexpected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsNotOneOf(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.Collections.Generic.IEnumerable<System.DateTimeOffset> unexpected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsNotOneOf(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.Collections.Generic.IEnumerable<System.DateTimeOffset?> unexpected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsNotOneOf(this aweXpect.Core.IThat<System.DateTimeOffset> source, params System.DateTimeOffset?[] unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsOnOrAfter(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.DateTimeOffset? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsOnOrBefore(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.DateTimeOffset? expected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsOneOf(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.Collections.Generic.IEnumerable<System.DateTimeOffset> expected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsOneOf(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.Collections.Generic.IEnumerable<System.DateTimeOffset?> expected) { }
@@ -124,9 +145,13 @@ namespace aweXpect
     }
     public static class ThatDelegate
     {
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ExpectationResult DoesNotExecuteWithin(this aweXpect.Core.IThat<aweXpect.Delegates.ThatDelegate.WithoutValue> source, System.TimeSpan duration) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ExpectationResult<TValue> DoesNotExecuteWithin<TValue>(this aweXpect.Core.IThat<aweXpect.Delegates.ThatDelegate.WithValue<TValue>> source, System.TimeSpan duration) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ExpectationResult ExecutesWithin(this aweXpect.Core.IThat<aweXpect.Delegates.ThatDelegate.WithoutValue> source, System.TimeSpan duration) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ExpectationResult<TValue> ExecutesWithin<TValue>(this aweXpect.Core.IThat<aweXpect.Delegates.ThatDelegate.WithValue<TValue>> source, System.TimeSpan duration) { }
     }
     public static class ThatDelegateThrows
@@ -148,41 +173,65 @@ namespace aweXpect
     }
     public static class ThatDictionary
     {
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityResult<System.Collections.Generic.Dictionary<TKey, string?>, aweXpect.Core.IThat<System.Collections.Generic.Dictionary<TKey, string?>?>> AreAllUnique<TKey>(this aweXpect.Core.IThat<System.Collections.Generic.Dictionary<TKey, string?>?> source)
             where TKey :  notnull { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityResult<System.Collections.Generic.IDictionary<TKey, string?>, aweXpect.Core.IThat<System.Collections.Generic.IDictionary<TKey, string?>?>> AreAllUnique<TKey>(this aweXpect.Core.IThat<System.Collections.Generic.IDictionary<TKey, string?>?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.Dictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.Dictionary<TKey, TValue>?>, TValue> AreAllUnique<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.Dictionary<TKey, TValue>?> source)
             where TKey :  notnull { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.IDictionary<TKey, TValue>?>, TValue> AreAllUnique<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.IDictionary<TKey, TValue>?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityResult<System.Collections.Generic.Dictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.Dictionary<TKey, TValue>?>> AreAllUnique<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.Dictionary<TKey, TValue>?> source, System.Func<TValue, string> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "")
             where TKey :  notnull { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityResult<System.Collections.Generic.IDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.IDictionary<TKey, TValue>?>> AreAllUnique<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.IDictionary<TKey, TValue>?> source, System.Func<TValue, string> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.Dictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.Dictionary<TKey, TValue>?>, TMember> AreAllUnique<TKey, TValue, TMember>(this aweXpect.Core.IThat<System.Collections.Generic.Dictionary<TKey, TValue>?> source, System.Func<TValue, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "")
             where TKey :  notnull { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.IDictionary<TKey, TValue>?>, TMember> AreAllUnique<TKey, TValue, TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IDictionary<TKey, TValue>?> source, System.Func<TValue, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ContainsValueResult<System.Collections.Generic.Dictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.Dictionary<TKey, TValue>?>, TKey, TValue?> ContainsKey<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.Dictionary<TKey, TValue>?> source, TKey expected)
             where TKey :  notnull { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ContainsValueResult<System.Collections.Generic.IDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.IDictionary<TKey, TValue>?>, TKey, TValue?> ContainsKey<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.IDictionary<TKey, TValue>?> source, TKey expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ContainsValuesResult<System.Collections.Generic.Dictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.Dictionary<TKey, TValue>?>, TKey, TValue?> ContainsKeys<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.Dictionary<TKey, TValue>?> source, params TKey[] expected)
             where TKey :  notnull { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ContainsValuesResult<System.Collections.Generic.IDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.IDictionary<TKey, TValue>?>, TKey, TValue?> ContainsKeys<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.IDictionary<TKey, TValue>?> source, params TKey[] expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.Dictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.Dictionary<TKey, TValue>?>> ContainsValue<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.Dictionary<TKey, TValue>?> source, TValue expected)
             where TKey :  notnull { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.IDictionary<TKey, TValue>?>> ContainsValue<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.IDictionary<TKey, TValue>?> source, TValue expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.Dictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.Dictionary<TKey, TValue>?>> ContainsValues<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.Dictionary<TKey, TValue>?> source, params TValue[] expected)
             where TKey :  notnull { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.IDictionary<TKey, TValue>?>> ContainsValues<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.IDictionary<TKey, TValue>?> source, params TValue[] expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.Dictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.Dictionary<TKey, TValue>?>> DoesNotContainKey<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.Dictionary<TKey, TValue>?> source, TKey unexpected)
             where TKey :  notnull { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.IDictionary<TKey, TValue>?>> DoesNotContainKey<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.IDictionary<TKey, TValue>?> source, TKey unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.Dictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.Dictionary<TKey, TValue>?>> DoesNotContainKeys<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.Dictionary<TKey, TValue>?> source, params TKey[] unexpected)
             where TKey :  notnull { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.IDictionary<TKey, TValue>?>> DoesNotContainKeys<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.IDictionary<TKey, TValue>?> source, params TKey[] unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.Dictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.Dictionary<TKey, TValue>?>> DoesNotContainValue<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.Dictionary<TKey, TValue>?> source, TValue unexpected)
             where TKey :  notnull { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.IDictionary<TKey, TValue>?>> DoesNotContainValue<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.IDictionary<TKey, TValue>?> source, TValue unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.Dictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.Dictionary<TKey, TValue>?>> DoesNotContainValues<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.Dictionary<TKey, TValue>?> source, params TValue[] unexpected)
             where TKey :  notnull { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.IDictionary<TKey, TValue>?>> DoesNotContainValues<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.IDictionary<TKey, TValue>?> source, params TValue[] unexpected) { }
     }
     public static class ThatEnum
@@ -193,12 +242,15 @@ namespace aweXpect
             where TEnum :  struct, System.Enum { }
         public static aweXpect.Results.AndOrResult<TEnum, aweXpect.Core.IThat<TEnum>> HasFlag<TEnum>(this aweXpect.Core.IThat<TEnum> source, TEnum? expectedFlag)
             where TEnum :  struct, System.Enum { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TEnum, aweXpect.Core.IThat<TEnum>> HasValue<TEnum>(this aweXpect.Core.IThat<TEnum> source, long? expected)
             where TEnum :  struct, System.Enum { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TEnum, aweXpect.Core.IThat<TEnum>> IsDefined<TEnum>(this aweXpect.Core.IThat<TEnum> source)
             where TEnum :  struct, System.Enum { }
         public static aweXpect.Results.AndOrResult<TEnum, aweXpect.Core.IThat<TEnum>> IsEqualTo<TEnum>(this aweXpect.Core.IThat<TEnum> source, TEnum? expected)
             where TEnum :  struct, System.Enum { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TEnum, aweXpect.Core.IThat<TEnum>> IsNotDefined<TEnum>(this aweXpect.Core.IThat<TEnum> source)
             where TEnum :  struct, System.Enum { }
         public static aweXpect.Results.AndOrResult<TEnum, aweXpect.Core.IThat<TEnum>> IsNotEqualTo<TEnum>(this aweXpect.Core.IThat<TEnum> source, TEnum? unexpected)
@@ -218,17 +270,29 @@ namespace aweXpect
     }
     public static class ThatEnumerable
     {
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements All(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable> All(this aweXpect.Core.IThat<System.Collections.IEnumerable> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements<TItem> All<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements Any(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable> Any(this aweXpect.Core.IThat<System.Collections.IEnumerable> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements<TItem> Any<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityResult<System.Collections.Generic.IEnumerable<string?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?>> AreAllUnique(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, object?> AreAllUnique(this aweXpect.Core.IThat<System.Collections.IEnumerable> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> AreAllUnique<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> AreAllUnique<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Func<TItem, string> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TMember> AreAllUnique<TMember>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Func<object?, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TMember> AreAllUnique<TItem, TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Func<TItem, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Results.StringEqualityResult<System.Collections.Generic.IEnumerable<string?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?>> AreEqualTo(this aweXpect.ThatEnumerable.Elements elements, string? expected) { }
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, object?> AreEqualTo(this aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable> elements, object? expected) { }
@@ -245,83 +309,155 @@ namespace aweXpect
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IEnumerable<TItem>?, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> AreEqualTo<TItem>(this aweXpect.ThatEnumerable.Elements<TItem> elements, TItem expected) { }
         public static aweXpect.Results.ObjectEqualityResult<TEnumerable, aweXpect.Core.IThat<TEnumerable>, object?> AreEqualTo<TEnumerable, TItem>(this aweXpect.ThatEnumerable.ElementsForStructEnumerable<TEnumerable, TItem> elements, object? expected)
             where TEnumerable :  struct, System.Collections.Generic.IEnumerable<TItem> { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements AtLeast(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> subject, int minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable> AtLeast(this aweXpect.Core.IThat<System.Collections.IEnumerable> subject, int minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements<TItem> AtLeast<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> subject, int minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements AtMost(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> subject, int maximum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable> AtMost(this aweXpect.Core.IThat<System.Collections.IEnumerable> subject, int maximum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements<TItem> AtMost<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> subject, int maximum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.ThatEnumerable.Elements> Between(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> subject, int minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable>> Between(this aweXpect.Core.IThat<System.Collections.IEnumerable> subject, int minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.ThatEnumerable.Elements<TItem>> Between<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> subject, int minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeCountResult<System.Collections.Generic.IEnumerable<string?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?>> Contains(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> source, string? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectCountResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, object?> Contains(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, object? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringCollectionContainResult<System.Collections.Generic.IEnumerable<string?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?>> Contains(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> source, System.Collections.Generic.IEnumerable<string?> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CountResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>> Contains(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Func<object?, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringCollectionContainResult<string?[], aweXpect.Core.IThat<string?[]?>> Contains(this aweXpect.Core.IThat<string?[]?> source, System.Collections.Generic.IEnumerable<string?> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectCountResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> Contains<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, TItem expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionContainResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> Contains<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<System.Action<aweXpect.Core.IThatSubject<TItem?>>> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionContainResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> Contains<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<System.Linq.Expressions.Expression<System.Func<TItem, bool>>> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectCollectionContainResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> Contains<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<TItem> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CountResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> Contains<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Func<TItem, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectCollectionContainResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TItem> Contains<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Collections.Generic.IEnumerable<TItem> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeCountResult<System.Collections.Generic.IEnumerable<string?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?>> DoesNotContain(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> source, string? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectCountResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, object?> DoesNotContain(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, object? unexpected) { }
         public static aweXpect.Results.StringCollectionContainResult<System.Collections.Generic.IEnumerable<string?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?>> DoesNotContain(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> source, System.Collections.Generic.IEnumerable<string?> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CountResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>> DoesNotContain(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Func<object?, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Results.StringCollectionContainResult<string?[], aweXpect.Core.IThat<string?[]?>> DoesNotContain(this aweXpect.Core.IThat<string?[]?> source, System.Collections.Generic.IEnumerable<string?> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectCountResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> DoesNotContain<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, TItem unexpected) { }
         public static aweXpect.Results.CollectionContainResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> DoesNotContain<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<System.Action<aweXpect.Core.IThatSubject<TItem?>>> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Results.CollectionContainResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> DoesNotContain<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<System.Linq.Expressions.Expression<System.Func<TItem, bool>>> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Results.ObjectCollectionContainResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> DoesNotContain<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<TItem> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CountResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> DoesNotContain<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Func<TItem, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Results.ObjectCollectionContainResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TItem> DoesNotContain<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Collections.Generic.IEnumerable<TItem> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityResult<System.Collections.Generic.IEnumerable<string?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?>> DoesNotEndWith(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> source, params string[] unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityResult<System.Collections.Generic.IEnumerable<string?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?>> DoesNotEndWith(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> source, System.Collections.Generic.IEnumerable<string?> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> DoesNotEndWith<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, params TItem[] unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TItem> DoesNotEndWith<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Collections.Generic.IEnumerable<TItem> unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TItem> DoesNotEndWith<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, params TItem[] unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> DoesNotEndWith<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<TItem> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>> DoesNotHaveCount(this aweXpect.Core.IThat<System.Collections.IEnumerable> subject, int unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> DoesNotHaveCount<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> subject, int unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TItem[], aweXpect.Core.IThat<TItem[]?>> DoesNotHaveCount<TItem>(this aweXpect.Core.IThat<TItem[]?> subject, int unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityResult<System.Collections.Generic.IEnumerable<string?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?>> DoesNotStartWith(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> source, params string[] unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityResult<System.Collections.Generic.IEnumerable<string?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?>> DoesNotStartWith(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> source, System.Collections.Generic.IEnumerable<string?> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> DoesNotStartWith<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, params TItem[] unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TItem> DoesNotStartWith<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Collections.Generic.IEnumerable<TItem> unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TItem> DoesNotStartWith<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, params TItem[] unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> DoesNotStartWith<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<TItem> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityResult<System.Collections.Generic.IEnumerable<string?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?>> EndsWith(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> source, params string[] expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityResult<System.Collections.Generic.IEnumerable<string?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?>> EndsWith(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> source, System.Collections.Generic.IEnumerable<string?> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> EndsWith<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, params TItem[] expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TItem> EndsWith<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Collections.Generic.IEnumerable<TItem> expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TItem> EndsWith<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, params TItem[] expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> EndsWith<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<TItem> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements Exactly(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> subject, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable> Exactly(this aweXpect.Core.IThat<System.Collections.IEnumerable> subject, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements<TItem> Exactly<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> subject, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.CollectionCountResult<aweXpect.Results.AndOrResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>>> HasCount(this aweXpect.Core.IThat<System.Collections.IEnumerable> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>> HasCount(this aweXpect.Core.IThat<System.Collections.IEnumerable> subject, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.CollectionCountResult<aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>>> HasCount<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.CollectionCountResult<aweXpect.Results.AndOrResult<TItem[], aweXpect.Core.IThat<TItem[]?>>> HasCount<TItem>(this aweXpect.Core.IThat<TItem[]?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> HasCount<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> subject, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TItem[], aweXpect.Core.IThat<TItem[]?>> HasCount<TItem>(this aweXpect.Core.IThat<TItem[]?> subject, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.HasItemWithConditionResult<System.Collections.IEnumerable?, object?> HasItem(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringHasItemResult<System.Collections.Generic.IEnumerable<string?>?> HasItem(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> source, string? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectHasItemResult<System.Collections.IEnumerable, object?> HasItem(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, object? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.HasItemResult<System.Collections.IEnumerable> HasItem(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Func<object?, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.HasItemWithConditionResult<System.Collections.Generic.IEnumerable<TItem>?, TItem> HasItem<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectHasItemResult<System.Collections.Generic.IEnumerable<TItem>?, TItem> HasItem<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, TItem expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.HasItemResult<System.Collections.Generic.IEnumerable<TItem>?> HasItem<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Func<TItem, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.HasItemResult<System.Collections.Generic.IEnumerable<TItem>?> HasItemThat<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Action<aweXpect.Core.IThatSubject<TItem>> expectations) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.SingleItemResult<System.Collections.IEnumerable, object?> HasSingle(this aweXpect.Core.IThat<System.Collections.IEnumerable> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.SingleItemResult<System.Collections.Generic.IEnumerable<TItem>, TItem> HasSingle<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringCollectionBeContainedInResult<System.Collections.Generic.IEnumerable<string?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?>> IsContainedIn(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> source, System.Collections.Generic.IEnumerable<string?> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionBeContainedInResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> IsContainedIn<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<System.Action<aweXpect.Core.IThatSubject<TItem?>>> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionBeContainedInResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> IsContainedIn<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<System.Linq.Expressions.Expression<System.Func<TItem, bool>>> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectCollectionBeContainedInResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> IsContainedIn<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<TItem> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectCollectionBeContainedInResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TItem> IsContainedIn<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Collections.Generic.IEnumerable<TItem> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> IsEmpty<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TEnumerable, aweXpect.Core.IThat<TEnumerable?>> IsEmpty<TEnumerable>(this aweXpect.Core.IThat<TEnumerable?> source)
             where TEnumerable : System.Collections.IEnumerable { }
         public static aweXpect.Results.ObjectCollectionMatchWithToleranceResult<System.Collections.Generic.IEnumerable<System.DateTime>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.DateTime>?>, System.DateTime, System.TimeSpan> IsEqualTo(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.DateTime>?> source, System.Collections.Generic.IEnumerable<System.DateTime> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
@@ -341,19 +477,28 @@ namespace aweXpect
         public static aweXpect.Results.CollectionMatchResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> IsEqualTo<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<System.Linq.Expressions.Expression<System.Func<TItem, bool>>> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Results.ObjectCollectionMatchResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> IsEqualTo<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<TItem> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Results.ObjectCollectionMatchResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TItem> IsEqualTo<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Collections.Generic.IEnumerable<TItem> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionOrderResult<object?, System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>> IsInAscendingOrder(this aweXpect.Core.IThat<System.Collections.IEnumerable> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionOrderResult<TItem, System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> IsInAscendingOrder<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionOrderResult<TMember, System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>> IsInAscendingOrder<TMember>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Func<object?, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionOrderResult<TMember, System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> IsInAscendingOrder<TItem, TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Func<TItem, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionOrderResult<object?, System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>> IsInDescendingOrder(this aweXpect.Core.IThat<System.Collections.IEnumerable> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionOrderResult<TItem, System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> IsInDescendingOrder<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionOrderResult<TMember, System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>> IsInDescendingOrder<TMember>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Func<object?, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionOrderResult<TMember, System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> IsInDescendingOrder<TItem, TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Func<TItem, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Results.StringCollectionBeContainedInResult<System.Collections.Generic.IEnumerable<string?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?>> IsNotContainedIn(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> source, System.Collections.Generic.IEnumerable<string?> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Results.CollectionBeContainedInResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> IsNotContainedIn<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<System.Action<aweXpect.Core.IThatSubject<TItem?>>> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Results.CollectionBeContainedInResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> IsNotContainedIn<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<System.Linq.Expressions.Expression<System.Func<TItem, bool>>> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Results.ObjectCollectionBeContainedInResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> IsNotContainedIn<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<TItem> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Results.ObjectCollectionBeContainedInResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TItem> IsNotContainedIn<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Collections.Generic.IEnumerable<TItem> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> IsNotEmpty<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source) { }
         public static aweXpect.Results.ObjectCollectionMatchWithToleranceResult<System.Collections.Generic.IEnumerable<System.DateTime>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.DateTime>?>, System.DateTime, System.TimeSpan> IsNotEqualTo(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.DateTime>?> source, System.Collections.Generic.IEnumerable<System.DateTime> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Results.ObjectCollectionMatchWithToleranceResult<System.Collections.Generic.IEnumerable<System.DateTime?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.DateTime?>?>, System.DateTime?, System.TimeSpan> IsNotEqualTo(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.DateTime?>?> source, System.Collections.Generic.IEnumerable<System.DateTime> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
@@ -372,28 +517,51 @@ namespace aweXpect
         public static aweXpect.Results.CollectionMatchResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> IsNotEqualTo<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<System.Linq.Expressions.Expression<System.Func<TItem, bool>>> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Results.ObjectCollectionMatchResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> IsNotEqualTo<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<TItem> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Results.ObjectCollectionMatchResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TItem> IsNotEqualTo<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Collections.Generic.IEnumerable<TItem> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionOrderResult<object?, System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>> IsNotInAscendingOrder(this aweXpect.Core.IThat<System.Collections.IEnumerable> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionOrderResult<TItem, System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> IsNotInAscendingOrder<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionOrderResult<TMember, System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>> IsNotInAscendingOrder<TMember>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Func<object?, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionOrderResult<TMember, System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> IsNotInAscendingOrder<TItem, TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Func<TItem, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionOrderResult<object?, System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>> IsNotInDescendingOrder(this aweXpect.Core.IThat<System.Collections.IEnumerable> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionOrderResult<TItem, System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> IsNotInDescendingOrder<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionOrderResult<TMember, System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>> IsNotInDescendingOrder<TMember>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Func<object?, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionOrderResult<TMember, System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> IsNotInDescendingOrder<TItem, TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Func<TItem, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements LessThan(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> subject, int maximum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable> LessThan(this aweXpect.Core.IThat<System.Collections.IEnumerable> subject, int maximum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements<TItem> LessThan<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> subject, int maximum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements MoreThan(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> subject, int minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable> MoreThan(this aweXpect.Core.IThat<System.Collections.IEnumerable> subject, int minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements<TItem> MoreThan<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> subject, int minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements None(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable> None(this aweXpect.Core.IThat<System.Collections.IEnumerable> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements<TItem> None<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityResult<System.Collections.Generic.IEnumerable<string?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?>> StartsWith(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> source, params string[] expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityResult<System.Collections.Generic.IEnumerable<string?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?>> StartsWith(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> source, System.Collections.Generic.IEnumerable<string?> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> StartsWith<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, params TItem[] expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TItem> StartsWith<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Collections.Generic.IEnumerable<TItem> expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TItem> StartsWith<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, params TItem[] expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> StartsWith<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<TItem> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
         public class Elements : aweXpect.ThatEnumerable.IElements
         {
@@ -471,51 +639,74 @@ namespace aweXpect
     }
     public static class ThatEventRecording
     {
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.EventTriggerResult<TSubject> DidNotTriggerPropertyChanged<TSubject>(this aweXpect.Core.IThat<aweXpect.Recording.IEventRecording<TSubject>> source)
             where TSubject : System.ComponentModel.INotifyPropertyChanged { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.EventTriggerResult<TSubject> DidNotTriggerPropertyChangedFor<TSubject>(this aweXpect.Core.IThat<aweXpect.Recording.IEventRecording<TSubject>> source, string? propertyName)
             where TSubject : System.ComponentModel.INotifyPropertyChanged { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.EventTriggerResult<TSubject> DidNotTriggerPropertyChangedFor<TSubject, TProperty>(this aweXpect.Core.IThat<aweXpect.Recording.IEventRecording<TSubject>> source, System.Linq.Expressions.Expression<System.Func<TSubject, TProperty>> propertyExpression)
             where TSubject : System.ComponentModel.INotifyPropertyChanged { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.EventTriggerResult<TSubject> Triggered<TSubject>(this aweXpect.Core.IThat<aweXpect.Recording.IEventRecording<TSubject>> source, string eventName)
             where TSubject :  notnull { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.EventTriggerResult<TSubject> TriggeredPropertyChanged<TSubject>(this aweXpect.Core.IThat<aweXpect.Recording.IEventRecording<TSubject>> source)
             where TSubject : System.ComponentModel.INotifyPropertyChanged { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.EventTriggerResult<TSubject> TriggeredPropertyChangedFor<TSubject>(this aweXpect.Core.IThat<aweXpect.Recording.IEventRecording<TSubject>> source, string? propertyName)
             where TSubject : System.ComponentModel.INotifyPropertyChanged { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.EventTriggerResult<TSubject> TriggeredPropertyChangedFor<TSubject, TProperty>(this aweXpect.Core.IThat<aweXpect.Recording.IEventRecording<TSubject>> source, System.Linq.Expressions.Expression<System.Func<TSubject, TProperty>> propertyExpression)
             where TSubject : System.ComponentModel.INotifyPropertyChanged { }
     }
     public static class ThatException
     {
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.Exception?, aweXpect.Core.IThat<System.Exception?>> DoesNotHaveMessage(this aweXpect.Core.IThat<System.Exception?> source, string unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.Exception?, aweXpect.Core.IThat<System.Exception?>> DoesNotHaveMessageContaining(this aweXpect.Core.IThat<System.Exception?> source, string? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThat<TException>> HasHResult<TException>(this aweXpect.Core.IThat<TException> source, int expected)
             where TException : System.Exception? { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Exception?, aweXpect.Core.IThat<System.Exception?>> HasInner(this aweXpect.Core.IThat<System.Exception?> source, System.Type innerExceptionType) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Exception?, aweXpect.Core.IThat<System.Exception?>> HasInner(this aweXpect.Core.IThat<System.Exception?> source, System.Type innerExceptionType, System.Action<aweXpect.Core.IThatSubject<System.Exception?>> expectations) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Exception?, aweXpect.Core.IThat<System.Exception?>> HasInner<TInnerException>(this aweXpect.Core.IThat<System.Exception?> source)
             where TInnerException : System.Exception? { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Exception?, aweXpect.Core.IThat<System.Exception?>> HasInner<TInnerException>(this aweXpect.Core.IThat<System.Exception?> source, System.Action<aweXpect.Core.IThatSubject<TInnerException?>> expectations)
             where TInnerException : System.Exception? { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Exception?, aweXpect.Core.IThat<System.Exception?>> HasInnerException(this aweXpect.Core.IThat<System.Exception?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Exception?, aweXpect.Core.IThat<System.Exception?>> HasInnerException(this aweXpect.Core.IThat<System.Exception?> source, System.Action<aweXpect.Core.IThatSubject<System.Exception?>> expectations) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.Exception?, aweXpect.Core.IThat<System.Exception?>> HasMessage(this aweXpect.Core.IThat<System.Exception?> source, string expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.Exception?, aweXpect.Core.IThat<System.Exception?>> HasMessageContaining(this aweXpect.Core.IThat<System.Exception?> source, string? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThat<TException>> HasParamName<TException>(this aweXpect.Core.IThat<TException> source, string? expected)
             where TException : System.ArgumentException? { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Exception?, aweXpect.Core.IThat<System.Exception?>> HasRecursiveInnerExceptions(this aweXpect.Core.IThat<System.Exception?> source, System.Action<aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<System.Exception>>> expectations) { }
     }
     public static class ThatGeneric
     {
         public static aweXpect.Results.RepeatedCheckResult<T, aweXpect.Core.IThat<T>> CompliesWith<T>(this aweXpect.Core.IThat<T> source, System.Action<aweXpect.Core.IThatSubject<T>> expectations) { }
         public static aweXpect.Results.RepeatedCheckResult<T, aweXpect.Core.IThat<T>> DoesNotComplyWith<T>(this aweXpect.Core.IThat<T> source, System.Action<aweXpect.Core.IThatSubject<T>> expectations) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<T, aweXpect.Core.IThat<T>> DoesNotSatisfy<T>(this aweXpect.Core.IThat<T> source, System.Func<T, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Results.AndOrResult<T, aweXpect.Core.IThat<T>> For<T, TMember>(this aweXpect.Core.IThat<T> source, System.Func<T, TMember?> memberSelector, System.Action<aweXpect.Core.IThatSubject<TMember?>> expectations, [System.Runtime.CompilerServices.CallerArgumentExpression("memberSelector")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TEquatable, aweXpect.Core.IThat<TEquatable>> IsEquatableTo<T, TEquatable>(this aweXpect.Core.IThat<TEquatable> source, T expected)
             where TEquatable : System.IEquatable<T> { }
         public static aweXpect.Results.AndOrResult<TEquatable, aweXpect.Core.IThat<TEquatable>> IsNotEquatableTo<T, TEquatable>(this aweXpect.Core.IThat<TEquatable> source, T unexpected)
             where TEquatable : System.IEquatable<T> { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.RepeatedCheckResult<T, aweXpect.Core.IThat<T>> Satisfies<T>(this aweXpect.Core.IThat<T> source, System.Func<T, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
     }
     public static class ThatGuid
@@ -527,33 +718,45 @@ namespace aweXpect
     }
     public static class ThatNullableBool
     {
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<bool?, aweXpect.Core.IThat<bool?>> Implies(this aweXpect.Core.IThat<bool?> source, bool consequent) { }
         public static aweXpect.Results.AndOrResult<bool?, aweXpect.Core.IThat<bool?>> IsEqualTo(this aweXpect.Core.IThat<bool?> source, bool? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<bool?, aweXpect.Core.IThat<bool?>> IsFalse(this aweXpect.Core.IThat<bool?> source) { }
         public static aweXpect.Results.AndOrResult<bool?, aweXpect.Core.IThat<bool?>> IsNotEqualTo(this aweXpect.Core.IThat<bool?> source, bool? unexpected) { }
         public static aweXpect.Results.AndOrResult<bool?, aweXpect.Core.IThat<bool?>> IsNotFalse(this aweXpect.Core.IThat<bool?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<bool?, aweXpect.Core.IThat<bool?>> IsNotNull(this aweXpect.Core.IThat<bool?> source) { }
         public static aweXpect.Results.AndOrResult<bool?, aweXpect.Core.IThat<bool?>> IsNotTrue(this aweXpect.Core.IThat<bool?> source) { }
         public static aweXpect.Results.AndOrResult<bool?, aweXpect.Core.IThat<bool?>> IsNull(this aweXpect.Core.IThat<bool?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<bool?, aweXpect.Core.IThat<bool?>> IsTrue(this aweXpect.Core.IThat<bool?> source) { }
     }
     public static class ThatNullableChar
     {
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>> IsALetter(this aweXpect.Core.IThat<char?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>> IsANumber(this aweXpect.Core.IThat<char?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>> IsAnAsciiLetter(this aweXpect.Core.IThat<char?> source) { }
         public static aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>> IsEqualTo(this aweXpect.Core.IThat<char?> source, char? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>> IsNotALetter(this aweXpect.Core.IThat<char?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>> IsNotANumber(this aweXpect.Core.IThat<char?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>> IsNotAnAsciiLetter(this aweXpect.Core.IThat<char?> source) { }
         public static aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>> IsNotEqualTo(this aweXpect.Core.IThat<char?> source, char? unexpected) { }
         public static aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>> IsNotOneOf(this aweXpect.Core.IThat<char?> source, System.Collections.Generic.IEnumerable<char> unexpected) { }
         public static aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>> IsNotOneOf(this aweXpect.Core.IThat<char?> source, System.Collections.Generic.IEnumerable<char?> unexpected) { }
         public static aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>> IsNotOneOf(this aweXpect.Core.IThat<char?> source, params char?[] unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>> IsNotWhiteSpace(this aweXpect.Core.IThat<char?> source) { }
         public static aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>> IsOneOf(this aweXpect.Core.IThat<char?> source, System.Collections.Generic.IEnumerable<char> expected) { }
         public static aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>> IsOneOf(this aweXpect.Core.IThat<char?> source, System.Collections.Generic.IEnumerable<char?> expected) { }
         public static aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>> IsOneOf(this aweXpect.Core.IThat<char?> source, params char?[] expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>> IsWhiteSpace(this aweXpect.Core.IThat<char?> source) { }
     }
     public static class ThatNullableDateTime
@@ -566,20 +769,29 @@ namespace aweXpect
         public static aweXpect.Results.PropertyResult.Int<System.DateTime?> HasMonth(this aweXpect.Core.IThat<System.DateTime?> source) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTime?> HasSecond(this aweXpect.Core.IThat<System.DateTime?> source) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTime?> HasYear(this aweXpect.Core.IThat<System.DateTime?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTime?, aweXpect.Core.IThat<System.DateTime?>> IsAfter(this aweXpect.Core.IThat<System.DateTime?> source, System.DateTime? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTime?, aweXpect.Core.IThat<System.DateTime?>> IsBefore(this aweXpect.Core.IThat<System.DateTime?> source, System.DateTime? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.TimeToleranceResult<System.DateTime?, aweXpect.Core.IThat<System.DateTime?>>, System.DateTime?> IsBetween(this aweXpect.Core.IThat<System.DateTime?> source, System.DateTime? minimum) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTime?, aweXpect.Core.IThat<System.DateTime?>> IsEqualTo(this aweXpect.Core.IThat<System.DateTime?> source, System.DateTime? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTime?, aweXpect.Core.IThat<System.DateTime?>> IsNotAfter(this aweXpect.Core.IThat<System.DateTime?> source, System.DateTime? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTime?, aweXpect.Core.IThat<System.DateTime?>> IsNotBefore(this aweXpect.Core.IThat<System.DateTime?> source, System.DateTime? unexpected) { }
         public static aweXpect.Results.BetweenResult<aweXpect.Results.TimeToleranceResult<System.DateTime?, aweXpect.Core.IThat<System.DateTime?>>, System.DateTime?> IsNotBetween(this aweXpect.Core.IThat<System.DateTime?> source, System.DateTime? minimum) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTime?, aweXpect.Core.IThat<System.DateTime?>> IsNotEqualTo(this aweXpect.Core.IThat<System.DateTime?> source, System.DateTime? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTime?, aweXpect.Core.IThat<System.DateTime?>> IsNotOnOrAfter(this aweXpect.Core.IThat<System.DateTime?> source, System.DateTime? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTime?, aweXpect.Core.IThat<System.DateTime?>> IsNotOnOrBefore(this aweXpect.Core.IThat<System.DateTime?> source, System.DateTime? unexpected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTime?, aweXpect.Core.IThat<System.DateTime?>> IsNotOneOf(this aweXpect.Core.IThat<System.DateTime?> source, System.Collections.Generic.IEnumerable<System.DateTime> unexpected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTime?, aweXpect.Core.IThat<System.DateTime?>> IsNotOneOf(this aweXpect.Core.IThat<System.DateTime?> source, System.Collections.Generic.IEnumerable<System.DateTime?> unexpected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTime?, aweXpect.Core.IThat<System.DateTime?>> IsNotOneOf(this aweXpect.Core.IThat<System.DateTime?> source, params System.DateTime?[] unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTime?, aweXpect.Core.IThat<System.DateTime?>> IsOnOrAfter(this aweXpect.Core.IThat<System.DateTime?> source, System.DateTime? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTime?, aweXpect.Core.IThat<System.DateTime?>> IsOnOrBefore(this aweXpect.Core.IThat<System.DateTime?> source, System.DateTime? expected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTime?, aweXpect.Core.IThat<System.DateTime?>> IsOneOf(this aweXpect.Core.IThat<System.DateTime?> source, System.Collections.Generic.IEnumerable<System.DateTime> expected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTime?, aweXpect.Core.IThat<System.DateTime?>> IsOneOf(this aweXpect.Core.IThat<System.DateTime?> source, System.Collections.Generic.IEnumerable<System.DateTime?> expected) { }
@@ -595,20 +807,29 @@ namespace aweXpect
         public static aweXpect.Results.PropertyResult.TimeSpan<System.DateTimeOffset?> HasOffset(this aweXpect.Core.IThat<System.DateTimeOffset?> source) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTimeOffset?> HasSecond(this aweXpect.Core.IThat<System.DateTimeOffset?> source) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTimeOffset?> HasYear(this aweXpect.Core.IThat<System.DateTimeOffset?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>> IsAfter(this aweXpect.Core.IThat<System.DateTimeOffset?> source, System.DateTimeOffset? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>> IsBefore(this aweXpect.Core.IThat<System.DateTimeOffset?> source, System.DateTimeOffset? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.TimeToleranceResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>>, System.DateTimeOffset?> IsBetween(this aweXpect.Core.IThat<System.DateTimeOffset?> source, System.DateTimeOffset? minimum) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>> IsEqualTo(this aweXpect.Core.IThat<System.DateTimeOffset?> source, System.DateTimeOffset? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>> IsNotAfter(this aweXpect.Core.IThat<System.DateTimeOffset?> source, System.DateTimeOffset? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>> IsNotBefore(this aweXpect.Core.IThat<System.DateTimeOffset?> source, System.DateTimeOffset? unexpected) { }
         public static aweXpect.Results.BetweenResult<aweXpect.Results.TimeToleranceResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>>, System.DateTimeOffset?> IsNotBetween(this aweXpect.Core.IThat<System.DateTimeOffset?> source, System.DateTimeOffset? minimum) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>> IsNotEqualTo(this aweXpect.Core.IThat<System.DateTimeOffset?> source, System.DateTimeOffset? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>> IsNotOnOrAfter(this aweXpect.Core.IThat<System.DateTimeOffset?> source, System.DateTimeOffset? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>> IsNotOnOrBefore(this aweXpect.Core.IThat<System.DateTimeOffset?> source, System.DateTimeOffset? unexpected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>> IsNotOneOf(this aweXpect.Core.IThat<System.DateTimeOffset?> source, System.Collections.Generic.IEnumerable<System.DateTimeOffset> unexpected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>> IsNotOneOf(this aweXpect.Core.IThat<System.DateTimeOffset?> source, System.Collections.Generic.IEnumerable<System.DateTimeOffset?> unexpected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>> IsNotOneOf(this aweXpect.Core.IThat<System.DateTimeOffset?> source, params System.DateTimeOffset?[] unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>> IsOnOrAfter(this aweXpect.Core.IThat<System.DateTimeOffset?> source, System.DateTimeOffset? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>> IsOnOrBefore(this aweXpect.Core.IThat<System.DateTimeOffset?> source, System.DateTimeOffset? expected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>> IsOneOf(this aweXpect.Core.IThat<System.DateTimeOffset?> source, System.Collections.Generic.IEnumerable<System.DateTimeOffset> expected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>> IsOneOf(this aweXpect.Core.IThat<System.DateTimeOffset?> source, System.Collections.Generic.IEnumerable<System.DateTimeOffset?> expected) { }
@@ -622,12 +843,15 @@ namespace aweXpect
             where TEnum :  struct, System.Enum { }
         public static aweXpect.Results.AndOrResult<TEnum?, aweXpect.Core.IThat<TEnum?>> HasFlag<TEnum>(this aweXpect.Core.IThat<TEnum?> source, TEnum? expectedFlag)
             where TEnum :  struct, System.Enum { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TEnum?, aweXpect.Core.IThat<TEnum?>> HasValue<TEnum>(this aweXpect.Core.IThat<TEnum?> source, long? expected)
             where TEnum :  struct, System.Enum { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TEnum?, aweXpect.Core.IThat<TEnum?>> IsDefined<TEnum>(this aweXpect.Core.IThat<TEnum?> source)
             where TEnum :  struct, System.Enum { }
         public static aweXpect.Results.AndOrResult<TEnum?, aweXpect.Core.IThat<TEnum?>> IsEqualTo<TEnum>(this aweXpect.Core.IThat<TEnum?> source, TEnum? expected)
             where TEnum :  struct, System.Enum { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TEnum?, aweXpect.Core.IThat<TEnum?>> IsNotDefined<TEnum>(this aweXpect.Core.IThat<TEnum?> source)
             where TEnum :  struct, System.Enum { }
         public static aweXpect.Results.AndOrResult<TEnum?, aweXpect.Core.IThat<TEnum?>> IsNotEqualTo<TEnum>(this aweXpect.Core.IThat<TEnum?> source, TEnum? unexpected)
@@ -647,61 +871,99 @@ namespace aweXpect
     }
     public static class ThatNullableGuid
     {
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Guid?, aweXpect.Core.IThat<System.Guid?>> IsEmpty(this aweXpect.Core.IThat<System.Guid?> source) { }
         public static aweXpect.Results.AndOrResult<System.Guid?, aweXpect.Core.IThat<System.Guid?>> IsEqualTo(this aweXpect.Core.IThat<System.Guid?> source, System.Guid? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Guid?, aweXpect.Core.IThat<System.Guid?>> IsNotEmpty(this aweXpect.Core.IThat<System.Guid?> source) { }
         public static aweXpect.Results.AndOrResult<System.Guid?, aweXpect.Core.IThat<System.Guid?>> IsNotEqualTo(this aweXpect.Core.IThat<System.Guid?> source, System.Guid? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Guid?, aweXpect.Core.IThat<System.Guid?>> IsNotNullOrEmpty(this aweXpect.Core.IThat<System.Guid?> source) { }
         public static aweXpect.Results.AndOrResult<System.Guid?, aweXpect.Core.IThat<System.Guid?>> IsNullOrEmpty(this aweXpect.Core.IThat<System.Guid?> source) { }
     }
     public static class ThatNullableTimeSpan
     {
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.TimeToleranceResult<System.TimeSpan?, aweXpect.Core.IThat<System.TimeSpan?>>, System.TimeSpan?> IsBetween(this aweXpect.Core.IThat<System.TimeSpan?> source, System.TimeSpan? minimum) { }
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan?, aweXpect.Core.IThat<System.TimeSpan?>> IsEqualTo(this aweXpect.Core.IThat<System.TimeSpan?> source, System.TimeSpan? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan?, aweXpect.Core.IThat<System.TimeSpan?>> IsGreaterThan(this aweXpect.Core.IThat<System.TimeSpan?> source, System.TimeSpan? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan?, aweXpect.Core.IThat<System.TimeSpan?>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<System.TimeSpan?> source, System.TimeSpan? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan?, aweXpect.Core.IThat<System.TimeSpan?>> IsLessThan(this aweXpect.Core.IThat<System.TimeSpan?> source, System.TimeSpan? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan?, aweXpect.Core.IThat<System.TimeSpan?>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<System.TimeSpan?> source, System.TimeSpan? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.TimeSpan?, aweXpect.Core.IThat<System.TimeSpan?>> IsNegative(this aweXpect.Core.IThat<System.TimeSpan?> source) { }
         public static aweXpect.Results.BetweenResult<aweXpect.Results.TimeToleranceResult<System.TimeSpan?, aweXpect.Core.IThat<System.TimeSpan?>>, System.TimeSpan?> IsNotBetween(this aweXpect.Core.IThat<System.TimeSpan?> source, System.TimeSpan? minimum) { }
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan?, aweXpect.Core.IThat<System.TimeSpan?>> IsNotEqualTo(this aweXpect.Core.IThat<System.TimeSpan?> source, System.TimeSpan? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan?, aweXpect.Core.IThat<System.TimeSpan?>> IsNotGreaterThan(this aweXpect.Core.IThat<System.TimeSpan?> source, System.TimeSpan? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan?, aweXpect.Core.IThat<System.TimeSpan?>> IsNotGreaterThanOrEqualTo(this aweXpect.Core.IThat<System.TimeSpan?> source, System.TimeSpan? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan?, aweXpect.Core.IThat<System.TimeSpan?>> IsNotLessThan(this aweXpect.Core.IThat<System.TimeSpan?> source, System.TimeSpan? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan?, aweXpect.Core.IThat<System.TimeSpan?>> IsNotLessThanOrEqualTo(this aweXpect.Core.IThat<System.TimeSpan?> source, System.TimeSpan? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.TimeSpan?, aweXpect.Core.IThat<System.TimeSpan?>> IsNotNegative(this aweXpect.Core.IThat<System.TimeSpan?> source) { }
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan?, aweXpect.Core.IThat<System.TimeSpan?>> IsNotOneOf(this aweXpect.Core.IThat<System.TimeSpan?> source, System.Collections.Generic.IEnumerable<System.TimeSpan> unexpected) { }
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan?, aweXpect.Core.IThat<System.TimeSpan?>> IsNotOneOf(this aweXpect.Core.IThat<System.TimeSpan?> source, System.Collections.Generic.IEnumerable<System.TimeSpan?> unexpected) { }
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan?, aweXpect.Core.IThat<System.TimeSpan?>> IsNotOneOf(this aweXpect.Core.IThat<System.TimeSpan?> source, params System.TimeSpan?[] unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.TimeSpan?, aweXpect.Core.IThat<System.TimeSpan?>> IsNotPositive(this aweXpect.Core.IThat<System.TimeSpan?> source) { }
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan?, aweXpect.Core.IThat<System.TimeSpan?>> IsOneOf(this aweXpect.Core.IThat<System.TimeSpan?> source, System.Collections.Generic.IEnumerable<System.TimeSpan> expected) { }
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan?, aweXpect.Core.IThat<System.TimeSpan?>> IsOneOf(this aweXpect.Core.IThat<System.TimeSpan?> source, System.Collections.Generic.IEnumerable<System.TimeSpan?> expected) { }
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan?, aweXpect.Core.IThat<System.TimeSpan?>> IsOneOf(this aweXpect.Core.IThat<System.TimeSpan?> source, params System.TimeSpan?[] expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.TimeSpan?, aweXpect.Core.IThat<System.TimeSpan?>> IsPositive(this aweXpect.Core.IThat<System.TimeSpan?> source) { }
     }
     public static class ThatNumber
     {
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<byte, aweXpect.Core.IThat<byte>>, byte?> IsBetween(this aweXpect.Core.IThat<byte> source, byte? minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<byte, aweXpect.Core.IThat<byte?>>, byte?> IsBetween(this aweXpect.Core.IThat<byte?> source, byte? minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<decimal, aweXpect.Core.IThat<decimal>>, decimal?> IsBetween(this aweXpect.Core.IThat<decimal> source, decimal? minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<decimal, aweXpect.Core.IThat<decimal?>>, decimal?> IsBetween(this aweXpect.Core.IThat<decimal?> source, decimal? minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<double, aweXpect.Core.IThat<double>>, double?> IsBetween(this aweXpect.Core.IThat<double> source, double? minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<double, aweXpect.Core.IThat<double?>>, double?> IsBetween(this aweXpect.Core.IThat<double?> source, double? minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<float, aweXpect.Core.IThat<float>>, float?> IsBetween(this aweXpect.Core.IThat<float> source, float? minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<float, aweXpect.Core.IThat<float?>>, float?> IsBetween(this aweXpect.Core.IThat<float?> source, float? minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<int, aweXpect.Core.IThat<int>>, int?> IsBetween(this aweXpect.Core.IThat<int> source, int? minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<int, aweXpect.Core.IThat<int?>>, int?> IsBetween(this aweXpect.Core.IThat<int?> source, int? minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<long, aweXpect.Core.IThat<long>>, long?> IsBetween(this aweXpect.Core.IThat<long> source, long? minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<long, aweXpect.Core.IThat<long?>>, long?> IsBetween(this aweXpect.Core.IThat<long?> source, long? minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<sbyte, aweXpect.Core.IThat<sbyte>>, sbyte?> IsBetween(this aweXpect.Core.IThat<sbyte> source, sbyte? minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<sbyte, aweXpect.Core.IThat<sbyte?>>, sbyte?> IsBetween(this aweXpect.Core.IThat<sbyte?> source, sbyte? minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<short, aweXpect.Core.IThat<short>>, short?> IsBetween(this aweXpect.Core.IThat<short> source, short? minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<short, aweXpect.Core.IThat<short?>>, short?> IsBetween(this aweXpect.Core.IThat<short?> source, short? minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<uint, aweXpect.Core.IThat<uint>>, uint?> IsBetween(this aweXpect.Core.IThat<uint> source, uint? minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<uint, aweXpect.Core.IThat<uint?>>, uint?> IsBetween(this aweXpect.Core.IThat<uint?> source, uint? minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<ulong, aweXpect.Core.IThat<ulong>>, ulong?> IsBetween(this aweXpect.Core.IThat<ulong> source, ulong? minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<ulong, aweXpect.Core.IThat<ulong?>>, ulong?> IsBetween(this aweXpect.Core.IThat<ulong?> source, ulong? minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<ushort, aweXpect.Core.IThat<ushort>>, ushort?> IsBetween(this aweXpect.Core.IThat<ushort> source, ushort? minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<ushort, aweXpect.Core.IThat<ushort?>>, ushort?> IsBetween(this aweXpect.Core.IThat<ushort?> source, ushort? minimum) { }
         public static aweXpect.Results.NumberToleranceResult<byte, aweXpect.Core.IThat<byte>> IsEqualTo(this aweXpect.Core.IThat<byte> source, byte? expected) { }
         public static aweXpect.Results.NullableNumberToleranceResult<byte, aweXpect.Core.IThat<byte?>> IsEqualTo(this aweXpect.Core.IThat<byte?> source, byte? expected) { }
@@ -725,119 +987,233 @@ namespace aweXpect
         public static aweXpect.Results.NullableNumberToleranceResult<ulong, aweXpect.Core.IThat<ulong?>> IsEqualTo(this aweXpect.Core.IThat<ulong?> source, ulong? expected) { }
         public static aweXpect.Results.NumberToleranceResult<ushort, aweXpect.Core.IThat<ushort>> IsEqualTo(this aweXpect.Core.IThat<ushort> source, ushort? expected) { }
         public static aweXpect.Results.NullableNumberToleranceResult<ushort, aweXpect.Core.IThat<ushort?>> IsEqualTo(this aweXpect.Core.IThat<ushort?> source, ushort? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<double, aweXpect.Core.IThat<double>> IsFinite(this aweXpect.Core.IThat<double> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<double, aweXpect.Core.IThat<double?>> IsFinite(this aweXpect.Core.IThat<double?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<float, aweXpect.Core.IThat<float>> IsFinite(this aweXpect.Core.IThat<float> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<float, aweXpect.Core.IThat<float?>> IsFinite(this aweXpect.Core.IThat<float?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<byte, aweXpect.Core.IThat<byte>> IsGreaterThan(this aweXpect.Core.IThat<byte> source, byte? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<byte, aweXpect.Core.IThat<byte?>> IsGreaterThan(this aweXpect.Core.IThat<byte?> source, byte? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<decimal, aweXpect.Core.IThat<decimal>> IsGreaterThan(this aweXpect.Core.IThat<decimal> source, decimal? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<decimal, aweXpect.Core.IThat<decimal?>> IsGreaterThan(this aweXpect.Core.IThat<decimal?> source, decimal? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<double, aweXpect.Core.IThat<double>> IsGreaterThan(this aweXpect.Core.IThat<double> source, double? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<double, aweXpect.Core.IThat<double?>> IsGreaterThan(this aweXpect.Core.IThat<double?> source, double? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<float, aweXpect.Core.IThat<float>> IsGreaterThan(this aweXpect.Core.IThat<float> source, float? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<float, aweXpect.Core.IThat<float?>> IsGreaterThan(this aweXpect.Core.IThat<float?> source, float? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<int, aweXpect.Core.IThat<int>> IsGreaterThan(this aweXpect.Core.IThat<int> source, int? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<int, aweXpect.Core.IThat<int?>> IsGreaterThan(this aweXpect.Core.IThat<int?> source, int? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<long, aweXpect.Core.IThat<long>> IsGreaterThan(this aweXpect.Core.IThat<long> source, long? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<long, aweXpect.Core.IThat<long?>> IsGreaterThan(this aweXpect.Core.IThat<long?> source, long? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<sbyte, aweXpect.Core.IThat<sbyte>> IsGreaterThan(this aweXpect.Core.IThat<sbyte> source, sbyte? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<sbyte, aweXpect.Core.IThat<sbyte?>> IsGreaterThan(this aweXpect.Core.IThat<sbyte?> source, sbyte? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<short, aweXpect.Core.IThat<short>> IsGreaterThan(this aweXpect.Core.IThat<short> source, short? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<short, aweXpect.Core.IThat<short?>> IsGreaterThan(this aweXpect.Core.IThat<short?> source, short? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<uint, aweXpect.Core.IThat<uint>> IsGreaterThan(this aweXpect.Core.IThat<uint> source, uint? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<uint, aweXpect.Core.IThat<uint?>> IsGreaterThan(this aweXpect.Core.IThat<uint?> source, uint? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<ulong, aweXpect.Core.IThat<ulong>> IsGreaterThan(this aweXpect.Core.IThat<ulong> source, ulong? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<ulong, aweXpect.Core.IThat<ulong?>> IsGreaterThan(this aweXpect.Core.IThat<ulong?> source, ulong? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<ushort, aweXpect.Core.IThat<ushort>> IsGreaterThan(this aweXpect.Core.IThat<ushort> source, ushort? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<ushort, aweXpect.Core.IThat<ushort?>> IsGreaterThan(this aweXpect.Core.IThat<ushort?> source, ushort? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<byte, aweXpect.Core.IThat<byte>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<byte> source, byte? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<byte, aweXpect.Core.IThat<byte?>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<byte?> source, byte? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<decimal, aweXpect.Core.IThat<decimal>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<decimal> source, decimal? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<decimal, aweXpect.Core.IThat<decimal?>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<decimal?> source, decimal? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<double, aweXpect.Core.IThat<double>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<double> source, double? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<double, aweXpect.Core.IThat<double?>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<double?> source, double? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<float, aweXpect.Core.IThat<float>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<float> source, float? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<float, aweXpect.Core.IThat<float?>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<float?> source, float? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<int, aweXpect.Core.IThat<int>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<int> source, int? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<int, aweXpect.Core.IThat<int?>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<int?> source, int? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<long, aweXpect.Core.IThat<long>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<long> source, long? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<long, aweXpect.Core.IThat<long?>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<long?> source, long? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<sbyte, aweXpect.Core.IThat<sbyte>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<sbyte> source, sbyte? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<sbyte, aweXpect.Core.IThat<sbyte?>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<sbyte?> source, sbyte? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<short, aweXpect.Core.IThat<short>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<short> source, short? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<short, aweXpect.Core.IThat<short?>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<short?> source, short? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<uint, aweXpect.Core.IThat<uint>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<uint> source, uint? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<uint, aweXpect.Core.IThat<uint?>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<uint?> source, uint? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<ulong, aweXpect.Core.IThat<ulong>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<ulong> source, ulong? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<ulong, aweXpect.Core.IThat<ulong?>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<ulong?> source, ulong? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<ushort, aweXpect.Core.IThat<ushort>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<ushort> source, ushort? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<ushort, aweXpect.Core.IThat<ushort?>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<ushort?> source, ushort? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<double, aweXpect.Core.IThat<double>> IsInfinite(this aweXpect.Core.IThat<double> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<double?, aweXpect.Core.IThat<double?>> IsInfinite(this aweXpect.Core.IThat<double?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<float, aweXpect.Core.IThat<float>> IsInfinite(this aweXpect.Core.IThat<float> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<float?, aweXpect.Core.IThat<float?>> IsInfinite(this aweXpect.Core.IThat<float?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<byte, aweXpect.Core.IThat<byte>> IsLessThan(this aweXpect.Core.IThat<byte> source, byte? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<byte, aweXpect.Core.IThat<byte?>> IsLessThan(this aweXpect.Core.IThat<byte?> source, byte? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<decimal, aweXpect.Core.IThat<decimal>> IsLessThan(this aweXpect.Core.IThat<decimal> source, decimal? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<decimal, aweXpect.Core.IThat<decimal?>> IsLessThan(this aweXpect.Core.IThat<decimal?> source, decimal? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<double, aweXpect.Core.IThat<double>> IsLessThan(this aweXpect.Core.IThat<double> source, double? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<double, aweXpect.Core.IThat<double?>> IsLessThan(this aweXpect.Core.IThat<double?> source, double? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<float, aweXpect.Core.IThat<float>> IsLessThan(this aweXpect.Core.IThat<float> source, float? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<float, aweXpect.Core.IThat<float?>> IsLessThan(this aweXpect.Core.IThat<float?> source, float? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<int, aweXpect.Core.IThat<int>> IsLessThan(this aweXpect.Core.IThat<int> source, int? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<int, aweXpect.Core.IThat<int?>> IsLessThan(this aweXpect.Core.IThat<int?> source, int? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<long, aweXpect.Core.IThat<long>> IsLessThan(this aweXpect.Core.IThat<long> source, long? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<long, aweXpect.Core.IThat<long?>> IsLessThan(this aweXpect.Core.IThat<long?> source, long? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<sbyte, aweXpect.Core.IThat<sbyte>> IsLessThan(this aweXpect.Core.IThat<sbyte> source, sbyte? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<sbyte, aweXpect.Core.IThat<sbyte?>> IsLessThan(this aweXpect.Core.IThat<sbyte?> source, sbyte? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<short, aweXpect.Core.IThat<short>> IsLessThan(this aweXpect.Core.IThat<short> source, short? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<short, aweXpect.Core.IThat<short?>> IsLessThan(this aweXpect.Core.IThat<short?> source, short? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<uint, aweXpect.Core.IThat<uint>> IsLessThan(this aweXpect.Core.IThat<uint> source, uint? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<uint, aweXpect.Core.IThat<uint?>> IsLessThan(this aweXpect.Core.IThat<uint?> source, uint? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<ulong, aweXpect.Core.IThat<ulong>> IsLessThan(this aweXpect.Core.IThat<ulong> source, ulong? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<ulong, aweXpect.Core.IThat<ulong?>> IsLessThan(this aweXpect.Core.IThat<ulong?> source, ulong? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<ushort, aweXpect.Core.IThat<ushort>> IsLessThan(this aweXpect.Core.IThat<ushort> source, ushort? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<ushort, aweXpect.Core.IThat<ushort?>> IsLessThan(this aweXpect.Core.IThat<ushort?> source, ushort? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<byte, aweXpect.Core.IThat<byte>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<byte> source, byte? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<byte, aweXpect.Core.IThat<byte?>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<byte?> source, byte? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<decimal, aweXpect.Core.IThat<decimal>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<decimal> source, decimal? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<decimal, aweXpect.Core.IThat<decimal?>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<decimal?> source, decimal? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<double, aweXpect.Core.IThat<double>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<double> source, double? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<double, aweXpect.Core.IThat<double?>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<double?> source, double? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<float, aweXpect.Core.IThat<float>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<float> source, float? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<float, aweXpect.Core.IThat<float?>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<float?> source, float? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<int, aweXpect.Core.IThat<int>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<int> source, int? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<int, aweXpect.Core.IThat<int?>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<int?> source, int? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<long, aweXpect.Core.IThat<long>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<long> source, long? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<long, aweXpect.Core.IThat<long?>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<long?> source, long? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<sbyte, aweXpect.Core.IThat<sbyte>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<sbyte> source, sbyte? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<sbyte, aweXpect.Core.IThat<sbyte?>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<sbyte?> source, sbyte? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<short, aweXpect.Core.IThat<short>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<short> source, short? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<short, aweXpect.Core.IThat<short?>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<short?> source, short? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<uint, aweXpect.Core.IThat<uint>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<uint> source, uint? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<uint, aweXpect.Core.IThat<uint?>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<uint?> source, uint? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<ulong, aweXpect.Core.IThat<ulong>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<ulong> source, ulong? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<ulong, aweXpect.Core.IThat<ulong?>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<ulong?> source, ulong? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<ushort, aweXpect.Core.IThat<ushort>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<ushort> source, ushort? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<ushort, aweXpect.Core.IThat<ushort?>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<ushort?> source, ushort? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<double, aweXpect.Core.IThat<double>> IsNaN(this aweXpect.Core.IThat<double> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<double?, aweXpect.Core.IThat<double?>> IsNaN(this aweXpect.Core.IThat<double?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<float, aweXpect.Core.IThat<float>> IsNaN(this aweXpect.Core.IThat<float> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<float?, aweXpect.Core.IThat<float?>> IsNaN(this aweXpect.Core.IThat<float?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<decimal, aweXpect.Core.IThat<decimal>> IsNegative(this aweXpect.Core.IThat<decimal> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<decimal?, aweXpect.Core.IThat<decimal?>> IsNegative(this aweXpect.Core.IThat<decimal?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<double, aweXpect.Core.IThat<double>> IsNegative(this aweXpect.Core.IThat<double> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<double?, aweXpect.Core.IThat<double?>> IsNegative(this aweXpect.Core.IThat<double?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<float, aweXpect.Core.IThat<float>> IsNegative(this aweXpect.Core.IThat<float> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<float?, aweXpect.Core.IThat<float?>> IsNegative(this aweXpect.Core.IThat<float?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<int, aweXpect.Core.IThat<int>> IsNegative(this aweXpect.Core.IThat<int> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<int?, aweXpect.Core.IThat<int?>> IsNegative(this aweXpect.Core.IThat<int?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<long, aweXpect.Core.IThat<long>> IsNegative(this aweXpect.Core.IThat<long> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<long?, aweXpect.Core.IThat<long?>> IsNegative(this aweXpect.Core.IThat<long?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<sbyte, aweXpect.Core.IThat<sbyte>> IsNegative(this aweXpect.Core.IThat<sbyte> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<sbyte?, aweXpect.Core.IThat<sbyte?>> IsNegative(this aweXpect.Core.IThat<sbyte?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<short, aweXpect.Core.IThat<short>> IsNegative(this aweXpect.Core.IThat<short> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<short?, aweXpect.Core.IThat<short?>> IsNegative(this aweXpect.Core.IThat<short?> source) { }
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<byte, aweXpect.Core.IThat<byte>>, byte?> IsNotBetween(this aweXpect.Core.IThat<byte> source, byte? minimum) { }
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<byte, aweXpect.Core.IThat<byte?>>, byte?> IsNotBetween(this aweXpect.Core.IThat<byte?> source, byte? minimum) { }
@@ -1027,23 +1403,38 @@ namespace aweXpect
         public static aweXpect.Results.NullableNumberToleranceResult<ushort, aweXpect.Core.IThat<ushort?>> IsOneOf(this aweXpect.Core.IThat<ushort?> source, System.Collections.Generic.IEnumerable<ushort> expected) { }
         public static aweXpect.Results.NullableNumberToleranceResult<ushort, aweXpect.Core.IThat<ushort?>> IsOneOf(this aweXpect.Core.IThat<ushort?> source, System.Collections.Generic.IEnumerable<ushort?> expected) { }
         public static aweXpect.Results.NullableNumberToleranceResult<ushort, aweXpect.Core.IThat<ushort?>> IsOneOf(this aweXpect.Core.IThat<ushort?> source, params ushort?[] expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<decimal, aweXpect.Core.IThat<decimal>> IsPositive(this aweXpect.Core.IThat<decimal> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<decimal?, aweXpect.Core.IThat<decimal?>> IsPositive(this aweXpect.Core.IThat<decimal?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<double, aweXpect.Core.IThat<double>> IsPositive(this aweXpect.Core.IThat<double> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<double?, aweXpect.Core.IThat<double?>> IsPositive(this aweXpect.Core.IThat<double?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<float, aweXpect.Core.IThat<float>> IsPositive(this aweXpect.Core.IThat<float> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<float?, aweXpect.Core.IThat<float?>> IsPositive(this aweXpect.Core.IThat<float?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<int, aweXpect.Core.IThat<int>> IsPositive(this aweXpect.Core.IThat<int> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<int?, aweXpect.Core.IThat<int?>> IsPositive(this aweXpect.Core.IThat<int?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<long, aweXpect.Core.IThat<long>> IsPositive(this aweXpect.Core.IThat<long> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<long?, aweXpect.Core.IThat<long?>> IsPositive(this aweXpect.Core.IThat<long?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<sbyte, aweXpect.Core.IThat<sbyte>> IsPositive(this aweXpect.Core.IThat<sbyte> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<sbyte?, aweXpect.Core.IThat<sbyte?>> IsPositive(this aweXpect.Core.IThat<sbyte?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<short, aweXpect.Core.IThat<short>> IsPositive(this aweXpect.Core.IThat<short> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<short?, aweXpect.Core.IThat<short?>> IsPositive(this aweXpect.Core.IThat<short?> source) { }
     }
     public static class ThatObject
     {
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<T?, aweXpect.Core.IThat<T?>> Is<T>(this aweXpect.Core.IThat<T?> source, System.Type type)
             where T :  class { }
         public static aweXpect.Results.ObjectEqualityResult<object?, aweXpect.Core.IThat<object?>, object?> IsEqualTo(this aweXpect.Core.IThat<object?> source, object? expected) { }
@@ -1053,6 +1444,7 @@ namespace aweXpect
             where T :  struct { }
         public static aweXpect.Results.AndOrResult<TSubject, aweXpect.Core.IThat<TSubject>> IsEquivalentTo<TSubject>(this aweXpect.Core.IThat<TSubject> source, object? expected, System.Func<aweXpect.Equivalency.EquivalencyOptions<object?>, aweXpect.Equivalency.EquivalencyOptions>? options = null) { }
         public static aweXpect.Results.AndOrResult<TSubject, aweXpect.Core.IThat<TSubject>> IsEquivalentTo<TSubject, TExpected>(this aweXpect.Core.IThat<TSubject> source, TExpected expected, System.Func<aweXpect.Equivalency.EquivalencyOptions<TExpected>, aweXpect.Equivalency.EquivalencyOptions>? options = null) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<object?, aweXpect.Core.IThat<object?>> IsExactly(this aweXpect.Core.IThat<object?> source, System.Type type) { }
         public static aweXpect.Results.AndOrResult<T?, aweXpect.Core.IThat<T?>> IsNot<T>(this aweXpect.Core.IThat<T?> source, System.Type type)
             where T :  class { }
@@ -1064,12 +1456,15 @@ namespace aweXpect
         public static aweXpect.Results.AndOrResult<TSubject, aweXpect.Core.IThat<TSubject>> IsNotEquivalentTo<TSubject>(this aweXpect.Core.IThat<TSubject> source, object? unexpected, System.Func<aweXpect.Equivalency.EquivalencyOptions<object?>, aweXpect.Equivalency.EquivalencyOptions>? options = null) { }
         public static aweXpect.Results.AndOrResult<TSubject, aweXpect.Core.IThat<TSubject>> IsNotEquivalentTo<TSubject, TExpected>(this aweXpect.Core.IThat<TSubject> source, TExpected unexpected, System.Func<aweXpect.Equivalency.EquivalencyOptions<TExpected>, aweXpect.Equivalency.EquivalencyOptions>? options = null) { }
         public static aweXpect.Results.AndOrResult<object?, aweXpect.Core.IThat<object?>> IsNotExactly(this aweXpect.Core.IThat<object?> source, System.Type type) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<T, aweXpect.Core.IThat<T?>> IsNotNull<T>(this aweXpect.Core.IThat<T?> source)
             where T :  class { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<T, aweXpect.Core.IThat<T?>> IsNotNull<T>(this aweXpect.Core.IThat<T?> source)
             where T :  struct { }
         public static aweXpect.Results.ObjectEqualityResult<object?, aweXpect.Core.IThat<object?>, object?> IsNotOneOf(this aweXpect.Core.IThat<object?> source, params object?[] unexpected) { }
         public static aweXpect.Results.ObjectEqualityResult<object?, aweXpect.Core.IThat<object?>, object?> IsNotOneOf(this aweXpect.Core.IThat<object?> source, System.Collections.Generic.IEnumerable<object?> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<T?, aweXpect.Core.IThat<T?>> IsNotSameAs<T>(this aweXpect.Core.IThat<T?> source, object? unexpected)
             where T :  class { }
         public static aweXpect.Results.AndOrResult<T?, aweXpect.Core.IThat<T?>> IsNull<T>(this aweXpect.Core.IThat<T?> source)
@@ -1078,127 +1473,194 @@ namespace aweXpect
             where T :  struct { }
         public static aweXpect.Results.ObjectEqualityResult<object?, aweXpect.Core.IThat<object?>, object?> IsOneOf(this aweXpect.Core.IThat<object?> source, params object?[] expected) { }
         public static aweXpect.Results.ObjectEqualityResult<object?, aweXpect.Core.IThat<object?>, object?> IsOneOf(this aweXpect.Core.IThat<object?> source, System.Collections.Generic.IEnumerable<object?> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<T?, aweXpect.Core.IThat<T?>> IsSameAs<T>(this aweXpect.Core.IThat<T?> source, object? expected)
             where T :  class { }
     }
     public static class ThatReadOnlyDictionary
     {
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityResult<System.Collections.Generic.IReadOnlyDictionary<TKey, string?>, aweXpect.Core.IThat<System.Collections.Generic.IReadOnlyDictionary<TKey, string?>?>> AreAllUnique<TKey>(this aweXpect.Core.IThat<System.Collections.Generic.IReadOnlyDictionary<TKey, string?>?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityResult<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, string?>, aweXpect.Core.IThat<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, string?>?>> AreAllUnique<TKey>(this aweXpect.Core.IThat<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, string?>?> source)
             where TKey :  notnull { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>?>, TValue> AreAllUnique<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>?>, TValue> AreAllUnique<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>?> source)
             where TKey :  notnull { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityResult<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>?>> AreAllUnique<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>?> source, System.Func<TValue, string> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityResult<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>?>> AreAllUnique<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>?> source, System.Func<TValue, string> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "")
             where TKey :  notnull { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>?>, TMember> AreAllUnique<TKey, TValue, TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>?> source, System.Func<TValue, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>?>, TMember> AreAllUnique<TKey, TValue, TMember>(this aweXpect.Core.IThat<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>?> source, System.Func<TValue, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "")
             where TKey :  notnull { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ContainsValueResult<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>?>, TKey, TValue?> ContainsKey<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>?> source, TKey expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ContainsValueResult<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>?>, TKey, TValue?> ContainsKey<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>?> source, TKey expected)
             where TKey :  notnull { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ContainsValuesResult<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>?>, TKey, TValue?> ContainsKeys<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>?> source, params TKey[] expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ContainsValuesResult<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>?>, TKey, TValue?> ContainsKeys<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>?> source, params TKey[] expected)
             where TKey :  notnull { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>?>> ContainsValue<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>?> source, TValue expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>?>> ContainsValue<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>?> source, TValue expected)
             where TKey :  notnull { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>?>> ContainsValues<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>?> source, params TValue[] expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>?>> ContainsValues<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>?> source, params TValue[] expected)
             where TKey :  notnull { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>?>> DoesNotContainKey<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>?> source, TKey unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>?>> DoesNotContainKey<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>?> source, TKey unexpected)
             where TKey :  notnull { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>?>> DoesNotContainKeys<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>?> source, params TKey[] unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>?>> DoesNotContainKeys<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>?> source, params TKey[] unexpected)
             where TKey :  notnull { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>?>> DoesNotContainValue<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>?> source, TValue unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>?>> DoesNotContainValue<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>?> source, TValue unexpected)
             where TKey :  notnull { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>?>> DoesNotContainValues<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>?> source, params TValue[] unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>, aweXpect.Core.IThat<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>?>> DoesNotContainValues<TKey, TValue>(this aweXpect.Core.IThat<System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>?> source, params TValue[] unexpected)
             where TKey :  notnull { }
     }
     public static class ThatSignaler
     {
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.SignalCountResult DidNotSignal(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.SignalCountResult DidNotSignal(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler> source, aweXpect.Core.Times times) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.SignalCountResult<TParameter> DidNotSignal<TParameter>(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.SignalCountResult<TParameter> DidNotSignal<TParameter>(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>> source, aweXpect.Core.Times times) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.SignalCountResult Signaled(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.SignalCountResult Signaled(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler> source, aweXpect.Core.Times times) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.SignalCountWhoseResult<TParameter> Signaled<TParameter>(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.SignalCountWhoseResult<TParameter> Signaled<TParameter>(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>> source, aweXpect.Core.Times times) { }
     }
     public static class ThatStream
     {
         public static aweXpect.Results.PropertyResult.Long<System.IO.Stream?> HasLength(this aweXpect.Core.IThat<System.IO.Stream?> source) { }
         public static aweXpect.Results.PropertyResult.Long<System.IO.Stream?> HasPosition(this aweXpect.Core.IThat<System.IO.Stream?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Stream?, aweXpect.Core.IThat<System.IO.Stream?>> IsNotReadOnly(this aweXpect.Core.IThat<System.IO.Stream?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Stream?, aweXpect.Core.IThat<System.IO.Stream?>> IsNotReadable(this aweXpect.Core.IThat<System.IO.Stream?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Stream?, aweXpect.Core.IThat<System.IO.Stream?>> IsNotSeekable(this aweXpect.Core.IThat<System.IO.Stream?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Stream?, aweXpect.Core.IThat<System.IO.Stream?>> IsNotWritable(this aweXpect.Core.IThat<System.IO.Stream?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Stream?, aweXpect.Core.IThat<System.IO.Stream?>> IsNotWriteOnly(this aweXpect.Core.IThat<System.IO.Stream?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Stream?, aweXpect.Core.IThat<System.IO.Stream?>> IsReadOnly(this aweXpect.Core.IThat<System.IO.Stream?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Stream?, aweXpect.Core.IThat<System.IO.Stream?>> IsReadable(this aweXpect.Core.IThat<System.IO.Stream?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Stream?, aweXpect.Core.IThat<System.IO.Stream?>> IsSeekable(this aweXpect.Core.IThat<System.IO.Stream?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Stream?, aweXpect.Core.IThat<System.IO.Stream?>> IsWritable(this aweXpect.Core.IThat<System.IO.Stream?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Stream?, aweXpect.Core.IThat<System.IO.Stream?>> IsWriteOnly(this aweXpect.Core.IThat<System.IO.Stream?> source) { }
     }
     public static class ThatString
     {
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeCountResult<string?, aweXpect.Core.IThat<string?>> Contains(this aweXpect.Core.IThat<string?> source, string expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeCountResult<string?, aweXpect.Core.IThat<string?>> DoesNotContain(this aweXpect.Core.IThat<string?> source, string unexpected) { }
         public static aweXpect.Results.StringEqualityResult<string?, aweXpect.Core.IThat<string?>> DoesNotEndWith(this aweXpect.Core.IThat<string?> source, string unexpected) { }
         public static aweXpect.Results.StringEqualityResult<string?, aweXpect.Core.IThat<string?>> DoesNotStartWith(this aweXpect.Core.IThat<string?> source, string unexpected) { }
         public static aweXpect.Results.StringEqualityResult<string?, aweXpect.Core.IThat<string?>> EndsWith(this aweXpect.Core.IThat<string?> source, string expected) { }
         public static aweXpect.Results.PropertyResult.Int<string?> HasLength(this aweXpect.Core.IThat<string?> source) { }
         public static aweXpect.Results.PropertyResult.Int<string?> HasLineCount(this aweXpect.Core.IThat<string?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>> HasLines(this aweXpect.Core.IThat<string?> source, System.Action<aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<string>>> expectations) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>> IsEmpty(this aweXpect.Core.IThat<string?> source) { }
         public static aweXpect.Results.StringEqualityTypeResult<string?, aweXpect.Core.IThat<string?>> IsEqualTo(this aweXpect.Core.IThat<string?> source, string? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>> IsLowerCased(this aweXpect.Core.IThat<string?> source) { }
         public static aweXpect.Results.AndOrResult<string, aweXpect.Core.IThat<string?>> IsNotEmpty(this aweXpect.Core.IThat<string?> source) { }
         public static aweXpect.Results.StringEqualityTypeResult<string?, aweXpect.Core.IThat<string?>> IsNotEqualTo(this aweXpect.Core.IThat<string?> source, string? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<string, aweXpect.Core.IThat<string?>> IsNotLowerCased(this aweXpect.Core.IThat<string?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<string, aweXpect.Core.IThat<string?>> IsNotNull(this aweXpect.Core.IThat<string?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<string, aweXpect.Core.IThat<string?>> IsNotNullOrEmpty(this aweXpect.Core.IThat<string?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<string, aweXpect.Core.IThat<string?>> IsNotNullOrWhiteSpace(this aweXpect.Core.IThat<string?> source) { }
         public static aweXpect.Results.StringEqualityTypeResult<string?, aweXpect.Core.IThat<string?>> IsNotOneOf(this aweXpect.Core.IThat<string?> source, System.Collections.Generic.IEnumerable<string?> unexpected) { }
         public static aweXpect.Results.StringEqualityTypeResult<string?, aweXpect.Core.IThat<string?>> IsNotOneOf(this aweXpect.Core.IThat<string?> source, params string?[] unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<string, aweXpect.Core.IThat<string?>> IsNotUpperCased(this aweXpect.Core.IThat<string?> source) { }
         public static aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>> IsNull(this aweXpect.Core.IThat<string?> source) { }
         public static aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>> IsNullOrEmpty(this aweXpect.Core.IThat<string?> source) { }
         public static aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>> IsNullOrWhiteSpace(this aweXpect.Core.IThat<string?> source) { }
         public static aweXpect.Results.StringEqualityTypeResult<string?, aweXpect.Core.IThat<string?>> IsOneOf(this aweXpect.Core.IThat<string?> source, System.Collections.Generic.IEnumerable<string?> expected) { }
         public static aweXpect.Results.StringEqualityTypeResult<string?, aweXpect.Core.IThat<string?>> IsOneOf(this aweXpect.Core.IThat<string?> source, params string?[] expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>> IsUpperCased(this aweXpect.Core.IThat<string?> source) { }
         public static aweXpect.Results.StringEqualityResult<string?, aweXpect.Core.IThat<string?>> StartsWith(this aweXpect.Core.IThat<string?> source, string expected) { }
     }
     public static class ThatTimeSpan
     {
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>>, System.TimeSpan?> IsBetween(this aweXpect.Core.IThat<System.TimeSpan> source, System.TimeSpan? minimum) { }
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsEqualTo(this aweXpect.Core.IThat<System.TimeSpan> source, System.TimeSpan? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsGreaterThan(this aweXpect.Core.IThat<System.TimeSpan> source, System.TimeSpan? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<System.TimeSpan> source, System.TimeSpan? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsLessThan(this aweXpect.Core.IThat<System.TimeSpan> source, System.TimeSpan? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<System.TimeSpan> source, System.TimeSpan? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsNegative(this aweXpect.Core.IThat<System.TimeSpan> source) { }
         public static aweXpect.Results.BetweenResult<aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>>, System.TimeSpan?> IsNotBetween(this aweXpect.Core.IThat<System.TimeSpan> source, System.TimeSpan? minimum) { }
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsNotEqualTo(this aweXpect.Core.IThat<System.TimeSpan> source, System.TimeSpan? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsNotGreaterThan(this aweXpect.Core.IThat<System.TimeSpan> source, System.TimeSpan? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsNotGreaterThanOrEqualTo(this aweXpect.Core.IThat<System.TimeSpan> source, System.TimeSpan? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsNotLessThan(this aweXpect.Core.IThat<System.TimeSpan> source, System.TimeSpan? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsNotLessThanOrEqualTo(this aweXpect.Core.IThat<System.TimeSpan> source, System.TimeSpan? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsNotNegative(this aweXpect.Core.IThat<System.TimeSpan> source) { }
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsNotOneOf(this aweXpect.Core.IThat<System.TimeSpan> source, System.Collections.Generic.IEnumerable<System.TimeSpan> unexpected) { }
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsNotOneOf(this aweXpect.Core.IThat<System.TimeSpan> source, System.Collections.Generic.IEnumerable<System.TimeSpan?> unexpected) { }
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsNotOneOf(this aweXpect.Core.IThat<System.TimeSpan> source, params System.TimeSpan?[] unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsNotPositive(this aweXpect.Core.IThat<System.TimeSpan> source) { }
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsOneOf(this aweXpect.Core.IThat<System.TimeSpan> source, System.Collections.Generic.IEnumerable<System.TimeSpan> expected) { }
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsOneOf(this aweXpect.Core.IThat<System.TimeSpan> source, System.Collections.Generic.IEnumerable<System.TimeSpan?> expected) { }
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsOneOf(this aweXpect.Core.IThat<System.TimeSpan> source, params System.TimeSpan?[] expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsPositive(this aweXpect.Core.IThat<System.TimeSpan> source) { }
     }
 }

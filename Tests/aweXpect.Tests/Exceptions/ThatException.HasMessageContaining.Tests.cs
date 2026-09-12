@@ -138,7 +138,21 @@ public sealed partial class ThatException
 					             expected actual text
 					             """);
 			}
-		}
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				Exception? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasMessageContaining("foo");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains Message matching "foo",
+					             but it was <null>
+					             """);
+			}		}
 
 		public sealed class NegatedTests
 		{

@@ -13,6 +13,7 @@ public static partial class ThatNullableDateTime
 	/// <summary>
 	///     Verifies that the subject is before the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static TimeToleranceResult<DateTime?, IThat<DateTime?>> IsBefore(
 		this IThat<DateTime?> source,
 		DateTime? expected)
@@ -28,6 +29,7 @@ public static partial class ThatNullableDateTime
 	/// <summary>
 	///     Verifies that the subject is not before the <paramref name="unexpected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static TimeToleranceResult<DateTime?, IThat<DateTime?>> IsNotBefore(
 		this IThat<DateTime?> source,
 		DateTime? unexpected)

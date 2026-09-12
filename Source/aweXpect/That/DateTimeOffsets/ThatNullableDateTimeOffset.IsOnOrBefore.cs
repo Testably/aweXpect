@@ -13,6 +13,7 @@ public static partial class ThatNullableDateTimeOffset
 	/// <summary>
 	///     Verifies that the subject is on or before the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>> IsOnOrBefore(
 		this IThat<DateTimeOffset?> source,
 		DateTimeOffset? expected)
@@ -28,6 +29,7 @@ public static partial class ThatNullableDateTimeOffset
 	/// <summary>
 	///     Verifies that the subject is not on or before the <paramref name="unexpected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>> IsNotOnOrBefore(
 		this IThat<DateTimeOffset?> source,
 		DateTimeOffset? unexpected)

@@ -15,6 +15,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is greater than the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NumberToleranceResult<TNumber, IThat<TNumber>> IsGreaterThan<TNumber>(
 		this IThat<TNumber> source, TNumber? expected)
 		where TNumber : struct, INumber<TNumber>
@@ -30,6 +31,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is greater than the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NullableNumberToleranceResult<TNumber, IThat<TNumber?>> IsGreaterThan<TNumber>(
 		this IThat<TNumber?> source, TNumber? expected)
 		where TNumber : struct, INumber<TNumber>
@@ -125,6 +127,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is greater than the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NumberToleranceResult<byte, IThat<byte>> IsGreaterThan(
 		this IThat<byte> source,
 		byte? expected)
@@ -140,6 +143,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is greater than the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NumberToleranceResult<sbyte, IThat<sbyte>> IsGreaterThan(
 		this IThat<sbyte> source,
 		sbyte? expected)
@@ -155,6 +159,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is greater than the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NumberToleranceResult<short, IThat<short>> IsGreaterThan(
 		this IThat<short> source,
 		short? expected)
@@ -170,6 +175,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is greater than the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NumberToleranceResult<ushort, IThat<ushort>> IsGreaterThan(
 		this IThat<ushort> source,
 		ushort? expected)
@@ -185,6 +191,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is greater than the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NumberToleranceResult<int, IThat<int>> IsGreaterThan(
 		this IThat<int> source,
 		int? expected)
@@ -200,6 +207,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is greater than the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NumberToleranceResult<uint, IThat<uint>> IsGreaterThan(
 		this IThat<uint> source,
 		uint? expected)
@@ -215,6 +223,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is greater than the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NumberToleranceResult<long, IThat<long>> IsGreaterThan(
 		this IThat<long> source,
 		long? expected)
@@ -230,6 +239,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is greater than the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NumberToleranceResult<ulong, IThat<ulong>> IsGreaterThan(
 		this IThat<ulong> source,
 		ulong? expected)
@@ -245,6 +255,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is greater than the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NumberToleranceResult<float, IThat<float>> IsGreaterThan(
 		this IThat<float> source,
 		float? expected)
@@ -268,6 +279,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is greater than the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NumberToleranceResult<double, IThat<double>> IsGreaterThan(
 		this IThat<double> source,
 		double? expected)
@@ -291,6 +303,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is greater than the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NumberToleranceResult<decimal, IThat<decimal>> IsGreaterThan(
 		this IThat<decimal> source,
 		decimal? expected)
@@ -306,6 +319,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is greater than the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NullableNumberToleranceResult<byte, IThat<byte?>> IsGreaterThan(
 		this IThat<byte?> source,
 		byte? expected)
@@ -321,6 +335,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is greater than the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NullableNumberToleranceResult<sbyte, IThat<sbyte?>> IsGreaterThan(
 		this IThat<sbyte?> source,
 		sbyte? expected)
@@ -336,6 +351,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is greater than the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NullableNumberToleranceResult<short, IThat<short?>> IsGreaterThan(
 		this IThat<short?> source,
 		short? expected)
@@ -351,6 +367,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is greater than the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NullableNumberToleranceResult<ushort, IThat<ushort?>> IsGreaterThan(
 		this IThat<ushort?> source,
 		ushort? expected)
@@ -366,6 +383,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is greater than the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NullableNumberToleranceResult<int, IThat<int?>> IsGreaterThan(
 		this IThat<int?> source,
 		int? expected)
@@ -381,6 +399,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is greater than the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NullableNumberToleranceResult<uint, IThat<uint?>> IsGreaterThan(
 		this IThat<uint?> source,
 		uint? expected)
@@ -396,6 +415,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is greater than the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NullableNumberToleranceResult<long, IThat<long?>> IsGreaterThan(
 		this IThat<long?> source,
 		long? expected)
@@ -411,6 +431,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is greater than the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NullableNumberToleranceResult<ulong, IThat<ulong?>> IsGreaterThan(
 		this IThat<ulong?> source,
 		ulong? expected)
@@ -426,6 +447,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is greater than the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NullableNumberToleranceResult<float, IThat<float?>> IsGreaterThan(
 		this IThat<float?> source,
 		float? expected)
@@ -449,6 +471,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is greater than the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NullableNumberToleranceResult<double, IThat<double?>> IsGreaterThan(
 		this IThat<double?> source,
 		double? expected)
@@ -472,6 +495,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is greater than the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NullableNumberToleranceResult<decimal, IThat<decimal?>> IsGreaterThan(
 		this IThat<decimal?> source,
 		decimal? expected)
