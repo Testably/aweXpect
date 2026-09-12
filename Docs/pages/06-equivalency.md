@@ -73,6 +73,9 @@ By default, equivalency:
 - Respects collection **order** when comparing `IEnumerable<T>`.
 - Detects cyclic references so two graphs that reference themselves do not cause infinite recursion.
 - Honours `IEqualityComparer` if either side implements it — that comparer wins over the structural walk.
+- Throws an `InvalidOperationException` when a type has no members to compare, instead of succeeding without
+  verifying anything. Either include the relevant members, compare the type
+  [by value](#comparing-by-value-or-by-members), or exclude all members explicitly with `IncludeMembers.None`.
 
 ## Configuration
 

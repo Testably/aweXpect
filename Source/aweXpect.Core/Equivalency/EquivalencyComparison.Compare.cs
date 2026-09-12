@@ -249,22 +249,31 @@ public static partial class EquivalencyComparison
 			}
 		}
 
-		if (memberCount == 0 && actual.GetType() != expected.GetType())
+		if (memberCount == 0)
 		{
-			failureBuilder.AppendLine();
-			if (failureBuilder.Length > 2)
+			if (actual.GetType() != expected.GetType())
 			{
-				failureBuilder.AppendLine("and");
-			}
+				failureBuilder.AppendLine();
+				if (failureBuilder.Length > 2)
+				{
+					failureBuilder.AppendLine("and");
+				}
 
-			failureBuilder.Append("  ");
-			failureBuilder.Append(GetMemberPath(memberType, memberPath));
-			failureBuilder.AppendLine(" differed:");
-			failureBuilder.Append("       Found: ");
-			Formatter.Format(failureBuilder, actual, FormattingOptions.SingleLine);
-			failureBuilder.AppendLine().Append("    Expected: ");
-			Formatter.Format(failureBuilder, expected, FormattingOptions.SingleLine);
-			result = false;
+				failureBuilder.Append("  ");
+				failureBuilder.Append(GetMemberPath(memberType, memberPath));
+				failureBuilder.AppendLine(" differed:");
+				failureBuilder.Append("       Found: ");
+				Formatter.Format(failureBuilder, actual, FormattingOptions.SingleLine);
+				failureBuilder.AppendLine().Append("    Expected: ");
+				Formatter.Format(failureBuilder, expected, FormattingOptions.SingleLine);
+				result = false;
+			}
+			else if (typeOptions.Fields != IncludeMembers.None || typeOptions.Properties != IncludeMembers.None)
+			{
+				throw new InvalidOperationException(
+						$"{GetMemberPath(memberType, memberPath)} has no members that could be compared on {Formatter.Format(expected.GetType())}, which would make the equivalency comparison succeed without verifying anything. Adjust the equivalency options to include the relevant members or to compare this type by value, or - when publishing with trimming or Native AOT enabled - ensure that the type is rooted, so that its members are preserved.")
+					.LogTrace();
+			}
 		}
 
 		return result;
