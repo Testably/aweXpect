@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "0927987f6b6cfad295e6bb811812f97b3f001efe",
-        "author": "dependabot[bot]",
-        "date": "Mon Jun 8 09:07:13 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.5.1 to 18.6.0 (#978)"
-      },
-      {
         "sha": "6920f4570f43885f3d4b29e7c3e9be97d6c72558",
         "author": "dependabot[bot]",
         "date": "Sat Jun 20 11:52:19 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 22:26:08 2026 \u002B0200",
         "message": "feat: register the generated test framework adapter via a module initializer (#1054)"
+      },
+      {
+        "sha": "935bb1451af9f36c96bcf2fadc72b77c3de6fb54",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 22:57:37 2026 \u002B0200",
+        "message": "fix: display the difference towards \u0060MinValue\u0060 in number failure messages (#1059)"
       }
     ],
     "labels": [
-      "0927987f",
       "6920f457",
       "bc6c799f",
       "44ed09de",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "2dfc2a93",
       "f2c58efc",
       "b40f1a29",
-      "12db0a0c"
+      "12db0a0c",
+      "935bb145"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          244.476037135491,
           269.24019278798784,
           248.99433843906112,
           241.350377591451,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           253.74554430643718,
           185.81431449254353,
           207.99691574390118,
-          270.29099127451576
+          270.29099127451576,
+          281.56352847417196
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          237.37615286509197,
           247.11946545328414,
           247.04331152779716,
           246.6118438584464,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           255.67135229110718,
           211.59095217500413,
           220.3440454006195,
-          264.55369930267335
+          264.55369930267335,
+          266.9943772315979
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "0927987f6b6cfad295e6bb811812f97b3f001efe",
-        "author": "dependabot[bot]",
-        "date": "Mon Jun 8 09:07:13 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.5.1 to 18.6.0 (#978)"
-      },
-      {
         "sha": "6920f4570f43885f3d4b29e7c3e9be97d6c72558",
         "author": "dependabot[bot]",
         "date": "Sat Jun 20 11:52:19 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 22:26:08 2026 \u002B0200",
         "message": "feat: register the generated test framework adapter via a module initializer (#1054)"
+      },
+      {
+        "sha": "935bb1451af9f36c96bcf2fadc72b77c3de6fb54",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 22:57:37 2026 \u002B0200",
+        "message": "fix: display the difference towards \u0060MinValue\u0060 in number failure messages (#1059)"
       }
     ],
     "labels": [
-      "0927987f",
       "6920f457",
       "bc6c799f",
       "44ed09de",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "2dfc2a93",
       "f2c58efc",
       "b40f1a29",
-      "12db0a0c"
+      "12db0a0c",
+      "935bb145"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          316276.7185384115,
           293878.3318196615,
           296727.05210658483,
           293305.36258370534,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           314607.5203776042,
           200805.07823768028,
           222028.6263709435,
-          338345.6691545759
+          338345.6691545759,
+          325843.86832682294
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1053,7 +1053,6 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
           335444,
           335444,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           335444,
           335442,
           335442,
+          335444,
           335444
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2721342.6646634615,
           2326466.11953125,
           2473659.553125,
           2346473.274832589,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2505769.34375,
           1670276.2193080357,
           1669236.4065504808,
-          2951527.1751802885
+          2951527.1751802885,
+          2856284.6182291666
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841651,
           4841651,
           4841647,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841611,
           4841609,
-          4841651
+          4841651,
+          4841648
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "0927987f6b6cfad295e6bb811812f97b3f001efe",
-        "author": "dependabot[bot]",
-        "date": "Mon Jun 8 09:07:13 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.5.1 to 18.6.0 (#978)"
-      },
       {
         "sha": "6920f4570f43885f3d4b29e7c3e9be97d6c72558",
         "author": "dependabot[bot]",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 22:26:08 2026 \u002B0200",
         "message": "feat: register the generated test framework adapter via a module initializer (#1054)"
+      },
+      {
+        "sha": "935bb1451af9f36c96bcf2fadc72b77c3de6fb54",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 22:57:37 2026 \u002B0200",
+        "message": "fix: display the difference towards \u0060MinValue\u0060 in number failure messages (#1059)"
       }
     ],
     "labels": [
-      "0927987f",
       "6920f457",
       "bc6c799f",
       "44ed09de",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "2dfc2a93",
       "f2c58efc",
       "b40f1a29",
-      "12db0a0c"
+      "12db0a0c",
+      "935bb145"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          460.82882738113403,
           465.5516929626465,
           465.1508773290194,
           471.57978766759237,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           517.4517107009888,
           411.3238247803279,
           387.5515358606974,
-          517.3623763402303
+          517.3623763402303,
+          541.9017120997111
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          463.22075010935464,
           473.96773140771046,
           489.85448201497394,
           503.10617173512776,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           520.8710504531861,
           414.6723243077596,
           420.1317024548849,
-          537.0394381205241
+          537.0394381205241,
+          570.2607573100498
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "0927987f6b6cfad295e6bb811812f97b3f001efe",
-        "author": "dependabot[bot]",
-        "date": "Mon Jun 8 09:07:13 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.5.1 to 18.6.0 (#978)"
-      },
-      {
         "sha": "6920f4570f43885f3d4b29e7c3e9be97d6c72558",
         "author": "dependabot[bot]",
         "date": "Sat Jun 20 11:52:19 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 22:26:08 2026 \u002B0200",
         "message": "feat: register the generated test framework adapter via a module initializer (#1054)"
+      },
+      {
+        "sha": "935bb1451af9f36c96bcf2fadc72b77c3de6fb54",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 22:57:37 2026 \u002B0200",
+        "message": "fix: display the difference towards \u0060MinValue\u0060 in number failure messages (#1059)"
       }
     ],
     "labels": [
-      "0927987f",
       "6920f457",
       "bc6c799f",
       "44ed09de",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "2dfc2a93",
       "f2c58efc",
       "b40f1a29",
-      "12db0a0c"
+      "12db0a0c",
+      "935bb145"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          261.12085257257735,
           250.9371336868831,
           285.6682287362906,
           254.16477779241708,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           264.43931474685667,
           193.14304917199271,
           209.47316687901815,
-          274.451362546285
+          274.451362546285,
+          300.1345632870992
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          237.16833070346289,
           240.50881153742472,
           244.60649277369183,
           249.66078751427787,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           263.38711411158243,
           215.79852714538575,
           220.41122935368463,
-          270.03851222991943
+          270.03851222991943,
+          286.254754002889
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "0927987f6b6cfad295e6bb811812f97b3f001efe",
-        "author": "dependabot[bot]",
-        "date": "Mon Jun 8 09:07:13 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.5.1 to 18.6.0 (#978)"
-      },
-      {
         "sha": "6920f4570f43885f3d4b29e7c3e9be97d6c72558",
         "author": "dependabot[bot]",
         "date": "Sat Jun 20 11:52:19 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 22:26:08 2026 \u002B0200",
         "message": "feat: register the generated test framework adapter via a module initializer (#1054)"
+      },
+      {
+        "sha": "935bb1451af9f36c96bcf2fadc72b77c3de6fb54",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 22:57:37 2026 \u002B0200",
+        "message": "fix: display the difference towards \u0060MinValue\u0060 in number failure messages (#1059)"
       }
     ],
     "labels": [
-      "0927987f",
       "6920f457",
       "bc6c799f",
       "44ed09de",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "2dfc2a93",
       "f2c58efc",
       "b40f1a29",
-      "12db0a0c"
+      "12db0a0c",
+      "935bb145"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          456.75095513888766,
           463.41466464996336,
           457.68718519210813,
           482.74196853637693,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           492.94501726967945,
           321.6662517865499,
           355.84341993331907,
-          514.9620515823365
+          514.9620515823365,
+          544.9427513758342
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1190.8403115590413,
           1101.3260318211146,
           1162.6957606633505,
           1128.9691250664848,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1268.5366074488713,
           899.8793354034424,
           956.5905661949745,
-          1337.4001406351724
+          1337.4001406351724,
+          1334.4067900521416
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "0927987f6b6cfad295e6bb811812f97b3f001efe",
-        "author": "dependabot[bot]",
-        "date": "Mon Jun 8 09:07:13 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.5.1 to 18.6.0 (#978)"
-      },
-      {
         "sha": "6920f4570f43885f3d4b29e7c3e9be97d6c72558",
         "author": "dependabot[bot]",
         "date": "Sat Jun 20 11:52:19 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 22:26:08 2026 \u002B0200",
         "message": "feat: register the generated test framework adapter via a module initializer (#1054)"
+      },
+      {
+        "sha": "935bb1451af9f36c96bcf2fadc72b77c3de6fb54",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 22:57:37 2026 \u002B0200",
+        "message": "fix: display the difference towards \u0060MinValue\u0060 in number failure messages (#1059)"
       }
     ],
     "labels": [
-      "0927987f",
       "6920f457",
       "bc6c799f",
       "44ed09de",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "2dfc2a93",
       "f2c58efc",
       "b40f1a29",
-      "12db0a0c"
+      "12db0a0c",
+      "935bb145"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1876.9502340044294,
           1880.7159954071044,
           1833.4658897399902,
           1890.0597494761148,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2048.7104324927695,
           1024.7778945650373,
           1172.1498559805063,
-          2068.8246877034503
+          2068.8246877034503,
+          2061.384815470378
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1248.9447863442558,
           1255.5963723318916,
           1342.7128648122152,
           1311.7862465722221,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1482.3498956680298,
           993.0315253917987,
           1091.659278188433,
-          1426.1770524342855
+          1426.1770524342855,
+          1470.378264290946
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "0927987f6b6cfad295e6bb811812f97b3f001efe",
-        "author": "dependabot[bot]",
-        "date": "Mon Jun 8 09:07:13 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.5.1 to 18.6.0 (#978)"
-      },
-      {
         "sha": "6920f4570f43885f3d4b29e7c3e9be97d6c72558",
         "author": "dependabot[bot]",
         "date": "Sat Jun 20 11:52:19 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 22:26:08 2026 \u002B0200",
         "message": "feat: register the generated test framework adapter via a module initializer (#1054)"
+      },
+      {
+        "sha": "935bb1451af9f36c96bcf2fadc72b77c3de6fb54",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 12 22:57:37 2026 \u002B0200",
+        "message": "fix: display the difference towards \u0060MinValue\u0060 in number failure messages (#1059)"
       }
     ],
     "labels": [
-      "0927987f",
       "6920f457",
       "bc6c799f",
       "44ed09de",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "2dfc2a93",
       "f2c58efc",
       "b40f1a29",
-      "12db0a0c"
+      "12db0a0c",
+      "935bb145"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2460.4072761535645,
           2462.123188273112,
           2455.8785621643065,
           2546.2303230285643,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2617.6351503225474,
           1325.9666979471842,
           1539.817172563993,
-          2669.7861605326334
+          2669.7861605326334,
+          2623.662196840559
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          26063.039310709635,
           20179.390925816126,
           20153.355488368445,
           20737.411871337892,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           21692.001957484656,
           12251.25824519566,
           14082.65697224935,
-          28076.470477764422
+          28076.470477764422,
+          27559.373363788312
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4220,7 +4220,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4242,6 +4241,7 @@ window.BENCHMARK_DATA = {
           33471,
           33465,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
