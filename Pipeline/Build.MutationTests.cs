@@ -172,6 +172,14 @@ partial class Build
 		strykerOutputDirectory.CreateOrCleanDirectory();
 		toolPath.CreateOrCleanDirectory();
 
+		// Stryker resolves the project references before it builds the solution in `Debug`, but the
+		// `Compile` target leaves `project.assets.json` restored for `Release`, where `aweXpect` and
+		// `aweXpect.Core.Tests` reference the released packages instead of the projects. Without this
+		// restore, Stryker compiles the mutants against both assemblies and fails with CS0433.
+		DotNetRestore(_ => _
+			.SetProjectFile(Solution)
+			.SetConfigFile(RootDirectory / "nuget.config"));
+
 		DotNetToolInstall(_ => _
 			.SetPackageName("dotnet-stryker")
 			.SetToolInstallationPath(toolPath));
