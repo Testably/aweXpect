@@ -99,34 +99,7 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(It).Append(" was ");
 			Formatter.Format(stringBuilder, Actual);
-			try
-			{
-				checked
-				{
-					if (Actual > expected)
-					{
-						TNumber? difference = Actual - expected;
-						if (IsFinite(difference))
-						{
-							stringBuilder.Append(" which differs by ");
-							Formatter.Format(stringBuilder, difference);
-						}
-					}
-					else
-					{
-						TNumber? difference = expected - Actual;
-						if (IsFinite(difference))
-						{
-							stringBuilder.Append(" which differs by -");
-							Formatter.Format(stringBuilder, difference);
-						}
-					}
-				}
-			}
-			catch (OverflowException)
-			{
-				// Do not display difference in case of overflow
-			}
+			AppendDifference(stringBuilder, Actual, expected);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -172,34 +145,7 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(It).Append(" was ");
 			Formatter.Format(stringBuilder, Actual);
-			try
-			{
-				checked
-				{
-					if (Actual > expected)
-					{
-						TNumber? difference = Actual - expected;
-						if (IsFinite(difference))
-						{
-							stringBuilder.Append(" which differs by ");
-							Formatter.Format(stringBuilder, difference);
-						}
-					}
-					else
-					{
-						TNumber? difference = expected - Actual;
-						if (IsFinite(difference))
-						{
-							stringBuilder.Append(" which differs by -");
-							Formatter.Format(stringBuilder, difference);
-						}
-					}
-				}
-			}
-			catch (OverflowException)
-			{
-				// Do not display difference in case of overflow
-			}
+			AppendDifference(stringBuilder, Actual, expected);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -907,30 +853,7 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(It).Append(" was ");
 			Formatter.Format(stringBuilder, Actual);
-			if (expected is null)
-			{
-				return;
-			}
-
-			try
-			{
-				checked
-				{
-					TNumber? difference = options.CalculateDifference(Actual, expected);
-					if (IsFinite(difference))
-					{
-						stringBuilder.Append(
-							Actual.CompareTo(expected.Value) >= 0
-								? " which differs by "
-								: " which differs by -");
-						Formatter.Format(stringBuilder, difference);
-					}
-				}
-			}
-			catch (OverflowException)
-			{
-				// Do not display difference in case of overflow
-			}
+			AppendDifference(stringBuilder, Actual, expected, options);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -974,30 +897,7 @@ public static partial class ThatNumber
 		{
 			stringBuilder.Append(It).Append(" was ");
 			Formatter.Format(stringBuilder, Actual);
-			if (Actual is null || expected is null)
-			{
-				return;
-			}
-
-			try
-			{
-				checked
-				{
-					TNumber? difference = options.CalculateDifference(Actual, expected);
-					if (IsFinite(difference))
-					{
-						stringBuilder.Append(
-							Actual.Value.CompareTo(expected.Value) >= 0
-								? " which differs by "
-								: " which differs by -");
-						Formatter.Format(stringBuilder, difference);
-					}
-				}
-			}
-			catch (OverflowException)
-			{
-				// Do not display difference in case of overflow
-			}
+			AppendDifference(stringBuilder, Actual, expected, options);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
