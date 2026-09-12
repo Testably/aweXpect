@@ -15,6 +15,10 @@ namespace aweXpect.Core.Adapters
         [System.Diagnostics.CodeAnalysis.DoesNotReturn]
         void Skip(string message);
     }
+    public static class TestFrameworkRegistry
+    {
+        public static void Register(aweXpect.Core.Adapters.ITestFrameworkAdapter testFrameworkAdapter, bool overwrite = true) { }
+    }
 }
 namespace aweXpect.Core.Constraints
 {
