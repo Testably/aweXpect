@@ -847,6 +847,10 @@ namespace aweXpect.Formatting
         public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, object? value, aweXpect.Formatting.FormattingOptions? options = null, aweXpect.Formatting.FormattingContext? context = null) { }
         public static string Format<T>(this aweXpect.Formatting.ValueFormatter formatter, System.Collections.Generic.IEnumerable<T>? value, aweXpect.Formatting.FormattingOptions? options = null) { }
         public static void Format<T>(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, System.Collections.Generic.IEnumerable<T>? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format<TKey, TValue>(this aweXpect.Formatting.ValueFormatter formatter, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format<TKey, TValue>(this aweXpect.Formatting.ValueFormatter formatter, System.Collections.Generic.KeyValuePair<TKey, TValue> value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format<TKey, TValue>(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static void Format<TKey, TValue>(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, System.Collections.Generic.KeyValuePair<TKey, TValue> value, aweXpect.Formatting.FormattingOptions? options = null) { }
     }
 }
 namespace aweXpect.Options
