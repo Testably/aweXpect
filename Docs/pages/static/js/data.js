@@ -3558,6 +3558,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 13:58:34 2026 \u002B0200",
         "message": "chore: slice the mutation tests over parallel jobs"
+      },
+      {
+        "sha": "dc29fb29ad8940c46a91cafdb9f8a81d2a2674a2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 14:31:09 2026 \u002B0200",
+        "message": "chore: slice the mutation tests over parallel jobs (#1071)"
       }
     ],
     "labels": [
@@ -4153,7 +4159,8 @@ window.BENCHMARK_DATA = {
       "80d7a636",
       "dfb520f6",
       "9bafd873",
-      "8c0caeb2"
+      "8c0caeb2",
+      "dc29fb29"
     ],
     "datasets": [
       {
@@ -4752,7 +4759,8 @@ window.BENCHMARK_DATA = {
           242.9484498500824,
           209.59045723279317,
           254.11032401598416,
-          289.89639768600466
+          289.89639768600466,
+          227.24173703193665
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5225,6 +5233,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5963,7 +5972,8 @@ window.BENCHMARK_DATA = {
           247.74600553512573,
           217.12616160710652,
           249.94736538614546,
-          246.6084097226461
+          246.6084097226461,
+          238.37522983551025
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6156,6 +6166,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -9677,6 +9688,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 13:58:34 2026 \u002B0200",
         "message": "chore: slice the mutation tests over parallel jobs"
+      },
+      {
+        "sha": "dc29fb29ad8940c46a91cafdb9f8a81d2a2674a2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 14:31:09 2026 \u002B0200",
+        "message": "chore: slice the mutation tests over parallel jobs (#1071)"
       }
     ],
     "labels": [
@@ -10195,7 +10212,8 @@ window.BENCHMARK_DATA = {
       "80d7a636",
       "dfb520f6",
       "9bafd873",
-      "8c0caeb2"
+      "8c0caeb2",
+      "dc29fb29"
     ],
     "datasets": [
       {
@@ -10717,7 +10735,8 @@ window.BENCHMARK_DATA = {
           286452.7508370536,
           206855.57451520648,
           309059.1347307478,
-          332842.84283854166
+          332842.84283854166,
+          239795.6194580078
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11244,7 +11263,8 @@ window.BENCHMARK_DATA = {
           335444,
           335442,
           335444,
-          335444
+          335444,
+          335442
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11774,7 +11794,8 @@ window.BENCHMARK_DATA = {
           2333736.3889508927,
           1629775.4592447917,
           2758251.6180245536,
-          2732419.07421875
+          2732419.07421875,
+          2002764.6549479167
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12301,7 +12322,8 @@ window.BENCHMARK_DATA = {
           4841647,
           4841611,
           4841651,
-          4841651
+          4841651,
+          4841609
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15873,6 +15895,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 13:58:34 2026 \u002B0200",
         "message": "chore: slice the mutation tests over parallel jobs"
+      },
+      {
+        "sha": "dc29fb29ad8940c46a91cafdb9f8a81d2a2674a2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 14:31:09 2026 \u002B0200",
+        "message": "chore: slice the mutation tests over parallel jobs (#1071)"
       }
     ],
     "labels": [
@@ -16468,7 +16496,8 @@ window.BENCHMARK_DATA = {
       "80d7a636",
       "dfb520f6",
       "9bafd873",
-      "8c0caeb2"
+      "8c0caeb2",
+      "dc29fb29"
     ],
     "datasets": [
       {
@@ -17067,7 +17096,8 @@ window.BENCHMARK_DATA = {
           524.0201873779297,
           339.1529517491659,
           479.3151646931966,
-          534.572336265019
+          534.572336265019,
+          443.84056151707966
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17540,6 +17570,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -18278,7 +18309,8 @@ window.BENCHMARK_DATA = {
           485.92426039377847,
           391.57037830352783,
           511.97983792622887,
-          489.1645165761312
+          489.1645165761312,
+          472.59745909372964
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18471,6 +18503,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -22454,6 +22487,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 13:58:34 2026 \u002B0200",
         "message": "chore: slice the mutation tests over parallel jobs"
+      },
+      {
+        "sha": "dc29fb29ad8940c46a91cafdb9f8a81d2a2674a2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 14:31:09 2026 \u002B0200",
+        "message": "chore: slice the mutation tests over parallel jobs (#1071)"
       }
     ],
     "labels": [
@@ -23049,7 +23088,8 @@ window.BENCHMARK_DATA = {
       "80d7a636",
       "dfb520f6",
       "9bafd873",
-      "8c0caeb2"
+      "8c0caeb2",
+      "dc29fb29"
     ],
     "datasets": [
       {
@@ -23648,7 +23688,8 @@ window.BENCHMARK_DATA = {
           255.62491631507874,
           209.0020554432502,
           270.2526925291334,
-          266.25251153537204
+          266.25251153537204,
+          247.98166553179422
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -24162,6 +24203,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -24859,7 +24901,8 @@ window.BENCHMARK_DATA = {
           245.76577932494027,
           219.0480896949768,
           247.85641435782114,
-          248.32830775578816
+          248.32830775578816,
+          256.6069412867228
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -25052,6 +25095,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -29035,6 +29079,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 13:58:34 2026 \u002B0200",
         "message": "chore: slice the mutation tests over parallel jobs"
+      },
+      {
+        "sha": "dc29fb29ad8940c46a91cafdb9f8a81d2a2674a2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 14:31:09 2026 \u002B0200",
+        "message": "chore: slice the mutation tests over parallel jobs (#1071)"
       }
     ],
     "labels": [
@@ -29630,7 +29680,8 @@ window.BENCHMARK_DATA = {
       "80d7a636",
       "dfb520f6",
       "9bafd873",
-      "8c0caeb2"
+      "8c0caeb2",
+      "dc29fb29"
     ],
     "datasets": [
       {
@@ -30229,7 +30280,8 @@ window.BENCHMARK_DATA = {
           495.42105700174966,
           349.1342089653015,
           477.642680199941,
-          460.0800317128499
+          460.0800317128499,
+          384.8767795562744
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30702,6 +30754,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -31440,7 +31493,8 @@ window.BENCHMARK_DATA = {
           1182.0531973520915,
           898.5017230987548,
           1218.4707197825114,
-          1193.0484619140625
+          1193.0484619140625,
+          1050.6551955086845
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31869,6 +31923,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -35616,6 +35671,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 13:58:34 2026 \u002B0200",
         "message": "chore: slice the mutation tests over parallel jobs"
+      },
+      {
+        "sha": "dc29fb29ad8940c46a91cafdb9f8a81d2a2674a2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 14:31:09 2026 \u002B0200",
+        "message": "chore: slice the mutation tests over parallel jobs (#1071)"
       }
     ],
     "labels": [
@@ -36211,7 +36272,8 @@ window.BENCHMARK_DATA = {
       "80d7a636",
       "dfb520f6",
       "9bafd873",
-      "8c0caeb2"
+      "8c0caeb2",
+      "dc29fb29"
     ],
     "datasets": [
       {
@@ -36810,7 +36872,8 @@ window.BENCHMARK_DATA = {
           1897.1561297098795,
           1025.3441064198812,
           1955.5244827270508,
-          2029.9102714538574
+          2029.9102714538574,
+          1262.6462652842204
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -37283,6 +37346,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -38021,7 +38085,8 @@ window.BENCHMARK_DATA = {
           1352.2423076629639,
           1033.1778022766114,
           1369.0302020481654,
-          1369.8892083849225
+          1369.8892083849225,
+          1248.5084645589193
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -38214,6 +38279,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -42197,6 +42263,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 13:58:34 2026 \u002B0200",
         "message": "chore: slice the mutation tests over parallel jobs"
+      },
+      {
+        "sha": "dc29fb29ad8940c46a91cafdb9f8a81d2a2674a2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 14:31:09 2026 \u002B0200",
+        "message": "chore: slice the mutation tests over parallel jobs (#1071)"
       }
     ],
     "labels": [
@@ -42792,7 +42864,8 @@ window.BENCHMARK_DATA = {
       "80d7a636",
       "dfb520f6",
       "9bafd873",
-      "8c0caeb2"
+      "8c0caeb2",
+      "dc29fb29"
     ],
     "datasets": [
       {
@@ -43391,7 +43464,8 @@ window.BENCHMARK_DATA = {
           2571.071692911784,
           1470.7018271854945,
           2688.8983939034597,
-          2725.5105266571045
+          2725.5105266571045,
+          1722.5688888549805
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -43864,6 +43938,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -44602,7 +44677,8 @@ window.BENCHMARK_DATA = {
           19494.986265055337,
           13859.130200899564,
           27901.550914219446,
-          27478.99108276367
+          27478.99108276367,
+          15551.548243931362
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -45206,7 +45282,8 @@ window.BENCHMARK_DATA = {
           33471,
           33465,
           33471,
-          33471
+          33471,
+          33465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
