@@ -3540,6 +3540,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 09:12:19 2026 \u002B0200",
         "message": "fix!: fail the negated boolean, number, enum and type expectations for a \u0060null\u0060 subject (#1065)"
+      },
+      {
+        "sha": "dfb520f6e4b0f9b7624205da8b2c42609ca9fa6f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 12:59:16 2026 \u002B0200",
+        "message": "fix!: treat \u0060IsSameAs\u0060 as a comparison for a \u0060null\u0060 subject (#1068)"
       }
     ],
     "labels": [
@@ -4132,7 +4138,8 @@ window.BENCHMARK_DATA = {
       "65f95731",
       "453a0e57",
       "8871bca5",
-      "80d7a636"
+      "80d7a636",
+      "dfb520f6"
     ],
     "datasets": [
       {
@@ -4728,7 +4735,8 @@ window.BENCHMARK_DATA = {
           250.8609804471334,
           234.92631273269654,
           182.18338933357825,
-          242.9484498500824
+          242.9484498500824,
+          209.59045723279317
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5201,6 +5209,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5933,7 +5942,8 @@ window.BENCHMARK_DATA = {
           233.7515582016536,
           229.21977038042886,
           189.7353384256363,
-          247.74600553512573
+          247.74600553512573,
+          217.12616160710652
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6126,6 +6136,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -9626,6 +9637,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 09:12:19 2026 \u002B0200",
         "message": "fix!: fail the negated boolean, number, enum and type expectations for a \u0060null\u0060 subject (#1065)"
+      },
+      {
+        "sha": "dfb520f6e4b0f9b7624205da8b2c42609ca9fa6f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 12:59:16 2026 \u002B0200",
+        "message": "fix!: treat \u0060IsSameAs\u0060 as a comparison for a \u0060null\u0060 subject (#1068)"
       }
     ],
     "labels": [
@@ -10141,7 +10158,8 @@ window.BENCHMARK_DATA = {
       "65f95731",
       "453a0e57",
       "8871bca5",
-      "80d7a636"
+      "80d7a636",
+      "dfb520f6"
     ],
     "datasets": [
       {
@@ -10660,7 +10678,8 @@ window.BENCHMARK_DATA = {
           307137.03560965403,
           248087.43250450722,
           219368.98120117188,
-          286452.7508370536
+          286452.7508370536,
+          206855.57451520648
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11184,7 +11203,8 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335442,
-          335444
+          335444,
+          335442
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11711,7 +11731,8 @@ window.BENCHMARK_DATA = {
           2645156.8571428573,
           1833769.812109375,
           1787183.7799479167,
-          2333736.3889508927
+          2333736.3889508927,
+          1629775.4592447917
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12235,7 +12256,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841609,
           4841647,
-          4841647
+          4841647,
+          4841611
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15789,6 +15811,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 09:12:19 2026 \u002B0200",
         "message": "fix!: fail the negated boolean, number, enum and type expectations for a \u0060null\u0060 subject (#1065)"
+      },
+      {
+        "sha": "dfb520f6e4b0f9b7624205da8b2c42609ca9fa6f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 12:59:16 2026 \u002B0200",
+        "message": "fix!: treat \u0060IsSameAs\u0060 as a comparison for a \u0060null\u0060 subject (#1068)"
       }
     ],
     "labels": [
@@ -16381,7 +16409,8 @@ window.BENCHMARK_DATA = {
       "65f95731",
       "453a0e57",
       "8871bca5",
-      "80d7a636"
+      "80d7a636",
+      "dfb520f6"
     ],
     "datasets": [
       {
@@ -16977,7 +17006,8 @@ window.BENCHMARK_DATA = {
           481.8990478175027,
           410.0907859802246,
           373.0539887632643,
-          524.0201873779297
+          524.0201873779297,
+          339.1529517491659
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17450,6 +17480,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -18182,7 +18213,8 @@ window.BENCHMARK_DATA = {
           486.3925545056661,
           429.52131395339967,
           371.1073820250375,
-          485.92426039377847
+          485.92426039377847,
+          391.57037830352783
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18375,6 +18407,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -22337,6 +22370,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 09:12:19 2026 \u002B0200",
         "message": "fix!: fail the negated boolean, number, enum and type expectations for a \u0060null\u0060 subject (#1065)"
+      },
+      {
+        "sha": "dfb520f6e4b0f9b7624205da8b2c42609ca9fa6f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 12:59:16 2026 \u002B0200",
+        "message": "fix!: treat \u0060IsSameAs\u0060 as a comparison for a \u0060null\u0060 subject (#1068)"
       }
     ],
     "labels": [
@@ -22929,7 +22968,8 @@ window.BENCHMARK_DATA = {
       "65f95731",
       "453a0e57",
       "8871bca5",
-      "80d7a636"
+      "80d7a636",
+      "dfb520f6"
     ],
     "datasets": [
       {
@@ -23525,7 +23565,8 @@ window.BENCHMARK_DATA = {
           258.00959533055624,
           227.71468903223675,
           194.76749450365702,
-          255.62491631507874
+          255.62491631507874,
+          209.0020554432502
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -24039,6 +24080,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -24730,7 +24772,8 @@ window.BENCHMARK_DATA = {
           252.04729822703771,
           226.72246983846028,
           189.72682732741038,
-          245.76577932494027
+          245.76577932494027,
+          219.0480896949768
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -24923,6 +24966,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -28885,6 +28929,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 09:12:19 2026 \u002B0200",
         "message": "fix!: fail the negated boolean, number, enum and type expectations for a \u0060null\u0060 subject (#1065)"
+      },
+      {
+        "sha": "dfb520f6e4b0f9b7624205da8b2c42609ca9fa6f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 12:59:16 2026 \u002B0200",
+        "message": "fix!: treat \u0060IsSameAs\u0060 as a comparison for a \u0060null\u0060 subject (#1068)"
       }
     ],
     "labels": [
@@ -29477,7 +29527,8 @@ window.BENCHMARK_DATA = {
       "65f95731",
       "453a0e57",
       "8871bca5",
-      "80d7a636"
+      "80d7a636",
+      "dfb520f6"
     ],
     "datasets": [
       {
@@ -30073,7 +30124,8 @@ window.BENCHMARK_DATA = {
           457.7422562326704,
           376.30130138397215,
           363.2302194595337,
-          495.42105700174966
+          495.42105700174966,
+          349.1342089653015
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30546,6 +30598,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -31278,7 +31331,8 @@ window.BENCHMARK_DATA = {
           1179.4223435719807,
           1027.0105902353923,
           871.2848658194908,
-          1182.0531973520915
+          1182.0531973520915,
+          898.5017230987548
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31707,6 +31761,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -35433,6 +35488,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 09:12:19 2026 \u002B0200",
         "message": "fix!: fail the negated boolean, number, enum and type expectations for a \u0060null\u0060 subject (#1065)"
+      },
+      {
+        "sha": "dfb520f6e4b0f9b7624205da8b2c42609ca9fa6f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 12:59:16 2026 \u002B0200",
+        "message": "fix!: treat \u0060IsSameAs\u0060 as a comparison for a \u0060null\u0060 subject (#1068)"
       }
     ],
     "labels": [
@@ -36025,7 +36086,8 @@ window.BENCHMARK_DATA = {
       "65f95731",
       "453a0e57",
       "8871bca5",
-      "80d7a636"
+      "80d7a636",
+      "dfb520f6"
     ],
     "datasets": [
       {
@@ -36621,7 +36683,8 @@ window.BENCHMARK_DATA = {
           1884.0970989227294,
           1273.1568255106608,
           1463.3764565331596,
-          1897.1561297098795
+          1897.1561297098795,
+          1025.3441064198812
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -37094,6 +37157,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -37826,7 +37890,8 @@ window.BENCHMARK_DATA = {
           1299.141104037945,
           1170.0875072479248,
           996.1870053155081,
-          1352.2423076629639
+          1352.2423076629639,
+          1033.1778022766114
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -38019,6 +38084,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -41981,6 +42047,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 09:12:19 2026 \u002B0200",
         "message": "fix!: fail the negated boolean, number, enum and type expectations for a \u0060null\u0060 subject (#1065)"
+      },
+      {
+        "sha": "dfb520f6e4b0f9b7624205da8b2c42609ca9fa6f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 12:59:16 2026 \u002B0200",
+        "message": "fix!: treat \u0060IsSameAs\u0060 as a comparison for a \u0060null\u0060 subject (#1068)"
       }
     ],
     "labels": [
@@ -42573,7 +42645,8 @@ window.BENCHMARK_DATA = {
       "65f95731",
       "453a0e57",
       "8871bca5",
-      "80d7a636"
+      "80d7a636",
+      "dfb520f6"
     ],
     "datasets": [
       {
@@ -43169,7 +43242,8 @@ window.BENCHMARK_DATA = {
           2553.6197069803875,
           1675.1993885040283,
           1934.740632193429,
-          2571.071692911784
+          2571.071692911784,
+          1470.7018271854945
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -43642,6 +43716,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -44374,7 +44449,8 @@ window.BENCHMARK_DATA = {
           26467.10194498698,
           15316.124305216472,
           15359.511141263521,
-          19494.986265055337
+          19494.986265055337,
+          13859.130200899564
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -44975,7 +45051,8 @@ window.BENCHMARK_DATA = {
           33471,
           33465,
           33471,
-          33471
+          33471,
+          33465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
