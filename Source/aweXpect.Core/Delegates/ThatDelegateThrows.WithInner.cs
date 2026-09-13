@@ -24,7 +24,7 @@ public partial class ThatDelegateThrows<TException>
 				.Validate((it, grammars)
 					=> new HasInnerExceptionValueConstraint(typeof(TInnerException), it,
 						grammars | ExpectationGrammars.Nested))
-				.AddExpectations(e => expectations(new ThatSubject<TInnerException?>(e)),
+				.AddExpectations<TInnerException?>(e => expectations(new ThatSubject<TInnerException?>(e)),
 					grammars => grammars | ExpectationGrammars.Nested),
 			this);
 

@@ -22,7 +22,7 @@ public static partial class ThatException
 					false)
 				.Validate((it, grammars)
 					=> new HasInnerExceptionValueConstraint(typeof(TInnerException), it, grammars))
-				.AddExpectations(e => expectations(new ThatSubject<TInnerException?>(e)),
+				.AddExpectations<TInnerException?>(e => expectations(new ThatSubject<TInnerException?>(e)),
 					grammars => grammars | ExpectationGrammars.Nested),
 			source);
 

@@ -161,11 +161,41 @@ public class ExpectationNodeTests
 
 
 	[Fact]
+	public async Task AddConstraint_WithAsyncNarrowingMapping_ShouldForwardToInnerNode()
+	{
+		ExpectationNode node = new();
+		node.AddConstraint(new DummyConstraint("foo"));
+		node.AddAsyncNarrowingMapping<string, object?, int>(
+			MemberAccessor<string, Task<object?>>.FromFunc(s => Task.FromResult<object?>(s.Length), " with length "));
+		StringBuilder sb = new();
+
+		node.AddConstraint(new DummyConstraint("bar"));
+
+		node.AppendExpectation(sb);
+		await That(sb.ToString()).IsEqualTo("foobar");
+	}
+
+	[Fact]
 	public async Task AddConstraint_WithMapping_ShouldForwardToInnerNode()
 	{
 		ExpectationNode node = new();
 		node.AddConstraint(new DummyConstraint("foo"));
 		node.AddMapping(MemberAccessor<string, int>.FromFunc(s => s.Length, " with length "));
+		StringBuilder sb = new();
+
+		node.AddConstraint(new DummyConstraint("bar"));
+
+		node.AppendExpectation(sb);
+		await That(sb.ToString()).IsEqualTo("foobar");
+	}
+
+	[Fact]
+	public async Task AddConstraint_WithNarrowingMapping_ShouldForwardToInnerNode()
+	{
+		ExpectationNode node = new();
+		node.AddConstraint(new DummyConstraint("foo"));
+		node.AddNarrowingMapping<string, object?, int>(
+			MemberAccessor<string, object?>.FromFunc(s => s.Length, " with length "));
 		StringBuilder sb = new();
 
 		node.AddConstraint(new DummyConstraint("bar"));
@@ -677,6 +707,7 @@ public class ExpectationNodeTests
 		await That(sb.ToString()).IsEqualTo("foo with mapping bar");
 		await That(result.GetResultText()).IsEqualTo("same failure");
 	}
+
 
 	[Fact]
 	public async Task IsMetBy_WithUnsupportedConstraint_ShouldThrowInvalidOperationException()

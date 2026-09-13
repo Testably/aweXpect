@@ -39,14 +39,14 @@ internal class MappingNode<TSource, TTarget> : ExpectationNode
 	{
 		if (value is null || value is DelegateValue { IsNull: true, })
 		{
-			ConstraintResult result = await base.IsMetBy<TTarget>(default, context, cancellationToken);
+			ConstraintResult result = await IsMetByMember(default, context, cancellationToken);
 			return result.Fail("it was <null>", value);
 		}
 
 		if (value is TSource typedValue)
 		{
 			TTarget matchingValue = _memberAccessor.AccessMember(typedValue);
-			ConstraintResult memberResult = await base.IsMetBy(matchingValue, context, cancellationToken);
+			ConstraintResult memberResult = await IsMetByMember(matchingValue, context, cancellationToken);
 			return memberResult.UseValue(value);
 		}
 
@@ -54,6 +54,22 @@ internal class MappingNode<TSource, TTarget> : ExpectationNode
 				$"The member type for the actual value in the which node did not match.{Environment.NewLine}Expected: {Formatter.Format(typeof(TSource))},{Environment.NewLine}   Found: {Formatter.Format(value.GetType())}")
 			.LogTrace();
 	}
+
+	/// <summary>
+	///     Verifies, if the <paramref name="value" /> of the member satisfies the expectations of the node.
+	/// </summary>
+	protected virtual Task<ConstraintResult> IsMetByMember(TTarget? value,
+		IEvaluationContext context,
+		CancellationToken cancellationToken)
+		=> IsMetByExpectations(value, context, cancellationToken);
+
+	/// <summary>
+	///     Verifies, if the <paramref name="value" /> satisfies the expectations of the node, without accessing the member.
+	/// </summary>
+	protected Task<ConstraintResult> IsMetByExpectations<TValue>(TValue? value,
+		IEvaluationContext context,
+		CancellationToken cancellationToken)
+		=> base.IsMetBy(value, context, cancellationToken);
 
 	/// <inheritdoc cref="object.Equals(object?)" />
 	public override bool Equals(object? obj) => obj is MappingNode<TSource, TTarget> other && Equals(other);

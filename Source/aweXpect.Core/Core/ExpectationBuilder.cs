@@ -205,7 +205,7 @@ public abstract class ExpectationBuilder
 		MemberAccessor<TSource, TTarget> memberAccessor,
 		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null,
 		bool replaceIt = true) =>
-		new((expectationBuilderCallback, expectationGrammar, sourceConstraintCallback) =>
+		new((expectationBuilderCallback, expectationGrammar, sourceConstraintCallback, addMappingCallback, _) =>
 		{
 			if (sourceConstraintCallback is not null)
 			{
@@ -214,7 +214,9 @@ public abstract class ExpectationBuilder
 			}
 
 			Node root = _node;
-			_node = _node.AddMapping(memberAccessor, expectationTextGenerator);
+			_node = addMappingCallback is null
+				? _node.AddMapping(memberAccessor, expectationTextGenerator)
+				: addMappingCallback.Invoke(_node, memberAccessor, expectationTextGenerator);
 			if (replaceIt)
 			{
 				_it = memberAccessor.ToString().Trim();
@@ -249,7 +251,7 @@ public abstract class ExpectationBuilder
 		MemberAccessor<TSource, Task<TTarget>> memberAccessor,
 		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null,
 		bool replaceIt = true) =>
-		new((expectationBuilderCallback, expectationGrammar, sourceConstraintCallback) =>
+		new((expectationBuilderCallback, expectationGrammar, sourceConstraintCallback, _, addAsyncMappingCallback) =>
 		{
 			if (sourceConstraintCallback is not null)
 			{
@@ -258,7 +260,9 @@ public abstract class ExpectationBuilder
 			}
 
 			Node root = _node;
-			_node = _node.AddAsyncMapping(memberAccessor, expectationTextGenerator);
+			_node = addAsyncMappingCallback is null
+				? _node.AddAsyncMapping(memberAccessor, expectationTextGenerator)
+				: addAsyncMappingCallback.Invoke(_node, memberAccessor, expectationTextGenerator);
 			if (replaceIt)
 			{
 				_it = memberAccessor.ToString().Trim();
@@ -529,6 +533,8 @@ public abstract class ExpectationBuilder
 				Action<ExpectationBuilder>,
 				Func<ExpectationGrammars, ExpectationGrammars>?,
 				Func<string, ExpectationGrammars, IValueConstraint<TSource>>?,
+				Func<Node, MemberAccessor<TSource, TMember>, Action<MemberAccessor, StringBuilder>?, Node>?,
+				Func<Node, MemberAccessor<TSource, Task<TMember>>, Action<MemberAccessor, StringBuilder>?, Node>?,
 				ExpectationBuilder>
 			_callback;
 
@@ -538,6 +544,8 @@ public abstract class ExpectationBuilder
 				Action<ExpectationBuilder>,
 				Func<ExpectationGrammars, ExpectationGrammars>?,
 				Func<string, ExpectationGrammars, IValueConstraint<TSource>>?,
+				Func<Node, MemberAccessor<TSource, TMember>, Action<MemberAccessor, StringBuilder>?, Node>?,
+				Func<Node, MemberAccessor<TSource, Task<TMember>>, Action<MemberAccessor, StringBuilder>?, Node>?,
 				ExpectationBuilder>
 			callback)
 		{
@@ -550,7 +558,28 @@ public abstract class ExpectationBuilder
 		public ExpectationBuilder AddExpectations(
 			Action<ExpectationBuilder> expectation,
 			Func<ExpectationGrammars, ExpectationGrammars>? expectationGrammars = null)
-			=> _callback(expectation, expectationGrammars, _sourceConstraintBuilder);
+			=> _callback(expectation, expectationGrammars, _sourceConstraintBuilder, null, null);
+
+		/// <summary>
+		///     Add expectations for the current <typeparamref name="TMember" /> that are typed at the narrower
+		///     <typeparamref name="TNarrowed" />.
+		/// </summary>
+		/// <remarks>
+		///     Use this overload when the <paramref name="expectation" /> is handed an
+		///     <see cref="IThatSubject{TNarrowed}" /> for a member that is projected as the wider
+		///     <typeparamref name="TMember" />. The expectations are skipped when the member has a different runtime type,
+		///     because the expectation which narrowed the type reports the mismatch on its own.
+		/// </remarks>
+		public ExpectationBuilder AddExpectations<TNarrowed>(
+			Action<ExpectationBuilder> expectation,
+			Func<ExpectationGrammars, ExpectationGrammars>? expectationGrammars = null)
+			where TNarrowed : TMember
+			=> _callback(expectation, expectationGrammars, _sourceConstraintBuilder,
+				(node, memberAccessor, expectationTextGenerator)
+					=> node.AddNarrowingMapping<TSource, TMember, TNarrowed>(memberAccessor, expectationTextGenerator),
+				(node, memberAccessor, expectationTextGenerator)
+					=> node.AddAsyncNarrowingMapping<TSource, TMember, TNarrowed>(memberAccessor,
+						expectationTextGenerator));
 
 		/// <summary>
 		///     Add a validation constraint for the current <typeparamref name="TSource" />.
