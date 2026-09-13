@@ -1,0 +1,178 @@
+using System.Collections.Generic;
+using aweXpect.Core.Metadata;
+using aweXpect.Equivalency;
+
+namespace aweXpect.Tests;
+
+public sealed partial class ThatObject
+{
+	public sealed partial class IsEquivalentTo
+	{
+		public sealed class MetadataTests
+		{
+			[Fact]
+			public async Task IgnoringFields_ShouldNotIgnoreProperties()
+			{
+				MixedMembers subject = new()
+				{
+					Number = 1,
+					Text = "foo",
+				};
+				MixedMembers expected = new()
+				{
+					Number = 2,
+					Text = "bar",
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected, o => o.IgnoringFields((_, _) => true));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("*Property Text differed:*").AsWildcard()
+					.Because("ignoring every field must leave the properties compared");
+			}
+
+			[Fact]
+			public async Task IgnoringProperties_ShouldNotApplyToCollectionElements()
+			{
+				List<string> subject = ["foo",];
+				List<string> expected = ["bar",];
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected, o => o.IgnoringProperties((_, _) => true));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("*Element [0] differed:*").AsWildcard()
+					.Because("a collection element is neither a field nor a property");
+			}
+
+			[Fact]
+			public async Task IgnoringProperties_ShouldNotIgnoreFields()
+			{
+				MixedMembers subject = new()
+				{
+					Number = 1,
+					Text = "foo",
+				};
+				MixedMembers expected = new()
+				{
+					Number = 2,
+					Text = "bar",
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected, o => o.IgnoringProperties((_, _) => true));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("*Field Number differed:*").AsWildcard()
+					.Because("ignoring every property must leave the fields compared");
+			}
+
+			[Fact]
+			public async Task WhenRegistered_ShouldCompareOnlyTheRegisteredMembers()
+			{
+				RegisterOnlyTheRegisteredProperty();
+				RegisteredType subject = new()
+				{
+					Registered = 1,
+					NotRegistered = 1,
+				};
+				RegisteredType expected = new()
+				{
+					Registered = 1,
+					NotRegistered = 2,
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).DoesNotThrow()
+					.Because("a registered type is compared through its registration instead of by reflection");
+			}
+
+			[Fact]
+			public async Task WhenRegistered_ShouldCompareTheRegisteredFields()
+			{
+				TypeMetadataRegistry.RegisterField<RegisteredField, int>(
+					nameof(RegisteredField.Number), x => x.Number);
+				RegisteredField subject = new()
+				{
+					Number = 1,
+				};
+				RegisteredField expected = new()
+				{
+					Number = 2,
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("*Field Number differed:*").AsWildcard()
+					.Because("a registered field is compared through its registration");
+			}
+
+			[Fact]
+			public async Task WhenRegistered_WithNonPublicMembers_ShouldThrow()
+			{
+				RegisterOnlyTheRegisteredProperty();
+				RegisteredType subject = new();
+				RegisteredType expected = new();
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected,
+						o => o.IncludingProperties(IncludeMembers.Private));
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("*Only public members of *can be compared*").AsWildcard()
+					.Because("the registration cannot provide members that trimming would remove");
+			}
+
+			[Fact]
+			public async Task WhenRegisteredWithProbe_ShouldCompareAnonymousTypes()
+			{
+				var probe = new
+				{
+					Title = default(string),
+				};
+				TypeMetadataRegistry.RegisterProperty(probe, "Title", x => x.Title);
+				var subject = new
+				{
+					Title = "foo",
+				};
+				var expected = new
+				{
+					Title = "bar",
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("*Property Title differed:*").AsWildcard()
+					.Because("the probe overload registers a type whose name cannot be written in source");
+			}
+
+			private static void RegisterOnlyTheRegisteredProperty()
+				=> TypeMetadataRegistry.RegisterProperty<RegisteredType, int>(
+					nameof(RegisteredType.Registered), x => x.Registered);
+
+			private sealed class MixedMembers
+			{
+				public int Number;
+				public string Text { get; set; } = "";
+			}
+
+			private sealed class RegisteredField
+			{
+				public int Number;
+			}
+
+			private sealed class RegisteredType
+			{
+				public int NotRegistered { get; set; }
+				public int Registered { get; set; }
+			}
+		}
+	}
+}

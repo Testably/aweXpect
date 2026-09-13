@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -197,21 +196,20 @@ public static partial class EquivalencyComparison
 		int memberCount = 0;
 		if (typeOptions.Fields != IncludeMembers.None)
 		{
-			BindingFlags fieldBindingFlags = typeOptions.Fields.GetBindingFlags();
-			foreach (FieldInfo? fieldInfo in expected.GetType().GetFields(typeOptions.Fields))
+			foreach (EquivalencyMember field in EquivalencyMembers.GetFields(expected.GetType(), typeOptions.Fields))
 			{
 				memberCount++;
-				string fieldMemberPath = ConcatMemberPath(memberPath, fieldInfo.Name);
+				string fieldMemberPath = ConcatMemberPath(memberPath, field.Name);
 				if (typeOptions.MembersToIgnore.Any(memberToIgnore
-					    => memberToIgnore.IgnoreMember(fieldMemberPath, fieldInfo.FieldType, fieldInfo)))
+					    => memberToIgnore is not MemberToIgnore.ByPropertyPredicate &&
+					       memberToIgnore.IgnoreMember(fieldMemberPath, field.DeclaredType)))
 				{
 					continue;
 				}
 
 				object? actualFieldValue =
-					actual.GetType().GetField(fieldInfo.Name, fieldBindingFlags)?.GetValue(actual);
-				object? expectedFieldValue =
-					expected.GetType().GetField(fieldInfo.Name, fieldBindingFlags)?.GetValue(expected);
+					EquivalencyMembers.FindField(actual.GetType(), field.Name, typeOptions.Fields)?.Invoke(actual);
+				object? expectedFieldValue = field.GetValue(expected);
 
 				if (!await Compare(actualFieldValue, expectedFieldValue,
 					    options, options.GetTypeOptions(actualFieldValue?.GetType(), typeOptions),
@@ -224,21 +222,22 @@ public static partial class EquivalencyComparison
 
 		if (typeOptions.Properties != IncludeMembers.None)
 		{
-			BindingFlags propertyBindingFlags = typeOptions.Properties.GetBindingFlags();
-			foreach (PropertyInfo? propertyInfo in expected.GetType().GetProperties(typeOptions.Properties))
+			foreach (EquivalencyMember property in EquivalencyMembers.GetProperties(expected.GetType(),
+				         typeOptions.Properties))
 			{
 				memberCount++;
-				string propertyMemberPath = ConcatMemberPath(memberPath, propertyInfo.Name);
+				string propertyMemberPath = ConcatMemberPath(memberPath, property.Name);
 				if (typeOptions.MembersToIgnore.Any(memberToIgnore
-					    => memberToIgnore.IgnoreMember(propertyMemberPath, propertyInfo.PropertyType, propertyInfo)))
+					    => memberToIgnore is not MemberToIgnore.ByFieldPredicate &&
+					       memberToIgnore.IgnoreMember(propertyMemberPath, property.DeclaredType)))
 				{
 					continue;
 				}
 
-				object? actualPropertyValue = actual.GetType().GetProperty(propertyInfo.Name, propertyBindingFlags)
-					?.GetValue(actual);
-				object? expectedPropertyValue =
-					expected.GetType().GetProperty(propertyInfo.Name, propertyBindingFlags)?.GetValue(expected);
+				object? actualPropertyValue =
+					EquivalencyMembers.FindProperty(actual.GetType(), property.Name, typeOptions.Properties)
+						?.Invoke(actual);
+				object? expectedPropertyValue = property.GetValue(expected);
 
 				if (!await Compare(actualPropertyValue, expectedPropertyValue,
 					    options, options.GetTypeOptions(actualPropertyValue?.GetType(), typeOptions),
@@ -300,7 +299,9 @@ public static partial class EquivalencyComparison
 
 			object? actualObject = actual[key];
 			if (typeOptions.MembersToIgnore.Any(memberToIgnore
-				    => memberToIgnore.IgnoreMember(elementMemberPath, actualObject?.GetType() ?? typeof(object), null)))
+				    => memberToIgnore is not MemberToIgnore.ByFieldPredicate &&
+				       memberToIgnore is not MemberToIgnore.ByPropertyPredicate &&
+				       memberToIgnore.IgnoreMember(elementMemberPath, actualObject?.GetType() ?? typeof(object))))
 			{
 				continue;
 			}
@@ -341,7 +342,9 @@ public static partial class EquivalencyComparison
 			string elementMemberPath = $"{memberPath}[{key}]";
 			object? expectedObject = expected[key];
 			if (typeOptions.MembersToIgnore.Any(memberToIgnore
-				    => memberToIgnore.IgnoreMember(elementMemberPath, expectedObject?.GetType() ?? typeof(object), null)))
+				    => memberToIgnore is not MemberToIgnore.ByFieldPredicate &&
+				       memberToIgnore is not MemberToIgnore.ByPropertyPredicate &&
+				       memberToIgnore.IgnoreMember(elementMemberPath, expectedObject?.GetType() ?? typeof(object))))
 			{
 				continue;
 			}
@@ -397,7 +400,9 @@ public static partial class EquivalencyComparison
 			string elementMemberPath = $"{memberPath}[{(keys is null ? i : keys[i])}]";
 			object? actualObject = actualObjects.ElementAtOrDefault(i);
 			if (typeOptions.MembersToIgnore.Any(memberToIgnore
-				    => memberToIgnore.IgnoreMember(elementMemberPath, actualObject?.GetType() ?? typeof(object), null)))
+				    => memberToIgnore is not MemberToIgnore.ByFieldPredicate &&
+				       memberToIgnore is not MemberToIgnore.ByPropertyPredicate &&
+				       memberToIgnore.IgnoreMember(elementMemberPath, actualObject?.GetType() ?? typeof(object))))
 			{
 				continue;
 			}
@@ -419,7 +424,9 @@ public static partial class EquivalencyComparison
 				string elementMemberPath = $"{memberPath}[{i}]";
 				object? expectedObject = expectedObjects.ElementAtOrDefault(i);
 				if (typeOptions.MembersToIgnore.Any(memberToIgnore
-					    => memberToIgnore.IgnoreMember(elementMemberPath, expectedObject?.GetType() ?? typeof(object), null)))
+					    => memberToIgnore is not MemberToIgnore.ByFieldPredicate &&
+					       memberToIgnore is not MemberToIgnore.ByPropertyPredicate &&
+					       memberToIgnore.IgnoreMember(elementMemberPath, expectedObject?.GetType() ?? typeof(object))))
 				{
 					continue;
 				}
@@ -445,7 +452,9 @@ public static partial class EquivalencyComparison
 				string elementMemberPath = $"{memberPath}[{(keys is null ? i : keys[i])}]";
 				object? actualObject = actualObjects.ElementAtOrDefault(i);
 				if (typeOptions.MembersToIgnore.Any(memberToIgnore
-					    => memberToIgnore.IgnoreMember(elementMemberPath, actualObject?.GetType() ?? typeof(object), null)))
+					    => memberToIgnore is not MemberToIgnore.ByFieldPredicate &&
+					       memberToIgnore is not MemberToIgnore.ByPropertyPredicate &&
+					       memberToIgnore.IgnoreMember(elementMemberPath, actualObject?.GetType() ?? typeof(object))))
 				{
 					continue;
 				}

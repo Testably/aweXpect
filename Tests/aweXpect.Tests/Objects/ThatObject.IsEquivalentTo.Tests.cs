@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using aweXpect.Equivalency;
 
 // ReSharper disable UnusedMember.Local
@@ -115,7 +114,7 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
-			public async Task IgnoringMismatchingPropertiesByPathTypeAndMemberInfoPredicate_ShouldBeEquivalent()
+			public async Task IgnoringMismatchingPropertiesByPropertyPredicate_ShouldBeEquivalent()
 			{
 				OuterClass subject = new()
 				{
@@ -136,8 +135,7 @@ public sealed partial class ThatObject
 
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected, o => o
-						.Ignoring((memberPath, _, memberInfo)
-							=> memberPath.EndsWith("IntValue") && memberInfo is PropertyInfo));
+						.IgnoringProperties((memberPath, _) => memberPath.EndsWith("IntValue")));
 
 				await That(Act).DoesNotThrow();
 			}
