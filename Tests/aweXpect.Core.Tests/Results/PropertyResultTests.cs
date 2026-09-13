@@ -28,6 +28,15 @@ public sealed partial class PropertyResultTests
 			return new PropertyResult.Int<MyClass?>(source, a => a?.IntValue, "int value");
 		}
 
+		public static PropertyResult.Int<MyClass?> HasIntValueOfNullSubject()
+		{
+			MyClass? subject = null;
+#pragma warning disable aweXpect0001
+			IThat<MyClass?> source = That(subject);
+#pragma warning restore aweXpect0001
+			return new PropertyResult.Int<MyClass?>(source, a => a?.IntValue, "int value");
+		}
+
 		public static PropertyResult.Long<MyClass?> HasLongValue(long longValue)
 		{
 			MyClass subject = new()
@@ -48,6 +57,15 @@ public sealed partial class PropertyResultTests
 			};
 #pragma warning disable aweXpect0001
 			IThat<MyClass> source = That(subject);
+#pragma warning restore aweXpect0001
+			return new PropertyResult.String<MyClass?>(source, a => a?.StringValue, "string value");
+		}
+
+		public static PropertyResult.String<MyClass?> HasStringValueOfNullSubject()
+		{
+			MyClass? subject = null;
+#pragma warning disable aweXpect0001
+			IThat<MyClass?> source = That(subject);
 #pragma warning restore aweXpect0001
 			return new PropertyResult.String<MyClass?>(source, a => a?.StringValue, "string value");
 		}

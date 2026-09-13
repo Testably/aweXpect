@@ -518,7 +518,7 @@ public static class PropertyResult
 		Func<TItem, TProperty?> mapper,
 		string propertyExpression,
 		Func<TProperty?, TProperty?, bool> condition,
-		string expectation) : ConstraintResult.WithEqualToValue<TItem>(it, grammars, expected is null),
+		string expectation) : ConstraintResult.WithNotNullValue<TItem>(it, grammars),
 		IValueConstraint<TItem>
 		where TProperty : struct
 	{
@@ -554,7 +554,7 @@ public static class PropertyResult
 		string? expected,
 		Func<TItem, string?> mapper,
 		string propertyExpression,
-		StringEqualityOptions options) : ConstraintResult.WithEqualToValue<TItem>(it, grammars, expected is null),
+		StringEqualityOptions options) : ConstraintResult.WithNotNullValue<TItem>(it, grammars),
 		IAsyncConstraint<TItem>
 	{
 		private string? _value;

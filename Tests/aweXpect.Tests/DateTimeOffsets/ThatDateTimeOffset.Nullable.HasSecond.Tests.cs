@@ -375,7 +375,7 @@ public sealed partial class ThatDateTimeOffset
 				}
 
 				[Fact]
-				public async Task WhenSubjectAndUnexpectedIsNull_ShouldSucceed()
+				public async Task WhenSubjectAndUnexpectedIsNull_ShouldFail()
 				{
 					DateTimeOffset? subject = null;
 					int? expected = null;
@@ -383,7 +383,12 @@ public sealed partial class ThatDateTimeOffset
 					async Task Act()
 						=> await That(subject).HasSecond().NotEqualTo(expected);
 
-					await That(Act).DoesNotThrow();
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             has second not equal to <null>,
+						             but it was <null>
+						             """);
 				}
 
 				[Fact]

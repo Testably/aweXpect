@@ -136,6 +136,22 @@ public sealed partial class PropertyResultTests
 			await That(result?.StringValue).IsEqualTo("foo");
 		}
 
+		[Fact]
+		public async Task EqualTo_WhenSubjectIsNull_ShouldFail()
+		{
+			PropertyResult.String<MyClass?> sut = MyClass.HasStringValueOfNullSubject();
+
+			async Task Act()
+				=> await sut.EqualTo("foo");
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has string value equal to "foo",
+				             but it was <null>
+				             """);
+		}
+
 		[Theory]
 		[InlineData("foo", "foo")]
 		[InlineData("foobar", "oob")]
@@ -263,6 +279,39 @@ public sealed partial class PropertyResultTests
 			MyClass? result = await sut.NotEqualTo(expected);
 
 			await That(result?.StringValue).IsEqualTo(actual);
+		}
+
+		[Fact]
+		public async Task NotEqualTo_WhenSubjectIsNullAndUnexpectedIsNull_ShouldFail()
+		{
+			PropertyResult.String<MyClass?> sut = MyClass.HasStringValueOfNullSubject();
+
+			async Task Act()
+				=> await sut.NotEqualTo(null);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has string value not equal to <null>,
+				             but it was <null>
+				             """)
+				.Because("a null subject has no string value to compare, whatever the unexpected value is");
+		}
+
+		[Fact]
+		public async Task NotEqualTo_WhenSubjectIsNull_ShouldFail()
+		{
+			PropertyResult.String<MyClass?> sut = MyClass.HasStringValueOfNullSubject();
+
+			async Task Act()
+				=> await sut.NotEqualTo("foo");
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has string value not equal to "foo",
+				             but it was <null>
+				             """);
 		}
 	}
 }

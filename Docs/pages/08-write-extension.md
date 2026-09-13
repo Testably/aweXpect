@@ -125,6 +125,19 @@ in most cases with one of the following helper classes:
   Ensures consistent `null`-handling when comparing two values for equality. Similar to `ConstraintResult.WithValue<T>`,
   but you have to also provide a flag, indicating if the expected value is `null` or not.
 
+Which of the three to pick is decided by how your expectation treats a `null` subject, and that follows one rule:
+a `null` subject fails every expectation, except those that compare it against a value the caller supplied.
+
+- Your expectation **inspects the subject** - its length, its type, its items, whether it is empty. There is nothing to
+  inspect when the subject is `null`, so it has to fail, in the negated case as well: `IsNotEmpty()` fails for a `null`
+  subject just like `IsEmpty()` does. Use `ConstraintResult.WithNotNullValue<T>`.
+- Your expectation **compares the subject** against a value the caller supplied. Then `null` is an ordinary value on
+  both sides: `IsEqualTo(null)` succeeds for a `null` subject, `IsNotEqualTo(null)` fails and `IsNotEqualTo("foo")`
+  succeeds. Use `ConstraintResult.WithEqualToValue<T>`.
+
+Use `ConstraintResult.WithValue<T>` only when the subject cannot be `null` at all, for example a non-nullable `bool`,
+`int` or `DateTime`.
+
 With these the above example could be written (with support for the negated case):
 
 ```csharp
