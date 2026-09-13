@@ -93,14 +93,16 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
-			public async Task WhenExpectedIsEmpty_ShouldSucceed()
+			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Array.Empty<int>());
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1);
 
 				async Task Act()
 					=> await That(subject).EndsWith();
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' collection cannot be empty.").AsPrefix();
 			}
 
 			[Fact]
@@ -112,7 +114,8 @@ public sealed partial class ThatAsyncEnumerable
 					=> await That(subject).EndsWith(null!);
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithParamName("expected");
+					.WithParamName("expected").And
+					.WithMessage("The expected cannot be null.").AsPrefix();
 			}
 
 			[Fact]
@@ -121,12 +124,12 @@ public sealed partial class ThatAsyncEnumerable
 				IAsyncEnumerable<int>? subject = null;
 
 				async Task Act()
-					=> await That(subject).EndsWith();
+					=> await That(subject).EndsWith(1);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             ends with [],
+					             ends with [1],
 					             but it was <null>
 					             """);
 			}

@@ -147,12 +147,12 @@ public sealed partial class ThatAsyncEnumerable
 				IAsyncEnumerable<int>? subject = null;
 
 				async Task Act()
-					=> await That(subject).DoesNotEndWith();
+					=> await That(subject).DoesNotEndWith(1);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not end with [],
+					             does not end with [1],
 					             but it was <null>
 					             """);
 			}
@@ -169,22 +169,16 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
-			public async Task WhenUnexpectedIsEmpty_ShouldFail()
+			public async Task WhenUnexpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2);
 
 				async Task Act()
 					=> await That(subject).DoesNotEndWith();
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             does not end with [],
-					             but it was [
-					               1,
-					               2
-					             ]
-					             """);
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' collection cannot be empty.").AsPrefix();
 			}
 
 			[Fact]
@@ -196,7 +190,8 @@ public sealed partial class ThatAsyncEnumerable
 					=> await That(subject).DoesNotEndWith(null!);
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithParamName("unexpected");
+					.WithParamName("unexpected").And
+					.WithMessage("The unexpected cannot be null.").AsPrefix();
 			}
 		}
 	}

@@ -1,5 +1,4 @@
 ﻿#if NET8_0_OR_GREATER
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -30,7 +29,6 @@ public static partial class ThatAsyncEnumerable
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
 		expected.ThrowIfNullOrEmpty();
-		ArgumentNullException.ThrowIfNull(expected);
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
@@ -52,7 +50,7 @@ public static partial class ThatAsyncEnumerable
 			this IThat<IAsyncEnumerable<TItem>?> source,
 			params TItem[] expected)
 	{
-		ArgumentNullException.ThrowIfNull(expected);
+		expected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
@@ -76,7 +74,6 @@ public static partial class ThatAsyncEnumerable
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
 		expected.ThrowIfNullOrEmpty();
-		ArgumentNullException.ThrowIfNull(expected);
 		StringEqualityOptions options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
@@ -98,7 +95,7 @@ public static partial class ThatAsyncEnumerable
 			this IThat<IAsyncEnumerable<string?>?> source,
 			params string[] expected)
 	{
-		ArgumentNullException.ThrowIfNull(expected);
+		expected.ThrowIfNullOrEmpty();
 		StringEqualityOptions options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
@@ -123,7 +120,6 @@ public static partial class ThatAsyncEnumerable
 			string doNotPopulateThisValue = "")
 	{
 		unexpected.ThrowIfNullOrEmpty();
-		ArgumentNullException.ThrowIfNull(unexpected);
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
@@ -145,7 +141,7 @@ public static partial class ThatAsyncEnumerable
 			this IThat<IAsyncEnumerable<TItem>?> source,
 			params TItem[] unexpected)
 	{
-		ArgumentNullException.ThrowIfNull(unexpected);
+		unexpected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
@@ -170,7 +166,6 @@ public static partial class ThatAsyncEnumerable
 			string doNotPopulateThisValue = "")
 	{
 		unexpected.ThrowIfNullOrEmpty();
-		ArgumentNullException.ThrowIfNull(unexpected);
 		StringEqualityOptions options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
@@ -192,7 +187,7 @@ public static partial class ThatAsyncEnumerable
 			this IThat<IAsyncEnumerable<string?>?> source,
 			params string[] unexpected)
 	{
-		ArgumentNullException.ThrowIfNull(unexpected);
+		unexpected.ThrowIfNullOrEmpty();
 		StringEqualityOptions options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(

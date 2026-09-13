@@ -93,14 +93,16 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
-			public async Task WhenExpectedIsEmpty_ShouldSucceed()
+			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				IEnumerable subject = ToEnumerable(1, 2);
 
 				async Task Act()
 					=> await That(subject).EndsWith(Array.Empty<int>());
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' collection cannot be empty.").AsPrefix();
 			}
 
 			[Fact]
