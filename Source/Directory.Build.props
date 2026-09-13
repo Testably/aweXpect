@@ -48,18 +48,22 @@
 		</PackageReference>
 	</ItemGroup>
 
+	<PropertyGroup>
+		<RepositoryRoot>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)..'))</RepositoryRoot>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<None Include="$([MSBuild]::GetPathOfFileAbove('Logo.png', '$(MSBuildThisFileDirectory)../Docs/Images/'))"
 			  Pack="true"
 			  PackagePath="/Docs/"
 			  Link="\Docs\Logo.png"/>
-		<None Include="$(SolutionDir)/Artifacts/README.md"
-			  Condition="Exists('$(SolutionDir)/Artifacts/README.md')"
+		<None Include="$(RepositoryRoot)Artifacts/README.md"
+			  Condition="Exists('$(RepositoryRoot)Artifacts/README.md')"
 			  Pack="true"
 			  PackagePath="/Docs/"
 			  Link="Docs\README.md"/>
-		<None Include="$(SolutionDir)/README.md"
-			  Condition="!Exists('$(SolutionDir)/Artifacts/README.md')"
+		<None Include="$(RepositoryRoot)README.md"
+			  Condition="!Exists('$(RepositoryRoot)Artifacts/README.md')"
 			  Pack="true"
 			  PackagePath="/Docs/"
 			  Link="Docs\README.md"/>
