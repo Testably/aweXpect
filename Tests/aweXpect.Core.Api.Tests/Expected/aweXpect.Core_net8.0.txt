@@ -403,6 +403,33 @@ namespace aweXpect.Core.Helpers
         ExplicitlyImplemented = 4,
     }
 }
+namespace aweXpect.Core.Metadata
+{
+    [System.AttributeUsage(System.AttributeTargets.Assembly, AllowMultiple=true)]
+    public sealed class GenerateMetadataAttribute : System.Attribute
+    {
+        public GenerateMetadataAttribute(System.Type type) { }
+        public System.Type Type { get; }
+    }
+    [System.AttributeUsage(System.AttributeTargets.Parameter | System.AttributeTargets.GenericParameter)]
+    public sealed class RequiresEventMetadataAttribute : System.Attribute
+    {
+        public RequiresEventMetadataAttribute() { }
+    }
+    [System.AttributeUsage(System.AttributeTargets.Parameter | System.AttributeTargets.GenericParameter)]
+    public sealed class RequiresMemberMetadataAttribute : System.Attribute
+    {
+        public RequiresMemberMetadataAttribute() { }
+    }
+    public static class TypeMetadataRegistry
+    {
+        public static void RegisterEvent<T>(string name, System.Func<System.Action<object?[]>, System.Delegate> createHandler, System.Action<T, System.Delegate> addHandler, System.Action<T, System.Delegate> removeHandler) { }
+        public static void RegisterField<T, TMember>(string name, System.Func<T, TMember> getValue) { }
+        public static void RegisterField<T, TMember>(T probe, string name, System.Func<T, TMember> getValue) { }
+        public static void RegisterProperty<T, TMember>(string name, System.Func<T, TMember> getValue) { }
+        public static void RegisterProperty<T, TMember>(T probe, string name, System.Func<T, TMember> getValue) { }
+    }
+}
 namespace aweXpect.Core.Sources
 {
     public class DelegateValue
@@ -673,18 +700,26 @@ namespace aweXpect.Equivalency
     public abstract class MemberToIgnore
     {
         protected MemberToIgnore() { }
-        public abstract bool IgnoreMember(string memberPath, System.Type memberType, System.Reflection.MemberInfo? memberInfo);
+        public abstract bool IgnoreMember(string memberPath, System.Type memberType);
+        public sealed class ByFieldPredicate : aweXpect.Equivalency.MemberToIgnore.ByPredicate
+        {
+            public ByFieldPredicate(System.Func<string, System.Type, bool> predicate, string description) { }
+        }
         public class ByName : aweXpect.Equivalency.MemberToIgnore
         {
             public ByName(string memberName) { }
-            public override bool IgnoreMember(string memberPath, System.Type memberType, System.Reflection.MemberInfo? memberInfo) { }
+            public override bool IgnoreMember(string memberPath, System.Type memberType) { }
             public override string ToString() { }
         }
         public class ByPredicate : aweXpect.Equivalency.MemberToIgnore
         {
-            public ByPredicate(System.Func<string, System.Type, System.Reflection.MemberInfo?, bool> predicate, string description) { }
-            public override bool IgnoreMember(string memberPath, System.Type memberType, System.Reflection.MemberInfo? memberInfo) { }
+            public ByPredicate(System.Func<string, System.Type, bool> predicate, string description) { }
+            public override bool IgnoreMember(string memberPath, System.Type memberType) { }
             public override string ToString() { }
+        }
+        public sealed class ByPropertyPredicate : aweXpect.Equivalency.MemberToIgnore.ByPredicate
+        {
+            public ByPropertyPredicate(System.Func<string, System.Type, bool> predicate, string description) { }
         }
     }
 }

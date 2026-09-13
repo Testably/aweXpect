@@ -1736,11 +1736,13 @@ namespace aweXpect.Equivalency
             where TEquivalencyOptions : aweXpect.Equivalency.EquivalencyTypeOptions { }
         public static TEquivalencyOptions Ignoring<TEquivalencyOptions>(this TEquivalencyOptions @this, System.Func<string, System.Type, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TEquivalencyOptions : aweXpect.Equivalency.EquivalencyTypeOptions { }
-        public static TEquivalencyOptions Ignoring<TEquivalencyOptions>(this TEquivalencyOptions @this, System.Func<string, System.Type, System.Reflection.MemberInfo?, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
-            where TEquivalencyOptions : aweXpect.Equivalency.EquivalencyTypeOptions { }
         public static TEquivalencyOptions IgnoringCollectionOrder<TEquivalencyOptions>(this TEquivalencyOptions @this, bool ignoreCollectionOrder = true)
             where TEquivalencyOptions : aweXpect.Equivalency.EquivalencyTypeOptions { }
+        public static TEquivalencyOptions IgnoringFields<TEquivalencyOptions>(this TEquivalencyOptions @this, System.Func<string, System.Type, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
+            where TEquivalencyOptions : aweXpect.Equivalency.EquivalencyTypeOptions { }
         public static TEquivalencyOptions IgnoringMember<TEquivalencyOptions>(this TEquivalencyOptions @this, string memberToIgnore)
+            where TEquivalencyOptions : aweXpect.Equivalency.EquivalencyTypeOptions { }
+        public static TEquivalencyOptions IgnoringProperties<TEquivalencyOptions>(this TEquivalencyOptions @this, System.Func<string, System.Type, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
             where TEquivalencyOptions : aweXpect.Equivalency.EquivalencyTypeOptions { }
         public static TEquivalencyOptions IncludingFields<TEquivalencyOptions>(this TEquivalencyOptions @this, aweXpect.Equivalency.IncludeMembers fieldsToInclude = 2)
             where TEquivalencyOptions : aweXpect.Equivalency.EquivalencyTypeOptions { }

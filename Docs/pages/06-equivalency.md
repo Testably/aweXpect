@@ -100,7 +100,7 @@ elements, the index is bracketed (e.g. `"Tracks[3]"`).
 
 ### Ignoring members by predicate
 
-There are four overloads of `Ignoring`, depending on which information you need:
+There are three overloads of `Ignoring`, depending on which information you need:
 
 ```csharp
 // by member path and type
@@ -115,11 +115,15 @@ await Expect.That(album).IsEquivalentTo(expected, o => o
 // by type only
 await Expect.That(album).IsEquivalentTo(expected, o => o
   .Ignoring(memberType => memberType == typeof(DateTime)));
+```
 
-// by member path, type and reflected MemberInfo
+Use `IgnoringFields` or `IgnoringProperties` instead of `Ignoring` to restrict a predicate to one kind of member.
+They take the same member path and type, and are never applied to collection elements, which are neither a field nor a
+property:
+
+```csharp
 await Expect.That(album).IsEquivalentTo(expected, o => o
-  .Ignoring((memberPath, _, memberInfo)
-    => memberPath.EndsWith("PlayCount") && memberInfo is PropertyInfo));
+  .IgnoringProperties((memberPath, _) => memberPath.EndsWith("PlayCount")));
 ```
 
 ### Including fields and properties

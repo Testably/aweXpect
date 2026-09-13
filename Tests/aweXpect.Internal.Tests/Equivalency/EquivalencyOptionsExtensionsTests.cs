@@ -48,28 +48,6 @@ public sealed class EquivalencyOptionsExtensionsTests
 	}
 
 	[Fact]
-	public async Task Generic_For_Ignoring_StringTypeAndMemberInfoPredicate_ShouldSetOptionForType()
-	{
-		EquivalencyOptions options = new();
-
-		EquivalencyOptions result = options.For<MyClass>(o
-			=> o.Ignoring((n, t, f) => n.EndsWith("At") && t == typeof(DateTime) && f != null));
-
-		await That(result.MembersToIgnore).IsEmpty();
-		await That(result.CustomOptions).ContainsKey(typeof(MyClass))
-			.WhoseValue.IsEquivalentTo(new
-			{
-				MembersToIgnore = It.Is<MemberToIgnore[]>().That.HasCount(1),
-			});
-		await That(result.ToString()).IsEqualTo("""
-		                                         - include public fields and properties
-		                                         - for EquivalencyOptionsExtensionsTests.MyClass:
-		                                           - include public fields and properties
-		                                           - ignore members: [(n, t, f) => n.EndsWith("At") && t == typeof(DateTime) && f != null]
-		                                        """);
-	}
-
-	[Fact]
 	public async Task Generic_For_Ignoring_TypePredicate_ShouldSetOptionForType()
 	{
 		EquivalencyOptions options = new();
@@ -117,6 +95,29 @@ public sealed class EquivalencyOptionsExtensionsTests
 		}
 	}
 
+	[Fact]
+	public async Task Generic_For_IgnoringFields_ShouldSetOptionForType()
+	{
+		EquivalencyOptions options = new();
+
+		EquivalencyOptions result = options.For<MyClass>(o
+			=> o.IgnoringFields((n, t) => n.EndsWith("At") && t == typeof(DateTime)));
+
+		await That(result.MembersToIgnore).IsEmpty();
+		await That(result.CustomOptions).ContainsKey(typeof(MyClass))
+			.WhoseValue.IsEquivalentTo(new
+			{
+				MembersToIgnore = It.Is<MemberToIgnore[]>().That.HasCount(1),
+			});
+		await That(result.ToString()).IsEqualTo("""
+		                                         - include public fields and properties
+		                                         - for EquivalencyOptionsExtensionsTests.MyClass:
+		                                           - include public fields and properties
+		                                           - ignore fields: [(n, t) => n.EndsWith("At") && t == typeof(DateTime)]
+		                                        """)
+			.Because("the rendering has to say which kind of member the predicate is applied to");
+	}
+
 	[Theory]
 	[AutoData]
 	public async Task Generic_For_IgnoringMember_ShouldSetOptionForType(string memberToIgnore)
@@ -137,6 +138,29 @@ public sealed class EquivalencyOptionsExtensionsTests
 		                                            - include public fields and properties
 		                                            - ignore members: ["{memberToIgnore}"]
 		                                         """);
+	}
+
+	[Fact]
+	public async Task Generic_For_IgnoringProperties_ShouldSetOptionForType()
+	{
+		EquivalencyOptions options = new();
+
+		EquivalencyOptions result = options.For<MyClass>(o
+			=> o.IgnoringProperties((n, t) => n.EndsWith("At") && t == typeof(DateTime)));
+
+		await That(result.MembersToIgnore).IsEmpty();
+		await That(result.CustomOptions).ContainsKey(typeof(MyClass))
+			.WhoseValue.IsEquivalentTo(new
+			{
+				MembersToIgnore = It.Is<MemberToIgnore[]>().That.HasCount(1),
+			});
+		await That(result.ToString()).IsEqualTo("""
+		                                         - include public fields and properties
+		                                         - for EquivalencyOptionsExtensionsTests.MyClass:
+		                                           - include public fields and properties
+		                                           - ignore properties: [(n, t) => n.EndsWith("At") && t == typeof(DateTime)]
+		                                        """)
+			.Because("the rendering has to say which kind of member the predicate is applied to");
 	}
 
 	[Theory]

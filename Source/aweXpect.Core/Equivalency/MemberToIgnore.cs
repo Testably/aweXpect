@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reflection;
+using System;
 
 namespace aweXpect.Equivalency;
 
@@ -12,28 +11,40 @@ public abstract class MemberToIgnore
 	/// <summary>
 	///     Checks if the member should be ignored.
 	/// </summary>
-	public abstract bool IgnoreMember(string memberPath, Type memberType, MemberInfo? memberInfo);
+	public abstract bool IgnoreMember(string memberPath, Type memberType);
 
 	/// <summary>
 	///     Ignores all members that satisfy the <paramref name="predicate" />.
 	/// </summary>
-	public class ByPredicate(Func<string, Type, MemberInfo?, bool> predicate, string description) : MemberToIgnore
+	public class ByPredicate(Func<string, Type, bool> predicate, string description) : MemberToIgnore
 	{
-		/// <inheritdoc cref="MemberToIgnore.IgnoreMember(string, Type, MemberInfo?)" />
-		public override bool IgnoreMember(string memberPath, Type memberType, MemberInfo? memberInfo)
-			=> predicate(memberPath, memberType, memberInfo);
+		/// <inheritdoc cref="MemberToIgnore.IgnoreMember(string, Type)" />
+		public override bool IgnoreMember(string memberPath, Type memberType)
+			=> predicate(memberPath, memberType);
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString() => description;
 	}
 
 	/// <summary>
+	///     Ignores all fields that satisfy the <paramref name="predicate" />.
+	/// </summary>
+	public sealed class ByFieldPredicate(Func<string, Type, bool> predicate, string description)
+		: ByPredicate(predicate, description);
+
+	/// <summary>
+	///     Ignores all properties that satisfy the <paramref name="predicate" />.
+	/// </summary>
+	public sealed class ByPropertyPredicate(Func<string, Type, bool> predicate, string description)
+		: ByPredicate(predicate, description);
+
+	/// <summary>
 	///     Ignores all members that have the provided <paramref name="memberName" />.
 	/// </summary>
 	public class ByName(string memberName) : MemberToIgnore
 	{
-		/// <inheritdoc cref="MemberToIgnore.IgnoreMember(string, Type, MemberInfo?)" />
-		public override bool IgnoreMember(string memberPath, Type memberType, MemberInfo? memberInfo)
+		/// <inheritdoc cref="MemberToIgnore.IgnoreMember(string, Type)" />
+		public override bool IgnoreMember(string memberPath, Type memberType)
 			=> memberPath.EndsWith(memberName, StringComparison.OrdinalIgnoreCase);
 
 		/// <inheritdoc cref="object.ToString()" />
