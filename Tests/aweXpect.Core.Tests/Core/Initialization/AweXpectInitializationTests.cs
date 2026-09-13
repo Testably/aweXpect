@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Threading;
 using aweXpect.Core.Adapters;
 using aweXpect.Core.Initialization;
 
@@ -84,23 +83,6 @@ public sealed class AweXpectInitializationTests
 
 		await That(result.IsAvailable).IsTrue()
 			.Because("the scan should still find the test framework adapter of this test assembly");
-	}
-
-	[Fact]
-	public async Task ShouldInitializeCustomInitializerOnceBeforeExpectationIsEvaluated()
-	{
-		int result = CustomInitializer.InitializationCount;
-
-		await That(result).IsEqualTo(1);
-	}
-
-	public sealed class CustomInitializer : IAweXpectInitializer
-	{
-		private static int _initializationCount;
-		public static int InitializationCount => _initializationCount;
-
-
-		public void Initialize() => Interlocked.Increment(ref _initializationCount);
 	}
 
 	private sealed class UnavailableFrameworkAdapter : ITestFrameworkAdapter

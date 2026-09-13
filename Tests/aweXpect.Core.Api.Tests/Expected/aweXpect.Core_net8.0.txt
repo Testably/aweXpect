@@ -401,13 +401,6 @@ namespace aweXpect.Core.Helpers
         ExplicitlyImplemented = 4,
     }
 }
-namespace aweXpect.Core.Initialization
-{
-    public interface IAweXpectInitializer
-    {
-        void Initialize();
-    }
-}
 namespace aweXpect.Core.Sources
 {
     public class DelegateValue
