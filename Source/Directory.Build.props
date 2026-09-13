@@ -49,7 +49,6 @@
 	</ItemGroup>
 
 	<PropertyGroup>
-		<!-- $(SolutionDir) is only defined for solution builds, so packing a project directly would look outside the repository. -->
 		<RepositoryRoot>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)..'))</RepositoryRoot>
 	</PropertyGroup>
 
