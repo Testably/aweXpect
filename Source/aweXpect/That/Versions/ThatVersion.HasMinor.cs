@@ -1,0 +1,14 @@
+﻿using System;
+using aweXpect.Core;
+using aweXpect.Results;
+
+namespace aweXpect;
+
+public static partial class ThatVersion
+{
+	/// <summary>
+	///     Verifies that the minor component of the <see cref="Version" /> subject…
+	/// </summary>
+	public static PropertyResult.Int<Version?> HasMinor(this IThat<Version?> source)
+		=> new(source, a => a?.Minor, "minor");
+}

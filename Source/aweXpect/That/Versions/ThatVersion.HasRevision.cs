@@ -1,0 +1,15 @@
+﻿using System;
+using aweXpect.Core;
+using aweXpect.Results;
+
+namespace aweXpect;
+
+public static partial class ThatVersion
+{
+	/// <summary>
+	///     Verifies that the revision component of the <see cref="Version" /> subject…
+	///     The revision component is <c>-1</c> when it is unspecified.
+	/// </summary>
+	public static PropertyResult.Int<Version?> HasRevision(this IThat<Version?> source)
+		=> new(source, a => a?.Revision, "revision");
+}
