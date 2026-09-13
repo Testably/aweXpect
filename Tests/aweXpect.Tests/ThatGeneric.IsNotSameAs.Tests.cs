@@ -79,7 +79,7 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
-			public async Task WhenSubjectIsNull_ShouldFail()
+			public async Task WhenSubjectIsNull_ShouldSucceed()
 			{
 				Other? subject = null;
 				Other expected = new()
@@ -90,14 +90,8 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).IsNotSameAs(expected);
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             does not refer to ThatGeneric.Other {
-					                 Value = 1
-					               },
-					             but it was <null>
-					             """);
+				await That(Act).DoesNotThrow()
+					.Because("nothing cannot refer to an instance");
 			}
 		}
 

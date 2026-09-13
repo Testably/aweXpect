@@ -161,6 +161,7 @@ public sealed class GuaranteesNotNullTests
 			["ThatObject.IsNull(Nullable<T>)"] = NullSubjectOutcome.Passes,
 			["ThatObject.IsNull(T)"] = NullSubjectOutcome.Passes,
 			["ThatObject.IsOneOf(Object)"] = NullSubjectOutcome.Passes,
+			["ThatObject.IsSameAs(T)"] = NullSubjectOutcome.Passes,
 			["ThatString.HasLines(String)"] = NullSubjectOutcome.Throws,
 			["ThatString.IsNotEqualTo(String)"] = NullSubjectOutcome.Passes,
 			["ThatString.IsNotOneOf(String)"] = NullSubjectOutcome.Passes,
