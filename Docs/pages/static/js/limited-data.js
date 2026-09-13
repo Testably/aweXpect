@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "05a05906a37c2901708ef62e4730331377e9a981",
-        "author": "dependabot[bot]",
-        "date": "Mon Jul 20 16:13:32 2026 \u002B0200",
-        "message": "chore: Bump the tunit group with 3 updates (#995)"
-      },
-      {
         "sha": "9ed9eb99dd3457d30d68c86c1277ad11a993ea10",
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:47 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 14:35:09 2026 \u002B0200",
         "message": "refactor!: format \u0060KeyValuePair\u0060 entries without reflection (#1070)"
+      },
+      {
+        "sha": "c6732d628c93a0741e76938d64c8659abf7d613c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 14:34:48 2026 \u002B0200",
+        "message": "fix: resolve the packed README without relying on the solution directory (#1072)"
       }
     ],
     "labels": [
-      "05a05906",
       "9ed9eb99",
       "6852ae85",
       "66530371",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "9bafd873",
       "8c0caeb2",
       "dc29fb29",
-      "c5c7f7d4"
+      "c5c7f7d4",
+      "c6732d62"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          251.0237106543321,
           261.29992993672687,
           280.499692099435,
           255.48705085118613,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           254.11032401598416,
           289.89639768600466,
           227.24173703193665,
-          250.75973449434554
+          250.75973449434554,
+          254.4613069466182
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          262.84639611611,
           255.45859234673637,
           248.15291047096252,
           254.406210454305,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           249.94736538614546,
           246.6084097226461,
           238.37522983551025,
-          236.79322616870587
+          236.79322616870587,
+          246.56261631647746
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "05a05906a37c2901708ef62e4730331377e9a981",
-        "author": "dependabot[bot]",
-        "date": "Mon Jul 20 16:13:32 2026 \u002B0200",
-        "message": "chore: Bump the tunit group with 3 updates (#995)"
-      },
-      {
         "sha": "9ed9eb99dd3457d30d68c86c1277ad11a993ea10",
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:47 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 14:35:09 2026 \u002B0200",
         "message": "refactor!: format \u0060KeyValuePair\u0060 entries without reflection (#1070)"
+      },
+      {
+        "sha": "c6732d628c93a0741e76938d64c8659abf7d613c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 14:34:48 2026 \u002B0200",
+        "message": "fix: resolve the packed README without relying on the solution directory (#1072)"
       }
     ],
     "labels": [
-      "05a05906",
       "9ed9eb99",
       "6852ae85",
       "66530371",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "9bafd873",
       "8c0caeb2",
       "dc29fb29",
-      "c5c7f7d4"
+      "c5c7f7d4",
+      "c6732d62"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          294355.8103190104,
           310771.8503580729,
           302191.66252790176,
           323283.2626604353,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           309059.1347307478,
           332842.84283854166,
           239795.6194580078,
-          300669.2333984375
+          300669.2333984375,
+          317015.54552283656
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1042,7 +1042,6 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
           335444,
           335444,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335442,
+          335444,
           335444
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2543407.78515625,
           2384567.625,
           2363770.5853365385,
           2800057.7682291665,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2758251.6180245536,
           2732419.07421875,
           2002764.6549479167,
-          2738172.296875
+          2738172.296875,
+          2688861.4171875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841647,
           4841647,
           4841651,
@@ -1202,6 +1201,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841609,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "05a05906a37c2901708ef62e4730331377e9a981",
-        "author": "dependabot[bot]",
-        "date": "Mon Jul 20 16:13:32 2026 \u002B0200",
-        "message": "chore: Bump the tunit group with 3 updates (#995)"
-      },
       {
         "sha": "9ed9eb99dd3457d30d68c86c1277ad11a993ea10",
         "author": "dependabot[bot]",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 14:35:09 2026 \u002B0200",
         "message": "refactor!: format \u0060KeyValuePair\u0060 entries without reflection (#1070)"
+      },
+      {
+        "sha": "c6732d628c93a0741e76938d64c8659abf7d613c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 14:34:48 2026 \u002B0200",
+        "message": "fix: resolve the packed README without relying on the solution directory (#1072)"
       }
     ],
     "labels": [
-      "05a05906",
       "9ed9eb99",
       "6852ae85",
       "66530371",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "9bafd873",
       "8c0caeb2",
       "dc29fb29",
-      "c5c7f7d4"
+      "c5c7f7d4",
+      "c6732d62"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          504.3686113993327,
           520.5315689086914,
           492.0809488296509,
           523.8340864817302,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           479.3151646931966,
           534.572336265019,
           443.84056151707966,
-          476.14383179800853
+          476.14383179800853,
+          520.978179693222
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          542.1279582659404,
           513.0179195721944,
           485.3975423812866,
           501.37619635264076,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           511.97983792622887,
           489.1645165761312,
           472.59745909372964,
-          469.3356034755707
+          469.3356034755707,
+          548.5366251128061
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "05a05906a37c2901708ef62e4730331377e9a981",
-        "author": "dependabot[bot]",
-        "date": "Mon Jul 20 16:13:32 2026 \u002B0200",
-        "message": "chore: Bump the tunit group with 3 updates (#995)"
-      },
-      {
         "sha": "9ed9eb99dd3457d30d68c86c1277ad11a993ea10",
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:47 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 14:35:09 2026 \u002B0200",
         "message": "refactor!: format \u0060KeyValuePair\u0060 entries without reflection (#1070)"
+      },
+      {
+        "sha": "c6732d628c93a0741e76938d64c8659abf7d613c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 14:34:48 2026 \u002B0200",
+        "message": "fix: resolve the packed README without relying on the solution directory (#1072)"
       }
     ],
     "labels": [
-      "05a05906",
       "9ed9eb99",
       "6852ae85",
       "66530371",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "9bafd873",
       "8c0caeb2",
       "dc29fb29",
-      "c5c7f7d4"
+      "c5c7f7d4",
+      "c6732d62"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          280.6270829518636,
           278.8900069236755,
           263.2455927644457,
           292.6164258003235,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           270.2526925291334,
           266.25251153537204,
           247.98166553179422,
-          259.7270631790161
+          259.7270631790161,
+          270.73044805526735
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          250.30743398666382,
           249.70486201558793,
           244.24100610188074,
           263.79900544484457,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           247.85641435782114,
           248.32830775578816,
           256.6069412867228,
-          257.8425686518351
+          257.8425686518351,
+          292.022051970164
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "05a05906a37c2901708ef62e4730331377e9a981",
-        "author": "dependabot[bot]",
-        "date": "Mon Jul 20 16:13:32 2026 \u002B0200",
-        "message": "chore: Bump the tunit group with 3 updates (#995)"
-      },
-      {
         "sha": "9ed9eb99dd3457d30d68c86c1277ad11a993ea10",
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:47 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 14:35:09 2026 \u002B0200",
         "message": "refactor!: format \u0060KeyValuePair\u0060 entries without reflection (#1070)"
+      },
+      {
+        "sha": "c6732d628c93a0741e76938d64c8659abf7d613c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 14:34:48 2026 \u002B0200",
+        "message": "fix: resolve the packed README without relying on the solution directory (#1072)"
       }
     ],
     "labels": [
-      "05a05906",
       "9ed9eb99",
       "6852ae85",
       "66530371",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "9bafd873",
       "8c0caeb2",
       "dc29fb29",
-      "c5c7f7d4"
+      "c5c7f7d4",
+      "c6732d62"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          519.445053918021,
           491.6327314376831,
           475.70042683283486,
           497.8442200342814,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           477.642680199941,
           460.0800317128499,
           384.8767795562744,
-          480.52882326566254
+          480.52882326566254,
+          493.8501781736101
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1255.2289052690778,
           1253.2510492960612,
           1165.2784207207817,
           1271.0447240193685,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1218.4707197825114,
           1193.0484619140625,
           1050.6551955086845,
-          1228.212302271525
+          1228.212302271525,
+          1433.442033290863
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "05a05906a37c2901708ef62e4730331377e9a981",
-        "author": "dependabot[bot]",
-        "date": "Mon Jul 20 16:13:32 2026 \u002B0200",
-        "message": "chore: Bump the tunit group with 3 updates (#995)"
-      },
-      {
         "sha": "9ed9eb99dd3457d30d68c86c1277ad11a993ea10",
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:47 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 14:35:09 2026 \u002B0200",
         "message": "refactor!: format \u0060KeyValuePair\u0060 entries without reflection (#1070)"
+      },
+      {
+        "sha": "c6732d628c93a0741e76938d64c8659abf7d613c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 14:34:48 2026 \u002B0200",
+        "message": "fix: resolve the packed README without relying on the solution directory (#1072)"
       }
     ],
     "labels": [
-      "05a05906",
       "9ed9eb99",
       "6852ae85",
       "66530371",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "9bafd873",
       "8c0caeb2",
       "dc29fb29",
-      "c5c7f7d4"
+      "c5c7f7d4",
+      "c6732d62"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1980.6558148520332,
           1940.3627637227376,
           1945.322928873698,
           2016.0552400861468,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1955.5244827270508,
           2029.9102714538574,
           1262.6462652842204,
-          1928.0085342407226
+          1928.0085342407226,
+          2033.934630530221
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1425.6334269387382,
           1427.4992933273315,
           1313.703686441694,
           1432.1969587961833,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1369.0302020481654,
           1369.8892083849225,
           1248.5084645589193,
-          1287.9860266367593
+          1287.9860266367593,
+          1467.3255128860474
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "05a05906a37c2901708ef62e4730331377e9a981",
-        "author": "dependabot[bot]",
-        "date": "Mon Jul 20 16:13:32 2026 \u002B0200",
-        "message": "chore: Bump the tunit group with 3 updates (#995)"
-      },
-      {
         "sha": "9ed9eb99dd3457d30d68c86c1277ad11a993ea10",
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:47 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 14:35:09 2026 \u002B0200",
         "message": "refactor!: format \u0060KeyValuePair\u0060 entries without reflection (#1070)"
+      },
+      {
+        "sha": "c6732d628c93a0741e76938d64c8659abf7d613c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 14:34:48 2026 \u002B0200",
+        "message": "fix: resolve the packed README without relying on the solution directory (#1072)"
       }
     ],
     "labels": [
-      "05a05906",
       "9ed9eb99",
       "6852ae85",
       "66530371",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "9bafd873",
       "8c0caeb2",
       "dc29fb29",
-      "c5c7f7d4"
+      "c5c7f7d4",
+      "c6732d62"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2554.021547589983,
           2480.318051746913,
           2487.963728841146,
           2625.639323679606,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2688.8983939034597,
           2725.5105266571045,
           1722.5688888549805,
-          2584.997779573713
+          2584.997779573713,
+          2693.6567529531626
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          21455.21271870931,
           20192.224662272136,
           20807.0376953125,
           27280.6028376988,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           27901.550914219446,
           27478.99108276367,
           15551.548243931362,
-          27038.082265218098
+          27038.082265218098,
+          27807.976272583008
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4209,7 +4209,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4242,6 +4241,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
