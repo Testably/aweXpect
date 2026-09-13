@@ -10,6 +10,7 @@ using aweXpect.Results;
 namespace aweXpect.Tests;
 
 using CoreDelegate = global::aweXpect.Delegates.ThatDelegate;
+using CoreGeneric = global::aweXpect.ThatGeneric;
 
 public sealed class GuaranteesNotNullTests
 {
@@ -54,15 +55,8 @@ public sealed class GuaranteesNotNullTests
 		"ThatEnumerable.LessThan(IThat<IEnumerable<String>>,Int32)",
 		"ThatEnumerable.MoreThan(IThat<IEnumerable<String>>,Int32)",
 		"ThatEnumerable.None(IThat<IEnumerable<String>>)",
-		"ThatEventRecording.DidNotTriggerPropertyChangedFor<TSubject,TProperty>(IThat<IEventRecording<TSubject>>,Expression<Func<TSubject,TProperty>>)",
-		"ThatEventRecording.TriggeredPropertyChangedFor<TSubject,TProperty>(IThat<IEventRecording<TSubject>>,Expression<Func<TSubject,TProperty>>)",
-		"ThatException.HasInner(IThat<Exception>,Type,Action<IThatSubject<Exception>>)",
-		"ThatException.HasInner<TInnerException>(IThat<Exception>,Action<IThatSubject<TInnerException>>)",
-		"ThatException.HasInnerException(IThat<Exception>,Action<IThatSubject<Exception>>)",
-		"ThatException.HasRecursiveInnerExceptions(IThat<Exception>,Action<IThatSubject<IEnumerable<Exception>>>)",
 		"ThatGeneric.DoesNotSatisfy<T>(IThat<T>,Func<T,Boolean>,String)",
 		"ThatGeneric.Satisfies<T>(IThat<T>,Func<T,Boolean>,String)",
-		"ThatString.HasLines(IThat<String>,Action<IThatSubject<IEnumerable<String>>>)",
 	];
 
 	// Expectations that do not fail for a null subject today, one entry per expectation name and
@@ -97,14 +91,6 @@ public sealed class GuaranteesNotNullTests
 			["ThatEnumerable.IsNotEqualTo(IEnumerable<Single>)"] = NullSubjectOutcome.Passes,
 			["ThatEnumerable.IsNotEqualTo(IEnumerable<String>)"] = NullSubjectOutcome.Passes,
 			["ThatEnumerable.IsNotEqualTo(IEnumerable<TItem>)"] = NullSubjectOutcome.Passes,
-			["ThatEventRecording.DidNotTriggerPropertyChangedFor(IEventRecording<TSubject>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.NotInvocable,
-			["ThatEventRecording.TriggeredPropertyChangedFor(IEventRecording<TSubject>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.NotInvocable,
-			["ThatException.HasInner(Exception)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Throws,
-			["ThatException.HasInnerException(Exception)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Throws,
-			["ThatException.HasRecursiveInnerExceptions(Exception)"] = NullSubjectOutcome.Throws,
-			["ThatGeneric.CompliesWith(T)"] = NullSubjectOutcome.Throws,
-			["ThatGeneric.DoesNotComplyWith(T)"] = NullSubjectOutcome.Throws,
-			["ThatGeneric.For(T)"] = NullSubjectOutcome.Throws,
 			["ThatNullableBool.IsEqualTo(Nullable<Boolean>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
 			["ThatNullableBool.IsNotEqualTo(Nullable<Boolean>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
 			["ThatNullableBool.IsNotFalse(Nullable<Boolean>)"] = NullSubjectOutcome.Passes,
@@ -154,7 +140,6 @@ public sealed class GuaranteesNotNullTests
 			["ThatObject.IsNull(T)"] = NullSubjectOutcome.Passes,
 			["ThatObject.IsOneOf(Object)"] = NullSubjectOutcome.Passes,
 			["ThatObject.IsSameAs(T)"] = NullSubjectOutcome.Passes,
-			["ThatString.HasLines(String)"] = NullSubjectOutcome.Throws,
 			["ThatString.IsNotEqualTo(String)"] = NullSubjectOutcome.Passes,
 			["ThatString.IsNotOneOf(String)"] = NullSubjectOutcome.Passes,
 			["ThatString.IsNull(String)"] = NullSubjectOutcome.Passes,
@@ -738,11 +723,35 @@ public sealed class GuaranteesNotNullTests
 
 		if (typeof(Expression).IsAssignableFrom(type))
 		{
-			throw new NotInvocableException(
-				$"The test cannot invent a '{type}' for parameter '{parameter.Name}'. Extend {nameof(CreateArgument)}.");
+			return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Expression<>)
+				? CreateMemberSelector(type.GetGenericArguments()[0])
+				: throw new NotInvocableException(
+					$"The test cannot invent a '{type}' for parameter '{parameter.Name}'. Extend {nameof(CreateArgument)}.");
 		}
 
 		return typeof(Delegate).IsAssignableFrom(type) ? CreateDelegate(type) : null;
+	}
+
+	// Builds `subject => subject.Member` for a property expression. A constant body would leave the
+	// expectation without a property name, so the call would no longer resemble what a caller writes;
+	// throwing keeps such a degenerate argument from passing unnoticed.
+	private static LambdaExpression CreateMemberSelector(Type delegateType)
+	{
+		MethodInfo invoke = delegateType.GetMethod("Invoke")!;
+		ParameterExpression subject = Expression.Parameter(invoke.GetParameters()[0].ParameterType, "subject");
+		PropertyInfo? property = subject.Type
+			.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+			.FirstOrDefault(candidate
+				=> candidate.CanRead && invoke.ReturnType.IsAssignableFrom(candidate.PropertyType));
+		if (property is null)
+		{
+			throw new NotInvocableException(
+				$"The test found no readable '{invoke.ReturnType}' property on '{subject.Type}' to select. Extend that type.");
+		}
+
+		return Expression.Lambda(delegateType,
+			Expression.Convert(Expression.Property(subject, property), invoke.ReturnType),
+			subject);
 	}
 
 	private static Delegate CreateDelegate(Type delegateType)
@@ -752,10 +761,42 @@ public sealed class GuaranteesNotNullTests
 			.Select(parameter => Expression.Parameter(parameter.ParameterType, parameter.Name))
 			.ToArray();
 		Expression body = invoke.ReturnType == typeof(void)
-			? Expression.Empty()
+			? CreateExpectationBody(parameters)
 			: Expression.Default(invoke.ReturnType);
 		return Expression.Lambda(delegateType, body, parameters).Compile();
 	}
+
+	// Builds `subject => subject.Satisfies(_ => true)` for a continuation on an IThat<T>. aweXpect
+	// rejects a continuation that declares no inner expectation, so a no-op body reports Throws and
+	// hides what the expectation does for a null subject. Satisfies is itself null-intolerant, so the
+	// recorded outcome is about the call as a whole - which is what the attribute describes - rather
+	// than about the outer expectation alone.
+	private static Expression CreateExpectationBody(ParameterExpression[] parameters)
+	{
+		if (parameters.Length != 1 || GetThatSubjectType(parameters[0].Type) is not { } subjectType)
+		{
+			return Expression.Empty();
+		}
+
+		MethodInfo satisfies = typeof(CoreGeneric)
+			.GetMethods(BindingFlags.Public | BindingFlags.Static)
+			.Single(method => method.Name == nameof(CoreGeneric.Satisfies) && method.GetParameters().Length == 3)
+			.MakeGenericMethod(subjectType);
+		LambdaExpression predicate = Expression.Lambda(
+			typeof(Func<,>).MakeGenericType(subjectType, typeof(bool)),
+			Expression.Constant(true),
+			Expression.Parameter(subjectType, "_"));
+		return Expression.Call(null, satisfies,
+			Expression.Convert(parameters[0], typeof(IThat<>).MakeGenericType(subjectType)),
+			predicate,
+			Expression.Constant("_ => true"));
+	}
+
+	private static Type? GetThatSubjectType(Type type)
+		=> new[] { type, }.Concat(type.GetInterfaces())
+			.FirstOrDefault(candidate => candidate.IsGenericType &&
+			                             candidate.GetGenericTypeDefinition() == typeof(IThat<>))
+			?.GetGenericArguments()[0];
 
 	private static Array CreateSingleElementArray(Type elementType)
 	{
@@ -838,6 +879,10 @@ public sealed class GuaranteesNotNullTests
 
 	private sealed class NotifyingSubject : INotifyPropertyChanged
 	{
+		// Gives CreateMemberSelector a member to select, so that a property expression argument is a
+		// real member access rather than a constant the expectation reads no property name from.
+		public string? Value { get; set; }
+
 		public event PropertyChangedEventHandler? PropertyChanged
 		{
 			add => throw new NotSupportedException();
