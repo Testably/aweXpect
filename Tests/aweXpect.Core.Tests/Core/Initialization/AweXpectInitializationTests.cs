@@ -6,6 +6,7 @@ namespace aweXpect.Core.Tests.Core.Initialization;
 
 public sealed class AweXpectInitializationTests
 {
+#if !NET8_0_OR_GREATER
 	[Fact]
 	public async Task DetectFramework_WhenAllFrameworksAreNotAvailable_ShouldReturnNull()
 	{
@@ -60,6 +61,7 @@ public sealed class AweXpectInitializationTests
 
 		await That(included).IsEqualTo(false);
 	}
+#endif
 
 	[Fact]
 	public async Task DetectTestFramework_WhenAdapterIsRegistered_ShouldReturnRegisteredAdapter()
@@ -74,6 +76,18 @@ public sealed class AweXpectInitializationTests
 			.Because("a registered adapter makes scanning the loaded assemblies unnecessary");
 	}
 
+#if NET8_0_OR_GREATER
+	[Fact]
+	public async Task DetectTestFramework_WhenNothingIsRegistered_ShouldReturnTheFallback()
+	{
+		TestFrameworkRegistry.Registration registration = new();
+
+		ITestFrameworkAdapter result = AweXpectInitialization.DetectTestFramework(registration);
+
+		await That(result.IsAvailable).IsFalse()
+			.Because("the generated adapter registers itself, so no adapter is available without a registration");
+	}
+#else
 	[Fact]
 	public async Task DetectTestFramework_WhenNothingIsRegistered_ShouldScanTheLoadedAssemblies()
 	{
@@ -82,9 +96,11 @@ public sealed class AweXpectInitializationTests
 		ITestFrameworkAdapter result = AweXpectInitialization.DetectTestFramework(registration);
 
 		await That(result.IsAvailable).IsTrue()
-			.Because("the scan should still find the test framework adapter of this test assembly");
+			.Because("the adapter cannot register itself without `ModuleInitializerAttribute`");
 	}
+#endif
 
+#if !NET8_0_OR_GREATER
 	private sealed class UnavailableFrameworkAdapter : ITestFrameworkAdapter
 	{
 		public bool IsAvailable => false;
@@ -103,6 +119,7 @@ public sealed class AweXpectInitializationTests
 		public void Skip(string message) => throw new NotSupportedException();
 #pragma warning restore CS0436
 	}
+#endif
 
 	private sealed class RegisteredFrameworkAdapter : ITestFrameworkAdapter
 	{
@@ -123,6 +140,7 @@ public sealed class AweXpectInitializationTests
 #pragma warning restore CS0436
 	}
 
+#if !NET8_0_OR_GREATER
 	private sealed class IncorrectFrameworkAdapter : ITestFrameworkAdapter
 	{
 		public bool IsAvailable => throw new NotSupportedException("Could not load the IncorrectFrameworkAdapter");
@@ -141,4 +159,5 @@ public sealed class AweXpectInitializationTests
 		public void Skip(string message) => throw new NotSupportedException();
 #pragma warning restore CS0436
 	}
+#endif
 }
