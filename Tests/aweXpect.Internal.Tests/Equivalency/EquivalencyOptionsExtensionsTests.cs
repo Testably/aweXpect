@@ -113,8 +113,9 @@ public sealed class EquivalencyOptionsExtensionsTests
 		                                         - include public fields and properties
 		                                         - for EquivalencyOptionsExtensionsTests.MyClass:
 		                                           - include public fields and properties
-		                                           - ignore members: [(n, t) => n.EndsWith("At") && t == typeof(DateTime)]
-		                                        """);
+		                                           - ignore fields: [(n, t) => n.EndsWith("At") && t == typeof(DateTime)]
+		                                        """)
+			.Because("the rendering has to say which kind of member the predicate is applied to");
 	}
 
 	[Theory]
@@ -157,8 +158,9 @@ public sealed class EquivalencyOptionsExtensionsTests
 		                                         - include public fields and properties
 		                                         - for EquivalencyOptionsExtensionsTests.MyClass:
 		                                           - include public fields and properties
-		                                           - ignore members: [(n, t) => n.EndsWith("At") && t == typeof(DateTime)]
-		                                        """);
+		                                           - ignore properties: [(n, t) => n.EndsWith("At") && t == typeof(DateTime)]
+		                                        """)
+			.Because("the rendering has to say which kind of member the predicate is applied to");
 	}
 
 	[Theory]
