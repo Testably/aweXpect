@@ -464,8 +464,7 @@ public sealed partial class ThatNumber
 			[Theory]
 			[InlineData(double.PositiveInfinity)]
 			[InlineData(double.NegativeInfinity)]
-			[InlineData(null)]
-			public async Task ForNullableDouble_WhenSubjectIsInfinityOrNull_ShouldSucceed(
+			public async Task ForNullableDouble_WhenSubjectIsInfinity_ShouldSucceed(
 				double? subject)
 			{
 				async Task Act()
@@ -474,6 +473,7 @@ public sealed partial class ThatNumber
 
 				await That(Act).DoesNotThrow();
 			}
+
 
 			[Fact]
 			public async Task ForNullableDouble_WhenSubjectIsNaN_ShouldFail()
@@ -489,6 +489,21 @@ public sealed partial class ThatNumber
 					              is not NaN,
 					              but it was {Formatter.Format(subject)}
 					              """);
+			}
+			[Fact]
+			public async Task ForNullableDouble_WhenSubjectIsNull_ShouldFail()
+			{
+				double? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNaN());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not NaN,
+					             but it was <null>
+					             """);
 			}
 
 			[Theory]
