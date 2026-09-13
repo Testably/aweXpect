@@ -169,7 +169,7 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
-			public async Task WhenExpectedIsNull_ShouldFail()
+			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "text";
 				string? expected = null;
@@ -177,15 +177,9 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).StartsWith(expected!);
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             starts with <null>,
-					             but it was "text"
-
-					             Actual:
-					             text
-					             """);
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The expected cannot be null.").AsPrefix();
 			}
 
 			[Fact]

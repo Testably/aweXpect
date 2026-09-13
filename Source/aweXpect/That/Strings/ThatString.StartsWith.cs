@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
@@ -17,6 +18,13 @@ public static partial class ThatString
 		this IThat<string?> source,
 		string expected)
 	{
+		expected.ThrowIfNull();
+		if (expected == string.Empty)
+		{
+			// ReSharper disable once LocalizableElement
+			throw new ArgumentException("The 'expected' string cannot be empty.", nameof(expected));
+		}
+
 		StringEqualityOptions options = new StringEqualityOptions().AsPrefix();
 		return new StringEqualityResult<string?, IThat<string?>>(
 			source.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
@@ -32,6 +40,13 @@ public static partial class ThatString
 		this IThat<string?> source,
 		string unexpected)
 	{
+		unexpected.ThrowIfNull();
+		if (unexpected == string.Empty)
+		{
+			// ReSharper disable once LocalizableElement
+			throw new ArgumentException("The 'unexpected' string cannot be empty.", nameof(unexpected));
+		}
+
 		StringEqualityOptions options = new StringEqualityOptions().AsPrefix();
 		return new StringEqualityResult<string?, IThat<string?>>(
 			source.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>

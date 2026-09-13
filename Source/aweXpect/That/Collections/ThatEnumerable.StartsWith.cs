@@ -31,6 +31,7 @@ public static partial class ThatEnumerable
 			IEnumerable<TItem> expected,
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
+		expected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
@@ -75,6 +76,7 @@ public static partial class ThatEnumerable
 			IEnumerable<string?> expected,
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
+		expected.ThrowIfNullOrEmpty();
 		StringEqualityOptions options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
@@ -165,6 +167,7 @@ public static partial class ThatEnumerable
 			IEnumerable<TItem> expected,
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
+		expected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>(
@@ -262,6 +265,7 @@ public static partial class ThatEnumerable
 			[CallerArgumentExpression("unexpected")]
 			string doNotPopulateThisValue = "")
 	{
+		unexpected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
@@ -307,6 +311,7 @@ public static partial class ThatEnumerable
 			[CallerArgumentExpression("unexpected")]
 			string doNotPopulateThisValue = "")
 	{
+		unexpected.ThrowIfNullOrEmpty();
 		StringEqualityOptions options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
@@ -398,6 +403,7 @@ public static partial class ThatEnumerable
 			[CallerArgumentExpression("unexpected")]
 			string doNotPopulateThisValue = "")
 	{
+		unexpected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>(

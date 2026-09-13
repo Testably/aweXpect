@@ -29,6 +29,7 @@ public static partial class ThatAsyncEnumerable
 			IEnumerable<TItem> expected,
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
+		expected.ThrowIfNullOrEmpty();
 		ArgumentNullException.ThrowIfNull(expected);
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
@@ -74,6 +75,7 @@ public static partial class ThatAsyncEnumerable
 			IEnumerable<string?> expected,
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
+		expected.ThrowIfNullOrEmpty();
 		ArgumentNullException.ThrowIfNull(expected);
 		StringEqualityOptions options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
@@ -120,6 +122,7 @@ public static partial class ThatAsyncEnumerable
 			[CallerArgumentExpression("unexpected")]
 			string doNotPopulateThisValue = "")
 	{
+		unexpected.ThrowIfNullOrEmpty();
 		ArgumentNullException.ThrowIfNull(unexpected);
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
@@ -166,6 +169,7 @@ public static partial class ThatAsyncEnumerable
 			[CallerArgumentExpression("unexpected")]
 			string doNotPopulateThisValue = "")
 	{
+		unexpected.ThrowIfNullOrEmpty();
 		ArgumentNullException.ThrowIfNull(unexpected);
 		StringEqualityOptions options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
