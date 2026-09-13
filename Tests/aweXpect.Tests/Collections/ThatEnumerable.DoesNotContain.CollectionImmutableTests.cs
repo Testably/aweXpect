@@ -64,7 +64,7 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
-			public async Task WhenSubjectIsNull_ShouldSucceed()
+			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEnumerable<string>? subject = null;
 				IEnumerable<string?> unexpected = ["foo",];
@@ -72,7 +72,12 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).DoesNotContain(unexpected);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain collection unexpected in order,
+					             but it was <null>
+					             """);
 			}
 
 			[Fact]

@@ -3763,7 +3763,7 @@ public sealed partial class ThatEnumerable
 			[InlineData("[g-h]{1}[o]*", false)]
 			public async Task AsRegex_ShouldUseRegex(string regex, bool expectSuccess)
 			{
-				string?[] subject = ["foo", "bar", "baz",];
+				ImmutableArray<string?> subject = ["foo", "bar", "baz",];
 
 				async Task Act()
 					=> await That(subject).Contains([regex,]).AsRegex();
@@ -3793,7 +3793,7 @@ public sealed partial class ThatEnumerable
 			[InlineData("f??o", false)]
 			public async Task AsWildcard_ShouldUseWildcard(string wildcard, bool expectSuccess)
 			{
-				string[] subject = ["foo", "bar", "baz",];
+				ImmutableArray<string?> subject = ["foo", "bar", "baz",];
 
 				async Task Act()
 					=> await That(subject).Contains([wildcard,]).AsWildcard();
@@ -3823,7 +3823,7 @@ public sealed partial class ThatEnumerable
 			[InlineData("*oo", false)]
 			public async Task Exactly_ShouldUseExactMatch(string match, bool expectSuccess)
 			{
-				string[] subject = ["foo", "bar", "baz",];
+				ImmutableArray<string?> subject = ["foo", "bar", "baz",];
 
 				async Task Act()
 					=> await That(subject).Contains([match,]).AsWildcard().Exactly();
@@ -3853,7 +3853,7 @@ public sealed partial class ThatEnumerable
 			[InlineData("goo", false)]
 			public async Task WhenIgnoringCase_ShouldUseCaseInsensitiveMatch(string match, bool expectSuccess)
 			{
-				string[] subject = ["foo", "bar", "baz",];
+				ImmutableArray<string?> subject = ["foo", "bar", "baz",];
 
 				async Task Act()
 					=> await That(subject).Contains([match,]).IgnoringCase();

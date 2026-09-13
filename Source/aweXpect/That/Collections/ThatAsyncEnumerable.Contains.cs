@@ -118,7 +118,7 @@ public static partial class ThatAsyncEnumerable
 				new IsEqualToConstraint<TItem, TItem>(
 					expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(), expected,
-					options, matchOptions)),
+					options, matchOptions, failsForNullSubject: true)),
 			source,
 			options,
 			matchOptions);
@@ -143,7 +143,7 @@ public static partial class ThatAsyncEnumerable
 				new IsEqualToConstraint<string?, string?>(
 					expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					expected, options, matchOptions)),
+					expected, options, matchOptions, failsForNullSubject: true)),
 			source,
 			options,
 			matchOptions);
@@ -168,7 +168,7 @@ public static partial class ThatAsyncEnumerable
 				=> new IsEqualToFromPredicateConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					expected,
-					matchOptions)),
+					matchOptions, failsForNullSubject: true)),
 			source,
 			matchOptions);
 	}
@@ -192,7 +192,7 @@ public static partial class ThatAsyncEnumerable
 				=> new IsEqualToFromExpectationsConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					expected,
-					matchOptions)),
+					matchOptions, failsForNullSubject: true)),
 			source,
 			matchOptions);
 	}
@@ -294,7 +294,7 @@ public static partial class ThatAsyncEnumerable
 				new IsEqualToConstraint<TItem, TItem>(
 					expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(), unexpected,
-					options, matchOptions).Invert()),
+					options, matchOptions, failsForNullSubject: true).Invert()),
 			source,
 			options,
 			matchOptions);
@@ -318,7 +318,7 @@ public static partial class ThatAsyncEnumerable
 				new IsEqualToConstraint<string?, string?>(
 					expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					unexpected, options, matchOptions).Invert()),
+					unexpected, options, matchOptions, failsForNullSubject: true).Invert()),
 			source,
 			options,
 			matchOptions);
@@ -342,7 +342,7 @@ public static partial class ThatAsyncEnumerable
 				=> new IsEqualToFromPredicateConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					unexpected,
-					matchOptions).Invert()),
+					matchOptions, failsForNullSubject: true).Invert()),
 			source,
 			matchOptions);
 	}
@@ -365,7 +365,7 @@ public static partial class ThatAsyncEnumerable
 				=> new IsEqualToFromExpectationsConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					unexpected,
-					matchOptions).Invert()),
+					matchOptions, failsForNullSubject: true).Invert()),
 			source,
 			matchOptions);
 	}
