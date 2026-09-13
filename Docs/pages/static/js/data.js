@@ -3606,6 +3606,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:45:32 2026 \u002B0200",
         "message": "test: close the null-subject sweep\u0027s blind spot (#1078)"
+      },
+      {
+        "sha": "d2ca3fb82b837daff5eb2ee17c11677a63ee3cb8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:46:34 2026 \u002B0200",
+        "message": "refactor!: discover the test framework adapter only from the registry (#1066)"
       }
     ],
     "labels": [
@@ -4209,7 +4215,8 @@ window.BENCHMARK_DATA = {
       "f2e29045",
       "9547e82c",
       "6870b4c9",
-      "3e81a878"
+      "3e81a878",
+      "d2ca3fb8"
     ],
     "datasets": [
       {
@@ -4816,7 +4823,8 @@ window.BENCHMARK_DATA = {
           188.02120952606202,
           248.97076454162598,
           254.73397379655106,
-          259.7866854349772
+          259.7866854349772,
+          307.019961865743
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5289,6 +5297,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6043,7 +6052,8 @@ window.BENCHMARK_DATA = {
           192.87963887055716,
           241.61465230354895,
           233.09332772890727,
-          245.70672464370728
+          245.70672464370728,
+          264.7816121101379
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6236,6 +6246,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -9813,6 +9824,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:45:32 2026 \u002B0200",
         "message": "test: close the null-subject sweep\u0027s blind spot (#1078)"
+      },
+      {
+        "sha": "d2ca3fb82b837daff5eb2ee17c11677a63ee3cb8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:46:34 2026 \u002B0200",
+        "message": "refactor!: discover the test framework adapter only from the registry (#1066)"
       }
     ],
     "labels": [
@@ -10339,7 +10356,8 @@ window.BENCHMARK_DATA = {
       "f2e29045",
       "9547e82c",
       "6870b4c9",
-      "3e81a878"
+      "3e81a878",
+      "d2ca3fb8"
     ],
     "datasets": [
       {
@@ -10869,7 +10887,8 @@ window.BENCHMARK_DATA = {
           225613.10516764323,
           302007.1185021034,
           311579.14092548075,
-          317410.8760516827
+          317410.8760516827,
+          337854.4787434896
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11402,6 +11421,7 @@ window.BENCHMARK_DATA = {
           335444,
           335442,
           335442,
+          335444,
           335444,
           335444,
           335444
@@ -11942,7 +11962,8 @@ window.BENCHMARK_DATA = {
           1809507.5341796875,
           2722615.3565104166,
           2679827.9291666667,
-          2817636.104266827
+          2817636.104266827,
+          2845124.76875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12475,6 +12496,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841647,
           4841647,
+          4841651,
           4841651,
           4841651,
           4841651
@@ -16097,6 +16119,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:45:32 2026 \u002B0200",
         "message": "test: close the null-subject sweep\u0027s blind spot (#1078)"
+      },
+      {
+        "sha": "d2ca3fb82b837daff5eb2ee17c11677a63ee3cb8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:46:34 2026 \u002B0200",
+        "message": "refactor!: discover the test framework adapter only from the registry (#1066)"
       }
     ],
     "labels": [
@@ -16700,7 +16728,8 @@ window.BENCHMARK_DATA = {
       "f2e29045",
       "9547e82c",
       "6870b4c9",
-      "3e81a878"
+      "3e81a878",
+      "d2ca3fb8"
     ],
     "datasets": [
       {
@@ -17307,7 +17336,8 @@ window.BENCHMARK_DATA = {
           372.9074284689767,
           461.8416782787868,
           486.415011201586,
-          525.063368661063
+          525.063368661063,
+          529.5231957753499
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17780,6 +17810,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -18534,7 +18565,8 @@ window.BENCHMARK_DATA = {
           388.7194734641484,
           469.7274462064107,
           482.7898104985555,
-          519.8143531163533
+          519.8143531163533,
+          516.1294058481852
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18727,6 +18759,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -22766,6 +22799,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:45:32 2026 \u002B0200",
         "message": "test: close the null-subject sweep\u0027s blind spot (#1078)"
+      },
+      {
+        "sha": "d2ca3fb82b837daff5eb2ee17c11677a63ee3cb8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:46:34 2026 \u002B0200",
+        "message": "refactor!: discover the test framework adapter only from the registry (#1066)"
       }
     ],
     "labels": [
@@ -23369,7 +23408,8 @@ window.BENCHMARK_DATA = {
       "f2e29045",
       "9547e82c",
       "6870b4c9",
-      "3e81a878"
+      "3e81a878",
+      "d2ca3fb8"
     ],
     "datasets": [
       {
@@ -23976,7 +24016,8 @@ window.BENCHMARK_DATA = {
           198.9648289510182,
           264.6084016731807,
           263.8104877131326,
-          292.5610894203186
+          292.5610894203186,
+          290.85830804279874
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -24490,6 +24531,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -25203,7 +25245,8 @@ window.BENCHMARK_DATA = {
           189.33685416834695,
           242.92863861719766,
           240.2802453358968,
-          287.0345934232076
+          287.0345934232076,
+          278.1200395266215
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -25396,6 +25439,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -29435,6 +29479,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:45:32 2026 \u002B0200",
         "message": "test: close the null-subject sweep\u0027s blind spot (#1078)"
+      },
+      {
+        "sha": "d2ca3fb82b837daff5eb2ee17c11677a63ee3cb8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:46:34 2026 \u002B0200",
+        "message": "refactor!: discover the test framework adapter only from the registry (#1066)"
       }
     ],
     "labels": [
@@ -30038,7 +30088,8 @@ window.BENCHMARK_DATA = {
       "f2e29045",
       "9547e82c",
       "6870b4c9",
-      "3e81a878"
+      "3e81a878",
+      "d2ca3fb8"
     ],
     "datasets": [
       {
@@ -30645,7 +30696,8 @@ window.BENCHMARK_DATA = {
           384.19529918034874,
           464.54025302614485,
           465.3481043302096,
-          468.8646805445353
+          468.8646805445353,
+          488.89495271046957
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31118,6 +31170,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -31872,7 +31925,8 @@ window.BENCHMARK_DATA = {
           899.5376797993978,
           1201.658662523542,
           1176.4259724617004,
-          1249.799434153239
+          1249.799434153239,
+          1295.904849243164
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32301,6 +32355,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -36104,6 +36159,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:45:32 2026 \u002B0200",
         "message": "test: close the null-subject sweep\u0027s blind spot (#1078)"
+      },
+      {
+        "sha": "d2ca3fb82b837daff5eb2ee17c11677a63ee3cb8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:46:34 2026 \u002B0200",
+        "message": "refactor!: discover the test framework adapter only from the registry (#1066)"
       }
     ],
     "labels": [
@@ -36707,7 +36768,8 @@ window.BENCHMARK_DATA = {
       "f2e29045",
       "9547e82c",
       "6870b4c9",
-      "3e81a878"
+      "3e81a878",
+      "d2ca3fb8"
     ],
     "datasets": [
       {
@@ -37314,7 +37376,8 @@ window.BENCHMARK_DATA = {
           1500.4603476206462,
           1929.1881154378254,
           1918.9761902945381,
-          1911.5522774287633
+          1911.5522774287633,
+          1992.9378428141276
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -37787,6 +37850,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -38541,7 +38605,8 @@ window.BENCHMARK_DATA = {
           1016.2394481386457,
           1316.3702767235893,
           1350.3056784409744,
-          1294.8320435841879
+          1294.8320435841879,
+          1315.3065643310547
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -38734,6 +38799,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -42773,6 +42839,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:45:32 2026 \u002B0200",
         "message": "test: close the null-subject sweep\u0027s blind spot (#1078)"
+      },
+      {
+        "sha": "d2ca3fb82b837daff5eb2ee17c11677a63ee3cb8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:46:34 2026 \u002B0200",
+        "message": "refactor!: discover the test framework adapter only from the registry (#1066)"
       }
     ],
     "labels": [
@@ -43376,7 +43448,8 @@ window.BENCHMARK_DATA = {
       "f2e29045",
       "9547e82c",
       "6870b4c9",
-      "3e81a878"
+      "3e81a878",
+      "d2ca3fb8"
     ],
     "datasets": [
       {
@@ -43983,7 +44056,8 @@ window.BENCHMARK_DATA = {
           1951.5280904134115,
           2576.0701917012534,
           2657.3305276234946,
-          2543.1785563151043
+          2543.1785563151043,
+          2589.773511505127
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44456,6 +44530,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -45210,7 +45285,8 @@ window.BENCHMARK_DATA = {
           15669.362336222332,
           26675.440717424666,
           26724.738989257814,
-          27291.032965087892
+          27291.032965087892,
+          27726.63888244629
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -45816,6 +45892,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
