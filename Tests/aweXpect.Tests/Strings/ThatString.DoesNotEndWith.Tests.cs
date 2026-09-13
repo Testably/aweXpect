@@ -151,7 +151,7 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
-			public async Task WhenSubjectIsNull_ShouldSucceed()
+			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				string? subject = null;
 				string expected = "text";
@@ -159,7 +159,12 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotEndWith(expected);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not end with "text",
+					             but it was <null>
+					             """);
 			}
 		}
 	}

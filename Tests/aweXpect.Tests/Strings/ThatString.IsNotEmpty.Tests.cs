@@ -33,14 +33,19 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
-			public async Task WhenActualIsNull_ShouldSucceed()
+			public async Task WhenActualIsNull_ShouldFail()
 			{
 				string? subject = null;
 
 				async Task Act()
 					=> await That(subject).IsNotEmpty();
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not empty,
+					             but it was <null>
+					             """);
 			}
 
 			[Fact]

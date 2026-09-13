@@ -20,7 +20,7 @@ public static partial class ThatString
 		StringEqualityOptions options = new StringEqualityOptions().AsSuffix();
 		return new StringEqualityResult<string?, IThat<string?>>(
 			source.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
-				new IsEqualToConstraint(expectationBuilder, it, grammars, expected, options)),
+				new EndsWithConstraint(expectationBuilder, it, grammars, expected, options)),
 			source,
 			options);
 	}
@@ -35,8 +35,49 @@ public static partial class ThatString
 		StringEqualityOptions options = new StringEqualityOptions().AsSuffix();
 		return new StringEqualityResult<string?, IThat<string?>>(
 			source.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
-				new IsEqualToConstraint(expectationBuilder, it, grammars, unexpected, options).Invert()),
+				new EndsWithConstraint(expectationBuilder, it, grammars, unexpected, options).Invert()),
 			source,
 			options);
+	}
+
+	private sealed class EndsWithConstraint(
+		ExpectationBuilder expectationBuilder,
+		string it,
+		ExpectationGrammars grammars,
+		string? expected,
+		StringEqualityOptions options)
+		: ConstraintResult.WithNotNullValue<string?>(it, grammars),
+			IAsyncConstraint<string?>
+	{
+		public async Task<ConstraintResult> IsMetBy(string? actual, CancellationToken cancellationToken)
+		{
+			Actual = actual;
+			Outcome = await options.AreConsideredEqual(actual, expected) ? Outcome.Success : Outcome.Failure;
+			if (!string.IsNullOrEmpty(actual))
+			{
+				expectationBuilder.AddContext(new ResultContext.Fixed("Actual", actual));
+
+				if (Outcome != Outcome.Success && !string.IsNullOrEmpty(expected))
+				{
+					expectationBuilder.AddContext(new ResultContext.Fixed("Expected", expected));
+				}
+			}
+
+			return this;
+		}
+
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(options.GetExpectation(expected, Grammars | ExpectationGrammars.Active));
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, Actual, expected)
+				.Indent(indentation, false));
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(options.GetExpectation(expected, Grammars | ExpectationGrammars.Active));
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, Actual, expected)
+				.Indent(indentation, false));
 	}
 }

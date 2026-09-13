@@ -27,7 +27,7 @@ public static partial class ThatString
 			source);
 
 	private sealed class IsEmptyConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<string?>(grammars),
+		: ConstraintResult.WithNotNullValue<string?>(it, grammars),
 			IValueConstraint<string?>
 	{
 		public ConstraintResult IsMetBy(string? actual)
@@ -42,7 +42,7 @@ public static partial class ThatString
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" was ");
+			stringBuilder.Append(It).Append(" was ");
 			Formatter.Format(stringBuilder, Actual);
 		}
 
@@ -50,6 +50,6 @@ public static partial class ThatString
 			=> stringBuilder.Append("is not empty");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(it).Append(" was");
+			=> stringBuilder.Append(It).Append(" was");
 	}
 }
