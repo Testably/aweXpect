@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "37f4afa3ff6c8d6df862dfe2849f72a3371118d3",
-        "author": "dependabot[bot]",
-        "date": "Sun Aug 16 17:27:34 2026 \u002B0200",
-        "message": "chore: Bump the mstest group with 2 updates (#1001)"
-      },
-      {
         "sha": "efbe5c0acc628f150ac4a76f24b7c0e1a7a987c1",
         "author": "dependabot[bot]",
         "date": "Sun Aug 16 17:27:47 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:45:32 2026 \u002B0200",
         "message": "test: close the null-subject sweep\u0027s blind spot (#1078)"
+      },
+      {
+        "sha": "d2ca3fb82b837daff5eb2ee17c11677a63ee3cb8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:46:34 2026 \u002B0200",
+        "message": "refactor!: discover the test framework adapter only from the registry (#1066)"
       }
     ],
     "labels": [
-      "37f4afa3",
       "efbe5c0a",
       "a2cd8a35",
       "d6d2b3d2",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "f2e29045",
       "9547e82c",
       "6870b4c9",
-      "3e81a878"
+      "3e81a878",
+      "d2ca3fb8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          256.0554825919015,
           256.2644588470459,
           254.05494383403234,
           251.71505771364485,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           188.02120952606202,
           248.97076454162598,
           254.73397379655106,
-          259.7866854349772
+          259.7866854349772,
+          307.019961865743
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          248.7102222442627,
           238.15933547701155,
           245.09986426280096,
           266.93660954066684,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           192.87963887055716,
           241.61465230354895,
           233.09332772890727,
-          245.70672464370728
+          245.70672464370728,
+          264.7816121101379
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "37f4afa3ff6c8d6df862dfe2849f72a3371118d3",
-        "author": "dependabot[bot]",
-        "date": "Sun Aug 16 17:27:34 2026 \u002B0200",
-        "message": "chore: Bump the mstest group with 2 updates (#1001)"
-      },
-      {
         "sha": "efbe5c0acc628f150ac4a76f24b7c0e1a7a987c1",
         "author": "dependabot[bot]",
         "date": "Sun Aug 16 17:27:47 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:45:32 2026 \u002B0200",
         "message": "test: close the null-subject sweep\u0027s blind spot (#1078)"
+      },
+      {
+        "sha": "d2ca3fb82b837daff5eb2ee17c11677a63ee3cb8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:46:34 2026 \u002B0200",
+        "message": "refactor!: discover the test framework adapter only from the registry (#1066)"
       }
     ],
     "labels": [
-      "37f4afa3",
       "efbe5c0a",
       "a2cd8a35",
       "d6d2b3d2",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "f2e29045",
       "9547e82c",
       "6870b4c9",
-      "3e81a878"
+      "3e81a878",
+      "d2ca3fb8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          297547.96955217636,
           301459.13895089284,
           292008.66573660716,
           299549.37747395836,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           225613.10516764323,
           302007.1185021034,
           311579.14092548075,
-          317410.8760516827
+          317410.8760516827,
+          337854.4787434896
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1036,7 +1036,6 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
           335444,
           335444,
@@ -1075,6 +1074,7 @@ window.BENCHMARK_DATA = {
           335444,
           335442,
           335442,
+          335444,
           335444,
           335444,
           335444
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2319945.7200520835,
           2689759.6598772323,
           2351292.710379464,
           2444080.3622395834,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           1809507.5341796875,
           2722615.3565104166,
           2679827.9291666667,
-          2817636.104266827
+          2817636.104266827,
+          2845124.76875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1156,7 +1156,6 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841651,
           4841647,
           4841651,
           4841651,
@@ -1200,6 +1199,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841647,
           4841647,
+          4841651,
           4841651,
           4841651,
           4841651
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "37f4afa3ff6c8d6df862dfe2849f72a3371118d3",
-        "author": "dependabot[bot]",
-        "date": "Sun Aug 16 17:27:34 2026 \u002B0200",
-        "message": "chore: Bump the mstest group with 2 updates (#1001)"
-      },
       {
         "sha": "efbe5c0acc628f150ac4a76f24b7c0e1a7a987c1",
         "author": "dependabot[bot]",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:45:32 2026 \u002B0200",
         "message": "test: close the null-subject sweep\u0027s blind spot (#1078)"
+      },
+      {
+        "sha": "d2ca3fb82b837daff5eb2ee17c11677a63ee3cb8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:46:34 2026 \u002B0200",
+        "message": "refactor!: discover the test framework adapter only from the registry (#1066)"
       }
     ],
     "labels": [
-      "37f4afa3",
       "efbe5c0a",
       "a2cd8a35",
       "d6d2b3d2",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "f2e29045",
       "9547e82c",
       "6870b4c9",
-      "3e81a878"
+      "3e81a878",
+      "d2ca3fb8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          483.4518507639567,
           463.1489292553493,
           485.1151306629181,
           474.23495664596555,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           372.9074284689767,
           461.8416782787868,
           486.415011201586,
-          525.063368661063
+          525.063368661063,
+          529.5231957753499
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          489.51873747507733,
           485.5276449067252,
           473.09620780944823,
           510.3519074757894,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           388.7194734641484,
           469.7274462064107,
           482.7898104985555,
-          519.8143531163533
+          519.8143531163533,
+          516.1294058481852
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "37f4afa3ff6c8d6df862dfe2849f72a3371118d3",
-        "author": "dependabot[bot]",
-        "date": "Sun Aug 16 17:27:34 2026 \u002B0200",
-        "message": "chore: Bump the mstest group with 2 updates (#1001)"
-      },
-      {
         "sha": "efbe5c0acc628f150ac4a76f24b7c0e1a7a987c1",
         "author": "dependabot[bot]",
         "date": "Sun Aug 16 17:27:47 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:45:32 2026 \u002B0200",
         "message": "test: close the null-subject sweep\u0027s blind spot (#1078)"
+      },
+      {
+        "sha": "d2ca3fb82b837daff5eb2ee17c11677a63ee3cb8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:46:34 2026 \u002B0200",
+        "message": "refactor!: discover the test framework adapter only from the registry (#1066)"
       }
     ],
     "labels": [
-      "37f4afa3",
       "efbe5c0a",
       "a2cd8a35",
       "d6d2b3d2",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "f2e29045",
       "9547e82c",
       "6870b4c9",
-      "3e81a878"
+      "3e81a878",
+      "d2ca3fb8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          254.10089457829793,
           267.5967062541417,
           248.1609696660723,
           263.4916341645377,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           198.9648289510182,
           264.6084016731807,
           263.8104877131326,
-          292.5610894203186
+          292.5610894203186,
+          290.85830804279874
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          265.5314603805542,
           241.64932530266898,
           238.2086463891543,
           257.3656890551249,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           189.33685416834695,
           242.92863861719766,
           240.2802453358968,
-          287.0345934232076
+          287.0345934232076,
+          278.1200395266215
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "37f4afa3ff6c8d6df862dfe2849f72a3371118d3",
-        "author": "dependabot[bot]",
-        "date": "Sun Aug 16 17:27:34 2026 \u002B0200",
-        "message": "chore: Bump the mstest group with 2 updates (#1001)"
-      },
-      {
         "sha": "efbe5c0acc628f150ac4a76f24b7c0e1a7a987c1",
         "author": "dependabot[bot]",
         "date": "Sun Aug 16 17:27:47 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:45:32 2026 \u002B0200",
         "message": "test: close the null-subject sweep\u0027s blind spot (#1078)"
+      },
+      {
+        "sha": "d2ca3fb82b837daff5eb2ee17c11677a63ee3cb8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:46:34 2026 \u002B0200",
+        "message": "refactor!: discover the test framework adapter only from the registry (#1066)"
       }
     ],
     "labels": [
-      "37f4afa3",
       "efbe5c0a",
       "a2cd8a35",
       "d6d2b3d2",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "f2e29045",
       "9547e82c",
       "6870b4c9",
-      "3e81a878"
+      "3e81a878",
+      "d2ca3fb8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          491.1146069208781,
           469.32736294086163,
           457.0840086619059,
           473.729869445165,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           384.19529918034874,
           464.54025302614485,
           465.3481043302096,
-          468.8646805445353
+          468.8646805445353,
+          488.89495271046957
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1160.6543505532402,
           1330.9443862915039,
           1145.1624849864415,
           1211.4821085248675,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           899.5376797993978,
           1201.658662523542,
           1176.4259724617004,
-          1249.799434153239
+          1249.799434153239,
+          1295.904849243164
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "37f4afa3ff6c8d6df862dfe2849f72a3371118d3",
-        "author": "dependabot[bot]",
-        "date": "Sun Aug 16 17:27:34 2026 \u002B0200",
-        "message": "chore: Bump the mstest group with 2 updates (#1001)"
-      },
-      {
         "sha": "efbe5c0acc628f150ac4a76f24b7c0e1a7a987c1",
         "author": "dependabot[bot]",
         "date": "Sun Aug 16 17:27:47 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:45:32 2026 \u002B0200",
         "message": "test: close the null-subject sweep\u0027s blind spot (#1078)"
+      },
+      {
+        "sha": "d2ca3fb82b837daff5eb2ee17c11677a63ee3cb8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:46:34 2026 \u002B0200",
+        "message": "refactor!: discover the test framework adapter only from the registry (#1066)"
       }
     ],
     "labels": [
-      "37f4afa3",
       "efbe5c0a",
       "a2cd8a35",
       "d6d2b3d2",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "f2e29045",
       "9547e82c",
       "6870b4c9",
-      "3e81a878"
+      "3e81a878",
+      "d2ca3fb8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1951.8924947102864,
           1928.834142957415,
           1882.4668922424316,
           1855.15222461407,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1500.4603476206462,
           1929.1881154378254,
           1918.9761902945381,
-          1911.5522774287633
+          1911.5522774287633,
+          1992.9378428141276
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1343.2441444396973,
           1326.3457829793294,
           1281.9057956695556,
           1365.7781730651855,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1016.2394481386457,
           1316.3702767235893,
           1350.3056784409744,
-          1294.8320435841879
+          1294.8320435841879,
+          1315.3065643310547
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "37f4afa3ff6c8d6df862dfe2849f72a3371118d3",
-        "author": "dependabot[bot]",
-        "date": "Sun Aug 16 17:27:34 2026 \u002B0200",
-        "message": "chore: Bump the mstest group with 2 updates (#1001)"
-      },
-      {
         "sha": "efbe5c0acc628f150ac4a76f24b7c0e1a7a987c1",
         "author": "dependabot[bot]",
         "date": "Sun Aug 16 17:27:47 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:45:32 2026 \u002B0200",
         "message": "test: close the null-subject sweep\u0027s blind spot (#1078)"
+      },
+      {
+        "sha": "d2ca3fb82b837daff5eb2ee17c11677a63ee3cb8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:46:34 2026 \u002B0200",
+        "message": "refactor!: discover the test framework adapter only from the registry (#1066)"
       }
     ],
     "labels": [
-      "37f4afa3",
       "efbe5c0a",
       "a2cd8a35",
       "d6d2b3d2",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "f2e29045",
       "9547e82c",
       "6870b4c9",
-      "3e81a878"
+      "3e81a878",
+      "d2ca3fb8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2531.6891387939454,
           2607.2419998168943,
           2524.2784502665204,
           2441.176905118502,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           1951.5280904134115,
           2576.0701917012534,
           2657.3305276234946,
-          2543.1785563151043
+          2543.1785563151043,
+          2589.773511505127
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          20057.27074105399,
           27195.259106953938,
           20087.33641924177,
           20258.23517150879,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           15669.362336222332,
           26675.440717424666,
           26724.738989257814,
-          27291.032965087892
+          27291.032965087892,
+          27726.63888244629
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4203,7 +4203,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4236,6 +4235,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
