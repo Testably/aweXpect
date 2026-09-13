@@ -5,6 +5,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json.Nodes;
+using System.Threading.Tasks;
 using Fallout.Common;
 using Fallout.Common.IO;
 using Fallout.Common.Tooling;
@@ -23,6 +25,33 @@ namespace Build;
 partial class Build
 {
 	private static bool DisableMutationTests = false;
+
+	/// <summary>
+	///     Disjoint slices of the mutated source, so that the full run can be spread over parallel jobs.
+	/// </summary>
+	/// <remarks>
+	///     A slice mutates its own patterns minus the patterns of every slice before it, and the last slice mutates
+	///     everything the others do not. The whole source is therefore covered by construction: a file in a new folder
+	///     falls into the last slice instead of silently dropping out of the score.
+	///     The patterns start with <c>**/</c> because Stryker does not document what its globs are relative to, and end
+	///     in <c>/*.cs</c> because the subject folders are flat - a nested folder would fall into the last slice.
+	/// </remarks>
+	private static readonly (string Name, string[] Patterns)[] MutationSlices =
+	[
+		("collections-enumerable", ["**/That/Collections/ThatEnumerable*.cs",]),
+		("collections-other", ["**/That/Collections/*.cs",]),
+		("numbers", ["**/That/Numbers/*.cs",]),
+		("dates",
+		[
+			"**/That/DateOnlys/*.cs", "**/That/DateTimeOffsets/*.cs", "**/That/DateTimes/*.cs",
+			"**/That/TimeOnlys/*.cs", "**/That/TimeSpans/*.cs",
+		]),
+		("rest", []),
+	];
+
+	[Parameter("The slice of the source to mutate - when unset, the whole project is mutated")]
+	readonly string MutationSlice;
+
 	AbsolutePath StrykerOutputDirectory => ArtifactsDirectory / "Stryker";
 	AbsolutePath StrykerToolPath => TestResultsDirectory / "dotnet-stryker";
 
@@ -123,7 +152,7 @@ partial class Build
 		{
 			ArtifactsDirectory.CreateDirectory();
 			await "MutationTestsCore".DownloadArtifactTo(ArtifactsDirectory / "aweXpect.Core", GithubToken);
-			await "MutationTestsMain".DownloadArtifactTo(ArtifactsDirectory / "aweXpect", GithubToken);
+			await DownloadMainMutationReport();
 
 			Dictionary<Project, Project[]> projects;
 			if (Repository.Branch != "main" && Repository.Tags.Count == 0)
@@ -164,6 +193,98 @@ partial class Build
 			}
 		});
 
+	/// <summary>
+	///     Collects the <c>aweXpect</c> mutation report into the single-report layout that the dashboard upload expects.
+	/// </summary>
+	/// <remarks>
+	///     The full run is sliced over parallel jobs, so the slice reports have to be merged back together. Pull requests
+	///     mutate only their own changes and stay unsliced, which is why a single artifact is still accepted.
+	/// </remarks>
+	private async Task DownloadMainMutationReport()
+	{
+		AbsolutePath projectDirectory = ArtifactsDirectory / "aweXpect";
+		List<(string Name, AbsolutePath Report)> sliceReports = [];
+		foreach ((string name, string[] _) in MutationSlices)
+		{
+			AbsolutePath sliceDirectory = projectDirectory / name;
+			await $"MutationTestsMain-{name}".DownloadArtifactTo(sliceDirectory, GithubToken);
+			AbsolutePath report = sliceDirectory / "Stryker" / "reports" / "mutation-report.json";
+			if (File.Exists(report))
+			{
+				sliceReports.Add((name, report));
+			}
+		}
+
+		if (sliceReports.Count == 0)
+		{
+			Log.Information("Found no mutation slices, so the run was not sliced");
+			await "MutationTestsMain".DownloadArtifactTo(projectDirectory, GithubToken);
+			return;
+		}
+
+		if (sliceReports.Count != MutationSlices.Length)
+		{
+			// Publishing now would drop the mutants of the missing slices and report a score for a subset of the source.
+			Assert.Fail(
+				$"Only {sliceReports.Count} of {MutationSlices.Length} mutation slices reported: " +
+				$"{string.Join(", ", sliceReports.Select(slice => slice.Name))}");
+		}
+		else
+		{
+			File.Copy(projectDirectory / sliceReports[0].Name / "BranchName.txt",
+				projectDirectory / "BranchName.txt", true);
+			MergeMutationReports(sliceReports, projectDirectory);
+		}
+	}
+
+	/// <summary>
+	///     Merges the <paramref name="sliceReports" /> into a single mutation report, by combining their files.
+	/// </summary>
+	private static void MergeMutationReports(List<(string Name, AbsolutePath Report)> sliceReports,
+		AbsolutePath projectDirectory)
+	{
+		JsonObject merged = null;
+		JsonObject mergedFiles = new();
+		int totalMutants = 0;
+		foreach ((string name, AbsolutePath report) in sliceReports)
+		{
+			JsonObject slice = JsonNode.Parse(File.ReadAllText(report))!.AsObject();
+			merged ??= slice;
+			int sliceMutants = 0;
+			foreach (KeyValuePair<string, JsonNode> file in slice["files"]!.AsObject())
+			{
+				int mutants = file.Value?["mutants"]?.AsArray().Count ?? 0;
+				sliceMutants += mutants;
+				if (!mergedFiles.TryGetPropertyValue(file.Key, out JsonNode existing))
+				{
+					mergedFiles[file.Key] = file.Value?.DeepClone();
+					continue;
+				}
+
+				if (mutants > 0 && existing?["mutants"]?.AsArray().Count > 0)
+				{
+					// Both slices mutated the file, so its mutants would be counted twice in the score.
+					Assert.Fail($"The mutation slices overlap in '{file.Key}'");
+				}
+				else if (mutants > 0)
+				{
+					mergedFiles[file.Key] = file.Value?.DeepClone();
+				}
+			}
+
+			totalMutants += sliceMutants;
+			Log.Information("The slice '{Slice}' contributed {Mutants} mutants", name, sliceMutants);
+		}
+
+		merged!["files"] = mergedFiles;
+		AbsolutePath mergedReport = projectDirectory / "Stryker" / "reports" / "mutation-report.json";
+		mergedReport.Parent.CreateDirectory();
+		File.WriteAllText(mergedReport, merged.ToJsonString());
+		// Compare this against the mutant count of an unsliced run to verify that the slices still cover every file.
+		Log.Information("Merged {SliceCount} slices into {FileCount} files with {Mutants} mutants",
+			sliceReports.Count, mergedFiles.Count, totalMutants);
+	}
+
 	private void ExecuteMutationTest(Project project, Project[] testProjects)
 	{
 		AbsolutePath toolPath = TestResultsDirectory / "dotnet-stryker";
@@ -194,6 +315,16 @@ partial class Build
 
 		File.WriteAllText(ArtifactsDirectory / "BranchName.txt", branchName);
 
+		string mutateSection = "";
+		if (!string.IsNullOrEmpty(MutationSlice))
+		{
+			string[] patterns = GetMutatePatterns(MutationSlice);
+			Log.Information("Mutate the slice '{MutationSlice}': {Patterns}", MutationSlice,
+				string.Join(" ", patterns));
+			mutateSection = $"\"mutate\": [\n\t\t\t{string.Join(",\n\t\t\t",
+				patterns.Select(pattern => $"\"{pattern}\""))}\n\t\t],\n\t\t";
+		}
+
 		string configText = $$"""
 		                      {
 		                      	"stryker-config": {
@@ -215,7 +346,7 @@ partial class Build
 		                      			]
 		                      		},
 		                      		"concurrency": {{Environment.ProcessorCount}},
-		                      		"mutation-level": "Advanced"
+		                      		{{mutateSection}}"mutation-level": "Advanced"
 		                      	}
 		                      }
 		                      """;
@@ -295,4 +426,30 @@ partial class Build
 
 	static string PathForJson(Project project)
 		=> $"\"{project.Path.ToString().Replace(@"\", @"\\")}\"";
+
+	/// <summary>
+	///     The Stryker <c>mutate</c> patterns for the <paramref name="sliceName" /> slice: its own patterns, minus the
+	///     patterns of every slice declared before it.
+	/// </summary>
+	/// <remarks>
+	///     The last slice declares no patterns of its own, so it is left with nothing but exclusions - which Stryker
+	///     reads as "mutate every file that does not match one of them".
+	/// </remarks>
+	static string[] GetMutatePatterns(string sliceName)
+	{
+		int index = Array.FindIndex(MutationSlices, slice => slice.Name == sliceName);
+		if (index < 0)
+		{
+			throw new ArgumentException(
+				$"Unknown mutation slice '{sliceName}'. Use one of: {string.Join(", ", MutationSlices.Select(slice => slice.Name))}",
+				nameof(sliceName));
+		}
+
+		return
+		[
+			..MutationSlices[index].Patterns,
+			..MutationSlices.Take(index).SelectMany(slice => slice.Patterns)
+				.Select(pattern => "!" + pattern),
+		];
+	}
 }

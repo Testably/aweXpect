@@ -91,9 +91,15 @@ jobs:
                         ./Artifacts/*
     
     mutation-tests-main:
-        name: "Mutation tests (aweXpect)"
+        name: "Mutation tests (aweXpect, ${{ matrix.slice }})"
         runs-on: ubuntu-latest
-        timeout-minutes: 150
+        timeout-minutes: 60
+        # The whole source is mutated on `main`, which takes more than two hours in a single job. The slices are
+        # disjoint and cover everything, so the dashboard job can merge their reports back into a single score.
+        strategy:
+            fail-fast: false
+            matrix:
+                slice: [ collections-enumerable, collections-other, numbers, dates, rest ]
         env:
             STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
             DOTNET_NOLOGO: true
@@ -108,11 +114,13 @@ jobs:
                         10.0.3xx
             -   name: Run mutation tests
                 run: ./build.sh MutationTestsMain
+                env:
+                    MutationSlice: ${{ matrix.slice }}
             -   name: Upload artifacts
                 if: always()
                 uses: actions/upload-artifact@v7
                 with:
-                    name: MutationTestsMain
+                    name: MutationTestsMain-${{ matrix.slice }}
                     path: |
                         ./Artifacts/*
     
