@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "97537941868134a45ce2755badf7b81d02f26562",
-        "author": "dependabot[bot]",
-        "date": "Tue Jul 28 23:16:20 2026 \u002B0200",
-        "message": "chore: Bump SharpCompress from 0.49.1 to 0.50.1 (#1000)"
-      },
-      {
         "sha": "37f4afa3ff6c8d6df862dfe2849f72a3371118d3",
         "author": "dependabot[bot]",
         "date": "Sun Aug 16 17:27:34 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:28:42 2026 \u002B0200",
         "message": "fix!: reject an empty needle in the \u0060params\u0060 overloads of \u0060StartsWith\u0060 and \u0060EndsWith\u0060 (#1076)"
+      },
+      {
+        "sha": "3e81a878cb9e1529e126f4fa4b15fadeda2af428",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:45:32 2026 \u002B0200",
+        "message": "test: close the null-subject sweep\u0027s blind spot (#1078)"
       }
     ],
     "labels": [
-      "97537941",
       "37f4afa3",
       "efbe5c0a",
       "a2cd8a35",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "756e490e",
       "f2e29045",
       "9547e82c",
-      "6870b4c9"
+      "6870b4c9",
+      "3e81a878"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          265.0856841723124,
           256.0554825919015,
           256.2644588470459,
           254.05494383403234,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           135.9181802749634,
           188.02120952606202,
           248.97076454162598,
-          254.73397379655106
+          254.73397379655106,
+          259.7866854349772
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          240.2802174250285,
           248.7102222442627,
           238.15933547701155,
           245.09986426280096,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           154.9280719246183,
           192.87963887055716,
           241.61465230354895,
-          233.09332772890727
+          233.09332772890727,
+          245.70672464370728
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "97537941868134a45ce2755badf7b81d02f26562",
-        "author": "dependabot[bot]",
-        "date": "Tue Jul 28 23:16:20 2026 \u002B0200",
-        "message": "chore: Bump SharpCompress from 0.49.1 to 0.50.1 (#1000)"
-      },
-      {
         "sha": "37f4afa3ff6c8d6df862dfe2849f72a3371118d3",
         "author": "dependabot[bot]",
         "date": "Sun Aug 16 17:27:34 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:28:42 2026 \u002B0200",
         "message": "fix!: reject an empty needle in the \u0060params\u0060 overloads of \u0060StartsWith\u0060 and \u0060EndsWith\u0060 (#1076)"
+      },
+      {
+        "sha": "3e81a878cb9e1529e126f4fa4b15fadeda2af428",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:45:32 2026 \u002B0200",
+        "message": "test: close the null-subject sweep\u0027s blind spot (#1078)"
       }
     ],
     "labels": [
-      "97537941",
       "37f4afa3",
       "efbe5c0a",
       "a2cd8a35",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "756e490e",
       "f2e29045",
       "9547e82c",
-      "6870b4c9"
+      "6870b4c9",
+      "3e81a878"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          319641.47196138825,
           297547.96955217636,
           301459.13895089284,
           292008.66573660716,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           169749.23313685827,
           225613.10516764323,
           302007.1185021034,
-          311579.14092548075
+          311579.14092548075,
+          317410.8760516827
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1037,7 +1037,6 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
           335444,
           335444,
@@ -1076,6 +1075,7 @@ window.BENCHMARK_DATA = {
           335444,
           335442,
           335442,
+          335444,
           335444,
           335444
         ],
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2800566.6703125,
           2319945.7200520835,
           2689759.6598772323,
           2351292.710379464,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           1366076.2995256695,
           1809507.5341796875,
           2722615.3565104166,
-          2679827.9291666667
+          2679827.9291666667,
+          2817636.104266827
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1157,7 +1157,6 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841651,
           4841647,
           4841651,
           4841651,
@@ -1201,6 +1200,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841647,
           4841647,
+          4841651,
           4841651,
           4841651
         ],
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "97537941868134a45ce2755badf7b81d02f26562",
-        "author": "dependabot[bot]",
-        "date": "Tue Jul 28 23:16:20 2026 \u002B0200",
-        "message": "chore: Bump SharpCompress from 0.49.1 to 0.50.1 (#1000)"
-      },
       {
         "sha": "37f4afa3ff6c8d6df862dfe2849f72a3371118d3",
         "author": "dependabot[bot]",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:28:42 2026 \u002B0200",
         "message": "fix!: reject an empty needle in the \u0060params\u0060 overloads of \u0060StartsWith\u0060 and \u0060EndsWith\u0060 (#1076)"
+      },
+      {
+        "sha": "3e81a878cb9e1529e126f4fa4b15fadeda2af428",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:45:32 2026 \u002B0200",
+        "message": "test: close the null-subject sweep\u0027s blind spot (#1078)"
       }
     ],
     "labels": [
-      "97537941",
       "37f4afa3",
       "efbe5c0a",
       "a2cd8a35",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "756e490e",
       "f2e29045",
       "9547e82c",
-      "6870b4c9"
+      "6870b4c9",
+      "3e81a878"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          513.6521787643433,
           483.4518507639567,
           463.1489292553493,
           485.1151306629181,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           247.31512594223022,
           372.9074284689767,
           461.8416782787868,
-          486.415011201586
+          486.415011201586,
+          525.063368661063
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          499.82895054136003,
           489.51873747507733,
           485.5276449067252,
           473.09620780944823,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           280.42371861139935,
           388.7194734641484,
           469.7274462064107,
-          482.7898104985555
+          482.7898104985555,
+          519.8143531163533
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "97537941868134a45ce2755badf7b81d02f26562",
-        "author": "dependabot[bot]",
-        "date": "Tue Jul 28 23:16:20 2026 \u002B0200",
-        "message": "chore: Bump SharpCompress from 0.49.1 to 0.50.1 (#1000)"
-      },
-      {
         "sha": "37f4afa3ff6c8d6df862dfe2849f72a3371118d3",
         "author": "dependabot[bot]",
         "date": "Sun Aug 16 17:27:34 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:28:42 2026 \u002B0200",
         "message": "fix!: reject an empty needle in the \u0060params\u0060 overloads of \u0060StartsWith\u0060 and \u0060EndsWith\u0060 (#1076)"
+      },
+      {
+        "sha": "3e81a878cb9e1529e126f4fa4b15fadeda2af428",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:45:32 2026 \u002B0200",
+        "message": "test: close the null-subject sweep\u0027s blind spot (#1078)"
       }
     ],
     "labels": [
-      "97537941",
       "37f4afa3",
       "efbe5c0a",
       "a2cd8a35",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "756e490e",
       "f2e29045",
       "9547e82c",
-      "6870b4c9"
+      "6870b4c9",
+      "3e81a878"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          265.1438490663256,
           254.10089457829793,
           267.5967062541417,
           248.1609696660723,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           142.2691675345103,
           198.9648289510182,
           264.6084016731807,
-          263.8104877131326
+          263.8104877131326,
+          292.5610894203186
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          255.93087975184122,
           265.5314603805542,
           241.64932530266898,
           238.2086463891543,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           140.3980232079824,
           189.33685416834695,
           242.92863861719766,
-          240.2802453358968
+          240.2802453358968,
+          287.0345934232076
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "97537941868134a45ce2755badf7b81d02f26562",
-        "author": "dependabot[bot]",
-        "date": "Tue Jul 28 23:16:20 2026 \u002B0200",
-        "message": "chore: Bump SharpCompress from 0.49.1 to 0.50.1 (#1000)"
-      },
-      {
         "sha": "37f4afa3ff6c8d6df862dfe2849f72a3371118d3",
         "author": "dependabot[bot]",
         "date": "Sun Aug 16 17:27:34 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:28:42 2026 \u002B0200",
         "message": "fix!: reject an empty needle in the \u0060params\u0060 overloads of \u0060StartsWith\u0060 and \u0060EndsWith\u0060 (#1076)"
+      },
+      {
+        "sha": "3e81a878cb9e1529e126f4fa4b15fadeda2af428",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:45:32 2026 \u002B0200",
+        "message": "test: close the null-subject sweep\u0027s blind spot (#1078)"
       }
     ],
     "labels": [
-      "97537941",
       "37f4afa3",
       "efbe5c0a",
       "a2cd8a35",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "756e490e",
       "f2e29045",
       "9547e82c",
-      "6870b4c9"
+      "6870b4c9",
+      "3e81a878"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          492.81332336153304,
           491.1146069208781,
           469.32736294086163,
           457.0840086619059,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           273.5651867389679,
           384.19529918034874,
           464.54025302614485,
-          465.3481043302096
+          465.3481043302096,
+          468.8646805445353
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1269.4671895345052,
           1160.6543505532402,
           1330.9443862915039,
           1145.1624849864415,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           681.5710824648539,
           899.5376797993978,
           1201.658662523542,
-          1176.4259724617004
+          1176.4259724617004,
+          1249.799434153239
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "97537941868134a45ce2755badf7b81d02f26562",
-        "author": "dependabot[bot]",
-        "date": "Tue Jul 28 23:16:20 2026 \u002B0200",
-        "message": "chore: Bump SharpCompress from 0.49.1 to 0.50.1 (#1000)"
-      },
-      {
         "sha": "37f4afa3ff6c8d6df862dfe2849f72a3371118d3",
         "author": "dependabot[bot]",
         "date": "Sun Aug 16 17:27:34 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:28:42 2026 \u002B0200",
         "message": "fix!: reject an empty needle in the \u0060params\u0060 overloads of \u0060StartsWith\u0060 and \u0060EndsWith\u0060 (#1076)"
+      },
+      {
+        "sha": "3e81a878cb9e1529e126f4fa4b15fadeda2af428",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:45:32 2026 \u002B0200",
+        "message": "test: close the null-subject sweep\u0027s blind spot (#1078)"
       }
     ],
     "labels": [
-      "97537941",
       "37f4afa3",
       "efbe5c0a",
       "a2cd8a35",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "756e490e",
       "f2e29045",
       "9547e82c",
-      "6870b4c9"
+      "6870b4c9",
+      "3e81a878"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2038.3470326741538,
           1951.8924947102864,
           1928.834142957415,
           1882.4668922424316,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1058.5298448290143,
           1500.4603476206462,
           1929.1881154378254,
-          1918.9761902945381
+          1918.9761902945381,
+          1911.5522774287633
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1344.3312196095785,
           1343.2441444396973,
           1326.3457829793294,
           1281.9057956695556,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           740.1549100875854,
           1016.2394481386457,
           1316.3702767235893,
-          1350.3056784409744
+          1350.3056784409744,
+          1294.8320435841879
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "97537941868134a45ce2755badf7b81d02f26562",
-        "author": "dependabot[bot]",
-        "date": "Tue Jul 28 23:16:20 2026 \u002B0200",
-        "message": "chore: Bump SharpCompress from 0.49.1 to 0.50.1 (#1000)"
-      },
-      {
         "sha": "37f4afa3ff6c8d6df862dfe2849f72a3371118d3",
         "author": "dependabot[bot]",
         "date": "Sun Aug 16 17:27:34 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:28:42 2026 \u002B0200",
         "message": "fix!: reject an empty needle in the \u0060params\u0060 overloads of \u0060StartsWith\u0060 and \u0060EndsWith\u0060 (#1076)"
+      },
+      {
+        "sha": "3e81a878cb9e1529e126f4fa4b15fadeda2af428",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:45:32 2026 \u002B0200",
+        "message": "test: close the null-subject sweep\u0027s blind spot (#1078)"
       }
     ],
     "labels": [
-      "97537941",
       "37f4afa3",
       "efbe5c0a",
       "a2cd8a35",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "756e490e",
       "f2e29045",
       "9547e82c",
-      "6870b4c9"
+      "6870b4c9",
+      "3e81a878"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2697.9083592732745,
           2531.6891387939454,
           2607.2419998168943,
           2524.2784502665204,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           1356.5092997184167,
           1951.5280904134115,
           2576.0701917012534,
-          2657.3305276234946
+          2657.3305276234946,
+          2543.1785563151043
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          28346.396923828124,
           20057.27074105399,
           27195.259106953938,
           20087.33641924177,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           10630.42140851702,
           15669.362336222332,
           26675.440717424666,
-          26724.738989257814
+          26724.738989257814,
+          27291.032965087892
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4204,7 +4204,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4237,6 +4236,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
