@@ -25,6 +25,7 @@ public static partial class ThatObject
 	/// <summary>
 	///     Verifies that the subject is not exactly of type <paramref name="type" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<object?, IThat<object?>> IsNotExactly(
 		this IThat<object?> source,
 		Type type)

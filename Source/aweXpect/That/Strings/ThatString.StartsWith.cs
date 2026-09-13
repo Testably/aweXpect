@@ -14,6 +14,7 @@ public static partial class ThatString
 	/// <summary>
 	///     Verifies that the subject starts with the <paramref name="expected" /> <see langword="string" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityResult<string?, IThat<string?>> StartsWith(
 		this IThat<string?> source,
 		string expected)
@@ -36,6 +37,7 @@ public static partial class ThatString
 	/// <summary>
 	///     Verifies that the subject does not start with the <paramref name="unexpected" /> <see langword="string" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityResult<string?, IThat<string?>> DoesNotStartWith(
 		this IThat<string?> source,
 		string unexpected)

@@ -24,6 +24,7 @@ public static partial class ThatNullableEnum
 	/// <summary>
 	///     Verifies that the subject does not have the <paramref name="unexpected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<TEnum?, IThat<TEnum?>> DoesNotHaveValue<TEnum>(
 		this IThat<TEnum?> source,
 		long? unexpected)

@@ -1,247 +1,58 @@
-﻿﻿using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using aweXpect.Core;
-using aweXpect.Results;
 
 namespace aweXpect.Tests;
 
-using CoreDelegate = global::aweXpect.Delegates.ThatDelegate;
-using CoreGeneric = global::aweXpect.ThatGeneric;
+using CoreDelegate = Delegates.ThatDelegate;
+using CoreGeneric = aweXpect.ThatGeneric;
 
 public sealed class GuaranteesNotNullTests
 {
-	private static readonly Type[] TypeArgumentCandidates =
-	[
-		typeof(object), typeof(string), typeof(Exception), typeof(ArgumentException), typeof(EquatableSubject),
-		typeof(NotifyingSubject), typeof(double), typeof(int), typeof(DayOfWeek), typeof(TimeSpan),
-		typeof(DateTime), typeof(EnumerableStruct<object>), typeof(EnumerableStruct<string?>),
-	];
-
-	// Expectations whose call shape this test cannot construct faithfully: the result needs a
-	// continuation the test cannot choose, or an argument it cannot invent. Each one is covered by
-	// a hand-written null-subject test instead, which ExcludedExpectations_ShouldBeCovered verifies.
-	private static readonly HashSet<string> ExcludedFromInvocation =
-	[
-		"ThatAsyncEnumerable.All(IThat<IAsyncEnumerable<String>>)",
-		"ThatAsyncEnumerable.Any(IThat<IAsyncEnumerable<String>>)",
-		"ThatAsyncEnumerable.AtLeast(IThat<IAsyncEnumerable<String>>,Int32)",
-		"ThatAsyncEnumerable.AtMost(IThat<IAsyncEnumerable<String>>,Int32)",
-		"ThatAsyncEnumerable.Between(IThat<IAsyncEnumerable<String>>,Int32)",
-		"ThatAsyncEnumerable.Contains<TItem>(IThat<IAsyncEnumerable<TItem>>,Func<TItem,Boolean>,String)",
-		"ThatAsyncEnumerable.DoesNotContain<TItem>(IThat<IAsyncEnumerable<TItem>>,Func<TItem,Boolean>,String)",
-		"ThatAsyncEnumerable.Exactly(IThat<IAsyncEnumerable<String>>,Int32)",
-		"ThatAsyncEnumerable.HasItem<TItem>(IThat<IAsyncEnumerable<TItem>>)",
-		"ThatAsyncEnumerable.HasItemThat<TItem>(IThat<IAsyncEnumerable<TItem>>,Action<IThatSubject<TItem>>)",
-		"ThatAsyncEnumerable.LessThan(IThat<IAsyncEnumerable<String>>,Int32)",
-		"ThatAsyncEnumerable.MoreThan(IThat<IAsyncEnumerable<String>>,Int32)",
-		"ThatAsyncEnumerable.None(IThat<IAsyncEnumerable<String>>)",
-		"ThatEnumerable.All(IThat<IEnumerable<String>>)",
-		"ThatEnumerable.Any(IThat<IEnumerable<String>>)",
-		"ThatEnumerable.AtLeast(IThat<IEnumerable<String>>,Int32)",
-		"ThatEnumerable.AtMost(IThat<IEnumerable<String>>,Int32)",
-		"ThatEnumerable.Between(IThat<IEnumerable<String>>,Int32)",
-		"ThatEnumerable.Contains(IThat<IEnumerable>,Func<Object,Boolean>,String)",
-		"ThatEnumerable.Contains<TItem>(IThat<IEnumerable<TItem>>,Func<TItem,Boolean>,String)",
-		"ThatEnumerable.DoesNotContain(IThat<IEnumerable>,Func<Object,Boolean>,String)",
-		"ThatEnumerable.DoesNotContain<TItem>(IThat<IEnumerable<TItem>>,Func<TItem,Boolean>,String)",
-		"ThatEnumerable.Exactly(IThat<IEnumerable<String>>,Int32)",
-		"ThatEnumerable.HasItem(IThat<IEnumerable>)",
-		"ThatEnumerable.HasItem<TItem>(IThat<IEnumerable<TItem>>)",
-		"ThatEnumerable.HasItemThat<TItem>(IThat<IEnumerable<TItem>>,Action<IThatSubject<TItem>>)",
-		"ThatEnumerable.LessThan(IThat<IEnumerable<String>>,Int32)",
-		"ThatEnumerable.MoreThan(IThat<IEnumerable<String>>,Int32)",
-		"ThatEnumerable.None(IThat<IEnumerable<String>>)",
-		"ThatGeneric.DoesNotSatisfy<T>(IThat<T>,Func<T,Boolean>,String)",
-		"ThatGeneric.Satisfies<T>(IThat<T>,Func<T,Boolean>,String)",
-	];
-
-	// Expectations that do not fail for a null subject today, one entry per expectation name and
-	// subject type. The rule is that a null subject fails, so every entry here is a deviation that
-	// the next major version either removes or documents.
-	private static readonly Dictionary<string, NullSubjectOutcome> ExpectationsThatDoNotFail =
-		new(StringComparer.Ordinal)
-		{
-			["ThatAsyncEnumerable.IsNotContainedIn(IAsyncEnumerable<String>)"] = NullSubjectOutcome.Passes,
-			["ThatAsyncEnumerable.IsNotContainedIn(IAsyncEnumerable<TItem>)"] = NullSubjectOutcome.Passes,
-			["ThatAsyncEnumerable.IsNotEqualTo(IAsyncEnumerable<DateTime>)"] = NullSubjectOutcome.Passes,
-			["ThatAsyncEnumerable.IsNotEqualTo(IAsyncEnumerable<Decimal>)"] = NullSubjectOutcome.Passes,
-			["ThatAsyncEnumerable.IsNotEqualTo(IAsyncEnumerable<Double>)"] = NullSubjectOutcome.Passes,
-			["ThatAsyncEnumerable.IsNotEqualTo(IAsyncEnumerable<Nullable<DateTime>>)"] = NullSubjectOutcome.Passes,
-			["ThatAsyncEnumerable.IsNotEqualTo(IAsyncEnumerable<Nullable<Decimal>>)"] = NullSubjectOutcome.Passes,
-			["ThatAsyncEnumerable.IsNotEqualTo(IAsyncEnumerable<Nullable<Double>>)"] = NullSubjectOutcome.Passes,
-			["ThatAsyncEnumerable.IsNotEqualTo(IAsyncEnumerable<Nullable<Single>>)"] = NullSubjectOutcome.Passes,
-			["ThatAsyncEnumerable.IsNotEqualTo(IAsyncEnumerable<Single>)"] = NullSubjectOutcome.Passes,
-			["ThatAsyncEnumerable.IsNotEqualTo(IAsyncEnumerable<String>)"] = NullSubjectOutcome.Passes,
-			["ThatAsyncEnumerable.IsNotEqualTo(IAsyncEnumerable<TItem>)"] = NullSubjectOutcome.Passes,
-			["ThatEnumerable.IsNotContainedIn(IEnumerable)"] = NullSubjectOutcome.Passes,
-			["ThatEnumerable.IsNotContainedIn(IEnumerable<String>)"] = NullSubjectOutcome.Passes,
-			["ThatEnumerable.IsNotContainedIn(IEnumerable<TItem>)"] = NullSubjectOutcome.Passes,
-			["ThatEnumerable.IsNotEqualTo(IEnumerable)"] = NullSubjectOutcome.Passes,
-			["ThatEnumerable.IsNotEqualTo(IEnumerable<DateTime>)"] = NullSubjectOutcome.Passes,
-			["ThatEnumerable.IsNotEqualTo(IEnumerable<Decimal>)"] = NullSubjectOutcome.Passes,
-			["ThatEnumerable.IsNotEqualTo(IEnumerable<Double>)"] = NullSubjectOutcome.Passes,
-			["ThatEnumerable.IsNotEqualTo(IEnumerable<Nullable<DateTime>>)"] = NullSubjectOutcome.Passes,
-			["ThatEnumerable.IsNotEqualTo(IEnumerable<Nullable<Decimal>>)"] = NullSubjectOutcome.Passes,
-			["ThatEnumerable.IsNotEqualTo(IEnumerable<Nullable<Double>>)"] = NullSubjectOutcome.Passes,
-			["ThatEnumerable.IsNotEqualTo(IEnumerable<Nullable<Single>>)"] = NullSubjectOutcome.Passes,
-			["ThatEnumerable.IsNotEqualTo(IEnumerable<Single>)"] = NullSubjectOutcome.Passes,
-			["ThatEnumerable.IsNotEqualTo(IEnumerable<String>)"] = NullSubjectOutcome.Passes,
-			["ThatEnumerable.IsNotEqualTo(IEnumerable<TItem>)"] = NullSubjectOutcome.Passes,
-			["ThatNullableBool.IsEqualTo(Nullable<Boolean>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableBool.IsNotEqualTo(Nullable<Boolean>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableBool.IsNotFalse(Nullable<Boolean>)"] = NullSubjectOutcome.Passes,
-			["ThatNullableBool.IsNotTrue(Nullable<Boolean>)"] = NullSubjectOutcome.Passes,
-			["ThatNullableBool.IsNull(Nullable<Boolean>)"] = NullSubjectOutcome.Passes,
-			["ThatNullableChar.IsEqualTo(Nullable<Char>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableChar.IsNotEqualTo(Nullable<Char>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableChar.IsNotOneOf(Nullable<Char>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableChar.IsOneOf(Nullable<Char>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableDateOnly.IsEqualTo(Nullable<DateOnly>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableDateOnly.IsNotEqualTo(Nullable<DateOnly>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableDateOnly.IsNotOneOf(Nullable<DateOnly>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableDateOnly.IsOneOf(Nullable<DateOnly>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableDateTime.IsEqualTo(Nullable<DateTime>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableDateTime.IsNotEqualTo(Nullable<DateTime>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableDateTime.IsNotOneOf(Nullable<DateTime>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableDateTime.IsOneOf(Nullable<DateTime>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableDateTimeOffset.IsEqualTo(Nullable<DateTimeOffset>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableDateTimeOffset.IsNotEqualTo(Nullable<DateTimeOffset>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableDateTimeOffset.IsNotOneOf(Nullable<DateTimeOffset>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableDateTimeOffset.IsOneOf(Nullable<DateTimeOffset>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableEnum.IsEqualTo(Nullable<TEnum>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableEnum.IsNotEqualTo(Nullable<TEnum>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableEnum.IsNotOneOf(Nullable<TEnum>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableEnum.IsOneOf(Nullable<TEnum>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableGuid.IsEqualTo(Nullable<Guid>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableGuid.IsNotEqualTo(Nullable<Guid>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableGuid.IsNullOrEmpty(Nullable<Guid>)"] = NullSubjectOutcome.Passes,
-			["ThatNullableTimeOnly.IsEqualTo(Nullable<TimeOnly>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableTimeOnly.IsNotEqualTo(Nullable<TimeOnly>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableTimeOnly.IsNotOneOf(Nullable<TimeOnly>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableTimeOnly.IsOneOf(Nullable<TimeOnly>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableTimeSpan.IsEqualTo(Nullable<TimeSpan>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableTimeSpan.IsNotEqualTo(Nullable<TimeSpan>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableTimeSpan.IsNotOneOf(Nullable<TimeSpan>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNullableTimeSpan.IsOneOf(Nullable<TimeSpan>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsEqualTo(Nullable<TNumber>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotBetween(Nullable<TNumber>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotEqualTo(Nullable<TNumber>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotOneOf(Nullable<TNumber>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsOneOf(Nullable<TNumber>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatObject.IsEqualTo(Nullable<T>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatObject.IsEqualTo(Object)"] = NullSubjectOutcome.Passes,
-			["ThatObject.IsEquivalentTo(TSubject)"] = NullSubjectOutcome.Passes,
-			["ThatObject.IsNotEqualTo(Nullable<T>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatObject.IsNull(Nullable<T>)"] = NullSubjectOutcome.Passes,
-			["ThatObject.IsNull(T)"] = NullSubjectOutcome.Passes,
-			["ThatObject.IsOneOf(Object)"] = NullSubjectOutcome.Passes,
-			["ThatObject.IsSameAs(T)"] = NullSubjectOutcome.Passes,
-			["ThatString.IsNotEqualTo(String)"] = NullSubjectOutcome.Passes,
-			["ThatString.IsNotOneOf(String)"] = NullSubjectOutcome.Passes,
-			["ThatString.IsNull(String)"] = NullSubjectOutcome.Passes,
-			["ThatString.IsNullOrEmpty(String)"] = NullSubjectOutcome.Passes,
-			["ThatString.IsNullOrWhiteSpace(String)"] = NullSubjectOutcome.Passes,
-			["WithValue<T>.Eventually(WithValue<T>)"] = NullSubjectOutcome.NotInvocable,
-			// Without generic math, the numeric expectations exist once per numeric type instead of
-			// once for `TNumber`, so they are separate entries on the older target frameworks.
-#if !NET8_0_OR_GREATER
-			["ThatNumber.IsEqualTo(Nullable<Byte>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsEqualTo(Nullable<Decimal>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsEqualTo(Nullable<Double>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsEqualTo(Nullable<Int16>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsEqualTo(Nullable<Int32>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsEqualTo(Nullable<Int64>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsEqualTo(Nullable<SByte>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsEqualTo(Nullable<Single>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsEqualTo(Nullable<UInt16>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsEqualTo(Nullable<UInt32>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsEqualTo(Nullable<UInt64>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotBetween(Nullable<Byte>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotBetween(Nullable<Decimal>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotBetween(Nullable<Double>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotBetween(Nullable<Int16>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotBetween(Nullable<Int32>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotBetween(Nullable<Int64>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotBetween(Nullable<SByte>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotBetween(Nullable<Single>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotBetween(Nullable<UInt16>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotBetween(Nullable<UInt32>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotBetween(Nullable<UInt64>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotEqualTo(Nullable<Byte>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotEqualTo(Nullable<Decimal>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotEqualTo(Nullable<Double>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotEqualTo(Nullable<Int16>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotEqualTo(Nullable<Int32>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotEqualTo(Nullable<Int64>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotEqualTo(Nullable<SByte>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotEqualTo(Nullable<Single>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotEqualTo(Nullable<UInt16>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotEqualTo(Nullable<UInt32>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotEqualTo(Nullable<UInt64>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotOneOf(Nullable<Byte>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotOneOf(Nullable<Decimal>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotOneOf(Nullable<Double>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotOneOf(Nullable<Int16>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotOneOf(Nullable<Int32>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotOneOf(Nullable<Int64>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotOneOf(Nullable<SByte>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotOneOf(Nullable<Single>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotOneOf(Nullable<UInt16>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotOneOf(Nullable<UInt32>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsNotOneOf(Nullable<UInt64>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsOneOf(Nullable<Byte>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsOneOf(Nullable<Decimal>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsOneOf(Nullable<Double>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsOneOf(Nullable<Int16>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsOneOf(Nullable<Int32>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsOneOf(Nullable<Int64>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsOneOf(Nullable<SByte>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsOneOf(Nullable<Single>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsOneOf(Nullable<UInt16>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsOneOf(Nullable<UInt32>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatNumber.IsOneOf(Nullable<UInt64>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-#endif
-		};
-
-	private static Dictionary<string, NullSubjectOutcome>? _nullSubjectBehaviour;
-
-	private static Dictionary<string, NullSubjectOutcome> NullSubjectBehaviour
-		=> _nullSubjectBehaviour ??= DetermineNullSubjectBehaviour();
-
-	public static TheoryData<string> MarkedExpectations
-	{
-		get
-		{
-			TheoryData<string> data = new();
-			foreach (MethodInfo method in GetMarkedExpectations().Where(CanHaveNullSubject))
-			{
-				string identifier = GetIdentifier(method);
-				if (!ExcludedFromInvocation.Contains(identifier))
-				{
-					data.Add(identifier);
-				}
-			}
-
-			return data;
-		}
-	}
-
 	[Fact]
 	public async Task EveryExpectation_ShouldFailForANullSubject()
 	{
-		List<string> deviations = NullSubjectBehaviour
-			.Where(entry => entry.Value != GetRecordedOutcome(entry.Key))
-			.Select(entry => $"{entry.Key} = {entry.Value}")
-			.OrderBy(entry => entry, StringComparer.Ordinal)
+		List<string> deviations = Observations
+			.Where(observation => !observation.Fails && !IsExempt(observation.Name))
+			.Select(observation => observation.Identifier)
+			.Distinct().OrderBy(identifier => identifier, StringComparer.Ordinal)
+			.ToList();
+
+		await That(deviations).IsEmpty()
+			.Because("a null subject must fail every expectation that is not one of the exceptions in Exempt");
+	}
+
+	[Fact]
+	public async Task EveryExpectationThatFails_ShouldGuaranteeNotNull()
+	{
+		List<string> unmarked = Observations
+			.Where(observation => observation.Fails && !IsExempt(observation.Name) && !observation.IsMarked &&
+			                      !AwaitingACoreRelease.Contains(observation.Identifier))
+			.Select(observation => observation.Identifier)
+			.Distinct().OrderBy(identifier => identifier, StringComparer.Ordinal)
+			.ToList();
+
+		await That(unmarked).IsEmpty()
+			.Because(
+				"an expectation that rules a null subject out must say so, or IsNotNullSuppressor cannot drop the CS8602 it has already answered");
+	}
+
+	[Fact]
+	public async Task EveryMarkedExpectation_ShouldFailForANullSubject()
+	{
+		List<string> deviations = Observations
+			.Where(observation => observation.IsMarked && !observation.Fails)
+			.Select(observation => observation.Identifier)
+			.Distinct().OrderBy(identifier => identifier, StringComparer.Ordinal)
 			.ToList();
 
 		await That(deviations).IsEmpty()
 			.Because(
-				"a null subject must fail every expectation, unless ExpectationsThatDoNotFail records that it does not");
+				"the attribute drops a CS8602 in user code, so an expectation that does not rule a null subject out must not carry it");
 	}
 
 	[Fact]
@@ -258,30 +69,6 @@ public sealed class GuaranteesNotNullTests
 			.Because("both assemblies declare expectations that are marked");
 	}
 
-#if NET8_0_OR_GREATER
-	// Both assertions are statements about this repository rather than about runtime behaviour, so it is
-	// enough to make them where every expectation and every test class is present: neither the
-	// `IAsyncEnumerable` expectations nor their tests exist on the older target frameworks.
-	[Fact]
-	public async Task ExcludedExpectations_ShouldBeCovered()
-	{
-		List<string> identifiers = GetMarkedExpectations().Where(CanHaveNullSubject).Select(GetIdentifier).ToList();
-
-		await That(ExcludedFromInvocation.Where(excluded => !identifiers.Contains(excluded)).ToList()).IsEmpty()
-			.Because("an exclusion that no longer matches a marked expectation is stale");
-		await That(ExcludedFromInvocation.Where(excluded => GetCoveringTests(excluded).Length == 0).ToList()).IsEmpty()
-			.Because("every excluded expectation needs a hand-written null-subject test instead");
-	}
-
-	[Fact]
-	public async Task RecordedExpectations_ShouldStillExist()
-	{
-		await That(ExpectationsThatDoNotFail.Keys.Where(key => !NullSubjectBehaviour.ContainsKey(key)).ToList())
-			.IsEmpty()
-			.Because("a recorded expectation that no longer exists is stale");
-	}
-#endif
-
 	[Fact]
 	public async Task SkippedExpectations_ShouldHaveASubjectThatCannotBeNull()
 	{
@@ -294,42 +81,87 @@ public sealed class GuaranteesNotNullTests
 				"a skipped expectation is invisible — it is neither invoked nor excluded — so a subject that only looks non-nullable because it was closed to one of this test's own helper structs must not go unnoticed");
 	}
 
-	[Theory]
-	[MemberData(nameof(MarkedExpectations))]
-	public async Task WhenSubjectIsNull_ShouldFail(string identifier)
+	private static readonly Type[] TypeArgumentCandidates =
+	[
+		typeof(object), typeof(string), typeof(Exception), typeof(ArgumentException), typeof(EquatableSubject),
+		typeof(NotifyingSubject), typeof(double), typeof(int), typeof(DayOfWeek), typeof(TimeSpan),
+		typeof(DateTime), typeof(EnumerableStruct<object>), typeof(EnumerableStruct<string?>),
+	];
+
+	/// <summary>
+	///     The rule: a null subject fails every expectation, except these. `IsEqualTo` and the other
+	///     comparisons may be handed a null of their own to compare against, and the tri-state `bool?`
+	///     expectations exist to cover the null case — making `IsNotTrue()` fail for it would leave it
+	///     identical to `IsFalse()`, with no null-tolerant twin. `Eventually` continues a delegate
+	///     expectation rather than taking a subject, so it has no null-subject behaviour of its own.
+	/// </summary>
+	private static readonly HashSet<string> Exempt = new(StringComparer.Ordinal)
 	{
-		MethodInfo method = GetMarkedExpectations().Single(m => GetIdentifier(m) == identifier);
+		"Eventually",
+		"IsContainedIn",
+		"IsEqualTo",
+		"IsEquivalentTo",
+		"IsNotBetween",
+		"IsNotContainedIn",
+		"IsNotEqualTo",
+		"IsNotEquivalentTo",
+		"IsNotOneOf",
+		"IsNotSameAs",
+		"IsOneOf",
+		"IsSameAs",
+		"IsNull",
+		"IsNullOrEmpty",
+		"IsNullOrWhiteSpace",
+		"IsFalse",
+		"IsNotFalse",
+		"IsNotTrue",
+		"IsTrue",
+	};
 
-		void Act() => Evaluate(method);
+	/// <summary>
+	///     `aweXpect` consumes `aweXpect.Core` as a released package outside Debug, so an attribute added to
+	///     the core interface would be missing from the Release test run and fail the converse assertion
+	///     below. These two qualify and are marked with the next core release instead.
+	/// </summary>
+	private static readonly HashSet<string> AwaitingACoreRelease = new(StringComparer.Ordinal)
+	{
+		"IThatSubject<T>.IsNot<TType>()",
+		"IThatSubject<T>.IsNotExactly<TType>()",
+	};
 
-		await That(Act).Throws<XunitException>()
-			.Because($"{identifier} is marked with [GuaranteesNotNull]");
+	private static IReadOnlyList<Observation>? _observations;
+
+	private static IReadOnlyList<Observation> Observations => _observations ??= Observe();
+
+	private static bool IsExempt(string name) => Exempt.Contains(name);
+
+	private sealed class Observation(string identifier, string name, bool fails, bool isMarked)
+	{
+		public string Identifier { get; } = identifier;
+
+		public string Name { get; } = name;
+
+		public bool Fails { get; } = fails;
+
+		public bool IsMarked { get; } = isMarked;
 	}
 
-	private static Dictionary<string, NullSubjectOutcome> DetermineNullSubjectBehaviour()
+	private static List<Observation> Observe()
 	{
-		Dictionary<string, NullSubjectOutcome> behaviour = new(StringComparer.Ordinal);
+		List<Observation> observations = [];
 		foreach (MethodInfo method in GetAllExpectations())
 		{
-			if (DetermineOutcome(method) is not { } determined)
+			if (FailsForANullSubject(method) is { } fails)
 			{
-				continue;
+				observations.Add(new Observation(GetIdentifier(method), method.Name, fails,
+					method.GetCustomAttribute<GuaranteesNotNullAttribute>() is not null));
 			}
-
-			string key = GetKey(method);
-			behaviour.TryGetValue(key, out NullSubjectOutcome outcome);
-			behaviour[key] = outcome | determined;
 		}
 
-		return behaviour;
+		return observations;
 	}
 
-	private static NullSubjectOutcome GetRecordedOutcome(string key)
-		=> ExpectationsThatDoNotFail.TryGetValue(key, out NullSubjectOutcome outcome)
-			? outcome
-			: NullSubjectOutcome.Fails;
-
-	private static NullSubjectOutcome? DetermineOutcome(MethodInfo method)
+	private static bool? FailsForANullSubject(MethodInfo method)
 	{
 		MethodInfo closedMethod;
 		Type subjectType;
@@ -346,38 +178,43 @@ public sealed class GuaranteesNotNullTests
 		}
 		catch (NotInvocableException)
 		{
-			return NullSubjectOutcome.NotInvocable;
+			return false;
 		}
 		catch (Exception exception) when (exception is not XunitException)
 		{
-			return NullSubjectOutcome.Throws;
+			return false;
 		}
 
 		List<MethodInfo[]> paths =
 			DiscoverCompletions(() => Invoke(closedMethod, CreateNullSubject(subjectType)), [], 0);
 
-		NullSubjectOutcome outcome = default;
+		// Only a failure on every path counts: an expectation that fails for one argument and passes for
+		// another does not guarantee a subject is there, and must not be marked as if it did.
+		bool observed = false;
 		foreach (MethodInfo[] path in paths)
 		{
-			foreach (bool nullValues in new[] { false, true, })
+			foreach (bool nullValues in new[]
+			         {
+				         false, true,
+			         })
 			{
 				try
 				{
 					Await(Follow(Invoke(closedMethod, CreateNullSubject(subjectType), nullValues), path, nullValues));
-					outcome |= NullSubjectOutcome.Passes;
+					return false;
 				}
 				catch (XunitException)
 				{
-					outcome |= NullSubjectOutcome.Fails;
+					observed = true;
 				}
 				catch (Exception)
 				{
-					outcome |= NullSubjectOutcome.Throws;
+					return false;
 				}
 			}
 		}
 
-		return outcome == default ? NullSubjectOutcome.NotInvocable : outcome;
+		return observed;
 	}
 
 	private static List<MethodInfo[]> DiscoverCompletions(Func<object> create, MethodInfo[] prefix, int depth)
@@ -426,7 +263,7 @@ public sealed class GuaranteesNotNullTests
 	private static IEnumerable<MethodInfo> GetAllExpectations()
 		=> new[]
 			{
-				typeof(GuaranteesNotNullAttribute).Assembly, typeof(global::aweXpect.ThatString).Assembly,
+				typeof(GuaranteesNotNullAttribute).Assembly, typeof(aweXpect.ThatString).Assembly,
 			}
 			.SelectMany(assembly => assembly.GetTypes())
 			.Where(type => type.IsPublic || type.IsNestedPublic)
@@ -456,30 +293,15 @@ public sealed class GuaranteesNotNullTests
 		       definition == typeof(CoreDelegate.WithoutValue) || definition == typeof(CoreDelegate.WithValue<>);
 	}
 
-	private static string GetKey(MethodInfo method)
-		=> $"{FormatType(method.DeclaringType!)}.{method.Name}({FormatType(GetSubjectType(method))})";
-
 	private static IEnumerable<MethodInfo> GetMarkedExpectations()
 		=> new[]
 			{
-				typeof(GuaranteesNotNullAttribute).Assembly, typeof(global::aweXpect.ThatString).Assembly,
+				typeof(GuaranteesNotNullAttribute).Assembly, typeof(aweXpect.ThatString).Assembly,
 			}
 			.SelectMany(assembly => assembly.GetTypes())
 			.SelectMany(type => type.GetMethods(BindingFlags.Public | BindingFlags.Static |
 			                                    BindingFlags.Instance | BindingFlags.DeclaredOnly))
 			.Where(method => method.GetCustomAttribute<GuaranteesNotNullAttribute>() is not null);
-
-	private static MethodInfo[] GetCoveringTests(string identifier)
-	{
-		string declaringType = identifier.Substring(0, identifier.IndexOf('.'));
-		string expectation = identifier.Substring(identifier.IndexOf('.') + 1).Split('<', '(')[0];
-		return typeof(GuaranteesNotNullTests).Assembly.GetTypes()
-			.Where(type => type.FullName?.Contains($"{declaringType}+{expectation}+") == true)
-			.SelectMany(type => type.GetMethods(BindingFlags.Public | BindingFlags.Instance |
-			                                    BindingFlags.DeclaredOnly))
-			.Where(method => method.Name is nameof(WhenSubjectIsNull_ShouldFail) or "WhenActualIsNull_ShouldFail")
-			.ToArray();
-	}
 
 	private static bool CanHaveNullSubject(MethodInfo method)
 	{
@@ -508,13 +330,6 @@ public sealed class GuaranteesNotNullTests
 		return type.IsGenericType
 			? name + "<" + string.Join(",", type.GetGenericArguments().Select(FormatType)) + ">"
 			: name;
-	}
-
-	private static void Evaluate(MethodInfo method)
-	{
-		MethodInfo closedMethod = CloseMethod(method);
-		object subject = CreateNullSubject(GetSubjectType(closedMethod));
-		Await(Complete(Invoke(closedMethod, subject)));
 	}
 
 	private static object Invoke(MethodInfo method, object subject, bool nullValues = false)
@@ -548,12 +363,12 @@ public sealed class GuaranteesNotNullTests
 #pragma warning disable aweXpect0001 // the expectation is awaited in Await after it was invoked reflectively
 		if (definition == typeof(IThatSubject<>) || definition == typeof(ThatSubject<>))
 		{
-			return Expect.That((object?)null);
+			return That((object?)null);
 		}
 
 		if (definition == typeof(CoreDelegate) || definition == typeof(CoreDelegate.WithoutValue))
 		{
-			return Expect.That((Action)null!);
+			return That((Action)null!);
 		}
 #pragma warning restore aweXpect0001
 
@@ -574,7 +389,7 @@ public sealed class GuaranteesNotNullTests
 	private static object InvokeThat(Type typeArgument, Func<ParameterInfo, bool> subjectParameter)
 	{
 		MethodInfo that = typeof(Expect).GetMethods(BindingFlags.Public | BindingFlags.Static)
-			.Single(candidate => candidate is { Name: nameof(Expect.That), IsGenericMethodDefinition: true, } &&
+			.Single(candidate => candidate is { Name: nameof(That), IsGenericMethodDefinition: true, } &&
 			                     candidate.GetGenericArguments().Length == 1 &&
 			                     candidate.GetParameters().Length == 2 &&
 			                     subjectParameter(candidate.GetParameters()[0]));
@@ -732,9 +547,6 @@ public sealed class GuaranteesNotNullTests
 		return typeof(Delegate).IsAssignableFrom(type) ? CreateDelegate(type) : null;
 	}
 
-	// Builds `subject => subject.Member` for a property expression. A constant body would leave the
-	// expectation without a property name, so the call would no longer resemble what a caller writes;
-	// throwing keeps such a degenerate argument from passing unnoticed.
 	private static LambdaExpression CreateMemberSelector(Type delegateType)
 	{
 		MethodInfo invoke = delegateType.GetMethod("Invoke")!;
@@ -766,11 +578,6 @@ public sealed class GuaranteesNotNullTests
 		return Expression.Lambda(delegateType, body, parameters).Compile();
 	}
 
-	// Builds `subject => subject.Satisfies(_ => true)` for a continuation on an IThat<T>. aweXpect
-	// rejects a continuation that declares no inner expectation, so a no-op body reports Throws and
-	// hides what the expectation does for a null subject. Satisfies is itself null-intolerant, so the
-	// recorded outcome is about the call as a whole - which is what the attribute describes - rather
-	// than about the outer expectation alone.
 	private static Expression CreateExpectationBody(ParameterExpression[] parameters)
 	{
 		if (parameters.Length != 1 || GetThatSubjectType(parameters[0].Type) is not { } subjectType)
@@ -793,7 +600,10 @@ public sealed class GuaranteesNotNullTests
 	}
 
 	private static Type? GetThatSubjectType(Type type)
-		=> new[] { type, }.Concat(type.GetInterfaces())
+		=> new[]
+			{
+				type,
+			}.Concat(type.GetInterfaces())
 			.FirstOrDefault(candidate => candidate.IsGenericType &&
 			                             candidate.GetGenericTypeDefinition() == typeof(IThat<>))
 			?.GetGenericArguments()[0];
@@ -866,21 +676,14 @@ public sealed class GuaranteesNotNullTests
 		}
 	}
 
-	[Flags]
-	private enum NullSubjectOutcome
-	{
-		Fails = 1,
-		Passes = 2,
-		Throws = 4,
-		NotInvocable = 8,
-	}
-
 	private sealed class NotInvocableException(string message) : Exception(message);
 
 	private sealed class NotifyingSubject : INotifyPropertyChanged
 	{
-		// Gives CreateMemberSelector a member to select, so that a property expression argument is a
-		// real member access rather than a constant the expectation reads no property name from.
+		/// <summary>
+		///     Gives CreateMemberSelector a member to select, so that a property expression argument is a
+		///     real member access rather than a constant the expectation reads no property name from.
+		/// </summary>
 		public string? Value { get; set; }
 
 		public event PropertyChangedEventHandler? PropertyChanged

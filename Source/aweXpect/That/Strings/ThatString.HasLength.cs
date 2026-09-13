@@ -9,6 +9,7 @@ public static partial class ThatString
 	/// <summary>
 	///     Verifies that the length of the <see langword="string" /> subject…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static PropertyResult.Int<string?> HasLength(this IThat<string?> source)
 		=> new(source, a => a?.Length, "length", (value, paramName) =>
 		{
