@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "6920f4570f43885f3d4b29e7c3e9be97d6c72558",
-        "author": "dependabot[bot]",
-        "date": "Sat Jun 20 11:52:19 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.7.0 to 18.8.0 (#982)"
-      },
-      {
         "sha": "bc6c799f65eb9cdb5666472723edfb3a16558594",
         "author": "dependabot[bot]",
         "date": "Sat Jun 20 11:52:31 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 22:57:37 2026 \u002B0200",
         "message": "fix: display the difference towards \u0060MinValue\u0060 in number failure messages (#1059)"
+      },
+      {
+        "sha": "543ef39f7bef756054a2cae06fd19157297f6996",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 07:49:54 2026 \u002B0200",
+        "message": "fix!: fail the negated string expectations for a null subject (#1063)"
       }
     ],
     "labels": [
-      "6920f457",
       "bc6c799f",
       "44ed09de",
       "95ef6b5c",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "f2c58efc",
       "b40f1a29",
       "12db0a0c",
-      "935bb145"
+      "935bb145",
+      "543ef39f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          269.24019278798784,
           248.99433843906112,
           241.350377591451,
           250.72195428212484,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           185.81431449254353,
           207.99691574390118,
           270.29099127451576,
-          281.56352847417196
+          281.56352847417196,
+          249.18366251673018
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          247.11946545328414,
           247.04331152779716,
           246.6118438584464,
           235.77647287505013,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           211.59095217500413,
           220.3440454006195,
           264.55369930267335,
-          266.9943772315979
+          266.9943772315979,
+          246.28094317118328
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "6920f4570f43885f3d4b29e7c3e9be97d6c72558",
-        "author": "dependabot[bot]",
-        "date": "Sat Jun 20 11:52:19 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.7.0 to 18.8.0 (#982)"
-      },
-      {
         "sha": "bc6c799f65eb9cdb5666472723edfb3a16558594",
         "author": "dependabot[bot]",
         "date": "Sat Jun 20 11:52:31 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 22:57:37 2026 \u002B0200",
         "message": "fix: display the difference towards \u0060MinValue\u0060 in number failure messages (#1059)"
+      },
+      {
+        "sha": "543ef39f7bef756054a2cae06fd19157297f6996",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 07:49:54 2026 \u002B0200",
+        "message": "fix!: fail the negated string expectations for a null subject (#1063)"
       }
     ],
     "labels": [
-      "6920f457",
       "bc6c799f",
       "44ed09de",
       "95ef6b5c",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "f2c58efc",
       "b40f1a29",
       "12db0a0c",
-      "935bb145"
+      "935bb145",
+      "543ef39f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          293878.3318196615,
           296727.05210658483,
           293305.36258370534,
           317781.9690880409,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           200805.07823768028,
           222028.6263709435,
           338345.6691545759,
-          325843.86832682294
+          325843.86832682294,
+          298770.44361979165
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1052,7 +1052,6 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
           335444,
           335444,
@@ -1076,6 +1075,7 @@ window.BENCHMARK_DATA = {
           335444,
           335442,
           335442,
+          335444,
           335444,
           335444
         ],
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2326466.11953125,
           2473659.553125,
           2346473.274832589,
           2747542.05859375,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           1670276.2193080357,
           1669236.4065504808,
           2951527.1751802885,
-          2856284.6182291666
+          2856284.6182291666,
+          2692831.5122395833
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841651,
           4841647,
           4841651,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841611,
           4841609,
           4841651,
-          4841648
+          4841648,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "6920f4570f43885f3d4b29e7c3e9be97d6c72558",
-        "author": "dependabot[bot]",
-        "date": "Sat Jun 20 11:52:19 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.7.0 to 18.8.0 (#982)"
-      },
       {
         "sha": "bc6c799f65eb9cdb5666472723edfb3a16558594",
         "author": "dependabot[bot]",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 22:57:37 2026 \u002B0200",
         "message": "fix: display the difference towards \u0060MinValue\u0060 in number failure messages (#1059)"
+      },
+      {
+        "sha": "543ef39f7bef756054a2cae06fd19157297f6996",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 07:49:54 2026 \u002B0200",
+        "message": "fix!: fail the negated string expectations for a null subject (#1063)"
       }
     ],
     "labels": [
-      "6920f457",
       "bc6c799f",
       "44ed09de",
       "95ef6b5c",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "f2c58efc",
       "b40f1a29",
       "12db0a0c",
-      "935bb145"
+      "935bb145",
+      "543ef39f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          465.5516929626465,
           465.1508773290194,
           471.57978766759237,
           480.2384469692524,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           411.3238247803279,
           387.5515358606974,
           517.3623763402303,
-          541.9017120997111
+          541.9017120997111,
+          505.5021213803972
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          473.96773140771046,
           489.85448201497394,
           503.10617173512776,
           456.0809893948691,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           414.6723243077596,
           420.1317024548849,
           537.0394381205241,
-          570.2607573100498
+          570.2607573100498,
+          487.66618938446044
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "6920f4570f43885f3d4b29e7c3e9be97d6c72558",
-        "author": "dependabot[bot]",
-        "date": "Sat Jun 20 11:52:19 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.7.0 to 18.8.0 (#982)"
-      },
-      {
         "sha": "bc6c799f65eb9cdb5666472723edfb3a16558594",
         "author": "dependabot[bot]",
         "date": "Sat Jun 20 11:52:31 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 22:57:37 2026 \u002B0200",
         "message": "fix: display the difference towards \u0060MinValue\u0060 in number failure messages (#1059)"
+      },
+      {
+        "sha": "543ef39f7bef756054a2cae06fd19157297f6996",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 07:49:54 2026 \u002B0200",
+        "message": "fix!: fail the negated string expectations for a null subject (#1063)"
       }
     ],
     "labels": [
-      "6920f457",
       "bc6c799f",
       "44ed09de",
       "95ef6b5c",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "f2c58efc",
       "b40f1a29",
       "12db0a0c",
-      "935bb145"
+      "935bb145",
+      "543ef39f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          250.9371336868831,
           285.6682287362906,
           254.16477779241708,
           266.79638926188153,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           193.14304917199271,
           209.47316687901815,
           274.451362546285,
-          300.1345632870992
+          300.1345632870992,
+          292.19284489949547
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          240.50881153742472,
           244.60649277369183,
           249.66078751427787,
           243.84770464897156,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           215.79852714538575,
           220.41122935368463,
           270.03851222991943,
-          286.254754002889
+          286.254754002889,
+          249.63275349934895
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "6920f4570f43885f3d4b29e7c3e9be97d6c72558",
-        "author": "dependabot[bot]",
-        "date": "Sat Jun 20 11:52:19 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.7.0 to 18.8.0 (#982)"
-      },
-      {
         "sha": "bc6c799f65eb9cdb5666472723edfb3a16558594",
         "author": "dependabot[bot]",
         "date": "Sat Jun 20 11:52:31 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 22:57:37 2026 \u002B0200",
         "message": "fix: display the difference towards \u0060MinValue\u0060 in number failure messages (#1059)"
+      },
+      {
+        "sha": "543ef39f7bef756054a2cae06fd19157297f6996",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 07:49:54 2026 \u002B0200",
+        "message": "fix!: fail the negated string expectations for a null subject (#1063)"
       }
     ],
     "labels": [
-      "6920f457",
       "bc6c799f",
       "44ed09de",
       "95ef6b5c",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "f2c58efc",
       "b40f1a29",
       "12db0a0c",
-      "935bb145"
+      "935bb145",
+      "543ef39f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          463.41466464996336,
           457.68718519210813,
           482.74196853637693,
           458.547548191888,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           321.6662517865499,
           355.84341993331907,
           514.9620515823365,
-          544.9427513758342
+          544.9427513758342,
+          477.30670067242215
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1101.3260318211146,
           1162.6957606633505,
           1128.9691250664848,
           1150.2959679921469,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           899.8793354034424,
           956.5905661949745,
           1337.4001406351724,
-          1334.4067900521416
+          1334.4067900521416,
+          1248.4108057657877
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "6920f4570f43885f3d4b29e7c3e9be97d6c72558",
-        "author": "dependabot[bot]",
-        "date": "Sat Jun 20 11:52:19 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.7.0 to 18.8.0 (#982)"
-      },
-      {
         "sha": "bc6c799f65eb9cdb5666472723edfb3a16558594",
         "author": "dependabot[bot]",
         "date": "Sat Jun 20 11:52:31 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 22:57:37 2026 \u002B0200",
         "message": "fix: display the difference towards \u0060MinValue\u0060 in number failure messages (#1059)"
+      },
+      {
+        "sha": "543ef39f7bef756054a2cae06fd19157297f6996",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 07:49:54 2026 \u002B0200",
+        "message": "fix!: fail the negated string expectations for a null subject (#1063)"
       }
     ],
     "labels": [
-      "6920f457",
       "bc6c799f",
       "44ed09de",
       "95ef6b5c",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "f2c58efc",
       "b40f1a29",
       "12db0a0c",
-      "935bb145"
+      "935bb145",
+      "543ef39f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1880.7159954071044,
           1833.4658897399902,
           1890.0597494761148,
           1943.644634791783,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1024.7778945650373,
           1172.1498559805063,
           2068.8246877034503,
-          2061.384815470378
+          2061.384815470378,
+          1946.7893300374349
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1255.5963723318916,
           1342.7128648122152,
           1311.7862465722221,
           1266.5787974766322,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           993.0315253917987,
           1091.659278188433,
           1426.1770524342855,
-          1470.378264290946
+          1470.378264290946,
+          1270.8310853413172
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "6920f4570f43885f3d4b29e7c3e9be97d6c72558",
-        "author": "dependabot[bot]",
-        "date": "Sat Jun 20 11:52:19 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.Testing.Extensions.CodeCoverage from 18.7.0 to 18.8.0 (#982)"
-      },
-      {
         "sha": "bc6c799f65eb9cdb5666472723edfb3a16558594",
         "author": "dependabot[bot]",
         "date": "Sat Jun 20 11:52:31 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 22:57:37 2026 \u002B0200",
         "message": "fix: display the difference towards \u0060MinValue\u0060 in number failure messages (#1059)"
+      },
+      {
+        "sha": "543ef39f7bef756054a2cae06fd19157297f6996",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 07:49:54 2026 \u002B0200",
+        "message": "fix!: fail the negated string expectations for a null subject (#1063)"
       }
     ],
     "labels": [
-      "6920f457",
       "bc6c799f",
       "44ed09de",
       "95ef6b5c",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "f2c58efc",
       "b40f1a29",
       "12db0a0c",
-      "935bb145"
+      "935bb145",
+      "543ef39f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2462.123188273112,
           2455.8785621643065,
           2546.2303230285643,
           2545.9524711608888,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           1325.9666979471842,
           1539.817172563993,
           2669.7861605326334,
-          2623.662196840559
+          2623.662196840559,
+          2618.817142232259
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          20179.390925816126,
           20153.355488368445,
           20737.411871337892,
           26395.47559407552,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           12251.25824519566,
           14082.65697224935,
           28076.470477764422,
-          27559.373363788312
+          27559.373363788312,
+          28009.99229867118
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4219,7 +4219,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4241,6 +4240,7 @@ window.BENCHMARK_DATA = {
           33471,
           33465,
           33465,
+          33471,
           33471,
           33471
         ],
