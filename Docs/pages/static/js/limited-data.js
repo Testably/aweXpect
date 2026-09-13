@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "efbe5c0acc628f150ac4a76f24b7c0e1a7a987c1",
-        "author": "dependabot[bot]",
-        "date": "Sun Aug 16 17:27:47 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.2 to 2.3.3 (#1003)"
-      },
-      {
         "sha": "a2cd8a356d089a4567225459acb342570cbdeb46",
         "author": "dependabot[bot]",
         "date": "Sun Aug 16 17:28:01 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:46:34 2026 \u002B0200",
         "message": "refactor!: discover the test framework adapter only from the registry (#1066)"
+      },
+      {
+        "sha": "d0ec4dc034676cc31384d687c95079c2ea1950a3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 21:33:47 2026 \u002B0200",
+        "message": "feat: mark the expectations that a null subject now fails with \u0060GuaranteesNotNull\u0060 (#1079)"
       }
     ],
     "labels": [
-      "efbe5c0a",
       "a2cd8a35",
       "d6d2b3d2",
       "956eadd6",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "9547e82c",
       "6870b4c9",
       "3e81a878",
-      "d2ca3fb8"
+      "d2ca3fb8",
+      "d0ec4dc0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          256.2644588470459,
           254.05494383403234,
           251.71505771364485,
           246.84150862693787,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           248.97076454162598,
           254.73397379655106,
           259.7866854349772,
-          307.019961865743
+          307.019961865743,
+          274.39142618179324
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          238.15933547701155,
           245.09986426280096,
           266.93660954066684,
           249.61967541621283,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           241.61465230354895,
           233.09332772890727,
           245.70672464370728,
-          264.7816121101379
+          264.7816121101379,
+          249.09174687521798
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "efbe5c0acc628f150ac4a76f24b7c0e1a7a987c1",
-        "author": "dependabot[bot]",
-        "date": "Sun Aug 16 17:27:47 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.2 to 2.3.3 (#1003)"
-      },
-      {
         "sha": "a2cd8a356d089a4567225459acb342570cbdeb46",
         "author": "dependabot[bot]",
         "date": "Sun Aug 16 17:28:01 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:46:34 2026 \u002B0200",
         "message": "refactor!: discover the test framework adapter only from the registry (#1066)"
+      },
+      {
+        "sha": "d0ec4dc034676cc31384d687c95079c2ea1950a3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 21:33:47 2026 \u002B0200",
+        "message": "feat: mark the expectations that a null subject now fails with \u0060GuaranteesNotNull\u0060 (#1079)"
       }
     ],
     "labels": [
-      "efbe5c0a",
       "a2cd8a35",
       "d6d2b3d2",
       "956eadd6",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "9547e82c",
       "6870b4c9",
       "3e81a878",
-      "d2ca3fb8"
+      "d2ca3fb8",
+      "d0ec4dc0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          301459.13895089284,
           292008.66573660716,
           299549.37747395836,
           294975.8651994978,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           302007.1185021034,
           311579.14092548075,
           317410.8760516827,
-          337854.4787434896
+          337854.4787434896,
+          330934.25544621394
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1035,7 +1035,6 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
           335444,
           335444,
@@ -1074,6 +1073,7 @@ window.BENCHMARK_DATA = {
           335444,
           335442,
           335442,
+          335444,
           335444,
           335444,
           335444,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2689759.6598772323,
           2351292.710379464,
           2444080.3622395834,
           2363169.249441964,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2722615.3565104166,
           2679827.9291666667,
           2817636.104266827,
-          2845124.76875
+          2845124.76875,
+          2853500.7399553573
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1155,7 +1155,6 @@ window.BENCHMARK_DATA = {
         "data": [
           4841651,
           4841651,
-          4841651,
           4841647,
           4841651,
           4841651,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841651
+          4841651,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "efbe5c0acc628f150ac4a76f24b7c0e1a7a987c1",
-        "author": "dependabot[bot]",
-        "date": "Sun Aug 16 17:27:47 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.2 to 2.3.3 (#1003)"
-      },
       {
         "sha": "a2cd8a356d089a4567225459acb342570cbdeb46",
         "author": "dependabot[bot]",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:46:34 2026 \u002B0200",
         "message": "refactor!: discover the test framework adapter only from the registry (#1066)"
+      },
+      {
+        "sha": "d0ec4dc034676cc31384d687c95079c2ea1950a3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 21:33:47 2026 \u002B0200",
+        "message": "feat: mark the expectations that a null subject now fails with \u0060GuaranteesNotNull\u0060 (#1079)"
       }
     ],
     "labels": [
-      "efbe5c0a",
       "a2cd8a35",
       "d6d2b3d2",
       "956eadd6",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "9547e82c",
       "6870b4c9",
       "3e81a878",
-      "d2ca3fb8"
+      "d2ca3fb8",
+      "d0ec4dc0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          463.1489292553493,
           485.1151306629181,
           474.23495664596555,
           489.05501550038656,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           461.8416782787868,
           486.415011201586,
           525.063368661063,
-          529.5231957753499
+          529.5231957753499,
+          506.03295019694735
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          485.5276449067252,
           473.09620780944823,
           510.3519074757894,
           501.6263490041097,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           469.7274462064107,
           482.7898104985555,
           519.8143531163533,
-          516.1294058481852
+          516.1294058481852,
+          513.9455503736224
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "efbe5c0acc628f150ac4a76f24b7c0e1a7a987c1",
-        "author": "dependabot[bot]",
-        "date": "Sun Aug 16 17:27:47 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.2 to 2.3.3 (#1003)"
-      },
-      {
         "sha": "a2cd8a356d089a4567225459acb342570cbdeb46",
         "author": "dependabot[bot]",
         "date": "Sun Aug 16 17:28:01 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:46:34 2026 \u002B0200",
         "message": "refactor!: discover the test framework adapter only from the registry (#1066)"
+      },
+      {
+        "sha": "d0ec4dc034676cc31384d687c95079c2ea1950a3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 21:33:47 2026 \u002B0200",
+        "message": "feat: mark the expectations that a null subject now fails with \u0060GuaranteesNotNull\u0060 (#1079)"
       }
     ],
     "labels": [
-      "efbe5c0a",
       "a2cd8a35",
       "d6d2b3d2",
       "956eadd6",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "9547e82c",
       "6870b4c9",
       "3e81a878",
-      "d2ca3fb8"
+      "d2ca3fb8",
+      "d0ec4dc0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          267.5967062541417,
           248.1609696660723,
           263.4916341645377,
           255.30838574681962,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           264.6084016731807,
           263.8104877131326,
           292.5610894203186,
-          290.85830804279874
+          290.85830804279874,
+          278.6792674064636
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          241.64932530266898,
           238.2086463891543,
           257.3656890551249,
           248.93196236292522,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           242.92863861719766,
           240.2802453358968,
           287.0345934232076,
-          278.1200395266215
+          278.1200395266215,
+          288.03102500098095
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "efbe5c0acc628f150ac4a76f24b7c0e1a7a987c1",
-        "author": "dependabot[bot]",
-        "date": "Sun Aug 16 17:27:47 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.2 to 2.3.3 (#1003)"
-      },
-      {
         "sha": "a2cd8a356d089a4567225459acb342570cbdeb46",
         "author": "dependabot[bot]",
         "date": "Sun Aug 16 17:28:01 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:46:34 2026 \u002B0200",
         "message": "refactor!: discover the test framework adapter only from the registry (#1066)"
+      },
+      {
+        "sha": "d0ec4dc034676cc31384d687c95079c2ea1950a3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 21:33:47 2026 \u002B0200",
+        "message": "feat: mark the expectations that a null subject now fails with \u0060GuaranteesNotNull\u0060 (#1079)"
       }
     ],
     "labels": [
-      "efbe5c0a",
       "a2cd8a35",
       "d6d2b3d2",
       "956eadd6",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "9547e82c",
       "6870b4c9",
       "3e81a878",
-      "d2ca3fb8"
+      "d2ca3fb8",
+      "d0ec4dc0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          469.32736294086163,
           457.0840086619059,
           473.729869445165,
           474.2024907430013,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           464.54025302614485,
           465.3481043302096,
           468.8646805445353,
-          488.89495271046957
+          488.89495271046957,
+          480.937150255839
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1330.9443862915039,
           1145.1624849864415,
           1211.4821085248675,
           1194.762306213379,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1201.658662523542,
           1176.4259724617004,
           1249.799434153239,
-          1295.904849243164
+          1295.904849243164,
+          1321.3737482706706
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "efbe5c0acc628f150ac4a76f24b7c0e1a7a987c1",
-        "author": "dependabot[bot]",
-        "date": "Sun Aug 16 17:27:47 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.2 to 2.3.3 (#1003)"
-      },
-      {
         "sha": "a2cd8a356d089a4567225459acb342570cbdeb46",
         "author": "dependabot[bot]",
         "date": "Sun Aug 16 17:28:01 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:46:34 2026 \u002B0200",
         "message": "refactor!: discover the test framework adapter only from the registry (#1066)"
+      },
+      {
+        "sha": "d0ec4dc034676cc31384d687c95079c2ea1950a3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 21:33:47 2026 \u002B0200",
+        "message": "feat: mark the expectations that a null subject now fails with \u0060GuaranteesNotNull\u0060 (#1079)"
       }
     ],
     "labels": [
-      "efbe5c0a",
       "a2cd8a35",
       "d6d2b3d2",
       "956eadd6",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "9547e82c",
       "6870b4c9",
       "3e81a878",
-      "d2ca3fb8"
+      "d2ca3fb8",
+      "d0ec4dc0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1928.834142957415,
           1882.4668922424316,
           1855.15222461407,
           1917.4381256103516,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1929.1881154378254,
           1918.9761902945381,
           1911.5522774287633,
-          1992.9378428141276
+          1992.9378428141276,
+          2019.234761919294
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1326.3457829793294,
           1281.9057956695556,
           1365.7781730651855,
           1360.8156960805256,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1316.3702767235893,
           1350.3056784409744,
           1294.8320435841879,
-          1315.3065643310547
+          1315.3065643310547,
+          1463.6770374591533
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "efbe5c0acc628f150ac4a76f24b7c0e1a7a987c1",
-        "author": "dependabot[bot]",
-        "date": "Sun Aug 16 17:27:47 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.2 to 2.3.3 (#1003)"
-      },
-      {
         "sha": "a2cd8a356d089a4567225459acb342570cbdeb46",
         "author": "dependabot[bot]",
         "date": "Sun Aug 16 17:28:01 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:46:34 2026 \u002B0200",
         "message": "refactor!: discover the test framework adapter only from the registry (#1066)"
+      },
+      {
+        "sha": "d0ec4dc034676cc31384d687c95079c2ea1950a3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 21:33:47 2026 \u002B0200",
+        "message": "feat: mark the expectations that a null subject now fails with \u0060GuaranteesNotNull\u0060 (#1079)"
       }
     ],
     "labels": [
-      "efbe5c0a",
       "a2cd8a35",
       "d6d2b3d2",
       "956eadd6",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "9547e82c",
       "6870b4c9",
       "3e81a878",
-      "d2ca3fb8"
+      "d2ca3fb8",
+      "d0ec4dc0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2607.2419998168943,
           2524.2784502665204,
           2441.176905118502,
           2525.806895446777,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2576.0701917012534,
           2657.3305276234946,
           2543.1785563151043,
-          2589.773511505127
+          2589.773511505127,
+          2688.963762828282
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27195.259106953938,
           20087.33641924177,
           20258.23517150879,
           21029.074384416854,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           26675.440717424666,
           26724.738989257814,
           27291.032965087892,
-          27726.63888244629
+          27726.63888244629,
+          28133.343471272787
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4202,7 +4202,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4235,6 +4234,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
