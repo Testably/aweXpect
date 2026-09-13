@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "95ef6b5cc4db9df7d0e9bf2297d1a41c7015f67c",
-        "author": "dependabot[bot]",
-        "date": "Mon Jun 29 12:21:55 2026 \u002B0200",
-        "message": "chore: Bump the tunit group with 2 updates (#985)"
-      },
-      {
         "sha": "9a5e940f9997bc4f77286a5e26e5178cab40283e",
         "author": "dependabot[bot]",
         "date": "Sun Jul 5 16:57:27 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Ferhat Samet Kalkan",
         "date": "Sun Sep 13 09:05:41 2026 \u002B0300",
         "message": "feat: add property expectations for Version (#1061)"
+      },
+      {
+        "sha": "8871bca5bd231595e8219cb6499db045b27bf470",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 08:56:01 2026 \u002B0200",
+        "message": "test: update the public API snapshots for \u0060ThatVersion\u0060 (#1067)"
       }
     ],
     "labels": [
-      "95ef6b5c",
       "9a5e940f",
       "a431a771",
       "4404211b",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "935bb145",
       "543ef39f",
       "65f95731",
-      "453a0e57"
+      "453a0e57",
+      "8871bca5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          250.72195428212484,
           265.5275889805385,
           254.1256928077111,
           282.11799686295643,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           281.56352847417196,
           249.18366251673018,
           250.8609804471334,
-          234.92631273269654
+          234.92631273269654,
+          182.18338933357825
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          235.77647287505013,
           264.8482259750366,
           247.2462817600795,
           265.8475589071001,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           266.9943772315979,
           246.28094317118328,
           233.7515582016536,
-          229.21977038042886
+          229.21977038042886,
+          189.7353384256363
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "95ef6b5cc4db9df7d0e9bf2297d1a41c7015f67c",
-        "author": "dependabot[bot]",
-        "date": "Mon Jun 29 12:21:55 2026 \u002B0200",
-        "message": "chore: Bump the tunit group with 2 updates (#985)"
-      },
-      {
         "sha": "9a5e940f9997bc4f77286a5e26e5178cab40283e",
         "author": "dependabot[bot]",
         "date": "Sun Jul 5 16:57:27 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Ferhat Samet Kalkan",
         "date": "Sun Sep 13 09:05:41 2026 \u002B0300",
         "message": "feat: add property expectations for Version (#1061)"
+      },
+      {
+        "sha": "8871bca5bd231595e8219cb6499db045b27bf470",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 08:56:01 2026 \u002B0200",
+        "message": "test: update the public API snapshots for \u0060ThatVersion\u0060 (#1067)"
       }
     ],
     "labels": [
-      "95ef6b5c",
       "9a5e940f",
       "a431a771",
       "4404211b",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "935bb145",
       "543ef39f",
       "65f95731",
-      "453a0e57"
+      "453a0e57",
+      "8871bca5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          317781.9690880409,
           312988.6269205729,
           282828.55787760415,
           326184.2515055339,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           325843.86832682294,
           298770.44361979165,
           307137.03560965403,
-          248087.43250450722
+          248087.43250450722,
+          219368.98120117188
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1049,7 +1049,6 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
           335444,
           335444,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444
+          335444,
+          335442
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2747542.05859375,
           2815038.0403645835,
           2421132.736197917,
           2914131.455208333,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2856284.6182291666,
           2692831.5122395833,
           2645156.8571428573,
-          1833769.812109375
+          1833769.812109375,
+          1787183.7799479167
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841651,
           4841647,
           4841651,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841648,
           4841647,
           4841651,
-          4841609
+          4841609,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "95ef6b5cc4db9df7d0e9bf2297d1a41c7015f67c",
-        "author": "dependabot[bot]",
-        "date": "Mon Jun 29 12:21:55 2026 \u002B0200",
-        "message": "chore: Bump the tunit group with 2 updates (#985)"
-      },
       {
         "sha": "9a5e940f9997bc4f77286a5e26e5178cab40283e",
         "author": "dependabot[bot]",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Ferhat Samet Kalkan",
         "date": "Sun Sep 13 09:05:41 2026 \u002B0300",
         "message": "feat: add property expectations for Version (#1061)"
+      },
+      {
+        "sha": "8871bca5bd231595e8219cb6499db045b27bf470",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 08:56:01 2026 \u002B0200",
+        "message": "test: update the public API snapshots for \u0060ThatVersion\u0060 (#1067)"
       }
     ],
     "labels": [
-      "95ef6b5c",
       "9a5e940f",
       "a431a771",
       "4404211b",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "935bb145",
       "543ef39f",
       "65f95731",
-      "453a0e57"
+      "453a0e57",
+      "8871bca5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          480.2384469692524,
           514.7213216781616,
           470.8345993848947,
           527.4903234481811,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           541.9017120997111,
           505.5021213803972,
           481.8990478175027,
-          410.0907859802246
+          410.0907859802246,
+          373.0539887632643
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          456.0809893948691,
           491.939611026219,
           493.87994399437537,
           526.5757371266683,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           570.2607573100498,
           487.66618938446044,
           486.3925545056661,
-          429.52131395339967
+          429.52131395339967,
+          371.1073820250375
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "95ef6b5cc4db9df7d0e9bf2297d1a41c7015f67c",
-        "author": "dependabot[bot]",
-        "date": "Mon Jun 29 12:21:55 2026 \u002B0200",
-        "message": "chore: Bump the tunit group with 2 updates (#985)"
-      },
-      {
         "sha": "9a5e940f9997bc4f77286a5e26e5178cab40283e",
         "author": "dependabot[bot]",
         "date": "Sun Jul 5 16:57:27 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Ferhat Samet Kalkan",
         "date": "Sun Sep 13 09:05:41 2026 \u002B0300",
         "message": "feat: add property expectations for Version (#1061)"
+      },
+      {
+        "sha": "8871bca5bd231595e8219cb6499db045b27bf470",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 08:56:01 2026 \u002B0200",
+        "message": "test: update the public API snapshots for \u0060ThatVersion\u0060 (#1067)"
       }
     ],
     "labels": [
-      "95ef6b5c",
       "9a5e940f",
       "a431a771",
       "4404211b",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "935bb145",
       "543ef39f",
       "65f95731",
-      "453a0e57"
+      "453a0e57",
+      "8871bca5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          266.79638926188153,
           283.1361319541931,
           262.61892363003324,
           286.9235668500265,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           300.1345632870992,
           292.19284489949547,
           258.00959533055624,
-          227.71468903223675
+          227.71468903223675,
+          194.76749450365702
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          243.84770464897156,
           258.05092646280923,
           246.32795023918152,
           273.4973823865255,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           286.254754002889,
           249.63275349934895,
           252.04729822703771,
-          226.72246983846028
+          226.72246983846028,
+          189.72682732741038
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "95ef6b5cc4db9df7d0e9bf2297d1a41c7015f67c",
-        "author": "dependabot[bot]",
-        "date": "Mon Jun 29 12:21:55 2026 \u002B0200",
-        "message": "chore: Bump the tunit group with 2 updates (#985)"
-      },
-      {
         "sha": "9a5e940f9997bc4f77286a5e26e5178cab40283e",
         "author": "dependabot[bot]",
         "date": "Sun Jul 5 16:57:27 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Ferhat Samet Kalkan",
         "date": "Sun Sep 13 09:05:41 2026 \u002B0300",
         "message": "feat: add property expectations for Version (#1061)"
+      },
+      {
+        "sha": "8871bca5bd231595e8219cb6499db045b27bf470",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 08:56:01 2026 \u002B0200",
+        "message": "test: update the public API snapshots for \u0060ThatVersion\u0060 (#1067)"
       }
     ],
     "labels": [
-      "95ef6b5c",
       "9a5e940f",
       "a431a771",
       "4404211b",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "935bb145",
       "543ef39f",
       "65f95731",
-      "453a0e57"
+      "453a0e57",
+      "8871bca5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          458.547548191888,
           483.3902147293091,
           473.13833872477215,
           501.55909046759973,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           544.9427513758342,
           477.30670067242215,
           457.7422562326704,
-          376.30130138397215
+          376.30130138397215,
+          363.2302194595337
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1150.2959679921469,
           1195.426530710856,
           1139.6234017780848,
           1388.2218990325928,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1334.4067900521416,
           1248.4108057657877,
           1179.4223435719807,
-          1027.0105902353923
+          1027.0105902353923,
+          871.2848658194908
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "95ef6b5cc4db9df7d0e9bf2297d1a41c7015f67c",
-        "author": "dependabot[bot]",
-        "date": "Mon Jun 29 12:21:55 2026 \u002B0200",
-        "message": "chore: Bump the tunit group with 2 updates (#985)"
-      },
-      {
         "sha": "9a5e940f9997bc4f77286a5e26e5178cab40283e",
         "author": "dependabot[bot]",
         "date": "Sun Jul 5 16:57:27 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Ferhat Samet Kalkan",
         "date": "Sun Sep 13 09:05:41 2026 \u002B0300",
         "message": "feat: add property expectations for Version (#1061)"
+      },
+      {
+        "sha": "8871bca5bd231595e8219cb6499db045b27bf470",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 08:56:01 2026 \u002B0200",
+        "message": "test: update the public API snapshots for \u0060ThatVersion\u0060 (#1067)"
       }
     ],
     "labels": [
-      "95ef6b5c",
       "9a5e940f",
       "a431a771",
       "4404211b",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "935bb145",
       "543ef39f",
       "65f95731",
-      "453a0e57"
+      "453a0e57",
+      "8871bca5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1943.644634791783,
           1942.4335873921711,
           1896.8186955085168,
           2049.9512934003556,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2061.384815470378,
           1946.7893300374349,
           1884.0970989227294,
-          1273.1568255106608
+          1273.1568255106608,
+          1463.3764565331596
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1266.5787974766322,
           1459.0090315500895,
           1314.5717296600342,
           1387.4574742998395,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1470.378264290946,
           1270.8310853413172,
           1299.141104037945,
-          1170.0875072479248
+          1170.0875072479248,
+          996.1870053155081
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "95ef6b5cc4db9df7d0e9bf2297d1a41c7015f67c",
-        "author": "dependabot[bot]",
-        "date": "Mon Jun 29 12:21:55 2026 \u002B0200",
-        "message": "chore: Bump the tunit group with 2 updates (#985)"
-      },
-      {
         "sha": "9a5e940f9997bc4f77286a5e26e5178cab40283e",
         "author": "dependabot[bot]",
         "date": "Sun Jul 5 16:57:27 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Ferhat Samet Kalkan",
         "date": "Sun Sep 13 09:05:41 2026 \u002B0300",
         "message": "feat: add property expectations for Version (#1061)"
+      },
+      {
+        "sha": "8871bca5bd231595e8219cb6499db045b27bf470",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 08:56:01 2026 \u002B0200",
+        "message": "test: update the public API snapshots for \u0060ThatVersion\u0060 (#1067)"
       }
     ],
     "labels": [
-      "95ef6b5c",
       "9a5e940f",
       "a431a771",
       "4404211b",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "935bb145",
       "543ef39f",
       "65f95731",
-      "453a0e57"
+      "453a0e57",
+      "8871bca5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2545.9524711608888,
           2635.852321624756,
           2467.304022380284,
           2721.93341217041,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2623.662196840559,
           2618.817142232259,
           2553.6197069803875,
-          1675.1993885040283
+          1675.1993885040283,
+          1934.740632193429
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          26395.47559407552,
           27497.987331136068,
           19844.512142944335,
           28064.67578125,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           27559.373363788312,
           28009.99229867118,
           26467.10194498698,
-          15316.124305216472
+          15316.124305216472,
+          15359.511141263521
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4216,7 +4216,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4242,7 +4241,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33465
+          33465,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
