@@ -1,4 +1,5 @@
 ﻿#if NET8_0_OR_GREATER
+using System.Collections.Immutable;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -130,7 +131,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task ShouldUseCustomComparer()
 			{
-				IEnumerable<string> subject = ToEnumerable(["a", "a", "a",]);
+				ImmutableArray<string?> subject = ["a", "a", "a",];
 
 				async Task Act()
 					=> await That(subject).AreAllUnique().Using(new AllDifferentComparer());
@@ -141,7 +142,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task WhenAllItemsAreUnique_ShouldSucceed()
 			{
-				IEnumerable<string> subject = ToEnumerable(["a", "b", "c",]);
+				ImmutableArray<string?> subject = ["a", "b", "c",];
 
 				async Task Act()
 					=> await That(subject).AreAllUnique();
@@ -152,7 +153,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task WhenDiffersInCasing_ShouldSucceed()
 			{
-				IEnumerable<string> subject = ToEnumerable(["a", "A",]);
+				ImmutableArray<string?> subject = ["a", "A",];
 
 				async Task Act()
 					=> await That(subject).AreAllUnique();
@@ -163,7 +164,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task WhenDiffersInCasingAndCasingIsIgnored_ShouldFail()
 			{
-				IEnumerable<string> subject = ToEnumerable(["a", "A",]);
+				ImmutableArray<string?> subject = ["a", "A",];
 
 				async Task Act()
 					=> await That(subject).AreAllUnique().IgnoringCase();
@@ -186,7 +187,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task WhenItContainsDuplicates_ShouldFail()
 			{
-				IEnumerable<string> subject = ToEnumerable(["a", "b", "c", "a",]);
+				ImmutableArray<string?> subject = ["a", "b", "c", "a",];
 
 				async Task Act()
 					=> await That(subject).AreAllUnique();
@@ -211,7 +212,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task WhenItContainsMultipleDuplicates_ShouldFail()
 			{
-				IEnumerable<string> subject = ToEnumerable(["a", "b", "c", "a", "b", "x",]);
+				ImmutableArray<string?> subject = ["a", "b", "c", "a", "b", "x",];
 
 				async Task Act()
 					=> await That(subject).AreAllUnique();

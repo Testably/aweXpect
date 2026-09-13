@@ -40,7 +40,6 @@ public sealed class GuaranteesNotNullTests
 		"ThatAsyncEnumerable.None(IThat<IAsyncEnumerable<String>>)",
 		"ThatEnumerable.All(IThat<IEnumerable<String>>)",
 		"ThatEnumerable.Any(IThat<IEnumerable<String>>)",
-		"ThatEnumerable.AreAllUnique(IThat<Nullable<ImmutableArray<String>>>)",
 		"ThatEnumerable.AtLeast(IThat<IEnumerable<String>>,Int32)",
 		"ThatEnumerable.AtMost(IThat<IEnumerable<String>>,Int32)",
 		"ThatEnumerable.Between(IThat<IEnumerable<String>>,Int32)",
@@ -72,8 +71,6 @@ public sealed class GuaranteesNotNullTests
 	private static readonly Dictionary<string, NullSubjectOutcome> ExpectationsThatDoNotFail =
 		new(StringComparer.Ordinal)
 		{
-			["ThatAsyncEnumerable.DoesNotContain(IAsyncEnumerable<String>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatAsyncEnumerable.DoesNotContain(IAsyncEnumerable<TItem>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
 			["ThatAsyncEnumerable.IsNotContainedIn(IAsyncEnumerable<String>)"] = NullSubjectOutcome.Passes,
 			["ThatAsyncEnumerable.IsNotContainedIn(IAsyncEnumerable<TItem>)"] = NullSubjectOutcome.Passes,
 			["ThatAsyncEnumerable.IsNotEqualTo(IAsyncEnumerable<DateTime>)"] = NullSubjectOutcome.Passes,
@@ -86,11 +83,6 @@ public sealed class GuaranteesNotNullTests
 			["ThatAsyncEnumerable.IsNotEqualTo(IAsyncEnumerable<Single>)"] = NullSubjectOutcome.Passes,
 			["ThatAsyncEnumerable.IsNotEqualTo(IAsyncEnumerable<String>)"] = NullSubjectOutcome.Passes,
 			["ThatAsyncEnumerable.IsNotEqualTo(IAsyncEnumerable<TItem>)"] = NullSubjectOutcome.Passes,
-			["ThatEnumerable.AreAllUnique(Nullable<ImmutableArray<String>>)"] = NullSubjectOutcome.Throws,
-			["ThatEnumerable.DoesNotContain(IEnumerable)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatEnumerable.DoesNotContain(IEnumerable<String>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatEnumerable.DoesNotContain(IEnumerable<TItem>)"] = NullSubjectOutcome.Fails | NullSubjectOutcome.Passes,
-			["ThatEnumerable.DoesNotContain(String[])"] = NullSubjectOutcome.Throws,
 			["ThatEnumerable.IsNotContainedIn(IEnumerable)"] = NullSubjectOutcome.Passes,
 			["ThatEnumerable.IsNotContainedIn(IEnumerable<String>)"] = NullSubjectOutcome.Passes,
 			["ThatEnumerable.IsNotContainedIn(IEnumerable<TItem>)"] = NullSubjectOutcome.Passes,

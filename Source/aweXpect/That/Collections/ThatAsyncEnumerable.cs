@@ -485,13 +485,20 @@ public static partial class ThatAsyncEnumerable
 		string expectedExpression,
 		IEnumerable<TItem>? expected,
 		IOptionsEquality<TMatch> options,
-		CollectionMatchOptions matchOptions)
+		CollectionMatchOptions matchOptions,
+		bool failsForNullSubject = false)
 		: ConstraintResult.WithEqualToValue<IAsyncEnumerable<TItem>?>(it, grammars, expected is null),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 		where TItem : TMatch
 	{
 		private string? _failure;
 		private List<TItem>? _items = [];
+
+		public override Outcome Outcome
+		{
+			get => failsForNullSubject && Actual is null ? Outcome.Failure : base.Outcome;
+			protected set => base.Outcome = value;
+		}
 
 		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
@@ -603,7 +610,8 @@ public static partial class ThatAsyncEnumerable
 		ExpectationGrammars grammars,
 		string expectedExpression,
 		IEnumerable<Action<IThatSubject<TItem?>>>? expected,
-		CollectionMatchOptions matchOptions)
+		CollectionMatchOptions matchOptions,
+		bool failsForNullSubject = false)
 		: ConstraintResult.WithEqualToValue<IAsyncEnumerable<TItem>?>(it, grammars, expected is null),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 		where TItem : TMatch
@@ -612,6 +620,12 @@ public static partial class ThatAsyncEnumerable
 
 		private string? _failure;
 		private List<TItem>? _items = [];
+
+		public override Outcome Outcome
+		{
+			get => failsForNullSubject && Actual is null ? Outcome.Failure : base.Outcome;
+			protected set => base.Outcome = value;
+		}
 
 		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
@@ -733,13 +747,20 @@ public static partial class ThatAsyncEnumerable
 		ExpectationGrammars grammars,
 		string expectedExpression,
 		IEnumerable<Expression<Func<TItem, bool>>>? expected,
-		CollectionMatchOptions matchOptions)
+		CollectionMatchOptions matchOptions,
+		bool failsForNullSubject = false)
 		: ConstraintResult.WithEqualToValue<IAsyncEnumerable<TItem>?>(it, grammars, expected is null),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 		where TItem : TMatch
 	{
 		private string? _failure;
 		private List<TItem>? _items = [];
+
+		public override Outcome Outcome
+		{
+			get => failsForNullSubject && Actual is null ? Outcome.Failure : base.Outcome;
+			protected set => base.Outcome = value;
+		}
 
 		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)

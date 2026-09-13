@@ -545,7 +545,7 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, object?> AreAllUnique(this aweXpect.Core.IThat<System.Collections.IEnumerable> source) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.StringEqualityResult<System.Collections.Immutable.ImmutableArray<string?>, aweXpect.Core.IThat<System.Collections.Immutable.ImmutableArray<string?>?>> AreAllUnique(this aweXpect.Core.IThat<System.Collections.Immutable.ImmutableArray<string?>?> source) { }
+        public static aweXpect.Results.StringEqualityResult<System.Collections.Immutable.ImmutableArray<string?>, aweXpect.Core.IThat<System.Collections.Immutable.ImmutableArray<string?>>> AreAllUnique(this aweXpect.Core.IThat<System.Collections.Immutable.ImmutableArray<string?>> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> AreAllUnique<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source) { }
         [aweXpect.Core.GuaranteesNotNull]

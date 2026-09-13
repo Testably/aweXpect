@@ -172,14 +172,15 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection only contains unique items.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>?>> AreAllUnique(
-		this IThat<ImmutableArray<string?>?> source)
+	public static StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>> AreAllUnique(
+		this IThat<ImmutableArray<string?>> source)
 	{
 		StringEqualityOptions options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>?>>(
+		return new StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new AreAllUniqueForEnumerableConstraint<string, string>(expectationBuilder, it, grammars, options)),
+				=> new AreAllUniqueForEnumerableConstraint<ImmutableArray<string?>, string>(expectationBuilder, it,
+					grammars, options)),
 			source, options
 		);
 	}

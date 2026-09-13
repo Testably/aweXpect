@@ -32,12 +32,19 @@ public static partial class ThatEnumerable
 		string? expectedExpression,
 		IEnumerable<TItem>? expected,
 		IOptionsEquality<TMatch> options,
-		CollectionMatchOptions matchOptions)
+		CollectionMatchOptions matchOptions,
+		bool failsForNullSubject = false)
 		: ConstraintResult.WithEqualToValue<IEnumerable<TItem>?>(it, grammars, expected is null),
 			IAsyncContextConstraint<IEnumerable<TItem>?>
 		where TItem : TMatch
 	{
 		private string? _failure;
+
+		public override Outcome Outcome
+		{
+			get => failsForNullSubject && Actual is null ? Outcome.Failure : base.Outcome;
+			protected set => base.Outcome = value;
+		}
 
 		public async Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
@@ -133,7 +140,8 @@ public static partial class ThatEnumerable
 		ExpectationGrammars grammars,
 		string? expectedExpression,
 		IEnumerable<Action<IThatSubject<TItem?>>>? expected,
-		CollectionMatchOptions matchOptions)
+		CollectionMatchOptions matchOptions,
+		bool failsForNullSubject = false)
 		: ConstraintResult.WithEqualToValue<IEnumerable<TItem>?>(it, grammars, expected is null),
 			IAsyncContextConstraint<IEnumerable<TItem>?>
 		where TItem : TMatch
@@ -141,6 +149,12 @@ public static partial class ThatEnumerable
 		private CollectionMatchOptions.ExpectationItem<TItem>[] _expectations = [];
 
 		private string? _failure;
+
+		public override Outcome Outcome
+		{
+			get => failsForNullSubject && Actual is null ? Outcome.Failure : base.Outcome;
+			protected set => base.Outcome = value;
+		}
 
 		public async Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
@@ -246,12 +260,19 @@ public static partial class ThatEnumerable
 		ExpectationGrammars grammars,
 		string? expectedExpression,
 		IEnumerable<Expression<Func<TItem, bool>>>? expected,
-		CollectionMatchOptions matchOptions)
+		CollectionMatchOptions matchOptions,
+		bool failsForNullSubject = false)
 		: ConstraintResult.WithEqualToValue<IEnumerable<TItem>?>(it, grammars, expected is null),
 			IAsyncContextConstraint<IEnumerable<TItem>?>
 		where TItem : TMatch
 	{
 		private string? _failure;
+
+		public override Outcome Outcome
+		{
+			get => failsForNullSubject && Actual is null ? Outcome.Failure : base.Outcome;
+			protected set => base.Outcome = value;
+		}
 
 		public async Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
@@ -357,13 +378,20 @@ public static partial class ThatEnumerable
 		string? expectedExpression,
 		IEnumerable<TItem>? expected,
 		IOptionsEquality<TMatch> options,
-		CollectionMatchOptions matchOptions)
+		CollectionMatchOptions matchOptions,
+		bool failsForNullSubject = false)
 		: ConstraintResult.WithEqualToValue<TEnumerable?>(it, grammars, expected is null),
 			IAsyncContextConstraint<TEnumerable?>
 		where TEnumerable : IEnumerable?
 		where TItem : TMatch
 	{
 		private string? _failure;
+
+		public override Outcome Outcome
+		{
+			get => failsForNullSubject && Actual is null ? Outcome.Failure : base.Outcome;
+			protected set => base.Outcome = value;
+		}
 
 		public async Task<ConstraintResult> IsMetBy(TEnumerable? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
