@@ -70,7 +70,7 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
-			public async Task WhenUnexpectedIsNull_ShouldFail()
+			public async Task WhenUnexpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "some text";
 				string? unexpected = null;
@@ -78,12 +78,9 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotContain(unexpected!);
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             does not contain <null>,
-					             but "some text" cannot be validated against <null>
-					             """);
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The unexpected cannot be null.").AsPrefix();
 			}
 
 			[Fact]

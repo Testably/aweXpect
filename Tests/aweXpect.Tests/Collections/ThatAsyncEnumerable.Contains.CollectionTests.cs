@@ -132,7 +132,7 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
-			public async Task WhenExpectedIsEmpty_ShouldSucceed()
+			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Enumerable.Range(1, 11));
 				IEnumerable<int> expected = [];
@@ -140,11 +140,13 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).Contains(expected);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' collection cannot be empty.").AsPrefix();
 			}
 
 			[Fact]
-			public async Task WhenExpectedIsNull_ShouldFail()
+			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Enumerable.Range(1, 11));
 				IEnumerable<int>? expected = null;
@@ -152,26 +154,24 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).Contains(expected!);
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             contains collection expected in order,
-					             but it cannot compare to <null>
-					             """);
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The expected cannot be null.").AsPrefix();
 			}
 
 			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IAsyncEnumerable<string>? subject = null;
+				IEnumerable<string> expected = ["foo",];
 
 				async Task Act()
-					=> await That(subject).Contains(Array.Empty<string>());
+					=> await That(subject).Contains(expected);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains collection Array.Empty<string>() in order,
+					             contains collection expected in order,
 					             but it was <null>
 					             """);
 			}
@@ -642,7 +642,7 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
-			public async Task WhenExpectedIsEmpty_ShouldSucceed()
+			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Enumerable.Range(1, 11));
 				IEnumerable<int> expected = [];
@@ -650,11 +650,13 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).Contains(expected).IgnoringDuplicates();
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' collection cannot be empty.").AsPrefix();
 			}
 
 			[Fact]
-			public async Task WhenExpectedIsNull_ShouldFail()
+			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Enumerable.Range(1, 11));
 				IEnumerable<int>? expected = null;
@@ -662,12 +664,9 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).Contains(expected!).IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             contains collection expected in order ignoring duplicates,
-					             but it cannot compare to <null>
-					             """);
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The expected cannot be null.").AsPrefix();
 			}
 
 			[Fact]
@@ -1066,7 +1065,7 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
-			public async Task WhenExpectedIsEmpty_ShouldSucceed()
+			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Enumerable.Range(1, 11));
 				IEnumerable<int> expected = [];
@@ -1074,11 +1073,13 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).Contains(expected).InAnyOrder();
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' collection cannot be empty.").AsPrefix();
 			}
 
 			[Fact]
-			public async Task WhenExpectedIsNull_ShouldFail()
+			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Enumerable.Range(1, 11));
 				IEnumerable<int>? expected = null;
@@ -1086,12 +1087,9 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).Contains(expected!).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             contains collection expected in any order,
-					             but it cannot compare to <null>
-					             """);
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The expected cannot be null.").AsPrefix();
 			}
 
 			[Fact]
@@ -1537,7 +1535,7 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
-			public async Task WhenExpectedIsEmpty_ShouldSucceed()
+			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Enumerable.Range(1, 11));
 				IEnumerable<int> expected = [];
@@ -1545,11 +1543,13 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).Contains(expected).InAnyOrder().IgnoringDuplicates();
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' collection cannot be empty.").AsPrefix();
 			}
 
 			[Fact]
-			public async Task WhenExpectedIsNull_ShouldFail()
+			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Enumerable.Range(1, 11));
 				IEnumerable<int>? expected = null;
@@ -1557,12 +1557,9 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).Contains(expected!).InAnyOrder().IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             contains collection expected in any order ignoring duplicates,
-					             but it cannot compare to <null>
-					             """);
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The expected cannot be null.").AsPrefix();
 			}
 
 			[Fact]

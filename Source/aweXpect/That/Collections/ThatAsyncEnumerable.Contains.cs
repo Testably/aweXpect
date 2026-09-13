@@ -109,6 +109,7 @@ public static partial class ThatAsyncEnumerable
 			IEnumerable<TItem> expected,
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
+		expected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
@@ -133,6 +134,7 @@ public static partial class ThatAsyncEnumerable
 			IEnumerable<string?> expected,
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
+		expected.ThrowIfNullOrEmpty();
 		StringEqualityOptions options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
@@ -158,6 +160,7 @@ public static partial class ThatAsyncEnumerable
 			[CallerArgumentExpression("expected")]
 			string doNotPopulateThisValue = "")
 	{
+		expected.ThrowIfNullOrEmpty();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new CollectionContainResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
@@ -181,6 +184,7 @@ public static partial class ThatAsyncEnumerable
 			[CallerArgumentExpression("expected")]
 			string doNotPopulateThisValue = "")
 	{
+		expected.ThrowIfNullOrEmpty();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new CollectionContainResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
@@ -281,6 +285,7 @@ public static partial class ThatAsyncEnumerable
 			IEnumerable<TItem> unexpected,
 			[CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "")
 	{
+		unexpected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
@@ -304,6 +309,7 @@ public static partial class ThatAsyncEnumerable
 			IEnumerable<string?> unexpected,
 			[CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "")
 	{
+		unexpected.ThrowIfNullOrEmpty();
 		StringEqualityOptions options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
@@ -328,6 +334,7 @@ public static partial class ThatAsyncEnumerable
 			[CallerArgumentExpression("unexpected")]
 			string doNotPopulateThisValue = "")
 	{
+		unexpected.ThrowIfNullOrEmpty();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new CollectionContainResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
@@ -350,6 +357,7 @@ public static partial class ThatAsyncEnumerable
 			[CallerArgumentExpression("unexpected")]
 			string doNotPopulateThisValue = "")
 	{
+		unexpected.ThrowIfNullOrEmpty();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new CollectionContainResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(

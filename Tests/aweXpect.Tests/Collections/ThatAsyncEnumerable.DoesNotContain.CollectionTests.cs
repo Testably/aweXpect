@@ -52,9 +52,10 @@ public sealed partial class ThatAsyncEnumerable
 			public async Task WhenSubjectIsNull_ShouldSucceed()
 			{
 				IAsyncEnumerable<string>? subject = null;
+				IEnumerable<string> unexpected = ["foo",];
 
 				async Task Act()
-					=> await That(subject).DoesNotContain(Array.Empty<string>());
+					=> await That(subject).DoesNotContain(unexpected);
 
 				await That(Act).DoesNotThrow();
 			}

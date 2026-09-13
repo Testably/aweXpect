@@ -20,6 +20,7 @@ public static partial class ThatString
 		this IThat<string?> source,
 		string expected)
 	{
+		expected.ThrowIfNull();
 		if (expected == string.Empty)
 		{
 			// ReSharper disable once LocalizableElement
@@ -44,6 +45,7 @@ public static partial class ThatString
 		this IThat<string?> source,
 		string unexpected)
 	{
+		unexpected.ThrowIfNull();
 		if (unexpected == string.Empty)
 		{
 			// ReSharper disable once LocalizableElement
