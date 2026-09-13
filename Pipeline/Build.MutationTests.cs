@@ -187,9 +187,22 @@ partial class Build
 				using HttpClient client = new();
 				client.DefaultRequestHeaders.Add("X-Api-Key", apiKey);
 				// https://stryker-mutator.io/docs/General/dashboard/#send-a-report-via-curl
-				await client.PutAsync(
+				HttpResponseMessage response = await client.PutAsync(
 					$"https://dashboard.stryker-mutator.io/api/reports/github.com/Testably/aweXpect/{branchName}?module={project.Key.Name}",
 					new StringContent(reportComment, new MediaTypeHeaderValue("application/json")));
+				string responseContent = await response.Content.ReadAsStringAsync();
+				if (response.IsSuccessStatusCode)
+				{
+					Log.Information("Uploaded the {Module} mutation report ({Size} bytes): {Response}",
+						project.Key.Name, reportComment.Length, responseContent);
+				}
+				else
+				{
+					// Without this the job stays green while the dashboard keeps showing the previous score.
+					Assert.Fail(
+						$"Could not upload the {project.Key.Name} mutation report ({reportComment.Length} bytes), " +
+						$"the dashboard answered {(int)response.StatusCode} {response.ReasonPhrase}: {responseContent}");
+				}
 			}
 		});
 
@@ -345,7 +358,6 @@ partial class Build
 		                      				"**/.github/**/*.*"
 		                      			]
 		                      		},
-		                      		"concurrency": {{Environment.ProcessorCount}},
 		                      		{{mutateSection}}"mutation-level": "Advanced"
 		                      	}
 		                      }
