@@ -173,6 +173,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not seen as infinite (<see langword="null" /> or not <see cref="float.IsInfinity" />).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<float?, IThat<float?>> IsNotInfinite(
 		this IThat<float?> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -183,6 +184,7 @@ public static partial class ThatNumber
 	///     Verifies that the subject is not seen as infinite (<see langword="null" /> or not <see cref="double.IsInfinity" />
 	///     ).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<double?, IThat<double?>> IsNotInfinite(
 		this IThat<double?> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>

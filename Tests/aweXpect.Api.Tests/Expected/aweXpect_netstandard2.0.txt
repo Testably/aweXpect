@@ -1289,16 +1289,22 @@ namespace aweXpect
         public static aweXpect.Results.NumberToleranceResult<ushort, aweXpect.Core.IThat<ushort>> IsNotEqualTo(this aweXpect.Core.IThat<ushort> source, ushort? unexpected) { }
         public static aweXpect.Results.NullableNumberToleranceResult<ushort, aweXpect.Core.IThat<ushort?>> IsNotEqualTo(this aweXpect.Core.IThat<ushort?> source, ushort? unexpected) { }
         public static aweXpect.Results.AndOrResult<double, aweXpect.Core.IThat<double>> IsNotFinite(this aweXpect.Core.IThat<double> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<double?, aweXpect.Core.IThat<double?>> IsNotFinite(this aweXpect.Core.IThat<double?> source) { }
         public static aweXpect.Results.AndOrResult<float, aweXpect.Core.IThat<float>> IsNotFinite(this aweXpect.Core.IThat<float> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<float?, aweXpect.Core.IThat<float?>> IsNotFinite(this aweXpect.Core.IThat<float?> source) { }
         public static aweXpect.Results.AndOrResult<double, aweXpect.Core.IThat<double>> IsNotInfinite(this aweXpect.Core.IThat<double> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<double?, aweXpect.Core.IThat<double?>> IsNotInfinite(this aweXpect.Core.IThat<double?> source) { }
         public static aweXpect.Results.AndOrResult<float, aweXpect.Core.IThat<float>> IsNotInfinite(this aweXpect.Core.IThat<float> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<float?, aweXpect.Core.IThat<float?>> IsNotInfinite(this aweXpect.Core.IThat<float?> source) { }
         public static aweXpect.Results.AndOrResult<double, aweXpect.Core.IThat<double>> IsNotNaN(this aweXpect.Core.IThat<double> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<double?, aweXpect.Core.IThat<double?>> IsNotNaN(this aweXpect.Core.IThat<double?> source) { }
         public static aweXpect.Results.AndOrResult<float, aweXpect.Core.IThat<float>> IsNotNaN(this aweXpect.Core.IThat<float> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<float?, aweXpect.Core.IThat<float?>> IsNotNaN(this aweXpect.Core.IThat<float?> source) { }
         public static aweXpect.Results.NumberToleranceResult<byte, aweXpect.Core.IThat<byte>> IsNotOneOf(this aweXpect.Core.IThat<byte> source, System.Collections.Generic.IEnumerable<byte> unexpected) { }
         public static aweXpect.Results.NumberToleranceResult<byte, aweXpect.Core.IThat<byte>> IsNotOneOf(this aweXpect.Core.IThat<byte> source, System.Collections.Generic.IEnumerable<byte?> unexpected) { }

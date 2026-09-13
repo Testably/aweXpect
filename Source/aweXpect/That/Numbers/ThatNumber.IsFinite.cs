@@ -190,6 +190,7 @@ public static partial class ThatNumber
 	///     Verifies that the subject is not seen as finite (either <see cref="float.IsInfinity" /> or
 	///     <see cref="float.IsNaN" /> or <see langword="null" />).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<float?, IThat<float?>> IsNotFinite(
 		this IThat<float?> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -200,6 +201,7 @@ public static partial class ThatNumber
 	///     Verifies that the subject is not seen as finite (either <see cref="double.IsInfinity" /> or
 	///     <see cref="double.IsNaN" /> or <see langword="null" />).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<double?, IThat<double?>> IsNotFinite(
 		this IThat<double?> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
