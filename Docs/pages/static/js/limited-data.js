@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "9a5e940f9997bc4f77286a5e26e5178cab40283e",
-        "author": "dependabot[bot]",
-        "date": "Sun Jul 5 16:57:27 2026 \u002B0200",
-        "message": "chore: Bump actions/checkout from 6 to 7 (#983)"
-      },
-      {
         "sha": "a431a77127448fe0541c29af8d2a42df104fa01c",
         "author": "dependabot[bot]",
         "date": "Mon Jul 6 16:33:45 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 08:56:01 2026 \u002B0200",
         "message": "test: update the public API snapshots for \u0060ThatVersion\u0060 (#1067)"
+      },
+      {
+        "sha": "80d7a636894ca1e3cc4ea5deadedd7d2e07cd9c2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 09:12:19 2026 \u002B0200",
+        "message": "fix!: fail the negated boolean, number, enum and type expectations for a \u0060null\u0060 subject (#1065)"
       }
     ],
     "labels": [
-      "9a5e940f",
       "a431a771",
       "4404211b",
       "76cf6952",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "543ef39f",
       "65f95731",
       "453a0e57",
-      "8871bca5"
+      "8871bca5",
+      "80d7a636"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          265.5275889805385,
           254.1256928077111,
           282.11799686295643,
           267.02068818410237,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           249.18366251673018,
           250.8609804471334,
           234.92631273269654,
-          182.18338933357825
+          182.18338933357825,
+          242.9484498500824
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          264.8482259750366,
           247.2462817600795,
           265.8475589071001,
           243.31778945241655,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           246.28094317118328,
           233.7515582016536,
           229.21977038042886,
-          189.7353384256363
+          189.7353384256363,
+          247.74600553512573
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "9a5e940f9997bc4f77286a5e26e5178cab40283e",
-        "author": "dependabot[bot]",
-        "date": "Sun Jul 5 16:57:27 2026 \u002B0200",
-        "message": "chore: Bump actions/checkout from 6 to 7 (#983)"
-      },
-      {
         "sha": "a431a77127448fe0541c29af8d2a42df104fa01c",
         "author": "dependabot[bot]",
         "date": "Mon Jul 6 16:33:45 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 08:56:01 2026 \u002B0200",
         "message": "test: update the public API snapshots for \u0060ThatVersion\u0060 (#1067)"
+      },
+      {
+        "sha": "80d7a636894ca1e3cc4ea5deadedd7d2e07cd9c2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 09:12:19 2026 \u002B0200",
+        "message": "fix!: fail the negated boolean, number, enum and type expectations for a \u0060null\u0060 subject (#1065)"
       }
     ],
     "labels": [
-      "9a5e940f",
       "a431a771",
       "4404211b",
       "76cf6952",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "543ef39f",
       "65f95731",
       "453a0e57",
-      "8871bca5"
+      "8871bca5",
+      "80d7a636"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          312988.6269205729,
           282828.55787760415,
           326184.2515055339,
           312643.49459635414,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           298770.44361979165,
           307137.03560965403,
           248087.43250450722,
-          219368.98120117188
+          219368.98120117188,
+          286452.7508370536
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1048,7 +1048,6 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
           335444,
           335444,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335442
+          335442,
+          335444
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2815038.0403645835,
           2421132.736197917,
           2914131.455208333,
           2738318.605769231,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2692831.5122395833,
           2645156.8571428573,
           1833769.812109375,
-          1787183.7799479167
+          1787183.7799479167,
+          2333736.3889508927
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841647,
           4841651,
           4841651,
@@ -1202,6 +1201,7 @@ window.BENCHMARK_DATA = {
           4841647,
           4841651,
           4841609,
+          4841647,
           4841647
         ],
         "borderColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "9a5e940f9997bc4f77286a5e26e5178cab40283e",
-        "author": "dependabot[bot]",
-        "date": "Sun Jul 5 16:57:27 2026 \u002B0200",
-        "message": "chore: Bump actions/checkout from 6 to 7 (#983)"
-      },
       {
         "sha": "a431a77127448fe0541c29af8d2a42df104fa01c",
         "author": "dependabot[bot]",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 08:56:01 2026 \u002B0200",
         "message": "test: update the public API snapshots for \u0060ThatVersion\u0060 (#1067)"
+      },
+      {
+        "sha": "80d7a636894ca1e3cc4ea5deadedd7d2e07cd9c2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 09:12:19 2026 \u002B0200",
+        "message": "fix!: fail the negated boolean, number, enum and type expectations for a \u0060null\u0060 subject (#1065)"
       }
     ],
     "labels": [
-      "9a5e940f",
       "a431a771",
       "4404211b",
       "76cf6952",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "543ef39f",
       "65f95731",
       "453a0e57",
-      "8871bca5"
+      "8871bca5",
+      "80d7a636"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          514.7213216781616,
           470.8345993848947,
           527.4903234481811,
           489.31808439890546,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           505.5021213803972,
           481.8990478175027,
           410.0907859802246,
-          373.0539887632643
+          373.0539887632643,
+          524.0201873779297
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          491.939611026219,
           493.87994399437537,
           526.5757371266683,
           506.4021090825399,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           487.66618938446044,
           486.3925545056661,
           429.52131395339967,
-          371.1073820250375
+          371.1073820250375,
+          485.92426039377847
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "9a5e940f9997bc4f77286a5e26e5178cab40283e",
-        "author": "dependabot[bot]",
-        "date": "Sun Jul 5 16:57:27 2026 \u002B0200",
-        "message": "chore: Bump actions/checkout from 6 to 7 (#983)"
-      },
-      {
         "sha": "a431a77127448fe0541c29af8d2a42df104fa01c",
         "author": "dependabot[bot]",
         "date": "Mon Jul 6 16:33:45 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 08:56:01 2026 \u002B0200",
         "message": "test: update the public API snapshots for \u0060ThatVersion\u0060 (#1067)"
+      },
+      {
+        "sha": "80d7a636894ca1e3cc4ea5deadedd7d2e07cd9c2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 09:12:19 2026 \u002B0200",
+        "message": "fix!: fail the negated boolean, number, enum and type expectations for a \u0060null\u0060 subject (#1065)"
       }
     ],
     "labels": [
-      "9a5e940f",
       "a431a771",
       "4404211b",
       "76cf6952",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "543ef39f",
       "65f95731",
       "453a0e57",
-      "8871bca5"
+      "8871bca5",
+      "80d7a636"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          283.1361319541931,
           262.61892363003324,
           286.9235668500265,
           281.9353145452646,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           292.19284489949547,
           258.00959533055624,
           227.71468903223675,
-          194.76749450365702
+          194.76749450365702,
+          255.62491631507874
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          258.05092646280923,
           246.32795023918152,
           273.4973823865255,
           263.03640667597455,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           249.63275349934895,
           252.04729822703771,
           226.72246983846028,
-          189.72682732741038
+          189.72682732741038,
+          245.76577932494027
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "9a5e940f9997bc4f77286a5e26e5178cab40283e",
-        "author": "dependabot[bot]",
-        "date": "Sun Jul 5 16:57:27 2026 \u002B0200",
-        "message": "chore: Bump actions/checkout from 6 to 7 (#983)"
-      },
-      {
         "sha": "a431a77127448fe0541c29af8d2a42df104fa01c",
         "author": "dependabot[bot]",
         "date": "Mon Jul 6 16:33:45 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 08:56:01 2026 \u002B0200",
         "message": "test: update the public API snapshots for \u0060ThatVersion\u0060 (#1067)"
+      },
+      {
+        "sha": "80d7a636894ca1e3cc4ea5deadedd7d2e07cd9c2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 09:12:19 2026 \u002B0200",
+        "message": "fix!: fail the negated boolean, number, enum and type expectations for a \u0060null\u0060 subject (#1065)"
       }
     ],
     "labels": [
-      "9a5e940f",
       "a431a771",
       "4404211b",
       "76cf6952",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "543ef39f",
       "65f95731",
       "453a0e57",
-      "8871bca5"
+      "8871bca5",
+      "80d7a636"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          483.3902147293091,
           473.13833872477215,
           501.55909046759973,
           492.769399370466,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           477.30670067242215,
           457.7422562326704,
           376.30130138397215,
-          363.2302194595337
+          363.2302194595337,
+          495.42105700174966
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1195.426530710856,
           1139.6234017780848,
           1388.2218990325928,
           1273.9693211873373,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1248.4108057657877,
           1179.4223435719807,
           1027.0105902353923,
-          871.2848658194908
+          871.2848658194908,
+          1182.0531973520915
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "9a5e940f9997bc4f77286a5e26e5178cab40283e",
-        "author": "dependabot[bot]",
-        "date": "Sun Jul 5 16:57:27 2026 \u002B0200",
-        "message": "chore: Bump actions/checkout from 6 to 7 (#983)"
-      },
-      {
         "sha": "a431a77127448fe0541c29af8d2a42df104fa01c",
         "author": "dependabot[bot]",
         "date": "Mon Jul 6 16:33:45 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 08:56:01 2026 \u002B0200",
         "message": "test: update the public API snapshots for \u0060ThatVersion\u0060 (#1067)"
+      },
+      {
+        "sha": "80d7a636894ca1e3cc4ea5deadedd7d2e07cd9c2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 09:12:19 2026 \u002B0200",
+        "message": "fix!: fail the negated boolean, number, enum and type expectations for a \u0060null\u0060 subject (#1065)"
       }
     ],
     "labels": [
-      "9a5e940f",
       "a431a771",
       "4404211b",
       "76cf6952",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "543ef39f",
       "65f95731",
       "453a0e57",
-      "8871bca5"
+      "8871bca5",
+      "80d7a636"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1942.4335873921711,
           1896.8186955085168,
           2049.9512934003556,
           2030.5790064493815,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1946.7893300374349,
           1884.0970989227294,
           1273.1568255106608,
-          1463.3764565331596
+          1463.3764565331596,
+          1897.1561297098795
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1459.0090315500895,
           1314.5717296600342,
           1387.4574742998395,
           1389.8721147264753,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1270.8310853413172,
           1299.141104037945,
           1170.0875072479248,
-          996.1870053155081
+          996.1870053155081,
+          1352.2423076629639
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "9a5e940f9997bc4f77286a5e26e5178cab40283e",
-        "author": "dependabot[bot]",
-        "date": "Sun Jul 5 16:57:27 2026 \u002B0200",
-        "message": "chore: Bump actions/checkout from 6 to 7 (#983)"
-      },
-      {
         "sha": "a431a77127448fe0541c29af8d2a42df104fa01c",
         "author": "dependabot[bot]",
         "date": "Mon Jul 6 16:33:45 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 08:56:01 2026 \u002B0200",
         "message": "test: update the public API snapshots for \u0060ThatVersion\u0060 (#1067)"
+      },
+      {
+        "sha": "80d7a636894ca1e3cc4ea5deadedd7d2e07cd9c2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 09:12:19 2026 \u002B0200",
+        "message": "fix!: fail the negated boolean, number, enum and type expectations for a \u0060null\u0060 subject (#1065)"
       }
     ],
     "labels": [
-      "9a5e940f",
       "a431a771",
       "4404211b",
       "76cf6952",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "543ef39f",
       "65f95731",
       "453a0e57",
-      "8871bca5"
+      "8871bca5",
+      "80d7a636"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2635.852321624756,
           2467.304022380284,
           2721.93341217041,
           2649.0480904212363,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2618.817142232259,
           2553.6197069803875,
           1675.1993885040283,
-          1934.740632193429
+          1934.740632193429,
+          2571.071692911784
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27497.987331136068,
           19844.512142944335,
           28064.67578125,
           26888.33899143764,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           28009.99229867118,
           26467.10194498698,
           15316.124305216472,
-          15359.511141263521
+          15359.511141263521,
+          19494.986265055337
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4215,7 +4215,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4242,6 +4241,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
