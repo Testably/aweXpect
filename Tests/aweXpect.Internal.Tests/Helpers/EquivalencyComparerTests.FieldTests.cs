@@ -145,6 +145,27 @@ public sealed partial class EquivalencyComparerTests
 		}
 
 		[Theory]
+		[InlineData(1, 2, 1, 2, true)]
+		[InlineData(1, 2, 1, 3, false)]
+		[InlineData(1, 2, 3, 2, false)]
+		public async Task WhenIncludingPublicAndInternalMembers_ShouldConsiderPublicAndInternalFields(
+			int actualPublicValue, int actualInternalValue, int expectedPublicValue, int expectedInternalValue,
+			bool expectedResult)
+		{
+			MyClassWithFields actual = new(actualPublicValue, actualInternalValue, 3);
+			MyClassWithFields expected = new(expectedPublicValue, expectedInternalValue, 4);
+			EquivalencyComparer sut = new(new EquivalencyOptions
+			{
+				Fields = IncludeMembers.Public | IncludeMembers.Internal,
+			});
+
+			bool result = await sut.AreConsideredEqual(actual, expected);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("a field has to satisfy one of the requested visibilities, not all of them at once");
+		}
+
+		[Theory]
 		[InlineData(5, 5, true)]
 		[InlineData(5, 6, false)]
 		public async Task WhenIncludingPublicMembers_ShouldConsiderPublicAndInternalFields(

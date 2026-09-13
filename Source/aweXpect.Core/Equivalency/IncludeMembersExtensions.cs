@@ -29,9 +29,7 @@ internal static class IncludeMembersExtensions
 		BindingFlags bindingFlags = GetBindingFlags(includeMembers);
 		foreach (FieldInfo field in type.GetFields(bindingFlags))
 		{
-			if ((includeMembers.HasFlag(IncludeMembers.Internal) && !field.IsAssembly) ||
-			    (includeMembers.HasFlag(IncludeMembers.Public) && !field.IsPublic) ||
-			    (includeMembers.HasFlag(IncludeMembers.Private) && !field.IsPrivate))
+			if (!Includes(includeMembers, field.IsPublic, field.IsAssembly, field.IsPrivate))
 			{
 				continue;
 			}
@@ -52,9 +50,7 @@ internal static class IncludeMembersExtensions
 		{
 			MethodInfo getter = property.GetAccessors(true)[0];
 			if (!getter.Name.StartsWith("get_", StringComparison.Ordinal) ||
-			    (includeMembers.HasFlag(IncludeMembers.Internal) && !getter.IsAssembly) ||
-			    (includeMembers.HasFlag(IncludeMembers.Public) && !getter.IsPublic) ||
-			    (includeMembers.HasFlag(IncludeMembers.Private) && !getter.IsPrivate))
+			    !Includes(includeMembers, getter.IsPublic, getter.IsAssembly, getter.IsPrivate))
 			{
 				continue;
 			}
@@ -62,4 +58,13 @@ internal static class IncludeMembersExtensions
 			yield return property;
 		}
 	}
+
+	/// <remarks>
+	///     A member is included when it has one of the requested visibilities. Requiring all of them at once would
+	///     leave a combination such as <c>Public | Internal</c> without any member.
+	/// </remarks>
+	private static bool Includes(IncludeMembers includeMembers, bool isPublic, bool isAssembly, bool isPrivate)
+		=> (includeMembers.HasFlag(IncludeMembers.Public) && isPublic) ||
+		   (includeMembers.HasFlag(IncludeMembers.Internal) && isAssembly) ||
+		   (includeMembers.HasFlag(IncludeMembers.Private) && isPrivate);
 }
