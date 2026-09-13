@@ -54,7 +54,7 @@ public class IsNotNullSuppressorTests
 	[Fact]
 	public async Task WhenExpectationAllowsNullString_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
-			// A null string fulfils `IsNotEmpty`, even though its result type is the not-nullable string.
+			// A null string fulfils `IsNotEqualTo`, even though its result type is the not-nullable string.
 			"""
 			using System.Threading.Tasks;
 			using aweXpect;
@@ -63,7 +63,7 @@ public class IsNotNullSuppressorTests
 			{
 			    public async Task MyTest(string? subject)
 			    {
-			        await Expect.That(subject).IsNotEmpty();
+			        await Expect.That(subject).IsNotEqualTo("foo");
 			        _ = {|#0:subject|}.Length;
 			    }
 			}
@@ -297,6 +297,26 @@ public class IsNotNullSuppressorTests
 			""",
 			SuppressedNullabilityWarning("CS8602")
 		);
+
+	[Fact]
+	public async Task WhenExpectationRequiresNotEmptyString_ShouldSuppressWarning() => await Verifier
+		.VerifySuppressorAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest(string? subject)
+			    {
+			        await Expect.That(subject).IsNotEmpty();
+			        _ = {|#0:subject|}.Length;
+			    }
+			}
+			""",
+			SuppressedNullabilityWarning()
+		);
+
 	[Fact]
 	public async Task WhenExpectationRequiresNotNullOrEmpty_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
