@@ -1663,6 +1663,13 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsPositive(this aweXpect.Core.IThat<System.TimeSpan> source) { }
     }
+    public static class ThatVersion
+    {
+        public static aweXpect.Results.PropertyResult.Int<System.Version?> HasBuild(this aweXpect.Core.IThat<System.Version?> source) { }
+        public static aweXpect.Results.PropertyResult.Int<System.Version?> HasMajor(this aweXpect.Core.IThat<System.Version?> source) { }
+        public static aweXpect.Results.PropertyResult.Int<System.Version?> HasMinor(this aweXpect.Core.IThat<System.Version?> source) { }
+        public static aweXpect.Results.PropertyResult.Int<System.Version?> HasRevision(this aweXpect.Core.IThat<System.Version?> source) { }
+    }
 }
 namespace aweXpect.Equivalency
 {
