@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using aweXpect.Core.Helpers;
@@ -28,7 +29,7 @@ internal static class EquivalencyMembers
 {
 	public static IEnumerable<EquivalencyMember> GetFields(Type type, IncludeMembers includeMembers)
 	{
-		if (TryGetRegistered(type, includeMembers, out TypeMetadataRegistry.TypeMetadata metadata))
+		if (TryGetRegistered(type, includeMembers, out TypeMetadataRegistry.TypeMetadata? metadata))
 		{
 			return metadata.Fields.Values
 				.OrderBy(member => member.Order)
@@ -41,7 +42,7 @@ internal static class EquivalencyMembers
 
 	public static IEnumerable<EquivalencyMember> GetProperties(Type type, IncludeMembers includeMembers)
 	{
-		if (TryGetRegistered(type, includeMembers, out TypeMetadataRegistry.TypeMetadata metadata))
+		if (TryGetRegistered(type, includeMembers, out TypeMetadataRegistry.TypeMetadata? metadata))
 		{
 			return metadata.Properties.Values
 				.OrderBy(member => member.Order)
@@ -59,7 +60,7 @@ internal static class EquivalencyMembers
 	/// </summary>
 	public static Func<object, object?>? FindField(Type type, string name, IncludeMembers includeMembers)
 	{
-		if (TryGetRegistered(type, includeMembers, out TypeMetadataRegistry.TypeMetadata metadata))
+		if (TryGetRegistered(type, includeMembers, out TypeMetadataRegistry.TypeMetadata? metadata))
 		{
 			return metadata.Fields.TryGetValue(name, out TypeMetadataRegistry.RegisteredMember? member)
 				? member.GetValue
@@ -76,7 +77,7 @@ internal static class EquivalencyMembers
 	/// </summary>
 	public static Func<object, object?>? FindProperty(Type type, string name, IncludeMembers includeMembers)
 	{
-		if (TryGetRegistered(type, includeMembers, out TypeMetadataRegistry.TypeMetadata metadata))
+		if (TryGetRegistered(type, includeMembers, out TypeMetadataRegistry.TypeMetadata? metadata))
 		{
 			return metadata.Properties.TryGetValue(name, out TypeMetadataRegistry.RegisteredMember? member)
 				? member.GetValue
@@ -88,14 +89,18 @@ internal static class EquivalencyMembers
 	}
 
 	/// <remarks>
+	///     A type counts as registered only when it has a field or a property: an event-only registration says nothing
+	///     about the members, so such a type is reflected over like an unregistered one.
+	///     <para />
 	///     The registry only holds public members, and the zero-member guard cannot catch a comparison that comes up
 	///     short rather than empty, so asking a registered type for non-public members has to fail instead of silently
 	///     comparing fewer of them.
 	/// </remarks>
 	private static bool TryGetRegistered(Type type, IncludeMembers includeMembers,
-		out TypeMetadataRegistry.TypeMetadata metadata)
+		[NotNullWhen(true)] out TypeMetadataRegistry.TypeMetadata? metadata)
 	{
-		if (!TypeMetadataRegistry.Instance.TryGet(type, out metadata))
+		if (!TypeMetadataRegistry.Instance.TryGet(type, out metadata) ||
+		    (metadata.Fields.IsEmpty && metadata.Properties.IsEmpty))
 		{
 			return false;
 		}

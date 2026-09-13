@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using aweXpect.Core.Metadata;
 using aweXpect.Equivalency;
@@ -69,6 +70,30 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
+			public async Task WhenOnlyEventsAreRegistered_ShouldCompareByReflection()
+			{
+				TypeMetadataRegistry.RegisterEvent<WithEvent>(nameof(WithEvent.Changed),
+					record => new EventHandler((_, _) => record([])),
+					(instance, handler) => instance.Changed += (EventHandler)handler,
+					(instance, handler) => instance.Changed -= (EventHandler)handler);
+				WithEvent subject = new()
+				{
+					Number = 1,
+				};
+				WithEvent expected = new()
+				{
+					Number = 2,
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("*Property Number differed:*").AsWildcard()
+					.Because("an event registration says nothing about the members, which still have to be reflected over");
+			}
+
+			[Fact]
 			public async Task WhenRegistered_ShouldCompareOnlyTheRegisteredMembers()
 			{
 				RegisterOnlyTheRegisteredProperty();
@@ -133,24 +158,25 @@ public sealed partial class ThatObject
 			{
 				var probe = new
 				{
-					Title = default(string),
+					MetadataProbeTitle = default(string),
 				};
-				TypeMetadataRegistry.RegisterProperty(probe, "Title", x => x.Title);
+				TypeMetadataRegistry.RegisterProperty(probe, "MetadataProbeTitle", x => x.MetadataProbeTitle);
 				var subject = new
 				{
-					Title = "foo",
+					MetadataProbeTitle = "foo",
 				};
 				var expected = new
 				{
-					Title = "bar",
+					MetadataProbeTitle = "bar",
 				};
 
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage("*Property Title differed:*").AsWildcard()
-					.Because("the probe overload registers a type whose name cannot be written in source");
+					.WithMessage("*Property MetadataProbeTitle differed:*").AsWildcard()
+					.Because(
+						"the probe overload registers a type whose name cannot be written in source, and the registration is shared by every anonymous type of this shape in the assembly");
 			}
 
 			private static void RegisterOnlyTheRegisteredProperty()
@@ -172,6 +198,13 @@ public sealed partial class ThatObject
 			{
 				public int NotRegistered { get; set; }
 				public int Registered { get; set; }
+			}
+
+			private sealed class WithEvent
+			{
+				public event EventHandler? Changed;
+				public int Number { get; set; }
+				public void Raise() => Changed?.Invoke(this, EventArgs.Empty);
 			}
 		}
 	}

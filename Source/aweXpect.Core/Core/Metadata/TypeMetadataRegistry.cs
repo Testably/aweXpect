@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 
 namespace aweXpect.Core.Metadata;
@@ -93,16 +94,8 @@ public static class TypeMetadataRegistry
 		/// <summary>
 		///     Whether any member or event was registered for the <paramref name="type" />.
 		/// </summary>
-		/// <remarks>
-		///     There is no separate completion marker: a type without any member has nothing to emit, so it falls back to
-		///     reflection, which is the same outcome the zero-member guard already produces.
-		/// </remarks>
-		public bool TryGet(Type type, out TypeMetadata metadata)
-		{
-			bool result = _metadata.TryGetValue(type, out TypeMetadata? found);
-			metadata = found ?? TypeMetadata.Empty;
-			return result;
-		}
+		public bool TryGet(Type type, [NotNullWhen(true)] out TypeMetadata? metadata)
+			=> _metadata.TryGetValue(type, out metadata);
 
 		private TypeMetadata GetOrAdd(Type type) => _metadata.GetOrAdd(type, _ => new TypeMetadata());
 
@@ -115,8 +108,6 @@ public static class TypeMetadataRegistry
 
 	internal sealed class TypeMetadata
 	{
-		public static TypeMetadata Empty { get; } = new();
-
 		public ConcurrentDictionary<string, RegisteredMember> Fields { get; } = new(StringComparer.Ordinal);
 		public ConcurrentDictionary<string, RegisteredMember> Properties { get; } = new(StringComparer.Ordinal);
 		public ConcurrentDictionary<string, RegisteredEvent> Events { get; } = new(StringComparer.Ordinal);
