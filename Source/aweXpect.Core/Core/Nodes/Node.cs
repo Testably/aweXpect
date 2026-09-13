@@ -24,10 +24,26 @@ internal abstract class Node
 		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null);
 
 	/// <summary>
+	///     Add a mapping constraint which maps the value according to the <paramref name="memberAccessor" /> to a member
+	///     and applies it to the inner expectations, which are typed at <typeparamref name="TNarrowed" />.
+	/// </summary>
+	public abstract Node AddNarrowingMapping<TValue, TTarget, TNarrowed>(
+		MemberAccessor<TValue, TTarget> memberAccessor,
+		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null);
+
+	/// <summary>
 	///     Add a mapping constraint which maps the value according to the <paramref name="memberAccessor" /> asynchronously
 	///     to a member and applies this value to the inner expectations.
 	/// </summary>
 	public abstract Node AddAsyncMapping<TValue, TTarget>(
+		MemberAccessor<TValue, Task<TTarget>> memberAccessor,
+		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null);
+
+	/// <summary>
+	///     Add a mapping constraint which maps the value according to the <paramref name="memberAccessor" /> asynchronously
+	///     to a member and applies it to the inner expectations, which are typed at <typeparamref name="TNarrowed" />.
+	/// </summary>
+	public abstract Node AddAsyncNarrowingMapping<TValue, TTarget, TNarrowed>(
 		MemberAccessor<TValue, Task<TTarget>> memberAccessor,
 		Action<MemberAccessor, StringBuilder>? expectationTextGenerator = null);
 
