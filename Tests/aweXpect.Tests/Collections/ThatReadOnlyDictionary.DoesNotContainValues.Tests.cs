@@ -88,6 +88,33 @@ public sealed partial class ThatReadOnlyDictionary
 					             but it was <null>
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenUnexpectedIsEmpty_ShouldThrowArgumentException()
+			{
+				IReadOnlyDictionary<int, int> subject = ToDictionary([1, 2, 3,], [41, 42, 43,]);
+
+				async Task Act()
+					=> await That(subject).DoesNotContainValues();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' collection cannot be empty.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenUnexpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				IReadOnlyDictionary<int, int> subject = ToDictionary([1, 2, 3,], [41, 42, 43,]);
+				int[]? unexpected = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotContainValues(unexpected!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The unexpected cannot be null.").AsPrefix();
+			}
 		}
 	}
 }

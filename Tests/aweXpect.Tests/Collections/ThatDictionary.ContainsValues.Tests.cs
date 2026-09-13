@@ -31,6 +31,33 @@ public sealed partial class ThatDictionary
 			}
 
 			[Fact]
+			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
+			{
+				IDictionary<int, int> subject = ToDictionary([1, 2, 3,], [41, 42, 43,]);
+
+				async Task Act()
+					=> await That(subject).ContainsValues();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' collection cannot be empty.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				IDictionary<int, int> subject = ToDictionary([1, 2, 3,], [41, 42, 43,]);
+				int[]? expected = null;
+
+				async Task Act()
+					=> await That(subject).ContainsValues(expected!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The expected cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenOneValueIsMissing_ShouldFail()
 			{
 				IDictionary<int, int> subject = ToDictionary([1, 2, 3,], [41, 42, 43,]);
