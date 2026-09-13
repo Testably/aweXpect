@@ -17,6 +17,7 @@ public static partial class ThatDictionary
 		this IThat<IDictionary<TKey, TValue>?> source,
 		params TValue[] expected)
 	{
+		expected.ThrowIfNullOrEmpty();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new AndOrResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
@@ -35,6 +36,7 @@ public static partial class ThatDictionary
 		params TValue[] expected)
 		where TKey : notnull
 	{
+		expected.ThrowIfNullOrEmpty();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new AndOrResult<Dictionary<TKey, TValue>, IThat<Dictionary<TKey, TValue>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
@@ -53,6 +55,7 @@ public static partial class ThatDictionary
 			this IThat<IDictionary<TKey, TValue>?> source,
 			params TValue[] unexpected)
 	{
+		unexpected.ThrowIfNullOrEmpty();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new AndOrResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
@@ -72,6 +75,7 @@ public static partial class ThatDictionary
 			params TValue[] unexpected)
 		where TKey : notnull
 	{
+		unexpected.ThrowIfNullOrEmpty();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new AndOrResult<Dictionary<TKey, TValue>, IThat<Dictionary<TKey, TValue>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>

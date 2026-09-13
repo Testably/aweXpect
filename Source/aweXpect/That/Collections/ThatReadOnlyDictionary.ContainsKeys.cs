@@ -20,6 +20,7 @@ public static partial class ThatReadOnlyDictionary
 			this IThat<IReadOnlyDictionary<TKey, TValue>?> source,
 			params TKey[] expected)
 	{
+		expected.ThrowIfNullOrEmpty();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new ContainsValuesResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>,
 			TKey, TValue?>(
@@ -43,6 +44,7 @@ public static partial class ThatReadOnlyDictionary
 			params TKey[] expected)
 		where TKey : notnull
 	{
+		expected.ThrowIfNullOrEmpty();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new ContainsValuesResult<ReadOnlyDictionary<TKey, TValue>, IThat<ReadOnlyDictionary<TKey, TValue>?>, TKey
 			, TValue?>(
@@ -64,6 +66,7 @@ public static partial class ThatReadOnlyDictionary
 			this IThat<IReadOnlyDictionary<TKey, TValue>?> source,
 			params TKey[] unexpected)
 	{
+		unexpected.ThrowIfNullOrEmpty();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new AndOrResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
@@ -82,6 +85,7 @@ public static partial class ThatReadOnlyDictionary
 			params TKey[] unexpected)
 		where TKey : notnull
 	{
+		unexpected.ThrowIfNullOrEmpty();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new AndOrResult<ReadOnlyDictionary<TKey, TValue>, IThat<ReadOnlyDictionary<TKey, TValue>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
