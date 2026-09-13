@@ -24,6 +24,32 @@ internal static class AweXpectInitialization
 		_ = State.Value;
 	}
 
+	private static InitializationState Initialize()
+		=> new(DetectTestFramework(TestFrameworkRegistry.Instance));
+
+	/// <summary>
+	///     Returns the registered <see cref="ITestFrameworkAdapter" />, or the fallback when none was registered.
+	/// </summary>
+	internal static ITestFrameworkAdapter DetectTestFramework(TestFrameworkRegistry.Registration registration)
+	{
+		ITestFrameworkAdapter? registeredTestFramework = registration.TestFrameworkAdapter;
+		if (registeredTestFramework is not null)
+		{
+			return registeredTestFramework;
+		}
+
+#if !NET8_0_OR_GREATER
+		ITestFrameworkAdapter? scannedTestFramework = ScanLoadedAssemblies();
+		if (scannedTestFramework is not null)
+		{
+			return scannedTestFramework;
+		}
+#endif
+
+		return new FallbackTestFramework();
+	}
+
+#if !NET8_0_OR_GREATER
 	/// <summary>
 	///     Detects a test framework adapter from the provided types.
 	/// </summary>
@@ -58,21 +84,13 @@ internal static class AweXpectInitialization
 		return null;
 	}
 
-	private static InitializationState Initialize()
-		=> new(DetectTestFramework(TestFrameworkRegistry.Instance));
-
-	/// <summary>
-	///     Returns the registered <see cref="ITestFrameworkAdapter" />, or scans the loaded assemblies for one when
-	///     none was registered.
-	/// </summary>
-	internal static ITestFrameworkAdapter DetectTestFramework(TestFrameworkRegistry.Registration registration)
+	/// <remarks>
+	///     Only target frameworks without <c>ModuleInitializerAttribute</c> still scan, because the generated adapter
+	///     cannot register itself there. They can neither be trimmed nor published with Native AOT, so the reflection
+	///     is harmless.
+	/// </remarks>
+	private static ITestFrameworkAdapter? ScanLoadedAssemblies()
 	{
-		ITestFrameworkAdapter? registeredTestFramework = registration.TestFrameworkAdapter;
-		if (registeredTestFramework is not null)
-		{
-			return registeredTestFramework;
-		}
-
 		foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies()
 			         .Where(IsAssemblyIncluded))
 		{
@@ -93,7 +111,7 @@ internal static class AweXpectInitialization
 			}
 		}
 
-		return new FallbackTestFramework();
+		return null;
 	}
 
 	private static bool IsAssemblyIncluded(Assembly assembly)
@@ -120,6 +138,7 @@ internal static class AweXpectInitialization
 			.All(prefix => assemblyName != prefix &&
 			               !assemblyName!.StartsWith(prefix + ".", StringComparison.Ordinal));
 	}
+#endif
 
 	internal class InitializationState(ITestFrameworkAdapter testFramework)
 	{
