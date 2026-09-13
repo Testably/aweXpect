@@ -9,6 +9,45 @@ public sealed partial class ThatException
 			public sealed class ExpectationsTests
 			{
 				[Fact]
+				public async Task WhenExpectationsAreCombinedWithAnd_ShouldApplyAllOfThem()
+				{
+					Exception subject = new("outer", new CustomException("inner"));
+
+					async Task Act()
+						=> await That(subject)
+							.HasInner<CustomException>(e => e.HasMessage("inner").And.HasMessage("other"));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             has an inner ThatException.CustomException whose Message is equal to "inner" and Message is equal to "other",
+						             but it was "inner" which differs at index 0:
+						                ↓ (actual)
+						               "inner"
+						               "other"
+						                ↑ (expected)
+
+						             Message:
+						             inner
+
+						             Message:
+						             inner
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenExpectationsAreCombinedWithOr_ShouldApplyEitherOfThem()
+				{
+					Exception subject = new("outer", new CustomException("inner"));
+
+					async Task Act()
+						=> await That(subject)
+							.HasInner<CustomException>(e => e.HasMessage("other").Or.HasMessage("inner"));
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
 				public async Task WhenExpectationsAreTypedAtTheInnerExceptionType_ShouldSucceed()
 				{
 					Exception subject = new("outer", new CustomException("inner"));
@@ -196,6 +235,18 @@ public sealed partial class ThatException
 
 			public sealed class NegatedExpectationsTests
 			{
+				[Fact]
+				public async Task WhenExpectationsAreCombinedWithAnd_ShouldSucceed()
+				{
+					Exception subject = new("outer", new CustomException("inner"));
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it
+							=> it.HasInner<CustomException>(e => e.HasMessage("inner").And.HasMessage("other")));
+
+					await That(Act).DoesNotThrow();
+				}
+
 				[Fact]
 				public async Task WhenExpectationsAreTypedAtTheInnerExceptionType_ShouldFail()
 				{

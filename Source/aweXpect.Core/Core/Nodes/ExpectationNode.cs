@@ -104,6 +104,11 @@ internal class ExpectationNode : Node
 	/// </summary>
 	public bool IsEmpty() => _constraint is null && _inner is null;
 
+	/// <summary>
+	///     Sets the <paramref name="node" /> which contains the nested expectations.
+	/// </summary>
+	protected void SetInnerNode(Node node) => _inner = node;
+
 	/// <inheritdoc />
 	public override async Task<ConstraintResult> IsMetBy<TValue>(TValue? value,
 		IEvaluationContext context,

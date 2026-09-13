@@ -55,6 +55,13 @@ internal class AsyncMappingNode<TSource, TTarget> : ExpectationNode
 			.LogTrace();
 	}
 
+	/// <inheritdoc />
+	/// <remarks>
+	///     The expectations on the member are held in a separate node, so that a combination node created by
+	///     <c>And</c>/<c>Or</c> while registering them can replace it.
+	/// </remarks>
+	public override void AddNode(Node node, string? separator = null) => SetInnerNode(node);
+
 	/// <summary>
 	///     Verifies, if the <paramref name="value" /> of the member satisfies the expectations of the node.
 	/// </summary>

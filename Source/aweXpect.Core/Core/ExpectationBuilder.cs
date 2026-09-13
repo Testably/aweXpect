@@ -214,9 +214,10 @@ public abstract class ExpectationBuilder
 			}
 
 			Node root = _node;
-			_node = addMappingCallback is null
+			Node mappingNode = addMappingCallback is null
 				? _node.AddMapping(memberAccessor, expectationTextGenerator)
 				: addMappingCallback.Invoke(_node, memberAccessor, expectationTextGenerator);
+			_node = new ExpectationNode();
 			if (replaceIt)
 			{
 				_it = memberAccessor.ToString().Trim();
@@ -234,6 +235,7 @@ public abstract class ExpectationBuilder
 				expectationBuilderCallback.Invoke(this);
 			}
 
+			mappingNode.AddNode(_node);
 			_node = root;
 			if (replaceIt)
 			{
@@ -260,9 +262,10 @@ public abstract class ExpectationBuilder
 			}
 
 			Node root = _node;
-			_node = addAsyncMappingCallback is null
+			Node mappingNode = addAsyncMappingCallback is null
 				? _node.AddAsyncMapping(memberAccessor, expectationTextGenerator)
 				: addAsyncMappingCallback.Invoke(_node, memberAccessor, expectationTextGenerator);
+			_node = new ExpectationNode();
 			if (replaceIt)
 			{
 				_it = memberAccessor.ToString().Trim();
@@ -280,6 +283,7 @@ public abstract class ExpectationBuilder
 				expectationBuilderCallback.Invoke(this);
 			}
 
+			mappingNode.AddNode(_node);
 			_node = root;
 			if (replaceIt)
 			{
