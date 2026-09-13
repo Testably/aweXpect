@@ -3588,6 +3588,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 15:33:08 2026 \u002B0200",
         "message": "chore: verify the mutation dashboard upload and drop the concurrency override (#1074)"
+      },
+      {
+        "sha": "9547e82c3df44b95f4bc13692f446a537c178588",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:12:13 2026 \u002B0200",
+        "message": "fix!: reject a \u0060null\u0060 or empty needle in the dictionary key and value expectations (#1075)"
       }
     ],
     "labels": [
@@ -4188,7 +4194,8 @@ window.BENCHMARK_DATA = {
       "c5c7f7d4",
       "c6732d62",
       "756e490e",
-      "f2e29045"
+      "f2e29045",
+      "9547e82c"
     ],
     "datasets": [
       {
@@ -4792,7 +4799,8 @@ window.BENCHMARK_DATA = {
           250.75973449434554,
           254.4613069466182,
           135.9181802749634,
-          188.02120952606202
+          188.02120952606202,
+          248.97076454162598
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5265,6 +5273,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6013,7 +6022,8 @@ window.BENCHMARK_DATA = {
           236.79322616870587,
           246.56261631647746,
           154.9280719246183,
-          192.87963887055716
+          192.87963887055716,
+          241.61465230354895
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6206,6 +6216,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -9762,6 +9773,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 15:33:08 2026 \u002B0200",
         "message": "chore: verify the mutation dashboard upload and drop the concurrency override (#1074)"
+      },
+      {
+        "sha": "9547e82c3df44b95f4bc13692f446a537c178588",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:12:13 2026 \u002B0200",
+        "message": "fix!: reject a \u0060null\u0060 or empty needle in the dictionary key and value expectations (#1075)"
       }
     ],
     "labels": [
@@ -10285,7 +10302,8 @@ window.BENCHMARK_DATA = {
       "c5c7f7d4",
       "c6732d62",
       "756e490e",
-      "f2e29045"
+      "f2e29045",
+      "9547e82c"
     ],
     "datasets": [
       {
@@ -10812,7 +10830,8 @@ window.BENCHMARK_DATA = {
           300669.2333984375,
           317015.54552283656,
           169749.23313685827,
-          225613.10516764323
+          225613.10516764323,
+          302007.1185021034
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11344,7 +11363,8 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335442,
-          335442
+          335442,
+          335444
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11879,7 +11899,8 @@ window.BENCHMARK_DATA = {
           2738172.296875,
           2688861.4171875,
           1366076.2995256695,
-          1809507.5341796875
+          1809507.5341796875,
+          2722615.3565104166
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12411,7 +12432,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841647,
-          4841647
+          4841647,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16013,6 +16035,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 15:33:08 2026 \u002B0200",
         "message": "chore: verify the mutation dashboard upload and drop the concurrency override (#1074)"
+      },
+      {
+        "sha": "9547e82c3df44b95f4bc13692f446a537c178588",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:12:13 2026 \u002B0200",
+        "message": "fix!: reject a \u0060null\u0060 or empty needle in the dictionary key and value expectations (#1075)"
       }
     ],
     "labels": [
@@ -16613,7 +16641,8 @@ window.BENCHMARK_DATA = {
       "c5c7f7d4",
       "c6732d62",
       "756e490e",
-      "f2e29045"
+      "f2e29045",
+      "9547e82c"
     ],
     "datasets": [
       {
@@ -17217,7 +17246,8 @@ window.BENCHMARK_DATA = {
           476.14383179800853,
           520.978179693222,
           247.31512594223022,
-          372.9074284689767
+          372.9074284689767,
+          461.8416782787868
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17690,6 +17720,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -18438,7 +18469,8 @@ window.BENCHMARK_DATA = {
           469.3356034755707,
           548.5366251128061,
           280.42371861139935,
-          388.7194734641484
+          388.7194734641484,
+          469.7274462064107
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18631,6 +18663,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -22649,6 +22682,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 15:33:08 2026 \u002B0200",
         "message": "chore: verify the mutation dashboard upload and drop the concurrency override (#1074)"
+      },
+      {
+        "sha": "9547e82c3df44b95f4bc13692f446a537c178588",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:12:13 2026 \u002B0200",
+        "message": "fix!: reject a \u0060null\u0060 or empty needle in the dictionary key and value expectations (#1075)"
       }
     ],
     "labels": [
@@ -23249,7 +23288,8 @@ window.BENCHMARK_DATA = {
       "c5c7f7d4",
       "c6732d62",
       "756e490e",
-      "f2e29045"
+      "f2e29045",
+      "9547e82c"
     ],
     "datasets": [
       {
@@ -23853,7 +23893,8 @@ window.BENCHMARK_DATA = {
           259.7270631790161,
           270.73044805526735,
           142.2691675345103,
-          198.9648289510182
+          198.9648289510182,
+          264.6084016731807
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -24367,6 +24408,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -25074,7 +25116,8 @@ window.BENCHMARK_DATA = {
           257.8425686518351,
           292.022051970164,
           140.3980232079824,
-          189.33685416834695
+          189.33685416834695,
+          242.92863861719766
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -25267,6 +25310,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -29285,6 +29329,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 15:33:08 2026 \u002B0200",
         "message": "chore: verify the mutation dashboard upload and drop the concurrency override (#1074)"
+      },
+      {
+        "sha": "9547e82c3df44b95f4bc13692f446a537c178588",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:12:13 2026 \u002B0200",
+        "message": "fix!: reject a \u0060null\u0060 or empty needle in the dictionary key and value expectations (#1075)"
       }
     ],
     "labels": [
@@ -29885,7 +29935,8 @@ window.BENCHMARK_DATA = {
       "c5c7f7d4",
       "c6732d62",
       "756e490e",
-      "f2e29045"
+      "f2e29045",
+      "9547e82c"
     ],
     "datasets": [
       {
@@ -30489,7 +30540,8 @@ window.BENCHMARK_DATA = {
           480.52882326566254,
           493.8501781736101,
           273.5651867389679,
-          384.19529918034874
+          384.19529918034874,
+          464.54025302614485
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30962,6 +31014,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -31710,7 +31763,8 @@ window.BENCHMARK_DATA = {
           1228.212302271525,
           1433.442033290863,
           681.5710824648539,
-          899.5376797993978
+          899.5376797993978,
+          1201.658662523542
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32139,6 +32193,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -35921,6 +35976,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 15:33:08 2026 \u002B0200",
         "message": "chore: verify the mutation dashboard upload and drop the concurrency override (#1074)"
+      },
+      {
+        "sha": "9547e82c3df44b95f4bc13692f446a537c178588",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:12:13 2026 \u002B0200",
+        "message": "fix!: reject a \u0060null\u0060 or empty needle in the dictionary key and value expectations (#1075)"
       }
     ],
     "labels": [
@@ -36521,7 +36582,8 @@ window.BENCHMARK_DATA = {
       "c5c7f7d4",
       "c6732d62",
       "756e490e",
-      "f2e29045"
+      "f2e29045",
+      "9547e82c"
     ],
     "datasets": [
       {
@@ -37125,7 +37187,8 @@ window.BENCHMARK_DATA = {
           1928.0085342407226,
           2033.934630530221,
           1058.5298448290143,
-          1500.4603476206462
+          1500.4603476206462,
+          1929.1881154378254
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -37598,6 +37661,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -38346,7 +38410,8 @@ window.BENCHMARK_DATA = {
           1287.9860266367593,
           1467.3255128860474,
           740.1549100875854,
-          1016.2394481386457
+          1016.2394481386457,
+          1316.3702767235893
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -38539,6 +38604,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -42557,6 +42623,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 15:33:08 2026 \u002B0200",
         "message": "chore: verify the mutation dashboard upload and drop the concurrency override (#1074)"
+      },
+      {
+        "sha": "9547e82c3df44b95f4bc13692f446a537c178588",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:12:13 2026 \u002B0200",
+        "message": "fix!: reject a \u0060null\u0060 or empty needle in the dictionary key and value expectations (#1075)"
       }
     ],
     "labels": [
@@ -43157,7 +43229,8 @@ window.BENCHMARK_DATA = {
       "c5c7f7d4",
       "c6732d62",
       "756e490e",
-      "f2e29045"
+      "f2e29045",
+      "9547e82c"
     ],
     "datasets": [
       {
@@ -43761,7 +43834,8 @@ window.BENCHMARK_DATA = {
           2584.997779573713,
           2693.6567529531626,
           1356.5092997184167,
-          1951.5280904134115
+          1951.5280904134115,
+          2576.0701917012534
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44234,6 +44308,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -44982,7 +45057,8 @@ window.BENCHMARK_DATA = {
           27038.082265218098,
           27807.976272583008,
           10630.42140851702,
-          15669.362336222332
+          15669.362336222332,
+          26675.440717424666
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -45588,6 +45664,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
