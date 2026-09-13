@@ -2,132 +2,64 @@
 using System.Reflection;
 using aweXpect.Formatting;
 using aweXpect.Reflection.Formatting;
+using aweXpect.Reflection.Internal.Tests.TestHelpers;
 
 namespace aweXpect.Reflection.Internal.Tests.Formatting;
 
 public class FormatterRegistrationTests
 {
 	[Fact]
-	public async Task Constructor_WhenNotDisposed_ShouldThrowInvalidOperationException()
-	{
-		void Act()
-		{
-			_ = new FormatterRegistration();
-		}
-
-		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage(
-				"A FormatterRegistration instance is already initialized. Dispose the existing instance before creating a new one.");
-	}
-
-	[Fact]
-	public async Task Dispose_WhenNotInitialized_ShouldNotThrow()
-	{
-		// Free the existing singleton so a fresh, never-initialized instance can be created.
-		FormatterRegistration.Instance.Dispose();
-
-		FormatterRegistration fresh = new();
-
-		void Act()
-		{
-			fresh.Dispose();
-		}
-
-		try
-		{
-			// A never-initialized instance must have an empty (not single-null) disposables array,
-			// so disposing it must not throw a NullReferenceException.
-			await That(Act).DoesNotThrow();
-		}
-		finally
-		{
-			// Restore the singleton and re-register all formatters for subsequent tests.
-			FormatterRegistration.Instance.Initialize();
-		}
-	}
-
-	[Fact]
-	public async Task Initialize_ShouldRegisterFormatterForConstructorInfo()
+	public async Task ModuleInitializer_ShouldRegisterFormatterForConstructorInfo()
 	{
 		ConstructorInfo constructorInfo = typeof(ConstructorFormatterTests.MyTestClass).GetConstructors().First();
-		await That(true).IsTrue();
-		string result1 = Format.Formatter.Format(constructorInfo);
 
-		FormatterRegistration.Instance.Dispose();
-		string result2 = Format.Formatter.Format(constructorInfo);
-		FormatterRegistration.Instance.Initialize();
+		string result = Format.Formatter.Format(constructorInfo);
 
-		string result3 = Format.Formatter.Format(constructorInfo);
-
-		await That(result1).IsEqualTo(result3);
-		await That(result2).IsNotEqualTo(result3);
+		await That(result).IsEqualTo(new ConstructorFormatter().GetString(constructorInfo))
+			.Because("the module initializer must have registered the ConstructorFormatter globally");
 	}
 
 	[Fact]
-	public async Task Initialize_ShouldRegisterFormatterForEventInfo()
+	public async Task ModuleInitializer_ShouldRegisterFormatterForEventInfo()
 	{
 		EventInfo eventInfo = typeof(EventFormatterTests.MyTestClass).GetEvents().First();
-		await That(true).IsTrue();
-		string result1 = Format.Formatter.Format(eventInfo);
 
-		FormatterRegistration.Instance.Dispose();
-		string result2 = Format.Formatter.Format(eventInfo);
-		FormatterRegistration.Instance.Initialize();
+		string result = Format.Formatter.Format(eventInfo);
 
-		string result3 = Format.Formatter.Format(eventInfo);
-
-		await That(result1).IsEqualTo(result3);
-		await That(result2).IsNotEqualTo(result3);
+		await That(result).IsEqualTo(new EventFormatter().GetString(eventInfo))
+			.Because("the module initializer must have registered the EventFormatter globally");
 	}
 
 	[Fact]
-	public async Task Initialize_ShouldRegisterFormatterForFieldInfo()
+	public async Task ModuleInitializer_ShouldRegisterFormatterForFieldInfo()
 	{
 		FieldInfo fieldInfo = typeof(FieldFormatterTests.MyTestClass).GetFields().First();
-		await That(true).IsTrue();
-		string result1 = Format.Formatter.Format(fieldInfo);
 
-		FormatterRegistration.Instance.Dispose();
-		string result2 = Format.Formatter.Format(fieldInfo);
-		FormatterRegistration.Instance.Initialize();
+		string result = Format.Formatter.Format(fieldInfo);
 
-		string result3 = Format.Formatter.Format(fieldInfo);
-
-		await That(result1).IsEqualTo(result3);
-		await That(result2).IsNotEqualTo(result3);
+		await That(result).IsEqualTo(new FieldFormatter().GetString(fieldInfo))
+			.Because("the module initializer must have registered the FieldFormatter globally");
 	}
 
 	[Fact]
-	public async Task Initialize_ShouldRegisterFormatterForMethodInfo()
+	public async Task ModuleInitializer_ShouldRegisterFormatterForMethodInfo()
 	{
 		MethodInfo methodInfo = typeof(MethodFormatterTests.MyTestClass).GetMethods().First();
-		await That(true).IsTrue();
-		string result1 = Format.Formatter.Format(methodInfo);
 
-		FormatterRegistration.Instance.Dispose();
-		string result2 = Format.Formatter.Format(methodInfo);
-		FormatterRegistration.Instance.Initialize();
+		string result = Format.Formatter.Format(methodInfo);
 
-		string result3 = Format.Formatter.Format(methodInfo);
-
-		await That(result1).IsEqualTo(result3);
-		await That(result2).IsNotEqualTo(result3);
+		await That(result).IsEqualTo(new MethodFormatter().GetString(methodInfo))
+			.Because("the module initializer must have registered the MethodFormatter globally");
 	}
 
 	[Fact]
-	public async Task Initialize_ShouldRegisterFormatterForPropertyInfo()
+	public async Task ModuleInitializer_ShouldRegisterFormatterForPropertyInfo()
 	{
 		PropertyInfo propertyInfo = typeof(PropertyFormatterTests.MyTestClass).GetProperties().First();
-		await That(true).IsTrue();
-		string result1 = Format.Formatter.Format(propertyInfo);
 
-		FormatterRegistration.Instance.Dispose();
-		string result2 = Format.Formatter.Format(propertyInfo);
-		FormatterRegistration.Instance.Initialize();
+		string result = Format.Formatter.Format(propertyInfo);
 
-		string result3 = Format.Formatter.Format(propertyInfo);
-
-		await That(result1).IsEqualTo(result3);
-		await That(result2).IsNotEqualTo(result3);
+		await That(result).IsEqualTo(new PropertyFormatter().GetString(propertyInfo))
+			.Because("the module initializer must have registered the PropertyFormatter globally");
 	}
 }

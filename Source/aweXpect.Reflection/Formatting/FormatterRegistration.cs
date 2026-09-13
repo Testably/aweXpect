@@ -1,47 +1,27 @@
-﻿using System;
-using aweXpect.Core.Initialization;
+﻿using System.Runtime.CompilerServices;
 
 namespace aweXpect.Reflection.Formatting;
 
-internal sealed class FormatterRegistration : IAweXpectInitializer, IDisposable
+internal static class FormatterRegistration
 {
-	private static FormatterRegistration? _instance;
-	private IDisposable[] _disposables = [];
-
-	public FormatterRegistration()
+	/// <summary>
+	///     Registers the reflection value formatters when the assembly is loaded.
+	/// </summary>
+	/// <remarks>
+	///     A module initializer keeps the registration reachable without reflection, so it survives trimming and
+	///     Native AOT - which is why CA2255 (discouraging module initializers in libraries) is suppressed here.
+	///     The registrations intentionally last for the lifetime of the process, hence the
+	///     <see cref="System.IDisposable" /> handles returned by <see cref="ValueFormatter.Register" /> are discarded.
+	/// </remarks>
+#pragma warning disable CA2255
+	[ModuleInitializer]
+	internal static void Initialize()
 	{
-		if (_instance != null)
-		{
-			throw new InvalidOperationException(
-				"A FormatterRegistration instance is already initialized. Dispose the existing instance before creating a new one.");
-		}
-
-#pragma warning disable S3010
-		_instance = this;
-#pragma warning restore S3010
+		ValueFormatter.Register(new ConstructorFormatter());
+		ValueFormatter.Register(new EventFormatter());
+		ValueFormatter.Register(new FieldFormatter());
+		ValueFormatter.Register(new MethodFormatter());
+		ValueFormatter.Register(new PropertyFormatter());
 	}
-
-	internal static FormatterRegistration Instance
-		=> _instance ??= new FormatterRegistration();
-
-	public void Initialize() => _disposables =
-	[
-		ValueFormatter.Register(new ConstructorFormatter()),
-		ValueFormatter.Register(new EventFormatter()),
-		ValueFormatter.Register(new FieldFormatter()),
-		ValueFormatter.Register(new MethodFormatter()),
-		ValueFormatter.Register(new PropertyFormatter()),
-	];
-
-	public void Dispose()
-	{
-		foreach (IDisposable? disposable in _disposables)
-		{
-			disposable.Dispose();
-		}
-
-#pragma warning disable S2696
-		_instance = null;
-#pragma warning restore S2696
-	}
+#pragma warning restore CA2255
 }
