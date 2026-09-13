@@ -3516,6 +3516,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 07:49:54 2026 \u002B0200",
         "message": "fix!: fail the negated string expectations for a null subject (#1063)"
+      },
+      {
+        "sha": "65f95731b4438690dbf8ed39697443ee8c10aaad",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 07:58:46 2026 \u002B0200",
+        "message": "refactor!: run extension initialization from a module initializer (#1064)"
       }
     ],
     "labels": [
@@ -4104,7 +4110,8 @@ window.BENCHMARK_DATA = {
       "b40f1a29",
       "12db0a0c",
       "935bb145",
-      "543ef39f"
+      "543ef39f",
+      "65f95731"
     ],
     "datasets": [
       {
@@ -4696,7 +4703,8 @@ window.BENCHMARK_DATA = {
           207.99691574390118,
           270.29099127451576,
           281.56352847417196,
-          249.18366251673018
+          249.18366251673018,
+          250.8609804471334
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5169,6 +5177,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -5893,7 +5902,8 @@ window.BENCHMARK_DATA = {
           220.3440454006195,
           264.55369930267335,
           266.9943772315979,
-          246.28094317118328
+          246.28094317118328,
+          233.7515582016536
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6086,6 +6096,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -9558,6 +9569,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 07:49:54 2026 \u002B0200",
         "message": "fix!: fail the negated string expectations for a null subject (#1063)"
+      },
+      {
+        "sha": "65f95731b4438690dbf8ed39697443ee8c10aaad",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 07:58:46 2026 \u002B0200",
+        "message": "refactor!: run extension initialization from a module initializer (#1064)"
       }
     ],
     "labels": [
@@ -10069,7 +10086,8 @@ window.BENCHMARK_DATA = {
       "b40f1a29",
       "12db0a0c",
       "935bb145",
-      "543ef39f"
+      "543ef39f",
+      "65f95731"
     ],
     "datasets": [
       {
@@ -10584,7 +10602,8 @@ window.BENCHMARK_DATA = {
           222028.6263709435,
           338345.6691545759,
           325843.86832682294,
-          298770.44361979165
+          298770.44361979165,
+          307137.03560965403
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11102,6 +11121,7 @@ window.BENCHMARK_DATA = {
           335444,
           335442,
           335442,
+          335444,
           335444,
           335444,
           335444
@@ -11627,7 +11647,8 @@ window.BENCHMARK_DATA = {
           1669236.4065504808,
           2951527.1751802885,
           2856284.6182291666,
-          2692831.5122395833
+          2692831.5122395833,
+          2645156.8571428573
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12147,7 +12168,8 @@ window.BENCHMARK_DATA = {
           4841609,
           4841651,
           4841648,
-          4841647
+          4841647,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15677,6 +15699,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 07:49:54 2026 \u002B0200",
         "message": "fix!: fail the negated string expectations for a null subject (#1063)"
+      },
+      {
+        "sha": "65f95731b4438690dbf8ed39697443ee8c10aaad",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 07:58:46 2026 \u002B0200",
+        "message": "refactor!: run extension initialization from a module initializer (#1064)"
       }
     ],
     "labels": [
@@ -16265,7 +16293,8 @@ window.BENCHMARK_DATA = {
       "b40f1a29",
       "12db0a0c",
       "935bb145",
-      "543ef39f"
+      "543ef39f",
+      "65f95731"
     ],
     "datasets": [
       {
@@ -16857,7 +16886,8 @@ window.BENCHMARK_DATA = {
           387.5515358606974,
           517.3623763402303,
           541.9017120997111,
-          505.5021213803972
+          505.5021213803972,
+          481.8990478175027
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17330,6 +17360,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -18054,7 +18085,8 @@ window.BENCHMARK_DATA = {
           420.1317024548849,
           537.0394381205241,
           570.2607573100498,
-          487.66618938446044
+          487.66618938446044,
+          486.3925545056661
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18247,6 +18279,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -22181,6 +22214,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 07:49:54 2026 \u002B0200",
         "message": "fix!: fail the negated string expectations for a null subject (#1063)"
+      },
+      {
+        "sha": "65f95731b4438690dbf8ed39697443ee8c10aaad",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 07:58:46 2026 \u002B0200",
+        "message": "refactor!: run extension initialization from a module initializer (#1064)"
       }
     ],
     "labels": [
@@ -22769,7 +22808,8 @@ window.BENCHMARK_DATA = {
       "b40f1a29",
       "12db0a0c",
       "935bb145",
-      "543ef39f"
+      "543ef39f",
+      "65f95731"
     ],
     "datasets": [
       {
@@ -23361,7 +23401,8 @@ window.BENCHMARK_DATA = {
           209.47316687901815,
           274.451362546285,
           300.1345632870992,
-          292.19284489949547
+          292.19284489949547,
+          258.00959533055624
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -23875,6 +23916,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -24558,7 +24600,8 @@ window.BENCHMARK_DATA = {
           220.41122935368463,
           270.03851222991943,
           286.254754002889,
-          249.63275349934895
+          249.63275349934895,
+          252.04729822703771
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -24751,6 +24794,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -28685,6 +28729,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 07:49:54 2026 \u002B0200",
         "message": "fix!: fail the negated string expectations for a null subject (#1063)"
+      },
+      {
+        "sha": "65f95731b4438690dbf8ed39697443ee8c10aaad",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 07:58:46 2026 \u002B0200",
+        "message": "refactor!: run extension initialization from a module initializer (#1064)"
       }
     ],
     "labels": [
@@ -29273,7 +29323,8 @@ window.BENCHMARK_DATA = {
       "b40f1a29",
       "12db0a0c",
       "935bb145",
-      "543ef39f"
+      "543ef39f",
+      "65f95731"
     ],
     "datasets": [
       {
@@ -29865,7 +29916,8 @@ window.BENCHMARK_DATA = {
           355.84341993331907,
           514.9620515823365,
           544.9427513758342,
-          477.30670067242215
+          477.30670067242215,
+          457.7422562326704
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30338,6 +30390,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -31062,7 +31115,8 @@ window.BENCHMARK_DATA = {
           956.5905661949745,
           1337.4001406351724,
           1334.4067900521416,
-          1248.4108057657877
+          1248.4108057657877,
+          1179.4223435719807
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31491,6 +31545,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -35189,6 +35244,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 07:49:54 2026 \u002B0200",
         "message": "fix!: fail the negated string expectations for a null subject (#1063)"
+      },
+      {
+        "sha": "65f95731b4438690dbf8ed39697443ee8c10aaad",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 07:58:46 2026 \u002B0200",
+        "message": "refactor!: run extension initialization from a module initializer (#1064)"
       }
     ],
     "labels": [
@@ -35777,7 +35838,8 @@ window.BENCHMARK_DATA = {
       "b40f1a29",
       "12db0a0c",
       "935bb145",
-      "543ef39f"
+      "543ef39f",
+      "65f95731"
     ],
     "datasets": [
       {
@@ -36369,7 +36431,8 @@ window.BENCHMARK_DATA = {
           1172.1498559805063,
           2068.8246877034503,
           2061.384815470378,
-          1946.7893300374349
+          1946.7893300374349,
+          1884.0970989227294
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36842,6 +36905,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -37566,7 +37630,8 @@ window.BENCHMARK_DATA = {
           1091.659278188433,
           1426.1770524342855,
           1470.378264290946,
-          1270.8310853413172
+          1270.8310853413172,
+          1299.141104037945
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37759,6 +37824,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -41693,6 +41759,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 07:49:54 2026 \u002B0200",
         "message": "fix!: fail the negated string expectations for a null subject (#1063)"
+      },
+      {
+        "sha": "65f95731b4438690dbf8ed39697443ee8c10aaad",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 07:58:46 2026 \u002B0200",
+        "message": "refactor!: run extension initialization from a module initializer (#1064)"
       }
     ],
     "labels": [
@@ -42281,7 +42353,8 @@ window.BENCHMARK_DATA = {
       "b40f1a29",
       "12db0a0c",
       "935bb145",
-      "543ef39f"
+      "543ef39f",
+      "65f95731"
     ],
     "datasets": [
       {
@@ -42873,7 +42946,8 @@ window.BENCHMARK_DATA = {
           1539.817172563993,
           2669.7861605326334,
           2623.662196840559,
-          2618.817142232259
+          2618.817142232259,
+          2553.6197069803875
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -43346,6 +43420,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -44070,7 +44145,8 @@ window.BENCHMARK_DATA = {
           14082.65697224935,
           28076.470477764422,
           27559.373363788312,
-          28009.99229867118
+          28009.99229867118,
+          26467.10194498698
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -44665,6 +44741,7 @@ window.BENCHMARK_DATA = {
           33471,
           33465,
           33465,
+          33471,
           33471,
           33471,
           33471
