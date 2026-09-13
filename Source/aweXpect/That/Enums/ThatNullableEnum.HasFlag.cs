@@ -31,7 +31,7 @@ public static partial class ThatNullableEnum
 			source);
 
 	private sealed class HasFlagConstraint<TEnum>(string it, ExpectationGrammars grammars, TEnum? expectedFlag)
-		: ConstraintResult.WithValue<TEnum?>(grammars),
+		: ConstraintResult.WithNotNullValue<TEnum?>(it, grammars),
 			IValueConstraint<TEnum?>
 		where TEnum : struct, Enum
 	{
@@ -50,7 +50,7 @@ public static partial class ThatNullableEnum
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" was ");
+			stringBuilder.Append(It).Append(" was ");
 			Formatter.Format(stringBuilder, Actual);
 		}
 

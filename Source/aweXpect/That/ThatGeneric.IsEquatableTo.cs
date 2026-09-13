@@ -37,7 +37,7 @@ public static partial class ThatGeneric
 		string it,
 		ExpectationGrammars grammars,
 		T expected)
-		: ConstraintResult.WithValue<TEquatable>(grammars),
+		: ConstraintResult.WithNotNullValue<TEquatable>(it, grammars),
 			IValueConstraint<TEquatable>
 		where TEquatable : IEquatable<T>
 	{
@@ -56,7 +56,7 @@ public static partial class ThatGeneric
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" was ");
+			stringBuilder.Append(It).Append(" was ");
 			Formatter.Format(stringBuilder, Actual);
 		}
 

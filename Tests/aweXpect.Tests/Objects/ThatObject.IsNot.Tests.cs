@@ -146,14 +146,19 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
-			public async Task WhenSubjectIsNull_ShouldSucceed()
+			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				object? subject = null;
 
 				async Task Act()
 					=> await That(subject).IsNot(typeof(MyClass));
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not type ThatObject.MyClass,
+					             but it was <null>
+					             """);
 			}
 
 			[Fact]

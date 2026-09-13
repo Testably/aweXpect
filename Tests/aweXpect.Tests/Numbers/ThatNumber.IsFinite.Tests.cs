@@ -351,14 +351,14 @@ public sealed partial class ThatNumber
 			[InlineData(double.PositiveInfinity)]
 			[InlineData(double.NegativeInfinity)]
 			[InlineData(double.NaN)]
-			[InlineData(null)]
-			public async Task ForNullableDouble_WhenSubjectIsInfinityNaNOrNull_ShouldSucceed(double? subject)
+			public async Task ForNullableDouble_WhenSubjectIsInfinityNaN_ShouldSucceed(double? subject)
 			{
 				async Task Act() => await That(subject).DoesNotComplyWith(it =>
 					it.IsFinite());
 
 				await That(Act).DoesNotThrow();
 			}
+
 
 			[Theory]
 			[InlineData(-1d)]
@@ -380,6 +380,21 @@ public sealed partial class ThatNumber
 					              is not finite,
 					              but it was {Formatter.Format(subject)}
 					              """);
+			}
+			[Fact]
+			public async Task ForNullableDouble_WhenSubjectIsNull_ShouldFail()
+			{
+				double? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsFinite());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not finite,
+					             but it was <null>
+					             """);
 			}
 		}
 	}

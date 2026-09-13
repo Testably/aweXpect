@@ -43,14 +43,19 @@ public sealed partial class ThatEnum
 				[InlineData(null)]
 				[InlineData(0L)]
 				[InlineData(2L)]
-				public async Task WhenSubjectIsNull_ShouldSucceed(long? unexpected)
+				public async Task WhenSubjectIsNull_ShouldFail(long? unexpected)
 				{
 					MyColors? subject = null;
 
 					async Task Act()
 						=> await That(subject).DoesNotHaveValue(unexpected);
 
-					await That(Act).DoesNotThrow();
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              does not have value {Formatter.Format(unexpected)},
+						              but it was <null>
+						              """);
 				}
 
 				[Fact]

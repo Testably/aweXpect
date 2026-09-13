@@ -367,8 +367,7 @@ public sealed partial class ThatNumber
 			[InlineData(double.MaxValue)]
 			[InlineData(double.Epsilon)]
 			[InlineData(double.NaN)]
-			[InlineData(null)]
-			public async Task ForNullableDouble_WhenSubjectIsNormalOrNaNValueOrNull_ShouldSucceed(
+			public async Task ForNullableDouble_WhenSubjectIsNormalOrNaNValue_ShouldSucceed(
 				double? subject)
 			{
 				async Task Act()
@@ -376,6 +375,22 @@ public sealed partial class ThatNumber
 						it.IsInfinite());
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task ForNullableDouble_WhenSubjectIsNull_ShouldFail()
+			{
+				double? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsInfinite());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not infinite,
+					             but it was <null>
+					             """);
 			}
 		}
 	}

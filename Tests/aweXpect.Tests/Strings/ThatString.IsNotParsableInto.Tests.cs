@@ -10,14 +10,19 @@ public sealed partial class ThatString
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenNull_ShouldSucceed()
+			public async Task WhenNull_ShouldFail()
 			{
 				string? subject = null;
 
 				async Task Act()
 					=> await That(subject).IsNotParsableInto<int>();
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not parsable into int,
+					             but it was <null>
+					             """);
 			}
 
 			[Fact]
