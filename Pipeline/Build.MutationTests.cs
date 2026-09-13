@@ -214,6 +214,7 @@ partial class Build
 		                      				"**/.github/**/*.*"
 		                      			]
 		                      		},
+		                      		"concurrency": {{Environment.ProcessorCount}},
 		                      		"mutation-level": "Advanced"
 		                      	}
 		                      }

@@ -67,6 +67,7 @@ jobs:
     mutation-tests-core:
         name: "Mutation tests (aweXpect.Core)"
         runs-on: ubuntu-latest
+        timeout-minutes: 150
         env:
             STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
             DOTNET_NOLOGO: true
@@ -92,6 +93,7 @@ jobs:
     mutation-tests-main:
         name: "Mutation tests (aweXpect)"
         runs-on: ubuntu-latest
+        timeout-minutes: 150
         env:
             STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
             DOTNET_NOLOGO: true
