@@ -73,19 +73,17 @@ public static partial class ThatSpan
 				=> new IsUtf8ParsableIntoConstraint<TType>(it, grammars, formatProvider).Invert()),
 			source);
 
-	private sealed class IsParsableIntoConstraint<TType> : ConstraintResult.WithValue<SpanWrapper<char>>,
+	private sealed class IsParsableIntoConstraint<TType> : ConstraintResult.WithNotNullValue<SpanWrapper<char>>,
 		IValueConstraint<SpanWrapper<char>>
 		where TType : ISpanParsable<TType>
 	{
 		private readonly IFormatProvider? _formatProvider;
-		private readonly string _it;
 		private string? _exceptionMessage;
 
 		public IsParsableIntoConstraint(string it,
 			ExpectationGrammars grammars,
-			IFormatProvider? formatProvider) : base(grammars)
+			IFormatProvider? formatProvider) : base(it, grammars)
 		{
-			_it = it;
 			_formatProvider = formatProvider;
 			FurtherProcessingStrategy = FurtherProcessingStrategy.IgnoreResult;
 		}
@@ -128,7 +126,7 @@ public static partial class ThatSpan
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(_it).Append(" was not because ").Append(_exceptionMessage);
+			=> stringBuilder.Append(It).Append(" was not because ").Append(_exceptionMessage);
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -142,22 +140,20 @@ public static partial class ThatSpan
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(_it).Append(" was");
+			=> stringBuilder.Append(It).Append(" was");
 	}
 
-	private sealed class IsUtf8ParsableIntoConstraint<TType> : ConstraintResult.WithValue<SpanWrapper<byte>>,
+	private sealed class IsUtf8ParsableIntoConstraint<TType> : ConstraintResult.WithNotNullValue<SpanWrapper<byte>>,
 		IValueConstraint<SpanWrapper<byte>>
 		where TType : IUtf8SpanParsable<TType>
 	{
 		private readonly IFormatProvider? _formatProvider;
-		private readonly string _it;
 		private string? _exceptionMessage;
 
 		public IsUtf8ParsableIntoConstraint(string it,
 			ExpectationGrammars grammars,
-			IFormatProvider? formatProvider) : base(grammars)
+			IFormatProvider? formatProvider) : base(it, grammars)
 		{
-			_it = it;
 			_formatProvider = formatProvider;
 			FurtherProcessingStrategy = FurtherProcessingStrategy.IgnoreResult;
 		}
@@ -200,7 +196,7 @@ public static partial class ThatSpan
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(_it).Append(" was not because ").Append(_exceptionMessage);
+			=> stringBuilder.Append(It).Append(" was not because ").Append(_exceptionMessage);
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -214,7 +210,7 @@ public static partial class ThatSpan
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(_it).Append(" was");
+			=> stringBuilder.Append(It).Append(" was");
 	}
 }
 #endif

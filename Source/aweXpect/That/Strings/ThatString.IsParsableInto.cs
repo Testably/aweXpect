@@ -41,19 +41,17 @@ public static partial class ThatString
 				=> new IsParsableIntoConstraint<TType>(it, grammars, formatProvider).Invert()),
 			source);
 
-	private sealed class IsParsableIntoConstraint<TType> : ConstraintResult.WithValue<string?>,
+	private sealed class IsParsableIntoConstraint<TType> : ConstraintResult.WithNotNullValue<string?>,
 		IValueConstraint<string?>
 		where TType : IParsable<TType>
 	{
 		private readonly IFormatProvider? _formatProvider;
-		private readonly string _it;
 		private string? _exceptionMessage;
 
 		public IsParsableIntoConstraint(string it,
 			ExpectationGrammars grammars,
-			IFormatProvider? formatProvider) : base(grammars)
+			IFormatProvider? formatProvider) : base(it, grammars)
 		{
-			_it = it;
 			_formatProvider = formatProvider;
 			FurtherProcessingStrategy = FurtherProcessingStrategy.IgnoreResult;
 		}
@@ -102,14 +100,7 @@ public static partial class ThatString
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual is null)
-			{
-				stringBuilder.ItWasNull(_it);
-			}
-			else
-			{
-				stringBuilder.Append(_it).Append(" was not because ").Append(_exceptionMessage);
-			}
+			stringBuilder.Append(It).Append(" was not because ").Append(_exceptionMessage);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -124,7 +115,7 @@ public static partial class ThatString
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(_it).Append(" was");
+			=> stringBuilder.Append(It).Append(" was");
 	}
 }
 #endif

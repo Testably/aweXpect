@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
@@ -39,7 +39,7 @@ public static partial class ThatObject
 	}
 
 	private sealed class IsOfTypeConstraint(string it, ExpectationGrammars grammars, Type type)
-		: ConstraintResult.WithValue<object>(grammars),
+		: ConstraintResult.WithNotNullValue<object>(it, grammars),
 			IValueConstraint<object?>
 	{
 		public ConstraintResult IsMetBy(object? actual)
@@ -88,7 +88,7 @@ public static partial class ThatObject
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" was ");
+			stringBuilder.Append(It).Append(" was ");
 			Formatter.Format(stringBuilder, Actual, FormattingOptions.Indented(indentation, true));
 		}
 

@@ -150,14 +150,19 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
-			public async Task WhenSubjectIsNull_ShouldSucceed()
+			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				NullableWrapper subject = null!;
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsEquatableTo(1L));
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not equatable to 1,
+					             but it was <null>
+					             """);
 			}
 		}
 
