@@ -1517,7 +1517,6 @@ namespace aweXpect
             where T :  struct { }
         public static aweXpect.Results.ObjectEqualityResult<object?, aweXpect.Core.IThat<object?>, object?> IsNotOneOf(this aweXpect.Core.IThat<object?> source, params object?[] unexpected) { }
         public static aweXpect.Results.ObjectEqualityResult<object?, aweXpect.Core.IThat<object?>, object?> IsNotOneOf(this aweXpect.Core.IThat<object?> source, System.Collections.Generic.IEnumerable<object?> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<T?, aweXpect.Core.IThat<T?>> IsNotSameAs<T>(this aweXpect.Core.IThat<T?> source, object? unexpected)
             where T :  class { }
         public static aweXpect.Results.AndOrResult<T?, aweXpect.Core.IThat<T?>> IsNull<T>(this aweXpect.Core.IThat<T?> source)
@@ -1526,7 +1525,6 @@ namespace aweXpect
             where T :  struct { }
         public static aweXpect.Results.ObjectEqualityResult<object?, aweXpect.Core.IThat<object?>, object?> IsOneOf(this aweXpect.Core.IThat<object?> source, params object?[] expected) { }
         public static aweXpect.Results.ObjectEqualityResult<object?, aweXpect.Core.IThat<object?>, object?> IsOneOf(this aweXpect.Core.IThat<object?> source, System.Collections.Generic.IEnumerable<object?> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<T?, aweXpect.Core.IThat<T?>> IsSameAs<T>(this aweXpect.Core.IThat<T?> source, object? expected)
             where T :  class { }
     }
