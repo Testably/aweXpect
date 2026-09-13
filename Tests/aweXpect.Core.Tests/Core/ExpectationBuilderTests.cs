@@ -28,6 +28,23 @@ public class ExpectationBuilderTests
 	}
 
 	[Fact]
+	public async Task ForAsyncMember_WithAndCombinedExpectations_ShouldApplyAllExpectations()
+	{
+		ManualExpectationBuilder<string> sut = new(null);
+
+		sut.ForAsyncMember(MemberAccessor<string, Task<int>>.FromFunc(x => Task.FromResult(x.Length), "length "))
+			.AddExpectations(expectationBuilder => expectationBuilder
+				.AddConstraint((_, _) => new DummyConstraint<int>(v => v == 3, "equal to 3"))
+				.And()
+				.AddConstraint((_, _) => new DummyConstraint<int>(v => v == 2, "equal to 2")));
+
+		ConstraintResult constraintResult = await sut.IsMetBy("bar", null!, CancellationToken.None);
+
+		await That(constraintResult.Outcome).IsEqualTo(Outcome.Failure);
+		await That(constraintResult.GetExpectationText()).IsEqualTo("length equal to 3 and equal to 2");
+	}
+
+	[Fact]
 	public async Task ForAsyncMember_WithFailingExpectation_ShouldReturnFailureConstraintResult()
 	{
 		ManualExpectationBuilder<string> sut = new(null);
@@ -40,6 +57,25 @@ public class ExpectationBuilderTests
 
 		await That(constraintResult.Outcome).IsEqualTo(Outcome.Failure);
 		await That(constraintResult.GetExpectationText()).IsEqualTo("length equal to 2");
+	}
+
+	[Fact]
+	public async Task ForAsyncMember_WithOrCombinedExpectations_ShouldApplyEitherExpectation()
+	{
+		ManualExpectationBuilder<string> sut = new(null);
+
+		sut.ForAsyncMember(MemberAccessor<string, Task<int>>.FromFunc(x => Task.FromResult(x.Length), "length "))
+			.AddExpectations(expectationBuilder =>
+			{
+				expectationBuilder.AddConstraint((_, _) => new DummyConstraint<int>(v => v == 2, "equal to 2"));
+				expectationBuilder.Or();
+				expectationBuilder.AddConstraint((_, _) => new DummyConstraint<int>(v => v == 3, "equal to 3"));
+			});
+
+		ConstraintResult constraintResult = await sut.IsMetBy("bar", null!, CancellationToken.None);
+
+		await That(constraintResult.Outcome).IsEqualTo(Outcome.Success);
+		await That(constraintResult.GetExpectationText()).IsEqualTo("length equal to 2 or equal to 3");
 	}
 
 	[Fact]
@@ -94,6 +130,23 @@ public class ExpectationBuilderTests
 	}
 
 	[Fact]
+	public async Task ForMember_WithAndCombinedExpectations_ShouldApplyAllExpectations()
+	{
+		ManualExpectationBuilder<string> sut = new(null);
+
+		sut.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
+			.AddExpectations(expectationBuilder => expectationBuilder
+				.AddConstraint((_, _) => new DummyConstraint<int>(v => v == 3, "equal to 3"))
+				.And()
+				.AddConstraint((_, _) => new DummyConstraint<int>(v => v == 2, "equal to 2")));
+
+		ConstraintResult constraintResult = await sut.IsMetBy("bar", null!, CancellationToken.None);
+
+		await That(constraintResult.Outcome).IsEqualTo(Outcome.Failure);
+		await That(constraintResult.GetExpectationText()).IsEqualTo("length equal to 3 and equal to 2");
+	}
+
+	[Fact]
 	public async Task ForMember_WithFailingExpectation_ShouldReturnFailureConstraintResult()
 	{
 		ManualExpectationBuilder<string> sut = new(null);
@@ -106,6 +159,25 @@ public class ExpectationBuilderTests
 
 		await That(constraintResult.Outcome).IsEqualTo(Outcome.Failure);
 		await That(constraintResult.GetExpectationText()).IsEqualTo("length equal to 2");
+	}
+
+	[Fact]
+	public async Task ForMember_WithOrCombinedExpectations_ShouldApplyEitherExpectation()
+	{
+		ManualExpectationBuilder<string> sut = new(null);
+
+		sut.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
+			.AddExpectations(expectationBuilder =>
+			{
+				expectationBuilder.AddConstraint((_, _) => new DummyConstraint<int>(v => v == 2, "equal to 2"));
+				expectationBuilder.Or();
+				expectationBuilder.AddConstraint((_, _) => new DummyConstraint<int>(v => v == 3, "equal to 3"));
+			});
+
+		ConstraintResult constraintResult = await sut.IsMetBy("bar", null!, CancellationToken.None);
+
+		await That(constraintResult.Outcome).IsEqualTo(Outcome.Success);
+		await That(constraintResult.GetExpectationText()).IsEqualTo("length equal to 2 or equal to 3");
 	}
 
 	[Fact]

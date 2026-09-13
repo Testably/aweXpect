@@ -182,6 +182,47 @@ public sealed partial class ThatDelegate
 				}
 
 				[Fact]
+				public async Task WhenExpectationsAreCombinedWithAnd_ShouldApplyAllOfThem()
+				{
+					Action action = ()
+						=> throw new OuterException(innerException: new CustomException("bar"));
+
+					async Task Act()
+						=> await That(action).ThrowsException()
+							.WithInner<CustomException>(x => x.HasMessage("bar").And.HasMessage("foo"));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that action
+						             throws an exception with an inner ThatDelegate.CustomException whose Message is equal to "bar" and Message is equal to "foo",
+						             but it was "bar" which differs at index 0:
+						                ↓ (actual)
+						               "bar"
+						               "foo"
+						                ↑ (expected)
+
+						             Message:
+						             bar
+
+						             Message:
+						             bar
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenExpectationsAreCombinedWithOr_ShouldApplyEitherOfThem()
+				{
+					Action action = ()
+						=> throw new OuterException(innerException: new CustomException("bar"));
+
+					async Task Act()
+						=> await That(action).ThrowsException()
+							.WithInner<CustomException>(x => x.HasMessage("foo").Or.HasMessage("bar"));
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
 				public async Task WhenExpectationsAreTypedAtTheInnerExceptionType_ShouldSucceed()
 				{
 					Action action = ()
