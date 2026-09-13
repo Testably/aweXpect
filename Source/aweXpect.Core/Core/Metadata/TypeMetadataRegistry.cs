@@ -13,9 +13,10 @@ namespace aweXpect.Core.Metadata;
 ///     because members that are only referenced reflectively are removed. The registrations provide them statically
 ///     instead, and are normally emitted by the source generator from the call sites that need them.
 ///     <para />
-///     Only public instance members are registered: the equivalency options arrive as a callback that a generator
-///     cannot inspect, so it can never emit exactly the members a call site will ask for. Requesting non-public
-///     members of a registered type therefore fails instead of silently comparing fewer members.
+///     Only public instance members are registered, because a generated accessor cannot reach the non-public members
+///     of a type from another assembly on every target. Non-public members are still reflected over when requested,
+///     which works unchanged in a normal build and remains best effort when publishing with trimming or Native AOT
+///     enabled, where members removed by the trimmer are silently left out of the comparison.
 /// </remarks>
 public static class TypeMetadataRegistry
 {

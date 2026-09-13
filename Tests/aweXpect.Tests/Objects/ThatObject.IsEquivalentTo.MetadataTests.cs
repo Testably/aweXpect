@@ -138,19 +138,20 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
-			public async Task WhenRegistered_WithNonPublicMembers_ShouldThrow()
+			public async Task WhenRegistered_WithNonPublicMembers_ShouldReflectOverThem()
 			{
-				RegisterOnlyTheRegisteredProperty();
-				RegisteredType subject = new();
-				RegisteredType expected = new();
+				TypeMetadataRegistry.RegisterProperty<RegisteredWithSecret, int>(
+					nameof(RegisteredWithSecret.Registered), x => x.Registered);
+				RegisteredWithSecret subject = new(1);
+				RegisteredWithSecret expected = new(2);
 
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected,
 						o => o.IncludingProperties(IncludeMembers.Private));
 
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("*Only public members of *can be compared*").AsWildcard()
-					.Because("the registration cannot provide members that trimming would remove");
+				await That(Act).Throws<XunitException>()
+					.WithMessage("*Property Secret differed:*").AsWildcard()
+					.Because("the registry only holds public members, so the non-public ones are still reflected over");
 			}
 
 			[Fact]
@@ -198,6 +199,12 @@ public sealed partial class ThatObject
 			{
 				public int NotRegistered { get; set; }
 				public int Registered { get; set; }
+			}
+
+			private sealed class RegisteredWithSecret(int secret)
+			{
+				public int Registered { get; set; }
+				private int Secret { get; } = secret;
 			}
 
 			private sealed class WithEvent
