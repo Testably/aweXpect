@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "44ed09de7f267ce3bed8b8eedf73f543de4ecbe9",
-        "author": "dependabot[bot]",
-        "date": "Mon Jun 29 12:22:04 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.6.0 to 18.7.0 (#986)"
-      },
-      {
         "sha": "95ef6b5cc4db9df7d0e9bf2297d1a41c7015f67c",
         "author": "dependabot[bot]",
         "date": "Mon Jun 29 12:21:55 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 07:58:46 2026 \u002B0200",
         "message": "refactor!: run extension initialization from a module initializer (#1064)"
+      },
+      {
+        "sha": "453a0e5774ec8028a5a8a6defc91b7e812e839a0",
+        "author": "Ferhat Samet Kalkan",
+        "date": "Sun Sep 13 09:05:41 2026 \u002B0300",
+        "message": "feat: add property expectations for Version (#1061)"
       }
     ],
     "labels": [
-      "44ed09de",
       "95ef6b5c",
       "9a5e940f",
       "a431a771",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "12db0a0c",
       "935bb145",
       "543ef39f",
-      "65f95731"
+      "65f95731",
+      "453a0e57"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          241.350377591451,
           250.72195428212484,
           265.5275889805385,
           254.1256928077111,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           270.29099127451576,
           281.56352847417196,
           249.18366251673018,
-          250.8609804471334
+          250.8609804471334,
+          234.92631273269654
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          246.6118438584464,
           235.77647287505013,
           264.8482259750366,
           247.2462817600795,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           264.55369930267335,
           266.9943772315979,
           246.28094317118328,
-          233.7515582016536
+          233.7515582016536,
+          229.21977038042886
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "44ed09de7f267ce3bed8b8eedf73f543de4ecbe9",
-        "author": "dependabot[bot]",
-        "date": "Mon Jun 29 12:22:04 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.6.0 to 18.7.0 (#986)"
-      },
-      {
         "sha": "95ef6b5cc4db9df7d0e9bf2297d1a41c7015f67c",
         "author": "dependabot[bot]",
         "date": "Mon Jun 29 12:21:55 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 07:58:46 2026 \u002B0200",
         "message": "refactor!: run extension initialization from a module initializer (#1064)"
+      },
+      {
+        "sha": "453a0e5774ec8028a5a8a6defc91b7e812e839a0",
+        "author": "Ferhat Samet Kalkan",
+        "date": "Sun Sep 13 09:05:41 2026 \u002B0300",
+        "message": "feat: add property expectations for Version (#1061)"
       }
     ],
     "labels": [
-      "44ed09de",
       "95ef6b5c",
       "9a5e940f",
       "a431a771",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "12db0a0c",
       "935bb145",
       "543ef39f",
-      "65f95731"
+      "65f95731",
+      "453a0e57"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          293305.36258370534,
           317781.9690880409,
           312988.6269205729,
           282828.55787760415,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           338345.6691545759,
           325843.86832682294,
           298770.44361979165,
-          307137.03560965403
+          307137.03560965403,
+          248087.43250450722
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1050,7 +1050,6 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
           335444,
           335444,
@@ -1074,6 +1073,7 @@ window.BENCHMARK_DATA = {
           335444,
           335442,
           335442,
+          335444,
           335444,
           335444,
           335444,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2346473.274832589,
           2747542.05859375,
           2815038.0403645835,
           2421132.736197917,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2951527.1751802885,
           2856284.6182291666,
           2692831.5122395833,
-          2645156.8571428573
+          2645156.8571428573,
+          1833769.812109375
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841647,
           4841651,
           4841651,
           4841647,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841648,
           4841647,
-          4841651
+          4841651,
+          4841609
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "44ed09de7f267ce3bed8b8eedf73f543de4ecbe9",
-        "author": "dependabot[bot]",
-        "date": "Mon Jun 29 12:22:04 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.6.0 to 18.7.0 (#986)"
-      },
       {
         "sha": "95ef6b5cc4db9df7d0e9bf2297d1a41c7015f67c",
         "author": "dependabot[bot]",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 07:58:46 2026 \u002B0200",
         "message": "refactor!: run extension initialization from a module initializer (#1064)"
+      },
+      {
+        "sha": "453a0e5774ec8028a5a8a6defc91b7e812e839a0",
+        "author": "Ferhat Samet Kalkan",
+        "date": "Sun Sep 13 09:05:41 2026 \u002B0300",
+        "message": "feat: add property expectations for Version (#1061)"
       }
     ],
     "labels": [
-      "44ed09de",
       "95ef6b5c",
       "9a5e940f",
       "a431a771",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "12db0a0c",
       "935bb145",
       "543ef39f",
-      "65f95731"
+      "65f95731",
+      "453a0e57"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          471.57978766759237,
           480.2384469692524,
           514.7213216781616,
           470.8345993848947,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           517.3623763402303,
           541.9017120997111,
           505.5021213803972,
-          481.8990478175027
+          481.8990478175027,
+          410.0907859802246
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          503.10617173512776,
           456.0809893948691,
           491.939611026219,
           493.87994399437537,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           537.0394381205241,
           570.2607573100498,
           487.66618938446044,
-          486.3925545056661
+          486.3925545056661,
+          429.52131395339967
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "44ed09de7f267ce3bed8b8eedf73f543de4ecbe9",
-        "author": "dependabot[bot]",
-        "date": "Mon Jun 29 12:22:04 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.6.0 to 18.7.0 (#986)"
-      },
-      {
         "sha": "95ef6b5cc4db9df7d0e9bf2297d1a41c7015f67c",
         "author": "dependabot[bot]",
         "date": "Mon Jun 29 12:21:55 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 07:58:46 2026 \u002B0200",
         "message": "refactor!: run extension initialization from a module initializer (#1064)"
+      },
+      {
+        "sha": "453a0e5774ec8028a5a8a6defc91b7e812e839a0",
+        "author": "Ferhat Samet Kalkan",
+        "date": "Sun Sep 13 09:05:41 2026 \u002B0300",
+        "message": "feat: add property expectations for Version (#1061)"
       }
     ],
     "labels": [
-      "44ed09de",
       "95ef6b5c",
       "9a5e940f",
       "a431a771",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "12db0a0c",
       "935bb145",
       "543ef39f",
-      "65f95731"
+      "65f95731",
+      "453a0e57"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          254.16477779241708,
           266.79638926188153,
           283.1361319541931,
           262.61892363003324,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           274.451362546285,
           300.1345632870992,
           292.19284489949547,
-          258.00959533055624
+          258.00959533055624,
+          227.71468903223675
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          249.66078751427787,
           243.84770464897156,
           258.05092646280923,
           246.32795023918152,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           270.03851222991943,
           286.254754002889,
           249.63275349934895,
-          252.04729822703771
+          252.04729822703771,
+          226.72246983846028
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "44ed09de7f267ce3bed8b8eedf73f543de4ecbe9",
-        "author": "dependabot[bot]",
-        "date": "Mon Jun 29 12:22:04 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.6.0 to 18.7.0 (#986)"
-      },
-      {
         "sha": "95ef6b5cc4db9df7d0e9bf2297d1a41c7015f67c",
         "author": "dependabot[bot]",
         "date": "Mon Jun 29 12:21:55 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 07:58:46 2026 \u002B0200",
         "message": "refactor!: run extension initialization from a module initializer (#1064)"
+      },
+      {
+        "sha": "453a0e5774ec8028a5a8a6defc91b7e812e839a0",
+        "author": "Ferhat Samet Kalkan",
+        "date": "Sun Sep 13 09:05:41 2026 \u002B0300",
+        "message": "feat: add property expectations for Version (#1061)"
       }
     ],
     "labels": [
-      "44ed09de",
       "95ef6b5c",
       "9a5e940f",
       "a431a771",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "12db0a0c",
       "935bb145",
       "543ef39f",
-      "65f95731"
+      "65f95731",
+      "453a0e57"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          482.74196853637693,
           458.547548191888,
           483.3902147293091,
           473.13833872477215,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           514.9620515823365,
           544.9427513758342,
           477.30670067242215,
-          457.7422562326704
+          457.7422562326704,
+          376.30130138397215
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1128.9691250664848,
           1150.2959679921469,
           1195.426530710856,
           1139.6234017780848,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1337.4001406351724,
           1334.4067900521416,
           1248.4108057657877,
-          1179.4223435719807
+          1179.4223435719807,
+          1027.0105902353923
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "44ed09de7f267ce3bed8b8eedf73f543de4ecbe9",
-        "author": "dependabot[bot]",
-        "date": "Mon Jun 29 12:22:04 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.6.0 to 18.7.0 (#986)"
-      },
-      {
         "sha": "95ef6b5cc4db9df7d0e9bf2297d1a41c7015f67c",
         "author": "dependabot[bot]",
         "date": "Mon Jun 29 12:21:55 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 07:58:46 2026 \u002B0200",
         "message": "refactor!: run extension initialization from a module initializer (#1064)"
+      },
+      {
+        "sha": "453a0e5774ec8028a5a8a6defc91b7e812e839a0",
+        "author": "Ferhat Samet Kalkan",
+        "date": "Sun Sep 13 09:05:41 2026 \u002B0300",
+        "message": "feat: add property expectations for Version (#1061)"
       }
     ],
     "labels": [
-      "44ed09de",
       "95ef6b5c",
       "9a5e940f",
       "a431a771",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "12db0a0c",
       "935bb145",
       "543ef39f",
-      "65f95731"
+      "65f95731",
+      "453a0e57"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1890.0597494761148,
           1943.644634791783,
           1942.4335873921711,
           1896.8186955085168,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2068.8246877034503,
           2061.384815470378,
           1946.7893300374349,
-          1884.0970989227294
+          1884.0970989227294,
+          1273.1568255106608
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1311.7862465722221,
           1266.5787974766322,
           1459.0090315500895,
           1314.5717296600342,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1426.1770524342855,
           1470.378264290946,
           1270.8310853413172,
-          1299.141104037945
+          1299.141104037945,
+          1170.0875072479248
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "44ed09de7f267ce3bed8b8eedf73f543de4ecbe9",
-        "author": "dependabot[bot]",
-        "date": "Mon Jun 29 12:22:04 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.6.0 to 18.7.0 (#986)"
-      },
-      {
         "sha": "95ef6b5cc4db9df7d0e9bf2297d1a41c7015f67c",
         "author": "dependabot[bot]",
         "date": "Mon Jun 29 12:21:55 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 07:58:46 2026 \u002B0200",
         "message": "refactor!: run extension initialization from a module initializer (#1064)"
+      },
+      {
+        "sha": "453a0e5774ec8028a5a8a6defc91b7e812e839a0",
+        "author": "Ferhat Samet Kalkan",
+        "date": "Sun Sep 13 09:05:41 2026 \u002B0300",
+        "message": "feat: add property expectations for Version (#1061)"
       }
     ],
     "labels": [
-      "44ed09de",
       "95ef6b5c",
       "9a5e940f",
       "a431a771",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "12db0a0c",
       "935bb145",
       "543ef39f",
-      "65f95731"
+      "65f95731",
+      "453a0e57"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2546.2303230285643,
           2545.9524711608888,
           2635.852321624756,
           2467.304022380284,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2669.7861605326334,
           2623.662196840559,
           2618.817142232259,
-          2553.6197069803875
+          2553.6197069803875,
+          1675.1993885040283
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          20737.411871337892,
           26395.47559407552,
           27497.987331136068,
           19844.512142944335,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           28076.470477764422,
           27559.373363788312,
           28009.99229867118,
-          26467.10194498698
+          26467.10194498698,
+          15316.124305216472
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4217,7 +4217,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4242,7 +4241,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471
+          33471,
+          33465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
