@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "9ed9eb99dd3457d30d68c86c1277ad11a993ea10",
-        "author": "dependabot[bot]",
-        "date": "Mon Jul 20 16:13:47 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.7.0 to 18.8.1 (#996)"
-      },
-      {
         "sha": "6852ae85c9421017e99f74ec1523d2be457b6f72",
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:14:02 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 14:34:48 2026 \u002B0200",
         "message": "fix: resolve the packed README without relying on the solution directory (#1072)"
+      },
+      {
+        "sha": "756e490e76e477f4b567e437f3852066737e1bd6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 15:25:41 2026 \u002B0200",
+        "message": "fix!: fail the collection inspections for a \u0060null\u0060 subject (#1073)"
       }
     ],
     "labels": [
-      "9ed9eb99",
       "6852ae85",
       "66530371",
       "8283fcea",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "8c0caeb2",
       "dc29fb29",
       "c5c7f7d4",
-      "c6732d62"
+      "c6732d62",
+      "756e490e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          261.29992993672687,
           280.499692099435,
           255.48705085118613,
           251.88145289054285,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           289.89639768600466,
           227.24173703193665,
           250.75973449434554,
-          254.4613069466182
+          254.4613069466182,
+          135.9181802749634
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          255.45859234673637,
           248.15291047096252,
           254.406210454305,
           244.47806106294905,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           246.6084097226461,
           238.37522983551025,
           236.79322616870587,
-          246.56261631647746
+          246.56261631647746,
+          154.9280719246183
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "9ed9eb99dd3457d30d68c86c1277ad11a993ea10",
-        "author": "dependabot[bot]",
-        "date": "Mon Jul 20 16:13:47 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.7.0 to 18.8.1 (#996)"
-      },
-      {
         "sha": "6852ae85c9421017e99f74ec1523d2be457b6f72",
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:14:02 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 14:34:48 2026 \u002B0200",
         "message": "fix: resolve the packed README without relying on the solution directory (#1072)"
+      },
+      {
+        "sha": "756e490e76e477f4b567e437f3852066737e1bd6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 15:25:41 2026 \u002B0200",
+        "message": "fix!: fail the collection inspections for a \u0060null\u0060 subject (#1073)"
       }
     ],
     "labels": [
-      "9ed9eb99",
       "6852ae85",
       "66530371",
       "8283fcea",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "8c0caeb2",
       "dc29fb29",
       "c5c7f7d4",
-      "c6732d62"
+      "c6732d62",
+      "756e490e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          310771.8503580729,
           302191.66252790176,
           323283.2626604353,
           302768.747000558,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           332842.84283854166,
           239795.6194580078,
           300669.2333984375,
-          317015.54552283656
+          317015.54552283656,
+          169749.23313685827
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1041,7 +1041,6 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
           335444,
           335444,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           335444,
           335442,
           335444,
-          335444
+          335444,
+          335442
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2384567.625,
           2363770.5853365385,
           2800057.7682291665,
           2636195.4044471155,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2732419.07421875,
           2002764.6549479167,
           2738172.296875,
-          2688861.4171875
+          2688861.4171875,
+          1366076.2995256695
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1154,7 +1154,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           4841647,
-          4841647,
           4841651,
           4841651,
           4841651,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841609,
           4841651,
-          4841651
+          4841651,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "9ed9eb99dd3457d30d68c86c1277ad11a993ea10",
-        "author": "dependabot[bot]",
-        "date": "Mon Jul 20 16:13:47 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.7.0 to 18.8.1 (#996)"
-      },
       {
         "sha": "6852ae85c9421017e99f74ec1523d2be457b6f72",
         "author": "dependabot[bot]",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 14:34:48 2026 \u002B0200",
         "message": "fix: resolve the packed README without relying on the solution directory (#1072)"
+      },
+      {
+        "sha": "756e490e76e477f4b567e437f3852066737e1bd6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 15:25:41 2026 \u002B0200",
+        "message": "fix!: fail the collection inspections for a \u0060null\u0060 subject (#1073)"
       }
     ],
     "labels": [
-      "9ed9eb99",
       "6852ae85",
       "66530371",
       "8283fcea",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "8c0caeb2",
       "dc29fb29",
       "c5c7f7d4",
-      "c6732d62"
+      "c6732d62",
+      "756e490e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          520.5315689086914,
           492.0809488296509,
           523.8340864817302,
           472.30581566492714,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           534.572336265019,
           443.84056151707966,
           476.14383179800853,
-          520.978179693222
+          520.978179693222,
+          247.31512594223022
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          513.0179195721944,
           485.3975423812866,
           501.37619635264076,
           463.01733786265055,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           489.1645165761312,
           472.59745909372964,
           469.3356034755707,
-          548.5366251128061
+          548.5366251128061,
+          280.42371861139935
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "9ed9eb99dd3457d30d68c86c1277ad11a993ea10",
-        "author": "dependabot[bot]",
-        "date": "Mon Jul 20 16:13:47 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.7.0 to 18.8.1 (#996)"
-      },
-      {
         "sha": "6852ae85c9421017e99f74ec1523d2be457b6f72",
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:14:02 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 14:34:48 2026 \u002B0200",
         "message": "fix: resolve the packed README without relying on the solution directory (#1072)"
+      },
+      {
+        "sha": "756e490e76e477f4b567e437f3852066737e1bd6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 15:25:41 2026 \u002B0200",
+        "message": "fix!: fail the collection inspections for a \u0060null\u0060 subject (#1073)"
       }
     ],
     "labels": [
-      "9ed9eb99",
       "6852ae85",
       "66530371",
       "8283fcea",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "8c0caeb2",
       "dc29fb29",
       "c5c7f7d4",
-      "c6732d62"
+      "c6732d62",
+      "756e490e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          278.8900069236755,
           263.2455927644457,
           292.6164258003235,
           259.14284918858453,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           266.25251153537204,
           247.98166553179422,
           259.7270631790161,
-          270.73044805526735
+          270.73044805526735,
+          142.2691675345103
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          249.70486201558793,
           244.24100610188074,
           263.79900544484457,
           239.86527779897054,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           248.32830775578816,
           256.6069412867228,
           257.8425686518351,
-          292.022051970164
+          292.022051970164,
+          140.3980232079824
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "9ed9eb99dd3457d30d68c86c1277ad11a993ea10",
-        "author": "dependabot[bot]",
-        "date": "Mon Jul 20 16:13:47 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.7.0 to 18.8.1 (#996)"
-      },
-      {
         "sha": "6852ae85c9421017e99f74ec1523d2be457b6f72",
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:14:02 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 14:34:48 2026 \u002B0200",
         "message": "fix: resolve the packed README without relying on the solution directory (#1072)"
+      },
+      {
+        "sha": "756e490e76e477f4b567e437f3852066737e1bd6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 15:25:41 2026 \u002B0200",
+        "message": "fix!: fail the collection inspections for a \u0060null\u0060 subject (#1073)"
       }
     ],
     "labels": [
-      "9ed9eb99",
       "6852ae85",
       "66530371",
       "8283fcea",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "8c0caeb2",
       "dc29fb29",
       "c5c7f7d4",
-      "c6732d62"
+      "c6732d62",
+      "756e490e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          491.6327314376831,
           475.70042683283486,
           497.8442200342814,
           443.885150941213,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           460.0800317128499,
           384.8767795562744,
           480.52882326566254,
-          493.8501781736101
+          493.8501781736101,
+          273.5651867389679
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1253.2510492960612,
           1165.2784207207817,
           1271.0447240193685,
           1188.6415425709315,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1193.0484619140625,
           1050.6551955086845,
           1228.212302271525,
-          1433.442033290863
+          1433.442033290863,
+          681.5710824648539
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "9ed9eb99dd3457d30d68c86c1277ad11a993ea10",
-        "author": "dependabot[bot]",
-        "date": "Mon Jul 20 16:13:47 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.7.0 to 18.8.1 (#996)"
-      },
-      {
         "sha": "6852ae85c9421017e99f74ec1523d2be457b6f72",
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:14:02 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 14:34:48 2026 \u002B0200",
         "message": "fix: resolve the packed README without relying on the solution directory (#1072)"
+      },
+      {
+        "sha": "756e490e76e477f4b567e437f3852066737e1bd6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 15:25:41 2026 \u002B0200",
+        "message": "fix!: fail the collection inspections for a \u0060null\u0060 subject (#1073)"
       }
     ],
     "labels": [
-      "9ed9eb99",
       "6852ae85",
       "66530371",
       "8283fcea",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "8c0caeb2",
       "dc29fb29",
       "c5c7f7d4",
-      "c6732d62"
+      "c6732d62",
+      "756e490e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1940.3627637227376,
           1945.322928873698,
           2016.0552400861468,
           1905.3482880910237,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2029.9102714538574,
           1262.6462652842204,
           1928.0085342407226,
-          2033.934630530221
+          2033.934630530221,
+          1058.5298448290143
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1427.4992933273315,
           1313.703686441694,
           1432.1969587961833,
           1270.7210006713867,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1369.8892083849225,
           1248.5084645589193,
           1287.9860266367593,
-          1467.3255128860474
+          1467.3255128860474,
+          740.1549100875854
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "9ed9eb99dd3457d30d68c86c1277ad11a993ea10",
-        "author": "dependabot[bot]",
-        "date": "Mon Jul 20 16:13:47 2026 \u002B0200",
-        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.7.0 to 18.8.1 (#996)"
-      },
-      {
         "sha": "6852ae85c9421017e99f74ec1523d2be457b6f72",
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:14:02 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 14:34:48 2026 \u002B0200",
         "message": "fix: resolve the packed README without relying on the solution directory (#1072)"
+      },
+      {
+        "sha": "756e490e76e477f4b567e437f3852066737e1bd6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 15:25:41 2026 \u002B0200",
+        "message": "fix!: fail the collection inspections for a \u0060null\u0060 subject (#1073)"
       }
     ],
     "labels": [
-      "9ed9eb99",
       "6852ae85",
       "66530371",
       "8283fcea",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "8c0caeb2",
       "dc29fb29",
       "c5c7f7d4",
-      "c6732d62"
+      "c6732d62",
+      "756e490e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2480.318051746913,
           2487.963728841146,
           2625.639323679606,
           2503.2055353800456,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2725.5105266571045,
           1722.5688888549805,
           2584.997779573713,
-          2693.6567529531626
+          2693.6567529531626,
+          1356.5092997184167
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          20192.224662272136,
           20807.0376953125,
           27280.6028376988,
           25860.80059712728,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           27478.99108276367,
           15551.548243931362,
           27038.082265218098,
-          27807.976272583008
+          27807.976272583008,
+          10630.42140851702
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4208,7 +4208,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4241,6 +4240,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471
         ],
