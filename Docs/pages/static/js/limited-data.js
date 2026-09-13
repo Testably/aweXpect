@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "be73df5aa2faa84dcfa5f8d6efb4ba18c3e2120e",
-        "author": "dependabot[bot]",
-        "date": "Mon Jul 20 16:13:02 2026 \u002B0200",
-        "message": "chore: Bump actions/setup-dotnet from 5 to 6 (#993)"
-      },
-      {
         "sha": "c69bdc71685505157843e329076fb043f2ffbdf8",
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:16 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 13:58:34 2026 \u002B0200",
         "message": "chore: slice the mutation tests over parallel jobs"
+      },
+      {
+        "sha": "dc29fb29ad8940c46a91cafdb9f8a81d2a2674a2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 14:31:09 2026 \u002B0200",
+        "message": "chore: slice the mutation tests over parallel jobs (#1071)"
       }
     ],
     "labels": [
-      "be73df5a",
       "c69bdc71",
       "05a05906",
       "9ed9eb99",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "80d7a636",
       "dfb520f6",
       "9bafd873",
-      "8c0caeb2"
+      "8c0caeb2",
+      "dc29fb29"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          262.0750855377742,
           293.3556893030802,
           251.0237106543321,
           261.29992993672687,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           242.9484498500824,
           209.59045723279317,
           254.11032401598416,
-          289.89639768600466
+          289.89639768600466,
+          227.24173703193665
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          260.1815192858378,
           247.1360973578233,
           262.84639611611,
           255.45859234673637,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           247.74600553512573,
           217.12616160710652,
           249.94736538614546,
-          246.6084097226461
+          246.6084097226461,
+          238.37522983551025
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "be73df5aa2faa84dcfa5f8d6efb4ba18c3e2120e",
-        "author": "dependabot[bot]",
-        "date": "Mon Jul 20 16:13:02 2026 \u002B0200",
-        "message": "chore: Bump actions/setup-dotnet from 5 to 6 (#993)"
-      },
-      {
         "sha": "c69bdc71685505157843e329076fb043f2ffbdf8",
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:16 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 13:58:34 2026 \u002B0200",
         "message": "chore: slice the mutation tests over parallel jobs"
+      },
+      {
+        "sha": "dc29fb29ad8940c46a91cafdb9f8a81d2a2674a2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 14:31:09 2026 \u002B0200",
+        "message": "chore: slice the mutation tests over parallel jobs (#1071)"
       }
     ],
     "labels": [
-      "be73df5a",
       "c69bdc71",
       "05a05906",
       "9ed9eb99",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "80d7a636",
       "dfb520f6",
       "9bafd873",
-      "8c0caeb2"
+      "8c0caeb2",
+      "dc29fb29"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          305725.0335223858,
           353954.05228097097,
           294355.8103190104,
           310771.8503580729,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           286452.7508370536,
           206855.57451520648,
           309059.1347307478,
-          332842.84283854166
+          332842.84283854166,
+          239795.6194580078
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1044,7 +1044,6 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
           335444,
           335444,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           335444,
           335442,
           335444,
-          335444
+          335444,
+          335442
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2560062.257552083,
           2843068.539322917,
           2543407.78515625,
           2384567.625,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2333736.3889508927,
           1629775.4592447917,
           2758251.6180245536,
-          2732419.07421875
+          2732419.07421875,
+          2002764.6549479167
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841647,
           4841651,
           4841651,
           4841647,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841647,
           4841611,
           4841651,
-          4841651
+          4841651,
+          4841609
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "be73df5aa2faa84dcfa5f8d6efb4ba18c3e2120e",
-        "author": "dependabot[bot]",
-        "date": "Mon Jul 20 16:13:02 2026 \u002B0200",
-        "message": "chore: Bump actions/setup-dotnet from 5 to 6 (#993)"
-      },
       {
         "sha": "c69bdc71685505157843e329076fb043f2ffbdf8",
         "author": "dependabot[bot]",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 13:58:34 2026 \u002B0200",
         "message": "chore: slice the mutation tests over parallel jobs"
+      },
+      {
+        "sha": "dc29fb29ad8940c46a91cafdb9f8a81d2a2674a2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 14:31:09 2026 \u002B0200",
+        "message": "chore: slice the mutation tests over parallel jobs (#1071)"
       }
     ],
     "labels": [
-      "be73df5a",
       "c69bdc71",
       "05a05906",
       "9ed9eb99",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "80d7a636",
       "dfb520f6",
       "9bafd873",
-      "8c0caeb2"
+      "8c0caeb2",
+      "dc29fb29"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          524.2387333552043,
           506.16048785618375,
           504.3686113993327,
           520.5315689086914,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           524.0201873779297,
           339.1529517491659,
           479.3151646931966,
-          534.572336265019
+          534.572336265019,
+          443.84056151707966
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          553.3017815272013,
           497.3670150121053,
           542.1279582659404,
           513.0179195721944,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           485.92426039377847,
           391.57037830352783,
           511.97983792622887,
-          489.1645165761312
+          489.1645165761312,
+          472.59745909372964
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "be73df5aa2faa84dcfa5f8d6efb4ba18c3e2120e",
-        "author": "dependabot[bot]",
-        "date": "Mon Jul 20 16:13:02 2026 \u002B0200",
-        "message": "chore: Bump actions/setup-dotnet from 5 to 6 (#993)"
-      },
-      {
         "sha": "c69bdc71685505157843e329076fb043f2ffbdf8",
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:16 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 13:58:34 2026 \u002B0200",
         "message": "chore: slice the mutation tests over parallel jobs"
+      },
+      {
+        "sha": "dc29fb29ad8940c46a91cafdb9f8a81d2a2674a2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 14:31:09 2026 \u002B0200",
+        "message": "chore: slice the mutation tests over parallel jobs (#1071)"
       }
     ],
     "labels": [
-      "be73df5a",
       "c69bdc71",
       "05a05906",
       "9ed9eb99",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "80d7a636",
       "dfb520f6",
       "9bafd873",
-      "8c0caeb2"
+      "8c0caeb2",
+      "dc29fb29"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          280.99974727630615,
           278.2655808766683,
           280.6270829518636,
           278.8900069236755,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           255.62491631507874,
           209.0020554432502,
           270.2526925291334,
-          266.25251153537204
+          266.25251153537204,
+          247.98166553179422
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          269.398565864563,
           265.0189107577006,
           250.30743398666382,
           249.70486201558793,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           245.76577932494027,
           219.0480896949768,
           247.85641435782114,
-          248.32830775578816
+          248.32830775578816,
+          256.6069412867228
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "be73df5aa2faa84dcfa5f8d6efb4ba18c3e2120e",
-        "author": "dependabot[bot]",
-        "date": "Mon Jul 20 16:13:02 2026 \u002B0200",
-        "message": "chore: Bump actions/setup-dotnet from 5 to 6 (#993)"
-      },
-      {
         "sha": "c69bdc71685505157843e329076fb043f2ffbdf8",
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:16 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 13:58:34 2026 \u002B0200",
         "message": "chore: slice the mutation tests over parallel jobs"
+      },
+      {
+        "sha": "dc29fb29ad8940c46a91cafdb9f8a81d2a2674a2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 14:31:09 2026 \u002B0200",
+        "message": "chore: slice the mutation tests over parallel jobs (#1071)"
       }
     ],
     "labels": [
-      "be73df5a",
       "c69bdc71",
       "05a05906",
       "9ed9eb99",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "80d7a636",
       "dfb520f6",
       "9bafd873",
-      "8c0caeb2"
+      "8c0caeb2",
+      "dc29fb29"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          498.28256839116415,
           538.090622584025,
           519.445053918021,
           491.6327314376831,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           495.42105700174966,
           349.1342089653015,
           477.642680199941,
-          460.0800317128499
+          460.0800317128499,
+          384.8767795562744
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1339.9412716456823,
           1377.729123878479,
           1255.2289052690778,
           1253.2510492960612,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1182.0531973520915,
           898.5017230987548,
           1218.4707197825114,
-          1193.0484619140625
+          1193.0484619140625,
+          1050.6551955086845
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "be73df5aa2faa84dcfa5f8d6efb4ba18c3e2120e",
-        "author": "dependabot[bot]",
-        "date": "Mon Jul 20 16:13:02 2026 \u002B0200",
-        "message": "chore: Bump actions/setup-dotnet from 5 to 6 (#993)"
-      },
-      {
         "sha": "c69bdc71685505157843e329076fb043f2ffbdf8",
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:16 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 13:58:34 2026 \u002B0200",
         "message": "chore: slice the mutation tests over parallel jobs"
+      },
+      {
+        "sha": "dc29fb29ad8940c46a91cafdb9f8a81d2a2674a2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 14:31:09 2026 \u002B0200",
+        "message": "chore: slice the mutation tests over parallel jobs (#1071)"
       }
     ],
     "labels": [
-      "be73df5a",
       "c69bdc71",
       "05a05906",
       "9ed9eb99",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "80d7a636",
       "dfb520f6",
       "9bafd873",
-      "8c0caeb2"
+      "8c0caeb2",
+      "dc29fb29"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2015.482980455671,
           2032.7376618018518,
           1980.6558148520332,
           1940.3627637227376,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1897.1561297098795,
           1025.3441064198812,
           1955.5244827270508,
-          2029.9102714538574
+          2029.9102714538574,
+          1262.6462652842204
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1493.766656112671,
           1432.0199657167707,
           1425.6334269387382,
           1427.4992933273315,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1352.2423076629639,
           1033.1778022766114,
           1369.0302020481654,
-          1369.8892083849225
+          1369.8892083849225,
+          1248.5084645589193
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "be73df5aa2faa84dcfa5f8d6efb4ba18c3e2120e",
-        "author": "dependabot[bot]",
-        "date": "Mon Jul 20 16:13:02 2026 \u002B0200",
-        "message": "chore: Bump actions/setup-dotnet from 5 to 6 (#993)"
-      },
-      {
         "sha": "c69bdc71685505157843e329076fb043f2ffbdf8",
         "author": "dependabot[bot]",
         "date": "Mon Jul 20 16:13:16 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 13:58:34 2026 \u002B0200",
         "message": "chore: slice the mutation tests over parallel jobs"
+      },
+      {
+        "sha": "dc29fb29ad8940c46a91cafdb9f8a81d2a2674a2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 14:31:09 2026 \u002B0200",
+        "message": "chore: slice the mutation tests over parallel jobs (#1071)"
       }
     ],
     "labels": [
-      "be73df5a",
       "c69bdc71",
       "05a05906",
       "9ed9eb99",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "80d7a636",
       "dfb520f6",
       "9bafd873",
-      "8c0caeb2"
+      "8c0caeb2",
+      "dc29fb29"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2681.2109008202187,
           2642.61529897054,
           2554.021547589983,
           2480.318051746913,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2571.071692911784,
           1470.7018271854945,
           2688.8983939034597,
-          2725.5105266571045
+          2725.5105266571045,
+          1722.5688888549805
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          21290.862158203126,
           28536.718900408065,
           21455.21271870931,
           20192.224662272136,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           19494.986265055337,
           13859.130200899564,
           27901.550914219446,
-          27478.99108276367
+          27478.99108276367,
+          15551.548243931362
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4211,7 +4211,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4242,7 +4241,8 @@ window.BENCHMARK_DATA = {
           33471,
           33465,
           33471,
-          33471
+          33471,
+          33465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
