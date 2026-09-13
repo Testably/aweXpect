@@ -1986,7 +1986,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task AsWildcard_ShouldNotThrowWhenMatchingWildcard()
 			{
-				IEnumerable<string> subject = ["foo", "bar", "baz",];
+				ImmutableArray<string?> subject = ["foo", "bar", "baz",];
 				string[] expected = ["*oo", "*a?", "?a?",];
 
 				async Task Act()
@@ -1999,7 +1999,7 @@ public sealed partial class ThatEnumerable
 			public async Task
 				IgnoringLeadingWhiteSpace_ShouldNotThrowWhenOnlyDifferenceIsInLeadingWhiteSpace()
 			{
-				IEnumerable<string> subject = [" a", "b", "\tc",];
+				ImmutableArray<string?> subject = [" a", "b", "\tc",];
 				string[] expected = ["a", " b", "c",];
 
 				async Task Act()
@@ -2012,7 +2012,7 @@ public sealed partial class ThatEnumerable
 			public async Task
 				IgnoringTrailingWhiteSpace_ShouldNotThrowWhenOnlyDifferenceIsInTrailingWhiteSpace()
 			{
-				IEnumerable<string> subject = ["a ", "b", "c\t",];
+				ImmutableArray<string?> subject = ["a ", "b", "c\t",];
 				string[] expected = ["a", "b ", "c",];
 
 				async Task Act()
