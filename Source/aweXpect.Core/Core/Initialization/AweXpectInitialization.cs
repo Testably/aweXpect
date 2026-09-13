@@ -59,11 +59,7 @@ internal static class AweXpectInitialization
 	}
 
 	private static InitializationState Initialize()
-	{
-		ExecuteCustomInitializers();
-
-		return new InitializationState(DetectTestFramework(TestFrameworkRegistry.Instance));
-	}
+		=> new(DetectTestFramework(TestFrameworkRegistry.Instance));
 
 	/// <summary>
 	///     Returns the registered <see cref="ITestFrameworkAdapter" />, or scans the loaded assemblies for one when
@@ -111,7 +107,7 @@ internal static class AweXpectInitialization
 	/// <remarks>
 	///     A prefix matches the assembly name only at a name-segment boundary, so that e.g. <c>System</c> excludes
 	///     <c>System</c> and <c>System.Net.Http</c>, but not an unrelated assembly named <c>Systemics</c>.<br />
-	///     Assemblies without a name are never scanned, as they cannot host a test framework adapter or initializer.
+	///     Assemblies without a name are never scanned, as they cannot host a test framework adapter.
 	/// </remarks>
 	internal static bool IsAssemblyNameIncluded(string? assemblyName)
 	{
@@ -123,41 +119,6 @@ internal static class AweXpectInitialization
 		return Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes.Get()
 			.All(prefix => assemblyName != prefix &&
 			               !assemblyName!.StartsWith(prefix + ".", StringComparison.Ordinal));
-	}
-
-	private static void ExecuteCustomInitializers()
-	{
-		Type initializerInterface = typeof(IAweXpectInitializer);
-		foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies()
-			         .Where(IsAssemblyIncluded))
-		{
-			try
-			{
-#pragma warning disable S2259
-				foreach (Type initializerType in assembly.GetTypes()
-					         .Where(type => type is { IsClass: true, IsAbstract: false, } &&
-					                        initializerInterface.IsAssignableFrom(type)))
-				{
-					try
-					{
-						IAweXpectInitializer? initializer =
-							(IAweXpectInitializer?)Activator.CreateInstance(initializerType);
-						initializer?.Initialize();
-					}
-					catch (Exception ex)
-					{
-						throw new InvalidOperationException(
-								$"Could not instantiate initializer '{Formatter.Format(initializerType)}'!", ex)
-							.LogTrace();
-					}
-				}
-#pragma warning restore S2259
-			}
-			catch (ReflectionTypeLoadException)
-			{
-				// Ignore any ReflectionTypeLoadException and continue with the next assembly.
-			}
-		}
 	}
 
 	internal class InitializationState(ITestFrameworkAdapter testFramework)
