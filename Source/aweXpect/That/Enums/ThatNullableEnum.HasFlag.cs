@@ -11,6 +11,7 @@ public static partial class ThatNullableEnum
 	/// <summary>
 	///     Verifies that the subject has the <paramref name="expectedFlag" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<TEnum?, IThat<TEnum?>> HasFlag<TEnum>(
 		this IThat<TEnum?> source,
 		TEnum? expectedFlag)
@@ -22,6 +23,7 @@ public static partial class ThatNullableEnum
 	/// <summary>
 	///     Verifies that the subject does not have the <paramref name="unexpectedFlag" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<TEnum?, IThat<TEnum?>> DoesNotHaveFlag<TEnum>(
 		this IThat<TEnum?> source,
 		TEnum? unexpectedFlag)

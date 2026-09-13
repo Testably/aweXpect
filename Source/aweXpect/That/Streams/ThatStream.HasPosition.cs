@@ -10,6 +10,7 @@ public static partial class ThatStream
 	/// <summary>
 	///     Verifies that the position of the <see cref="Stream" /> subject…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static PropertyResult.Long<Stream?> HasPosition(this IThat<Stream?> source)
 		=> new(source, a => a?.Position, "position", (value, paramName) =>
 		{

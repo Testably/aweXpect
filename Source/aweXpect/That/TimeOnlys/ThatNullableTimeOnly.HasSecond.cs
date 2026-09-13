@@ -10,6 +10,7 @@ public static partial class ThatNullableTimeOnly
 	/// <summary>
 	///     Verifies that the second of the subject…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static PropertyResult.Int<TimeOnly?> HasSecond(this IThat<TimeOnly?> source)
 		=> new(source, a => a?.Second, "second");
 }

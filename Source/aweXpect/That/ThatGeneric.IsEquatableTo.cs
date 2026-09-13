@@ -25,6 +25,7 @@ public static partial class ThatGeneric
 	///     Verifies that the subject is not equal to the <paramref name="unexpected" /> value
 	///     using the <see cref="IEquatable{T}.Equals(T)" /> method.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<TEquatable, IThat<TEquatable>> IsNotEquatableTo<T, TEquatable>(
 		this IThat<TEquatable> source,
 		T unexpected)

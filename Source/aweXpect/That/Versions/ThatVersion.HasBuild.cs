@@ -10,6 +10,7 @@ public static partial class ThatVersion
 	///     Verifies that the build component of the <see cref="Version" /> subject…
 	///     The build component is <c>-1</c> when it is unspecified.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static PropertyResult.Int<Version?> HasBuild(this IThat<Version?> source)
 		=> new(source, a => a?.Build, "build");
 }

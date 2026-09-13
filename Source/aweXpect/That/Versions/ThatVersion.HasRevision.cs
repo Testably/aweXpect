@@ -10,6 +10,7 @@ public static partial class ThatVersion
 	///     Verifies that the revision component of the <see cref="Version" /> subject…
 	///     The revision component is <c>-1</c> when it is unspecified.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static PropertyResult.Int<Version?> HasRevision(this IThat<Version?> source)
 		=> new(source, a => a?.Revision, "revision");
 }

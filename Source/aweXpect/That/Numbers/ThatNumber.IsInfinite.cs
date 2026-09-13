@@ -49,6 +49,7 @@ public static partial class ThatNumber
 	/// <remarks>
 	///     <see langword="null" /> is treated as not infinite.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static AndOrResult<TNumber?, IThat<TNumber?>> IsNotInfinite<TNumber>(this IThat<TNumber?> source)
 		where TNumber : struct, IFloatingPoint<TNumber>
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>

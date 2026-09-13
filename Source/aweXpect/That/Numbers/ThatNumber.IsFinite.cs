@@ -55,6 +55,7 @@ public static partial class ThatNumber
 	/// <remarks>
 	///     Not finite means either infinity or not a number (NaN) or <see langword="null" />.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static AndOrResult<TNumber?, IThat<TNumber?>> IsNotFinite<TNumber>(this IThat<TNumber?> source)
 		where TNumber : struct, IFloatingPoint<TNumber>
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>

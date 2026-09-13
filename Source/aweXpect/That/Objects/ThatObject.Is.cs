@@ -27,6 +27,7 @@ public static partial class ThatObject
 	/// <summary>
 	///     Verifies that the subject is not of type <paramref name="type" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<T?, IThat<T?>> IsNot<T>(
 		this IThat<T?> source,
 		Type type)

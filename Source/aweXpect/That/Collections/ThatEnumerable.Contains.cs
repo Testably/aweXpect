@@ -662,6 +662,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectCollectionContainResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		DoesNotContain<TItem>(
 			this IThat<IEnumerable<TItem>?> source,
@@ -687,6 +688,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringCollectionContainResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 		DoesNotContain(this IThat<IEnumerable<string?>?> source,
 			IEnumerable<string?> unexpected,
@@ -710,6 +712,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringCollectionContainResult<string?[], IThat<string?[]?>>
 		DoesNotContain(this IThat<string?[]?> source,
 			IEnumerable<string?> unexpected,
@@ -734,6 +737,7 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection.
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
+	[GuaranteesNotNull]
 	public static ObjectCollectionContainResult<IEnumerable, IThat<IEnumerable>, TItem>
 		DoesNotContain<TItem>(
 			this IThat<IEnumerable> source,
@@ -761,6 +765,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectCollectionContainResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
 		DoesNotContain<TItem>(
 			this IThat<ImmutableArray<TItem>> source,
@@ -790,6 +795,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringCollectionContainResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
 		DoesNotContain(this IThat<ImmutableArray<string?>> source,
 			IEnumerable<string?> unexpected,
@@ -817,6 +823,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection of predicates.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionContainResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		DoesNotContain<TItem>(
 			this IThat<IEnumerable<TItem>?> source,
@@ -840,6 +847,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection of expectations.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionContainResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		DoesNotContain<TItem>(
 			this IThat<IEnumerable<TItem>?> source,

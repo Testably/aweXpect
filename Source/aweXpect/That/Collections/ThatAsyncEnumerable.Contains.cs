@@ -279,6 +279,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectCollectionContainResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		DoesNotContain<TItem>(
 			this IThat<IAsyncEnumerable<TItem>?> source,
@@ -303,6 +304,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringCollectionContainResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
 		DoesNotContain(
 			this IThat<IAsyncEnumerable<string?>?> source,
@@ -327,6 +329,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection of predicates.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionContainResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		DoesNotContain<TItem>(
 			this IThat<IAsyncEnumerable<TItem>?> source,
@@ -350,6 +353,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection of expectations.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionContainResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		DoesNotContain<TItem>(
 			this IThat<IAsyncEnumerable<TItem>?> source,

@@ -43,6 +43,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not seen as not a number.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<TNumber?, IThat<TNumber?>> IsNotNaN<TNumber>(this IThat<TNumber?> source)
 		where TNumber : struct, IFloatingPoint<TNumber>
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
