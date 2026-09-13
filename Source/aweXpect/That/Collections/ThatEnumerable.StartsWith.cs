@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -53,7 +52,7 @@ public static partial class ThatEnumerable
 			this IThat<IEnumerable<TItem>?> source,
 			params TItem[] expected)
 	{
-		_ = expected ?? throw new ArgumentNullException(nameof(expected));
+		expected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
@@ -98,7 +97,7 @@ public static partial class ThatEnumerable
 			this IThat<IEnumerable<string?>?> source,
 			params string[] expected)
 	{
-		_ = expected ?? throw new ArgumentNullException(nameof(expected));
+		expected.ThrowIfNullOrEmpty();
 		StringEqualityOptions options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
@@ -143,7 +142,7 @@ public static partial class ThatEnumerable
 			this IThat<IEnumerable> source,
 			params TItem[] expected)
 	{
-		_ = expected ?? throw new ArgumentNullException(nameof(expected));
+		expected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable>, TItem>(
@@ -191,7 +190,7 @@ public static partial class ThatEnumerable
 			this IThat<ImmutableArray<TItem>> source,
 			params TItem[] expected)
 	{
-		_ = expected ?? throw new ArgumentNullException(nameof(expected));
+		expected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>(
@@ -239,7 +238,7 @@ public static partial class ThatEnumerable
 			this IThat<ImmutableArray<string?>> source,
 			params string[] expected)
 	{
-		_ = expected ?? throw new ArgumentNullException(nameof(expected));
+		expected.ThrowIfNullOrEmpty();
 		StringEqualityOptions options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>(
@@ -287,7 +286,7 @@ public static partial class ThatEnumerable
 			this IThat<IEnumerable<TItem>?> source,
 			params TItem[] unexpected)
 	{
-		_ = unexpected ?? throw new ArgumentNullException(nameof(unexpected));
+		unexpected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
@@ -333,7 +332,7 @@ public static partial class ThatEnumerable
 			this IThat<IEnumerable<string?>?> source,
 			params string[] unexpected)
 	{
-		_ = unexpected ?? throw new ArgumentNullException(nameof(unexpected));
+		unexpected.ThrowIfNullOrEmpty();
 		StringEqualityOptions options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
@@ -378,7 +377,7 @@ public static partial class ThatEnumerable
 			this IThat<IEnumerable> source,
 			params TItem[] unexpected)
 	{
-		_ = unexpected ?? throw new ArgumentNullException(nameof(unexpected));
+		unexpected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable>, TItem>(
@@ -427,7 +426,7 @@ public static partial class ThatEnumerable
 			this IThat<ImmutableArray<TItem>> source,
 			params TItem[] unexpected)
 	{
-		_ = unexpected ?? throw new ArgumentNullException(nameof(unexpected));
+		unexpected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>(
@@ -475,7 +474,7 @@ public static partial class ThatEnumerable
 			this IThat<ImmutableArray<string?>> source,
 			params string[] unexpected)
 	{
-		_ = unexpected ?? throw new ArgumentNullException(nameof(unexpected));
+		unexpected.ThrowIfNullOrEmpty();
 		StringEqualityOptions options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>(

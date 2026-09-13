@@ -145,22 +145,16 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
-			public async Task WhenUnexpectedIsEmpty_ShouldFail()
+			public async Task WhenUnexpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				IEnumerable subject = ToEnumerable([1, 2,]);
 
 				async Task Act()
 					=> await That(subject).DoesNotStartWith(Array.Empty<int>());
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             does not start with [],
-					             but it was [
-					               1,
-					               2
-					             ]
-					             """);
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' collection cannot be empty.").AsPrefix();
 			}
 		}
 	}
