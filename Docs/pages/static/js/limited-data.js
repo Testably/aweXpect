@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "665303713c8888b4a8f6e41ef61ca354e7e7b433",
-        "author": "dependabot[bot]",
-        "date": "Tue Jul 28 22:43:55 2026 \u002B0200",
-        "message": "chore: Bump LibGit2Sharp from 0.31.0 to 0.32.0 (#999)"
-      },
-      {
         "sha": "8283fcea6eaec136bf0c94927521b33a364f7400",
         "author": "dependabot[bot]",
         "date": "Tue Jul 28 22:43:39 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 15:33:08 2026 \u002B0200",
         "message": "chore: verify the mutation dashboard upload and drop the concurrency override (#1074)"
+      },
+      {
+        "sha": "9547e82c3df44b95f4bc13692f446a537c178588",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:12:13 2026 \u002B0200",
+        "message": "fix!: reject a \u0060null\u0060 or empty needle in the dictionary key and value expectations (#1075)"
       }
     ],
     "labels": [
-      "66530371",
       "8283fcea",
       "97537941",
       "37f4afa3",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "c5c7f7d4",
       "c6732d62",
       "756e490e",
-      "f2e29045"
+      "f2e29045",
+      "9547e82c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          255.48705085118613,
           251.88145289054285,
           265.0856841723124,
           256.0554825919015,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           250.75973449434554,
           254.4613069466182,
           135.9181802749634,
-          188.02120952606202
+          188.02120952606202,
+          248.97076454162598
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          254.406210454305,
           244.47806106294905,
           240.2802174250285,
           248.7102222442627,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           236.79322616870587,
           246.56261631647746,
           154.9280719246183,
-          192.87963887055716
+          192.87963887055716,
+          241.61465230354895
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "665303713c8888b4a8f6e41ef61ca354e7e7b433",
-        "author": "dependabot[bot]",
-        "date": "Tue Jul 28 22:43:55 2026 \u002B0200",
-        "message": "chore: Bump LibGit2Sharp from 0.31.0 to 0.32.0 (#999)"
-      },
-      {
         "sha": "8283fcea6eaec136bf0c94927521b33a364f7400",
         "author": "dependabot[bot]",
         "date": "Tue Jul 28 22:43:39 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 15:33:08 2026 \u002B0200",
         "message": "chore: verify the mutation dashboard upload and drop the concurrency override (#1074)"
+      },
+      {
+        "sha": "9547e82c3df44b95f4bc13692f446a537c178588",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:12:13 2026 \u002B0200",
+        "message": "fix!: reject a \u0060null\u0060 or empty needle in the dictionary key and value expectations (#1075)"
       }
     ],
     "labels": [
-      "66530371",
       "8283fcea",
       "97537941",
       "37f4afa3",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "c5c7f7d4",
       "c6732d62",
       "756e490e",
-      "f2e29045"
+      "f2e29045",
+      "9547e82c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          323283.2626604353,
           302768.747000558,
           319641.47196138825,
           297547.96955217636,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           300669.2333984375,
           317015.54552283656,
           169749.23313685827,
-          225613.10516764323
+          225613.10516764323,
+          302007.1185021034
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1039,7 +1039,6 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
           335444,
           335444,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335442,
-          335442
+          335442,
+          335444
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2800057.7682291665,
           2636195.4044471155,
           2800566.6703125,
           2319945.7200520835,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2738172.296875,
           2688861.4171875,
           1366076.2995256695,
-          1809507.5341796875
+          1809507.5341796875,
+          2722615.3565104166
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1159,7 +1159,6 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841651,
           4841647,
           4841651,
           4841651,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841647,
-          4841647
+          4841647,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "665303713c8888b4a8f6e41ef61ca354e7e7b433",
-        "author": "dependabot[bot]",
-        "date": "Tue Jul 28 22:43:55 2026 \u002B0200",
-        "message": "chore: Bump LibGit2Sharp from 0.31.0 to 0.32.0 (#999)"
-      },
       {
         "sha": "8283fcea6eaec136bf0c94927521b33a364f7400",
         "author": "dependabot[bot]",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 15:33:08 2026 \u002B0200",
         "message": "chore: verify the mutation dashboard upload and drop the concurrency override (#1074)"
+      },
+      {
+        "sha": "9547e82c3df44b95f4bc13692f446a537c178588",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:12:13 2026 \u002B0200",
+        "message": "fix!: reject a \u0060null\u0060 or empty needle in the dictionary key and value expectations (#1075)"
       }
     ],
     "labels": [
-      "66530371",
       "8283fcea",
       "97537941",
       "37f4afa3",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "c5c7f7d4",
       "c6732d62",
       "756e490e",
-      "f2e29045"
+      "f2e29045",
+      "9547e82c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          523.8340864817302,
           472.30581566492714,
           513.6521787643433,
           483.4518507639567,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           476.14383179800853,
           520.978179693222,
           247.31512594223022,
-          372.9074284689767
+          372.9074284689767,
+          461.8416782787868
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          501.37619635264076,
           463.01733786265055,
           499.82895054136003,
           489.51873747507733,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           469.3356034755707,
           548.5366251128061,
           280.42371861139935,
-          388.7194734641484
+          388.7194734641484,
+          469.7274462064107
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "665303713c8888b4a8f6e41ef61ca354e7e7b433",
-        "author": "dependabot[bot]",
-        "date": "Tue Jul 28 22:43:55 2026 \u002B0200",
-        "message": "chore: Bump LibGit2Sharp from 0.31.0 to 0.32.0 (#999)"
-      },
-      {
         "sha": "8283fcea6eaec136bf0c94927521b33a364f7400",
         "author": "dependabot[bot]",
         "date": "Tue Jul 28 22:43:39 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 15:33:08 2026 \u002B0200",
         "message": "chore: verify the mutation dashboard upload and drop the concurrency override (#1074)"
+      },
+      {
+        "sha": "9547e82c3df44b95f4bc13692f446a537c178588",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:12:13 2026 \u002B0200",
+        "message": "fix!: reject a \u0060null\u0060 or empty needle in the dictionary key and value expectations (#1075)"
       }
     ],
     "labels": [
-      "66530371",
       "8283fcea",
       "97537941",
       "37f4afa3",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "c5c7f7d4",
       "c6732d62",
       "756e490e",
-      "f2e29045"
+      "f2e29045",
+      "9547e82c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          292.6164258003235,
           259.14284918858453,
           265.1438490663256,
           254.10089457829793,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           259.7270631790161,
           270.73044805526735,
           142.2691675345103,
-          198.9648289510182
+          198.9648289510182,
+          264.6084016731807
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          263.79900544484457,
           239.86527779897054,
           255.93087975184122,
           265.5314603805542,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           257.8425686518351,
           292.022051970164,
           140.3980232079824,
-          189.33685416834695
+          189.33685416834695,
+          242.92863861719766
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "665303713c8888b4a8f6e41ef61ca354e7e7b433",
-        "author": "dependabot[bot]",
-        "date": "Tue Jul 28 22:43:55 2026 \u002B0200",
-        "message": "chore: Bump LibGit2Sharp from 0.31.0 to 0.32.0 (#999)"
-      },
-      {
         "sha": "8283fcea6eaec136bf0c94927521b33a364f7400",
         "author": "dependabot[bot]",
         "date": "Tue Jul 28 22:43:39 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 15:33:08 2026 \u002B0200",
         "message": "chore: verify the mutation dashboard upload and drop the concurrency override (#1074)"
+      },
+      {
+        "sha": "9547e82c3df44b95f4bc13692f446a537c178588",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:12:13 2026 \u002B0200",
+        "message": "fix!: reject a \u0060null\u0060 or empty needle in the dictionary key and value expectations (#1075)"
       }
     ],
     "labels": [
-      "66530371",
       "8283fcea",
       "97537941",
       "37f4afa3",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "c5c7f7d4",
       "c6732d62",
       "756e490e",
-      "f2e29045"
+      "f2e29045",
+      "9547e82c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          497.8442200342814,
           443.885150941213,
           492.81332336153304,
           491.1146069208781,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           480.52882326566254,
           493.8501781736101,
           273.5651867389679,
-          384.19529918034874
+          384.19529918034874,
+          464.54025302614485
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1271.0447240193685,
           1188.6415425709315,
           1269.4671895345052,
           1160.6543505532402,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1228.212302271525,
           1433.442033290863,
           681.5710824648539,
-          899.5376797993978
+          899.5376797993978,
+          1201.658662523542
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "665303713c8888b4a8f6e41ef61ca354e7e7b433",
-        "author": "dependabot[bot]",
-        "date": "Tue Jul 28 22:43:55 2026 \u002B0200",
-        "message": "chore: Bump LibGit2Sharp from 0.31.0 to 0.32.0 (#999)"
-      },
-      {
         "sha": "8283fcea6eaec136bf0c94927521b33a364f7400",
         "author": "dependabot[bot]",
         "date": "Tue Jul 28 22:43:39 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 15:33:08 2026 \u002B0200",
         "message": "chore: verify the mutation dashboard upload and drop the concurrency override (#1074)"
+      },
+      {
+        "sha": "9547e82c3df44b95f4bc13692f446a537c178588",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:12:13 2026 \u002B0200",
+        "message": "fix!: reject a \u0060null\u0060 or empty needle in the dictionary key and value expectations (#1075)"
       }
     ],
     "labels": [
-      "66530371",
       "8283fcea",
       "97537941",
       "37f4afa3",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "c5c7f7d4",
       "c6732d62",
       "756e490e",
-      "f2e29045"
+      "f2e29045",
+      "9547e82c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2016.0552400861468,
           1905.3482880910237,
           2038.3470326741538,
           1951.8924947102864,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1928.0085342407226,
           2033.934630530221,
           1058.5298448290143,
-          1500.4603476206462
+          1500.4603476206462,
+          1929.1881154378254
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1432.1969587961833,
           1270.7210006713867,
           1344.3312196095785,
           1343.2441444396973,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1287.9860266367593,
           1467.3255128860474,
           740.1549100875854,
-          1016.2394481386457
+          1016.2394481386457,
+          1316.3702767235893
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "665303713c8888b4a8f6e41ef61ca354e7e7b433",
-        "author": "dependabot[bot]",
-        "date": "Tue Jul 28 22:43:55 2026 \u002B0200",
-        "message": "chore: Bump LibGit2Sharp from 0.31.0 to 0.32.0 (#999)"
-      },
-      {
         "sha": "8283fcea6eaec136bf0c94927521b33a364f7400",
         "author": "dependabot[bot]",
         "date": "Tue Jul 28 22:43:39 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 15:33:08 2026 \u002B0200",
         "message": "chore: verify the mutation dashboard upload and drop the concurrency override (#1074)"
+      },
+      {
+        "sha": "9547e82c3df44b95f4bc13692f446a537c178588",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Sep 13 16:12:13 2026 \u002B0200",
+        "message": "fix!: reject a \u0060null\u0060 or empty needle in the dictionary key and value expectations (#1075)"
       }
     ],
     "labels": [
-      "66530371",
       "8283fcea",
       "97537941",
       "37f4afa3",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "c5c7f7d4",
       "c6732d62",
       "756e490e",
-      "f2e29045"
+      "f2e29045",
+      "9547e82c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2625.639323679606,
           2503.2055353800456,
           2697.9083592732745,
           2531.6891387939454,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2584.997779573713,
           2693.6567529531626,
           1356.5092997184167,
-          1951.5280904134115
+          1951.5280904134115,
+          2576.0701917012534
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27280.6028376988,
           25860.80059712728,
           28346.396923828124,
           20057.27074105399,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           27038.082265218098,
           27807.976272583008,
           10630.42140851702,
-          15669.362336222332
+          15669.362336222332,
+          26675.440717424666
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4206,7 +4206,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4239,6 +4238,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
