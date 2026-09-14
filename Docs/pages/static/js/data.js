@@ -3666,6 +3666,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 13:29:59 2026 \u002B0200",
         "message": "feat!: mark \u0060IsNotBetween\u0060 as \u0060GuaranteesNotNull\u0060 (#1092)"
+      },
+      {
+        "sha": "dfdf055d25ef291e7028edb7997b06f8e954c7a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 13:33:28 2026 \u002B0200",
+        "message": "fix: keep a runaway mutant from taking down the mutation runner"
       }
     ],
     "labels": [
@@ -4279,7 +4285,8 @@ window.BENCHMARK_DATA = {
       "6d1fd9f2",
       "5fdcb1f5",
       "6d14d7ab",
-      "fd00414e"
+      "fd00414e",
+      "dfdf055d"
     ],
     "datasets": [
       {
@@ -4896,7 +4903,8 @@ window.BENCHMARK_DATA = {
           249.66410438219705,
           253.45660810470582,
           263.6970933505467,
-          183.11750654073862
+          183.11750654073862,
+          241.6897472313472
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5369,6 +5377,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6143,7 +6152,8 @@ window.BENCHMARK_DATA = {
           251.00914753400363,
           238.20291840235393,
           241.76030870846338,
-          190.08391800948553
+          190.08391800948553,
+          249.49964272181194
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6336,6 +6346,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -9983,6 +9994,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 13:29:59 2026 \u002B0200",
         "message": "feat!: mark \u0060IsNotBetween\u0060 as \u0060GuaranteesNotNull\u0060 (#1092)"
+      },
+      {
+        "sha": "dfdf055d25ef291e7028edb7997b06f8e954c7a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 13:33:28 2026 \u002B0200",
+        "message": "fix: keep a runaway mutant from taking down the mutation runner"
       }
     ],
     "labels": [
@@ -10519,7 +10536,8 @@ window.BENCHMARK_DATA = {
       "6d1fd9f2",
       "5fdcb1f5",
       "6d14d7ab",
-      "fd00414e"
+      "fd00414e",
+      "dfdf055d"
     ],
     "datasets": [
       {
@@ -11059,7 +11077,8 @@ window.BENCHMARK_DATA = {
           377747.7562825521,
           380885.13536783855,
           377538.96295572916,
-          272909.063264974
+          272909.063264974,
+          310160.52689034597
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11604,6 +11623,7 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542085,
+          542084,
           542084
         ],
         "borderColor": "#63A2AC",
@@ -12152,7 +12172,8 @@ window.BENCHMARK_DATA = {
           2424088.3388020834,
           2607126.966796875,
           2656590.2580915177,
-          1761810.0951450893
+          1761810.0951450893,
+          1961056.0255301339
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12697,7 +12718,8 @@ window.BENCHMARK_DATA = {
           4841647,
           4841651,
           4841651,
-          4841647
+          4841647,
+          4841610
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16377,6 +16399,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 13:29:59 2026 \u002B0200",
         "message": "feat!: mark \u0060IsNotBetween\u0060 as \u0060GuaranteesNotNull\u0060 (#1092)"
+      },
+      {
+        "sha": "dfdf055d25ef291e7028edb7997b06f8e954c7a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 13:33:28 2026 \u002B0200",
+        "message": "fix: keep a runaway mutant from taking down the mutation runner"
       }
     ],
     "labels": [
@@ -16990,7 +17018,8 @@ window.BENCHMARK_DATA = {
       "6d1fd9f2",
       "5fdcb1f5",
       "6d14d7ab",
-      "fd00414e"
+      "fd00414e",
+      "dfdf055d"
     ],
     "datasets": [
       {
@@ -17607,7 +17636,8 @@ window.BENCHMARK_DATA = {
           475.8615978240967,
           458.6794052441915,
           449.50483423868815,
-          354.6007298787435
+          354.6007298787435,
+          417.8039389610291
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18080,6 +18110,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -18854,7 +18885,8 @@ window.BENCHMARK_DATA = {
           498.57393035888674,
           509.3773717880249,
           495.2988224665324,
-          368.87855978012084
+          368.87855978012084,
+          460.89590808323453
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19047,6 +19079,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -23156,6 +23189,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 13:29:59 2026 \u002B0200",
         "message": "feat!: mark \u0060IsNotBetween\u0060 as \u0060GuaranteesNotNull\u0060 (#1092)"
+      },
+      {
+        "sha": "dfdf055d25ef291e7028edb7997b06f8e954c7a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 13:33:28 2026 \u002B0200",
+        "message": "fix: keep a runaway mutant from taking down the mutation runner"
       }
     ],
     "labels": [
@@ -23769,7 +23808,8 @@ window.BENCHMARK_DATA = {
       "6d1fd9f2",
       "5fdcb1f5",
       "6d14d7ab",
-      "fd00414e"
+      "fd00414e",
+      "dfdf055d"
     ],
     "datasets": [
       {
@@ -24386,7 +24426,8 @@ window.BENCHMARK_DATA = {
           269.57373355229697,
           260.13586384909496,
           263.9802384058634,
-          193.41651456696647
+          193.41651456696647,
+          253.78392321268717
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -24900,6 +24941,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -25633,7 +25675,8 @@ window.BENCHMARK_DATA = {
           244.01057580312093,
           247.2639165242513,
           242.94598509470623,
-          189.79524131615958
+          189.79524131615958,
+          266.45659490994046
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -25826,6 +25869,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -29935,6 +29979,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 13:29:59 2026 \u002B0200",
         "message": "feat!: mark \u0060IsNotBetween\u0060 as \u0060GuaranteesNotNull\u0060 (#1092)"
+      },
+      {
+        "sha": "dfdf055d25ef291e7028edb7997b06f8e954c7a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 13:33:28 2026 \u002B0200",
+        "message": "fix: keep a runaway mutant from taking down the mutation runner"
       }
     ],
     "labels": [
@@ -30548,7 +30598,8 @@ window.BENCHMARK_DATA = {
       "6d1fd9f2",
       "5fdcb1f5",
       "6d14d7ab",
-      "fd00414e"
+      "fd00414e",
+      "dfdf055d"
     ],
     "datasets": [
       {
@@ -31165,7 +31216,8 @@ window.BENCHMARK_DATA = {
           470.68008817036946,
           445.21608165105187,
           456.6439706166585,
-          347.501420434316
+          347.501420434316,
+          388.8420433998108
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31638,6 +31690,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -32412,7 +32465,8 @@ window.BENCHMARK_DATA = {
           1177.0053024291992,
           1180.4894489875207,
           1200.081512069702,
-          855.7843433788845
+          855.7843433788845,
+          1076.598162206014
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32841,6 +32895,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -36714,6 +36769,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 13:29:59 2026 \u002B0200",
         "message": "feat!: mark \u0060IsNotBetween\u0060 as \u0060GuaranteesNotNull\u0060 (#1092)"
+      },
+      {
+        "sha": "dfdf055d25ef291e7028edb7997b06f8e954c7a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 13:33:28 2026 \u002B0200",
+        "message": "fix: keep a runaway mutant from taking down the mutation runner"
       }
     ],
     "labels": [
@@ -37327,7 +37388,8 @@ window.BENCHMARK_DATA = {
       "6d1fd9f2",
       "5fdcb1f5",
       "6d14d7ab",
-      "fd00414e"
+      "fd00414e",
+      "dfdf055d"
     ],
     "datasets": [
       {
@@ -37944,7 +38006,8 @@ window.BENCHMARK_DATA = {
           1867.5488277435302,
           1901.679819869995,
           1896.2060609545026,
-          1445.4109486171178
+          1445.4109486171178,
+          1263.9480908257622
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38417,6 +38480,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -39191,7 +39255,8 @@ window.BENCHMARK_DATA = {
           1340.2610610961915,
           1308.885598863874,
           1361.9800455729167,
-          1004.3867805480957
+          1004.3867805480957,
+          1267.9197845458984
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39384,6 +39449,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -43493,6 +43559,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 13:29:59 2026 \u002B0200",
         "message": "feat!: mark \u0060IsNotBetween\u0060 as \u0060GuaranteesNotNull\u0060 (#1092)"
+      },
+      {
+        "sha": "dfdf055d25ef291e7028edb7997b06f8e954c7a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 13:33:28 2026 \u002B0200",
+        "message": "fix: keep a runaway mutant from taking down the mutation runner"
       }
     ],
     "labels": [
@@ -44106,7 +44178,8 @@ window.BENCHMARK_DATA = {
       "6d1fd9f2",
       "5fdcb1f5",
       "6d14d7ab",
-      "fd00414e"
+      "fd00414e",
+      "dfdf055d"
     ],
     "datasets": [
       {
@@ -44723,7 +44796,8 @@ window.BENCHMARK_DATA = {
           2454.1506958007812,
           2482.5264661153155,
           2531.095802307129,
-          1894.7102771759032
+          1894.7102771759032,
+          1661.151132447379
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -45196,6 +45270,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -45970,7 +46045,8 @@ window.BENCHMARK_DATA = {
           19912.0600789388,
           27732.19226989746,
           26807.29797973633,
-          14984.105593167818
+          14984.105593167818,
+          15686.815439860025
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -46592,7 +46668,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471
+          33471,
+          33465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
