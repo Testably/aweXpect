@@ -3678,6 +3678,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 14:24:31 2026 \u002B0200",
         "message": "fix: keep the resource sampler from replacing the build\u0027s exit code"
+      },
+      {
+        "sha": "48275fcff734ce8c6b97898142dbaaa306c155b2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 15:27:55 2026 \u002B0200",
+        "message": "fix!: fail a null subject for the negated form of an expectation (#1094)"
       }
     ],
     "labels": [
@@ -4293,7 +4299,8 @@ window.BENCHMARK_DATA = {
       "6d14d7ab",
       "fd00414e",
       "dfdf055d",
-      "07659ebf"
+      "07659ebf",
+      "48275fcf"
     ],
     "datasets": [
       {
@@ -4912,7 +4919,8 @@ window.BENCHMARK_DATA = {
           263.6970933505467,
           183.11750654073862,
           241.6897472313472,
-          261.35009473164877
+          261.35009473164877,
+          202.0682702700297
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5385,6 +5393,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6163,7 +6172,8 @@ window.BENCHMARK_DATA = {
           241.76030870846338,
           190.08391800948553,
           249.49964272181194,
-          248.91758947372438
+          248.91758947372438,
+          193.95771493911744
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6356,6 +6366,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10017,6 +10028,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 14:24:31 2026 \u002B0200",
         "message": "fix: keep the resource sampler from replacing the build\u0027s exit code"
+      },
+      {
+        "sha": "48275fcff734ce8c6b97898142dbaaa306c155b2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 15:27:55 2026 \u002B0200",
+        "message": "fix!: fail a null subject for the negated form of an expectation (#1094)"
       }
     ],
     "labels": [
@@ -10555,7 +10572,8 @@ window.BENCHMARK_DATA = {
       "6d14d7ab",
       "fd00414e",
       "dfdf055d",
-      "07659ebf"
+      "07659ebf",
+      "48275fcf"
     ],
     "datasets": [
       {
@@ -11097,7 +11115,8 @@ window.BENCHMARK_DATA = {
           377538.96295572916,
           272909.063264974,
           310160.52689034597,
-          384797.04899088544
+          384797.04899088544,
+          288932.6270833333
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11644,7 +11663,8 @@ window.BENCHMARK_DATA = {
           542085,
           542084,
           542084,
-          542085
+          542085,
+          542084
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12194,7 +12214,8 @@ window.BENCHMARK_DATA = {
           2656590.2580915177,
           1761810.0951450893,
           1961056.0255301339,
-          2694216.7727864585
+          2694216.7727864585,
+          1919859.78125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12741,7 +12762,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841647,
           4841610,
-          4841651
+          4841651,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16433,6 +16455,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 14:24:31 2026 \u002B0200",
         "message": "fix: keep the resource sampler from replacing the build\u0027s exit code"
+      },
+      {
+        "sha": "48275fcff734ce8c6b97898142dbaaa306c155b2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 15:27:55 2026 \u002B0200",
+        "message": "fix!: fail a null subject for the negated form of an expectation (#1094)"
       }
     ],
     "labels": [
@@ -17048,7 +17076,8 @@ window.BENCHMARK_DATA = {
       "6d14d7ab",
       "fd00414e",
       "dfdf055d",
-      "07659ebf"
+      "07659ebf",
+      "48275fcf"
     ],
     "datasets": [
       {
@@ -17667,7 +17696,8 @@ window.BENCHMARK_DATA = {
           449.50483423868815,
           354.6007298787435,
           417.8039389610291,
-          515.1616793950399
+          515.1616793950399,
+          388.25114046732585
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18140,6 +18170,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -18918,7 +18949,8 @@ window.BENCHMARK_DATA = {
           495.2988224665324,
           368.87855978012084,
           460.89590808323453,
-          510.66075089772545
+          510.66075089772545,
+          444.05623321533204
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19111,6 +19143,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -23234,6 +23267,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 14:24:31 2026 \u002B0200",
         "message": "fix: keep the resource sampler from replacing the build\u0027s exit code"
+      },
+      {
+        "sha": "48275fcff734ce8c6b97898142dbaaa306c155b2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 15:27:55 2026 \u002B0200",
+        "message": "fix!: fail a null subject for the negated form of an expectation (#1094)"
       }
     ],
     "labels": [
@@ -23849,7 +23888,8 @@ window.BENCHMARK_DATA = {
       "6d14d7ab",
       "fd00414e",
       "dfdf055d",
-      "07659ebf"
+      "07659ebf",
+      "48275fcf"
     ],
     "datasets": [
       {
@@ -24468,7 +24508,8 @@ window.BENCHMARK_DATA = {
           263.9802384058634,
           193.41651456696647,
           253.78392321268717,
-          266.98263822283064
+          266.98263822283064,
+          215.05497576395672
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -24982,6 +25023,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -25719,7 +25761,8 @@ window.BENCHMARK_DATA = {
           242.94598509470623,
           189.79524131615958,
           266.45659490994046,
-          251.55838861465455
+          251.55838861465455,
+          193.71849513053894
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -25912,6 +25955,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -30035,6 +30079,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 14:24:31 2026 \u002B0200",
         "message": "fix: keep the resource sampler from replacing the build\u0027s exit code"
+      },
+      {
+        "sha": "48275fcff734ce8c6b97898142dbaaa306c155b2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 15:27:55 2026 \u002B0200",
+        "message": "fix!: fail a null subject for the negated form of an expectation (#1094)"
       }
     ],
     "labels": [
@@ -30650,7 +30700,8 @@ window.BENCHMARK_DATA = {
       "6d14d7ab",
       "fd00414e",
       "dfdf055d",
-      "07659ebf"
+      "07659ebf",
+      "48275fcf"
     ],
     "datasets": [
       {
@@ -31269,7 +31320,8 @@ window.BENCHMARK_DATA = {
           456.6439706166585,
           347.501420434316,
           388.8420433998108,
-          454.9438359896342
+          454.9438359896342,
+          401.7921457608541
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31742,6 +31794,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -32520,7 +32573,8 @@ window.BENCHMARK_DATA = {
           1200.081512069702,
           855.7843433788845,
           1076.598162206014,
-          1192.530027516683
+          1192.530027516683,
+          1038.105400466919
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32949,6 +33003,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -36836,6 +36891,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 14:24:31 2026 \u002B0200",
         "message": "fix: keep the resource sampler from replacing the build\u0027s exit code"
+      },
+      {
+        "sha": "48275fcff734ce8c6b97898142dbaaa306c155b2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 15:27:55 2026 \u002B0200",
+        "message": "fix!: fail a null subject for the negated form of an expectation (#1094)"
       }
     ],
     "labels": [
@@ -37451,7 +37512,8 @@ window.BENCHMARK_DATA = {
       "6d14d7ab",
       "fd00414e",
       "dfdf055d",
-      "07659ebf"
+      "07659ebf",
+      "48275fcf"
     ],
     "datasets": [
       {
@@ -38070,7 +38132,8 @@ window.BENCHMARK_DATA = {
           1896.2060609545026,
           1445.4109486171178,
           1263.9480908257622,
-          1923.368877919515
+          1923.368877919515,
+          1623.953402382987
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38543,6 +38606,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -39321,7 +39385,8 @@ window.BENCHMARK_DATA = {
           1361.9800455729167,
           1004.3867805480957,
           1267.9197845458984,
-          1365.60766850985
+          1365.60766850985,
+          1131.3129965464275
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39514,6 +39579,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -43637,6 +43703,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 14:24:31 2026 \u002B0200",
         "message": "fix: keep the resource sampler from replacing the build\u0027s exit code"
+      },
+      {
+        "sha": "48275fcff734ce8c6b97898142dbaaa306c155b2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 15:27:55 2026 \u002B0200",
+        "message": "fix!: fail a null subject for the negated form of an expectation (#1094)"
       }
     ],
     "labels": [
@@ -44252,7 +44324,8 @@ window.BENCHMARK_DATA = {
       "6d14d7ab",
       "fd00414e",
       "dfdf055d",
-      "07659ebf"
+      "07659ebf",
+      "48275fcf"
     ],
     "datasets": [
       {
@@ -44871,7 +44944,8 @@ window.BENCHMARK_DATA = {
           2531.095802307129,
           1894.7102771759032,
           1661.151132447379,
-          2614.6848622639973
+          2614.6848622639973,
+          2052.538283421443
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -45344,6 +45418,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -46122,7 +46197,8 @@ window.BENCHMARK_DATA = {
           26807.29797973633,
           14984.105593167818,
           15686.815439860025,
-          26792.870127360027
+          26792.870127360027,
+          16741.85625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -46746,6 +46822,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
