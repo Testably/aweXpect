@@ -420,6 +420,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				.Distinct().OrderBy(x => x, StringComparer.Ordinal).ToList();
 			if (members.Count == 0 || type.IsAbstract || type.IsStatic || !IsReferenceable(type) ||
 			    members.Any(member => IsUnreferenceable(member) || !CanBeMemberType(member.Type) ||
+			                          !SyntaxFacts.IsValidIdentifier(member.Name) ||
 			                          !IsReferenceable(member.Type) ||
 			                          !IsReferenceable(member.Symbol.ContainingType)) ||
 			    !diagnosticIds.All(IsDiagnosticId))
@@ -510,8 +511,8 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		private static string MetadataSignature(ITypeSymbol type)
 			=> type switch
 			{
-				ITypeParameterSymbol parameter => "!" + parameter.Ordinal,
-				IDynamicTypeSymbol => "object",
+				ITypeParameterSymbol parameter => "!" + Position(parameter),
+				IDynamicTypeSymbol => "System.Object",
 				IArrayTypeSymbol array => MetadataSignature(array.ElementType) + "[" + new string(',', array.Rank - 1) +
 				                          "]",
 				IPointerTypeSymbol pointer => MetadataSignature(pointer.PointedAtType) + "*",
@@ -527,6 +528,23 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 					                            ">"),
 				_ => type.ToDisplayString(TypeFormat),
 			};
+
+		/// <remarks>
+		///     Roslyn numbers a type parameter within its declaring type, while metadata numbers it across the containing
+		///     types as well, so <c>U</c> in <c>Outer&lt;T&gt;.Inner&lt;U&gt;</c> is position one, not zero.
+		/// </remarks>
+		private static int Position(ITypeParameterSymbol parameter)
+		{
+			int position = parameter.Ordinal;
+			for (INamedTypeSymbol? containing = parameter.DeclaringType?.ContainingType;
+			     containing is not null;
+			     containing = containing.ContainingType)
+			{
+				position += containing.Arity;
+			}
+
+			return position;
+		}
 
 		/// <remarks>
 		///     A tuple exposes its elements as fields named after the declaration and, from the eighth element on, as

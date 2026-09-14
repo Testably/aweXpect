@@ -116,6 +116,34 @@ public sealed partial class TypeMetadataGeneratorTests
 	}
 
 	[Fact]
+	public async Task WhenBasePropertyIsDynamicAndHiddenByAnObjectOne_ShouldNotRegisterIt()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"""
+			namespace Models;
+
+			public class WithDynamic
+			{
+				public dynamic Value { get; set; } = 1;
+			}
+
+			public class HidingDynamic : WithDynamic
+			{
+				public int Own { get; set; }
+				private new object Value { get; set; } = 2;
+			}
+			""",
+			Call("Expect.That(new Models.HidingDynamic()).IsEquivalentTo(new Models.HidingDynamic());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains("(\"Own\", o => o.Own);");
+		await That(result.Generated).DoesNotContain("\"Value\"")
+			.Because("dynamic is object in metadata, so the private object property hides the dynamic base one");
+	}
+
+	[Fact]
 	public async Task WhenBasePropertyIsHiddenByAByReferenceOne_ShouldRegisterIt()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -201,6 +229,37 @@ public sealed partial class TypeMetadataGeneratorTests
 		await That(result.Generated)
 			.Contains("RegisterProperty<global::Models.Leaf, int>(\"Value\", o => ((global::Models.WithValue)o).Value);")
 			.Because("the runtime never returns private members of a base type, so a private hider on an intermediate type does not hide anything");
+	}
+
+	[Fact]
+	public async Task WhenBasePropertyOfANestedGenericIsHiddenPrivately_ShouldRegisterIt()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"""
+			namespace Models;
+
+			public class GenericBase<T>
+			{
+				public T Value { get; set; } = default!;
+			}
+
+			public class Outer<T>
+			{
+				public class Inner<U> : GenericBase<T>
+				{
+					public int Own { get; set; }
+					private new U Value { get; set; } = default!;
+				}
+			}
+			""",
+			Call("Expect.That(new Models.Outer<int>.Inner<string>()).IsEquivalentTo(new Models.Outer<int>.Inner<string>());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated)
+			.Contains("(\"Value\", o => ((global::Models.GenericBase<int>)o).Value);")
+			.Because("metadata numbers U as the second type parameter of the nested type, so it differs from the base's T");
 	}
 
 	[Fact]

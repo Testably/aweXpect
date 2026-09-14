@@ -56,6 +56,30 @@ public static class Corpus
 		public override string ToString() => $"{Value}";
 	}
 
+	public class WithDynamic
+	{
+		public dynamic Value { get; set; } = 1;
+	}
+
+	public class HidingDynamic : WithDynamic
+	{
+		public int Own { get; set; }
+		private new object Value { get; set; } = 2;
+
+		public override string ToString() => $"{Value}";
+	}
+
+	public class Outer<T>
+	{
+		public class Inner<TInner> : Generic<T>
+		{
+			public int Own { get; set; }
+			private new TInner Value { get; set; } = default!;
+
+			public override string ToString() => $"{Value}";
+		}
+	}
+
 	public class WithIndexer
 	{
 		public int Count { get; set; }

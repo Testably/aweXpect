@@ -288,8 +288,9 @@ Some types cannot be seen by the generator, because it works from the types decl
 - an anonymous type with a member holding a collection of anonymous types, other than an array, cannot be written
   as an instance and is compared through reflection; the element type itself is registered.
 
-Name such a type explicitly to register it anyway. The generator warns with `aweXpect2001` when a named type yields
-no registration:
+A type the generator merely did not see, such as the runtime type behind an `object` member or a value passed through
+an unmarked extension, can be named explicitly to register it anyway; a type it cannot reference stays on reflection
+regardless. The generator warns with `aweXpect2001` when a named type yields no registration:
 
 ```csharp
 using aweXpect.Core.Metadata;
