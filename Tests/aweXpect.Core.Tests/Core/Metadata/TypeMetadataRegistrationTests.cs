@@ -1,4 +1,4 @@
-#if NET8_0_OR_GREATER
+#if NET8_0_OR_GREATER && DEBUG
 using aweXpect.Core.Metadata;
 using aweXpect.Core.Tests.Core.Metadata;
 
@@ -6,6 +6,10 @@ using aweXpect.Core.Tests.Core.Metadata;
 
 namespace aweXpect.Core.Tests.Core.Metadata;
 
+/// <remarks>
+///     Outside <c>Debug</c> this project takes its generators from the released <c>aweXpect</c> package, which does not
+///     ship the metadata generator yet, so the tests exist only where the project generator runs.
+/// </remarks>
 public sealed class TypeMetadataRegistrationTests
 {
 	[Fact]

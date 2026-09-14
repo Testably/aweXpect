@@ -82,6 +82,11 @@ public static class Corpus
 		public int Y { get; set; }
 	}
 
+	public class WithBigTuple
+	{
+		public (int, int, int, int, int, int, int, int) Eight { get; set; }
+	}
+
 	public class WithInitOnly
 	{
 		public int Value { get; init; }
@@ -97,6 +102,13 @@ public static class Corpus
 	{
 		[Obsolete("gone")] public int Old { get; set; }
 		public int Current { get; set; }
+	}
+
+	public class WithRefProperty
+	{
+		private int _value;
+		public int Other { get; set; }
+		public ref int Value => ref _value;
 	}
 
 	public class WithVisibilities

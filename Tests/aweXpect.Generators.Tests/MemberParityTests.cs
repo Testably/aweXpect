@@ -25,7 +25,11 @@ public sealed partial class MemberParityTests
 		(typeof(Corpus.WithExplicitInterface), "aweXpect.Generators.Tests.Corpus.WithExplicitInterface"),
 		(typeof(Corpus.PositionalRecord), "aweXpect.Generators.Tests.Corpus.PositionalRecord"),
 		(typeof(Corpus.Point), "aweXpect.Generators.Tests.Corpus.Point"),
+		(typeof(Corpus.WithBigTuple), "aweXpect.Generators.Tests.Corpus.WithBigTuple"),
+		(typeof(ValueTuple<int, int, int, int, int, int, int, ValueTuple<int>>),
+			"(int, int, int, int, int, int, int, int)"),
 		(typeof(Corpus.WithInitOnly), "aweXpect.Generators.Tests.Corpus.WithInitOnly"),
+		(typeof(Corpus.WithRefProperty), "aweXpect.Generators.Tests.Corpus.WithRefProperty"),
 		(typeof(Corpus.WithKeywords), "aweXpect.Generators.Tests.Corpus.WithKeywords"),
 		(typeof(Corpus.WithObsolete), "aweXpect.Generators.Tests.Corpus.WithObsolete"),
 		(typeof(Corpus.WithVisibilities), "aweXpect.Generators.Tests.Corpus.WithVisibilities"),
@@ -47,7 +51,7 @@ public sealed partial class MemberParityTests
 			TheoryData<Type, string> data = new();
 			foreach ((Type type, string name) in CorpusTypes)
 			{
-				data.Add(type, "global::" + name);
+				data.Add(type, name.StartsWith('(') ? name : "global::" + name);
 			}
 
 			return data;

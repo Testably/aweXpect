@@ -298,6 +298,11 @@ using aweXpect.Core.Metadata;
 The registration needs `ModuleInitializerAttribute`, so nothing is generated for a project that targets .NET Framework
 or .NET Standard 2.0. Those targets cannot be trimmed or published with Native AOT and keep using reflection.
 
+The walk follows every member type the comparison would visit, including framework types. A member of type
+`Exception`, for example, registers the types reachable from its properties, because reflection would compare them
+too. Members whose getter is marked with `RequiresUnreferencedCode` or `RequiresDynamicCode` cannot be registered, so
+their type stays on the reflection path.
+
 Two limits remain under trimming. Members requested with `IncludeMembers.Internal` or `IncludeMembers.Private` are
 never registered and are always reflected over, so a trimmed member is left out of the comparison. And a type the
 generator did not see whose members were all removed by the trimmer fails with an error that names the type and asks

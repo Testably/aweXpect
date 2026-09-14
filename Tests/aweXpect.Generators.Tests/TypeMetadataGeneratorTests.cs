@@ -194,6 +194,48 @@ public sealed class TypeMetadataGeneratorTests
 	}
 
 	[Fact]
+	public async Task WhenGetterRequiresUnreferencedCode_ShouldNotRegisterTheType()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"""
+			namespace Models
+			{
+				public class WithTrimmedGetter
+				{
+					public int Id { get; set; }
+					public string Name
+					{
+						[System.Diagnostics.CodeAnalysis.RequiresUnreferencedCode("reflects")]
+						get => "";
+					}
+				}
+			}
+			""",
+			Call("Expect.That(new Models.WithTrimmedGetter()).IsEquivalentTo(new Models.WithTrimmedGetter());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).DoesNotContain("WithTrimmedGetter")
+			.Because("calling such a getter would make the registration itself a trimming warning on publish");
+	}
+
+	[Fact]
+	public async Task WhenMemberIsABigTuple_ShouldRegisterRestInsteadOfTheVirtualItems()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"namespace Models { public class WithBigTuple { public (int, int, int, int, int, int, int, int) Eight { get; set; } } }",
+			Call("Expect.That(new Models.WithBigTuple()).IsEquivalentTo(new Models.WithBigTuple());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains("(\"Rest\", o => o.Rest);");
+		await That(result.Generated).DoesNotContain("\"Item8\"")
+			.Because("the eighth element is a virtual field of the tuple syntax that reflection never sees");
+	}
+
+	[Fact]
 	public async Task WhenMemberIsATuple_ShouldRegisterItsItems()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -206,6 +248,34 @@ public sealed class TypeMetadataGeneratorTests
 		await That(result.Generated).Contains("RegisterField<(int, string), int>(\"Item1\", o => o.Item1);")
 			.Because("reflection sees the tuple's fields, not the element names of the declaration");
 		await That(result.Generated).DoesNotContain("\"Left\"");
+	}
+
+	[Fact]
+	public async Task WhenMemberIsHidden_ShouldRegisterTheMostDerivedDeclaration()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"""
+			namespace Models;
+
+			public class WithValue
+			{
+				public int Value { get; set; }
+			}
+
+			public class Hiding : WithValue
+			{
+				public new string Value { get; set; } = "";
+			}
+			""",
+			Call("Expect.That(new Models.Hiding()).IsEquivalentTo(new Models.Hiding());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated)
+			.Contains("RegisterProperty<global::Models.Hiding, string>(\"Value\", o => o.Value);");
+		await That(result.Generated).DoesNotContain("RegisterProperty<global::Models.Hiding, int>")
+			.Because("reflection keeps the declaration on the most derived type, so the registry has to as well");
 	}
 
 	[Fact]
@@ -255,6 +325,21 @@ public sealed class TypeMetadataGeneratorTests
 	}
 
 	[Fact]
+	public async Task WhenMemberIsObsoleteWithDiagnosticId_ShouldRegisterItWithoutWarnings()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"namespace Models { public class WithCustomObsolete { [System.Obsolete(\"gone\", DiagnosticId = \"MYLIB001\")] public int Old { get; set; } } }",
+			Call("Expect.That(new Models.WithCustomObsolete()).IsEquivalentTo(new Models.WithCustomObsolete());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Warnings).IsEmpty()
+			.Because("an obsolete member reports under its own id, which the plain CS0618 suppression does not cover");
+		await That(result.Generated).Contains("#pragma warning disable CS0612, CS0618, MYLIB001");
+	}
+
+	[Fact]
 	public async Task WhenMemberIsObsoleteWithError_ShouldNotRegisterTheType()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -293,6 +378,20 @@ public sealed class TypeMetadataGeneratorTests
 
 		await That(result.Errors).IsEmpty();
 		await That(result.Generated).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenPropertyReturnsByReference_ShouldRegisterIt()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"namespace Models { public class WithRef { private int _value; public ref int Value => ref _value; } }",
+			Call("Expect.That(new Models.WithRef()).IsEquivalentTo(new Models.WithRef());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains("RegisterProperty<global::Models.WithRef, int>(\"Value\", o => o.Value);")
+			.Because("reflection reads a ref-returning property like any other, so the registry has to hold it");
 	}
 
 	[Fact]
