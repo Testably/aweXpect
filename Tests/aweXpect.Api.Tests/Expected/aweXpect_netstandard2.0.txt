@@ -1717,6 +1717,26 @@ namespace aweXpect
         public static aweXpect.Results.PropertyResult.Int<System.Version?> HasMinor(this aweXpect.Core.IThat<System.Version?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.Version?> HasRevision(this aweXpect.Core.IThat<System.Version?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<System.Version?, aweXpect.Core.IThat<System.Version?>>, System.Version?> IsBetween(this aweXpect.Core.IThat<System.Version?> source, System.Version? minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Version?, aweXpect.Core.IThat<System.Version?>> IsGreaterThan(this aweXpect.Core.IThat<System.Version?> source, System.Version? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Version?, aweXpect.Core.IThat<System.Version?>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<System.Version?> source, System.Version? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Version?, aweXpect.Core.IThat<System.Version?>> IsLessThan(this aweXpect.Core.IThat<System.Version?> source, System.Version? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Version?, aweXpect.Core.IThat<System.Version?>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<System.Version?> source, System.Version? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<System.Version?, aweXpect.Core.IThat<System.Version?>>, System.Version?> IsNotBetween(this aweXpect.Core.IThat<System.Version?> source, System.Version? minimum) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Version?, aweXpect.Core.IThat<System.Version?>> IsNotGreaterThan(this aweXpect.Core.IThat<System.Version?> source, System.Version? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Version?, aweXpect.Core.IThat<System.Version?>> IsNotGreaterThanOrEqualTo(this aweXpect.Core.IThat<System.Version?> source, System.Version? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Version?, aweXpect.Core.IThat<System.Version?>> IsNotLessThan(this aweXpect.Core.IThat<System.Version?> source, System.Version? unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Version?, aweXpect.Core.IThat<System.Version?>> IsNotLessThanOrEqualTo(this aweXpect.Core.IThat<System.Version?> source, System.Version? unexpected) { }
     }
 }
 namespace aweXpect.Equivalency
