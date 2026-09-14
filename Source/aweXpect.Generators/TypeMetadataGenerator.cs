@@ -356,6 +356,8 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 
 		private readonly HashSet<ITypeSymbol> _visited = new(SymbolEqualityComparer.Default);
 
+		private readonly Dictionary<IAssemblySymbol, bool> _isGlobal = new(SymbolEqualityComparer.Default);
+
 		public ImmutableArray<TypeRegistration> Registrations => _registrations.ToImmutable();
 
 		public void Seed(ITypeSymbol? type)
@@ -674,8 +676,9 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				INamedTypeSymbol { TypeKind: TypeKind.Error, } => false,
 				INamedTypeSymbol { IsAnonymousType: true, } anonymous => anonymous.GetMembers()
 					.OfType<IPropertySymbol>().All(x => IsReferenceable(x.Type)),
-				INamedTypeSymbol named => !named.IsFileLocal && !IsUnreferenceable(named) && IsGlobal(named) &&
+				INamedTypeSymbol named => !named.IsFileLocal && !IsUnreferenceable(named) &&
 				                          compilation.IsSymbolAccessibleWithin(named, compilation.Assembly) &&
+				                          IsGlobal(named) &&
 				                          named.TypeArguments.All(IsReferenceable) &&
 				                          (named.ContainingType is null || IsReferenceable(named.ContainingType)),
 				_ => true,
@@ -691,18 +694,25 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		/// </remarks>
 		private bool IsGlobal(INamedTypeSymbol type)
 		{
-			if (SymbolEqualityComparer.Default.Equals(type.ContainingAssembly, compilation.Assembly))
+			IAssemblySymbol assembly = type.ContainingAssembly;
+			if (SymbolEqualityComparer.Default.Equals(assembly, compilation.Assembly))
 			{
 				return true;
 			}
 
-			List<MetadataReference> references = compilation.References
-				.Where(reference => SymbolEqualityComparer.Default.Equals(
-					compilation.GetAssemblyOrModuleSymbol(reference), type.ContainingAssembly))
-				.ToList();
-			return references.Count == 0 ||
-			       references.Any(reference => reference.Properties.Aliases.IsEmpty ||
-			                                   reference.Properties.Aliases.Contains("global"));
+			if (!_isGlobal.TryGetValue(assembly, out bool isGlobal))
+			{
+				List<MetadataReference> references = compilation.References
+					.Where(reference => SymbolEqualityComparer.Default.Equals(
+						compilation.GetAssemblyOrModuleSymbol(reference), assembly))
+					.ToList();
+				isGlobal = references.Count == 0 ||
+				           references.Any(reference => reference.Properties.Aliases.IsEmpty ||
+				                                       reference.Properties.Aliases.Contains("global"));
+				_isGlobal[assembly] = isGlobal;
+			}
+
+			return isGlobal;
 		}
 
 		private static bool IsUnreferenceable(ISymbol symbol)

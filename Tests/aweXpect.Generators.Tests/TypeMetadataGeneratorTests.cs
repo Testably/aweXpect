@@ -7,6 +7,8 @@ namespace aweXpect.Generators.Tests;
 
 public sealed partial class TypeMetadataGeneratorTests
 {
+	private const string Library = "namespace Lib { public class Foo { public int Id { get; set; } } }";
+
 	private const string Models = """
 	                              namespace Models;
 
@@ -113,6 +115,57 @@ public sealed partial class TypeMetadataGeneratorTests
 		await That(result.Generated)
 			.Contains("RegisterProperty<global::Models.Subject, int>(\"Id\", o => o.Id);")
 			.Because("a named argument is matched by its name instead of its position");
+	}
+
+	[Fact]
+	public async Task WhenAssemblyAliasesIncludeGlobal_ShouldRegisterItsTypes()
+	{
+		MetadataReference library = GeneratorRunner.CompileToReference("Lib", Library);
+
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+			[Call("Expect.That(new Lib.Foo()).IsEquivalentTo(new Lib.Foo());"),],
+			additionalReferences: [library.WithAliases(["A", "global",]),]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains("RegisterProperty<global::Lib.Foo, int>(\"Id\", o => o.Id);")
+			.Because("the global alias makes the type reachable through global::");
+	}
+
+	[Fact]
+	public async Task WhenAssemblyIsReferencedByAliasAndGlobally_ShouldRegisterItsTypes()
+	{
+		MetadataReference library = GeneratorRunner.CompileToReference("Lib", Library);
+
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+			[Call("Expect.That(new Lib.Foo()).IsEquivalentTo(new Lib.Foo());"),],
+			additionalReferences: [library.WithAliases(["A",]), library,]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains("RegisterProperty<global::Lib.Foo, int>(\"Id\", o => o.Id);")
+			.Because("one global reference is enough, whatever other aliases the assembly is known under");
+	}
+
+	[Fact]
+	public async Task WhenAssemblyIsReferencedOnlyByAlias_ShouldNotRegisterItsTypes()
+	{
+		MetadataReference library = GeneratorRunner.CompileToReference("Lib", Library);
+
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"""
+			extern alias A;
+			using aweXpect;
+
+			public class Tests
+			{
+				public void Test() => Expect.That(new A::Lib.Foo()).IsEquivalentTo(new A::Lib.Foo());
+			}
+			""",
+		], additionalReferences: [library.WithAliases(["A",]),]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).DoesNotContain("Lib.Foo")
+			.Because("a type that is only reachable through an extern alias cannot be named with global::");
 	}
 
 	[Fact]
