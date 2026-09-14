@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "affdbc378d700ce40d2bfe4621501abb2368882f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 19:22:42 2026 \u002B0200",
-        "message": "feat: add \u0060Eventually()\u0060 to retry an expectation on a delegate (#1033)"
-      },
-      {
         "sha": "aed9d35cfea98282093a2e29afac4cadc58c4af6",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 20:31:05 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 15:27:55 2026 \u002B0200",
         "message": "fix!: fail a null subject for the negated form of an expectation (#1094)"
+      },
+      {
+        "sha": "23133e352519fba3293b7ae48dffb83acae9b30e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 16:26:53 2026 \u002B0200",
+        "message": "docs: state the null rule that extension authors must follow (#1100)"
       }
     ],
     "labels": [
-      "affdbc37",
       "aed9d35c",
       "eef3e6a3",
       "24a17c1c",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "fd00414e",
       "dfdf055d",
       "07659ebf",
-      "48275fcf"
+      "48275fcf",
+      "23133e35"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          191.0487357934316,
           220.6771111647288,
           222.33497150739035,
           251.6664425055186,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           183.11750654073862,
           241.6897472313472,
           261.35009473164877,
-          202.0682702700297
+          202.0682702700297,
+          272.7071217757005
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          208.36846761703492,
           218.34737292925516,
           201.06839975288935,
           253.91424544652304,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           190.08391800948553,
           249.49964272181194,
           248.91758947372438,
-          193.95771493911744
+          193.95771493911744,
+          239.39834238688152
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "affdbc378d700ce40d2bfe4621501abb2368882f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 19:22:42 2026 \u002B0200",
-        "message": "feat: add \u0060Eventually()\u0060 to retry an expectation on a delegate (#1033)"
-      },
-      {
         "sha": "aed9d35cfea98282093a2e29afac4cadc58c4af6",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 20:31:05 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 15:27:55 2026 \u002B0200",
         "message": "fix!: fail a null subject for the negated form of an expectation (#1094)"
+      },
+      {
+        "sha": "23133e352519fba3293b7ae48dffb83acae9b30e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 16:26:53 2026 \u002B0200",
+        "message": "docs: state the null rule that extension authors must follow (#1100)"
       }
     ],
     "labels": [
-      "affdbc37",
       "aed9d35c",
       "eef3e6a3",
       "24a17c1c",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "fd00414e",
       "dfdf055d",
       "07659ebf",
-      "48275fcf"
+      "48275fcf",
+      "23133e35"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          238487.37515694756,
           242433.01806640625,
           243159.89986979167,
           321485.473828125,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           272909.063264974,
           310160.52689034597,
           384797.04899088544,
-          288932.6270833333
+          288932.6270833333,
+          398807.8967122396
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          335442,
           335444,
           335444,
           335444,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           542084,
           542084,
           542085,
-          542084
+          542084,
+          542085
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1946460.4822265625,
           2066123.7115885417,
           1905257.0578962055,
           2868241.325,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           1761810.0951450893,
           1961056.0255301339,
           2694216.7727864585,
-          1919859.78125
+          1919859.78125,
+          2660831.3231770834
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841647,
           4841648,
           4841647,
           4841651,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841647,
           4841610,
           4841651,
-          4841647
+          4841647,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "affdbc378d700ce40d2bfe4621501abb2368882f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 19:22:42 2026 \u002B0200",
-        "message": "feat: add \u0060Eventually()\u0060 to retry an expectation on a delegate (#1033)"
-      },
       {
         "sha": "aed9d35cfea98282093a2e29afac4cadc58c4af6",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 15:27:55 2026 \u002B0200",
         "message": "fix!: fail a null subject for the negated form of an expectation (#1094)"
+      },
+      {
+        "sha": "23133e352519fba3293b7ae48dffb83acae9b30e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 16:26:53 2026 \u002B0200",
+        "message": "docs: state the null rule that extension authors must follow (#1100)"
       }
     ],
     "labels": [
-      "affdbc37",
       "aed9d35c",
       "eef3e6a3",
       "24a17c1c",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "fd00414e",
       "dfdf055d",
       "07659ebf",
-      "48275fcf"
+      "48275fcf",
+      "23133e35"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          421.632573668162,
           408.61175231933595,
           384.1228542327881,
           509.5957601411002,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           354.6007298787435,
           417.8039389610291,
           515.1616793950399,
-          388.25114046732585
+          388.25114046732585,
+          468.19346981048585
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          427.9677768389384,
           453.5224277496338,
           425.5202818552653,
           523.6554533004761,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           368.87855978012084,
           460.89590808323453,
           510.66075089772545,
-          444.05623321533204
+          444.05623321533204,
+          510.66202341715496
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "affdbc378d700ce40d2bfe4621501abb2368882f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 19:22:42 2026 \u002B0200",
-        "message": "feat: add \u0060Eventually()\u0060 to retry an expectation on a delegate (#1033)"
-      },
-      {
         "sha": "aed9d35cfea98282093a2e29afac4cadc58c4af6",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 20:31:05 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 15:27:55 2026 \u002B0200",
         "message": "fix!: fail a null subject for the negated form of an expectation (#1094)"
+      },
+      {
+        "sha": "23133e352519fba3293b7ae48dffb83acae9b30e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 16:26:53 2026 \u002B0200",
+        "message": "docs: state the null rule that extension authors must follow (#1100)"
       }
     ],
     "labels": [
-      "affdbc37",
       "aed9d35c",
       "eef3e6a3",
       "24a17c1c",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "fd00414e",
       "dfdf055d",
       "07659ebf",
-      "48275fcf"
+      "48275fcf",
+      "23133e35"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          199.57252311706543,
           229.3678126970927,
           203.26784507433572,
           277.4515934944153,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           193.41651456696647,
           253.78392321268717,
           266.98263822283064,
-          215.05497576395672
+          215.05497576395672,
+          252.94306329318457
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          209.31265878677368,
           233.34098466237387,
           203.78753784724645,
           274.7266558579036,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           189.79524131615958,
           266.45659490994046,
           251.55838861465455,
-          193.71849513053894
+          193.71849513053894,
+          243.92973760196142
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "affdbc378d700ce40d2bfe4621501abb2368882f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 19:22:42 2026 \u002B0200",
-        "message": "feat: add \u0060Eventually()\u0060 to retry an expectation on a delegate (#1033)"
-      },
-      {
         "sha": "aed9d35cfea98282093a2e29afac4cadc58c4af6",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 20:31:05 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 15:27:55 2026 \u002B0200",
         "message": "fix!: fail a null subject for the negated form of an expectation (#1094)"
+      },
+      {
+        "sha": "23133e352519fba3293b7ae48dffb83acae9b30e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 16:26:53 2026 \u002B0200",
+        "message": "docs: state the null rule that extension authors must follow (#1100)"
       }
     ],
     "labels": [
-      "affdbc37",
       "aed9d35c",
       "eef3e6a3",
       "24a17c1c",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "fd00414e",
       "dfdf055d",
       "07659ebf",
-      "48275fcf"
+      "48275fcf",
+      "23133e35"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          391.83385581970214,
           392.44809595743817,
           390.11140654881797,
           471.7250687394823,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           347.501420434316,
           388.8420433998108,
           454.9438359896342,
-          401.7921457608541
+          401.7921457608541,
+          446.7085044542948
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          975.4726434071858,
           1043.9087708791096,
           935.6467853546143,
           1321.9363451004028,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           855.7843433788845,
           1076.598162206014,
           1192.530027516683,
-          1038.105400466919
+          1038.105400466919,
+          1280.4255312601724
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "affdbc378d700ce40d2bfe4621501abb2368882f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 19:22:42 2026 \u002B0200",
-        "message": "feat: add \u0060Eventually()\u0060 to retry an expectation on a delegate (#1033)"
-      },
-      {
         "sha": "aed9d35cfea98282093a2e29afac4cadc58c4af6",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 20:31:05 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 15:27:55 2026 \u002B0200",
         "message": "fix!: fail a null subject for the negated form of an expectation (#1094)"
+      },
+      {
+        "sha": "23133e352519fba3293b7ae48dffb83acae9b30e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 16:26:53 2026 \u002B0200",
+        "message": "docs: state the null rule that extension authors must follow (#1100)"
       }
     ],
     "labels": [
-      "affdbc37",
       "aed9d35c",
       "eef3e6a3",
       "24a17c1c",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "fd00414e",
       "dfdf055d",
       "07659ebf",
-      "48275fcf"
+      "48275fcf",
+      "23133e35"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1528.6663879394532,
           1549.8642019907634,
           1520.8064758300782,
           2006.229408009847,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1445.4109486171178,
           1263.9480908257622,
           1923.368877919515,
-          1623.953402382987
+          1623.953402382987,
+          1957.9608357747395
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1101.0765909467425,
           1157.9394217173258,
           1091.960484822591,
           1464.9938775380454,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1004.3867805480957,
           1267.9197845458984,
           1365.60766850985,
-          1131.3129965464275
+          1131.3129965464275,
+          1445.2837228139242
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "affdbc378d700ce40d2bfe4621501abb2368882f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 19:22:42 2026 \u002B0200",
-        "message": "feat: add \u0060Eventually()\u0060 to retry an expectation on a delegate (#1033)"
-      },
-      {
         "sha": "aed9d35cfea98282093a2e29afac4cadc58c4af6",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 20:31:05 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 15:27:55 2026 \u002B0200",
         "message": "fix!: fail a null subject for the negated form of an expectation (#1094)"
+      },
+      {
+        "sha": "23133e352519fba3293b7ae48dffb83acae9b30e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 16:26:53 2026 \u002B0200",
+        "message": "docs: state the null rule that extension authors must follow (#1100)"
       }
     ],
     "labels": [
-      "affdbc37",
       "aed9d35c",
       "eef3e6a3",
       "24a17c1c",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "fd00414e",
       "dfdf055d",
       "07659ebf",
-      "48275fcf"
+      "48275fcf",
+      "23133e35"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2038.1347600496733,
           2030.3624051411946,
           2029.514542388916,
           2628.0233812967936,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           1894.7102771759032,
           1661.151132447379,
           2614.6848622639973,
-          2052.538283421443
+          2052.538283421443,
+          2651.728740946452
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          16199.068056233724,
           16905.009329223634,
           16022.333467610677,
           27760.519110543388,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           14984.105593167818,
           15686.815439860025,
           26792.870127360027,
-          16741.85625
+          16741.85625,
+          28410.73045654297
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33471,
           33471,
           33471,
@@ -4241,6 +4240,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471
         ],
