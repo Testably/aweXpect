@@ -3684,6 +3684,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 15:27:55 2026 \u002B0200",
         "message": "fix!: fail a null subject for the negated form of an expectation (#1094)"
+      },
+      {
+        "sha": "23133e352519fba3293b7ae48dffb83acae9b30e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 16:26:53 2026 \u002B0200",
+        "message": "docs: state the null rule that extension authors must follow (#1100)"
       }
     ],
     "labels": [
@@ -4300,7 +4306,8 @@ window.BENCHMARK_DATA = {
       "fd00414e",
       "dfdf055d",
       "07659ebf",
-      "48275fcf"
+      "48275fcf",
+      "23133e35"
     ],
     "datasets": [
       {
@@ -4920,7 +4927,8 @@ window.BENCHMARK_DATA = {
           183.11750654073862,
           241.6897472313472,
           261.35009473164877,
-          202.0682702700297
+          202.0682702700297,
+          272.7071217757005
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5393,6 +5401,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6173,7 +6182,8 @@ window.BENCHMARK_DATA = {
           190.08391800948553,
           249.49964272181194,
           248.91758947372438,
-          193.95771493911744
+          193.95771493911744,
+          239.39834238688152
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6366,6 +6376,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10034,6 +10045,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 15:27:55 2026 \u002B0200",
         "message": "fix!: fail a null subject for the negated form of an expectation (#1094)"
+      },
+      {
+        "sha": "23133e352519fba3293b7ae48dffb83acae9b30e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 16:26:53 2026 \u002B0200",
+        "message": "docs: state the null rule that extension authors must follow (#1100)"
       }
     ],
     "labels": [
@@ -10573,7 +10590,8 @@ window.BENCHMARK_DATA = {
       "fd00414e",
       "dfdf055d",
       "07659ebf",
-      "48275fcf"
+      "48275fcf",
+      "23133e35"
     ],
     "datasets": [
       {
@@ -11116,7 +11134,8 @@ window.BENCHMARK_DATA = {
           272909.063264974,
           310160.52689034597,
           384797.04899088544,
-          288932.6270833333
+          288932.6270833333,
+          398807.8967122396
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11664,7 +11683,8 @@ window.BENCHMARK_DATA = {
           542084,
           542084,
           542085,
-          542084
+          542084,
+          542085
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12215,7 +12235,8 @@ window.BENCHMARK_DATA = {
           1761810.0951450893,
           1961056.0255301339,
           2694216.7727864585,
-          1919859.78125
+          1919859.78125,
+          2660831.3231770834
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12763,7 +12784,8 @@ window.BENCHMARK_DATA = {
           4841647,
           4841610,
           4841651,
-          4841647
+          4841647,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16461,6 +16483,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 15:27:55 2026 \u002B0200",
         "message": "fix!: fail a null subject for the negated form of an expectation (#1094)"
+      },
+      {
+        "sha": "23133e352519fba3293b7ae48dffb83acae9b30e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 16:26:53 2026 \u002B0200",
+        "message": "docs: state the null rule that extension authors must follow (#1100)"
       }
     ],
     "labels": [
@@ -17077,7 +17105,8 @@ window.BENCHMARK_DATA = {
       "fd00414e",
       "dfdf055d",
       "07659ebf",
-      "48275fcf"
+      "48275fcf",
+      "23133e35"
     ],
     "datasets": [
       {
@@ -17697,7 +17726,8 @@ window.BENCHMARK_DATA = {
           354.6007298787435,
           417.8039389610291,
           515.1616793950399,
-          388.25114046732585
+          388.25114046732585,
+          468.19346981048585
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18170,6 +18200,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -18950,7 +18981,8 @@ window.BENCHMARK_DATA = {
           368.87855978012084,
           460.89590808323453,
           510.66075089772545,
-          444.05623321533204
+          444.05623321533204,
+          510.66202341715496
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19143,6 +19175,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -23273,6 +23306,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 15:27:55 2026 \u002B0200",
         "message": "fix!: fail a null subject for the negated form of an expectation (#1094)"
+      },
+      {
+        "sha": "23133e352519fba3293b7ae48dffb83acae9b30e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 16:26:53 2026 \u002B0200",
+        "message": "docs: state the null rule that extension authors must follow (#1100)"
       }
     ],
     "labels": [
@@ -23889,7 +23928,8 @@ window.BENCHMARK_DATA = {
       "fd00414e",
       "dfdf055d",
       "07659ebf",
-      "48275fcf"
+      "48275fcf",
+      "23133e35"
     ],
     "datasets": [
       {
@@ -24509,7 +24549,8 @@ window.BENCHMARK_DATA = {
           193.41651456696647,
           253.78392321268717,
           266.98263822283064,
-          215.05497576395672
+          215.05497576395672,
+          252.94306329318457
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -25023,6 +25064,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -25762,7 +25804,8 @@ window.BENCHMARK_DATA = {
           189.79524131615958,
           266.45659490994046,
           251.55838861465455,
-          193.71849513053894
+          193.71849513053894,
+          243.92973760196142
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -25955,6 +25998,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -30085,6 +30129,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 15:27:55 2026 \u002B0200",
         "message": "fix!: fail a null subject for the negated form of an expectation (#1094)"
+      },
+      {
+        "sha": "23133e352519fba3293b7ae48dffb83acae9b30e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 16:26:53 2026 \u002B0200",
+        "message": "docs: state the null rule that extension authors must follow (#1100)"
       }
     ],
     "labels": [
@@ -30701,7 +30751,8 @@ window.BENCHMARK_DATA = {
       "fd00414e",
       "dfdf055d",
       "07659ebf",
-      "48275fcf"
+      "48275fcf",
+      "23133e35"
     ],
     "datasets": [
       {
@@ -31321,7 +31372,8 @@ window.BENCHMARK_DATA = {
           347.501420434316,
           388.8420433998108,
           454.9438359896342,
-          401.7921457608541
+          401.7921457608541,
+          446.7085044542948
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31794,6 +31846,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -32574,7 +32627,8 @@ window.BENCHMARK_DATA = {
           855.7843433788845,
           1076.598162206014,
           1192.530027516683,
-          1038.105400466919
+          1038.105400466919,
+          1280.4255312601724
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33003,6 +33057,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -36897,6 +36952,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 15:27:55 2026 \u002B0200",
         "message": "fix!: fail a null subject for the negated form of an expectation (#1094)"
+      },
+      {
+        "sha": "23133e352519fba3293b7ae48dffb83acae9b30e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 16:26:53 2026 \u002B0200",
+        "message": "docs: state the null rule that extension authors must follow (#1100)"
       }
     ],
     "labels": [
@@ -37513,7 +37574,8 @@ window.BENCHMARK_DATA = {
       "fd00414e",
       "dfdf055d",
       "07659ebf",
-      "48275fcf"
+      "48275fcf",
+      "23133e35"
     ],
     "datasets": [
       {
@@ -38133,7 +38195,8 @@ window.BENCHMARK_DATA = {
           1445.4109486171178,
           1263.9480908257622,
           1923.368877919515,
-          1623.953402382987
+          1623.953402382987,
+          1957.9608357747395
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38606,6 +38669,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -39386,7 +39450,8 @@ window.BENCHMARK_DATA = {
           1004.3867805480957,
           1267.9197845458984,
           1365.60766850985,
-          1131.3129965464275
+          1131.3129965464275,
+          1445.2837228139242
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39579,6 +39644,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -43709,6 +43775,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 15:27:55 2026 \u002B0200",
         "message": "fix!: fail a null subject for the negated form of an expectation (#1094)"
+      },
+      {
+        "sha": "23133e352519fba3293b7ae48dffb83acae9b30e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 16:26:53 2026 \u002B0200",
+        "message": "docs: state the null rule that extension authors must follow (#1100)"
       }
     ],
     "labels": [
@@ -44325,7 +44397,8 @@ window.BENCHMARK_DATA = {
       "fd00414e",
       "dfdf055d",
       "07659ebf",
-      "48275fcf"
+      "48275fcf",
+      "23133e35"
     ],
     "datasets": [
       {
@@ -44945,7 +45018,8 @@ window.BENCHMARK_DATA = {
           1894.7102771759032,
           1661.151132447379,
           2614.6848622639973,
-          2052.538283421443
+          2052.538283421443,
+          2651.728740946452
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -45418,6 +45492,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -46198,7 +46273,8 @@ window.BENCHMARK_DATA = {
           14984.105593167818,
           15686.815439860025,
           26792.870127360027,
-          16741.85625
+          16741.85625,
+          28410.73045654297
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -46822,6 +46898,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471
         ],
