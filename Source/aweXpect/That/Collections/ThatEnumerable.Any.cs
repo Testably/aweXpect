@@ -32,8 +32,8 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static ElementsForEnumerable<IEnumerable> Any(
-		this IThat<IEnumerable> subject)
+	public static ElementsForEnumerable<IEnumerable?> Any(
+		this IThat<IEnumerable?> subject)
 		=> new(subject, EnumerableQuantifier.AtLeast(1, subject.Get().ExpectationBuilder.ExpectationGrammars));
 
 #if NET8_0_OR_GREATER

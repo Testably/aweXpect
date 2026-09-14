@@ -127,14 +127,14 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static HasItemResult<IEnumerable> HasItem(
-		this IThat<IEnumerable> source, Func<object?, bool> predicate,
+	public static HasItemResult<IEnumerable?> HasItem(
+		this IThat<IEnumerable?> source, Func<object?, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new HasItemResult<IEnumerable>(
+		return new HasItemResult<IEnumerable?>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemForEnumerableConstraint<IEnumerable, object?>(
 					expectationBuilder, it, grammars,
@@ -148,13 +148,13 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection has the <paramref name="expected" /> item…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ObjectHasItemResult<IEnumerable, object?> HasItem(
-		this IThat<IEnumerable> source, object? expected)
+	public static ObjectHasItemResult<IEnumerable?, object?> HasItem(
+		this IThat<IEnumerable?> source, object? expected)
 	{
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		ObjectEqualityOptions<object?> options = new();
-		return new ObjectHasItemResult<IEnumerable, object?>(
+		return new ObjectHasItemResult<IEnumerable?, object?>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasAsyncItemForEnumerableConstraint<IEnumerable, object?>(
 					expectationBuilder, it, grammars,

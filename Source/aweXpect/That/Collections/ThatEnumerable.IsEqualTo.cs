@@ -392,16 +392,16 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection matches the <paramref name="expected" /> collection.
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
-	public static ObjectCollectionMatchResult<IEnumerable, IThat<IEnumerable>, TItem>
+	public static ObjectCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, TItem>
 		IsEqualTo<TItem>(
-			this IThat<IEnumerable> source,
+			this IThat<IEnumerable?> source,
 			IEnumerable<TItem> expected,
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
 		ObjectEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new ObjectCollectionMatchResult<IEnumerable, IThat<IEnumerable>, TItem>(
+		return new ObjectCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToForEnumerableConstraint<IEnumerable, TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
@@ -897,9 +897,9 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection.
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
-	public static ObjectCollectionMatchResult<IEnumerable, IThat<IEnumerable>, TItem>
+	public static ObjectCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, TItem>
 		IsNotEqualTo<TItem>(
-			this IThat<IEnumerable> source,
+			this IThat<IEnumerable?> source,
 			IEnumerable<TItem> unexpected,
 			[CallerArgumentExpression("unexpected")]
 			string doNotPopulateThisValue = "")
@@ -907,7 +907,7 @@ public static partial class ThatEnumerable
 		ObjectEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new ObjectCollectionMatchResult<IEnumerable, IThat<IEnumerable>, TItem>(
+		return new ObjectCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToForEnumerableConstraint<IEnumerable, TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),

@@ -72,9 +72,9 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static ObjectCollectionBeContainedInResult<IEnumerable, IThat<IEnumerable>, TItem>
+	public static ObjectCollectionBeContainedInResult<IEnumerable, IThat<IEnumerable?>, TItem>
 		IsContainedIn<TItem>(
-			this IThat<IEnumerable> source,
+			this IThat<IEnumerable?> source,
 			IEnumerable<TItem> expected,
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
@@ -82,7 +82,7 @@ public static partial class ThatEnumerable
 		ObjectEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new ObjectCollectionBeContainedInResult<IEnumerable, IThat<IEnumerable>, TItem>(
+		return new ObjectCollectionBeContainedInResult<IEnumerable, IThat<IEnumerable?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToForEnumerableConstraint<IEnumerable, TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
@@ -255,9 +255,9 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static ObjectCollectionBeContainedInResult<IEnumerable, IThat<IEnumerable>, TItem>
+	public static ObjectCollectionBeContainedInResult<IEnumerable, IThat<IEnumerable?>, TItem>
 		IsNotContainedIn<TItem>(
-			this IThat<IEnumerable> source,
+			this IThat<IEnumerable?> source,
 			IEnumerable<TItem> unexpected,
 			[CallerArgumentExpression("unexpected")]
 			string doNotPopulateThisValue = "")
@@ -266,7 +266,7 @@ public static partial class ThatEnumerable
 		ObjectEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new ObjectCollectionBeContainedInResult<IEnumerable, IThat<IEnumerable>, TItem>(
+		return new ObjectCollectionBeContainedInResult<IEnumerable, IThat<IEnumerable?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToForEnumerableConstraint<IEnumerable, TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),

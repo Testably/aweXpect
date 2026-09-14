@@ -221,13 +221,13 @@ public static partial class ThatEnumerable
 	///     …are equal to the <paramref name="expected" /> value.
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
-	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable>, object?>
-		AreEqualTo(this ElementsForEnumerable<IEnumerable> elements, object? expected)
+	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, object?>
+		AreEqualTo(this ElementsForEnumerable<IEnumerable?> elements, object? expected)
 	{
-		IElementsForEnumerable<IEnumerable> iElements = elements;
+		IElementsForEnumerable<IEnumerable?> iElements = elements;
 		ObjectEqualityOptions<object?> options = new();
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable>, object?>(
+		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, object?>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new AsyncCollectionForEnumerableConstraint<IEnumerable>(
 					expectationBuilder,
