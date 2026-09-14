@@ -30,6 +30,7 @@ public static partial class ThatNullableDateTime
 	/// <summary>
 	///     Verifies that the subject is not between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<TimeToleranceResult<DateTime?, IThat<DateTime?>>, DateTime?> IsNotBetween(
 		this IThat<DateTime?> source,
 		DateTime? minimum)

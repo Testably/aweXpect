@@ -30,6 +30,7 @@ public static partial class ThatDateTimeOffset
 	/// <summary>
 	///     Verifies that the subject is not between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<TimeToleranceResult<DateTimeOffset, IThat<DateTimeOffset>>, DateTimeOffset?>
 		IsNotBetween(
 			this IThat<DateTimeOffset> source,

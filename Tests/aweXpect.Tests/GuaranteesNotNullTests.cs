@@ -101,7 +101,6 @@ public sealed class GuaranteesNotNullTests
 		"Eventually",
 		"IsEqualTo",
 		"IsEquivalentTo",
-		"IsNotBetween",
 		"IsNotEqualTo",
 		"IsNotEquivalentTo",
 		"IsNotOneOf",
