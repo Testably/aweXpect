@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "b54cc8e62f9abb98ae7601551e26bb1ee1727f4c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 09:37:29 2026 \u002B0200",
-        "message": "perf: count lines without splitting the string (#1029)"
-      },
-      {
         "sha": "11994e6d2350c42fb2b19c2626e999a31a7aa891",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 13:33:28 2026 \u002B0200",
         "message": "fix: keep a runaway mutant from taking down the mutation runner"
+      },
+      {
+        "sha": "07659ebf654b4a1ec239d702248af1d911a18580",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 14:24:31 2026 \u002B0200",
+        "message": "fix: keep the resource sampler from replacing the build\u0027s exit code"
       }
     ],
     "labels": [
-      "b54cc8e6",
       "11994e6d",
       "affdbc37",
       "aed9d35c",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "5fdcb1f5",
       "6d14d7ab",
       "fd00414e",
-      "dfdf055d"
+      "dfdf055d",
+      "07659ebf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          287.9791279157003,
           286.4416621843974,
           191.0487357934316,
           220.6771111647288,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           253.45660810470582,
           263.6970933505467,
           183.11750654073862,
-          241.6897472313472
+          241.6897472313472,
+          261.35009473164877
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          301.0684215863546,
           262.62074750264486,
           208.36846761703492,
           218.34737292925516,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           238.20291840235393,
           241.76030870846338,
           190.08391800948553,
-          249.49964272181194
+          249.49964272181194,
+          248.91758947372438
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "b54cc8e62f9abb98ae7601551e26bb1ee1727f4c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 09:37:29 2026 \u002B0200",
-        "message": "perf: count lines without splitting the string (#1029)"
-      },
-      {
         "sha": "11994e6d2350c42fb2b19c2626e999a31a7aa891",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 13:33:28 2026 \u002B0200",
         "message": "fix: keep a runaway mutant from taking down the mutation runner"
+      },
+      {
+        "sha": "07659ebf654b4a1ec239d702248af1d911a18580",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 14:24:31 2026 \u002B0200",
+        "message": "fix: keep the resource sampler from replacing the build\u0027s exit code"
       }
     ],
     "labels": [
-      "b54cc8e6",
       "11994e6d",
       "affdbc37",
       "aed9d35c",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "5fdcb1f5",
       "6d14d7ab",
       "fd00414e",
-      "dfdf055d"
+      "dfdf055d",
+      "07659ebf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          273489.1768624442,
           323745.7591271034,
           238487.37515694756,
           242433.01806640625,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           380885.13536783855,
           377538.96295572916,
           272909.063264974,
-          310160.52689034597
+          310160.52689034597,
+          384797.04899088544
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1029,7 +1029,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           335444,
-          335444,
           335442,
           335444,
           335444,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           542085,
           542085,
           542084,
-          542084
+          542084,
+          542085
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2296891.5299479165,
           2773380.45625,
           1946460.4822265625,
           2066123.7115885417,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2607126.966796875,
           2656590.2580915177,
           1761810.0951450893,
-          1961056.0255301339
+          1961056.0255301339,
+          2694216.7727864585
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841613,
           4841651,
           4841647,
           4841648,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841647,
-          4841610
+          4841610,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "b54cc8e62f9abb98ae7601551e26bb1ee1727f4c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 09:37:29 2026 \u002B0200",
-        "message": "perf: count lines without splitting the string (#1029)"
-      },
       {
         "sha": "11994e6d2350c42fb2b19c2626e999a31a7aa891",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 13:33:28 2026 \u002B0200",
         "message": "fix: keep a runaway mutant from taking down the mutation runner"
+      },
+      {
+        "sha": "07659ebf654b4a1ec239d702248af1d911a18580",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 14:24:31 2026 \u002B0200",
+        "message": "fix: keep the resource sampler from replacing the build\u0027s exit code"
       }
     ],
     "labels": [
-      "b54cc8e6",
       "11994e6d",
       "affdbc37",
       "aed9d35c",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "5fdcb1f5",
       "6d14d7ab",
       "fd00414e",
-      "dfdf055d"
+      "dfdf055d",
+      "07659ebf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          490.6649518330892,
           521.6060015814645,
           421.632573668162,
           408.61175231933595,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           458.6794052441915,
           449.50483423868815,
           354.6007298787435,
-          417.8039389610291
+          417.8039389610291,
+          515.1616793950399
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          533.8596198399862,
           517.7070039113363,
           427.9677768389384,
           453.5224277496338,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           509.3773717880249,
           495.2988224665324,
           368.87855978012084,
-          460.89590808323453
+          460.89590808323453,
+          510.66075089772545
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "b54cc8e62f9abb98ae7601551e26bb1ee1727f4c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 09:37:29 2026 \u002B0200",
-        "message": "perf: count lines without splitting the string (#1029)"
-      },
-      {
         "sha": "11994e6d2350c42fb2b19c2626e999a31a7aa891",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 13:33:28 2026 \u002B0200",
         "message": "fix: keep a runaway mutant from taking down the mutation runner"
+      },
+      {
+        "sha": "07659ebf654b4a1ec239d702248af1d911a18580",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 14:24:31 2026 \u002B0200",
+        "message": "fix: keep the resource sampler from replacing the build\u0027s exit code"
       }
     ],
     "labels": [
-      "b54cc8e6",
       "11994e6d",
       "affdbc37",
       "aed9d35c",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "5fdcb1f5",
       "6d14d7ab",
       "fd00414e",
-      "dfdf055d"
+      "dfdf055d",
+      "07659ebf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          291.6615239143372,
           274.26365219751995,
           199.57252311706543,
           229.3678126970927,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           260.13586384909496,
           263.9802384058634,
           193.41651456696647,
-          253.78392321268717
+          253.78392321268717,
+          266.98263822283064
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          295.32209663391114,
           267.2180280049642,
           209.31265878677368,
           233.34098466237387,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           247.2639165242513,
           242.94598509470623,
           189.79524131615958,
-          266.45659490994046
+          266.45659490994046,
+          251.55838861465455
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "b54cc8e62f9abb98ae7601551e26bb1ee1727f4c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 09:37:29 2026 \u002B0200",
-        "message": "perf: count lines without splitting the string (#1029)"
-      },
-      {
         "sha": "11994e6d2350c42fb2b19c2626e999a31a7aa891",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 13:33:28 2026 \u002B0200",
         "message": "fix: keep a runaway mutant from taking down the mutation runner"
+      },
+      {
+        "sha": "07659ebf654b4a1ec239d702248af1d911a18580",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 14:24:31 2026 \u002B0200",
+        "message": "fix: keep the resource sampler from replacing the build\u0027s exit code"
       }
     ],
     "labels": [
-      "b54cc8e6",
       "11994e6d",
       "affdbc37",
       "aed9d35c",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "5fdcb1f5",
       "6d14d7ab",
       "fd00414e",
-      "dfdf055d"
+      "dfdf055d",
+      "07659ebf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          445.5378861745199,
           498.9076719965254,
           391.83385581970214,
           392.44809595743817,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           445.21608165105187,
           456.6439706166585,
           347.501420434316,
-          388.8420433998108
+          388.8420433998108,
+          454.9438359896342
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1273.3620643615723,
           1381.4389188130697,
           975.4726434071858,
           1043.9087708791096,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1180.4894489875207,
           1200.081512069702,
           855.7843433788845,
-          1076.598162206014
+          1076.598162206014,
+          1192.530027516683
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "b54cc8e62f9abb98ae7601551e26bb1ee1727f4c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 09:37:29 2026 \u002B0200",
-        "message": "perf: count lines without splitting the string (#1029)"
-      },
-      {
         "sha": "11994e6d2350c42fb2b19c2626e999a31a7aa891",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 13:33:28 2026 \u002B0200",
         "message": "fix: keep a runaway mutant from taking down the mutation runner"
+      },
+      {
+        "sha": "07659ebf654b4a1ec239d702248af1d911a18580",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 14:24:31 2026 \u002B0200",
+        "message": "fix: keep the resource sampler from replacing the build\u0027s exit code"
       }
     ],
     "labels": [
-      "b54cc8e6",
       "11994e6d",
       "affdbc37",
       "aed9d35c",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "5fdcb1f5",
       "6d14d7ab",
       "fd00414e",
-      "dfdf055d"
+      "dfdf055d",
+      "07659ebf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1420.962323888143,
           1961.5972730000815,
           1528.6663879394532,
           1549.8642019907634,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1901.679819869995,
           1896.2060609545026,
           1445.4109486171178,
-          1263.9480908257622
+          1263.9480908257622,
+          1923.368877919515
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1401.9845397949218,
           1419.2282477787562,
           1101.0765909467425,
           1157.9394217173258,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1308.885598863874,
           1361.9800455729167,
           1004.3867805480957,
-          1267.9197845458984
+          1267.9197845458984,
+          1365.60766850985
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "b54cc8e62f9abb98ae7601551e26bb1ee1727f4c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 09:37:29 2026 \u002B0200",
-        "message": "perf: count lines without splitting the string (#1029)"
-      },
-      {
         "sha": "11994e6d2350c42fb2b19c2626e999a31a7aa891",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 13:33:28 2026 \u002B0200",
         "message": "fix: keep a runaway mutant from taking down the mutation runner"
+      },
+      {
+        "sha": "07659ebf654b4a1ec239d702248af1d911a18580",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 14:24:31 2026 \u002B0200",
+        "message": "fix: keep the resource sampler from replacing the build\u0027s exit code"
       }
     ],
     "labels": [
-      "b54cc8e6",
       "11994e6d",
       "affdbc37",
       "aed9d35c",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "5fdcb1f5",
       "6d14d7ab",
       "fd00414e",
-      "dfdf055d"
+      "dfdf055d",
+      "07659ebf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1855.2125802721296,
           2662.4832257588705,
           2038.1347600496733,
           2030.3624051411946,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2482.5264661153155,
           2531.095802307129,
           1894.7102771759032,
-          1661.151132447379
+          1661.151132447379,
+          2614.6848622639973
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          17947.528975423178,
           27737.258825683595,
           16199.068056233724,
           16905.009329223634,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           27732.19226989746,
           26807.29797973633,
           14984.105593167818,
-          15686.815439860025
+          15686.815439860025,
+          26792.870127360027
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33465,
           33471,
           33471,
           33471,
@@ -4242,7 +4241,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33465
+          33465,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
