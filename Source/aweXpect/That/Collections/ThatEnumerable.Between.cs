@@ -47,7 +47,6 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that in the collection between <paramref name="minimum" />…
 	/// </summary>
-	[GuaranteesNotNull]
 	public static BetweenResult<ElementsForStructEnumerable<ImmutableArray<TItem>, TItem>> Between<TItem>(
 		this IThat<ImmutableArray<TItem>> subject,
 		int minimum)
@@ -59,7 +58,6 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that in the collection between <paramref name="minimum" />…
 	/// </summary>
-	[GuaranteesNotNull]
 	public static BetweenResult<ElementsForStructEnumerable<ImmutableArray<string?>>> Between(
 		this IThat<ImmutableArray<string?>> subject,
 		int minimum)

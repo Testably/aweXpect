@@ -11,7 +11,6 @@ public static partial class ThatEnum
 	/// <summary>
 	///     Verifies that the subject is defined inside the <typeparamref name="TEnum" />.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static AndOrResult<TEnum, IThat<TEnum>> IsDefined<TEnum>(
 		this IThat<TEnum> source)
 		where TEnum : struct, Enum
@@ -22,7 +21,6 @@ public static partial class ThatEnum
 	/// <summary>
 	///     Verifies that the subject is not defined inside the <typeparamref name="TEnum" />.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static AndOrResult<TEnum, IThat<TEnum>> IsNotDefined<TEnum>(
 		this IThat<TEnum> source)
 		where TEnum : struct, Enum

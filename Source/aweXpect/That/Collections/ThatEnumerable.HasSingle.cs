@@ -61,7 +61,6 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection contains exactly one item.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static SingleItemResult<ImmutableArray<TItem>, TItem> HasSingle<TItem>(
 		this IThat<ImmutableArray<TItem>> source)
 	{

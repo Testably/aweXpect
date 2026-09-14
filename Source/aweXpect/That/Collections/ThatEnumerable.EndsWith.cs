@@ -159,7 +159,6 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection ends with the provided <paramref name="expected" /> collection.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
 		EndsWith<TItem>(
 			this IThat<ImmutableArray<TItem>> source,
@@ -184,7 +183,6 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection ends with the provided <paramref name="expected" /> collection.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
 		EndsWith<TItem>(
 			this IThat<ImmutableArray<TItem>> source,
@@ -208,7 +206,6 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection ends with the provided <paramref name="expected" /> collection.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
 		EndsWith(
 			this IThat<ImmutableArray<string?>> source,
@@ -232,7 +229,6 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection ends with the provided <paramref name="expected" /> collection.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
 		EndsWith(
 			this IThat<ImmutableArray<string?>> source,
@@ -394,7 +390,6 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection does not end with the provided <paramref name="unexpected" /> collection.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
 		DoesNotEndWith<TItem>(
 			this IThat<ImmutableArray<TItem>> source,
@@ -420,7 +415,6 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection does not end with the provided <paramref name="unexpected" /> collection.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
 		DoesNotEndWith<TItem>(
 			this IThat<ImmutableArray<TItem>> source,
@@ -444,7 +438,6 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection does not end with the provided <paramref name="unexpected" /> collection.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
 		DoesNotEndWith(
 			this IThat<ImmutableArray<string?>> source,
@@ -468,7 +461,6 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection does not end with the provided <paramref name="unexpected" /> collection.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
 		DoesNotEndWith(
 			this IThat<ImmutableArray<string?>> source,

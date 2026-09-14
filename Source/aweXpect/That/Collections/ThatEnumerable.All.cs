@@ -40,7 +40,6 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that in the collection all items…
 	/// </summary>
-	[GuaranteesNotNull]
 	public static ElementsForStructEnumerable<ImmutableArray<TItem>, TItem> All<TItem>(
 		this IThat<ImmutableArray<TItem>> subject)
 		=> new(subject, EnumerableQuantifier.All(subject.Get().ExpectationBuilder.ExpectationGrammars));
@@ -50,7 +49,6 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that in the collection all items…
 	/// </summary>
-	[GuaranteesNotNull]
 	public static ElementsForStructEnumerable<ImmutableArray<string?>> All(
 		this IThat<ImmutableArray<string?>> subject)
 		=> new(subject, EnumerableQuantifier.All(subject.Get().ExpectationBuilder.ExpectationGrammars));

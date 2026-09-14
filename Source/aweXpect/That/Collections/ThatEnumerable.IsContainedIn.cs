@@ -98,7 +98,6 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is contained in the provided <paramref name="expected" /> collection.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static ObjectCollectionBeContainedInResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
 		IsContainedIn<TItem>(
 			this IThat<ImmutableArray<TItem>> source,
@@ -127,7 +126,6 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is contained in the provided <paramref name="expected" /> collection.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static StringCollectionBeContainedInResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
 		IsContainedIn(this IThat<ImmutableArray<string?>> source,
 			IEnumerable<string?> expected,
@@ -282,7 +280,6 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is not contained in the provided <paramref name="unexpected" /> collection.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static ObjectCollectionBeContainedInResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
 		IsNotContainedIn<TItem>(
 			this IThat<ImmutableArray<TItem>> source,
@@ -312,7 +309,6 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is not contained in the provided <paramref name="unexpected" /> collection.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static StringCollectionBeContainedInResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
 		IsNotContainedIn(this IThat<ImmutableArray<string?>> source,
 			IEnumerable<string?> unexpected,

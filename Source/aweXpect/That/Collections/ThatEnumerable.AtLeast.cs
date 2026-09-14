@@ -43,7 +43,6 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that in the collection at least <paramref name="minimum" /> items…
 	/// </summary>
-	[GuaranteesNotNull]
 	public static ElementsForStructEnumerable<ImmutableArray<TItem>, TItem> AtLeast<TItem>(
 		this IThat<ImmutableArray<TItem>> subject,
 		int minimum)
@@ -54,7 +53,6 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that in the collection at least <paramref name="minimum" /> items…
 	/// </summary>
-	[GuaranteesNotNull]
 	public static ElementsForStructEnumerable<ImmutableArray<string?>> AtLeast(
 		this IThat<ImmutableArray<string?>> subject,
 		int minimum)
