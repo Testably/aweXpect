@@ -365,8 +365,11 @@ partial class Build
 		File.WriteAllText(configFile, configText);
 		Log.Debug($"Created '{configFile}':{Environment.NewLine}{configText}");
 
+		// `--log-to-file` always logs at trace level, independent of the console verbosity, so it says why a test
+		// session was retried without drowning the job log. The file lands below `-O` and rides along in the
+		// uploaded artifacts, which - unlike a runner that is torn down - survive the job timeout.
 		string arguments =
-			$"-f \"{configFile}\" -O \"{strykerOutputDirectory}\" -r \"Markdown\" -r \"cleartext\" -r \"json\"";
+			$"-f \"{configFile}\" -O \"{strykerOutputDirectory}\" -r \"Markdown\" -r \"cleartext\" -r \"json\" --log-to-file";
 
 		string executable = EnvironmentInfo.IsWin ? "dotnet-stryker.exe" : "dotnet-stryker";
 		IProcess process = ProcessTasks.StartProcess(
