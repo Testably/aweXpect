@@ -3654,6 +3654,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Sep 14 09:06:43 2026 \u002B0000",
         "message": "chore: Bump TUnit and TUnit.Assertions (#1088)"
+      },
+      {
+        "sha": "6d14d7ab536c43591fbb0b88bdd31d801ad6f166",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 12:00:34 2026 \u002B0200",
+        "message": "fix!: reject a null list and a null subject in \u0060IsContainedIn\u0060 (#1091)"
       }
     ],
     "labels": [
@@ -4265,7 +4271,8 @@ window.BENCHMARK_DATA = {
       "0ee271ea",
       "17ec8fe6",
       "6d1fd9f2",
-      "5fdcb1f5"
+      "5fdcb1f5",
+      "6d14d7ab"
     ],
     "datasets": [
       {
@@ -4880,7 +4887,8 @@ window.BENCHMARK_DATA = {
           273.5617689352769,
           243.38492396899633,
           249.66410438219705,
-          253.45660810470582
+          253.45660810470582,
+          263.6970933505467
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5353,6 +5361,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6123,7 +6132,8 @@ window.BENCHMARK_DATA = {
           295.36873945823083,
           232.63954355035509,
           251.00914753400363,
-          238.20291840235393
+          238.20291840235393,
+          241.76030870846338
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6316,6 +6326,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -9949,6 +9960,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Sep 14 09:06:43 2026 \u002B0000",
         "message": "chore: Bump TUnit and TUnit.Assertions (#1088)"
+      },
+      {
+        "sha": "6d14d7ab536c43591fbb0b88bdd31d801ad6f166",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 12:00:34 2026 \u002B0200",
+        "message": "fix!: reject a null list and a null subject in \u0060IsContainedIn\u0060 (#1091)"
       }
     ],
     "labels": [
@@ -10483,7 +10500,8 @@ window.BENCHMARK_DATA = {
       "0ee271ea",
       "17ec8fe6",
       "6d1fd9f2",
-      "5fdcb1f5"
+      "5fdcb1f5",
+      "6d14d7ab"
     ],
     "datasets": [
       {
@@ -11021,7 +11039,8 @@ window.BENCHMARK_DATA = {
           399767.38720703125,
           374133.0217285156,
           377747.7562825521,
-          380885.13536783855
+          380885.13536783855,
+          377538.96295572916
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11564,6 +11583,7 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542084,
+          542085,
           542085
         ],
         "borderColor": "#63A2AC",
@@ -12110,7 +12130,8 @@ window.BENCHMARK_DATA = {
           2493686.390625,
           2570248.724479167,
           2424088.3388020834,
-          2607126.966796875
+          2607126.966796875,
+          2656590.2580915177
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12653,6 +12674,7 @@ window.BENCHMARK_DATA = {
           4841635,
           4841651,
           4841647,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -16321,6 +16343,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Sep 14 09:06:43 2026 \u002B0000",
         "message": "chore: Bump TUnit and TUnit.Assertions (#1088)"
+      },
+      {
+        "sha": "6d14d7ab536c43591fbb0b88bdd31d801ad6f166",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 12:00:34 2026 \u002B0200",
+        "message": "fix!: reject a null list and a null subject in \u0060IsContainedIn\u0060 (#1091)"
       }
     ],
     "labels": [
@@ -16932,7 +16960,8 @@ window.BENCHMARK_DATA = {
       "0ee271ea",
       "17ec8fe6",
       "6d1fd9f2",
-      "5fdcb1f5"
+      "5fdcb1f5",
+      "6d14d7ab"
     ],
     "datasets": [
       {
@@ -17547,7 +17576,8 @@ window.BENCHMARK_DATA = {
           518.9379989917462,
           443.52883034486035,
           475.8615978240967,
-          458.6794052441915
+          458.6794052441915,
+          449.50483423868815
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18020,6 +18050,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -18790,7 +18821,8 @@ window.BENCHMARK_DATA = {
           568.9296937355629,
           468.3997852461679,
           498.57393035888674,
-          509.3773717880249
+          509.3773717880249,
+          495.2988224665324
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18983,6 +19015,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -23078,6 +23111,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Sep 14 09:06:43 2026 \u002B0000",
         "message": "chore: Bump TUnit and TUnit.Assertions (#1088)"
+      },
+      {
+        "sha": "6d14d7ab536c43591fbb0b88bdd31d801ad6f166",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 12:00:34 2026 \u002B0200",
+        "message": "fix!: reject a null list and a null subject in \u0060IsContainedIn\u0060 (#1091)"
       }
     ],
     "labels": [
@@ -23689,7 +23728,8 @@ window.BENCHMARK_DATA = {
       "0ee271ea",
       "17ec8fe6",
       "6d1fd9f2",
-      "5fdcb1f5"
+      "5fdcb1f5",
+      "6d14d7ab"
     ],
     "datasets": [
       {
@@ -24304,7 +24344,8 @@ window.BENCHMARK_DATA = {
           302.6372409820557,
           249.44472227777754,
           269.57373355229697,
-          260.13586384909496
+          260.13586384909496,
+          263.9802384058634
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -24818,6 +24859,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -25547,7 +25589,8 @@ window.BENCHMARK_DATA = {
           319.19809678622653,
           241.04878514607748,
           244.01057580312093,
-          247.2639165242513
+          247.2639165242513,
+          242.94598509470623
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -25740,6 +25783,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -29835,6 +29879,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Sep 14 09:06:43 2026 \u002B0000",
         "message": "chore: Bump TUnit and TUnit.Assertions (#1088)"
+      },
+      {
+        "sha": "6d14d7ab536c43591fbb0b88bdd31d801ad6f166",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 12:00:34 2026 \u002B0200",
+        "message": "fix!: reject a null list and a null subject in \u0060IsContainedIn\u0060 (#1091)"
       }
     ],
     "labels": [
@@ -30446,7 +30496,8 @@ window.BENCHMARK_DATA = {
       "0ee271ea",
       "17ec8fe6",
       "6d1fd9f2",
-      "5fdcb1f5"
+      "5fdcb1f5",
+      "6d14d7ab"
     ],
     "datasets": [
       {
@@ -31061,7 +31112,8 @@ window.BENCHMARK_DATA = {
           498.3817323684692,
           438.546740600041,
           470.68008817036946,
-          445.21608165105187
+          445.21608165105187,
+          456.6439706166585
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31534,6 +31586,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -32304,7 +32357,8 @@ window.BENCHMARK_DATA = {
           1367.508293560573,
           1178.6956462860107,
           1177.0053024291992,
-          1180.4894489875207
+          1180.4894489875207,
+          1200.081512069702
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32733,6 +32787,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -36592,6 +36647,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Sep 14 09:06:43 2026 \u002B0000",
         "message": "chore: Bump TUnit and TUnit.Assertions (#1088)"
+      },
+      {
+        "sha": "6d14d7ab536c43591fbb0b88bdd31d801ad6f166",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 12:00:34 2026 \u002B0200",
+        "message": "fix!: reject a null list and a null subject in \u0060IsContainedIn\u0060 (#1091)"
       }
     ],
     "labels": [
@@ -37203,7 +37264,8 @@ window.BENCHMARK_DATA = {
       "0ee271ea",
       "17ec8fe6",
       "6d1fd9f2",
-      "5fdcb1f5"
+      "5fdcb1f5",
+      "6d14d7ab"
     ],
     "datasets": [
       {
@@ -37818,7 +37880,8 @@ window.BENCHMARK_DATA = {
           1763.101915105184,
           1935.638449350993,
           1867.5488277435302,
-          1901.679819869995
+          1901.679819869995,
+          1896.2060609545026
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38291,6 +38354,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -39061,7 +39125,8 @@ window.BENCHMARK_DATA = {
           1491.4880906513758,
           1302.501866204398,
           1340.2610610961915,
-          1308.885598863874
+          1308.885598863874,
+          1361.9800455729167
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39254,6 +39319,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -43349,6 +43415,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Sep 14 09:06:43 2026 \u002B0000",
         "message": "chore: Bump TUnit and TUnit.Assertions (#1088)"
+      },
+      {
+        "sha": "6d14d7ab536c43591fbb0b88bdd31d801ad6f166",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 12:00:34 2026 \u002B0200",
+        "message": "fix!: reject a null list and a null subject in \u0060IsContainedIn\u0060 (#1091)"
       }
     ],
     "labels": [
@@ -43960,7 +44032,8 @@ window.BENCHMARK_DATA = {
       "0ee271ea",
       "17ec8fe6",
       "6d1fd9f2",
-      "5fdcb1f5"
+      "5fdcb1f5",
+      "6d14d7ab"
     ],
     "datasets": [
       {
@@ -44575,7 +44648,8 @@ window.BENCHMARK_DATA = {
           2239.05790125529,
           2468.7668718973796,
           2454.1506958007812,
-          2482.5264661153155
+          2482.5264661153155,
+          2531.095802307129
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -45048,6 +45122,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -45818,7 +45893,8 @@ window.BENCHMARK_DATA = {
           24298.394321695963,
           26020.990515572685,
           19912.0600789388,
-          27732.19226989746
+          27732.19226989746,
+          26807.29797973633
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -46436,6 +46512,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471,
           33471
