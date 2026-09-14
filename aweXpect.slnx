@@ -62,7 +62,7 @@
   <Project Path="Source/aweXpect.Analyzers.CodeFixers/aweXpect.Analyzers.CodeFixers.csproj" />
   <Project Path="Source/aweXpect.Analyzers/aweXpect.Analyzers.csproj" />
   <Project Path="Source/aweXpect.Core/aweXpect.Core.csproj" />
-  <Project Path="Source/aweXpect.Frameworks/aweXpect.Frameworks.csproj" />
+  <Project Path="Source/aweXpect.Generators/aweXpect.Generators.csproj" />
   <Project Path="Source/aweXpect.SourceGenerators/aweXpect.SourceGenerators.csproj" />
   <Project Path="Source/aweXpect/aweXpect.csproj" />
 </Solution>

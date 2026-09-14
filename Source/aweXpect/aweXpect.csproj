@@ -21,7 +21,7 @@
 		<ProjectReference Include="..\aweXpect.Analyzers.CodeFixers\aweXpect.Analyzers.CodeFixers.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
 		<None Include="$(MSBuildProjectDirectory)\..\aweXpect.Analyzers.CodeFixers\bin\$(Configuration)\netstandard2.0\aweXpect.Analyzers.CodeFixers.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
 		<ProjectReference Include="..\aweXpect.SourceGenerators\aweXpect.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-		<None Include="$(MSBuildProjectDirectory)\..\aweXpect.Frameworks\bin\$(Configuration)\netstandard2.0\aweXpect.Frameworks.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+		<None Include="$(MSBuildProjectDirectory)\..\aweXpect.Generators\bin\$(Configuration)\netstandard2.0\aweXpect.Generators.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	</ItemGroup>
 
 </Project>

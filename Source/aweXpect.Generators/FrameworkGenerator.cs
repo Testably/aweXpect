@@ -1,6 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 
-namespace aweXpect.Frameworks;
+namespace aweXpect.Generators;
 
 /// <summary>
 ///     The <see cref="IIncrementalGenerator" /> for generating test framework adapters.
