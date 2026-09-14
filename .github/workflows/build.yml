@@ -86,14 +86,20 @@ jobs:
                         10.0.3xx
             -   name: Run mutation tests
                 # The sampler writes into the live job log, because a runner that runs out of memory is torn down
-                # before `if: always()` steps run, so anything it left in an artifact is lost.
+                # before `if: always()` steps run, so anything it left in an artifact is lost. It has to be reaped
+                # before the step ends, because a surviving background process holds the step's stdout open, and
+                # it cannot be reaped from an `EXIT` trap, because the trap replaces the exit code of the build.
                 run: |
                     while sleep 60; do
                         echo "resources: $(free -m | awk 'NR==2{print "mem_used="$3"M mem_available="$7"M"}') disk_available=$(df -m --output=avail / | tail -1)M"
                     done &
                     sampler=$!
-                    trap "pkill -P $sampler 2>/dev/null; kill $sampler 2>/dev/null; true" EXIT
-                    ./build.sh MutationTestsCore
+                    status=0
+                    ./build.sh MutationTestsCore || status=$?
+                    pkill -P "$sampler" 2>/dev/null || true
+                    kill "$sampler" 2>/dev/null || true
+                    wait "$sampler" 2>/dev/null || true
+                    exit "$status"
             -   name: Upload artifacts
                 if: always()
                 uses: actions/upload-artifact@v7
@@ -130,14 +136,20 @@ jobs:
                         10.0.3xx
             -   name: Run mutation tests
                 # The sampler writes into the live job log, because a runner that runs out of memory is torn down
-                # before `if: always()` steps run, so anything it left in an artifact is lost.
+                # before `if: always()` steps run, so anything it left in an artifact is lost. It has to be reaped
+                # before the step ends, because a surviving background process holds the step's stdout open, and
+                # it cannot be reaped from an `EXIT` trap, because the trap replaces the exit code of the build.
                 run: |
                     while sleep 60; do
                         echo "resources: $(free -m | awk 'NR==2{print "mem_used="$3"M mem_available="$7"M"}') disk_available=$(df -m --output=avail / | tail -1)M"
                     done &
                     sampler=$!
-                    trap "pkill -P $sampler 2>/dev/null; kill $sampler 2>/dev/null; true" EXIT
-                    ./build.sh MutationTestsMain
+                    status=0
+                    ./build.sh MutationTestsMain || status=$?
+                    pkill -P "$sampler" 2>/dev/null || true
+                    kill "$sampler" 2>/dev/null || true
+                    wait "$sampler" 2>/dev/null || true
+                    exit "$status"
                 env:
                     MutationSlice: ${{ matrix.slice }}
             -   name: Upload artifacts
