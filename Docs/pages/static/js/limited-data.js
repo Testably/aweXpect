@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "520b24032f8868f48867bacf41f6ab153527a2d5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 08:14:45 2026 \u002B0200",
-        "message": "fix: report the negated result of \u0060HasRecursiveInnerExceptions\u0060 (#1028)"
-      },
-      {
         "sha": "b54cc8e62f9abb98ae7601551e26bb1ee1727f4c",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 09:37:29 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 13:29:59 2026 \u002B0200",
         "message": "feat!: mark \u0060IsNotBetween\u0060 as \u0060GuaranteesNotNull\u0060 (#1092)"
+      },
+      {
+        "sha": "dfdf055d25ef291e7028edb7997b06f8e954c7a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 13:33:28 2026 \u002B0200",
+        "message": "fix: keep a runaway mutant from taking down the mutation runner"
       }
     ],
     "labels": [
-      "520b2403",
       "b54cc8e6",
       "11994e6d",
       "affdbc37",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "6d1fd9f2",
       "5fdcb1f5",
       "6d14d7ab",
-      "fd00414e"
+      "fd00414e",
+      "dfdf055d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          263.55120881398517,
           287.9791279157003,
           286.4416621843974,
           191.0487357934316,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           249.66410438219705,
           253.45660810470582,
           263.6970933505467,
-          183.11750654073862
+          183.11750654073862,
+          241.6897472313472
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          249.12790355682372,
           301.0684215863546,
           262.62074750264486,
           208.36846761703492,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           251.00914753400363,
           238.20291840235393,
           241.76030870846338,
-          190.08391800948553
+          190.08391800948553,
+          249.49964272181194
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "520b24032f8868f48867bacf41f6ab153527a2d5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 08:14:45 2026 \u002B0200",
-        "message": "fix: report the negated result of \u0060HasRecursiveInnerExceptions\u0060 (#1028)"
-      },
-      {
         "sha": "b54cc8e62f9abb98ae7601551e26bb1ee1727f4c",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 09:37:29 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 13:29:59 2026 \u002B0200",
         "message": "feat!: mark \u0060IsNotBetween\u0060 as \u0060GuaranteesNotNull\u0060 (#1092)"
+      },
+      {
+        "sha": "dfdf055d25ef291e7028edb7997b06f8e954c7a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 13:33:28 2026 \u002B0200",
+        "message": "fix: keep a runaway mutant from taking down the mutation runner"
       }
     ],
     "labels": [
-      "520b2403",
       "b54cc8e6",
       "11994e6d",
       "affdbc37",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "6d1fd9f2",
       "5fdcb1f5",
       "6d14d7ab",
-      "fd00414e"
+      "fd00414e",
+      "dfdf055d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          327566.77659254806,
           273489.1768624442,
           323745.7591271034,
           238487.37515694756,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           377747.7562825521,
           380885.13536783855,
           377538.96295572916,
-          272909.063264974
+          272909.063264974,
+          310160.52689034597
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1030,7 +1030,6 @@ window.BENCHMARK_DATA = {
         "data": [
           335444,
           335444,
-          335444,
           335442,
           335444,
           335444,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542085,
+          542084,
           542084
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2708150.0167410714,
           2296891.5299479165,
           2773380.45625,
           1946460.4822265625,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2424088.3388020834,
           2607126.966796875,
           2656590.2580915177,
-          1761810.0951450893
+          1761810.0951450893,
+          1961056.0255301339
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841613,
           4841651,
           4841647,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841647,
           4841651,
           4841651,
-          4841647
+          4841647,
+          4841610
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "520b24032f8868f48867bacf41f6ab153527a2d5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 08:14:45 2026 \u002B0200",
-        "message": "fix: report the negated result of \u0060HasRecursiveInnerExceptions\u0060 (#1028)"
-      },
       {
         "sha": "b54cc8e62f9abb98ae7601551e26bb1ee1727f4c",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 13:29:59 2026 \u002B0200",
         "message": "feat!: mark \u0060IsNotBetween\u0060 as \u0060GuaranteesNotNull\u0060 (#1092)"
+      },
+      {
+        "sha": "dfdf055d25ef291e7028edb7997b06f8e954c7a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 13:33:28 2026 \u002B0200",
+        "message": "fix: keep a runaway mutant from taking down the mutation runner"
       }
     ],
     "labels": [
-      "520b2403",
       "b54cc8e6",
       "11994e6d",
       "affdbc37",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "6d1fd9f2",
       "5fdcb1f5",
       "6d14d7ab",
-      "fd00414e"
+      "fd00414e",
+      "dfdf055d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          503.7450442314148,
           490.6649518330892,
           521.6060015814645,
           421.632573668162,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           475.8615978240967,
           458.6794052441915,
           449.50483423868815,
-          354.6007298787435
+          354.6007298787435,
+          417.8039389610291
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          487.83619356155396,
           533.8596198399862,
           517.7070039113363,
           427.9677768389384,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           498.57393035888674,
           509.3773717880249,
           495.2988224665324,
-          368.87855978012084
+          368.87855978012084,
+          460.89590808323453
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "520b24032f8868f48867bacf41f6ab153527a2d5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 08:14:45 2026 \u002B0200",
-        "message": "fix: report the negated result of \u0060HasRecursiveInnerExceptions\u0060 (#1028)"
-      },
-      {
         "sha": "b54cc8e62f9abb98ae7601551e26bb1ee1727f4c",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 09:37:29 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 13:29:59 2026 \u002B0200",
         "message": "feat!: mark \u0060IsNotBetween\u0060 as \u0060GuaranteesNotNull\u0060 (#1092)"
+      },
+      {
+        "sha": "dfdf055d25ef291e7028edb7997b06f8e954c7a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 13:33:28 2026 \u002B0200",
+        "message": "fix: keep a runaway mutant from taking down the mutation runner"
       }
     ],
     "labels": [
-      "520b2403",
       "b54cc8e6",
       "11994e6d",
       "affdbc37",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "6d1fd9f2",
       "5fdcb1f5",
       "6d14d7ab",
-      "fd00414e"
+      "fd00414e",
+      "dfdf055d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          266.67754578590393,
           291.6615239143372,
           274.26365219751995,
           199.57252311706543,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           269.57373355229697,
           260.13586384909496,
           263.9802384058634,
-          193.41651456696647
+          193.41651456696647,
+          253.78392321268717
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          252.25035781126755,
           295.32209663391114,
           267.2180280049642,
           209.31265878677368,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           244.01057580312093,
           247.2639165242513,
           242.94598509470623,
-          189.79524131615958
+          189.79524131615958,
+          266.45659490994046
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "520b24032f8868f48867bacf41f6ab153527a2d5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 08:14:45 2026 \u002B0200",
-        "message": "fix: report the negated result of \u0060HasRecursiveInnerExceptions\u0060 (#1028)"
-      },
-      {
         "sha": "b54cc8e62f9abb98ae7601551e26bb1ee1727f4c",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 09:37:29 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 13:29:59 2026 \u002B0200",
         "message": "feat!: mark \u0060IsNotBetween\u0060 as \u0060GuaranteesNotNull\u0060 (#1092)"
+      },
+      {
+        "sha": "dfdf055d25ef291e7028edb7997b06f8e954c7a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 13:33:28 2026 \u002B0200",
+        "message": "fix: keep a runaway mutant from taking down the mutation runner"
       }
     ],
     "labels": [
-      "520b2403",
       "b54cc8e6",
       "11994e6d",
       "affdbc37",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "6d1fd9f2",
       "5fdcb1f5",
       "6d14d7ab",
-      "fd00414e"
+      "fd00414e",
+      "dfdf055d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          476.6364890416463,
           445.5378861745199,
           498.9076719965254,
           391.83385581970214,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           470.68008817036946,
           445.21608165105187,
           456.6439706166585,
-          347.501420434316
+          347.501420434316,
+          388.8420433998108
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1237.353496424357,
           1273.3620643615723,
           1381.4389188130697,
           975.4726434071858,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1177.0053024291992,
           1180.4894489875207,
           1200.081512069702,
-          855.7843433788845
+          855.7843433788845,
+          1076.598162206014
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "520b24032f8868f48867bacf41f6ab153527a2d5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 08:14:45 2026 \u002B0200",
-        "message": "fix: report the negated result of \u0060HasRecursiveInnerExceptions\u0060 (#1028)"
-      },
-      {
         "sha": "b54cc8e62f9abb98ae7601551e26bb1ee1727f4c",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 09:37:29 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 13:29:59 2026 \u002B0200",
         "message": "feat!: mark \u0060IsNotBetween\u0060 as \u0060GuaranteesNotNull\u0060 (#1092)"
+      },
+      {
+        "sha": "dfdf055d25ef291e7028edb7997b06f8e954c7a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 13:33:28 2026 \u002B0200",
+        "message": "fix: keep a runaway mutant from taking down the mutation runner"
       }
     ],
     "labels": [
-      "520b2403",
       "b54cc8e6",
       "11994e6d",
       "affdbc37",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "6d1fd9f2",
       "5fdcb1f5",
       "6d14d7ab",
-      "fd00414e"
+      "fd00414e",
+      "dfdf055d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2047.8017865498862,
           1420.962323888143,
           1961.5972730000815,
           1528.6663879394532,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1867.5488277435302,
           1901.679819869995,
           1896.2060609545026,
-          1445.4109486171178
+          1445.4109486171178,
+          1263.9480908257622
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1399.8545087178547,
           1401.9845397949218,
           1419.2282477787562,
           1101.0765909467425,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1340.2610610961915,
           1308.885598863874,
           1361.9800455729167,
-          1004.3867805480957
+          1004.3867805480957,
+          1267.9197845458984
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "520b24032f8868f48867bacf41f6ab153527a2d5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 08:14:45 2026 \u002B0200",
-        "message": "fix: report the negated result of \u0060HasRecursiveInnerExceptions\u0060 (#1028)"
-      },
-      {
         "sha": "b54cc8e62f9abb98ae7601551e26bb1ee1727f4c",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 09:37:29 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 13:29:59 2026 \u002B0200",
         "message": "feat!: mark \u0060IsNotBetween\u0060 as \u0060GuaranteesNotNull\u0060 (#1092)"
+      },
+      {
+        "sha": "dfdf055d25ef291e7028edb7997b06f8e954c7a5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 13:33:28 2026 \u002B0200",
+        "message": "fix: keep a runaway mutant from taking down the mutation runner"
       }
     ],
     "labels": [
-      "520b2403",
       "b54cc8e6",
       "11994e6d",
       "affdbc37",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "6d1fd9f2",
       "5fdcb1f5",
       "6d14d7ab",
-      "fd00414e"
+      "fd00414e",
+      "dfdf055d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2712.830554707845,
           1855.2125802721296,
           2662.4832257588705,
           2038.1347600496733,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2454.1506958007812,
           2482.5264661153155,
           2531.095802307129,
-          1894.7102771759032
+          1894.7102771759032,
+          1661.151132447379
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          28598.32417515346,
           17947.528975423178,
           27737.258825683595,
           16199.068056233724,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           19912.0600789388,
           27732.19226989746,
           26807.29797973633,
-          14984.105593167818
+          14984.105593167818,
+          15686.815439860025
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33465,
           33471,
           33471,
@@ -4242,7 +4241,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471
+          33471,
+          33465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
