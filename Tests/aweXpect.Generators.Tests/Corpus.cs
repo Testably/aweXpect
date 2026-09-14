@@ -48,6 +48,13 @@ public static class Corpus
 		public int More { get; set; }
 	}
 
+	public class HidingByReference : Base
+	{
+		private int _value;
+		public int Own { get; set; }
+		private new ref int BaseProperty => ref _value;
+	}
+
 	public class HidingGenerically : Generic<int>
 	{
 		public int Own { get; set; }

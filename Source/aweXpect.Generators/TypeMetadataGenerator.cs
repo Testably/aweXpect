@@ -674,7 +674,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				INamedTypeSymbol { TypeKind: TypeKind.Error, } => false,
 				INamedTypeSymbol { IsAnonymousType: true, } anonymous => anonymous.GetMembers()
 					.OfType<IPropertySymbol>().All(x => IsReferenceable(x.Type)),
-				INamedTypeSymbol named => !named.IsFileLocal && !IsUnreferenceable(named) &&
+				INamedTypeSymbol named => !named.IsFileLocal && !IsUnreferenceable(named) && IsGlobal(named) &&
 				                          compilation.IsSymbolAccessibleWithin(named, compilation.Assembly) &&
 				                          named.TypeArguments.All(IsReferenceable) &&
 				                          (named.ContainingType is null || IsReferenceable(named.ContainingType)),
@@ -685,6 +685,14 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		///     A getter that requires unreferenced or dynamic code would make the generated registration itself a
 		///     trimming warning, which is what the registration exists to avoid.
 		/// </remarks>
+		/// <remarks>
+		///     A type from an assembly that is referenced only under an extern alias cannot be reached through
+		///     <c>global::</c>.
+		/// </remarks>
+		private bool IsGlobal(INamedTypeSymbol type)
+			=> compilation.GetMetadataReference(type.ContainingAssembly) is not { Properties.Aliases: { IsEmpty: false, } aliases, } ||
+			   aliases.Contains("global");
+
 		private static bool IsUnreferenceable(ISymbol symbol)
 			=> symbol.GetAttributes().Any(x
 				=> x.AttributeClass?.ToDisplayString() switch

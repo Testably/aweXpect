@@ -21,6 +21,8 @@ public sealed partial class MemberParityTests
 		(typeof(Corpus.HidingPrivately), "aweXpect.Generators.Tests.Corpus.HidingPrivately"),
 		(typeof(Corpus.HidingPrivatelyDerived), "aweXpect.Generators.Tests.Corpus.HidingPrivatelyDerived"),
 		(typeof(Corpus.HidingGenerically), "aweXpect.Generators.Tests.Corpus.HidingGenerically"),
+		(typeof(Corpus.HidingByReference), "aweXpect.Generators.Tests.Corpus.HidingByReference"),
+		(typeof(Corpus.WithDynamic), "aweXpect.Generators.Tests.Corpus.WithDynamic"),
 		(typeof(Corpus.HidingDynamic), "aweXpect.Generators.Tests.Corpus.HidingDynamic"),
 		(typeof(Corpus.Outer<int>.Inner<string>), "aweXpect.Generators.Tests.Corpus.Outer<int>.Inner<string>"),
 		(typeof(Corpus.WithIndexer), "aweXpect.Generators.Tests.Corpus.WithIndexer"),
