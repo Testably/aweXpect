@@ -3708,6 +3708,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 17:27:47 2026 \u002B0200",
         "message": "refactor: drop the GuaranteesNotNull markings that can never suppress anything (#1097)"
+      },
+      {
+        "sha": "2274a820443f74d11a338b3e5d034e9e4a386e28",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 22:12:29 2026 \u002B0200",
+        "message": "chore: TEMPORARY - always mutate the whole project"
       }
     ],
     "labels": [
@@ -4328,7 +4334,8 @@ window.BENCHMARK_DATA = {
       "23133e35",
       "dbd64a16",
       "3a66050e",
-      "5fa9d810"
+      "5fa9d810",
+      "2274a820"
     ],
     "datasets": [
       {
@@ -4952,7 +4959,8 @@ window.BENCHMARK_DATA = {
           272.7071217757005,
           282.5873665968577,
           254.31283381779988,
-          257.5374924023946
+          257.5374924023946,
+          196.90801135698953
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5425,6 +5433,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6213,7 +6222,8 @@ window.BENCHMARK_DATA = {
           239.39834238688152,
           244.30020138422648,
           237.89337490002313,
-          271.99132073720295
+          271.99132073720295,
+          196.11365172068278
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6406,6 +6416,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10102,6 +10113,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 17:27:47 2026 \u002B0200",
         "message": "refactor: drop the GuaranteesNotNull markings that can never suppress anything (#1097)"
+      },
+      {
+        "sha": "2274a820443f74d11a338b3e5d034e9e4a386e28",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 22:12:29 2026 \u002B0200",
+        "message": "chore: TEMPORARY - always mutate the whole project"
       }
     ],
     "labels": [
@@ -10645,7 +10662,8 @@ window.BENCHMARK_DATA = {
       "23133e35",
       "dbd64a16",
       "3a66050e",
-      "5fa9d810"
+      "5fa9d810",
+      "2274a820"
     ],
     "datasets": [
       {
@@ -11192,7 +11210,8 @@ window.BENCHMARK_DATA = {
           398807.8967122396,
           406313.1495186942,
           395099.5535807292,
-          383259.0914388021
+          383259.0914388021,
+          282997.7490559896
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11744,6 +11763,7 @@ window.BENCHMARK_DATA = {
           542085,
           542085,
           542085,
+          542084,
           542084
         ],
         "borderColor": "#63A2AC",
@@ -12299,7 +12319,8 @@ window.BENCHMARK_DATA = {
           2660831.3231770834,
           2648058.49375,
           2802643.9260602677,
-          2397191.646354167
+          2397191.646354167,
+          1836027.2087239583
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12851,7 +12872,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841635
+          4841635,
+          4841648
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16573,6 +16595,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 17:27:47 2026 \u002B0200",
         "message": "refactor: drop the GuaranteesNotNull markings that can never suppress anything (#1097)"
+      },
+      {
+        "sha": "2274a820443f74d11a338b3e5d034e9e4a386e28",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 22:12:29 2026 \u002B0200",
+        "message": "chore: TEMPORARY - always mutate the whole project"
       }
     ],
     "labels": [
@@ -17193,7 +17221,8 @@ window.BENCHMARK_DATA = {
       "23133e35",
       "dbd64a16",
       "3a66050e",
-      "5fa9d810"
+      "5fa9d810",
+      "2274a820"
     ],
     "datasets": [
       {
@@ -17817,7 +17846,8 @@ window.BENCHMARK_DATA = {
           468.19346981048585,
           486.34537158693587,
           521.6478244917733,
-          494.7722628275553
+          494.7722628275553,
+          363.58683786392214
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18290,6 +18320,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -19078,7 +19109,8 @@ window.BENCHMARK_DATA = {
           510.66202341715496,
           489.4366489137922,
           538.4961628232684,
-          528.4363608678182
+          528.4363608678182,
+          399.7704559961955
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19271,6 +19303,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -23429,6 +23462,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 17:27:47 2026 \u002B0200",
         "message": "refactor: drop the GuaranteesNotNull markings that can never suppress anything (#1097)"
+      },
+      {
+        "sha": "2274a820443f74d11a338b3e5d034e9e4a386e28",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 22:12:29 2026 \u002B0200",
+        "message": "chore: TEMPORARY - always mutate the whole project"
       }
     ],
     "labels": [
@@ -24049,7 +24088,8 @@ window.BENCHMARK_DATA = {
       "23133e35",
       "dbd64a16",
       "3a66050e",
-      "5fa9d810"
+      "5fa9d810",
+      "2274a820"
     ],
     "datasets": [
       {
@@ -24673,7 +24713,8 @@ window.BENCHMARK_DATA = {
           252.94306329318457,
           267.9070954004923,
           281.6811509450277,
-          275.06960776646935
+          275.06960776646935,
+          206.19679361979166
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -25187,6 +25228,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -25934,7 +25976,8 @@ window.BENCHMARK_DATA = {
           243.92973760196142,
           249.65470666885375,
           288.50390370686847,
-          276.23029589653015
+          276.23029589653015,
+          190.39022885836087
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -26127,6 +26170,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -30285,6 +30329,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 17:27:47 2026 \u002B0200",
         "message": "refactor: drop the GuaranteesNotNull markings that can never suppress anything (#1097)"
+      },
+      {
+        "sha": "2274a820443f74d11a338b3e5d034e9e4a386e28",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 22:12:29 2026 \u002B0200",
+        "message": "chore: TEMPORARY - always mutate the whole project"
       }
     ],
     "labels": [
@@ -30905,7 +30955,8 @@ window.BENCHMARK_DATA = {
       "23133e35",
       "dbd64a16",
       "3a66050e",
-      "5fa9d810"
+      "5fa9d810",
+      "2274a820"
     ],
     "datasets": [
       {
@@ -31529,7 +31580,8 @@ window.BENCHMARK_DATA = {
           446.7085044542948,
           454.5175503094991,
           494.18738918304444,
-          477.94668610890704
+          477.94668610890704,
+          355.2072853020259
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32002,6 +32054,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -32790,7 +32843,8 @@ window.BENCHMARK_DATA = {
           1280.4255312601724,
           1223.4176754270281,
           1370.0128548940022,
-          1341.652505329677
+          1341.652505329677,
+          883.0441282908122
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33219,6 +33273,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -37141,6 +37196,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 17:27:47 2026 \u002B0200",
         "message": "refactor: drop the GuaranteesNotNull markings that can never suppress anything (#1097)"
+      },
+      {
+        "sha": "2274a820443f74d11a338b3e5d034e9e4a386e28",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 22:12:29 2026 \u002B0200",
+        "message": "chore: TEMPORARY - always mutate the whole project"
       }
     ],
     "labels": [
@@ -37761,7 +37822,8 @@ window.BENCHMARK_DATA = {
       "23133e35",
       "dbd64a16",
       "3a66050e",
-      "5fa9d810"
+      "5fa9d810",
+      "2274a820"
     ],
     "datasets": [
       {
@@ -38385,7 +38447,8 @@ window.BENCHMARK_DATA = {
           1957.9608357747395,
           1916.6552419662476,
           1941.6528345743816,
-          1670.9143939971923
+          1670.9143939971923,
+          1410.924646105085
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38858,6 +38921,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -39646,7 +39710,8 @@ window.BENCHMARK_DATA = {
           1445.2837228139242,
           1366.0677769524711,
           1400.2874593734741,
-          1437.5937737782797
+          1437.5937737782797,
+          1009.9652674538748
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39839,6 +39904,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -43997,6 +44063,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 17:27:47 2026 \u002B0200",
         "message": "refactor: drop the GuaranteesNotNull markings that can never suppress anything (#1097)"
+      },
+      {
+        "sha": "2274a820443f74d11a338b3e5d034e9e4a386e28",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 22:12:29 2026 \u002B0200",
+        "message": "chore: TEMPORARY - always mutate the whole project"
       }
     ],
     "labels": [
@@ -44617,7 +44689,8 @@ window.BENCHMARK_DATA = {
       "23133e35",
       "dbd64a16",
       "3a66050e",
-      "5fa9d810"
+      "5fa9d810",
+      "2274a820"
     ],
     "datasets": [
       {
@@ -45241,7 +45314,8 @@ window.BENCHMARK_DATA = {
           2651.728740946452,
           2535.7885340372723,
           2660.4840303148544,
-          2179.668372599284
+          2179.668372599284,
+          1916.8696338653565
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -45714,6 +45788,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -46502,7 +46577,8 @@ window.BENCHMARK_DATA = {
           28410.73045654297,
           27259.131116739907,
           28238.857125418526,
-          24276.291119384765
+          24276.291119384765,
+          15356.671731131417
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47131,7 +47207,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33468
+          33468,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
