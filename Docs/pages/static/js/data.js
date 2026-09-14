@@ -3696,6 +3696,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 16:27:25 2026 \u002B0200",
         "message": "refactor!: accept a null subject on the non-generic collection expectations (#1096)"
+      },
+      {
+        "sha": "3a66050e2f75de139debf131e02a3ed53a6d3d3a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 16:32:29 2026 \u002B0200",
+        "message": "fix: keep a runaway mutant from taking down the mutation runner (#1093)"
       }
     ],
     "labels": [
@@ -4314,7 +4320,8 @@ window.BENCHMARK_DATA = {
       "07659ebf",
       "48275fcf",
       "23133e35",
-      "dbd64a16"
+      "dbd64a16",
+      "3a66050e"
     ],
     "datasets": [
       {
@@ -4936,7 +4943,8 @@ window.BENCHMARK_DATA = {
           261.35009473164877,
           202.0682702700297,
           272.7071217757005,
-          282.5873665968577
+          282.5873665968577,
+          254.31283381779988
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5409,6 +5417,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6193,7 +6202,8 @@ window.BENCHMARK_DATA = {
           248.91758947372438,
           193.95771493911744,
           239.39834238688152,
-          244.30020138422648
+          244.30020138422648,
+          237.89337490002313
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6386,6 +6396,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10068,6 +10079,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 16:27:25 2026 \u002B0200",
         "message": "refactor!: accept a null subject on the non-generic collection expectations (#1096)"
+      },
+      {
+        "sha": "3a66050e2f75de139debf131e02a3ed53a6d3d3a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 16:32:29 2026 \u002B0200",
+        "message": "fix: keep a runaway mutant from taking down the mutation runner (#1093)"
       }
     ],
     "labels": [
@@ -10609,7 +10626,8 @@ window.BENCHMARK_DATA = {
       "07659ebf",
       "48275fcf",
       "23133e35",
-      "dbd64a16"
+      "dbd64a16",
+      "3a66050e"
     ],
     "datasets": [
       {
@@ -11154,7 +11172,8 @@ window.BENCHMARK_DATA = {
           384797.04899088544,
           288932.6270833333,
           398807.8967122396,
-          406313.1495186942
+          406313.1495186942,
+          395099.5535807292
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11703,6 +11722,7 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542084,
+          542085,
           542085,
           542085
         ],
@@ -12257,7 +12277,8 @@ window.BENCHMARK_DATA = {
           2694216.7727864585,
           1919859.78125,
           2660831.3231770834,
-          2648058.49375
+          2648058.49375,
+          2802643.9260602677
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12806,6 +12827,7 @@ window.BENCHMARK_DATA = {
           4841610,
           4841651,
           4841647,
+          4841651,
           4841651,
           4841651
         ],
@@ -16517,6 +16539,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 16:27:25 2026 \u002B0200",
         "message": "refactor!: accept a null subject on the non-generic collection expectations (#1096)"
+      },
+      {
+        "sha": "3a66050e2f75de139debf131e02a3ed53a6d3d3a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 16:32:29 2026 \u002B0200",
+        "message": "fix: keep a runaway mutant from taking down the mutation runner (#1093)"
       }
     ],
     "labels": [
@@ -17135,7 +17163,8 @@ window.BENCHMARK_DATA = {
       "07659ebf",
       "48275fcf",
       "23133e35",
-      "dbd64a16"
+      "dbd64a16",
+      "3a66050e"
     ],
     "datasets": [
       {
@@ -17757,7 +17786,8 @@ window.BENCHMARK_DATA = {
           515.1616793950399,
           388.25114046732585,
           468.19346981048585,
-          486.34537158693587
+          486.34537158693587,
+          521.6478244917733
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18230,6 +18260,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -19014,7 +19045,8 @@ window.BENCHMARK_DATA = {
           510.66075089772545,
           444.05623321533204,
           510.66202341715496,
-          489.4366489137922
+          489.4366489137922,
+          538.4961628232684
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19207,6 +19239,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -23351,6 +23384,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 16:27:25 2026 \u002B0200",
         "message": "refactor!: accept a null subject on the non-generic collection expectations (#1096)"
+      },
+      {
+        "sha": "3a66050e2f75de139debf131e02a3ed53a6d3d3a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 16:32:29 2026 \u002B0200",
+        "message": "fix: keep a runaway mutant from taking down the mutation runner (#1093)"
       }
     ],
     "labels": [
@@ -23969,7 +24008,8 @@ window.BENCHMARK_DATA = {
       "07659ebf",
       "48275fcf",
       "23133e35",
-      "dbd64a16"
+      "dbd64a16",
+      "3a66050e"
     ],
     "datasets": [
       {
@@ -24591,7 +24631,8 @@ window.BENCHMARK_DATA = {
           266.98263822283064,
           215.05497576395672,
           252.94306329318457,
-          267.9070954004923
+          267.9070954004923,
+          281.6811509450277
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -25105,6 +25146,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -25848,7 +25890,8 @@ window.BENCHMARK_DATA = {
           251.55838861465455,
           193.71849513053894,
           243.92973760196142,
-          249.65470666885375
+          249.65470666885375,
+          288.50390370686847
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -26041,6 +26084,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -30185,6 +30229,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 16:27:25 2026 \u002B0200",
         "message": "refactor!: accept a null subject on the non-generic collection expectations (#1096)"
+      },
+      {
+        "sha": "3a66050e2f75de139debf131e02a3ed53a6d3d3a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 16:32:29 2026 \u002B0200",
+        "message": "fix: keep a runaway mutant from taking down the mutation runner (#1093)"
       }
     ],
     "labels": [
@@ -30803,7 +30853,8 @@ window.BENCHMARK_DATA = {
       "07659ebf",
       "48275fcf",
       "23133e35",
-      "dbd64a16"
+      "dbd64a16",
+      "3a66050e"
     ],
     "datasets": [
       {
@@ -31425,7 +31476,8 @@ window.BENCHMARK_DATA = {
           454.9438359896342,
           401.7921457608541,
           446.7085044542948,
-          454.5175503094991
+          454.5175503094991,
+          494.18738918304444
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31898,6 +31950,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -32682,7 +32735,8 @@ window.BENCHMARK_DATA = {
           1192.530027516683,
           1038.105400466919,
           1280.4255312601724,
-          1223.4176754270281
+          1223.4176754270281,
+          1370.0128548940022
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33111,6 +33165,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -37019,6 +37074,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 16:27:25 2026 \u002B0200",
         "message": "refactor!: accept a null subject on the non-generic collection expectations (#1096)"
+      },
+      {
+        "sha": "3a66050e2f75de139debf131e02a3ed53a6d3d3a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 16:32:29 2026 \u002B0200",
+        "message": "fix: keep a runaway mutant from taking down the mutation runner (#1093)"
       }
     ],
     "labels": [
@@ -37637,7 +37698,8 @@ window.BENCHMARK_DATA = {
       "07659ebf",
       "48275fcf",
       "23133e35",
-      "dbd64a16"
+      "dbd64a16",
+      "3a66050e"
     ],
     "datasets": [
       {
@@ -38259,7 +38321,8 @@ window.BENCHMARK_DATA = {
           1923.368877919515,
           1623.953402382987,
           1957.9608357747395,
-          1916.6552419662476
+          1916.6552419662476,
+          1941.6528345743816
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38732,6 +38795,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -39516,7 +39580,8 @@ window.BENCHMARK_DATA = {
           1365.60766850985,
           1131.3129965464275,
           1445.2837228139242,
-          1366.0677769524711
+          1366.0677769524711,
+          1400.2874593734741
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39709,6 +39774,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -43853,6 +43919,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 16:27:25 2026 \u002B0200",
         "message": "refactor!: accept a null subject on the non-generic collection expectations (#1096)"
+      },
+      {
+        "sha": "3a66050e2f75de139debf131e02a3ed53a6d3d3a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 16:32:29 2026 \u002B0200",
+        "message": "fix: keep a runaway mutant from taking down the mutation runner (#1093)"
       }
     ],
     "labels": [
@@ -44471,7 +44543,8 @@ window.BENCHMARK_DATA = {
       "07659ebf",
       "48275fcf",
       "23133e35",
-      "dbd64a16"
+      "dbd64a16",
+      "3a66050e"
     ],
     "datasets": [
       {
@@ -45093,7 +45166,8 @@ window.BENCHMARK_DATA = {
           2614.6848622639973,
           2052.538283421443,
           2651.728740946452,
-          2535.7885340372723
+          2535.7885340372723,
+          2660.4840303148544
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -45566,6 +45640,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -46350,7 +46425,8 @@ window.BENCHMARK_DATA = {
           26792.870127360027,
           16741.85625,
           28410.73045654297,
-          27259.131116739907
+          27259.131116739907,
+          28238.857125418526
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -46974,6 +47050,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
