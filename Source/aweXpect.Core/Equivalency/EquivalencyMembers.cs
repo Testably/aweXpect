@@ -23,32 +23,33 @@ internal readonly struct EquivalencyMember(string name, Type declaredType, Func<
 ///     Resolves the members that participate in an equivalency comparison.
 /// </summary>
 /// <remarks>
-///     The public members of a registered type are served from the <see cref="TypeMetadataRegistry" />, so that
-///     publishing with trimming or Native AOT enabled does not remove them. Non-public members are never registered,
-///     so they are reflected over like the members of an unregistered type.
+///     A registered type is served from the <see cref="TypeMetadataRegistry" />, so that publishing with trimming or
+///     Native AOT enabled does not remove its members. Only public members are registered, so a comparison that asks
+///     for non-public members reflects over the whole type: mixing the two sources would let a registered public
+///     member stand next to the non-public member that hides it, which reflection alone never does.
 /// </remarks>
 internal static class EquivalencyMembers
 {
 	public static IEnumerable<EquivalencyMember> GetFields(Type type, IncludeMembers includeMembers)
 	{
-		if (TryGetRegistered(type, out TypeMetadataRegistry.TypeMetadata? metadata))
+		if (TryGetRegistered(type, includeMembers, out TypeMetadataRegistry.TypeMetadata? metadata))
 		{
-			return Registered(metadata.Fields, includeMembers)
-				.Concat(ReflectFields(type, includeMembers & ~IncludeMembers.Public));
+			return Registered(metadata.Fields);
 		}
 
-		return ReflectFields(type, includeMembers);
+		return type.GetFields(includeMembers)
+			.Select(field => new EquivalencyMember(field.Name, field.FieldType, Accessor(field)));
 	}
 
 	public static IEnumerable<EquivalencyMember> GetProperties(Type type, IncludeMembers includeMembers)
 	{
-		if (TryGetRegistered(type, out TypeMetadataRegistry.TypeMetadata? metadata))
+		if (TryGetRegistered(type, includeMembers, out TypeMetadataRegistry.TypeMetadata? metadata))
 		{
-			return Registered(metadata.Properties, includeMembers)
-				.Concat(ReflectProperties(type, includeMembers & ~IncludeMembers.Public));
+			return Registered(metadata.Properties);
 		}
 
-		return ReflectProperties(type, includeMembers);
+		return type.GetProperties(includeMembers)
+			.Select(property => new EquivalencyMember(property.Name, property.PropertyType, Accessor(property)));
 	}
 
 	/// <summary>
@@ -57,11 +58,11 @@ internal static class EquivalencyMembers
 	/// </summary>
 	public static Func<object, object?>? FindField(Type type, string name, IncludeMembers includeMembers)
 	{
-		if (includeMembers.HasFlag(IncludeMembers.Public) &&
-		    TryGetRegistered(type, out TypeMetadataRegistry.TypeMetadata? metadata) &&
-		    metadata.Fields.TryGetValue(name, out TypeMetadataRegistry.RegisteredMember? member))
+		if (TryGetRegistered(type, includeMembers, out TypeMetadataRegistry.TypeMetadata? metadata))
 		{
-			return member.GetValue;
+			return metadata.Fields.TryGetValue(name, out TypeMetadataRegistry.RegisteredMember? member)
+				? member.GetValue
+				: null;
 		}
 
 		FieldInfo? field = type.GetFields(includeMembers).FirstOrDefault(x => x.Name == name);
@@ -74,11 +75,11 @@ internal static class EquivalencyMembers
 	/// </summary>
 	public static Func<object, object?>? FindProperty(Type type, string name, IncludeMembers includeMembers)
 	{
-		if (includeMembers.HasFlag(IncludeMembers.Public) &&
-		    TryGetRegistered(type, out TypeMetadataRegistry.TypeMetadata? metadata) &&
-		    metadata.Properties.TryGetValue(name, out TypeMetadataRegistry.RegisteredMember? member))
+		if (TryGetRegistered(type, includeMembers, out TypeMetadataRegistry.TypeMetadata? metadata))
 		{
-			return member.GetValue;
+			return metadata.Properties.TryGetValue(name, out TypeMetadataRegistry.RegisteredMember? member)
+				? member.GetValue
+				: null;
 		}
 
 		PropertyInfo? property = type.GetProperties(includeMembers).FirstOrDefault(x => x.Name == name);
@@ -89,27 +90,24 @@ internal static class EquivalencyMembers
 	///     A type counts as registered only when it has a field or a property: an event-only registration says nothing
 	///     about the members, so such a type is reflected over like an unregistered one.
 	/// </remarks>
-	private static bool TryGetRegistered(Type type,
+	private static bool TryGetRegistered(Type type, IncludeMembers includeMembers,
 		[NotNullWhen(true)] out TypeMetadataRegistry.TypeMetadata? metadata)
-		=> TypeMetadataRegistry.Instance.TryGet(type, out metadata) &&
-		   !(metadata.Fields.IsEmpty && metadata.Properties.IsEmpty);
+	{
+		if (includeMembers != IncludeMembers.Public)
+		{
+			metadata = null;
+			return false;
+		}
+
+		return TypeMetadataRegistry.Instance.TryGet(type, out metadata) &&
+		       !(metadata.Fields.IsEmpty && metadata.Properties.IsEmpty);
+	}
 
 	private static IEnumerable<EquivalencyMember> Registered(
-		ConcurrentDictionary<string, TypeMetadataRegistry.RegisteredMember> members,
-		IncludeMembers includeMembers)
-		=> includeMembers.HasFlag(IncludeMembers.Public)
-			? members.Values
-				.OrderBy(member => member.Order)
-				.Select(member => new EquivalencyMember(member.Name, member.MemberType, member.GetValue))
-			: Enumerable.Empty<EquivalencyMember>();
-
-	private static IEnumerable<EquivalencyMember> ReflectFields(Type type, IncludeMembers includeMembers)
-		=> type.GetFields(includeMembers)
-			.Select(field => new EquivalencyMember(field.Name, field.FieldType, Accessor(field)));
-
-	private static IEnumerable<EquivalencyMember> ReflectProperties(Type type, IncludeMembers includeMembers)
-		=> type.GetProperties(includeMembers)
-			.Select(property => new EquivalencyMember(property.Name, property.PropertyType, Accessor(property)));
+		ConcurrentDictionary<string, TypeMetadataRegistry.RegisteredMember> members)
+		=> members.Values
+			.OrderBy(member => member.Order)
+			.Select(member => new EquivalencyMember(member.Name, member.MemberType, member.GetValue));
 
 	private static Func<object, object?> Accessor(FieldInfo field)
 		=> subject => Read(() => field.GetValue(subject));

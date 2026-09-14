@@ -284,7 +284,9 @@ Some types cannot be seen by the generator, because it works from the types decl
 - a `private`, `protected` or `file`-local type cannot be referenced by generated code and is compared through
   reflection,
 - a value that reaches the comparison through your own extension method is only registered if the extension's
-  parameter or type parameter carries `[RequiresMemberMetadata]`.
+  parameter or type parameter carries `[RequiresMemberMetadata]`,
+- an anonymous type with a member holding a collection of anonymous types, other than an array, cannot be written
+  as an instance and is compared through reflection; the element type itself is registered.
 
 Name such a type explicitly to register it anyway. The generator warns with `aweXpect2001` when a named type yields
 no registration:
@@ -303,7 +305,7 @@ The walk follows every member type the comparison would visit, including framewo
 too. Members whose getter is marked with `RequiresUnreferencedCode` or `RequiresDynamicCode` cannot be registered, so
 their type stays on the reflection path.
 
-Two limits remain under trimming. Members requested with `IncludeMembers.Internal` or `IncludeMembers.Private` are
-never registered and are always reflected over, so a trimmed member is left out of the comparison. And a type the
-generator did not see whose members were all removed by the trimmer fails with an error that names the type and asks
-you to root it.
+Two limits remain under trimming. Only public members are registered, so a comparison that requests
+`IncludeMembers.Internal` or `IncludeMembers.Private` reflects over the whole type, and a trimmed member is left out
+of the comparison. And a type the generator did not see whose members were all removed by the trimmer fails with an
+error that names the type and asks you to root it.

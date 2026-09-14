@@ -497,13 +497,15 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				return false;
 			}
 
-			return signatures.Add(property.Name + "|" + MetadataSignature(property.OriginalDefinition.Type));
+			return signatures.Add(property.Name + "|" + property.RefKind + "|" +
+			                      MetadataSignature(property.OriginalDefinition.Type));
 		}
 
 		/// <remarks>
 		///     The runtime compares the metadata signature of the declaration, in which a type parameter is a position,
-		///     <see langword="dynamic" /> is <see cref="object" /> and tuple element names do not exist, so a
-		///     substituted or annotated type must not tell two identical signatures apart.
+		///     <see langword="dynamic" /> is <see cref="object" />, tuple element names do not exist and a nested type
+		///     carries the positions of its container's type arguments, so a substituted or annotated type must not
+		///     tell two identical signatures apart.
 		/// </remarks>
 		private static string MetadataSignature(ITypeSymbol type)
 			=> type switch
@@ -515,9 +517,14 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				IPointerTypeSymbol pointer => MetadataSignature(pointer.PointedAtType) + "*",
 				INamedTypeSymbol { IsTupleType: true, TupleUnderlyingType: { } underlying, } => MetadataSignature(
 					underlying),
-				INamedTypeSymbol { IsGenericType: true, } named => named.OriginalDefinition.ToDisplayString(TypeFormat) +
-				                                                    "<" + string.Join(",",
-					                                                    named.TypeArguments.Select(MetadataSignature)) + ">",
+				INamedTypeSymbol named => (named.ContainingType is null
+					                          ? named.ContainingNamespace.ToDisplayString() + "."
+					                          : MetadataSignature(named.ContainingType) + ".") +
+				                          named.MetadataName +
+				                          (named.TypeArguments.Length == 0
+					                          ? ""
+					                          : "<" + string.Join(",", named.TypeArguments.Select(MetadataSignature)) +
+					                            ">"),
 				_ => type.ToDisplayString(TypeFormat),
 			};
 

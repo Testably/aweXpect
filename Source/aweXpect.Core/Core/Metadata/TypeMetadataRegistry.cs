@@ -14,9 +14,9 @@ namespace aweXpect.Core.Metadata;
 ///     instead, and are normally emitted by the source generator from the call sites that need them.
 ///     <para />
 ///     Only public instance members are registered, because a generated accessor cannot reach the non-public members
-///     of a type from another assembly on every target. Non-public members are still reflected over when requested,
-///     which works unchanged in a normal build and remains best effort when publishing with trimming or Native AOT
-///     enabled, where members removed by the trimmer are silently left out of the comparison.
+///     of a type from another assembly on every target. A comparison that requests non-public members reflects over
+///     the whole type, which works unchanged in a normal build and remains best effort when publishing with trimming
+///     or Native AOT enabled, where members removed by the trimmer are silently left out of the comparison.
 /// </remarks>
 public static class TypeMetadataRegistry
 {

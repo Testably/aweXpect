@@ -116,6 +116,34 @@ public sealed partial class TypeMetadataGeneratorTests
 	}
 
 	[Fact]
+	public async Task WhenBasePropertyIsHiddenByAByReferenceOne_ShouldRegisterIt()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"""
+			namespace Models;
+
+			public class WithValue
+			{
+				public int Value { get; set; }
+			}
+
+			public class HidingByReference : WithValue
+			{
+				private int _value;
+				private new ref int Value => ref _value;
+			}
+			""",
+			Call("Expect.That(new Models.HidingByReference()).IsEquivalentTo(new Models.HidingByReference());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated)
+			.Contains("(\"Value\", o => ((global::Models.WithValue)o).Value);")
+			.Because("a by-reference return is part of the metadata signature, so the base property is not hidden");
+	}
+
+	[Fact]
 	public async Task WhenBasePropertyIsHiddenByALessVisibleOne_ShouldNotRegisterIt()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
