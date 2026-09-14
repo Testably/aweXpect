@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis;
 
 namespace aweXpect.Generators.Tests;
 
-public sealed class TypeMetadataGeneratorTests
+public sealed partial class TypeMetadataGeneratorTests
 {
 	private const string Models = """
 	                              namespace Models;
@@ -499,7 +499,7 @@ public sealed class TypeMetadataGeneratorTests
 		]);
 
 		await That(result.Errors).IsEmpty();
-		await That(Regex.Matches(result.Generated, "// global::Models.Other").Count).IsEqualTo(1)
+		await That(OtherRegistration().Matches(result.Generated).Count).IsEqualTo(1)
 			.Because("the registry keeps one entry per type, so the registration is emitted once");
 	}
 
@@ -515,4 +515,7 @@ public sealed class TypeMetadataGeneratorTests
 		     	}
 		     }
 		     """;
+
+	[GeneratedRegex("^\t// global::Models\\.Other\r?$", RegexOptions.Multiline)]
+	private static partial Regex OtherRegistration();
 }
