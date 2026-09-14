@@ -3642,6 +3642,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Sep 14 08:21:22 2026 \u002B0000",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.9.0 to 18.10.0 (#1090)"
+      },
+      {
+        "sha": "6d1fd9f2d0441982505ad28c46ab93c2ce71e377",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 11:02:17 2026 \u002B0200",
+        "message": "feat: add comparison expectations for Version (#1085)"
       }
     ],
     "labels": [
@@ -4251,7 +4257,8 @@ window.BENCHMARK_DATA = {
       "f66faa25",
       "58290e80",
       "0ee271ea",
-      "17ec8fe6"
+      "17ec8fe6",
+      "6d1fd9f2"
     ],
     "datasets": [
       {
@@ -4864,7 +4871,8 @@ window.BENCHMARK_DATA = {
           274.7645135659438,
           259.71256140300204,
           273.5617689352769,
-          243.38492396899633
+          243.38492396899633,
+          249.66410438219705
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5337,6 +5345,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6103,7 +6112,8 @@ window.BENCHMARK_DATA = {
           250.2445392926534,
           247.47003167470297,
           295.36873945823083,
-          232.63954355035509
+          232.63954355035509,
+          251.00914753400363
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6296,6 +6306,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -9915,6 +9926,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Sep 14 08:21:22 2026 \u002B0000",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.9.0 to 18.10.0 (#1090)"
+      },
+      {
+        "sha": "6d1fd9f2d0441982505ad28c46ab93c2ce71e377",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 11:02:17 2026 \u002B0200",
+        "message": "feat: add comparison expectations for Version (#1085)"
       }
     ],
     "labels": [
@@ -10447,7 +10464,8 @@ window.BENCHMARK_DATA = {
       "f66faa25",
       "58290e80",
       "0ee271ea",
-      "17ec8fe6"
+      "17ec8fe6",
+      "6d1fd9f2"
     ],
     "datasets": [
       {
@@ -10983,7 +11001,8 @@ window.BENCHMARK_DATA = {
           389705.67330496653,
           401143.07958984375,
           399767.38720703125,
-          374133.0217285156
+          374133.0217285156,
+          377747.7562825521
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11524,7 +11543,8 @@ window.BENCHMARK_DATA = {
           542085,
           542085,
           542084,
-          542085
+          542085,
+          542084
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12068,7 +12088,8 @@ window.BENCHMARK_DATA = {
           2737564.7447916665,
           2635227.4921875,
           2493686.390625,
-          2570248.724479167
+          2570248.724479167,
+          2424088.3388020834
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12609,7 +12630,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841635,
-          4841651
+          4841651,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16265,6 +16287,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Sep 14 08:21:22 2026 \u002B0000",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.9.0 to 18.10.0 (#1090)"
+      },
+      {
+        "sha": "6d1fd9f2d0441982505ad28c46ab93c2ce71e377",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 11:02:17 2026 \u002B0200",
+        "message": "feat: add comparison expectations for Version (#1085)"
       }
     ],
     "labels": [
@@ -16874,7 +16902,8 @@ window.BENCHMARK_DATA = {
       "f66faa25",
       "58290e80",
       "0ee271ea",
-      "17ec8fe6"
+      "17ec8fe6",
+      "6d1fd9f2"
     ],
     "datasets": [
       {
@@ -17487,7 +17516,8 @@ window.BENCHMARK_DATA = {
           470.5121303876241,
           466.5715479214986,
           518.9379989917462,
-          443.52883034486035
+          443.52883034486035,
+          475.8615978240967
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17960,6 +17990,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -18726,7 +18757,8 @@ window.BENCHMARK_DATA = {
           495.75147552490233,
           494.53349374135337,
           568.9296937355629,
-          468.3997852461679
+          468.3997852461679,
+          498.57393035888674
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18919,6 +18951,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -23000,6 +23033,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Sep 14 08:21:22 2026 \u002B0000",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.9.0 to 18.10.0 (#1090)"
+      },
+      {
+        "sha": "6d1fd9f2d0441982505ad28c46ab93c2ce71e377",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 11:02:17 2026 \u002B0200",
+        "message": "feat: add comparison expectations for Version (#1085)"
       }
     ],
     "labels": [
@@ -23609,7 +23648,8 @@ window.BENCHMARK_DATA = {
       "f66faa25",
       "58290e80",
       "0ee271ea",
-      "17ec8fe6"
+      "17ec8fe6",
+      "6d1fd9f2"
     ],
     "datasets": [
       {
@@ -24222,7 +24262,8 @@ window.BENCHMARK_DATA = {
           264.52562294687544,
           269.3935879389445,
           302.6372409820557,
-          249.44472227777754
+          249.44472227777754,
+          269.57373355229697
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -24736,6 +24777,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -25461,7 +25503,8 @@ window.BENCHMARK_DATA = {
           254.30318018595378,
           248.65455646514891,
           319.19809678622653,
-          241.04878514607748
+          241.04878514607748,
+          244.01057580312093
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -25654,6 +25697,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -29735,6 +29779,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Sep 14 08:21:22 2026 \u002B0000",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.9.0 to 18.10.0 (#1090)"
+      },
+      {
+        "sha": "6d1fd9f2d0441982505ad28c46ab93c2ce71e377",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 11:02:17 2026 \u002B0200",
+        "message": "feat: add comparison expectations for Version (#1085)"
       }
     ],
     "labels": [
@@ -30344,7 +30394,8 @@ window.BENCHMARK_DATA = {
       "f66faa25",
       "58290e80",
       "0ee271ea",
-      "17ec8fe6"
+      "17ec8fe6",
+      "6d1fd9f2"
     ],
     "datasets": [
       {
@@ -30957,7 +31008,8 @@ window.BENCHMARK_DATA = {
           480.7775178909302,
           465.443952592214,
           498.3817323684692,
-          438.546740600041
+          438.546740600041,
+          470.68008817036946
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31430,6 +31482,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -32196,7 +32249,8 @@ window.BENCHMARK_DATA = {
           1220.0667766571046,
           1205.1778465270995,
           1367.508293560573,
-          1178.6956462860107
+          1178.6956462860107,
+          1177.0053024291992
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32625,6 +32679,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -36470,6 +36525,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Sep 14 08:21:22 2026 \u002B0000",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.9.0 to 18.10.0 (#1090)"
+      },
+      {
+        "sha": "6d1fd9f2d0441982505ad28c46ab93c2ce71e377",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 11:02:17 2026 \u002B0200",
+        "message": "feat: add comparison expectations for Version (#1085)"
       }
     ],
     "labels": [
@@ -37079,7 +37140,8 @@ window.BENCHMARK_DATA = {
       "f66faa25",
       "58290e80",
       "0ee271ea",
-      "17ec8fe6"
+      "17ec8fe6",
+      "6d1fd9f2"
     ],
     "datasets": [
       {
@@ -37692,7 +37754,8 @@ window.BENCHMARK_DATA = {
           1887.0097145353045,
           1896.5535133361816,
           1763.101915105184,
-          1935.638449350993
+          1935.638449350993,
+          1867.5488277435302
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38165,6 +38228,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -38931,7 +38995,8 @@ window.BENCHMARK_DATA = {
           1387.1435702187675,
           1362.6844951084681,
           1491.4880906513758,
-          1302.501866204398
+          1302.501866204398,
+          1340.2610610961915
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39124,6 +39189,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -43205,6 +43271,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Sep 14 08:21:22 2026 \u002B0000",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.9.0 to 18.10.0 (#1090)"
+      },
+      {
+        "sha": "6d1fd9f2d0441982505ad28c46ab93c2ce71e377",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 11:02:17 2026 \u002B0200",
+        "message": "feat: add comparison expectations for Version (#1085)"
       }
     ],
     "labels": [
@@ -43814,7 +43886,8 @@ window.BENCHMARK_DATA = {
       "f66faa25",
       "58290e80",
       "0ee271ea",
-      "17ec8fe6"
+      "17ec8fe6",
+      "6d1fd9f2"
     ],
     "datasets": [
       {
@@ -44427,7 +44500,8 @@ window.BENCHMARK_DATA = {
           2522.014156614031,
           2544.174378967285,
           2239.05790125529,
-          2468.7668718973796
+          2468.7668718973796,
+          2454.1506958007812
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44900,6 +44974,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -45666,7 +45741,8 @@ window.BENCHMARK_DATA = {
           27777.223079136438,
           26392.498586801383,
           24298.394321695963,
-          26020.990515572685
+          26020.990515572685,
+          19912.0600789388
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -46284,6 +46360,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
