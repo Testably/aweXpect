@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "d6d2b3d208fddff69b61686ac68b61152ddbe7c2",
-        "author": "dependabot[bot]",
-        "date": "Mon Aug 17 12:51:00 2026 \u002B0200",
-        "message": "chore: Bump the xunit group with 3 updates (#1006)"
-      },
-      {
         "sha": "956eadd61443687e65db1ea1137ff0a5ba3e0681",
         "author": "dependabot[bot]",
         "date": "Mon Aug 17 12:51:10 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 08:15:13 2026 \u002B0200",
         "message": "chore: bump aweXpect.Core to 3.0.0-pre.4 and restore the default build scope (#1084)"
+      },
+      {
+        "sha": "58290e808b4d37f040c6c5f42cf90c1164fe9c3d",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 14 07:59:05 2026 \u002B0000",
+        "message": "chore: Bump the nunit group with 1 update (#1087)"
       }
     ],
     "labels": [
-      "d6d2b3d2",
       "956eadd6",
       "24dc08d9",
       "300993a9",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "3e81a878",
       "d2ca3fb8",
       "d0ec4dc0",
-      "f66faa25"
+      "f66faa25",
+      "58290e80"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          251.71505771364485,
           246.84150862693787,
           271.3400662626539,
           260.6101592268263,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           259.7866854349772,
           307.019961865743,
           274.39142618179324,
-          274.7645135659438
+          274.7645135659438,
+          259.71256140300204
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          266.93660954066684,
           249.61967541621283,
           244.4677336215973,
           250.41821381251017,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           245.70672464370728,
           264.7816121101379,
           249.09174687521798,
-          250.2445392926534
+          250.2445392926534,
+          247.47003167470297
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "d6d2b3d208fddff69b61686ac68b61152ddbe7c2",
-        "author": "dependabot[bot]",
-        "date": "Mon Aug 17 12:51:00 2026 \u002B0200",
-        "message": "chore: Bump the xunit group with 3 updates (#1006)"
-      },
-      {
         "sha": "956eadd61443687e65db1ea1137ff0a5ba3e0681",
         "author": "dependabot[bot]",
         "date": "Mon Aug 17 12:51:10 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 08:15:13 2026 \u002B0200",
         "message": "chore: bump aweXpect.Core to 3.0.0-pre.4 and restore the default build scope (#1084)"
+      },
+      {
+        "sha": "58290e808b4d37f040c6c5f42cf90c1164fe9c3d",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 14 07:59:05 2026 \u002B0000",
+        "message": "chore: Bump the nunit group with 1 update (#1087)"
       }
     ],
     "labels": [
-      "d6d2b3d2",
       "956eadd6",
       "24dc08d9",
       "300993a9",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "3e81a878",
       "d2ca3fb8",
       "d0ec4dc0",
-      "f66faa25"
+      "f66faa25",
+      "58290e80"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          299549.37747395836,
           294975.8651994978,
           309869.0206380208,
           329961.2967354911,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           317410.8760516827,
           337854.4787434896,
           330934.25544621394,
-          389705.67330496653
+          389705.67330496653,
+          401143.07958984375
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1033,7 +1033,6 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
           335444,
           335444,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
+          542085,
           542085
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2444080.3622395834,
           2363169.249441964,
           2796549.349158654,
           2681717.0424479167,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2817636.104266827,
           2845124.76875,
           2853500.7399553573,
-          2737564.7447916665
+          2737564.7447916665,
+          2635227.4921875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841647,
           4841651,
           4841651,
@@ -1202,6 +1201,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841647,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "d6d2b3d208fddff69b61686ac68b61152ddbe7c2",
-        "author": "dependabot[bot]",
-        "date": "Mon Aug 17 12:51:00 2026 \u002B0200",
-        "message": "chore: Bump the xunit group with 3 updates (#1006)"
-      },
       {
         "sha": "956eadd61443687e65db1ea1137ff0a5ba3e0681",
         "author": "dependabot[bot]",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 08:15:13 2026 \u002B0200",
         "message": "chore: bump aweXpect.Core to 3.0.0-pre.4 and restore the default build scope (#1084)"
+      },
+      {
+        "sha": "58290e808b4d37f040c6c5f42cf90c1164fe9c3d",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 14 07:59:05 2026 \u002B0000",
+        "message": "chore: Bump the nunit group with 1 update (#1087)"
       }
     ],
     "labels": [
-      "d6d2b3d2",
       "956eadd6",
       "24dc08d9",
       "300993a9",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "3e81a878",
       "d2ca3fb8",
       "d0ec4dc0",
-      "f66faa25"
+      "f66faa25",
+      "58290e80"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          474.23495664596555,
           489.05501550038656,
           508.41381093433927,
           544.7505034128825,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           525.063368661063,
           529.5231957753499,
           506.03295019694735,
-          470.5121303876241
+          470.5121303876241,
+          466.5715479214986
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          510.3519074757894,
           501.6263490041097,
           537.9235699971517,
           497.77142899831136,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           519.8143531163533,
           516.1294058481852,
           513.9455503736224,
-          495.75147552490233
+          495.75147552490233,
+          494.53349374135337
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "d6d2b3d208fddff69b61686ac68b61152ddbe7c2",
-        "author": "dependabot[bot]",
-        "date": "Mon Aug 17 12:51:00 2026 \u002B0200",
-        "message": "chore: Bump the xunit group with 3 updates (#1006)"
-      },
-      {
         "sha": "956eadd61443687e65db1ea1137ff0a5ba3e0681",
         "author": "dependabot[bot]",
         "date": "Mon Aug 17 12:51:10 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 08:15:13 2026 \u002B0200",
         "message": "chore: bump aweXpect.Core to 3.0.0-pre.4 and restore the default build scope (#1084)"
+      },
+      {
+        "sha": "58290e808b4d37f040c6c5f42cf90c1164fe9c3d",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 14 07:59:05 2026 \u002B0000",
+        "message": "chore: Bump the nunit group with 1 update (#1087)"
       }
     ],
     "labels": [
-      "d6d2b3d2",
       "956eadd6",
       "24dc08d9",
       "300993a9",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "3e81a878",
       "d2ca3fb8",
       "d0ec4dc0",
-      "f66faa25"
+      "f66faa25",
+      "58290e80"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          263.4916341645377,
           255.30838574681962,
           286.87845315933225,
           271.17682282129925,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           292.5610894203186,
           290.85830804279874,
           278.6792674064636,
-          264.52562294687544
+          264.52562294687544,
+          269.3935879389445
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          257.3656890551249,
           248.93196236292522,
           279.25633927753995,
           259.80303284327186,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           287.0345934232076,
           278.1200395266215,
           288.03102500098095,
-          254.30318018595378
+          254.30318018595378,
+          248.65455646514891
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "d6d2b3d208fddff69b61686ac68b61152ddbe7c2",
-        "author": "dependabot[bot]",
-        "date": "Mon Aug 17 12:51:00 2026 \u002B0200",
-        "message": "chore: Bump the xunit group with 3 updates (#1006)"
-      },
-      {
         "sha": "956eadd61443687e65db1ea1137ff0a5ba3e0681",
         "author": "dependabot[bot]",
         "date": "Mon Aug 17 12:51:10 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 08:15:13 2026 \u002B0200",
         "message": "chore: bump aweXpect.Core to 3.0.0-pre.4 and restore the default build scope (#1084)"
+      },
+      {
+        "sha": "58290e808b4d37f040c6c5f42cf90c1164fe9c3d",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 14 07:59:05 2026 \u002B0000",
+        "message": "chore: Bump the nunit group with 1 update (#1087)"
       }
     ],
     "labels": [
-      "d6d2b3d2",
       "956eadd6",
       "24dc08d9",
       "300993a9",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "3e81a878",
       "d2ca3fb8",
       "d0ec4dc0",
-      "f66faa25"
+      "f66faa25",
+      "58290e80"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          473.729869445165,
           474.2024907430013,
           489.05617464505707,
           486.1496162414551,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           468.8646805445353,
           488.89495271046957,
           480.937150255839,
-          480.7775178909302
+          480.7775178909302,
+          465.443952592214
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1211.4821085248675,
           1194.762306213379,
           1319.9606152943202,
           1253.156853357951,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1249.799434153239,
           1295.904849243164,
           1321.3737482706706,
-          1220.0667766571046
+          1220.0667766571046,
+          1205.1778465270995
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "d6d2b3d208fddff69b61686ac68b61152ddbe7c2",
-        "author": "dependabot[bot]",
-        "date": "Mon Aug 17 12:51:00 2026 \u002B0200",
-        "message": "chore: Bump the xunit group with 3 updates (#1006)"
-      },
-      {
         "sha": "956eadd61443687e65db1ea1137ff0a5ba3e0681",
         "author": "dependabot[bot]",
         "date": "Mon Aug 17 12:51:10 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 08:15:13 2026 \u002B0200",
         "message": "chore: bump aweXpect.Core to 3.0.0-pre.4 and restore the default build scope (#1084)"
+      },
+      {
+        "sha": "58290e808b4d37f040c6c5f42cf90c1164fe9c3d",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 14 07:59:05 2026 \u002B0000",
+        "message": "chore: Bump the nunit group with 1 update (#1087)"
       }
     ],
     "labels": [
-      "d6d2b3d2",
       "956eadd6",
       "24dc08d9",
       "300993a9",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "3e81a878",
       "d2ca3fb8",
       "d0ec4dc0",
-      "f66faa25"
+      "f66faa25",
+      "58290e80"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1855.15222461407,
           1917.4381256103516,
           2153.836298806327,
           1905.213739267985,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1911.5522774287633,
           1992.9378428141276,
           2019.234761919294,
-          1887.0097145353045
+          1887.0097145353045,
+          1896.5535133361816
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1365.7781730651855,
           1360.8156960805256,
           1436.160674902109,
           1324.521998723348,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1294.8320435841879,
           1315.3065643310547,
           1463.6770374591533,
-          1387.1435702187675
+          1387.1435702187675,
+          1362.6844951084681
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "d6d2b3d208fddff69b61686ac68b61152ddbe7c2",
-        "author": "dependabot[bot]",
-        "date": "Mon Aug 17 12:51:00 2026 \u002B0200",
-        "message": "chore: Bump the xunit group with 3 updates (#1006)"
-      },
-      {
         "sha": "956eadd61443687e65db1ea1137ff0a5ba3e0681",
         "author": "dependabot[bot]",
         "date": "Mon Aug 17 12:51:10 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 08:15:13 2026 \u002B0200",
         "message": "chore: bump aweXpect.Core to 3.0.0-pre.4 and restore the default build scope (#1084)"
+      },
+      {
+        "sha": "58290e808b4d37f040c6c5f42cf90c1164fe9c3d",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 14 07:59:05 2026 \u002B0000",
+        "message": "chore: Bump the nunit group with 1 update (#1087)"
       }
     ],
     "labels": [
-      "d6d2b3d2",
       "956eadd6",
       "24dc08d9",
       "300993a9",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "3e81a878",
       "d2ca3fb8",
       "d0ec4dc0",
-      "f66faa25"
+      "f66faa25",
+      "58290e80"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2441.176905118502,
           2525.806895446777,
           2770.208013974703,
           2535.344251759847,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2543.1785563151043,
           2589.773511505127,
           2688.963762828282,
-          2522.014156614031
+          2522.014156614031,
+          2544.174378967285
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          20258.23517150879,
           21029.074384416854,
           28797.18398030599,
           26631.96302141462,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           27291.032965087892,
           27726.63888244629,
           28133.343471272787,
-          27777.223079136438
+          27777.223079136438,
+          26392.498586801383
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4200,7 +4200,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4233,6 +4232,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
