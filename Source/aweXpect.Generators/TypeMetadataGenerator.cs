@@ -690,8 +690,20 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		///     <c>global::</c>.
 		/// </remarks>
 		private bool IsGlobal(INamedTypeSymbol type)
-			=> compilation.GetMetadataReference(type.ContainingAssembly) is not { Properties.Aliases: { IsEmpty: false, } aliases, } ||
-			   aliases.Contains("global");
+		{
+			if (SymbolEqualityComparer.Default.Equals(type.ContainingAssembly, compilation.Assembly))
+			{
+				return true;
+			}
+
+			List<MetadataReference> references = compilation.References
+				.Where(reference => SymbolEqualityComparer.Default.Equals(
+					compilation.GetAssemblyOrModuleSymbol(reference), type.ContainingAssembly))
+				.ToList();
+			return references.Count == 0 ||
+			       references.Any(reference => reference.Properties.Aliases.IsEmpty ||
+			                                   reference.Properties.Aliases.Contains("global"));
+		}
 
 		private static bool IsUnreferenceable(ISymbol symbol)
 			=> symbol.GetAttributes().Any(x

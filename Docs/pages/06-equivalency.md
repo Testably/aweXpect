@@ -298,8 +298,9 @@ using aweXpect.Core.Metadata;
 [assembly: GenerateMetadata(typeof(Track))]
 ```
 
-The registration needs `ModuleInitializerAttribute`, so nothing is generated for a project that targets .NET Framework
-or .NET Standard 2.0. Those targets cannot be trimmed or published with Native AOT and keep using reflection.
+The registration needs `ModuleInitializerAttribute` and C# 9, so nothing is generated for a project that targets
+.NET Framework or .NET Standard 2.0 unless it polyfills the attribute. Those targets cannot be trimmed or published
+with Native AOT and keep using reflection.
 
 The walk follows every member type the comparison would visit, including framework types. A member of type
 `Exception`, for example, registers the types reachable from its properties, because reflection would compare them

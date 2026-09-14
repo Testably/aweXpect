@@ -6,6 +6,23 @@ namespace aweXpect.Core.Tests.Equivalency;
 public sealed class EquivalencyComparisonTests
 {
 	[Fact]
+	public async Task WhenActualMemberIsMoreVisibleThanRequested_ShouldStillCompareIt()
+	{
+		WithPublicValue actual = new(1);
+		WithInternalValue expected = new(1);
+		EquivalencyOptions options = new()
+		{
+			Fields = IncludeMembers.Internal,
+			Properties = IncludeMembers.None,
+		};
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, new StringBuilder());
+
+		await That(result).IsTrue()
+			.Because("the visibility selects the members of the expected object, while the actual side only has to have a member of that name");
+	}
+
+	[Fact]
 	public async Task WhenAllMembersAreExcludedExplicitly_ShouldNotThrow()
 	{
 		ClassWithOnlyPrivateState actual = new(1);
@@ -196,6 +213,16 @@ public sealed class EquivalencyComparisonTests
 	{
 		public int Count { get; set; }
 		public int this[int index] => index;
+	}
+
+	private sealed class WithInternalValue(int value)
+	{
+		internal int Value = value;
+	}
+
+	private sealed class WithPublicValue(int value)
+	{
+		public int Value = value;
 	}
 
 	private sealed class WithThrowingGetter

@@ -65,7 +65,7 @@ internal static class EquivalencyMembers
 				: null;
 		}
 
-		FieldInfo? field = type.GetFields(includeMembers).FirstOrDefault(x => x.Name == name);
+		FieldInfo? field = type.FindField(name, includeMembers);
 		return field is null ? null : Accessor(field);
 	}
 
@@ -82,7 +82,7 @@ internal static class EquivalencyMembers
 				: null;
 		}
 
-		PropertyInfo? property = type.GetProperties(includeMembers).FirstOrDefault(x => x.Name == name);
+		PropertyInfo? property = type.FindProperty(name, includeMembers);
 		return property is null ? null : Accessor(property);
 	}
 
