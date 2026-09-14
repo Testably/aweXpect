@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using aweXpect.Core.Metadata;
 
 namespace aweXpect.Equivalency;
 
@@ -22,8 +23,8 @@ public static partial class EquivalencyComparison
 	public static Task<bool>
 #endif
 		Compare<TActual, TExpected>(
-			TActual actual,
-			TExpected expected,
+			[RequiresMemberMetadata] TActual actual,
+			[RequiresMemberMetadata] TExpected expected,
 			EquivalencyOptions equivalencyOptions,
 			StringBuilder failureBuilder)
 		=> Compare(

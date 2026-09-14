@@ -58,6 +58,20 @@ public sealed class EquivalencyComparisonTests
 			.Because("a field and a property of the same name are both members of the type");
 	}
 
+	[Fact]
+	public async Task WhenGetterThrows_ShouldThrowTheGetterException()
+	{
+		WithThrowingGetter actual = new();
+		WithThrowingGetter expected = new();
+
+		async Task Act()
+			=> await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), new StringBuilder());
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("getter failed")
+			.Because("reflection wraps the exception, while a registered accessor lets it through, so both paths have to agree");
+	}
+
 	[Theory]
 	[InlineData("foo", "foo", true)]
 	[InlineData("foo", "bar", false)]
@@ -182,6 +196,11 @@ public sealed class EquivalencyComparisonTests
 	{
 		public int Count { get; set; }
 		public int this[int index] => index;
+	}
+
+	private sealed class WithThrowingGetter
+	{
+		public int Value => throw new InvalidOperationException("getter failed");
 	}
 
 	private class WithProperty(int value)

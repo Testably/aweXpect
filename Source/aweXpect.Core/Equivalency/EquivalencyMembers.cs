@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 using aweXpect.Core.Metadata;
 
 namespace aweXpect.Equivalency;
@@ -63,7 +64,7 @@ internal static class EquivalencyMembers
 		}
 
 		FieldInfo? field = type.GetFields(includeMembers).FirstOrDefault(x => x.Name == name);
-		return field is null ? null : subject => field.GetValue(subject);
+		return field is null ? null : Accessor(field);
 	}
 
 	/// <summary>
@@ -79,7 +80,7 @@ internal static class EquivalencyMembers
 		}
 
 		PropertyInfo? property = type.GetProperties(includeMembers).FirstOrDefault(x => x.Name == name);
-		return property is null ? null : subject => property.GetValue(subject);
+		return property is null ? null : Accessor(property);
 	}
 
 	/// <remarks>
@@ -102,10 +103,32 @@ internal static class EquivalencyMembers
 
 	private static IEnumerable<EquivalencyMember> ReflectFields(Type type, IncludeMembers includeMembers)
 		=> type.GetFields(includeMembers)
-			.Select(field => new EquivalencyMember(field.Name, field.FieldType, subject => field.GetValue(subject)));
+			.Select(field => new EquivalencyMember(field.Name, field.FieldType, Accessor(field)));
 
 	private static IEnumerable<EquivalencyMember> ReflectProperties(Type type, IncludeMembers includeMembers)
 		=> type.GetProperties(includeMembers)
-			.Select(property
-				=> new EquivalencyMember(property.Name, property.PropertyType, subject => property.GetValue(subject)));
+			.Select(property => new EquivalencyMember(property.Name, property.PropertyType, Accessor(property)));
+
+	private static Func<object, object?> Accessor(FieldInfo field)
+		=> subject => Read(() => field.GetValue(subject));
+
+	private static Func<object, object?> Accessor(PropertyInfo property)
+		=> subject => Read(() => property.GetValue(subject));
+
+	/// <remarks>
+	///     Reflection wraps an exception thrown by a getter, while a registered accessor lets it through. Unwrapping
+	///     keeps the two paths indistinguishable to the caller.
+	/// </remarks>
+	private static object? Read(Func<object?> read)
+	{
+		try
+		{
+			return read();
+		}
+		catch (TargetInvocationException exception) when (exception.InnerException is not null)
+		{
+			ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
+			throw;
+		}
+	}
 }
