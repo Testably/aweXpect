@@ -1,3 +1,7 @@
+using System.Linq;
+using System.Text.RegularExpressions;
+using Microsoft.CodeAnalysis;
+
 namespace aweXpect.Generators.Tests;
 
 public sealed class TypeMetadataGeneratorTests
@@ -25,7 +29,7 @@ public sealed class TypeMetadataGeneratorTests
 	[Fact]
 	public async Task ShouldEmitAModuleInitializer()
 	{
-		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(sources:
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
 			[Models, Call("Expect.That(new Models.Other()).IsEquivalentTo(new Models.Other());"),]);
 
 		await That(result.Errors).IsEmpty();
@@ -36,7 +40,7 @@ public sealed class TypeMetadataGeneratorTests
 	[Fact]
 	public async Task WhenArgumentIsAnonymous_ShouldRegisterThroughAProbe()
 	{
-		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(sources:
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
 		[
 			Models,
 			Call("Expect.That(new Models.Other()).IsEquivalentTo(new { Count = 1, Inner = new { Name = \"foo\" } });"),
@@ -54,7 +58,7 @@ public sealed class TypeMetadataGeneratorTests
 	[Fact]
 	public async Task WhenArgumentIsMarked_ShouldRegisterTheExpectedTypeTransitively()
 	{
-		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(sources:
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
 			[Models, Call("Expect.That(new Models.Other()).IsEquivalentTo(new Models.Subject());"),]);
 
 		await That(result.Errors).IsEmpty();
@@ -70,7 +74,7 @@ public sealed class TypeMetadataGeneratorTests
 	[Fact]
 	public async Task WhenArgumentIsMarked_ShouldRegisterTheSubjectType()
 	{
-		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(sources:
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
 			[Models, Call("Expect.That(new Models.Other()).IsEquivalentTo(new Models.Subject());"),]);
 
 		await That(result.Errors).IsEmpty();
@@ -80,30 +84,211 @@ public sealed class TypeMetadataGeneratorTests
 	}
 
 	[Fact]
+	public async Task WhenArgumentIsNamed_ShouldRegisterIt()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+			[Models, Call("Expect.That(new Models.Other()).IsEquivalentTo(expected: new Models.Subject());"),]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated)
+			.Contains("RegisterProperty<global::Models.Subject, int>(\"Id\", o => o.Id);")
+			.Because("a named argument is matched by its name instead of its position");
+	}
+
+	[Fact]
+	public async Task WhenCalledAsAStaticMethod_ShouldRegisterTheArgumentAndTheSubject()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			Models,
+			Call("ThatObject.IsEquivalentTo(Expect.That(new Models.Other()), new Models.Subject());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated)
+			.Contains("RegisterProperty<global::Models.Subject, int>(\"Id\", o => o.Id);");
+		await That(result.Generated)
+			.Contains("RegisterProperty<global::Models.Other, int>(\"Count\", o => o.Count);")
+			.Because("the receiver is the first argument when an extension method is called as a static method");
+	}
+
+	[Fact]
 	public async Task WhenCoreIsNotReferenced_ShouldNotEmit()
 	{
-		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(false, Models);
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			Models,
+			"""
+			namespace aweXpect.Core.Metadata
+			{
+				public sealed class GenerateMetadataAttribute(System.Type type) : System.Attribute
+				{
+					public System.Type Type { get; } = type;
+				}
+			}
+			""",
+			"[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof(Models.Other))]",
+		], false);
 
+		await That(result.Errors).IsEmpty();
 		await That(result.Generated).IsEmpty()
 			.Because("a registration against a Core without the registry would not compile");
 	}
 
 	[Fact]
+	public async Task WhenFieldHidesAProperty_ShouldRegisterBoth()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"""
+			namespace Models;
+
+			public class WithProperty
+			{
+				public int Value => 1;
+			}
+
+			public class HidingField : WithProperty
+			{
+				public new int Value = 2;
+			}
+			""",
+			Call("Expect.That(new Models.HidingField()).IsEquivalentTo(new Models.HidingField());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated)
+			.Contains("RegisterField<global::Models.HidingField, int>(\"Value\", o => o.Value);");
+		await That(result.Generated)
+			.Contains("RegisterProperty<global::Models.HidingField, int>(\"Value\", o => ((global::Models.WithProperty)o).Value);")
+			.Because("reflection compares the field and the hidden property, so the registration has to hold both");
+	}
+
+	[Fact]
 	public async Task WhenGenerateMetadataAttributeIsApplied_ShouldRegisterTheType()
 	{
-		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(sources:
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
 			[Models, "[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof(Models.Other))]",]);
 
 		await That(result.Errors).IsEmpty();
+		await That(result.GeneratorDiagnostics).IsEmpty();
 		await That(result.Generated)
 			.Contains("RegisterProperty<global::Models.Other, int>(\"Count\", o => o.Count);")
 			.Because("the attribute is the escape hatch for a type no marked call site reveals");
 	}
 
 	[Fact]
+	public async Task WhenGenerateMetadataAttributeNamesAnUnregistrableType_ShouldReportADiagnostic()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"namespace Models { public class Generic<T> { public T Value { get; set; } = default!; } }",
+			"[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof(Models.Generic<>))]",
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).IsEmpty();
+		await That(result.GeneratorDiagnostics).HasSingle().Which
+			.Satisfies(x => x.Id == "aweXpect2001" && x.GetMessage().Contains("'Models.Generic<>'"))
+			.Because("the escape hatch is used when something already went wrong, so silently doing nothing is not acceptable");
+	}
+
+	[Fact]
+	public async Task WhenMemberIsATuple_ShouldRegisterItsItems()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"namespace Models { public class WithTuple { public (int Left, string Right) Pair { get; set; } } }",
+			Call("Expect.That(new Models.WithTuple()).IsEquivalentTo(new Models.WithTuple());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains("RegisterField<(int, string), int>(\"Item1\", o => o.Item1);")
+			.Because("reflection sees the tuple's fields, not the element names of the declaration");
+		await That(result.Generated).DoesNotContain("\"Left\"");
+	}
+
+	[Fact]
+	public async Task WhenMemberIsNamedLikeAKeyword_ShouldEscapeIt()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"namespace Models { public class WithKeywords { public int @class { get; set; } public string @event = \"\"; } }",
+			Call("Expect.That(new Models.WithKeywords()).IsEquivalentTo(new Models.WithKeywords());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains("(\"class\", o => o.@class);")
+			.Because("the registered name is the metadata name, while the member access needs the escape");
+		await That(result.Generated).Contains("(\"event\", o => o.@event);");
+	}
+
+	[Fact]
+	public async Task WhenMemberIsNullableStruct_ShouldRegisterTheUnderlyingType()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"namespace Models { public struct Point { public int X; } public class WithNullable { public Point? Maybe { get; set; } } }",
+			Call("Expect.That(new Models.WithNullable()).IsEquivalentTo(new Models.WithNullable());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains("RegisterProperty<global::Models.WithNullable, global::Models.Point?>(\"Maybe\", o => o.Maybe);");
+		await That(result.Generated).Contains("RegisterField<global::Models.Point, int>(\"X\", o => o.X);")
+			.Because("a boxed nullable has the runtime type of its underlying struct");
+	}
+
+	[Fact]
+	public async Task WhenMemberIsObsolete_ShouldRegisterItWithoutWarnings()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"namespace Models { public class WithObsolete { [System.Obsolete(\"gone\")] public int Old { get; set; } } }",
+			Call("Expect.That(new Models.WithObsolete()).IsEquivalentTo(new Models.WithObsolete());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Warnings).IsEmpty()
+			.Because("a consumer building with warnings as errors must not fail on generated code");
+		await That(result.Generated).Contains("(\"Old\", o => o.Old);")
+			.Because("reflection compares an obsolete member like any other");
+	}
+
+	[Fact]
+	public async Task WhenMemberIsObsoleteWithError_ShouldNotRegisterTheType()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"namespace Models { public class WithDead { [System.Obsolete(\"gone\", true)] public int Dead { get; set; } public int Alive { get; set; } } }",
+			Call("Expect.That(new Models.WithDead()).IsEquivalentTo(new Models.WithDead());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).DoesNotContain("WithDead")
+			.Because("the member cannot be referenced, and registering the other members alone would compare fewer of them than reflection");
+	}
+
+	[Fact]
+	public async Task WhenMemberTypeIsNotReferenced_ShouldNotRegisterTheType()
+	{
+		MetadataReference dependency = GeneratorRunner.CompileToReference("Dependency",
+			"namespace Dependency { public class Dep { public int Value { get; set; } } }");
+		MetadataReference owner = GeneratorRunner.CompileToReference("Owner",
+			"namespace Owner { public class Root { public Dependency.Dep D { get; set; } = new(); public int Id { get; set; } } }",
+			dependency);
+
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+			[Call("Expect.That(new Owner.Root()).IsEquivalentTo(new Owner.Root());"),], true, owner);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).DoesNotContain("Owner.Root")
+			.Because("the generated code cannot name a type from an assembly the consumer does not reference");
+	}
+
+	[Fact]
 	public async Task WhenNothingIsMarked_ShouldNotEmit()
 	{
-		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(sources:
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
 			[Models, Call("Expect.That(new Models.Other()).IsNotNull();"),]);
 
 		await That(result.Errors).IsEmpty();
@@ -111,9 +296,24 @@ public sealed class TypeMetadataGeneratorTests
 	}
 
 	[Fact]
+	public async Task WhenReceiverIsAnInstance_ShouldRegisterItsTypeArgument()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			Models,
+			Call("Expect.That(new[] { new Models.Other(), }).All().AreEquivalentTo(new Models.Subject());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated)
+			.Contains("RegisterProperty<global::Models.Other, int>(\"Count\", o => o.Count);")
+			.Because("the element type of the receiver is the subject of each element comparison");
+	}
+
+	[Fact]
 	public async Task WhenTypeIsEnumerable_ShouldRegisterTheElementTypeInstead()
 	{
-		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(sources:
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
 		[
 			Models,
 			Call(
@@ -128,9 +328,32 @@ public sealed class TypeMetadataGeneratorTests
 	}
 
 	[Fact]
+	public async Task WhenTypeIsFileLocal_ShouldNotRegisterIt()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"""
+			using aweXpect;
+			file class Hidden
+			{
+				public int Value { get; set; }
+			}
+			public class Tests
+			{
+				public void Test() => Expect.That(new Hidden()).IsEquivalentTo(new Hidden());
+			}
+			""",
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).DoesNotContain("Hidden")
+			.Because("a file-local type is only visible inside its own file, and the generated code is another one");
+	}
+
+	[Fact]
 	public async Task WhenTypeIsNotAccessible_ShouldNotRegisterIt()
 	{
-		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(sources:
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
 		[
 			"""
 			using aweXpect;
@@ -153,7 +376,7 @@ public sealed class TypeMetadataGeneratorTests
 	[Fact]
 	public async Task WhenTypeParameterIsMarked_ShouldRegisterTheTypeArgument()
 	{
-		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(sources:
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
 		[
 			Models,
 			Call("Expect.That(new[] { new Models.Other(), }).Contains(new Models.Other()).Equivalent();"),
@@ -163,6 +386,22 @@ public sealed class TypeMetadataGeneratorTests
 		await That(result.Generated)
 			.Contains("RegisterProperty<global::Models.Other, int>(\"Count\", o => o.Count);")
 			.Because("the expected value reached the comparison through an earlier call, so only the type argument names it");
+	}
+
+	[Fact]
+	public async Task WhenTypeReachesTheComparisonTwice_ShouldRegisterItOnce()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			Models,
+			Call("Expect.That(new Models.Other()).IsEquivalentTo(new Models.Other());"),
+			Call("Expect.That(new Models.Subject()).IsEquivalentTo(new Models.Other());").Replace("class Tests",
+				"class OtherTests"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(Regex.Matches(result.Generated, "// global::Models.Other").Count).IsEqualTo(1)
+			.Because("the registry keeps one entry per type, so the registration is emitted once");
 	}
 
 	private static string Call(string statement)

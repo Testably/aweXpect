@@ -281,15 +281,22 @@ Some types cannot be seen by the generator, because it works from the types decl
 
 - a member declared as `object`, an interface or a base type only reveals the declared type; the instance it holds at
   runtime is compared through reflection,
-- a `private` nested type cannot be referenced by generated code and is compared through reflection,
+- a `private`, `protected` or `file`-local type cannot be referenced by generated code and is compared through
+  reflection,
 - a value that reaches the comparison through your own extension method is only registered if the extension's
   parameter or type parameter carries `[RequiresMemberMetadata]`.
 
-Name such a type explicitly to register it anyway:
+Name such a type explicitly to register it anyway. The generator warns with `aweXpect2001` when a named type yields
+no registration:
 
 ```csharp
+using aweXpect.Core.Metadata;
+
 [assembly: GenerateMetadata(typeof(Track))]
 ```
+
+The registration needs `ModuleInitializerAttribute`, so nothing is generated for a project that targets .NET Framework
+or .NET Standard 2.0. Those targets cannot be trimmed or published with Native AOT and keep using reflection.
 
 Two limits remain under trimming. Members requested with `IncludeMembers.Internal` or `IncludeMembers.Private` are
 never registered and are always reflected over, so a trimmed member is left out of the comparison. And a type the

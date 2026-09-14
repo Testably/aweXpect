@@ -10,13 +10,14 @@ namespace aweXpect.Generators.Tests;
 ///     Under the JIT both paths are available, so the members the generator registers for the <see cref="Corpus" />
 ///     types are compared against the members reflection returns for the very same types.
 /// </summary>
-public sealed class MemberParityTests
+public sealed partial class MemberParityTests
 {
 	private static readonly (Type Type, string Name)[] CorpusTypes =
 	[
 		(typeof(Corpus.Base), "aweXpect.Generators.Tests.Corpus.Base"),
 		(typeof(Corpus.Derived), "aweXpect.Generators.Tests.Corpus.Derived"),
 		(typeof(Corpus.Shadowing), "aweXpect.Generators.Tests.Corpus.Shadowing"),
+		(typeof(Corpus.FieldHidingProperty), "aweXpect.Generators.Tests.Corpus.FieldHidingProperty"),
 		(typeof(Corpus.WithIndexer), "aweXpect.Generators.Tests.Corpus.WithIndexer"),
 		(typeof(Corpus.WithWriteOnly), "aweXpect.Generators.Tests.Corpus.WithWriteOnly"),
 		(typeof(Corpus.WithStatics), "aweXpect.Generators.Tests.Corpus.WithStatics"),
@@ -25,6 +26,8 @@ public sealed class MemberParityTests
 		(typeof(Corpus.PositionalRecord), "aweXpect.Generators.Tests.Corpus.PositionalRecord"),
 		(typeof(Corpus.Point), "aweXpect.Generators.Tests.Corpus.Point"),
 		(typeof(Corpus.WithInitOnly), "aweXpect.Generators.Tests.Corpus.WithInitOnly"),
+		(typeof(Corpus.WithKeywords), "aweXpect.Generators.Tests.Corpus.WithKeywords"),
+		(typeof(Corpus.WithObsolete), "aweXpect.Generators.Tests.Corpus.WithObsolete"),
 		(typeof(Corpus.WithVisibilities), "aweXpect.Generators.Tests.Corpus.WithVisibilities"),
 	];
 
@@ -34,16 +37,30 @@ public sealed class MemberParityTests
 		using StreamReader reader = new(stream);
 		string attributes = string.Join(Environment.NewLine, CorpusTypes.Select(x
 			=> $"[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof({x.Name}))]"));
-		return GeneratorRunner.Run(sources: [reader.ReadToEnd(), attributes,]);
+		return GeneratorRunner.Run([reader.ReadToEnd(), attributes,]);
 	});
 
-	public static IEnumerable<object[]> Types
-		=> CorpusTypes.Select(x => new object[] { x.Type, "global::" + x.Name, });
+	public static TheoryData<Type, string> Types
+	{
+		get
+		{
+			TheoryData<Type, string> data = new();
+			foreach ((Type type, string name) in CorpusTypes)
+			{
+				data.Add(type, "global::" + name);
+			}
+
+			return data;
+		}
+	}
 
 	[Fact]
-	public async Task GeneratedRegistrations_ShouldCompile()
+	public async Task GeneratedRegistrations_ShouldCompileWithoutWarnings()
 	{
 		await That(Result.Value.Errors).IsEmpty();
+		await That(Result.Value.Warnings).IsEmpty();
+		await That(Result.Value.GeneratorDiagnostics).IsEmpty()
+			.Because("every corpus type is meant to be registered");
 	}
 
 	[Theory]
@@ -59,9 +76,8 @@ public sealed class MemberParityTests
 	}
 
 	/// <remarks>
-	///     The oracle is what <c>IncludeMembersExtensions</c> reflects over, without indexers, whose accessors take
-	///     arguments. A shadowed member appears twice in reflection and once in the registry, so both are compared as
-	///     sets.
+	///     The oracle is what <c>IncludeMembersExtensions</c> reflects over: public instance fields and readable
+	///     public instance properties, without indexers, and one declaration per name.
 	/// </remarks>
 	private static IEnumerable<string> ReflectedMembers(Type type)
 	{
@@ -88,7 +104,7 @@ public sealed class MemberParityTests
 				continue;
 			}
 
-			Match match = Regex.Match(line, "\\.Register(Field|Property)(?:<.*>)?\\((?:probe, )?\"(\\w+)\"");
+			Match match = Registration().Match(line);
 			if (match.Success && current is not null)
 			{
 				current.Add((match.Groups[1].Value == "Field" ? "F:" : "P:") + match.Groups[2].Value);
@@ -97,4 +113,7 @@ public sealed class MemberParityTests
 
 		return result;
 	}
+
+	[GeneratedRegex("\\.Register(Field|Property)(?:<.*>)?\\((?:probe, )?\"(\\w+)\"")]
+	private static partial Regex Registration();
 }

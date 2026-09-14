@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace aweXpect.Generators.Tests;
@@ -29,6 +30,11 @@ public static class Corpus
 		public new string BaseProperty { get; set; } = "";
 	}
 
+	public class FieldHidingProperty : Base
+	{
+		public new int BaseProperty = 1;
+	}
+
 	public class WithIndexer
 	{
 		public int Count { get; set; }
@@ -51,7 +57,7 @@ public static class Corpus
 	public class WithStatics
 	{
 		public const int Constant = 1;
-		public static int StaticField;
+		public static readonly int StaticField = 2;
 		public static int StaticProperty { get; set; }
 		public int Instance { get; set; }
 	}
@@ -79,6 +85,18 @@ public static class Corpus
 	public class WithInitOnly
 	{
 		public int Value { get; init; }
+	}
+
+	public class WithKeywords
+	{
+		public string @event = "";
+		public int @class { get; set; }
+	}
+
+	public class WithObsolete
+	{
+		[Obsolete("gone")] public int Old { get; set; }
+		public int Current { get; set; }
 	}
 
 	public class WithVisibilities
