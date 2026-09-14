@@ -126,23 +126,39 @@ in most cases with one of the following helper classes:
   but you have to also provide a flag, indicating if the expected value is `null` or not.
 
 Which of the three to pick is decided by how your expectation treats a `null` subject, and that follows one rule:
-a `null` subject fails every expectation, except those that compare it against a value the caller supplied.
+
+> A `null` subject fails an expectation **and its negation**, unless the expectation is *about* `null` - equality and
+> identity comparisons, where `null` is a legitimate value on either side, or an explicit `null` or tri-state check.
+
+A `null` subject does not mean "the expectation is false", it means there is no value to inspect and the question
+cannot be answered. Negating an unanswerable question does not make it true, which is why the rule covers the negated
+case as well.
 
 - Your expectation **inspects the subject** - its length, its type, its items, whether it is empty. There is nothing to
   inspect when the subject is `null`, so it has to fail, in the negated case as well: `IsNotEmpty()` fails for a `null`
-  subject just like `IsEmpty()` does. Use `ConstraintResult.WithNotNullValue<T>`.
-- Your expectation **compares the subject** against a value the caller supplied. Then `null` is an ordinary value on
-  both sides: `IsEqualTo(null)` succeeds for a `null` subject, `IsNotEqualTo(null)` fails and `IsNotEqualTo("foo")`
-  succeeds. Use `ConstraintResult.WithEqualToValue<T>`.
+  subject just like `IsEmpty()` does, and so does `DoesNotComplyWith(x => x.IsEmpty())`. Use
+  `ConstraintResult.WithNotNullValue<T>`.
+- Your expectation **compares the subject for equality or identity** against a value the caller supplied. Then `null`
+  is an ordinary value on both sides: `IsEqualTo(null)` succeeds for a `null` subject, `IsNotEqualTo(null)` fails and
+  `IsNotEqualTo("foo")` succeeds. Use `ConstraintResult.WithEqualToValue<T>` and pass whether the expected value is
+  `null`; that flag is what makes the subject fail on the side where `null` is not a legitimate answer.
 
-Use `ConstraintResult.WithValue<T>` only when the subject cannot be `null` at all, for example a non-nullable `bool`,
-`int` or `DateTime`.
+Do not read the second case as "any value the caller supplied" - `HasValue(2)` takes one and still fails for `null`,
+because it inspects the subject rather than comparing it. Only equality and identity give `null` a meaning on both
+sides; an ordering or a range does not, which is why `IsGreaterThan` and `IsNotBetween` use
+`ConstraintResult.WithNotNullValue<T>`.
+
+Use `ConstraintResult.WithValue<T>` only when the subject cannot be `null` at all - a non-nullable `bool`, `int` or
+`DateTime` - or when your expectation is one of the `null` checks that a `null` subject is meant to satisfy, such as
+`IsNull()` or `IsOneOf(...)`. It applies no `null` policy of its own, so deciding the outcome with
+`Actual is null ? Outcome.Failure : ...` inside `IsMetBy` is **not** enough: that failure is inverted into a success
+when the expectation is negated. Only `WithNotNullValue<T>` decides before the inversion is applied.
 
 With these the above example could be written (with support for the negated case):
 
 ```csharp
 private sealed class IsAbsolutePathConstraint(string it, ExpectationGrammars grammars)
-    : ConstraintResult.WithValue<string>(grammars),
+    : ConstraintResult.WithNotNullValue<string>(it, grammars),
         IValueConstraint<string>
 {
     public ConstraintResult IsMetBy(string actual)
@@ -157,7 +173,7 @@ private sealed class IsAbsolutePathConstraint(string it, ExpectationGrammars gra
 
     protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
     {
-        stringBuilder.Append(it).Append(" was ");
+        stringBuilder.Append(It).Append(" was ");
         Formatter.Format(stringBuilder, Actual);
     }
 
@@ -166,11 +182,14 @@ private sealed class IsAbsolutePathConstraint(string it, ExpectationGrammars gra
 
     protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
     {
-        stringBuilder.Append(it).Append(" was ");
+        stringBuilder.Append(It).Append(" was ");
         Formatter.Format(stringBuilder, Actual);
     }
 }
 ```
+
+Note that the `it` parameter is passed to the base class and the inherited `It` property is used in the body: capturing
+the parameter *and* passing it to the base is a compiler error (CS9107).
 
 This then also allows you to write an explicit negated expectation with the same constraint using the `.Invert()`
 method:
