@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "eef3e6a39c586b0fe855116d0007b47d8c2dfc17",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 20:46:18 2026 \u002B0200",
-        "message": "fix: record the cancellation time before the wait continues (#1034)"
-      },
-      {
         "sha": "24a17c1c23870775e85dd79fb05bc03e14489449",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 21:23:57 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 16:27:25 2026 \u002B0200",
         "message": "refactor!: accept a null subject on the non-generic collection expectations (#1096)"
+      },
+      {
+        "sha": "3a66050e2f75de139debf131e02a3ed53a6d3d3a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 16:32:29 2026 \u002B0200",
+        "message": "fix: keep a runaway mutant from taking down the mutation runner (#1093)"
       }
     ],
     "labels": [
-      "eef3e6a3",
       "24a17c1c",
       "17158c05",
       "6ed4d82c",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "07659ebf",
       "48275fcf",
       "23133e35",
-      "dbd64a16"
+      "dbd64a16",
+      "3a66050e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          222.33497150739035,
           251.6664425055186,
           273.690616162618,
           294.47748397191367,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           261.35009473164877,
           202.0682702700297,
           272.7071217757005,
-          282.5873665968577
+          282.5873665968577,
+          254.31283381779988
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          201.06839975288935,
           253.91424544652304,
           272.7523417790731,
           251.42155241966248,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           248.91758947372438,
           193.95771493911744,
           239.39834238688152,
-          244.30020138422648
+          244.30020138422648,
+          237.89337490002313
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "eef3e6a39c586b0fe855116d0007b47d8c2dfc17",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 20:46:18 2026 \u002B0200",
-        "message": "fix: record the cancellation time before the wait continues (#1034)"
-      },
-      {
         "sha": "24a17c1c23870775e85dd79fb05bc03e14489449",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 21:23:57 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 16:27:25 2026 \u002B0200",
         "message": "refactor!: accept a null subject on the non-generic collection expectations (#1096)"
+      },
+      {
+        "sha": "3a66050e2f75de139debf131e02a3ed53a6d3d3a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 16:32:29 2026 \u002B0200",
+        "message": "fix: keep a runaway mutant from taking down the mutation runner (#1093)"
       }
     ],
     "labels": [
-      "eef3e6a3",
       "24a17c1c",
       "17158c05",
       "6ed4d82c",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "07659ebf",
       "48275fcf",
       "23133e35",
-      "dbd64a16"
+      "dbd64a16",
+      "3a66050e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          243159.89986979167,
           321485.473828125,
           317531.7226911272,
           301359.532808744,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           384797.04899088544,
           288932.6270833333,
           398807.8967122396,
-          406313.1495186942
+          406313.1495186942,
+          395099.5535807292
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1037,7 +1037,6 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
           335444,
           335442,
@@ -1076,6 +1075,7 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542084,
+          542085,
           542085,
           542085
         ],
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1905257.0578962055,
           2868241.325,
           2723807.4057291667,
           2436414.806770833,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2694216.7727864585,
           1919859.78125,
           2660831.3231770834,
-          2648058.49375
+          2648058.49375,
+          2802643.9260602677
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841647,
           4841651,
           4841651,
           4841651,
@@ -1202,6 +1201,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841647,
           4841651,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "eef3e6a39c586b0fe855116d0007b47d8c2dfc17",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 20:46:18 2026 \u002B0200",
-        "message": "fix: record the cancellation time before the wait continues (#1034)"
-      },
       {
         "sha": "24a17c1c23870775e85dd79fb05bc03e14489449",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 16:27:25 2026 \u002B0200",
         "message": "refactor!: accept a null subject on the non-generic collection expectations (#1096)"
+      },
+      {
+        "sha": "3a66050e2f75de139debf131e02a3ed53a6d3d3a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 16:32:29 2026 \u002B0200",
+        "message": "fix: keep a runaway mutant from taking down the mutation runner (#1093)"
       }
     ],
     "labels": [
-      "eef3e6a3",
       "24a17c1c",
       "17158c05",
       "6ed4d82c",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "07659ebf",
       "48275fcf",
       "23133e35",
-      "dbd64a16"
+      "dbd64a16",
+      "3a66050e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          384.1228542327881,
           509.5957601411002,
           487.83896595637003,
           507.58375219198376,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           515.1616793950399,
           388.25114046732585,
           468.19346981048585,
-          486.34537158693587
+          486.34537158693587,
+          521.6478244917733
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          425.5202818552653,
           523.6554533004761,
           527.3543803532918,
           492.43233496802196,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           510.66075089772545,
           444.05623321533204,
           510.66202341715496,
-          489.4366489137922
+          489.4366489137922,
+          538.4961628232684
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "eef3e6a39c586b0fe855116d0007b47d8c2dfc17",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 20:46:18 2026 \u002B0200",
-        "message": "fix: record the cancellation time before the wait continues (#1034)"
-      },
-      {
         "sha": "24a17c1c23870775e85dd79fb05bc03e14489449",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 21:23:57 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 16:27:25 2026 \u002B0200",
         "message": "refactor!: accept a null subject on the non-generic collection expectations (#1096)"
+      },
+      {
+        "sha": "3a66050e2f75de139debf131e02a3ed53a6d3d3a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 16:32:29 2026 \u002B0200",
+        "message": "fix: keep a runaway mutant from taking down the mutation runner (#1093)"
       }
     ],
     "labels": [
-      "eef3e6a3",
       "24a17c1c",
       "17158c05",
       "6ed4d82c",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "07659ebf",
       "48275fcf",
       "23133e35",
-      "dbd64a16"
+      "dbd64a16",
+      "3a66050e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          203.26784507433572,
           277.4515934944153,
           274.0059195200602,
           259.15261329923356,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           266.98263822283064,
           215.05497576395672,
           252.94306329318457,
-          267.9070954004923
+          267.9070954004923,
+          281.6811509450277
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          203.78753784724645,
           274.7266558579036,
           267.3532590866089,
           256.2115569795881,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           251.55838861465455,
           193.71849513053894,
           243.92973760196142,
-          249.65470666885375
+          249.65470666885375,
+          288.50390370686847
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "eef3e6a39c586b0fe855116d0007b47d8c2dfc17",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 20:46:18 2026 \u002B0200",
-        "message": "fix: record the cancellation time before the wait continues (#1034)"
-      },
-      {
         "sha": "24a17c1c23870775e85dd79fb05bc03e14489449",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 21:23:57 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 16:27:25 2026 \u002B0200",
         "message": "refactor!: accept a null subject on the non-generic collection expectations (#1096)"
+      },
+      {
+        "sha": "3a66050e2f75de139debf131e02a3ed53a6d3d3a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 16:32:29 2026 \u002B0200",
+        "message": "fix: keep a runaway mutant from taking down the mutation runner (#1093)"
       }
     ],
     "labels": [
-      "eef3e6a3",
       "24a17c1c",
       "17158c05",
       "6ed4d82c",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "07659ebf",
       "48275fcf",
       "23133e35",
-      "dbd64a16"
+      "dbd64a16",
+      "3a66050e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          390.11140654881797,
           471.7250687394823,
           473.303697903951,
           482.4130295239962,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           454.9438359896342,
           401.7921457608541,
           446.7085044542948,
-          454.5175503094991
+          454.5175503094991,
+          494.18738918304444
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          935.6467853546143,
           1321.9363451004028,
           1205.141513824463,
           1165.5106554667154,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1192.530027516683,
           1038.105400466919,
           1280.4255312601724,
-          1223.4176754270281
+          1223.4176754270281,
+          1370.0128548940022
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "eef3e6a39c586b0fe855116d0007b47d8c2dfc17",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 20:46:18 2026 \u002B0200",
-        "message": "fix: record the cancellation time before the wait continues (#1034)"
-      },
-      {
         "sha": "24a17c1c23870775e85dd79fb05bc03e14489449",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 21:23:57 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 16:27:25 2026 \u002B0200",
         "message": "refactor!: accept a null subject on the non-generic collection expectations (#1096)"
+      },
+      {
+        "sha": "3a66050e2f75de139debf131e02a3ed53a6d3d3a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 16:32:29 2026 \u002B0200",
+        "message": "fix: keep a runaway mutant from taking down the mutation runner (#1093)"
       }
     ],
     "labels": [
-      "eef3e6a3",
       "24a17c1c",
       "17158c05",
       "6ed4d82c",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "07659ebf",
       "48275fcf",
       "23133e35",
-      "dbd64a16"
+      "dbd64a16",
+      "3a66050e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1520.8064758300782,
           2006.229408009847,
           1968.0141832987467,
           1897.40666443961,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1923.368877919515,
           1623.953402382987,
           1957.9608357747395,
-          1916.6552419662476
+          1916.6552419662476,
+          1941.6528345743816
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1091.960484822591,
           1464.9938775380454,
           1311.0715756734212,
           1338.767943246024,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1365.60766850985,
           1131.3129965464275,
           1445.2837228139242,
-          1366.0677769524711
+          1366.0677769524711,
+          1400.2874593734741
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "eef3e6a39c586b0fe855116d0007b47d8c2dfc17",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 20:46:18 2026 \u002B0200",
-        "message": "fix: record the cancellation time before the wait continues (#1034)"
-      },
-      {
         "sha": "24a17c1c23870775e85dd79fb05bc03e14489449",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 21:23:57 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 16:27:25 2026 \u002B0200",
         "message": "refactor!: accept a null subject on the non-generic collection expectations (#1096)"
+      },
+      {
+        "sha": "3a66050e2f75de139debf131e02a3ed53a6d3d3a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 16:32:29 2026 \u002B0200",
+        "message": "fix: keep a runaway mutant from taking down the mutation runner (#1093)"
       }
     ],
     "labels": [
-      "eef3e6a3",
       "24a17c1c",
       "17158c05",
       "6ed4d82c",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "07659ebf",
       "48275fcf",
       "23133e35",
-      "dbd64a16"
+      "dbd64a16",
+      "3a66050e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2029.514542388916,
           2628.0233812967936,
           2600.125273777888,
           2523.571538380214,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2614.6848622639973,
           2052.538283421443,
           2651.728740946452,
-          2535.7885340372723
+          2535.7885340372723,
+          2660.4840303148544
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          16022.333467610677,
           27760.519110543388,
           27066.304311116535,
           20497.064522298177,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           26792.870127360027,
           16741.85625,
           28410.73045654297,
-          27259.131116739907
+          27259.131116739907,
+          28238.857125418526
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33471,
           33471,
           33471,
@@ -4239,6 +4238,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
