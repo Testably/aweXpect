@@ -126,7 +126,44 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
-			public async Task WhenExpectedIsNull_ShouldFail()
+			public async Task WhenExpectedIsEmpty_ShouldFail()
+			{
+				IEnumerable<string> subject = ToEnumerable(["a",]);
+
+				async Task Act()
+					=> await That(subject).IsContainedIn(Array.Empty<string>());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is contained in collection Array.Empty<string>() in order,
+					             but it contained item "a" at index 0 that was not expected
+
+					             Collection:
+					             [
+					               "a"
+					             ]
+
+					             Expected:
+					             []
+					             """)
+					.Because(
+						"an empty collection is a meaningful expectation - only an empty subject is contained in it - so it must not be rejected the way the empty needle of Contains is");
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsEmpty_ShouldSucceedForAnEmptySubject()
+			{
+				IEnumerable<string> subject = ToEnumerable(Array.Empty<string>());
+
+				async Task Act()
+					=> await That(subject).IsContainedIn(Array.Empty<string>());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				IEnumerable<int> subject = Enumerable.Range(1, 11);
 				IEnumerable<int>? expected = null;
@@ -134,12 +171,9 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected!);
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is contained in collection expected in order,
-					             but it cannot compare to <null>
-					             """);
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The expected cannot be null.").AsPrefix();
 			}
 
 			[Fact]

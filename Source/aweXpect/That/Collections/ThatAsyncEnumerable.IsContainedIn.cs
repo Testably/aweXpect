@@ -23,6 +23,7 @@ public static partial class ThatAsyncEnumerable
 			IEnumerable<TItem> expected,
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
+		expected.ThrowIfNull();
 		ObjectEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
@@ -33,7 +34,7 @@ public static partial class ThatAsyncEnumerable
 						doNotPopulateThisValue.TrimCommonWhiteSpace(),
 						expected,
 						options,
-						matchOptions)),
+						matchOptions, failsForNullSubject: true)),
 				source,
 				options,
 				matchOptions);
@@ -50,6 +51,7 @@ public static partial class ThatAsyncEnumerable
 			IEnumerable<string?> expected,
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
+		expected.ThrowIfNull();
 		StringEqualityOptions options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
@@ -60,7 +62,7 @@ public static partial class ThatAsyncEnumerable
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					expected,
 					options,
-					matchOptions)),
+					matchOptions, failsForNullSubject: true)),
 			source,
 			options,
 			matchOptions);
@@ -77,6 +79,7 @@ public static partial class ThatAsyncEnumerable
 			[CallerArgumentExpression("expected")]
 			string doNotPopulateThisValue = "")
 	{
+		expected.ThrowIfNull();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new CollectionBeContainedInResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
@@ -84,7 +87,7 @@ public static partial class ThatAsyncEnumerable
 				=> new IsEqualToFromPredicateConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					expected,
-					matchOptions)),
+					matchOptions, failsForNullSubject: true)),
 			source,
 			matchOptions);
 	}
@@ -100,6 +103,7 @@ public static partial class ThatAsyncEnumerable
 			[CallerArgumentExpression("expected")]
 			string doNotPopulateThisValue = "")
 	{
+		expected.ThrowIfNull();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new CollectionBeContainedInResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
@@ -107,7 +111,7 @@ public static partial class ThatAsyncEnumerable
 				=> new IsEqualToFromExpectationsConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					expected,
-					matchOptions)),
+					matchOptions, failsForNullSubject: true)),
 			source,
 			matchOptions);
 	}
@@ -115,12 +119,14 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection is not contained in the provided <paramref name="unexpected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ObjectCollectionBeContainedInResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		IsNotContainedIn<TItem>(
 			this IThat<IAsyncEnumerable<TItem>?> source,
 			IEnumerable<TItem> unexpected,
 			[CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "")
 	{
+		unexpected.ThrowIfNull();
 		ObjectEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
@@ -131,7 +137,7 @@ public static partial class ThatAsyncEnumerable
 						doNotPopulateThisValue.TrimCommonWhiteSpace(),
 						unexpected,
 						options,
-						matchOptions).Invert()),
+						matchOptions, failsForNullSubject: true).Invert()),
 				source,
 				options,
 				matchOptions);
@@ -140,6 +146,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection is not contained in the provided <paramref name="unexpected" /> collection.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringCollectionBeContainedInResult<IAsyncEnumerable<string?>,
 			IThat<IAsyncEnumerable<string?>?>>
 		IsNotContainedIn(
@@ -147,6 +154,7 @@ public static partial class ThatAsyncEnumerable
 			IEnumerable<string?> unexpected,
 			[CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "")
 	{
+		unexpected.ThrowIfNull();
 		StringEqualityOptions options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
@@ -157,7 +165,7 @@ public static partial class ThatAsyncEnumerable
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					unexpected,
 					options,
-					matchOptions).Invert()),
+					matchOptions, failsForNullSubject: true).Invert()),
 			source,
 			options,
 			matchOptions);
@@ -166,6 +174,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection is not contained in the provided <paramref name="unexpected" /> collection of predicates.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionBeContainedInResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		IsNotContainedIn<TItem>(
 			this IThat<IAsyncEnumerable<TItem>?> source,
@@ -173,6 +182,7 @@ public static partial class ThatAsyncEnumerable
 			[CallerArgumentExpression("unexpected")]
 			string doNotPopulateThisValue = "")
 	{
+		unexpected.ThrowIfNull();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new CollectionBeContainedInResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
@@ -180,7 +190,7 @@ public static partial class ThatAsyncEnumerable
 				=> new IsEqualToFromPredicateConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					unexpected,
-					matchOptions).Invert()),
+					matchOptions, failsForNullSubject: true).Invert()),
 			source,
 			matchOptions);
 	}
@@ -188,6 +198,7 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection is not contained in the provided <paramref name="unexpected" /> collection of expectations.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static CollectionBeContainedInResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		IsNotContainedIn<TItem>(
 			this IThat<IAsyncEnumerable<TItem>?> source,
@@ -195,6 +206,7 @@ public static partial class ThatAsyncEnumerable
 			[CallerArgumentExpression("unexpected")]
 			string doNotPopulateThisValue = "")
 	{
+		unexpected.ThrowIfNull();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new CollectionBeContainedInResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
@@ -202,7 +214,7 @@ public static partial class ThatAsyncEnumerable
 				=> new IsEqualToFromExpectationsConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					unexpected,
-					matchOptions).Invert()),
+					matchOptions, failsForNullSubject: true).Invert()),
 			source,
 			matchOptions);
 	}

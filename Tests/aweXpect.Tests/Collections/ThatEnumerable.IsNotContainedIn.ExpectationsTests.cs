@@ -94,7 +94,7 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
-			public async Task WhenExpectedIsNull_ShouldSucceed()
+			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				IEnumerable<int> subject = Enumerable.Range(1, 11);
 				IEnumerable<Action<IThat<int>>>? expected = null;
@@ -102,18 +102,25 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotContainedIn(expected!);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The expected cannot be null.").AsPrefix();
 			}
 
 			[Fact]
-			public async Task WhenSubjectIsNull_ShouldSucceed()
+			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEnumerable<string>? subject = null;
 
 				async Task Act()
 					=> await That(subject).IsNotContainedIn(Array.Empty<Action<IThat<string?>>>());
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not contained in collection Array.Empty<Action<IThat<string?>>>() in order,
+					             but it was <null>
+					             """);
 			}
 
 			[Fact]

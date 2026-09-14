@@ -90,19 +90,18 @@ public sealed class GuaranteesNotNullTests
 
 	/// <summary>
 	///     The rule: a null subject fails every expectation, except these. `IsEqualTo` and the other
-	///     comparisons may be handed a null of their own to compare against, and the tri-state `bool?`
-	///     expectations exist to cover the null case — making `IsNotTrue()` fail for it would leave it
-	///     identical to `IsFalse()`, with no null-tolerant twin. `Eventually` continues a delegate
-	///     expectation rather than taking a subject, so it has no null-subject behaviour of its own.
+	///     comparisons may be handed a null of their own to compare against, and the negated tri-state
+	///     `bool?` expectations exist to cover the null case — making `IsNotTrue()` fail for it would
+	///     leave it identical to `IsFalse()`, with no null-tolerant twin. `Eventually` continues a
+	///     delegate expectation rather than taking a subject, so it has no null-subject behaviour of
+	///     its own.
 	/// </summary>
 	private static readonly HashSet<string> Exempt = new(StringComparer.Ordinal)
 	{
 		"Eventually",
-		"IsContainedIn",
 		"IsEqualTo",
 		"IsEquivalentTo",
 		"IsNotBetween",
-		"IsNotContainedIn",
 		"IsNotEqualTo",
 		"IsNotEquivalentTo",
 		"IsNotOneOf",
@@ -112,10 +111,8 @@ public sealed class GuaranteesNotNullTests
 		"IsNull",
 		"IsNullOrEmpty",
 		"IsNullOrWhiteSpace",
-		"IsFalse",
 		"IsNotFalse",
 		"IsNotTrue",
-		"IsTrue",
 	};
 
 	/// <summary>
