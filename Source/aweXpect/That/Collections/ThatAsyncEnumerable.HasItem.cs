@@ -106,7 +106,7 @@ public static partial class ThatAsyncEnumerable
 		Func<TItem, bool> predicate,
 		Func<string> predicateDescription,
 		CollectionIndexOptions options)
-		: ConstraintResult.WithValue<IAsyncEnumerable<TItem>?>(grammars),
+		: ConstraintResult.WithNotNullValue<IAsyncEnumerable<TItem>?>(it, grammars),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
 		private TItem? _actual;
@@ -172,15 +172,11 @@ public static partial class ThatAsyncEnumerable
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual is null)
-			{
-				stringBuilder.ItWasNull(it, Grammars);
-			}
-			else if (_hasIndex)
+			if (_hasIndex)
 			{
 				if (options.Match.OnlySingleIndex())
 				{
-					stringBuilder.Append(it).Append(" had item ");
+					stringBuilder.Append(It).Append(" had item ");
 					Formatter.Format(stringBuilder, _actual);
 					stringBuilder.Append(options.Match.GetDescription());
 				}
@@ -192,12 +188,12 @@ public static partial class ThatAsyncEnumerable
 						optionDescription = " at any index";
 					}
 
-					stringBuilder.Append(it).Append(" did not match").Append(optionDescription);
+					stringBuilder.Append(It).Append(" did not match").Append(optionDescription);
 				}
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" did not contain any item").Append(options.Match.GetDescription());
+				stringBuilder.Append(It).Append(" did not contain any item").Append(options.Match.GetDescription());
 			}
 		}
 
@@ -210,11 +206,11 @@ public static partial class ThatAsyncEnumerable
 		{
 			if (_actual is null)
 			{
-				stringBuilder.ItWasNull(it, Grammars);
+				stringBuilder.ItWasNull(It, Grammars);
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" did");
+				stringBuilder.Append(It).Append(" did");
 			}
 		}
 	}
@@ -230,7 +226,7 @@ public static partial class ThatAsyncEnumerable
 #endif
 		Func<string> predicateDescription,
 		CollectionIndexOptions options)
-		: ConstraintResult.WithValue<IAsyncEnumerable<TItem>?>(grammars),
+		: ConstraintResult.WithNotNullValue<IAsyncEnumerable<TItem>?>(it, grammars),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
 		private TItem? _actual;
@@ -296,15 +292,11 @@ public static partial class ThatAsyncEnumerable
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual is null)
-			{
-				stringBuilder.ItWasNull(it, Grammars);
-			}
-			else if (_hasIndex)
+			if (_hasIndex)
 			{
 				if (options.Match.OnlySingleIndex())
 				{
-					stringBuilder.Append(it).Append(" had item ");
+					stringBuilder.Append(It).Append(" had item ");
 					Formatter.Format(stringBuilder, _actual);
 					stringBuilder.Append(options.Match.GetDescription());
 				}
@@ -316,12 +308,12 @@ public static partial class ThatAsyncEnumerable
 						optionDescription = " at any index";
 					}
 
-					stringBuilder.Append(it).Append(" did not match").Append(optionDescription);
+					stringBuilder.Append(It).Append(" did not match").Append(optionDescription);
 				}
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" did not contain any item").Append(options.Match.GetDescription());
+				stringBuilder.Append(It).Append(" did not contain any item").Append(options.Match.GetDescription());
 			}
 		}
 
@@ -334,11 +326,11 @@ public static partial class ThatAsyncEnumerable
 		{
 			if (_actual is null)
 			{
-				stringBuilder.ItWasNull(it, Grammars);
+				stringBuilder.ItWasNull(It, Grammars);
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" did");
+				stringBuilder.Append(It).Append(" did");
 			}
 		}
 	}

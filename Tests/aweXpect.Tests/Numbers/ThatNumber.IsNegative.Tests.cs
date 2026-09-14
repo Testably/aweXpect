@@ -799,15 +799,20 @@ public sealed partial class ThatNumber
 			}
 
 			[Fact]
-			public async Task ForNullableInt_WhenValueIsNull_ShouldSucceed()
+			public async Task ForNullableInt_WhenValueIsNull_ShouldFail()
 			{
 				int? subject = null;
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => 
+					=> await That(subject).DoesNotComplyWith(it =>
 						it.IsNegative());
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not negative,
+					             but it was <null>
+					             """);
 			}
 		}
 	}

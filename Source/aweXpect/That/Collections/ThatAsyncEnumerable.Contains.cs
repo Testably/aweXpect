@@ -508,6 +508,13 @@ public static partial class ThatAsyncEnumerable
 			return typeof(TValue).IsAssignableFrom(typeof(IAsyncEnumerable<TItem>));
 		}
 
+		/// <inheritdoc cref="ConstraintResult.Outcome" />
+		public override Outcome Outcome
+		{
+			get => _actual is null ? Outcome.Failure : base.Outcome;
+			protected set => base.Outcome = value;
+		}
+
 		public override ConstraintResult Negate()
 		{
 			_isNegated = !_isNegated;
@@ -658,6 +665,13 @@ public static partial class ThatAsyncEnumerable
 
 			value = default;
 			return typeof(TValue).IsAssignableFrom(typeof(IAsyncEnumerable<TItem>));
+		}
+
+		/// <inheritdoc cref="ConstraintResult.Outcome" />
+		public override Outcome Outcome
+		{
+			get => _actual is null ? Outcome.Failure : base.Outcome;
+			protected set => base.Outcome = value;
 		}
 
 		public override ConstraintResult Negate()

@@ -54,7 +54,7 @@ public sealed partial class ThatBool
 						.WithMessage($"""
 						              Expected that antecedent
 						              implies {Formatter.Format(consequent)}, because we want to test the failure,
-						              but it did not
+						              but it was <null>
 						              """);
 				}
 			}

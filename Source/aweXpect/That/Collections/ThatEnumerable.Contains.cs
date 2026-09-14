@@ -983,6 +983,13 @@ public static partial class ThatEnumerable
 			return typeof(TValue).IsAssignableFrom(typeof(IEnumerable<TItem>));
 		}
 
+		/// <inheritdoc cref="ConstraintResult.Outcome" />
+		public override Outcome Outcome
+		{
+			get => _actual is null ? Outcome.Failure : base.Outcome;
+			protected set => base.Outcome = value;
+		}
+
 		public override ConstraintResult Negate()
 		{
 			_isNegated = !_isNegated;
@@ -1122,6 +1129,13 @@ public static partial class ThatEnumerable
 			return typeof(TValue).IsAssignableFrom(typeof(IEnumerable<TItem>));
 		}
 
+		/// <inheritdoc cref="ConstraintResult.Outcome" />
+		public override Outcome Outcome
+		{
+			get => _actual is null ? Outcome.Failure : base.Outcome;
+			protected set => base.Outcome = value;
+		}
+
 		public override ConstraintResult Negate()
 		{
 			_isNegated = !_isNegated;
@@ -1252,6 +1266,13 @@ public static partial class ThatEnumerable
 
 			value = default;
 			return typeof(TValue).IsAssignableFrom(typeof(IEnumerable<TItem>));
+		}
+
+		/// <inheritdoc cref="ConstraintResult.Outcome" />
+		public override Outcome Outcome
+		{
+			get => _actual is null ? Outcome.Failure : base.Outcome;
+			protected set => base.Outcome = value;
 		}
 
 		public override ConstraintResult Negate()
@@ -1389,6 +1410,13 @@ public static partial class ThatEnumerable
 
 			value = default;
 			return typeof(TValue).IsAssignableFrom(typeof(IEnumerable<TItem>));
+		}
+
+		/// <inheritdoc cref="ConstraintResult.Outcome" />
+		public override Outcome Outcome
+		{
+			get => _actual is null ? Outcome.Failure : base.Outcome;
+			protected set => base.Outcome = value;
 		}
 
 		public override ConstraintResult Negate()

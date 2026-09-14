@@ -32,7 +32,7 @@ public static partial class ThatAsyncEnumerable
 			indexOptions);
 	}
 
-	private sealed class HasItemThatConstraint<TItem> : ConstraintResult.WithValue<IAsyncEnumerable<TItem>?>,
+	private sealed class HasItemThatConstraint<TItem> : ConstraintResult.WithNotNullValue<IAsyncEnumerable<TItem>?>,
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
 		private readonly ExpectationBuilder _expectationBuilder;
@@ -46,7 +46,7 @@ public static partial class ThatAsyncEnumerable
 			string it,
 			ExpectationGrammars grammars,
 			Action<IThatSubject<TItem>> expectations,
-			CollectionIndexOptions options) : base(grammars)
+			CollectionIndexOptions options) : base(it, grammars)
 		{
 			_expectationBuilder = expectationBuilder;
 			_it = it;
@@ -120,11 +120,7 @@ public static partial class ThatAsyncEnumerable
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual is null)
-			{
-				stringBuilder.ItWasNull(_it, Grammars);
-			}
-			else if (_hasIndex)
+			if (_hasIndex)
 			{
 				if (_options.Match.OnlySingleIndex())
 				{

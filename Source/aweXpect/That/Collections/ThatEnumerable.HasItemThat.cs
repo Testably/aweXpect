@@ -55,7 +55,7 @@ public static partial class ThatEnumerable
 	}
 #endif
 
-	private sealed class HasItemThatConstraint<TItem> : ConstraintResult.WithValue<IEnumerable<TItem>?>,
+	private sealed class HasItemThatConstraint<TItem> : ConstraintResult.WithNotNullValue<IEnumerable<TItem>?>,
 		IAsyncContextConstraint<IEnumerable<TItem>?>
 	{
 		private readonly ExpectationBuilder _expectationBuilder;
@@ -69,7 +69,7 @@ public static partial class ThatEnumerable
 			string it,
 			ExpectationGrammars grammars,
 			Action<IThatSubject<TItem>> expectations,
-			CollectionIndexOptions options) : base(grammars)
+			CollectionIndexOptions options) : base(it, grammars)
 		{
 			_expectationBuilder = expectationBuilder;
 			_it = it;
@@ -142,11 +142,7 @@ public static partial class ThatEnumerable
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual is null)
-			{
-				stringBuilder.ItWasNull(_it, Grammars);
-			}
-			else if (_hasIndex)
+			if (_hasIndex)
 			{
 				stringBuilder.Append(_it).Append(" had item ");
 				Formatter.Format(stringBuilder, _actual);
@@ -171,7 +167,7 @@ public static partial class ThatEnumerable
 
 #if NET8_0_OR_GREATER
 	private sealed class HasItemThatForEnumerableConstraint<TEnumerable, TItem> :
-		ConstraintResult.WithValue<TEnumerable>,
+		ConstraintResult.WithNotNullValue<TEnumerable>,
 		IAsyncContextConstraint<TEnumerable>
 		where TEnumerable : IEnumerable?
 	{
@@ -185,7 +181,7 @@ public static partial class ThatEnumerable
 			string it,
 			ExpectationGrammars grammars,
 			Action<IThatSubject<TItem>> expectations,
-			CollectionIndexOptions options) : base(grammars)
+			CollectionIndexOptions options) : base(it, grammars)
 		{
 			_expectationBuilder = expectationBuilder;
 			_it = it;
@@ -256,11 +252,7 @@ public static partial class ThatEnumerable
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual is null)
-			{
-				stringBuilder.ItWasNull(_it, Grammars);
-			}
-			else if (_actual is not null)
+			if (_actual is not null)
 			{
 				stringBuilder.Append(_it).Append(" had item ");
 				Formatter.Format(stringBuilder, _actual);
