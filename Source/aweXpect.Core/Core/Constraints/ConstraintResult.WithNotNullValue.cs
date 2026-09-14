@@ -12,6 +12,10 @@ public abstract partial class ConstraintResult
 	///     the actual value in the <see cref="Actual" /> property and ensures that it is not <see langword="null" />.
 	/// </summary>
 	/// <remarks>
+	///     The <see langword="null" /> check is applied <b>before</b> the negation, so a <see langword="null" /> subject
+	///     fails the expectation and its negation alike: there is no value to inspect, and negating a question that cannot
+	///     be answered does not make it true. This is the base class for every expectation that inspects its subject.
+	///     <para />
 	///     Set <see cref="Actual" /> in one of the <c>IsMetBy</c> overloads of <see cref="IConstraint" /> and overwrite<br />
 	///     - <see cref="AppendNormalExpectation" /> / <see cref="AppendNegatedExpectation" />
 	///     which add the normal and negated expectation strings<br />

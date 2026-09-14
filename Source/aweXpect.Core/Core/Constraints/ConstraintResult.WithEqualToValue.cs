@@ -18,6 +18,18 @@ public abstract partial class ConstraintResult
 	///     <see langword="null" /> or not.
 	/// </param>
 	/// <remarks>
+	///     A <see langword="null" /> subject fails on the side where <see langword="null" /> is not a legitimate answer,
+	///     which <paramref name="isExpectedNull" /> identifies:
+	///     <code>
+	/// IsEqualTo("foo")     null fails    (not negated, expected not null)
+	/// IsEqualTo(null)      null succeeds (not negated, expected null)
+	/// IsNotEqualTo("foo")  null succeeds (negated,     expected not null)
+	/// IsNotEqualTo(null)   null fails    (negated,     expected null)
+	///     </code>
+	///     Only equality and identity give <see langword="null" /> a meaning on both sides. An ordering or a range does
+	///     not, so <c>IsGreaterThan</c> and <c>IsNotBetween</c> use <see cref="ConstraintResult.WithNotNullValue{T}" />
+	///     even though they too take a value from the caller.
+	///     <para />
 	///     Set <see cref="Actual" /> in one of the <c>IsMetBy</c> overloads of <see cref="IConstraint" /> and overwrite<br />
 	///     - <see cref="AppendNormalExpectation" /> / <see cref="AppendNegatedExpectation" />
 	///     which add the normal and negated expectation strings<br />
