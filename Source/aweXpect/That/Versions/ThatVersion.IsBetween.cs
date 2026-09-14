@@ -50,7 +50,7 @@ public static partial class ThatVersion
 				return this;
 			}
 
-			Outcome = actual?.CompareTo(minimum) >= 0 && actual?.CompareTo(maximum) <= 0
+			Outcome = actual is not null && actual.CompareTo(minimum) >= 0 && actual.CompareTo(maximum) <= 0
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;

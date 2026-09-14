@@ -25,6 +25,18 @@ public sealed partial class ThatVersion
 			}
 
 			[Fact]
+			public async Task WhenMinimumIsGreaterThanMaximum_ShouldSucceed()
+			{
+				Version? subject = new(1, 5);
+
+				async Task Act()
+					=> await That(subject).IsNotBetween(new Version(2, 0)).And(new Version(1, 2));
+
+				await That(Act).DoesNotThrow()
+					.Because("an inverted range can never be satisfied, so nothing is ever between its bounds");
+			}
+
+			[Fact]
 			public async Task WhenMinimumIsNull_ShouldFail()
 			{
 				Version? subject = new(1, 5);
