@@ -3648,6 +3648,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 11:02:17 2026 \u002B0200",
         "message": "feat: add comparison expectations for Version (#1085)"
+      },
+      {
+        "sha": "5fdcb1f59ebb651c58adbf7b37ccc83c09ab6e0f",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 14 09:06:43 2026 \u002B0000",
+        "message": "chore: Bump TUnit and TUnit.Assertions (#1088)"
       }
     ],
     "labels": [
@@ -4258,7 +4264,8 @@ window.BENCHMARK_DATA = {
       "58290e80",
       "0ee271ea",
       "17ec8fe6",
-      "6d1fd9f2"
+      "6d1fd9f2",
+      "5fdcb1f5"
     ],
     "datasets": [
       {
@@ -4872,7 +4879,8 @@ window.BENCHMARK_DATA = {
           259.71256140300204,
           273.5617689352769,
           243.38492396899633,
-          249.66410438219705
+          249.66410438219705,
+          253.45660810470582
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5345,6 +5353,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6113,7 +6122,8 @@ window.BENCHMARK_DATA = {
           247.47003167470297,
           295.36873945823083,
           232.63954355035509,
-          251.00914753400363
+          251.00914753400363,
+          238.20291840235393
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6306,6 +6316,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -9932,6 +9943,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 11:02:17 2026 \u002B0200",
         "message": "feat: add comparison expectations for Version (#1085)"
+      },
+      {
+        "sha": "5fdcb1f59ebb651c58adbf7b37ccc83c09ab6e0f",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 14 09:06:43 2026 \u002B0000",
+        "message": "chore: Bump TUnit and TUnit.Assertions (#1088)"
       }
     ],
     "labels": [
@@ -10465,7 +10482,8 @@ window.BENCHMARK_DATA = {
       "58290e80",
       "0ee271ea",
       "17ec8fe6",
-      "6d1fd9f2"
+      "6d1fd9f2",
+      "5fdcb1f5"
     ],
     "datasets": [
       {
@@ -11002,7 +11020,8 @@ window.BENCHMARK_DATA = {
           401143.07958984375,
           399767.38720703125,
           374133.0217285156,
-          377747.7562825521
+          377747.7562825521,
+          380885.13536783855
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11544,7 +11563,8 @@ window.BENCHMARK_DATA = {
           542085,
           542084,
           542085,
-          542084
+          542084,
+          542085
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12089,7 +12109,8 @@ window.BENCHMARK_DATA = {
           2635227.4921875,
           2493686.390625,
           2570248.724479167,
-          2424088.3388020834
+          2424088.3388020834,
+          2607126.966796875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12631,7 +12652,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841635,
           4841651,
-          4841647
+          4841647,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16293,6 +16315,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 11:02:17 2026 \u002B0200",
         "message": "feat: add comparison expectations for Version (#1085)"
+      },
+      {
+        "sha": "5fdcb1f59ebb651c58adbf7b37ccc83c09ab6e0f",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 14 09:06:43 2026 \u002B0000",
+        "message": "chore: Bump TUnit and TUnit.Assertions (#1088)"
       }
     ],
     "labels": [
@@ -16903,7 +16931,8 @@ window.BENCHMARK_DATA = {
       "58290e80",
       "0ee271ea",
       "17ec8fe6",
-      "6d1fd9f2"
+      "6d1fd9f2",
+      "5fdcb1f5"
     ],
     "datasets": [
       {
@@ -17517,7 +17546,8 @@ window.BENCHMARK_DATA = {
           466.5715479214986,
           518.9379989917462,
           443.52883034486035,
-          475.8615978240967
+          475.8615978240967,
+          458.6794052441915
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17990,6 +18020,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -18758,7 +18789,8 @@ window.BENCHMARK_DATA = {
           494.53349374135337,
           568.9296937355629,
           468.3997852461679,
-          498.57393035888674
+          498.57393035888674,
+          509.3773717880249
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18951,6 +18983,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -23039,6 +23072,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 11:02:17 2026 \u002B0200",
         "message": "feat: add comparison expectations for Version (#1085)"
+      },
+      {
+        "sha": "5fdcb1f59ebb651c58adbf7b37ccc83c09ab6e0f",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 14 09:06:43 2026 \u002B0000",
+        "message": "chore: Bump TUnit and TUnit.Assertions (#1088)"
       }
     ],
     "labels": [
@@ -23649,7 +23688,8 @@ window.BENCHMARK_DATA = {
       "58290e80",
       "0ee271ea",
       "17ec8fe6",
-      "6d1fd9f2"
+      "6d1fd9f2",
+      "5fdcb1f5"
     ],
     "datasets": [
       {
@@ -24263,7 +24303,8 @@ window.BENCHMARK_DATA = {
           269.3935879389445,
           302.6372409820557,
           249.44472227777754,
-          269.57373355229697
+          269.57373355229697,
+          260.13586384909496
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -24777,6 +24818,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -25504,7 +25546,8 @@ window.BENCHMARK_DATA = {
           248.65455646514891,
           319.19809678622653,
           241.04878514607748,
-          244.01057580312093
+          244.01057580312093,
+          247.2639165242513
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -25697,6 +25740,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -29785,6 +29829,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 11:02:17 2026 \u002B0200",
         "message": "feat: add comparison expectations for Version (#1085)"
+      },
+      {
+        "sha": "5fdcb1f59ebb651c58adbf7b37ccc83c09ab6e0f",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 14 09:06:43 2026 \u002B0000",
+        "message": "chore: Bump TUnit and TUnit.Assertions (#1088)"
       }
     ],
     "labels": [
@@ -30395,7 +30445,8 @@ window.BENCHMARK_DATA = {
       "58290e80",
       "0ee271ea",
       "17ec8fe6",
-      "6d1fd9f2"
+      "6d1fd9f2",
+      "5fdcb1f5"
     ],
     "datasets": [
       {
@@ -31009,7 +31060,8 @@ window.BENCHMARK_DATA = {
           465.443952592214,
           498.3817323684692,
           438.546740600041,
-          470.68008817036946
+          470.68008817036946,
+          445.21608165105187
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31482,6 +31534,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -32250,7 +32303,8 @@ window.BENCHMARK_DATA = {
           1205.1778465270995,
           1367.508293560573,
           1178.6956462860107,
-          1177.0053024291992
+          1177.0053024291992,
+          1180.4894489875207
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32679,6 +32733,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -36531,6 +36586,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 11:02:17 2026 \u002B0200",
         "message": "feat: add comparison expectations for Version (#1085)"
+      },
+      {
+        "sha": "5fdcb1f59ebb651c58adbf7b37ccc83c09ab6e0f",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 14 09:06:43 2026 \u002B0000",
+        "message": "chore: Bump TUnit and TUnit.Assertions (#1088)"
       }
     ],
     "labels": [
@@ -37141,7 +37202,8 @@ window.BENCHMARK_DATA = {
       "58290e80",
       "0ee271ea",
       "17ec8fe6",
-      "6d1fd9f2"
+      "6d1fd9f2",
+      "5fdcb1f5"
     ],
     "datasets": [
       {
@@ -37755,7 +37817,8 @@ window.BENCHMARK_DATA = {
           1896.5535133361816,
           1763.101915105184,
           1935.638449350993,
-          1867.5488277435302
+          1867.5488277435302,
+          1901.679819869995
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38228,6 +38291,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -38996,7 +39060,8 @@ window.BENCHMARK_DATA = {
           1362.6844951084681,
           1491.4880906513758,
           1302.501866204398,
-          1340.2610610961915
+          1340.2610610961915,
+          1308.885598863874
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39189,6 +39254,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -43277,6 +43343,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 11:02:17 2026 \u002B0200",
         "message": "feat: add comparison expectations for Version (#1085)"
+      },
+      {
+        "sha": "5fdcb1f59ebb651c58adbf7b37ccc83c09ab6e0f",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 14 09:06:43 2026 \u002B0000",
+        "message": "chore: Bump TUnit and TUnit.Assertions (#1088)"
       }
     ],
     "labels": [
@@ -43887,7 +43959,8 @@ window.BENCHMARK_DATA = {
       "58290e80",
       "0ee271ea",
       "17ec8fe6",
-      "6d1fd9f2"
+      "6d1fd9f2",
+      "5fdcb1f5"
     ],
     "datasets": [
       {
@@ -44501,7 +44574,8 @@ window.BENCHMARK_DATA = {
           2544.174378967285,
           2239.05790125529,
           2468.7668718973796,
-          2454.1506958007812
+          2454.1506958007812,
+          2482.5264661153155
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44974,6 +45048,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -45742,7 +45817,8 @@ window.BENCHMARK_DATA = {
           26392.498586801383,
           24298.394321695963,
           26020.990515572685,
-          19912.0600789388
+          19912.0600789388,
+          27732.19226989746
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -46360,6 +46436,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471
         ],
