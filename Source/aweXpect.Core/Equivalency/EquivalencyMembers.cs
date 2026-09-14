@@ -62,7 +62,7 @@ internal static class EquivalencyMembers
 			return member.GetValue;
 		}
 
-		FieldInfo? field = type.GetField(name, includeMembers.GetBindingFlags());
+		FieldInfo? field = type.GetFields(includeMembers).FirstOrDefault(x => x.Name == name);
 		return field is null ? null : subject => field.GetValue(subject);
 	}
 
@@ -78,7 +78,7 @@ internal static class EquivalencyMembers
 			return member.GetValue;
 		}
 
-		PropertyInfo? property = type.GetProperty(name, includeMembers.GetBindingFlags());
+		PropertyInfo? property = type.GetProperties(includeMembers).FirstOrDefault(x => x.Name == name);
 		return property is null ? null : subject => property.GetValue(subject);
 	}
 

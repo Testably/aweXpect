@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -23,40 +23,30 @@ internal static class IncludeMembersExtensions
 	{
 		if (includeMembers == IncludeMembers.None)
 		{
-			yield break;
+			return Enumerable.Empty<FieldInfo>();
 		}
 
-		BindingFlags bindingFlags = GetBindingFlags(includeMembers);
-		foreach (FieldInfo field in type.GetFields(bindingFlags))
-		{
-			if (!Includes(includeMembers, field.IsPublic, field.IsAssembly, field.IsPrivate))
-			{
-				continue;
-			}
-
-			yield return field;
-		}
+		return MostDerived(type.GetFields(GetBindingFlags(includeMembers))
+			.Where(field => Includes(includeMembers, field.IsPublic, field.IsAssembly, field.IsPrivate)));
 	}
 
+	/// <remarks>
+	///     An indexer is a property whose getter takes arguments, so its value cannot be read for the comparison.
+	/// </remarks>
 	public static IEnumerable<PropertyInfo> GetProperties(this Type type, IncludeMembers includeMembers)
 	{
 		if (includeMembers == IncludeMembers.None)
 		{
-			yield break;
+			return Enumerable.Empty<PropertyInfo>();
 		}
 
-		BindingFlags bindingFlags = GetBindingFlags(includeMembers);
-		foreach (PropertyInfo property in type.GetProperties(bindingFlags).Where(x => x.CanRead))
-		{
-			MethodInfo getter = property.GetAccessors(true)[0];
-			if (!getter.Name.StartsWith("get_", StringComparison.Ordinal) ||
-			    !Includes(includeMembers, getter.IsPublic, getter.IsAssembly, getter.IsPrivate))
+		return MostDerived(type.GetProperties(GetBindingFlags(includeMembers))
+			.Where(property => property.CanRead && property.GetIndexParameters().Length == 0)
+			.Where(property =>
 			{
-				continue;
-			}
-
-			yield return property;
-		}
+				MethodInfo getter = property.GetGetMethod(true)!;
+				return Includes(includeMembers, getter.IsPublic, getter.IsAssembly, getter.IsPrivate);
+			}));
 	}
 
 	/// <remarks>
@@ -67,4 +57,31 @@ internal static class IncludeMembersExtensions
 		=> (includeMembers.HasFlag(IncludeMembers.Public) && isPublic) ||
 		   (includeMembers.HasFlag(IncludeMembers.Internal) && isAssembly) ||
 		   (includeMembers.HasFlag(IncludeMembers.Private) && isPrivate);
+
+	/// <remarks>
+	///     Reflection returns a member hidden with <see langword="new" /> once per declaration, which makes a lookup
+	///     by name ambiguous. Only the declaration on the most derived type takes part, which is also the one a
+	///     registration provides.
+	/// </remarks>
+	private static IEnumerable<TMember> MostDerived<TMember>(IEnumerable<TMember> members)
+		where TMember : MemberInfo
+	{
+		Dictionary<string, TMember> byName = new(StringComparer.Ordinal);
+		List<string> names = new();
+		foreach (TMember member in members)
+		{
+			if (!byName.TryGetValue(member.Name, out TMember? existing))
+			{
+				byName[member.Name] = member;
+				names.Add(member.Name);
+			}
+			else if (existing.DeclaringType != member.DeclaringType &&
+			         existing.DeclaringType!.IsAssignableFrom(member.DeclaringType))
+			{
+				byName[member.Name] = member;
+			}
+		}
+
+		return names.Select(name => byName[name]);
+	}
 }

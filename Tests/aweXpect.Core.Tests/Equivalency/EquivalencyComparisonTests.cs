@@ -41,6 +41,39 @@ public sealed class EquivalencyComparisonTests
 			.Because("comparing by value is the documented remedy for types without comparable members");
 	}
 
+	[Theory]
+	[InlineData(1, 3, 2, 3, "Property Value differed")]
+	[InlineData(1, 3, 1, 4, "Field Value differed")]
+	public async Task WhenFieldHidesAProperty_ShouldCompareBoth(int actualProperty, int actualField,
+		int expectedProperty, int expectedField, string expectedDifference)
+	{
+		FieldHidingProperty actual = new(actualProperty, actualField);
+		FieldHidingProperty expected = new(expectedProperty, expectedField);
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).Contains(expectedDifference)
+			.Because("a field and a property of the same name are both members of the type");
+	}
+
+	[Theory]
+	[InlineData("foo", "foo", true)]
+	[InlineData("foo", "bar", false)]
+	public async Task WhenMemberIsHidden_ShouldCompareTheMostDerivedDeclarationOnly(string actualText,
+		string expectedText, bool expectedResult)
+	{
+		PropertyHidingProperty actual = new(1, actualText);
+		PropertyHidingProperty expected = new(2, expectedText);
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsEqualTo(expectedResult)
+			.Because("reflection returns both declarations, but only the one on the most derived type is visible");
+	}
+
 	[Fact]
 	public async Task WhenNestedMemberHasNoComparableMembers_ShouldIncludeTheMemberPath()
 	{
@@ -71,6 +104,26 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenTypeHasAnIndexer_ShouldIgnoreTheIndexer()
+	{
+		WithIndexer actual = new()
+		{
+			Count = 1,
+		};
+		WithIndexer expected = new()
+		{
+			Count = 2,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).Contains("Property Count differed")
+			.Because("an indexer cannot be read without an argument, so it is not a comparable member");
+	}
+
+	[Fact]
 	public async Task WhenTypesDifferWithoutComparableMembers_ShouldReportTheDifferenceInsteadOfThrowing()
 	{
 		ClassWithOnlyPrivateState actual = new(1);
@@ -96,11 +149,21 @@ public sealed class EquivalencyComparisonTests
 		public ClassWithOnlyPrivateState Inner { get; } = inner;
 	}
 
+	private sealed class FieldHidingProperty(int property, int field) : WithProperty(property)
+	{
+		public new int Value = field;
+	}
+
 	private sealed class OtherClassWithOnlyPrivateState(int value)
 	{
 		private readonly int _value = value;
 
 		public override string ToString() => $"{nameof(OtherClassWithOnlyPrivateState)}({_value})";
+	}
+
+	private sealed class PropertyHidingProperty(int property, string text) : WithProperty(property)
+	{
+		public new string Value { get; } = text;
 	}
 
 	private sealed class ValueLikeWithoutMembers(int value)
@@ -113,5 +176,16 @@ public sealed class EquivalencyComparisonTests
 		public override int GetHashCode() => _value;
 
 		public override string ToString() => $"{nameof(ValueLikeWithoutMembers)}({_value})";
+	}
+
+	private sealed class WithIndexer
+	{
+		public int Count { get; set; }
+		public int this[int index] => index;
+	}
+
+	private class WithProperty(int value)
+	{
+		public int Value => value;
 	}
 }
