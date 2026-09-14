@@ -43,6 +43,11 @@ public static class Corpus
 		public override string ToString() => $"{BaseProperty}";
 	}
 
+	public class HidingPrivatelyDerived : HidingPrivately
+	{
+		public int More { get; set; }
+	}
+
 	public class WithIndexer
 	{
 		public int Count { get; set; }

@@ -19,6 +19,7 @@ public sealed partial class MemberParityTests
 		(typeof(Corpus.Shadowing), "aweXpect.Generators.Tests.Corpus.Shadowing"),
 		(typeof(Corpus.FieldHidingProperty), "aweXpect.Generators.Tests.Corpus.FieldHidingProperty"),
 		(typeof(Corpus.HidingPrivately), "aweXpect.Generators.Tests.Corpus.HidingPrivately"),
+		(typeof(Corpus.HidingPrivatelyDerived), "aweXpect.Generators.Tests.Corpus.HidingPrivatelyDerived"),
 		(typeof(Corpus.WithIndexer), "aweXpect.Generators.Tests.Corpus.WithIndexer"),
 		(typeof(Corpus.WithWriteOnly), "aweXpect.Generators.Tests.Corpus.WithWriteOnly"),
 		(typeof(Corpus.WithStatics), "aweXpect.Generators.Tests.Corpus.WithStatics"),
@@ -101,11 +102,11 @@ public sealed partial class MemberParityTests
 		HashSet<string>? current = null;
 		foreach (string rawLine in generated.Split('\n'))
 		{
-			string line = rawLine.TrimEnd('\r');
-			if (line.StartsWith("\t// ", StringComparison.Ordinal))
+			string line = rawLine.TrimEnd('\r').TrimStart('\t');
+			if (line.StartsWith("// global::", StringComparison.Ordinal) || line.StartsWith("// (", StringComparison.Ordinal))
 			{
 				current = [];
-				result[line.Substring(4)] = current;
+				result[line.Substring(3)] = current;
 				continue;
 			}
 

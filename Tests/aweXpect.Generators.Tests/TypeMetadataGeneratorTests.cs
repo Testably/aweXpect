@@ -139,7 +139,39 @@ public sealed partial class TypeMetadataGeneratorTests
 		await That(result.Errors).IsEmpty();
 		await That(result.Generated).Contains("(\"Own\", o => o.Own);");
 		await That(result.Generated).DoesNotContain("\"Value\"")
-			.Because("the runtime drops a base property hidden by name and type, whatever the visibility of the hiding one");
+			.Because("the runtime drops a base property hidden by name and type when the private hider sits on the reflected type itself");
+	}
+
+	[Fact]
+	public async Task WhenBasePropertyIsHiddenPrivatelyOnAnIntermediateType_ShouldRegisterIt()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"""
+			namespace Models;
+
+			public class WithValue
+			{
+				public int Value { get; set; }
+			}
+
+			public class HidingPrivately : WithValue
+			{
+				private new int Value { get; set; }
+			}
+
+			public class Leaf : HidingPrivately
+			{
+				public int Own { get; set; }
+			}
+			""",
+			Call("Expect.That(new Models.Leaf()).IsEquivalentTo(new Models.Leaf());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated)
+			.Contains("RegisterProperty<global::Models.Leaf, int>(\"Value\", o => ((global::Models.WithValue)o).Value);")
+			.Because("the runtime never returns private members of a base type, so a private hider on an intermediate type does not hide anything");
 	}
 
 	[Fact]
@@ -321,7 +353,7 @@ public sealed partial class TypeMetadataGeneratorTests
 
 		await That(result.Errors).IsEmpty();
 		await That(result.Generated).DoesNotContain("WithSpan")
-			.Because("a ref struct cannot be a type argument, and registering the other members alone would compare fewer of them than reflection");
+			.Because("a ref struct cannot be a type argument, and reflection cannot read such a member either, so the type is compared through reflection where it fails as before");
 	}
 
 	[Fact]
@@ -605,6 +637,6 @@ public sealed partial class TypeMetadataGeneratorTests
 		     }
 		     """;
 
-	[GeneratedRegex("^\t// global::Models\\.Other\r?$", RegexOptions.Multiline)]
+	[GeneratedRegex("^\t+// global::Models\\.Other\r?$", RegexOptions.Multiline)]
 	private static partial Regex OtherRegistration();
 }
