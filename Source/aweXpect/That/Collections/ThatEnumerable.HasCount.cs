@@ -78,12 +78,12 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static CollectionCountResult<AndOrResult<IEnumerable, IThat<IEnumerable>>> HasCount(
-		this IThat<IEnumerable> subject)
+	public static CollectionCountResult<AndOrResult<IEnumerable, IThat<IEnumerable?>>> HasCount(
+		this IThat<IEnumerable?> subject)
 	{
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new CollectionCountResult<AndOrResult<IEnumerable, IThat<IEnumerable>>>(quantifier
-			=> new AndOrResult<IEnumerable, IThat<IEnumerable>>(
+		return new CollectionCountResult<AndOrResult<IEnumerable, IThat<IEnumerable?>>>(quantifier
+			=> new AndOrResult<IEnumerable, IThat<IEnumerable?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new SyncCollectionCountForEnumerableConstraint<IEnumerable>(expectationBuilder, it, grammars,
 						quantifier)),
@@ -94,11 +94,11 @@ public static partial class ThatEnumerable
 	///     Verifies that the <paramref name="subject" /> has exactly <paramref name="expected" /> items.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable, IThat<IEnumerable>> HasCount(
-		this IThat<IEnumerable> subject, int expected)
+	public static AndOrResult<IEnumerable, IThat<IEnumerable?>> HasCount(
+		this IThat<IEnumerable?> subject, int expected)
 	{
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new AndOrResult<IEnumerable, IThat<IEnumerable>>(
+		return new AndOrResult<IEnumerable, IThat<IEnumerable?>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new SyncCollectionCountForEnumerableConstraint<IEnumerable>(expectationBuilder, it, grammars,
 					EnumerableQuantifier.Exactly(expected))),
@@ -177,11 +177,11 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable, IThat<IEnumerable>> DoesNotHaveCount(
-		this IThat<IEnumerable> subject, int unexpected)
+	public static AndOrResult<IEnumerable, IThat<IEnumerable?>> DoesNotHaveCount(
+		this IThat<IEnumerable?> subject, int unexpected)
 	{
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new AndOrResult<IEnumerable, IThat<IEnumerable>>(
+		return new AndOrResult<IEnumerable, IThat<IEnumerable?>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new SyncCollectionCountForEnumerableConstraint<IEnumerable>(expectationBuilder, it, grammars,
 					EnumerableQuantifier.Exactly(unexpected)).Invert()),

@@ -42,7 +42,7 @@ public static partial class ThatEnumerable
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
 	public static SingleItemResult<IEnumerable, object?> HasSingle(
-		this IThat<IEnumerable> source)
+		this IThat<IEnumerable?> source)
 	{
 		PredicateOptions<object?> options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;

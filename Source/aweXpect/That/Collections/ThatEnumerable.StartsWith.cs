@@ -115,14 +115,14 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable>, TItem>
+	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>
 		StartsWith<TItem>(
-			this IThat<IEnumerable> source,
+			this IThat<IEnumerable?> source,
 			IEnumerable<TItem> expected)
 	{
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable>, TItem>(
+		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new StartsWithForEnumerableConstraint<IEnumerable, TItem>(expectationBuilder, it, grammars,
 					Formatter.Format(expected),
@@ -137,15 +137,15 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable>, TItem>
+	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>
 		StartsWith<TItem>(
-			this IThat<IEnumerable> source,
+			this IThat<IEnumerable?> source,
 			params TItem[] expected)
 	{
 		expected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable>, TItem>(
+		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new StartsWithForEnumerableConstraint<IEnumerable, TItem>(expectationBuilder, it, grammars,
 					Formatter.Format(expected),
@@ -350,14 +350,14 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable>, TItem>
+	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>
 		DoesNotStartWith<TItem>(
-			this IThat<IEnumerable> source,
+			this IThat<IEnumerable?> source,
 			IEnumerable<TItem> unexpected)
 	{
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable>, TItem>(
+		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new StartsWithForEnumerableConstraint<IEnumerable, TItem>(expectationBuilder, it, grammars,
 					Formatter.Format(unexpected),
@@ -372,15 +372,15 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable>, TItem>
+	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>
 		DoesNotStartWith<TItem>(
-			this IThat<IEnumerable> source,
+			this IThat<IEnumerable?> source,
 			params TItem[] unexpected)
 	{
 		unexpected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable>, TItem>(
+		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new StartsWithForEnumerableConstraint<IEnumerable, TItem>(expectationBuilder, it, grammars,
 					Formatter.Format(unexpected),

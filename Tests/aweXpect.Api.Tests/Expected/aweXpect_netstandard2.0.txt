@@ -275,29 +275,29 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements All(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable> All(this aweXpect.Core.IThat<System.Collections.IEnumerable> subject) { }
+        public static aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable?> All(this aweXpect.Core.IThat<System.Collections.IEnumerable?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements<TItem> All<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements Any(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable> Any(this aweXpect.Core.IThat<System.Collections.IEnumerable> subject) { }
+        public static aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable?> Any(this aweXpect.Core.IThat<System.Collections.IEnumerable?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements<TItem> Any<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityResult<System.Collections.Generic.IEnumerable<string?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?>> AreAllUnique(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, object?> AreAllUnique(this aweXpect.Core.IThat<System.Collections.IEnumerable> source) { }
+        public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>, object?> AreAllUnique(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> AreAllUnique<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> AreAllUnique<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Func<TItem, string> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TMember> AreAllUnique<TMember>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Func<object?, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>, TMember> AreAllUnique<TMember>(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source, System.Func<object?, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TMember> AreAllUnique<TItem, TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Func<TItem, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Results.StringEqualityResult<System.Collections.Generic.IEnumerable<string?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?>> AreEqualTo(this aweXpect.ThatEnumerable.Elements elements, string? expected) { }
-        public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, object?> AreEqualTo(this aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable> elements, object? expected) { }
+        public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>, object?> AreEqualTo(this aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable?> elements, object? expected) { }
         public static aweXpect.Results.ToleranceEqualityResult<System.Collections.Generic.IEnumerable<System.DateTime>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.DateTime>?>, System.DateTime, System.TimeSpan> AreEqualTo(this aweXpect.ThatEnumerable.Elements<System.DateTime> elements, System.DateTime expected) { }
         public static aweXpect.Results.ToleranceEqualityResult<System.Collections.Generic.IEnumerable<System.DateTime?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.DateTime?>?>, System.DateTime?, System.TimeSpan> AreEqualTo(this aweXpect.ThatEnumerable.Elements<System.DateTime?> elements, System.DateTime? expected) { }
         public static aweXpect.Results.ToleranceEqualityResult<System.Collections.Generic.IEnumerable<decimal>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<decimal>?>, decimal, decimal> AreEqualTo(this aweXpect.ThatEnumerable.Elements<decimal> elements, decimal expected) { }
@@ -314,29 +314,29 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements AtLeast(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> subject, int minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable> AtLeast(this aweXpect.Core.IThat<System.Collections.IEnumerable> subject, int minimum) { }
+        public static aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable?> AtLeast(this aweXpect.Core.IThat<System.Collections.IEnumerable?> subject, int minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements<TItem> AtLeast<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> subject, int minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements AtMost(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> subject, int maximum) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable> AtMost(this aweXpect.Core.IThat<System.Collections.IEnumerable> subject, int maximum) { }
+        public static aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable?> AtMost(this aweXpect.Core.IThat<System.Collections.IEnumerable?> subject, int maximum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements<TItem> AtMost<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> subject, int maximum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.ThatEnumerable.Elements> Between(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> subject, int minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.BetweenResult<aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable>> Between(this aweXpect.Core.IThat<System.Collections.IEnumerable> subject, int minimum) { }
+        public static aweXpect.Results.BetweenResult<aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable?>> Between(this aweXpect.Core.IThat<System.Collections.IEnumerable?> subject, int minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.ThatEnumerable.Elements<TItem>> Between<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> subject, int minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeCountResult<System.Collections.Generic.IEnumerable<string?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?>> Contains(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> source, string? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.ObjectCountResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, object?> Contains(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, object? expected) { }
+        public static aweXpect.Results.ObjectCountResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>, object?> Contains(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source, object? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringCollectionContainResult<System.Collections.Generic.IEnumerable<string?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?>> Contains(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> source, System.Collections.Generic.IEnumerable<string?> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.CountResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>> Contains(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Func<object?, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Results.CountResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>> Contains(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source, System.Func<object?, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringCollectionContainResult<string?[], aweXpect.Core.IThat<string?[]?>> Contains(this aweXpect.Core.IThat<string?[]?> source, System.Collections.Generic.IEnumerable<string?> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -350,15 +350,15 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CountResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> Contains<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Func<TItem, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.ObjectCollectionContainResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TItem> Contains<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Collections.Generic.IEnumerable<TItem> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Results.ObjectCollectionContainResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>, TItem> Contains<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source, System.Collections.Generic.IEnumerable<TItem> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeCountResult<System.Collections.Generic.IEnumerable<string?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?>> DoesNotContain(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> source, string? unexpected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.ObjectCountResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, object?> DoesNotContain(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, object? unexpected) { }
+        public static aweXpect.Results.ObjectCountResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>, object?> DoesNotContain(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source, object? unexpected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringCollectionContainResult<System.Collections.Generic.IEnumerable<string?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?>> DoesNotContain(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> source, System.Collections.Generic.IEnumerable<string?> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.CountResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>> DoesNotContain(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Func<object?, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Results.CountResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>> DoesNotContain(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source, System.Func<object?, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringCollectionContainResult<string?[], aweXpect.Core.IThat<string?[]?>> DoesNotContain(this aweXpect.Core.IThat<string?[]?> source, System.Collections.Generic.IEnumerable<string?> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -372,7 +372,7 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CountResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> DoesNotContain<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Func<TItem, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.ObjectCollectionContainResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TItem> DoesNotContain<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Collections.Generic.IEnumerable<TItem> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Results.ObjectCollectionContainResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>, TItem> DoesNotContain<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source, System.Collections.Generic.IEnumerable<TItem> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityResult<System.Collections.Generic.IEnumerable<string?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?>> DoesNotEndWith(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> source, params string[] unexpected) { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -380,13 +380,13 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> DoesNotEndWith<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, params TItem[] unexpected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TItem> DoesNotEndWith<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Collections.Generic.IEnumerable<TItem> unexpected) { }
+        public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>, TItem> DoesNotEndWith<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source, System.Collections.Generic.IEnumerable<TItem> unexpected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TItem> DoesNotEndWith<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, params TItem[] unexpected) { }
+        public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>, TItem> DoesNotEndWith<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source, params TItem[] unexpected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> DoesNotEndWith<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<TItem> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>> DoesNotHaveCount(this aweXpect.Core.IThat<System.Collections.IEnumerable> subject, int unexpected) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>> DoesNotHaveCount(this aweXpect.Core.IThat<System.Collections.IEnumerable?> subject, int unexpected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> DoesNotHaveCount<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> subject, int unexpected) { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -398,9 +398,9 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> DoesNotStartWith<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, params TItem[] unexpected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TItem> DoesNotStartWith<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Collections.Generic.IEnumerable<TItem> unexpected) { }
+        public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>, TItem> DoesNotStartWith<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source, System.Collections.Generic.IEnumerable<TItem> unexpected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TItem> DoesNotStartWith<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, params TItem[] unexpected) { }
+        public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>, TItem> DoesNotStartWith<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source, params TItem[] unexpected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> DoesNotStartWith<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<TItem> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -410,21 +410,21 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> EndsWith<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, params TItem[] expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TItem> EndsWith<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Collections.Generic.IEnumerable<TItem> expected) { }
+        public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>, TItem> EndsWith<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source, System.Collections.Generic.IEnumerable<TItem> expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TItem> EndsWith<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, params TItem[] expected) { }
+        public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>, TItem> EndsWith<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source, params TItem[] expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> EndsWith<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<TItem> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements Exactly(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> subject, int expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable> Exactly(this aweXpect.Core.IThat<System.Collections.IEnumerable> subject, int expected) { }
+        public static aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable?> Exactly(this aweXpect.Core.IThat<System.Collections.IEnumerable?> subject, int expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements<TItem> Exactly<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> subject, int expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.CollectionCountResult<aweXpect.Results.AndOrResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>>> HasCount(this aweXpect.Core.IThat<System.Collections.IEnumerable> subject) { }
+        public static aweXpect.CollectionCountResult<aweXpect.Results.AndOrResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>>> HasCount(this aweXpect.Core.IThat<System.Collections.IEnumerable?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>> HasCount(this aweXpect.Core.IThat<System.Collections.IEnumerable> subject, int expected) { }
+        public static aweXpect.Results.AndOrResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>> HasCount(this aweXpect.Core.IThat<System.Collections.IEnumerable?> subject, int expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.CollectionCountResult<aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>>> HasCount<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -438,9 +438,9 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringHasItemResult<System.Collections.Generic.IEnumerable<string?>?> HasItem(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> source, string? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.ObjectHasItemResult<System.Collections.IEnumerable, object?> HasItem(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, object? expected) { }
+        public static aweXpect.Results.ObjectHasItemResult<System.Collections.IEnumerable?, object?> HasItem(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source, object? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.HasItemResult<System.Collections.IEnumerable> HasItem(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Func<object?, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Results.HasItemResult<System.Collections.IEnumerable?> HasItem(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source, System.Func<object?, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.HasItemWithConditionResult<System.Collections.Generic.IEnumerable<TItem>?, TItem> HasItem<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -450,7 +450,7 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.HasItemResult<System.Collections.Generic.IEnumerable<TItem>?> HasItemThat<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Action<aweXpect.Core.IThatSubject<TItem>> expectations) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.SingleItemResult<System.Collections.IEnumerable, object?> HasSingle(this aweXpect.Core.IThat<System.Collections.IEnumerable> source) { }
+        public static aweXpect.Results.SingleItemResult<System.Collections.IEnumerable, object?> HasSingle(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.SingleItemResult<System.Collections.Generic.IEnumerable<TItem>, TItem> HasSingle<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -462,7 +462,7 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectCollectionBeContainedInResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> IsContainedIn<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<TItem> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.ObjectCollectionBeContainedInResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TItem> IsContainedIn<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Collections.Generic.IEnumerable<TItem> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Results.ObjectCollectionBeContainedInResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>, TItem> IsContainedIn<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source, System.Collections.Generic.IEnumerable<TItem> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> IsEmpty<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -484,21 +484,21 @@ namespace aweXpect
         public static aweXpect.Results.CollectionMatchResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> IsEqualTo<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<System.Action<aweXpect.Core.IThatSubject<TItem?>>> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Results.CollectionMatchResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> IsEqualTo<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<System.Linq.Expressions.Expression<System.Func<TItem, bool>>> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Results.ObjectCollectionMatchResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> IsEqualTo<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<TItem> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
-        public static aweXpect.Results.ObjectCollectionMatchResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TItem> IsEqualTo<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Collections.Generic.IEnumerable<TItem> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Results.ObjectCollectionMatchResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>, TItem> IsEqualTo<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source, System.Collections.Generic.IEnumerable<TItem> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.CollectionOrderResult<object?, System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>> IsInAscendingOrder(this aweXpect.Core.IThat<System.Collections.IEnumerable> source) { }
+        public static aweXpect.Results.CollectionOrderResult<object?, System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>> IsInAscendingOrder(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionOrderResult<TItem, System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> IsInAscendingOrder<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.CollectionOrderResult<TMember, System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>> IsInAscendingOrder<TMember>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Func<object?, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Results.CollectionOrderResult<TMember, System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>> IsInAscendingOrder<TMember>(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source, System.Func<object?, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionOrderResult<TMember, System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> IsInAscendingOrder<TItem, TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Func<TItem, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.CollectionOrderResult<object?, System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>> IsInDescendingOrder(this aweXpect.Core.IThat<System.Collections.IEnumerable> source) { }
+        public static aweXpect.Results.CollectionOrderResult<object?, System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>> IsInDescendingOrder(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionOrderResult<TItem, System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> IsInDescendingOrder<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.CollectionOrderResult<TMember, System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>> IsInDescendingOrder<TMember>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Func<object?, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Results.CollectionOrderResult<TMember, System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>> IsInDescendingOrder<TMember>(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source, System.Func<object?, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionOrderResult<TMember, System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> IsInDescendingOrder<TItem, TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Func<TItem, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -510,7 +510,7 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectCollectionBeContainedInResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> IsNotContainedIn<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<TItem> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.ObjectCollectionBeContainedInResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TItem> IsNotContainedIn<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Collections.Generic.IEnumerable<TItem> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Results.ObjectCollectionBeContainedInResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>, TItem> IsNotContainedIn<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source, System.Collections.Generic.IEnumerable<TItem> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> IsNotEmpty<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source) { }
         public static aweXpect.Results.ObjectCollectionMatchWithToleranceResult<System.Collections.Generic.IEnumerable<System.DateTime>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.DateTime>?>, System.DateTime, System.TimeSpan> IsNotEqualTo(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.DateTime>?> source, System.Collections.Generic.IEnumerable<System.DateTime> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
@@ -529,39 +529,39 @@ namespace aweXpect
         public static aweXpect.Results.CollectionMatchResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> IsNotEqualTo<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<System.Action<aweXpect.Core.IThatSubject<TItem?>>> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Results.CollectionMatchResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> IsNotEqualTo<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<System.Linq.Expressions.Expression<System.Func<TItem, bool>>> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Results.ObjectCollectionMatchResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> IsNotEqualTo<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<TItem> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
-        public static aweXpect.Results.ObjectCollectionMatchResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TItem> IsNotEqualTo<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Collections.Generic.IEnumerable<TItem> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Results.ObjectCollectionMatchResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>, TItem> IsNotEqualTo<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source, System.Collections.Generic.IEnumerable<TItem> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.CollectionOrderResult<object?, System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>> IsNotInAscendingOrder(this aweXpect.Core.IThat<System.Collections.IEnumerable> source) { }
+        public static aweXpect.Results.CollectionOrderResult<object?, System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>> IsNotInAscendingOrder(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionOrderResult<TItem, System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> IsNotInAscendingOrder<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.CollectionOrderResult<TMember, System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>> IsNotInAscendingOrder<TMember>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Func<object?, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Results.CollectionOrderResult<TMember, System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>> IsNotInAscendingOrder<TMember>(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source, System.Func<object?, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionOrderResult<TMember, System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> IsNotInAscendingOrder<TItem, TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Func<TItem, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.CollectionOrderResult<object?, System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>> IsNotInDescendingOrder(this aweXpect.Core.IThat<System.Collections.IEnumerable> source) { }
+        public static aweXpect.Results.CollectionOrderResult<object?, System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>> IsNotInDescendingOrder(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionOrderResult<TItem, System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> IsNotInDescendingOrder<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.CollectionOrderResult<TMember, System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>> IsNotInDescendingOrder<TMember>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Func<object?, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Results.CollectionOrderResult<TMember, System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>> IsNotInDescendingOrder<TMember>(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source, System.Func<object?, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionOrderResult<TMember, System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> IsNotInDescendingOrder<TItem, TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Func<TItem, TMember> memberAccessor, [System.Runtime.CompilerServices.CallerArgumentExpression("memberAccessor")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements LessThan(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> subject, int maximum) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable> LessThan(this aweXpect.Core.IThat<System.Collections.IEnumerable> subject, int maximum) { }
+        public static aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable?> LessThan(this aweXpect.Core.IThat<System.Collections.IEnumerable?> subject, int maximum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements<TItem> LessThan<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> subject, int maximum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements MoreThan(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> subject, int minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable> MoreThan(this aweXpect.Core.IThat<System.Collections.IEnumerable> subject, int minimum) { }
+        public static aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable?> MoreThan(this aweXpect.Core.IThat<System.Collections.IEnumerable?> subject, int minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements<TItem> MoreThan<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> subject, int minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements None(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable> None(this aweXpect.Core.IThat<System.Collections.IEnumerable> subject) { }
+        public static aweXpect.ThatEnumerable.ElementsForEnumerable<System.Collections.IEnumerable?> None(this aweXpect.Core.IThat<System.Collections.IEnumerable?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.ThatEnumerable.Elements<TItem> None<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -571,9 +571,9 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> StartsWith<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, params TItem[] expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TItem> StartsWith<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, System.Collections.Generic.IEnumerable<TItem> expected) { }
+        public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>, TItem> StartsWith<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source, System.Collections.Generic.IEnumerable<TItem> expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable>, TItem> StartsWith<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable> source, params TItem[] expected) { }
+        public static aweXpect.Results.ObjectEqualityResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>, TItem> StartsWith<TItem>(this aweXpect.Core.IThat<System.Collections.IEnumerable?> source, params TItem[] expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> StartsWith<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> source, System.Collections.Generic.IEnumerable<TItem> expected, [System.Runtime.CompilerServices.CallerArgumentExpression("expected")] string doNotPopulateThisValue = "") { }
         public class Elements : aweXpect.ThatEnumerable.IElements

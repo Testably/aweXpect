@@ -109,12 +109,12 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable>, object?> AreAllUnique(
-		this IThat<IEnumerable> source)
+	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, object?> AreAllUnique(
+		this IThat<IEnumerable?> source)
 	{
 		ObjectEqualityOptions<object?> options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable>, object?>(
+		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, object?>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new AreAllUniqueForEnumerableConstraint<IEnumerable, object?>(expectationBuilder, it, grammars,
 					options)),
@@ -128,15 +128,15 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable>, TMember> AreAllUnique<TMember>(
-		this IThat<IEnumerable> source,
+	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TMember> AreAllUnique<TMember>(
+		this IThat<IEnumerable?> source,
 		Func<object?, TMember> memberAccessor,
 		[CallerArgumentExpression("memberAccessor")]
 		string doNotPopulateThisValue = "")
 	{
 		ObjectEqualityOptions<TMember> options = new();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable>, TMember>(
+		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TMember>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new AreAllUniqueWithPredicateForEnumerableConstraint<IEnumerable, TMember, TMember>(
 					expectationBuilder,
