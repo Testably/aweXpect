@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "24a17c1c23870775e85dd79fb05bc03e14489449",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 21:23:57 2026 \u002B0200",
-        "message": "test: make the eventually tests independent of the agent speed (#1035)"
-      },
-      {
         "sha": "17158c05cc8ec097c2b8552a9a980c7ae6c8d0e7",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 21:28:08 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 16:32:29 2026 \u002B0200",
         "message": "fix: keep a runaway mutant from taking down the mutation runner (#1093)"
+      },
+      {
+        "sha": "5fa9d810916df1aeb52d14a67bc165c4c7d1bfe0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 17:27:47 2026 \u002B0200",
+        "message": "refactor: drop the GuaranteesNotNull markings that can never suppress anything (#1097)"
       }
     ],
     "labels": [
-      "24a17c1c",
       "17158c05",
       "6ed4d82c",
       "719a9454",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "48275fcf",
       "23133e35",
       "dbd64a16",
-      "3a66050e"
+      "3a66050e",
+      "5fa9d810"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          251.6664425055186,
           273.690616162618,
           294.47748397191367,
           256.9228895187378,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           202.0682702700297,
           272.7071217757005,
           282.5873665968577,
-          254.31283381779988
+          254.31283381779988,
+          257.5374924023946
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          253.91424544652304,
           272.7523417790731,
           251.42155241966248,
           247.14513374964397,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           193.95771493911744,
           239.39834238688152,
           244.30020138422648,
-          237.89337490002313
+          237.89337490002313,
+          271.99132073720295
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "24a17c1c23870775e85dd79fb05bc03e14489449",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 21:23:57 2026 \u002B0200",
-        "message": "test: make the eventually tests independent of the agent speed (#1035)"
-      },
-      {
         "sha": "17158c05cc8ec097c2b8552a9a980c7ae6c8d0e7",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 21:28:08 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 16:32:29 2026 \u002B0200",
         "message": "fix: keep a runaway mutant from taking down the mutation runner (#1093)"
+      },
+      {
+        "sha": "5fa9d810916df1aeb52d14a67bc165c4c7d1bfe0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 17:27:47 2026 \u002B0200",
+        "message": "refactor: drop the GuaranteesNotNull markings that can never suppress anything (#1097)"
       }
     ],
     "labels": [
-      "24a17c1c",
       "17158c05",
       "6ed4d82c",
       "719a9454",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "48275fcf",
       "23133e35",
       "dbd64a16",
-      "3a66050e"
+      "3a66050e",
+      "5fa9d810"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          321485.473828125,
           317531.7226911272,
           301359.532808744,
           317686.2840820312,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           288932.6270833333,
           398807.8967122396,
           406313.1495186942,
-          395099.5535807292
+          395099.5535807292,
+          383259.0914388021
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1036,7 +1036,6 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
           335444,
           335442,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542085,
-          542085
+          542085,
+          542084
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2868241.325,
           2723807.4057291667,
           2436414.806770833,
           2685577.53515625,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           1919859.78125,
           2660831.3231770834,
           2648058.49375,
-          2802643.9260602677
+          2802643.9260602677,
+          2397191.646354167
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841651,
           4841651,
           4841651,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841647,
           4841651,
           4841651,
-          4841651
+          4841651,
+          4841635
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "24a17c1c23870775e85dd79fb05bc03e14489449",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 21:23:57 2026 \u002B0200",
-        "message": "test: make the eventually tests independent of the agent speed (#1035)"
-      },
       {
         "sha": "17158c05cc8ec097c2b8552a9a980c7ae6c8d0e7",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 16:32:29 2026 \u002B0200",
         "message": "fix: keep a runaway mutant from taking down the mutation runner (#1093)"
+      },
+      {
+        "sha": "5fa9d810916df1aeb52d14a67bc165c4c7d1bfe0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 17:27:47 2026 \u002B0200",
+        "message": "refactor: drop the GuaranteesNotNull markings that can never suppress anything (#1097)"
       }
     ],
     "labels": [
-      "24a17c1c",
       "17158c05",
       "6ed4d82c",
       "719a9454",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "48275fcf",
       "23133e35",
       "dbd64a16",
-      "3a66050e"
+      "3a66050e",
+      "5fa9d810"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          509.5957601411002,
           487.83896595637003,
           507.58375219198376,
           476.70153372628346,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           388.25114046732585,
           468.19346981048585,
           486.34537158693587,
-          521.6478244917733
+          521.6478244917733,
+          494.7722628275553
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          523.6554533004761,
           527.3543803532918,
           492.43233496802196,
           530.0054939270019,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           444.05623321533204,
           510.66202341715496,
           489.4366489137922,
-          538.4961628232684
+          538.4961628232684,
+          528.4363608678182
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "24a17c1c23870775e85dd79fb05bc03e14489449",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 21:23:57 2026 \u002B0200",
-        "message": "test: make the eventually tests independent of the agent speed (#1035)"
-      },
-      {
         "sha": "17158c05cc8ec097c2b8552a9a980c7ae6c8d0e7",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 21:28:08 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 16:32:29 2026 \u002B0200",
         "message": "fix: keep a runaway mutant from taking down the mutation runner (#1093)"
+      },
+      {
+        "sha": "5fa9d810916df1aeb52d14a67bc165c4c7d1bfe0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 17:27:47 2026 \u002B0200",
+        "message": "refactor: drop the GuaranteesNotNull markings that can never suppress anything (#1097)"
       }
     ],
     "labels": [
-      "24a17c1c",
       "17158c05",
       "6ed4d82c",
       "719a9454",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "48275fcf",
       "23133e35",
       "dbd64a16",
-      "3a66050e"
+      "3a66050e",
+      "5fa9d810"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          277.4515934944153,
           274.0059195200602,
           259.15261329923356,
           272.8763891969408,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           215.05497576395672,
           252.94306329318457,
           267.9070954004923,
-          281.6811509450277
+          281.6811509450277,
+          275.06960776646935
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          274.7266558579036,
           267.3532590866089,
           256.2115569795881,
           261.5507885615031,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           193.71849513053894,
           243.92973760196142,
           249.65470666885375,
-          288.50390370686847
+          288.50390370686847,
+          276.23029589653015
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "24a17c1c23870775e85dd79fb05bc03e14489449",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 21:23:57 2026 \u002B0200",
-        "message": "test: make the eventually tests independent of the agent speed (#1035)"
-      },
-      {
         "sha": "17158c05cc8ec097c2b8552a9a980c7ae6c8d0e7",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 21:28:08 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 16:32:29 2026 \u002B0200",
         "message": "fix: keep a runaway mutant from taking down the mutation runner (#1093)"
+      },
+      {
+        "sha": "5fa9d810916df1aeb52d14a67bc165c4c7d1bfe0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 17:27:47 2026 \u002B0200",
+        "message": "refactor: drop the GuaranteesNotNull markings that can never suppress anything (#1097)"
       }
     ],
     "labels": [
-      "24a17c1c",
       "17158c05",
       "6ed4d82c",
       "719a9454",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "48275fcf",
       "23133e35",
       "dbd64a16",
-      "3a66050e"
+      "3a66050e",
+      "5fa9d810"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          471.7250687394823,
           473.303697903951,
           482.4130295239962,
           478.21953665415447,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           401.7921457608541,
           446.7085044542948,
           454.5175503094991,
-          494.18738918304444
+          494.18738918304444,
+          477.94668610890704
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1321.9363451004028,
           1205.141513824463,
           1165.5106554667154,
           1266.7932704925538,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1038.105400466919,
           1280.4255312601724,
           1223.4176754270281,
-          1370.0128548940022
+          1370.0128548940022,
+          1341.652505329677
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "24a17c1c23870775e85dd79fb05bc03e14489449",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 21:23:57 2026 \u002B0200",
-        "message": "test: make the eventually tests independent of the agent speed (#1035)"
-      },
-      {
         "sha": "17158c05cc8ec097c2b8552a9a980c7ae6c8d0e7",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 21:28:08 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 16:32:29 2026 \u002B0200",
         "message": "fix: keep a runaway mutant from taking down the mutation runner (#1093)"
+      },
+      {
+        "sha": "5fa9d810916df1aeb52d14a67bc165c4c7d1bfe0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 17:27:47 2026 \u002B0200",
+        "message": "refactor: drop the GuaranteesNotNull markings that can never suppress anything (#1097)"
       }
     ],
     "labels": [
-      "24a17c1c",
       "17158c05",
       "6ed4d82c",
       "719a9454",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "48275fcf",
       "23133e35",
       "dbd64a16",
-      "3a66050e"
+      "3a66050e",
+      "5fa9d810"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2006.229408009847,
           1968.0141832987467,
           1897.40666443961,
           2016.4773431505475,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1623.953402382987,
           1957.9608357747395,
           1916.6552419662476,
-          1941.6528345743816
+          1941.6528345743816,
+          1670.9143939971923
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1464.9938775380454,
           1311.0715756734212,
           1338.767943246024,
           1346.3890763600668,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1131.3129965464275,
           1445.2837228139242,
           1366.0677769524711,
-          1400.2874593734741
+          1400.2874593734741,
+          1437.5937737782797
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "24a17c1c23870775e85dd79fb05bc03e14489449",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 21:23:57 2026 \u002B0200",
-        "message": "test: make the eventually tests independent of the agent speed (#1035)"
-      },
-      {
         "sha": "17158c05cc8ec097c2b8552a9a980c7ae6c8d0e7",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 21:28:08 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 16:32:29 2026 \u002B0200",
         "message": "fix: keep a runaway mutant from taking down the mutation runner (#1093)"
+      },
+      {
+        "sha": "5fa9d810916df1aeb52d14a67bc165c4c7d1bfe0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 17:27:47 2026 \u002B0200",
+        "message": "refactor: drop the GuaranteesNotNull markings that can never suppress anything (#1097)"
       }
     ],
     "labels": [
-      "24a17c1c",
       "17158c05",
       "6ed4d82c",
       "719a9454",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "48275fcf",
       "23133e35",
       "dbd64a16",
-      "3a66050e"
+      "3a66050e",
+      "5fa9d810"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2628.0233812967936,
           2600.125273777888,
           2523.571538380214,
           2720.7322338649205,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2052.538283421443,
           2651.728740946452,
           2535.7885340372723,
-          2660.4840303148544
+          2660.4840303148544,
+          2179.668372599284
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27760.519110543388,
           27066.304311116535,
           20497.064522298177,
           28483.61748453776,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           16741.85625,
           28410.73045654297,
           27259.131116739907,
-          28238.857125418526
+          28238.857125418526,
+          24276.291119384765
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33471,
           33471,
           33471,
@@ -4242,7 +4241,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471
+          33471,
+          33468
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
