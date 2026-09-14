@@ -353,7 +353,7 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
-			public async Task WhenSubjectIsNull_ShouldSucceed()
+			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEnumerable<int>? subject = null;
 
@@ -361,7 +361,12 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).DoesNotComplyWith(it => it
 						.HasItemThat(x => x.IsNotEqualTo(0)));
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have item that is not equal to 0,
+					             but it was <null>
+					             """);
 			}
 		}
 	}

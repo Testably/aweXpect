@@ -114,6 +114,13 @@ public static partial class ThatEventRecording
 			return typeof(TValue).IsAssignableFrom(typeof(IEventRecording<TSubject>));
 		}
 
+		/// <inheritdoc cref="ConstraintResult.Outcome" />
+		public override Outcome Outcome
+		{
+			get => _actual is null ? Outcome.Failure : base.Outcome;
+			protected set => base.Outcome = value;
+		}
+
 		public override ConstraintResult Negate()
 		{
 			quantifier.Negate();

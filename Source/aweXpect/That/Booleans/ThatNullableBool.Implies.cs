@@ -22,7 +22,7 @@ public static partial class ThatNullableBool
 			source);
 
 	private sealed class ImpliesConstraint(string it, ExpectationGrammars grammars, bool consequent)
-		: ConstraintResult.WithValue<bool?>(grammars),
+		: ConstraintResult.WithNotNullValue<bool?>(it, grammars),
 			IValueConstraint<bool?>
 	{
 		public ConstraintResult IsMetBy(bool? actual)
@@ -40,7 +40,7 @@ public static partial class ThatNullableBool
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it);
+			stringBuilder.Append(It);
 			stringBuilder.Append(" did not");
 		}
 
@@ -52,7 +52,7 @@ public static partial class ThatNullableBool
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it);
+			stringBuilder.Append(It);
 			stringBuilder.Append(" did");
 		}
 	}

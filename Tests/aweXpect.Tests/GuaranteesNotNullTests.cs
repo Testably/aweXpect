@@ -27,6 +27,21 @@ public sealed class GuaranteesNotNullTests
 	}
 
 	[Fact]
+	public async Task EveryExpectation_ShouldFailForANullSubjectWhenNegated()
+	{
+		List<string> deviations = Observations
+			.Where(observation => observation.FailsWhenNegated == false && !IsExemptWhenNegated(observation.Name) &&
+			                      !NegationAwaitingACoreRelease.Contains(observation.Identifier))
+			.Select(observation => observation.Identifier)
+			.Distinct().OrderBy(identifier => identifier, StringComparer.Ordinal)
+			.ToList();
+
+		await That(deviations).IsEmpty()
+			.Because(
+				"a null subject must fail an expectation that DoesNotComplyWith negates just as it fails the expectation itself");
+	}
+
+	[Fact]
 	public async Task EveryExpectationThatFails_ShouldGuaranteeNotNull()
 	{
 		List<string> unmarked = Observations
@@ -125,19 +140,57 @@ public sealed class GuaranteesNotNullTests
 		"IThatSubject<T>.IsNotExactly<TType>()",
 	};
 
+	/// <summary>
+	///     These nest an inner expectation, so the negation is applied by <c>MappingNode</c> in `aweXpect.Core`, which
+	///     flips the composite outcome without being able to tell a subject that was ruled out as <see langword="null" />
+	///     from one whose expectation was merely unmet. Their outer constraints already derive from
+	///     <see cref="ConstraintResult.WithNotNullValue{T}" /> and fail correctly on their own; only the composite does
+	///     not. Fixing that needs the node to be told, which is a core change and therefore a core release.
+	/// </summary>
+	private static readonly HashSet<string> NegationAwaitingACoreRelease = new(StringComparer.Ordinal)
+	{
+		"ThatException.HasInner(IThat<Exception>,Type,Action<IThatSubject<Exception>>)",
+		"ThatException.HasInner<TInnerException>(IThat<Exception>,Action<IThatSubject<TInnerException>>)",
+		"ThatException.HasInnerException(IThat<Exception>,Action<IThatSubject<Exception>>)",
+		"ThatException.HasRecursiveInnerExceptions(IThat<Exception>,Action<IThatSubject<IEnumerable<Exception>>>)",
+		"ThatString.HasLines(IThat<String>,Action<IThatSubject<IEnumerable<String>>>)",
+	};
+
 	private static IReadOnlyList<Observation>? _observations;
 
 	private static IReadOnlyList<Observation> Observations => _observations ??= Observe();
 
 	private static bool IsExempt(string name) => Exempt.Contains(name);
 
-	private sealed class Observation(string identifier, string name, bool fails, bool isMarked)
+	/// <summary>
+	///     The negated form of an exempt expectation is exempt as well: <c>IsNotNull</c> negated is <c>IsNull</c>, which
+	///     a <see langword="null" /> subject must satisfy. Deriving it keeps <see cref="Exempt" /> the single source of
+	///     truth for both axes instead of maintaining a second list.
+	/// </summary>
+	private static bool IsExemptWhenNegated(string name) => IsExempt(name) || IsExempt(Negate(name));
+
+	private static string Negate(string name)
+		=> name.StartsWith("IsNot", StringComparison.Ordinal) ? "Is" + name.Substring(5) :
+			name.StartsWith("Is", StringComparison.Ordinal) ? "IsNot" + name.Substring(2) : name;
+
+	private sealed class Observation(
+		string identifier,
+		string name,
+		bool fails,
+		bool? failsWhenNegated,
+		bool isMarked)
 	{
 		public string Identifier { get; } = identifier;
 
 		public string Name { get; } = name;
 
 		public bool Fails { get; } = fails;
+
+		/// <summary>
+		///     Whether the expectation also fails for a <see langword="null" /> subject when it is negated, or
+		///     <see langword="null" /> when it cannot be negated reflectively.
+		/// </summary>
+		public bool? FailsWhenNegated { get; } = failsWhenNegated;
 
 		public bool IsMarked { get; } = isMarked;
 	}
@@ -150,6 +203,7 @@ public sealed class GuaranteesNotNullTests
 			if (FailsForANullSubject(method) is { } fails)
 			{
 				observations.Add(new Observation(GetIdentifier(method), method.Name, fails,
+					FailsWhenNegated(method),
 					method.GetCustomAttribute<GuaranteesNotNullAttribute>() is not null));
 			}
 		}
@@ -211,6 +265,91 @@ public sealed class GuaranteesNotNullTests
 		}
 
 		return observed;
+	}
+
+	/// <summary>
+	///     Invokes the expectation inside <c>DoesNotComplyWith</c>, which negates it.
+	/// </summary>
+	/// <remarks>
+	///     A constraint that reports <see cref="Outcome.Failure" /> for a <see langword="null" /> subject from its
+	///     <c>IsMetBy</c> has that failure turned into a success by the negation, unlike one that derives from
+	///     <see cref="ConstraintResult.WithNotNullValue{T}" />, which decides before the inversion is applied. The
+	///     guarantee would then only hold as long as nobody negates the expectation.
+	/// </remarks>
+	/// <returns>
+	///     <see langword="null" /> when the expectation cannot be negated reflectively, otherwise whether the negated
+	///     expectation fails for a <see langword="null" /> subject.
+	/// </returns>
+	private static bool? FailsWhenNegated(MethodInfo method)
+	{
+		MethodInfo closedMethod;
+		Type subjectType;
+		try
+		{
+			closedMethod = CloseMethod(method);
+			if (!closedMethod.IsStatic || !CanHaveNullSubject(closedMethod) ||
+			    GetThatSubjectType(closedMethod.GetParameters()[0].ParameterType) is not { } thatSubjectType)
+			{
+				return null;
+			}
+
+			subjectType = thatSubjectType;
+		}
+		catch (Exception)
+		{
+			return null;
+		}
+
+		bool observed = false;
+		foreach (bool nullValues in new[]
+		         {
+			         false, true,
+		         })
+		{
+			try
+			{
+				Await(InvokeNegated(closedMethod, subjectType, nullValues));
+				return false;
+			}
+			catch (XunitException)
+			{
+				observed = true;
+			}
+			catch (Exception)
+			{
+				// The expectation cannot be invoked with these arguments, which the positive sweep already reports.
+			}
+		}
+
+		return observed ? true : null;
+	}
+
+	private static object InvokeNegated(MethodInfo method, Type subjectType, bool nullValues)
+	{
+		Type thatSubjectType = typeof(IThatSubject<>).MakeGenericType(subjectType);
+		ParameterExpression subject = Expression.Parameter(thatSubjectType, "subject");
+		Expression[] arguments = method.GetParameters()
+			.Select((parameter, index) => index == 0
+				? (Expression)Expression.Convert(subject, parameter.ParameterType)
+				: Expression.Constant(CreateArgument(parameter, nullValues), parameter.ParameterType))
+			.ToArray();
+		Delegate expectations = Expression
+			.Lambda(typeof(Action<>).MakeGenericType(thatSubjectType),
+				Expression.Call(null, method, arguments), subject)
+			.Compile();
+
+		MethodInfo doesNotComplyWith = typeof(CoreGeneric)
+			.GetMethods(BindingFlags.Public | BindingFlags.Static)
+			.Single(candidate => candidate.Name == nameof(CoreGeneric.DoesNotComplyWith))
+			.MakeGenericMethod(subjectType);
+		try
+		{
+			return doesNotComplyWith.Invoke(null, [CreateNullSubject(subjectType), expectations,])!;
+		}
+		catch (TargetInvocationException exception) when (exception.InnerException is not null)
+		{
+			throw exception.InnerException;
+		}
 	}
 
 	private static List<MethodInfo[]> DiscoverCompletions(Func<object> create, MethodInfo[] prefix, int depth)
