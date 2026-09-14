@@ -38,6 +38,25 @@ public sealed partial class TypeMetadataGeneratorTests
 	}
 
 	[Fact]
+	public async Task WhenAnonymousTypeCarriesATypeParameter_ShouldNotRegisterIt()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"""
+			using aweXpect;
+			public class Tests
+			{
+				public void Test<T>(T value) => Expect.That(new { Value = value }).IsEquivalentTo(new { Value = value });
+			}
+			""",
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).DoesNotContain("default(T)")
+			.Because("the type parameter of the enclosing method cannot be named in a module initializer");
+	}
+
+	[Fact]
 	public async Task WhenArgumentIsAnonymous_ShouldRegisterThroughAProbe()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -96,6 +115,34 @@ public sealed partial class TypeMetadataGeneratorTests
 	}
 
 	[Fact]
+	public async Task WhenBasePropertyIsHiddenByALessVisibleOne_ShouldNotRegisterIt()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"""
+			namespace Models;
+
+			public class WithValue
+			{
+				public int Value { get; set; }
+			}
+
+			public class HidingPrivately : WithValue
+			{
+				public int Own { get; set; }
+				private new int Value { get; set; }
+			}
+			""",
+			Call("Expect.That(new Models.HidingPrivately()).IsEquivalentTo(new Models.HidingPrivately());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains("(\"Own\", o => o.Own);");
+		await That(result.Generated).DoesNotContain("\"Value\"")
+			.Because("the runtime drops a base property hidden by name and type, whatever the visibility of the hiding one");
+	}
+
+	[Fact]
 	public async Task WhenCalledAsAStaticMethod_ShouldRegisterTheArgumentAndTheSubject()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -133,6 +180,21 @@ public sealed partial class TypeMetadataGeneratorTests
 		await That(result.Errors).IsEmpty();
 		await That(result.Generated).IsEmpty()
 			.Because("a registration against a Core without the registry would not compile");
+	}
+
+	[Fact]
+	public async Task WhenDiagnosticIdIsMalformed_ShouldNotRegisterTheType()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"namespace Models { public class WithOddObsolete { [System.Obsolete(\"gone\", DiagnosticId = \"MY LIB\")] public int Old { get; set; } } }",
+			Call("Expect.That(new Models.WithOddObsolete()).IsEquivalentTo(new Models.WithOddObsolete());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Warnings).IsEmpty();
+		await That(result.Generated).DoesNotContain("WithOddObsolete")
+			.Because("an id that is not an identifier cannot be suppressed by a pragma");
 	}
 
 	[Fact]
@@ -175,6 +237,19 @@ public sealed partial class TypeMetadataGeneratorTests
 		await That(result.Generated)
 			.Contains("RegisterProperty<global::Models.Other, int>(\"Count\", o => o.Count);")
 			.Because("the attribute is the escape hatch for a type no marked call site reveals");
+	}
+
+	[Fact]
+	public async Task WhenGenerateMetadataAttributeNamesAnArray_ShouldRegisterTheElementWithoutADiagnostic()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+			[Models, "[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof(Models.Other[]))]",]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.GeneratorDiagnostics).IsEmpty()
+			.Because("the element type is what the comparison visits, so registering it is the expected outcome");
+		await That(result.Generated)
+			.Contains("RegisterProperty<global::Models.Other, int>(\"Count\", o => o.Count);");
 	}
 
 	[Fact]
@@ -233,6 +308,20 @@ public sealed partial class TypeMetadataGeneratorTests
 		await That(result.Generated).Contains("(\"Rest\", o => o.Rest);");
 		await That(result.Generated).DoesNotContain("\"Item8\"")
 			.Because("the eighth element is a virtual field of the tuple syntax that reflection never sees");
+	}
+
+	[Fact]
+	public async Task WhenMemberIsARefStruct_ShouldNotRegisterTheType()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"namespace Models { public class WithSpan { public int Id { get; set; } public System.Span<byte> Bytes => default; } }",
+			Call("Expect.That(new Models.WithSpan()).IsEquivalentTo(new Models.WithSpan());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).DoesNotContain("WithSpan")
+			.Because("a ref struct cannot be a type argument, and registering the other members alone would compare fewer of them than reflection");
 	}
 
 	[Fact]

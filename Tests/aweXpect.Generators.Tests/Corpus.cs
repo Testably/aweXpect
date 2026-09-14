@@ -35,6 +35,14 @@ public static class Corpus
 		public new int BaseProperty = 1;
 	}
 
+	public class HidingPrivately : Base
+	{
+		public int Own { get; set; }
+		private new int BaseProperty { get; set; }
+
+		public override string ToString() => $"{BaseProperty}";
+	}
+
 	public class WithIndexer
 	{
 		public int Count { get; set; }

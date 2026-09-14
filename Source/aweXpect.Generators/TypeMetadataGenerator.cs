@@ -162,11 +162,36 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 
 		ImmutableArray<TypeRegistration> registrations = walker.Registrations;
 		ImmutableArray<UnregisteredType> unregistered = named
-			.Where(x => !registrations.Any(r => r.Key == x.Type.ToDisplayString(TypeFormat)))
+			.Where(x => !registrations.Any(r => r.Key == SeedKey(x.Type)))
 			.Select(x => UnregisteredType.Create(x.Type, x.Attribute))
 			.ToImmutableArray();
 		return new AssemblyRegistrations(new EquatableArray<TypeRegistration>(registrations),
 			new EquatableArray<UnregisteredType>(unregistered));
+	}
+
+	/// <remarks>
+	///     The walk registers the element of an array, the underlying type of a <see cref="Nullable{T}" /> and the
+	///     <c>ValueTuple</c> behind a tuple, so the diagnostic has to look for the same key.
+	/// </remarks>
+	private static string SeedKey(ITypeSymbol type)
+	{
+		while (true)
+		{
+			switch (type)
+			{
+				case IArrayTypeSymbol array:
+					type = array.ElementType;
+					continue;
+				case INamedTypeSymbol { OriginalDefinition.SpecialType: SpecialType.System_Nullable_T, } nullable:
+					type = nullable.TypeArguments[0];
+					continue;
+				case INamedTypeSymbol { IsTupleType: true, TupleUnderlyingType: { } underlying, }:
+					type = underlying;
+					continue;
+				default:
+					return type.ToDisplayString(TypeFormat);
+			}
+		}
 	}
 
 	private static bool IsMarked(ISymbol symbol)
@@ -368,9 +393,13 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				Seed(member.Type);
 			}
 
+			List<string> diagnosticIds = DiagnosticIds(type, members)
+				.Distinct().OrderBy(x => x, StringComparer.Ordinal).ToList();
 			if (members.Count == 0 || type.IsAbstract || type.IsStatic || !IsReferenceable(type) ||
-			    members.Any(member => IsUnreferenceable(member) || !IsReferenceable(member.Type) ||
-			                          !IsReferenceable(member.Symbol.ContainingType)))
+			    members.Any(member => IsUnreferenceable(member) || !CanBeMemberType(member.Type) ||
+			                          !IsReferenceable(member.Type) ||
+			                          !IsReferenceable(member.Symbol.ContainingType)) ||
+			    !diagnosticIds.All(IsDiagnosticId))
 			{
 				return;
 			}
@@ -379,13 +408,18 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			if (source is not null)
 			{
 				_registrations.Add(new TypeRegistration(type.ToDisplayString(TypeFormat), source,
-					string.Join(",", DiagnosticIds(type, members).Distinct().OrderBy(x => x, StringComparer.Ordinal))));
+					string.Join(",", diagnosticIds)));
 			}
 		}
 
+		/// <remarks>
+		///     A ref struct cannot be boxed, so the comparison never reaches its members, and it cannot be a type
+		///     argument of a registration either.
+		/// </remarks>
 		private static bool IsWalkable(INamedTypeSymbol type)
 			=> type.TypeKind is not (TypeKind.Error or TypeKind.Delegate or TypeKind.Pointer
 				   or TypeKind.FunctionPointer) &&
+			   !type.IsRefLikeType &&
 			   type.SpecialType != SpecialType.System_Object;
 
 		/// <remarks>
@@ -398,6 +432,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		{
 			HashSet<string> fieldNames = new(StringComparer.Ordinal);
 			HashSet<string> propertyNames = new(StringComparer.Ordinal);
+			HashSet<string> propertySignatures = new(StringComparer.Ordinal);
 			List<Member> members = [];
 			for (INamedTypeSymbol? current = type;
 			     current is not null && current.SpecialType != SpecialType.System_Object;
@@ -409,11 +444,13 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 					{
 						IFieldSymbol field when IsComparedField(field) && fieldNames.Add(field.Name)
 							=> new Member(field, field.Name, field.Type, true),
-						IPropertySymbol property when IsComparedProperty(property) && propertyNames.Add(property.Name)
+						IPropertySymbol { IsStatic: false, IsIndexer: false, } property
+							when propertySignatures.Add(Signature(property)) && IsComparedProperty(property) &&
+							     propertyNames.Add(property.Name)
 							=> new Member(property, property.Name, property.Type, false),
 						_ => null,
 					};
-					if (member is not null && CanBeMemberType(member.Value.Type))
+					if (member is not null)
 					{
 						members.Add(member.Value);
 					}
@@ -422,6 +459,14 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 
 			return members;
 		}
+
+		/// <remarks>
+		///     The runtime drops a base property that a derived declaration hides by name and type, whatever the
+		///     visibility of the hiding declaration, so a less visible <see langword="new" /> property removes its
+		///     public base counterpart from the comparison.
+		/// </remarks>
+		private static string Signature(IPropertySymbol property)
+			=> property.Name + "|" + property.Type.ToDisplayString(TypeFormat);
 
 		/// <remarks>
 		///     A tuple exposes its elements as fields named after the declaration and, from the eighth element on, as
@@ -531,6 +576,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		private static bool IsNameable(ITypeSymbol type)
 			=> type switch
 			{
+				ITypeParameterSymbol => false,
 				IArrayTypeSymbol array => IsNameable(array.ElementType),
 				INamedTypeSymbol { IsAnonymousType: true, } => false,
 				INamedTypeSymbol named => named.TypeArguments.All(IsNameable) &&
@@ -609,15 +655,28 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				_ => Enumerable.Empty<INamedTypeSymbol>(),
 			};
 
+		/// <remarks>
+		///     The compiler accepts any string as an obsolete diagnostic id, but a <c>#pragma</c> only accepts an
+		///     identifier, so a member with an id that cannot be suppressed keeps its owner on the reflection path.
+		/// </remarks>
+		private static bool IsDiagnosticId(string id)
+			=> id.All(c => char.IsLetterOrDigit(c) || c == '_');
+
 		private static bool CanBeMemberType(ITypeSymbol type)
 			=> type.TypeKind is not (TypeKind.Pointer or TypeKind.FunctionPointer) && !type.IsRefLikeType &&
 			   type.SpecialType != SpecialType.System_Void;
 
+		/// <remarks>
+		///     An anonymous type has no type arguments of its own, but its properties can still be typed by a type
+		///     parameter of the enclosing method.
+		/// </remarks>
 		private static bool ContainsTypeParameter(ITypeSymbol type)
 			=> type switch
 			{
 				ITypeParameterSymbol => true,
 				IArrayTypeSymbol array => ContainsTypeParameter(array.ElementType),
+				INamedTypeSymbol { IsAnonymousType: true, } anonymous => anonymous.GetMembers()
+					.OfType<IPropertySymbol>().Any(x => ContainsTypeParameter(x.Type)),
 				INamedTypeSymbol named => named.TypeArguments.Any(ContainsTypeParameter) ||
 				                          (named.ContainingType is not null &&
 				                           ContainsTypeParameter(named.ContainingType)),
