@@ -47,6 +47,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<NumberToleranceResult<TNumber, IThat<TNumber>>, TNumber?> IsNotBetween<TNumber>(
 		this IThat<TNumber> source, TNumber? minimum)
 		where TNumber : struct, INumber<TNumber>
@@ -63,6 +64,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<TNumber, IThat<TNumber?>>, TNumber?> IsNotBetween<TNumber>(
 		this IThat<TNumber?> source, TNumber? minimum)
 		where TNumber : struct, INumber<TNumber>
@@ -139,7 +141,7 @@ public static partial class ThatNumber
 			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
-	private sealed class NullableIsInRangeConstraint<TNumber> : ConstraintResult.WithEqualToValue<TNumber?>,
+	private sealed class NullableIsInRangeConstraint<TNumber> : ConstraintResult.WithNotNullValue<TNumber?>,
 		IValueConstraint<TNumber?>
 		where TNumber : struct, INumber<TNumber>
 	{
@@ -151,7 +153,7 @@ public static partial class ThatNumber
 			ExpectationGrammars grammars,
 			TNumber? minimum,
 			TNumber? maximum,
-			NumberTolerance<TNumber> options) : base(it, grammars, minimum is null)
+			NumberTolerance<TNumber> options) : base(it, grammars)
 		{
 			if (maximum < minimum)
 			{
@@ -609,6 +611,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<NumberToleranceResult<byte, IThat<byte>>, byte?> IsNotBetween(
 		this IThat<byte> source,
 		byte? minimum)
@@ -625,6 +628,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<NumberToleranceResult<sbyte, IThat<sbyte>>, sbyte?> IsNotBetween(
 		this IThat<sbyte> source,
 		sbyte? minimum)
@@ -641,6 +645,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<NumberToleranceResult<short, IThat<short>>, short?> IsNotBetween(
 		this IThat<short> source,
 		short? minimum)
@@ -657,6 +662,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<NumberToleranceResult<ushort, IThat<ushort>>, ushort?> IsNotBetween(
 		this IThat<ushort> source,
 		ushort? minimum)
@@ -673,6 +679,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<NumberToleranceResult<int, IThat<int>>, int?> IsNotBetween(
 		this IThat<int> source,
 		int? minimum)
@@ -689,6 +696,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<NumberToleranceResult<uint, IThat<uint>>, uint?> IsNotBetween(
 		this IThat<uint> source,
 		uint? minimum)
@@ -705,6 +713,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<NumberToleranceResult<long, IThat<long>>, long?> IsNotBetween(
 		this IThat<long> source,
 		long? minimum)
@@ -721,6 +730,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<NumberToleranceResult<ulong, IThat<ulong>>, ulong?> IsNotBetween(
 		this IThat<ulong> source,
 		ulong? minimum)
@@ -737,6 +747,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<NumberToleranceResult<float, IThat<float>>, float?> IsNotBetween(
 		this IThat<float> source,
 		float? minimum)
@@ -761,6 +772,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<NumberToleranceResult<double, IThat<double>>, double?> IsNotBetween(
 		this IThat<double> source,
 		double? minimum)
@@ -785,6 +797,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<NumberToleranceResult<decimal, IThat<decimal>>, decimal?> IsNotBetween(
 		this IThat<decimal> source,
 		decimal? minimum)
@@ -801,6 +814,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<byte, IThat<byte?>>, byte?> IsNotBetween(
 		this IThat<byte?> source,
 		byte? minimum)
@@ -817,6 +831,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<sbyte, IThat<sbyte?>>, sbyte?> IsNotBetween(
 		this IThat<sbyte?> source,
 		sbyte? minimum)
@@ -833,6 +848,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<short, IThat<short?>>, short?> IsNotBetween(
 		this IThat<short?> source,
 		short? minimum)
@@ -849,6 +865,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<ushort, IThat<ushort?>>, ushort?> IsNotBetween(
 		this IThat<ushort?> source,
 		ushort? minimum)
@@ -865,6 +882,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<int, IThat<int?>>, int?> IsNotBetween(
 		this IThat<int?> source,
 		int? minimum)
@@ -881,6 +899,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<uint, IThat<uint?>>, uint?> IsNotBetween(
 		this IThat<uint?> source,
 		uint? minimum)
@@ -897,6 +916,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<long, IThat<long?>>, long?> IsNotBetween(
 		this IThat<long?> source,
 		long? minimum)
@@ -913,6 +933,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<ulong, IThat<ulong?>>, ulong?> IsNotBetween(
 		this IThat<ulong?> source,
 		ulong? minimum)
@@ -929,6 +950,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<float, IThat<float?>>, float?> IsNotBetween(
 		this IThat<float?> source,
 		float? minimum)
@@ -953,6 +975,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<double, IThat<double?>>, double?> IsNotBetween(
 		this IThat<double?> source,
 		double? minimum)
@@ -977,6 +1000,7 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<decimal, IThat<decimal?>>, decimal?> IsNotBetween(
 		this IThat<decimal?> source,
 		decimal? minimum)
@@ -1054,7 +1078,7 @@ public static partial class ThatNumber
 			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
-	private sealed class NullableIsInRangeConstraint<TNumber> : ConstraintResult.WithEqualToValue<TNumber?>,
+	private sealed class NullableIsInRangeConstraint<TNumber> : ConstraintResult.WithNotNullValue<TNumber?>,
 		IValueConstraint<TNumber?>
 		where TNumber : struct, IComparable<TNumber>
 	{
@@ -1066,7 +1090,7 @@ public static partial class ThatNumber
 			ExpectationGrammars grammars,
 			TNumber? minimum,
 			TNumber? maximum,
-			NumberTolerance<TNumber> options) : base(it, grammars, minimum is null)
+			NumberTolerance<TNumber> options) : base(it, grammars)
 		{
 			if (maximum != null && minimum != null &&
 			    maximum.Value.CompareTo(minimum.Value) < 0)

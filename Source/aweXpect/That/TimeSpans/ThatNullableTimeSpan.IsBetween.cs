@@ -30,6 +30,7 @@ public static partial class ThatNullableTimeSpan
 	/// <summary>
 	///     Verifies that the subject is not between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>>, TimeSpan?> IsNotBetween(
 		this IThat<TimeSpan?> source,
 		TimeSpan? minimum)

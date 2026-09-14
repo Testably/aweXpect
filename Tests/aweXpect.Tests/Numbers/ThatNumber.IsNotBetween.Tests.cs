@@ -368,7 +368,7 @@ public sealed partial class ThatNumber
 			}
 
 			[Fact]
-			public async Task ForNullableByte_WhenValueIsNull_ShouldSucceed()
+			public async Task ForNullableByte_WhenValueIsNull_ShouldFail()
 			{
 				byte? subject = null;
 				byte minimum = 1;
@@ -377,7 +377,12 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was <null>
+					              """);
 			}
 
 			[Theory]
@@ -579,7 +584,7 @@ public sealed partial class ThatNumber
 			}
 
 			[Fact]
-			public async Task ForNullableInt_WhenValueIsNull_ShouldSucceed()
+			public async Task ForNullableInt_WhenValueIsNull_ShouldFail()
 			{
 				int? subject = null;
 				int minimum = 1;
@@ -588,7 +593,12 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was <null>
+					              """);
 			}
 
 			[Theory]
@@ -695,7 +705,7 @@ public sealed partial class ThatNumber
 			}
 
 			[Fact]
-			public async Task ForNullableLong_WhenValueIsNull_ShouldSucceed()
+			public async Task ForNullableLong_WhenValueIsNull_ShouldFail()
 			{
 				long? subject = null;
 				long minimum = 1;
@@ -704,7 +714,12 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was <null>
+					              """);
 			}
 
 			[Theory]
@@ -738,7 +753,7 @@ public sealed partial class ThatNumber
 			}
 
 			[Fact]
-			public async Task ForNullableSbyte_WhenValueIsNull_ShouldSucceed()
+			public async Task ForNullableSbyte_WhenValueIsNull_ShouldFail()
 			{
 				sbyte? subject = null;
 				sbyte minimum = 1;
@@ -747,7 +762,12 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was <null>
+					              """);
 			}
 
 			[Theory]
@@ -781,7 +801,7 @@ public sealed partial class ThatNumber
 			}
 
 			[Fact]
-			public async Task ForNullableShort_WhenValueIsNull_ShouldSucceed()
+			public async Task ForNullableShort_WhenValueIsNull_ShouldFail()
 			{
 				short? subject = null;
 				short minimum = 1;
@@ -790,7 +810,12 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was <null>
+					              """);
 			}
 
 			[Theory]
@@ -824,7 +849,7 @@ public sealed partial class ThatNumber
 			}
 
 			[Fact]
-			public async Task ForNullableUint_WhenValueIsNull_ShouldSucceed()
+			public async Task ForNullableUint_WhenValueIsNull_ShouldFail()
 			{
 				uint? subject = null;
 				uint minimum = 1;
@@ -833,7 +858,12 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was <null>
+					              """);
 			}
 
 			[Theory]
@@ -867,7 +897,7 @@ public sealed partial class ThatNumber
 			}
 
 			[Fact]
-			public async Task ForNullableUlong_WhenValueIsNull_ShouldSucceed()
+			public async Task ForNullableUlong_WhenValueIsNull_ShouldFail()
 			{
 				ulong? subject = null;
 				ulong minimum = 1;
@@ -876,7 +906,12 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was <null>
+					              """);
 			}
 
 			[Theory]
@@ -910,7 +945,7 @@ public sealed partial class ThatNumber
 			}
 
 			[Fact]
-			public async Task ForNullableUshort_WhenValueIsNull_ShouldSucceed()
+			public async Task ForNullableUshort_WhenValueIsNull_ShouldFail()
 			{
 				ushort? subject = null;
 				ushort minimum = 1;
@@ -919,7 +954,12 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was <null>
+					              """);
 			}
 
 			[Theory]
