@@ -16,13 +16,15 @@ internal static class GeneratorRunner
 	///     runtime, <c>aweXpect</c> and <c>aweXpect.Core</c>.
 	/// </summary>
 	public static GeneratorResult Run(string[] sources, bool referenceCore = true,
-		params MetadataReference[] additionalReferences)
+		LanguageVersion languageVersion = LanguageVersion.Latest, params MetadataReference[] additionalReferences)
 	{
-		List<SyntaxTree> trees = Parse(sources);
+		CSharpParseOptions parseOptions = new(languageVersion);
+		List<SyntaxTree> trees = Parse(sources, parseOptions);
 		CSharpCompilation compilation = Compile("GeneratorTests", trees,
 			GetReferences(referenceCore).Concat(additionalReferences));
 
-		GeneratorDriver driver = CSharpGeneratorDriver.Create(new TypeMetadataGenerator());
+		GeneratorDriver driver = CSharpGeneratorDriver.Create([new TypeMetadataGenerator().AsSourceGenerator(),],
+			parseOptions: parseOptions);
 		driver.RunGeneratorsAndUpdateCompilation(compilation, out Compilation output,
 			out ImmutableArray<Diagnostic> generatorDiagnostics);
 
@@ -43,7 +45,8 @@ internal static class GeneratorRunner
 	public static MetadataReference CompileToReference(string assemblyName, string source,
 		params MetadataReference[] additionalReferences)
 	{
-		CSharpCompilation compilation = Compile(assemblyName, Parse([source,]),
+		CSharpCompilation compilation = Compile(assemblyName,
+			Parse([source,], new CSharpParseOptions(LanguageVersion.Latest)),
 			GetReferences(false).Concat(additionalReferences));
 		using MemoryStream stream = new();
 		EmitResult result = compilation.Emit(stream);
@@ -55,11 +58,8 @@ internal static class GeneratorRunner
 		return MetadataReference.CreateFromImage(stream.ToArray());
 	}
 
-	private static List<SyntaxTree> Parse(string[] sources)
-	{
-		CSharpParseOptions parseOptions = new(LanguageVersion.Latest);
-		return sources.Select(source => CSharpSyntaxTree.ParseText(source, parseOptions)).ToList();
-	}
+	private static List<SyntaxTree> Parse(string[] sources, CSharpParseOptions parseOptions)
+		=> sources.Select(source => CSharpSyntaxTree.ParseText(source, parseOptions)).ToList();
 
 	private static CSharpCompilation Compile(string assemblyName, IEnumerable<SyntaxTree> trees,
 		IEnumerable<MetadataReference> references)

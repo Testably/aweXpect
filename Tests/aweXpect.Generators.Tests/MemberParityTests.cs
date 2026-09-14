@@ -20,6 +20,7 @@ public sealed partial class MemberParityTests
 		(typeof(Corpus.FieldHidingProperty), "aweXpect.Generators.Tests.Corpus.FieldHidingProperty"),
 		(typeof(Corpus.HidingPrivately), "aweXpect.Generators.Tests.Corpus.HidingPrivately"),
 		(typeof(Corpus.HidingPrivatelyDerived), "aweXpect.Generators.Tests.Corpus.HidingPrivatelyDerived"),
+		(typeof(Corpus.HidingGenerically), "aweXpect.Generators.Tests.Corpus.HidingGenerically"),
 		(typeof(Corpus.WithIndexer), "aweXpect.Generators.Tests.Corpus.WithIndexer"),
 		(typeof(Corpus.WithWriteOnly), "aweXpect.Generators.Tests.Corpus.WithWriteOnly"),
 		(typeof(Corpus.WithStatics), "aweXpect.Generators.Tests.Corpus.WithStatics"),

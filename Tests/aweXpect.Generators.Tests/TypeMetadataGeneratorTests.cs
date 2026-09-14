@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace aweXpect.Generators.Tests;
 
@@ -175,6 +176,34 @@ public sealed partial class TypeMetadataGeneratorTests
 	}
 
 	[Fact]
+	public async Task WhenBasePropertyOnAGenericBaseIsHiddenPrivately_ShouldRegisterIt()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"""
+			namespace Models;
+
+			public class GenericBase<T>
+			{
+				public T Value { get; set; } = default!;
+			}
+
+			public class HidingGenerically : GenericBase<int>
+			{
+				public int Own { get; set; }
+				private new int Value { get; set; }
+			}
+			""",
+			Call("Expect.That(new Models.HidingGenerically()).IsEquivalentTo(new Models.HidingGenerically());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated)
+			.Contains("(\"Value\", o => ((global::Models.GenericBase<int>)o).Value);")
+			.Because("the runtime compares the declared signature, in which the base property is typed by the type parameter, not by int");
+	}
+
+	[Fact]
 	public async Task WhenCalledAsAStaticMethod_ShouldRegisterTheArgumentAndTheSubject()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -189,6 +218,35 @@ public sealed partial class TypeMetadataGeneratorTests
 		await That(result.Generated)
 			.Contains("RegisterProperty<global::Models.Other, int>(\"Count\", o => o.Count);")
 			.Because("the receiver is the first argument when an extension method is called as a static method");
+	}
+
+	[Fact]
+	public async Task WhenConsumerUsesCSharp8_ShouldNotEmit()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"namespace Models { public class Other { public int Count { get; set; } } }",
+			Call("Expect.That(new Models.Other()).IsEquivalentTo(new Models.Other());"),
+		], languageVersion: LanguageVersion.CSharp8);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).IsEmpty()
+			.Because("a module initializer needs C# 9, so emitting one would break the consumer's build");
+	}
+
+	[Fact]
+	public async Task WhenConsumerUsesCSharp9_ShouldCompile()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"namespace Models { public class Other { public int Count { get; set; } } }",
+			Call("Expect.That(new Models.Other()).IsEquivalentTo(new { Count = 1 });"),
+		], languageVersion: LanguageVersion.CSharp9);
+
+		await That(result.Errors).IsEmpty()
+			.Because("the generated file must not use anything newer than the module initializer itself");
+		await That(result.Generated)
+			.Contains("RegisterProperty<global::Models.Other, int>(\"Count\", o => o.Count);");
 	}
 
 	[Fact]
@@ -227,6 +285,21 @@ public sealed partial class TypeMetadataGeneratorTests
 		await That(result.Warnings).IsEmpty();
 		await That(result.Generated).DoesNotContain("WithOddObsolete")
 			.Because("an id that is not an identifier cannot be suppressed by a pragma");
+	}
+
+	[Fact]
+	public async Task WhenDiagnosticIdIsNumeric_ShouldNotRegisterTheType()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"namespace Models { public class WithNumericObsolete { [System.Obsolete(\"gone\", DiagnosticId = \"0618\")] public int Old { get; set; } } }",
+			Call("Expect.That(new Models.WithNumericObsolete()).IsEquivalentTo(new Models.WithNumericObsolete());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Warnings).IsEmpty();
+		await That(result.Generated).DoesNotContain("WithNumericObsolete")
+			.Because("the compiler reads a numeric id in a pragma as a CS code, so the warning would stay");
 	}
 
 	[Fact]
@@ -484,7 +557,8 @@ public sealed partial class TypeMetadataGeneratorTests
 			dependency);
 
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
-			[Call("Expect.That(new Owner.Root()).IsEquivalentTo(new Owner.Root());"),], true, owner);
+			[Call("Expect.That(new Owner.Root()).IsEquivalentTo(new Owner.Root());"),],
+			additionalReferences: [owner,]);
 
 		await That(result.Errors).IsEmpty();
 		await That(result.Generated).DoesNotContain("Owner.Root")

@@ -48,6 +48,14 @@ public static class Corpus
 		public int More { get; set; }
 	}
 
+	public class HidingGenerically : Generic<int>
+	{
+		public int Own { get; set; }
+		private new int Value { get; set; }
+
+		public override string ToString() => $"{Value}";
+	}
+
 	public class WithIndexer
 	{
 		public int Count { get; set; }

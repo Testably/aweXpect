@@ -41,7 +41,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 	void IIncrementalGenerator.Initialize(IncrementalGeneratorInitializationContext context)
 	{
 		IncrementalValueProvider<bool> isSupported = context.CompilationProvider
-			.Select(static (c, _) => SupportsRegistration(c) && HasModuleInitializer(c));
+			.Select(static (c, _) => SupportsRegistration(c) && HasModuleInitializer(c) && HasLanguageVersion(c));
 
 		IncrementalValueProvider<EquatableArray<TypeRegistration>> fromCallSites = context.SyntaxProvider
 			.CreateSyntaxProvider(
@@ -52,7 +52,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			.Select(static (x, _) => new EquatableArray<TypeRegistration>(x));
 
 		IncrementalValueProvider<AssemblyRegistrations> fromAssembly = context.CompilationProvider
-			.Select(static (c, _) => FromAssemblyAttributes(c));
+			.Select(static (c, cancellationToken) => FromAssemblyAttributes(c, cancellationToken));
 
 		context.RegisterSourceOutput(fromCallSites.Combine(fromAssembly).Combine(isSupported),
 			static (spc, source) => Emit(spc, source.Left.Left, source.Left.Right, source.Right));
@@ -70,7 +70,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		IMethodSymbol constructed = method.GetConstructedReducedFrom() ?? method;
 		IMethodSymbol definition = constructed.OriginalDefinition;
 		int reductionOffset = method.ReducedFrom is null ? 0 : 1;
-		MetadataWalker walker = new(context.SemanticModel.Compilation);
+		MetadataWalker walker = new(context.SemanticModel.Compilation, cancellationToken);
 		bool hasMarkedParameter = false;
 
 		for (int i = 0; i < definition.Parameters.Length; i++)
@@ -145,9 +145,10 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			: null;
 	}
 
-	private static AssemblyRegistrations FromAssemblyAttributes(Compilation compilation)
+	private static AssemblyRegistrations FromAssemblyAttributes(Compilation compilation,
+		CancellationToken cancellationToken)
 	{
-		MetadataWalker walker = new(compilation);
+		MetadataWalker walker = new(compilation, cancellationToken);
 		List<(ITypeSymbol Type, AttributeData Attribute)> named = [];
 		foreach (AttributeData attribute in compilation.Assembly.GetAttributes())
 		{
@@ -210,6 +211,13 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			.OfType<IMethodSymbol>()
 			.Any(x => x.IsStatic && x.DeclaredAccessibility == Accessibility.Public && x.Parameters.Length == 3) ==
 		   true;
+
+	/// <remarks>
+	///     The generated file needs nothing newer than C# 9, but a consumer pinned below that could not compile the
+	///     module initializer.
+	/// </remarks>
+	private static bool HasLanguageVersion(Compilation compilation)
+		=> compilation is CSharpCompilation { LanguageVersion: >= LanguageVersion.CSharp9, };
 
 	/// <remarks>
 	///     Without <c>ModuleInitializerAttribute</c> the target framework cannot be trimmed or AOT-published anyway.
@@ -341,7 +349,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 	///     Walks a type graph the way the equivalency comparison does, and collects a registration for every type
 	///     whose members it would compare.
 	/// </summary>
-	private sealed class MetadataWalker(Compilation compilation)
+	private sealed class MetadataWalker(Compilation compilation, CancellationToken cancellationToken)
 	{
 		private readonly ImmutableArray<TypeRegistration>.Builder _registrations =
 			ImmutableArray.CreateBuilder<TypeRegistration>();
@@ -352,6 +360,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 
 		public void Seed(ITypeSymbol? type)
 		{
+			cancellationToken.ThrowIfCancellationRequested();
 			if (type is IArrayTypeSymbol array)
 			{
 				Seed(array.ElementType);
@@ -488,8 +497,29 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				return false;
 			}
 
-			return signatures.Add(property.Name + "|" + property.Type.ToDisplayString(TypeFormat));
+			return signatures.Add(property.Name + "|" + MetadataSignature(property.OriginalDefinition.Type));
 		}
+
+		/// <remarks>
+		///     The runtime compares the metadata signature of the declaration, in which a type parameter is a position,
+		///     <see langword="dynamic" /> is <see cref="object" /> and tuple element names do not exist, so a
+		///     substituted or annotated type must not tell two identical signatures apart.
+		/// </remarks>
+		private static string MetadataSignature(ITypeSymbol type)
+			=> type switch
+			{
+				ITypeParameterSymbol parameter => "!" + parameter.Ordinal,
+				IDynamicTypeSymbol => "object",
+				IArrayTypeSymbol array => MetadataSignature(array.ElementType) + "[" + new string(',', array.Rank - 1) +
+				                          "]",
+				IPointerTypeSymbol pointer => MetadataSignature(pointer.PointedAtType) + "*",
+				INamedTypeSymbol { IsTupleType: true, TupleUnderlyingType: { } underlying, } => MetadataSignature(
+					underlying),
+				INamedTypeSymbol { IsGenericType: true, } named => named.OriginalDefinition.ToDisplayString(TypeFormat) +
+				                                                    "<" + string.Join(",",
+					                                                    named.TypeArguments.Select(MetadataSignature)) + ">",
+				_ => type.ToDisplayString(TypeFormat),
+			};
 
 		/// <remarks>
 		///     A tuple exposes its elements as fields named after the declaration and, from the eighth element on, as
