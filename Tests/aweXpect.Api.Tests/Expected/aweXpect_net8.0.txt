@@ -1846,6 +1846,7 @@ namespace aweXpect
         public static aweXpect.Results.AndOrResult<System.Version?, aweXpect.Core.IThat<System.Version?>> IsLessThan(this aweXpect.Core.IThat<System.Version?> source, System.Version? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Version?, aweXpect.Core.IThat<System.Version?>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<System.Version?> source, System.Version? expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<System.Version?, aweXpect.Core.IThat<System.Version?>>, System.Version?> IsNotBetween(this aweXpect.Core.IThat<System.Version?> source, System.Version? minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Version?, aweXpect.Core.IThat<System.Version?>> IsNotGreaterThan(this aweXpect.Core.IThat<System.Version?> source, System.Version? unexpected) { }

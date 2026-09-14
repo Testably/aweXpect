@@ -24,6 +24,7 @@ public static partial class ThatVersion
 	/// <summary>
 	///     Verifies that the subject is not between the <paramref name="minimum" />…
 	/// </summary>
+	[GuaranteesNotNull]
 	public static BetweenResult<AndOrResult<Version?, IThat<Version?>>, Version?> IsNotBetween(
 		this IThat<Version?> source,
 		Version? minimum)
