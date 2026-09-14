@@ -12,6 +12,7 @@
     <Project Path="Tests/aweXpect.Api.Tests/aweXpect.Api.Tests.csproj" />
     <Project Path="Tests/aweXpect.Core.Api.Tests/aweXpect.Core.Api.Tests.csproj" />
     <Project Path="Tests/aweXpect.Core.Tests/aweXpect.Core.Tests.csproj" />
+    <Project Path="Tests/aweXpect.Generators.Tests/aweXpect.Generators.Tests.csproj" />
     <Project Path="Tests/aweXpect.Internal.Tests/aweXpect.Internal.Tests.csproj" />
     <Project Path="Tests/aweXpect.Tests/aweXpect.Tests.csproj" />
   </Folder>
