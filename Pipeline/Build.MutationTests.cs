@@ -338,6 +338,10 @@ partial class Build
 				patterns.Select(pattern => $"\"{pattern}\""))}\n\t\t],\n\t\t";
 		}
 
+		// TEMPORARY: mutate the whole project even on a branch, so that the mutation jobs can be exercised at
+		// their real size without merging to `main` first. Revert this commit before merging.
+		bool mutateOnlyTheChanges = false;
+
 		string configText = $$"""
 		                      {
 		                      	"stryker-config": {
@@ -353,7 +357,7 @@ partial class Build
 		                      		"target-framework": "net8.0",
 		                      		"since": {
 		                      			"target": "main",
-		                      			"enabled": {{(BranchName != "main").ToString().ToLowerInvariant()}},
+		                      			"enabled": {{mutateOnlyTheChanges.ToString().ToLowerInvariant()}},
 		                      			"ignore-changes-in": [
 		                      				"**/.github/**/*.*"
 		                      			]
