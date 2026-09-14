@@ -71,6 +71,19 @@ public sealed class GuaranteesNotNullTests
 	}
 
 	[Fact]
+	public async Task EveryMarkedExpectation_ShouldHaveASubjectThatCanBeNull()
+	{
+		List<string> inert = GetMarkedExpectations().Where(method => !CanHaveANullSubjectValue(method))
+			.Select(GetIdentifier)
+			.Distinct().OrderBy(identifier => identifier, StringComparer.Ordinal)
+			.ToList();
+
+		await That(inert).IsEmpty()
+			.Because(
+				"the attribute exists so that IsNotNullSuppressor can drop a nullability warning, and a subject that cannot be null never raises one — marking it says nothing and makes the attribute read as documentation rather than as the suppression directive it is");
+	}
+
+	[Fact]
 	public async Task ShouldFindTheMarkedExpectations()
 	{
 		List<MethodInfo> marked = GetMarkedExpectations().ToList();
@@ -82,18 +95,6 @@ public sealed class GuaranteesNotNullTests
 		await That(marked.Select(method => method.DeclaringType!.Assembly.GetName().Name).Distinct())
 			.IsEqualTo(["aweXpect", "aweXpect.Core",]).InAnyOrder()
 			.Because("both assemblies declare expectations that are marked");
-	}
-
-	[Fact]
-	public async Task SkippedExpectations_ShouldHaveASubjectThatCannotBeNull()
-	{
-		List<Type> skipped = GetMarkedExpectations().Where(method => !CanHaveNullSubject(method))
-			.Select(method => GetSubjectType(CloseMethod(method)))
-			.Distinct().ToList();
-
-		await That(skipped.Where(type => type.Assembly == typeof(GuaranteesNotNullTests).Assembly).ToList()).IsEmpty()
-			.Because(
-				"a skipped expectation is invisible — it is neither invoked nor excluded — so a subject that only looks non-nullable because it was closed to one of this test's own helper structs must not go unnoticed");
 	}
 
 	private static readonly Type[] TypeArgumentCandidates =
@@ -437,6 +438,25 @@ public sealed class GuaranteesNotNullTests
 			.SelectMany(type => type.GetMethods(BindingFlags.Public | BindingFlags.Static |
 			                                    BindingFlags.Instance | BindingFlags.DeclaredOnly))
 			.Where(method => method.GetCustomAttribute<GuaranteesNotNullAttribute>() is not null);
+
+	/// <summary>
+	///     Whether the value the suppressor tracks — the subject of the <c>Expect.That(subject)</c> the expectation
+	///     belongs to — can be <see langword="null" />, and a nullability warning can therefore exist to be dropped.
+	/// </summary>
+	/// <remarks>
+	///     This is not <see cref="CanHaveNullSubject" />, which asks whether the harness can invoke the method on a
+	///     <see langword="null" /> receiver. A receiver such as <c>ThatSubject&lt;T&gt;</c> is a struct that wraps the
+	///     subject, so it can never be <see langword="null" /> itself while its subject can.
+	/// </remarks>
+	private static bool CanHaveANullSubjectValue(MethodInfo method)
+	{
+		MethodInfo closedMethod = CloseMethod(method);
+		Type receiver = closedMethod.IsStatic
+			? closedMethod.GetParameters()[0].ParameterType
+			: closedMethod.DeclaringType!;
+		Type subjectType = GetThatSubjectType(receiver) ?? receiver;
+		return !subjectType.IsValueType || Nullable.GetUnderlyingType(subjectType) is not null;
+	}
 
 	private static bool CanHaveNullSubject(MethodInfo method)
 	{

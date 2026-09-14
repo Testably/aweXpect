@@ -152,7 +152,6 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection only contains unique items.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem> AreAllUnique<TItem>(
 		this IThat<ImmutableArray<TItem>> source)
 	{
@@ -171,7 +170,6 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection only contains unique items.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>> AreAllUnique(
 		this IThat<ImmutableArray<string?>> source)
 	{
@@ -191,7 +189,6 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection only contains items with unique members specified by the
 	///     <paramref name="memberAccessor" />.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TMember> AreAllUnique<
 		TItem,
 		TMember>(
@@ -220,7 +217,6 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection only contains items with unique members specified by the
 	///     <paramref name="memberAccessor" />.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static StringEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>> AreAllUnique<TItem>(
 		this IThat<ImmutableArray<TItem>> source,
 		Func<TItem, string> memberAccessor,

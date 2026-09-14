@@ -43,7 +43,6 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that in the collection at most <paramref name="maximum" /> items…
 	/// </summary>
-	[GuaranteesNotNull]
 	public static ElementsForStructEnumerable<ImmutableArray<TItem>, TItem> AtMost<TItem>(
 		this IThat<ImmutableArray<TItem>> subject,
 		int maximum)
@@ -54,7 +53,6 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that in the collection at most <paramref name="maximum" /> items…
 	/// </summary>
-	[GuaranteesNotNull]
 	public static ElementsForStructEnumerable<ImmutableArray<string?>> AtMost(
 		this IThat<ImmutableArray<string?>> subject,
 		int maximum)

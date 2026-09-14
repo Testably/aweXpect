@@ -39,13 +39,10 @@ namespace aweXpect
     }
     public static class ThatBool
     {
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<bool, aweXpect.Core.IThat<bool>> Implies(this aweXpect.Core.IThat<bool> source, bool consequent) { }
         public static aweXpect.Results.AndOrResult<bool, aweXpect.Core.IThat<bool>> IsEqualTo(this aweXpect.Core.IThat<bool> source, bool expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<bool, aweXpect.Core.IThat<bool>> IsFalse(this aweXpect.Core.IThat<bool> source) { }
         public static aweXpect.Results.AndOrResult<bool, aweXpect.Core.IThat<bool>> IsNotEqualTo(this aweXpect.Core.IThat<bool> source, bool unexpected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<bool, aweXpect.Core.IThat<bool>> IsTrue(this aweXpect.Core.IThat<bool> source) { }
     }
     public static class ThatChar
@@ -77,30 +74,20 @@ namespace aweXpect
         public static aweXpect.Results.PropertyResult.Int<System.DateTime> HasMonth(this aweXpect.Core.IThat<System.DateTime> source) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTime> HasSecond(this aweXpect.Core.IThat<System.DateTime> source) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTime> HasYear(this aweXpect.Core.IThat<System.DateTime> source) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsAfter(this aweXpect.Core.IThat<System.DateTime> source, System.DateTime? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsBefore(this aweXpect.Core.IThat<System.DateTime> source, System.DateTime? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>>, System.DateTime?> IsBetween(this aweXpect.Core.IThat<System.DateTime> source, System.DateTime? minimum) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsEqualTo(this aweXpect.Core.IThat<System.DateTime> source, System.DateTime? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsNotAfter(this aweXpect.Core.IThat<System.DateTime> source, System.DateTime? unexpected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsNotBefore(this aweXpect.Core.IThat<System.DateTime> source, System.DateTime? unexpected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>>, System.DateTime?> IsNotBetween(this aweXpect.Core.IThat<System.DateTime> source, System.DateTime? minimum) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsNotEqualTo(this aweXpect.Core.IThat<System.DateTime> source, System.DateTime? unexpected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsNotOnOrAfter(this aweXpect.Core.IThat<System.DateTime> source, System.DateTime? unexpected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsNotOnOrBefore(this aweXpect.Core.IThat<System.DateTime> source, System.DateTime? unexpected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsNotOneOf(this aweXpect.Core.IThat<System.DateTime> source, System.Collections.Generic.IEnumerable<System.DateTime> unexpected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsNotOneOf(this aweXpect.Core.IThat<System.DateTime> source, System.Collections.Generic.IEnumerable<System.DateTime?> unexpected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsNotOneOf(this aweXpect.Core.IThat<System.DateTime> source, params System.DateTime?[] unexpected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsOnOrAfter(this aweXpect.Core.IThat<System.DateTime> source, System.DateTime? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsOnOrBefore(this aweXpect.Core.IThat<System.DateTime> source, System.DateTime? expected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsOneOf(this aweXpect.Core.IThat<System.DateTime> source, System.Collections.Generic.IEnumerable<System.DateTime> expected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsOneOf(this aweXpect.Core.IThat<System.DateTime> source, System.Collections.Generic.IEnumerable<System.DateTime?> expected) { }
@@ -116,30 +103,20 @@ namespace aweXpect
         public static aweXpect.Results.PropertyResult.TimeSpan<System.DateTimeOffset> HasOffset(this aweXpect.Core.IThat<System.DateTimeOffset> source) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTimeOffset> HasSecond(this aweXpect.Core.IThat<System.DateTimeOffset> source) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTimeOffset> HasYear(this aweXpect.Core.IThat<System.DateTimeOffset> source) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsAfter(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.DateTimeOffset? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsBefore(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.DateTimeOffset? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>>, System.DateTimeOffset?> IsBetween(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.DateTimeOffset? minimum) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsEqualTo(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.DateTimeOffset? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsNotAfter(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.DateTimeOffset? unexpected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsNotBefore(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.DateTimeOffset? unexpected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>>, System.DateTimeOffset?> IsNotBetween(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.DateTimeOffset? minimum) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsNotEqualTo(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.DateTimeOffset? unexpected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsNotOnOrAfter(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.DateTimeOffset? unexpected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsNotOnOrBefore(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.DateTimeOffset? unexpected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsNotOneOf(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.Collections.Generic.IEnumerable<System.DateTimeOffset> unexpected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsNotOneOf(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.Collections.Generic.IEnumerable<System.DateTimeOffset?> unexpected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsNotOneOf(this aweXpect.Core.IThat<System.DateTimeOffset> source, params System.DateTimeOffset?[] unexpected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsOnOrAfter(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.DateTimeOffset? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsOnOrBefore(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.DateTimeOffset? expected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsOneOf(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.Collections.Generic.IEnumerable<System.DateTimeOffset> expected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsOneOf(this aweXpect.Core.IThat<System.DateTimeOffset> source, System.Collections.Generic.IEnumerable<System.DateTimeOffset?> expected) { }
@@ -244,15 +221,12 @@ namespace aweXpect
             where TEnum :  struct, System.Enum { }
         public static aweXpect.Results.AndOrResult<TEnum, aweXpect.Core.IThat<TEnum>> HasFlag<TEnum>(this aweXpect.Core.IThat<TEnum> source, TEnum? expectedFlag)
             where TEnum :  struct, System.Enum { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TEnum, aweXpect.Core.IThat<TEnum>> HasValue<TEnum>(this aweXpect.Core.IThat<TEnum> source, long? expected)
             where TEnum :  struct, System.Enum { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TEnum, aweXpect.Core.IThat<TEnum>> IsDefined<TEnum>(this aweXpect.Core.IThat<TEnum> source)
             where TEnum :  struct, System.Enum { }
         public static aweXpect.Results.AndOrResult<TEnum, aweXpect.Core.IThat<TEnum>> IsEqualTo<TEnum>(this aweXpect.Core.IThat<TEnum> source, TEnum? expected)
             where TEnum :  struct, System.Enum { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TEnum, aweXpect.Core.IThat<TEnum>> IsNotDefined<TEnum>(this aweXpect.Core.IThat<TEnum> source)
             where TEnum :  struct, System.Enum { }
         public static aweXpect.Results.AndOrResult<TEnum, aweXpect.Core.IThat<TEnum>> IsNotEqualTo<TEnum>(this aweXpect.Core.IThat<TEnum> source, TEnum? unexpected)
@@ -960,47 +934,36 @@ namespace aweXpect
     }
     public static class ThatNumber
     {
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<byte, aweXpect.Core.IThat<byte>>, byte?> IsBetween(this aweXpect.Core.IThat<byte> source, byte? minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<byte, aweXpect.Core.IThat<byte?>>, byte?> IsBetween(this aweXpect.Core.IThat<byte?> source, byte? minimum) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<decimal, aweXpect.Core.IThat<decimal>>, decimal?> IsBetween(this aweXpect.Core.IThat<decimal> source, decimal? minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<decimal, aweXpect.Core.IThat<decimal?>>, decimal?> IsBetween(this aweXpect.Core.IThat<decimal?> source, decimal? minimum) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<double, aweXpect.Core.IThat<double>>, double?> IsBetween(this aweXpect.Core.IThat<double> source, double? minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<double, aweXpect.Core.IThat<double?>>, double?> IsBetween(this aweXpect.Core.IThat<double?> source, double? minimum) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<float, aweXpect.Core.IThat<float>>, float?> IsBetween(this aweXpect.Core.IThat<float> source, float? minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<float, aweXpect.Core.IThat<float?>>, float?> IsBetween(this aweXpect.Core.IThat<float?> source, float? minimum) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<int, aweXpect.Core.IThat<int>>, int?> IsBetween(this aweXpect.Core.IThat<int> source, int? minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<int, aweXpect.Core.IThat<int?>>, int?> IsBetween(this aweXpect.Core.IThat<int?> source, int? minimum) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<long, aweXpect.Core.IThat<long>>, long?> IsBetween(this aweXpect.Core.IThat<long> source, long? minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<long, aweXpect.Core.IThat<long?>>, long?> IsBetween(this aweXpect.Core.IThat<long?> source, long? minimum) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<sbyte, aweXpect.Core.IThat<sbyte>>, sbyte?> IsBetween(this aweXpect.Core.IThat<sbyte> source, sbyte? minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<sbyte, aweXpect.Core.IThat<sbyte?>>, sbyte?> IsBetween(this aweXpect.Core.IThat<sbyte?> source, sbyte? minimum) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<short, aweXpect.Core.IThat<short>>, short?> IsBetween(this aweXpect.Core.IThat<short> source, short? minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<short, aweXpect.Core.IThat<short?>>, short?> IsBetween(this aweXpect.Core.IThat<short?> source, short? minimum) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<uint, aweXpect.Core.IThat<uint>>, uint?> IsBetween(this aweXpect.Core.IThat<uint> source, uint? minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<uint, aweXpect.Core.IThat<uint?>>, uint?> IsBetween(this aweXpect.Core.IThat<uint?> source, uint? minimum) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<ulong, aweXpect.Core.IThat<ulong>>, ulong?> IsBetween(this aweXpect.Core.IThat<ulong> source, ulong? minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<ulong, aweXpect.Core.IThat<ulong?>>, ulong?> IsBetween(this aweXpect.Core.IThat<ulong?> source, ulong? minimum) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<ushort, aweXpect.Core.IThat<ushort>>, ushort?> IsBetween(this aweXpect.Core.IThat<ushort> source, ushort? minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<ushort, aweXpect.Core.IThat<ushort?>>, ushort?> IsBetween(this aweXpect.Core.IThat<ushort?> source, ushort? minimum) { }
@@ -1026,275 +989,207 @@ namespace aweXpect
         public static aweXpect.Results.NullableNumberToleranceResult<ulong, aweXpect.Core.IThat<ulong?>> IsEqualTo(this aweXpect.Core.IThat<ulong?> source, ulong? expected) { }
         public static aweXpect.Results.NumberToleranceResult<ushort, aweXpect.Core.IThat<ushort>> IsEqualTo(this aweXpect.Core.IThat<ushort> source, ushort? expected) { }
         public static aweXpect.Results.NullableNumberToleranceResult<ushort, aweXpect.Core.IThat<ushort?>> IsEqualTo(this aweXpect.Core.IThat<ushort?> source, ushort? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<double, aweXpect.Core.IThat<double>> IsFinite(this aweXpect.Core.IThat<double> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<double, aweXpect.Core.IThat<double?>> IsFinite(this aweXpect.Core.IThat<double?> source) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<float, aweXpect.Core.IThat<float>> IsFinite(this aweXpect.Core.IThat<float> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<float, aweXpect.Core.IThat<float?>> IsFinite(this aweXpect.Core.IThat<float?> source) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<byte, aweXpect.Core.IThat<byte>> IsGreaterThan(this aweXpect.Core.IThat<byte> source, byte? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<byte, aweXpect.Core.IThat<byte?>> IsGreaterThan(this aweXpect.Core.IThat<byte?> source, byte? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<decimal, aweXpect.Core.IThat<decimal>> IsGreaterThan(this aweXpect.Core.IThat<decimal> source, decimal? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<decimal, aweXpect.Core.IThat<decimal?>> IsGreaterThan(this aweXpect.Core.IThat<decimal?> source, decimal? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<double, aweXpect.Core.IThat<double>> IsGreaterThan(this aweXpect.Core.IThat<double> source, double? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<double, aweXpect.Core.IThat<double?>> IsGreaterThan(this aweXpect.Core.IThat<double?> source, double? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<float, aweXpect.Core.IThat<float>> IsGreaterThan(this aweXpect.Core.IThat<float> source, float? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<float, aweXpect.Core.IThat<float?>> IsGreaterThan(this aweXpect.Core.IThat<float?> source, float? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<int, aweXpect.Core.IThat<int>> IsGreaterThan(this aweXpect.Core.IThat<int> source, int? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<int, aweXpect.Core.IThat<int?>> IsGreaterThan(this aweXpect.Core.IThat<int?> source, int? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<long, aweXpect.Core.IThat<long>> IsGreaterThan(this aweXpect.Core.IThat<long> source, long? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<long, aweXpect.Core.IThat<long?>> IsGreaterThan(this aweXpect.Core.IThat<long?> source, long? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<sbyte, aweXpect.Core.IThat<sbyte>> IsGreaterThan(this aweXpect.Core.IThat<sbyte> source, sbyte? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<sbyte, aweXpect.Core.IThat<sbyte?>> IsGreaterThan(this aweXpect.Core.IThat<sbyte?> source, sbyte? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<short, aweXpect.Core.IThat<short>> IsGreaterThan(this aweXpect.Core.IThat<short> source, short? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<short, aweXpect.Core.IThat<short?>> IsGreaterThan(this aweXpect.Core.IThat<short?> source, short? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<uint, aweXpect.Core.IThat<uint>> IsGreaterThan(this aweXpect.Core.IThat<uint> source, uint? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<uint, aweXpect.Core.IThat<uint?>> IsGreaterThan(this aweXpect.Core.IThat<uint?> source, uint? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<ulong, aweXpect.Core.IThat<ulong>> IsGreaterThan(this aweXpect.Core.IThat<ulong> source, ulong? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<ulong, aweXpect.Core.IThat<ulong?>> IsGreaterThan(this aweXpect.Core.IThat<ulong?> source, ulong? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<ushort, aweXpect.Core.IThat<ushort>> IsGreaterThan(this aweXpect.Core.IThat<ushort> source, ushort? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<ushort, aweXpect.Core.IThat<ushort?>> IsGreaterThan(this aweXpect.Core.IThat<ushort?> source, ushort? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<byte, aweXpect.Core.IThat<byte>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<byte> source, byte? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<byte, aweXpect.Core.IThat<byte?>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<byte?> source, byte? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<decimal, aweXpect.Core.IThat<decimal>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<decimal> source, decimal? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<decimal, aweXpect.Core.IThat<decimal?>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<decimal?> source, decimal? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<double, aweXpect.Core.IThat<double>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<double> source, double? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<double, aweXpect.Core.IThat<double?>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<double?> source, double? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<float, aweXpect.Core.IThat<float>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<float> source, float? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<float, aweXpect.Core.IThat<float?>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<float?> source, float? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<int, aweXpect.Core.IThat<int>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<int> source, int? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<int, aweXpect.Core.IThat<int?>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<int?> source, int? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<long, aweXpect.Core.IThat<long>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<long> source, long? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<long, aweXpect.Core.IThat<long?>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<long?> source, long? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<sbyte, aweXpect.Core.IThat<sbyte>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<sbyte> source, sbyte? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<sbyte, aweXpect.Core.IThat<sbyte?>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<sbyte?> source, sbyte? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<short, aweXpect.Core.IThat<short>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<short> source, short? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<short, aweXpect.Core.IThat<short?>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<short?> source, short? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<uint, aweXpect.Core.IThat<uint>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<uint> source, uint? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<uint, aweXpect.Core.IThat<uint?>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<uint?> source, uint? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<ulong, aweXpect.Core.IThat<ulong>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<ulong> source, ulong? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<ulong, aweXpect.Core.IThat<ulong?>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<ulong?> source, ulong? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<ushort, aweXpect.Core.IThat<ushort>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<ushort> source, ushort? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<ushort, aweXpect.Core.IThat<ushort?>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<ushort?> source, ushort? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<double, aweXpect.Core.IThat<double>> IsInfinite(this aweXpect.Core.IThat<double> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<double?, aweXpect.Core.IThat<double?>> IsInfinite(this aweXpect.Core.IThat<double?> source) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<float, aweXpect.Core.IThat<float>> IsInfinite(this aweXpect.Core.IThat<float> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<float?, aweXpect.Core.IThat<float?>> IsInfinite(this aweXpect.Core.IThat<float?> source) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<byte, aweXpect.Core.IThat<byte>> IsLessThan(this aweXpect.Core.IThat<byte> source, byte? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<byte, aweXpect.Core.IThat<byte?>> IsLessThan(this aweXpect.Core.IThat<byte?> source, byte? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<decimal, aweXpect.Core.IThat<decimal>> IsLessThan(this aweXpect.Core.IThat<decimal> source, decimal? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<decimal, aweXpect.Core.IThat<decimal?>> IsLessThan(this aweXpect.Core.IThat<decimal?> source, decimal? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<double, aweXpect.Core.IThat<double>> IsLessThan(this aweXpect.Core.IThat<double> source, double? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<double, aweXpect.Core.IThat<double?>> IsLessThan(this aweXpect.Core.IThat<double?> source, double? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<float, aweXpect.Core.IThat<float>> IsLessThan(this aweXpect.Core.IThat<float> source, float? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<float, aweXpect.Core.IThat<float?>> IsLessThan(this aweXpect.Core.IThat<float?> source, float? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<int, aweXpect.Core.IThat<int>> IsLessThan(this aweXpect.Core.IThat<int> source, int? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<int, aweXpect.Core.IThat<int?>> IsLessThan(this aweXpect.Core.IThat<int?> source, int? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<long, aweXpect.Core.IThat<long>> IsLessThan(this aweXpect.Core.IThat<long> source, long? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<long, aweXpect.Core.IThat<long?>> IsLessThan(this aweXpect.Core.IThat<long?> source, long? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<sbyte, aweXpect.Core.IThat<sbyte>> IsLessThan(this aweXpect.Core.IThat<sbyte> source, sbyte? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<sbyte, aweXpect.Core.IThat<sbyte?>> IsLessThan(this aweXpect.Core.IThat<sbyte?> source, sbyte? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<short, aweXpect.Core.IThat<short>> IsLessThan(this aweXpect.Core.IThat<short> source, short? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<short, aweXpect.Core.IThat<short?>> IsLessThan(this aweXpect.Core.IThat<short?> source, short? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<uint, aweXpect.Core.IThat<uint>> IsLessThan(this aweXpect.Core.IThat<uint> source, uint? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<uint, aweXpect.Core.IThat<uint?>> IsLessThan(this aweXpect.Core.IThat<uint?> source, uint? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<ulong, aweXpect.Core.IThat<ulong>> IsLessThan(this aweXpect.Core.IThat<ulong> source, ulong? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<ulong, aweXpect.Core.IThat<ulong?>> IsLessThan(this aweXpect.Core.IThat<ulong?> source, ulong? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<ushort, aweXpect.Core.IThat<ushort>> IsLessThan(this aweXpect.Core.IThat<ushort> source, ushort? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<ushort, aweXpect.Core.IThat<ushort?>> IsLessThan(this aweXpect.Core.IThat<ushort?> source, ushort? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<byte, aweXpect.Core.IThat<byte>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<byte> source, byte? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<byte, aweXpect.Core.IThat<byte?>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<byte?> source, byte? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<decimal, aweXpect.Core.IThat<decimal>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<decimal> source, decimal? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<decimal, aweXpect.Core.IThat<decimal?>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<decimal?> source, decimal? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<double, aweXpect.Core.IThat<double>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<double> source, double? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<double, aweXpect.Core.IThat<double?>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<double?> source, double? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<float, aweXpect.Core.IThat<float>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<float> source, float? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<float, aweXpect.Core.IThat<float?>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<float?> source, float? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<int, aweXpect.Core.IThat<int>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<int> source, int? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<int, aweXpect.Core.IThat<int?>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<int?> source, int? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<long, aweXpect.Core.IThat<long>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<long> source, long? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<long, aweXpect.Core.IThat<long?>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<long?> source, long? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<sbyte, aweXpect.Core.IThat<sbyte>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<sbyte> source, sbyte? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<sbyte, aweXpect.Core.IThat<sbyte?>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<sbyte?> source, sbyte? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<short, aweXpect.Core.IThat<short>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<short> source, short? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<short, aweXpect.Core.IThat<short?>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<short?> source, short? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<uint, aweXpect.Core.IThat<uint>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<uint> source, uint? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<uint, aweXpect.Core.IThat<uint?>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<uint?> source, uint? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<ulong, aweXpect.Core.IThat<ulong>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<ulong> source, ulong? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<ulong, aweXpect.Core.IThat<ulong?>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<ulong?> source, ulong? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NumberToleranceResult<ushort, aweXpect.Core.IThat<ushort>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<ushort> source, ushort? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.NullableNumberToleranceResult<ushort, aweXpect.Core.IThat<ushort?>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<ushort?> source, ushort? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<double, aweXpect.Core.IThat<double>> IsNaN(this aweXpect.Core.IThat<double> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<double?, aweXpect.Core.IThat<double?>> IsNaN(this aweXpect.Core.IThat<double?> source) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<float, aweXpect.Core.IThat<float>> IsNaN(this aweXpect.Core.IThat<float> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<float?, aweXpect.Core.IThat<float?>> IsNaN(this aweXpect.Core.IThat<float?> source) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<decimal, aweXpect.Core.IThat<decimal>> IsNegative(this aweXpect.Core.IThat<decimal> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<decimal?, aweXpect.Core.IThat<decimal?>> IsNegative(this aweXpect.Core.IThat<decimal?> source) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<double, aweXpect.Core.IThat<double>> IsNegative(this aweXpect.Core.IThat<double> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<double?, aweXpect.Core.IThat<double?>> IsNegative(this aweXpect.Core.IThat<double?> source) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<float, aweXpect.Core.IThat<float>> IsNegative(this aweXpect.Core.IThat<float> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<float?, aweXpect.Core.IThat<float?>> IsNegative(this aweXpect.Core.IThat<float?> source) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<int, aweXpect.Core.IThat<int>> IsNegative(this aweXpect.Core.IThat<int> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<int?, aweXpect.Core.IThat<int?>> IsNegative(this aweXpect.Core.IThat<int?> source) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<long, aweXpect.Core.IThat<long>> IsNegative(this aweXpect.Core.IThat<long> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<long?, aweXpect.Core.IThat<long?>> IsNegative(this aweXpect.Core.IThat<long?> source) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<sbyte, aweXpect.Core.IThat<sbyte>> IsNegative(this aweXpect.Core.IThat<sbyte> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<sbyte?, aweXpect.Core.IThat<sbyte?>> IsNegative(this aweXpect.Core.IThat<sbyte?> source) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<short, aweXpect.Core.IThat<short>> IsNegative(this aweXpect.Core.IThat<short> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<short?, aweXpect.Core.IThat<short?>> IsNegative(this aweXpect.Core.IThat<short?> source) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<byte, aweXpect.Core.IThat<byte>>, byte?> IsNotBetween(this aweXpect.Core.IThat<byte> source, byte? minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<byte, aweXpect.Core.IThat<byte?>>, byte?> IsNotBetween(this aweXpect.Core.IThat<byte?> source, byte? minimum) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<decimal, aweXpect.Core.IThat<decimal>>, decimal?> IsNotBetween(this aweXpect.Core.IThat<decimal> source, decimal? minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<decimal, aweXpect.Core.IThat<decimal?>>, decimal?> IsNotBetween(this aweXpect.Core.IThat<decimal?> source, decimal? minimum) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<double, aweXpect.Core.IThat<double>>, double?> IsNotBetween(this aweXpect.Core.IThat<double> source, double? minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<double, aweXpect.Core.IThat<double?>>, double?> IsNotBetween(this aweXpect.Core.IThat<double?> source, double? minimum) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<float, aweXpect.Core.IThat<float>>, float?> IsNotBetween(this aweXpect.Core.IThat<float> source, float? minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<float, aweXpect.Core.IThat<float?>>, float?> IsNotBetween(this aweXpect.Core.IThat<float?> source, float? minimum) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<int, aweXpect.Core.IThat<int>>, int?> IsNotBetween(this aweXpect.Core.IThat<int> source, int? minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<int, aweXpect.Core.IThat<int?>>, int?> IsNotBetween(this aweXpect.Core.IThat<int?> source, int? minimum) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<long, aweXpect.Core.IThat<long>>, long?> IsNotBetween(this aweXpect.Core.IThat<long> source, long? minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<long, aweXpect.Core.IThat<long?>>, long?> IsNotBetween(this aweXpect.Core.IThat<long?> source, long? minimum) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<sbyte, aweXpect.Core.IThat<sbyte>>, sbyte?> IsNotBetween(this aweXpect.Core.IThat<sbyte> source, sbyte? minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<sbyte, aweXpect.Core.IThat<sbyte?>>, sbyte?> IsNotBetween(this aweXpect.Core.IThat<sbyte?> source, sbyte? minimum) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<short, aweXpect.Core.IThat<short>>, short?> IsNotBetween(this aweXpect.Core.IThat<short> source, short? minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<short, aweXpect.Core.IThat<short?>>, short?> IsNotBetween(this aweXpect.Core.IThat<short?> source, short? minimum) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<uint, aweXpect.Core.IThat<uint>>, uint?> IsNotBetween(this aweXpect.Core.IThat<uint> source, uint? minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<uint, aweXpect.Core.IThat<uint?>>, uint?> IsNotBetween(this aweXpect.Core.IThat<uint?> source, uint? minimum) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<ulong, aweXpect.Core.IThat<ulong>>, ulong?> IsNotBetween(this aweXpect.Core.IThat<ulong> source, ulong? minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<ulong, aweXpect.Core.IThat<ulong?>>, ulong?> IsNotBetween(this aweXpect.Core.IThat<ulong?> source, ulong? minimum) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NumberToleranceResult<ushort, aweXpect.Core.IThat<ushort>>, ushort?> IsNotBetween(this aweXpect.Core.IThat<ushort> source, ushort? minimum) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.NullableNumberToleranceResult<ushort, aweXpect.Core.IThat<ushort?>>, ushort?> IsNotBetween(this aweXpect.Core.IThat<ushort?> source, ushort? minimum) { }
@@ -1470,31 +1365,24 @@ namespace aweXpect
         public static aweXpect.Results.NullableNumberToleranceResult<ushort, aweXpect.Core.IThat<ushort?>> IsOneOf(this aweXpect.Core.IThat<ushort?> source, System.Collections.Generic.IEnumerable<ushort> expected) { }
         public static aweXpect.Results.NullableNumberToleranceResult<ushort, aweXpect.Core.IThat<ushort?>> IsOneOf(this aweXpect.Core.IThat<ushort?> source, System.Collections.Generic.IEnumerable<ushort?> expected) { }
         public static aweXpect.Results.NullableNumberToleranceResult<ushort, aweXpect.Core.IThat<ushort?>> IsOneOf(this aweXpect.Core.IThat<ushort?> source, params ushort?[] expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<decimal, aweXpect.Core.IThat<decimal>> IsPositive(this aweXpect.Core.IThat<decimal> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<decimal?, aweXpect.Core.IThat<decimal?>> IsPositive(this aweXpect.Core.IThat<decimal?> source) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<double, aweXpect.Core.IThat<double>> IsPositive(this aweXpect.Core.IThat<double> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<double?, aweXpect.Core.IThat<double?>> IsPositive(this aweXpect.Core.IThat<double?> source) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<float, aweXpect.Core.IThat<float>> IsPositive(this aweXpect.Core.IThat<float> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<float?, aweXpect.Core.IThat<float?>> IsPositive(this aweXpect.Core.IThat<float?> source) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<int, aweXpect.Core.IThat<int>> IsPositive(this aweXpect.Core.IThat<int> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<int?, aweXpect.Core.IThat<int?>> IsPositive(this aweXpect.Core.IThat<int?> source) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<long, aweXpect.Core.IThat<long>> IsPositive(this aweXpect.Core.IThat<long> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<long?, aweXpect.Core.IThat<long?>> IsPositive(this aweXpect.Core.IThat<long?> source) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<sbyte, aweXpect.Core.IThat<sbyte>> IsPositive(this aweXpect.Core.IThat<sbyte> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<sbyte?, aweXpect.Core.IThat<sbyte?>> IsPositive(this aweXpect.Core.IThat<sbyte?> source) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<short, aweXpect.Core.IThat<short>> IsPositive(this aweXpect.Core.IThat<short> source) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<short?, aweXpect.Core.IThat<short?>> IsPositive(this aweXpect.Core.IThat<short?> source) { }
@@ -1703,41 +1591,27 @@ namespace aweXpect
     }
     public static class ThatTimeSpan
     {
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>>, System.TimeSpan?> IsBetween(this aweXpect.Core.IThat<System.TimeSpan> source, System.TimeSpan? minimum) { }
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsEqualTo(this aweXpect.Core.IThat<System.TimeSpan> source, System.TimeSpan? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsGreaterThan(this aweXpect.Core.IThat<System.TimeSpan> source, System.TimeSpan? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsGreaterThanOrEqualTo(this aweXpect.Core.IThat<System.TimeSpan> source, System.TimeSpan? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsLessThan(this aweXpect.Core.IThat<System.TimeSpan> source, System.TimeSpan? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsLessThanOrEqualTo(this aweXpect.Core.IThat<System.TimeSpan> source, System.TimeSpan? expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsNegative(this aweXpect.Core.IThat<System.TimeSpan> source) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>>, System.TimeSpan?> IsNotBetween(this aweXpect.Core.IThat<System.TimeSpan> source, System.TimeSpan? minimum) { }
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsNotEqualTo(this aweXpect.Core.IThat<System.TimeSpan> source, System.TimeSpan? unexpected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsNotGreaterThan(this aweXpect.Core.IThat<System.TimeSpan> source, System.TimeSpan? unexpected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsNotGreaterThanOrEqualTo(this aweXpect.Core.IThat<System.TimeSpan> source, System.TimeSpan? unexpected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsNotLessThan(this aweXpect.Core.IThat<System.TimeSpan> source, System.TimeSpan? unexpected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsNotLessThanOrEqualTo(this aweXpect.Core.IThat<System.TimeSpan> source, System.TimeSpan? unexpected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsNotNegative(this aweXpect.Core.IThat<System.TimeSpan> source) { }
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsNotOneOf(this aweXpect.Core.IThat<System.TimeSpan> source, System.Collections.Generic.IEnumerable<System.TimeSpan> unexpected) { }
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsNotOneOf(this aweXpect.Core.IThat<System.TimeSpan> source, System.Collections.Generic.IEnumerable<System.TimeSpan?> unexpected) { }
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsNotOneOf(this aweXpect.Core.IThat<System.TimeSpan> source, params System.TimeSpan?[] unexpected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsNotPositive(this aweXpect.Core.IThat<System.TimeSpan> source) { }
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsOneOf(this aweXpect.Core.IThat<System.TimeSpan> source, System.Collections.Generic.IEnumerable<System.TimeSpan> expected) { }
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsOneOf(this aweXpect.Core.IThat<System.TimeSpan> source, System.Collections.Generic.IEnumerable<System.TimeSpan?> expected) { }
         public static aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsOneOf(this aweXpect.Core.IThat<System.TimeSpan> source, params System.TimeSpan?[] expected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>> IsPositive(this aweXpect.Core.IThat<System.TimeSpan> source) { }
     }
     public static class ThatVersion

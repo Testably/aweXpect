@@ -17,7 +17,6 @@ public static partial class ThatNumber
 	/// <remarks>
 	///     Finite means neither infinity nor not a number (NaN).
 	/// </remarks>
-	[GuaranteesNotNull]
 	public static AndOrResult<TNumber, IThat<TNumber>> IsFinite<TNumber>(this IThat<TNumber> source)
 		where TNumber : struct, IFloatingPoint<TNumber>
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -126,7 +125,6 @@ public static partial class ThatNumber
 	///     Verifies that the subject is seen as finite (neither <see cref="float.IsInfinity" />
 	///     nor <see cref="float.IsNaN" />).
 	/// </summary>
-	[GuaranteesNotNull]
 	public static AndOrResult<float, IThat<float>> IsFinite(
 		this IThat<float> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -137,7 +135,6 @@ public static partial class ThatNumber
 	///     Verifies that the subject is seen as finite (neither <see cref="double.IsInfinity" />
 	///     nor <see cref="double.IsNaN" />).
 	/// </summary>
-	[GuaranteesNotNull]
 	public static AndOrResult<double, IThat<double>> IsFinite(
 		this IThat<double> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>

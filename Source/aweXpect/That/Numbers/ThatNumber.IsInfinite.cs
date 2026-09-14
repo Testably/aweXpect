@@ -14,7 +14,6 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is seen as infinite.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static AndOrResult<TNumber, IThat<TNumber>> IsInfinite<TNumber>(this IThat<TNumber> source)
 		where TNumber : struct, IFloatingPoint<TNumber>
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -117,7 +116,6 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is seen as infinite (<see cref="float.IsInfinity" />).
 	/// </summary>
-	[GuaranteesNotNull]
 	public static AndOrResult<float, IThat<float>> IsInfinite(this IThat<float> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsFloatInfiniteConstraint(it, grammars)),
@@ -126,7 +124,6 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is seen as infinite (<see cref="double.IsInfinity" />).
 	/// </summary>
-	[GuaranteesNotNull]
 	public static AndOrResult<double, IThat<double>> IsInfinite(
 		this IThat<double> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>

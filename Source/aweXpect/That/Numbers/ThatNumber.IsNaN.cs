@@ -14,7 +14,6 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is seen as not a number.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static AndOrResult<TNumber, IThat<TNumber>> IsNaN<TNumber>(this IThat<TNumber> source)
 		where TNumber : struct, IFloatingPoint<TNumber>
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -111,7 +110,6 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is seen as not a number (<see cref="float.NaN" />).
 	/// </summary>
-	[GuaranteesNotNull]
 	public static AndOrResult<float, IThat<float>> IsNaN(this IThat<float> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsFloatNaNConstraint(it, grammars)),
@@ -120,7 +118,6 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is seen as not a number (<see cref="double.NaN" />).
 	/// </summary>
-	[GuaranteesNotNull]
 	public static AndOrResult<double, IThat<double>> IsNaN(this IThat<double> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsDoubleNaNConstraint(it, grammars)),

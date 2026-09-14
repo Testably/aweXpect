@@ -13,7 +13,6 @@ public static partial class ThatTimeSpan
 	/// <summary>
 	///     Verifies that the subject is between the <paramref name="minimum" />…
 	/// </summary>
-	[GuaranteesNotNull]
 	public static BetweenResult<TimeToleranceResult<TimeSpan, IThat<TimeSpan>>, TimeSpan?> IsBetween(
 		this IThat<TimeSpan> source,
 		TimeSpan? minimum)
@@ -30,7 +29,6 @@ public static partial class ThatTimeSpan
 	/// <summary>
 	///     Verifies that the subject is not between the <paramref name="minimum" />…
 	/// </summary>
-	[GuaranteesNotNull]
 	public static BetweenResult<TimeToleranceResult<TimeSpan, IThat<TimeSpan>>, TimeSpan?> IsNotBetween(
 		this IThat<TimeSpan> source,
 		TimeSpan? minimum)

@@ -17,7 +17,6 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is negative.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static AndOrResult<TNumber, IThat<TNumber>> IsNegative<TNumber>(
 		this IThat<TNumber> source)
 		where TNumber : struct, INumber<TNumber>
@@ -101,7 +100,6 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is negative.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static AndOrResult<sbyte, IThat<sbyte>> IsNegative(
 		this IThat<sbyte> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -111,7 +109,6 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is negative.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static AndOrResult<short, IThat<short>> IsNegative(
 		this IThat<short> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -121,7 +118,6 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is negative.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static AndOrResult<int, IThat<int>> IsNegative(
 		this IThat<int> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -131,7 +127,6 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is negative.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static AndOrResult<long, IThat<long>> IsNegative(
 		this IThat<long> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -141,7 +136,6 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is negative.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static AndOrResult<float, IThat<float>> IsNegative(
 		this IThat<float> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -151,7 +145,6 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is negative.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static AndOrResult<double, IThat<double>> IsNegative(
 		this IThat<double> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -161,7 +154,6 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is negative.
 	/// </summary>
-	[GuaranteesNotNull]
 	public static AndOrResult<decimal, IThat<decimal>> IsNegative(
 		this IThat<decimal> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
