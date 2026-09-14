@@ -4,7 +4,7 @@ using System.Reflection;
 using aweXpect.Core.Metadata;
 using aweXpect.Equivalency;
 
-namespace aweXpect.Tests;
+namespace aweXpect.Core.Tests.Equivalency;
 
 public sealed class RequiresMemberMetadataTests
 {
@@ -26,29 +26,22 @@ public sealed class RequiresMemberMetadataTests
 	public async Task ShouldFindTheEquivalencyEntryPoints()
 	{
 		await That(EquivalencyEntryPoints().Select(method => method.Name).Distinct())
-			.IsEqualTo(["AreEquivalentTo", "Equivalent", "IsEquivalentTo", "IsNotEquivalentTo",]).InAnyOrder()
+			.IsEqualTo(["Compare",])
 			.Because("the reflection lookup must not silently degrade into an empty test set");
 	}
 
 	/// <remarks>
-	///     Every public method that takes equivalency options, directly or as a callback, lets a value reach the
-	///     comparison. The Core assembly is checked by its own test project, because this one builds against the
-	///     released Core outside Debug.
+	///     Every public method that takes equivalency options lets a value reach the comparison. The options types'
+	///     own equality members and property accessors merely carry the options around.
 	/// </remarks>
 	private static IEnumerable<MethodInfo> EquivalencyEntryPoints()
-		=> typeof(EquivalencyExtensions).Assembly.GetTypes()
+		=> typeof(EquivalencyComparison).Assembly.GetTypes()
 			.Where(type => type.IsPublic || type.IsNestedPublic)
 			.SelectMany(type => type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static |
 			                                    BindingFlags.DeclaredOnly))
 			.Where(method => !method.IsSpecialName &&
 			                 !typeof(EquivalencyOptions).IsAssignableFrom(method.DeclaringType) &&
-			                 method.GetParameters().Any(TakesEquivalencyOptions));
-
-	private static bool TakesEquivalencyOptions(ParameterInfo parameter)
-		=> parameter.ParameterType == typeof(EquivalencyOptions) ||
-		   (parameter.ParameterType is { IsGenericType: true, } type &&
-		    type.GetGenericTypeDefinition() == typeof(Func<,>) &&
-		    type.GetGenericArguments()[1] == typeof(EquivalencyOptions));
+			                 method.GetParameters().Any(parameter => parameter.ParameterType == typeof(EquivalencyOptions)));
 
 	private static bool IsMarked(MethodInfo method)
 		=> method.GetParameters().Any(parameter => parameter.IsDefined(typeof(RequiresMemberMetadataAttribute), false)) ||

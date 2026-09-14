@@ -57,7 +57,8 @@ internal static class EquivalencyMembers
 	/// </summary>
 	public static Func<object, object?>? FindField(Type type, string name, IncludeMembers includeMembers)
 	{
-		if (TryGetRegistered(type, out TypeMetadataRegistry.TypeMetadata? metadata) &&
+		if (includeMembers.HasFlag(IncludeMembers.Public) &&
+		    TryGetRegistered(type, out TypeMetadataRegistry.TypeMetadata? metadata) &&
 		    metadata.Fields.TryGetValue(name, out TypeMetadataRegistry.RegisteredMember? member))
 		{
 			return member.GetValue;
@@ -73,7 +74,8 @@ internal static class EquivalencyMembers
 	/// </summary>
 	public static Func<object, object?>? FindProperty(Type type, string name, IncludeMembers includeMembers)
 	{
-		if (TryGetRegistered(type, out TypeMetadataRegistry.TypeMetadata? metadata) &&
+		if (includeMembers.HasFlag(IncludeMembers.Public) &&
+		    TryGetRegistered(type, out TypeMetadataRegistry.TypeMetadata? metadata) &&
 		    metadata.Properties.TryGetValue(name, out TypeMetadataRegistry.RegisteredMember? member))
 		{
 			return member.GetValue;
