@@ -3660,6 +3660,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 12:00:34 2026 \u002B0200",
         "message": "fix!: reject a null list and a null subject in \u0060IsContainedIn\u0060 (#1091)"
+      },
+      {
+        "sha": "fd00414ee435780fd6fdc6c021c286c1c8a19701",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 13:29:59 2026 \u002B0200",
+        "message": "feat!: mark \u0060IsNotBetween\u0060 as \u0060GuaranteesNotNull\u0060 (#1092)"
       }
     ],
     "labels": [
@@ -4272,7 +4278,8 @@ window.BENCHMARK_DATA = {
       "17ec8fe6",
       "6d1fd9f2",
       "5fdcb1f5",
-      "6d14d7ab"
+      "6d14d7ab",
+      "fd00414e"
     ],
     "datasets": [
       {
@@ -4888,7 +4895,8 @@ window.BENCHMARK_DATA = {
           243.38492396899633,
           249.66410438219705,
           253.45660810470582,
-          263.6970933505467
+          263.6970933505467,
+          183.11750654073862
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5361,6 +5369,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6133,7 +6142,8 @@ window.BENCHMARK_DATA = {
           232.63954355035509,
           251.00914753400363,
           238.20291840235393,
-          241.76030870846338
+          241.76030870846338,
+          190.08391800948553
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6326,6 +6336,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -9966,6 +9977,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 12:00:34 2026 \u002B0200",
         "message": "fix!: reject a null list and a null subject in \u0060IsContainedIn\u0060 (#1091)"
+      },
+      {
+        "sha": "fd00414ee435780fd6fdc6c021c286c1c8a19701",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 13:29:59 2026 \u002B0200",
+        "message": "feat!: mark \u0060IsNotBetween\u0060 as \u0060GuaranteesNotNull\u0060 (#1092)"
       }
     ],
     "labels": [
@@ -10501,7 +10518,8 @@ window.BENCHMARK_DATA = {
       "17ec8fe6",
       "6d1fd9f2",
       "5fdcb1f5",
-      "6d14d7ab"
+      "6d14d7ab",
+      "fd00414e"
     ],
     "datasets": [
       {
@@ -11040,7 +11058,8 @@ window.BENCHMARK_DATA = {
           374133.0217285156,
           377747.7562825521,
           380885.13536783855,
-          377538.96295572916
+          377538.96295572916,
+          272909.063264974
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11584,7 +11603,8 @@ window.BENCHMARK_DATA = {
           542085,
           542084,
           542085,
-          542085
+          542085,
+          542084
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12131,7 +12151,8 @@ window.BENCHMARK_DATA = {
           2570248.724479167,
           2424088.3388020834,
           2607126.966796875,
-          2656590.2580915177
+          2656590.2580915177,
+          1761810.0951450893
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12675,7 +12696,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841647,
           4841651,
-          4841651
+          4841651,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16349,6 +16371,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 12:00:34 2026 \u002B0200",
         "message": "fix!: reject a null list and a null subject in \u0060IsContainedIn\u0060 (#1091)"
+      },
+      {
+        "sha": "fd00414ee435780fd6fdc6c021c286c1c8a19701",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 13:29:59 2026 \u002B0200",
+        "message": "feat!: mark \u0060IsNotBetween\u0060 as \u0060GuaranteesNotNull\u0060 (#1092)"
       }
     ],
     "labels": [
@@ -16961,7 +16989,8 @@ window.BENCHMARK_DATA = {
       "17ec8fe6",
       "6d1fd9f2",
       "5fdcb1f5",
-      "6d14d7ab"
+      "6d14d7ab",
+      "fd00414e"
     ],
     "datasets": [
       {
@@ -17577,7 +17606,8 @@ window.BENCHMARK_DATA = {
           443.52883034486035,
           475.8615978240967,
           458.6794052441915,
-          449.50483423868815
+          449.50483423868815,
+          354.6007298787435
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18050,6 +18080,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -18822,7 +18853,8 @@ window.BENCHMARK_DATA = {
           468.3997852461679,
           498.57393035888674,
           509.3773717880249,
-          495.2988224665324
+          495.2988224665324,
+          368.87855978012084
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19015,6 +19047,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -23117,6 +23150,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 12:00:34 2026 \u002B0200",
         "message": "fix!: reject a null list and a null subject in \u0060IsContainedIn\u0060 (#1091)"
+      },
+      {
+        "sha": "fd00414ee435780fd6fdc6c021c286c1c8a19701",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 13:29:59 2026 \u002B0200",
+        "message": "feat!: mark \u0060IsNotBetween\u0060 as \u0060GuaranteesNotNull\u0060 (#1092)"
       }
     ],
     "labels": [
@@ -23729,7 +23768,8 @@ window.BENCHMARK_DATA = {
       "17ec8fe6",
       "6d1fd9f2",
       "5fdcb1f5",
-      "6d14d7ab"
+      "6d14d7ab",
+      "fd00414e"
     ],
     "datasets": [
       {
@@ -24345,7 +24385,8 @@ window.BENCHMARK_DATA = {
           249.44472227777754,
           269.57373355229697,
           260.13586384909496,
-          263.9802384058634
+          263.9802384058634,
+          193.41651456696647
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -24859,6 +24900,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -25590,7 +25632,8 @@ window.BENCHMARK_DATA = {
           241.04878514607748,
           244.01057580312093,
           247.2639165242513,
-          242.94598509470623
+          242.94598509470623,
+          189.79524131615958
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -25783,6 +25826,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -29885,6 +29929,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 12:00:34 2026 \u002B0200",
         "message": "fix!: reject a null list and a null subject in \u0060IsContainedIn\u0060 (#1091)"
+      },
+      {
+        "sha": "fd00414ee435780fd6fdc6c021c286c1c8a19701",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 13:29:59 2026 \u002B0200",
+        "message": "feat!: mark \u0060IsNotBetween\u0060 as \u0060GuaranteesNotNull\u0060 (#1092)"
       }
     ],
     "labels": [
@@ -30497,7 +30547,8 @@ window.BENCHMARK_DATA = {
       "17ec8fe6",
       "6d1fd9f2",
       "5fdcb1f5",
-      "6d14d7ab"
+      "6d14d7ab",
+      "fd00414e"
     ],
     "datasets": [
       {
@@ -31113,7 +31164,8 @@ window.BENCHMARK_DATA = {
           438.546740600041,
           470.68008817036946,
           445.21608165105187,
-          456.6439706166585
+          456.6439706166585,
+          347.501420434316
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31586,6 +31638,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -32358,7 +32411,8 @@ window.BENCHMARK_DATA = {
           1178.6956462860107,
           1177.0053024291992,
           1180.4894489875207,
-          1200.081512069702
+          1200.081512069702,
+          855.7843433788845
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32787,6 +32841,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -36653,6 +36708,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 12:00:34 2026 \u002B0200",
         "message": "fix!: reject a null list and a null subject in \u0060IsContainedIn\u0060 (#1091)"
+      },
+      {
+        "sha": "fd00414ee435780fd6fdc6c021c286c1c8a19701",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 13:29:59 2026 \u002B0200",
+        "message": "feat!: mark \u0060IsNotBetween\u0060 as \u0060GuaranteesNotNull\u0060 (#1092)"
       }
     ],
     "labels": [
@@ -37265,7 +37326,8 @@ window.BENCHMARK_DATA = {
       "17ec8fe6",
       "6d1fd9f2",
       "5fdcb1f5",
-      "6d14d7ab"
+      "6d14d7ab",
+      "fd00414e"
     ],
     "datasets": [
       {
@@ -37881,7 +37943,8 @@ window.BENCHMARK_DATA = {
           1935.638449350993,
           1867.5488277435302,
           1901.679819869995,
-          1896.2060609545026
+          1896.2060609545026,
+          1445.4109486171178
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38354,6 +38417,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -39126,7 +39190,8 @@ window.BENCHMARK_DATA = {
           1302.501866204398,
           1340.2610610961915,
           1308.885598863874,
-          1361.9800455729167
+          1361.9800455729167,
+          1004.3867805480957
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39319,6 +39384,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -43421,6 +43487,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 12:00:34 2026 \u002B0200",
         "message": "fix!: reject a null list and a null subject in \u0060IsContainedIn\u0060 (#1091)"
+      },
+      {
+        "sha": "fd00414ee435780fd6fdc6c021c286c1c8a19701",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 13:29:59 2026 \u002B0200",
+        "message": "feat!: mark \u0060IsNotBetween\u0060 as \u0060GuaranteesNotNull\u0060 (#1092)"
       }
     ],
     "labels": [
@@ -44033,7 +44105,8 @@ window.BENCHMARK_DATA = {
       "17ec8fe6",
       "6d1fd9f2",
       "5fdcb1f5",
-      "6d14d7ab"
+      "6d14d7ab",
+      "fd00414e"
     ],
     "datasets": [
       {
@@ -44649,7 +44722,8 @@ window.BENCHMARK_DATA = {
           2468.7668718973796,
           2454.1506958007812,
           2482.5264661153155,
-          2531.095802307129
+          2531.095802307129,
+          1894.7102771759032
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -45122,6 +45196,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -45894,7 +45969,8 @@ window.BENCHMARK_DATA = {
           26020.990515572685,
           19912.0600789388,
           27732.19226989746,
-          26807.29797973633
+          26807.29797973633,
+          14984.105593167818
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -46512,6 +46588,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471,
           33471,
