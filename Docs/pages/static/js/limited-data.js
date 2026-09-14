@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "11994e6d2350c42fb2b19c2626e999a31a7aa891",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
-        "message": "feat: support \u0060IgnoringIndentation()\u0060 in the string expectations (#1032)"
-      },
-      {
         "sha": "affdbc378d700ce40d2bfe4621501abb2368882f",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 19:22:42 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 14:24:31 2026 \u002B0200",
         "message": "fix: keep the resource sampler from replacing the build\u0027s exit code"
+      },
+      {
+        "sha": "48275fcff734ce8c6b97898142dbaaa306c155b2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 15:27:55 2026 \u002B0200",
+        "message": "fix!: fail a null subject for the negated form of an expectation (#1094)"
       }
     ],
     "labels": [
-      "11994e6d",
       "affdbc37",
       "aed9d35c",
       "eef3e6a3",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "6d14d7ab",
       "fd00414e",
       "dfdf055d",
-      "07659ebf"
+      "07659ebf",
+      "48275fcf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          286.4416621843974,
           191.0487357934316,
           220.6771111647288,
           222.33497150739035,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           263.6970933505467,
           183.11750654073862,
           241.6897472313472,
-          261.35009473164877
+          261.35009473164877,
+          202.0682702700297
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          262.62074750264486,
           208.36846761703492,
           218.34737292925516,
           201.06839975288935,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           241.76030870846338,
           190.08391800948553,
           249.49964272181194,
-          248.91758947372438
+          248.91758947372438,
+          193.95771493911744
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "11994e6d2350c42fb2b19c2626e999a31a7aa891",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
-        "message": "feat: support \u0060IgnoringIndentation()\u0060 in the string expectations (#1032)"
-      },
-      {
         "sha": "affdbc378d700ce40d2bfe4621501abb2368882f",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 19:22:42 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 14:24:31 2026 \u002B0200",
         "message": "fix: keep the resource sampler from replacing the build\u0027s exit code"
+      },
+      {
+        "sha": "48275fcff734ce8c6b97898142dbaaa306c155b2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 15:27:55 2026 \u002B0200",
+        "message": "fix!: fail a null subject for the negated form of an expectation (#1094)"
       }
     ],
     "labels": [
-      "11994e6d",
       "affdbc37",
       "aed9d35c",
       "eef3e6a3",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "6d14d7ab",
       "fd00414e",
       "dfdf055d",
-      "07659ebf"
+      "07659ebf",
+      "48275fcf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          323745.7591271034,
           238487.37515694756,
           242433.01806640625,
           243159.89986979167,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           377538.96295572916,
           272909.063264974,
           310160.52689034597,
-          384797.04899088544
+          384797.04899088544,
+          288932.6270833333
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          335444,
           335442,
           335444,
           335444,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           542085,
           542084,
           542084,
-          542085
+          542085,
+          542084
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2773380.45625,
           1946460.4822265625,
           2066123.7115885417,
           1905257.0578962055,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2656590.2580915177,
           1761810.0951450893,
           1961056.0255301339,
-          2694216.7727864585
+          2694216.7727864585,
+          1919859.78125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841647,
           4841648,
           4841647,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841647,
           4841610,
-          4841651
+          4841651,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "11994e6d2350c42fb2b19c2626e999a31a7aa891",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
-        "message": "feat: support \u0060IgnoringIndentation()\u0060 in the string expectations (#1032)"
-      },
       {
         "sha": "affdbc378d700ce40d2bfe4621501abb2368882f",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 14:24:31 2026 \u002B0200",
         "message": "fix: keep the resource sampler from replacing the build\u0027s exit code"
+      },
+      {
+        "sha": "48275fcff734ce8c6b97898142dbaaa306c155b2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 15:27:55 2026 \u002B0200",
+        "message": "fix!: fail a null subject for the negated form of an expectation (#1094)"
       }
     ],
     "labels": [
-      "11994e6d",
       "affdbc37",
       "aed9d35c",
       "eef3e6a3",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "6d14d7ab",
       "fd00414e",
       "dfdf055d",
-      "07659ebf"
+      "07659ebf",
+      "48275fcf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          521.6060015814645,
           421.632573668162,
           408.61175231933595,
           384.1228542327881,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           449.50483423868815,
           354.6007298787435,
           417.8039389610291,
-          515.1616793950399
+          515.1616793950399,
+          388.25114046732585
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          517.7070039113363,
           427.9677768389384,
           453.5224277496338,
           425.5202818552653,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           495.2988224665324,
           368.87855978012084,
           460.89590808323453,
-          510.66075089772545
+          510.66075089772545,
+          444.05623321533204
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "11994e6d2350c42fb2b19c2626e999a31a7aa891",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
-        "message": "feat: support \u0060IgnoringIndentation()\u0060 in the string expectations (#1032)"
-      },
-      {
         "sha": "affdbc378d700ce40d2bfe4621501abb2368882f",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 19:22:42 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 14:24:31 2026 \u002B0200",
         "message": "fix: keep the resource sampler from replacing the build\u0027s exit code"
+      },
+      {
+        "sha": "48275fcff734ce8c6b97898142dbaaa306c155b2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 15:27:55 2026 \u002B0200",
+        "message": "fix!: fail a null subject for the negated form of an expectation (#1094)"
       }
     ],
     "labels": [
-      "11994e6d",
       "affdbc37",
       "aed9d35c",
       "eef3e6a3",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "6d14d7ab",
       "fd00414e",
       "dfdf055d",
-      "07659ebf"
+      "07659ebf",
+      "48275fcf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          274.26365219751995,
           199.57252311706543,
           229.3678126970927,
           203.26784507433572,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           263.9802384058634,
           193.41651456696647,
           253.78392321268717,
-          266.98263822283064
+          266.98263822283064,
+          215.05497576395672
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          267.2180280049642,
           209.31265878677368,
           233.34098466237387,
           203.78753784724645,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           242.94598509470623,
           189.79524131615958,
           266.45659490994046,
-          251.55838861465455
+          251.55838861465455,
+          193.71849513053894
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "11994e6d2350c42fb2b19c2626e999a31a7aa891",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
-        "message": "feat: support \u0060IgnoringIndentation()\u0060 in the string expectations (#1032)"
-      },
-      {
         "sha": "affdbc378d700ce40d2bfe4621501abb2368882f",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 19:22:42 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 14:24:31 2026 \u002B0200",
         "message": "fix: keep the resource sampler from replacing the build\u0027s exit code"
+      },
+      {
+        "sha": "48275fcff734ce8c6b97898142dbaaa306c155b2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 15:27:55 2026 \u002B0200",
+        "message": "fix!: fail a null subject for the negated form of an expectation (#1094)"
       }
     ],
     "labels": [
-      "11994e6d",
       "affdbc37",
       "aed9d35c",
       "eef3e6a3",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "6d14d7ab",
       "fd00414e",
       "dfdf055d",
-      "07659ebf"
+      "07659ebf",
+      "48275fcf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          498.9076719965254,
           391.83385581970214,
           392.44809595743817,
           390.11140654881797,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           456.6439706166585,
           347.501420434316,
           388.8420433998108,
-          454.9438359896342
+          454.9438359896342,
+          401.7921457608541
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1381.4389188130697,
           975.4726434071858,
           1043.9087708791096,
           935.6467853546143,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1200.081512069702,
           855.7843433788845,
           1076.598162206014,
-          1192.530027516683
+          1192.530027516683,
+          1038.105400466919
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "11994e6d2350c42fb2b19c2626e999a31a7aa891",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
-        "message": "feat: support \u0060IgnoringIndentation()\u0060 in the string expectations (#1032)"
-      },
-      {
         "sha": "affdbc378d700ce40d2bfe4621501abb2368882f",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 19:22:42 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 14:24:31 2026 \u002B0200",
         "message": "fix: keep the resource sampler from replacing the build\u0027s exit code"
+      },
+      {
+        "sha": "48275fcff734ce8c6b97898142dbaaa306c155b2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 15:27:55 2026 \u002B0200",
+        "message": "fix!: fail a null subject for the negated form of an expectation (#1094)"
       }
     ],
     "labels": [
-      "11994e6d",
       "affdbc37",
       "aed9d35c",
       "eef3e6a3",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "6d14d7ab",
       "fd00414e",
       "dfdf055d",
-      "07659ebf"
+      "07659ebf",
+      "48275fcf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1961.5972730000815,
           1528.6663879394532,
           1549.8642019907634,
           1520.8064758300782,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1896.2060609545026,
           1445.4109486171178,
           1263.9480908257622,
-          1923.368877919515
+          1923.368877919515,
+          1623.953402382987
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1419.2282477787562,
           1101.0765909467425,
           1157.9394217173258,
           1091.960484822591,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1361.9800455729167,
           1004.3867805480957,
           1267.9197845458984,
-          1365.60766850985
+          1365.60766850985,
+          1131.3129965464275
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "11994e6d2350c42fb2b19c2626e999a31a7aa891",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 6 11:56:36 2026 \u002B0200",
-        "message": "feat: support \u0060IgnoringIndentation()\u0060 in the string expectations (#1032)"
-      },
-      {
         "sha": "affdbc378d700ce40d2bfe4621501abb2368882f",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 6 19:22:42 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 14:24:31 2026 \u002B0200",
         "message": "fix: keep the resource sampler from replacing the build\u0027s exit code"
+      },
+      {
+        "sha": "48275fcff734ce8c6b97898142dbaaa306c155b2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 14 15:27:55 2026 \u002B0200",
+        "message": "fix!: fail a null subject for the negated form of an expectation (#1094)"
       }
     ],
     "labels": [
-      "11994e6d",
       "affdbc37",
       "aed9d35c",
       "eef3e6a3",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "6d14d7ab",
       "fd00414e",
       "dfdf055d",
-      "07659ebf"
+      "07659ebf",
+      "48275fcf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2662.4832257588705,
           2038.1347600496733,
           2030.3624051411946,
           2029.514542388916,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2531.095802307129,
           1894.7102771759032,
           1661.151132447379,
-          2614.6848622639973
+          2614.6848622639973,
+          2052.538283421443
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27737.258825683595,
           16199.068056233724,
           16905.009329223634,
           16022.333467610677,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           26807.29797973633,
           14984.105593167818,
           15686.815439860025,
-          26792.870127360027
+          26792.870127360027,
+          16741.85625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33471,
           33471,
           33471,
@@ -4242,6 +4241,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
