@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -7,6 +8,14 @@ namespace aweXpect.Equivalency;
 
 internal static class IncludeMembersExtensions
 {
+	/// <remarks>
+	///     The members of a type are looked up once per member of the compared object, so the filtered result is
+	///     kept per type and option.
+	/// </remarks>
+	private static readonly ConcurrentDictionary<(Type, IncludeMembers), FieldInfo[]> Fields = new();
+
+	private static readonly ConcurrentDictionary<(Type, IncludeMembers), PropertyInfo[]> Properties = new();
+
 	public static BindingFlags GetBindingFlags(this IncludeMembers includeMembers)
 	{
 		if (includeMembers == IncludeMembers.Public)
@@ -26,8 +35,9 @@ internal static class IncludeMembersExtensions
 			return Enumerable.Empty<FieldInfo>();
 		}
 
-		return MostDerived(type.GetFields(GetBindingFlags(includeMembers))
-			.Where(field => Includes(includeMembers, field.IsPublic, field.IsAssembly, field.IsPrivate)));
+		return Fields.GetOrAdd((type, includeMembers), static key
+			=> MostDerived(key.Item1.GetFields(GetBindingFlags(key.Item2))
+				.Where(field => Includes(key.Item2, field.IsPublic, field.IsAssembly, field.IsPrivate))));
 	}
 
 	/// <remarks>
@@ -40,13 +50,14 @@ internal static class IncludeMembersExtensions
 			return Enumerable.Empty<PropertyInfo>();
 		}
 
-		return MostDerived(type.GetProperties(GetBindingFlags(includeMembers))
-			.Where(property => property.CanRead && property.GetIndexParameters().Length == 0)
-			.Where(property =>
-			{
-				MethodInfo getter = property.GetGetMethod(true)!;
-				return Includes(includeMembers, getter.IsPublic, getter.IsAssembly, getter.IsPrivate);
-			}));
+		return Properties.GetOrAdd((type, includeMembers), static key
+			=> MostDerived(key.Item1.GetProperties(GetBindingFlags(key.Item2))
+				.Where(property => property.CanRead && property.GetIndexParameters().Length == 0)
+				.Where(property =>
+				{
+					MethodInfo getter = property.GetGetMethod(true)!;
+					return Includes(key.Item2, getter.IsPublic, getter.IsAssembly, getter.IsPrivate);
+				})));
 	}
 
 	/// <remarks>
@@ -63,7 +74,7 @@ internal static class IncludeMembersExtensions
 	///     by name ambiguous. Only the declaration on the most derived type takes part, which is also the one a
 	///     registration provides.
 	/// </remarks>
-	private static IEnumerable<TMember> MostDerived<TMember>(IEnumerable<TMember> members)
+	private static TMember[] MostDerived<TMember>(IEnumerable<TMember> members)
 		where TMember : MemberInfo
 	{
 		Dictionary<string, TMember> byName = new(StringComparer.Ordinal);
@@ -82,6 +93,6 @@ internal static class IncludeMembersExtensions
 			}
 		}
 
-		return names.Select(name => byName[name]);
+		return names.Select(name => byName[name]).ToArray();
 	}
 }
