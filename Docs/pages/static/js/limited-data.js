@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "f37799d9463485c16a57bc1e164b8aa50637a0dd",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 5 08:41:06 2026 \u002B0200",
-        "message": "chore: add mergify auto-merge for dependabot PRs (#1020)"
-      },
-      {
         "sha": "99b68991a924c95da3786bdc1dd5f8857c2e9ced",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 5 16:40:11 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 11:02:17 2026 \u002B0200",
         "message": "feat: add comparison expectations for Version (#1085)"
+      },
+      {
+        "sha": "5fdcb1f59ebb651c58adbf7b37ccc83c09ab6e0f",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 14 09:06:43 2026 \u002B0000",
+        "message": "chore: Bump TUnit and TUnit.Assertions (#1088)"
       }
     ],
     "labels": [
-      "f37799d9",
       "99b68991",
       "964906fc",
       "520b2403",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "58290e80",
       "0ee271ea",
       "17ec8fe6",
-      "6d1fd9f2"
+      "6d1fd9f2",
+      "5fdcb1f5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          261.8702751159668,
           260.8233981927236,
           187.39688928922018,
           263.55120881398517,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           259.71256140300204,
           273.5617689352769,
           243.38492396899633,
-          249.66410438219705
+          249.66410438219705,
+          253.45660810470582
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          240.63339359419686,
           253.01398871739704,
           207.76081890719277,
           249.12790355682372,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           247.47003167470297,
           295.36873945823083,
           232.63954355035509,
-          251.00914753400363
+          251.00914753400363,
+          238.20291840235393
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "f37799d9463485c16a57bc1e164b8aa50637a0dd",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 5 08:41:06 2026 \u002B0200",
-        "message": "chore: add mergify auto-merge for dependabot PRs (#1020)"
-      },
-      {
         "sha": "99b68991a924c95da3786bdc1dd5f8857c2e9ced",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 5 16:40:11 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 11:02:17 2026 \u002B0200",
         "message": "feat: add comparison expectations for Version (#1085)"
+      },
+      {
+        "sha": "5fdcb1f59ebb651c58adbf7b37ccc83c09ab6e0f",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 14 09:06:43 2026 \u002B0000",
+        "message": "chore: Bump TUnit and TUnit.Assertions (#1088)"
       }
     ],
     "labels": [
-      "f37799d9",
       "99b68991",
       "964906fc",
       "520b2403",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "58290e80",
       "0ee271ea",
       "17ec8fe6",
-      "6d1fd9f2"
+      "6d1fd9f2",
+      "5fdcb1f5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          312238.31331380206,
           298965.4108886719,
           236163.94596354166,
           327566.77659254806,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           401143.07958984375,
           399767.38720703125,
           374133.0217285156,
-          377747.7562825521
+          377747.7562825521,
+          380885.13536783855
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          335444,
           335444,
           335442,
           335444,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           542085,
           542084,
           542085,
-          542084
+          542084,
+          542085
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2727141.603645833,
           2374673.901785714,
           1887719.546595982,
           2708150.0167410714,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2635227.4921875,
           2493686.390625,
           2570248.724479167,
-          2424088.3388020834
+          2424088.3388020834,
+          2607126.966796875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841648,
           4841647,
           4841651,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841635,
           4841651,
-          4841647
+          4841647,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "f37799d9463485c16a57bc1e164b8aa50637a0dd",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 5 08:41:06 2026 \u002B0200",
-        "message": "chore: add mergify auto-merge for dependabot PRs (#1020)"
-      },
       {
         "sha": "99b68991a924c95da3786bdc1dd5f8857c2e9ced",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 11:02:17 2026 \u002B0200",
         "message": "feat: add comparison expectations for Version (#1085)"
+      },
+      {
+        "sha": "5fdcb1f59ebb651c58adbf7b37ccc83c09ab6e0f",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 14 09:06:43 2026 \u002B0000",
+        "message": "chore: Bump TUnit and TUnit.Assertions (#1088)"
       }
     ],
     "labels": [
-      "f37799d9",
       "99b68991",
       "964906fc",
       "520b2403",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "58290e80",
       "0ee271ea",
       "17ec8fe6",
-      "6d1fd9f2"
+      "6d1fd9f2",
+      "5fdcb1f5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          492.20544007619225,
           509.43494784037273,
           372.76982164382935,
           503.7450442314148,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           466.5715479214986,
           518.9379989917462,
           443.52883034486035,
-          475.8615978240967
+          475.8615978240967,
+          458.6794052441915
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          528.7770683924357,
           492.5379686355591,
           394.07516254697526,
           487.83619356155396,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           494.53349374135337,
           568.9296937355629,
           468.3997852461679,
-          498.57393035888674
+          498.57393035888674,
+          509.3773717880249
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "f37799d9463485c16a57bc1e164b8aa50637a0dd",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 5 08:41:06 2026 \u002B0200",
-        "message": "chore: add mergify auto-merge for dependabot PRs (#1020)"
-      },
-      {
         "sha": "99b68991a924c95da3786bdc1dd5f8857c2e9ced",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 5 16:40:11 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 11:02:17 2026 \u002B0200",
         "message": "feat: add comparison expectations for Version (#1085)"
+      },
+      {
+        "sha": "5fdcb1f59ebb651c58adbf7b37ccc83c09ab6e0f",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 14 09:06:43 2026 \u002B0000",
+        "message": "chore: Bump TUnit and TUnit.Assertions (#1088)"
       }
     ],
     "labels": [
-      "f37799d9",
       "99b68991",
       "964906fc",
       "520b2403",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "58290e80",
       "0ee271ea",
       "17ec8fe6",
-      "6d1fd9f2"
+      "6d1fd9f2",
+      "5fdcb1f5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          263.992242370333,
           262.85993460246493,
           195.24499454498292,
           266.67754578590393,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           269.3935879389445,
           302.6372409820557,
           249.44472227777754,
-          269.57373355229697
+          269.57373355229697,
+          260.13586384909496
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          252.77559280395508,
           246.28508731297083,
           202.3700886408488,
           252.25035781126755,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           248.65455646514891,
           319.19809678622653,
           241.04878514607748,
-          244.01057580312093
+          244.01057580312093,
+          247.2639165242513
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "f37799d9463485c16a57bc1e164b8aa50637a0dd",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 5 08:41:06 2026 \u002B0200",
-        "message": "chore: add mergify auto-merge for dependabot PRs (#1020)"
-      },
-      {
         "sha": "99b68991a924c95da3786bdc1dd5f8857c2e9ced",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 5 16:40:11 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 11:02:17 2026 \u002B0200",
         "message": "feat: add comparison expectations for Version (#1085)"
+      },
+      {
+        "sha": "5fdcb1f59ebb651c58adbf7b37ccc83c09ab6e0f",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 14 09:06:43 2026 \u002B0000",
+        "message": "chore: Bump TUnit and TUnit.Assertions (#1088)"
       }
     ],
     "labels": [
-      "f37799d9",
       "99b68991",
       "964906fc",
       "520b2403",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "58290e80",
       "0ee271ea",
       "17ec8fe6",
-      "6d1fd9f2"
+      "6d1fd9f2",
+      "5fdcb1f5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          468.5110655512129,
           481.9711998939514,
           381.2699041366577,
           476.6364890416463,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           465.443952592214,
           498.3817323684692,
           438.546740600041,
-          470.68008817036946
+          470.68008817036946,
+          445.21608165105187
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1206.7439642588297,
           1252.2308293751307,
           955.3100690841675,
           1237.353496424357,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1205.1778465270995,
           1367.508293560573,
           1178.6956462860107,
-          1177.0053024291992
+          1177.0053024291992,
+          1180.4894489875207
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "f37799d9463485c16a57bc1e164b8aa50637a0dd",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 5 08:41:06 2026 \u002B0200",
-        "message": "chore: add mergify auto-merge for dependabot PRs (#1020)"
-      },
-      {
         "sha": "99b68991a924c95da3786bdc1dd5f8857c2e9ced",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 5 16:40:11 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 11:02:17 2026 \u002B0200",
         "message": "feat: add comparison expectations for Version (#1085)"
+      },
+      {
+        "sha": "5fdcb1f59ebb651c58adbf7b37ccc83c09ab6e0f",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 14 09:06:43 2026 \u002B0000",
+        "message": "chore: Bump TUnit and TUnit.Assertions (#1088)"
       }
     ],
     "labels": [
-      "f37799d9",
       "99b68991",
       "964906fc",
       "520b2403",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "58290e80",
       "0ee271ea",
       "17ec8fe6",
-      "6d1fd9f2"
+      "6d1fd9f2",
+      "5fdcb1f5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1951.43681640625,
           1964.588737487793,
           1527.452621459961,
           2047.8017865498862,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1896.5535133361816,
           1763.101915105184,
           1935.638449350993,
-          1867.5488277435302
+          1867.5488277435302,
+          1901.679819869995
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1341.0697611490884,
           1359.1450143178304,
           1078.9776429396409,
           1399.8545087178547,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1362.6844951084681,
           1491.4880906513758,
           1302.501866204398,
-          1340.2610610961915
+          1340.2610610961915,
+          1308.885598863874
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "f37799d9463485c16a57bc1e164b8aa50637a0dd",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 5 08:41:06 2026 \u002B0200",
-        "message": "chore: add mergify auto-merge for dependabot PRs (#1020)"
-      },
-      {
         "sha": "99b68991a924c95da3786bdc1dd5f8857c2e9ced",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 5 16:40:11 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 11:02:17 2026 \u002B0200",
         "message": "feat: add comparison expectations for Version (#1085)"
+      },
+      {
+        "sha": "5fdcb1f59ebb651c58adbf7b37ccc83c09ab6e0f",
+        "author": "dependabot[bot]",
+        "date": "Mon Sep 14 09:06:43 2026 \u002B0000",
+        "message": "chore: Bump TUnit and TUnit.Assertions (#1088)"
       }
     ],
     "labels": [
-      "f37799d9",
       "99b68991",
       "964906fc",
       "520b2403",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "58290e80",
       "0ee271ea",
       "17ec8fe6",
-      "6d1fd9f2"
+      "6d1fd9f2",
+      "5fdcb1f5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2598.736553464617,
           2612.8094171796524,
           2052.6709531148276,
           2712.830554707845,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2544.174378967285,
           2239.05790125529,
           2468.7668718973796,
-          2454.1506958007812
+          2454.1506958007812,
+          2482.5264661153155
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27103.36249593099,
           20963.565364583334,
           16551.361726888023,
           28598.32417515346,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           26392.498586801383,
           24298.394321695963,
           26020.990515572685,
-          19912.0600789388
+          19912.0600789388,
+          27732.19226989746
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33471,
           33471,
           33471,
@@ -4241,6 +4240,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471
         ],
