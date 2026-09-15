@@ -190,6 +190,7 @@ await Expect.That(subject).HasYear().GreaterThan(2023);
 await Expect.That(subject).HasYear().GreaterThanOrEqualTo(2024);
 await Expect.That(subject).HasYear().LessThanOrEqualTo(2024);
 await Expect.That(subject).HasYear().LessThan(2025);
+await Expect.That(subject).HasYear().Between(2000).And(2024);
 ```
 
 ## Default Tolerance

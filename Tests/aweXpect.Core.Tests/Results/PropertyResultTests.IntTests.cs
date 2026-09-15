@@ -8,6 +8,76 @@ public sealed partial class PropertyResultTests
 	public sealed class IntTests
 	{
 		[Fact]
+		public async Task Between_ShouldTriggerValidationForMaximum()
+		{
+			Signaler<int?> signal = new();
+			PropertyResult.Int<string> sut = new(new Dummy(), _ => 0, "foo", (e, _) =>
+			{
+				signal.Signal(e);
+			});
+
+			_ = sut.Between(42).And(43);
+
+			await That(signal).Signaled().With(e => e == 43);
+		}
+
+		[Fact]
+		public async Task Between_ShouldTriggerValidationForMinimum()
+		{
+			Signaler<int?> signal = new();
+			PropertyResult.Int<string> sut = new(new Dummy(), _ => 0, "foo", (e, _) =>
+			{
+				signal.Signal(e);
+			});
+
+			_ = sut.Between(42).And(43);
+
+			await That(signal).Signaled().With(e => e == 42);
+		}
+
+		[Fact]
+		public async Task Between_ShouldVerifyThatActualIsBetweenMinimumAndMaximum()
+		{
+			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
+
+			MyClass? result = await sut.Between(41).And(43);
+
+			await That(result?.IntValue).IsEqualTo(42);
+		}
+
+		[Fact]
+		public async Task Between_WhenActualIsOutsideTheRange_ShouldFail()
+		{
+			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
+
+			async Task Act()
+				=> await sut.Between(43).And(44);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has int value between 43 and 44,
+				             but it had int value 42
+				             """);
+		}
+
+		[Fact]
+		public async Task Between_WhenSubjectIsNull_ShouldFail()
+		{
+			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValueOfNullSubject();
+
+			async Task Act()
+				=> await sut.Between(41).And(43);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has int value between 41 and 43,
+				             but it was <null>
+				             """);
+		}
+
+		[Fact]
 		public async Task EqualTo_ShouldTriggerValidation()
 		{
 			Signaler<int?> signal = new();

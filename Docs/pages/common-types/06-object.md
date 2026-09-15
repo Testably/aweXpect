@@ -152,6 +152,6 @@ period:
 List<Track> tracks = new();
 // Start a background task that adds items to `tracks`
 
-await Expect.That(tracks).CompliesWith(x => x.HasCount().AtLeast(4)).Within(2.Seconds());
+await Expect.That(tracks).CompliesWith(x => x.HasCount().GreaterThanOrEqualTo(4)).Within(2.Seconds());
 // using aweXpect.Chronology
 ```

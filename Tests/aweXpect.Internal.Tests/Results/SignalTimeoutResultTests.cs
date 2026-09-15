@@ -6,13 +6,13 @@ using aweXpect.Signaling;
 
 namespace aweXpect.Internal.Tests.Results;
 
-public sealed class SignalCountResultTests
+public sealed class SignalTimeoutResultTests
 {
 	[Fact]
 	public async Task Generic_ShouldBeOptionsProvider_ForPredicateOptions()
 	{
 		SignalerOptions<int> options = new();
-		SignalCountResult<int> sut = CreateSut(options);
+		SignalTimeoutResult<int> sut = CreateSut(options);
 
 		await That(sut).Is<IOptionsProvider<SignalerOptions>>()
 			.Whose(x => x.Options, it => it.IsSameAs(options));
@@ -22,29 +22,29 @@ public sealed class SignalCountResultTests
 	public async Task ShouldBeOptionsProvider_ForPredicateOptions()
 	{
 		SignalerOptions options = new();
-		SignalCountResult sut = CreateSut(options);
+		SignalTimeoutResult sut = CreateSut(options);
 
 		await That(sut).Is<IOptionsProvider<SignalerOptions>>()
 			.Whose(x => x.Options, it => it.IsSameAs(options));
 	}
 
-	private static SignalCountResult<TParameter> CreateSut<TParameter>(SignalerOptions<TParameter> options)
+	private static SignalTimeoutResult<TParameter> CreateSut<TParameter>(SignalerOptions<TParameter> options)
 	{
 		Signaler<TParameter> signaler = new();
 #pragma warning disable aweXpect0001
 		IThat<Signaler<TParameter>> source = That(signaler);
 #pragma warning restore aweXpect0001
-		return new SignalCountResult<TParameter>(source.Get().ExpectationBuilder,
-			source, new Quantifier(), options);
+		return new SignalTimeoutResult<TParameter>(source.Get().ExpectationBuilder,
+			source, options);
 	}
 
-	private static SignalCountResult CreateSut(SignalerOptions options)
+	private static SignalTimeoutResult CreateSut(SignalerOptions options)
 	{
 		Signaler signaler = new();
 #pragma warning disable aweXpect0001
 		IThat<Signaler> source = That(signaler);
 #pragma warning restore aweXpect0001
-		return new SignalCountResult(source.Get().ExpectationBuilder,
-			source, new Quantifier(), options);
+		return new SignalTimeoutResult(source.Get().ExpectationBuilder,
+			source, options);
 	}
 }

@@ -136,6 +136,29 @@ public static class PropertyResult
 							$"has {propertyExpression} less than or equal to {Formatter.Format(expected)}")),
 				subject);
 		}
+
+		/// <summary>
+		///     …is between the <paramref name="minimum" />…
+		/// </summary>
+		public BetweenResult<AndOrResult<TItem, IThat<TItem>>, int?> Between(
+			int? minimum)
+		{
+			validation?.Invoke(minimum, nameof(minimum));
+			return new BetweenResult<AndOrResult<TItem, IThat<TItem>>, int?>(maximum =>
+			{
+				validation?.Invoke(maximum, nameof(maximum));
+				return new AndOrResult<TItem, IThat<TItem>>(subject.Get().ExpectationBuilder
+						.AddConstraint((it, grammars) =>
+							new StructPropertyConstraint<TItem, int>(
+								it, grammars,
+								minimum,
+								mapper,
+								propertyExpression,
+								(a, e) => a >= e && a <= maximum,
+								$"has {propertyExpression} between {Formatter.Format(minimum)} and {Formatter.Format(maximum)}")),
+					subject);
+			});
+		}
 	}
 
 	/// <summary>
@@ -259,6 +282,29 @@ public static class PropertyResult
 							(a, e) => a <= e,
 							$"has {propertyExpression} less than or equal to {Formatter.Format(expected)}")),
 				subject);
+		}
+
+		/// <summary>
+		///     …is between the <paramref name="minimum" />…
+		/// </summary>
+		public BetweenResult<AndOrResult<TItem, IThat<TItem>>, long?> Between(
+			long? minimum)
+		{
+			validation?.Invoke(minimum, nameof(minimum));
+			return new BetweenResult<AndOrResult<TItem, IThat<TItem>>, long?>(maximum =>
+			{
+				validation?.Invoke(maximum, nameof(maximum));
+				return new AndOrResult<TItem, IThat<TItem>>(subject.Get().ExpectationBuilder
+						.AddConstraint((it, grammars) =>
+							new StructPropertyConstraint<TItem, long>(
+								it, grammars,
+								minimum,
+								mapper,
+								propertyExpression,
+								(a, e) => a >= e && a <= maximum,
+								$"has {propertyExpression} between {Formatter.Format(minimum)} and {Formatter.Format(maximum)}")),
+					subject);
+			});
 		}
 	}
 
@@ -416,6 +462,29 @@ public static class PropertyResult
 						(a, e) => a <= e,
 						$"has {propertyExpression} less than or equal to {Formatter.Format(expected)}")),
 				subject);
+		}
+
+		/// <summary>
+		///     …is between the <paramref name="minimum" />…
+		/// </summary>
+		public BetweenResult<AndOrResult<TItem, IThat<TItem>>, TimeSpan?> Between(
+			TimeSpan? minimum)
+		{
+			validation?.Invoke(minimum, nameof(minimum));
+			return new BetweenResult<AndOrResult<TItem, IThat<TItem>>, TimeSpan?>(maximum =>
+			{
+				validation?.Invoke(maximum, nameof(maximum));
+				return new AndOrResult<TItem, IThat<TItem>>(subject.Get().ExpectationBuilder.AddConstraint(
+						(it, grammars) =>
+							new StructPropertyConstraint<TItem, TimeSpan>(
+								it, grammars,
+								minimum,
+								mapper,
+								propertyExpression,
+								(a, e) => a >= e && a <= maximum,
+								$"has {propertyExpression} between {Formatter.Format(minimum)} and {Formatter.Format(maximum)}")),
+					subject);
+			});
 		}
 	}
 

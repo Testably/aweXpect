@@ -12,8 +12,10 @@ namespace aweXpect.Results;
 public class SignalCountWhoseResult<TParameter>(
 	ExpectationBuilder expectationBuilder,
 	IThat<Signaler<TParameter>> returnValue,
+	Quantifier quantifier,
 	SignalerOptions<TParameter> options)
-	: SignalCountResult<TParameter, SignalCountWhoseResult<TParameter>>(expectationBuilder, returnValue, options)
+	: SignalCountResult<TParameter, SignalCountWhoseResult<TParameter>>(expectationBuilder, returnValue, quantifier,
+		options)
 {
 	private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
 

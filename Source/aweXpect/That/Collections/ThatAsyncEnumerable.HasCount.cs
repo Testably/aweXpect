@@ -19,11 +19,13 @@ public static partial class ThatAsyncEnumerable
 	{
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new
-			CollectionCountResult<AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>>(quantifier
-				=> new AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
-					expectationBuilder.AddConstraint((it, grammars)
-						=> new AsyncCollectionCountConstraint<TItem>(expectationBuilder, it, grammars, quantifier)),
-					subject));
+			CollectionCountResult<AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>>(
+				(quantifier, isNegated)
+					=> new AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
+						expectationBuilder.AddConstraint((it, grammars)
+							=> new AsyncCollectionCountConstraint<TItem>(expectationBuilder, it, grammars, quantifier)
+								.InvertIf(isNegated)),
+						subject));
 	}
 
 	/// <summary>

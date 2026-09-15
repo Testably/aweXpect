@@ -24,6 +24,25 @@ public class Quantifier
 	};
 
 	/// <summary>
+	///     The amount at which <see cref="Check(int, bool)" /> becomes determinable without knowing whether more
+	///     occurrences follow.
+	/// </summary>
+	/// <remarks>
+	///     Callers that observe occurrences over time can stop as soon as this many occurred; below it they have to
+	///     wait for their timeout to expire, because only then is the amount final.
+	/// </remarks>
+	public int DeterminableAmount
+	{
+		get
+		{
+			(int amount, bool isExclusive) = _maximum is null
+				? (_minimum ?? 0, !_allowEqual)
+				: (_maximum.Value, _allowEqual);
+			return isExclusive && amount < int.MaxValue ? amount + 1 : amount;
+		}
+	}
+
+	/// <summary>
 	///     A quantifier for exactly zero items.
 	/// </summary>
 	public static Quantifier Never()

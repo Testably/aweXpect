@@ -1020,6 +1020,7 @@ namespace aweXpect.Options
     public class Quantifier
     {
         public Quantifier() { }
+        public int DeterminableAmount { get; }
         public bool IsNever { get; }
         public void AtLeast(int minimum) { }
         public void AtMost(int maximum) { }
@@ -1354,6 +1355,7 @@ namespace aweXpect.Results
         public class Int<TItem>
         {
             public Int(aweXpect.Core.IThat<TItem> subject, System.Func<TItem, int?> mapper, string propertyExpression, System.Action<int?, string>? validation = null) { }
+            public aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>>, int?> Between(int? minimum) { }
             public aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>> EqualTo(int? expected) { }
             public aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>> GreaterThan(int? expected) { }
             public aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>> GreaterThanOrEqualTo(int? expected) { }
@@ -1364,6 +1366,7 @@ namespace aweXpect.Results
         public class Long<TItem>
         {
             public Long(aweXpect.Core.IThat<TItem> subject, System.Func<TItem, long?> mapper, string propertyExpression, System.Action<long?, string>? validation = null) { }
+            public aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>>, long?> Between(long? minimum) { }
             public aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>> EqualTo(long? expected) { }
             public aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>> GreaterThan(long? expected) { }
             public aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>> GreaterThanOrEqualTo(long? expected) { }
@@ -1382,6 +1385,7 @@ namespace aweXpect.Results
         public class TimeSpan<TItem>
         {
             public TimeSpan(aweXpect.Core.IThat<TItem> subject, System.Func<TItem, System.TimeSpan?> mapper, string propertyExpression, System.Action<System.TimeSpan?, string>? validation = null) { }
+            public aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>>, System.TimeSpan?> Between(System.TimeSpan? minimum) { }
             public aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>> EqualTo(System.TimeSpan? expected) { }
             public aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>> GreaterThan(System.TimeSpan? expected) { }
             public aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>> GreaterThanOrEqualTo(System.TimeSpan? expected) { }

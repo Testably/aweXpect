@@ -9,7 +9,7 @@ public sealed partial class ThatEnumerable
 {
 	public sealed partial class HasCount
 	{
-		public sealed class AtMost
+		public sealed class NotEqualTo
 		{
 			public sealed class Tests
 			{
@@ -21,13 +21,13 @@ public sealed partial class ThatEnumerable
 					IEnumerable<int> subject = GetCancellingEnumerable(4, cts);
 
 					async Task Act()
-						=> await That(subject).HasCount().AtMost(6)
+						=> await That(subject).HasCount().NotEqualTo(6)
 							.WithCancellation(token);
 
 					await That(Act).Throws<InconclusiveException>()
 						.WithMessage("""
 						             Expected that subject
-						             has at most 6 items,
+						             does not have exactly 6 items,
 						             but could not verify, because it was already cancelled
 
 						             Collection:
@@ -48,14 +48,22 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
-				public async Task WhenArrayContainsMatchingItems_ShouldSucceed()
+				public async Task WhenArrayContainsMatchingItems_ShouldFail()
 				{
-					int[] subject = [1, 2, 3,];
+					int[] subject = [1, 2,];
 
 					async Task Act()
-						=> await That(subject).HasCount().AtMost(3);
+						=> await That(subject).HasCount().NotEqualTo(2);
 
-					await That(Act).DoesNotThrow();
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             does not have exactly 2 items,
+						             but it did
+
+						             Collection:
+						             [1, 2]
+						             """);
 				}
 
 				[Fact]
@@ -64,39 +72,39 @@ public sealed partial class ThatEnumerable
 					int[] subject = [1, 2, 3,];
 
 					async Task Act()
-						=> await That(subject).HasCount().AtMost(4);
+						=> await That(subject).HasCount().NotEqualTo(4);
 
 					await That(Act).DoesNotThrow();
 				}
 
 				[Fact]
-				public async Task WhenArrayContainsTooManyItems_ShouldFail()
+				public async Task WhenArrayContainsTooManyItems_ShouldSucceed()
 				{
 					int[] subject = [1, 2, 3,];
 
 					async Task Act()
-						=> await That(subject).HasCount().AtMost(2);
+						=> await That(subject).HasCount().NotEqualTo(2);
 
-					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that subject
-						             has at most 2 items,
-						             but found 3
-
-						             Collection:
-						             [1, 2, 3]
-						             """);
+					await That(Act).DoesNotThrow();
 				}
 
 				[Fact]
-				public async Task WhenEnumerableContainsMatchingItems_ShouldSucceed()
+				public async Task WhenEnumerableContainsMatchingItems_ShouldFail()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
 
 					async Task Act()
-						=> await That(subject).HasCount().AtMost(3);
+						=> await That(subject).HasCount().NotEqualTo(3);
 
-					await That(Act).DoesNotThrow();
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             does not have exactly 3 items,
+						             but it did
+
+						             Collection:
+						             [1, 2, 3]
+						             """);
 				}
 
 				[Fact]
@@ -105,28 +113,20 @@ public sealed partial class ThatEnumerable
 					IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
 
 					async Task Act()
-						=> await That(subject).HasCount().AtMost(4);
+						=> await That(subject).HasCount().NotEqualTo(4);
 
 					await That(Act).DoesNotThrow();
 				}
 
 				[Fact]
-				public async Task WhenEnumerableContainsTooManyItems_ShouldFail()
+				public async Task WhenEnumerableContainsTooManyItems_ShouldSucceed()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
 
 					async Task Act()
-						=> await That(subject).HasCount().AtMost(2);
+						=> await That(subject).HasCount().NotEqualTo(2);
 
-					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that subject
-						             has at most 2 items,
-						             but found at least 3
-
-						             Collection:
-						             [1, 2, 3]
-						             """);
+					await That(Act).DoesNotThrow();
 				}
 
 				[Fact]
@@ -135,12 +135,12 @@ public sealed partial class ThatEnumerable
 					IEnumerable<int>? subject = null;
 
 					async Task Act()
-						=> await That(subject).HasCount().AtMost(2);
+						=> await That(subject).HasCount().NotEqualTo(2);
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has at most 2 items,
+						             does not have exactly 2 items,
 						             but it was <null>
 						             """);
 				}

@@ -18,7 +18,7 @@ public sealed partial class ThatSignaler
 				CancellationToken token = cts.Token;
 
 				async Task Act() =>
-					await That(signaler).Signaled(2.Times()).With(x => x > 0)
+					await That(signaler).Signaled().AtLeast(2.Times()).With(x => x > 0)
 						.WhoseParameters.AreAllUnique().WithCancellation(token);
 
 				await That(Act).Throws<XunitException>()

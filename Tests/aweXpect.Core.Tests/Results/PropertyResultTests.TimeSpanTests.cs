@@ -9,6 +9,60 @@ public sealed partial class PropertyResultTests
 	public sealed class TimeSpanTests
 	{
 		[Fact]
+		public async Task Between_ShouldTriggerValidationForMaximum()
+		{
+			Signaler<TimeSpan?> signal = new();
+			PropertyResult.TimeSpan<string> sut = new(new Dummy(), _ => TimeSpan.Zero, "foo", (e, _) =>
+			{
+				signal.Signal(e);
+			});
+
+			_ = sut.Between(42.Seconds()).And(43.Seconds());
+
+			await That(signal).Signaled().With(e => e == 43.Seconds());
+		}
+
+		[Fact]
+		public async Task Between_ShouldTriggerValidationForMinimum()
+		{
+			Signaler<TimeSpan?> signal = new();
+			PropertyResult.TimeSpan<string> sut = new(new Dummy(), _ => TimeSpan.Zero, "foo", (e, _) =>
+			{
+				signal.Signal(e);
+			});
+
+			_ = sut.Between(42.Seconds()).And(43.Seconds());
+
+			await That(signal).Signaled().With(e => e == 42.Seconds());
+		}
+
+		[Fact]
+		public async Task Between_ShouldVerifyThatActualIsBetweenMinimumAndMaximum()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValue(42.Seconds());
+
+			MyClass? result = await sut.Between(41.Seconds()).And(43.Seconds());
+
+			await That(result?.TimeSpanValue).IsEqualTo(42.Seconds());
+		}
+
+		[Fact]
+		public async Task Between_WhenActualIsOutsideTheRange_ShouldFail()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValue(42.Seconds());
+
+			async Task Act()
+				=> await sut.Between(43.Seconds()).And(44.Seconds());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has TimeSpan value between 0:43 and 0:44,
+				             but it had TimeSpan value 0:42
+				             """);
+		}
+
+		[Fact]
 		public async Task EqualTo_ShouldTriggerValidation()
 		{
 			Signaler<TimeSpan?> signal = new();

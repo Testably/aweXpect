@@ -62,17 +62,23 @@ await Expect.That(signaler).Signaled().WithCancellation(cancellationToken)
 
 ### Amount
 
-You can specify a number of times, that a callback must at least be signaled:
+You can specify how often a callback must be signaled:
 
 ```csharp
-await Expect.That(signaler).Signaled(3.Times());
+await Expect.That(signaler).Signaled().AtLeast(3.Times());
+await Expect.That(signaler).Signaled().Exactly(3.Times());
+await Expect.That(signaler).Signaled().AtMost(3.Times());
+await Expect.That(signaler).Signaled().LessThan(3.Times());
+await Expect.That(signaler).Signaled().Between(2).And(4.Times());
+await Expect.That(signaler).Signaled().Once();
+await Expect.That(signaler).Signaled().Twice();
+await Expect.That(signaler).Signaled().Never();
 ```
 
-You can also verify that the callback was not signaled at least the given number of times:
+`Signaled(3.Times())` and `DidNotSignal(3.Times())` are shorthands for the `AtLeast` form.
 
-```csharp
-await Expect.That(signaler).DidNotSignal(3.Times());
-```
+*NOTE: Only expectations without an upper bound (e.g. `AtLeast`) can complete as soon as enough callbacks were signaled.
+All others have to wait for the timeout to expire, because only then is the number of signals final!*
 
 ### Parameters
 
@@ -84,7 +90,7 @@ Signaler<string> signaler = new();
 signaler.Signal("Yesterday");
 signaler.Signal("Let It Be");
 
-await Expect.That(signaler).Signaled(2.Times());
+await Expect.That(signaler).Signaled().AtLeast(2.Times());
 ```
 
 You can filter for signals with specific parameters by providing a `predicate`:
@@ -96,7 +102,7 @@ signaler.Signal("Yesterday");
 signaler.Signal("Let It Be");
 signaler.Signal("Yesterday");
 
-await Expect.That(signaler).Signaled(2.Times()).With(p => p == "Yesterday");
+await Expect.That(signaler).Signaled().AtLeast(2.Times()).With(p => p == "Yesterday");
 ```
 
 *In case of a failed expectation, the recorded parameters will be displayed in the error message.*
