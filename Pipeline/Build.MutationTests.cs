@@ -60,10 +60,12 @@ partial class Build
 	/// <remarks>
 	///     The <c>Core</c> folder is the only one with nested folders, so it is matched twice - once flat and once
 	///     recursively - because the last slice would otherwise silently pick up everything below it.
+	///     The files directly in the project folder match no <c>**/</c> pattern, and Stryker mutates them in every
+	///     slice rather than in none, so the first slice claims them explicitly and the others exclude them.
 	/// </remarks>
 	private static readonly (string Name, string[] Patterns)[] CoreMutationSlices =
 	[
-		("engine", ["**/Core/*.cs", "**/Core/**/*.cs",]),
+		("engine", ["**/aweXpect.Core/*.cs", "**/Core/*.cs", "**/Core/**/*.cs",]),
 		("options", ["**/Options/*.cs",]),
 		("formatting", ["**/Formatting/*.cs", "**/Equivalency/*.cs",]),
 		("rest", []),
