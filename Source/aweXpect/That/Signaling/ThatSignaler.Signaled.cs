@@ -160,25 +160,6 @@ public static partial class ThatSignaler
 			options);
 	}
 
-	/// <summary>
-	///     The number of signals after which the <paramref name="quantifier" /> decides without knowing whether more follow.
-	/// </summary>
-	/// <remarks>
-	///     Waiting for exactly this many signals lets the quantifiers that can be satisfied early (e.g. <c>AtLeast</c>)
-	///     short-circuit, while all others (e.g. <c>AtMost</c>) wait out the timeout, because only then is the recorded
-	///     count final.
-	/// </remarks>
-	private static int GetDecisiveCount(Quantifier quantifier)
-	{
-		int count = 0;
-		while (quantifier.Check(count, false) is null)
-		{
-			count++;
-		}
-
-		return count;
-	}
-
 	private static void AppendNormalCallbackExpectation(StringBuilder stringBuilder, Quantifier quantifier,
 		SignalerOptions options)
 	{
@@ -251,13 +232,13 @@ public static partial class ThatSignaler
 				return this;
 			}
 
-			int decisiveCount = GetDecisiveCount(quantifier);
-			TimeSpan? timeout = decisiveCount > 0 ? options.Timeout : TimeSpan.Zero;
+			int determinableAmount = quantifier.DeterminableAmount;
+			TimeSpan? timeout = determinableAmount > 0 ? options.Timeout : TimeSpan.Zero;
 			// A single signal must not be awaited through the Times overload: it leaves the signaler with a disposed
 			// CountdownEvent, so that any later Signal() would throw an ObjectDisposedException.
 			Actual = await Task.Run(()
-					=> decisiveCount > 1
-						? actual.Wait(decisiveCount.Times(), timeout, cancellationToken)
+					=> determinableAmount > 1
+						? actual.Wait(determinableAmount.Times(), timeout, cancellationToken)
 						: actual.Wait(timeout, cancellationToken),
 				CancellationToken.None);
 
@@ -303,13 +284,13 @@ public static partial class ThatSignaler
 			}
 
 			SignalerOptions<TParameter> o = options;
-			int decisiveCount = GetDecisiveCount(quantifier);
-			TimeSpan? timeout = decisiveCount > 0 ? options.Timeout : TimeSpan.Zero;
+			int determinableAmount = quantifier.DeterminableAmount;
+			TimeSpan? timeout = determinableAmount > 0 ? options.Timeout : TimeSpan.Zero;
 			// A single signal must not be awaited through the Times overload: it leaves the signaler with a disposed
 			// CountdownEvent, so that any later Signal() would throw an ObjectDisposedException.
 			Actual = await Task.Run(()
-					=> decisiveCount > 1
-						? actual.Wait(decisiveCount.Times(), o.Matches, timeout, cancellationToken)
+					=> determinableAmount > 1
+						? actual.Wait(determinableAmount.Times(), o.Matches, timeout, cancellationToken)
 						: actual.Wait(o.Matches, timeout, cancellationToken),
 				CancellationToken.None);
 

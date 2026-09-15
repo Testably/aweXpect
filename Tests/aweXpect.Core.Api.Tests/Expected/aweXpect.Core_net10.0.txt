@@ -1020,6 +1020,7 @@ namespace aweXpect.Options
     public class Quantifier
     {
         public Quantifier() { }
+        public int DeterminableAmount { get; }
         public bool IsNever { get; }
         public void AtLeast(int minimum) { }
         public void AtMost(int maximum) { }
