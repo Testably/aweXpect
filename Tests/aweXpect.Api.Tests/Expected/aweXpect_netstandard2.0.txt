@@ -1497,13 +1497,13 @@ namespace aweXpect
     public static class ThatSignaler
     {
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.SignalCountResult DidNotSignal(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler> subject) { }
+        public static aweXpect.Results.SignalTimeoutResult DidNotSignal(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.SignalCountResult DidNotSignal(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler> subject, aweXpect.Core.Times times) { }
+        public static aweXpect.Results.SignalTimeoutResult DidNotSignal(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler> subject, aweXpect.Core.Times times) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.SignalCountResult<TParameter> DidNotSignal<TParameter>(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>> subject) { }
+        public static aweXpect.Results.SignalTimeoutResult<TParameter> DidNotSignal<TParameter>(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.SignalCountResult<TParameter> DidNotSignal<TParameter>(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>> subject, aweXpect.Core.Times times) { }
+        public static aweXpect.Results.SignalTimeoutResult<TParameter> DidNotSignal<TParameter>(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>> subject, aweXpect.Core.Times times) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.SignalCountResult Signaled(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -1814,6 +1814,17 @@ namespace aweXpect.Results
     {
         public SignalCountWhoseResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>> returnValue, aweXpect.Options.Quantifier quantifier, aweXpect.Options.SignalerOptions<TParameter> options) { }
         public aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TParameter>> WhoseParameters { get; }
+    }
+    public class SignalTimeoutResult : aweXpect.Results.AndOrResult<aweXpect.Signaling.SignalerResult, aweXpect.Core.IThat<aweXpect.Signaling.Signaler>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions>
+    {
+        public SignalTimeoutResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<aweXpect.Signaling.Signaler> returnValue, aweXpect.Options.SignalerOptions options) { }
+        public aweXpect.Results.SignalTimeoutResult Within(System.TimeSpan timeout) { }
+    }
+    public class SignalTimeoutResult<TParameter> : aweXpect.Results.AndOrResult<aweXpect.Signaling.SignalerResult<TParameter>, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.SignalerOptions>
+    {
+        public SignalTimeoutResult(aweXpect.Core.ExpectationBuilder expectationBuilder, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>> returnValue, aweXpect.Options.SignalerOptions<TParameter> options) { }
+        public aweXpect.Results.SignalTimeoutResult<TParameter> With(System.Func<TParameter, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+        public aweXpect.Results.SignalTimeoutResult<TParameter> Within(System.TimeSpan timeout) { }
     }
     public class SingleItemResult<TCollection, TItem> : aweXpect.Results.ExpectationResult<TItem, aweXpect.Results.SingleItemResult<TCollection, TItem>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.PredicateOptions<TItem>>
     {
