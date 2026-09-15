@@ -3714,6 +3714,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 22:12:29 2026 \u002B0200",
         "message": "chore: TEMPORARY - always mutate the whole project"
+      },
+      {
+        "sha": "7a595a63c86dc5466a9feab2315e045e065ffb3a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 07:33:41 2026 \u002B0200",
+        "message": "test: stop the \u0022infinite\u0022 sequences after a safety limit"
       }
     ],
     "labels": [
@@ -4335,7 +4341,8 @@ window.BENCHMARK_DATA = {
       "dbd64a16",
       "3a66050e",
       "5fa9d810",
-      "2274a820"
+      "2274a820",
+      "7a595a63"
     ],
     "datasets": [
       {
@@ -4960,7 +4967,8 @@ window.BENCHMARK_DATA = {
           282.5873665968577,
           254.31283381779988,
           257.5374924023946,
-          196.90801135698953
+          196.90801135698953,
+          269.8032855669657
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5433,6 +5441,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6223,7 +6232,8 @@ window.BENCHMARK_DATA = {
           244.30020138422648,
           237.89337490002313,
           271.99132073720295,
-          196.11365172068278
+          196.11365172068278,
+          292.3035370826721
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6416,6 +6426,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10119,6 +10130,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 22:12:29 2026 \u002B0200",
         "message": "chore: TEMPORARY - always mutate the whole project"
+      },
+      {
+        "sha": "7a595a63c86dc5466a9feab2315e045e065ffb3a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 07:33:41 2026 \u002B0200",
+        "message": "test: stop the \u0022infinite\u0022 sequences after a safety limit"
       }
     ],
     "labels": [
@@ -10663,7 +10680,8 @@ window.BENCHMARK_DATA = {
       "dbd64a16",
       "3a66050e",
       "5fa9d810",
-      "2274a820"
+      "2274a820",
+      "7a595a63"
     ],
     "datasets": [
       {
@@ -11211,7 +11229,8 @@ window.BENCHMARK_DATA = {
           406313.1495186942,
           395099.5535807292,
           383259.0914388021,
-          282997.7490559896
+          282997.7490559896,
+          352153.7346888951
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11763,6 +11782,7 @@ window.BENCHMARK_DATA = {
           542085,
           542085,
           542085,
+          542084,
           542084,
           542084
         ],
@@ -12320,7 +12340,8 @@ window.BENCHMARK_DATA = {
           2648058.49375,
           2802643.9260602677,
           2397191.646354167,
-          1836027.2087239583
+          1836027.2087239583,
+          2258618.474739583
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12873,7 +12894,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841635,
-          4841648
+          4841648,
+          4841613
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16601,6 +16623,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 22:12:29 2026 \u002B0200",
         "message": "chore: TEMPORARY - always mutate the whole project"
+      },
+      {
+        "sha": "7a595a63c86dc5466a9feab2315e045e065ffb3a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 07:33:41 2026 \u002B0200",
+        "message": "test: stop the \u0022infinite\u0022 sequences after a safety limit"
       }
     ],
     "labels": [
@@ -17222,7 +17250,8 @@ window.BENCHMARK_DATA = {
       "dbd64a16",
       "3a66050e",
       "5fa9d810",
-      "2274a820"
+      "2274a820",
+      "7a595a63"
     ],
     "datasets": [
       {
@@ -17847,7 +17876,8 @@ window.BENCHMARK_DATA = {
           486.34537158693587,
           521.6478244917733,
           494.7722628275553,
-          363.58683786392214
+          363.58683786392214,
+          525.800393308912
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18320,6 +18350,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -19110,7 +19141,8 @@ window.BENCHMARK_DATA = {
           489.4366489137922,
           538.4961628232684,
           528.4363608678182,
-          399.7704559961955
+          399.7704559961955,
+          590.330544980367
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19303,6 +19335,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -23468,6 +23501,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 22:12:29 2026 \u002B0200",
         "message": "chore: TEMPORARY - always mutate the whole project"
+      },
+      {
+        "sha": "7a595a63c86dc5466a9feab2315e045e065ffb3a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 07:33:41 2026 \u002B0200",
+        "message": "test: stop the \u0022infinite\u0022 sequences after a safety limit"
       }
     ],
     "labels": [
@@ -24089,7 +24128,8 @@ window.BENCHMARK_DATA = {
       "dbd64a16",
       "3a66050e",
       "5fa9d810",
-      "2274a820"
+      "2274a820",
+      "7a595a63"
     ],
     "datasets": [
       {
@@ -24714,7 +24754,8 @@ window.BENCHMARK_DATA = {
           267.9070954004923,
           281.6811509450277,
           275.06960776646935,
-          206.19679361979166
+          206.19679361979166,
+          309.70217558542885
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -25228,6 +25269,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -25977,7 +26019,8 @@ window.BENCHMARK_DATA = {
           249.65470666885375,
           288.50390370686847,
           276.23029589653015,
-          190.39022885836087
+          190.39022885836087,
+          332.3568512916565
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -26170,6 +26213,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -30335,6 +30379,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 22:12:29 2026 \u002B0200",
         "message": "chore: TEMPORARY - always mutate the whole project"
+      },
+      {
+        "sha": "7a595a63c86dc5466a9feab2315e045e065ffb3a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 07:33:41 2026 \u002B0200",
+        "message": "test: stop the \u0022infinite\u0022 sequences after a safety limit"
       }
     ],
     "labels": [
@@ -30956,7 +31006,8 @@ window.BENCHMARK_DATA = {
       "dbd64a16",
       "3a66050e",
       "5fa9d810",
-      "2274a820"
+      "2274a820",
+      "7a595a63"
     ],
     "datasets": [
       {
@@ -31581,7 +31632,8 @@ window.BENCHMARK_DATA = {
           454.5175503094991,
           494.18738918304444,
           477.94668610890704,
-          355.2072853020259
+          355.2072853020259,
+          447.0760128339132
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32054,6 +32106,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -32844,7 +32897,8 @@ window.BENCHMARK_DATA = {
           1223.4176754270281,
           1370.0128548940022,
           1341.652505329677,
-          883.0441282908122
+          883.0441282908122,
+          1277.3768961588542
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33273,6 +33327,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -37202,6 +37257,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 22:12:29 2026 \u002B0200",
         "message": "chore: TEMPORARY - always mutate the whole project"
+      },
+      {
+        "sha": "7a595a63c86dc5466a9feab2315e045e065ffb3a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 07:33:41 2026 \u002B0200",
+        "message": "test: stop the \u0022infinite\u0022 sequences after a safety limit"
       }
     ],
     "labels": [
@@ -37823,7 +37884,8 @@ window.BENCHMARK_DATA = {
       "dbd64a16",
       "3a66050e",
       "5fa9d810",
-      "2274a820"
+      "2274a820",
+      "7a595a63"
     ],
     "datasets": [
       {
@@ -38448,7 +38510,8 @@ window.BENCHMARK_DATA = {
           1916.6552419662476,
           1941.6528345743816,
           1670.9143939971923,
-          1410.924646105085
+          1410.924646105085,
+          1422.3141540527345
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38921,6 +38984,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -39711,7 +39775,8 @@ window.BENCHMARK_DATA = {
           1366.0677769524711,
           1400.2874593734741,
           1437.5937737782797,
-          1009.9652674538748
+          1009.9652674538748,
+          1444.8710503896077
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39904,6 +39969,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -44069,6 +44135,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 22:12:29 2026 \u002B0200",
         "message": "chore: TEMPORARY - always mutate the whole project"
+      },
+      {
+        "sha": "7a595a63c86dc5466a9feab2315e045e065ffb3a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 07:33:41 2026 \u002B0200",
+        "message": "test: stop the \u0022infinite\u0022 sequences after a safety limit"
       }
     ],
     "labels": [
@@ -44690,7 +44762,8 @@ window.BENCHMARK_DATA = {
       "dbd64a16",
       "3a66050e",
       "5fa9d810",
-      "2274a820"
+      "2274a820",
+      "7a595a63"
     ],
     "datasets": [
       {
@@ -45315,7 +45388,8 @@ window.BENCHMARK_DATA = {
           2535.7885340372723,
           2660.4840303148544,
           2179.668372599284,
-          1916.8696338653565
+          1916.8696338653565,
+          1870.5654805501301
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -45788,6 +45862,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -46578,7 +46653,8 @@ window.BENCHMARK_DATA = {
           27259.131116739907,
           28238.857125418526,
           24276.291119384765,
-          15356.671731131417
+          15356.671731131417,
+          17557.282236735027
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47208,7 +47284,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
-          33471
+          33471,
+          33465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
