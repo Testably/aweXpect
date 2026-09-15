@@ -10,7 +10,7 @@ public sealed partial class ThatAsyncEnumerable
 {
 	public sealed partial class HasCount
 	{
-		public sealed class MoreThan
+		public sealed class GreaterThanOrEqualTo
 		{
 			public sealed class Tests
 			{
@@ -23,13 +23,13 @@ public sealed partial class ThatAsyncEnumerable
 						GetCancellingAsyncEnumerable(4, cts, CancellationToken.None);
 
 					async Task Act()
-						=> await That(subject).HasCount().MoreThan(6)
+						=> await That(subject).HasCount().GreaterThanOrEqualTo(6)
 							.WithCancellation(token);
 
 					await That(Act).Throws<InconclusiveException>()
 						.WithMessage("""
 						             Expected that subject
-						             has more than 6 items,
+						             has at least 6 items,
 						             but could not verify, because it was already cancelled
 
 						             Collection:
@@ -38,22 +38,14 @@ public sealed partial class ThatAsyncEnumerable
 				}
 
 				[Fact]
-				public async Task WhenEnumerableContainsMatchingItems_ShouldFail()
+				public async Task WhenEnumerableContainsMatchingItems_ShouldSucceed()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
 
 					async Task Act()
-						=> await That(subject).HasCount().MoreThan(3);
+						=> await That(subject).HasCount().GreaterThanOrEqualTo(3);
 
-					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that subject
-						             has more than 3 items,
-						             but found only 3
-
-						             Collection:
-						             [1, 2, 3]
-						             """);
+					await That(Act).DoesNotThrow();
 				}
 
 				[Fact]
@@ -62,12 +54,12 @@ public sealed partial class ThatAsyncEnumerable
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
 
 					async Task Act()
-						=> await That(subject).HasCount().MoreThan(4);
+						=> await That(subject).HasCount().GreaterThanOrEqualTo(4);
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has more than 4 items,
+						             has at least 4 items,
 						             but found only 3
 
 						             Collection:
@@ -81,7 +73,7 @@ public sealed partial class ThatAsyncEnumerable
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
 
 					async Task Act()
-						=> await That(subject).HasCount().MoreThan(2);
+						=> await That(subject).HasCount().GreaterThanOrEqualTo(2);
 
 					await That(Act).DoesNotThrow();
 				}
@@ -92,12 +84,12 @@ public sealed partial class ThatAsyncEnumerable
 					IAsyncEnumerable<int>? subject = null;
 
 					async Task Act()
-						=> await That(subject).HasCount().MoreThan(2);
+						=> await That(subject).HasCount().GreaterThanOrEqualTo(2);
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has more than 2 items,
+						             has at least 2 items,
 						             but it was <null>
 						             """);
 				}

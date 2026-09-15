@@ -13,8 +13,9 @@ namespace aweXpect.Results;
 public class SignalCountResult(
 	ExpectationBuilder expectationBuilder,
 	IThat<Signaler> returnValue,
+	Quantifier quantifier,
 	SignalerOptions options)
-	: AndOrResult<SignalerResult, IThat<Signaler>>(expectationBuilder, returnValue),
+	: CountResult<SignalerResult, IThat<Signaler>, SignalCountResult>(expectationBuilder, returnValue, quantifier),
 		IOptionsProvider<SignalerOptions>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
@@ -36,8 +37,10 @@ public class SignalCountResult(
 public class SignalCountResult<TParameter>(
 	ExpectationBuilder expectationBuilder,
 	IThat<Signaler<TParameter>> returnValue,
+	Quantifier quantifier,
 	SignalerOptions<TParameter> options)
-	: SignalCountResult<TParameter, SignalCountResult<TParameter>>(expectationBuilder, returnValue, options);
+	: SignalCountResult<TParameter, SignalCountResult<TParameter>>(expectationBuilder, returnValue, quantifier,
+		options);
 
 /// <summary>
 ///     A trigger result that also allows specifying the timeout.
@@ -45,8 +48,10 @@ public class SignalCountResult<TParameter>(
 public class SignalCountResult<TParameter, TSelf>(
 	ExpectationBuilder expectationBuilder,
 	IThat<Signaler<TParameter>> returnValue,
+	Quantifier quantifier,
 	SignalerOptions<TParameter> options)
-	: AndOrResult<SignalerResult<TParameter>, IThat<Signaler<TParameter>>>(expectationBuilder, returnValue),
+	: CountResult<SignalerResult<TParameter>, IThat<Signaler<TParameter>>, TSelf>(expectationBuilder, returnValue,
+			quantifier),
 		IOptionsProvider<SignalerOptions>
 	where TSelf : SignalCountResult<TParameter, TSelf>
 {

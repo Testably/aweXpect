@@ -16,16 +16,27 @@ public static partial class ThatSignaler
 	private const string Times = " times";
 
 	/// <summary>
+	///     The occurrences of a <see cref="Quantifier" /> that was never further specified.
+	/// </summary>
+	/// <remarks>
+	///     They are left out of the negated expectation, so that <c>DidNotSignal()</c> keeps reading as
+	///     "does not have recorded the callback" instead of adding a redundant "at least once".
+	/// </remarks>
+	private static readonly string DefaultOccurrences = new Quantifier().ToString();
+
+	/// <summary>
 	///     Verifies that the expected callback was signaled at least once.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static SignalCountResult Signaled(
 		this IThat<Signaler> subject)
 	{
+		Quantifier quantifier = new();
 		SignalerOptions options = new();
 		return new SignalCountResult(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new SignaledConstraint(it, grammars, 1, options)),
+				=> new SignaledConstraint(it, grammars, quantifier, options)),
 			subject,
+			quantifier,
 			options);
 	}
 
@@ -36,10 +47,12 @@ public static partial class ThatSignaler
 	public static SignalCountWhoseResult<TParameter> Signaled<TParameter>(
 		this IThat<Signaler<TParameter>> subject)
 	{
+		Quantifier quantifier = new();
 		SignalerOptions<TParameter> options = new();
 		return new SignalCountWhoseResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new SignaledConstraint<TParameter>(it, grammars, 1, options)),
+				=> new SignaledConstraint<TParameter>(it, grammars, quantifier, options)),
 			subject,
+			quantifier,
 			options);
 	}
 
@@ -52,10 +65,13 @@ public static partial class ThatSignaler
 		this IThat<Signaler> subject,
 		Times times)
 	{
+		Quantifier quantifier = new();
+		quantifier.AtLeast(times.Value);
 		SignalerOptions options = new();
 		return new SignalCountResult(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new SignaledConstraint(it, grammars, times.Value, options)),
+				=> new SignaledConstraint(it, grammars, quantifier, options)),
 			subject,
+			quantifier,
 			options);
 	}
 
@@ -68,10 +84,13 @@ public static partial class ThatSignaler
 		this IThat<Signaler<TParameter>> subject,
 		Times times)
 	{
+		Quantifier quantifier = new();
+		quantifier.AtLeast(times.Value);
 		SignalerOptions<TParameter> options = new();
 		return new SignalCountWhoseResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new SignaledConstraint<TParameter>(it, grammars, times.Value, options)),
+				=> new SignaledConstraint<TParameter>(it, grammars, quantifier, options)),
 			subject,
+			quantifier,
 			options);
 	}
 
@@ -82,10 +101,12 @@ public static partial class ThatSignaler
 	public static SignalCountResult DidNotSignal(
 		this IThat<Signaler> subject)
 	{
+		Quantifier quantifier = new();
 		SignalerOptions options = new();
 		return new SignalCountResult(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new SignaledConstraint(it, grammars, 1, options).Invert()),
+				=> new SignaledConstraint(it, grammars, quantifier, options).Invert()),
 			subject,
+			quantifier,
 			options);
 	}
 
@@ -96,10 +117,12 @@ public static partial class ThatSignaler
 	public static SignalCountResult<TParameter> DidNotSignal<TParameter>(
 		this IThat<Signaler<TParameter>> subject)
 	{
+		Quantifier quantifier = new();
 		SignalerOptions<TParameter> options = new();
 		return new SignalCountResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new SignaledConstraint<TParameter>(it, grammars, 1, options).Invert()),
+				=> new SignaledConstraint<TParameter>(it, grammars, quantifier, options).Invert()),
 			subject,
+			quantifier,
 			options);
 	}
 
@@ -112,10 +135,13 @@ public static partial class ThatSignaler
 		this IThat<Signaler> subject,
 		Times times)
 	{
+		Quantifier quantifier = new();
+		quantifier.AtLeast(times.Value);
 		SignalerOptions options = new();
 		return new SignalCountResult(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new SignaledConstraint(it, grammars, times.Value, options).Invert()),
+				=> new SignaledConstraint(it, grammars, quantifier, options).Invert()),
 			subject,
+			quantifier,
 			options);
 	}
 
@@ -128,14 +154,96 @@ public static partial class ThatSignaler
 		this IThat<Signaler<TParameter>> subject,
 		Times times)
 	{
+		Quantifier quantifier = new();
+		quantifier.AtLeast(times.Value);
 		SignalerOptions<TParameter> options = new();
 		return new SignalCountResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new SignaledConstraint<TParameter>(it, grammars, times.Value, options).Invert()),
+				=> new SignaledConstraint<TParameter>(it, grammars, quantifier, options).Invert()),
 			subject,
+			quantifier,
 			options);
 	}
 
-	private sealed class SignaledConstraint(string it, ExpectationGrammars grammars, int count, SignalerOptions options)
+	/// <summary>
+	///     The number of signals after which the <paramref name="quantifier" /> decides without knowing whether more follow.
+	/// </summary>
+	/// <remarks>
+	///     Waiting for exactly this many signals lets the quantifiers that can be satisfied early (e.g. <c>AtLeast</c>)
+	///     short-circuit, while all others (e.g. <c>AtMost</c>) wait out the timeout, because only then is the recorded
+	///     count final.
+	/// </remarks>
+	private static int GetDecisiveCount(Quantifier quantifier)
+	{
+		int count = 0;
+		while (quantifier.Check(count, false) is null)
+		{
+			count++;
+		}
+
+		return count;
+	}
+
+	private static void AppendNormalCallbackExpectation(StringBuilder stringBuilder, Quantifier quantifier,
+		SignalerOptions options)
+	{
+		if (quantifier.IsNever)
+		{
+			stringBuilder.Append("has never recorded the callback");
+		}
+		else
+		{
+			stringBuilder.Append("has recorded the callback ").Append(quantifier);
+		}
+
+		stringBuilder.Append(options);
+	}
+
+	private static void AppendNegatedCallbackExpectation(StringBuilder stringBuilder, Quantifier quantifier,
+		SignalerOptions options)
+	{
+		stringBuilder.Append("does not have recorded the callback");
+		string occurrences = quantifier.ToString();
+		if (occurrences != DefaultOccurrences)
+		{
+			stringBuilder.Append(' ').Append(occurrences);
+		}
+
+		stringBuilder.Append(options);
+	}
+
+	private static void AppendOccurrences(StringBuilder stringBuilder, Quantifier quantifier, int count)
+	{
+		if (count == 0)
+		{
+			stringBuilder.Append("never recorded");
+			return;
+		}
+
+		if (quantifier.Check(count, false) is null)
+		{
+			stringBuilder.Append("only ");
+		}
+
+		stringBuilder.Append("recorded ");
+		if (count == 1)
+		{
+			stringBuilder.Append("once");
+		}
+		else if (count == 2)
+		{
+			stringBuilder.Append("twice");
+		}
+		else
+		{
+			stringBuilder.Append(count).Append(Times);
+		}
+	}
+
+	private sealed class SignaledConstraint(
+		string it,
+		ExpectationGrammars grammars,
+		Quantifier quantifier,
+		SignalerOptions options)
 		: ConstraintResult.WithNotNullValue<SignalerResult>(it, grammars), IAsyncConstraint<Signaler>
 	{
 		public async Task<ConstraintResult> IsMetBy(Signaler actual, CancellationToken cancellationToken)
@@ -147,104 +255,37 @@ public static partial class ThatSignaler
 				return this;
 			}
 
-			TimeSpan? timeout = options.Timeout;
-			if (count == 1)
-			{
-				Actual = await Task.Run(()
-						=> actual.Wait(timeout, cancellationToken),
-					CancellationToken.None);
-			}
-			else
-			{
-				int amount = count;
-				Actual = await Task.Run(()
-						=> actual.Wait(amount, timeout, cancellationToken),
-					CancellationToken.None);
-			}
+			int decisiveCount = GetDecisiveCount(quantifier);
+			TimeSpan? timeout = decisiveCount > 0 ? options.Timeout : TimeSpan.Zero;
+			int amount = Math.Max(1, decisiveCount);
+			Actual = await Task.Run(()
+					=> actual.Wait(amount.Times(), timeout, cancellationToken),
+				CancellationToken.None);
 
-			Outcome = Actual.IsSuccess ? Outcome.Success : Outcome.Failure;
+			Outcome = quantifier.Check(Actual.Count, true) == true ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (count == 1)
-			{
-				stringBuilder.Append("has recorded the callback at least once");
-			}
-			else if (count == 2)
-			{
-				stringBuilder.Append("has recorded the callback at least twice");
-			}
-			else
-			{
-				stringBuilder.Append("has recorded the callback at least ").Append(count).Append(Times);
-			}
-
-			stringBuilder.Append(options);
-		}
+			=> AppendNormalCallbackExpectation(stringBuilder, quantifier, options);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" was ");
-			if (Actual?.Count == 0)
-			{
-				stringBuilder.Append("never recorded");
-			}
-			else if (Actual?.Count == 1)
-			{
-				stringBuilder.Append("only recorded once");
-			}
-			else if (Actual?.Count == 2)
-			{
-				stringBuilder.Append("only recorded twice");
-			}
-			else
-			{
-				stringBuilder.Append("only recorded ").Append(Actual?.Count).Append(Times);
-			}
+			AppendOccurrences(stringBuilder, quantifier, Actual?.Count ?? 0);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (count == 1)
-			{
-				stringBuilder.Append("does not have recorded the callback");
-			}
-			else if (count == 2)
-			{
-				stringBuilder.Append("does not have recorded the callback at least twice");
-			}
-			else
-			{
-				stringBuilder.Append("does not have recorded the callback at least ").Append(count).Append(Times);
-			}
-
-			stringBuilder.Append(options);
-		}
+			=> AppendNegatedCallbackExpectation(stringBuilder, quantifier, options);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was ");
-			if (Actual?.Count == 1)
-			{
-				stringBuilder.Append("recorded once");
-			}
-			else if (Actual?.Count == 2)
-			{
-				stringBuilder.Append("recorded twice");
-			}
-			else
-			{
-				stringBuilder.Append("recorded ").Append(Actual?.Count).Append(Times);
-			}
-		}
+			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
 	private sealed class SignaledConstraint<TParameter>(
 		string it,
 		ExpectationGrammars grammars,
-		int count,
+		Quantifier quantifier,
 		SignalerOptions<TParameter> options)
 		: ConstraintResult.WithNotNullValue<SignalerResult<TParameter>>(it, grammars),
 			IAsyncConstraint<Signaler<TParameter>>
@@ -263,65 +304,26 @@ public static partial class ThatSignaler
 			}
 
 			SignalerOptions<TParameter> o = options;
-
-			TimeSpan? timeout = options.Timeout;
-			if (count == 1)
-			{
-				Actual = await Task.Run(()
-						=> actual.Wait(o.Matches, timeout, cancellationToken),
-					CancellationToken.None);
-			}
-			else
-			{
-				int amount = count;
-				Actual = await Task.Run(()
-						=> actual.Wait(amount, o.Matches, timeout, cancellationToken),
-					CancellationToken.None);
-			}
+			int decisiveCount = GetDecisiveCount(quantifier);
+			TimeSpan? timeout = decisiveCount > 0 ? options.Timeout : TimeSpan.Zero;
+			int amount = Math.Max(1, decisiveCount);
+			Actual = await Task.Run(()
+					=> actual.Wait(amount.Times(), o.Matches, timeout, cancellationToken),
+				CancellationToken.None);
 
 			_actualCount = Actual.Parameters.Count(p => o.Matches(p));
 
-			Outcome = Actual.IsSuccess && _actualCount >= count ? Outcome.Success : Outcome.Failure;
+			Outcome = quantifier.Check(_actualCount, true) == true ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (count == 1)
-			{
-				stringBuilder.Append("has recorded the callback at least once");
-			}
-			else if (count == 2)
-			{
-				stringBuilder.Append("has recorded the callback at least twice");
-			}
-			else
-			{
-				stringBuilder.Append("has recorded the callback at least ").Append(count).Append(Times);
-			}
-
-			stringBuilder.Append(options);
-		}
+			=> AppendNormalCallbackExpectation(stringBuilder, quantifier, options);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" was ");
-			if (_actualCount == 0)
-			{
-				stringBuilder.Append("never recorded");
-			}
-			else if (_actualCount == 1)
-			{
-				stringBuilder.Append("only recorded once");
-			}
-			else if (_actualCount == 2)
-			{
-				stringBuilder.Append("only recorded twice");
-			}
-			else
-			{
-				stringBuilder.Append("only recorded ").Append(_actualCount).Append(Times);
-			}
+			AppendOccurrences(stringBuilder, quantifier, _actualCount);
 
 			if (Actual?.Count > 0)
 			{
@@ -331,44 +333,9 @@ public static partial class ThatSignaler
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (count == 1)
-			{
-				stringBuilder.Append("does not have recorded the callback");
-			}
-			else if (count == 2)
-			{
-				stringBuilder.Append("does not have recorded the callback at least twice");
-			}
-			else
-			{
-				stringBuilder.Append("does not have recorded the callback at least ").Append(count).Append(Times);
-			}
-
-			stringBuilder.Append(options);
-		}
+			=> AppendNegatedCallbackExpectation(stringBuilder, quantifier, options);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was ");
-			if (_actualCount == 1)
-			{
-				stringBuilder.Append("recorded once");
-			}
-			else if (_actualCount == 2)
-			{
-				stringBuilder.Append("recorded twice");
-			}
-			else
-			{
-				stringBuilder.Append("recorded ").Append(_actualCount).Append(Times);
-			}
-
-			if (Actual?.Count > 0)
-			{
-				stringBuilder.Append(" in ");
-				ValueFormatters.Format(Formatter, stringBuilder, Actual.Parameters, FormattingOptions.MultipleLines);
-			}
-		}
+			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }

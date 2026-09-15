@@ -23,7 +23,7 @@ public sealed partial class ThatSignaler
 				signaler.Signal(3);
 
 				async Task Act() =>
-					await That(signaler).DidNotSignal(2.Times())
+					await That(signaler).DidNotSignal().AtLeast(2.Times())
 						.With(p => p > 1).With(p => p < 3)
 						.WithCancellation(token);
 
@@ -42,7 +42,7 @@ public sealed partial class ThatSignaler
 				signaler.Signal(2);
 
 				async Task Act() =>
-					await That(signaler).DidNotSignal(2.Times())
+					await That(signaler).DidNotSignal().AtLeast(2.Times())
 						.With(p => p > 1)
 						.WithCancellation(token);
 
@@ -77,7 +77,7 @@ public sealed partial class ThatSignaler
 					});
 
 				async Task Act() =>
-					await That(signaler).DidNotSignal(2.Times())
+					await That(signaler).DidNotSignal().AtLeast(2.Times())
 						.With(p => p > 1);
 
 				await That(Act).Throws<XunitException>()
@@ -107,7 +107,7 @@ public sealed partial class ThatSignaler
 					});
 
 				async Task Act() =>
-					await That(signaler).DidNotSignal(2.Times())
+					await That(signaler).DidNotSignal().AtLeast(2.Times())
 						.With(p => p > 2);
 
 				await That(Act).Throws<XunitException>()

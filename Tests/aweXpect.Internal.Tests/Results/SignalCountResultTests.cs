@@ -35,7 +35,7 @@ public sealed class SignalCountResultTests
 		IThat<Signaler<TParameter>> source = That(signaler);
 #pragma warning restore aweXpect0001
 		return new SignalCountResult<TParameter>(source.Get().ExpectationBuilder,
-			source, options);
+			source, new Quantifier(), options);
 	}
 
 	private static SignalCountResult CreateSut(SignalerOptions options)
@@ -45,6 +45,6 @@ public sealed class SignalCountResultTests
 		IThat<Signaler> source = That(signaler);
 #pragma warning restore aweXpect0001
 		return new SignalCountResult(source.Get().ExpectationBuilder,
-			source, options);
+			source, new Quantifier(), options);
 	}
 }

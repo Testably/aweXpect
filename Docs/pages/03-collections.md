@@ -44,11 +44,13 @@ await Expect.That(values).HasCount(10);
 // or more explicit
 await Expect.That(values).HasCount().EqualTo(10);
 
-await Expect.That(values).HasCount().MoreThan(8)
+await Expect.That(values).HasCount().NotEqualTo(9)
+	.Because("item count should be '!= 9'");
+await Expect.That(values).HasCount().GreaterThan(8)
 	.Because("item count should be '> 8'");
-await Expect.That(values).HasCount().AtLeast(9)
+await Expect.That(values).HasCount().GreaterThanOrEqualTo(9)
 	.Because("item count should be '>= 9'");
-await Expect.That(values).HasCount().AtMost(11)
+await Expect.That(values).HasCount().LessThanOrEqualTo(11)
 	.Because("item count should be '<= 11'");
 await Expect.That(values).HasCount().LessThan(12)
 	.Because("item count should be '< 12'");
