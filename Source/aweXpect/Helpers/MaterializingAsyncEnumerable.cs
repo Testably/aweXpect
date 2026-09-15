@@ -25,6 +25,7 @@ internal sealed class MaterializingAsyncEnumerable<T> : IAsyncEnumerable<T>, IMa
 			yield return materializedItem;
 		}
 
+		// Stryker disable once Conditional : a mutated condition keeps appending the exhausted enumerator's current item until the test host runs out of memory, which costs a minute per mutant and cannot be killed any cheaper
 		while (await _enumerator.MoveNextAsync())
 		{
 			T item = _enumerator.Current;
