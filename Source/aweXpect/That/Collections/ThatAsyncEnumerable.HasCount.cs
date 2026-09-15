@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
+using aweXpect.Options;
 using aweXpect.Results;
 
 namespace aweXpect;

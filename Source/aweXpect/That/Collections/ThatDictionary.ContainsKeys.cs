@@ -13,14 +13,14 @@ public static partial class ThatDictionary
 	///     Verifies that the dictionary contains all <paramref name="expected" /> keys.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ContainsValuesResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>, TKey, TValue?>
+	public static ContainsKeysResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>, TKey, TValue?>
 		ContainsKeys<TKey, TValue>(
 			this IThat<IDictionary<TKey, TValue>?> source,
 			params TKey[] expected)
 	{
 		expected.ThrowIfNullOrEmpty();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new ContainsValuesResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>, TKey, TValue?>(
+		return new ContainsKeysResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>, TKey, TValue?>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new ContainKeysConstraint<TKey, TValue>(expectationBuilder, it, grammars, expected)),
 			source,
@@ -34,7 +34,7 @@ public static partial class ThatDictionary
 	///     Verifies that the dictionary contains all <paramref name="expected" /> keys.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ContainsValuesResult<Dictionary<TKey, TValue>, IThat<Dictionary<TKey, TValue>?>, TKey, TValue?>
+	public static ContainsKeysResult<Dictionary<TKey, TValue>, IThat<Dictionary<TKey, TValue>?>, TKey, TValue?>
 		ContainsKeys<TKey, TValue>(
 			this IThat<Dictionary<TKey, TValue>?> source,
 			params TKey[] expected)
@@ -42,7 +42,7 @@ public static partial class ThatDictionary
 	{
 		expected.ThrowIfNullOrEmpty();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new ContainsValuesResult<Dictionary<TKey, TValue>, IThat<Dictionary<TKey, TValue>?>, TKey, TValue?>(
+		return new ContainsKeysResult<Dictionary<TKey, TValue>, IThat<Dictionary<TKey, TValue>?>, TKey, TValue?>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new ContainKeysConstraint<TKey, TValue>(expectationBuilder, it, grammars, expected)),
 			source,

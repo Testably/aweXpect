@@ -1,29 +1,29 @@
 ﻿using aweXpect.Core;
 using aweXpect.Core.Constraints;
 
-namespace aweXpect;
+namespace aweXpect.Options;
 
 public abstract partial class EnumerableQuantifier
 {
 	/// <summary>
-	///     Matches at least <paramref name="minimum" /> items.
+	///     Matches more than <paramref name="minimum" /> items.
 	/// </summary>
-	public static EnumerableQuantifier AtLeast(int minimum,
+	public static EnumerableQuantifier MoreThan(int minimum,
 		ExpectationGrammars expectationGrammars = ExpectationGrammars.None)
-		=> new AtLeastQuantifier(minimum);
+		=> new MoreThanQuantifier(minimum);
 
-	private sealed class AtLeastQuantifier(int minimum) : EnumerableQuantifier
+	private sealed class MoreThanQuantifier(int minimum) : EnumerableQuantifier
 	{
 		public override string ToString()
 			=> minimum switch
 			{
-				1 => "at least one",
-				_ => $"at least {minimum}",
+				1 => "more than one",
+				_ => $"more than {minimum}",
 			};
 
 		/// <inheritdoc />
 		public override bool IsDeterminable(int matchingCount, int notMatchingCount)
-			=> matchingCount >= minimum;
+			=> matchingCount > minimum;
 
 		/// <inheritdoc />
 		public override bool IsSingle() => minimum == 1;
@@ -31,7 +31,7 @@ public abstract partial class EnumerableQuantifier
 		/// <inheritdoc />
 		public override Outcome GetOutcome(int matchingCount, int notMatchingCount, int? totalCount)
 		{
-			if (matchingCount >= minimum)
+			if (matchingCount > minimum)
 			{
 				return Outcome.Success;
 			}
@@ -46,7 +46,7 @@ public abstract partial class EnumerableQuantifier
 
 		/// <inheritdoc />
 		public override QuantifierContexts GetQuantifierContext()
-			=> QuantifierContexts.None;
+			=> QuantifierContexts.NotMatchingItems;
 
 		/// <inheritdoc />
 		public override void AppendResult(StringBuilder stringBuilder,
@@ -70,12 +70,7 @@ public abstract partial class EnumerableQuantifier
 				return;
 			}
 
-			if (!totalCount.HasValue)
-			{
-				return;
-			}
-
-			if (verb != null)
+			if (verb != null && totalCount.HasValue)
 			{
 				stringBuilder.Append("only ").Append(matchingCount).Append(" of ").Append(totalCount.Value)
 					.Append(' ').Append(verb);

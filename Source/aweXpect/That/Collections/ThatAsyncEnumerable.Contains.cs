@@ -103,7 +103,7 @@ public static partial class ThatAsyncEnumerable
 	///     Verifies that the collection contains the provided <paramref name="expected" /> collection.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ObjectCollectionContainResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
+	public static ObjectProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		Contains<TItem>(
 			this IThat<IAsyncEnumerable<TItem>?> source,
 			IEnumerable<TItem> expected,
@@ -113,7 +113,7 @@ public static partial class ThatAsyncEnumerable
 		ObjectEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new ObjectCollectionContainResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
+		return new ObjectProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint<TItem, TItem>(
 					expectationBuilder, it, grammars,
@@ -121,14 +121,15 @@ public static partial class ThatAsyncEnumerable
 					options, matchOptions, failsForNullSubject: true)),
 			source,
 			options,
-			matchOptions);
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
 	/// <summary>
 	///     Verifies that the collection contains the provided <paramref name="expected" /> collection.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringCollectionContainResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
+	public static StringProperCollectionMatchResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
 		Contains(
 			this IThat<IAsyncEnumerable<string?>?> source,
 			IEnumerable<string?> expected,
@@ -138,7 +139,7 @@ public static partial class ThatAsyncEnumerable
 		StringEqualityOptions options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new StringCollectionContainResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
+		return new StringProperCollectionMatchResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint<string?, string?>(
 					expectationBuilder, it, grammars,
@@ -146,14 +147,15 @@ public static partial class ThatAsyncEnumerable
 					expected, options, matchOptions, failsForNullSubject: true)),
 			source,
 			options,
-			matchOptions);
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
 	/// <summary>
 	///     Verifies that the collection contains the provided <paramref name="expected" /> collection of predicates.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static CollectionContainResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
+	public static ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		Contains<TItem>(
 			this IThat<IAsyncEnumerable<TItem>?> source,
 			IEnumerable<Expression<Func<TItem, bool>>> expected,
@@ -163,21 +165,22 @@ public static partial class ThatAsyncEnumerable
 		expected.ThrowIfNullOrEmpty();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new CollectionContainResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
+		return new ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToFromPredicateConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					expected,
 					matchOptions, failsForNullSubject: true)),
 			source,
-			matchOptions);
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
 	/// <summary>
 	///     Verifies that the collection contains the provided <paramref name="expected" /> collection of expectations.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static CollectionContainResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
+	public static ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		Contains<TItem>(
 			this IThat<IAsyncEnumerable<TItem>?> source,
 			IEnumerable<Action<IThatSubject<TItem?>>> expected,
@@ -187,14 +190,15 @@ public static partial class ThatAsyncEnumerable
 		expected.ThrowIfNullOrEmpty();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new CollectionContainResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
+		return new ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToFromExpectationsConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					expected,
 					matchOptions, failsForNullSubject: true)),
 			source,
-			matchOptions);
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
 	/// <summary>
@@ -280,7 +284,7 @@ public static partial class ThatAsyncEnumerable
 	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ObjectCollectionContainResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
+	public static ObjectProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		DoesNotContain<TItem>(
 			this IThat<IAsyncEnumerable<TItem>?> source,
 			IEnumerable<TItem> unexpected,
@@ -290,7 +294,7 @@ public static partial class ThatAsyncEnumerable
 		ObjectEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new ObjectCollectionContainResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
+		return new ObjectProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint<TItem, TItem>(
 					expectationBuilder, it, grammars,
@@ -298,14 +302,15 @@ public static partial class ThatAsyncEnumerable
 					options, matchOptions, failsForNullSubject: true).Invert()),
 			source,
 			options,
-			matchOptions);
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
 	/// <summary>
 	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringCollectionContainResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
+	public static StringProperCollectionMatchResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
 		DoesNotContain(
 			this IThat<IAsyncEnumerable<string?>?> source,
 			IEnumerable<string?> unexpected,
@@ -315,7 +320,7 @@ public static partial class ThatAsyncEnumerable
 		StringEqualityOptions options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new StringCollectionContainResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
+		return new StringProperCollectionMatchResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint<string?, string?>(
 					expectationBuilder, it, grammars,
@@ -323,14 +328,15 @@ public static partial class ThatAsyncEnumerable
 					unexpected, options, matchOptions, failsForNullSubject: true).Invert()),
 			source,
 			options,
-			matchOptions);
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
 	/// <summary>
 	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection of predicates.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static CollectionContainResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
+	public static ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		DoesNotContain<TItem>(
 			this IThat<IAsyncEnumerable<TItem>?> source,
 			IEnumerable<Expression<Func<TItem, bool>>> unexpected,
@@ -340,21 +346,22 @@ public static partial class ThatAsyncEnumerable
 		unexpected.ThrowIfNullOrEmpty();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new CollectionContainResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
+		return new ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToFromPredicateConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					unexpected,
 					matchOptions, failsForNullSubject: true).Invert()),
 			source,
-			matchOptions);
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
 	/// <summary>
 	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection of expectations.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static CollectionContainResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
+	public static ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		DoesNotContain<TItem>(
 			this IThat<IAsyncEnumerable<TItem>?> source,
 			IEnumerable<Action<IThatSubject<TItem?>>> unexpected,
@@ -364,14 +371,15 @@ public static partial class ThatAsyncEnumerable
 		unexpected.ThrowIfNullOrEmpty();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new CollectionContainResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
+		return new ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToFromExpectationsConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					unexpected,
 					matchOptions, failsForNullSubject: true).Invert()),
 			source,
-			matchOptions);
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
 	private sealed class ContainConstraint<TItem>(

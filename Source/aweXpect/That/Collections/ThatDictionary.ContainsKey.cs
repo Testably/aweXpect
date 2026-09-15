@@ -12,13 +12,13 @@ public static partial class ThatDictionary
 	///     Verifies that the dictionary contains the <paramref name="expected" /> key.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ContainsValueResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>, TKey, TValue?>
+	public static ContainsKeyResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>, TKey, TValue?>
 		ContainsKey<TKey, TValue>(
 			this IThat<IDictionary<TKey, TValue>?> source,
 			TKey expected)
 	{
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new ContainsValueResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>, TKey, TValue?>(
+		return new ContainsKeyResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>, TKey, TValue?>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new ContainsKeyConstraint<TKey, TValue>(expectationBuilder, it, grammars, expected)),
 			source,
@@ -31,14 +31,14 @@ public static partial class ThatDictionary
 	///     Verifies that the dictionary contains the <paramref name="expected" /> key.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ContainsValueResult<Dictionary<TKey, TValue>, IThat<Dictionary<TKey, TValue>?>, TKey, TValue?>
+	public static ContainsKeyResult<Dictionary<TKey, TValue>, IThat<Dictionary<TKey, TValue>?>, TKey, TValue?>
 		ContainsKey<TKey, TValue>(
 			this IThat<Dictionary<TKey, TValue>?> source,
 			TKey expected)
 		where TKey : notnull
 	{
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new ContainsValueResult<Dictionary<TKey, TValue>, IThat<Dictionary<TKey, TValue>?>, TKey, TValue?>(
+		return new ContainsKeyResult<Dictionary<TKey, TValue>, IThat<Dictionary<TKey, TValue>?>, TKey, TValue?>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new ContainsKeyConstraint<TKey, TValue>(expectationBuilder, it, grammars, expected)),
 			source,

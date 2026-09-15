@@ -243,7 +243,7 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection contains the provided <paramref name="expected" /> collection.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ObjectCollectionContainResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
+	public static ObjectProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		Contains<TItem>(
 			this IThat<IEnumerable<TItem>?> source,
 			IEnumerable<TItem> expected,
@@ -253,7 +253,7 @@ public static partial class ThatEnumerable
 		ObjectEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new ObjectCollectionContainResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
+		return new ObjectProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
@@ -261,14 +261,15 @@ public static partial class ThatEnumerable
 					options, matchOptions, failsForNullSubject: true)),
 			source,
 			options,
-			matchOptions);
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
 	/// <summary>
 	///     Verifies that the collection contains the provided <paramref name="expected" /> collection.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringCollectionContainResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
+	public static StringProperCollectionMatchResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 		Contains(this IThat<IEnumerable<string?>?> source,
 			IEnumerable<string?> expected,
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
@@ -277,21 +278,22 @@ public static partial class ThatEnumerable
 		StringEqualityOptions options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new StringCollectionContainResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
+		return new StringProperCollectionMatchResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint<string?, string?>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					expected, options, matchOptions, failsForNullSubject: true)),
 			source,
 			options,
-			matchOptions);
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
 	/// <summary>
 	///     Verifies that the collection contains the provided <paramref name="expected" /> collection.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringCollectionContainResult<string?[], IThat<string?[]?>>
+	public static StringProperCollectionMatchResult<string?[], IThat<string?[]?>>
 		Contains(this IThat<string?[]?> source,
 			IEnumerable<string?> expected,
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
@@ -300,14 +302,15 @@ public static partial class ThatEnumerable
 		StringEqualityOptions options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new StringCollectionContainResult<string?[], IThat<string?[]?>>(
+		return new StringProperCollectionMatchResult<string?[], IThat<string?[]?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint<string?, string?>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					expected, options, matchOptions, failsForNullSubject: true)),
 			source,
 			options,
-			matchOptions);
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
 	/// <summary>
@@ -315,7 +318,7 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static ObjectCollectionContainResult<IEnumerable, IThat<IEnumerable?>, TItem>
+	public static ObjectProperCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, TItem>
 		Contains<TItem>(
 			this IThat<IEnumerable?> source,
 			IEnumerable<TItem> expected,
@@ -325,7 +328,7 @@ public static partial class ThatEnumerable
 		ObjectEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new ObjectCollectionContainResult<IEnumerable, IThat<IEnumerable?>, TItem>(
+		return new ObjectProperCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToForEnumerableConstraint<IEnumerable, TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
@@ -334,14 +337,15 @@ public static partial class ThatEnumerable
 					matchOptions, failsForNullSubject: true)),
 			source,
 			options,
-			matchOptions);
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that the collection contains the provided <paramref name="expected" /> collection.
 	/// </summary>
-	public static ObjectCollectionContainResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
+	public static ObjectProperCollectionMatchResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
 		Contains<TItem>(
 			this IThat<ImmutableArray<TItem>> source,
 			IEnumerable<TItem> expected,
@@ -351,7 +355,7 @@ public static partial class ThatEnumerable
 		ObjectEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new ObjectCollectionContainResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>(
+		return new ObjectProperCollectionMatchResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToForEnumerableConstraint<ImmutableArray<TItem>, TItem, TItem>(expectationBuilder, it,
 					grammars,
@@ -361,7 +365,8 @@ public static partial class ThatEnumerable
 					matchOptions, failsForNullSubject: true)),
 			source,
 			options,
-			matchOptions);
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 #endif
 
@@ -369,7 +374,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection contains the provided <paramref name="expected" /> collection.
 	/// </summary>
-	public static StringCollectionContainResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
+	public static StringProperCollectionMatchResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
 		Contains(this IThat<ImmutableArray<string?>> source,
 			IEnumerable<string?> expected,
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
@@ -378,7 +383,7 @@ public static partial class ThatEnumerable
 		StringEqualityOptions options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new StringCollectionContainResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>(
+		return new StringProperCollectionMatchResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToForEnumerableConstraint<ImmutableArray<string?>, string?, string?>(expectationBuilder, it,
 					grammars,
@@ -388,7 +393,8 @@ public static partial class ThatEnumerable
 					matchOptions, failsForNullSubject: true)),
 			source,
 			options,
-			matchOptions);
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 #endif
 
@@ -396,7 +402,7 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection contains the provided <paramref name="expected" /> collection of predicates.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static CollectionContainResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
+	public static ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		Contains<TItem>(
 			this IThat<IEnumerable<TItem>?> source,
 			IEnumerable<Expression<Func<TItem, bool>>> expected,
@@ -405,21 +411,22 @@ public static partial class ThatEnumerable
 		expected.ThrowIfNullOrEmpty();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new CollectionContainResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
+		return new ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToFromPredicateConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					expected,
 					matchOptions, failsForNullSubject: true)),
 			source,
-			matchOptions);
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
 	/// <summary>
 	///     Verifies that the collection contains the provided <paramref name="expected" /> collection of expectations.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static CollectionContainResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
+	public static ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		Contains<TItem>(
 			this IThat<IEnumerable<TItem>?> source,
 			IEnumerable<Action<IThatSubject<TItem?>>> expected,
@@ -428,14 +435,15 @@ public static partial class ThatEnumerable
 		expected.ThrowIfNullOrEmpty();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new CollectionContainResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
+		return new ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToFromExpectationsConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					expected,
 					matchOptions, failsForNullSubject: true)),
 			source,
-			matchOptions);
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
 	/// <summary>
@@ -655,7 +663,7 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ObjectCollectionContainResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
+	public static ObjectProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		DoesNotContain<TItem>(
 			this IThat<IEnumerable<TItem>?> source,
 			IEnumerable<TItem> unexpected,
@@ -666,7 +674,7 @@ public static partial class ThatEnumerable
 		ObjectEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new ObjectCollectionContainResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
+		return new ObjectProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
@@ -674,14 +682,15 @@ public static partial class ThatEnumerable
 					options, matchOptions, failsForNullSubject: true).Invert()),
 			source,
 			options,
-			matchOptions);
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
 	/// <summary>
 	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringCollectionContainResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
+	public static StringProperCollectionMatchResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 		DoesNotContain(this IThat<IEnumerable<string?>?> source,
 			IEnumerable<string?> unexpected,
 			[CallerArgumentExpression("unexpected")]
@@ -691,21 +700,22 @@ public static partial class ThatEnumerable
 		StringEqualityOptions options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new StringCollectionContainResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
+		return new StringProperCollectionMatchResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint<string?, string?>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					unexpected, options, matchOptions, failsForNullSubject: true).Invert()),
 			source,
 			options,
-			matchOptions);
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
 	/// <summary>
 	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringCollectionContainResult<string?[], IThat<string?[]?>>
+	public static StringProperCollectionMatchResult<string?[], IThat<string?[]?>>
 		DoesNotContain(this IThat<string?[]?> source,
 			IEnumerable<string?> unexpected,
 			[CallerArgumentExpression("unexpected")]
@@ -715,14 +725,15 @@ public static partial class ThatEnumerable
 		StringEqualityOptions options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new StringCollectionContainResult<string?[], IThat<string?[]?>>(
+		return new StringProperCollectionMatchResult<string?[], IThat<string?[]?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint<string?, string?>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					unexpected, options, matchOptions, failsForNullSubject: true).Invert()),
 			source,
 			options,
-			matchOptions);
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
 	/// <summary>
@@ -730,7 +741,7 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
-	public static ObjectCollectionContainResult<IEnumerable, IThat<IEnumerable?>, TItem>
+	public static ObjectProperCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, TItem>
 		DoesNotContain<TItem>(
 			this IThat<IEnumerable?> source,
 			IEnumerable<TItem> unexpected,
@@ -741,7 +752,7 @@ public static partial class ThatEnumerable
 		ObjectEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new ObjectCollectionContainResult<IEnumerable, IThat<IEnumerable?>, TItem>(
+		return new ObjectProperCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToForEnumerableConstraint<IEnumerable, TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
@@ -750,14 +761,15 @@ public static partial class ThatEnumerable
 					matchOptions, failsForNullSubject: true).Invert()),
 			source,
 			options,
-			matchOptions);
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection.
 	/// </summary>
-	public static ObjectCollectionContainResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
+	public static ObjectProperCollectionMatchResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
 		DoesNotContain<TItem>(
 			this IThat<ImmutableArray<TItem>> source,
 			IEnumerable<TItem> unexpected,
@@ -768,7 +780,7 @@ public static partial class ThatEnumerable
 		ObjectEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new ObjectCollectionContainResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>(
+		return new ObjectProperCollectionMatchResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToForEnumerableConstraint<ImmutableArray<TItem>, TItem, TItem>(expectationBuilder, it,
 					grammars,
@@ -778,7 +790,8 @@ public static partial class ThatEnumerable
 					matchOptions, failsForNullSubject: true).Invert()),
 			source,
 			options,
-			matchOptions);
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 #endif
 
@@ -786,7 +799,7 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection.
 	/// </summary>
-	public static StringCollectionContainResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
+	public static StringProperCollectionMatchResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
 		DoesNotContain(this IThat<ImmutableArray<string?>> source,
 			IEnumerable<string?> unexpected,
 			[CallerArgumentExpression("unexpected")]
@@ -796,7 +809,7 @@ public static partial class ThatEnumerable
 		StringEqualityOptions options = new();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new StringCollectionContainResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>(
+		return new StringProperCollectionMatchResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToForEnumerableConstraint<ImmutableArray<string?>, string?, string?>(expectationBuilder, it,
 					grammars,
@@ -806,7 +819,8 @@ public static partial class ThatEnumerable
 					matchOptions, failsForNullSubject: true).Invert()),
 			source,
 			options,
-			matchOptions);
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 #endif
 
@@ -814,7 +828,7 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection of predicates.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static CollectionContainResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
+	public static ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		DoesNotContain<TItem>(
 			this IThat<IEnumerable<TItem>?> source,
 			IEnumerable<Expression<Func<TItem, bool>>> unexpected,
@@ -824,21 +838,22 @@ public static partial class ThatEnumerable
 		unexpected.ThrowIfNullOrEmpty();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new CollectionContainResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
+		return new ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToFromPredicateConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					unexpected,
 					matchOptions, failsForNullSubject: true).Invert()),
 			source,
-			matchOptions);
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
 	/// <summary>
 	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection of expectations.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static CollectionContainResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
+	public static ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		DoesNotContain<TItem>(
 			this IThat<IEnumerable<TItem>?> source,
 			IEnumerable<Action<IThatSubject<TItem?>>> unexpected,
@@ -848,14 +863,15 @@ public static partial class ThatEnumerable
 		unexpected.ThrowIfNullOrEmpty();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new CollectionContainResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
+		return new ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToFromExpectationsConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					unexpected,
 					matchOptions, failsForNullSubject: true).Invert()),
 			source,
-			matchOptions);
+			matchOptions,
+			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
 	private sealed class ContainConstraint<TItem>(

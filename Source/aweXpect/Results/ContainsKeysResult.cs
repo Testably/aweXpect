@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using aweXpect.Core;
+using aweXpect.Options;
 
 namespace aweXpect.Results;
 
@@ -10,14 +11,14 @@ namespace aweXpect.Results;
 /// <remarks>
 ///     <seealso cref="AndOrResult{TCollection, TThat}" />
 /// </remarks>
-public class ContainsValuesResult<TCollection, TThat, TKey, TValue>
+public class ContainsKeysResult<TCollection, TThat, TKey, TValue>
 	: AndOrResult<TCollection, TThat>
 {
 	private readonly ExpectationBuilder _expectationBuilder;
 	private readonly TKey[] _keys;
 	private readonly Func<TCollection, IEnumerable<TValue>> _memberAccessor;
 
-	internal ContainsValuesResult(
+	internal ContainsKeysResult(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
 		TKey[] keys,

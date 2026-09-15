@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Options;
 
 namespace aweXpect.Internal.Tests.Collections;
 

@@ -2,7 +2,7 @@
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 
-namespace aweXpect;
+namespace aweXpect.Options;
 
 /// <summary>
 ///     Quantifier for evaluating collections.

@@ -14,7 +14,7 @@ public static partial class ThatReadOnlyDictionary
 	///     Verifies that the dictionary contains all <paramref name="expected" /> keys.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ContainsValuesResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>,
+	public static ContainsKeysResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>,
 			TKey, TValue?>
 		ContainsKeys<TKey, TValue>(
 			this IThat<IReadOnlyDictionary<TKey, TValue>?> source,
@@ -22,7 +22,7 @@ public static partial class ThatReadOnlyDictionary
 	{
 		expected.ThrowIfNullOrEmpty();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new ContainsValuesResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>,
+		return new ContainsKeysResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>,
 			TKey, TValue?>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new ContainKeysConstraint<TKey, TValue>(expectationBuilder, it, grammars, expected)),
@@ -37,7 +37,7 @@ public static partial class ThatReadOnlyDictionary
 	///     Verifies that the dictionary contains all <paramref name="expected" /> keys.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ContainsValuesResult<ReadOnlyDictionary<TKey, TValue>, IThat<ReadOnlyDictionary<TKey, TValue>?>, TKey,
+	public static ContainsKeysResult<ReadOnlyDictionary<TKey, TValue>, IThat<ReadOnlyDictionary<TKey, TValue>?>, TKey,
 			TValue?>
 		ContainsKeys<TKey, TValue>(
 			this IThat<ReadOnlyDictionary<TKey, TValue>?> source,
@@ -46,7 +46,7 @@ public static partial class ThatReadOnlyDictionary
 	{
 		expected.ThrowIfNullOrEmpty();
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new ContainsValuesResult<ReadOnlyDictionary<TKey, TValue>, IThat<ReadOnlyDictionary<TKey, TValue>?>, TKey
+		return new ContainsKeysResult<ReadOnlyDictionary<TKey, TValue>, IThat<ReadOnlyDictionary<TKey, TValue>?>, TKey
 			, TValue?>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new ContainKeysConstraint<TKey, TValue>(expectationBuilder, it, grammars, expected)),
