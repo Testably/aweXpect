@@ -12,6 +12,7 @@
     <Project Path="Tests/aweXpect.Api.Tests/aweXpect.Api.Tests.csproj" />
     <Project Path="Tests/aweXpect.Core.Api.Tests/aweXpect.Core.Api.Tests.csproj" />
     <Project Path="Tests/aweXpect.Core.Tests/aweXpect.Core.Tests.csproj" />
+    <Project Path="Tests/aweXpect.Generators.Tests/aweXpect.Generators.Tests.csproj" />
     <Project Path="Tests/aweXpect.Internal.Tests/aweXpect.Internal.Tests.csproj" />
     <Project Path="Tests/aweXpect.Tests/aweXpect.Tests.csproj" />
   </Folder>
@@ -62,7 +63,7 @@
   <Project Path="Source/aweXpect.Analyzers.CodeFixers/aweXpect.Analyzers.CodeFixers.csproj" />
   <Project Path="Source/aweXpect.Analyzers/aweXpect.Analyzers.csproj" />
   <Project Path="Source/aweXpect.Core/aweXpect.Core.csproj" />
-  <Project Path="Source/aweXpect.Frameworks/aweXpect.Frameworks.csproj" />
+  <Project Path="Source/aweXpect.Generators/aweXpect.Generators.csproj" />
   <Project Path="Source/aweXpect.SourceGenerators/aweXpect.SourceGenerators.csproj" />
   <Project Path="Source/aweXpect/aweXpect.csproj" />
 </Solution>

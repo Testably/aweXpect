@@ -6,7 +6,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\Source\aweXpect.Frameworks\aweXpect.Frameworks.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		<ProjectReference Include="..\..\..\Source\aweXpect.Generators\aweXpect.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 		<ProjectReference Include="..\..\..\Source\aweXpect\aweXpect.csproj"/>
 	</ItemGroup>
 

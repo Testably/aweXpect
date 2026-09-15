@@ -1,6 +1,7 @@
 ﻿using System;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Metadata;
 using aweXpect.Customization;
 using aweXpect.Equivalency;
 using aweXpect.Helpers;
@@ -16,7 +17,7 @@ public static partial class ThatObject
 	/// </summary>
 	public static AndOrResult<TSubject, IThat<TSubject>> IsEquivalentTo<TSubject, TExpected>(
 		this IThat<TSubject> source,
-		TExpected expected,
+		[RequiresMemberMetadata] TExpected expected,
 		Func<EquivalencyOptions<TExpected>, EquivalencyOptions>? options = null)
 	{
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
@@ -44,7 +45,7 @@ public static partial class ThatObject
 	/// </remarks>
 	public static AndOrResult<TSubject, IThat<TSubject>> IsEquivalentTo<TSubject>(
 		this IThat<TSubject> source,
-		object? expected,
+		[RequiresMemberMetadata] object? expected,
 		Func<EquivalencyOptions<object?>, EquivalencyOptions>? options = null)
 		=> source.IsEquivalentTo<TSubject, object?>(expected, options);
 
@@ -53,7 +54,7 @@ public static partial class ThatObject
 	/// </summary>
 	public static AndOrResult<TSubject, IThat<TSubject>> IsNotEquivalentTo<TSubject, TExpected>(
 		this IThat<TSubject> source,
-		TExpected unexpected,
+		[RequiresMemberMetadata] TExpected unexpected,
 		Func<EquivalencyOptions<TExpected>, EquivalencyOptions>? options = null)
 	{
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
@@ -81,7 +82,7 @@ public static partial class ThatObject
 	/// </remarks>
 	public static AndOrResult<TSubject, IThat<TSubject>> IsNotEquivalentTo<TSubject>(
 		this IThat<TSubject> source,
-		object? unexpected,
+		[RequiresMemberMetadata] object? unexpected,
 		Func<EquivalencyOptions<object?>, EquivalencyOptions>? options = null)
 		=> source.IsNotEquivalentTo<TSubject, object?>(unexpected, options);
 }

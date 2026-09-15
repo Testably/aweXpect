@@ -622,7 +622,7 @@ namespace aweXpect.Equivalency
 {
     public static class EquivalencyComparison
     {
-        public static System.Threading.Tasks.Task<bool> Compare<TActual, TExpected>(TActual actual, TExpected expected, aweXpect.Equivalency.EquivalencyOptions equivalencyOptions, System.Text.StringBuilder failureBuilder) { }
+        public static System.Threading.Tasks.Task<bool> Compare<TActual, TExpected>([aweXpect.Core.Metadata.RequiresMemberMetadata] TActual actual, [aweXpect.Core.Metadata.RequiresMemberMetadata] TExpected expected, aweXpect.Equivalency.EquivalencyOptions equivalencyOptions, System.Text.StringBuilder failureBuilder) { }
     }
     public enum EquivalencyComparisonType
     {

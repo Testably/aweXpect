@@ -1,10 +1,42 @@
 using System.Text;
+using aweXpect.Core.Metadata;
 using aweXpect.Equivalency;
 
 namespace aweXpect.Core.Tests.Equivalency;
 
 public sealed class EquivalencyComparisonTests
 {
+	[Fact]
+	public async Task WhenActualMemberIsMoreVisibleThanRequested_ShouldStillCompareIt()
+	{
+		WithPublicValue actual = new(1);
+		WithInternalValue expected = new(1);
+		EquivalencyOptions options = new()
+		{
+			Fields = IncludeMembers.Internal,
+			Properties = IncludeMembers.None,
+		};
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, new StringBuilder());
+
+		await That(result).IsTrue()
+			.Because("the visibility selects the members of the expected object, while the actual side only has to have a member of that name");
+	}
+
+	[Fact]
+	public async Task WhenActualPropertyHasNoPublicGetter_ShouldTreatItAsMissing()
+	{
+		WithPrivateGetter actual = new(1);
+		WithPublicGetter expected = new(1);
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).Contains("Property Value was <null> instead of 1")
+			.Because("a registration cannot call a non-public getter, so reflection must not read one either");
+	}
+
 	[Fact]
 	public async Task WhenAllMembersAreExcludedExplicitly_ShouldNotThrow()
 	{
@@ -41,6 +73,53 @@ public sealed class EquivalencyComparisonTests
 			.Because("comparing by value is the documented remedy for types without comparable members");
 	}
 
+	[Theory]
+	[InlineData(1, 3, 2, 3, "Property Value differed")]
+	[InlineData(1, 3, 1, 4, "Field Value differed")]
+	public async Task WhenFieldHidesAProperty_ShouldCompareBoth(int actualProperty, int actualField,
+		int expectedProperty, int expectedField, string expectedDifference)
+	{
+		FieldHidingProperty actual = new(actualProperty, actualField);
+		FieldHidingProperty expected = new(expectedProperty, expectedField);
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).Contains(expectedDifference)
+			.Because("a field and a property of the same name are both members of the type");
+	}
+
+	[Fact]
+	public async Task WhenGetterThrows_ShouldThrowTheGetterException()
+	{
+		WithThrowingGetter actual = new("getter failed");
+		WithThrowingGetter expected = new("getter failed");
+
+		async Task Act()
+			=> await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), new StringBuilder());
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("getter failed")
+			.Because("reflection wraps the exception, while a registered accessor lets it through, so both paths have to agree");
+	}
+
+	[Theory]
+	[InlineData("foo", "foo", true)]
+	[InlineData("foo", "bar", false)]
+	public async Task WhenMemberIsHidden_ShouldCompareTheMostDerivedDeclarationOnly(string actualText,
+		string expectedText, bool expectedResult)
+	{
+		PropertyHidingProperty actual = new(1, actualText);
+		PropertyHidingProperty expected = new(2, expectedText);
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsEqualTo(expectedResult)
+			.Because("reflection returns both declarations, but only the one on the most derived type is visible");
+	}
+
 	[Fact]
 	public async Task WhenNestedMemberHasNoComparableMembers_ShouldIncludeTheMemberPath()
 	{
@@ -71,6 +150,59 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenTypeHasAnIndexer_ShouldIgnoreTheIndexer()
+	{
+		WithIndexer actual = new()
+		{
+			Count = 1,
+		};
+		WithIndexer expected = new()
+		{
+			Count = 2,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).Contains("Property Count differed")
+			.Because("an indexer cannot be read without an argument, so it is not a comparable member");
+	}
+
+	[Fact]
+	public async Task WhenTypeIsRegistered_ShouldCompareTheRegisteredMembers()
+	{
+		RegisterPhantom();
+		RegisteredProbe actual = new(1);
+		RegisteredProbe expected = new(2);
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).Contains("Property Phantom differed")
+			.Because("the registered member is not a member reflection could find, so only the registry can report it");
+	}
+
+	[Fact]
+	public async Task WhenTypeIsRegistered_WithNonPublicMembers_ShouldReflectOverTheWholeType()
+	{
+		RegisterPhantom();
+		RegisteredProbe actual = new(1);
+		RegisteredProbe expected = new(2);
+		StringBuilder failureBuilder = new();
+		EquivalencyOptions options = new()
+		{
+			Properties = IncludeMembers.Public | IncludeMembers.Internal,
+		};
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("a request for non-public members bypasses the registry, and reflection does not know the phantom");
+	}
+
+	[Fact]
 	public async Task WhenTypesDifferWithoutComparableMembers_ShouldReportTheDifferenceInsteadOfThrowing()
 	{
 		ClassWithOnlyPrivateState actual = new(1);
@@ -84,6 +216,9 @@ public sealed class EquivalencyComparisonTests
 			.Because("a mismatching type is a difference that can be reported without inspecting members");
 	}
 
+	private static void RegisterPhantom()
+		=> TypeMetadataRegistry.RegisterProperty<RegisteredProbe, int>("Phantom", x => x.PhantomValue());
+
 	private sealed class ClassWithOnlyPrivateState(int value)
 	{
 		private readonly int _value = value;
@@ -96,11 +231,28 @@ public sealed class EquivalencyComparisonTests
 		public ClassWithOnlyPrivateState Inner { get; } = inner;
 	}
 
+	private sealed class FieldHidingProperty(int property, int field) : WithProperty(property)
+	{
+		public new int Value = field;
+	}
+
 	private sealed class OtherClassWithOnlyPrivateState(int value)
 	{
 		private readonly int _value = value;
 
 		public override string ToString() => $"{nameof(OtherClassWithOnlyPrivateState)}({_value})";
+	}
+
+	private sealed class PropertyHidingProperty(int property, string text) : WithProperty(property)
+	{
+		public new string Value { get; } = text;
+	}
+
+	private sealed class RegisteredProbe(int phantom)
+	{
+		public int Visible { get; set; }
+
+		public int PhantomValue() => phantom;
 	}
 
 	private sealed class ValueLikeWithoutMembers(int value)
@@ -113,5 +265,45 @@ public sealed class EquivalencyComparisonTests
 		public override int GetHashCode() => _value;
 
 		public override string ToString() => $"{nameof(ValueLikeWithoutMembers)}({_value})";
+	}
+
+	private sealed class WithIndexer
+	{
+		public int Count { get; set; }
+		public int this[int index] => index;
+	}
+
+	private sealed class WithInternalValue(int value)
+	{
+		internal int Value = value;
+	}
+
+	private sealed class WithPrivateGetter(int value)
+	{
+		public int Value { private get; set; } = value;
+		public int Other { get; set; }
+
+		public override string ToString() => $"{Value}";
+	}
+
+	private class WithProperty(int value)
+	{
+		public int Value => value;
+	}
+
+	private sealed class WithPublicGetter(int value)
+	{
+		public int Value { get; set; } = value;
+		public int Other { get; set; }
+	}
+
+	private sealed class WithPublicValue(int value)
+	{
+		public int Value = value;
+	}
+
+	private sealed class WithThrowingGetter(string message)
+	{
+		public int Value => throw new InvalidOperationException(message);
 	}
 }

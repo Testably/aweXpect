@@ -43,16 +43,6 @@ public class ObjectCountResult<TType, TThat, TElement, TSelf>(
 	ObjectEqualityOptions<TElement> IOptionsProvider<ObjectEqualityOptions<TElement>>.Options => options;
 
 	/// <summary>
-	///     Use equivalency to compare objects.
-	/// </summary>
-	public TSelf Equivalent(
-		Func<EquivalencyOptions, EquivalencyOptions>? optionsCallback = null)
-	{
-		options.Equivalent(EquivalencyOptionsExtensions.FromCallback(optionsCallback));
-		return (TSelf)this;
-	}
-
-	/// <summary>
 	///     Uses the provided <paramref name="comparer" /> for comparing <see langword="object" />s.
 	/// </summary>
 	public TSelf Using(

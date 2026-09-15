@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<IsPackable>false</IsPackable>
+		<TargetFrameworks>net8.0</TargetFrameworks>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Source\aweXpect.Generators\aweXpect.Generators.csproj" OutputItemType="Analyzer"/>
+		<ProjectReference Include="..\..\Source\aweXpect\aweXpect.csproj"/>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp"/>
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Corpus.cs" LogicalName="Corpus.cs"/>
+	</ItemGroup>
+</Project>

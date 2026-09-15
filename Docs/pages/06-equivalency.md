@@ -263,3 +263,53 @@ but it was not:
 Equivalency options:
  - include public fields and properties
 ```
+
+## Trimming and Native AOT
+
+Equivalency has to know the members of the compared types. Reflection provides them under the JIT, but publishing
+with trimming or Native AOT enabled removes members that are only reached reflectively, so a comparison would
+silently verify less than it claims to.
+
+A source generator that ships with the `aweXpect` package closes this gap: for every call site that passes a value to
+`IsEquivalentTo`, `IsNotEquivalentTo`, `AreEquivalentTo` or switches to `Equivalent()`, it registers the public
+fields and properties of the argument's type, of the subject's type and of every type reachable through their
+members. The registration runs when your assembly is loaded and needs no configuration. A type that has a
+registration is compared through it, every other type is reflected over as before. A type without any comparable
+member fails loudly instead of passing without verifying anything.
+
+Some types cannot be seen by the generator, because it works from the types declared in your source:
+
+- a member declared as `object`, an interface or a base type only reveals the declared type; the instance it holds at
+  runtime is compared through reflection,
+- a `private`, `protected` or `file`-local type cannot be referenced by generated code and is compared through
+  reflection,
+- a value that reaches the comparison through your own extension method is only registered if the extension's
+  parameter or type parameter carries `[RequiresMemberMetadata]`,
+- an anonymous type with a member holding a collection of anonymous types, other than an array, cannot be written
+  as an instance and is compared through reflection; the element type itself is registered.
+
+A type the generator merely did not see, such as the runtime type behind an `object` member or a value passed through
+an unmarked extension, can be named explicitly to register it anyway:
+
+```csharp
+using aweXpect.Core.Metadata;
+
+[assembly: GenerateMetadata(typeof(Track))]
+```
+
+A type the generated code cannot reference stays on reflection regardless, and the generator warns with `aweXpect2001`
+when a named type yields no registration.
+
+The registration needs `ModuleInitializerAttribute` and C# 9, so nothing is generated for a project that targets
+.NET Framework or .NET Standard 2.0 unless it polyfills the attribute. Those targets cannot be trimmed or published
+with Native AOT and keep using reflection.
+
+The walk follows every member type the comparison would visit, including framework types. A member of type
+`Exception`, for example, registers the types reachable from its properties, because reflection would compare them
+too. Members whose getter is marked with `RequiresUnreferencedCode` or `RequiresDynamicCode` cannot be registered, so
+their type stays on the reflection path.
+
+Two limits remain under trimming. Only public members are registered, so a comparison that requests
+`IncludeMembers.Internal` or `IncludeMembers.Private` reflects over the whole type, and a trimmed member is left out
+of the comparison. And a type the generator did not see whose members were all removed by the trimmer fails with an
+error that names the type and asks you to root it.
