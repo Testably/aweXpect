@@ -3744,6 +3744,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 11:47:33 2026 \u002B0200",
         "message": "refactor!: remove the parameterless Exactly() match type (#1123)"
+      },
+      {
+        "sha": "d22cf29f00034a5a5f57895339c4e4ee1840a45f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 12:13:46 2026 \u002B0200",
+        "message": "refactor: name every expectation receiver \u0060subject\u0060 (#1122)"
       }
     ],
     "labels": [
@@ -4370,7 +4376,8 @@ window.BENCHMARK_DATA = {
       "a9d6112f",
       "98a01e4d",
       "d095969d",
-      "af336624"
+      "af336624",
+      "d22cf29f"
     ],
     "datasets": [
       {
@@ -5000,7 +5007,8 @@ window.BENCHMARK_DATA = {
           249.30110273361205,
           282.25110816955566,
           240.25693119366963,
-          187.42290679613748
+          187.42290679613748,
+          239.29671038114108
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5473,6 +5481,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6273,7 +6282,8 @@ window.BENCHMARK_DATA = {
           251.50414164861044,
           257.1469643456595,
           251.3275227546692,
-          193.04728918809158
+          193.04728918809158,
+          247.2769733575674
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6466,6 +6476,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10204,6 +10215,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 11:47:33 2026 \u002B0200",
         "message": "refactor!: remove the parameterless Exactly() match type (#1123)"
+      },
+      {
+        "sha": "d22cf29f00034a5a5f57895339c4e4ee1840a45f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 12:13:46 2026 \u002B0200",
+        "message": "refactor: name every expectation receiver \u0060subject\u0060 (#1122)"
       }
     ],
     "labels": [
@@ -10753,7 +10770,8 @@ window.BENCHMARK_DATA = {
       "a9d6112f",
       "98a01e4d",
       "d095969d",
-      "af336624"
+      "af336624",
+      "d22cf29f"
     ],
     "datasets": [
       {
@@ -11306,7 +11324,8 @@ window.BENCHMARK_DATA = {
           367216.8917317708,
           401135.9821777344,
           367072.13548177085,
-          278294.9004882813
+          278294.9004882813,
+          362708.42550223216
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11864,7 +11883,8 @@ window.BENCHMARK_DATA = {
           542085,
           542085,
           542084,
-          542085
+          542085,
+          542084
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12425,7 +12445,8 @@ window.BENCHMARK_DATA = {
           2347232.1354166665,
           2769117.538802083,
           2294237.7859375,
-          1874052.9045572917
+          1874052.9045572917,
+          2317601.6453125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12983,7 +13004,8 @@ window.BENCHMARK_DATA = {
           4841647,
           4841651,
           4841647,
-          4841648
+          4841648,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16741,6 +16763,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 11:47:33 2026 \u002B0200",
         "message": "refactor!: remove the parameterless Exactly() match type (#1123)"
+      },
+      {
+        "sha": "d22cf29f00034a5a5f57895339c4e4ee1840a45f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 12:13:46 2026 \u002B0200",
+        "message": "refactor: name every expectation receiver \u0060subject\u0060 (#1122)"
       }
     ],
     "labels": [
@@ -17367,7 +17395,8 @@ window.BENCHMARK_DATA = {
       "a9d6112f",
       "98a01e4d",
       "d095969d",
-      "af336624"
+      "af336624",
+      "d22cf29f"
     ],
     "datasets": [
       {
@@ -17997,7 +18026,8 @@ window.BENCHMARK_DATA = {
           469.3274403254191,
           497.25142247336254,
           447.7724458694458,
-          347.0769005775452
+          347.0769005775452,
+          461.40208435058594
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18470,6 +18500,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -19270,7 +19301,8 @@ window.BENCHMARK_DATA = {
           488.87791239420574,
           507.8180557659694,
           509.60990585599626,
-          377.06740255355834
+          377.06740255355834,
+          480.8352996281215
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19463,6 +19495,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -23663,6 +23696,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 11:47:33 2026 \u002B0200",
         "message": "refactor!: remove the parameterless Exactly() match type (#1123)"
+      },
+      {
+        "sha": "d22cf29f00034a5a5f57895339c4e4ee1840a45f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 12:13:46 2026 \u002B0200",
+        "message": "refactor: name every expectation receiver \u0060subject\u0060 (#1122)"
       }
     ],
     "labels": [
@@ -24289,7 +24328,8 @@ window.BENCHMARK_DATA = {
       "a9d6112f",
       "98a01e4d",
       "d095969d",
-      "af336624"
+      "af336624",
+      "d22cf29f"
     ],
     "datasets": [
       {
@@ -24919,7 +24959,8 @@ window.BENCHMARK_DATA = {
           311.4363928159078,
           276.3372493426005,
           251.45580520629883,
-          193.5445455823626
+          193.5445455823626,
+          253.960641009467
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -25433,6 +25474,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -26192,7 +26234,8 @@ window.BENCHMARK_DATA = {
           245.01674894186166,
           271.7574294635228,
           247.3370247909001,
-          190.3003691037496
+          190.3003691037496,
+          242.3548962275187
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -26385,6 +26428,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -30585,6 +30629,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 11:47:33 2026 \u002B0200",
         "message": "refactor!: remove the parameterless Exactly() match type (#1123)"
+      },
+      {
+        "sha": "d22cf29f00034a5a5f57895339c4e4ee1840a45f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 12:13:46 2026 \u002B0200",
+        "message": "refactor: name every expectation receiver \u0060subject\u0060 (#1122)"
       }
     ],
     "labels": [
@@ -31211,7 +31261,8 @@ window.BENCHMARK_DATA = {
       "a9d6112f",
       "98a01e4d",
       "d095969d",
-      "af336624"
+      "af336624",
+      "d22cf29f"
     ],
     "datasets": [
       {
@@ -31841,7 +31892,8 @@ window.BENCHMARK_DATA = {
           458.56294771341175,
           471.88618322781156,
           467.48165338379994,
-          358.1299643834432
+          358.1299643834432,
+          461.53673432423517
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32314,6 +32366,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -33114,7 +33167,8 @@ window.BENCHMARK_DATA = {
           1128.3526980536324,
           1268.4050240834554,
           1136.2323797666108,
-          873.9648835842426
+          873.9648835842426,
+          1133.339914004008
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33543,6 +33597,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -37507,6 +37562,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 11:47:33 2026 \u002B0200",
         "message": "refactor!: remove the parameterless Exactly() match type (#1123)"
+      },
+      {
+        "sha": "d22cf29f00034a5a5f57895339c4e4ee1840a45f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 12:13:46 2026 \u002B0200",
+        "message": "refactor: name every expectation receiver \u0060subject\u0060 (#1122)"
       }
     ],
     "labels": [
@@ -38133,7 +38194,8 @@ window.BENCHMARK_DATA = {
       "a9d6112f",
       "98a01e4d",
       "d095969d",
-      "af336624"
+      "af336624",
+      "d22cf29f"
     ],
     "datasets": [
       {
@@ -38763,7 +38825,8 @@ window.BENCHMARK_DATA = {
           1808.64620413099,
           1971.4030593872071,
           1829.5400713407075,
-          1402.0262065614972
+          1402.0262065614972,
+          1831.0748758951822
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -39236,6 +39299,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -40036,7 +40100,8 @@ window.BENCHMARK_DATA = {
           1321.148864618937,
           1491.9525361742292,
           1364.1942037582398,
-          998.0545776912144
+          998.0545776912144,
+          1313.8069371541342
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40229,6 +40294,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -44429,6 +44495,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 11:47:33 2026 \u002B0200",
         "message": "refactor!: remove the parameterless Exactly() match type (#1123)"
+      },
+      {
+        "sha": "d22cf29f00034a5a5f57895339c4e4ee1840a45f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 12:13:46 2026 \u002B0200",
+        "message": "refactor: name every expectation receiver \u0060subject\u0060 (#1122)"
       }
     ],
     "labels": [
@@ -45055,7 +45127,8 @@ window.BENCHMARK_DATA = {
       "a9d6112f",
       "98a01e4d",
       "d095969d",
-      "af336624"
+      "af336624",
+      "d22cf29f"
     ],
     "datasets": [
       {
@@ -45685,7 +45758,8 @@ window.BENCHMARK_DATA = {
           2491.4571551005047,
           2663.2380771636963,
           2401.1907946268716,
-          1900.321192932129
+          1900.321192932129,
+          2493.6360699971515
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -46158,6 +46232,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -46958,7 +47033,8 @@ window.BENCHMARK_DATA = {
           19817.087254115515,
           27891.504345233625,
           19789.662180582684,
-          15674.699180094402
+          15674.699180094402,
+          19911.246940104167
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47590,6 +47666,7 @@ window.BENCHMARK_DATA = {
           33468,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
