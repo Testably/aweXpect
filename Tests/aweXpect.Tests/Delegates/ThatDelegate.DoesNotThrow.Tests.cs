@@ -27,7 +27,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).DoesNotThrow();
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that @delegate
 					              does not throw any exception,
@@ -46,7 +46,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).DoesNotThrow();
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 			}
 
@@ -101,7 +101,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).DoesNotThrow();
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that @delegate
 					              does not throw any exception,

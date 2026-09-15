@@ -264,7 +264,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to ThatObject.OuterClass {
@@ -368,7 +368,7 @@ public sealed partial class ThatObject
 					=> await That(subject)
 						.IsEquivalentTo(expected, o => o.IgnoringMember("Inner.Inner.Collection.[3]"));
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to ThatObject.OuterClass {

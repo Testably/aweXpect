@@ -13,7 +13,7 @@ public class Xunit3TestFrameworkTests
 		void Act()
 			=> Fail.Test("my message");
 
-		Exception exception = await Expect.That(Act).ThrowsException()
+		Exception exception = await Expect.That(Act).Throws()
 			.WithMessage("my message");
 		await Expect.That(exception.GetType().GetInterfaces().Select(e => e.Name))
 			.Contains("IAssertionException");
@@ -27,7 +27,7 @@ public class Xunit3TestFrameworkTests
 		void Act()
 			=> Fail.Test("my message", cause);
 
-		await Expect.That(Act).ThrowsException()
+		await Expect.That(Act).Throws()
 			.Whose(e => e.InnerException, i => i.IsSameAs(cause));
 	}
 
@@ -37,7 +37,7 @@ public class Xunit3TestFrameworkTests
 		void Act()
 			=> Fail.Inconclusive("my message");
 
-		Exception exception = await Expect.That(Act).ThrowsException()
+		Exception exception = await Expect.That(Act).Throws()
 			.WithMessage("my message");
 		await Expect.That(exception.GetType().GetInterfaces().Select(e => e.Name))
 			.Contains("ITestTimeoutException");
@@ -49,7 +49,7 @@ public class Xunit3TestFrameworkTests
 		void Act()
 			=> Skip.Test("my message");
 
-		await Expect.That(Act).ThrowsException()
+		await Expect.That(Act).Throws()
 			.WithMessage("$XunitDynamicSkip$my message");
 	}
 }

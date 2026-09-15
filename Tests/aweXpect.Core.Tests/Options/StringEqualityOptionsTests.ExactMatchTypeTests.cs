@@ -106,7 +106,7 @@ public sealed partial class StringEqualityOptionsTests
 			Exception exception = new("foo");
 
 			async Task Act()
-				=> await That(() => Task.FromException(exception)).ThrowsException().WithMessage("bar");
+				=> await That(() => Task.FromException(exception)).Throws().WithMessage("bar");
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""

@@ -2,7 +2,7 @@
 
 public sealed partial class ThatDelegate
 {
-	public sealed partial class ThrowsException
+	public sealed partial class Throws
 	{
 		public sealed class WithMessage
 		{
@@ -17,7 +17,7 @@ public sealed partial class ThatDelegate
 					void Delegate() => throw exception;
 
 					async Task Act()
-						=> await That(Delegate).ThrowsException()
+						=> await That(Delegate).Throws()
 							.WithMessage("foo").IgnoringCase();
 
 					await That(Act).DoesNotThrow();
@@ -32,7 +32,7 @@ public sealed partial class ThatDelegate
 					void Delegate() => throw exception;
 
 					async Task Act()
-						=> await That(Delegate).ThrowsException()
+						=> await That(Delegate).Throws()
 							.WithMessage("foo*").AsWildcard();
 
 					await That(Act).DoesNotThrow();
@@ -47,7 +47,7 @@ public sealed partial class ThatDelegate
 					void Delegate() => throw exception;
 
 					async Task Act()
-						=> await That(Delegate).ThrowsException()
+						=> await That(Delegate).Throws()
 							.WithMessage("foo");
 
 					await That(Act).Throws<XunitException>()
@@ -100,7 +100,7 @@ public sealed partial class ThatDelegate
 					void Delegate() => throw exception;
 
 					Exception result = await That(Delegate)
-						.ThrowsException().WithMessage(message);
+						.Throws().WithMessage(message);
 
 					await That(result).IsSameAs(exception);
 				}
@@ -113,7 +113,7 @@ public sealed partial class ThatDelegate
 					Action action = () => throw new CustomException(actual);
 
 					async Task Act()
-						=> await That(action).ThrowsException().WithMessage(expected);
+						=> await That(action).Throws().WithMessage(expected);
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""

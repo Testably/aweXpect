@@ -419,7 +419,7 @@ public sealed class AndNodeTests
 		async Task Act()
 			=> await That(true).IsFalse().And.IsTrue();
 
-		await That(Act).ThrowsException()
+		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that true
 			             is False and is True,
@@ -433,7 +433,7 @@ public sealed class AndNodeTests
 		async Task Act()
 			=> await That(true).IsFalse().And.IsFalse().And.Implies(false);
 
-		await That(Act).ThrowsException()
+		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that true
 			             is False and is False and implies False,
@@ -465,7 +465,7 @@ public sealed class AndNodeTests
 		async Task Act()
 			=> await That(true).IsTrue().And.IsFalse();
 
-		await That(Act).ThrowsException()
+		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that true
 			             is True and is False,

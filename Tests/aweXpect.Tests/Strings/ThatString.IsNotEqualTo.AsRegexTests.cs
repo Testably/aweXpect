@@ -19,7 +19,7 @@ public sealed partial class ThatString
 					=> await That(subject).IsNotEqualTo(pattern)
 						.AsRegex().IgnoringCase(ignoreCase);
 
-				await That(Act).ThrowsException().OnlyIf(ignoreCase)
+				await That(Act).Throws().OnlyIf(ignoreCase)
 					.WithMessage("""
 					             Expected that subject
 					             does not match regex ".*ME ME.*",

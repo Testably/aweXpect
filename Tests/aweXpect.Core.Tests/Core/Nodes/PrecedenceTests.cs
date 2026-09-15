@@ -10,7 +10,7 @@ public sealed class PrecedenceTests
 			async Task Act()
 				=> await That(true).IsFalse().And.IsTrue().Or.IsFalse();
 
-			await That(Act).ThrowsException()
+			await That(Act).Throws()
 				.WithMessage("""
 				             Expected that true
 				             is False and is True or is False,
@@ -24,7 +24,7 @@ public sealed class PrecedenceTests
 			async Task Act()
 				=> await That(true).IsFalse().And.IsTrue().Or.IsTrue().And.IsFalse();
 
-			await That(Act).ThrowsException()
+			await That(Act).Throws()
 				.WithMessage("""
 				             Expected that true
 				             is False and is True or is True and is False,
@@ -47,7 +47,7 @@ public sealed class PrecedenceTests
 			async Task Act()
 				=> await That(true).IsFalse().Or.IsTrue().And.IsFalse();
 
-			await That(Act).ThrowsException()
+			await That(Act).Throws()
 				.WithMessage("""
 				             Expected that true
 				             is False or is True and is False,
@@ -61,7 +61,7 @@ public sealed class PrecedenceTests
 			async Task Act()
 				=> await That(true).IsTrue().And.IsFalse().Or.IsFalse();
 
-			await That(Act).ThrowsException()
+			await That(Act).Throws()
 				.WithMessage("""
 				             Expected that true
 				             is True and is False or is False,

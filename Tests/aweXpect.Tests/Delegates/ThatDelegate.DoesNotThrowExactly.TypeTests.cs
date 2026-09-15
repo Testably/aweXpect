@@ -27,7 +27,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).DoesNotThrowExactly(typeof(CustomException));
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that @delegate
 					              does not throw exactly a ThatDelegate.CustomException,
@@ -126,7 +126,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).DoesNotThrowExactly(typeof(CustomException));
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that @delegate
 					              does not throw exactly a ThatDelegate.CustomException,

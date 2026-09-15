@@ -31,7 +31,7 @@ public sealed class ExpectationTests
 		async Task Act()
 			=> await That(true).IsEqualTo(a).Or.IsEqualTo(b);
 
-		await That(Act).ThrowsException();
+		await That(Act).Throws();
 	}
 
 	[Theory]

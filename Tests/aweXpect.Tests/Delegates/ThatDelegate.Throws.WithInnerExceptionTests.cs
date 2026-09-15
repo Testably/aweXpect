@@ -2,7 +2,7 @@
 
 public sealed partial class ThatDelegate
 {
-	public sealed partial class ThrowsException
+	public sealed partial class Throws
 	{
 		public sealed class WithInnerExceptionTests
 		{
@@ -13,8 +13,7 @@ public sealed partial class ThatDelegate
 				void Delegate() => throw exception;
 
 				Exception result = await That(Delegate)
-					.ThrowsException().WithInnerException(
-						e => e.HasMessage("inner"));
+					.Throws().WithInnerException(e => e.HasMessage("inner"));
 
 				await That(result).IsSameAs(exception);
 			}
@@ -26,7 +25,7 @@ public sealed partial class ThatDelegate
 				void Delegate() => throw exception;
 
 				Exception result = await That(Delegate)
-					.ThrowsException().WithInnerException();
+					.Throws().WithInnerException();
 
 				await That(result).IsSameAs(exception);
 			}
@@ -39,7 +38,7 @@ public sealed partial class ThatDelegate
 					=> throw new OuterException(innerException: new CustomException(message));
 
 				async Task Act()
-					=> await That(action).ThrowsException().WithInnerException(x => x.HasMessage("foo"));
+					=> await That(action).Throws().WithInnerException(x => x.HasMessage("foo"));
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -62,7 +61,7 @@ public sealed partial class ThatDelegate
 				Action action = () => throw new OuterException();
 
 				async Task Act()
-					=> await That(action).ThrowsException().WithInnerException();
+					=> await That(action).Throws().WithInnerException();
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -78,7 +77,7 @@ public sealed partial class ThatDelegate
 				Action action = () => throw new OuterException(innerException: new Exception());
 
 				async Task Act()
-					=> await That(action).ThrowsException().WithInnerException();
+					=> await That(action).Throws().WithInnerException();
 
 				await That(Act).DoesNotThrow();
 			}
@@ -89,7 +88,7 @@ public sealed partial class ThatDelegate
 				Action action = () => throw new OuterException();
 
 				async Task Act()
-					=> await That(action).ThrowsException().WithInnerException();
+					=> await That(action).Throws().WithInnerException();
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

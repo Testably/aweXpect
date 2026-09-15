@@ -2,7 +2,7 @@
 
 public sealed partial class ThatDelegate
 {
-	public sealed partial class ThrowsException
+	public sealed partial class Throws
 	{
 		public sealed class WithRecursiveInnerExceptionsTests
 		{
@@ -20,15 +20,14 @@ public sealed partial class ThatDelegate
 								innerException: new CustomException()))));
 
 				async Task Act()
-					=> await That(action).ThrowsException().WithRecursiveInnerExceptions(
-						e => e.AtLeast(minimum).Are<CustomException>());
+					=> await That(action).Throws().WithRecursiveInnerExceptions(e => e.AtLeast(minimum).Are<CustomException>());
 
 				await That(Act).Throws<XunitException>().OnlyIf(shouldThrow)
 					.WithMessage($"""
 					              Expected that action
 					              throws an exception with recursive inner exceptions which at least {minimum} are of type ThatDelegate.CustomException,
 					              but only 1 of 5 were
-					              
+
 					              Collection:
 					              [
 					                aweXpect.Tests.ThatDelegate+OtherException: WhenAnyInnerExceptionDoesMatch_ShouldSucceed*,
@@ -47,8 +46,7 @@ public sealed partial class ThatDelegate
 				void Delegate() => throw exception;
 
 				Exception? result = await That(Delegate)
-					.ThrowsException().WithRecursiveInnerExceptions(
-						e => e.All().Satisfy(_ => true));
+					.Throws().WithRecursiveInnerExceptions(e => e.All().Satisfy(_ => true));
 
 				await That(result).IsSameAs(exception);
 			}
@@ -59,8 +57,7 @@ public sealed partial class ThatDelegate
 				Action action = () => throw new OuterException(innerException: new CustomException());
 
 				async Task Act()
-					=> await That(action).ThrowsException().WithRecursiveInnerExceptions(
-						innerExceptions => innerExceptions.IsEmpty());
+					=> await That(action).Throws().WithRecursiveInnerExceptions(innerExceptions => innerExceptions.IsEmpty());
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -78,8 +75,7 @@ public sealed partial class ThatDelegate
 				Action action = () => throw new OuterException(innerException: new CustomException());
 
 				async Task Act()
-					=> await That(action).ThrowsException().WithRecursiveInnerExceptions(
-						e => e.All().Satisfy(_ => false));
+					=> await That(action).Throws().WithRecursiveInnerExceptions(e => e.All().Satisfy(_ => false));
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -106,8 +102,7 @@ public sealed partial class ThatDelegate
 				Action action = () => throw new OuterException();
 
 				async Task Act()
-					=> await That(action).ThrowsException().WithRecursiveInnerExceptions(
-						e => e.All().Satisfy(_ => false));
+					=> await That(action).Throws().WithRecursiveInnerExceptions(e => e.All().Satisfy(_ => false));
 
 				await That(Act).DoesNotThrow();
 			}

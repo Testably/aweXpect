@@ -2,7 +2,7 @@
 
 public sealed partial class ThatDelegate
 {
-	public sealed partial class ThrowsException
+	public sealed partial class Throws
 	{
 		public sealed class WithoutMessage
 		{
@@ -17,7 +17,7 @@ public sealed partial class ThatDelegate
 					void Delegate() => throw exception;
 
 					async Task Act()
-						=> await That(Delegate).ThrowsException()
+						=> await That(Delegate).Throws()
 							.WithoutMessage("foo").IgnoringCase();
 
 					await That(Act).Throws<XunitException>()
@@ -40,7 +40,7 @@ public sealed partial class ThatDelegate
 					void Delegate() => throw exception;
 
 					async Task Act()
-						=> await That(Delegate).ThrowsException()
+						=> await That(Delegate).Throws()
 							.WithoutMessage("foo*").AsWildcard();
 
 					await That(Act).Throws<XunitException>()
@@ -48,7 +48,7 @@ public sealed partial class ThatDelegate
 						             Expected that Delegate
 						             throws an exception with Message not matching "foo*",
 						             but it was "foo-bar"
-						             
+
 						             Message:
 						             foo-bar
 						             """);
@@ -63,7 +63,7 @@ public sealed partial class ThatDelegate
 					void Delegate() => throw exception;
 
 					async Task Act()
-						=> await That(Delegate).ThrowsException()
+						=> await That(Delegate).Throws()
 							.WithoutMessage("foo");
 
 					await That(Act).DoesNotThrow();
@@ -92,7 +92,7 @@ public sealed partial class ThatDelegate
 					void Delegate() => throw exception;
 
 					Exception result = await That(Delegate)
-						.ThrowsException().WithoutMessage("foo");
+						.Throws().WithoutMessage("foo");
 
 					await That(result).IsSameAs(exception);
 				}
@@ -105,7 +105,7 @@ public sealed partial class ThatDelegate
 					Action action = () => throw new CustomException(actual);
 
 					async Task Act()
-						=> await That(action).ThrowsException().WithoutMessage(expected);
+						=> await That(action).Throws().WithoutMessage(expected);
 
 					await That(Act).DoesNotThrow();
 				}

@@ -22,7 +22,7 @@ public sealed class CustomizeEquivalencyTests
 			await That(Act).DoesNotThrow();
 		}
 
-		await That(Act).ThrowsException()
+		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that actual
 			             is equivalent to [

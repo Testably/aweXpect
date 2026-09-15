@@ -16,7 +16,7 @@ public class BecauseTests
 			await That(subject).DoesNotThrow().Because(becauseTask);
 		}
 
-		await That(Act).ThrowsException().WithMessage($"*{because}*").AsWildcard();
+		await That(Act).Throws().WithMessage($"*{because}*").AsWildcard();
 	}
 
 	[Fact]
@@ -30,7 +30,7 @@ public class BecauseTests
 			await That(subject).DoesNotThrow().Because(because);
 		}
 
-		await That(Act).ThrowsException().WithMessage($"*{because}*").AsWildcard();
+		await That(Act).Throws().WithMessage($"*{because}*").AsWildcard();
 	}
 
 	[Theory]
@@ -46,7 +46,7 @@ public class BecauseTests
 			await That(subject).DoesNotThrow().Because(becauseTask);
 		}
 
-		Exception exception = await That(Act).ThrowsException();
+		Exception exception = await That(Act).Throws();
 		await That(exception.Message).DoesNotContain("because");
 	}
 
@@ -62,7 +62,7 @@ public class BecauseTests
 			await That(subject).DoesNotThrow().Because(because);
 		}
 
-		Exception exception = await That(Act).ThrowsException();
+		Exception exception = await That(Act).Throws();
 		await That(exception.Message).DoesNotContain("because");
 	}
 
@@ -77,7 +77,7 @@ public class BecauseTests
 			await That(subject).IsFalse().Because(because);
 		}
 
-		await That(Act).ThrowsException().WithMessage($"*{because}*").AsWildcard();
+		await That(Act).Throws().WithMessage($"*{because}*").AsWildcard();
 	}
 
 	[Fact]
@@ -92,7 +92,7 @@ public class BecauseTests
 			await That(subject).DoesNotThrow().Because(becauseTask);
 		}
 
-		await That(Act).ThrowsException().WithMessage($"*{because}*").AsWildcard();
+		await That(Act).Throws().WithMessage($"*{because}*").AsWildcard();
 	}
 
 	[Fact]
@@ -106,7 +106,7 @@ public class BecauseTests
 			await That(subject).DoesNotThrow().Because(because);
 		}
 
-		await That(Act).ThrowsException().WithMessage($"*{because}*").AsWildcard();
+		await That(Act).Throws().WithMessage($"*{because}*").AsWildcard();
 	}
 
 	[Theory]
@@ -122,7 +122,7 @@ public class BecauseTests
 			await That(subject).IsFalse().Because(because);
 		}
 
-		await That(Act).ThrowsException().WithMessage($"*{expectedWithPrefix}*")
+		await That(Act).Throws().WithMessage($"*{expectedWithPrefix}*")
 			.AsWildcard();
 	}
 
@@ -139,7 +139,7 @@ public class BecauseTests
 				.And.IsFalse().Because(because2);
 		}
 
-		await That(Act).ThrowsException().WithMessage($"*{because1}*").AsWildcard();
+		await That(Act).Throws().WithMessage($"*{because1}*").AsWildcard();
 	}
 
 	[Theory]
@@ -155,7 +155,7 @@ public class BecauseTests
 			await That(subject).IsFalse().Because(becauseTask);
 		}
 
-		await That(Act).ThrowsException()
+		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that subject
 			             is False,
@@ -176,7 +176,7 @@ public class BecauseTests
 				.And.IsFalse().Because(because2);
 		}
 
-		await That(Act).ThrowsException().WithMessage($"*{because2}*").AsWildcard();
+		await That(Act).Throws().WithMessage($"*{because2}*").AsWildcard();
 	}
 
 	[Fact]
@@ -191,7 +191,7 @@ public class BecauseTests
 				.And.IsFalse();
 		}
 
-		await That(Act).ThrowsException()
+		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that subject
 			             is True, because we only apply it to previous constraints and is False,
@@ -212,7 +212,7 @@ public class BecauseTests
 				.Or.IsFalse().Because(because2);
 		}
 
-		await That(Act).ThrowsException().WithMessage($"*{because1}*{because2}*")
+		await That(Act).Throws().WithMessage($"*{because1}*{because2}*")
 			.AsWildcard();
 	}
 
@@ -226,7 +226,7 @@ public class BecauseTests
 			await That(subject).IsFalse();
 		}
 
-		await That(Act).ThrowsException()
+		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that subject
 			             is False,
@@ -246,7 +246,7 @@ public class BecauseTests
 			await That(subject).IsFalse().Because(because);
 		}
 
-		await That(Act).ThrowsException()
+		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that subject
 			             is False,
@@ -265,7 +265,7 @@ public class BecauseTests
 			await That(subject).IsFalse().Because(because);
 		}
 
-		Exception exception = await That(Act).ThrowsException()
+		Exception exception = await That(Act).Throws()
 			.WithMessage("*because*").AsWildcard();
 		await That(exception.Message).DoesNotContain("because because");
 	}

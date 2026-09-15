@@ -2,7 +2,7 @@
 
 public sealed partial class ThatDelegate
 {
-	public sealed partial class ThrowsException
+	public sealed partial class Throws
 	{
 		public sealed class WithHResultTests
 		{
@@ -15,7 +15,7 @@ public sealed partial class ThatDelegate
 				void Delegate() => throw exception;
 
 				async Task Act()
-					=> await That(Delegate).ThrowsException().WithHResult(expectedHResult);
+					=> await That(Delegate).Throws().WithHResult(expectedHResult);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -33,7 +33,7 @@ public sealed partial class ThatDelegate
 				void Delegate() => throw exception;
 
 				async Task Act()
-					=> await That(Delegate).ThrowsException().WithHResult(hResult);
+					=> await That(Delegate).Throws().WithHResult(hResult);
 
 				await That(Act).DoesNotThrow();
 			}

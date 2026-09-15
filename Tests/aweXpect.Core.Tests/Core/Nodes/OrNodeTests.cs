@@ -485,7 +485,7 @@ public sealed class OrNodeTests
 		async Task Act()
 			=> await That(true).IsFalse().Or.IsFalse().Or.Implies(false);
 
-		await That(Act).ThrowsException()
+		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that true
 			             is False or is False or implies False,
