@@ -3768,6 +3768,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 12:20:46 2026 \u002B0200",
         "message": "chore: rebalance the mutation slices and tighten the heap limit"
+      },
+      {
+        "sha": "c038ec2602447bfa07015ff9122aabfe8bdf6f5b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
+        "message": "fix: cap the heap of the test host instead of the whole job"
       }
     ],
     "labels": [
@@ -4398,7 +4404,8 @@ window.BENCHMARK_DATA = {
       "d22cf29f",
       "93e2fd51",
       "c0173dfd",
-      "152b45e4"
+      "152b45e4",
+      "c038ec26"
     ],
     "datasets": [
       {
@@ -5032,7 +5039,8 @@ window.BENCHMARK_DATA = {
           239.29671038114108,
           192.54164187724774,
           257.545502948761,
-          225.96870646476745
+          225.96870646476745,
+          252.4134638786316
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5505,6 +5513,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6313,7 +6322,8 @@ window.BENCHMARK_DATA = {
           247.2769733575674,
           189.80345698992411,
           234.5285401026408,
-          253.98439423243204
+          253.98439423243204,
+          245.66537170410157
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6506,6 +6516,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10272,6 +10283,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 12:20:46 2026 \u002B0200",
         "message": "chore: rebalance the mutation slices and tighten the heap limit"
+      },
+      {
+        "sha": "c038ec2602447bfa07015ff9122aabfe8bdf6f5b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
+        "message": "fix: cap the heap of the test host instead of the whole job"
       }
     ],
     "labels": [
@@ -10825,7 +10842,8 @@ window.BENCHMARK_DATA = {
       "d22cf29f",
       "93e2fd51",
       "c0173dfd",
-      "152b45e4"
+      "152b45e4",
+      "c038ec26"
     ],
     "datasets": [
       {
@@ -11382,7 +11400,8 @@ window.BENCHMARK_DATA = {
           362708.42550223216,
           282105.42115885415,
           383674.42034040176,
-          337191.46025390626
+          337191.46025390626,
+          379574.25278320315
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11944,6 +11963,7 @@ window.BENCHMARK_DATA = {
           542084,
           542084,
           542085,
+          542084,
           542084
         ],
         "borderColor": "#63A2AC",
@@ -12509,7 +12529,8 @@ window.BENCHMARK_DATA = {
           2317601.6453125,
           1821061.6046875,
           2702261.0809151786,
-          2124859.86640625
+          2124859.86640625,
+          2772779.322135417
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13071,7 +13092,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841647,
           4841651,
-          4841613
+          4841613,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16853,6 +16875,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 12:20:46 2026 \u002B0200",
         "message": "chore: rebalance the mutation slices and tighten the heap limit"
+      },
+      {
+        "sha": "c038ec2602447bfa07015ff9122aabfe8bdf6f5b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
+        "message": "fix: cap the heap of the test host instead of the whole job"
       }
     ],
     "labels": [
@@ -17483,7 +17511,8 @@ window.BENCHMARK_DATA = {
       "d22cf29f",
       "93e2fd51",
       "c0173dfd",
-      "152b45e4"
+      "152b45e4",
+      "c038ec26"
     ],
     "datasets": [
       {
@@ -18117,7 +18146,8 @@ window.BENCHMARK_DATA = {
           461.40208435058594,
           346.67944114548817,
           485.2447775204976,
-          437.89498167037965
+          437.89498167037965,
+          488.20431429545084
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18590,6 +18620,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -19398,7 +19429,8 @@ window.BENCHMARK_DATA = {
           480.8352996281215,
           369.44302238736833,
           495.1810088524452,
-          497.8950578689575
+          497.8950578689575,
+          506.7423930849348
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19591,6 +19623,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -23819,6 +23852,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 12:20:46 2026 \u002B0200",
         "message": "chore: rebalance the mutation slices and tighten the heap limit"
+      },
+      {
+        "sha": "c038ec2602447bfa07015ff9122aabfe8bdf6f5b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
+        "message": "fix: cap the heap of the test host instead of the whole job"
       }
     ],
     "labels": [
@@ -24449,7 +24488,8 @@ window.BENCHMARK_DATA = {
       "d22cf29f",
       "93e2fd51",
       "c0173dfd",
-      "152b45e4"
+      "152b45e4",
+      "c038ec26"
     ],
     "datasets": [
       {
@@ -25083,7 +25123,8 @@ window.BENCHMARK_DATA = {
           253.960641009467,
           198.33121064503987,
           272.62607968648274,
-          253.99401931762696
+          253.99401931762696,
+          278.1191467285156
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -25597,6 +25638,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -26364,7 +26406,8 @@ window.BENCHMARK_DATA = {
           242.3548962275187,
           191.97776057720185,
           251.3622358640035,
-          255.23169129689535
+          255.23169129689535,
+          259.62245308558147
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -26557,6 +26600,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -30785,6 +30829,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 12:20:46 2026 \u002B0200",
         "message": "chore: rebalance the mutation slices and tighten the heap limit"
+      },
+      {
+        "sha": "c038ec2602447bfa07015ff9122aabfe8bdf6f5b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
+        "message": "fix: cap the heap of the test host instead of the whole job"
       }
     ],
     "labels": [
@@ -31415,7 +31465,8 @@ window.BENCHMARK_DATA = {
       "d22cf29f",
       "93e2fd51",
       "c0173dfd",
-      "152b45e4"
+      "152b45e4",
+      "c038ec26"
     ],
     "datasets": [
       {
@@ -32049,7 +32100,8 @@ window.BENCHMARK_DATA = {
           461.53673432423517,
           343.7824761072795,
           470.1731425603231,
-          435.94404163360593
+          435.94404163360593,
+          443.8239698750632
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32522,6 +32574,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -33330,7 +33383,8 @@ window.BENCHMARK_DATA = {
           1133.339914004008,
           895.6350174585979,
           1207.4822497049968,
-          1220.9729890823364
+          1220.9729890823364,
+          1189.5603050231935
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33759,6 +33813,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -37751,6 +37806,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 12:20:46 2026 \u002B0200",
         "message": "chore: rebalance the mutation slices and tighten the heap limit"
+      },
+      {
+        "sha": "c038ec2602447bfa07015ff9122aabfe8bdf6f5b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
+        "message": "fix: cap the heap of the test host instead of the whole job"
       }
     ],
     "labels": [
@@ -38381,7 +38442,8 @@ window.BENCHMARK_DATA = {
       "d22cf29f",
       "93e2fd51",
       "c0173dfd",
-      "152b45e4"
+      "152b45e4",
+      "c038ec26"
     ],
     "datasets": [
       {
@@ -39015,7 +39077,8 @@ window.BENCHMARK_DATA = {
           1831.0748758951822,
           1476.4722430365425,
           1936.5568182809013,
-          1348.5513350168865
+          1348.5513350168865,
+          1899.8832641601562
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -39488,6 +39551,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -40296,7 +40360,8 @@ window.BENCHMARK_DATA = {
           1313.8069371541342,
           1003.9631337385911,
           1242.3274236043294,
-          1381.5317835126605
+          1381.5317835126605,
+          1378.2740264892577
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40489,6 +40554,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -44717,6 +44783,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 12:20:46 2026 \u002B0200",
         "message": "chore: rebalance the mutation slices and tighten the heap limit"
+      },
+      {
+        "sha": "c038ec2602447bfa07015ff9122aabfe8bdf6f5b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
+        "message": "fix: cap the heap of the test host instead of the whole job"
       }
     ],
     "labels": [
@@ -45347,7 +45419,8 @@ window.BENCHMARK_DATA = {
       "d22cf29f",
       "93e2fd51",
       "c0173dfd",
-      "152b45e4"
+      "152b45e4",
+      "c038ec26"
     ],
     "datasets": [
       {
@@ -45981,7 +46054,8 @@ window.BENCHMARK_DATA = {
           2493.6360699971515,
           1884.5005330403646,
           2472.942229407174,
-          1795.5128047943115
+          1795.5128047943115,
+          2525.565395061786
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -46454,6 +46528,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -47262,7 +47337,8 @@ window.BENCHMARK_DATA = {
           19911.246940104167,
           15499.583459472657,
           25512.445173997145,
-          16737.171134440105
+          16737.171134440105,
+          27292.448457845054
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47901,7 +47977,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33465
+          33465,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
