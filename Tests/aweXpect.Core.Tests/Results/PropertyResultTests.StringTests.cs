@@ -345,6 +345,70 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
+		public sealed class ContextTests
+		{
+			[Fact]
+			public async Task WhenIncludedTwiceWithTheSameValue_ShouldAppendTheValueOnlyOnce()
+			{
+				IThat<MyClass?> source = MyClass.WithStringValue("foo-bar");
+				IThat<MyClass?> afterFirstProperty = MyClass.StringValueOf(source, true).Containing("foo").And;
+
+				async Task Act()
+					=> await MyClass.StringValueOf(afterFirstProperty, true).Containing("baz");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has string value containing "foo" and has string value containing "baz",
+					             but it was "foo-bar"
+
+					             string value:
+					             foo-bar
+					             """)
+					.Because("a chained expectation over the same property must not repeat the identical block");
+			}
+
+			[Fact]
+			public async Task WhenIncluded_ShouldAppendTheValue()
+			{
+				StringProperty sut = MyClass.StringValueOf(MyClass.WithStringValue("foo"), true);
+
+				async Task Act()
+					=> await sut.EqualTo("bar");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has string value equal to "bar",
+					             but it was "foo"*
+
+					             string value:
+					             foo
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenNotIncluded_ShouldNotAppendTheValue()
+			{
+				StringProperty sut = MyClass.StringValueOf(MyClass.WithStringValue("foo"));
+
+				async Task Act()
+					=> await sut.EqualTo("bar");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has string value equal to "bar",
+					             but it was "foo" which differs at index 0:
+					                ↓ (actual)
+					               "foo"
+					               "bar"
+					                ↑ (expected)
+					             """)
+					.Because("the value is only appended as context when the property asks for it");
+			}
+		}
+
 		public sealed class GrammarTests
 		{
 			[Fact]
@@ -379,6 +443,32 @@ public sealed partial class PropertyResultTests
 					             string value is equal to "bar",
 					             but it was "foo"*
 					             """).AsWildcard();
+			}
+		}
+
+		public sealed class NarrowedTypeTests
+		{
+			[Fact]
+			public async Task WhenTheMapperIsTypedAtTheBaseType_ShouldFailForAMismatch()
+			{
+				async Task Act()
+					=> await MyClass.HasStringValueOfNarrowedSubject("foo").EqualTo("bar");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has string value equal to "bar",
+					             but it was "foo"*
+					             """).AsWildcard()
+					.Because("a constraint typed at the narrowed type would silently never be matched");
+			}
+
+			[Fact]
+			public async Task WhenTheMapperIsTypedAtTheBaseType_ShouldReturnTheNarrowedType()
+			{
+				MyDerivedClass? result = await MyClass.HasStringValueOfNarrowedSubject("foo").EqualTo("foo");
+
+				await That(result?.StringValue).IsEqualTo("foo");
 			}
 		}
 	}

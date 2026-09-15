@@ -514,6 +514,11 @@ public static class PropertyResult
 		/// <summary>
 		///     …contains the <paramref name="expected" /> value.
 		/// </summary>
+		/// <remarks>
+		///     The match type is part of the returned result, so a subsequent <c>AsWildcard()</c>, <c>AsRegex()</c>,
+		///     <c>AsPrefix()</c> or <c>AsSuffix()</c> replaces the containment with that match against the whole
+		///     value; the expectation text says which one was used.
+		/// </remarks>
 		public StringEqualityTypeResult<TType, TThat> Containing(
 			string? expected)
 		{
@@ -536,6 +541,11 @@ public static class PropertyResult
 		/// <summary>
 		///     …does not contain the <paramref name="unexpected" /> value.
 		/// </summary>
+		/// <remarks>
+		///     The match type is part of the returned result, so a subsequent <c>AsWildcard()</c>, <c>AsRegex()</c>,
+		///     <c>AsPrefix()</c> or <c>AsSuffix()</c> replaces the containment with that match against the whole
+		///     value; the expectation text says which one was used.
+		/// </remarks>
 		public StringEqualityTypeResult<TType, TThat> NotContaining(
 			string? unexpected)
 		{

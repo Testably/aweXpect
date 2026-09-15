@@ -6,67 +6,6 @@ public sealed partial class ThatDelegate
 	{
 		public class WithParamNameTests
 		{
-			[Theory]
-			[AutoData]
-			public async Task WhenExpectedIsNull_AndParamNameIsEmpty_ShouldSucceed(string message)
-			{
-				ArgumentException exception = new(message);
-				void Delegate() => throw exception;
-
-				async Task Act()
-					=> await That(Delegate).Throws<ArgumentException>()
-						.WithParamName(null);
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Theory]
-			[AutoData]
-			public async Task WhenExpectedIsNull_ShouldSucceed(string message)
-			{
-				ArgumentException exception = new(message, nameof(message));
-				void Delegate() => throw exception;
-
-				async Task Act()
-					=> await That(Delegate).Throws<ArgumentException>()
-						.WithParamName(null);
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Theory]
-			[AutoData]
-			public async Task WhenParamNameIsDifferent_ShouldFail(string message)
-			{
-				ArgumentException exception = new(message, nameof(message));
-				void Delegate() => throw exception;
-
-				async Task Act()
-					=> await That(Delegate).Throws<ArgumentException>()
-						.WithParamName("somethingElse");
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that Delegate
-					             throws an ArgumentException with ParamName "somethingElse",
-					             but it had ParamName "message"
-					             """);
-			}
-
-			[Theory]
-			[AutoData]
-			public async Task WhenParamNameMatchesExpected_ShouldSucceed(string message)
-			{
-				ArgumentException exception = new(message, nameof(message));
-				void Delegate() => throw exception;
-
-				async Task Act()
-					=> await That(Delegate).Throws<ArgumentException>()
-						.WithParamName("message");
-
-				await That(Act).DoesNotThrow();
-			}
-
 			public sealed class ContainingTests
 			{
 				[Theory]
@@ -158,6 +97,42 @@ public sealed partial class ThatDelegate
 				}
 			}
 
+			public sealed class NotContainingTests
+			{
+				[Theory]
+				[AutoData]
+				public async Task WhenParamNameContainsUnexpected_ShouldFail(string message)
+				{
+					ArgumentException exception = new(message, nameof(message));
+					void Delegate() => throw exception;
+
+					async Task Act()
+						=> await That(Delegate).Throws<ArgumentException>()
+							.WithParamName().NotContaining("essag");
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that Delegate
+						             throws an ArgumentException with ParamName not containing "essag",
+						             but it was "message"
+						             """);
+				}
+
+				[Theory]
+				[AutoData]
+				public async Task WhenParamNameDoesNotContainUnexpected_ShouldSucceed(string message)
+				{
+					ArgumentException exception = new(message, nameof(message));
+					void Delegate() => throw exception;
+
+					async Task Act()
+						=> await That(Delegate).Throws<ArgumentException>()
+							.WithParamName().NotContaining("somethingElse");
+
+					await That(Act).DoesNotThrow();
+				}
+			}
+
 			public sealed class NotEqualToTests
 			{
 				[Theory]
@@ -191,6 +166,82 @@ public sealed partial class ThatDelegate
 						             throws an ArgumentException with ParamName not equal to "message",
 						             but it was "message"
 						             """);
+				}
+			}
+
+			public sealed class Tests
+			{
+				[Theory]
+				[AutoData]
+				public async Task WhenExpectedIsNull_AndParamNameIsNull_ShouldSucceed(string message)
+				{
+					ArgumentException exception = new(message);
+					void Delegate() => throw exception;
+
+					async Task Act()
+						=> await That(Delegate).Throws<ArgumentException>()
+							.WithParamName(null);
+
+					await That(Act).DoesNotThrow()
+						.Because("the shorthand compares a null argument as null instead of skipping the check");
+				}
+
+				[Theory]
+				[AutoData]
+				public async Task WhenExpectedIsNull_AndParamNameIsSet_ShouldFail(string message)
+				{
+					ArgumentException exception = new(message, nameof(message));
+					void Delegate() => throw exception;
+
+					async Task Act()
+						=> await That(Delegate).Throws<ArgumentException>()
+							.WithParamName(null);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that Delegate
+						             throws an ArgumentException with ParamName equal to <null>,
+						             but it was "message"
+						             """)
+						.Because("the shorthand compares a null argument as null instead of skipping the check");
+				}
+
+				[Theory]
+				[AutoData]
+				public async Task WhenParamNameIsDifferent_ShouldFail(string message)
+				{
+					ArgumentException exception = new(message, nameof(message));
+					void Delegate() => throw exception;
+
+					async Task Act()
+						=> await That(Delegate).Throws<ArgumentException>()
+							.WithParamName("somethingElse");
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that Delegate
+						             throws an ArgumentException with ParamName equal to "somethingElse",
+						             but it was "message" which differs at index 0:
+						                ↓ (actual)
+						               "message"
+						               "somethingElse"
+						                ↑ (expected)
+						             """)
+						.Because("the shorthand renders exactly like the WithParamName().EqualTo(expected) continuation");
+				}
+
+				[Theory]
+				[AutoData]
+				public async Task WhenParamNameMatchesExpected_ShouldSucceed(string message)
+				{
+					ArgumentException exception = new(message, nameof(message));
+					void Delegate() => throw exception;
+
+					async Task Act()
+						=> await That(Delegate).Throws<ArgumentException>()
+							.WithParamName("message");
+
+					await That(Act).DoesNotThrow();
 				}
 			}
 		}

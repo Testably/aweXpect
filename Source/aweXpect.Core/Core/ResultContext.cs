@@ -40,20 +40,24 @@ public abstract class ResultContext
 	/// </summary>
 	public class Fixed : ResultContext
 	{
-		private readonly string? _content;
-
 		/// <summary>
 		///     A <see cref="ResultContext" /> from a fixed <see langword="string" /> <paramref name="content" />.
 		/// </summary>
 		/// <remarks>The optional <paramref name="priority" /> determines the displayed order (higher values are displayed first).</remarks>
 		public Fixed(string title, string? content, int priority = 0) : base(title, priority)
 		{
-			_content = content;
+			Content = content;
 		}
+
+		/// <summary>
+		///     The fixed content, which <see cref="ResultContexts" /> compares to recognize a duplicate without
+		///     having to evaluate it.
+		/// </summary>
+		internal string? Content { get; }
 
 		/// <inheritdoc cref="ResultContext.GetContent(CancellationToken)" />
 		public override Task<string?> GetContent(CancellationToken cancellationToken = default)
-			=> Task.FromResult(_content);
+			=> Task.FromResult(Content);
 	}
 
 	/// <summary>

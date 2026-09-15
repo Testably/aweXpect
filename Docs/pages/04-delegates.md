@@ -95,15 +95,6 @@ await Expect.That(Act).Throws().WithMessage().NotContaining("something else");
 
 You can use the same configuration options as when [comparing strings](/docs/expectations/common-types/string#equality).
 
-The param name of an `ArgumentException` continues in the same way:
-
-```csharp
-void Act() => throw new ArgumentNullException("myParameter");
-
-await Expect.That(Act).Throws<ArgumentNullException>().WithParamName("myParameter");
-await Expect.That(Act).Throws<ArgumentNullException>().WithParamName().NotEqualTo("otherParameter");
-```
-
 ## Inner exceptions
 
 You can verify the inner exception of the thrown exception;
@@ -130,11 +121,9 @@ await Expect.That(Act).Throws().WithRecursiveInnerExceptions(innerExceptions => 
 You can recursively verify additional members of the exception:
 
 ```csharp
-var exception = new CustomException("outer", paramName: "paramName", hResult: 12345);
+var exception = new CustomException("outer", hResult: 12345);
 void Act() => throw exception;
 
-await Expect.That(Act).Throws().WithParamName("paramName")
-  .Because("you can verify the `paramName`");
 await Expect.That(Act).Throws().WithHResult(12345)
   .Because("you can verify the `HResult`");
 await Expect.That(Act).Throws()
@@ -145,6 +134,18 @@ await Expect.That(Act).Throws()
   .Because("you can access the thrown exception");
 
 ```
+
+The `ParamName` of an `ArgumentException` continues like the message:
+
+```csharp
+void Act() => throw new ArgumentNullException("myParameter");
+
+await Expect.That(Act).Throws<ArgumentNullException>().WithParamName("myParameter");
+await Expect.That(Act).Throws<ArgumentNullException>().WithParamName().NotEqualTo("otherParameter");
+await Expect.That(Act).Throws<ArgumentNullException>().WithParamName().Containing("Parameter");
+```
+
+`WithParamName(expected)` is the shorthand for `WithParamName().EqualTo(expected)`, so a `null` argument requires the `ParamName` to be `null` as well.
 
 ## Execution time
 

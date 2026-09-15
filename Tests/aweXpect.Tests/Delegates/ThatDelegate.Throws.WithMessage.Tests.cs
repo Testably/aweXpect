@@ -233,43 +233,6 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
-				public async Task ShouldIgnorePrecedingText()
-				{
-					string message = "some text before foo";
-					Exception exception =
-						new OuterException(message, new CustomException());
-					void Delegate() => throw exception;
-
-					async Task Act()
-						=> await That(Delegate).Throws()
-							.WithMessage().NotContaining("foo");
-
-					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that Delegate
-						             throws an exception with Message not containing "foo",
-						             but it was "some text before foo"
-
-						             Message:
-						             some text before foo
-						             """);
-				}
-
-				[Fact]
-				public async Task ShouldIncludeExceptionType()
-				{
-					string message = "FOO";
-					Exception exception = new CustomException(message);
-					void Delegate() => throw exception;
-
-					async Task Act()
-						=> await That(Delegate).Throws<CustomException>()
-							.WithMessage().NotContaining("foo");
-
-					await That(Act).DoesNotThrow();
-				}
-
 				[Theory]
 				[AutoData]
 				public async Task WhenAwaited_ShouldReturnThrownException(string message)
@@ -295,6 +258,29 @@ public sealed partial class ThatDelegate
 						=> await That(action).Throws().WithMessage().NotContaining(expected);
 
 					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenTextIsPrecededByOtherText_ShouldFail()
+				{
+					string message = "some text before foo";
+					Exception exception =
+						new OuterException(message, new CustomException());
+					void Delegate() => throw exception;
+
+					async Task Act()
+						=> await That(Delegate).Throws()
+							.WithMessage().NotContaining("foo");
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that Delegate
+						             throws an exception with Message not containing "foo",
+						             but it was "some text before foo"
+
+						             Message:
+						             some text before foo
+						             """);
 				}
 			}
 

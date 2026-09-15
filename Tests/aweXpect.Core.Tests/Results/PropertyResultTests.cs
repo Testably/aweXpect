@@ -12,9 +12,17 @@ public sealed partial class PropertyResultTests
 		Func<MyClass?, string?> mapper,
 		string propertyExpression,
 		Action<string?, string>? validation = null,
-		ExpectationGrammars grammars = ExpectationGrammars.None)
+		ExpectationGrammars grammars = ExpectationGrammars.None,
+		bool includeValueInContext = false)
 		: PropertyResult.String<MyClass?, MyClass?, IThat<MyClass?>>(subject, mapper, propertyExpression, validation,
-			grammars);
+			grammars, includeValueInContext);
+
+	private class MyBaseClass
+	{
+		public string? StringValue { get; init; }
+	}
+
+	private sealed class MyDerivedClass : MyBaseClass;
 
 	private sealed class Dummy : IExpectThat<string>
 	{
@@ -81,6 +89,42 @@ public sealed partial class PropertyResultTests
 			IThat<MyClass?> source = That(subject);
 #pragma warning restore aweXpect0001
 			return new StringProperty(source, a => a?.StringValue, "string value");
+		}
+
+		/// <summary>
+		///     The source of a <see cref="StringValueOf" />, so that two properties can share one expectation builder.
+		/// </summary>
+		public static IThat<MyClass?> WithStringValue(string stringValue)
+		{
+			MyClass subject = new()
+			{
+				StringValue = stringValue,
+			};
+#pragma warning disable aweXpect0001
+			return That(subject);
+#pragma warning restore aweXpect0001
+		}
+
+		public static StringProperty StringValueOf(IThat<MyClass?> source, bool includeValueInContext = false)
+			=> new(source, a => a?.StringValue, "string value", null, ExpectationGrammars.None,
+				includeValueInContext);
+
+		/// <summary>
+		///     The mapper is typed at <see cref="MyBaseClass" /> while the result keeps <see cref="MyDerivedClass" />,
+		///     which is the shape a delegate produces when it narrows the exception type only at the result.
+		/// </summary>
+		public static PropertyResult.String<MyBaseClass?, MyDerivedClass?, IThat<MyDerivedClass?>>
+			HasStringValueOfNarrowedSubject(string stringValue)
+		{
+			MyDerivedClass subject = new()
+			{
+				StringValue = stringValue,
+			};
+#pragma warning disable aweXpect0001
+			IThat<MyDerivedClass> source = That(subject);
+#pragma warning restore aweXpect0001
+			return new PropertyResult.String<MyBaseClass?, MyDerivedClass?, IThat<MyDerivedClass?>>(
+				source, a => a?.StringValue, "string value");
 		}
 
 		public static PropertyResult.TimeSpan<MyClass?> HasTimeSpanValue(TimeSpan timeSpanValue)

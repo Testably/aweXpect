@@ -63,26 +63,6 @@ public sealed partial class ThatException
 			}
 
 			[Fact]
-			public async Task ShouldIncludeExceptionType()
-			{
-				string message = "FOO";
-				Exception exception = new CustomException(message);
-
-				async Task Act()
-					=> await That(exception).HasMessage().Containing("foo");
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that exception
-					             has Message containing "foo",
-					             but it was "FOO"
-
-					             Message:
-					             FOO
-					             """);
-			}
-
-			[Fact]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				string message = "foo and some other text";
@@ -223,46 +203,6 @@ public sealed partial class ThatException
 			}
 
 			[Fact]
-			public async Task ShouldIgnorePrecedingText()
-			{
-				string message = "some text before foo";
-				MyException exception = new(message);
-
-				async Task Act()
-					=> await That(exception).HasMessage().NotContaining("foo");
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that exception
-					             has Message not containing "foo",
-					             but it was "some text before foo"
-
-					             Message:
-					             some text before foo
-					             """);
-			}
-
-			[Fact]
-			public async Task ShouldIgnoreSucceedingText()
-			{
-				string message = "foo and some other text";
-				MyException exception = new(message);
-
-				async Task Act()
-					=> await That(exception).HasMessage().NotContaining("foo");
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that exception
-					             has Message not containing "foo",
-					             but it was "foo and some other text"
-
-					             Message:
-					             foo and some other text
-					             """);
-			}
-
-			[Fact]
 			public async Task WhenStringsDiffer_ShouldSucceed()
 			{
 				string actual = "actual text";
@@ -288,6 +228,46 @@ public sealed partial class ThatException
 					             Expected that subject
 					             has Message not containing "foo",
 					             but it was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenTextIsFollowedByOtherText_ShouldFail()
+			{
+				string message = "foo and some other text";
+				MyException exception = new(message);
+
+				async Task Act()
+					=> await That(exception).HasMessage().NotContaining("foo");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that exception
+					             has Message not containing "foo",
+					             but it was "foo and some other text"
+
+					             Message:
+					             foo and some other text
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenTextIsPrecededByOtherText_ShouldFail()
+			{
+				string message = "some text before foo";
+				MyException exception = new(message);
+
+				async Task Act()
+					=> await That(exception).HasMessage().NotContaining("foo");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that exception
+					             has Message not containing "foo",
+					             but it was "some text before foo"
+
+					             Message:
+					             some text before foo
 					             """);
 			}
 		}
