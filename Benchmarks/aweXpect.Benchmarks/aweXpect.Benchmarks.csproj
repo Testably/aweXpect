@@ -13,6 +13,9 @@
 	<ItemGroup>
 		<PackageReference Include="BenchmarkDotNet"/>
 		<PackageReference Include="FluentAssertions"/>
+		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Common" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
 		<PackageReference Include="TUnit.Assertions"/>
 	</ItemGroup>
 
