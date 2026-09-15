@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "1da713db658b62bda8746fa6595a0f58b30b759d",
-        "author": "dependabot[bot]",
-        "date": "Mon Sep 7 07:53:08 2026 \u002B0000",
-        "message": "chore: Bump the mstest group with 2 updates (#1038)"
-      },
-      {
         "sha": "a065b6824d0b2e2a2e98a67eeab0556b3a545b72",
         "author": "dependabot[bot]",
         "date": "Mon Sep 7 07:54:47 2026 \u002B0000",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 08:11:25 2026 \u002B0200",
         "message": "feat!: generate the type metadata registrations for equivalency from the marked call sites (#1086)"
+      },
+      {
+        "sha": "98a01e4d3d1a29831f17f990649af69889ca26c7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 10:28:16 2026 \u002B0200",
+        "message": "feat: measure the \u0060aweXpect.Core\u0060 mutation score on \u0060main\u0060"
       }
     ],
     "labels": [
-      "1da713db",
       "a065b682",
       "082a6795",
       "4d0dab36",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "5fa9d810",
       "2274a820",
       "7a595a63",
-      "a9d6112f"
+      "a9d6112f",
+      "98a01e4d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          287.4645160039266,
           257.5428523676736,
           270.45566242081776,
           256.6291039784749,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           257.5374924023946,
           196.90801135698953,
           269.8032855669657,
-          249.30110273361205
+          249.30110273361205,
+          282.25110816955566
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          256.9680477891649,
           242.96165249897882,
           228.99347099891077,
           242.52080263410295,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           271.99132073720295,
           196.11365172068278,
           292.3035370826721,
-          251.50414164861044
+          251.50414164861044,
+          257.1469643456595
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "1da713db658b62bda8746fa6595a0f58b30b759d",
-        "author": "dependabot[bot]",
-        "date": "Mon Sep 7 07:53:08 2026 \u002B0000",
-        "message": "chore: Bump the mstest group with 2 updates (#1038)"
-      },
-      {
         "sha": "a065b6824d0b2e2a2e98a67eeab0556b3a545b72",
         "author": "dependabot[bot]",
         "date": "Mon Sep 7 07:54:47 2026 \u002B0000",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 08:11:25 2026 \u002B0200",
         "message": "feat!: generate the type metadata registrations for equivalency from the marked call sites (#1086)"
+      },
+      {
+        "sha": "98a01e4d3d1a29831f17f990649af69889ca26c7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 10:28:16 2026 \u002B0200",
+        "message": "feat: measure the \u0060aweXpect.Core\u0060 mutation score on \u0060main\u0060"
       }
     ],
     "labels": [
-      "1da713db",
       "a065b682",
       "082a6795",
       "4d0dab36",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "5fa9d810",
       "2274a820",
       "7a595a63",
-      "a9d6112f"
+      "a9d6112f",
+      "98a01e4d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          315430.17843424476,
           325304.2374093192,
           305770.0921875,
           325778.1329520089,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           383259.0914388021,
           282997.7490559896,
           352153.7346888951,
-          367216.8917317708
+          367216.8917317708,
+          401135.9821777344
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1032,7 +1032,6 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
           335444,
           335442,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           542084,
           542084,
           542084,
+          542085,
           542085
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2868417.1922433036,
           2732500.082291667,
           2555721.08203125,
           2783075.2807291667,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2397191.646354167,
           1836027.2087239583,
           2258618.474739583,
-          2347232.1354166665
+          2347232.1354166665,
+          2769117.538802083
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841651,
           4841651,
           4841651,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841635,
           4841648,
           4841613,
-          4841647
+          4841647,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "1da713db658b62bda8746fa6595a0f58b30b759d",
-        "author": "dependabot[bot]",
-        "date": "Mon Sep 7 07:53:08 2026 \u002B0000",
-        "message": "chore: Bump the mstest group with 2 updates (#1038)"
-      },
       {
         "sha": "a065b6824d0b2e2a2e98a67eeab0556b3a545b72",
         "author": "dependabot[bot]",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 08:11:25 2026 \u002B0200",
         "message": "feat!: generate the type metadata registrations for equivalency from the marked call sites (#1086)"
+      },
+      {
+        "sha": "98a01e4d3d1a29831f17f990649af69889ca26c7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 10:28:16 2026 \u002B0200",
+        "message": "feat: measure the \u0060aweXpect.Core\u0060 mutation score on \u0060main\u0060"
       }
     ],
     "labels": [
-      "1da713db",
       "a065b682",
       "082a6795",
       "4d0dab36",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "5fa9d810",
       "2274a820",
       "7a595a63",
-      "a9d6112f"
+      "a9d6112f",
+      "98a01e4d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          520.5406125613621,
           483.1710897854396,
           455.0473243713379,
           511.50231685638425,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           494.7722628275553,
           363.58683786392214,
           525.800393308912,
-          469.3274403254191
+          469.3274403254191,
+          497.25142247336254
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          544.9716225941976,
           534.531932762691,
           470.4036148071289,
           513.4317329406738,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           528.4363608678182,
           399.7704559961955,
           590.330544980367,
-          488.87791239420574
+          488.87791239420574,
+          507.8180557659694
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "1da713db658b62bda8746fa6595a0f58b30b759d",
-        "author": "dependabot[bot]",
-        "date": "Mon Sep 7 07:53:08 2026 \u002B0000",
-        "message": "chore: Bump the mstest group with 2 updates (#1038)"
-      },
-      {
         "sha": "a065b6824d0b2e2a2e98a67eeab0556b3a545b72",
         "author": "dependabot[bot]",
         "date": "Mon Sep 7 07:54:47 2026 \u002B0000",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 08:11:25 2026 \u002B0200",
         "message": "feat!: generate the type metadata registrations for equivalency from the marked call sites (#1086)"
+      },
+      {
+        "sha": "98a01e4d3d1a29831f17f990649af69889ca26c7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 10:28:16 2026 \u002B0200",
+        "message": "feat: measure the \u0060aweXpect.Core\u0060 mutation score on \u0060main\u0060"
       }
     ],
     "labels": [
-      "1da713db",
       "a065b682",
       "082a6795",
       "4d0dab36",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "5fa9d810",
       "2274a820",
       "7a595a63",
-      "a9d6112f"
+      "a9d6112f",
+      "98a01e4d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          290.7147014822279,
           282.51821689605714,
           257.3622921625773,
           272.66313835779823,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           275.06960776646935,
           206.19679361979166,
           309.70217558542885,
-          311.4363928159078
+          311.4363928159078,
+          276.3372493426005
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          283.3468252182007,
           250.07380317052204,
           239.15889861033514,
           272.0863518374307,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           276.23029589653015,
           190.39022885836087,
           332.3568512916565,
-          245.01674894186166
+          245.01674894186166,
+          271.7574294635228
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "1da713db658b62bda8746fa6595a0f58b30b759d",
-        "author": "dependabot[bot]",
-        "date": "Mon Sep 7 07:53:08 2026 \u002B0000",
-        "message": "chore: Bump the mstest group with 2 updates (#1038)"
-      },
-      {
         "sha": "a065b6824d0b2e2a2e98a67eeab0556b3a545b72",
         "author": "dependabot[bot]",
         "date": "Mon Sep 7 07:54:47 2026 \u002B0000",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 08:11:25 2026 \u002B0200",
         "message": "feat!: generate the type metadata registrations for equivalency from the marked call sites (#1086)"
+      },
+      {
+        "sha": "98a01e4d3d1a29831f17f990649af69889ca26c7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 10:28:16 2026 \u002B0200",
+        "message": "feat: measure the \u0060aweXpect.Core\u0060 mutation score on \u0060main\u0060"
       }
     ],
     "labels": [
-      "1da713db",
       "a065b682",
       "082a6795",
       "4d0dab36",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "5fa9d810",
       "2274a820",
       "7a595a63",
-      "a9d6112f"
+      "a9d6112f",
+      "98a01e4d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          506.15128435407365,
           466.43498471577965,
           452.75008656183877,
           479.2496374766032,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           477.94668610890704,
           355.2072853020259,
           447.0760128339132,
-          458.56294771341175
+          458.56294771341175,
+          471.88618322781156
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1382.3267773848313,
           1217.093755976359,
           1201.970852778508,
           1240.3623783111573,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1341.652505329677,
           883.0441282908122,
           1277.3768961588542,
-          1128.3526980536324
+          1128.3526980536324,
+          1268.4050240834554
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "1da713db658b62bda8746fa6595a0f58b30b759d",
-        "author": "dependabot[bot]",
-        "date": "Mon Sep 7 07:53:08 2026 \u002B0000",
-        "message": "chore: Bump the mstest group with 2 updates (#1038)"
-      },
-      {
         "sha": "a065b6824d0b2e2a2e98a67eeab0556b3a545b72",
         "author": "dependabot[bot]",
         "date": "Mon Sep 7 07:54:47 2026 \u002B0000",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 08:11:25 2026 \u002B0200",
         "message": "feat!: generate the type metadata registrations for equivalency from the marked call sites (#1086)"
+      },
+      {
+        "sha": "98a01e4d3d1a29831f17f990649af69889ca26c7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 10:28:16 2026 \u002B0200",
+        "message": "feat: measure the \u0060aweXpect.Core\u0060 mutation score on \u0060main\u0060"
       }
     ],
     "labels": [
-      "1da713db",
       "a065b682",
       "082a6795",
       "4d0dab36",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "5fa9d810",
       "2274a820",
       "7a595a63",
-      "a9d6112f"
+      "a9d6112f",
+      "98a01e4d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2016.8341816493444,
           1905.3962106704712,
           1909.4487761179605,
           2054.7027384440103,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1670.9143939971923,
           1410.924646105085,
           1422.3141540527345,
-          1808.64620413099
+          1808.64620413099,
+          1971.4030593872071
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1434.101515197754,
           1314.7438346862793,
           1282.2141908918109,
           1368.0961346944173,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1437.5937737782797,
           1009.9652674538748,
           1444.8710503896077,
-          1321.148864618937
+          1321.148864618937,
+          1491.9525361742292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "1da713db658b62bda8746fa6595a0f58b30b759d",
-        "author": "dependabot[bot]",
-        "date": "Mon Sep 7 07:53:08 2026 \u002B0000",
-        "message": "chore: Bump the mstest group with 2 updates (#1038)"
-      },
-      {
         "sha": "a065b6824d0b2e2a2e98a67eeab0556b3a545b72",
         "author": "dependabot[bot]",
         "date": "Mon Sep 7 07:54:47 2026 \u002B0000",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 08:11:25 2026 \u002B0200",
         "message": "feat!: generate the type metadata registrations for equivalency from the marked call sites (#1086)"
+      },
+      {
+        "sha": "98a01e4d3d1a29831f17f990649af69889ca26c7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 10:28:16 2026 \u002B0200",
+        "message": "feat: measure the \u0060aweXpect.Core\u0060 mutation score on \u0060main\u0060"
       }
     ],
     "labels": [
-      "1da713db",
       "a065b682",
       "082a6795",
       "4d0dab36",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "5fa9d810",
       "2274a820",
       "7a595a63",
-      "a9d6112f"
+      "a9d6112f",
+      "98a01e4d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2669.7825558980308,
           2521.895532608032,
           2478.2062553405763,
           2734.0682273864745,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2179.668372599284,
           1916.8696338653565,
           1870.5654805501301,
-          2491.4571551005047
+          2491.4571551005047,
+          2663.2380771636963
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          28450.560705566408,
           27628.447670491536,
           26239.906803385416,
           27511.36063058036,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           24276.291119384765,
           15356.671731131417,
           17557.282236735027,
-          19817.087254115515
+          19817.087254115515,
+          27891.504345233625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4199,7 +4199,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33465,
           33471,
@@ -4242,6 +4241,7 @@ window.BENCHMARK_DATA = {
           33468,
           33471,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
