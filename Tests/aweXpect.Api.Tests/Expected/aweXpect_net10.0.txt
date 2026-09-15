@@ -386,17 +386,15 @@ namespace aweXpect
     {
         public static aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>> WithHResult<TException>(this aweXpect.Delegates.ThatDelegateThrows<TException> subject, int expected)
             where TException : System.Exception? { }
+        public static aweXpect.Results.PropertyResult.String<System.Exception?, TException, aweXpect.Delegates.ThatDelegateThrows<TException>> WithMessage<TException>(this aweXpect.Delegates.ThatDelegateThrows<TException> subject)
+            where TException : System.Exception? { }
         public static aweXpect.Results.StringEqualityTypeResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>> WithMessage<TException>(this aweXpect.Delegates.ThatDelegateThrows<TException> subject, string expected)
             where TException : System.Exception? { }
-        public static aweXpect.Results.StringEqualityResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>> WithMessageContaining<TException>(this aweXpect.Delegates.ThatDelegateThrows<TException> subject, string? expected)
-            where TException : System.Exception? { }
+        public static aweXpect.Results.PropertyResult.String<System.Exception?, TException, aweXpect.Delegates.ThatDelegateThrows<TException>> WithParamName<TException>(this aweXpect.Delegates.ThatDelegateThrows<TException> subject)
+            where TException : System.ArgumentException? { }
         public static aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>> WithParamName<TException>(this aweXpect.Delegates.ThatDelegateThrows<TException> subject, string? expected)
             where TException : System.ArgumentException? { }
         public static aweXpect.Results.AndOrResult<TException?, aweXpect.Delegates.ThatDelegateThrows<TException>> WithRecursiveInnerExceptions<TException>(this aweXpect.Delegates.ThatDelegateThrows<TException> subject, System.Action<aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<System.Exception>>> expectations)
-            where TException : System.Exception? { }
-        public static aweXpect.Results.StringEqualityTypeResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>> WithoutMessage<TException>(this aweXpect.Delegates.ThatDelegateThrows<TException> subject, string unexpected)
-            where TException : System.Exception? { }
-        public static aweXpect.Results.StringEqualityResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>> WithoutMessageContaining<TException>(this aweXpect.Delegates.ThatDelegateThrows<TException> subject, string? unexpected)
             where TException : System.Exception? { }
     }
     public static class ThatDictionary
@@ -973,10 +971,6 @@ namespace aweXpect
     public static class ThatException
     {
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.StringEqualityTypeResult<System.Exception?, aweXpect.Core.IThat<System.Exception?>> DoesNotHaveMessage(this aweXpect.Core.IThat<System.Exception?> subject, string unexpected) { }
-        [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.StringEqualityTypeResult<System.Exception?, aweXpect.Core.IThat<System.Exception?>> DoesNotHaveMessageContaining(this aweXpect.Core.IThat<System.Exception?> subject, string? unexpected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThat<TException>> HasHResult<TException>(this aweXpect.Core.IThat<TException> subject, int expected)
             where TException : System.Exception? { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -994,9 +988,12 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Exception?, aweXpect.Core.IThat<System.Exception?>> HasInnerException(this aweXpect.Core.IThat<System.Exception?> subject, System.Action<aweXpect.Core.IThatSubject<System.Exception?>> expectations) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.PropertyResult.String<System.Exception?, System.Exception?, aweXpect.Core.IThat<System.Exception?>> HasMessage(this aweXpect.Core.IThat<System.Exception?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.Exception?, aweXpect.Core.IThat<System.Exception?>> HasMessage(this aweXpect.Core.IThat<System.Exception?> subject, string expected) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.StringEqualityTypeResult<System.Exception?, aweXpect.Core.IThat<System.Exception?>> HasMessageContaining(this aweXpect.Core.IThat<System.Exception?> subject, string? expected) { }
+        public static aweXpect.Results.PropertyResult.String<System.Exception?, TException, aweXpect.Core.IThat<TException>> HasParamName<TException>(this aweXpect.Core.IThat<TException> subject)
+            where TException : System.ArgumentException? { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThat<TException>> HasParamName<TException>(this aweXpect.Core.IThat<TException> subject, string? expected)
             where TException : System.ArgumentException? { }

@@ -8,6 +8,16 @@ namespace aweXpect;
 public static partial class ThatDelegateThrows
 {
 	/// <summary>
+	///     Verifies that the param name of the thrown <see cref="ArgumentException" />…
+	/// </summary>
+	public static PropertyResult.String<Exception?, TException, ThatDelegateThrows<TException>>
+		WithParamName<TException>(
+			this ThatDelegateThrows<TException> subject)
+		where TException : ArgumentException?
+		=> new(subject, e => (e as ArgumentException)?.ParamName, "ParamName",
+			grammars: ExpectationGrammars.Active | ExpectationGrammars.Nested);
+
+	/// <summary>
 	///     Verifies that the actual <see cref="ArgumentException" /> has an <paramref name="expected" /> param name.
 	/// </summary>
 	/// <remarks>

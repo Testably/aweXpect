@@ -4,6 +4,18 @@ namespace aweXpect.Core.Tests.Results;
 
 public sealed partial class PropertyResultTests
 {
+	/// <summary>
+	///     Spelling the three type arguments out once keeps the string tests readable.
+	/// </summary>
+	private sealed class StringProperty(
+		IThat<MyClass?> subject,
+		Func<MyClass?, string?> mapper,
+		string propertyExpression,
+		Action<string?, string>? validation = null,
+		ExpectationGrammars grammars = ExpectationGrammars.None)
+		: PropertyResult.String<MyClass?, MyClass?, IThat<MyClass?>>(subject, mapper, propertyExpression, validation,
+			grammars);
+
 	private sealed class Dummy : IExpectThat<string>
 	{
 		public ExpectationBuilder ExpectationBuilder { get; } = new ManualExpectationBuilder<string>(null);
@@ -49,7 +61,8 @@ public sealed partial class PropertyResultTests
 			return new PropertyResult.Long<MyClass?>(source, a => a?.LongValue, "long value");
 		}
 
-		public static PropertyResult.String<MyClass?> HasStringValue(string stringValue)
+		public static StringProperty HasStringValue(string stringValue,
+			ExpectationGrammars grammars = ExpectationGrammars.None)
 		{
 			MyClass subject = new()
 			{
@@ -58,16 +71,16 @@ public sealed partial class PropertyResultTests
 #pragma warning disable aweXpect0001
 			IThat<MyClass> source = That(subject);
 #pragma warning restore aweXpect0001
-			return new PropertyResult.String<MyClass?>(source, a => a?.StringValue, "string value");
+			return new StringProperty(source, a => a?.StringValue, "string value", null, grammars);
 		}
 
-		public static PropertyResult.String<MyClass?> HasStringValueOfNullSubject()
+		public static StringProperty HasStringValueOfNullSubject()
 		{
 			MyClass? subject = null;
 #pragma warning disable aweXpect0001
 			IThat<MyClass?> source = That(subject);
 #pragma warning restore aweXpect0001
-			return new PropertyResult.String<MyClass?>(source, a => a?.StringValue, "string value");
+			return new StringProperty(source, a => a?.StringValue, "string value");
 		}
 
 		public static PropertyResult.TimeSpan<MyClass?> HasTimeSpanValue(TimeSpan timeSpanValue)
