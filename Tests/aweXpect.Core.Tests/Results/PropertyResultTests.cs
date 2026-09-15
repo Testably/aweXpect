@@ -4,6 +4,26 @@ namespace aweXpect.Core.Tests.Results;
 
 public sealed partial class PropertyResultTests
 {
+	/// <summary>
+	///     Spelling the three type arguments out once keeps the string tests readable.
+	/// </summary>
+	private sealed class StringProperty(
+		IThat<MyClass?> subject,
+		Func<MyClass?, string?> mapper,
+		string propertyExpression,
+		Action<string?, string>? validation = null,
+		ExpectationGrammars grammars = ExpectationGrammars.None,
+		bool includeValueInContext = false)
+		: PropertyResult.String<MyClass?, MyClass?, IThat<MyClass?>>(subject, mapper, propertyExpression, validation,
+			grammars, includeValueInContext);
+
+	private class MyBaseClass
+	{
+		public string? StringValue { get; init; }
+	}
+
+	private sealed class MyDerivedClass : MyBaseClass;
+
 	private sealed class Dummy : IExpectThat<string>
 	{
 		public ExpectationBuilder ExpectationBuilder { get; } = new ManualExpectationBuilder<string>(null);
@@ -49,7 +69,8 @@ public sealed partial class PropertyResultTests
 			return new PropertyResult.Long<MyClass?>(source, a => a?.LongValue, "long value");
 		}
 
-		public static PropertyResult.String<MyClass?> HasStringValue(string stringValue)
+		public static StringProperty HasStringValue(string stringValue,
+			ExpectationGrammars grammars = ExpectationGrammars.None)
 		{
 			MyClass subject = new()
 			{
@@ -58,16 +79,52 @@ public sealed partial class PropertyResultTests
 #pragma warning disable aweXpect0001
 			IThat<MyClass> source = That(subject);
 #pragma warning restore aweXpect0001
-			return new PropertyResult.String<MyClass?>(source, a => a?.StringValue, "string value");
+			return new StringProperty(source, a => a?.StringValue, "string value", null, grammars);
 		}
 
-		public static PropertyResult.String<MyClass?> HasStringValueOfNullSubject()
+		public static StringProperty HasStringValueOfNullSubject()
 		{
 			MyClass? subject = null;
 #pragma warning disable aweXpect0001
 			IThat<MyClass?> source = That(subject);
 #pragma warning restore aweXpect0001
-			return new PropertyResult.String<MyClass?>(source, a => a?.StringValue, "string value");
+			return new StringProperty(source, a => a?.StringValue, "string value");
+		}
+
+		/// <summary>
+		///     The source of a <see cref="StringValueOf" />, so that two properties can share one expectation builder.
+		/// </summary>
+		public static IThat<MyClass?> WithStringValue(string stringValue)
+		{
+			MyClass subject = new()
+			{
+				StringValue = stringValue,
+			};
+#pragma warning disable aweXpect0001
+			return That(subject);
+#pragma warning restore aweXpect0001
+		}
+
+		public static StringProperty StringValueOf(IThat<MyClass?> source, bool includeValueInContext = false)
+			=> new(source, a => a?.StringValue, "string value", null, ExpectationGrammars.None,
+				includeValueInContext);
+
+		/// <summary>
+		///     The mapper is typed at <see cref="MyBaseClass" /> while the result keeps <see cref="MyDerivedClass" />,
+		///     which is the shape a delegate produces when it narrows the exception type only at the result.
+		/// </summary>
+		public static PropertyResult.String<MyBaseClass?, MyDerivedClass?, IThat<MyDerivedClass?>>
+			HasStringValueOfNarrowedSubject(string stringValue)
+		{
+			MyDerivedClass subject = new()
+			{
+				StringValue = stringValue,
+			};
+#pragma warning disable aweXpect0001
+			IThat<MyDerivedClass> source = That(subject);
+#pragma warning restore aweXpect0001
+			return new PropertyResult.String<MyBaseClass?, MyDerivedClass?, IThat<MyDerivedClass?>>(
+				source, a => a?.StringValue, "string value");
 		}
 
 		public static PropertyResult.TimeSpan<MyClass?> HasTimeSpanValue(TimeSpan timeSpanValue)

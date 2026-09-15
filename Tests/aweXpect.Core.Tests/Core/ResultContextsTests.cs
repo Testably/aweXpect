@@ -19,7 +19,7 @@ public sealed class ResultContextsTests
 	}
 
 	[Fact]
-	public async Task AddMultiple_ShouldAddContext()
+	public async Task AddMultiple_ShouldIgnoreADuplicate()
 	{
 		ResultContexts sut = new();
 
@@ -29,7 +29,31 @@ public sealed class ResultContextsTests
 		sut.Add(new ResultContext.Fixed("bar", "3"));
 		sut.Add(new ResultContext.Fixed("foo", "4"));
 
-		await That(sut).HasCount().EqualTo(5);
+		await That(sut).HasCount().EqualTo(4)
+			.Because("only the repeated foo/2 pair is a duplicate");
+	}
+
+	[Fact]
+	public async Task AddMultiple_WithACallbackContext_ShouldAddBoth()
+	{
+		ResultContexts sut = new();
+
+		sut.Add(new ResultContext.SyncCallback("foo", () => "1"));
+		sut.Add(new ResultContext.SyncCallback("foo", () => "1"));
+
+		await That(sut).HasCount().EqualTo(2)
+			.Because("a callback cannot be recognized as a duplicate without evaluating it");
+	}
+
+	[Fact]
+	public async Task AddMultiple_WithTheSameTitleButDifferentContent_ShouldAddBoth()
+	{
+		ResultContexts sut = new();
+
+		sut.Add(new ResultContext.Fixed("foo", "1"));
+		sut.Add(new ResultContext.Fixed("foo", "2"));
+
+		await That(sut).HasCount().EqualTo(2);
 	}
 
 	[Fact]

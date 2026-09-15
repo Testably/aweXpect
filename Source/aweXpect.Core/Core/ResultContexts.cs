@@ -38,11 +38,17 @@ public class ResultContexts : IEnumerable<ResultContext>
 	}
 
 	/// <summary>
-	///     Adds the <paramref name="context" /> to the context list.
+	///     Adds the <paramref name="context" /> to the context list, unless it is already contained in it.
 	/// </summary>
+	/// <remarks>
+	///     A constraint adds its context while it is evaluated, so an expectation that inspects the same property
+	///     twice (<c>HasMessage().Containing("a").And.HasMessage().Containing("b")</c>) would otherwise repeat the
+	///     identical block. Only a <see cref="ResultContext.Fixed" /> can be recognized as a duplicate without
+	///     evaluating it, so only those are suppressed.
+	/// </remarks>
 	public ResultContexts Add(ResultContext context)
 	{
-		if (_isOpen)
+		if (_isOpen && !_results.Exists(existing => IsDuplicate(existing, context)))
 		{
 			_results.Add(context);
 		}
@@ -81,4 +87,10 @@ public class ResultContexts : IEnumerable<ResultContext>
 
 		return this;
 	}
+
+	private static bool IsDuplicate(ResultContext existing, ResultContext context)
+		=> existing is ResultContext.Fixed existingFixed &&
+		   context is ResultContext.Fixed addedFixed &&
+		   string.Equals(existingFixed.Title, addedFixed.Title, StringComparison.Ordinal) &&
+		   string.Equals(existingFixed.Content, addedFixed.Content, StringComparison.Ordinal);
 }
