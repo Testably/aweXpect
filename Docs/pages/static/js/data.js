@@ -3774,6 +3774,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
         "message": "fix: cap the heap of the test host instead of the whole job"
+      },
+      {
+        "sha": "525e912c42dbede647c60c0ff48a7ed4447fcfd7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 13:48:54 2026 \u002B0200",
+        "message": "refactor!: render tolerance as \u0060\u00B1 x\u0060 everywhere (#1125)"
       }
     ],
     "labels": [
@@ -4405,7 +4411,8 @@ window.BENCHMARK_DATA = {
       "93e2fd51",
       "c0173dfd",
       "152b45e4",
-      "c038ec26"
+      "c038ec26",
+      "525e912c"
     ],
     "datasets": [
       {
@@ -5040,7 +5047,8 @@ window.BENCHMARK_DATA = {
           192.54164187724774,
           257.545502948761,
           225.96870646476745,
-          252.4134638786316
+          252.4134638786316,
+          255.2726117769877
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5513,6 +5521,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6323,7 +6332,8 @@ window.BENCHMARK_DATA = {
           189.80345698992411,
           234.5285401026408,
           253.98439423243204,
-          245.66537170410157
+          245.66537170410157,
+          235.88093944958277
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6516,6 +6526,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10289,6 +10300,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
         "message": "fix: cap the heap of the test host instead of the whole job"
+      },
+      {
+        "sha": "525e912c42dbede647c60c0ff48a7ed4447fcfd7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 13:48:54 2026 \u002B0200",
+        "message": "refactor!: render tolerance as \u0060\u00B1 x\u0060 everywhere (#1125)"
       }
     ],
     "labels": [
@@ -10843,7 +10860,8 @@ window.BENCHMARK_DATA = {
       "93e2fd51",
       "c0173dfd",
       "152b45e4",
-      "c038ec26"
+      "c038ec26",
+      "525e912c"
     ],
     "datasets": [
       {
@@ -11401,7 +11419,8 @@ window.BENCHMARK_DATA = {
           282105.42115885415,
           383674.42034040176,
           337191.46025390626,
-          379574.25278320315
+          379574.25278320315,
+          387609.7756998698
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11964,7 +11983,8 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542084,
-          542084
+          542084,
+          542085
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12530,7 +12550,8 @@ window.BENCHMARK_DATA = {
           1821061.6046875,
           2702261.0809151786,
           2124859.86640625,
-          2772779.322135417
+          2772779.322135417,
+          2597183.655048077
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13093,6 +13114,7 @@ window.BENCHMARK_DATA = {
           4841647,
           4841651,
           4841613,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -16881,6 +16903,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
         "message": "fix: cap the heap of the test host instead of the whole job"
+      },
+      {
+        "sha": "525e912c42dbede647c60c0ff48a7ed4447fcfd7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 13:48:54 2026 \u002B0200",
+        "message": "refactor!: render tolerance as \u0060\u00B1 x\u0060 everywhere (#1125)"
       }
     ],
     "labels": [
@@ -17512,7 +17540,8 @@ window.BENCHMARK_DATA = {
       "93e2fd51",
       "c0173dfd",
       "152b45e4",
-      "c038ec26"
+      "c038ec26",
+      "525e912c"
     ],
     "datasets": [
       {
@@ -18147,7 +18176,8 @@ window.BENCHMARK_DATA = {
           346.67944114548817,
           485.2447775204976,
           437.89498167037965,
-          488.20431429545084
+          488.20431429545084,
+          454.63850116729736
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18620,6 +18650,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -19430,7 +19461,8 @@ window.BENCHMARK_DATA = {
           369.44302238736833,
           495.1810088524452,
           497.8950578689575,
-          506.7423930849348
+          506.7423930849348,
+          470.06133098602294
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19623,6 +19655,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -23858,6 +23891,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
         "message": "fix: cap the heap of the test host instead of the whole job"
+      },
+      {
+        "sha": "525e912c42dbede647c60c0ff48a7ed4447fcfd7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 13:48:54 2026 \u002B0200",
+        "message": "refactor!: render tolerance as \u0060\u00B1 x\u0060 everywhere (#1125)"
       }
     ],
     "labels": [
@@ -24489,7 +24528,8 @@ window.BENCHMARK_DATA = {
       "93e2fd51",
       "c0173dfd",
       "152b45e4",
-      "c038ec26"
+      "c038ec26",
+      "525e912c"
     ],
     "datasets": [
       {
@@ -25124,7 +25164,8 @@ window.BENCHMARK_DATA = {
           198.33121064503987,
           272.62607968648274,
           253.99401931762696,
-          278.1191467285156
+          278.1191467285156,
+          266.18300444285074
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -25638,6 +25679,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -26407,7 +26449,8 @@ window.BENCHMARK_DATA = {
           191.97776057720185,
           251.3622358640035,
           255.23169129689535,
-          259.62245308558147
+          259.62245308558147,
+          258.6352137883504
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -26600,6 +26643,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -30835,6 +30879,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
         "message": "fix: cap the heap of the test host instead of the whole job"
+      },
+      {
+        "sha": "525e912c42dbede647c60c0ff48a7ed4447fcfd7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 13:48:54 2026 \u002B0200",
+        "message": "refactor!: render tolerance as \u0060\u00B1 x\u0060 everywhere (#1125)"
       }
     ],
     "labels": [
@@ -31466,7 +31516,8 @@ window.BENCHMARK_DATA = {
       "93e2fd51",
       "c0173dfd",
       "152b45e4",
-      "c038ec26"
+      "c038ec26",
+      "525e912c"
     ],
     "datasets": [
       {
@@ -32101,7 +32152,8 @@ window.BENCHMARK_DATA = {
           343.7824761072795,
           470.1731425603231,
           435.94404163360593,
-          443.8239698750632
+          443.8239698750632,
+          451.3546841825758
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32574,6 +32626,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -33384,7 +33437,8 @@ window.BENCHMARK_DATA = {
           895.6350174585979,
           1207.4822497049968,
           1220.9729890823364,
-          1189.5603050231935
+          1189.5603050231935,
+          1137.5848183949788
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33813,6 +33867,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -37812,6 +37867,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
         "message": "fix: cap the heap of the test host instead of the whole job"
+      },
+      {
+        "sha": "525e912c42dbede647c60c0ff48a7ed4447fcfd7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 13:48:54 2026 \u002B0200",
+        "message": "refactor!: render tolerance as \u0060\u00B1 x\u0060 everywhere (#1125)"
       }
     ],
     "labels": [
@@ -38443,7 +38504,8 @@ window.BENCHMARK_DATA = {
       "93e2fd51",
       "c0173dfd",
       "152b45e4",
-      "c038ec26"
+      "c038ec26",
+      "525e912c"
     ],
     "datasets": [
       {
@@ -39078,7 +39140,8 @@ window.BENCHMARK_DATA = {
           1476.4722430365425,
           1936.5568182809013,
           1348.5513350168865,
-          1899.8832641601562
+          1899.8832641601562,
+          1915.4286098480225
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -39551,6 +39614,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -40361,7 +40425,8 @@ window.BENCHMARK_DATA = {
           1003.9631337385911,
           1242.3274236043294,
           1381.5317835126605,
-          1378.2740264892577
+          1378.2740264892577,
+          1285.010301208496
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40554,6 +40619,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -44789,6 +44855,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
         "message": "fix: cap the heap of the test host instead of the whole job"
+      },
+      {
+        "sha": "525e912c42dbede647c60c0ff48a7ed4447fcfd7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 13:48:54 2026 \u002B0200",
+        "message": "refactor!: render tolerance as \u0060\u00B1 x\u0060 everywhere (#1125)"
       }
     ],
     "labels": [
@@ -45420,7 +45492,8 @@ window.BENCHMARK_DATA = {
       "93e2fd51",
       "c0173dfd",
       "152b45e4",
-      "c038ec26"
+      "c038ec26",
+      "525e912c"
     ],
     "datasets": [
       {
@@ -46055,7 +46128,8 @@ window.BENCHMARK_DATA = {
           1884.5005330403646,
           2472.942229407174,
           1795.5128047943115,
-          2525.565395061786
+          2525.565395061786,
+          2612.7643934396597
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -46528,6 +46602,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -47338,7 +47413,8 @@ window.BENCHMARK_DATA = {
           15499.583459472657,
           25512.445173997145,
           16737.171134440105,
-          27292.448457845054
+          27292.448457845054,
+          26717.905848185223
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47978,6 +48054,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
