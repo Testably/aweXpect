@@ -93,8 +93,8 @@ public sealed class EquivalencyComparisonTests
 	[Fact]
 	public async Task WhenGetterThrows_ShouldThrowTheGetterException()
 	{
-		WithThrowingGetter actual = new();
-		WithThrowingGetter expected = new();
+		WithThrowingGetter actual = new("getter failed");
+		WithThrowingGetter expected = new("getter failed");
 
 		async Task Act()
 			=> await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), new StringBuilder());
@@ -302,8 +302,8 @@ public sealed class EquivalencyComparisonTests
 		public int Value = value;
 	}
 
-	private sealed class WithThrowingGetter
+	private sealed class WithThrowingGetter(string message)
 	{
-		public int Value => throw new InvalidOperationException("getter failed");
+		public int Value => throw new InvalidOperationException(message);
 	}
 }
