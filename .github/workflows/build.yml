@@ -65,16 +65,25 @@ jobs:
                         ./TestResults/*.trx
     
     mutation-tests-core:
-        name: "Mutation tests (aweXpect.Core)"
+        name: "Mutation tests (aweXpect.Core, ${{ matrix.slice }})"
         runs-on: ubuntu-latest
-        timeout-minutes: 150
+        timeout-minutes: 120
+        # `aweXpect.Core` is released on its own, so its score has to be measured on `main` too. The whole source takes
+        # more than two hours in a single job, and the slices are disjoint and cover everything, so the dashboard job
+        # can merge their reports back into a single score.
+        strategy:
+            fail-fast: false
+            matrix:
+                slice: [ engine, options, formatting, rest ]
         env:
             STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
             DOTNET_NOLOGO: true
             # A mutant that allocates without bound otherwise exhausts the runner and takes the whole VM with it,
-            # which surfaces as an unattributable "the runner has received a shutdown signal". With the limit the
-            # test host throws instead, so the mutant is reported rather than killing the job.
-            DOTNET_GCHeapHardLimit: "0x100000000"
+            # which surfaces as an unattributable "the runner has received a shutdown signal". It reaches only the
+            # test host, through `RuntimeHostConfigurationOption` in the test projects, because the environment
+            # variable that would do the same overrides it everywhere - including in the compiler, which needs far
+            # more memory than the test host ever does.
+            MutationTestHeapHardLimit: "0x20000000"
         steps:
             -   uses: actions/checkout@v7
                 with:
@@ -100,11 +109,13 @@ jobs:
                     kill "$sampler" 2>/dev/null || true
                     wait "$sampler" 2>/dev/null || true
                     exit "$status"
+                env:
+                    MutationSlice: ${{ matrix.slice }}
             -   name: Upload artifacts
                 if: always()
                 uses: actions/upload-artifact@v7
                 with:
-                    name: MutationTestsCore
+                    name: MutationTestsCore-${{ matrix.slice }}
                     path: |
                         ./Artifacts/*
     
@@ -117,14 +128,16 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                slice: [ collections-enumerable, collections-other, numbers, dates, rest ]
+                slice: [ collections-enumerable, collections-other, numbers, dates, infrastructure, rest ]
         env:
             STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
             DOTNET_NOLOGO: true
             # A mutant that allocates without bound otherwise exhausts the runner and takes the whole VM with it,
-            # which surfaces as an unattributable "the runner has received a shutdown signal". With the limit the
-            # test host throws instead, so the mutant is reported rather than killing the job.
-            DOTNET_GCHeapHardLimit: "0x100000000"
+            # which surfaces as an unattributable "the runner has received a shutdown signal". It reaches only the
+            # test host, through `RuntimeHostConfigurationOption` in the test projects, because the environment
+            # variable that would do the same overrides it everywhere - including in the compiler, which needs far
+            # more memory than the test host ever does.
+            MutationTestHeapHardLimit: "0x20000000"
         steps:
             -   uses: actions/checkout@v7
                 with:
