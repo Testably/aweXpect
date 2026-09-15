@@ -1,4 +1,5 @@
 using System.Text;
+using aweXpect.Core.Metadata;
 using aweXpect.Equivalency;
 
 namespace aweXpect.Core.Tests.Equivalency;
@@ -20,6 +21,20 @@ public sealed class EquivalencyComparisonTests
 
 		await That(result).IsTrue()
 			.Because("the visibility selects the members of the expected object, while the actual side only has to have a member of that name");
+	}
+
+	[Fact]
+	public async Task WhenActualPropertyHasNoPublicGetter_ShouldTreatItAsMissing()
+	{
+		WithPrivateGetter actual = new(1);
+		WithPublicGetter expected = new(1);
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).Contains("Property Value was <null> instead of 1")
+			.Because("a registration cannot call a non-public getter, so reflection must not read one either");
 	}
 
 	[Fact]
@@ -155,6 +170,39 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenTypeIsRegistered_ShouldCompareTheRegisteredMembers()
+	{
+		RegisterPhantom();
+		RegisteredProbe actual = new(1);
+		RegisteredProbe expected = new(2);
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).Contains("Property Phantom differed")
+			.Because("the registered member is not a member reflection could find, so only the registry can report it");
+	}
+
+	[Fact]
+	public async Task WhenTypeIsRegistered_WithNonPublicMembers_ShouldReflectOverTheWholeType()
+	{
+		RegisterPhantom();
+		RegisteredProbe actual = new(1);
+		RegisteredProbe expected = new(2);
+		StringBuilder failureBuilder = new();
+		EquivalencyOptions options = new()
+		{
+			Properties = IncludeMembers.Public | IncludeMembers.Internal,
+		};
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("a request for non-public members bypasses the registry, and reflection does not know the phantom");
+	}
+
+	[Fact]
 	public async Task WhenTypesDifferWithoutComparableMembers_ShouldReportTheDifferenceInsteadOfThrowing()
 	{
 		ClassWithOnlyPrivateState actual = new(1);
@@ -167,6 +215,9 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).Contains("It differed:")
 			.Because("a mismatching type is a difference that can be reported without inspecting members");
 	}
+
+	private static void RegisterPhantom()
+		=> TypeMetadataRegistry.RegisterProperty<RegisteredProbe, int>("Phantom", x => x.PhantomValue());
 
 	private sealed class ClassWithOnlyPrivateState(int value)
 	{
@@ -197,6 +248,13 @@ public sealed class EquivalencyComparisonTests
 		public new string Value { get; } = text;
 	}
 
+	private sealed class RegisteredProbe(int phantom)
+	{
+		public int Visible { get; set; }
+
+		public int PhantomValue() => phantom;
+	}
+
 	private sealed class ValueLikeWithoutMembers(int value)
 	{
 		private readonly int _value = value;
@@ -220,6 +278,25 @@ public sealed class EquivalencyComparisonTests
 		internal int Value = value;
 	}
 
+	private sealed class WithPrivateGetter(int value)
+	{
+		public int Value { private get; set; } = value;
+		public int Other { get; set; }
+
+		public override string ToString() => $"{Value}";
+	}
+
+	private class WithProperty(int value)
+	{
+		public int Value => value;
+	}
+
+	private sealed class WithPublicGetter(int value)
+	{
+		public int Value { get; set; } = value;
+		public int Other { get; set; }
+	}
+
 	private sealed class WithPublicValue(int value)
 	{
 		public int Value = value;
@@ -228,10 +305,5 @@ public sealed class EquivalencyComparisonTests
 	private sealed class WithThrowingGetter
 	{
 		public int Value => throw new InvalidOperationException("getter failed");
-	}
-
-	private class WithProperty(int value)
-	{
-		public int Value => value;
 	}
 }

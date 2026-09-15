@@ -11,10 +11,6 @@ namespace aweXpect.Generators.Tests;
 
 internal static class GeneratorRunner
 {
-	/// <summary>
-	///     Runs the <see cref="TypeMetadataGenerator" /> over the <paramref name="sources" /> compiled against the
-	///     runtime, <c>aweXpect</c> and <c>aweXpect.Core</c>.
-	/// </summary>
 	public static GeneratorResult Run(string[] sources, bool referenceCore = true,
 		LanguageVersion languageVersion = LanguageVersion.Latest, params MetadataReference[] additionalReferences)
 	{
@@ -39,9 +35,6 @@ internal static class GeneratorRunner
 			generatorDiagnostics);
 	}
 
-	/// <summary>
-	///     Compiles the <paramref name="source" /> into an in-memory assembly that other compilations can reference.
-	/// </summary>
 	public static MetadataReference CompileToReference(string assemblyName, string source,
 		params MetadataReference[] additionalReferences)
 	{
@@ -68,8 +61,8 @@ internal static class GeneratorRunner
 				nullableContextOptions: NullableContextOptions.Enable));
 
 	/// <remarks>
-	///     The trusted platform assemblies already contain the test's own copies of <c>aweXpect</c>, so the explicit
-	///     references only make sure they are present when the compilation runs elsewhere.
+	///     The trusted platform assemblies include this test assembly, whose copy of the corpus would clash with the
+	///     corpus source fed to the generator, so it is left out.
 	/// </remarks>
 	private static IEnumerable<MetadataReference> GetReferences(bool referenceCore)
 	{

@@ -72,8 +72,14 @@ internal static class IncludeMembersExtensions
 	///     <paramref name="includeMembers" /> does, without requiring the property itself to have a requested
 	///     visibility.
 	/// </summary>
+	/// <remarks>
+	///     A public request only sees a property that can be read publicly, because a registration cannot call a
+	///     non-public getter and the two paths have to agree.
+	/// </remarks>
 	public static PropertyInfo? FindProperty(this Type type, string name, IncludeMembers includeMembers)
-		=> GetAllProperties(type, includeMembers).FirstOrDefault(property => property.Name == name);
+		=> GetAllProperties(type, includeMembers).FirstOrDefault(property
+			=> property.Name == name &&
+			   (includeMembers != IncludeMembers.Public || property.GetGetMethod(true)!.IsPublic));
 
 	private static FieldInfo[] GetAllFields(Type type, IncludeMembers includeMembers)
 		=> AllFields.GetOrAdd((type, GetBindingFlags(includeMembers)), static key

@@ -31,9 +31,8 @@ public sealed class RequiresMemberMetadataTests
 	}
 
 	/// <remarks>
-	///     Every public method that takes equivalency options, directly or as a callback, lets a value reach the
-	///     comparison. The Core assembly is checked by its own test project, because this one builds against the
-	///     released Core outside Debug.
+	///     The Core assembly is checked by its own test project, because this one builds against the released Core
+	///     outside Debug, where a marker added on the branch is not visible yet.
 	/// </remarks>
 	private static IEnumerable<MethodInfo> EquivalencyEntryPoints()
 		=> typeof(EquivalencyExtensions).Assembly.GetTypes()

@@ -6,10 +6,6 @@ using System.Text.RegularExpressions;
 
 namespace aweXpect.Generators.Tests;
 
-/// <summary>
-///     Under the JIT both paths are available, so the members the generator registers for the <see cref="Corpus" />
-///     types are compared against the members reflection returns for the very same types.
-/// </summary>
 public sealed partial class MemberParityTests
 {
 	private static readonly (Type Type, string Name)[] CorpusTypes =

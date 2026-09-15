@@ -31,8 +31,8 @@ public sealed class RequiresMemberMetadataTests
 	}
 
 	/// <remarks>
-	///     Every public method that takes equivalency options lets a value reach the comparison. The options types'
-	///     own equality members and property accessors merely carry the options around.
+	///     The equality members of the options types and property accessors take an <see cref="EquivalencyOptions" />
+	///     as well, but only carry it around, so they are not entry points.
 	/// </remarks>
 	private static IEnumerable<MethodInfo> EquivalencyEntryPoints()
 		=> typeof(EquivalencyComparison).Assembly.GetTypes()

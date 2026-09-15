@@ -289,14 +289,16 @@ Some types cannot be seen by the generator, because it works from the types decl
   as an instance and is compared through reflection; the element type itself is registered.
 
 A type the generator merely did not see, such as the runtime type behind an `object` member or a value passed through
-an unmarked extension, can be named explicitly to register it anyway; a type it cannot reference stays on reflection
-regardless. The generator warns with `aweXpect2001` when a named type yields no registration:
+an unmarked extension, can be named explicitly to register it anyway:
 
 ```csharp
 using aweXpect.Core.Metadata;
 
 [assembly: GenerateMetadata(typeof(Track))]
 ```
+
+A type the generated code cannot reference stays on reflection regardless, and the generator warns with `aweXpect2001`
+when a named type yields no registration.
 
 The registration needs `ModuleInitializerAttribute` and C# 9, so nothing is generated for a project that targets
 .NET Framework or .NET Standard 2.0 unless it polyfills the attribute. Those targets cannot be trimmed or published

@@ -3,10 +3,6 @@ using System.Collections.Generic;
 
 namespace aweXpect.Generators.Tests;
 
-/// <summary>
-///     Types whose registered members are compared against reflection, both compiled into this assembly and fed to
-///     the generator as source.
-/// </summary>
 public static class Corpus
 {
 	public interface IHasValue
