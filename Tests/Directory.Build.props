@@ -33,4 +33,13 @@
 		</PackageReference>
 	</ItemGroup>
 
+	<!--
+	    The mutation tests set `MutationTestHeapHardLimit` so that a mutant which allocates without bound hits the
+	    limit quickly instead of exhausting the runner. It has to reach the test host alone - the environment variable
+	    that would do the same applies to the compiler too, which needs far more than the test host ever does.
+	-->
+	<ItemGroup Condition="'$(MutationTestHeapHardLimit)' != ''">
+		<RuntimeHostConfigurationOption Include="System.GC.HeapHardLimit" Value="$(MutationTestHeapHardLimit)" />
+	</ItemGroup>
+
 </Project>
