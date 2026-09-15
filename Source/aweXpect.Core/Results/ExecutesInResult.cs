@@ -34,15 +34,6 @@ public class ExecutesInResult<TResult>(
 	}
 
 	/// <summary>
-	///     …approximately the <paramref name="expected" /> time using the provided <paramref name="tolerance" />.
-	/// </summary>
-	public TResult Approximately(TimeSpan expected, TimeSpan tolerance)
-	{
-		options.Approximately(expected, tolerance);
-		return returnValue;
-	}
-
-	/// <summary>
 	///     …between <paramref name="minimum" />…
 	/// </summary>
 	public BetweenResult Between(TimeSpan minimum) => new(maximum =>

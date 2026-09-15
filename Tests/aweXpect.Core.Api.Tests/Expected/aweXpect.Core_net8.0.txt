@@ -592,6 +592,8 @@ namespace aweXpect.Delegates
             public aweXpect.Core.IThatSubject<T> Eventually() { }
             [aweXpect.Core.GuaranteesNotNull]
             public aweXpect.Results.ExecutesInResult<aweXpect.Results.AndResult<aweXpect.Delegates.ThatDelegate.WithValue<T>>> ExecutesIn() { }
+            [aweXpect.Core.GuaranteesNotNull]
+            public aweXpect.Results.ExecutesInToleranceResult<aweXpect.Results.AndResult<aweXpect.Delegates.ThatDelegate.WithValue<T>>> ExecutesIn(System.TimeSpan expected) { }
         }
         public sealed class WithoutValue : aweXpect.Delegates.ThatDelegate, aweXpect.Core.IExpectThat<aweXpect.Delegates.ThatDelegate.WithoutValue>, aweXpect.Core.IThat<aweXpect.Delegates.ThatDelegate.WithoutValue>
         {
@@ -610,6 +612,8 @@ namespace aweXpect.Delegates
                 where TException : System.Exception { }
             [aweXpect.Core.GuaranteesNotNull]
             public aweXpect.Results.ExecutesInResult<aweXpect.Results.AndResult<aweXpect.Delegates.ThatDelegate.WithoutValue>> ExecutesIn() { }
+            [aweXpect.Core.GuaranteesNotNull]
+            public aweXpect.Results.ExecutesInToleranceResult<aweXpect.Results.AndResult<aweXpect.Delegates.ThatDelegate.WithoutValue>> ExecutesIn(System.TimeSpan expected) { }
         }
     }
     public class ThatDelegateThrows<TException> : aweXpect.Results.ExpectationResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>>, aweXpect.Core.IExpectThat<TException>, aweXpect.Core.IThatDelegateThrows<TException>, aweXpect.Core.IThat<TException>
@@ -1215,7 +1219,6 @@ namespace aweXpect.Results
     public class ExecutesInResult<TResult> : aweXpect.Core.IOptionsProvider<aweXpect.Options.TimeSpanEqualityOptions>
     {
         public ExecutesInResult(TResult returnValue, aweXpect.Options.TimeSpanEqualityOptions options) { }
-        public TResult Approximately(System.TimeSpan expected, System.TimeSpan tolerance) { }
         public TResult AtLeast(System.TimeSpan minimum) { }
         public TResult AtMost(System.TimeSpan maximum) { }
         public aweXpect.Results.ExecutesInResult<TResult>.BetweenResult Between(System.TimeSpan minimum) { }
@@ -1224,6 +1227,11 @@ namespace aweXpect.Results
             public BetweenResult(System.Func<System.TimeSpan, TResult> callback) { }
             public TResult And(System.TimeSpan maximum) { }
         }
+    }
+    public class ExecutesInToleranceResult<TResult>
+    {
+        public ExecutesInToleranceResult(TResult returnValue, aweXpect.Options.TimeSpanEqualityOptions options, System.TimeSpan expected) { }
+        public TResult Within(System.TimeSpan tolerance) { }
     }
     [System.Diagnostics.StackTraceHidden]
     public abstract class Expectation

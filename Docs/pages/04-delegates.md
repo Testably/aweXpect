@@ -144,7 +144,7 @@ await Expect.That(Task.Delay(200)).ExecutesIn().AtMost(300.Milliseconds())
   .Because("the delegate should execute faster than 300ms");
 await Expect.That(Task.Delay(200)).ExecutesIn().AtLeast(100.Milliseconds())
   .Because("the delegate should execute slower than 100ms");
-await Expect.That(Task.Delay(200)).ExecutesIn().Approximately(200.Milliseconds(), 50.Milliseconds())
+await Expect.That(Task.Delay(200)).ExecutesIn(200.Milliseconds()).Within(50.Milliseconds())
   .Because("the delegate should execute within 200ms ± 50ms");
 await Expect.That(Task.Delay(200)).ExecutesIn().Between(100.Milliseconds()).And(300.Milliseconds())
   .Because("the delegate should execute slower than 100ms and faster than 300ms");
