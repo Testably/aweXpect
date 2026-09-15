@@ -12,7 +12,7 @@ public static partial class ThatGeneric
 	///     Verifies the <paramref name="expectations" /> on the member selected by the <paramref name="memberSelector" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<T, IThat<T>> For<T, TMember>(
+	public static AndOrResult<T, IThat<T>> Whose<T, TMember>(
 		this IThat<T> subject,
 		Func<T, TMember?> memberSelector,
 		Action<IThatSubject<TMember?>> expectations,
@@ -23,7 +23,7 @@ public static partial class ThatGeneric
 		expectationBuilder
 			.ForMember(
 				MemberAccessor<T, TMember?>.FromFuncAsMemberAccessor(memberSelector, doNotPopulateThisValue),
-				(member, stringBuilder) => stringBuilder.Append("for ").Append(member))
+				(member, stringBuilder) => stringBuilder.Append("whose ").Append(member))
 			.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)));
 		return new AndOrResult<T, IThat<T>>(expectationBuilder, subject);
 	}
