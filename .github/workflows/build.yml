@@ -65,9 +65,16 @@ jobs:
                         ./TestResults/*.trx
     
     mutation-tests-core:
-        name: "Mutation tests (aweXpect.Core)"
+        name: "Mutation tests (aweXpect.Core, ${{ matrix.slice }})"
         runs-on: ubuntu-latest
-        timeout-minutes: 150
+        timeout-minutes: 90
+        # `aweXpect.Core` is released on its own, so its score has to be measured on `main` too. The whole source takes
+        # more than two hours in a single job, and the slices are disjoint and cover everything, so the dashboard job
+        # can merge their reports back into a single score.
+        strategy:
+            fail-fast: false
+            matrix:
+                slice: [ engine, options, rest ]
         env:
             STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
             DOTNET_NOLOGO: true
@@ -100,11 +107,13 @@ jobs:
                     kill "$sampler" 2>/dev/null || true
                     wait "$sampler" 2>/dev/null || true
                     exit "$status"
+                env:
+                    MutationSlice: ${{ matrix.slice }}
             -   name: Upload artifacts
                 if: always()
                 uses: actions/upload-artifact@v7
                 with:
-                    name: MutationTestsCore
+                    name: MutationTestsCore-${{ matrix.slice }}
                     path: |
                         ./Artifacts/*
     
