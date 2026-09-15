@@ -272,6 +272,7 @@ partial class Build
 	{
 		JsonObject merged = null;
 		JsonObject mergedFiles = new();
+		Dictionary<string, string> contributingSlice = new();
 		int totalMutants = 0;
 		foreach ((string name, AbsolutePath report) in sliceReports)
 		{
@@ -285,17 +286,25 @@ partial class Build
 				if (!mergedFiles.TryGetPropertyValue(file.Key, out JsonNode existing))
 				{
 					mergedFiles[file.Key] = file.Value?.DeepClone();
+					if (mutants > 0)
+					{
+						contributingSlice[file.Key] = name;
+					}
+
 					continue;
 				}
 
 				if (mutants > 0 && existing?["mutants"]?.AsArray().Count > 0)
 				{
 					// Both slices mutated the file, so its mutants would be counted twice in the score.
-					Assert.Fail($"The mutation slices overlap in '{file.Key}'");
+					Assert.Fail(
+						$"The mutation slices '{contributingSlice[file.Key]}' ({existing["mutants"]!.AsArray().Count} " +
+						$"mutants) and '{name}' ({mutants} mutants) overlap in '{file.Key}'");
 				}
 				else if (mutants > 0)
 				{
 					mergedFiles[file.Key] = file.Value?.DeepClone();
+					contributingSlice[file.Key] = name;
 				}
 			}
 
