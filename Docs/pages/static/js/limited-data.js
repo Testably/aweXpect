@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "719a9454ac10862a8e079a85f7e607dec7e83611",
-        "author": "dependabot[bot]",
-        "date": "Mon Sep 7 07:50:28 2026 \u002B0000",
-        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.3 to 2.4.0 (#1041)"
-      },
-      {
         "sha": "1da713db658b62bda8746fa6595a0f58b30b759d",
         "author": "dependabot[bot]",
         "date": "Mon Sep 7 07:53:08 2026 \u002B0000",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 07:33:41 2026 \u002B0200",
         "message": "test: stop the \u0022infinite\u0022 sequences after a safety limit"
+      },
+      {
+        "sha": "a9d6112f7f61e4a029a56a43a1cd5d55c1fe309c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 08:11:25 2026 \u002B0200",
+        "message": "feat!: generate the type metadata registrations for equivalency from the marked call sites (#1086)"
       }
     ],
     "labels": [
-      "719a9454",
       "1da713db",
       "a065b682",
       "082a6795",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "3a66050e",
       "5fa9d810",
       "2274a820",
-      "7a595a63"
+      "7a595a63",
+      "a9d6112f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          256.9228895187378,
           287.4645160039266,
           257.5428523676736,
           270.45566242081776,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           254.31283381779988,
           257.5374924023946,
           196.90801135698953,
-          269.8032855669657
+          269.8032855669657,
+          249.30110273361205
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          247.14513374964397,
           256.9680477891649,
           242.96165249897882,
           228.99347099891077,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           237.89337490002313,
           271.99132073720295,
           196.11365172068278,
-          292.3035370826721
+          292.3035370826721,
+          251.50414164861044
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "719a9454ac10862a8e079a85f7e607dec7e83611",
-        "author": "dependabot[bot]",
-        "date": "Mon Sep 7 07:50:28 2026 \u002B0000",
-        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.3 to 2.4.0 (#1041)"
-      },
-      {
         "sha": "1da713db658b62bda8746fa6595a0f58b30b759d",
         "author": "dependabot[bot]",
         "date": "Mon Sep 7 07:53:08 2026 \u002B0000",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 07:33:41 2026 \u002B0200",
         "message": "test: stop the \u0022infinite\u0022 sequences after a safety limit"
+      },
+      {
+        "sha": "a9d6112f7f61e4a029a56a43a1cd5d55c1fe309c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 08:11:25 2026 \u002B0200",
+        "message": "feat!: generate the type metadata registrations for equivalency from the marked call sites (#1086)"
       }
     ],
     "labels": [
-      "719a9454",
       "1da713db",
       "a065b682",
       "082a6795",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "3a66050e",
       "5fa9d810",
       "2274a820",
-      "7a595a63"
+      "7a595a63",
+      "a9d6112f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          317686.2840820312,
           315430.17843424476,
           325304.2374093192,
           305770.0921875,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           395099.5535807292,
           383259.0914388021,
           282997.7490559896,
-          352153.7346888951
+          352153.7346888951,
+          367216.8917317708
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1033,7 +1033,6 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
           335444,
           335442,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           542085,
           542084,
           542084,
-          542084
+          542084,
+          542085
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2685577.53515625,
           2868417.1922433036,
           2732500.082291667,
           2555721.08203125,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2802643.9260602677,
           2397191.646354167,
           1836027.2087239583,
-          2258618.474739583
+          2258618.474739583,
+          2347232.1354166665
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841651,
           4841651,
           4841651,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841635,
           4841648,
-          4841613
+          4841613,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "719a9454ac10862a8e079a85f7e607dec7e83611",
-        "author": "dependabot[bot]",
-        "date": "Mon Sep 7 07:50:28 2026 \u002B0000",
-        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.3 to 2.4.0 (#1041)"
-      },
       {
         "sha": "1da713db658b62bda8746fa6595a0f58b30b759d",
         "author": "dependabot[bot]",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 07:33:41 2026 \u002B0200",
         "message": "test: stop the \u0022infinite\u0022 sequences after a safety limit"
+      },
+      {
+        "sha": "a9d6112f7f61e4a029a56a43a1cd5d55c1fe309c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 08:11:25 2026 \u002B0200",
+        "message": "feat!: generate the type metadata registrations for equivalency from the marked call sites (#1086)"
       }
     ],
     "labels": [
-      "719a9454",
       "1da713db",
       "a065b682",
       "082a6795",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "3a66050e",
       "5fa9d810",
       "2274a820",
-      "7a595a63"
+      "7a595a63",
+      "a9d6112f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          476.70153372628346,
           520.5406125613621,
           483.1710897854396,
           455.0473243713379,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           521.6478244917733,
           494.7722628275553,
           363.58683786392214,
-          525.800393308912
+          525.800393308912,
+          469.3274403254191
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          530.0054939270019,
           544.9716225941976,
           534.531932762691,
           470.4036148071289,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           538.4961628232684,
           528.4363608678182,
           399.7704559961955,
-          590.330544980367
+          590.330544980367,
+          488.87791239420574
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "719a9454ac10862a8e079a85f7e607dec7e83611",
-        "author": "dependabot[bot]",
-        "date": "Mon Sep 7 07:50:28 2026 \u002B0000",
-        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.3 to 2.4.0 (#1041)"
-      },
-      {
         "sha": "1da713db658b62bda8746fa6595a0f58b30b759d",
         "author": "dependabot[bot]",
         "date": "Mon Sep 7 07:53:08 2026 \u002B0000",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 07:33:41 2026 \u002B0200",
         "message": "test: stop the \u0022infinite\u0022 sequences after a safety limit"
+      },
+      {
+        "sha": "a9d6112f7f61e4a029a56a43a1cd5d55c1fe309c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 08:11:25 2026 \u002B0200",
+        "message": "feat!: generate the type metadata registrations for equivalency from the marked call sites (#1086)"
       }
     ],
     "labels": [
-      "719a9454",
       "1da713db",
       "a065b682",
       "082a6795",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "3a66050e",
       "5fa9d810",
       "2274a820",
-      "7a595a63"
+      "7a595a63",
+      "a9d6112f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          272.8763891969408,
           290.7147014822279,
           282.51821689605714,
           257.3622921625773,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           281.6811509450277,
           275.06960776646935,
           206.19679361979166,
-          309.70217558542885
+          309.70217558542885,
+          311.4363928159078
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          261.5507885615031,
           283.3468252182007,
           250.07380317052204,
           239.15889861033514,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           288.50390370686847,
           276.23029589653015,
           190.39022885836087,
-          332.3568512916565
+          332.3568512916565,
+          245.01674894186166
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "719a9454ac10862a8e079a85f7e607dec7e83611",
-        "author": "dependabot[bot]",
-        "date": "Mon Sep 7 07:50:28 2026 \u002B0000",
-        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.3 to 2.4.0 (#1041)"
-      },
-      {
         "sha": "1da713db658b62bda8746fa6595a0f58b30b759d",
         "author": "dependabot[bot]",
         "date": "Mon Sep 7 07:53:08 2026 \u002B0000",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 07:33:41 2026 \u002B0200",
         "message": "test: stop the \u0022infinite\u0022 sequences after a safety limit"
+      },
+      {
+        "sha": "a9d6112f7f61e4a029a56a43a1cd5d55c1fe309c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 08:11:25 2026 \u002B0200",
+        "message": "feat!: generate the type metadata registrations for equivalency from the marked call sites (#1086)"
       }
     ],
     "labels": [
-      "719a9454",
       "1da713db",
       "a065b682",
       "082a6795",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "3a66050e",
       "5fa9d810",
       "2274a820",
-      "7a595a63"
+      "7a595a63",
+      "a9d6112f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          478.21953665415447,
           506.15128435407365,
           466.43498471577965,
           452.75008656183877,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           494.18738918304444,
           477.94668610890704,
           355.2072853020259,
-          447.0760128339132
+          447.0760128339132,
+          458.56294771341175
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1266.7932704925538,
           1382.3267773848313,
           1217.093755976359,
           1201.970852778508,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1370.0128548940022,
           1341.652505329677,
           883.0441282908122,
-          1277.3768961588542
+          1277.3768961588542,
+          1128.3526980536324
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "719a9454ac10862a8e079a85f7e607dec7e83611",
-        "author": "dependabot[bot]",
-        "date": "Mon Sep 7 07:50:28 2026 \u002B0000",
-        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.3 to 2.4.0 (#1041)"
-      },
-      {
         "sha": "1da713db658b62bda8746fa6595a0f58b30b759d",
         "author": "dependabot[bot]",
         "date": "Mon Sep 7 07:53:08 2026 \u002B0000",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 07:33:41 2026 \u002B0200",
         "message": "test: stop the \u0022infinite\u0022 sequences after a safety limit"
+      },
+      {
+        "sha": "a9d6112f7f61e4a029a56a43a1cd5d55c1fe309c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 08:11:25 2026 \u002B0200",
+        "message": "feat!: generate the type metadata registrations for equivalency from the marked call sites (#1086)"
       }
     ],
     "labels": [
-      "719a9454",
       "1da713db",
       "a065b682",
       "082a6795",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "3a66050e",
       "5fa9d810",
       "2274a820",
-      "7a595a63"
+      "7a595a63",
+      "a9d6112f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2016.4773431505475,
           2016.8341816493444,
           1905.3962106704712,
           1909.4487761179605,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1941.6528345743816,
           1670.9143939971923,
           1410.924646105085,
-          1422.3141540527345
+          1422.3141540527345,
+          1808.64620413099
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1346.3890763600668,
           1434.101515197754,
           1314.7438346862793,
           1282.2141908918109,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1400.2874593734741,
           1437.5937737782797,
           1009.9652674538748,
-          1444.8710503896077
+          1444.8710503896077,
+          1321.148864618937
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "719a9454ac10862a8e079a85f7e607dec7e83611",
-        "author": "dependabot[bot]",
-        "date": "Mon Sep 7 07:50:28 2026 \u002B0000",
-        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.3.3 to 2.4.0 (#1041)"
-      },
-      {
         "sha": "1da713db658b62bda8746fa6595a0f58b30b759d",
         "author": "dependabot[bot]",
         "date": "Mon Sep 7 07:53:08 2026 \u002B0000",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 07:33:41 2026 \u002B0200",
         "message": "test: stop the \u0022infinite\u0022 sequences after a safety limit"
+      },
+      {
+        "sha": "a9d6112f7f61e4a029a56a43a1cd5d55c1fe309c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 08:11:25 2026 \u002B0200",
+        "message": "feat!: generate the type metadata registrations for equivalency from the marked call sites (#1086)"
       }
     ],
     "labels": [
-      "719a9454",
       "1da713db",
       "a065b682",
       "082a6795",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "3a66050e",
       "5fa9d810",
       "2274a820",
-      "7a595a63"
+      "7a595a63",
+      "a9d6112f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2720.7322338649205,
           2669.7825558980308,
           2521.895532608032,
           2478.2062553405763,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2660.4840303148544,
           2179.668372599284,
           1916.8696338653565,
-          1870.5654805501301
+          1870.5654805501301,
+          2491.4571551005047
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          28483.61748453776,
           28450.560705566408,
           27628.447670491536,
           26239.906803385416,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           28238.857125418526,
           24276.291119384765,
           15356.671731131417,
-          17557.282236735027
+          17557.282236735027,
+          19817.087254115515
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4200,7 +4200,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33465,
           33471,
@@ -4242,7 +4241,8 @@ window.BENCHMARK_DATA = {
           33471,
           33468,
           33471,
-          33465
+          33465,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
