@@ -3786,6 +3786,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 16:40:37 2026 \u002B0200",
         "message": "fix: let the test host\u0027s heap limit take effect"
+      },
+      {
+        "sha": "debf8049d4e8af4ec566d29edca6d90b745facc4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 21:34:28 2026 \u002B0200",
+        "message": "fix: give the files in the Core project folder a single slice"
       }
     ],
     "labels": [
@@ -4419,7 +4425,8 @@ window.BENCHMARK_DATA = {
       "152b45e4",
       "c038ec26",
       "525e912c",
-      "17052f40"
+      "17052f40",
+      "debf8049"
     ],
     "datasets": [
       {
@@ -5056,7 +5063,8 @@ window.BENCHMARK_DATA = {
           225.96870646476745,
           252.4134638786316,
           255.2726117769877,
-          250.21984214049118
+          250.21984214049118,
+          238.01321502832266
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5529,6 +5537,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6343,7 +6352,8 @@ window.BENCHMARK_DATA = {
           253.98439423243204,
           245.66537170410157,
           235.88093944958277,
-          246.26655778884887
+          246.26655778884887,
+          232.07729390689306
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6536,6 +6546,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10323,6 +10334,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 16:40:37 2026 \u002B0200",
         "message": "fix: let the test host\u0027s heap limit take effect"
+      },
+      {
+        "sha": "debf8049d4e8af4ec566d29edca6d90b745facc4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 21:34:28 2026 \u002B0200",
+        "message": "fix: give the files in the Core project folder a single slice"
       }
     ],
     "labels": [
@@ -10879,7 +10896,8 @@ window.BENCHMARK_DATA = {
       "152b45e4",
       "c038ec26",
       "525e912c",
-      "17052f40"
+      "17052f40",
+      "debf8049"
     ],
     "datasets": [
       {
@@ -11439,7 +11457,8 @@ window.BENCHMARK_DATA = {
           337191.46025390626,
           379574.25278320315,
           387609.7756998698,
-          378122.3570963542
+          378122.3570963542,
+          359753.4371861049
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12004,7 +12023,8 @@ window.BENCHMARK_DATA = {
           542084,
           542084,
           542085,
-          542084
+          542084,
+          542085
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12572,7 +12592,8 @@ window.BENCHMARK_DATA = {
           2124859.86640625,
           2772779.322135417,
           2597183.655048077,
-          2691490.117745536
+          2691490.117745536,
+          2656361.561104911
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13135,6 +13156,7 @@ window.BENCHMARK_DATA = {
           4841647,
           4841651,
           4841613,
+          4841651,
           4841651,
           4841651,
           4841651
@@ -16937,6 +16959,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 16:40:37 2026 \u002B0200",
         "message": "fix: let the test host\u0027s heap limit take effect"
+      },
+      {
+        "sha": "debf8049d4e8af4ec566d29edca6d90b745facc4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 21:34:28 2026 \u002B0200",
+        "message": "fix: give the files in the Core project folder a single slice"
       }
     ],
     "labels": [
@@ -17570,7 +17598,8 @@ window.BENCHMARK_DATA = {
       "152b45e4",
       "c038ec26",
       "525e912c",
-      "17052f40"
+      "17052f40",
+      "debf8049"
     ],
     "datasets": [
       {
@@ -18207,7 +18236,8 @@ window.BENCHMARK_DATA = {
           437.89498167037965,
           488.20431429545084,
           454.63850116729736,
-          490.7369747161865
+          490.7369747161865,
+          430.87276567731584
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18680,6 +18710,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -19494,7 +19525,8 @@ window.BENCHMARK_DATA = {
           497.8950578689575,
           506.7423930849348,
           470.06133098602294,
-          463.4168947660006
+          463.4168947660006,
+          502.7744050392738
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19687,6 +19719,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -23936,6 +23969,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 16:40:37 2026 \u002B0200",
         "message": "fix: let the test host\u0027s heap limit take effect"
+      },
+      {
+        "sha": "debf8049d4e8af4ec566d29edca6d90b745facc4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 21:34:28 2026 \u002B0200",
+        "message": "fix: give the files in the Core project folder a single slice"
       }
     ],
     "labels": [
@@ -24569,7 +24608,8 @@ window.BENCHMARK_DATA = {
       "152b45e4",
       "c038ec26",
       "525e912c",
-      "17052f40"
+      "17052f40",
+      "debf8049"
     ],
     "datasets": [
       {
@@ -25206,7 +25246,8 @@ window.BENCHMARK_DATA = {
           253.99401931762696,
           278.1191467285156,
           266.18300444285074,
-          266.84208323160806
+          266.84208323160806,
+          248.98065288861594
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -25720,6 +25761,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -26493,7 +26535,8 @@ window.BENCHMARK_DATA = {
           255.23169129689535,
           259.62245308558147,
           258.6352137883504,
-          250.7939587434133
+          250.7939587434133,
+          233.75534197262354
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -26686,6 +26729,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -30935,6 +30979,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 16:40:37 2026 \u002B0200",
         "message": "fix: let the test host\u0027s heap limit take effect"
+      },
+      {
+        "sha": "debf8049d4e8af4ec566d29edca6d90b745facc4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 21:34:28 2026 \u002B0200",
+        "message": "fix: give the files in the Core project folder a single slice"
       }
     ],
     "labels": [
@@ -31568,7 +31618,8 @@ window.BENCHMARK_DATA = {
       "152b45e4",
       "c038ec26",
       "525e912c",
-      "17052f40"
+      "17052f40",
+      "debf8049"
     ],
     "datasets": [
       {
@@ -32205,7 +32256,8 @@ window.BENCHMARK_DATA = {
           435.94404163360593,
           443.8239698750632,
           451.3546841825758,
-          445.87982719285145
+          445.87982719285145,
+          434.76134182856634
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32678,6 +32730,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -33492,7 +33545,8 @@ window.BENCHMARK_DATA = {
           1220.9729890823364,
           1189.5603050231935,
           1137.5848183949788,
-          1168.7655032231257
+          1168.7655032231257,
+          1126.2487712860107
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33921,6 +33975,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -37934,6 +37989,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 16:40:37 2026 \u002B0200",
         "message": "fix: let the test host\u0027s heap limit take effect"
+      },
+      {
+        "sha": "debf8049d4e8af4ec566d29edca6d90b745facc4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 21:34:28 2026 \u002B0200",
+        "message": "fix: give the files in the Core project folder a single slice"
       }
     ],
     "labels": [
@@ -38567,7 +38628,8 @@ window.BENCHMARK_DATA = {
       "152b45e4",
       "c038ec26",
       "525e912c",
-      "17052f40"
+      "17052f40",
+      "debf8049"
     ],
     "datasets": [
       {
@@ -39204,7 +39266,8 @@ window.BENCHMARK_DATA = {
           1348.5513350168865,
           1899.8832641601562,
           1915.4286098480225,
-          1861.6818230946858
+          1861.6818230946858,
+          1841.2285196940104
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -39677,6 +39740,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -40491,7 +40555,8 @@ window.BENCHMARK_DATA = {
           1381.5317835126605,
           1378.2740264892577,
           1285.010301208496,
-          1295.5762007395426
+          1295.5762007395426,
+          1253.913455581665
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40684,6 +40749,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -44933,6 +44999,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 16:40:37 2026 \u002B0200",
         "message": "fix: let the test host\u0027s heap limit take effect"
+      },
+      {
+        "sha": "debf8049d4e8af4ec566d29edca6d90b745facc4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 21:34:28 2026 \u002B0200",
+        "message": "fix: give the files in the Core project folder a single slice"
       }
     ],
     "labels": [
@@ -45566,7 +45638,8 @@ window.BENCHMARK_DATA = {
       "152b45e4",
       "c038ec26",
       "525e912c",
-      "17052f40"
+      "17052f40",
+      "debf8049"
     ],
     "datasets": [
       {
@@ -46203,7 +46276,8 @@ window.BENCHMARK_DATA = {
           1795.5128047943115,
           2525.565395061786,
           2612.7643934396597,
-          2556.625624847412
+          2556.625624847412,
+          2496.28075000218
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -46676,6 +46750,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -47490,7 +47565,8 @@ window.BENCHMARK_DATA = {
           16737.171134440105,
           27292.448457845054,
           26717.905848185223,
-          27086.83559526716
+          27086.83559526716,
+          26457.502580915178
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -48130,6 +48206,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471
