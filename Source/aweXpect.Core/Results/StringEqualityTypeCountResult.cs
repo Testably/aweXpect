@@ -36,15 +36,6 @@ public class StringEqualityTypeCountResult<TType, TThat>(
 	}
 
 	/// <summary>
-	///     Interprets the expected <see langword="string" /> to be exactly equal.
-	/// </summary>
-	public StringCountResult<TType, TThat> Exactly()
-	{
-		_options.Exactly();
-		return this;
-	}
-
-	/// <summary>
 	///     Interprets the expected <see langword="string" /> as a prefix, so that the actual value starts with it.
 	/// </summary>
 	public StringCountResult<TType, TThat> AsPrefix()

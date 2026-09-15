@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using aweXpect.Core;
-using aweXpect.Results;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -405,36 +404,6 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              contains "{wildcard}" as wildcard at least once,
-					              but it did not contain it
-
-					              Collection:
-					              [
-					                "foo",
-					                "bar",
-					                "baz"
-					              ]
-					              """);
-			}
-
-			[Theory]
-			[InlineData("foo", true)]
-			[InlineData("*oo", false)]
-			public async Task Exactly_ShouldUseExactMatch(string match, bool expectSuccess)
-			{
-				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["foo", "bar", "baz",]);
-#pragma warning disable aweXpect0001
-				StringEqualityTypeCountResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
-					expectation = That(subject).Contains(match);
-				_ = expectation.AsWildcard();
-
-				async Task Act()
-					=> await expectation.Exactly();
-#pragma warning restore aweXpect0001
-
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
-					.WithMessage($"""
-					              Expected that subject
-					              contains "{match}" at least once,
 					              but it did not contain it
 
 					              Collection:

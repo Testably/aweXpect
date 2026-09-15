@@ -3819,36 +3819,6 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Theory]
-			[InlineData("foo", true)]
-			[InlineData("*oo", false)]
-			public async Task Exactly_ShouldUseExactMatch(string match, bool expectSuccess)
-			{
-				ImmutableArray<string?> subject = ["foo", "bar", "baz",];
-
-				async Task Act()
-					=> await That(subject).Contains([match,]).AsWildcard().Exactly();
-
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
-					.WithMessage($"""
-					              Expected that subject
-					              contains collection [match,] in order,
-					              but it lacked all 1 expected items
-					              
-					              Collection:
-					              [
-					                "foo",
-					                "bar",
-					                "baz"
-					              ]
-
-					              Expected:
-					              [
-					                "*oo"
-					              ]
-					              """);
-			}
-
-			[Theory]
 			[InlineData("FOO", true)]
 			[InlineData("goo", false)]
 			public async Task WhenIgnoringCase_ShouldUseCaseInsensitiveMatch(string match, bool expectSuccess)

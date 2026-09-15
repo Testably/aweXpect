@@ -1400,7 +1400,6 @@ namespace aweXpect.Results
         public aweXpect.Results.StringCountResult<TType, TThat> AsRegex() { }
         public aweXpect.Results.StringCountResult<TType, TThat> AsSuffix() { }
         public aweXpect.Results.StringCountResult<TType, TThat> AsWildcard() { }
-        public aweXpect.Results.StringCountResult<TType, TThat> Exactly() { }
     }
     public class StringEqualityTypeResult<TType, TThat> : aweXpect.Results.StringEqualityTypeResult<TType, TThat, aweXpect.Results.StringEqualityTypeResult<TType, TThat>>
     {
@@ -1414,7 +1413,6 @@ namespace aweXpect.Results
         public TSelf AsRegex() { }
         public TSelf AsSuffix() { }
         public TSelf AsWildcard() { }
-        public TSelf Exactly() { }
     }
     public class StringHasItemResult<TCollection> : aweXpect.Results.StringHasItemResult<TCollection, aweXpect.Results.StringHasItemResult<TCollection>>
     {

@@ -33,15 +33,6 @@ public class StringEqualityTypeResult<TType, TThat, TSelf>(
 	private readonly StringEqualityOptions _options = options;
 
 	/// <summary>
-	///     Interprets the expected <see langword="string" /> to be exactly equal.
-	/// </summary>
-	public TSelf Exactly()
-	{
-		_options.Exactly();
-		return (TSelf)this;
-	}
-
-	/// <summary>
 	///     Interprets the expected <see langword="string" /> as a prefix, so that the actual value starts with it.
 	/// </summary>
 	public TSelf AsPrefix()
