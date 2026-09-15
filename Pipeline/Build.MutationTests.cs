@@ -46,6 +46,10 @@ partial class Build
 			"**/That/DateOnlys/*.cs", "**/That/DateTimeOffsets/*.cs", "**/That/DateTimes/*.cs",
 			"**/That/TimeOnlys/*.cs", "**/That/TimeSpans/*.cs",
 		]),
+		("infrastructure",
+		[
+			"**/Helpers/*.cs", "**/Results/*.cs", "**/Equivalency/*.cs", "**/Options/*.cs", "**/Polyfills/*.cs",
+		]),
 		("rest", []),
 	];
 
@@ -60,7 +64,8 @@ partial class Build
 	private static readonly (string Name, string[] Patterns)[] CoreMutationSlices =
 	[
 		("engine", ["**/Core/*.cs", "**/Core/**/*.cs",]),
-		("options", ["**/Options/*.cs", "**/Formatting/*.cs",]),
+		("options", ["**/Options/*.cs",]),
+		("formatting", ["**/Formatting/*.cs", "**/Equivalency/*.cs",]),
 		("rest", []),
 	];
 

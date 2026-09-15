@@ -74,14 +74,14 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                slice: [ engine, options, rest ]
+                slice: [ engine, options, formatting, rest ]
         env:
             STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
             DOTNET_NOLOGO: true
             # A mutant that allocates without bound otherwise exhausts the runner and takes the whole VM with it,
             # which surfaces as an unattributable "the runner has received a shutdown signal". With the limit the
             # test host throws instead, so the mutant is reported rather than killing the job.
-            DOTNET_GCHeapHardLimit: "0x100000000"
+            DOTNET_GCHeapHardLimit: "0x40000000"
         steps:
             -   uses: actions/checkout@v7
                 with:
@@ -126,14 +126,14 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                slice: [ collections-enumerable, collections-other, numbers, dates, rest ]
+                slice: [ collections-enumerable, collections-other, numbers, dates, infrastructure, rest ]
         env:
             STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
             DOTNET_NOLOGO: true
             # A mutant that allocates without bound otherwise exhausts the runner and takes the whole VM with it,
             # which surfaces as an unattributable "the runner has received a shutdown signal". With the limit the
             # test host throws instead, so the mutant is reported rather than killing the job.
-            DOTNET_GCHeapHardLimit: "0x100000000"
+            DOTNET_GCHeapHardLimit: "0x40000000"
         steps:
             -   uses: actions/checkout@v7
                 with:
