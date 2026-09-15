@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "ef652c1fe7637944eb5f031119feb57a70786a40",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 12 16:30:15 2026 \u002B0200",
-        "message": "fix: do not throw when the subject of \u0060IsEquatableTo\u0060 is \u0060null\u0060 (#1047)"
-      },
-      {
         "sha": "4bd75735126eb8c8619b6898302e169a845fe941",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 16:40:11 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:04:09 2026 \u002B0200",
         "message": "refactor!: unify member navigation on \u0060Whose\u0060 (#1124)"
+      },
+      {
+        "sha": "c0173dfda468b49182d0ff6df54e3cab80306e9a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 12:20:46 2026 \u002B0200",
+        "message": "chore: rebalance the mutation slices and tighten the heap limit"
       }
     ],
     "labels": [
-      "ef652c1f",
       "4bd75735",
       "1c48f221",
       "ae28ac8b",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "d095969d",
       "af336624",
       "d22cf29f",
-      "93e2fd51"
+      "93e2fd51",
+      "c0173dfd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          194.75820589065552,
           279.72621849605014,
           176.9221565246582,
           251.45966777801513,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           240.25693119366963,
           187.42290679613748,
           239.29671038114108,
-          192.54164187724774
+          192.54164187724774,
+          257.545502948761
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          191.06551202705927,
           263.74817759650097,
           192.242506980896,
           271.93721526009693,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           251.3275227546692,
           193.04728918809158,
           247.2769733575674,
-          189.80345698992411
+          189.80345698992411,
+          234.5285401026408
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "ef652c1fe7637944eb5f031119feb57a70786a40",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 12 16:30:15 2026 \u002B0200",
-        "message": "fix: do not throw when the subject of \u0060IsEquatableTo\u0060 is \u0060null\u0060 (#1047)"
-      },
-      {
         "sha": "4bd75735126eb8c8619b6898302e169a845fe941",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 16:40:11 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:04:09 2026 \u002B0200",
         "message": "refactor!: unify member navigation on \u0060Whose\u0060 (#1124)"
+      },
+      {
+        "sha": "c0173dfda468b49182d0ff6df54e3cab80306e9a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 12:20:46 2026 \u002B0200",
+        "message": "chore: rebalance the mutation slices and tighten the heap limit"
       }
     ],
     "labels": [
-      "ef652c1f",
       "4bd75735",
       "1c48f221",
       "ae28ac8b",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "d095969d",
       "af336624",
       "d22cf29f",
-      "93e2fd51"
+      "93e2fd51",
+      "c0173dfd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          219891.06270926338,
           330381.0539388021,
           201159.01329627403,
           246182.51293945312,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           367072.13548177085,
           278294.9004882813,
           362708.42550223216,
-          282105.42115885415
+          282105.42115885415,
+          383674.42034040176
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          335442,
           335444,
           335442,
           335444,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542084,
-          542084
+          542084,
+          542085
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1795566.599233774,
           2754495.861328125,
           1632144.8722098214,
           1975977.1479166667,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2294237.7859375,
           1874052.9045572917,
           2317601.6453125,
-          1821061.6046875
+          1821061.6046875,
+          2702261.0809151786
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841648,
           4841651,
           4841611,
           4841613,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841647,
           4841648,
           4841651,
-          4841647
+          4841647,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "ef652c1fe7637944eb5f031119feb57a70786a40",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 12 16:30:15 2026 \u002B0200",
-        "message": "fix: do not throw when the subject of \u0060IsEquatableTo\u0060 is \u0060null\u0060 (#1047)"
-      },
       {
         "sha": "4bd75735126eb8c8619b6898302e169a845fe941",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:04:09 2026 \u002B0200",
         "message": "refactor!: unify member navigation on \u0060Whose\u0060 (#1124)"
+      },
+      {
+        "sha": "c0173dfda468b49182d0ff6df54e3cab80306e9a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 12:20:46 2026 \u002B0200",
+        "message": "chore: rebalance the mutation slices and tighten the heap limit"
       }
     ],
     "labels": [
-      "ef652c1f",
       "4bd75735",
       "1c48f221",
       "ae28ac8b",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "d095969d",
       "af336624",
       "d22cf29f",
-      "93e2fd51"
+      "93e2fd51",
+      "c0173dfd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          389.25706512587413,
           546.6029392242432,
           442.43858333996366,
           460.4913195201329,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           447.7724458694458,
           347.0769005775452,
           461.40208435058594,
-          346.67944114548817
+          346.67944114548817,
+          485.2447775204976
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          374.84017050266266,
           557.0006458282471,
           377.8739272117615,
           518.0169225692749,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           509.60990585599626,
           377.06740255355834,
           480.8352996281215,
-          369.44302238736833
+          369.44302238736833,
+          495.1810088524452
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "ef652c1fe7637944eb5f031119feb57a70786a40",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 12 16:30:15 2026 \u002B0200",
-        "message": "fix: do not throw when the subject of \u0060IsEquatableTo\u0060 is \u0060null\u0060 (#1047)"
-      },
-      {
         "sha": "4bd75735126eb8c8619b6898302e169a845fe941",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 16:40:11 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:04:09 2026 \u002B0200",
         "message": "refactor!: unify member navigation on \u0060Whose\u0060 (#1124)"
+      },
+      {
+        "sha": "c0173dfda468b49182d0ff6df54e3cab80306e9a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 12:20:46 2026 \u002B0200",
+        "message": "chore: rebalance the mutation slices and tighten the heap limit"
       }
     ],
     "labels": [
-      "ef652c1f",
       "4bd75735",
       "1c48f221",
       "ae28ac8b",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "d095969d",
       "af336624",
       "d22cf29f",
-      "93e2fd51"
+      "93e2fd51",
+      "c0173dfd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          197.31578922271729,
           299.5892717043559,
           196.72756666796548,
           258.7793156305949,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           251.45580520629883,
           193.5445455823626,
           253.960641009467,
-          198.33121064503987
+          198.33121064503987,
+          272.62607968648274
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          192.4854500611623,
           277.9910137494405,
           205.07823863396277,
           282.3623188654582,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           247.3370247909001,
           190.3003691037496,
           242.3548962275187,
-          191.97776057720185
+          191.97776057720185,
+          251.3622358640035
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "ef652c1fe7637944eb5f031119feb57a70786a40",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 12 16:30:15 2026 \u002B0200",
-        "message": "fix: do not throw when the subject of \u0060IsEquatableTo\u0060 is \u0060null\u0060 (#1047)"
-      },
-      {
         "sha": "4bd75735126eb8c8619b6898302e169a845fe941",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 16:40:11 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:04:09 2026 \u002B0200",
         "message": "refactor!: unify member navigation on \u0060Whose\u0060 (#1124)"
+      },
+      {
+        "sha": "c0173dfda468b49182d0ff6df54e3cab80306e9a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 12:20:46 2026 \u002B0200",
+        "message": "chore: rebalance the mutation slices and tighten the heap limit"
       }
     ],
     "labels": [
-      "ef652c1f",
       "4bd75735",
       "1c48f221",
       "ae28ac8b",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "d095969d",
       "af336624",
       "d22cf29f",
-      "93e2fd51"
+      "93e2fd51",
+      "c0173dfd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          356.45355892181396,
           488.67998450142994,
           374.4749781744821,
           419.3198487917582,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           467.48165338379994,
           358.1299643834432,
           461.53673432423517,
-          343.7824761072795
+          343.7824761072795,
+          470.1731425603231
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          877.4429955115685,
           1409.8203082765851,
           956.7152788798014,
           1156.9683876037598,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1136.2323797666108,
           873.9648835842426,
           1133.339914004008,
-          895.6350174585979
+          895.6350174585979,
+          1207.4822497049968
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "ef652c1fe7637944eb5f031119feb57a70786a40",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 12 16:30:15 2026 \u002B0200",
-        "message": "fix: do not throw when the subject of \u0060IsEquatableTo\u0060 is \u0060null\u0060 (#1047)"
-      },
-      {
         "sha": "4bd75735126eb8c8619b6898302e169a845fe941",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 16:40:11 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:04:09 2026 \u002B0200",
         "message": "refactor!: unify member navigation on \u0060Whose\u0060 (#1124)"
+      },
+      {
+        "sha": "c0173dfda468b49182d0ff6df54e3cab80306e9a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 12:20:46 2026 \u002B0200",
+        "message": "chore: rebalance the mutation slices and tighten the heap limit"
       }
     ],
     "labels": [
-      "ef652c1f",
       "4bd75735",
       "1c48f221",
       "ae28ac8b",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "d095969d",
       "af336624",
       "d22cf29f",
-      "93e2fd51"
+      "93e2fd51",
+      "c0173dfd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1431.4062286104474,
           1956.8689994812012,
           1069.3930759429932,
           1285.6932764053345,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1829.5400713407075,
           1402.0262065614972,
           1831.0748758951822,
-          1476.4722430365425
+          1476.4722430365425,
+          1936.5568182809013
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1006.8457903544108,
           1501.1235309328351,
           1063.036941019694,
           1316.807714589437,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1364.1942037582398,
           998.0545776912144,
           1313.8069371541342,
-          1003.9631337385911
+          1003.9631337385911,
+          1242.3274236043294
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "ef652c1fe7637944eb5f031119feb57a70786a40",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 12 16:30:15 2026 \u002B0200",
-        "message": "fix: do not throw when the subject of \u0060IsEquatableTo\u0060 is \u0060null\u0060 (#1047)"
-      },
-      {
         "sha": "4bd75735126eb8c8619b6898302e169a845fe941",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 16:40:11 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:04:09 2026 \u002B0200",
         "message": "refactor!: unify member navigation on \u0060Whose\u0060 (#1124)"
+      },
+      {
+        "sha": "c0173dfda468b49182d0ff6df54e3cab80306e9a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 12:20:46 2026 \u002B0200",
+        "message": "chore: rebalance the mutation slices and tighten the heap limit"
       }
     ],
     "labels": [
-      "ef652c1f",
       "4bd75735",
       "1c48f221",
       "ae28ac8b",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "d095969d",
       "af336624",
       "d22cf29f",
-      "93e2fd51"
+      "93e2fd51",
+      "c0173dfd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1879.5178239186605,
           2621.92692489624,
           1422.9330649058024,
           1679.661682510376,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2401.1907946268716,
           1900.321192932129,
           2493.6360699971515,
-          1884.5005330403646
+          1884.5005330403646,
+          2472.942229407174
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          15298.983383687337,
           27183.448396955217,
           14327.642207845052,
           15854.894307454428,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           19789.662180582684,
           15674.699180094402,
           19911.246940104167,
-          15499.583459472657
+          15499.583459472657,
+          25512.445173997145
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4194,7 +4194,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           33471,
-          33471,
           33465,
           33465,
           33471,
@@ -4237,6 +4236,7 @@ window.BENCHMARK_DATA = {
           33468,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
