@@ -9,6 +9,6 @@ public static partial class ThatDateTimeOffset
 	/// <summary>
 	///     Verifies that the month of the subject…
 	/// </summary>
-	public static PropertyResult.Int<DateTimeOffset> HasMonth(this IThat<DateTimeOffset> source)
-		=> new(source, a => a.Month, "month");
+	public static PropertyResult.Int<DateTimeOffset> HasMonth(this IThat<DateTimeOffset> subject)
+		=> new(subject, a => a.Month, "month");
 }

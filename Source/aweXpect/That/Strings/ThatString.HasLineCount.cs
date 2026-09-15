@@ -15,8 +15,8 @@ public static partial class ThatString
 	///     A single trailing line terminator does not start a new line, so <c>"a\nb\n"</c> has two lines.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static PropertyResult.Int<string?> HasLineCount(this IThat<string?> source)
-		=> new(source, a => a?.GetLineCount(), "line count", (value, paramName) =>
+	public static PropertyResult.Int<string?> HasLineCount(this IThat<string?> subject)
+		=> new(subject, a => a?.GetLineCount(), "line count", (value, paramName) =>
 		{
 			if (value < 0)
 			{

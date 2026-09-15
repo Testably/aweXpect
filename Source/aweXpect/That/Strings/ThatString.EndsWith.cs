@@ -16,7 +16,7 @@ public static partial class ThatString
 	/// </summary>
 	[GuaranteesNotNull]
 	public static StringEqualityResult<string?, IThat<string?>> EndsWith(
-		this IThat<string?> source,
+		this IThat<string?> subject,
 		string expected)
 	{
 		expected.ThrowIfNull();
@@ -28,9 +28,9 @@ public static partial class ThatString
 
 		StringEqualityOptions options = new StringEqualityOptions().AsSuffix();
 		return new StringEqualityResult<string?, IThat<string?>>(
-			source.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
 				new EndsWithConstraint(expectationBuilder, it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -39,7 +39,7 @@ public static partial class ThatString
 	/// </summary>
 	[GuaranteesNotNull]
 	public static StringEqualityResult<string?, IThat<string?>> DoesNotEndWith(
-		this IThat<string?> source,
+		this IThat<string?> subject,
 		string unexpected)
 	{
 		unexpected.ThrowIfNull();
@@ -51,9 +51,9 @@ public static partial class ThatString
 
 		StringEqualityOptions options = new StringEqualityOptions().AsSuffix();
 		return new StringEqualityResult<string?, IThat<string?>>(
-			source.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
 				new EndsWithConstraint(expectationBuilder, it, grammars, unexpected, options).Invert()),
-			source,
+			subject,
 			options);
 	}
 

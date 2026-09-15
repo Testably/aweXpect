@@ -15,11 +15,11 @@ public static partial class ThatNullableBool
 	///     <seealso href="https://mathworld.wolfram.com/Implies.html" />
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<bool?, IThat<bool?>> Implies(this IThat<bool?> source,
+	public static AndOrResult<bool?, IThat<bool?>> Implies(this IThat<bool?> subject,
 		bool consequent)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new ImpliesConstraint(it, grammars, consequent)),
-			source);
+			subject);
 
 	private sealed class ImpliesConstraint(string it, ExpectationGrammars grammars, bool consequent)
 		: ConstraintResult.WithNotNullValue<bool?>(it, grammars),

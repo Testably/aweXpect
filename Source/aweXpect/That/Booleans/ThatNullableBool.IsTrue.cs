@@ -11,16 +11,16 @@ public static partial class ThatNullableBool
 	///     Verifies that the subject is <see langword="true" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<bool?, IThat<bool?>> IsTrue(this IThat<bool?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+	public static AndOrResult<bool?, IThat<bool?>> IsTrue(this IThat<bool?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToConstraint(it, grammars, true)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not <see langword="true" />.
 	/// </summary>
-	public static AndOrResult<bool?, IThat<bool?>> IsNotTrue(this IThat<bool?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+	public static AndOrResult<bool?, IThat<bool?>> IsNotTrue(this IThat<bool?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToConstraint(it, grammars, true).Invert()),
-			source);
+			subject);
 }

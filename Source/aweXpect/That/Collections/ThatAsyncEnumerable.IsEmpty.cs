@@ -21,10 +21,10 @@ public static partial class ThatAsyncEnumerable
 	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
 		IsEmpty<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			this IThat<IAsyncEnumerable<TItem>?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsEmptyConstraint<TItem>(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the collection is not empty.
@@ -32,10 +32,10 @@ public static partial class ThatAsyncEnumerable
 	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
 		IsNotEmpty<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			this IThat<IAsyncEnumerable<TItem>?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsEmptyConstraint<TItem>(it, grammars).Invert()),
-			source);
+			subject);
 
 	private sealed class IsEmptyConstraint<TItem>(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<IAsyncEnumerable<TItem>?>(it, grammars),

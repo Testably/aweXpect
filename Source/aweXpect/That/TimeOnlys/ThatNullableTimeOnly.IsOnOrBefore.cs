@@ -16,14 +16,14 @@ public static partial class ThatNullableTimeOnly
 	/// </summary>
 	[GuaranteesNotNull]
 	public static TimeToleranceResult<TimeOnly?, IThat<TimeOnly?>> IsOnOrBefore(
-		this IThat<TimeOnly?> source,
+		this IThat<TimeOnly?> subject,
 		TimeOnly? expected)
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<TimeOnly?, IThat<TimeOnly?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOnOrBeforeConstraint(it, grammars, expected, tolerance)),
-			source,
+			subject,
 			tolerance);
 	}
 
@@ -32,14 +32,14 @@ public static partial class ThatNullableTimeOnly
 	/// </summary>
 	[GuaranteesNotNull]
 	public static TimeToleranceResult<TimeOnly?, IThat<TimeOnly?>> IsNotOnOrBefore(
-		this IThat<TimeOnly?> source,
+		this IThat<TimeOnly?> subject,
 		TimeOnly? unexpected)
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<TimeOnly?, IThat<TimeOnly?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOnOrBeforeConstraint(it, grammars, unexpected, tolerance).Invert()),
-			source,
+			subject,
 			tolerance);
 	}
 

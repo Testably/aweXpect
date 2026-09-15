@@ -13,23 +13,23 @@ public static partial class ThatEnum
 	///     Verifies that the subject has the <paramref name="expected" /> value.
 	/// </summary>
 	public static AndOrResult<TEnum, IThat<TEnum>> HasValue<TEnum>(
-		this IThat<TEnum> source,
+		this IThat<TEnum> subject,
 		long? expected)
 		where TEnum : struct, Enum
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new HasValueConstraint<TEnum>(it, grammars, expected)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject does not have the <paramref name="unexpected" /> value.
 	/// </summary>
 	public static AndOrResult<TEnum, IThat<TEnum>> DoesNotHaveValue<TEnum>(
-		this IThat<TEnum> source,
+		this IThat<TEnum> subject,
 		long? unexpected)
 		where TEnum : struct, Enum
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new HasValueConstraint<TEnum>(it, grammars, unexpected).Invert()),
-			source);
+			subject);
 
 	private sealed class HasValueConstraint<TEnum>(string it, ExpectationGrammars grammars, long? expectedValue)
 		: ConstraintResult.WithNotNullValue<TEnum>(it, grammars),

@@ -13,18 +13,18 @@ public static partial class ThatGeneric
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<T, IThat<T>> For<T, TMember>(
-		this IThat<T> source,
+		this IThat<T> subject,
 		Func<T, TMember?> memberSelector,
 		Action<IThatSubject<TMember?>> expectations,
 		[CallerArgumentExpression("memberSelector")]
 		string doNotPopulateThisValue = "")
 	{
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		expectationBuilder
 			.ForMember(
 				MemberAccessor<T, TMember?>.FromFuncAsMemberAccessor(memberSelector, doNotPopulateThisValue),
 				(member, stringBuilder) => stringBuilder.Append("for ").Append(member))
 			.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)));
-		return new AndOrResult<T, IThat<T>>(expectationBuilder, source);
+		return new AndOrResult<T, IThat<T>>(expectationBuilder, subject);
 	}
 }

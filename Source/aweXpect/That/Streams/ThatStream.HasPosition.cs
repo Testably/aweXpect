@@ -11,8 +11,8 @@ public static partial class ThatStream
 	///     Verifies that the position of the <see cref="Stream" /> subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Long<Stream?> HasPosition(this IThat<Stream?> source)
-		=> new(source, a => a?.Position, "position", (value, paramName) =>
+	public static PropertyResult.Long<Stream?> HasPosition(this IThat<Stream?> subject)
+		=> new(subject, a => a?.Position, "position", (value, paramName) =>
 		{
 			if (value < 0)
 			{

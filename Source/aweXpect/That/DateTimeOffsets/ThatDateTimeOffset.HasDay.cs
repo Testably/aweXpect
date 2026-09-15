@@ -9,6 +9,6 @@ public static partial class ThatDateTimeOffset
 	/// <summary>
 	///     Verifies that the day of the subject…
 	/// </summary>
-	public static PropertyResult.Int<DateTimeOffset> HasDay(this IThat<DateTimeOffset> source)
-		=> new(source, a => a.Day, "day");
+	public static PropertyResult.Int<DateTimeOffset> HasDay(this IThat<DateTimeOffset> subject)
+		=> new(subject, a => a.Day, "day");
 }

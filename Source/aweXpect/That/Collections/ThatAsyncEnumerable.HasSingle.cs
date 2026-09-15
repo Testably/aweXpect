@@ -21,10 +21,10 @@ public static partial class ThatAsyncEnumerable
 	/// </summary>
 	[GuaranteesNotNull]
 	public static SingleItemResult<IAsyncEnumerable<TItem>, TItem>.Async HasSingle<TItem>(
-		this IThat<IAsyncEnumerable<TItem>?> source)
+		this IThat<IAsyncEnumerable<TItem>?> subject)
 	{
 		PredicateOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new SingleItemResult<IAsyncEnumerable<TItem>, TItem>.Async(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new HasSingleConstraint<TItem>(expectationBuilder, it, grammars, options)),

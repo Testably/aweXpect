@@ -12,19 +12,19 @@ public partial class ThatException
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<Exception?, IThat<Exception?>> HasInnerException(
-		this IThat<Exception?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<Exception?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new HasInnerExceptionValueConstraint(typeof(Exception), it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the actual exception has an inner exception which satisfies the <paramref name="expectations" />.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<Exception?, IThat<Exception?>> HasInnerException(
-		this IThat<Exception?> source,
+		this IThat<Exception?> subject,
 		Action<IThatSubject<Exception?>> expectations)
-		=> new(source.Get().ExpectationBuilder
+		=> new(subject.Get().ExpectationBuilder
 				.ForMember<Exception, Exception?>(e => e.InnerException,
 					" whose ",
 					false)
@@ -32,5 +32,5 @@ public partial class ThatException
 					=> new HasInnerExceptionValueConstraint(typeof(Exception), it, grammars))
 				.AddExpectations(e => expectations(new ThatSubject<Exception?>(e)),
 					grammars => grammars | ExpectationGrammars.Nested),
-			source);
+			subject);
 }

@@ -14,14 +14,14 @@ public static partial class ThatNullableTimeOnly
 	/// <summary>
 	///     Verifies that the subject is equal to the <paramref name="expected" /> value.
 	/// </summary>
-	public static TimeToleranceResult<TimeOnly?, IThat<TimeOnly?>> IsEqualTo(this IThat<TimeOnly?> source,
+	public static TimeToleranceResult<TimeOnly?, IThat<TimeOnly?>> IsEqualTo(this IThat<TimeOnly?> subject,
 		TimeOnly? expected)
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<TimeOnly?, IThat<TimeOnly?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint(it, grammars, expected, tolerance)),
-			source,
+			subject,
 			tolerance);
 	}
 
@@ -29,14 +29,14 @@ public static partial class ThatNullableTimeOnly
 	///     Verifies that the subject is not equal to the <paramref name="unexpected" /> value.
 	/// </summary>
 	public static TimeToleranceResult<TimeOnly?, IThat<TimeOnly?>> IsNotEqualTo(
-		this IThat<TimeOnly?> source,
+		this IThat<TimeOnly?> subject,
 		TimeOnly? unexpected)
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<TimeOnly?, IThat<TimeOnly?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint(it, grammars, unexpected, tolerance).Invert()),
-			source,
+			subject,
 			tolerance);
 	}
 

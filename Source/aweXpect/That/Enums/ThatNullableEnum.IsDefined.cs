@@ -13,22 +13,22 @@ public static partial class ThatNullableEnum
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<TEnum?, IThat<TEnum?>> IsDefined<TEnum>(
-		this IThat<TEnum?> source)
+		this IThat<TEnum?> subject)
 		where TEnum : struct, Enum
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsDefinedConstraint<TEnum>(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not defined inside the <typeparamref name="TEnum" />.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<TEnum?, IThat<TEnum?>> IsNotDefined<TEnum>(
-		this IThat<TEnum?> source)
+		this IThat<TEnum?> subject)
 		where TEnum : struct, Enum
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsDefinedConstraint<TEnum>(it, grammars).Invert()),
-			source);
+			subject);
 
 	private sealed class IsDefinedConstraint<TEnum>(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<TEnum?>(it, grammars),

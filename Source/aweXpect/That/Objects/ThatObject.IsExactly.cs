@@ -13,13 +13,13 @@ public static partial class ThatObject
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<object?, IThat<object?>> IsExactly(
-		this IThat<object?> source,
+		this IThat<object?> subject,
 		Type type)
 	{
 		type.ThrowIfNull();
-		return new AndOrResult<object?, IThat<object?>>(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new AndOrResult<object?, IThat<object?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsExactlyOfTypeConstraint(it, grammars, type)),
-			source);
+			subject);
 	}
 
 	/// <summary>
@@ -27,13 +27,13 @@ public static partial class ThatObject
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<object?, IThat<object?>> IsNotExactly(
-		this IThat<object?> source,
+		this IThat<object?> subject,
 		Type type)
 	{
 		type.ThrowIfNull();
-		return new AndOrResult<object?, IThat<object?>>(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new AndOrResult<object?, IThat<object?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsExactlyOfTypeConstraint(it, grammars, type).Invert()),
-			source);
+			subject);
 	}
 
 	private sealed class IsExactlyOfTypeConstraint(string it, ExpectationGrammars grammars, Type type)

@@ -15,14 +15,14 @@ public static partial class ThatObject
 	///     Verifies that the subject is equal to the <paramref name="expected" /> value.
 	/// </summary>
 	public static ObjectEqualityResult<object?, IThat<object?>, object?> IsEqualTo(
-		this IThat<object?> source,
+		this IThat<object?> subject,
 		object? expected)
 	{
 		ObjectEqualityOptions<object?> options = new();
 		return new ObjectEqualityResult<object?, IThat<object?>, object?>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToConstraint<object?, object?>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -30,16 +30,16 @@ public static partial class ThatObject
 	///     Verifies that the subject is equal to the <paramref name="expected" /> value.
 	/// </summary>
 	public static ObjectEqualityResult<T?, IThat<T?>, T?> IsEqualTo<T>(
-		this IThat<T?> source,
+		this IThat<T?> subject,
 		T? expected,
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 		where T : struct
 	{
 		ObjectEqualityOptions<T?> options = new();
 		return new ObjectEqualityResult<T?, IThat<T?>, T?>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsNullableEqualToConstraint<T>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -47,16 +47,16 @@ public static partial class ThatObject
 	///     Verifies that the subject is equal to the <paramref name="expected" /> value.
 	/// </summary>
 	public static ObjectEqualityResult<T, IThat<T>, T> IsEqualTo<T>(
-		this IThat<T> source,
+		this IThat<T> subject,
 		T? expected,
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 		where T : struct
 	{
 		ObjectEqualityOptions<T> options = new();
 		return new ObjectEqualityResult<T, IThat<T>, T>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToConstraint<T>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -64,14 +64,14 @@ public static partial class ThatObject
 	///     Verifies that the subject is not equal to the <paramref name="unexpected" /> value.
 	/// </summary>
 	public static ObjectEqualityResult<object?, IThat<object?>, object?> IsNotEqualTo(
-		this IThat<object?> source,
+		this IThat<object?> subject,
 		object? unexpected)
 	{
 		ObjectEqualityOptions<object?> options = new();
 		return new ObjectEqualityResult<object?, IThat<object?>, object?>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToConstraint<object?, object?>(it, grammars, unexpected, options).Invert()),
-			source,
+			subject,
 			options);
 	}
 
@@ -79,7 +79,7 @@ public static partial class ThatObject
 	///     Verifies that the subject is not equal to the <paramref name="unexpected" /> value.
 	/// </summary>
 	public static ObjectEqualityResult<T?, IThat<T?>, T?> IsNotEqualTo<T>(
-		this IThat<T?> source,
+		this IThat<T?> subject,
 		T? unexpected,
 		[CallerArgumentExpression("unexpected")]
 		string doNotPopulateThisValue = "")
@@ -87,9 +87,9 @@ public static partial class ThatObject
 	{
 		ObjectEqualityOptions<T?> options = new();
 		return new ObjectEqualityResult<T?, IThat<T?>, T?>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsNullableEqualToConstraint<T>(it, grammars, unexpected, options).Invert()),
-			source,
+			subject,
 			options);
 	}
 
@@ -97,7 +97,7 @@ public static partial class ThatObject
 	///     Verifies that the subject is not equal to the <paramref name="unexpected" /> value.
 	/// </summary>
 	public static ObjectEqualityResult<T, IThat<T>, T> IsNotEqualTo<T>(
-		this IThat<T> source,
+		this IThat<T> subject,
 		T? unexpected,
 		[CallerArgumentExpression("unexpected")]
 		string doNotPopulateThisValue = "")
@@ -105,9 +105,9 @@ public static partial class ThatObject
 	{
 		ObjectEqualityOptions<T> options = new();
 		return new ObjectEqualityResult<T, IThat<T>, T>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToConstraint<T>(it, grammars, unexpected, options).Invert()),
-			source,
+			subject,
 			options);
 	}
 

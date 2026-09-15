@@ -26,20 +26,20 @@ public static partial class ThatEnumerable
 	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		StartsWith<TItem>(
-			this IThat<IEnumerable<TItem>?> source,
+			this IThat<IEnumerable<TItem>?> subject,
 			IEnumerable<TItem> expected,
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
 		expected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new StartsWithConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					expected.ToArray(),
 					options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -49,19 +49,19 @@ public static partial class ThatEnumerable
 	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		StartsWith<TItem>(
-			this IThat<IEnumerable<TItem>?> source,
+			this IThat<IEnumerable<TItem>?> subject,
 			params TItem[] expected)
 	{
 		expected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new StartsWithConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					Formatter.Format(expected),
 					expected,
 					options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -71,20 +71,20 @@ public static partial class ThatEnumerable
 	[GuaranteesNotNull]
 	public static StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 		StartsWith(
-			this IThat<IEnumerable<string?>?> source,
+			this IThat<IEnumerable<string?>?> subject,
 			IEnumerable<string?> expected,
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
 		expected.ThrowIfNullOrEmpty();
 		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new StartsWithConstraint<string?, string?>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					expected.ToArray(),
 					options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -94,19 +94,19 @@ public static partial class ThatEnumerable
 	[GuaranteesNotNull]
 	public static StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 		StartsWith(
-			this IThat<IEnumerable<string?>?> source,
+			this IThat<IEnumerable<string?>?> subject,
 			params string[] expected)
 	{
 		expected.ThrowIfNullOrEmpty();
 		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new StartsWithConstraint<string, string>(expectationBuilder, it, grammars,
 					Formatter.Format(expected),
 					expected,
 					options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -117,18 +117,18 @@ public static partial class ThatEnumerable
 	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>
 		StartsWith<TItem>(
-			this IThat<IEnumerable?> source,
+			this IThat<IEnumerable?> subject,
 			IEnumerable<TItem> expected)
 	{
 		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new StartsWithForEnumerableConstraint<IEnumerable, TItem>(expectationBuilder, it, grammars,
 					Formatter.Format(expected),
 					expected.ToArray(),
 					options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -139,19 +139,19 @@ public static partial class ThatEnumerable
 	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>
 		StartsWith<TItem>(
-			this IThat<IEnumerable?> source,
+			this IThat<IEnumerable?> subject,
 			params TItem[] expected)
 	{
 		expected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new StartsWithForEnumerableConstraint<IEnumerable, TItem>(expectationBuilder, it, grammars,
 					Formatter.Format(expected),
 					expected,
 					options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -161,20 +161,20 @@ public static partial class ThatEnumerable
 	/// </summary>
 	public static ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
 		StartsWith<TItem>(
-			this IThat<ImmutableArray<TItem>> source,
+			this IThat<ImmutableArray<TItem>> subject,
 			IEnumerable<TItem> expected,
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
 		expected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new StartsWithForEnumerableConstraint<ImmutableArray<TItem>, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					expected.ToArray(),
 					options)),
-			source,
+			subject,
 			options);
 	}
 #endif
@@ -185,19 +185,19 @@ public static partial class ThatEnumerable
 	/// </summary>
 	public static ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
 		StartsWith<TItem>(
-			this IThat<ImmutableArray<TItem>> source,
+			this IThat<ImmutableArray<TItem>> subject,
 			params TItem[] expected)
 	{
 		expected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new StartsWithForEnumerableConstraint<ImmutableArray<TItem>, TItem>(expectationBuilder, it, grammars,
 					Formatter.Format(expected),
 					expected,
 					options)),
-			source,
+			subject,
 			options);
 	}
 #endif
@@ -208,11 +208,11 @@ public static partial class ThatEnumerable
 	/// </summary>
 	public static StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
 		StartsWith(
-			this IThat<ImmutableArray<string?>> source,
+			this IThat<ImmutableArray<string?>> subject,
 			IEnumerable<string?> expected)
 	{
 		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new StartsWithForEnumerableConstraint<ImmutableArray<string?>, string?>(expectationBuilder, it,
@@ -220,7 +220,7 @@ public static partial class ThatEnumerable
 					Formatter.Format(expected),
 					expected.ToArray(),
 					options)),
-			source,
+			subject,
 			options);
 	}
 #endif
@@ -231,12 +231,12 @@ public static partial class ThatEnumerable
 	/// </summary>
 	public static StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
 		StartsWith(
-			this IThat<ImmutableArray<string?>> source,
+			this IThat<ImmutableArray<string?>> subject,
 			params string[] expected)
 	{
 		expected.ThrowIfNullOrEmpty();
 		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new StartsWithForEnumerableConstraint<ImmutableArray<string?>, string>(expectationBuilder, it,
@@ -244,7 +244,7 @@ public static partial class ThatEnumerable
 					Formatter.Format(expected),
 					expected,
 					options)),
-			source,
+			subject,
 			options);
 	}
 #endif
@@ -255,21 +255,21 @@ public static partial class ThatEnumerable
 	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		DoesNotStartWith<TItem>(
-			this IThat<IEnumerable<TItem>?> source,
+			this IThat<IEnumerable<TItem>?> subject,
 			IEnumerable<TItem> unexpected,
 			[CallerArgumentExpression("unexpected")]
 			string doNotPopulateThisValue = "")
 	{
 		unexpected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new StartsWithConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					unexpected.ToArray(),
 					options).Invert()),
-			source,
+			subject,
 			options);
 	}
 
@@ -279,19 +279,19 @@ public static partial class ThatEnumerable
 	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		DoesNotStartWith<TItem>(
-			this IThat<IEnumerable<TItem>?> source,
+			this IThat<IEnumerable<TItem>?> subject,
 			params TItem[] unexpected)
 	{
 		unexpected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new StartsWithConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					Formatter.Format(unexpected),
 					unexpected,
 					options).Invert()),
-			source,
+			subject,
 			options);
 	}
 
@@ -301,21 +301,21 @@ public static partial class ThatEnumerable
 	[GuaranteesNotNull]
 	public static StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 		DoesNotStartWith(
-			this IThat<IEnumerable<string?>?> source,
+			this IThat<IEnumerable<string?>?> subject,
 			IEnumerable<string?> unexpected,
 			[CallerArgumentExpression("unexpected")]
 			string doNotPopulateThisValue = "")
 	{
 		unexpected.ThrowIfNullOrEmpty();
 		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new StartsWithConstraint<string?, string?>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					unexpected.ToArray(),
 					options).Invert()),
-			source,
+			subject,
 			options);
 	}
 
@@ -325,19 +325,19 @@ public static partial class ThatEnumerable
 	[GuaranteesNotNull]
 	public static StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 		DoesNotStartWith(
-			this IThat<IEnumerable<string?>?> source,
+			this IThat<IEnumerable<string?>?> subject,
 			params string[] unexpected)
 	{
 		unexpected.ThrowIfNullOrEmpty();
 		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new StartsWithConstraint<string, string>(expectationBuilder, it, grammars,
 					Formatter.Format(unexpected),
 					unexpected,
 					options).Invert()),
-			source,
+			subject,
 			options);
 	}
 
@@ -348,18 +348,18 @@ public static partial class ThatEnumerable
 	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>
 		DoesNotStartWith<TItem>(
-			this IThat<IEnumerable?> source,
+			this IThat<IEnumerable?> subject,
 			IEnumerable<TItem> unexpected)
 	{
 		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new StartsWithForEnumerableConstraint<IEnumerable, TItem>(expectationBuilder, it, grammars,
 					Formatter.Format(unexpected),
 					unexpected.ToArray(),
 					options).Invert()),
-			source,
+			subject,
 			options);
 	}
 
@@ -370,19 +370,19 @@ public static partial class ThatEnumerable
 	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>
 		DoesNotStartWith<TItem>(
-			this IThat<IEnumerable?> source,
+			this IThat<IEnumerable?> subject,
 			params TItem[] unexpected)
 	{
 		unexpected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new StartsWithForEnumerableConstraint<IEnumerable, TItem>(expectationBuilder, it, grammars,
 					Formatter.Format(unexpected),
 					unexpected,
 					options).Invert()),
-			source,
+			subject,
 			options);
 	}
 
@@ -392,21 +392,21 @@ public static partial class ThatEnumerable
 	/// </summary>
 	public static ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
 		DoesNotStartWith<TItem>(
-			this IThat<ImmutableArray<TItem>> source,
+			this IThat<ImmutableArray<TItem>> subject,
 			IEnumerable<TItem> unexpected,
 			[CallerArgumentExpression("unexpected")]
 			string doNotPopulateThisValue = "")
 	{
 		unexpected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new StartsWithForEnumerableConstraint<ImmutableArray<TItem>, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					unexpected.ToArray(),
 					options).Invert()),
-			source,
+			subject,
 			options);
 	}
 #endif
@@ -417,19 +417,19 @@ public static partial class ThatEnumerable
 	/// </summary>
 	public static ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
 		DoesNotStartWith<TItem>(
-			this IThat<ImmutableArray<TItem>> source,
+			this IThat<ImmutableArray<TItem>> subject,
 			params TItem[] unexpected)
 	{
 		unexpected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new StartsWithForEnumerableConstraint<ImmutableArray<TItem>, TItem>(expectationBuilder, it, grammars,
 					Formatter.Format(unexpected),
 					unexpected,
 					options).Invert()),
-			source,
+			subject,
 			options);
 	}
 #endif
@@ -440,11 +440,11 @@ public static partial class ThatEnumerable
 	/// </summary>
 	public static StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
 		DoesNotStartWith(
-			this IThat<ImmutableArray<string?>> source,
+			this IThat<ImmutableArray<string?>> subject,
 			IEnumerable<string?> unexpected)
 	{
 		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new StartsWithForEnumerableConstraint<ImmutableArray<string?>, string?>(expectationBuilder, it,
@@ -452,7 +452,7 @@ public static partial class ThatEnumerable
 					Formatter.Format(unexpected),
 					unexpected.ToArray(),
 					options).Invert()),
-			source,
+			subject,
 			options);
 	}
 #endif
@@ -463,12 +463,12 @@ public static partial class ThatEnumerable
 	/// </summary>
 	public static StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
 		DoesNotStartWith(
-			this IThat<ImmutableArray<string?>> source,
+			this IThat<ImmutableArray<string?>> subject,
 			params string[] unexpected)
 	{
 		unexpected.ThrowIfNullOrEmpty();
 		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new StartsWithForEnumerableConstraint<ImmutableArray<string?>, string>(expectationBuilder, it,
@@ -476,7 +476,7 @@ public static partial class ThatEnumerable
 					Formatter.Format(unexpected),
 					unexpected,
 					options).Invert()),
-			source,
+			subject,
 			options);
 	}
 #endif

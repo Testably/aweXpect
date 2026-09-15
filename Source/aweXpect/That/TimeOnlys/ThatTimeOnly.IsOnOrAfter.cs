@@ -15,14 +15,14 @@ public static partial class ThatTimeOnly
 	///     Verifies that the subject is on or after the <paramref name="expected" /> value.
 	/// </summary>
 	public static TimeToleranceResult<TimeOnly, IThat<TimeOnly>> IsOnOrAfter(
-		this IThat<TimeOnly> source,
+		this IThat<TimeOnly> subject,
 		TimeOnly? expected)
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<TimeOnly, IThat<TimeOnly>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOnOrAfterConstraint(it, grammars, expected, tolerance)),
-			source,
+			subject,
 			tolerance);
 	}
 
@@ -30,14 +30,14 @@ public static partial class ThatTimeOnly
 	///     Verifies that the subject is not on or after the <paramref name="unexpected" /> value.
 	/// </summary>
 	public static TimeToleranceResult<TimeOnly, IThat<TimeOnly>> IsNotOnOrAfter(
-		this IThat<TimeOnly> source,
+		this IThat<TimeOnly> subject,
 		TimeOnly? unexpected)
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<TimeOnly, IThat<TimeOnly>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOnOrAfterConstraint(it, grammars, unexpected, tolerance).Invert()),
-			source,
+			subject,
 			tolerance);
 	}
 

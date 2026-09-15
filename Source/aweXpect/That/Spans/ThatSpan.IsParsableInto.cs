@@ -18,12 +18,12 @@ public static partial class ThatSpan
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static IsSpanParsableResult<TType> IsParsableInto<TType>(
-		this IThat<SpanWrapper<char>> source,
+		this IThat<SpanWrapper<char>> subject,
 		IFormatProvider? formatProvider = null)
 		where TType : ISpanParsable<TType>
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsParsableIntoConstraint<TType>(it, grammars, formatProvider)),
-			source,
+			subject,
 			formatProvider);
 
 	/// <summary>
@@ -35,12 +35,12 @@ public static partial class ThatSpan
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static IsUtf8SpanParsableResult<TType> IsParsableInto<TType>(
-		this IThat<SpanWrapper<byte>> source,
+		this IThat<SpanWrapper<byte>> subject,
 		IFormatProvider? formatProvider = null)
 		where TType : IUtf8SpanParsable<TType>
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsUtf8ParsableIntoConstraint<TType>(it, grammars, formatProvider)),
-			source,
+			subject,
 			formatProvider);
 
 	/// <summary>
@@ -52,12 +52,12 @@ public static partial class ThatSpan
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<SpanWrapper<char>, IThat<SpanWrapper<char>>> IsNotParsableInto<TType>(
-		this IThat<SpanWrapper<char>> source,
+		this IThat<SpanWrapper<char>> subject,
 		IFormatProvider? formatProvider = null)
 		where TType : ISpanParsable<TType>
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsParsableIntoConstraint<TType>(it, grammars, formatProvider).Invert()),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not parsable into type <typeparamref name="TType" />.
@@ -68,12 +68,12 @@ public static partial class ThatSpan
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<SpanWrapper<byte>, IThat<SpanWrapper<byte>>> IsNotParsableInto<TType>(
-		this IThat<SpanWrapper<byte>> source,
+		this IThat<SpanWrapper<byte>> subject,
 		IFormatProvider? formatProvider = null)
 		where TType : IUtf8SpanParsable<TType>
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsUtf8ParsableIntoConstraint<TType>(it, grammars, formatProvider).Invert()),
-			source);
+			subject);
 
 	private sealed class IsParsableIntoConstraint<TType> : ConstraintResult.WithNotNullValue<SpanWrapper<char>>,
 		IValueConstraint<SpanWrapper<char>>

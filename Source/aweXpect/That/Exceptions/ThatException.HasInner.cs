@@ -13,10 +13,10 @@ public static partial class ThatException
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<Exception?, IThat<Exception?>> HasInner<TInnerException>(
-		this IThat<Exception?> source,
+		this IThat<Exception?> subject,
 		Action<IThatSubject<TInnerException?>> expectations)
 		where TInnerException : Exception?
-		=> new(source.Get().ExpectationBuilder
+		=> new(subject.Get().ExpectationBuilder
 				.ForMember<Exception?, Exception?>(e => e?.InnerException,
 					" whose ",
 					false)
@@ -24,18 +24,18 @@ public static partial class ThatException
 					=> new HasInnerExceptionValueConstraint(typeof(TInnerException), it, grammars))
 				.AddExpectations<TInnerException?>(e => expectations(new ThatSubject<TInnerException?>(e)),
 					grammars => grammars | ExpectationGrammars.Nested),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the actual exception has an inner exception of type <typeparamref name="TInnerException" />.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<Exception?, IThat<Exception?>> HasInner<TInnerException>(
-		this IThat<Exception?> source)
+		this IThat<Exception?> subject)
 		where TInnerException : Exception?
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new HasInnerExceptionValueConstraint(typeof(TInnerException), it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the actual exception has an inner exception of type <paramref name="innerExceptionType" /> which
@@ -43,10 +43,10 @@ public static partial class ThatException
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<Exception?, IThat<Exception?>> HasInner(
-		this IThat<Exception?> source,
+		this IThat<Exception?> subject,
 		Type innerExceptionType,
 		Action<IThatSubject<Exception?>> expectations)
-		=> new(source.Get().ExpectationBuilder
+		=> new(subject.Get().ExpectationBuilder
 				.ForMember<Exception?, Exception?>(e => e?.InnerException,
 					" whose ",
 					false)
@@ -54,16 +54,16 @@ public static partial class ThatException
 					=> new HasInnerExceptionValueConstraint(innerExceptionType, it, grammars))
 				.AddExpectations(e => expectations(new ThatSubject<Exception?>(e)),
 					grammars => grammars | ExpectationGrammars.Nested),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the actual exception has an inner exception of type <paramref name="innerExceptionType" />.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<Exception?, IThat<Exception?>> HasInner(
-		this IThat<Exception?> source,
+		this IThat<Exception?> subject,
 		Type innerExceptionType)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasInnerExceptionValueConstraint(innerExceptionType, it, grammars)),
-			source);
+			subject);
 }

@@ -14,14 +14,14 @@ public static partial class ThatDateOnly
 	/// <summary>
 	///     Verifies that the subject is equal to the <paramref name="expected" /> value.
 	/// </summary>
-	public static TimeToleranceResult<DateOnly, IThat<DateOnly>> IsEqualTo(this IThat<DateOnly> source,
+	public static TimeToleranceResult<DateOnly, IThat<DateOnly>> IsEqualTo(this IThat<DateOnly> subject,
 		DateOnly? expected)
 	{
 		TimeTolerance tolerance = new();
-		return new TimeToleranceResult<DateOnly, IThat<DateOnly>>(source.Get().ExpectationBuilder
+		return new TimeToleranceResult<DateOnly, IThat<DateOnly>>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars) =>
 					new IsEqualToConstraint(it, grammars, expected, tolerance)),
-			source,
+			subject,
 			tolerance);
 	}
 
@@ -29,14 +29,14 @@ public static partial class ThatDateOnly
 	///     Verifies that the subject is not equal to the <paramref name="unexpected" /> value.
 	/// </summary>
 	public static TimeToleranceResult<DateOnly, IThat<DateOnly>> IsNotEqualTo(
-		this IThat<DateOnly> source,
+		this IThat<DateOnly> subject,
 		DateOnly? unexpected)
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateOnly, IThat<DateOnly>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint(it, grammars, unexpected, tolerance).Invert()),
-			source,
+			subject,
 			tolerance);
 	}
 

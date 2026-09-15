@@ -12,7 +12,7 @@ public static partial class ValueFormatters
 	///     Returns the formatted <paramref name="value" /> according to the <paramref name="options" />.
 	/// </summary>
 	public static string Format(
-		this ValueFormatter _,
+		this ValueFormatter formatter,
 		byte value,
 		FormattingOptions? options = null)
 		=> options?.IncludeType switch
@@ -78,7 +78,7 @@ public static partial class ValueFormatters
 	///     Returns the formatted <paramref name="value" /> according to the <paramref name="options" />.
 	/// </summary>
 	public static string Format(
-		this ValueFormatter _,
+		this ValueFormatter formatter,
 		sbyte value,
 		FormattingOptions? options = null)
 		=> options?.IncludeType switch
@@ -144,7 +144,7 @@ public static partial class ValueFormatters
 	///     Returns the formatted <paramref name="value" /> according to the <paramref name="options" />.
 	/// </summary>
 	public static string Format(
-		this ValueFormatter _,
+		this ValueFormatter formatter,
 		short value,
 		FormattingOptions? options = null)
 		=> options?.IncludeType switch
@@ -210,7 +210,7 @@ public static partial class ValueFormatters
 	///     Returns the formatted <paramref name="value" /> according to the <paramref name="options" />.
 	/// </summary>
 	public static string Format(
-		this ValueFormatter _,
+		this ValueFormatter formatter,
 		ushort value,
 		FormattingOptions? options = null)
 		=> options?.IncludeType switch
@@ -276,7 +276,7 @@ public static partial class ValueFormatters
 	///     Returns the formatted <paramref name="value" /> according to the <paramref name="options" />.
 	/// </summary>
 	public static string Format(
-		this ValueFormatter _,
+		this ValueFormatter formatter,
 		int value,
 		FormattingOptions? options = null)
 		=> options?.IncludeType switch
@@ -342,7 +342,7 @@ public static partial class ValueFormatters
 	///     Returns the formatted <paramref name="value" /> according to the <paramref name="options" />.
 	/// </summary>
 	public static string Format(
-		this ValueFormatter _,
+		this ValueFormatter formatter,
 		uint value,
 		FormattingOptions? options = null)
 		=> options?.IncludeType switch
@@ -408,7 +408,7 @@ public static partial class ValueFormatters
 	///     Returns the formatted <paramref name="value" /> according to the <paramref name="options" />.
 	/// </summary>
 	public static string Format(
-		this ValueFormatter _,
+		this ValueFormatter formatter,
 		long value,
 		FormattingOptions? options = null)
 		=> options?.IncludeType switch
@@ -474,7 +474,7 @@ public static partial class ValueFormatters
 	///     Returns the formatted <paramref name="value" /> according to the <paramref name="options" />.
 	/// </summary>
 	public static string Format(
-		this ValueFormatter _,
+		this ValueFormatter formatter,
 		ulong value,
 		FormattingOptions? options = null)
 		=> options?.IncludeType switch
@@ -540,7 +540,7 @@ public static partial class ValueFormatters
 	///     Returns the formatted <paramref name="value" /> according to the <paramref name="options" />.
 	/// </summary>
 	public static string Format(
-		this ValueFormatter _,
+		this ValueFormatter formatter,
 		float value,
 		FormattingOptions? options = null)
 		=> (options?.IncludeType, value) switch
@@ -607,7 +607,7 @@ public static partial class ValueFormatters
 	///     Returns the formatted <paramref name="value" /> according to the <paramref name="options" />.
 	/// </summary>
 	public static string Format(
-		this ValueFormatter _,
+		this ValueFormatter formatter,
 		double value,
 		FormattingOptions? options = null)
 		=> (options?.IncludeType, value) switch
@@ -675,7 +675,7 @@ public static partial class ValueFormatters
 	///     Returns the formatted <paramref name="value" /> according to the <paramref name="options" />.
 	/// </summary>
 	public static string Format(
-		this ValueFormatter _,
+		this ValueFormatter formatter,
 		Half value,
 		FormattingOptions? options = null)
 	{
@@ -754,7 +754,7 @@ public static partial class ValueFormatters
 	///     Returns the formatted <paramref name="value" /> according to the <paramref name="options" />.
 	/// </summary>
 	public static string Format(
-		this ValueFormatter _,
+		this ValueFormatter formatter,
 		decimal value,
 		FormattingOptions? options = null)
 		=> (options?.IncludeType, value) switch
@@ -817,7 +817,7 @@ public static partial class ValueFormatters
 	///     Returns the formatted <paramref name="value" /> according to the <paramref name="options" />.
 	/// </summary>
 	public static string Format(
-		this ValueFormatter _,
+		this ValueFormatter formatter,
 		nint value,
 		FormattingOptions? options = null)
 		=> options?.IncludeType switch
@@ -883,7 +883,7 @@ public static partial class ValueFormatters
 	///     Returns the formatted <paramref name="value" /> according to the <paramref name="options" />.
 	/// </summary>
 	public static string Format(
-		this ValueFormatter _,
+		this ValueFormatter formatter,
 		nuint value,
 		FormattingOptions? options = null)
 		=> options?.IncludeType switch

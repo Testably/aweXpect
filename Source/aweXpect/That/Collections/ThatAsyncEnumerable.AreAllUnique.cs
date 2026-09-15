@@ -24,14 +24,14 @@ public static partial class ThatAsyncEnumerable
 	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		AreAllUnique<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> source)
+			this IThat<IAsyncEnumerable<TItem>?> subject)
 	{
 		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AreAllUniqueConstraint<TItem, TItem>(expectationBuilder, it, grammars, options)),
-			source, options
+			subject, options
 		);
 	}
 
@@ -40,14 +40,14 @@ public static partial class ThatAsyncEnumerable
 	/// </summary>
 	[GuaranteesNotNull]
 	public static StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>> AreAllUnique(
-		this IThat<IAsyncEnumerable<string?>?> source)
+		this IThat<IAsyncEnumerable<string?>?> subject)
 	{
 		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AreAllUniqueConstraint<string, string>(expectationBuilder, it, grammars, options)),
-			source, options
+			subject, options
 		);
 	}
 
@@ -58,20 +58,20 @@ public static partial class ThatAsyncEnumerable
 	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TMember>
 		AreAllUnique<TItem, TMember>(
-			this IThat<IAsyncEnumerable<TItem>?> source,
+			this IThat<IAsyncEnumerable<TItem>?> subject,
 			Func<TItem, TMember> memberAccessor,
 			[CallerArgumentExpression("memberAccessor")]
 			string doNotPopulateThisValue = "")
 	{
 		ObjectEqualityOptions<TMember> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TMember>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AreAllUniqueWithPredicateConstraint<TItem, TMember, TMember>(expectationBuilder, it, grammars,
 					memberAccessor,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					options)),
-			source, options
+			subject, options
 		);
 	}
 
@@ -82,20 +82,20 @@ public static partial class ThatAsyncEnumerable
 	[GuaranteesNotNull]
 	public static StringEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
 		AreAllUnique<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> source,
+			this IThat<IAsyncEnumerable<TItem>?> subject,
 			Func<TItem, string> memberAccessor,
 			[CallerArgumentExpression("memberAccessor")]
 			string doNotPopulateThisValue = "")
 	{
 		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AreAllUniqueWithPredicateConstraint<TItem, string, string>(expectationBuilder, it, grammars,
 					memberAccessor,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					options)),
-			source, options
+			subject, options
 		);
 	}
 

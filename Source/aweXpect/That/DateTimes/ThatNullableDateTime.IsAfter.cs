@@ -15,14 +15,14 @@ public static partial class ThatNullableDateTime
 	/// </summary>
 	[GuaranteesNotNull]
 	public static TimeToleranceResult<DateTime?, IThat<DateTime?>> IsAfter(
-		this IThat<DateTime?> source,
+		this IThat<DateTime?> subject,
 		DateTime? expected)
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateTime?, IThat<DateTime?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsAfterConstraint(it, grammars, expected, tolerance)),
-			source,
+			subject,
 			tolerance);
 	}
 
@@ -31,14 +31,14 @@ public static partial class ThatNullableDateTime
 	/// </summary>
 	[GuaranteesNotNull]
 	public static TimeToleranceResult<DateTime?, IThat<DateTime?>> IsNotAfter(
-		this IThat<DateTime?> source,
+		this IThat<DateTime?> subject,
 		DateTime? unexpected)
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateTime?, IThat<DateTime?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsAfterConstraint(it, grammars, unexpected, tolerance).Invert()),
-			source,
+			subject,
 			tolerance);
 	}
 

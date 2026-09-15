@@ -16,9 +16,9 @@ public static partial class ThatDelegate
 	/// </summary>
 	[GuaranteesNotNull]
 	public static ExpectationResult<TValue> ExecutesWithin<TValue>(
-		this IThat<Delegates.ThatDelegate.WithValue<TValue>> source,
+		this IThat<Delegates.ThatDelegate.WithValue<TValue>> subject,
 		TimeSpan duration)
-		=> new(source.Get().ExpectationBuilder
+		=> new(subject.Get().ExpectationBuilder
 			.AddConstraint((it, grammars) => new ExecutesWithinConstraint<TValue>(it, grammars, duration)));
 
 	/// <summary>
@@ -27,9 +27,9 @@ public static partial class ThatDelegate
 	/// </summary>
 	[GuaranteesNotNull]
 	public static ExpectationResult ExecutesWithin(
-		this IThat<Delegates.ThatDelegate.WithoutValue> source,
+		this IThat<Delegates.ThatDelegate.WithoutValue> subject,
 		TimeSpan duration)
-		=> new(source.Get().ExpectationBuilder
+		=> new(subject.Get().ExpectationBuilder
 			.AddConstraint((it, grammars) => new ExecutesWithinConstraint(it, grammars, duration)));
 
 	/// <summary>
@@ -38,9 +38,9 @@ public static partial class ThatDelegate
 	/// </summary>
 	[GuaranteesNotNull]
 	public static ExpectationResult<TValue> DoesNotExecuteWithin<TValue>(
-		this IThat<Delegates.ThatDelegate.WithValue<TValue>> source,
+		this IThat<Delegates.ThatDelegate.WithValue<TValue>> subject,
 		TimeSpan duration)
-		=> new(source.Get().ExpectationBuilder
+		=> new(subject.Get().ExpectationBuilder
 			.AddConstraint((it, grammars) => new ExecutesWithinConstraint<TValue>(it, grammars, duration).Invert()));
 
 	/// <summary>
@@ -49,9 +49,9 @@ public static partial class ThatDelegate
 	/// </summary>
 	[GuaranteesNotNull]
 	public static ExpectationResult DoesNotExecuteWithin(
-		this IThat<Delegates.ThatDelegate.WithoutValue> source,
+		this IThat<Delegates.ThatDelegate.WithoutValue> subject,
 		TimeSpan duration)
-		=> new(source.Get().ExpectationBuilder
+		=> new(subject.Get().ExpectationBuilder
 			.AddConstraint((it, grammars) => new ExecutesWithinConstraint(it, grammars, duration).Invert()));
 
 	private sealed class ExecutesWithinConstraint<T>(string it, ExpectationGrammars grammars, TimeSpan duration)

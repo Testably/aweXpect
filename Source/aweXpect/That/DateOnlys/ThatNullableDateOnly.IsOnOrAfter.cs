@@ -16,14 +16,14 @@ public static partial class ThatNullableDateOnly
 	/// </summary>
 	[GuaranteesNotNull]
 	public static TimeToleranceResult<DateOnly?, IThat<DateOnly?>> IsOnOrAfter(
-		this IThat<DateOnly?> source,
+		this IThat<DateOnly?> subject,
 		DateOnly? expected)
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateOnly?, IThat<DateOnly?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOnOrAfterConstraint(it, grammars, expected, tolerance)),
-			source,
+			subject,
 			tolerance);
 	}
 
@@ -32,14 +32,14 @@ public static partial class ThatNullableDateOnly
 	/// </summary>
 	[GuaranteesNotNull]
 	public static TimeToleranceResult<DateOnly?, IThat<DateOnly?>> IsNotOnOrAfter(
-		this IThat<DateOnly?> source,
+		this IThat<DateOnly?> subject,
 		DateOnly? unexpected)
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateOnly?, IThat<DateOnly?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOnOrAfterConstraint(it, grammars, unexpected, tolerance).Invert()),
-			source,
+			subject,
 			tolerance);
 	}
 

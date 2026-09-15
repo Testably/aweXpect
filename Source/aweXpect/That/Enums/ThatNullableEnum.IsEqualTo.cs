@@ -11,23 +11,23 @@ public static partial class ThatNullableEnum
 	/// <summary>
 	///     Verifies that the subject is equal to the <paramref name="expected" /> value.
 	/// </summary>
-	public static AndOrResult<TEnum?, IThat<TEnum?>> IsEqualTo<TEnum>(this IThat<TEnum?> source,
+	public static AndOrResult<TEnum?, IThat<TEnum?>> IsEqualTo<TEnum>(this IThat<TEnum?> subject,
 		TEnum? expected)
 		where TEnum : struct, Enum
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint<TEnum>(it, grammars, expected)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not equal to the <paramref name="unexpected" /> value.
 	/// </summary>
 	public static AndOrResult<TEnum?, IThat<TEnum?>> IsNotEqualTo<TEnum>(
-		this IThat<TEnum?> source,
+		this IThat<TEnum?> subject,
 		TEnum? unexpected)
 		where TEnum : struct, Enum
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint<TEnum>(it, grammars, unexpected).Invert()),
-			source);
+			subject);
 
 	private sealed class IsEqualToConstraint<TEnum>(string it, ExpectationGrammars grammars, TEnum? expected)
 		: ConstraintResult.WithEqualToValue<TEnum?>(it, grammars, expected is null),

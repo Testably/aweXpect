@@ -17,11 +17,11 @@ public static partial class ThatNumber
 	/// <remarks>
 	///     Finite means neither infinity nor not a number (NaN).
 	/// </remarks>
-	public static AndOrResult<TNumber, IThat<TNumber>> IsFinite<TNumber>(this IThat<TNumber> source)
+	public static AndOrResult<TNumber, IThat<TNumber>> IsFinite<TNumber>(this IThat<TNumber> subject)
 		where TNumber : struct, IFloatingPoint<TNumber>
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsFiniteConstraint<TNumber>(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is seen as finite.
@@ -30,11 +30,11 @@ public static partial class ThatNumber
 	///     Finite means neither infinity nor not a number (NaN) nor <see langword="null" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<TNumber?, IThat<TNumber?>> IsFinite<TNumber>(this IThat<TNumber?> source)
+	public static AndOrResult<TNumber?, IThat<TNumber?>> IsFinite<TNumber>(this IThat<TNumber?> subject)
 		where TNumber : struct, IFloatingPoint<TNumber>
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsFiniteConstraint<TNumber>(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not seen as finite.
@@ -42,11 +42,11 @@ public static partial class ThatNumber
 	/// <remarks>
 	///     Not finite means either infinity or not a number (NaN).
 	/// </remarks>
-	public static AndOrResult<TNumber, IThat<TNumber>> IsNotFinite<TNumber>(this IThat<TNumber> source)
+	public static AndOrResult<TNumber, IThat<TNumber>> IsNotFinite<TNumber>(this IThat<TNumber> subject)
 		where TNumber : struct, IFloatingPoint<TNumber>
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsFiniteConstraint<TNumber>(it, grammars).Invert()),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not seen as finite.
@@ -55,11 +55,11 @@ public static partial class ThatNumber
 	///     Not finite means either infinity or not a number (NaN) or <see langword="null" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<TNumber?, IThat<TNumber?>> IsNotFinite<TNumber>(this IThat<TNumber?> source)
+	public static AndOrResult<TNumber?, IThat<TNumber?>> IsNotFinite<TNumber>(this IThat<TNumber?> subject)
 		where TNumber : struct, IFloatingPoint<TNumber>
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsFiniteConstraint<TNumber>(it, grammars).Invert()),
-			source);
+			subject);
 
 	private sealed class IsFiniteConstraint<TNumber>(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithValue<TNumber>(grammars),
@@ -126,20 +126,20 @@ public static partial class ThatNumber
 	///     nor <see cref="float.IsNaN" />).
 	/// </summary>
 	public static AndOrResult<float, IThat<float>> IsFinite(
-		this IThat<float> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<float> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsFloatFiniteConstraint(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is seen as finite (neither <see cref="double.IsInfinity" />
 	///     nor <see cref="double.IsNaN" />).
 	/// </summary>
 	public static AndOrResult<double, IThat<double>> IsFinite(
-		this IThat<double> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<double> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsDoubleFiniteConstraint(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is seen as finite (neither <see cref="float.IsInfinity" /> nor
@@ -147,10 +147,10 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<float, IThat<float?>> IsFinite(
-		this IThat<float?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<float?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsFloatFiniteConstraint(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is seen as finite (neither <see cref="double.IsInfinity" /> nor
@@ -158,30 +158,30 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<double, IThat<double?>> IsFinite(
-		this IThat<double?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<double?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsDoubleFiniteConstraint(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not seen as finite (either <see cref="float.IsInfinity" /> or
 	///     <see cref="float.IsNaN" />).
 	/// </summary>
 	public static AndOrResult<float, IThat<float>> IsNotFinite(
-		this IThat<float> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<float> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsFloatFiniteConstraint(it, grammars).Invert()),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not seen as finite (either <see cref="double.IsInfinity" /> or
 	///     <see cref="double.IsNaN" />).
 	/// </summary>
 	public static AndOrResult<double, IThat<double>> IsNotFinite(
-		this IThat<double> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<double> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsDoubleFiniteConstraint(it, grammars).Invert()),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not seen as finite (either <see cref="float.IsInfinity" /> or
@@ -189,10 +189,10 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<float?, IThat<float?>> IsNotFinite(
-		this IThat<float?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<float?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsFloatFiniteConstraint(it, grammars).Invert()),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not seen as finite (either <see cref="double.IsInfinity" /> or
@@ -200,10 +200,10 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<double?, IThat<double?>> IsNotFinite(
-		this IThat<double?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<double?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsDoubleFiniteConstraint(it, grammars).Invert()),
-			source);
+			subject);
 
 	private sealed class IsFloatFiniteConstraint(
 		string it,

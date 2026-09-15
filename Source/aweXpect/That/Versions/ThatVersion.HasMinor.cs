@@ -10,6 +10,6 @@ public static partial class ThatVersion
 	///     Verifies that the minor component of the <see cref="Version" /> subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Int<Version?> HasMinor(this IThat<Version?> source)
-		=> new(source, a => a?.Minor, "minor");
+	public static PropertyResult.Int<Version?> HasMinor(this IThat<Version?> subject)
+		=> new(subject, a => a?.Minor, "minor");
 }

@@ -11,20 +11,20 @@ public static partial class ThatString
 	///     Verifies that the subject is <see langword="null" />.
 	/// </summary>
 	public static AndOrResult<string?, IThat<string?>> IsNull(
-		this IThat<string?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<string?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsNullConstraint(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not <see langword="null" />.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<string, IThat<string?>> IsNotNull(
-		this IThat<string?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<string?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsNullConstraint(it, grammars).Invert()),
-			source);
+			subject);
 
 	private sealed class IsNullConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithValue<string?>(grammars),

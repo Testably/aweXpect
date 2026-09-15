@@ -11,6 +11,6 @@ public static partial class ThatVersion
 	///     The revision component is <c>-1</c> when it is unspecified.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Int<Version?> HasRevision(this IThat<Version?> source)
-		=> new(source, a => a?.Revision, "revision");
+	public static PropertyResult.Int<Version?> HasRevision(this IThat<Version?> subject)
+		=> new(subject, a => a?.Revision, "revision");
 }

@@ -9,6 +9,6 @@ public static partial class ThatDateTimeOffset
 	/// <summary>
 	///     Verifies that the hour of the subject…
 	/// </summary>
-	public static PropertyResult.Int<DateTimeOffset> HasHour(this IThat<DateTimeOffset> source)
-		=> new(source, a => a.Hour, "hour");
+	public static PropertyResult.Int<DateTimeOffset> HasHour(this IThat<DateTimeOffset> subject)
+		=> new(subject, a => a.Hour, "hour");
 }

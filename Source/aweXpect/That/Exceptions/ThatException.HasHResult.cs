@@ -13,12 +13,12 @@ public static partial class ThatException
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<TException, IThat<TException>> HasHResult<TException>(
-		this IThat<TException> source,
+		this IThat<TException> subject,
 		int expected)
 		where TException : Exception?
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new HasHResultValueConstraint(it, grammars, expected)),
-			source);
+			subject);
 
 	internal class HasHResultValueConstraint(
 		string it,

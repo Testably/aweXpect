@@ -14,19 +14,19 @@ public static partial class ThatEventRecording
 	/// </summary>
 	[GuaranteesNotNull]
 	public static EventTriggerResult<TSubject> TriggeredPropertyChanged<TSubject>(
-		this IThat<IEventRecording<TSubject>> source)
+		this IThat<IEventRecording<TSubject>> subject)
 		where TSubject : INotifyPropertyChanged
 	{
 		Quantifier quantifier = new();
 		TriggerEventFilter filter = new();
 		RepeatedCheckOptions options = new();
 		return new EventTriggerResult<TSubject>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HaveTriggeredConstraint<TSubject>(it, grammars, nameof(INotifyPropertyChanged.PropertyChanged),
 					filter,
 					quantifier,
 					options)),
-			source,
+			subject,
 			filter,
 			quantifier,
 			options);
@@ -37,7 +37,7 @@ public static partial class ThatEventRecording
 	/// </summary>
 	[GuaranteesNotNull]
 	public static EventTriggerResult<TSubject> DidNotTriggerPropertyChanged<TSubject>(
-		this IThat<IEventRecording<TSubject>> source)
+		this IThat<IEventRecording<TSubject>> subject)
 		where TSubject : INotifyPropertyChanged
 	{
 		Quantifier quantifier = new();
@@ -45,12 +45,12 @@ public static partial class ThatEventRecording
 		TriggerEventFilter filter = new();
 		RepeatedCheckOptions options = new();
 		return new EventTriggerResult<TSubject>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HaveTriggeredConstraint<TSubject>(it, grammars, nameof(INotifyPropertyChanged.PropertyChanged),
 					filter,
 					quantifier,
 					options)),
-			source,
+			subject,
 			filter,
 			quantifier,
 			options);

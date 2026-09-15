@@ -21,14 +21,14 @@ public static partial class ThatAsyncEnumerable
 	/// </summary>
 	[GuaranteesNotNull]
 	public static HasItemResult<IAsyncEnumerable<TItem>?> HasItemThat<TItem>(
-		this IThat<IAsyncEnumerable<TItem>?> source, Action<IThatSubject<TItem>> expectations)
+		this IThat<IAsyncEnumerable<TItem>?> subject, Action<IThatSubject<TItem>> expectations)
 	{
 		CollectionIndexOptions indexOptions = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IAsyncEnumerable<TItem>?>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemThatConstraint<TItem>(expectationBuilder, it, grammars, expectations, indexOptions)),
-			source,
+			subject,
 			indexOptions);
 	}
 

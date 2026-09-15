@@ -12,22 +12,22 @@ public static partial class ThatNullableTimeSpan
 	///     Verifies that the subject is positive.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<TimeSpan?, IThat<TimeSpan?>> IsPositive(this IThat<TimeSpan?> source)
+	public static AndOrResult<TimeSpan?, IThat<TimeSpan?>> IsPositive(this IThat<TimeSpan?> subject)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsPositiveConstraint(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not positive.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<TimeSpan?, IThat<TimeSpan?>> IsNotPositive(
-		this IThat<TimeSpan?> source)
+		this IThat<TimeSpan?> subject)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsPositiveConstraint(it, grammars).Invert()),
-			source);
+			subject);
 
 	private sealed class IsPositiveConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<TimeSpan?>(it, grammars),

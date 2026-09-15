@@ -18,7 +18,7 @@ public static partial class ThatEventRecording
 	/// </summary>
 	[GuaranteesNotNull]
 	public static EventTriggerResult<TSubject> TriggeredPropertyChangedFor<TSubject, TProperty>(
-		this IThat<IEventRecording<TSubject>> source,
+		this IThat<IEventRecording<TSubject>> subject,
 		Expression<Func<TSubject, TProperty>> propertyExpression)
 		where TSubject : INotifyPropertyChanged
 	{
@@ -26,7 +26,7 @@ public static partial class ThatEventRecording
 			(((propertyExpression.Body as UnaryExpression)?.Operand ?? propertyExpression.Body) as MemberExpression)
 			?.Member;
 		string? propertyName = (memberInfo as PropertyInfo)?.Name;
-		return TriggeredPropertyChangedFor(source, propertyName);
+		return TriggeredPropertyChangedFor(subject, propertyName);
 	}
 
 	/// <summary>
@@ -35,7 +35,7 @@ public static partial class ThatEventRecording
 	/// </summary>
 	[GuaranteesNotNull]
 	public static EventTriggerResult<TSubject> TriggeredPropertyChangedFor<TSubject>(
-		this IThat<IEventRecording<TSubject>> source,
+		this IThat<IEventRecording<TSubject>> subject,
 		string? propertyName)
 		where TSubject : INotifyPropertyChanged
 	{
@@ -46,12 +46,12 @@ public static partial class ThatEventRecording
 			o => o.Length > 1 && o[1] is PropertyChangedEventArgs m && m.PropertyName == propertyName,
 			$" for property {propertyName}");
 		return new EventTriggerResult<TSubject>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HaveTriggeredConstraint<TSubject>(it, grammars, nameof(INotifyPropertyChanged.PropertyChanged),
 					filter,
 					quantifier,
 					options)),
-			source,
+			subject,
 			filter,
 			quantifier,
 			options);
@@ -63,7 +63,7 @@ public static partial class ThatEventRecording
 	/// </summary>
 	[GuaranteesNotNull]
 	public static EventTriggerResult<TSubject> DidNotTriggerPropertyChangedFor<TSubject, TProperty>(
-		this IThat<IEventRecording<TSubject>> source,
+		this IThat<IEventRecording<TSubject>> subject,
 		Expression<Func<TSubject, TProperty>> propertyExpression)
 		where TSubject : INotifyPropertyChanged
 	{
@@ -71,7 +71,7 @@ public static partial class ThatEventRecording
 			(((propertyExpression.Body as UnaryExpression)?.Operand ?? propertyExpression.Body) as MemberExpression)
 			?.Member;
 		string? propertyName = (memberInfo as PropertyInfo)?.Name;
-		return DidNotTriggerPropertyChangedFor(source, propertyName);
+		return DidNotTriggerPropertyChangedFor(subject, propertyName);
 	}
 
 	/// <summary>
@@ -80,7 +80,7 @@ public static partial class ThatEventRecording
 	/// </summary>
 	[GuaranteesNotNull]
 	public static EventTriggerResult<TSubject> DidNotTriggerPropertyChangedFor<TSubject>(
-		this IThat<IEventRecording<TSubject>> source,
+		this IThat<IEventRecording<TSubject>> subject,
 		string? propertyName)
 		where TSubject : INotifyPropertyChanged
 	{
@@ -92,12 +92,12 @@ public static partial class ThatEventRecording
 			o => o.Length > 1 && o[1] is PropertyChangedEventArgs m && m.PropertyName == propertyName,
 			$" for property {propertyName}");
 		return new EventTriggerResult<TSubject>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HaveTriggeredConstraint<TSubject>(it, grammars, nameof(INotifyPropertyChanged.PropertyChanged),
 					filter,
 					quantifier,
 					options)),
-			source,
+			subject,
 			filter,
 			quantifier,
 			options);

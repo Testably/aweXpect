@@ -26,15 +26,15 @@ public static partial class ThatReadOnlyDictionary
 	public static ObjectEqualityResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>,
 			TValue>
 		AreAllUnique<TKey, TValue>(
-			this IThat<IReadOnlyDictionary<TKey, TValue>?> source)
+			this IThat<IReadOnlyDictionary<TKey, TValue>?> subject)
 	{
 		ObjectEqualityOptions<TValue> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>,
 			TValue>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AllIsUniqueConstraint<TKey, TValue, TValue>(expectationBuilder, it, grammars, options)),
-			source, options
+			subject, options
 		);
 	}
 
@@ -46,14 +46,14 @@ public static partial class ThatReadOnlyDictionary
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static StringEqualityResult<IReadOnlyDictionary<TKey, string?>, IThat<IReadOnlyDictionary<TKey, string?>?>>
-		AreAllUnique<TKey>(this IThat<IReadOnlyDictionary<TKey, string?>?> source)
+		AreAllUnique<TKey>(this IThat<IReadOnlyDictionary<TKey, string?>?> subject)
 	{
 		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<IReadOnlyDictionary<TKey, string?>, IThat<IReadOnlyDictionary<TKey, string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AllIsUniqueConstraint<TKey, string?, string?>(expectationBuilder, it, grammars, options)),
-			source, options
+			subject, options
 		);
 	}
 
@@ -69,13 +69,13 @@ public static partial class ThatReadOnlyDictionary
 			TMember>
 		AreAllUnique<TKey,
 			TValue, TMember>(
-			this IThat<IReadOnlyDictionary<TKey, TValue>?> source,
+			this IThat<IReadOnlyDictionary<TKey, TValue>?> subject,
 			Func<TValue, TMember> memberAccessor,
 			[CallerArgumentExpression("memberAccessor")]
 			string doNotPopulateThisValue = "")
 	{
 		ObjectEqualityOptions<TMember> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>,
 			TMember>(
 			expectationBuilder.AddConstraint((it, grammars) =>
@@ -85,7 +85,7 @@ public static partial class ThatReadOnlyDictionary
 					memberAccessor,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					options)),
-			source, options
+			subject, options
 		);
 	}
 
@@ -100,13 +100,13 @@ public static partial class ThatReadOnlyDictionary
 	public static StringEqualityResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>>
 		AreAllUnique<TKey,
 			TValue>(
-			this IThat<IReadOnlyDictionary<TKey, TValue>?> source,
+			this IThat<IReadOnlyDictionary<TKey, TValue>?> subject,
 			Func<TValue, string> memberAccessor,
 			[CallerArgumentExpression("memberAccessor")]
 			string doNotPopulateThisValue = "")
 	{
 		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AllIsUniqueWithPredicateConstraint<TKey, TValue, string, string>(
@@ -115,7 +115,7 @@ public static partial class ThatReadOnlyDictionary
 					memberAccessor,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					options)),
-			source, options
+			subject, options
 		);
 	}
 
@@ -129,16 +129,16 @@ public static partial class ThatReadOnlyDictionary
 	public static ObjectEqualityResult<ReadOnlyDictionary<TKey, TValue>, IThat<ReadOnlyDictionary<TKey, TValue>?>,
 			TValue>
 		AreAllUnique<TKey, TValue>(
-			this IThat<ReadOnlyDictionary<TKey, TValue>?> source)
+			this IThat<ReadOnlyDictionary<TKey, TValue>?> subject)
 		where TKey : notnull
 	{
 		ObjectEqualityOptions<TValue> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<ReadOnlyDictionary<TKey, TValue>, IThat<ReadOnlyDictionary<TKey, TValue>?>,
 			TValue>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AllIsUniqueConstraint<TKey, TValue, TValue>(expectationBuilder, it, grammars, options)),
-			source, options
+			subject, options
 		);
 	}
 
@@ -150,15 +150,15 @@ public static partial class ThatReadOnlyDictionary
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static StringEqualityResult<ReadOnlyDictionary<TKey, string?>, IThat<ReadOnlyDictionary<TKey, string?>?>>
-		AreAllUnique<TKey>(this IThat<ReadOnlyDictionary<TKey, string?>?> source)
+		AreAllUnique<TKey>(this IThat<ReadOnlyDictionary<TKey, string?>?> subject)
 		where TKey : notnull
 	{
 		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<ReadOnlyDictionary<TKey, string?>, IThat<ReadOnlyDictionary<TKey, string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AllIsUniqueConstraint<TKey, string?, string?>(expectationBuilder, it, grammars, options)),
-			source, options
+			subject, options
 		);
 	}
 
@@ -174,14 +174,14 @@ public static partial class ThatReadOnlyDictionary
 			TMember>
 		AreAllUnique<TKey,
 			TValue, TMember>(
-			this IThat<ReadOnlyDictionary<TKey, TValue>?> source,
+			this IThat<ReadOnlyDictionary<TKey, TValue>?> subject,
 			Func<TValue, TMember> memberAccessor,
 			[CallerArgumentExpression("memberAccessor")]
 			string doNotPopulateThisValue = "")
 		where TKey : notnull
 	{
 		ObjectEqualityOptions<TMember> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<ReadOnlyDictionary<TKey, TValue>, IThat<ReadOnlyDictionary<TKey, TValue>?>,
 			TMember>(
 			expectationBuilder.AddConstraint((it, grammars) =>
@@ -191,7 +191,7 @@ public static partial class ThatReadOnlyDictionary
 					memberAccessor,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					options)),
-			source, options
+			subject, options
 		);
 	}
 
@@ -206,14 +206,14 @@ public static partial class ThatReadOnlyDictionary
 	public static StringEqualityResult<ReadOnlyDictionary<TKey, TValue>, IThat<ReadOnlyDictionary<TKey, TValue>?>>
 		AreAllUnique<TKey,
 			TValue>(
-			this IThat<ReadOnlyDictionary<TKey, TValue>?> source,
+			this IThat<ReadOnlyDictionary<TKey, TValue>?> subject,
 			Func<TValue, string> memberAccessor,
 			[CallerArgumentExpression("memberAccessor")]
 			string doNotPopulateThisValue = "")
 		where TKey : notnull
 	{
 		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<ReadOnlyDictionary<TKey, TValue>, IThat<ReadOnlyDictionary<TKey, TValue>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AllIsUniqueWithPredicateConstraint<TKey, TValue, string, string>(
@@ -222,7 +222,7 @@ public static partial class ThatReadOnlyDictionary
 					memberAccessor,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					options)),
-			source, options
+			subject, options
 		);
 	}
 

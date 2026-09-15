@@ -20,12 +20,12 @@ public static partial class ThatSignaler
 	/// </summary>
 	[GuaranteesNotNull]
 	public static SignalCountResult Signaled(
-		this IThat<Signaler> source)
+		this IThat<Signaler> subject)
 	{
 		SignalerOptions options = new();
-		return new SignalCountResult(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new SignalCountResult(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new SignaledConstraint(it, grammars, 1, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -34,12 +34,12 @@ public static partial class ThatSignaler
 	/// </summary>
 	[GuaranteesNotNull]
 	public static SignalCountWhoseResult<TParameter> Signaled<TParameter>(
-		this IThat<Signaler<TParameter>> source)
+		this IThat<Signaler<TParameter>> subject)
 	{
 		SignalerOptions<TParameter> options = new();
-		return new SignalCountWhoseResult<TParameter>(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new SignalCountWhoseResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new SignaledConstraint<TParameter>(it, grammars, 1, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -49,13 +49,13 @@ public static partial class ThatSignaler
 	/// </summary>
 	[GuaranteesNotNull]
 	public static SignalCountResult Signaled(
-		this IThat<Signaler> source,
+		this IThat<Signaler> subject,
 		Times times)
 	{
 		SignalerOptions options = new();
-		return new SignalCountResult(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new SignalCountResult(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new SignaledConstraint(it, grammars, times.Value, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -65,13 +65,13 @@ public static partial class ThatSignaler
 	/// </summary>
 	[GuaranteesNotNull]
 	public static SignalCountWhoseResult<TParameter> Signaled<TParameter>(
-		this IThat<Signaler<TParameter>> source,
+		this IThat<Signaler<TParameter>> subject,
 		Times times)
 	{
 		SignalerOptions<TParameter> options = new();
-		return new SignalCountWhoseResult<TParameter>(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new SignalCountWhoseResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new SignaledConstraint<TParameter>(it, grammars, times.Value, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -80,12 +80,12 @@ public static partial class ThatSignaler
 	/// </summary>
 	[GuaranteesNotNull]
 	public static SignalCountResult DidNotSignal(
-		this IThat<Signaler> source)
+		this IThat<Signaler> subject)
 	{
 		SignalerOptions options = new();
-		return new SignalCountResult(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new SignalCountResult(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new SignaledConstraint(it, grammars, 1, options).Invert()),
-			source,
+			subject,
 			options);
 	}
 
@@ -94,12 +94,12 @@ public static partial class ThatSignaler
 	/// </summary>
 	[GuaranteesNotNull]
 	public static SignalCountResult<TParameter> DidNotSignal<TParameter>(
-		this IThat<Signaler<TParameter>> source)
+		this IThat<Signaler<TParameter>> subject)
 	{
 		SignalerOptions<TParameter> options = new();
-		return new SignalCountResult<TParameter>(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new SignalCountResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new SignaledConstraint<TParameter>(it, grammars, 1, options).Invert()),
-			source,
+			subject,
 			options);
 	}
 
@@ -109,13 +109,13 @@ public static partial class ThatSignaler
 	/// </summary>
 	[GuaranteesNotNull]
 	public static SignalCountResult DidNotSignal(
-		this IThat<Signaler> source,
+		this IThat<Signaler> subject,
 		Times times)
 	{
 		SignalerOptions options = new();
-		return new SignalCountResult(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new SignalCountResult(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new SignaledConstraint(it, grammars, times.Value, options).Invert()),
-			source,
+			subject,
 			options);
 	}
 
@@ -125,13 +125,13 @@ public static partial class ThatSignaler
 	/// </summary>
 	[GuaranteesNotNull]
 	public static SignalCountResult<TParameter> DidNotSignal<TParameter>(
-		this IThat<Signaler<TParameter>> source,
+		this IThat<Signaler<TParameter>> subject,
 		Times times)
 	{
 		SignalerOptions<TParameter> options = new();
-		return new SignalCountResult<TParameter>(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new SignalCountResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new SignaledConstraint<TParameter>(it, grammars, times.Value, options).Invert()),
-			source,
+			subject,
 			options);
 	}
 

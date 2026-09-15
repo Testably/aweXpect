@@ -15,14 +15,14 @@ public static partial class ThatNullableTimeSpan
 	///     Verifies that the subject is one of the <paramref name="expected" /> values.
 	/// </summary>
 	public static TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>> IsOneOf(
-		this IThat<TimeSpan?> source,
+		this IThat<TimeSpan?> subject,
 		params TimeSpan?[] expected)
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint(it, grammars, expected, tolerance)),
-			source,
+			subject,
 			tolerance);
 	}
 
@@ -30,14 +30,14 @@ public static partial class ThatNullableTimeSpan
 	///     Verifies that the subject is one of the <paramref name="expected" /> values.
 	/// </summary>
 	public static TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>> IsOneOf(
-		this IThat<TimeSpan?> source,
+		this IThat<TimeSpan?> subject,
 		IEnumerable<TimeSpan> expected)
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint(it, grammars, expected.Cast<TimeSpan?>(), tolerance)),
-			source,
+			subject,
 			tolerance);
 	}
 
@@ -45,14 +45,14 @@ public static partial class ThatNullableTimeSpan
 	///     Verifies that the subject is one of the <paramref name="expected" /> values.
 	/// </summary>
 	public static TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>> IsOneOf(
-		this IThat<TimeSpan?> source,
+		this IThat<TimeSpan?> subject,
 		IEnumerable<TimeSpan?> expected)
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint(it, grammars, expected, tolerance)),
-			source,
+			subject,
 			tolerance);
 	}
 
@@ -60,14 +60,14 @@ public static partial class ThatNullableTimeSpan
 	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
 	/// </summary>
 	public static TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>> IsNotOneOf(
-		this IThat<TimeSpan?> source,
+		this IThat<TimeSpan?> subject,
 		params TimeSpan?[] unexpected)
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint(it, grammars, unexpected, tolerance).Invert()),
-			source,
+			subject,
 			tolerance);
 	}
 
@@ -75,14 +75,14 @@ public static partial class ThatNullableTimeSpan
 	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
 	/// </summary>
 	public static TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>> IsNotOneOf(
-		this IThat<TimeSpan?> source,
+		this IThat<TimeSpan?> subject,
 		IEnumerable<TimeSpan> unexpected)
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint(it, grammars, unexpected.Cast<TimeSpan?>(), tolerance).Invert()),
-			source,
+			subject,
 			tolerance);
 	}
 
@@ -90,14 +90,14 @@ public static partial class ThatNullableTimeSpan
 	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
 	/// </summary>
 	public static TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>> IsNotOneOf(
-		this IThat<TimeSpan?> source,
+		this IThat<TimeSpan?> subject,
 		IEnumerable<TimeSpan?> unexpected)
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<TimeSpan?, IThat<TimeSpan?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint(it, grammars, unexpected, tolerance).Invert()),
-			source,
+			subject,
 			tolerance);
 	}
 

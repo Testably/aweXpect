@@ -14,14 +14,14 @@ public static partial class ThatObject
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<T?, IThat<T?>> Is<T>(
-		this IThat<T?> source,
+		this IThat<T?> subject,
 		Type type)
 		where T : class
 	{
 		type.ThrowIfNull();
-		return new AndOrResult<T?, IThat<T?>>(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new AndOrResult<T?, IThat<T?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsOfTypeConstraint(it, grammars, type)),
-			source);
+			subject);
 	}
 
 	/// <summary>
@@ -29,14 +29,14 @@ public static partial class ThatObject
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<T?, IThat<T?>> IsNot<T>(
-		this IThat<T?> source,
+		this IThat<T?> subject,
 		Type type)
 		where T : class
 	{
 		type.ThrowIfNull();
-		return new AndOrResult<T?, IThat<T?>>(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new AndOrResult<T?, IThat<T?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsOfTypeConstraint(it, grammars, type).Invert()),
-			source);
+			subject);
 	}
 
 	private sealed class IsOfTypeConstraint(string it, ExpectationGrammars grammars, Type type)

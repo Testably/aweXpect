@@ -10,6 +10,6 @@ public static partial class ThatVersion
 	///     Verifies that the major component of the <see cref="Version" /> subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Int<Version?> HasMajor(this IThat<Version?> source)
-		=> new(source, a => a?.Major, "major");
+	public static PropertyResult.Int<Version?> HasMajor(this IThat<Version?> subject)
+		=> new(subject, a => a?.Major, "major");
 }

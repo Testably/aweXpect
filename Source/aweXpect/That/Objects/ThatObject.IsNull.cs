@@ -11,43 +11,43 @@ public static partial class ThatObject
 	///     Verifies that the subject is <see langword="null" />.
 	/// </summary>
 	public static AndOrResult<T?, IThat<T?>> IsNull<T>(
-		this IThat<T?> source)
+		this IThat<T?> subject)
 		where T : class
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsNullConstraint<T?>(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is <see langword="null" />.
 	/// </summary>
 	public static AndOrResult<T?, IThat<T?>> IsNull<T>(
-		this IThat<T?> source)
+		this IThat<T?> subject)
 		where T : struct
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsNullConstraint<T?>(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not <see langword="null" />.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<T, IThat<T?>> IsNotNull<T>(
-		this IThat<T?> source)
+		this IThat<T?> subject)
 		where T : class
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsNullConstraint<T?>(it, grammars).Invert()),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not <see langword="null" />.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<T, IThat<T?>> IsNotNull<T>(
-		this IThat<T?> source)
+		this IThat<T?> subject)
 		where T : struct
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsNullConstraint<T?>(it, grammars).Invert()),
-			source);
+			subject);
 
 	private sealed class IsNullConstraint<T>(
 		string it,

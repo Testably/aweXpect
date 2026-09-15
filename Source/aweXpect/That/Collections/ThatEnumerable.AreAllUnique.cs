@@ -26,14 +26,14 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem> AreAllUnique<TItem>(
-		this IThat<IEnumerable<TItem>?> source)
+		this IThat<IEnumerable<TItem>?> subject)
 	{
 		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new AreAllUniqueConstraint<TItem, TItem>(expectationBuilder, it, grammars, options)),
-			source, options
+			subject, options
 		);
 	}
 
@@ -42,14 +42,14 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[GuaranteesNotNull]
 	public static StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>> AreAllUnique(
-		this IThat<IEnumerable<string?>?> source)
+		this IThat<IEnumerable<string?>?> subject)
 	{
 		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new AreAllUniqueConstraint<string, string>(expectationBuilder, it, grammars, options)),
-			source, options
+			subject, options
 		);
 	}
 
@@ -60,13 +60,13 @@ public static partial class ThatEnumerable
 	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TMember> AreAllUnique<TItem,
 		TMember>(
-		this IThat<IEnumerable<TItem>?> source,
+		this IThat<IEnumerable<TItem>?> subject,
 		Func<TItem, TMember> memberAccessor,
 		[CallerArgumentExpression("memberAccessor")]
 		string doNotPopulateThisValue = "")
 	{
 		ObjectEqualityOptions<TMember> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TMember>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new AreAllUniqueWithPredicateConstraint<TItem, TMember, TMember>(
@@ -75,7 +75,7 @@ public static partial class ThatEnumerable
 					memberAccessor,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					options)),
-			source, options
+			subject, options
 		);
 	}
 
@@ -85,13 +85,13 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[GuaranteesNotNull]
 	public static StringEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>> AreAllUnique<TItem>(
-		this IThat<IEnumerable<TItem>?> source,
+		this IThat<IEnumerable<TItem>?> subject,
 		Func<TItem, string> memberAccessor,
 		[CallerArgumentExpression("memberAccessor")]
 		string doNotPopulateThisValue = "")
 	{
 		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new AreAllUniqueWithPredicateConstraint<TItem, string, string>(
@@ -100,7 +100,7 @@ public static partial class ThatEnumerable
 					memberAccessor,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					options)),
-			source, options
+			subject, options
 		);
 	}
 
@@ -110,15 +110,15 @@ public static partial class ThatEnumerable
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, object?> AreAllUnique(
-		this IThat<IEnumerable?> source)
+		this IThat<IEnumerable?> subject)
 	{
 		ObjectEqualityOptions<object?> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, object?>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new AreAllUniqueForEnumerableConstraint<IEnumerable, object?>(expectationBuilder, it, grammars,
 					options)),
-			source, options
+			subject, options
 		);
 	}
 
@@ -129,13 +129,13 @@ public static partial class ThatEnumerable
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TMember> AreAllUnique<TMember>(
-		this IThat<IEnumerable?> source,
+		this IThat<IEnumerable?> subject,
 		Func<object?, TMember> memberAccessor,
 		[CallerArgumentExpression("memberAccessor")]
 		string doNotPopulateThisValue = "")
 	{
 		ObjectEqualityOptions<TMember> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TMember>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new AreAllUniqueWithPredicateForEnumerableConstraint<IEnumerable, TMember, TMember>(
@@ -144,7 +144,7 @@ public static partial class ThatEnumerable
 					memberAccessor,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					options)),
-			source, options
+			subject, options
 		);
 	}
 
@@ -153,15 +153,15 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection only contains unique items.
 	/// </summary>
 	public static ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem> AreAllUnique<TItem>(
-		this IThat<ImmutableArray<TItem>> source)
+		this IThat<ImmutableArray<TItem>> subject)
 	{
 		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new AreAllUniqueForEnumerableConstraint<ImmutableArray<TItem>, TItem>(expectationBuilder, it,
 					grammars, options)),
-			source, options
+			subject, options
 		);
 	}
 #endif
@@ -171,15 +171,15 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection only contains unique items.
 	/// </summary>
 	public static StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>> AreAllUnique(
-		this IThat<ImmutableArray<string?>> source)
+		this IThat<ImmutableArray<string?>> subject)
 	{
 		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new AreAllUniqueForEnumerableConstraint<ImmutableArray<string?>, string>(expectationBuilder, it,
 					grammars, options)),
-			source, options
+			subject, options
 		);
 	}
 #endif
@@ -192,13 +192,13 @@ public static partial class ThatEnumerable
 	public static ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TMember> AreAllUnique<
 		TItem,
 		TMember>(
-		this IThat<ImmutableArray<TItem>> source,
+		this IThat<ImmutableArray<TItem>> subject,
 		Func<TItem, TMember> memberAccessor,
 		[CallerArgumentExpression("memberAccessor")]
 		string doNotPopulateThisValue = "")
 	{
 		ObjectEqualityOptions<TMember> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TMember>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new AreAllUniqueWithPredicateForEnumerableConstraint<ImmutableArray<TItem>, TMember, TMember>(
@@ -207,7 +207,7 @@ public static partial class ThatEnumerable
 					v => memberAccessor((TItem)v!),
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					options)),
-			source, options
+			subject, options
 		);
 	}
 #endif
@@ -218,13 +218,13 @@ public static partial class ThatEnumerable
 	///     <paramref name="memberAccessor" />.
 	/// </summary>
 	public static StringEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>> AreAllUnique<TItem>(
-		this IThat<ImmutableArray<TItem>> source,
+		this IThat<ImmutableArray<TItem>> subject,
 		Func<TItem, string> memberAccessor,
 		[CallerArgumentExpression("memberAccessor")]
 		string doNotPopulateThisValue = "")
 	{
 		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new AreAllUniqueWithPredicateForEnumerableConstraint<ImmutableArray<TItem>, string, string>(
@@ -233,7 +233,7 @@ public static partial class ThatEnumerable
 					v => memberAccessor((TItem)v!),
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					options)),
-			source, options
+			subject, options
 		);
 	}
 #endif

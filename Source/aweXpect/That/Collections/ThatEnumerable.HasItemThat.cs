@@ -25,14 +25,14 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[GuaranteesNotNull]
 	public static HasItemResult<IEnumerable<TItem>?> HasItemThat<TItem>(
-		this IThat<IEnumerable<TItem>?> source, Action<IThatSubject<TItem>> expectations)
+		this IThat<IEnumerable<TItem>?> subject, Action<IThatSubject<TItem>> expectations)
 	{
 		CollectionIndexOptions indexOptions = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IEnumerable<TItem>?>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemThatConstraint<TItem>(expectationBuilder, it, grammars, expectations, indexOptions)),
-			source,
+			subject,
 			indexOptions);
 	}
 
@@ -41,15 +41,15 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection has an item that complies with the <paramref name="expectations" />…
 	/// </summary>
 	public static HasItemResult<ImmutableArray<TItem>> HasItemThat<TItem>(
-		this IThat<ImmutableArray<TItem>> source, Action<IThatSubject<TItem>> expectations)
+		this IThat<ImmutableArray<TItem>> subject, Action<IThatSubject<TItem>> expectations)
 	{
 		CollectionIndexOptions indexOptions = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<ImmutableArray<TItem>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemThatForEnumerableConstraint<ImmutableArray<TItem>, TItem>(
 					expectationBuilder, it, grammars, expectations, indexOptions)),
-			source,
+			subject,
 			indexOptions);
 	}
 #endif

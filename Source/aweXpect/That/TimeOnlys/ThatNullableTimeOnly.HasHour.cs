@@ -11,7 +11,7 @@ public static partial class ThatNullableTimeOnly
 	///     Verifies that the hour of the subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Int<TimeOnly?> HasHour(this IThat<TimeOnly?> source)
-		=> new(source, a => a?.Hour, "hour");
+	public static PropertyResult.Int<TimeOnly?> HasHour(this IThat<TimeOnly?> subject)
+		=> new(subject, a => a?.Hour, "hour");
 }
 #endif

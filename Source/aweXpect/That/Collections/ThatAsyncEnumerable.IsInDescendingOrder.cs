@@ -20,16 +20,16 @@ public static partial class ThatAsyncEnumerable
 	[GuaranteesNotNull]
 	public static CollectionOrderResult<TItem, IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
 		IsInDescendingOrder<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> source)
+			this IThat<IAsyncEnumerable<TItem>?> subject)
 	{
 		CollectionOrderOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CollectionOrderResult<TItem, IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsInOrderConstraint<TItem, TItem>(
 					expectationBuilder, it, grammars,
 					x => x, SortOrder.Descending, options, "")),
-			source,
+			subject,
 			options);
 	}
 
@@ -40,20 +40,20 @@ public static partial class ThatAsyncEnumerable
 	public static CollectionOrderResult<TMember, IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
 		IsInDescendingOrder<
 			TItem, TMember>(
-			this IThat<IAsyncEnumerable<TItem>?> source,
+			this IThat<IAsyncEnumerable<TItem>?> subject,
 			Func<TItem, TMember> memberAccessor,
 			[CallerArgumentExpression("memberAccessor")]
 			string doNotPopulateThisValue = "")
 	{
 		CollectionOrderOptions<TMember> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CollectionOrderResult<TMember, IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsInOrderConstraint<TItem, TMember>(
 					expectationBuilder, it, grammars,
 					memberAccessor, SortOrder.Descending, options,
 					$" for {doNotPopulateThisValue.TrimCommonWhiteSpace()}")),
-			source,
+			subject,
 			options);
 	}
 
@@ -63,16 +63,16 @@ public static partial class ThatAsyncEnumerable
 	[GuaranteesNotNull]
 	public static CollectionOrderResult<TItem, IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
 		IsNotInDescendingOrder<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> source)
+			this IThat<IAsyncEnumerable<TItem>?> subject)
 	{
 		CollectionOrderOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CollectionOrderResult<TItem, IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsInOrderConstraint<TItem, TItem>(
 					expectationBuilder, it, grammars,
 					x => x, SortOrder.Descending, options, "").Invert()),
-			source,
+			subject,
 			options);
 	}
 
@@ -83,20 +83,20 @@ public static partial class ThatAsyncEnumerable
 	public static CollectionOrderResult<TMember, IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
 		IsNotInDescendingOrder<
 			TItem, TMember>(
-			this IThat<IAsyncEnumerable<TItem>?> source,
+			this IThat<IAsyncEnumerable<TItem>?> subject,
 			Func<TItem, TMember> memberAccessor,
 			[CallerArgumentExpression("memberAccessor")]
 			string doNotPopulateThisValue = "")
 	{
 		CollectionOrderOptions<TMember> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CollectionOrderResult<TMember, IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new IsInOrderConstraint<TItem, TMember>(
 					expectationBuilder, it, grammars,
 					memberAccessor, SortOrder.Descending, options,
 					$" for {doNotPopulateThisValue.TrimCommonWhiteSpace()}").Invert()),
-			source,
+			subject,
 			options);
 	}
 }

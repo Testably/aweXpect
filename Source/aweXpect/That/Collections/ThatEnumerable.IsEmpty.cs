@@ -20,31 +20,31 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>> IsEmpty<TItem>(
-		this IThat<IEnumerable<TItem>?> source)
-		=> new(source.Get().ExpectationBuilder
+		this IThat<IEnumerable<TItem>?> subject)
+		=> new(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars) => new IsEmptyConstraint<TItem>(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the collection is empty.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<TEnumerable, IThat<TEnumerable?>> IsEmpty<TEnumerable>(
-		this IThat<TEnumerable?> source)
+		this IThat<TEnumerable?> subject)
 		where TEnumerable : IEnumerable
-		=> new(source.Get().ExpectationBuilder
+		=> new(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars) => new IsEmptyForEnumerableConstraint<TEnumerable>(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the collection is not empty.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>> IsNotEmpty<TItem>(
-		this IThat<IEnumerable<TItem>?> source)
-		=> new(source.Get().ExpectationBuilder
+		this IThat<IEnumerable<TItem>?> subject)
+		=> new(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars) => new IsEmptyConstraint<TItem>(it, grammars).Invert()),
-			source);
+			subject);
 
 	private sealed class IsEmptyConstraint<TItem>(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<IEnumerable<TItem>?>(it, grammars),

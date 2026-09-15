@@ -16,14 +16,14 @@ public static partial class ThatNullableDateTimeOffset
 	///     Verifies that the subject is one of the <paramref name="expected" /> values.
 	/// </summary>
 	public static TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>> IsOneOf(
-		this IThat<DateTimeOffset?> source,
+		this IThat<DateTimeOffset?> subject,
 		params DateTimeOffset?[] expected)
 	{
 		TimeTolerance tolerance = new();
-		return new TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>(source.Get().ExpectationBuilder
+		return new TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars) =>
 					new IsOneOfConstraint(it, grammars, expected, tolerance)),
-			source,
+			subject,
 			tolerance);
 	}
 
@@ -31,14 +31,14 @@ public static partial class ThatNullableDateTimeOffset
 	///     Verifies that the subject is one of the <paramref name="expected" /> values.
 	/// </summary>
 	public static TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>> IsOneOf(
-		this IThat<DateTimeOffset?> source,
+		this IThat<DateTimeOffset?> subject,
 		IEnumerable<DateTimeOffset> expected)
 	{
 		TimeTolerance tolerance = new();
-		return new TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>(source.Get().ExpectationBuilder
+		return new TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars) =>
 					new IsOneOfConstraint(it, grammars, expected.Cast<DateTimeOffset?>(), tolerance)),
-			source,
+			subject,
 			tolerance);
 	}
 
@@ -46,14 +46,14 @@ public static partial class ThatNullableDateTimeOffset
 	///     Verifies that the subject is one of the <paramref name="expected" /> values.
 	/// </summary>
 	public static TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>> IsOneOf(
-		this IThat<DateTimeOffset?> source,
+		this IThat<DateTimeOffset?> subject,
 		IEnumerable<DateTimeOffset?> expected)
 	{
 		TimeTolerance tolerance = new();
-		return new TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>(source.Get().ExpectationBuilder
+		return new TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars) =>
 					new IsOneOfConstraint(it, grammars, expected, tolerance)),
-			source,
+			subject,
 			tolerance);
 	}
 
@@ -61,14 +61,14 @@ public static partial class ThatNullableDateTimeOffset
 	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
 	/// </summary>
 	public static TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>> IsNotOneOf(
-		this IThat<DateTimeOffset?> source,
+		this IThat<DateTimeOffset?> subject,
 		params DateTimeOffset?[] unexpected)
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint(it, grammars, unexpected, tolerance).Invert()),
-			source,
+			subject,
 			tolerance);
 	}
 
@@ -76,14 +76,14 @@ public static partial class ThatNullableDateTimeOffset
 	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
 	/// </summary>
 	public static TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>> IsNotOneOf(
-		this IThat<DateTimeOffset?> source,
+		this IThat<DateTimeOffset?> subject,
 		IEnumerable<DateTimeOffset> unexpected)
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint(it, grammars, unexpected.Cast<DateTimeOffset?>(), tolerance).Invert()),
-			source,
+			subject,
 			tolerance);
 	}
 
@@ -91,14 +91,14 @@ public static partial class ThatNullableDateTimeOffset
 	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
 	/// </summary>
 	public static TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>> IsNotOneOf(
-		this IThat<DateTimeOffset?> source,
+		this IThat<DateTimeOffset?> subject,
 		IEnumerable<DateTimeOffset?> unexpected)
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint(it, grammars, unexpected, tolerance).Invert()),
-			source,
+			subject,
 			tolerance);
 	}
 

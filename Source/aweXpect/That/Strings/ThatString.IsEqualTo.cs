@@ -14,14 +14,14 @@ public static partial class ThatString
 	///     Verifies that the subject is equal to <paramref name="expected" />.
 	/// </summary>
 	public static StringEqualityTypeResult<string?, IThat<string?>> IsEqualTo(
-		this IThat<string?> source,
+		this IThat<string?> subject,
 		string? expected)
 	{
 		StringEqualityOptions options = new();
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
-			source.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
 				new IsEqualToConstraint(expectationBuilder, it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -29,14 +29,14 @@ public static partial class ThatString
 	///     Verifies that the subject is not equal to <paramref name="unexpected" />.
 	/// </summary>
 	public static StringEqualityTypeResult<string?, IThat<string?>> IsNotEqualTo(
-		this IThat<string?> source,
+		this IThat<string?> subject,
 		string? unexpected)
 	{
 		StringEqualityOptions options = new();
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
-			source.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
 				new IsEqualToConstraint(expectationBuilder, it, grammars, unexpected, options).Invert()),
-			source,
+			subject,
 			options);
 	}
 

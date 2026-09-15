@@ -13,20 +13,20 @@ public static partial class ThatStream
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<Stream?, IThat<Stream?>> IsReadable(
-		this IThat<Stream?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<Stream?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsReadableConstraint(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject <see cref="Stream" /> is not readable.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<Stream?, IThat<Stream?>> IsNotReadable(
-		this IThat<Stream?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<Stream?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsReadableConstraint(it, grammars).Invert()),
-			source);
+			subject);
 
 	private sealed class IsReadableConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<Stream?>(it, grammars),
