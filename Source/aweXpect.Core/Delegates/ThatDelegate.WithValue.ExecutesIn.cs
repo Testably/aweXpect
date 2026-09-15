@@ -28,6 +28,21 @@ public abstract partial class ThatDelegate
 				options);
 		}
 
+		/// <summary>
+		///     Verifies that the delegate executes in approximately the <paramref name="expected" /> time…
+		/// </summary>
+		[GuaranteesNotNull]
+		public ExecutesInToleranceResult<AndResult<WithValue<T>>> ExecutesIn(TimeSpan expected)
+		{
+			TimeSpanEqualityOptions options = new();
+			return new ExecutesInToleranceResult<AndResult<WithValue<T>>>(
+				new AndResult<WithValue<T>>(ExpectationBuilder.AddConstraint((it, grammars)
+						=> new ExecutesInConstraint(it, grammars, options)),
+					this),
+				options,
+				expected);
+		}
+
 		private sealed class ExecutesInConstraint(
 			string it,
 			ExpectationGrammars grammars,

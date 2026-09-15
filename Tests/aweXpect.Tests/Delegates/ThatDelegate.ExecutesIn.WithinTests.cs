@@ -6,7 +6,7 @@ public sealed partial class ThatDelegate
 {
 	public sealed partial class ExecutesIn
 	{
-		public sealed class ApproximatelyTests
+		public sealed class WithinTests
 		{
 			[Fact]
 			public async Task WhenDelegateIsTooFast_ShouldFail()
@@ -14,7 +14,7 @@ public sealed partial class ThatDelegate
 				Action @delegate = () => { Thread.Sleep(5); };
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().Approximately(5000.Milliseconds(), 1123.Milliseconds());
+					=> await That(@delegate).ExecutesIn(5000.Milliseconds()).Within(1123.Milliseconds());
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -30,7 +30,7 @@ public sealed partial class ThatDelegate
 				Action @delegate = () => { Thread.Sleep(50); };
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().Approximately(50.Milliseconds(), 500.Milliseconds());
+					=> await That(@delegate).ExecutesIn(50.Milliseconds()).Within(500.Milliseconds());
 
 				await That(Act).DoesNotThrow();
 			}
@@ -41,7 +41,7 @@ public sealed partial class ThatDelegate
 				Action @delegate = () => { Thread.Sleep(50); };
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().Approximately(10.Milliseconds(), 5.Milliseconds());
+					=> await That(@delegate).ExecutesIn(10.Milliseconds()).Within(5.Milliseconds());
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -49,6 +49,18 @@ public sealed partial class ThatDelegate
 					             executes in approximately 0:00.010 ± 0:00.005,
 					             but it took 0:*
 					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenToleranceIsNegative_ShouldThrowArgumentOutOfRangeException()
+			{
+				Action @delegate = () => { };
+
+				async Task Act()
+					=> await That(@delegate).ExecutesIn(50.Milliseconds()).Within(-1.Milliseconds());
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithMessage("The tolerance must not be negative").AsPrefix();
 			}
 		}
 	}
