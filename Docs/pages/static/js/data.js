@@ -3720,6 +3720,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 07:33:41 2026 \u002B0200",
         "message": "test: stop the \u0022infinite\u0022 sequences after a safety limit"
+      },
+      {
+        "sha": "a9d6112f7f61e4a029a56a43a1cd5d55c1fe309c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 08:11:25 2026 \u002B0200",
+        "message": "feat!: generate the type metadata registrations for equivalency from the marked call sites (#1086)"
       }
     ],
     "labels": [
@@ -4342,7 +4348,8 @@ window.BENCHMARK_DATA = {
       "3a66050e",
       "5fa9d810",
       "2274a820",
-      "7a595a63"
+      "7a595a63",
+      "a9d6112f"
     ],
     "datasets": [
       {
@@ -4968,7 +4975,8 @@ window.BENCHMARK_DATA = {
           254.31283381779988,
           257.5374924023946,
           196.90801135698953,
-          269.8032855669657
+          269.8032855669657,
+          249.30110273361205
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5441,6 +5449,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6233,7 +6242,8 @@ window.BENCHMARK_DATA = {
           237.89337490002313,
           271.99132073720295,
           196.11365172068278,
-          292.3035370826721
+          292.3035370826721,
+          251.50414164861044
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6426,6 +6436,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10136,6 +10147,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 07:33:41 2026 \u002B0200",
         "message": "test: stop the \u0022infinite\u0022 sequences after a safety limit"
+      },
+      {
+        "sha": "a9d6112f7f61e4a029a56a43a1cd5d55c1fe309c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 08:11:25 2026 \u002B0200",
+        "message": "feat!: generate the type metadata registrations for equivalency from the marked call sites (#1086)"
       }
     ],
     "labels": [
@@ -10681,7 +10698,8 @@ window.BENCHMARK_DATA = {
       "3a66050e",
       "5fa9d810",
       "2274a820",
-      "7a595a63"
+      "7a595a63",
+      "a9d6112f"
     ],
     "datasets": [
       {
@@ -11230,7 +11248,8 @@ window.BENCHMARK_DATA = {
           395099.5535807292,
           383259.0914388021,
           282997.7490559896,
-          352153.7346888951
+          352153.7346888951,
+          367216.8917317708
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11784,7 +11803,8 @@ window.BENCHMARK_DATA = {
           542085,
           542084,
           542084,
-          542084
+          542084,
+          542085
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12341,7 +12361,8 @@ window.BENCHMARK_DATA = {
           2802643.9260602677,
           2397191.646354167,
           1836027.2087239583,
-          2258618.474739583
+          2258618.474739583,
+          2347232.1354166665
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12895,7 +12916,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841635,
           4841648,
-          4841613
+          4841613,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16629,6 +16651,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 07:33:41 2026 \u002B0200",
         "message": "test: stop the \u0022infinite\u0022 sequences after a safety limit"
+      },
+      {
+        "sha": "a9d6112f7f61e4a029a56a43a1cd5d55c1fe309c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 08:11:25 2026 \u002B0200",
+        "message": "feat!: generate the type metadata registrations for equivalency from the marked call sites (#1086)"
       }
     ],
     "labels": [
@@ -17251,7 +17279,8 @@ window.BENCHMARK_DATA = {
       "3a66050e",
       "5fa9d810",
       "2274a820",
-      "7a595a63"
+      "7a595a63",
+      "a9d6112f"
     ],
     "datasets": [
       {
@@ -17877,7 +17906,8 @@ window.BENCHMARK_DATA = {
           521.6478244917733,
           494.7722628275553,
           363.58683786392214,
-          525.800393308912
+          525.800393308912,
+          469.3274403254191
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18350,6 +18380,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -19142,7 +19173,8 @@ window.BENCHMARK_DATA = {
           538.4961628232684,
           528.4363608678182,
           399.7704559961955,
-          590.330544980367
+          590.330544980367,
+          488.87791239420574
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19335,6 +19367,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -23507,6 +23540,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 07:33:41 2026 \u002B0200",
         "message": "test: stop the \u0022infinite\u0022 sequences after a safety limit"
+      },
+      {
+        "sha": "a9d6112f7f61e4a029a56a43a1cd5d55c1fe309c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 08:11:25 2026 \u002B0200",
+        "message": "feat!: generate the type metadata registrations for equivalency from the marked call sites (#1086)"
       }
     ],
     "labels": [
@@ -24129,7 +24168,8 @@ window.BENCHMARK_DATA = {
       "3a66050e",
       "5fa9d810",
       "2274a820",
-      "7a595a63"
+      "7a595a63",
+      "a9d6112f"
     ],
     "datasets": [
       {
@@ -24755,7 +24795,8 @@ window.BENCHMARK_DATA = {
           281.6811509450277,
           275.06960776646935,
           206.19679361979166,
-          309.70217558542885
+          309.70217558542885,
+          311.4363928159078
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -25269,6 +25310,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -26020,7 +26062,8 @@ window.BENCHMARK_DATA = {
           288.50390370686847,
           276.23029589653015,
           190.39022885836087,
-          332.3568512916565
+          332.3568512916565,
+          245.01674894186166
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -26213,6 +26256,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -30385,6 +30429,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 07:33:41 2026 \u002B0200",
         "message": "test: stop the \u0022infinite\u0022 sequences after a safety limit"
+      },
+      {
+        "sha": "a9d6112f7f61e4a029a56a43a1cd5d55c1fe309c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 08:11:25 2026 \u002B0200",
+        "message": "feat!: generate the type metadata registrations for equivalency from the marked call sites (#1086)"
       }
     ],
     "labels": [
@@ -31007,7 +31057,8 @@ window.BENCHMARK_DATA = {
       "3a66050e",
       "5fa9d810",
       "2274a820",
-      "7a595a63"
+      "7a595a63",
+      "a9d6112f"
     ],
     "datasets": [
       {
@@ -31633,7 +31684,8 @@ window.BENCHMARK_DATA = {
           494.18738918304444,
           477.94668610890704,
           355.2072853020259,
-          447.0760128339132
+          447.0760128339132,
+          458.56294771341175
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32106,6 +32158,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -32898,7 +32951,8 @@ window.BENCHMARK_DATA = {
           1370.0128548940022,
           1341.652505329677,
           883.0441282908122,
-          1277.3768961588542
+          1277.3768961588542,
+          1128.3526980536324
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33327,6 +33381,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -37263,6 +37318,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 07:33:41 2026 \u002B0200",
         "message": "test: stop the \u0022infinite\u0022 sequences after a safety limit"
+      },
+      {
+        "sha": "a9d6112f7f61e4a029a56a43a1cd5d55c1fe309c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 08:11:25 2026 \u002B0200",
+        "message": "feat!: generate the type metadata registrations for equivalency from the marked call sites (#1086)"
       }
     ],
     "labels": [
@@ -37885,7 +37946,8 @@ window.BENCHMARK_DATA = {
       "3a66050e",
       "5fa9d810",
       "2274a820",
-      "7a595a63"
+      "7a595a63",
+      "a9d6112f"
     ],
     "datasets": [
       {
@@ -38511,7 +38573,8 @@ window.BENCHMARK_DATA = {
           1941.6528345743816,
           1670.9143939971923,
           1410.924646105085,
-          1422.3141540527345
+          1422.3141540527345,
+          1808.64620413099
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38984,6 +39047,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -39776,7 +39840,8 @@ window.BENCHMARK_DATA = {
           1400.2874593734741,
           1437.5937737782797,
           1009.9652674538748,
-          1444.8710503896077
+          1444.8710503896077,
+          1321.148864618937
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39969,6 +40034,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -44141,6 +44207,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 07:33:41 2026 \u002B0200",
         "message": "test: stop the \u0022infinite\u0022 sequences after a safety limit"
+      },
+      {
+        "sha": "a9d6112f7f61e4a029a56a43a1cd5d55c1fe309c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 08:11:25 2026 \u002B0200",
+        "message": "feat!: generate the type metadata registrations for equivalency from the marked call sites (#1086)"
       }
     ],
     "labels": [
@@ -44763,7 +44835,8 @@ window.BENCHMARK_DATA = {
       "3a66050e",
       "5fa9d810",
       "2274a820",
-      "7a595a63"
+      "7a595a63",
+      "a9d6112f"
     ],
     "datasets": [
       {
@@ -45389,7 +45462,8 @@ window.BENCHMARK_DATA = {
           2660.4840303148544,
           2179.668372599284,
           1916.8696338653565,
-          1870.5654805501301
+          1870.5654805501301,
+          2491.4571551005047
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -45862,6 +45936,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -46654,7 +46729,8 @@ window.BENCHMARK_DATA = {
           28238.857125418526,
           24276.291119384765,
           15356.671731131417,
-          17557.282236735027
+          17557.282236735027,
+          19817.087254115515
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47285,7 +47361,8 @@ window.BENCHMARK_DATA = {
           33471,
           33468,
           33471,
-          33465
+          33465,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
