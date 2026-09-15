@@ -3738,6 +3738,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 11:05:13 2026 \u002B0200",
         "message": "refactor!: name the collection result types after what they do (#1121)"
+      },
+      {
+        "sha": "af336624738f9fca6493ea1f4abe4200a8c70430",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 11:47:33 2026 \u002B0200",
+        "message": "refactor!: remove the parameterless Exactly() match type (#1123)"
       }
     ],
     "labels": [
@@ -4363,7 +4369,8 @@ window.BENCHMARK_DATA = {
       "7a595a63",
       "a9d6112f",
       "98a01e4d",
-      "d095969d"
+      "d095969d",
+      "af336624"
     ],
     "datasets": [
       {
@@ -4992,7 +4999,8 @@ window.BENCHMARK_DATA = {
           269.8032855669657,
           249.30110273361205,
           282.25110816955566,
-          240.25693119366963
+          240.25693119366963,
+          187.42290679613748
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5465,6 +5473,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6263,7 +6272,8 @@ window.BENCHMARK_DATA = {
           292.3035370826721,
           251.50414164861044,
           257.1469643456595,
-          251.3275227546692
+          251.3275227546692,
+          193.04728918809158
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6456,6 +6466,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10187,6 +10198,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 11:05:13 2026 \u002B0200",
         "message": "refactor!: name the collection result types after what they do (#1121)"
+      },
+      {
+        "sha": "af336624738f9fca6493ea1f4abe4200a8c70430",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 11:47:33 2026 \u002B0200",
+        "message": "refactor!: remove the parameterless Exactly() match type (#1123)"
       }
     ],
     "labels": [
@@ -10735,7 +10752,8 @@ window.BENCHMARK_DATA = {
       "7a595a63",
       "a9d6112f",
       "98a01e4d",
-      "d095969d"
+      "d095969d",
+      "af336624"
     ],
     "datasets": [
       {
@@ -11287,7 +11305,8 @@ window.BENCHMARK_DATA = {
           352153.7346888951,
           367216.8917317708,
           401135.9821777344,
-          367072.13548177085
+          367072.13548177085,
+          278294.9004882813
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11844,7 +11863,8 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542085,
-          542084
+          542084,
+          542085
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12404,7 +12424,8 @@ window.BENCHMARK_DATA = {
           2258618.474739583,
           2347232.1354166665,
           2769117.538802083,
-          2294237.7859375
+          2294237.7859375,
+          1874052.9045572917
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12961,7 +12982,8 @@ window.BENCHMARK_DATA = {
           4841613,
           4841647,
           4841651,
-          4841647
+          4841647,
+          4841648
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16713,6 +16735,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 11:05:13 2026 \u002B0200",
         "message": "refactor!: name the collection result types after what they do (#1121)"
+      },
+      {
+        "sha": "af336624738f9fca6493ea1f4abe4200a8c70430",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 11:47:33 2026 \u002B0200",
+        "message": "refactor!: remove the parameterless Exactly() match type (#1123)"
       }
     ],
     "labels": [
@@ -17338,7 +17366,8 @@ window.BENCHMARK_DATA = {
       "7a595a63",
       "a9d6112f",
       "98a01e4d",
-      "d095969d"
+      "d095969d",
+      "af336624"
     ],
     "datasets": [
       {
@@ -17967,7 +17996,8 @@ window.BENCHMARK_DATA = {
           525.800393308912,
           469.3274403254191,
           497.25142247336254,
-          447.7724458694458
+          447.7724458694458,
+          347.0769005775452
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18440,6 +18470,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -19238,7 +19269,8 @@ window.BENCHMARK_DATA = {
           590.330544980367,
           488.87791239420574,
           507.8180557659694,
-          509.60990585599626
+          509.60990585599626,
+          377.06740255355834
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19431,6 +19463,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -23624,6 +23657,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 11:05:13 2026 \u002B0200",
         "message": "refactor!: name the collection result types after what they do (#1121)"
+      },
+      {
+        "sha": "af336624738f9fca6493ea1f4abe4200a8c70430",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 11:47:33 2026 \u002B0200",
+        "message": "refactor!: remove the parameterless Exactly() match type (#1123)"
       }
     ],
     "labels": [
@@ -24249,7 +24288,8 @@ window.BENCHMARK_DATA = {
       "7a595a63",
       "a9d6112f",
       "98a01e4d",
-      "d095969d"
+      "d095969d",
+      "af336624"
     ],
     "datasets": [
       {
@@ -24878,7 +24918,8 @@ window.BENCHMARK_DATA = {
           309.70217558542885,
           311.4363928159078,
           276.3372493426005,
-          251.45580520629883
+          251.45580520629883,
+          193.5445455823626
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -25392,6 +25433,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -26149,7 +26191,8 @@ window.BENCHMARK_DATA = {
           332.3568512916565,
           245.01674894186166,
           271.7574294635228,
-          247.3370247909001
+          247.3370247909001,
+          190.3003691037496
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -26342,6 +26385,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -30535,6 +30579,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 11:05:13 2026 \u002B0200",
         "message": "refactor!: name the collection result types after what they do (#1121)"
+      },
+      {
+        "sha": "af336624738f9fca6493ea1f4abe4200a8c70430",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 11:47:33 2026 \u002B0200",
+        "message": "refactor!: remove the parameterless Exactly() match type (#1123)"
       }
     ],
     "labels": [
@@ -31160,7 +31210,8 @@ window.BENCHMARK_DATA = {
       "7a595a63",
       "a9d6112f",
       "98a01e4d",
-      "d095969d"
+      "d095969d",
+      "af336624"
     ],
     "datasets": [
       {
@@ -31789,7 +31840,8 @@ window.BENCHMARK_DATA = {
           447.0760128339132,
           458.56294771341175,
           471.88618322781156,
-          467.48165338379994
+          467.48165338379994,
+          358.1299643834432
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32262,6 +32314,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -33060,7 +33113,8 @@ window.BENCHMARK_DATA = {
           1277.3768961588542,
           1128.3526980536324,
           1268.4050240834554,
-          1136.2323797666108
+          1136.2323797666108,
+          873.9648835842426
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33489,6 +33543,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -37446,6 +37501,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 11:05:13 2026 \u002B0200",
         "message": "refactor!: name the collection result types after what they do (#1121)"
+      },
+      {
+        "sha": "af336624738f9fca6493ea1f4abe4200a8c70430",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 11:47:33 2026 \u002B0200",
+        "message": "refactor!: remove the parameterless Exactly() match type (#1123)"
       }
     ],
     "labels": [
@@ -38071,7 +38132,8 @@ window.BENCHMARK_DATA = {
       "7a595a63",
       "a9d6112f",
       "98a01e4d",
-      "d095969d"
+      "d095969d",
+      "af336624"
     ],
     "datasets": [
       {
@@ -38700,7 +38762,8 @@ window.BENCHMARK_DATA = {
           1422.3141540527345,
           1808.64620413099,
           1971.4030593872071,
-          1829.5400713407075
+          1829.5400713407075,
+          1402.0262065614972
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -39173,6 +39236,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -39971,7 +40035,8 @@ window.BENCHMARK_DATA = {
           1444.8710503896077,
           1321.148864618937,
           1491.9525361742292,
-          1364.1942037582398
+          1364.1942037582398,
+          998.0545776912144
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40164,6 +40229,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -44357,6 +44423,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 11:05:13 2026 \u002B0200",
         "message": "refactor!: name the collection result types after what they do (#1121)"
+      },
+      {
+        "sha": "af336624738f9fca6493ea1f4abe4200a8c70430",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 11:47:33 2026 \u002B0200",
+        "message": "refactor!: remove the parameterless Exactly() match type (#1123)"
       }
     ],
     "labels": [
@@ -44982,7 +45054,8 @@ window.BENCHMARK_DATA = {
       "7a595a63",
       "a9d6112f",
       "98a01e4d",
-      "d095969d"
+      "d095969d",
+      "af336624"
     ],
     "datasets": [
       {
@@ -45611,7 +45684,8 @@ window.BENCHMARK_DATA = {
           1870.5654805501301,
           2491.4571551005047,
           2663.2380771636963,
-          2401.1907946268716
+          2401.1907946268716,
+          1900.321192932129
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -46084,6 +46158,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -46882,7 +46957,8 @@ window.BENCHMARK_DATA = {
           17557.282236735027,
           19817.087254115515,
           27891.504345233625,
-          19789.662180582684
+          19789.662180582684,
+          15674.699180094402
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47514,6 +47590,7 @@ window.BENCHMARK_DATA = {
           33468,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471
