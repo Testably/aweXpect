@@ -3756,6 +3756,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:04:09 2026 \u002B0200",
         "message": "refactor!: unify member navigation on \u0060Whose\u0060 (#1124)"
+      },
+      {
+        "sha": "c0173dfda468b49182d0ff6df54e3cab80306e9a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 12:20:46 2026 \u002B0200",
+        "message": "chore: rebalance the mutation slices and tighten the heap limit"
       }
     ],
     "labels": [
@@ -4384,7 +4390,8 @@ window.BENCHMARK_DATA = {
       "d095969d",
       "af336624",
       "d22cf29f",
-      "93e2fd51"
+      "93e2fd51",
+      "c0173dfd"
     ],
     "datasets": [
       {
@@ -5016,7 +5023,8 @@ window.BENCHMARK_DATA = {
           240.25693119366963,
           187.42290679613748,
           239.29671038114108,
-          192.54164187724774
+          192.54164187724774,
+          257.545502948761
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5489,6 +5497,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6293,7 +6302,8 @@ window.BENCHMARK_DATA = {
           251.3275227546692,
           193.04728918809158,
           247.2769733575674,
-          189.80345698992411
+          189.80345698992411,
+          234.5285401026408
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6486,6 +6496,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10238,6 +10249,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:04:09 2026 \u002B0200",
         "message": "refactor!: unify member navigation on \u0060Whose\u0060 (#1124)"
+      },
+      {
+        "sha": "c0173dfda468b49182d0ff6df54e3cab80306e9a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 12:20:46 2026 \u002B0200",
+        "message": "chore: rebalance the mutation slices and tighten the heap limit"
       }
     ],
     "labels": [
@@ -10789,7 +10806,8 @@ window.BENCHMARK_DATA = {
       "d095969d",
       "af336624",
       "d22cf29f",
-      "93e2fd51"
+      "93e2fd51",
+      "c0173dfd"
     ],
     "datasets": [
       {
@@ -11344,7 +11362,8 @@ window.BENCHMARK_DATA = {
           367072.13548177085,
           278294.9004882813,
           362708.42550223216,
-          282105.42115885415
+          282105.42115885415,
+          383674.42034040176
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11904,7 +11923,8 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542084,
-          542084
+          542084,
+          542085
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12467,7 +12487,8 @@ window.BENCHMARK_DATA = {
           2294237.7859375,
           1874052.9045572917,
           2317601.6453125,
-          1821061.6046875
+          1821061.6046875,
+          2702261.0809151786
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13027,7 +13048,8 @@ window.BENCHMARK_DATA = {
           4841647,
           4841648,
           4841651,
-          4841647
+          4841647,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16797,6 +16819,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:04:09 2026 \u002B0200",
         "message": "refactor!: unify member navigation on \u0060Whose\u0060 (#1124)"
+      },
+      {
+        "sha": "c0173dfda468b49182d0ff6df54e3cab80306e9a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 12:20:46 2026 \u002B0200",
+        "message": "chore: rebalance the mutation slices and tighten the heap limit"
       }
     ],
     "labels": [
@@ -17425,7 +17453,8 @@ window.BENCHMARK_DATA = {
       "d095969d",
       "af336624",
       "d22cf29f",
-      "93e2fd51"
+      "93e2fd51",
+      "c0173dfd"
     ],
     "datasets": [
       {
@@ -18057,7 +18086,8 @@ window.BENCHMARK_DATA = {
           447.7724458694458,
           347.0769005775452,
           461.40208435058594,
-          346.67944114548817
+          346.67944114548817,
+          485.2447775204976
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18530,6 +18560,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -19334,7 +19365,8 @@ window.BENCHMARK_DATA = {
           509.60990585599626,
           377.06740255355834,
           480.8352996281215,
-          369.44302238736833
+          369.44302238736833,
+          495.1810088524452
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19527,6 +19559,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -23741,6 +23774,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:04:09 2026 \u002B0200",
         "message": "refactor!: unify member navigation on \u0060Whose\u0060 (#1124)"
+      },
+      {
+        "sha": "c0173dfda468b49182d0ff6df54e3cab80306e9a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 12:20:46 2026 \u002B0200",
+        "message": "chore: rebalance the mutation slices and tighten the heap limit"
       }
     ],
     "labels": [
@@ -24369,7 +24408,8 @@ window.BENCHMARK_DATA = {
       "d095969d",
       "af336624",
       "d22cf29f",
-      "93e2fd51"
+      "93e2fd51",
+      "c0173dfd"
     ],
     "datasets": [
       {
@@ -25001,7 +25041,8 @@ window.BENCHMARK_DATA = {
           251.45580520629883,
           193.5445455823626,
           253.960641009467,
-          198.33121064503987
+          198.33121064503987,
+          272.62607968648274
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -25515,6 +25556,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -26278,7 +26320,8 @@ window.BENCHMARK_DATA = {
           247.3370247909001,
           190.3003691037496,
           242.3548962275187,
-          191.97776057720185
+          191.97776057720185,
+          251.3622358640035
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -26471,6 +26514,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -30685,6 +30729,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:04:09 2026 \u002B0200",
         "message": "refactor!: unify member navigation on \u0060Whose\u0060 (#1124)"
+      },
+      {
+        "sha": "c0173dfda468b49182d0ff6df54e3cab80306e9a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 12:20:46 2026 \u002B0200",
+        "message": "chore: rebalance the mutation slices and tighten the heap limit"
       }
     ],
     "labels": [
@@ -31313,7 +31363,8 @@ window.BENCHMARK_DATA = {
       "d095969d",
       "af336624",
       "d22cf29f",
-      "93e2fd51"
+      "93e2fd51",
+      "c0173dfd"
     ],
     "datasets": [
       {
@@ -31945,7 +31996,8 @@ window.BENCHMARK_DATA = {
           467.48165338379994,
           358.1299643834432,
           461.53673432423517,
-          343.7824761072795
+          343.7824761072795,
+          470.1731425603231
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32418,6 +32470,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -33222,7 +33275,8 @@ window.BENCHMARK_DATA = {
           1136.2323797666108,
           873.9648835842426,
           1133.339914004008,
-          895.6350174585979
+          895.6350174585979,
+          1207.4822497049968
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33651,6 +33705,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -37629,6 +37684,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:04:09 2026 \u002B0200",
         "message": "refactor!: unify member navigation on \u0060Whose\u0060 (#1124)"
+      },
+      {
+        "sha": "c0173dfda468b49182d0ff6df54e3cab80306e9a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 12:20:46 2026 \u002B0200",
+        "message": "chore: rebalance the mutation slices and tighten the heap limit"
       }
     ],
     "labels": [
@@ -38257,7 +38318,8 @@ window.BENCHMARK_DATA = {
       "d095969d",
       "af336624",
       "d22cf29f",
-      "93e2fd51"
+      "93e2fd51",
+      "c0173dfd"
     ],
     "datasets": [
       {
@@ -38889,7 +38951,8 @@ window.BENCHMARK_DATA = {
           1829.5400713407075,
           1402.0262065614972,
           1831.0748758951822,
-          1476.4722430365425
+          1476.4722430365425,
+          1936.5568182809013
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -39362,6 +39425,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -40166,7 +40230,8 @@ window.BENCHMARK_DATA = {
           1364.1942037582398,
           998.0545776912144,
           1313.8069371541342,
-          1003.9631337385911
+          1003.9631337385911,
+          1242.3274236043294
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40359,6 +40424,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -44573,6 +44639,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:04:09 2026 \u002B0200",
         "message": "refactor!: unify member navigation on \u0060Whose\u0060 (#1124)"
+      },
+      {
+        "sha": "c0173dfda468b49182d0ff6df54e3cab80306e9a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 12:20:46 2026 \u002B0200",
+        "message": "chore: rebalance the mutation slices and tighten the heap limit"
       }
     ],
     "labels": [
@@ -45201,7 +45273,8 @@ window.BENCHMARK_DATA = {
       "d095969d",
       "af336624",
       "d22cf29f",
-      "93e2fd51"
+      "93e2fd51",
+      "c0173dfd"
     ],
     "datasets": [
       {
@@ -45833,7 +45906,8 @@ window.BENCHMARK_DATA = {
           2401.1907946268716,
           1900.321192932129,
           2493.6360699971515,
-          1884.5005330403646
+          1884.5005330403646,
+          2472.942229407174
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -46306,6 +46380,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -47110,7 +47185,8 @@ window.BENCHMARK_DATA = {
           19789.662180582684,
           15674.699180094402,
           19911.246940104167,
-          15499.583459472657
+          15499.583459472657,
+          25512.445173997145
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47742,6 +47818,7 @@ window.BENCHMARK_DATA = {
           33468,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
