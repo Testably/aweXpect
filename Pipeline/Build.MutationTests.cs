@@ -366,10 +366,6 @@ partial class Build
 				patterns.Select(pattern => $"\"{pattern}\""))}\n\t\t],\n\t\t";
 		}
 
-		// TEMPORARY: mutate the whole project even on a branch, so that the mutation jobs can be exercised at
-		// their real size without merging to `main` first. Revert this commit before merging.
-		bool mutateOnlyTheChanges = false;
-
 		string configText = $$"""
 		                      {
 		                      	"stryker-config": {
@@ -385,7 +381,7 @@ partial class Build
 		                      		"target-framework": "net8.0",
 		                      		"since": {
 		                      			"target": "main",
-		                      			"enabled": {{mutateOnlyTheChanges.ToString().ToLowerInvariant()}},
+		                      			"enabled": {{(BranchName != "main").ToString().ToLowerInvariant()}},
 		                      			"ignore-changes-in": [
 		                      				"**/.github/**/*.*"
 		                      			]
@@ -397,11 +393,8 @@ partial class Build
 		File.WriteAllText(configFile, configText);
 		Log.Debug($"Created '{configFile}':{Environment.NewLine}{configText}");
 
-		// `--log-to-file` always logs at trace level, independent of the console verbosity, so it says why a test
-		// session was retried without drowning the job log. The file lands below `-O` and rides along in the
-		// uploaded artifacts, which - unlike a runner that is torn down - survive the job timeout.
 		string arguments =
-			$"-f \"{configFile}\" -O \"{strykerOutputDirectory}\" -r \"Markdown\" -r \"cleartext\" -r \"json\" --log-to-file";
+			$"-f \"{configFile}\" -O \"{strykerOutputDirectory}\" -r \"Markdown\" -r \"cleartext\" -r \"json\"";
 
 		string executable = EnvironmentInfo.IsWin ? "dotnet-stryker.exe" : "dotnet-stryker";
 		IProcess process = ProcessTasks.StartProcess(
