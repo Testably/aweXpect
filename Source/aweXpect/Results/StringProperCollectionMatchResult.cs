@@ -4,29 +4,31 @@ using aweXpect.Options;
 namespace aweXpect.Results;
 
 /// <summary>
-///     The result for verifying that a string collection contains another collection.
+///     The result for verifying that a string collection contains or is contained in another collection.
 /// </summary>
 /// <remarks>
 ///     <seealso cref="StringCollectionMatchResult{TType,TThat}" />
 /// </remarks>
-public class StringCollectionContainResult<TType, TThat>(
+public class StringProperCollectionMatchResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
 	StringEqualityOptions options,
-	CollectionMatchOptions collectionMatchOptions)
+	CollectionMatchOptions collectionMatchOptions,
+	CollectionMatchOptions.EquivalenceRelations properEquivalenceRelation)
 	: StringCollectionMatchResult<TType, TThat>(expectationBuilder, returnValue, options, collectionMatchOptions)
 {
 	private readonly CollectionMatchOptions _collectionMatchOptions = collectionMatchOptions;
 
 	/// <summary>
-	///     Verifies that the subject contain all expected items and at least one additional item.
+	///     Verifies that the two collections differ by at least one additional item.
 	/// </summary>
 	/// <remarks>
-	///     This means, that the expected collection is a proper subset.
+	///     This means, that the expected collection is a proper subset of the subject for <c>Contains</c> and a proper
+	///     superset for <c>IsContainedIn</c>.
 	/// </remarks>
 	public StringCollectionMatchResult<TType, TThat> Properly()
 	{
-		_collectionMatchOptions.SetEquivalenceRelation(CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
+		_collectionMatchOptions.SetEquivalenceRelation(properEquivalenceRelation);
 		return this;
 	}
 }

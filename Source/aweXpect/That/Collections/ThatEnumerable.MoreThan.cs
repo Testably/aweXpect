@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using aweXpect.Core;
 using aweXpect.Helpers;
+using aweXpect.Options;
 #if NET8_0_OR_GREATER
 using System.Collections.Immutable;
 #endif

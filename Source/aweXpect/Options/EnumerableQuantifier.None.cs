@@ -1,7 +1,7 @@
 ﻿using aweXpect.Core;
 using aweXpect.Core.Constraints;
 
-namespace aweXpect;
+namespace aweXpect.Options;
 
 public abstract partial class EnumerableQuantifier
 {

@@ -13,14 +13,14 @@ public static partial class ThatReadOnlyDictionary
 	///     Verifies that the dictionary contains the <paramref name="expected" /> key.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ContainsValueResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>, TKey
+	public static ContainsKeyResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>, TKey
 			, TValue?>
 		ContainsKey<TKey, TValue>(
 			this IThat<IReadOnlyDictionary<TKey, TValue>?> source,
 			TKey expected)
 	{
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new ContainsValueResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>,
+		return new ContainsKeyResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>,
 			TKey, TValue?>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new ContainsKeyConstraint<TKey, TValue>(expectationBuilder, it, grammars, expected)),
@@ -34,7 +34,7 @@ public static partial class ThatReadOnlyDictionary
 	///     Verifies that the dictionary contains the <paramref name="expected" /> key.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ContainsValueResult<ReadOnlyDictionary<TKey, TValue>, IThat<ReadOnlyDictionary<TKey, TValue>?>, TKey,
+	public static ContainsKeyResult<ReadOnlyDictionary<TKey, TValue>, IThat<ReadOnlyDictionary<TKey, TValue>?>, TKey,
 			TValue?>
 		ContainsKey<TKey, TValue>(
 			this IThat<ReadOnlyDictionary<TKey, TValue>?> source,
@@ -42,7 +42,7 @@ public static partial class ThatReadOnlyDictionary
 		where TKey : notnull
 	{
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
-		return new ContainsValueResult<ReadOnlyDictionary<TKey, TValue>, IThat<ReadOnlyDictionary<TKey, TValue>?>, TKey,
+		return new ContainsKeyResult<ReadOnlyDictionary<TKey, TValue>, IThat<ReadOnlyDictionary<TKey, TValue>?>, TKey,
 			TValue?>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new ContainsKeyConstraint<TKey, TValue>(expectationBuilder, it, grammars, expected)),

@@ -1,29 +1,29 @@
 ﻿using aweXpect.Core;
 using aweXpect.Core.Constraints;
 
-namespace aweXpect;
+namespace aweXpect.Options;
 
 public abstract partial class EnumerableQuantifier
 {
 	/// <summary>
-	///     Matches less than <paramref name="maximum" /> items.
+	///     Matches at most <paramref name="maximum" /> items.
 	/// </summary>
-	public static EnumerableQuantifier LessThan(int maximum,
+	public static EnumerableQuantifier AtMost(int maximum,
 		ExpectationGrammars expectationGrammars = ExpectationGrammars.None)
-		=> new LessThanQuantifier(maximum);
+		=> new AtMostQuantifier(maximum);
 
-	private sealed class LessThanQuantifier(int maximum) : EnumerableQuantifier
+	private sealed class AtMostQuantifier(int maximum) : EnumerableQuantifier
 	{
 		public override string ToString()
 			=> maximum switch
 			{
-				1 => "less than one",
-				_ => $"less than {maximum}",
+				1 => "at most one",
+				_ => $"at most {maximum}",
 			};
 
 		/// <inheritdoc />
 		public override bool IsDeterminable(int matchingCount, int notMatchingCount)
-			=> matchingCount >= maximum;
+			=> matchingCount > maximum;
 
 		/// <inheritdoc />
 		public override bool IsSingle() => maximum == 1;
@@ -31,7 +31,7 @@ public abstract partial class EnumerableQuantifier
 		/// <inheritdoc />
 		public override Outcome GetOutcome(int matchingCount, int notMatchingCount, int? totalCount)
 		{
-			if (matchingCount >= maximum)
+			if (matchingCount > maximum)
 			{
 				return Outcome.Failure;
 			}

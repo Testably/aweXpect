@@ -9,14 +9,14 @@ namespace aweXpect.Results;
 /// <remarks>
 ///     <seealso cref="AndOrResult{TCollection, TThat}" />
 /// </remarks>
-public class ContainsValueResult<TCollection, TThat, TKey, TValue>
+public class ContainsKeyResult<TCollection, TThat, TKey, TValue>
 	: AndOrResult<TCollection, TThat>
 {
 	private readonly ExpectationBuilder _expectationBuilder;
 	private readonly TKey _key;
 	private readonly Func<TCollection, TValue> _memberAccessor;
 
-	internal ContainsValueResult(
+	internal ContainsKeyResult(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
 		TKey key,

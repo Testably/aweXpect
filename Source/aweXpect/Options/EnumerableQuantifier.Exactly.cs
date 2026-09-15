@@ -1,45 +1,46 @@
 ﻿using aweXpect.Core;
 using aweXpect.Core.Constraints;
 
-namespace aweXpect;
+namespace aweXpect.Options;
 
 public abstract partial class EnumerableQuantifier
 {
 	/// <summary>
-	///     Matches between <paramref name="minimum" /> and <paramref name="maximum" /> items.
+	///     Matches exactly <paramref name="expected" /> items.
 	/// </summary>
-	public static EnumerableQuantifier Between(int minimum, int maximum,
+	public static EnumerableQuantifier Exactly(int expected,
 		ExpectationGrammars expectationGrammars = ExpectationGrammars.None)
-		=> new BetweenQuantifier(minimum, maximum);
+		=> new ExactlyQuantifier(expected);
 
-	private sealed class BetweenQuantifier(int minimum, int maximum)
-		: EnumerableQuantifier
+	private sealed class ExactlyQuantifier(int expected) : EnumerableQuantifier
 	{
-		public override string ToString() => $"between {minimum} and {maximum}";
+		public override string ToString()
+			=> expected switch
+			{
+				1 => "exactly one",
+				_ => $"exactly {expected}",
+			};
 
 		/// <inheritdoc />
 		public override bool IsDeterminable(int matchingCount, int notMatchingCount)
-			=> matchingCount > maximum;
+			=> matchingCount > expected;
 
 		/// <inheritdoc />
-		public override bool IsSingle() => false;
+		public override bool IsSingle() => expected == 1;
 
 		/// <inheritdoc />
 		public override Outcome GetOutcome(int matchingCount, int notMatchingCount, int? totalCount)
 		{
-			if (matchingCount > maximum)
+			if (matchingCount > expected)
 			{
 				return Outcome.Failure;
-			}
-
-			if (matchingCount >= minimum)
-			{
-				return Outcome.Success;
 			}
 
 			if (totalCount.HasValue)
 			{
-				return Outcome.Failure;
+				return matchingCount == expected
+					? Outcome.Success
+					: Outcome.Failure;
 			}
 
 			return Outcome.Undecided;
@@ -53,7 +54,11 @@ public abstract partial class EnumerableQuantifier
 			int? totalCount,
 			string? verb = null)
 		{
-			if (matchingCount > maximum)
+			if (grammars.HasFlag(ExpectationGrammars.Negated))
+			{
+				stringBuilder.Append("it did");
+			}
+			else if (matchingCount > expected)
 			{
 				if (totalCount.HasValue)
 				{
