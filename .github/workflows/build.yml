@@ -67,7 +67,7 @@ jobs:
     mutation-tests-core:
         name: "Mutation tests (aweXpect.Core, ${{ matrix.slice }})"
         runs-on: ubuntu-latest
-        timeout-minutes: 90
+        timeout-minutes: 120
         # `aweXpect.Core` is released on its own, so its score has to be measured on `main` too. The whole source takes
         # more than two hours in a single job, and the slices are disjoint and cover everything, so the dashboard job
         # can merge their reports back into a single score.
