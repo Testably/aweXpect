@@ -3732,6 +3732,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 10:28:16 2026 \u002B0200",
         "message": "feat: measure the \u0060aweXpect.Core\u0060 mutation score on \u0060main\u0060"
+      },
+      {
+        "sha": "d095969d41598b44698cada0db60e3e27e32981f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 11:05:13 2026 \u002B0200",
+        "message": "refactor!: name the collection result types after what they do (#1121)"
       }
     ],
     "labels": [
@@ -4356,7 +4362,8 @@ window.BENCHMARK_DATA = {
       "2274a820",
       "7a595a63",
       "a9d6112f",
-      "98a01e4d"
+      "98a01e4d",
+      "d095969d"
     ],
     "datasets": [
       {
@@ -4984,7 +4991,8 @@ window.BENCHMARK_DATA = {
           196.90801135698953,
           269.8032855669657,
           249.30110273361205,
-          282.25110816955566
+          282.25110816955566,
+          240.25693119366963
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5457,6 +5465,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6253,7 +6262,8 @@ window.BENCHMARK_DATA = {
           196.11365172068278,
           292.3035370826721,
           251.50414164861044,
-          257.1469643456595
+          257.1469643456595,
+          251.3275227546692
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6446,6 +6456,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10170,6 +10181,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 10:28:16 2026 \u002B0200",
         "message": "feat: measure the \u0060aweXpect.Core\u0060 mutation score on \u0060main\u0060"
+      },
+      {
+        "sha": "d095969d41598b44698cada0db60e3e27e32981f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 11:05:13 2026 \u002B0200",
+        "message": "refactor!: name the collection result types after what they do (#1121)"
       }
     ],
     "labels": [
@@ -10717,7 +10734,8 @@ window.BENCHMARK_DATA = {
       "2274a820",
       "7a595a63",
       "a9d6112f",
-      "98a01e4d"
+      "98a01e4d",
+      "d095969d"
     ],
     "datasets": [
       {
@@ -11268,7 +11286,8 @@ window.BENCHMARK_DATA = {
           282997.7490559896,
           352153.7346888951,
           367216.8917317708,
-          401135.9821777344
+          401135.9821777344,
+          367072.13548177085
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11824,7 +11843,8 @@ window.BENCHMARK_DATA = {
           542084,
           542084,
           542085,
-          542085
+          542085,
+          542084
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12383,7 +12403,8 @@ window.BENCHMARK_DATA = {
           1836027.2087239583,
           2258618.474739583,
           2347232.1354166665,
-          2769117.538802083
+          2769117.538802083,
+          2294237.7859375
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12939,7 +12960,8 @@ window.BENCHMARK_DATA = {
           4841648,
           4841613,
           4841647,
-          4841651
+          4841651,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16685,6 +16707,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 10:28:16 2026 \u002B0200",
         "message": "feat: measure the \u0060aweXpect.Core\u0060 mutation score on \u0060main\u0060"
+      },
+      {
+        "sha": "d095969d41598b44698cada0db60e3e27e32981f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 11:05:13 2026 \u002B0200",
+        "message": "refactor!: name the collection result types after what they do (#1121)"
       }
     ],
     "labels": [
@@ -17309,7 +17337,8 @@ window.BENCHMARK_DATA = {
       "2274a820",
       "7a595a63",
       "a9d6112f",
-      "98a01e4d"
+      "98a01e4d",
+      "d095969d"
     ],
     "datasets": [
       {
@@ -17937,7 +17966,8 @@ window.BENCHMARK_DATA = {
           363.58683786392214,
           525.800393308912,
           469.3274403254191,
-          497.25142247336254
+          497.25142247336254,
+          447.7724458694458
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18410,6 +18440,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -19206,7 +19237,8 @@ window.BENCHMARK_DATA = {
           399.7704559961955,
           590.330544980367,
           488.87791239420574,
-          507.8180557659694
+          507.8180557659694,
+          509.60990585599626
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19399,6 +19431,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -23585,6 +23618,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 10:28:16 2026 \u002B0200",
         "message": "feat: measure the \u0060aweXpect.Core\u0060 mutation score on \u0060main\u0060"
+      },
+      {
+        "sha": "d095969d41598b44698cada0db60e3e27e32981f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 11:05:13 2026 \u002B0200",
+        "message": "refactor!: name the collection result types after what they do (#1121)"
       }
     ],
     "labels": [
@@ -24209,7 +24248,8 @@ window.BENCHMARK_DATA = {
       "2274a820",
       "7a595a63",
       "a9d6112f",
-      "98a01e4d"
+      "98a01e4d",
+      "d095969d"
     ],
     "datasets": [
       {
@@ -24837,7 +24877,8 @@ window.BENCHMARK_DATA = {
           206.19679361979166,
           309.70217558542885,
           311.4363928159078,
-          276.3372493426005
+          276.3372493426005,
+          251.45580520629883
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -25351,6 +25392,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -26106,7 +26148,8 @@ window.BENCHMARK_DATA = {
           190.39022885836087,
           332.3568512916565,
           245.01674894186166,
-          271.7574294635228
+          271.7574294635228,
+          247.3370247909001
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -26299,6 +26342,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -30485,6 +30529,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 10:28:16 2026 \u002B0200",
         "message": "feat: measure the \u0060aweXpect.Core\u0060 mutation score on \u0060main\u0060"
+      },
+      {
+        "sha": "d095969d41598b44698cada0db60e3e27e32981f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 11:05:13 2026 \u002B0200",
+        "message": "refactor!: name the collection result types after what they do (#1121)"
       }
     ],
     "labels": [
@@ -31109,7 +31159,8 @@ window.BENCHMARK_DATA = {
       "2274a820",
       "7a595a63",
       "a9d6112f",
-      "98a01e4d"
+      "98a01e4d",
+      "d095969d"
     ],
     "datasets": [
       {
@@ -31737,7 +31788,8 @@ window.BENCHMARK_DATA = {
           355.2072853020259,
           447.0760128339132,
           458.56294771341175,
-          471.88618322781156
+          471.88618322781156,
+          467.48165338379994
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32210,6 +32262,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -33006,7 +33059,8 @@ window.BENCHMARK_DATA = {
           883.0441282908122,
           1277.3768961588542,
           1128.3526980536324,
-          1268.4050240834554
+          1268.4050240834554,
+          1136.2323797666108
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33435,6 +33489,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -37385,6 +37440,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 10:28:16 2026 \u002B0200",
         "message": "feat: measure the \u0060aweXpect.Core\u0060 mutation score on \u0060main\u0060"
+      },
+      {
+        "sha": "d095969d41598b44698cada0db60e3e27e32981f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 11:05:13 2026 \u002B0200",
+        "message": "refactor!: name the collection result types after what they do (#1121)"
       }
     ],
     "labels": [
@@ -38009,7 +38070,8 @@ window.BENCHMARK_DATA = {
       "2274a820",
       "7a595a63",
       "a9d6112f",
-      "98a01e4d"
+      "98a01e4d",
+      "d095969d"
     ],
     "datasets": [
       {
@@ -38637,7 +38699,8 @@ window.BENCHMARK_DATA = {
           1410.924646105085,
           1422.3141540527345,
           1808.64620413099,
-          1971.4030593872071
+          1971.4030593872071,
+          1829.5400713407075
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -39110,6 +39173,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -39906,7 +39970,8 @@ window.BENCHMARK_DATA = {
           1009.9652674538748,
           1444.8710503896077,
           1321.148864618937,
-          1491.9525361742292
+          1491.9525361742292,
+          1364.1942037582398
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40099,6 +40164,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -44285,6 +44351,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 10:28:16 2026 \u002B0200",
         "message": "feat: measure the \u0060aweXpect.Core\u0060 mutation score on \u0060main\u0060"
+      },
+      {
+        "sha": "d095969d41598b44698cada0db60e3e27e32981f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 11:05:13 2026 \u002B0200",
+        "message": "refactor!: name the collection result types after what they do (#1121)"
       }
     ],
     "labels": [
@@ -44909,7 +44981,8 @@ window.BENCHMARK_DATA = {
       "2274a820",
       "7a595a63",
       "a9d6112f",
-      "98a01e4d"
+      "98a01e4d",
+      "d095969d"
     ],
     "datasets": [
       {
@@ -45537,7 +45610,8 @@ window.BENCHMARK_DATA = {
           1916.8696338653565,
           1870.5654805501301,
           2491.4571551005047,
-          2663.2380771636963
+          2663.2380771636963,
+          2401.1907946268716
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -46010,6 +46084,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -46806,7 +46881,8 @@ window.BENCHMARK_DATA = {
           15356.671731131417,
           17557.282236735027,
           19817.087254115515,
-          27891.504345233625
+          27891.504345233625,
+          19789.662180582684
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47438,6 +47514,7 @@ window.BENCHMARK_DATA = {
           33468,
           33471,
           33465,
+          33471,
           33471,
           33471
         ],
