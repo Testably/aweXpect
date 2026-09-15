@@ -23,7 +23,7 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 	}
 
 	private static string DefaultToleranceFormatter(TTolerance tolerance)
-		=> $" within {Formatter.Format(tolerance)}";
+		=> $" ± {Formatter.Format(tolerance)}";
 
 	private sealed class WithinMatchType(
 		TTolerance tolerance,

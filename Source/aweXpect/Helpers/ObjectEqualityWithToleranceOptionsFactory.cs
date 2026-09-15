@@ -31,9 +31,9 @@ internal static class ObjectEqualityWithToleranceOptionsFactory
 
 	public static ObjectEqualityWithToleranceOptions<DateTime, TimeSpan> CreateDateTime() =>
 		new((a, e, t) => a.IsConsideredEqualTo(e, t),
-			t => $" within {Formatter.Format(t)}");
+			t => $" ± {Formatter.Format(t)}");
 
 	public static ObjectEqualityWithToleranceOptions<DateTime?, TimeSpan> CreateNullableDateTime() =>
 		new((a, e, t) => a.IsConsideredEqualTo(e, t),
-			t => $" within {Formatter.Format(t)}");
+			t => $" ± {Formatter.Format(t)}");
 }

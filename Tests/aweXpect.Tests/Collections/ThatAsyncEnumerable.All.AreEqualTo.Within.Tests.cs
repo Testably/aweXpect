@@ -244,7 +244,7 @@ public sealed partial class ThatAsyncEnumerable
 						await That(Act).Throws<XunitException>()
 							.WithMessage($"""
 							              Expected that subject
-							              is equal to {Formatter.Format(now)} within 1:00 for all items,
+							              is equal to {Formatter.Format(now)} ± 1:00 for all items,
 							              but only 2 of 3 were
 
 							              Not matching items:
@@ -290,7 +290,7 @@ public sealed partial class ThatAsyncEnumerable
 						await That(Act).Throws<XunitException>()
 							.WithMessage($"""
 							              Expected that subject
-							              is equal to {Formatter.Format(now)} within 1:00 for all items,
+							              is equal to {Formatter.Format(now)} ± 1:00 for all items,
 							              but only 2 of 4 were
 
 							              Not matching items:

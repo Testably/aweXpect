@@ -332,7 +332,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              does not match collection expected in any order within 1:00,
+						              does not match collection expected in any order ± 1:00,
 						              but it did
 
 						              Collection:
@@ -380,7 +380,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              does not match collection expected in any order within 1:00,
+						              does not match collection expected in any order ± 1:00,
 						              but it did
 
 						              Collection:

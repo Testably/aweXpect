@@ -314,7 +314,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              matches collection expected in any order within 1:00,
+						              matches collection expected in any order ± 1:00,
 						              but it
 						                contained item {Formatter.Format(now.AddHours(2))} at index 1 that was not expected and
 						                lacked 1 of 3 expected items: {Formatter.Format(now.AddHours(2).AddMinutes(-2))}
@@ -364,7 +364,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that subject
-						              matches collection expected in any order within 1:00,
+						              matches collection expected in any order ± 1:00,
 						              but it
 						                contained item {Formatter.Format(now.AddHours(2))} at index 2 that was not expected and
 						                lacked 1 of 4 expected items: {Formatter.Format(now.AddHours(2).AddMinutes(-2))}
