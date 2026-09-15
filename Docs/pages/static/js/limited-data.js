@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "ae28ac8bfc1408f37f394d2e7fb8d78a35f9d494",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 12 19:13:15 2026 \u002B0200",
-        "message": "fix: restore in \u0060Debug\u0060 before running the mutation tests (#1049)"
-      },
-      {
         "sha": "2dfc2a933980f4270bed8a11bc6fdbd818bb25e6",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 20:28:52 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
         "message": "fix: cap the heap of the test host instead of the whole job"
+      },
+      {
+        "sha": "525e912c42dbede647c60c0ff48a7ed4447fcfd7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 13:48:54 2026 \u002B0200",
+        "message": "refactor!: render tolerance as \u0060\u00B1 x\u0060 everywhere (#1125)"
       }
     ],
     "labels": [
-      "ae28ac8b",
       "2dfc2a93",
       "f2c58efc",
       "b40f1a29",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "93e2fd51",
       "c0173dfd",
       "152b45e4",
-      "c038ec26"
+      "c038ec26",
+      "525e912c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          251.45966777801513,
           253.74554430643718,
           185.81431449254353,
           207.99691574390118,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           192.54164187724774,
           257.545502948761,
           225.96870646476745,
-          252.4134638786316
+          252.4134638786316,
+          255.2726117769877
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          271.93721526009693,
           255.67135229110718,
           211.59095217500413,
           220.3440454006195,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           189.80345698992411,
           234.5285401026408,
           253.98439423243204,
-          245.66537170410157
+          245.66537170410157,
+          235.88093944958277
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "ae28ac8bfc1408f37f394d2e7fb8d78a35f9d494",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 12 19:13:15 2026 \u002B0200",
-        "message": "fix: restore in \u0060Debug\u0060 before running the mutation tests (#1049)"
-      },
-      {
         "sha": "2dfc2a933980f4270bed8a11bc6fdbd818bb25e6",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 20:28:52 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
         "message": "fix: cap the heap of the test host instead of the whole job"
+      },
+      {
+        "sha": "525e912c42dbede647c60c0ff48a7ed4447fcfd7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 13:48:54 2026 \u002B0200",
+        "message": "refactor!: render tolerance as \u0060\u00B1 x\u0060 everywhere (#1125)"
       }
     ],
     "labels": [
-      "ae28ac8b",
       "2dfc2a93",
       "f2c58efc",
       "b40f1a29",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "93e2fd51",
       "c0173dfd",
       "152b45e4",
-      "c038ec26"
+      "c038ec26",
+      "525e912c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          246182.51293945312,
           314607.5203776042,
           200805.07823768028,
           222028.6263709435,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           282105.42115885415,
           383674.42034040176,
           337191.46025390626,
-          379574.25278320315
+          379574.25278320315,
+          387609.7756998698
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1029,7 +1029,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           335444,
-          335444,
           335442,
           335442,
           335444,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542084,
-          542084
+          542084,
+          542085
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1975977.1479166667,
           2505769.34375,
           1670276.2193080357,
           1669236.4065504808,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           1821061.6046875,
           2702261.0809151786,
           2124859.86640625,
-          2772779.322135417
+          2772779.322135417,
+          2597183.655048077
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841613,
           4841651,
           4841611,
           4841609,
@@ -1202,6 +1201,7 @@ window.BENCHMARK_DATA = {
           4841647,
           4841651,
           4841613,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "ae28ac8bfc1408f37f394d2e7fb8d78a35f9d494",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 12 19:13:15 2026 \u002B0200",
-        "message": "fix: restore in \u0060Debug\u0060 before running the mutation tests (#1049)"
-      },
       {
         "sha": "2dfc2a933980f4270bed8a11bc6fdbd818bb25e6",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
         "message": "fix: cap the heap of the test host instead of the whole job"
+      },
+      {
+        "sha": "525e912c42dbede647c60c0ff48a7ed4447fcfd7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 13:48:54 2026 \u002B0200",
+        "message": "refactor!: render tolerance as \u0060\u00B1 x\u0060 everywhere (#1125)"
       }
     ],
     "labels": [
-      "ae28ac8b",
       "2dfc2a93",
       "f2c58efc",
       "b40f1a29",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "93e2fd51",
       "c0173dfd",
       "152b45e4",
-      "c038ec26"
+      "c038ec26",
+      "525e912c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          460.4913195201329,
           517.4517107009888,
           411.3238247803279,
           387.5515358606974,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           346.67944114548817,
           485.2447775204976,
           437.89498167037965,
-          488.20431429545084
+          488.20431429545084,
+          454.63850116729736
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          518.0169225692749,
           520.8710504531861,
           414.6723243077596,
           420.1317024548849,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           369.44302238736833,
           495.1810088524452,
           497.8950578689575,
-          506.7423930849348
+          506.7423930849348,
+          470.06133098602294
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "ae28ac8bfc1408f37f394d2e7fb8d78a35f9d494",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 12 19:13:15 2026 \u002B0200",
-        "message": "fix: restore in \u0060Debug\u0060 before running the mutation tests (#1049)"
-      },
-      {
         "sha": "2dfc2a933980f4270bed8a11bc6fdbd818bb25e6",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 20:28:52 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
         "message": "fix: cap the heap of the test host instead of the whole job"
+      },
+      {
+        "sha": "525e912c42dbede647c60c0ff48a7ed4447fcfd7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 13:48:54 2026 \u002B0200",
+        "message": "refactor!: render tolerance as \u0060\u00B1 x\u0060 everywhere (#1125)"
       }
     ],
     "labels": [
-      "ae28ac8b",
       "2dfc2a93",
       "f2c58efc",
       "b40f1a29",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "93e2fd51",
       "c0173dfd",
       "152b45e4",
-      "c038ec26"
+      "c038ec26",
+      "525e912c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          258.7793156305949,
           264.43931474685667,
           193.14304917199271,
           209.47316687901815,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           198.33121064503987,
           272.62607968648274,
           253.99401931762696,
-          278.1191467285156
+          278.1191467285156,
+          266.18300444285074
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          282.3623188654582,
           263.38711411158243,
           215.79852714538575,
           220.41122935368463,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           191.97776057720185,
           251.3622358640035,
           255.23169129689535,
-          259.62245308558147
+          259.62245308558147,
+          258.6352137883504
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "ae28ac8bfc1408f37f394d2e7fb8d78a35f9d494",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 12 19:13:15 2026 \u002B0200",
-        "message": "fix: restore in \u0060Debug\u0060 before running the mutation tests (#1049)"
-      },
-      {
         "sha": "2dfc2a933980f4270bed8a11bc6fdbd818bb25e6",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 20:28:52 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
         "message": "fix: cap the heap of the test host instead of the whole job"
+      },
+      {
+        "sha": "525e912c42dbede647c60c0ff48a7ed4447fcfd7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 13:48:54 2026 \u002B0200",
+        "message": "refactor!: render tolerance as \u0060\u00B1 x\u0060 everywhere (#1125)"
       }
     ],
     "labels": [
-      "ae28ac8b",
       "2dfc2a93",
       "f2c58efc",
       "b40f1a29",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "93e2fd51",
       "c0173dfd",
       "152b45e4",
-      "c038ec26"
+      "c038ec26",
+      "525e912c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          419.3198487917582,
           492.94501726967945,
           321.6662517865499,
           355.84341993331907,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           343.7824761072795,
           470.1731425603231,
           435.94404163360593,
-          443.8239698750632
+          443.8239698750632,
+          451.3546841825758
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1156.9683876037598,
           1268.5366074488713,
           899.8793354034424,
           956.5905661949745,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           895.6350174585979,
           1207.4822497049968,
           1220.9729890823364,
-          1189.5603050231935
+          1189.5603050231935,
+          1137.5848183949788
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "ae28ac8bfc1408f37f394d2e7fb8d78a35f9d494",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 12 19:13:15 2026 \u002B0200",
-        "message": "fix: restore in \u0060Debug\u0060 before running the mutation tests (#1049)"
-      },
-      {
         "sha": "2dfc2a933980f4270bed8a11bc6fdbd818bb25e6",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 20:28:52 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
         "message": "fix: cap the heap of the test host instead of the whole job"
+      },
+      {
+        "sha": "525e912c42dbede647c60c0ff48a7ed4447fcfd7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 13:48:54 2026 \u002B0200",
+        "message": "refactor!: render tolerance as \u0060\u00B1 x\u0060 everywhere (#1125)"
       }
     ],
     "labels": [
-      "ae28ac8b",
       "2dfc2a93",
       "f2c58efc",
       "b40f1a29",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "93e2fd51",
       "c0173dfd",
       "152b45e4",
-      "c038ec26"
+      "c038ec26",
+      "525e912c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1285.6932764053345,
           2048.7104324927695,
           1024.7778945650373,
           1172.1498559805063,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1476.4722430365425,
           1936.5568182809013,
           1348.5513350168865,
-          1899.8832641601562
+          1899.8832641601562,
+          1915.4286098480225
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1316.807714589437,
           1482.3498956680298,
           993.0315253917987,
           1091.659278188433,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1003.9631337385911,
           1242.3274236043294,
           1381.5317835126605,
-          1378.2740264892577
+          1378.2740264892577,
+          1285.010301208496
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "ae28ac8bfc1408f37f394d2e7fb8d78a35f9d494",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 12 19:13:15 2026 \u002B0200",
-        "message": "fix: restore in \u0060Debug\u0060 before running the mutation tests (#1049)"
-      },
-      {
         "sha": "2dfc2a933980f4270bed8a11bc6fdbd818bb25e6",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 20:28:52 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 13:44:03 2026 \u002B0200",
         "message": "fix: cap the heap of the test host instead of the whole job"
+      },
+      {
+        "sha": "525e912c42dbede647c60c0ff48a7ed4447fcfd7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Sep 15 13:48:54 2026 \u002B0200",
+        "message": "refactor!: render tolerance as \u0060\u00B1 x\u0060 everywhere (#1125)"
       }
     ],
     "labels": [
-      "ae28ac8b",
       "2dfc2a93",
       "f2c58efc",
       "b40f1a29",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "93e2fd51",
       "c0173dfd",
       "152b45e4",
-      "c038ec26"
+      "c038ec26",
+      "525e912c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1679.661682510376,
           2617.6351503225474,
           1325.9666979471842,
           1539.817172563993,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           1884.5005330403646,
           2472.942229407174,
           1795.5128047943115,
-          2525.565395061786
+          2525.565395061786,
+          2612.7643934396597
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          15854.894307454428,
           21692.001957484656,
           12251.25824519566,
           14082.65697224935,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           15499.583459472657,
           25512.445173997145,
           16737.171134440105,
-          27292.448457845054
+          27292.448457845054,
+          26717.905848185223
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33465,
           33471,
           33465,
           33465,
@@ -4242,6 +4241,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
