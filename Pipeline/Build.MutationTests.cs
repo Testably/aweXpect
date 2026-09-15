@@ -35,10 +35,12 @@ partial class Build
 	///     falls into the last slice instead of silently dropping out of the score.
 	///     The patterns start with <c>**/</c> because Stryker does not document what its globs are relative to, and end
 	///     in <c>/*.cs</c> because the subject folders are flat - a nested folder would fall into the last slice.
+	///     The files directly in the project folder match none of them, and Stryker mutates such a file in every slice
+	///     rather than in none, so the first slice claims them and every later slice inherits the exclusion.
 	/// </remarks>
 	private static readonly (string Name, string[] Patterns)[] MainMutationSlices =
 	[
-		("collections-enumerable", ["**/That/Collections/ThatEnumerable*.cs",]),
+		("collections-enumerable", ["**/aweXpect/*.cs", "**/That/Collections/ThatEnumerable*.cs",]),
 		("collections-other", ["**/That/Collections/*.cs",]),
 		("numbers", ["**/That/Numbers/*.cs",]),
 		("dates",
