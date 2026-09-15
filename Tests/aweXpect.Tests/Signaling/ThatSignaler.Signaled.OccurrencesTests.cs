@@ -34,6 +34,26 @@ public sealed partial class ThatSignaler
 			}
 
 			[Fact]
+			public async Task WhenRecordedAsOftenAsTheLimit_LessThanShouldFail()
+			{
+				Signaler signaler = new();
+
+				signaler.Signal();
+				signaler.Signal();
+				signaler.Signal();
+
+				async Task Act() =>
+					await That(signaler).Signaled().LessThan(3.Times()).Within(40.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that signaler
+					             has recorded the callback less than 3 times within 0:00.040,
+					             but it was recorded 3 times
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenRecordedExactlyTwice_ExactlyShouldSucceed()
 			{
 				Signaler signaler = new();
@@ -43,6 +63,20 @@ public sealed partial class ThatSignaler
 
 				async Task Act() =>
 					await That(signaler).Signaled().Exactly(2.Times()).Within(40.Milliseconds());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenRecordedInsideTheRange_BetweenShouldSucceed()
+			{
+				Signaler signaler = new();
+
+				signaler.Signal();
+				signaler.Signal();
+
+				async Task Act() =>
+					await That(signaler).Signaled().Between(1).And(3.Times()).Within(40.Milliseconds());
 
 				await That(Act).DoesNotThrow();
 			}
@@ -81,26 +115,6 @@ public sealed partial class ThatSignaler
 			}
 
 			[Fact]
-			public async Task WhenRecordedMoreOftenThanTheMaximum_LessThanShouldFail()
-			{
-				Signaler signaler = new();
-
-				signaler.Signal();
-				signaler.Signal();
-				signaler.Signal();
-
-				async Task Act() =>
-					await That(signaler).Signaled().LessThan(3.Times()).Within(40.Milliseconds());
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that signaler
-					             has recorded the callback less than 3 times within 0:00.040,
-					             but it was recorded 3 times
-					             """);
-			}
-
-			[Fact]
 			public async Task WhenRecordedOnce_NeverShouldFail()
 			{
 				Signaler signaler = new();
@@ -129,6 +143,27 @@ public sealed partial class ThatSignaler
 					await That(signaler).Signaled().Once().Within(40.Milliseconds());
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenRecordedOutsideTheRange_BetweenShouldFail()
+			{
+				Signaler signaler = new();
+
+				signaler.Signal();
+				signaler.Signal();
+				signaler.Signal();
+				signaler.Signal();
+
+				async Task Act() =>
+					await That(signaler).Signaled().Between(1).And(3.Times()).Within(40.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that signaler
+					             has recorded the callback between 1 and 3 times within 0:00.040,
+					             but it was recorded 4 times
+					             """);
 			}
 
 			[Fact]

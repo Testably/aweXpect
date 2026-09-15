@@ -6,6 +6,10 @@ namespace aweXpect.Results;
 /// <summary>
 ///     The result for counting items in a collection.
 /// </summary>
+/// <param name="factory">
+///     Creates the result from the <see cref="EnumerableQuantifier" /> to apply and a flag that is
+///     <see langword="true" /> when the expectation is negated, as for <see cref="NotEqualTo(int)" />.
+/// </param>
 public class CollectionCountResult<TReturn>(Func<EnumerableQuantifier, bool, TReturn> factory)
 {
 	/// <summary>

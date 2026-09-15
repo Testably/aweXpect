@@ -257,9 +257,12 @@ public static partial class ThatSignaler
 
 			int decisiveCount = GetDecisiveCount(quantifier);
 			TimeSpan? timeout = decisiveCount > 0 ? options.Timeout : TimeSpan.Zero;
-			int amount = Math.Max(1, decisiveCount);
+			// A single signal must not be awaited through the Times overload: it leaves the signaler with a disposed
+			// CountdownEvent, so that any later Signal() would throw an ObjectDisposedException.
 			Actual = await Task.Run(()
-					=> actual.Wait(amount.Times(), timeout, cancellationToken),
+					=> decisiveCount > 1
+						? actual.Wait(decisiveCount.Times(), timeout, cancellationToken)
+						: actual.Wait(timeout, cancellationToken),
 				CancellationToken.None);
 
 			Outcome = quantifier.Check(Actual.Count, true) == true ? Outcome.Success : Outcome.Failure;
@@ -306,9 +309,12 @@ public static partial class ThatSignaler
 			SignalerOptions<TParameter> o = options;
 			int decisiveCount = GetDecisiveCount(quantifier);
 			TimeSpan? timeout = decisiveCount > 0 ? options.Timeout : TimeSpan.Zero;
-			int amount = Math.Max(1, decisiveCount);
+			// A single signal must not be awaited through the Times overload: it leaves the signaler with a disposed
+			// CountdownEvent, so that any later Signal() would throw an ObjectDisposedException.
 			Actual = await Task.Run(()
-					=> actual.Wait(amount.Times(), o.Matches, timeout, cancellationToken),
+					=> decisiveCount > 1
+						? actual.Wait(decisiveCount.Times(), o.Matches, timeout, cancellationToken)
+						: actual.Wait(o.Matches, timeout, cancellationToken),
 				CancellationToken.None);
 
 			_actualCount = Actual.Parameters.Count(p => o.Matches(p));
