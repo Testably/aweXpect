@@ -27,12 +27,12 @@ public sealed partial class ThatDelegate
 
 				async Task Act()
 					=> await That(Delegate).Throws<MyException>()
-						.Which.For(h => h.Message, r => r.IsEqualTo("foo"));
+						.Which.Whose(h => h.Message, r => r.IsEqualTo("foo"));
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that Delegate
-					             throws a MyException which for .Message is equal to "foo",
+					             throws a MyException which whose .Message is equal to "foo",
 					             but .Message was "ShouldIncludeWhichInErrorMessa…" which differs at index 0:
 					                ↓ (actual)
 					               "ShouldIncludeWhichInErrorMessage"

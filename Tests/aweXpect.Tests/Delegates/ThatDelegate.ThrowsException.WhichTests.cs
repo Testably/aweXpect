@@ -29,12 +29,12 @@ public sealed partial class ThatDelegate
 
 				async Task Act()
 					=> await That(Delegate).Throws<ArgumentNullException>()
-						.Which.For(h => h.ParamName, r => r.IsEqualTo(expectedParamName));
+						.Which.Whose(h => h.ParamName, r => r.IsEqualTo(expectedParamName));
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that Delegate
-					             throws an ArgumentNullException which for .ParamName is equal to "bar",
+					             throws an ArgumentNullException which whose .ParamName is equal to "bar",
 					             but .ParamName was "foo" which differs at index 0:
 					                ↓ (actual)
 					               "foo"

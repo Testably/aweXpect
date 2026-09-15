@@ -2,7 +2,7 @@
 
 public sealed partial class ThatGeneric
 {
-	public sealed class For
+	public sealed class Whose
 	{
 		public sealed class Tests
 		{
@@ -18,7 +18,7 @@ public sealed partial class ThatGeneric
 				};
 
 				async Task Act()
-					=> await That(subject).For(o => o.Item, it => it.Is<Derived>()
+					=> await That(subject).Whose(o => o.Item, it => it.Is<Derived>()
 						.Whose(d => d.Name, it => it.IsEqualTo("foo")));
 
 				await That(Act).DoesNotThrow();
@@ -39,13 +39,13 @@ public sealed partial class ThatGeneric
 
 				async Task Act()
 					=> await That(subject)
-						.For(o => o.A, v => v.IsTrue()).And
-						.For(o => o.B, v => v.IsTrue());
+						.Whose(o => o.A, v => v.IsTrue()).And
+						.Whose(o => o.B, v => v.IsTrue());
 
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
-					              for .A is True and for .B is True,
+					              whose .A is True and whose .B is True,
 					              but {(a ? "" : ".A was False")}{(!a && !b ? " and " : "")}{(b ? "" : ".B was False")}
 					              """);
 			}
@@ -65,13 +65,13 @@ public sealed partial class ThatGeneric
 
 				async Task Act()
 					=> await That(subject)
-						.For(o => o.A, v => v.IsTrue()).Or
-						.For(o => o.B, v => v.IsTrue());
+						.Whose(o => o.A, v => v.IsTrue()).Or
+						.Whose(o => o.B, v => v.IsTrue());
 
 				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that subject
-					             for .A is True or for .B is True,
+					             whose .A is True or whose .B is True,
 					             but .A was False and .B was False
 					             """);
 			}
@@ -88,12 +88,12 @@ public sealed partial class ThatGeneric
 
 				async Task Act()
 					=> await That(subject)
-						.For(o => o.Value, v => v.IsEqualTo(expectedValue));
+						.Whose(o => o.Value, v => v.IsEqualTo(expectedValue));
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              for .Value is equal to {Formatter.Format(expectedValue)},
+					              whose .Value is equal to {Formatter.Format(expectedValue)},
 					              but .Value was {Formatter.Format(value)} which differs by -1
 					              """);
 			}
@@ -108,7 +108,7 @@ public sealed partial class ThatGeneric
 				};
 
 				async Task Act()
-					=> await That(subject).For(o => o.Value, v => v.IsEqualTo(value));
+					=> await That(subject).Whose(o => o.Value, v => v.IsEqualTo(value));
 
 				await That(Act).DoesNotThrow();
 			}

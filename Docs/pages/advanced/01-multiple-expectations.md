@@ -19,7 +19,7 @@ await Expect.That(subject).StartsWith("some").And.EndsWith("text");
 
 ## On different properties of the same subject
 
-Use the `For`-syntax to access different properties of a common subject and combine them again with `.And` or `.Or`,
+Use the `Whose`-syntax to access different properties of a common subject and combine them again with `.And` or `.Or`,
 e.g.
 
 ```csharp
@@ -27,13 +27,13 @@ e.g.
   Album subject = new(1, "Dark Side of the Sun");
   
   await Expect.That(subject)
-    .For(x => x.TrackCount, x => x.IsGreaterThan(1)).And
-    .For(x => x.Title, x => x.Is("Dark Side of the Moon"));
+    .Whose(x => x.TrackCount, x => x.IsGreaterThan(1)).And
+    .Whose(x => x.Title, x => x.Is("Dark Side of the Moon"));
 ```
 
 > ```
 > Expected subject to
-> for .TrackCount be greater than 1 and for .Title be equal to "Dark Side of the Moon",
+> whose .TrackCount be greater than 1 and whose .Title be equal to "Dark Side of the Moon",
 > but .TrackCount was 1 and .Title was "Dark Side of the Sun" which differs at index 17:
 >                      ↓ (actual)
 >   "Dark Side of the Sun"

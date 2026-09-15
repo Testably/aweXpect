@@ -1012,8 +1012,6 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<T, aweXpect.Core.IThat<T>> DoesNotSatisfy<T>(this aweXpect.Core.IThat<T> subject, System.Func<T, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<T, aweXpect.Core.IThat<T>> For<T, TMember>(this aweXpect.Core.IThat<T> subject, System.Func<T, TMember?> memberSelector, System.Action<aweXpect.Core.IThatSubject<TMember?>> expectations, [System.Runtime.CompilerServices.CallerArgumentExpression("memberSelector")] string doNotPopulateThisValue = "") { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TEquatable, aweXpect.Core.IThat<TEquatable>> IsEquatableTo<T, TEquatable>(this aweXpect.Core.IThat<TEquatable> subject, T expected)
             where TEquatable : System.IEquatable<T> { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -1021,6 +1019,8 @@ namespace aweXpect
             where TEquatable : System.IEquatable<T> { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.RepeatedCheckResult<T, aweXpect.Core.IThat<T>> Satisfies<T>(this aweXpect.Core.IThat<T> subject, System.Func<T, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<T, aweXpect.Core.IThat<T>> Whose<T, TMember>(this aweXpect.Core.IThat<T> subject, System.Func<T, TMember?> memberSelector, System.Action<aweXpect.Core.IThatSubject<TMember?>> expectations, [System.Runtime.CompilerServices.CallerArgumentExpression("memberSelector")] string doNotPopulateThisValue = "") { }
     }
     public static class ThatGuid
     {
