@@ -16,7 +16,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(@delegate).DoesNotThrow().AndWhoseResult.IsEqualTo(1);
 
-			await That(Act).ThrowsException()
+			await That(Act).Throws()
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
@@ -29,7 +29,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(@delegate).DoesNotThrow();
 
-			await That(Act).ThrowsException()
+			await That(Act).Throws()
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
@@ -42,7 +42,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(@delegate).DoesNotThrow();
 
-			await That(Act).ThrowsException()
+			await That(Act).Throws()
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
@@ -55,7 +55,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(@delegate).DoesNotThrowExactly<MyException>();
 
-			await That(Act).ThrowsException()
+			await That(Act).Throws()
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
@@ -69,7 +69,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(@delegate).DoesNotThrowExactly<MyException>();
 
-			await That(Act).ThrowsException()
+			await That(Act).Throws()
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
@@ -82,7 +82,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(@delegate).ExecutesWithin(5.Seconds());
 
-			await That(Act).ThrowsException()
+			await That(Act).Throws()
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
@@ -95,7 +95,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(@delegate).ExecutesWithin(5.Seconds());
 
-			await That(Act).ThrowsException()
+			await That(Act).Throws()
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
@@ -112,7 +112,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(@delegate).Throws<MyException>().Within(5.Milliseconds());
 
-			await That(Act).ThrowsException()
+			await That(Act).Throws()
 				.Whose(e => e.InnerException, i => i.IsNull());
 		}
 
@@ -125,7 +125,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(@delegate).Throws<InvalidOperationException>();
 
-			await That(Act).ThrowsException()
+			await That(Act).Throws()
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
@@ -138,7 +138,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(@delegate).ThrowsExactly<InvalidOperationException>();
 
-			await That(Act).ThrowsException()
+			await That(Act).Throws()
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 	}

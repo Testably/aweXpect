@@ -61,7 +61,7 @@ public sealed class CustomizeFormattingTests
 		async Task Act() => await That(actual).IsEqualTo(expected);
 		using (IDisposable _ = Customize.aweXpect.Formatting().MinimumNumberOfCharactersAfterStringDifference.Set(3))
 		{
-			await That(Act).ThrowsException()
+			await That(Act).Throws()
 				.WithMessage("""
 				             Expected that actual
 				             is equal to "this is another text with…",
@@ -79,7 +79,7 @@ public sealed class CustomizeFormattingTests
 				             """);
 		}
 
-		await That(Act).ThrowsException()
+		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that actual
 			             is equal to "this is another text with…",

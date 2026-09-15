@@ -6,6 +6,98 @@ public sealed partial class ThatDelegate
 	{
 		public sealed class OnlyIf
 		{
+			public sealed class Tests
+			{
+				[Fact]
+				public async Task ShouldSupportChainedConstraints()
+				{
+					Action action = () => { };
+
+					await That(action).Throws()
+						.OnlyIf(false)
+						.WithMessage("foo");
+				}
+
+				[Fact]
+				public async Task WhenAwaited_OnlyIfFalse_ShouldReturnNull()
+				{
+					Action action = () => { };
+
+					Exception? result =
+						await That(action).Throws().OnlyIf(false);
+
+					await That(result).IsNull();
+				}
+
+				[Fact]
+				public async Task WhenAwaited_OnlyIfTrue_ShouldReturnThrownException()
+				{
+					Exception exception = new CustomException();
+					Action action = () => throw exception;
+
+					Exception? result =
+						await That(action).Throws().OnlyIf(true);
+
+					await That(result).IsSameAs(exception);
+				}
+
+				[Fact]
+				public async Task WhenFalse_ShouldFailWhenAnExceptionWasThrown()
+				{
+					Exception exception = new("");
+					Action action = () => throw exception;
+
+					async Task Act()
+						=> await That(action).Throws().OnlyIf(false);
+
+					await That(Act).Throws()
+						.WithMessage("""
+						             Expected that action
+						             does not throw any exception,
+						             but it did throw an Exception
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenFalse_ShouldSucceedWhenNoExceptionWasThrown()
+				{
+					Action action = () => { };
+
+					async Task Act()
+						=> await That(action).Throws().OnlyIf(false);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenTrue_ShouldFailWhenNoExceptionWasThrow()
+				{
+					Action action = () => { };
+
+					async Task Act()
+						=> await That(action).Throws().OnlyIf(true);
+
+					await That(Act).Throws()
+						.WithMessage("""
+						             Expected that action
+						             throws an exception,
+						             but it did not throw any exception
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenTrue_ShouldSucceedWhenAnExceptionWasThrow()
+				{
+					Exception exception = new("");
+					Action action = () => throw exception;
+
+					async Task Act()
+						=> await That(action).Throws().OnlyIf(true);
+
+					await That(Act).DoesNotThrow();
+				}
+			}
+
 			public sealed class GenericTests
 			{
 				[Fact]
@@ -60,7 +152,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws<Exception>().OnlyIf(false);
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that action
 						             does not throw any exception,
@@ -87,7 +179,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action!).Throws<Exception>().OnlyIf(false);
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that action
 						             does not throw any exception,
@@ -103,7 +195,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws<ArgumentException>().OnlyIf(true);
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that action
 						             throws an ArgumentException,
@@ -178,7 +270,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws(typeof(Exception)).OnlyIf(false);
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that action
 						             does not throw any exception,
@@ -205,7 +297,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws(typeof(ArgumentException)).OnlyIf(true);
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that action
 						             throws an ArgumentException,

@@ -557,6 +557,8 @@ namespace aweXpect.Delegates
         protected ThatDelegate(aweXpect.Core.ExpectationBuilder expectationBuilder) { }
         public aweXpect.Core.ExpectationBuilder ExpectationBuilder { get; }
         [aweXpect.Core.GuaranteesNotNull]
+        public aweXpect.Delegates.ThatDelegateThrows<System.Exception> Throws() { }
+        [aweXpect.Core.GuaranteesNotNull]
         public aweXpect.Delegates.ThatDelegateThrows<System.Exception> Throws(System.Type exceptionType) { }
         [aweXpect.Core.GuaranteesNotNull]
         public aweXpect.Delegates.ThatDelegateThrows<TException> Throws<TException>()
@@ -566,8 +568,6 @@ namespace aweXpect.Delegates
         [aweXpect.Core.GuaranteesNotNull]
         public aweXpect.Delegates.ThatDelegateThrows<TException> ThrowsExactly<TException>()
             where TException : System.Exception { }
-        [aweXpect.Core.GuaranteesNotNull]
-        public aweXpect.Delegates.ThatDelegateThrows<System.Exception> ThrowsException() { }
         public class ThrowsOption
         {
             public ThrowsOption() { }

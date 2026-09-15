@@ -4,6 +4,80 @@ public sealed partial class ThatDelegate
 {
 	public sealed partial class Throws
 	{
+		public sealed class Tests
+		{
+			[Fact]
+			public async Task WhenAwaited_ShouldReturnThrownException()
+			{
+				Exception exception = new CustomException();
+				Action action = () => throw exception;
+
+				Exception result = await That(action).Throws();
+
+				await That(result).IsSameAs(exception);
+			}
+
+			[Fact]
+			public async Task WhenChained_ShouldOnlyDisplayInformationAboutNotThrownException()
+			{
+				Action action = () => { };
+
+				async Task<Exception> Act()
+					=> await That(action).Throws().WithMessage("foo");
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that action
+					             throws an exception with Message equal to "foo",
+					             but it did not throw any exception
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenExceptionIsThrown_ShouldSucceed()
+			{
+				Exception exception = new CustomException();
+				Action action = () => throw exception;
+
+				async Task<Exception> Act()
+					=> await That(action).Throws();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenNoExceptionIsThrown_ShouldFail()
+			{
+				Action action = () => { };
+
+				async Task<Exception> Act()
+					=> await That(action).Throws().Because("it should throw");
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that action
+					             throws an exception, because it should throw,
+					             but it did not throw any exception
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				Action? subject = null;
+
+				async Task Act()
+					=> await That(subject!).Throws();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             throws an exception,
+					             but it was <null>
+					             """);
+			}
+		}
+
 		public sealed class GenericTests
 		{
 			[Fact]
@@ -14,7 +88,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(action).Throws<ArgumentException>().WithMessage("foo");
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that action
 					             throws an ArgumentException with Message equal to "foo",
@@ -59,7 +133,7 @@ public sealed partial class ThatDelegate
 				async Task<Exception> Act()
 					=> await That(action).Throws<Exception>();
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that action
 					             throws an exception,
@@ -77,7 +151,7 @@ public sealed partial class ThatDelegate
 				async Task<CustomException> Act()
 					=> await That(action).Throws<CustomException>();
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that action
 					              throws a ThatDelegate.CustomException,
@@ -96,7 +170,7 @@ public sealed partial class ThatDelegate
 				async Task<CustomException> Act()
 					=> await That(action).Throws<CustomException>();
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 			}
 
@@ -138,7 +212,7 @@ public sealed partial class ThatDelegate
 				async Task<SubCustomException> Act()
 					=> await That(action).Throws<SubCustomException>();
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that action
 					              throws a ThatDelegate.SubCustomException,
@@ -158,7 +232,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(action).Throws(typeof(ArgumentException)).WithMessage("foo");
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that action
 					             throws an ArgumentException with Message equal to "foo",
@@ -202,7 +276,7 @@ public sealed partial class ThatDelegate
 				async Task<Exception> Act()
 					=> await That(action).Throws(typeof(Exception));
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that action
 					             throws an exception,
@@ -220,7 +294,7 @@ public sealed partial class ThatDelegate
 				async Task<Exception> Act()
 					=> await That(action).Throws(typeof(CustomException));
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that action
 					              throws a ThatDelegate.CustomException,
@@ -267,7 +341,7 @@ public sealed partial class ThatDelegate
 				async Task<Exception> Act()
 					=> await That(action).Throws(typeof(SubCustomException));
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that action
 					              throws a ThatDelegate.SubCustomException,

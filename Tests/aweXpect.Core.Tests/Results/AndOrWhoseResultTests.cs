@@ -13,7 +13,7 @@ public class AndOrWhoseResultTests
 				.AndWhose(f => f.Value2, f => f.IsTrue())
 				.And.IsSameAs(sut);
 
-		await That(Act).ThrowsException()
+		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that sut
 			             is type AndOrWhoseResultTests.MyClass whose .Value1 is True and whose .Value2 is True and refers to AndOrWhoseResultTests.MyClass {
@@ -42,7 +42,7 @@ public class AndOrWhoseResultTests
 				.Whose(f => f.Value1, f => f.IsTrue())
 				.AndWhose(f => f.Value2, f => f.IsTrue());
 
-		await That(Act).ThrowsException().OnlyIf(!expectSuccess)
+		await That(Act).Throws().OnlyIf(!expectSuccess)
 			.WithMessage($"""
 			              Expected that sut
 			              is type AndOrWhoseResultTests.MyClass whose .Value1 is True and whose .Value2 is True,

@@ -14,7 +14,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(action).ThrowsExactly<Exception>().WithMessage("foo");
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that action
 					             throws exactly an Exception with Message equal to "foo",
@@ -59,7 +59,7 @@ public sealed partial class ThatDelegate
 				async Task<CustomException> Act()
 					=> await That(action).ThrowsExactly<CustomException>();
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that action
 					             throws exactly a ThatDelegate.CustomException,
@@ -77,7 +77,7 @@ public sealed partial class ThatDelegate
 				async Task<CustomException> Act()
 					=> await That(action).ThrowsExactly<CustomException>();
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that action
 					              throws exactly a ThatDelegate.CustomException,
@@ -96,7 +96,7 @@ public sealed partial class ThatDelegate
 				async Task<CustomException> Act()
 					=> await That(action).ThrowsExactly<CustomException>();
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that action
 					              throws exactly a ThatDelegate.CustomException,
@@ -132,7 +132,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(action).ThrowsExactly(typeof(Exception)).WithMessage("foo");
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that action
 					             throws exactly an Exception with Message equal to "foo",
@@ -176,7 +176,7 @@ public sealed partial class ThatDelegate
 				async Task<Exception> Act()
 					=> await That(action).ThrowsExactly(typeof(CustomException));
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that action
 					             throws exactly a ThatDelegate.CustomException,
@@ -194,7 +194,7 @@ public sealed partial class ThatDelegate
 				async Task<Exception> Act()
 					=> await That(action).ThrowsExactly(typeof(CustomException));
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that action
 					              throws exactly a ThatDelegate.CustomException,
@@ -213,7 +213,7 @@ public sealed partial class ThatDelegate
 				async Task<Exception> Act()
 					=> await That(action).ThrowsExactly(typeof(CustomException));
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage($"""
 					              Expected that action
 					              throws exactly a ThatDelegate.CustomException,

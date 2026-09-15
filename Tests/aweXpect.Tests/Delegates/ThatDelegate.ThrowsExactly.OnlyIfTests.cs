@@ -50,7 +50,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).ThrowsExactly<Exception>().OnlyIf(false);
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that action
 						             does not throw any exception,
@@ -77,7 +77,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).ThrowsExactly<ArgumentException>().OnlyIf(true);
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that action
 						             throws exactly an ArgumentException,
@@ -142,7 +142,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).ThrowsExactly(typeof(Exception)).OnlyIf(false);
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that action
 						             does not throw any exception,
@@ -169,7 +169,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).ThrowsExactly(typeof(ArgumentException)).OnlyIf(true);
 
-					await That(Act).ThrowsException()
+					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that action
 						             throws exactly an ArgumentException,

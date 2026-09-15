@@ -92,7 +92,7 @@ public sealed partial class ThatObject
 					=> await That(subject)
 						.IsNotEquivalentTo(unexpected, o => o.IgnoringMember("Inner.Inner.Collection[3]"));
 
-				await That(Act).ThrowsException()
+				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
 					             is not equivalent to ThatObject.OuterClass {

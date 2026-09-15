@@ -2,7 +2,7 @@
 
 public sealed partial class ThatDelegate
 {
-	public sealed partial class ThrowsException
+	public sealed partial class Throws
 	{
 		public sealed class WithInner
 		{
@@ -15,7 +15,7 @@ public sealed partial class ThatDelegate
 					void Delegate() => throw exception;
 
 					Exception result = await That(Delegate)
-						.ThrowsException().WithInner<CustomException>();
+						.Throws().WithInner<CustomException>();
 
 					await That(result).IsSameAs(exception);
 				}
@@ -28,7 +28,7 @@ public sealed partial class ThatDelegate
 						=> throw new OuterException(innerException: new CustomException(message));
 
 					async Task Act()
-						=> await That(action).ThrowsException().WithInner<SubCustomException>();
+						=> await That(action).Throws().WithInner<SubCustomException>();
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
@@ -47,7 +47,7 @@ public sealed partial class ThatDelegate
 						=> throw new OuterException(innerException: new OtherException(message));
 
 					async Task Act()
-						=> await That(action).ThrowsException().WithInner<CustomException>();
+						=> await That(action).Throws().WithInner<CustomException>();
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
@@ -64,7 +64,7 @@ public sealed partial class ThatDelegate
 					Action action = () => throw new OuterException();
 
 					async Task Act()
-						=> await That(action).ThrowsException().WithInner<Exception>();
+						=> await That(action).Throws().WithInner<Exception>();
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -80,7 +80,7 @@ public sealed partial class ThatDelegate
 					Action action = () => throw new OuterException(innerException: new CustomException());
 
 					async Task Act()
-						=> await That(action).ThrowsException().WithInner<CustomException>();
+						=> await That(action).Throws().WithInner<CustomException>();
 
 					await That(Act).DoesNotThrow();
 				}
@@ -92,7 +92,7 @@ public sealed partial class ThatDelegate
 						=> throw new OuterException(innerException: new SubCustomException());
 
 					async Task Act()
-						=> await That(action).ThrowsException().WithInner<CustomException>();
+						=> await That(action).Throws().WithInner<CustomException>();
 
 					await That(Act).DoesNotThrow();
 				}
@@ -103,7 +103,7 @@ public sealed partial class ThatDelegate
 					Action action = () => throw new OuterException();
 
 					async Task Act()
-						=> await That(action).ThrowsException().WithInner<CustomException>();
+						=> await That(action).Throws().WithInner<CustomException>();
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -124,7 +124,7 @@ public sealed partial class ThatDelegate
 						=> throw new OuterException(innerException: new CustomException(message));
 
 					async Task Act()
-						=> await That(action).ThrowsException().WithInner<CustomException>(x => x.HasMessage("foo"));
+						=> await That(action).Throws().WithInner<CustomException>(x => x.HasMessage("foo"));
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -149,7 +149,7 @@ public sealed partial class ThatDelegate
 						=> throw new OuterException(innerException: new CustomException(message));
 
 					async Task Act()
-						=> await That(action).ThrowsException().WithInner<Exception>(x => x.HasMessage("foo"));
+						=> await That(action).Throws().WithInner<Exception>(x => x.HasMessage("foo"));
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -175,8 +175,7 @@ public sealed partial class ThatDelegate
 					void Delegate() => throw exception;
 
 					Exception result = await That(Delegate)
-						.ThrowsException().WithInner<CustomException>(
-							e => e.HasMessage(message));
+						.Throws().WithInner<CustomException>(e => e.HasMessage(message));
 
 					await That(result).IsSameAs(exception);
 				}
@@ -188,7 +187,7 @@ public sealed partial class ThatDelegate
 						=> throw new OuterException(innerException: new CustomException("bar"));
 
 					async Task Act()
-						=> await That(action).ThrowsException()
+						=> await That(action).Throws()
 							.WithInner<CustomException>(x => x.HasMessage("bar").And.HasMessage("foo"));
 
 					await That(Act).Throws<XunitException>()
@@ -216,7 +215,7 @@ public sealed partial class ThatDelegate
 						=> throw new OuterException(innerException: new CustomException("bar"));
 
 					async Task Act()
-						=> await That(action).ThrowsException()
+						=> await That(action).Throws()
 							.WithInner<CustomException>(x => x.HasMessage("foo").Or.HasMessage("bar"));
 
 					await That(Act).DoesNotThrow();
@@ -232,7 +231,7 @@ public sealed partial class ThatDelegate
 						});
 
 					async Task Act()
-						=> await That(action).ThrowsException()
+						=> await That(action).Throws()
 							.WithInner<CustomException>(x => x.Satisfies(e => e?.Value == "bar"));
 
 					await That(Act).DoesNotThrow();
@@ -246,7 +245,7 @@ public sealed partial class ThatDelegate
 						=> throw new OuterException(innerException: new CustomException(message));
 
 					async Task Act()
-						=> await That(action).ThrowsException().WithInner<Exception>(x => x.HasMessage("foo"));
+						=> await That(action).Throws().WithInner<Exception>(x => x.HasMessage("foo"));
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -270,7 +269,7 @@ public sealed partial class ThatDelegate
 						=> throw new OuterException(innerException: new CustomException("foo"));
 
 					async Task Act()
-						=> await That(action).ThrowsException()
+						=> await That(action).Throws()
 							.WithInner<MyException>(x => x.HasMessage("foo"));
 
 					await That(Act).Throws<XunitException>()
@@ -290,7 +289,7 @@ public sealed partial class ThatDelegate
 						=> throw new OuterException(innerException: new OtherException("foo"));
 
 					async Task Act()
-						=> await That(action).ThrowsException()
+						=> await That(action).Throws()
 							.WithInner<CustomException>(x => x.Satisfies(e => e?.Value == "bar"));
 
 					await That(Act).Throws<XunitException>()
@@ -308,7 +307,7 @@ public sealed partial class ThatDelegate
 					Action action = () => throw new OuterException();
 
 					async Task Act()
-						=> await That(action).ThrowsException()
+						=> await That(action).Throws()
 							.WithInner<Exception>(x => x.HasMessage("foo"));
 
 					await That(Act).Throws<XunitException>()
@@ -325,7 +324,7 @@ public sealed partial class ThatDelegate
 					Action action = () => { };
 
 					async Task Act()
-						=> await That(action).ThrowsException()
+						=> await That(action).Throws()
 							.WithInner<CustomException>(x => x.HasMessage("foo"));
 
 					await That(Act).Throws<XunitException>()
@@ -348,7 +347,7 @@ public sealed partial class ThatDelegate
 					void Delegate() => throw exception;
 
 					Exception result = await That(Delegate)
-						.ThrowsException().WithInner(typeof(CustomException),
+						.Throws().WithInner(typeof(CustomException),
 							e => e.HasMessage(message));
 
 					await That(result).IsSameAs(exception);
@@ -361,7 +360,7 @@ public sealed partial class ThatDelegate
 					void Delegate() => throw exception;
 
 					Exception result = await That(Delegate)
-						.ThrowsException().WithInner(typeof(CustomException));
+						.Throws().WithInner(typeof(CustomException));
 
 					await That(result).IsSameAs(exception);
 				}
@@ -374,7 +373,7 @@ public sealed partial class ThatDelegate
 						=> throw new OuterException(innerException: new CustomException(message));
 
 					async Task Act()
-						=> await That(action).ThrowsException()
+						=> await That(action).Throws()
 							.WithInner(typeof(SubCustomException));
 
 					await That(Act).Throws<XunitException>()
@@ -394,7 +393,7 @@ public sealed partial class ThatDelegate
 						=> throw new OuterException(innerException: new OtherException(message));
 
 					async Task Act()
-						=> await That(action).ThrowsException().WithInner(typeof(CustomException));
+						=> await That(action).Throws().WithInner(typeof(CustomException));
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
@@ -411,7 +410,7 @@ public sealed partial class ThatDelegate
 					Action action = () => throw new OuterException();
 
 					async Task Act()
-						=> await That(action).ThrowsException().WithInner(typeof(Exception));
+						=> await That(action).Throws().WithInner(typeof(Exception));
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -427,7 +426,7 @@ public sealed partial class ThatDelegate
 					Action action = () => throw new OuterException(innerException: new CustomException());
 
 					async Task Act()
-						=> await That(action).ThrowsException().WithInner(typeof(CustomException));
+						=> await That(action).Throws().WithInner(typeof(CustomException));
 
 					await That(Act).DoesNotThrow();
 				}
@@ -439,7 +438,7 @@ public sealed partial class ThatDelegate
 						=> throw new OuterException(innerException: new SubCustomException());
 
 					async Task Act()
-						=> await That(action).ThrowsException().WithInner(typeof(CustomException));
+						=> await That(action).Throws().WithInner(typeof(CustomException));
 
 					await That(Act).DoesNotThrow();
 				}
@@ -450,7 +449,7 @@ public sealed partial class ThatDelegate
 					Action action = () => throw new OuterException();
 
 					async Task Act()
-						=> await That(action).ThrowsException().WithInner(typeof(CustomException));
+						=> await That(action).Throws().WithInner(typeof(CustomException));
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -471,7 +470,7 @@ public sealed partial class ThatDelegate
 						=> throw new OuterException(innerException: new CustomException(message));
 
 					async Task Act()
-						=> await That(action).ThrowsException()
+						=> await That(action).Throws()
 							.WithInner(typeof(CustomException), x => x.HasMessage("foo"));
 
 					await That(Act).Throws<XunitException>()
@@ -497,7 +496,7 @@ public sealed partial class ThatDelegate
 						=> throw new OuterException(innerException: new CustomException(message));
 
 					async Task Act()
-						=> await That(action).ThrowsException()
+						=> await That(action).Throws()
 							.WithInner(typeof(Exception), x => x.HasMessage("foo"));
 
 					await That(Act).Throws<XunitException>()
@@ -523,7 +522,7 @@ public sealed partial class ThatDelegate
 						=> throw new OuterException(innerException: new CustomException(message));
 
 					async Task Act()
-						=> await That(action).ThrowsException()
+						=> await That(action).Throws()
 							.WithInner(typeof(Exception), x => x.HasMessage("foo"));
 
 					await That(Act).Throws<XunitException>()
@@ -548,7 +547,7 @@ public sealed partial class ThatDelegate
 						=> throw new OuterException(innerException: new CustomException("foo"));
 
 					async Task Act()
-						=> await That(action).ThrowsException()
+						=> await That(action).Throws()
 							.WithInner(typeof(MyException), x => x.HasMessage("foo"));
 
 					await That(Act).Throws<XunitException>()
@@ -557,7 +556,7 @@ public sealed partial class ThatDelegate
 						             throws an exception with an inner MyException whose Message is equal to "foo",
 						             but it was a ThatDelegate.CustomException:
 						               foo
-						             
+
 						             Message:
 						             foo
 						             """);
@@ -569,7 +568,7 @@ public sealed partial class ThatDelegate
 					Action action = () => throw new OuterException();
 
 					async Task Act()
-						=> await That(action).ThrowsException()
+						=> await That(action).Throws()
 							.WithInner(typeof(Exception), x => x.HasMessage("foo"));
 
 					await That(Act).Throws<XunitException>()
@@ -586,7 +585,7 @@ public sealed partial class ThatDelegate
 					Action action = () => { };
 
 					async Task Act()
-						=> await That(action).ThrowsException()
+						=> await That(action).Throws()
 							.WithInner(typeof(CustomException), x => x.HasMessage("foo"));
 
 					await That(Act).Throws<XunitException>()

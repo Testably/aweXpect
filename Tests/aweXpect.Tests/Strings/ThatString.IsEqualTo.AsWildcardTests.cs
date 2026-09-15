@@ -19,7 +19,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsEqualTo(pattern).AsWildcard();
 
-				await That(Act).ThrowsException().OnlyIf(!expectMatch)
+				await That(Act).Throws().OnlyIf(!expectMatch)
 					.WithMessage($"""
 					              Expected that subject
 					              matches {Formatter.Format(pattern)},
@@ -50,7 +50,7 @@ public sealed partial class ThatString
 					=> await That(subject).IsEqualTo(pattern)
 						.AsWildcard().IgnoringCase(ignoreCase);
 
-				await That(Act).ThrowsException().OnlyIf(!ignoreCase)
+				await That(Act).Throws().OnlyIf(!ignoreCase)
 					.WithMessage("""
 					             Expected that subject
 					             matches "*ME ME*",

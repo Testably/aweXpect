@@ -40,7 +40,7 @@ public sealed class CustomizeSettingsTests
 			await That(Customize.aweXpect.Settings().DefaultEventuallyTimeout.Get()).IsEqualTo(LowTimeout);
 			stopwatch.Start();
 			async Task Act() => await That(() => 1).Eventually().IsEqualTo(2);
-			await That(Act).ThrowsException();
+			await That(Act).Throws();
 			stopwatch.Stop();
 		}
 
@@ -77,13 +77,13 @@ public sealed class CustomizeSettingsTests
 		DateTime otherTime = time.AddMilliseconds(10);
 		await That(Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get()).IsEqualTo(TimeSpan.Zero);
 		async Task Act() => await That(time).IsEqualTo(otherTime);
-		await That(Act).ThrowsException();
+		await That(Act).Throws();
 		using (IDisposable __ = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(10.Milliseconds()))
 		{
 			await That(Act).DoesNotThrow();
 		}
 
-		await That(Act).ThrowsException();
+		await That(Act).Throws();
 	}
 
 	[Fact]

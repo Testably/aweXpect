@@ -35,7 +35,7 @@ You can verify that the delegate throws an exception:
 ```csharp
 void Act() => throw new CustomException("my exception");
 
-await Expect.That(Act).ThrowsException();
+await Expect.That(Act).Throws();
 ```
 
 ### Specific exception
@@ -85,10 +85,10 @@ You can verify the message of the thrown exception:
 ```csharp
 void Act() => throw new CustomException("This is my exception text");
 
-await Expect.That(Act).ThrowsException().WithMessage("This is my exception text");
-await Expect.That(Act).ThrowsException().WithoutMessage("some other text");
-await Expect.That(Act).ThrowsException().WithMessageContaining("my exception");
-await Expect.That(Act).ThrowsException().WithoutMessageContaining("something else");
+await Expect.That(Act).Throws().WithMessage("This is my exception text");
+await Expect.That(Act).Throws().WithoutMessage("some other text");
+await Expect.That(Act).Throws().WithMessageContaining("my exception");
+await Expect.That(Act).Throws().WithoutMessageContaining("something else");
 ```
 
 You can use the same configuration options as when [comparing strings](/docs/expectations/common-types/string#equality).
@@ -100,8 +100,8 @@ You can verify the inner exception of the thrown exception;
 ```csharp
 void Act() => throw new CustomException("outer", new CustomException("inner"));
 
-await Expect.That(Act).ThrowsException().WithInnerException();
-await Expect.That(Act).ThrowsException().WithInner<CustomException>();
+await Expect.That(Act).Throws().WithInnerException();
+await Expect.That(Act).Throws().WithInner<CustomException>();
 ```
 
 ### Recursive inner exceptions
@@ -111,7 +111,7 @@ You can recursively verify the collection of inner exceptions of the thrown exce
 ```csharp
 void Act() => throw new AggregateException("outer", new CustomException("inner"));
 
-await Expect.That(Act).ThrowsException().WithRecursiveInnerExceptions(innerExceptions => innerExceptions.HasAtLeast(1).Be<CustomException>());
+await Expect.That(Act).Throws().WithRecursiveInnerExceptions(innerExceptions => innerExceptions.HasAtLeast(1).Be<CustomException>());
 ```
 
 ### Other members
@@ -122,14 +122,14 @@ You can recursively verify additional members of the exception:
 var exception = new CustomException("outer", paramName: "paramName", hResult: 12345);
 void Act() => throw exception;
 
-await Expect.That(Act).ThrowsException().WithParamName("paramName")
+await Expect.That(Act).Throws().WithParamName("paramName")
   .Because("you can verify the `paramName`");
-await Expect.That(Act).ThrowsException().WithHResult(12345)
+await Expect.That(Act).Throws().WithHResult(12345)
   .Because("you can verify the `HResult`");
-await Expect.That(Act).ThrowsException()
+await Expect.That(Act).Throws()
   .Whose(e => e.HResult, h => h.IsGreaterThan(12340))
   .Because("you can verify arbitrary additional members");
-await Expect.That(Act).ThrowsException()
+await Expect.That(Act).Throws()
   .Which.IsSameAs(exception)
   .Because("you can access the thrown exception");
 
