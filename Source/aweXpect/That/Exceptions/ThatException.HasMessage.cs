@@ -16,15 +16,15 @@ public static partial class ThatException
 	/// </summary>
 	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<Exception?, IThat<Exception?>> HasMessage(
-		this IThat<Exception?> source,
+		this IThat<Exception?> subject,
 		string expected)
 	{
 		StringEqualityOptions options = new();
 		return new StringEqualityTypeResult<Exception?, IThat<Exception?>>(
-			source.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars)
 				=> new HasMessageValueConstraint(
 					expectationBuilder, it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -33,15 +33,15 @@ public static partial class ThatException
 	/// </summary>
 	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<Exception?, IThat<Exception?>> DoesNotHaveMessage(
-		this IThat<Exception?> source,
+		this IThat<Exception?> subject,
 		string unexpected)
 	{
 		StringEqualityOptions options = new();
 		return new StringEqualityTypeResult<Exception?, IThat<Exception?>>(
-			source.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars)
 				=> new HasMessageValueConstraint(
 					expectationBuilder, it, grammars, unexpected, options).Invert()),
-			source,
+			subject,
 			options);
 	}
 

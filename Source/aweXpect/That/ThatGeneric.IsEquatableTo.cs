@@ -14,12 +14,12 @@ public static partial class ThatGeneric
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<TEquatable, IThat<TEquatable>> IsEquatableTo<T, TEquatable>(
-		this IThat<TEquatable> source,
+		this IThat<TEquatable> subject,
 		T expected)
 		where TEquatable : IEquatable<T>
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsEquatableToConstraint<T, TEquatable>(it, grammars, expected)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not equal to the <paramref name="unexpected" /> value
@@ -27,12 +27,12 @@ public static partial class ThatGeneric
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<TEquatable, IThat<TEquatable>> IsNotEquatableTo<T, TEquatable>(
-		this IThat<TEquatable> source,
+		this IThat<TEquatable> subject,
 		T unexpected)
 		where TEquatable : IEquatable<T>
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsEquatableToConstraint<T, TEquatable>(it, grammars, unexpected).Invert()),
-			source);
+			subject);
 
 	private sealed class IsEquatableToConstraint<T, TEquatable>(
 		string it,

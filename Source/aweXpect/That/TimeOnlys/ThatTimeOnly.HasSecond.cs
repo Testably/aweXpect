@@ -10,7 +10,7 @@ public static partial class ThatTimeOnly
 	/// <summary>
 	///     Verifies that the second of the subject…
 	/// </summary>
-	public static PropertyResult.Int<TimeOnly> HasSecond(this IThat<TimeOnly> source)
-		=> new(source, a => a.Second, "second");
+	public static PropertyResult.Int<TimeOnly> HasSecond(this IThat<TimeOnly> subject)
+		=> new(subject, a => a.Second, "second");
 }
 #endif

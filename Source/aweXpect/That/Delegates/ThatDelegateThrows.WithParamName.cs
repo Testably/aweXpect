@@ -14,21 +14,21 @@ public static partial class ThatDelegateThrows
 	///     If <paramref name="expected" /> is <see langword="null" />, does not verify anything.
 	/// </remarks>
 	public static AndOrResult<TException, ThatDelegateThrows<TException>> WithParamName<TException>(
-		this ThatDelegateThrows<TException> source,
+		this ThatDelegateThrows<TException> subject,
 		string? expected)
 		where TException : ArgumentException?
 	{
 		if (expected == null)
 		{
-			return new AndOrResult<TException, ThatDelegateThrows<TException>>(source.ExpectationBuilder, source);
+			return new AndOrResult<TException, ThatDelegateThrows<TException>>(subject.ExpectationBuilder, subject);
 		}
 
 		return new AndOrResult<TException, ThatDelegateThrows<TException>>(
-			source.ExpectationBuilder.AddConstraint((it, grammars)
+			subject.ExpectationBuilder.AddConstraint((it, grammars)
 				=> new ThatException.HasParamNameValueConstraint<TException>(
 					it,
 					grammars | ExpectationGrammars.Active | ExpectationGrammars.Nested,
 					expected)),
-			source);
+			subject);
 	}
 }

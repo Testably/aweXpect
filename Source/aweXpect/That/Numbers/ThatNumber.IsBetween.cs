@@ -14,15 +14,15 @@ public static partial class ThatNumber
 	///     Verifies that the subject is between the <paramref name="minimum" />…
 	/// </summary>
 	public static BetweenResult<NumberToleranceResult<TNumber, IThat<TNumber>>, TNumber?> IsBetween<TNumber>(
-		this IThat<TNumber> source, TNumber? minimum)
+		this IThat<TNumber> subject, TNumber? minimum)
 		where TNumber : struct, INumber<TNumber>
 		=> new(maximum =>
 		{
 			NumberTolerance<TNumber> options = new(CalculateDifference);
 			return new NumberToleranceResult<TNumber, IThat<TNumber>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsInRangeConstraint<TNumber>(it, grammars, minimum, maximum, options)),
-				source,
+				subject,
 				options);
 		});
 
@@ -31,15 +31,15 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<TNumber, IThat<TNumber?>>, TNumber?> IsBetween<TNumber>(
-		this IThat<TNumber?> source, TNumber? minimum)
+		this IThat<TNumber?> subject, TNumber? minimum)
 		where TNumber : struct, INumber<TNumber>
 		=> new(maximum =>
 		{
 			NumberTolerance<TNumber> options = new(CalculateDifference);
 			return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsInRangeConstraint<TNumber>(it, grammars, minimum, maximum, options)),
-				source,
+				subject,
 				options);
 		});
 
@@ -47,15 +47,15 @@ public static partial class ThatNumber
 	///     Verifies that the subject is not between the <paramref name="minimum" />…
 	/// </summary>
 	public static BetweenResult<NumberToleranceResult<TNumber, IThat<TNumber>>, TNumber?> IsNotBetween<TNumber>(
-		this IThat<TNumber> source, TNumber? minimum)
+		this IThat<TNumber> subject, TNumber? minimum)
 		where TNumber : struct, INumber<TNumber>
 		=> new(maximum =>
 		{
 			NumberTolerance<TNumber> options = new(CalculateDifference);
 			return new NumberToleranceResult<TNumber, IThat<TNumber>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsInRangeConstraint<TNumber>(it, grammars, minimum, maximum, options).Invert()),
-				source,
+				subject,
 				options);
 		});
 
@@ -64,15 +64,15 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<TNumber, IThat<TNumber?>>, TNumber?> IsNotBetween<TNumber>(
-		this IThat<TNumber?> source, TNumber? minimum)
+		this IThat<TNumber?> subject, TNumber? minimum)
 		where TNumber : struct, INumber<TNumber>
 		=> new(maximum =>
 		{
 			NumberTolerance<TNumber> options = new(CalculateDifference);
 			return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsInRangeConstraint<TNumber>(it, grammars, minimum, maximum, options).Invert()),
-				source,
+				subject,
 				options);
 		});
 
@@ -204,15 +204,15 @@ public static partial class ThatNumber
 	///     Verifies that the subject is in the range between the <paramref name="minimum" />…
 	/// </summary>
 	public static BetweenResult<NumberToleranceResult<byte, IThat<byte>>, byte?> IsBetween(
-		this IThat<byte> source,
+		this IThat<byte> subject,
 		byte? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<byte> options = new((a, e) => { checked { return (byte)(a > e ? a - e : e - a); } });
 			return new NumberToleranceResult<byte, IThat<byte>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsInRangeConstraint<byte>(it, grammars, minimum, maximum, options)),
-				source,
+				subject,
 				options);
 		});
 
@@ -220,15 +220,15 @@ public static partial class ThatNumber
 	///     Verifies that the subject is in the range between the <paramref name="minimum" />…
 	/// </summary>
 	public static BetweenResult<NumberToleranceResult<sbyte, IThat<sbyte>>, sbyte?> IsBetween(
-		this IThat<sbyte> source,
+		this IThat<sbyte> subject,
 		sbyte? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<sbyte> options = new((a, e) => { checked { return (sbyte)(a > e ? a - e : e - a); } });
 			return new NumberToleranceResult<sbyte, IThat<sbyte>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsInRangeConstraint<sbyte>(it, grammars, minimum, maximum, options)),
-				source,
+				subject,
 				options);
 		});
 
@@ -236,15 +236,15 @@ public static partial class ThatNumber
 	///     Verifies that the subject is in the range between the <paramref name="minimum" />…
 	/// </summary>
 	public static BetweenResult<NumberToleranceResult<short, IThat<short>>, short?> IsBetween(
-		this IThat<short> source,
+		this IThat<short> subject,
 		short? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<short> options = new((a, e) => { checked { return (short)(a > e ? a - e : e - a); } });
 			return new NumberToleranceResult<short, IThat<short>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsInRangeConstraint<short>(it, grammars, minimum, maximum, options)),
-				source,
+				subject,
 				options);
 		});
 
@@ -252,15 +252,15 @@ public static partial class ThatNumber
 	///     Verifies that the subject is in the range between the <paramref name="minimum" />…
 	/// </summary>
 	public static BetweenResult<NumberToleranceResult<ushort, IThat<ushort>>, ushort?> IsBetween(
-		this IThat<ushort> source,
+		this IThat<ushort> subject,
 		ushort? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<ushort> options = new((a, e) => { checked { return (ushort)(a > e ? a - e : e - a); } });
 			return new NumberToleranceResult<ushort, IThat<ushort>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsInRangeConstraint<ushort>(it, grammars, minimum, maximum, options)),
-				source,
+				subject,
 				options);
 		});
 
@@ -268,15 +268,15 @@ public static partial class ThatNumber
 	///     Verifies that the subject is in the range between the <paramref name="minimum" />…
 	/// </summary>
 	public static BetweenResult<NumberToleranceResult<int, IThat<int>>, int?> IsBetween(
-		this IThat<int> source,
+		this IThat<int> subject,
 		int? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<int> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 			return new NumberToleranceResult<int, IThat<int>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsInRangeConstraint<int>(it, grammars, minimum, maximum, options)),
-				source,
+				subject,
 				options);
 		});
 
@@ -284,15 +284,15 @@ public static partial class ThatNumber
 	///     Verifies that the subject is in the range between the <paramref name="minimum" />…
 	/// </summary>
 	public static BetweenResult<NumberToleranceResult<uint, IThat<uint>>, uint?> IsBetween(
-		this IThat<uint> source,
+		this IThat<uint> subject,
 		uint? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<uint> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 			return new NumberToleranceResult<uint, IThat<uint>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsInRangeConstraint<uint>(it, grammars, minimum, maximum, options)),
-				source,
+				subject,
 				options);
 		});
 
@@ -300,15 +300,15 @@ public static partial class ThatNumber
 	///     Verifies that the subject is in the range between the <paramref name="minimum" />…
 	/// </summary>
 	public static BetweenResult<NumberToleranceResult<long, IThat<long>>, long?> IsBetween(
-		this IThat<long> source,
+		this IThat<long> subject,
 		long? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<long> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 			return new NumberToleranceResult<long, IThat<long>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsInRangeConstraint<long>(it, grammars, minimum, maximum, options)),
-				source,
+				subject,
 				options);
 		});
 
@@ -316,15 +316,15 @@ public static partial class ThatNumber
 	///     Verifies that the subject is in the range between the <paramref name="minimum" />…
 	/// </summary>
 	public static BetweenResult<NumberToleranceResult<ulong, IThat<ulong>>, ulong?> IsBetween(
-		this IThat<ulong> source,
+		this IThat<ulong> subject,
 		ulong? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<ulong> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 			return new NumberToleranceResult<ulong, IThat<ulong>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsInRangeConstraint<ulong>(it, grammars, minimum, maximum, options)),
-				source,
+				subject,
 				options);
 		});
 
@@ -332,7 +332,7 @@ public static partial class ThatNumber
 	///     Verifies that the subject is in the range between the <paramref name="minimum" />…
 	/// </summary>
 	public static BetweenResult<NumberToleranceResult<float, IThat<float>>, float?> IsBetween(
-		this IThat<float> source,
+		this IThat<float> subject,
 		float? minimum)
 		=> new(maximum =>
 		{
@@ -346,9 +346,9 @@ public static partial class ThatNumber
 				return a > e ? a - e : e - a;
 			});
 			return new NumberToleranceResult<float, IThat<float>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsInRangeConstraint<float>(it, grammars, minimum, maximum, options)),
-				source,
+				subject,
 				options);
 		});
 
@@ -356,7 +356,7 @@ public static partial class ThatNumber
 	///     Verifies that the subject is in the range between the <paramref name="minimum" />…
 	/// </summary>
 	public static BetweenResult<NumberToleranceResult<double, IThat<double>>, double?> IsBetween(
-		this IThat<double> source,
+		this IThat<double> subject,
 		double? minimum)
 		=> new(maximum =>
 		{
@@ -370,9 +370,9 @@ public static partial class ThatNumber
 				return a > e ? a - e : e - a;
 			});
 			return new NumberToleranceResult<double, IThat<double>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsInRangeConstraint<double>(it, grammars, minimum, maximum, options)),
-				source,
+				subject,
 				options);
 		});
 
@@ -380,15 +380,15 @@ public static partial class ThatNumber
 	///     Verifies that the subject is in the range between the <paramref name="minimum" />…
 	/// </summary>
 	public static BetweenResult<NumberToleranceResult<decimal, IThat<decimal>>, decimal?> IsBetween(
-		this IThat<decimal> source,
+		this IThat<decimal> subject,
 		decimal? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<decimal> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 			return new NumberToleranceResult<decimal, IThat<decimal>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsInRangeConstraint<decimal>(it, grammars, minimum, maximum, options)),
-				source,
+				subject,
 				options);
 		});
 
@@ -397,15 +397,15 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<byte, IThat<byte?>>, byte?> IsBetween(
-		this IThat<byte?> source,
+		this IThat<byte?> subject,
 		byte? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<byte> options = new((a, e) => { checked { return (byte)(a > e ? a - e : e - a); } });
 			return new NullableNumberToleranceResult<byte, IThat<byte?>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsInRangeConstraint<byte>(it, grammars, minimum, maximum, options)),
-				source,
+				subject,
 				options);
 		});
 
@@ -414,15 +414,15 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<sbyte, IThat<sbyte?>>, sbyte?> IsBetween(
-		this IThat<sbyte?> source,
+		this IThat<sbyte?> subject,
 		sbyte? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<sbyte> options = new((a, e) => { checked { return (sbyte)(a > e ? a - e : e - a); } });
 			return new NullableNumberToleranceResult<sbyte, IThat<sbyte?>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsInRangeConstraint<sbyte>(it, grammars, minimum, maximum, options)),
-				source,
+				subject,
 				options);
 		});
 
@@ -431,15 +431,15 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<short, IThat<short?>>, short?> IsBetween(
-		this IThat<short?> source,
+		this IThat<short?> subject,
 		short? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<short> options = new((a, e) => { checked { return (short)(a > e ? a - e : e - a); } });
 			return new NullableNumberToleranceResult<short, IThat<short?>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsInRangeConstraint<short>(it, grammars, minimum, maximum, options)),
-				source,
+				subject,
 				options);
 		});
 
@@ -448,15 +448,15 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<ushort, IThat<ushort?>>, ushort?> IsBetween(
-		this IThat<ushort?> source,
+		this IThat<ushort?> subject,
 		ushort? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<ushort> options = new((a, e) => { checked { return (ushort)(a > e ? a - e : e - a); } });
 			return new NullableNumberToleranceResult<ushort, IThat<ushort?>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsInRangeConstraint<ushort>(it, grammars, minimum, maximum, options)),
-				source,
+				subject,
 				options);
 		});
 
@@ -465,15 +465,15 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<int, IThat<int?>>, int?> IsBetween(
-		this IThat<int?> source,
+		this IThat<int?> subject,
 		int? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<int> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 			return new NullableNumberToleranceResult<int, IThat<int?>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsInRangeConstraint<int>(it, grammars, minimum, maximum, options)),
-				source,
+				subject,
 				options);
 		});
 
@@ -482,15 +482,15 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<uint, IThat<uint?>>, uint?> IsBetween(
-		this IThat<uint?> source,
+		this IThat<uint?> subject,
 		uint? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<uint> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 			return new NullableNumberToleranceResult<uint, IThat<uint?>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsInRangeConstraint<uint>(it, grammars, minimum, maximum, options)),
-				source,
+				subject,
 				options);
 		});
 
@@ -499,15 +499,15 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<long, IThat<long?>>, long?> IsBetween(
-		this IThat<long?> source,
+		this IThat<long?> subject,
 		long? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<long> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 			return new NullableNumberToleranceResult<long, IThat<long?>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsInRangeConstraint<long>(it, grammars, minimum, maximum, options)),
-				source,
+				subject,
 				options);
 		});
 
@@ -516,15 +516,15 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<ulong, IThat<ulong?>>, ulong?> IsBetween(
-		this IThat<ulong?> source,
+		this IThat<ulong?> subject,
 		ulong? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<ulong> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 			return new NullableNumberToleranceResult<ulong, IThat<ulong?>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsInRangeConstraint<ulong>(it, grammars, minimum, maximum, options)),
-				source,
+				subject,
 				options);
 		});
 
@@ -533,7 +533,7 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<float, IThat<float?>>, float?> IsBetween(
-		this IThat<float?> source,
+		this IThat<float?> subject,
 		float? minimum)
 		=> new(maximum =>
 		{
@@ -547,9 +547,9 @@ public static partial class ThatNumber
 				return a > e ? a - e : e - a;
 			});
 			return new NullableNumberToleranceResult<float, IThat<float?>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsInRangeConstraint<float>(it, grammars, minimum, maximum, options)),
-				source,
+				subject,
 				options);
 		});
 
@@ -558,7 +558,7 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<double, IThat<double?>>, double?> IsBetween(
-		this IThat<double?> source,
+		this IThat<double?> subject,
 		double? minimum)
 		=> new(maximum =>
 		{
@@ -572,9 +572,9 @@ public static partial class ThatNumber
 				return a > e ? a - e : e - a;
 			});
 			return new NullableNumberToleranceResult<double, IThat<double?>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsInRangeConstraint<double>(it, grammars, minimum, maximum, options)),
-				source,
+				subject,
 				options);
 		});
 
@@ -583,15 +583,15 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<decimal, IThat<decimal?>>, decimal?> IsBetween(
-		this IThat<decimal?> source,
+		this IThat<decimal?> subject,
 		decimal? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<decimal> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 			return new NullableNumberToleranceResult<decimal, IThat<decimal?>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsInRangeConstraint<decimal>(it, grammars, minimum, maximum, options)),
-				source,
+				subject,
 				options);
 		});
 
@@ -599,15 +599,15 @@ public static partial class ThatNumber
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
 	public static BetweenResult<NumberToleranceResult<byte, IThat<byte>>, byte?> IsNotBetween(
-		this IThat<byte> source,
+		this IThat<byte> subject,
 		byte? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<byte> options = new((a, e) => { checked { return (byte)(a > e ? a - e : e - a); } });
 			return new NumberToleranceResult<byte, IThat<byte>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsInRangeConstraint<byte>(it, grammars, minimum, maximum, options).Invert()),
-				source,
+				subject,
 				options);
 		});
 
@@ -615,15 +615,15 @@ public static partial class ThatNumber
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
 	public static BetweenResult<NumberToleranceResult<sbyte, IThat<sbyte>>, sbyte?> IsNotBetween(
-		this IThat<sbyte> source,
+		this IThat<sbyte> subject,
 		sbyte? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<sbyte> options = new((a, e) => { checked { return (sbyte)(a > e ? a - e : e - a); } });
 			return new NumberToleranceResult<sbyte, IThat<sbyte>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsInRangeConstraint<sbyte>(it, grammars, minimum, maximum, options).Invert()),
-				source,
+				subject,
 				options);
 		});
 
@@ -631,15 +631,15 @@ public static partial class ThatNumber
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
 	public static BetweenResult<NumberToleranceResult<short, IThat<short>>, short?> IsNotBetween(
-		this IThat<short> source,
+		this IThat<short> subject,
 		short? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<short> options = new((a, e) => { checked { return (short)(a > e ? a - e : e - a); } });
 			return new NumberToleranceResult<short, IThat<short>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsInRangeConstraint<short>(it, grammars, minimum, maximum, options).Invert()),
-				source,
+				subject,
 				options);
 		});
 
@@ -647,15 +647,15 @@ public static partial class ThatNumber
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
 	public static BetweenResult<NumberToleranceResult<ushort, IThat<ushort>>, ushort?> IsNotBetween(
-		this IThat<ushort> source,
+		this IThat<ushort> subject,
 		ushort? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<ushort> options = new((a, e) => { checked { return (ushort)(a > e ? a - e : e - a); } });
 			return new NumberToleranceResult<ushort, IThat<ushort>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsInRangeConstraint<ushort>(it, grammars, minimum, maximum, options).Invert()),
-				source,
+				subject,
 				options);
 		});
 
@@ -663,15 +663,15 @@ public static partial class ThatNumber
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
 	public static BetweenResult<NumberToleranceResult<int, IThat<int>>, int?> IsNotBetween(
-		this IThat<int> source,
+		this IThat<int> subject,
 		int? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<int> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 			return new NumberToleranceResult<int, IThat<int>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsInRangeConstraint<int>(it, grammars, minimum, maximum, options).Invert()),
-				source,
+				subject,
 				options);
 		});
 
@@ -679,15 +679,15 @@ public static partial class ThatNumber
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
 	public static BetweenResult<NumberToleranceResult<uint, IThat<uint>>, uint?> IsNotBetween(
-		this IThat<uint> source,
+		this IThat<uint> subject,
 		uint? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<uint> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 			return new NumberToleranceResult<uint, IThat<uint>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsInRangeConstraint<uint>(it, grammars, minimum, maximum, options).Invert()),
-				source,
+				subject,
 				options);
 		});
 
@@ -695,15 +695,15 @@ public static partial class ThatNumber
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
 	public static BetweenResult<NumberToleranceResult<long, IThat<long>>, long?> IsNotBetween(
-		this IThat<long> source,
+		this IThat<long> subject,
 		long? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<long> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 			return new NumberToleranceResult<long, IThat<long>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsInRangeConstraint<long>(it, grammars, minimum, maximum, options).Invert()),
-				source,
+				subject,
 				options);
 		});
 
@@ -711,15 +711,15 @@ public static partial class ThatNumber
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
 	public static BetweenResult<NumberToleranceResult<ulong, IThat<ulong>>, ulong?> IsNotBetween(
-		this IThat<ulong> source,
+		this IThat<ulong> subject,
 		ulong? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<ulong> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 			return new NumberToleranceResult<ulong, IThat<ulong>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsInRangeConstraint<ulong>(it, grammars, minimum, maximum, options).Invert()),
-				source,
+				subject,
 				options);
 		});
 
@@ -727,7 +727,7 @@ public static partial class ThatNumber
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
 	public static BetweenResult<NumberToleranceResult<float, IThat<float>>, float?> IsNotBetween(
-		this IThat<float> source,
+		this IThat<float> subject,
 		float? minimum)
 		=> new(maximum =>
 		{
@@ -741,9 +741,9 @@ public static partial class ThatNumber
 				return a > e ? a - e : e - a;
 			});
 			return new NumberToleranceResult<float, IThat<float>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsInRangeConstraint<float>(it, grammars, minimum, maximum, options).Invert()),
-				source,
+				subject,
 				options);
 		});
 
@@ -751,7 +751,7 @@ public static partial class ThatNumber
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
 	public static BetweenResult<NumberToleranceResult<double, IThat<double>>, double?> IsNotBetween(
-		this IThat<double> source,
+		this IThat<double> subject,
 		double? minimum)
 		=> new(maximum =>
 		{
@@ -765,9 +765,9 @@ public static partial class ThatNumber
 				return a > e ? a - e : e - a;
 			});
 			return new NumberToleranceResult<double, IThat<double>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsInRangeConstraint<double>(it, grammars, minimum, maximum, options).Invert()),
-				source,
+				subject,
 				options);
 		});
 
@@ -775,15 +775,15 @@ public static partial class ThatNumber
 	///     Verifies that the subject is not in the range between the <paramref name="minimum" />…
 	/// </summary>
 	public static BetweenResult<NumberToleranceResult<decimal, IThat<decimal>>, decimal?> IsNotBetween(
-		this IThat<decimal> source,
+		this IThat<decimal> subject,
 		decimal? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<decimal> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 			return new NumberToleranceResult<decimal, IThat<decimal>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsInRangeConstraint<decimal>(it, grammars, minimum, maximum, options).Invert()),
-				source,
+				subject,
 				options);
 		});
 
@@ -792,15 +792,15 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<byte, IThat<byte?>>, byte?> IsNotBetween(
-		this IThat<byte?> source,
+		this IThat<byte?> subject,
 		byte? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<byte> options = new((a, e) => { checked { return (byte)(a > e ? a - e : e - a); } });
 			return new NullableNumberToleranceResult<byte, IThat<byte?>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsInRangeConstraint<byte>(it, grammars, minimum, maximum, options).Invert()),
-				source,
+				subject,
 				options);
 		});
 
@@ -809,15 +809,15 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<sbyte, IThat<sbyte?>>, sbyte?> IsNotBetween(
-		this IThat<sbyte?> source,
+		this IThat<sbyte?> subject,
 		sbyte? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<sbyte> options = new((a, e) => { checked { return (sbyte)(a > e ? a - e : e - a); } });
 			return new NullableNumberToleranceResult<sbyte, IThat<sbyte?>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsInRangeConstraint<sbyte>(it, grammars, minimum, maximum, options).Invert()),
-				source,
+				subject,
 				options);
 		});
 
@@ -826,15 +826,15 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<short, IThat<short?>>, short?> IsNotBetween(
-		this IThat<short?> source,
+		this IThat<short?> subject,
 		short? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<short> options = new((a, e) => { checked { return (short)(a > e ? a - e : e - a); } });
 			return new NullableNumberToleranceResult<short, IThat<short?>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsInRangeConstraint<short>(it, grammars, minimum, maximum, options).Invert()),
-				source,
+				subject,
 				options);
 		});
 
@@ -843,15 +843,15 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<ushort, IThat<ushort?>>, ushort?> IsNotBetween(
-		this IThat<ushort?> source,
+		this IThat<ushort?> subject,
 		ushort? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<ushort> options = new((a, e) => { checked { return (ushort)(a > e ? a - e : e - a); } });
 			return new NullableNumberToleranceResult<ushort, IThat<ushort?>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsInRangeConstraint<ushort>(it, grammars, minimum, maximum, options).Invert()),
-				source,
+				subject,
 				options);
 		});
 
@@ -860,15 +860,15 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<int, IThat<int?>>, int?> IsNotBetween(
-		this IThat<int?> source,
+		this IThat<int?> subject,
 		int? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<int> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 			return new NullableNumberToleranceResult<int, IThat<int?>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsInRangeConstraint<int>(it, grammars, minimum, maximum, options).Invert()),
-				source,
+				subject,
 				options);
 		});
 
@@ -877,15 +877,15 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<uint, IThat<uint?>>, uint?> IsNotBetween(
-		this IThat<uint?> source,
+		this IThat<uint?> subject,
 		uint? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<uint> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 			return new NullableNumberToleranceResult<uint, IThat<uint?>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsInRangeConstraint<uint>(it, grammars, minimum, maximum, options).Invert()),
-				source,
+				subject,
 				options);
 		});
 
@@ -894,15 +894,15 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<long, IThat<long?>>, long?> IsNotBetween(
-		this IThat<long?> source,
+		this IThat<long?> subject,
 		long? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<long> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 			return new NullableNumberToleranceResult<long, IThat<long?>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsInRangeConstraint<long>(it, grammars, minimum, maximum, options).Invert()),
-				source,
+				subject,
 				options);
 		});
 
@@ -911,15 +911,15 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<ulong, IThat<ulong?>>, ulong?> IsNotBetween(
-		this IThat<ulong?> source,
+		this IThat<ulong?> subject,
 		ulong? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<ulong> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 			return new NullableNumberToleranceResult<ulong, IThat<ulong?>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsInRangeConstraint<ulong>(it, grammars, minimum, maximum, options).Invert()),
-				source,
+				subject,
 				options);
 		});
 
@@ -928,7 +928,7 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<float, IThat<float?>>, float?> IsNotBetween(
-		this IThat<float?> source,
+		this IThat<float?> subject,
 		float? minimum)
 		=> new(maximum =>
 		{
@@ -942,9 +942,9 @@ public static partial class ThatNumber
 				return a > e ? a - e : e - a;
 			});
 			return new NullableNumberToleranceResult<float, IThat<float?>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsInRangeConstraint<float>(it, grammars, minimum, maximum, options).Invert()),
-				source,
+				subject,
 				options);
 		});
 
@@ -953,7 +953,7 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<double, IThat<double?>>, double?> IsNotBetween(
-		this IThat<double?> source,
+		this IThat<double?> subject,
 		double? minimum)
 		=> new(maximum =>
 		{
@@ -967,9 +967,9 @@ public static partial class ThatNumber
 				return a > e ? a - e : e - a;
 			});
 			return new NullableNumberToleranceResult<double, IThat<double?>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsInRangeConstraint<double>(it, grammars, minimum, maximum, options).Invert()),
-				source,
+				subject,
 				options);
 		});
 
@@ -978,15 +978,15 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static BetweenResult<NullableNumberToleranceResult<decimal, IThat<decimal?>>, decimal?> IsNotBetween(
-		this IThat<decimal?> source,
+		this IThat<decimal?> subject,
 		decimal? minimum)
 		=> new(maximum =>
 		{
 			NumberTolerance<decimal> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 			return new NullableNumberToleranceResult<decimal, IThat<decimal?>>(
-				source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsInRangeConstraint<decimal>(it, grammars, minimum, maximum, options).Invert()),
-				source,
+				subject,
 				options);
 		});
 

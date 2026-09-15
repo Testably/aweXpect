@@ -10,22 +10,22 @@ public static partial class ThatObject
 	/// <summary>
 	///     Verifies the actual value to be the same as the <paramref name="expected" /> value.
 	/// </summary>
-	public static AndOrResult<T?, IThat<T?>> IsSameAs<T>(this IThat<T?> source, object? expected)
+	public static AndOrResult<T?, IThat<T?>> IsSameAs<T>(this IThat<T?> subject, object? expected)
 		where T : class
-		=> new(source.Get().ExpectationBuilder
+		=> new(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars) =>
 					new IsSameAsConstraint<T>(it, grammars, expected)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies the actual value to not be the same as the <paramref name="unexpected" /> value.
 	/// </summary>
-	public static AndOrResult<T?, IThat<T?>> IsNotSameAs<T>(this IThat<T?> source, object? unexpected)
+	public static AndOrResult<T?, IThat<T?>> IsNotSameAs<T>(this IThat<T?> subject, object? unexpected)
 		where T : class
-		=> new(source.Get().ExpectationBuilder
+		=> new(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars) =>
 					new IsSameAsConstraint<T>(it, grammars, unexpected).Invert()),
-			source);
+			subject);
 
 	private sealed class IsSameAsConstraint<T>(
 		string it,

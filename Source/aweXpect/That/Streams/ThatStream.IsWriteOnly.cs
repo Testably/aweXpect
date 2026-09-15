@@ -13,20 +13,20 @@ public static partial class ThatStream
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<Stream?, IThat<Stream?>> IsWriteOnly(
-		this IThat<Stream?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<Stream?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsWriteOnlyConstraint(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject <see cref="Stream" /> is not write-only.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<Stream?, IThat<Stream?>> IsNotWriteOnly(
-		this IThat<Stream?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<Stream?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsWriteOnlyConstraint(it, grammars).Invert()),
-			source);
+			subject);
 
 	private sealed class IsWriteOnlyConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<Stream?>(it, grammars),

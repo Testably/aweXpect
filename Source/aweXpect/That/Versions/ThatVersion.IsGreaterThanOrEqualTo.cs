@@ -13,22 +13,22 @@ public static partial class ThatVersion
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<Version?, IThat<Version?>> IsGreaterThanOrEqualTo(
-		this IThat<Version?> source,
+		this IThat<Version?> subject,
 		Version? expected)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsGreaterThanOrEqualToConstraint(it, grammars, expected)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not greater than or equal to the <paramref name="unexpected" /> value.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<Version?, IThat<Version?>> IsNotGreaterThanOrEqualTo(
-		this IThat<Version?> source,
+		this IThat<Version?> subject,
 		Version? unexpected)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsGreaterThanOrEqualToConstraint(it, grammars, unexpected).Invert()),
-			source);
+			subject);
 
 	private sealed class IsGreaterThanOrEqualToConstraint(
 		string it,

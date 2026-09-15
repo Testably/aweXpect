@@ -15,10 +15,10 @@ public static partial class ThatString
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<string?, IThat<string?>> IsUpperCased(
-		this IThat<string?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<string?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsUpperCasedConstraint(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that of all cased characters in the subject at least one is lower-case.
@@ -28,10 +28,10 @@ public static partial class ThatString
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<string, IThat<string?>> IsNotUpperCased(
-		this IThat<string?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<string?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsUpperCasedConstraint(it, grammars).Invert()),
-			source);
+			subject);
 
 	private sealed class IsUpperCasedConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<string?>(it, grammars),

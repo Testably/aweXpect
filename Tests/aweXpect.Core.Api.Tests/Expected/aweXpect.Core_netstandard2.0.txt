@@ -795,47 +795,47 @@ namespace aweXpect.Formatting
     }
     public static class ValueFormatters
     {
-        public static string Format(this aweXpect.Formatting.ValueFormatter _, System.DateTime value, aweXpect.Formatting.FormattingOptions? options = null) { }
-        public static string Format(this aweXpect.Formatting.ValueFormatter _, System.DateTimeOffset value, aweXpect.Formatting.FormattingOptions? options = null) { }
-        public static string Format(this aweXpect.Formatting.ValueFormatter _, System.Guid value, aweXpect.Formatting.FormattingOptions? options = null) { }
-        public static string Format(this aweXpect.Formatting.ValueFormatter _, nint value, aweXpect.Formatting.FormattingOptions? options = null) { }
-        public static string Format(this aweXpect.Formatting.ValueFormatter _, System.Net.HttpStatusCode? value, aweXpect.Formatting.FormattingOptions? options = null) { }
-        public static string Format(this aweXpect.Formatting.ValueFormatter _, nuint value, aweXpect.Formatting.FormattingOptions? options = null) { }
-        public static string Format(this aweXpect.Formatting.ValueFormatter _, bool value, aweXpect.Formatting.FormattingOptions? options = null) { }
-        public static string Format(this aweXpect.Formatting.ValueFormatter _, byte value, aweXpect.Formatting.FormattingOptions? options = null) { }
-        public static string Format(this aweXpect.Formatting.ValueFormatter _, char value, aweXpect.Formatting.FormattingOptions? options = null) { }
-        public static string Format(this aweXpect.Formatting.ValueFormatter _, decimal value, aweXpect.Formatting.FormattingOptions? options = null) { }
-        public static string Format(this aweXpect.Formatting.ValueFormatter _, double value, aweXpect.Formatting.FormattingOptions? options = null) { }
-        public static string Format(this aweXpect.Formatting.ValueFormatter _, float value, aweXpect.Formatting.FormattingOptions? options = null) { }
-        public static string Format(this aweXpect.Formatting.ValueFormatter _, int value, aweXpect.Formatting.FormattingOptions? options = null) { }
-        public static string Format(this aweXpect.Formatting.ValueFormatter _, long value, aweXpect.Formatting.FormattingOptions? options = null) { }
-        public static string Format(this aweXpect.Formatting.ValueFormatter _, sbyte value, aweXpect.Formatting.FormattingOptions? options = null) { }
-        public static string Format(this aweXpect.Formatting.ValueFormatter _, short value, aweXpect.Formatting.FormattingOptions? options = null) { }
-        public static string Format(this aweXpect.Formatting.ValueFormatter _, string? value, aweXpect.Formatting.FormattingOptions? options = null) { }
-        public static string Format(this aweXpect.Formatting.ValueFormatter _, uint value, aweXpect.Formatting.FormattingOptions? options = null) { }
-        public static string Format(this aweXpect.Formatting.ValueFormatter _, ulong value, aweXpect.Formatting.FormattingOptions? options = null) { }
-        public static string Format(this aweXpect.Formatting.ValueFormatter _, ushort value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.DateTime value, aweXpect.Formatting.FormattingOptions? options = null) { }
         public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.DateTime? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.DateTimeOffset value, aweXpect.Formatting.FormattingOptions? options = null) { }
         public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.DateTimeOffset? value, aweXpect.Formatting.FormattingOptions? options = null) { }
         public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.Enum? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.Guid value, aweXpect.Formatting.FormattingOptions? options = null) { }
         public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.Guid? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, nint value, aweXpect.Formatting.FormattingOptions? options = null) { }
         public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.IntPtr? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.Net.HttpStatusCode? value, aweXpect.Formatting.FormattingOptions? options = null) { }
         public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.TimeSpan value, aweXpect.Formatting.FormattingOptions? options = null) { }
         public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.TimeSpan? value, aweXpect.Formatting.FormattingOptions? options = null) { }
         public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.Type? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, nuint value, aweXpect.Formatting.FormattingOptions? options = null) { }
         public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.UIntPtr? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, bool value, aweXpect.Formatting.FormattingOptions? options = null) { }
         public static string Format(this aweXpect.Formatting.ValueFormatter formatter, bool? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, byte value, aweXpect.Formatting.FormattingOptions? options = null) { }
         public static string Format(this aweXpect.Formatting.ValueFormatter formatter, byte? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, char value, aweXpect.Formatting.FormattingOptions? options = null) { }
         public static string Format(this aweXpect.Formatting.ValueFormatter formatter, char? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, decimal value, aweXpect.Formatting.FormattingOptions? options = null) { }
         public static string Format(this aweXpect.Formatting.ValueFormatter formatter, decimal? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, double value, aweXpect.Formatting.FormattingOptions? options = null) { }
         public static string Format(this aweXpect.Formatting.ValueFormatter formatter, double? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, float value, aweXpect.Formatting.FormattingOptions? options = null) { }
         public static string Format(this aweXpect.Formatting.ValueFormatter formatter, float? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, int value, aweXpect.Formatting.FormattingOptions? options = null) { }
         public static string Format(this aweXpect.Formatting.ValueFormatter formatter, int? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, long value, aweXpect.Formatting.FormattingOptions? options = null) { }
         public static string Format(this aweXpect.Formatting.ValueFormatter formatter, long? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, sbyte value, aweXpect.Formatting.FormattingOptions? options = null) { }
         public static string Format(this aweXpect.Formatting.ValueFormatter formatter, sbyte? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, short value, aweXpect.Formatting.FormattingOptions? options = null) { }
         public static string Format(this aweXpect.Formatting.ValueFormatter formatter, short? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, string? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, uint value, aweXpect.Formatting.FormattingOptions? options = null) { }
         public static string Format(this aweXpect.Formatting.ValueFormatter formatter, uint? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, ulong value, aweXpect.Formatting.FormattingOptions? options = null) { }
         public static string Format(this aweXpect.Formatting.ValueFormatter formatter, ulong? value, aweXpect.Formatting.FormattingOptions? options = null) { }
+        public static string Format(this aweXpect.Formatting.ValueFormatter formatter, ushort value, aweXpect.Formatting.FormattingOptions? options = null) { }
         public static string Format(this aweXpect.Formatting.ValueFormatter formatter, ushort? value, aweXpect.Formatting.FormattingOptions? options = null) { }
         public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, System.Collections.IEnumerable? value, aweXpect.Formatting.FormattingOptions? options = null) { }
         public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, System.DateTime value, aweXpect.Formatting.FormattingOptions? options = null) { }
@@ -1315,13 +1315,13 @@ namespace aweXpect.Results
     {
         public class DateTimeKind<TItem>
         {
-            public DateTimeKind(aweXpect.Core.IThat<TItem> source, System.Func<TItem, System.DateTimeKind?> mapper, string propertyExpression) { }
+            public DateTimeKind(aweXpect.Core.IThat<TItem> subject, System.Func<TItem, System.DateTimeKind?> mapper, string propertyExpression) { }
             public aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>> EqualTo(System.DateTimeKind expected) { }
             public aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>> NotEqualTo(System.DateTimeKind unexpected) { }
         }
         public class Int<TItem>
         {
-            public Int(aweXpect.Core.IThat<TItem> source, System.Func<TItem, int?> mapper, string propertyExpression, System.Action<int?, string>? validation = null) { }
+            public Int(aweXpect.Core.IThat<TItem> subject, System.Func<TItem, int?> mapper, string propertyExpression, System.Action<int?, string>? validation = null) { }
             public aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>> EqualTo(int? expected) { }
             public aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>> GreaterThan(int? expected) { }
             public aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>> GreaterThanOrEqualTo(int? expected) { }
@@ -1331,7 +1331,7 @@ namespace aweXpect.Results
         }
         public class Long<TItem>
         {
-            public Long(aweXpect.Core.IThat<TItem> source, System.Func<TItem, long?> mapper, string propertyExpression, System.Action<long?, string>? validation = null) { }
+            public Long(aweXpect.Core.IThat<TItem> subject, System.Func<TItem, long?> mapper, string propertyExpression, System.Action<long?, string>? validation = null) { }
             public aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>> EqualTo(long? expected) { }
             public aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>> GreaterThan(long? expected) { }
             public aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>> GreaterThanOrEqualTo(long? expected) { }
@@ -1341,7 +1341,7 @@ namespace aweXpect.Results
         }
         public class String<TItem>
         {
-            public String(aweXpect.Core.IThat<TItem> source, System.Func<TItem, string?> mapper, string propertyExpression, System.Action<string?, string>? validation = null) { }
+            public String(aweXpect.Core.IThat<TItem> subject, System.Func<TItem, string?> mapper, string propertyExpression, System.Action<string?, string>? validation = null) { }
             public aweXpect.Results.StringEqualityResult<TItem, aweXpect.Core.IThat<TItem>> Containing(string? expected) { }
             public aweXpect.Results.StringEqualityResult<TItem, aweXpect.Core.IThat<TItem>> EqualTo(string? expected) { }
             public aweXpect.Results.StringEqualityResult<TItem, aweXpect.Core.IThat<TItem>> NotContaining(string? unexpected) { }
@@ -1349,7 +1349,7 @@ namespace aweXpect.Results
         }
         public class TimeSpan<TItem>
         {
-            public TimeSpan(aweXpect.Core.IThat<TItem> source, System.Func<TItem, System.TimeSpan?> mapper, string propertyExpression, System.Action<System.TimeSpan?, string>? validation = null) { }
+            public TimeSpan(aweXpect.Core.IThat<TItem> subject, System.Func<TItem, System.TimeSpan?> mapper, string propertyExpression, System.Action<System.TimeSpan?, string>? validation = null) { }
             public aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>> EqualTo(System.TimeSpan? expected) { }
             public aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>> GreaterThan(System.TimeSpan? expected) { }
             public aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>> GreaterThanOrEqualTo(System.TimeSpan? expected) { }

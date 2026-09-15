@@ -10,6 +10,6 @@ public static partial class ThatNullableDateTime
 	///     Verifies that the minute of the subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Int<DateTime?> HasMinute(this IThat<DateTime?> source)
-		=> new(source, a => a?.Minute, "minute");
+	public static PropertyResult.Int<DateTime?> HasMinute(this IThat<DateTime?> subject)
+		=> new(subject, a => a?.Minute, "minute");
 }

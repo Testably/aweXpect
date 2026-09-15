@@ -14,14 +14,14 @@ public static partial class ThatDateTimeOffset
 	///     Verifies that the subject is after the <paramref name="expected" /> value.
 	/// </summary>
 	public static TimeToleranceResult<DateTimeOffset, IThat<DateTimeOffset>> IsAfter(
-		this IThat<DateTimeOffset> source,
+		this IThat<DateTimeOffset> subject,
 		DateTimeOffset? expected)
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateTimeOffset, IThat<DateTimeOffset>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsAfterConstraint(it, grammars, expected, tolerance)),
-			source,
+			subject,
 			tolerance);
 	}
 
@@ -29,14 +29,14 @@ public static partial class ThatDateTimeOffset
 	///     Verifies that the subject is not after the <paramref name="unexpected" /> value.
 	/// </summary>
 	public static TimeToleranceResult<DateTimeOffset, IThat<DateTimeOffset>> IsNotAfter(
-		this IThat<DateTimeOffset> source,
+		this IThat<DateTimeOffset> subject,
 		DateTimeOffset? unexpected)
 	{
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateTimeOffset, IThat<DateTimeOffset>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsAfterConstraint(it, grammars, unexpected, tolerance).Invert()),
-			source,
+			subject,
 			tolerance);
 	}
 

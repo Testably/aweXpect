@@ -16,14 +16,14 @@ public static partial class ThatObject
 	///     Verifies that the subject is one of the <paramref name="expected" /> values.
 	/// </summary>
 	public static ObjectEqualityResult<object?, IThat<object?>, object?> IsOneOf(
-		this IThat<object?> source,
+		this IThat<object?> subject,
 		params object?[] expected)
 	{
 		ObjectEqualityOptions<object?> options = new();
 		return new ObjectEqualityResult<object?, IThat<object?>, object?>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsOneOfConstraint<object?, object?>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -31,15 +31,15 @@ public static partial class ThatObject
 	///     Verifies that the subject is one of the <paramref name="expected" /> values.
 	/// </summary>
 	public static ObjectEqualityResult<object?, IThat<object?>, object?> IsOneOf(
-		this IThat<object?> source,
+		this IThat<object?> subject,
 		IEnumerable<object?> expected,
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
 		ObjectEqualityOptions<object?> options = new();
 		return new ObjectEqualityResult<object?, IThat<object?>, object?>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsOneOfConstraint<object?, object?>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -47,15 +47,15 @@ public static partial class ThatObject
 	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
 	/// </summary>
 	public static ObjectEqualityResult<object?, IThat<object?>, object?> IsNotOneOf(
-		this IThat<object?> source,
+		this IThat<object?> subject,
 		params object?[] unexpected)
 	{
 		ObjectEqualityOptions<object?> options = new();
 		return new ObjectEqualityResult<object?, IThat<object?>, object?>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsOneOfConstraint<object?, object?>(it, grammars, unexpected, options)
 					.Invert()),
-			source,
+			subject,
 			options);
 	}
 
@@ -63,17 +63,17 @@ public static partial class ThatObject
 	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
 	/// </summary>
 	public static ObjectEqualityResult<object?, IThat<object?>, object?> IsNotOneOf(
-		this IThat<object?> source,
+		this IThat<object?> subject,
 		IEnumerable<object?> unexpected,
 		[CallerArgumentExpression("unexpected")]
 		string doNotPopulateThisValue = "")
 	{
 		ObjectEqualityOptions<object?> options = new();
 		return new ObjectEqualityResult<object?, IThat<object?>, object?>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsOneOfConstraint<object?, object?>(it, grammars, unexpected, options)
 					.Invert()),
-			source,
+			subject,
 			options);
 	}
 

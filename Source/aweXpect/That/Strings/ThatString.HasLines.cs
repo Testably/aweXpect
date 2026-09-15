@@ -18,9 +18,9 @@ public static partial class ThatString
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<string?, IThat<string?>> HasLines(
-		this IThat<string?> source,
+		this IThat<string?> subject,
 		Action<IThatSubject<IEnumerable<string>>> expectations)
-		=> new(source.Get().ExpectationBuilder
+		=> new(subject.Get().ExpectationBuilder
 				.ForMember<string?, IEnumerable<string?>>(
 					s => s.GetLines(),
 					" which ",
@@ -29,7 +29,7 @@ public static partial class ThatString
 				.AddExpectations(e => expectations(
 						new ThatSubject<IEnumerable<string>>(e)),
 					grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural),
-			source);
+			subject);
 
 	internal sealed class HasLinesConstraint(
 		string it,

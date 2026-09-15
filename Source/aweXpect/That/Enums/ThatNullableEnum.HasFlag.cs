@@ -13,24 +13,24 @@ public static partial class ThatNullableEnum
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<TEnum?, IThat<TEnum?>> HasFlag<TEnum>(
-		this IThat<TEnum?> source,
+		this IThat<TEnum?> subject,
 		TEnum? expectedFlag)
 		where TEnum : struct, Enum
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new HasFlagConstraint<TEnum>(it, grammars, expectedFlag)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject does not have the <paramref name="unexpectedFlag" /> value.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<TEnum?, IThat<TEnum?>> DoesNotHaveFlag<TEnum>(
-		this IThat<TEnum?> source,
+		this IThat<TEnum?> subject,
 		TEnum? unexpectedFlag)
 		where TEnum : struct, Enum
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new HasFlagConstraint<TEnum>(it, grammars, unexpectedFlag).Invert()),
-			source);
+			subject);
 
 	private sealed class HasFlagConstraint<TEnum>(string it, ExpectationGrammars grammars, TEnum? expectedFlag)
 		: ConstraintResult.WithNotNullValue<TEnum?>(it, grammars),

@@ -16,7 +16,7 @@ public static partial class ThatEventRecording
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static EventTriggerResult<TSubject> Triggered<TSubject>(
-		this IThat<IEventRecording<TSubject>> source,
+		this IThat<IEventRecording<TSubject>> subject,
 		string eventName)
 		where TSubject : notnull
 	{
@@ -24,9 +24,9 @@ public static partial class ThatEventRecording
 		TriggerEventFilter filter = new();
 		RepeatedCheckOptions options = new();
 		return new EventTriggerResult<TSubject>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HaveTriggeredConstraint<TSubject>(it, grammars, eventName, filter, quantifier, options)),
-			source,
+			subject,
 			filter,
 			quantifier,
 			options);

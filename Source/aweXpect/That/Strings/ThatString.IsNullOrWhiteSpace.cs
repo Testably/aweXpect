@@ -12,10 +12,10 @@ public static partial class ThatString
 	///     characters.
 	/// </summary>
 	public static AndOrResult<string?, IThat<string?>> IsNullOrWhiteSpace(
-		this IThat<string?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<string?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsNullOrWhiteSpaceConstraint(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not <see langword="null" />, <see cref="string.Empty" /> or consists only of
@@ -23,10 +23,10 @@ public static partial class ThatString
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<string, IThat<string?>> IsNotNullOrWhiteSpace(
-		this IThat<string?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<string?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsNullOrWhiteSpaceConstraint(it, grammars).Invert()),
-			source);
+			subject);
 
 	private sealed class IsNullOrWhiteSpaceConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithValue<string?>(grammars),

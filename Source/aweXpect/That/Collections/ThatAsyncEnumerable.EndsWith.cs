@@ -24,20 +24,20 @@ public static partial class ThatAsyncEnumerable
 	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		EndsWith<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> source,
+			this IThat<IAsyncEnumerable<TItem>?> subject,
 			IEnumerable<TItem> expected,
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
 		expected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new EndsWithConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					expected.ToArray(),
 					options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -47,19 +47,19 @@ public static partial class ThatAsyncEnumerable
 	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		EndsWith<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> source,
+			this IThat<IAsyncEnumerable<TItem>?> subject,
 			params TItem[] expected)
 	{
 		expected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new EndsWithConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					Formatter.Format(expected),
 					expected,
 					options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -69,20 +69,20 @@ public static partial class ThatAsyncEnumerable
 	[GuaranteesNotNull]
 	public static StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
 		EndsWith(
-			this IThat<IAsyncEnumerable<string?>?> source,
+			this IThat<IAsyncEnumerable<string?>?> subject,
 			IEnumerable<string?> expected,
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
 		expected.ThrowIfNullOrEmpty();
 		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new EndsWithConstraint<string?, string?>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					expected.ToArray(),
 					options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -92,19 +92,19 @@ public static partial class ThatAsyncEnumerable
 	[GuaranteesNotNull]
 	public static StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
 		EndsWith(
-			this IThat<IAsyncEnumerable<string?>?> source,
+			this IThat<IAsyncEnumerable<string?>?> subject,
 			params string[] expected)
 	{
 		expected.ThrowIfNullOrEmpty();
 		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new EndsWithConstraint<string, string>(expectationBuilder, it, grammars,
 					Formatter.Format(expected),
 					expected,
 					options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -114,21 +114,21 @@ public static partial class ThatAsyncEnumerable
 	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		DoesNotEndWith<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> source,
+			this IThat<IAsyncEnumerable<TItem>?> subject,
 			IEnumerable<TItem> unexpected,
 			[CallerArgumentExpression("unexpected")]
 			string doNotPopulateThisValue = "")
 	{
 		unexpected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new EndsWithConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					unexpected.ToArray(),
 					options).Invert()),
-			source,
+			subject,
 			options);
 	}
 
@@ -138,19 +138,19 @@ public static partial class ThatAsyncEnumerable
 	[GuaranteesNotNull]
 	public static ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		DoesNotEndWith<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> source,
+			this IThat<IAsyncEnumerable<TItem>?> subject,
 			params TItem[] unexpected)
 	{
 		unexpected.ThrowIfNullOrEmpty();
 		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new EndsWithConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					Formatter.Format(unexpected),
 					unexpected,
 					options).Invert()),
-			source,
+			subject,
 			options);
 	}
 
@@ -160,21 +160,21 @@ public static partial class ThatAsyncEnumerable
 	[GuaranteesNotNull]
 	public static StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
 		DoesNotEndWith(
-			this IThat<IAsyncEnumerable<string?>?> source,
+			this IThat<IAsyncEnumerable<string?>?> subject,
 			IEnumerable<string?> unexpected,
 			[CallerArgumentExpression("unexpected")]
 			string doNotPopulateThisValue = "")
 	{
 		unexpected.ThrowIfNullOrEmpty();
 		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new EndsWithConstraint<string?, string?>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					unexpected.ToArray(),
 					options).Invert()),
-			source,
+			subject,
 			options);
 	}
 
@@ -184,19 +184,19 @@ public static partial class ThatAsyncEnumerable
 	[GuaranteesNotNull]
 	public static StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
 		DoesNotEndWith(
-			this IThat<IAsyncEnumerable<string?>?> source,
+			this IThat<IAsyncEnumerable<string?>?> subject,
 			params string[] unexpected)
 	{
 		unexpected.ThrowIfNullOrEmpty();
 		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new EndsWithConstraint<string, string>(expectationBuilder, it, grammars,
 					Formatter.Format(unexpected),
 					unexpected,
 					options).Invert()),
-			source,
+			subject,
 			options);
 	}
 

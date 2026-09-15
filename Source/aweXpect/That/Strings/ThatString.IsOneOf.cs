@@ -15,14 +15,14 @@ public static partial class ThatString
 	///     Verifies that the subject is one of the <paramref name="expected" /> values.
 	/// </summary>
 	public static StringEqualityTypeResult<string?, IThat<string?>> IsOneOf(
-		this IThat<string?> source,
+		this IThat<string?> subject,
 		params string?[] expected)
 	{
 		StringEqualityOptions options = new();
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsOneOfConstraint(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -30,14 +30,14 @@ public static partial class ThatString
 	///     Verifies that the subject is one of the <paramref name="expected" /> values.
 	/// </summary>
 	public static StringEqualityTypeResult<string?, IThat<string?>> IsOneOf(
-		this IThat<string?> source,
+		this IThat<string?> subject,
 		IEnumerable<string?> expected)
 	{
 		StringEqualityOptions options = new();
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsOneOfConstraint(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -45,14 +45,14 @@ public static partial class ThatString
 	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
 	/// </summary>
 	public static StringEqualityTypeResult<string?, IThat<string?>> IsNotOneOf(
-		this IThat<string?> source,
+		this IThat<string?> subject,
 		params string?[] unexpected)
 	{
 		StringEqualityOptions options = new();
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsOneOfConstraint(it, grammars, unexpected, options).Invert()),
-			source,
+			subject,
 			options);
 	}
 
@@ -60,14 +60,14 @@ public static partial class ThatString
 	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
 	/// </summary>
 	public static StringEqualityTypeResult<string?, IThat<string?>> IsNotOneOf(
-		this IThat<string?> source,
+		this IThat<string?> subject,
 		IEnumerable<string?> unexpected)
 	{
 		StringEqualityOptions options = new();
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsOneOfConstraint(it, grammars, unexpected, options).Invert()),
-			source,
+			subject,
 			options);
 	}
 

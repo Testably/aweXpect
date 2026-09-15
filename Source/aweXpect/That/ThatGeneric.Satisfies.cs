@@ -17,14 +17,14 @@ public static partial class ThatGeneric
 	///     Verifies the actual value to satisfy the <paramref name="predicate" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static RepeatedCheckResult<T, IThat<T>> Satisfies<T>(this IThat<T> source,
+	public static RepeatedCheckResult<T, IThat<T>> Satisfies<T>(this IThat<T> subject,
 		Func<T, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
 		RepeatedCheckOptions options = new();
-		return new RepeatedCheckResult<T, IThat<T>>(source.Get().ExpectationBuilder
+		return new RepeatedCheckResult<T, IThat<T>>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars) =>
 					new SatisfiesConstraint<T>(
 						it,
@@ -32,7 +32,7 @@ public static partial class ThatGeneric
 						predicate,
 						doNotPopulateThisValue.TrimCommonWhiteSpace(),
 						options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -40,13 +40,13 @@ public static partial class ThatGeneric
 	///     Verifies the actual value to not satisfy the <paramref name="predicate" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<T, IThat<T>> DoesNotSatisfy<T>(this IThat<T> source,
+	public static AndOrResult<T, IThat<T>> DoesNotSatisfy<T>(this IThat<T> subject,
 		Func<T, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
-		return new AndOrResult<T, IThat<T>>(source.Get().ExpectationBuilder
+		return new AndOrResult<T, IThat<T>>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars) =>
 					new SatisfiesConstraint<T>(
 						it,
@@ -54,7 +54,7 @@ public static partial class ThatGeneric
 						predicate,
 						doNotPopulateThisValue.TrimCommonWhiteSpace(),
 						null).Invert()),
-			source);
+			subject);
 	}
 
 	private sealed class SatisfiesConstraint<T>(

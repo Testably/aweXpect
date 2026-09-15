@@ -18,14 +18,14 @@ public static partial class ThatGeneric
 	///     Verifies that the actual value complies with the <paramref name="expectations" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static RepeatedCheckResult<T, IThat<T>> CompliesWith<T>(this IThat<T> source,
+	public static RepeatedCheckResult<T, IThat<T>> CompliesWith<T>(this IThat<T> subject,
 		Action<IThatSubject<T>> expectations)
 	{
 		RepeatedCheckOptions options = new();
-		return new RepeatedCheckResult<T, IThat<T>>(source.Get().ExpectationBuilder
+		return new RepeatedCheckResult<T, IThat<T>>(subject.Get().ExpectationBuilder
 				.AddConstraint((expectationBuilder, _, grammars) =>
 					new CompliesWithConstraint<T>(expectationBuilder, grammars, expectations, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -33,14 +33,14 @@ public static partial class ThatGeneric
 	///     Verifies that the actual value does not comply with the <paramref name="expectations" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static RepeatedCheckResult<T, IThat<T>> DoesNotComplyWith<T>(this IThat<T> source,
+	public static RepeatedCheckResult<T, IThat<T>> DoesNotComplyWith<T>(this IThat<T> subject,
 		Action<IThatSubject<T>> expectations)
 	{
 		RepeatedCheckOptions options = new();
-		return new RepeatedCheckResult<T, IThat<T>>(source.Get().ExpectationBuilder
+		return new RepeatedCheckResult<T, IThat<T>>(subject.Get().ExpectationBuilder
 				.AddConstraint((expectationBuilder, _, grammars) =>
 					new CompliesWithConstraint<T>(expectationBuilder, grammars, expectations, options).Invert()),
-			source,
+			subject,
 			options);
 	}
 

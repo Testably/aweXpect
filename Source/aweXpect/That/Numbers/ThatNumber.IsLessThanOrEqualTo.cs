@@ -16,14 +16,14 @@ public static partial class ThatNumber
 	///     Verifies that the subject is less than or equal to the <paramref name="expected" /> value.
 	/// </summary>
 	public static NumberToleranceResult<TNumber, IThat<TNumber>> IsLessThanOrEqualTo<TNumber>(
-		this IThat<TNumber> source, TNumber? expected)
+		this IThat<TNumber> subject, TNumber? expected)
 		where TNumber : struct, INumber<TNumber>
 	{
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsLessThanOrEqualToConstraint<TNumber>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -32,14 +32,14 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static NullableNumberToleranceResult<TNumber, IThat<TNumber?>> IsLessThanOrEqualTo<TNumber>(
-		this IThat<TNumber?> source, TNumber? expected)
+		this IThat<TNumber?> subject, TNumber? expected)
 		where TNumber : struct, INumber<TNumber>
 	{
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsLessThanOrEqualToConstraint<TNumber>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -127,14 +127,14 @@ public static partial class ThatNumber
 	///     Verifies that the subject is less than or equal to the <paramref name="expected" /> value.
 	/// </summary>
 	public static NumberToleranceResult<byte, IThat<byte>> IsLessThanOrEqualTo(
-		this IThat<byte> source,
+		this IThat<byte> subject,
 		byte? expected)
 	{
 		NumberTolerance<byte> options = new((a, e) => { checked { return (byte)(a > e ? a - e : e - a); } });
 		return new NumberToleranceResult<byte, IThat<byte>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsLessThanOrEqualToConstraint<byte>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -142,14 +142,14 @@ public static partial class ThatNumber
 	///     Verifies that the subject is less than or equal to the <paramref name="expected" /> value.
 	/// </summary>
 	public static NumberToleranceResult<sbyte, IThat<sbyte>> IsLessThanOrEqualTo(
-		this IThat<sbyte> source,
+		this IThat<sbyte> subject,
 		sbyte? expected)
 	{
 		NumberTolerance<sbyte> options = new((a, e) => { checked { return (sbyte)(a > e ? a - e : e - a); } });
 		return new NumberToleranceResult<sbyte, IThat<sbyte>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsLessThanOrEqualToConstraint<sbyte>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -157,14 +157,14 @@ public static partial class ThatNumber
 	///     Verifies that the subject is less than or equal to the <paramref name="expected" /> value.
 	/// </summary>
 	public static NumberToleranceResult<short, IThat<short>> IsLessThanOrEqualTo(
-		this IThat<short> source,
+		this IThat<short> subject,
 		short? expected)
 	{
 		NumberTolerance<short> options = new((a, e) => { checked { return (short)(a > e ? a - e : e - a); } });
 		return new NumberToleranceResult<short, IThat<short>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsLessThanOrEqualToConstraint<short>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -172,14 +172,14 @@ public static partial class ThatNumber
 	///     Verifies that the subject is less than or equal to the <paramref name="expected" /> value.
 	/// </summary>
 	public static NumberToleranceResult<ushort, IThat<ushort>> IsLessThanOrEqualTo(
-		this IThat<ushort> source,
+		this IThat<ushort> subject,
 		ushort? expected)
 	{
 		NumberTolerance<ushort> options = new((a, e) => { checked { return (ushort)(a > e ? a - e : e - a); } });
 		return new NumberToleranceResult<ushort, IThat<ushort>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsLessThanOrEqualToConstraint<ushort>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -187,14 +187,14 @@ public static partial class ThatNumber
 	///     Verifies that the subject is less than or equal to the <paramref name="expected" /> value.
 	/// </summary>
 	public static NumberToleranceResult<int, IThat<int>> IsLessThanOrEqualTo(
-		this IThat<int> source,
+		this IThat<int> subject,
 		int? expected)
 	{
 		NumberTolerance<int> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 		return new NumberToleranceResult<int, IThat<int>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsLessThanOrEqualToConstraint<int>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -202,14 +202,14 @@ public static partial class ThatNumber
 	///     Verifies that the subject is less than or equal to the <paramref name="expected" /> value.
 	/// </summary>
 	public static NumberToleranceResult<uint, IThat<uint>> IsLessThanOrEqualTo(
-		this IThat<uint> source,
+		this IThat<uint> subject,
 		uint? expected)
 	{
 		NumberTolerance<uint> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 		return new NumberToleranceResult<uint, IThat<uint>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsLessThanOrEqualToConstraint<uint>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -217,14 +217,14 @@ public static partial class ThatNumber
 	///     Verifies that the subject is less than or equal to the <paramref name="expected" /> value.
 	/// </summary>
 	public static NumberToleranceResult<long, IThat<long>> IsLessThanOrEqualTo(
-		this IThat<long> source,
+		this IThat<long> subject,
 		long? expected)
 	{
 		NumberTolerance<long> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 		return new NumberToleranceResult<long, IThat<long>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsLessThanOrEqualToConstraint<long>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -232,14 +232,14 @@ public static partial class ThatNumber
 	///     Verifies that the subject is less than or equal to the <paramref name="expected" /> value.
 	/// </summary>
 	public static NumberToleranceResult<ulong, IThat<ulong>> IsLessThanOrEqualTo(
-		this IThat<ulong> source,
+		this IThat<ulong> subject,
 		ulong? expected)
 	{
 		NumberTolerance<ulong> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 		return new NumberToleranceResult<ulong, IThat<ulong>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsLessThanOrEqualToConstraint<ulong>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -247,7 +247,7 @@ public static partial class ThatNumber
 	///     Verifies that the subject is less than or equal to the <paramref name="expected" /> value.
 	/// </summary>
 	public static NumberToleranceResult<float, IThat<float>> IsLessThanOrEqualTo(
-		this IThat<float> source,
+		this IThat<float> subject,
 		float? expected)
 	{
 		NumberTolerance<float> options = new((a, e) =>
@@ -260,9 +260,9 @@ public static partial class ThatNumber
 			return a > e ? a - e : e - a;
 		});
 		return new NumberToleranceResult<float, IThat<float>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsLessThanOrEqualToConstraint<float>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -270,7 +270,7 @@ public static partial class ThatNumber
 	///     Verifies that the subject is less than or equal to the <paramref name="expected" /> value.
 	/// </summary>
 	public static NumberToleranceResult<double, IThat<double>> IsLessThanOrEqualTo(
-		this IThat<double> source,
+		this IThat<double> subject,
 		double? expected)
 	{
 		NumberTolerance<double> options = new((a, e) =>
@@ -283,9 +283,9 @@ public static partial class ThatNumber
 			return a > e ? a - e : e - a;
 		});
 		return new NumberToleranceResult<double, IThat<double>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsLessThanOrEqualToConstraint<double>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -293,14 +293,14 @@ public static partial class ThatNumber
 	///     Verifies that the subject is less than or equal to the <paramref name="expected" /> value.
 	/// </summary>
 	public static NumberToleranceResult<decimal, IThat<decimal>> IsLessThanOrEqualTo(
-		this IThat<decimal> source,
+		this IThat<decimal> subject,
 		decimal? expected)
 	{
 		NumberTolerance<decimal> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 		return new NumberToleranceResult<decimal, IThat<decimal>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsLessThanOrEqualToConstraint<decimal>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -309,14 +309,14 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static NullableNumberToleranceResult<byte, IThat<byte?>> IsLessThanOrEqualTo(
-		this IThat<byte?> source,
+		this IThat<byte?> subject,
 		byte? expected)
 	{
 		NumberTolerance<byte> options = new((a, e) => { checked { return (byte)(a > e ? a - e : e - a); } });
 		return new NullableNumberToleranceResult<byte, IThat<byte?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsLessThanOrEqualToConstraint<byte>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -325,14 +325,14 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static NullableNumberToleranceResult<sbyte, IThat<sbyte?>> IsLessThanOrEqualTo(
-		this IThat<sbyte?> source,
+		this IThat<sbyte?> subject,
 		sbyte? expected)
 	{
 		NumberTolerance<sbyte> options = new((a, e) => { checked { return (sbyte)(a > e ? a - e : e - a); } });
 		return new NullableNumberToleranceResult<sbyte, IThat<sbyte?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsLessThanOrEqualToConstraint<sbyte>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -341,14 +341,14 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static NullableNumberToleranceResult<short, IThat<short?>> IsLessThanOrEqualTo(
-		this IThat<short?> source,
+		this IThat<short?> subject,
 		short? expected)
 	{
 		NumberTolerance<short> options = new((a, e) => { checked { return (short)(a > e ? a - e : e - a); } });
 		return new NullableNumberToleranceResult<short, IThat<short?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsLessThanOrEqualToConstraint<short>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -357,14 +357,14 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static NullableNumberToleranceResult<ushort, IThat<ushort?>> IsLessThanOrEqualTo(
-		this IThat<ushort?> source,
+		this IThat<ushort?> subject,
 		ushort? expected)
 	{
 		NumberTolerance<ushort> options = new((a, e) => { checked { return (ushort)(a > e ? a - e : e - a); } });
 		return new NullableNumberToleranceResult<ushort, IThat<ushort?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsLessThanOrEqualToConstraint<ushort>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -373,14 +373,14 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static NullableNumberToleranceResult<int, IThat<int?>> IsLessThanOrEqualTo(
-		this IThat<int?> source,
+		this IThat<int?> subject,
 		int? expected)
 	{
 		NumberTolerance<int> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 		return new NullableNumberToleranceResult<int, IThat<int?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsLessThanOrEqualToConstraint<int>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -389,14 +389,14 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static NullableNumberToleranceResult<uint, IThat<uint?>> IsLessThanOrEqualTo(
-		this IThat<uint?> source,
+		this IThat<uint?> subject,
 		uint? expected)
 	{
 		NumberTolerance<uint> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 		return new NullableNumberToleranceResult<uint, IThat<uint?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsLessThanOrEqualToConstraint<uint>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -405,14 +405,14 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static NullableNumberToleranceResult<long, IThat<long?>> IsLessThanOrEqualTo(
-		this IThat<long?> source,
+		this IThat<long?> subject,
 		long? expected)
 	{
 		NumberTolerance<long> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 		return new NullableNumberToleranceResult<long, IThat<long?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsLessThanOrEqualToConstraint<long>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -421,14 +421,14 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static NullableNumberToleranceResult<ulong, IThat<ulong?>> IsLessThanOrEqualTo(
-		this IThat<ulong?> source,
+		this IThat<ulong?> subject,
 		ulong? expected)
 	{
 		NumberTolerance<ulong> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 		return new NullableNumberToleranceResult<ulong, IThat<ulong?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsLessThanOrEqualToConstraint<ulong>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -437,7 +437,7 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static NullableNumberToleranceResult<float, IThat<float?>> IsLessThanOrEqualTo(
-		this IThat<float?> source,
+		this IThat<float?> subject,
 		float? expected)
 	{
 		NumberTolerance<float> options = new((a, e) =>
@@ -450,9 +450,9 @@ public static partial class ThatNumber
 			return a > e ? a - e : e - a;
 		});
 		return new NullableNumberToleranceResult<float, IThat<float?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsLessThanOrEqualToConstraint<float>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -461,7 +461,7 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static NullableNumberToleranceResult<double, IThat<double?>> IsLessThanOrEqualTo(
-		this IThat<double?> source,
+		this IThat<double?> subject,
 		double? expected)
 	{
 		NumberTolerance<double> options = new((a, e) =>
@@ -474,9 +474,9 @@ public static partial class ThatNumber
 			return a > e ? a - e : e - a;
 		});
 		return new NullableNumberToleranceResult<double, IThat<double?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsLessThanOrEqualToConstraint<double>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 
@@ -485,14 +485,14 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static NullableNumberToleranceResult<decimal, IThat<decimal?>> IsLessThanOrEqualTo(
-		this IThat<decimal?> source,
+		this IThat<decimal?> subject,
 		decimal? expected)
 	{
 		NumberTolerance<decimal> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
 		return new NullableNumberToleranceResult<decimal, IThat<decimal?>>(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsLessThanOrEqualToConstraint<decimal>(it, grammars, expected, options)),
-			source,
+			subject,
 			options);
 	}
 

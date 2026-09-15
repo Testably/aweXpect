@@ -10,20 +10,20 @@ public static partial class ThatChar
 	/// <summary>
 	///     Verifies that the subject is equal to the <paramref name="expected" /> value.
 	/// </summary>
-	public static AndOrResult<char, IThat<char>> IsEqualTo(this IThat<char> source,
+	public static AndOrResult<char, IThat<char>> IsEqualTo(this IThat<char> subject,
 		char? expected)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint(it, grammars, expected)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not equal to the <paramref name="unexpected" /> value.
 	/// </summary>
-	public static AndOrResult<char, IThat<char>> IsNotEqualTo(this IThat<char> source,
+	public static AndOrResult<char, IThat<char>> IsNotEqualTo(this IThat<char> subject,
 		char? unexpected)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint(it, grammars, unexpected).Invert()),
-			source);
+			subject);
 
 	private sealed class IsEqualToConstraint(string it, ExpectationGrammars grammars, char? expected)
 		: ConstraintResult.WithEqualToValue<char>(it, grammars, expected is null),

@@ -16,11 +16,11 @@ public static partial class ThatObject
 	///     Verifies that the subject is equivalent to the <paramref name="expected" /> value.
 	/// </summary>
 	public static AndOrResult<TSubject, IThat<TSubject>> IsEquivalentTo<TSubject, TExpected>(
-		this IThat<TSubject> source,
+		this IThat<TSubject> subject,
 		[RequiresMemberMetadata] TExpected expected,
 		Func<EquivalencyOptions<TExpected>, EquivalencyOptions>? options = null)
 	{
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		EquivalencyOptions equivalencyOptions = Customize.aweXpect.Equivalency().DefaultEquivalencyOptions.Get();
 		if (options != null)
 		{
@@ -34,7 +34,7 @@ public static partial class ThatObject
 		return new AndOrResult<TSubject, IThat<TSubject>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToConstraint<TSubject, TExpected>(it, grammars, expected, equalityOptions)),
-			source);
+			subject);
 	}
 
 	/// <summary>
@@ -44,20 +44,20 @@ public static partial class ThatObject
 	///     This overload allows passing a literal <see langword="null" />, for which the generic type cannot be inferred.
 	/// </remarks>
 	public static AndOrResult<TSubject, IThat<TSubject>> IsEquivalentTo<TSubject>(
-		this IThat<TSubject> source,
+		this IThat<TSubject> subject,
 		[RequiresMemberMetadata] object? expected,
 		Func<EquivalencyOptions<object?>, EquivalencyOptions>? options = null)
-		=> source.IsEquivalentTo<TSubject, object?>(expected, options);
+		=> subject.IsEquivalentTo<TSubject, object?>(expected, options);
 
 	/// <summary>
 	///     Verifies that the subject is not equivalent to the <paramref name="unexpected" /> value.
 	/// </summary>
 	public static AndOrResult<TSubject, IThat<TSubject>> IsNotEquivalentTo<TSubject, TExpected>(
-		this IThat<TSubject> source,
+		this IThat<TSubject> subject,
 		[RequiresMemberMetadata] TExpected unexpected,
 		Func<EquivalencyOptions<TExpected>, EquivalencyOptions>? options = null)
 	{
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		EquivalencyOptions equivalencyOptions = Customize.aweXpect.Equivalency().DefaultEquivalencyOptions.Get();
 		if (options != null)
 		{
@@ -71,7 +71,7 @@ public static partial class ThatObject
 		return new AndOrResult<TSubject, IThat<TSubject>>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToConstraint<TSubject, TExpected>(it, grammars, unexpected, equalityOptions).Invert()),
-			source);
+			subject);
 	}
 
 	/// <summary>
@@ -81,8 +81,8 @@ public static partial class ThatObject
 	///     This overload allows passing a literal <see langword="null" />, for which the generic type cannot be inferred.
 	/// </remarks>
 	public static AndOrResult<TSubject, IThat<TSubject>> IsNotEquivalentTo<TSubject>(
-		this IThat<TSubject> source,
+		this IThat<TSubject> subject,
 		[RequiresMemberMetadata] object? unexpected,
 		Func<EquivalencyOptions<object?>, EquivalencyOptions>? options = null)
-		=> source.IsNotEquivalentTo<TSubject, object?>(unexpected, options);
+		=> subject.IsNotEquivalentTo<TSubject, object?>(unexpected, options);
 }

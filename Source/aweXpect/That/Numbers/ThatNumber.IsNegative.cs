@@ -18,22 +18,22 @@ public static partial class ThatNumber
 	///     Verifies that the subject is negative.
 	/// </summary>
 	public static AndOrResult<TNumber, IThat<TNumber>> IsNegative<TNumber>(
-		this IThat<TNumber> source)
+		this IThat<TNumber> subject)
 		where TNumber : struct, INumber<TNumber>
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsNegativeConstraint<TNumber>(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is negative.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<TNumber?, IThat<TNumber?>> IsNegative<TNumber>(
-		this IThat<TNumber?> source)
+		this IThat<TNumber?> subject)
 		where TNumber : struct, INumber<TNumber>
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsNegativeConstraint<TNumber>(it, grammars)),
-			source);
+			subject);
 
 	private sealed class IsNegativeConstraint<TNumber>(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithValue<TNumber>(grammars),
@@ -101,134 +101,134 @@ public static partial class ThatNumber
 	///     Verifies that the subject is negative.
 	/// </summary>
 	public static AndOrResult<sbyte, IThat<sbyte>> IsNegative(
-		this IThat<sbyte> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<sbyte> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsNegativeConstraint<sbyte>(it, grammars, a => a < 0)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is negative.
 	/// </summary>
 	public static AndOrResult<short, IThat<short>> IsNegative(
-		this IThat<short> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<short> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsNegativeConstraint<short>(it, grammars, a => a < 0)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is negative.
 	/// </summary>
 	public static AndOrResult<int, IThat<int>> IsNegative(
-		this IThat<int> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<int> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsNegativeConstraint<int>(it, grammars, a => a < 0)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is negative.
 	/// </summary>
 	public static AndOrResult<long, IThat<long>> IsNegative(
-		this IThat<long> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<long> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsNegativeConstraint<long>(it, grammars, a => a < 0L)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is negative.
 	/// </summary>
 	public static AndOrResult<float, IThat<float>> IsNegative(
-		this IThat<float> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<float> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsNegativeConstraint<float>(it, grammars, a => a < 0.0F)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is negative.
 	/// </summary>
 	public static AndOrResult<double, IThat<double>> IsNegative(
-		this IThat<double> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<double> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsNegativeConstraint<double>(it, grammars, a => a < 0.0)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is negative.
 	/// </summary>
 	public static AndOrResult<decimal, IThat<decimal>> IsNegative(
-		this IThat<decimal> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<decimal> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsNegativeConstraint<decimal>(it, grammars, a => a < 0)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is negative.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<sbyte?, IThat<sbyte?>> IsNegative(
-		this IThat<sbyte?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<sbyte?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsNegativeConstraint<sbyte>(it, grammars, a => a < 0)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is negative.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<short?, IThat<short?>> IsNegative(
-		this IThat<short?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<short?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsNegativeConstraint<short>(it, grammars, a => a < 0)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is negative.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<int?, IThat<int?>> IsNegative(
-		this IThat<int?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<int?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsNegativeConstraint<int>(it, grammars, a => a < 0)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is negative.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<long?, IThat<long?>> IsNegative(
-		this IThat<long?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<long?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsNegativeConstraint<long>(it, grammars, a => a < 0L)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is negative.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<float?, IThat<float?>> IsNegative(
-		this IThat<float?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<float?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsNegativeConstraint<float>(it, grammars, a => a < 0.0F)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is negative.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<double?, IThat<double?>> IsNegative(
-		this IThat<double?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<double?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsNegativeConstraint<double>(it, grammars, a => a < 0.0)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is negative.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<decimal?, IThat<decimal?>> IsNegative(
-		this IThat<decimal?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<decimal?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsNegativeConstraint<decimal>(it, grammars, a => a < 0)),
-			source);
+			subject);
 
 	private sealed class IsNegativeConstraint<TNumber>(
 		string it,

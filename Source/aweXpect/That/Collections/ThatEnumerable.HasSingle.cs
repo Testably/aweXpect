@@ -24,10 +24,10 @@ public static partial class ThatEnumerable
 	/// </summary>
 	[GuaranteesNotNull]
 	public static SingleItemResult<IEnumerable<TItem>, TItem> HasSingle<TItem>(
-		this IThat<IEnumerable<TItem>?> source)
+		this IThat<IEnumerable<TItem>?> subject)
 	{
 		PredicateOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new SingleItemResult<IEnumerable<TItem>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasSingleConstraint<TItem>(expectationBuilder, it, grammars, options)),
@@ -42,10 +42,10 @@ public static partial class ThatEnumerable
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
 	public static SingleItemResult<IEnumerable, object?> HasSingle(
-		this IThat<IEnumerable?> source)
+		this IThat<IEnumerable?> subject)
 	{
 		PredicateOptions<object?> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new SingleItemResult<IEnumerable, object?>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasSingleForEnumerableConstraint<IEnumerable, object?>(expectationBuilder, it, grammars,
@@ -62,10 +62,10 @@ public static partial class ThatEnumerable
 	///     Verifies that the collection contains exactly one item.
 	/// </summary>
 	public static SingleItemResult<ImmutableArray<TItem>, TItem> HasSingle<TItem>(
-		this IThat<ImmutableArray<TItem>> source)
+		this IThat<ImmutableArray<TItem>> subject)
 	{
 		PredicateOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new SingleItemResult<ImmutableArray<TItem>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasSingleForEnumerableConstraint<ImmutableArray<TItem>, TItem>(expectationBuilder, it, grammars,

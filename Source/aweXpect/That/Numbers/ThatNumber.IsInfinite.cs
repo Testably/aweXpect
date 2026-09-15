@@ -14,11 +14,11 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is seen as infinite.
 	/// </summary>
-	public static AndOrResult<TNumber, IThat<TNumber>> IsInfinite<TNumber>(this IThat<TNumber> source)
+	public static AndOrResult<TNumber, IThat<TNumber>> IsInfinite<TNumber>(this IThat<TNumber> subject)
 		where TNumber : struct, IFloatingPoint<TNumber>
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsInfiniteConstraint<TNumber>(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is seen as infinite.
@@ -27,20 +27,20 @@ public static partial class ThatNumber
 	///     <see langword="null" /> is not treated as infinite.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<TNumber?, IThat<TNumber?>> IsInfinite<TNumber>(this IThat<TNumber?> source)
+	public static AndOrResult<TNumber?, IThat<TNumber?>> IsInfinite<TNumber>(this IThat<TNumber?> subject)
 		where TNumber : struct, IFloatingPoint<TNumber>
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsInfiniteConstraint<TNumber>(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not seen as infinite.
 	/// </summary>
-	public static AndOrResult<TNumber, IThat<TNumber>> IsNotInfinite<TNumber>(this IThat<TNumber> source)
+	public static AndOrResult<TNumber, IThat<TNumber>> IsNotInfinite<TNumber>(this IThat<TNumber> subject)
 		where TNumber : struct, IFloatingPoint<TNumber>
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsInfiniteConstraint<TNumber>(it, grammars).Invert()),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not seen as infinite.
@@ -49,11 +49,11 @@ public static partial class ThatNumber
 	///     <see langword="null" /> is treated as not infinite.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<TNumber?, IThat<TNumber?>> IsNotInfinite<TNumber>(this IThat<TNumber?> source)
+	public static AndOrResult<TNumber?, IThat<TNumber?>> IsNotInfinite<TNumber>(this IThat<TNumber?> subject)
 		where TNumber : struct, IFloatingPoint<TNumber>
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsInfiniteConstraint<TNumber>(it, grammars).Invert()),
-			source);
+			subject);
 
 	private sealed class IsInfiniteConstraint<TNumber>(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithValue<TNumber>(grammars),
@@ -116,66 +116,66 @@ public static partial class ThatNumber
 	/// <summary>
 	///     Verifies that the subject is seen as infinite (<see cref="float.IsInfinity" />).
 	/// </summary>
-	public static AndOrResult<float, IThat<float>> IsInfinite(this IThat<float> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	public static AndOrResult<float, IThat<float>> IsInfinite(this IThat<float> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsFloatInfiniteConstraint(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is seen as infinite (<see cref="double.IsInfinity" />).
 	/// </summary>
 	public static AndOrResult<double, IThat<double>> IsInfinite(
-		this IThat<double> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<double> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsDoubleInfiniteConstraint(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is seen as infinite (not <see langword="null" /> and <see cref="float.IsInfinity" />).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<float?, IThat<float?>> IsInfinite(this IThat<float?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	public static AndOrResult<float?, IThat<float?>> IsInfinite(this IThat<float?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsFloatInfiniteConstraint(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is seen as infinite (not <see langword="null" /> and <see cref="double.IsInfinity" />).
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<double?, IThat<double?>> IsInfinite(
-		this IThat<double?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<double?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsDoubleInfiniteConstraint(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not seen as infinite (not <see cref="float.IsInfinity" />).
 	/// </summary>
 	public static AndOrResult<float, IThat<float>> IsNotInfinite(
-		this IThat<float> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<float> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsFloatInfiniteConstraint(it, grammars).Invert()),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not seen as infinite (not <see cref="double.IsInfinity" />).
 	/// </summary>
 	public static AndOrResult<double, IThat<double>> IsNotInfinite(
-		this IThat<double> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<double> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsDoubleInfiniteConstraint(it, grammars).Invert()),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not seen as infinite (<see langword="null" /> or not <see cref="float.IsInfinity" />).
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<float?, IThat<float?>> IsNotInfinite(
-		this IThat<float?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<float?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsFloatInfiniteConstraint(it, grammars).Invert()),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not seen as infinite (<see langword="null" /> or not <see cref="double.IsInfinity" />
@@ -183,10 +183,10 @@ public static partial class ThatNumber
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<double?, IThat<double?>> IsNotInfinite(
-		this IThat<double?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<double?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsDoubleInfiniteConstraint(it, grammars).Invert()),
-			source);
+			subject);
 
 	private sealed class IsFloatInfiniteConstraint(
 		string it,

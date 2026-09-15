@@ -13,28 +13,28 @@ public static class EquivalencyOptionsExtensions
 	///     Ignores the <paramref name="memberToIgnore" /> when checking for equivalency.
 	/// </summary>
 	public static TEquivalencyOptions IgnoringMember<TEquivalencyOptions>(
-		this TEquivalencyOptions @this,
+		this TEquivalencyOptions options,
 		string memberToIgnore)
 		where TEquivalencyOptions : EquivalencyTypeOptions
-		=> @this with
+		=> options with
 		{
-			MembersToIgnore = [..@this.MembersToIgnore, new MemberToIgnore.ByName(memberToIgnore),],
+			MembersToIgnore = [..options.MembersToIgnore, new MemberToIgnore.ByName(memberToIgnore),],
 		};
 
 	/// <summary>
 	///     Ignores members matching the <paramref name="predicate" /> when checking for equivalency.
 	/// </summary>
 	public static TEquivalencyOptions Ignoring<TEquivalencyOptions>(
-		this TEquivalencyOptions @this,
+		this TEquivalencyOptions options,
 		Func<string, Type, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TEquivalencyOptions : EquivalencyTypeOptions
-		=> @this with
+		=> options with
 		{
 			MembersToIgnore =
 			[
-				..@this.MembersToIgnore,
+				..options.MembersToIgnore,
 				new MemberToIgnore.ByPredicate(predicate, doNotPopulateThisValue),
 			],
 		};
@@ -43,16 +43,16 @@ public static class EquivalencyOptionsExtensions
 	///     Ignores members matching the <paramref name="predicate" /> when checking for equivalency.
 	/// </summary>
 	public static TEquivalencyOptions Ignoring<TEquivalencyOptions>(
-		this TEquivalencyOptions @this,
+		this TEquivalencyOptions options,
 		Func<string, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TEquivalencyOptions : EquivalencyTypeOptions
-		=> @this with
+		=> options with
 		{
 			MembersToIgnore =
 			[
-				..@this.MembersToIgnore,
+				..options.MembersToIgnore,
 				new MemberToIgnore.ByPredicate((memberName, _) => predicate(memberName),
 					doNotPopulateThisValue),
 			],
@@ -62,16 +62,16 @@ public static class EquivalencyOptionsExtensions
 	///     Ignores members matching the <paramref name="predicate" /> when checking for equivalency.
 	/// </summary>
 	public static TEquivalencyOptions Ignoring<TEquivalencyOptions>(
-		this TEquivalencyOptions @this,
+		this TEquivalencyOptions options,
 		Func<Type, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TEquivalencyOptions : EquivalencyTypeOptions
-		=> @this with
+		=> options with
 		{
 			MembersToIgnore =
 			[
-				..@this.MembersToIgnore,
+				..options.MembersToIgnore,
 				new MemberToIgnore.ByPredicate((_, memberType) => predicate(memberType),
 					doNotPopulateThisValue),
 			],
@@ -81,16 +81,16 @@ public static class EquivalencyOptionsExtensions
 	///     Ignores fields matching the <paramref name="predicate" /> when checking for equivalency.
 	/// </summary>
 	public static TEquivalencyOptions IgnoringFields<TEquivalencyOptions>(
-		this TEquivalencyOptions @this,
+		this TEquivalencyOptions options,
 		Func<string, Type, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TEquivalencyOptions : EquivalencyTypeOptions
-		=> @this with
+		=> options with
 		{
 			MembersToIgnore =
 			[
-				..@this.MembersToIgnore,
+				..options.MembersToIgnore,
 				new MemberToIgnore.ByFieldPredicate(predicate, doNotPopulateThisValue),
 			],
 		};
@@ -99,16 +99,16 @@ public static class EquivalencyOptionsExtensions
 	///     Ignores properties matching the <paramref name="predicate" /> when checking for equivalency.
 	/// </summary>
 	public static TEquivalencyOptions IgnoringProperties<TEquivalencyOptions>(
-		this TEquivalencyOptions @this,
+		this TEquivalencyOptions options,
 		Func<string, Type, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TEquivalencyOptions : EquivalencyTypeOptions
-		=> @this with
+		=> options with
 		{
 			MembersToIgnore =
 			[
-				..@this.MembersToIgnore,
+				..options.MembersToIgnore,
 				new MemberToIgnore.ByPropertyPredicate(predicate, doNotPopulateThisValue),
 			],
 		};
@@ -121,10 +121,10 @@ public static class EquivalencyOptionsExtensions
 	///     comparison.
 	/// </remarks>
 	public static TEquivalencyOptions IncludingFields<TEquivalencyOptions>(
-		this TEquivalencyOptions @this,
+		this TEquivalencyOptions options,
 		IncludeMembers fieldsToInclude = IncludeMembers.Public)
 		where TEquivalencyOptions : EquivalencyTypeOptions
-		=> @this with
+		=> options with
 		{
 			Fields = fieldsToInclude,
 		};
@@ -138,10 +138,10 @@ public static class EquivalencyOptionsExtensions
 	///     comparison.
 	/// </remarks>
 	public static TEquivalencyOptions IncludingProperties<TEquivalencyOptions>(
-		this TEquivalencyOptions @this,
+		this TEquivalencyOptions options,
 		IncludeMembers propertiesToInclude = IncludeMembers.Public)
 		where TEquivalencyOptions : EquivalencyTypeOptions
-		=> @this with
+		=> options with
 		{
 			Properties = propertiesToInclude,
 		};
@@ -151,10 +151,10 @@ public static class EquivalencyOptionsExtensions
 	///     when <paramref name="ignoreCollectionOrder" /> is <see langword="true" />.
 	/// </summary>
 	public static TEquivalencyOptions IgnoringCollectionOrder<TEquivalencyOptions>(
-		this TEquivalencyOptions @this,
+		this TEquivalencyOptions options,
 		bool ignoreCollectionOrder = true)
 		where TEquivalencyOptions : EquivalencyTypeOptions
-		=> @this with
+		=> options with
 		{
 			IgnoreCollectionOrder = ignoreCollectionOrder,
 		};

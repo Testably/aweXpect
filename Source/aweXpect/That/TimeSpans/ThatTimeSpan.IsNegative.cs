@@ -11,20 +11,20 @@ public static partial class ThatTimeSpan
 	/// <summary>
 	///     Verifies that the subject is negative.
 	/// </summary>
-	public static AndOrResult<TimeSpan, IThat<TimeSpan>> IsNegative(this IThat<TimeSpan> source)
+	public static AndOrResult<TimeSpan, IThat<TimeSpan>> IsNegative(this IThat<TimeSpan> subject)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsNegativeConstraint(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not negative.
 	/// </summary>
-	public static AndOrResult<TimeSpan, IThat<TimeSpan>> IsNotNegative(this IThat<TimeSpan> source)
+	public static AndOrResult<TimeSpan, IThat<TimeSpan>> IsNotNegative(this IThat<TimeSpan> subject)
 		=> new(
-			source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsNegativeConstraint(it, grammars).Invert()),
-			source);
+			subject);
 
 	private sealed class IsNegativeConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<TimeSpan>(it, grammars),

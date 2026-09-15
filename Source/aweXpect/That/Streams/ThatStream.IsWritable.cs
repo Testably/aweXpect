@@ -13,20 +13,20 @@ public static partial class ThatStream
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<Stream?, IThat<Stream?>> IsWritable(
-		this IThat<Stream?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<Stream?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsWritableConstraint(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject <see cref="Stream" /> is not writable.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<Stream?, IThat<Stream?>> IsNotWritable(
-		this IThat<Stream?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<Stream?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsWritableConstraint(it, grammars).Invert()),
-			source);
+			subject);
 
 	private sealed class IsWritableConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<Stream?>(it, grammars),

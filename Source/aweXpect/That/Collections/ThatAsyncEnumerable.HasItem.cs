@@ -22,18 +22,18 @@ public static partial class ThatAsyncEnumerable
 	/// </summary>
 	[GuaranteesNotNull]
 	public static HasItemWithConditionResult<IAsyncEnumerable<TItem>?, TItem> HasItem<TItem>(
-		this IThat<IAsyncEnumerable<TItem>?> source)
+		this IThat<IAsyncEnumerable<TItem>?> subject)
 	{
 		CollectionIndexOptions indexOptions = new();
 		PredicateOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemWithConditionResult<IAsyncEnumerable<TItem>?, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemConstraint<TItem>(expectationBuilder, it, grammars,
 					x => options.Matches(x),
 					options.GetDescription,
 					indexOptions)),
-			source,
+			subject,
 			indexOptions,
 			options);
 	}
@@ -43,17 +43,17 @@ public static partial class ThatAsyncEnumerable
 	/// </summary>
 	[GuaranteesNotNull]
 	public static HasItemResult<IAsyncEnumerable<TItem>?> HasItem<TItem>(
-		this IThat<IAsyncEnumerable<TItem>?> source, Func<TItem, bool> predicate,
+		this IThat<IAsyncEnumerable<TItem>?> subject, Func<TItem, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{
 		CollectionIndexOptions indexOptions = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IAsyncEnumerable<TItem>?>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemConstraint<TItem>(expectationBuilder, it, grammars, predicate,
 					() => doNotPopulateThisValue, indexOptions)),
-			source,
+			subject,
 			indexOptions);
 	}
 
@@ -62,10 +62,10 @@ public static partial class ThatAsyncEnumerable
 	/// </summary>
 	[GuaranteesNotNull]
 	public static ObjectHasItemResult<IAsyncEnumerable<TItem>?, TItem> HasItem<TItem>(
-		this IThat<IAsyncEnumerable<TItem>?> source, TItem expected)
+		this IThat<IAsyncEnumerable<TItem>?> subject, TItem expected)
 	{
 		CollectionIndexOptions indexOptions = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		ObjectEqualityOptions<TItem> options = new();
 		return new ObjectHasItemResult<IAsyncEnumerable<TItem>?, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
@@ -73,7 +73,7 @@ public static partial class ThatAsyncEnumerable
 					a => options.AreConsideredEqual(a, expected),
 					() => $"{Formatter.Format(expected)}{options}",
 					indexOptions)),
-			source,
+			subject,
 			indexOptions,
 			options);
 	}
@@ -83,10 +83,10 @@ public static partial class ThatAsyncEnumerable
 	/// </summary>
 	[GuaranteesNotNull]
 	public static StringHasItemResult<IAsyncEnumerable<string?>?> HasItem(
-		this IThat<IAsyncEnumerable<string?>?> source, string? expected)
+		this IThat<IAsyncEnumerable<string?>?> subject, string? expected)
 	{
 		CollectionIndexOptions indexOptions = new();
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		StringEqualityOptions options = new();
 		return new StringHasItemResult<IAsyncEnumerable<string?>?>(
 			expectationBuilder.AddConstraint((it, grammars)
@@ -94,7 +94,7 @@ public static partial class ThatAsyncEnumerable
 					a => options.AreConsideredEqual(a, expected),
 					() => options.GetExpectation(expected, grammars),
 					indexOptions)),
-			source,
+			subject,
 			indexOptions,
 			options);
 	}

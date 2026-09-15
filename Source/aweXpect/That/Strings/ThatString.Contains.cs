@@ -17,7 +17,7 @@ public static partial class ThatString
 	/// </summary>
 	[GuaranteesNotNull]
 	public static StringEqualityTypeCountResult<string?, IThat<string?>> Contains(
-		this IThat<string?> source,
+		this IThat<string?> subject,
 		string expected)
 	{
 		expected.ThrowIfNull();
@@ -30,9 +30,9 @@ public static partial class ThatString
 		Quantifier quantifier = new();
 		StringEqualityOptions options = new();
 		return new StringEqualityTypeCountResult<string?, IThat<string?>>(
-			source.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
 				new ContainsConstraint(expectationBuilder, it, grammars, expected, quantifier, options)),
-			source,
+			subject,
 			quantifier,
 			options);
 	}
@@ -42,7 +42,7 @@ public static partial class ThatString
 	/// </summary>
 	[GuaranteesNotNull]
 	public static StringEqualityTypeCountResult<string?, IThat<string?>> DoesNotContain(
-		this IThat<string?> source,
+		this IThat<string?> subject,
 		string unexpected)
 	{
 		unexpected.ThrowIfNull();
@@ -55,9 +55,9 @@ public static partial class ThatString
 		Quantifier quantifier = new();
 		StringEqualityOptions options = new();
 		return new StringEqualityTypeCountResult<string?, IThat<string?>>(
-			source.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
+			subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars) =>
 				new ContainsConstraint(expectationBuilder, it, grammars, unexpected, quantifier, options).Invert()),
-			source,
+			subject,
 			quantifier,
 			options);
 	}

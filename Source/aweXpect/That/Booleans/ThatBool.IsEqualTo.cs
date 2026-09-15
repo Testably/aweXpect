@@ -10,18 +10,18 @@ public static partial class ThatBool
 	/// <summary>
 	///     Verifies that the subject is equal to the <paramref name="expected" /> value.
 	/// </summary>
-	public static AndOrResult<bool, IThat<bool>> IsEqualTo(this IThat<bool> source,
+	public static AndOrResult<bool, IThat<bool>> IsEqualTo(this IThat<bool> subject,
 		bool expected)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToConstraint(it, grammars, expected)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not equal to the <paramref name="unexpected" /> value.
 	/// </summary>
-	public static AndOrResult<bool, IThat<bool>> IsNotEqualTo(this IThat<bool> source,
+	public static AndOrResult<bool, IThat<bool>> IsNotEqualTo(this IThat<bool> subject,
 		bool unexpected)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToConstraint(it, grammars, unexpected).Invert()),
-			source);
+			subject);
 }

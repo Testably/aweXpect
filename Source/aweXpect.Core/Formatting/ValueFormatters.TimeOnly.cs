@@ -10,7 +10,7 @@ public static partial class ValueFormatters
 	///     Returns the formatted <paramref name="value" /> according to the <paramref name="options" />.
 	/// </summary>
 	public static string Format(
-		this ValueFormatter _,
+		this ValueFormatter formatter,
 		TimeOnly value,
 		FormattingOptions? options = null)
 		=> options?.IncludeType switch

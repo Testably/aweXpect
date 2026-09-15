@@ -19,9 +19,9 @@ public static partial class ThatException
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<Exception?, IThat<Exception?>> HasRecursiveInnerExceptions(
-		this IThat<Exception?> source,
+		this IThat<Exception?> subject,
 		Action<IThatSubject<IEnumerable<Exception>>> expectations)
-		=> new(source.Get().ExpectationBuilder
+		=> new(subject.Get().ExpectationBuilder
 				.ForMember<Exception?, IEnumerable<Exception?>>(
 					e => e.GetInnerExceptions(),
 					" which ",
@@ -30,7 +30,7 @@ public static partial class ThatException
 				.AddExpectations(e => expectations(
 						new ThatSubject<IEnumerable<Exception>>(e)),
 					grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural),
-			source);
+			subject);
 
 	internal class HasRecursiveInnerExceptionsConstraint(
 		string it,

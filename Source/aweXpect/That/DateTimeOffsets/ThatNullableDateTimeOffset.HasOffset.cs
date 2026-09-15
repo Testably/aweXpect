@@ -10,6 +10,6 @@ public static partial class ThatNullableDateTimeOffset
 	///     Verifies that the offset of the subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.TimeSpan<DateTimeOffset?> HasOffset(this IThat<DateTimeOffset?> source)
-		=> new(source, a => a?.Offset, "offset");
+	public static PropertyResult.TimeSpan<DateTimeOffset?> HasOffset(this IThat<DateTimeOffset?> subject)
+		=> new(subject, a => a?.Offset, "offset");
 }

@@ -10,6 +10,6 @@ public static partial class ThatNullableDateTimeOffset
 	///     Verifies that the millisecond of the subject…
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Int<DateTimeOffset?> HasMillisecond(this IThat<DateTimeOffset?> source)
-		=> new(source, a => a?.Millisecond, "millisecond");
+	public static PropertyResult.Int<DateTimeOffset?> HasMillisecond(this IThat<DateTimeOffset?> subject)
+		=> new(subject, a => a?.Millisecond, "millisecond");
 }

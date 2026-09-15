@@ -121,10 +121,10 @@ internal static class SourceGenerationHelper
 		                  	/// <summary>
 		                  	///     Verifies that the subject {{expectationToGenerate.ExpectationText}}.
 		                  	/// </summary>{{expectationToGenerate.AppendRemarks()}}{{guaranteesNotNull}}
-		                  	public static AndOrResult<{{expectationToGenerate.TargetType}}, IThat<{{expectationToGenerate.TargetType}}>> {{expectationToGenerate.Name}}(this IThat<{{expectationToGenerate.TargetType}}> source)
-		                  		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		                  	public static AndOrResult<{{expectationToGenerate.TargetType}}, IThat<{{expectationToGenerate.TargetType}}>> {{expectationToGenerate.Name}}(this IThat<{{expectationToGenerate.TargetType}}> subject)
+		                  		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 		                  			new {{expectationToGenerate.Name}}Constraint(it, grammars)),
-		                  		source);
+		                  		subject);
 
 
 		                  """;
@@ -134,10 +134,10 @@ internal static class SourceGenerationHelper
 			            	/// <summary>
 			            	///     Verifies that the subject {{expectationToGenerate.NegatedExpectationText}}.
 			            	/// </summary>{{expectationToGenerate.AppendRemarks()}}{{negatedGuaranteesNotNull}}
-			            	public static AndOrResult<{{expectationToGenerate.TargetType}}, IThat<{{expectationToGenerate.TargetType}}>> {{expectationToGenerate.NegatedName}}(this IThat<{{expectationToGenerate.TargetType}}> source)
-			            		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+			            	public static AndOrResult<{{expectationToGenerate.TargetType}}, IThat<{{expectationToGenerate.TargetType}}>> {{expectationToGenerate.NegatedName}}(this IThat<{{expectationToGenerate.TargetType}}> subject)
+			            		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 			            			new {{expectationToGenerate.Name}}Constraint(it, grammars).Invert()),
-			            		source);
+			            		subject);
 
 
 			            """;

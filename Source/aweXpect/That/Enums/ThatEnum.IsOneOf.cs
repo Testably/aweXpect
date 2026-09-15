@@ -13,62 +13,62 @@ public static partial class ThatEnum
 	/// <summary>
 	///     Verifies that the subject is one of the <paramref name="expected" /> values.
 	/// </summary>
-	public static AndOrResult<TEnum, IThat<TEnum>> IsOneOf<TEnum>(this IThat<TEnum> source,
+	public static AndOrResult<TEnum, IThat<TEnum>> IsOneOf<TEnum>(this IThat<TEnum> subject,
 		params TEnum?[] expected)
 		where TEnum : struct, Enum
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint<TEnum>(it, grammars, expected)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is one of the <paramref name="expected" /> values.
 	/// </summary>
-	public static AndOrResult<TEnum, IThat<TEnum>> IsOneOf<TEnum>(this IThat<TEnum> source,
+	public static AndOrResult<TEnum, IThat<TEnum>> IsOneOf<TEnum>(this IThat<TEnum> subject,
 		IEnumerable<TEnum?> expected)
 		where TEnum : struct, Enum
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint<TEnum>(it, grammars, expected)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is one of the <paramref name="expected" /> values.
 	/// </summary>
-	public static AndOrResult<TEnum, IThat<TEnum>> IsOneOf<TEnum>(this IThat<TEnum> source,
+	public static AndOrResult<TEnum, IThat<TEnum>> IsOneOf<TEnum>(this IThat<TEnum> subject,
 		IEnumerable<TEnum> expected)
 		where TEnum : struct, Enum
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint<TEnum>(it, grammars, expected.Cast<TEnum?>())),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
 	/// </summary>
-	public static AndOrResult<TEnum, IThat<TEnum>> IsNotOneOf<TEnum>(this IThat<TEnum> source,
+	public static AndOrResult<TEnum, IThat<TEnum>> IsNotOneOf<TEnum>(this IThat<TEnum> subject,
 		params TEnum?[] unexpected)
 		where TEnum : struct, Enum
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint<TEnum>(it, grammars, unexpected).Invert()),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
 	/// </summary>
-	public static AndOrResult<TEnum, IThat<TEnum>> IsNotOneOf<TEnum>(this IThat<TEnum> source,
+	public static AndOrResult<TEnum, IThat<TEnum>> IsNotOneOf<TEnum>(this IThat<TEnum> subject,
 		IEnumerable<TEnum?> unexpected)
 		where TEnum : struct, Enum
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint<TEnum>(it, grammars, unexpected).Invert()),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
 	/// </summary>
-	public static AndOrResult<TEnum, IThat<TEnum>> IsNotOneOf<TEnum>(this IThat<TEnum> source,
+	public static AndOrResult<TEnum, IThat<TEnum>> IsNotOneOf<TEnum>(this IThat<TEnum> subject,
 		IEnumerable<TEnum> unexpected)
 		where TEnum : struct, Enum
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint<TEnum>(it, grammars, unexpected.Cast<TEnum?>()).Invert()),
-			source);
+			subject);
 
 	private sealed class IsOneOfConstraint<TEnum>(string it, ExpectationGrammars grammars, IEnumerable<TEnum?> expected)
 		: ConstraintResult.WithNotNullValue<TEnum>(it, grammars),

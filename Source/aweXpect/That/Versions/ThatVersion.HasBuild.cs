@@ -11,6 +11,6 @@ public static partial class ThatVersion
 	///     The build component is <c>-1</c> when it is unspecified.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyResult.Int<Version?> HasBuild(this IThat<Version?> source)
-		=> new(source, a => a?.Build, "build");
+	public static PropertyResult.Int<Version?> HasBuild(this IThat<Version?> subject)
+		=> new(subject, a => a?.Build, "build");
 }

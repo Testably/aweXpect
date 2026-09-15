@@ -18,10 +18,10 @@ public static partial class ThatDelegateThrows
 	///     and for <see cref="AggregateException" /> also on the <see cref="AggregateException.InnerExceptions" />.
 	/// </remarks>
 	public static AndOrResult<TException?, ThatDelegateThrows<TException>> WithRecursiveInnerExceptions<TException>(
-		this ThatDelegateThrows<TException> source,
+		this ThatDelegateThrows<TException> subject,
 		Action<IThatSubject<IEnumerable<Exception>>> expectations)
 		where TException : Exception?
-		=> new(source.ExpectationBuilder
+		=> new(subject.ExpectationBuilder
 				.ForMember(
 					MemberAccessor<Exception?, IEnumerable<Exception>>.FromFunc(
 						e => e.GetInnerExceptions(),
@@ -32,5 +32,5 @@ public static partial class ThatDelegateThrows
 				.AddExpectations(e => expectations(new ThatSubject<IEnumerable<Exception>>(e)),
 					grammars => grammars | ExpectationGrammars.Active | ExpectationGrammars.Nested |
 					            ExpectationGrammars.Plural),
-			source);
+			subject);
 }

@@ -18,12 +18,12 @@ public static partial class ThatString
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static IsParsableResult<TType> IsParsableInto<TType>(
-		this IThat<string?> source,
+		this IThat<string?> subject,
 		IFormatProvider? formatProvider = null)
 		where TType : IParsable<TType>
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsParsableIntoConstraint<TType>(it, grammars, formatProvider)),
-			source,
+			subject,
 			formatProvider);
 
 	/// <summary>
@@ -35,12 +35,12 @@ public static partial class ThatString
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<string?, IThat<string?>> IsNotParsableInto<TType>(
-		this IThat<string?> source,
+		this IThat<string?> subject,
 		IFormatProvider? formatProvider = null)
 		where TType : IParsable<TType>
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsParsableIntoConstraint<TType>(it, grammars, formatProvider).Invert()),
-			source);
+			subject);
 
 	private sealed class IsParsableIntoConstraint<TType> : ConstraintResult.WithNotNullValue<string?>,
 		IValueConstraint<string?>

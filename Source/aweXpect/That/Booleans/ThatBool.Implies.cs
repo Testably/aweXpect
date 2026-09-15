@@ -14,11 +14,11 @@ public static partial class ThatBool
 	///     <c>A implies B</c> is equivalent to <c>NOT A OR B</c>.<br />
 	///     <seealso href="https://mathworld.wolfram.com/Implies.html" />
 	/// </remarks>
-	public static AndOrResult<bool, IThat<bool>> Implies(this IThat<bool> source,
+	public static AndOrResult<bool, IThat<bool>> Implies(this IThat<bool> subject,
 		bool consequent)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new ImpliesConstraint(it, grammars, consequent)),
-			source);
+			subject);
 
 	private sealed class ImpliesConstraint(string it, ExpectationGrammars grammars, bool consequent)
 		: ConstraintResult.WithValue<bool>(grammars),

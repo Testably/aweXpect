@@ -14,14 +14,14 @@ public static partial class ThatDictionary
 	[GuaranteesNotNull]
 	public static ContainsKeyResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>, TKey, TValue?>
 		ContainsKey<TKey, TValue>(
-			this IThat<IDictionary<TKey, TValue>?> source,
+			this IThat<IDictionary<TKey, TValue>?> subject,
 			TKey expected)
 	{
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ContainsKeyResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>, TKey, TValue?>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new ContainsKeyConstraint<TKey, TValue>(expectationBuilder, it, grammars, expected)),
-			source,
+			subject,
 			expected,
 			f => f.TryGetValue(expected, out TValue? value) ? value : default
 		);
@@ -33,15 +33,15 @@ public static partial class ThatDictionary
 	[GuaranteesNotNull]
 	public static ContainsKeyResult<Dictionary<TKey, TValue>, IThat<Dictionary<TKey, TValue>?>, TKey, TValue?>
 		ContainsKey<TKey, TValue>(
-			this IThat<Dictionary<TKey, TValue>?> source,
+			this IThat<Dictionary<TKey, TValue>?> subject,
 			TKey expected)
 		where TKey : notnull
 	{
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ContainsKeyResult<Dictionary<TKey, TValue>, IThat<Dictionary<TKey, TValue>?>, TKey, TValue?>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new ContainsKeyConstraint<TKey, TValue>(expectationBuilder, it, grammars, expected)),
-			source,
+			subject,
 			expected,
 			f => f.TryGetValue(expected, out TValue? value) ? value : default
 		);
@@ -53,14 +53,14 @@ public static partial class ThatDictionary
 	[GuaranteesNotNull]
 	public static AndOrResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>>
 		DoesNotContainKey<TKey, TValue>(
-			this IThat<IDictionary<TKey, TValue>?> source,
+			this IThat<IDictionary<TKey, TValue>?> subject,
 			TKey unexpected)
 	{
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new AndOrResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new ContainsKeyConstraint<TKey, TValue>(expectationBuilder, it, grammars, unexpected).Invert()),
-			source
+			subject
 		);
 	}
 
@@ -70,15 +70,15 @@ public static partial class ThatDictionary
 	[GuaranteesNotNull]
 	public static AndOrResult<Dictionary<TKey, TValue>, IThat<Dictionary<TKey, TValue>?>>
 		DoesNotContainKey<TKey, TValue>(
-			this IThat<Dictionary<TKey, TValue>?> source,
+			this IThat<Dictionary<TKey, TValue>?> subject,
 			TKey unexpected)
 		where TKey : notnull
 	{
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new AndOrResult<Dictionary<TKey, TValue>, IThat<Dictionary<TKey, TValue>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new ContainsKeyConstraint<TKey, TValue>(expectationBuilder, it, grammars, unexpected).Invert()),
-			source
+			subject
 		);
 	}
 

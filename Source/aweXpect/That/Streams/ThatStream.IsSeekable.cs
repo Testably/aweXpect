@@ -13,20 +13,20 @@ public static partial class ThatStream
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<Stream?, IThat<Stream?>> IsSeekable(
-		this IThat<Stream?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<Stream?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsSeekableConstraint(it, grammars)),
-			source);
+			subject);
 
 	/// <summary>
 	///     Verifies that the subject <see cref="Stream" /> is not seekable.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<Stream?, IThat<Stream?>> IsNotSeekable(
-		this IThat<Stream?> source)
-		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+		this IThat<Stream?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsSeekableConstraint(it, grammars).Invert()),
-			source);
+			subject);
 
 	private sealed class IsSeekableConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<Stream?>(it, grammars),
