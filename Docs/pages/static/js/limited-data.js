@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "dc29fb29ad8940c46a91cafdb9f8a81d2a2674a2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 14:31:09 2026 \u002B0200",
-        "message": "chore: slice the mutation tests over parallel jobs (#1071)"
-      },
-      {
         "sha": "c5c7f7d46449eada27ecebd17af972dae0c0dc50",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 14:35:09 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:23:56 2026 \u002B0200",
         "message": "feat: add a positional \u0060DoesNotHaveItem\u0060 (#1138)"
+      },
+      {
+        "sha": "1155bcb94d02cbfb1269ed10cd90d431d01476e7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 14:26:06 2026 \u002B0200",
+        "message": "build: apply the Debug downgrade of RS0016 and RS0017 without an explicit configuration (#1142)"
       }
     ],
     "labels": [
-      "dc29fb29",
       "c5c7f7d4",
       "c6732d62",
       "756e490e",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "92d19445",
       "90e4b8cd",
       "b96672f8",
-      "c61848cb"
+      "c61848cb",
+      "1155bcb9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          227.24173703193665,
           250.75973449434554,
           254.4613069466182,
           135.9181802749634,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           251.40182484899248,
           269.4652423540751,
           238.62320494651794,
-          299.6421850522359
+          299.6421850522359,
+          259.6582940541781
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          238.37522983551025,
           236.79322616870587,
           246.56261631647746,
           154.9280719246183,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           240.8214459101359,
           265.20534236090526,
           247.63670858970056,
-          246.15056107838947
+          246.15056107838947,
+          237.14610471044267
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "dc29fb29ad8940c46a91cafdb9f8a81d2a2674a2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 14:31:09 2026 \u002B0200",
-        "message": "chore: slice the mutation tests over parallel jobs (#1071)"
-      },
-      {
         "sha": "c5c7f7d46449eada27ecebd17af972dae0c0dc50",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 14:35:09 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:23:56 2026 \u002B0200",
         "message": "feat: add a positional \u0060DoesNotHaveItem\u0060 (#1138)"
+      },
+      {
+        "sha": "1155bcb94d02cbfb1269ed10cd90d431d01476e7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 14:26:06 2026 \u002B0200",
+        "message": "build: apply the Debug downgrade of RS0016 and RS0017 without an explicit configuration (#1142)"
       }
     ],
     "labels": [
-      "dc29fb29",
       "c5c7f7d4",
       "c6732d62",
       "756e490e",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "92d19445",
       "90e4b8cd",
       "b96672f8",
-      "c61848cb"
+      "c61848cb",
+      "1155bcb9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          239795.6194580078,
           300669.2333984375,
           317015.54552283656,
           169749.23313685827,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           307677.30032784597,
           331970.5521158854,
           304515.0453450521,
-          313328.3829264323
+          313328.3829264323,
+          327633.0501302083
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          335442,
           335444,
           335444,
           335442,
@@ -1070,6 +1069,7 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542084,
+          617976,
           617976,
           617976,
           617976,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2002764.6549479167,
           2738172.296875,
           2688861.4171875,
           1366076.2995256695,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2612813.2177083334,
           2849435.1923076925,
           2373191.4619791666,
-          2652479.40234375
+          2652479.40234375,
+          2586987.552864583
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841609,
           4841651,
           4841651,
           4841647,
@@ -1202,6 +1201,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "dc29fb29ad8940c46a91cafdb9f8a81d2a2674a2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 14:31:09 2026 \u002B0200",
-        "message": "chore: slice the mutation tests over parallel jobs (#1071)"
-      },
       {
         "sha": "c5c7f7d46449eada27ecebd17af972dae0c0dc50",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:23:56 2026 \u002B0200",
         "message": "feat: add a positional \u0060DoesNotHaveItem\u0060 (#1138)"
+      },
+      {
+        "sha": "1155bcb94d02cbfb1269ed10cd90d431d01476e7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 14:26:06 2026 \u002B0200",
+        "message": "build: apply the Debug downgrade of RS0016 and RS0017 without an explicit configuration (#1142)"
       }
     ],
     "labels": [
-      "dc29fb29",
       "c5c7f7d4",
       "c6732d62",
       "756e490e",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "92d19445",
       "90e4b8cd",
       "b96672f8",
-      "c61848cb"
+      "c61848cb",
+      "1155bcb9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          443.84056151707966,
           476.14383179800853,
           520.978179693222,
           247.31512594223022,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           453.90837942759197,
           477.80998727253507,
           492.46140168507895,
-          459.5840605894725
+          459.5840605894725,
+          470.77930974960327
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1677,7 +1677,7 @@ window.BENCHMARK_DATA = {
           1360,
           1360,
           1360,
-          1360,
+          1368,
           1368,
           1368,
           1368,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          472.59745909372964,
           469.3356034755707,
           548.5366251128061,
           280.42371861139935,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           486.0281050364176,
           515.6146961847941,
           505.1754206929888,
-          477.3013547261556
+          477.3013547261556,
+          466.8591782365526
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "dc29fb29ad8940c46a91cafdb9f8a81d2a2674a2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 14:31:09 2026 \u002B0200",
-        "message": "chore: slice the mutation tests over parallel jobs (#1071)"
-      },
-      {
         "sha": "c5c7f7d46449eada27ecebd17af972dae0c0dc50",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 14:35:09 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:23:56 2026 \u002B0200",
         "message": "feat: add a positional \u0060DoesNotHaveItem\u0060 (#1138)"
+      },
+      {
+        "sha": "1155bcb94d02cbfb1269ed10cd90d431d01476e7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 14:26:06 2026 \u002B0200",
+        "message": "build: apply the Debug downgrade of RS0016 and RS0017 without an explicit configuration (#1142)"
       }
     ],
     "labels": [
-      "dc29fb29",
       "c5c7f7d4",
       "c6732d62",
       "756e490e",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "92d19445",
       "90e4b8cd",
       "b96672f8",
-      "c61848cb"
+      "c61848cb",
+      "1155bcb9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          247.98166553179422,
           259.7270631790161,
           270.73044805526735,
           142.2691675345103,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           263.1876878371605,
           281.56462043126425,
           263.48430817921957,
-          271.5729146003723
+          271.5729146003723,
+          255.58846728006998
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          256.6069412867228,
           257.8425686518351,
           292.022051970164,
           140.3980232079824,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           240.1942369143168,
           273.2354783693949,
           246.19449597138626,
-          244.04474773406983
+          244.04474773406983,
+          237.56093287467957
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "dc29fb29ad8940c46a91cafdb9f8a81d2a2674a2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 14:31:09 2026 \u002B0200",
-        "message": "chore: slice the mutation tests over parallel jobs (#1071)"
-      },
-      {
         "sha": "c5c7f7d46449eada27ecebd17af972dae0c0dc50",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 14:35:09 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:23:56 2026 \u002B0200",
         "message": "feat: add a positional \u0060DoesNotHaveItem\u0060 (#1138)"
+      },
+      {
+        "sha": "1155bcb94d02cbfb1269ed10cd90d431d01476e7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 14:26:06 2026 \u002B0200",
+        "message": "build: apply the Debug downgrade of RS0016 and RS0017 without an explicit configuration (#1142)"
       }
     ],
     "labels": [
-      "dc29fb29",
       "c5c7f7d4",
       "c6732d62",
       "756e490e",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "92d19445",
       "90e4b8cd",
       "b96672f8",
-      "c61848cb"
+      "c61848cb",
+      "1155bcb9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          384.8767795562744,
           480.52882326566254,
           493.8501781736101,
           273.5651867389679,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           508.41211083730065,
           543.9238265355428,
           527.9870834986369,
-          528.8159358842032
+          528.8159358842032,
+          490.89194914499916
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2893,7 +2893,7 @@ window.BENCHMARK_DATA = {
           1128,
           1128,
           1128,
-          1128,
+          1256,
           1256,
           1256,
           1256,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1050.6551955086845,
           1228.212302271525,
           1433.442033290863,
           681.5710824648539,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1204.8881548472814,
           1276.4812213897706,
           1188.5228155576265,
-          1243.799567589393
+          1243.799567589393,
+          1164.362004500169
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "dc29fb29ad8940c46a91cafdb9f8a81d2a2674a2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 14:31:09 2026 \u002B0200",
-        "message": "chore: slice the mutation tests over parallel jobs (#1071)"
-      },
-      {
         "sha": "c5c7f7d46449eada27ecebd17af972dae0c0dc50",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 14:35:09 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:23:56 2026 \u002B0200",
         "message": "feat: add a positional \u0060DoesNotHaveItem\u0060 (#1138)"
+      },
+      {
+        "sha": "1155bcb94d02cbfb1269ed10cd90d431d01476e7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 14:26:06 2026 \u002B0200",
+        "message": "build: apply the Debug downgrade of RS0016 and RS0017 without an explicit configuration (#1142)"
       }
     ],
     "labels": [
-      "dc29fb29",
       "c5c7f7d4",
       "c6732d62",
       "756e490e",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "92d19445",
       "90e4b8cd",
       "b96672f8",
-      "c61848cb"
+      "c61848cb",
+      "1155bcb9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1262.6462652842204,
           1928.0085342407226,
           2033.934630530221,
           1058.5298448290143,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1962.5544964926582,
           2048.440956702599,
           2032.3603190104166,
-          1925.7750849405925
+          1925.7750849405925,
+          1888.4566846575055
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3501,7 +3501,7 @@ window.BENCHMARK_DATA = {
           2624,
           2624,
           2624,
-          2624,
+          2752,
           2752,
           2752,
           2752,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1248.5084645589193,
           1287.9860266367593,
           1467.3255128860474,
           740.1549100875854,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1309.8268162863594,
           1407.2877241770427,
           1423.3367259979248,
-          1331.6969072977702
+          1331.6969072977702,
+          1286.7029768625896
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "dc29fb29ad8940c46a91cafdb9f8a81d2a2674a2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 14:31:09 2026 \u002B0200",
-        "message": "chore: slice the mutation tests over parallel jobs (#1071)"
-      },
-      {
         "sha": "c5c7f7d46449eada27ecebd17af972dae0c0dc50",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 14:35:09 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:23:56 2026 \u002B0200",
         "message": "feat: add a positional \u0060DoesNotHaveItem\u0060 (#1138)"
+      },
+      {
+        "sha": "1155bcb94d02cbfb1269ed10cd90d431d01476e7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 14:26:06 2026 \u002B0200",
+        "message": "build: apply the Debug downgrade of RS0016 and RS0017 without an explicit configuration (#1142)"
       }
     ],
     "labels": [
-      "dc29fb29",
       "c5c7f7d4",
       "c6732d62",
       "756e490e",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "92d19445",
       "90e4b8cd",
       "b96672f8",
-      "c61848cb"
+      "c61848cb",
+      "1155bcb9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1722.5688888549805,
           2584.997779573713,
           2693.6567529531626,
           1356.5092997184167,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2470.333965008075,
           2592.1967231750486,
           2586.445989481608,
-          2544.9662017822266
+          2544.9662017822266,
+          2490.8498107910154
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4109,7 +4109,7 @@ window.BENCHMARK_DATA = {
           2816,
           2816,
           2816,
-          2816,
+          2944,
           2944,
           2944,
           2944,
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          15551.548243931362,
           27038.082265218098,
           27807.976272583008,
           10630.42140851702,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           26411.143216814315,
           26415.914396158852,
           20449.435106404624,
-          26161.38968549456
+          26161.38968549456,
+          26092.071990966797
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33465,
           33471,
           33471,
           33471,
@@ -4233,6 +4232,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
