@@ -54,6 +54,25 @@ public sealed partial class ThatEventRecording
 			}
 
 			[Fact]
+			public async Task Filter_WhenSpecifiedAfterTheOccurrenceConstraint_ShouldStillApply()
+			{
+				CustomEventWithParametersClass<string> sut = new();
+				IEventRecording<CustomEventWithParametersClass<string>> recording =
+					sut.Record().Events();
+
+				sut.NotifyCustomEvent("foo");
+
+				async Task Act() =>
+					await That(recording)
+						.Triggered(nameof(CustomEventWithParametersClass<string>.CustomEvent))
+						.Never()
+						.WithParameter<string>(s => s == "bar")
+						.Within(50.Milliseconds());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task Never_WhenEventIsNotTriggeredWithinTimeout_ShouldSucceed()
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -87,6 +106,32 @@ public sealed partial class ThatEventRecording
 						.Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
 						.Within(5.Seconds())
 						.Never();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that recording
+					             has never recorded the CustomEvent event on sut within 0:05,
+					             but it was recorded once in [
+					               CustomEvent()
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task Never_WhenSpecifiedAfterTheOccurrenceConstraint_ShouldStillApplyTheTimeout()
+			{
+				CustomEventWithoutParametersClass sut = new();
+				IEventRecording<CustomEventWithoutParametersClass> recording =
+					sut.Record().Events();
+
+				_ = Task.Delay(20.Milliseconds())
+					.ContinueWith(_ => sut.NotifyCustomEvent());
+
+				async Task Act() =>
+					await That(recording)
+						.Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
+						.Never()
+						.Within(5.Seconds());
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

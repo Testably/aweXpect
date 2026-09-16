@@ -102,15 +102,6 @@ await Expect.That(recording).DidNotTrigger(nameof(MyClass.ThresholdReached))
   .Within(3.Seconds());
 ```
 
-Note that `.Within(TimeSpan)` has to be specified before the occurrence constraint, because
-`Never()` and its siblings no longer give access to it:
-
-```csharp
-await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached))
-  .Within(3.Seconds())
-  .Never();
-```
-
 ### Sender
 
 When you follow

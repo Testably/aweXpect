@@ -17,7 +17,7 @@ public class EventTriggerResult<TSubject>(
 	TriggerEventFilter filter,
 	Quantifier quantifier,
 	RepeatedCheckOptions options)
-	: CountResult<IEventRecording<TSubject>, IThat<IEventRecording<TSubject>>>(
+	: CountResult<IEventRecording<TSubject>, IThat<IEventRecording<TSubject>>, EventTriggerResult<TSubject>>(
 			expectationBuilder, returnValue, quantifier),
 		EventTriggerResult<TSubject>.IExtensions,
 		IOptionsProvider<RepeatedCheckOptions>
