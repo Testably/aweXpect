@@ -38,6 +38,30 @@ jobs:
                         ./Artifacts/*
                         ./TestResults/*.trx
     
+    aot-smoke-tests:
+        name: "AOT smoke tests"
+        strategy:
+            fail-fast: false
+            matrix:
+                os: [ ubuntu-latest, windows-latest, macos-latest ]
+        runs-on: ${{ matrix.os }}
+        steps:
+            -   uses: actions/checkout@v7
+                with:
+                    fetch-depth: 0
+            -   name: Setup .NET SDKs
+                uses: actions/setup-dotnet@v6
+                with:
+                    dotnet-version: |
+                        8.0.x
+                        10.0.3xx
+            -   name: Run AOT smoke tests (windows)
+                if: matrix.os == 'windows-latest'
+                run: ./build.ps1 AotSmokeTests
+            -   name: Run AOT smoke tests (ubuntu|macos)
+                if: matrix.os != 'windows-latest'
+                run: ./build.sh AotSmokeTests
+    
     mutation-tests-core:
         name: "Mutation tests (aweXpect.Core)"
         runs-on: ubuntu-latest

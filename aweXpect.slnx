@@ -15,6 +15,10 @@
     <Project Path="Tests/aweXpect.Internal.Tests/aweXpect.Internal.Tests.csproj" />
     <Project Path="Tests/aweXpect.Tests/aweXpect.Tests.csproj" />
   </Folder>
+  <Folder Name="/Tests/Aot/">
+    <Project Path="Tests/Aot/aweXpect.Aot.TUnit/aweXpect.Aot.TUnit.csproj" />
+    <Project Path="Tests/Aot/aweXpect.Aot.Xunit3/aweXpect.Aot.Xunit3.csproj" />
+  </Folder>
   <Folder Name="/Tests/Frameworks/">
     <Project Path="Tests/Frameworks/aweXpect.Frameworks.Fallback.Tests/aweXpect.Frameworks.Fallback.Tests.csproj" />
     <Project Path="Tests/Frameworks/aweXpect.Frameworks.MsTest3.Tests/aweXpect.Frameworks.MsTest3.Tests.csproj" />
@@ -56,6 +60,9 @@
   </Folder>
   <Folder Name="/_/Tests/">
     <File Path="Tests/Directory.Build.props" />
+  </Folder>
+  <Folder Name="/_/Tests/Aot/">
+    <File Path="Tests/Aot/Directory.Build.props" />
   </Folder>
   <Folder Name="/_/Tests/Frameworks/">
     <File Path="Tests/Frameworks/Directory.Build.props" />

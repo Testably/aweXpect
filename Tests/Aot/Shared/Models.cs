@@ -1,0 +1,69 @@
+using System;
+using System.Collections.Generic;
+
+namespace aweXpect.Aot;
+
+public sealed class Order
+{
+	public int Id { get; set; }
+	public Customer Customer { get; set; } = new();
+	public List<Item> Items { get; set; } = [];
+	public Dictionary<string, int> Tags { get; set; } = [];
+}
+
+public sealed class Customer
+{
+	public string Name { get; set; } = "";
+	public Address Address { get; set; } = new();
+}
+
+public sealed class Address
+{
+	public string City { get; set; } = "";
+}
+
+public sealed class Item
+{
+	public string Sku = "";
+	public decimal Price { get; set; }
+}
+
+/// <summary>
+///     Only ever reaches a comparison declared as <see langword="object" />, so the generator never sees it.
+/// </summary>
+public sealed class Hidden
+{
+	public string Secret { get; set; } = "";
+}
+
+public sealed class Publisher
+{
+	public delegate void CountedHandler(int count, string name, bool flag, DateTime at, int? optional);
+
+	public event EventHandler? Changed;
+	public event CountedHandler? Counted;
+	public event Action<int>? Ticked;
+
+	public void RaiseChanged() => Changed?.Invoke(this, EventArgs.Empty);
+
+	public void RaiseCounted(int count) => Counted?.Invoke(count, "name", true, DateTime.MinValue, null);
+
+	public void RaiseTicked(int value) => Ticked?.Invoke(value);
+}
+
+public interface IPublisher
+{
+	event EventHandler? Changed;
+
+	void RaiseChanged();
+}
+
+/// <summary>
+///     Only ever recorded through <see cref="IPublisher" />, so the generator never sees the runtime type.
+/// </summary>
+public sealed class HiddenPublisher : IPublisher
+{
+	public event EventHandler? Changed;
+
+	public void RaiseChanged() => Changed?.Invoke(this, EventArgs.Empty);
+}

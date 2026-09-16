@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<!-- The TUnit analyzer objects to an entry point, because it expects to run the tests itself. -->
+	<PropertyGroup>
+		<NoWarn>$(NoWarn);TUnit0034</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="TUnit.Core"/>
+		<PackageReference Include="TUnit.Assertions"/>
+	</ItemGroup>
+
+</Project>

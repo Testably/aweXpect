@@ -38,8 +38,10 @@
 		<PackageVersion Include="NUnit.Analyzers" Version="4.15.0" />
 		<PackageVersion Include="TUnit" Version="1.67.0" />
 		<PackageVersion Include="TUnit.Assertions" Version="1.67.0" />
+		<PackageVersion Include="TUnit.Core" Version="1.67.0" />
 		<PackageVersion Include="xunit" Version="2.9.3" />
 		<PackageVersion Include="xunit.v3" Version="4.0.1" />
+		<PackageVersion Include="xunit.v3.assert" Version="4.0.1" />
 		<PackageVersion Include="xunit.v3.core" Version="4.0.1" />
 		<PackageVersion Include="xunit.runner.visualstudio" Version="4.0.0" />
 		<PackageVersion Include="AutoFixture.Xunit2" Version="4.18.1" />
