@@ -3858,6 +3858,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:23:56 2026 \u002B0200",
         "message": "feat: add a positional \u0060DoesNotHaveItem\u0060 (#1138)"
+      },
+      {
+        "sha": "1155bcb94d02cbfb1269ed10cd90d431d01476e7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 14:26:06 2026 \u002B0200",
+        "message": "build: apply the Debug downgrade of RS0016 and RS0017 without an explicit configuration (#1142)"
       }
     ],
     "labels": [
@@ -4503,7 +4509,8 @@ window.BENCHMARK_DATA = {
       "92d19445",
       "90e4b8cd",
       "b96672f8",
-      "c61848cb"
+      "c61848cb",
+      "1155bcb9"
     ],
     "datasets": [
       {
@@ -5152,7 +5159,8 @@ window.BENCHMARK_DATA = {
           251.40182484899248,
           269.4652423540751,
           238.62320494651794,
-          299.6421850522359
+          299.6421850522359,
+          259.6582940541781
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5625,6 +5633,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6463,7 +6472,8 @@ window.BENCHMARK_DATA = {
           240.8214459101359,
           265.20534236090526,
           247.63670858970056,
-          246.15056107838947
+          246.15056107838947,
+          237.14610471044267
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6656,6 +6666,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10527,6 +10538,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:23:56 2026 \u002B0200",
         "message": "feat: add a positional \u0060DoesNotHaveItem\u0060 (#1138)"
+      },
+      {
+        "sha": "1155bcb94d02cbfb1269ed10cd90d431d01476e7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 14:26:06 2026 \u002B0200",
+        "message": "build: apply the Debug downgrade of RS0016 and RS0017 without an explicit configuration (#1142)"
       }
     ],
     "labels": [
@@ -11095,7 +11112,8 @@ window.BENCHMARK_DATA = {
       "92d19445",
       "90e4b8cd",
       "b96672f8",
-      "c61848cb"
+      "c61848cb",
+      "1155bcb9"
     ],
     "datasets": [
       {
@@ -11667,7 +11685,8 @@ window.BENCHMARK_DATA = {
           307677.30032784597,
           331970.5521158854,
           304515.0453450521,
-          313328.3829264323
+          313328.3829264323,
+          327633.0501302083
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12237,6 +12256,7 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542084,
+          617976,
           617976,
           617976,
           617976,
@@ -12824,7 +12844,8 @@ window.BENCHMARK_DATA = {
           2612813.2177083334,
           2849435.1923076925,
           2373191.4619791666,
-          2652479.40234375
+          2652479.40234375,
+          2586987.552864583
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13398,6 +13419,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841647,
+          4841651,
           4841651,
           4841651,
           4841651,
@@ -17273,6 +17295,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:23:56 2026 \u002B0200",
         "message": "feat: add a positional \u0060DoesNotHaveItem\u0060 (#1138)"
+      },
+      {
+        "sha": "1155bcb94d02cbfb1269ed10cd90d431d01476e7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 14:26:06 2026 \u002B0200",
+        "message": "build: apply the Debug downgrade of RS0016 and RS0017 without an explicit configuration (#1142)"
       }
     ],
     "labels": [
@@ -17918,7 +17946,8 @@ window.BENCHMARK_DATA = {
       "92d19445",
       "90e4b8cd",
       "b96672f8",
-      "c61848cb"
+      "c61848cb",
+      "1155bcb9"
     ],
     "datasets": [
       {
@@ -18567,7 +18596,8 @@ window.BENCHMARK_DATA = {
           453.90837942759197,
           477.80998727253507,
           492.46140168507895,
-          459.5840605894725
+          459.5840605894725,
+          470.77930974960327
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19214,6 +19244,7 @@ window.BENCHMARK_DATA = {
           1360,
           1360,
           1360,
+          1368,
           1368,
           1368,
           1368,
@@ -19878,7 +19909,8 @@ window.BENCHMARK_DATA = {
           486.0281050364176,
           515.6146961847941,
           505.1754206929888,
-          477.3013547261556
+          477.3013547261556,
+          466.8591782365526
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20071,6 +20103,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -24404,6 +24437,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:23:56 2026 \u002B0200",
         "message": "feat: add a positional \u0060DoesNotHaveItem\u0060 (#1138)"
+      },
+      {
+        "sha": "1155bcb94d02cbfb1269ed10cd90d431d01476e7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 14:26:06 2026 \u002B0200",
+        "message": "build: apply the Debug downgrade of RS0016 and RS0017 without an explicit configuration (#1142)"
       }
     ],
     "labels": [
@@ -25049,7 +25088,8 @@ window.BENCHMARK_DATA = {
       "92d19445",
       "90e4b8cd",
       "b96672f8",
-      "c61848cb"
+      "c61848cb",
+      "1155bcb9"
     ],
     "datasets": [
       {
@@ -25698,7 +25738,8 @@ window.BENCHMARK_DATA = {
           263.1876878371605,
           281.56462043126425,
           263.48430817921957,
-          271.5729146003723
+          271.5729146003723,
+          255.58846728006998
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -26212,6 +26253,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -27009,7 +27051,8 @@ window.BENCHMARK_DATA = {
           240.1942369143168,
           273.2354783693949,
           246.19449597138626,
-          244.04474773406983
+          244.04474773406983,
+          237.56093287467957
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -27202,6 +27245,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -31535,6 +31579,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:23:56 2026 \u002B0200",
         "message": "feat: add a positional \u0060DoesNotHaveItem\u0060 (#1138)"
+      },
+      {
+        "sha": "1155bcb94d02cbfb1269ed10cd90d431d01476e7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 14:26:06 2026 \u002B0200",
+        "message": "build: apply the Debug downgrade of RS0016 and RS0017 without an explicit configuration (#1142)"
       }
     ],
     "labels": [
@@ -32180,7 +32230,8 @@ window.BENCHMARK_DATA = {
       "92d19445",
       "90e4b8cd",
       "b96672f8",
-      "c61848cb"
+      "c61848cb",
+      "1155bcb9"
     ],
     "datasets": [
       {
@@ -32829,7 +32880,8 @@ window.BENCHMARK_DATA = {
           508.41211083730065,
           543.9238265355428,
           527.9870834986369,
-          528.8159358842032
+          528.8159358842032,
+          490.89194914499916
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33476,6 +33528,7 @@ window.BENCHMARK_DATA = {
           1128,
           1128,
           1128,
+          1256,
           1256,
           1256,
           1256,
@@ -34140,7 +34193,8 @@ window.BENCHMARK_DATA = {
           1204.8881548472814,
           1276.4812213897706,
           1188.5228155576265,
-          1243.799567589393
+          1243.799567589393,
+          1164.362004500169
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34569,6 +34623,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -38666,6 +38721,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:23:56 2026 \u002B0200",
         "message": "feat: add a positional \u0060DoesNotHaveItem\u0060 (#1138)"
+      },
+      {
+        "sha": "1155bcb94d02cbfb1269ed10cd90d431d01476e7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 14:26:06 2026 \u002B0200",
+        "message": "build: apply the Debug downgrade of RS0016 and RS0017 without an explicit configuration (#1142)"
       }
     ],
     "labels": [
@@ -39311,7 +39372,8 @@ window.BENCHMARK_DATA = {
       "92d19445",
       "90e4b8cd",
       "b96672f8",
-      "c61848cb"
+      "c61848cb",
+      "1155bcb9"
     ],
     "datasets": [
       {
@@ -39960,7 +40022,8 @@ window.BENCHMARK_DATA = {
           1962.5544964926582,
           2048.440956702599,
           2032.3603190104166,
-          1925.7750849405925
+          1925.7750849405925,
+          1888.4566846575055
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -40607,6 +40670,7 @@ window.BENCHMARK_DATA = {
           2624,
           2624,
           2624,
+          2752,
           2752,
           2752,
           2752,
@@ -41271,7 +41335,8 @@ window.BENCHMARK_DATA = {
           1309.8268162863594,
           1407.2877241770427,
           1423.3367259979248,
-          1331.6969072977702
+          1331.6969072977702,
+          1286.7029768625896
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -41464,6 +41529,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -45797,6 +45863,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:23:56 2026 \u002B0200",
         "message": "feat: add a positional \u0060DoesNotHaveItem\u0060 (#1138)"
+      },
+      {
+        "sha": "1155bcb94d02cbfb1269ed10cd90d431d01476e7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 14:26:06 2026 \u002B0200",
+        "message": "build: apply the Debug downgrade of RS0016 and RS0017 without an explicit configuration (#1142)"
       }
     ],
     "labels": [
@@ -46442,7 +46514,8 @@ window.BENCHMARK_DATA = {
       "92d19445",
       "90e4b8cd",
       "b96672f8",
-      "c61848cb"
+      "c61848cb",
+      "1155bcb9"
     ],
     "datasets": [
       {
@@ -47091,7 +47164,8 @@ window.BENCHMARK_DATA = {
           2470.333965008075,
           2592.1967231750486,
           2586.445989481608,
-          2544.9662017822266
+          2544.9662017822266,
+          2490.8498107910154
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -47738,6 +47812,7 @@ window.BENCHMARK_DATA = {
           2816,
           2816,
           2816,
+          2944,
           2944,
           2944,
           2944,
@@ -48402,7 +48477,8 @@ window.BENCHMARK_DATA = {
           26411.143216814315,
           26415.914396158852,
           20449.435106404624,
-          26161.38968549456
+          26161.38968549456,
+          26092.071990966797
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -49047,6 +49123,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
