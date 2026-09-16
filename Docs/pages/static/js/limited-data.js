@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "c5c7f7d46449eada27ecebd17af972dae0c0dc50",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 14:35:09 2026 \u002B0200",
-        "message": "refactor!: format \u0060KeyValuePair\u0060 entries without reflection (#1070)"
-      },
-      {
         "sha": "c6732d628c93a0741e76938d64c8659abf7d613c",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 14:34:48 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:26:06 2026 \u002B0200",
         "message": "build: apply the Debug downgrade of RS0016 and RS0017 without an explicit configuration (#1142)"
+      },
+      {
+        "sha": "9da1cf49df1afd65873658bbbcd9ee8e9a83c06a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 15:01:23 2026 \u002B0200",
+        "message": "test: keep the API acceptance build from hanging and from packing (#1143)"
       }
     ],
     "labels": [
-      "c5c7f7d4",
       "c6732d62",
       "756e490e",
       "f2e29045",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "90e4b8cd",
       "b96672f8",
       "c61848cb",
-      "1155bcb9"
+      "1155bcb9",
+      "9da1cf49"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          250.75973449434554,
           254.4613069466182,
           135.9181802749634,
           188.02120952606202,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           269.4652423540751,
           238.62320494651794,
           299.6421850522359,
-          259.6582940541781
+          259.6582940541781,
+          263.0858057339986
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          236.79322616870587,
           246.56261631647746,
           154.9280719246183,
           192.87963887055716,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           265.20534236090526,
           247.63670858970056,
           246.15056107838947,
-          237.14610471044267
+          237.14610471044267,
+          261.2859146935599
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "c5c7f7d46449eada27ecebd17af972dae0c0dc50",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 14:35:09 2026 \u002B0200",
-        "message": "refactor!: format \u0060KeyValuePair\u0060 entries without reflection (#1070)"
-      },
-      {
         "sha": "c6732d628c93a0741e76938d64c8659abf7d613c",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 14:34:48 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:26:06 2026 \u002B0200",
         "message": "build: apply the Debug downgrade of RS0016 and RS0017 without an explicit configuration (#1142)"
+      },
+      {
+        "sha": "9da1cf49df1afd65873658bbbcd9ee8e9a83c06a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 15:01:23 2026 \u002B0200",
+        "message": "test: keep the API acceptance build from hanging and from packing (#1143)"
       }
     ],
     "labels": [
-      "c5c7f7d4",
       "c6732d62",
       "756e490e",
       "f2e29045",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "90e4b8cd",
       "b96672f8",
       "c61848cb",
-      "1155bcb9"
+      "1155bcb9",
+      "9da1cf49"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          300669.2333984375,
           317015.54552283656,
           169749.23313685827,
           225613.10516764323,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           331970.5521158854,
           304515.0453450521,
           313328.3829264323,
-          327633.0501302083
+          327633.0501302083,
+          331048.90040940506
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1029,7 +1029,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           335444,
-          335444,
           335442,
           335442,
           335444,
@@ -1069,6 +1068,7 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542084,
+          617976,
           617976,
           617976,
           617976,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2738172.296875,
           2688861.4171875,
           1366076.2995256695,
           1809507.5341796875,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2849435.1923076925,
           2373191.4619791666,
           2652479.40234375,
-          2586987.552864583
+          2586987.552864583,
+          2724957.017708333
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841651,
           4841647,
           4841647,
@@ -1202,6 +1201,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "c5c7f7d46449eada27ecebd17af972dae0c0dc50",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 14:35:09 2026 \u002B0200",
-        "message": "refactor!: format \u0060KeyValuePair\u0060 entries without reflection (#1070)"
-      },
       {
         "sha": "c6732d628c93a0741e76938d64c8659abf7d613c",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:26:06 2026 \u002B0200",
         "message": "build: apply the Debug downgrade of RS0016 and RS0017 without an explicit configuration (#1142)"
+      },
+      {
+        "sha": "9da1cf49df1afd65873658bbbcd9ee8e9a83c06a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 15:01:23 2026 \u002B0200",
+        "message": "test: keep the API acceptance build from hanging and from packing (#1143)"
       }
     ],
     "labels": [
-      "c5c7f7d4",
       "c6732d62",
       "756e490e",
       "f2e29045",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "90e4b8cd",
       "b96672f8",
       "c61848cb",
-      "1155bcb9"
+      "1155bcb9",
+      "9da1cf49"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          476.14383179800853,
           520.978179693222,
           247.31512594223022,
           372.9074284689767,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           477.80998727253507,
           492.46140168507895,
           459.5840605894725,
-          470.77930974960327
+          470.77930974960327,
+          477.6969051996867
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1676,7 +1676,7 @@ window.BENCHMARK_DATA = {
           1360,
           1360,
           1360,
-          1360,
+          1368,
           1368,
           1368,
           1368,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          469.3356034755707,
           548.5366251128061,
           280.42371861139935,
           388.7194734641484,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           515.6146961847941,
           505.1754206929888,
           477.3013547261556,
-          466.8591782365526
+          466.8591782365526,
+          527.1061539332072
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "c5c7f7d46449eada27ecebd17af972dae0c0dc50",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 14:35:09 2026 \u002B0200",
-        "message": "refactor!: format \u0060KeyValuePair\u0060 entries without reflection (#1070)"
-      },
-      {
         "sha": "c6732d628c93a0741e76938d64c8659abf7d613c",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 14:34:48 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:26:06 2026 \u002B0200",
         "message": "build: apply the Debug downgrade of RS0016 and RS0017 without an explicit configuration (#1142)"
+      },
+      {
+        "sha": "9da1cf49df1afd65873658bbbcd9ee8e9a83c06a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 15:01:23 2026 \u002B0200",
+        "message": "test: keep the API acceptance build from hanging and from packing (#1143)"
       }
     ],
     "labels": [
-      "c5c7f7d4",
       "c6732d62",
       "756e490e",
       "f2e29045",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "90e4b8cd",
       "b96672f8",
       "c61848cb",
-      "1155bcb9"
+      "1155bcb9",
+      "9da1cf49"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          259.7270631790161,
           270.73044805526735,
           142.2691675345103,
           198.9648289510182,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           281.56462043126425,
           263.48430817921957,
           271.5729146003723,
-          255.58846728006998
+          255.58846728006998,
+          273.95314671198526
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          257.8425686518351,
           292.022051970164,
           140.3980232079824,
           189.33685416834695,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           273.2354783693949,
           246.19449597138626,
           244.04474773406983,
-          237.56093287467957
+          237.56093287467957,
+          258.6540732383728
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "c5c7f7d46449eada27ecebd17af972dae0c0dc50",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 14:35:09 2026 \u002B0200",
-        "message": "refactor!: format \u0060KeyValuePair\u0060 entries without reflection (#1070)"
-      },
-      {
         "sha": "c6732d628c93a0741e76938d64c8659abf7d613c",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 14:34:48 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:26:06 2026 \u002B0200",
         "message": "build: apply the Debug downgrade of RS0016 and RS0017 without an explicit configuration (#1142)"
+      },
+      {
+        "sha": "9da1cf49df1afd65873658bbbcd9ee8e9a83c06a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 15:01:23 2026 \u002B0200",
+        "message": "test: keep the API acceptance build from hanging and from packing (#1143)"
       }
     ],
     "labels": [
-      "c5c7f7d4",
       "c6732d62",
       "756e490e",
       "f2e29045",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "90e4b8cd",
       "b96672f8",
       "c61848cb",
-      "1155bcb9"
+      "1155bcb9",
+      "9da1cf49"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          480.52882326566254,
           493.8501781736101,
           273.5651867389679,
           384.19529918034874,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           543.9238265355428,
           527.9870834986369,
           528.8159358842032,
-          490.89194914499916
+          490.89194914499916,
+          521.7357479731241
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2892,7 +2892,7 @@ window.BENCHMARK_DATA = {
           1128,
           1128,
           1128,
-          1128,
+          1256,
           1256,
           1256,
           1256,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1228.212302271525,
           1433.442033290863,
           681.5710824648539,
           899.5376797993978,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1276.4812213897706,
           1188.5228155576265,
           1243.799567589393,
-          1164.362004500169
+          1164.362004500169,
+          1273.134701792399
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "c5c7f7d46449eada27ecebd17af972dae0c0dc50",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 14:35:09 2026 \u002B0200",
-        "message": "refactor!: format \u0060KeyValuePair\u0060 entries without reflection (#1070)"
-      },
-      {
         "sha": "c6732d628c93a0741e76938d64c8659abf7d613c",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 14:34:48 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:26:06 2026 \u002B0200",
         "message": "build: apply the Debug downgrade of RS0016 and RS0017 without an explicit configuration (#1142)"
+      },
+      {
+        "sha": "9da1cf49df1afd65873658bbbcd9ee8e9a83c06a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 15:01:23 2026 \u002B0200",
+        "message": "test: keep the API acceptance build from hanging and from packing (#1143)"
       }
     ],
     "labels": [
-      "c5c7f7d4",
       "c6732d62",
       "756e490e",
       "f2e29045",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "90e4b8cd",
       "b96672f8",
       "c61848cb",
-      "1155bcb9"
+      "1155bcb9",
+      "9da1cf49"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1928.0085342407226,
           2033.934630530221,
           1058.5298448290143,
           1500.4603476206462,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2048.440956702599,
           2032.3603190104166,
           1925.7750849405925,
-          1888.4566846575055
+          1888.4566846575055,
+          2009.3580899919782
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3500,7 +3500,7 @@ window.BENCHMARK_DATA = {
           2624,
           2624,
           2624,
-          2624,
+          2752,
           2752,
           2752,
           2752,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1287.9860266367593,
           1467.3255128860474,
           740.1549100875854,
           1016.2394481386457,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1407.2877241770427,
           1423.3367259979248,
           1331.6969072977702,
-          1286.7029768625896
+          1286.7029768625896,
+          1399.1628487904866
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "c5c7f7d46449eada27ecebd17af972dae0c0dc50",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 14:35:09 2026 \u002B0200",
-        "message": "refactor!: format \u0060KeyValuePair\u0060 entries without reflection (#1070)"
-      },
-      {
         "sha": "c6732d628c93a0741e76938d64c8659abf7d613c",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 14:34:48 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:26:06 2026 \u002B0200",
         "message": "build: apply the Debug downgrade of RS0016 and RS0017 without an explicit configuration (#1142)"
+      },
+      {
+        "sha": "9da1cf49df1afd65873658bbbcd9ee8e9a83c06a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 15:01:23 2026 \u002B0200",
+        "message": "test: keep the API acceptance build from hanging and from packing (#1143)"
       }
     ],
     "labels": [
-      "c5c7f7d4",
       "c6732d62",
       "756e490e",
       "f2e29045",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "90e4b8cd",
       "b96672f8",
       "c61848cb",
-      "1155bcb9"
+      "1155bcb9",
+      "9da1cf49"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2584.997779573713,
           2693.6567529531626,
           1356.5092997184167,
           1951.5280904134115,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2592.1967231750486,
           2586.445989481608,
           2544.9662017822266,
-          2490.8498107910154
+          2490.8498107910154,
+          2551.3759628295898
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4108,7 +4108,7 @@ window.BENCHMARK_DATA = {
           2816,
           2816,
           2816,
-          2816,
+          2944,
           2944,
           2944,
           2944,
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27038.082265218098,
           27807.976272583008,
           10630.42140851702,
           15669.362336222332,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           26415.914396158852,
           20449.435106404624,
           26161.38968549456,
-          26092.071990966797
+          26092.071990966797,
+          27594.802510579426
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4203,7 +4203,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33468,
           33471,
           33471,
@@ -4232,6 +4231,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
