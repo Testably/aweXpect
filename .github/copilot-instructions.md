@@ -119,7 +119,7 @@ To communicate intent to the consumers of your library, the title of the pull re
 - **aweXpect.Tests**: Main test suite (12,000+ tests)
 - **aweXpect.Core.Tests**: Core library tests
 - **aweXpect.Internal.Tests**: Internal functionality tests
-- **Source/*/PublicAPI**: public API surface per target framework, enforced by Microsoft.CodeAnalysis.PublicApiAnalyzers
+- **aweXpect.Api.Tests**: explicit test that records the public API surface in Source/*/PublicAPI, which Microsoft.CodeAnalysis.PublicApiAnalyzers enforces during the build
 - **Frameworks/**: Framework-specific integration tests
 
 ### Key Configuration Files
