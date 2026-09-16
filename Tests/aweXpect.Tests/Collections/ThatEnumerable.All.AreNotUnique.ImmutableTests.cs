@@ -12,6 +12,28 @@ public sealed partial class ThatEnumerable
 			public sealed class ImmutableArrayTests
 			{
 				[Fact]
+				public async Task ShouldUseCustomComparer()
+				{
+					ImmutableArray<int> subject = [1, 1, 1,];
+
+					async Task Act()
+						=> await That(subject).All().AreNotUnique().Using(new AllDifferentComparer());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not unique using AllDifferentComparer for all items,
+						             but none of 3 were
+
+						             Not matching items:
+						             [1, 1, 1]
+
+						             Collection:
+						             [1, 1, 1]
+						             """);
+				}
+
+				[Fact]
 				public async Task WhenAllItemsAreDuplicated_ShouldSucceed()
 				{
 					ImmutableArray<int> subject = [1, 2, 1, 2,];
@@ -75,12 +97,34 @@ public sealed partial class ThatEnumerable
 			public sealed class ImmutableArrayStringTests
 			{
 				[Fact]
+				public async Task ShouldUseCustomComparer()
+				{
+					ImmutableArray<string?> subject = ["a", "b", "c",];
+
+					async Task Act()
+						=> await That(subject).All().AreNotUnique().Using(new AllEqualComparer());
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
 				public async Task WhenAllItemsAreDuplicated_ShouldSucceed()
 				{
 					ImmutableArray<string?> subject = ["a", "b", "a", "b",];
 
 					async Task Act()
 						=> await That(subject).All().AreNotUnique();
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenDiffersInCasingAndCasingIsIgnored_ShouldSucceed()
+				{
+					ImmutableArray<string?> subject = ["a", "A",];
+
+					async Task Act()
+						=> await That(subject).All().AreNotUnique().IgnoringCase();
 
 					await That(Act).DoesNotThrow();
 				}

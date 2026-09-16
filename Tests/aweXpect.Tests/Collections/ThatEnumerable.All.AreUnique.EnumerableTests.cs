@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Linq;
+using System.Threading;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -13,6 +14,25 @@ public sealed partial class ThatEnumerable
 		{
 			public sealed class EnumerableTests
 			{
+				[Fact]
+				public async Task ConsidersCancellationToken()
+				{
+					using CancellationTokenSource cts = new();
+					CancellationToken token = cts.Token;
+					IEnumerable subject = GetCancellingEnumerable(5, cts);
+
+					async Task Act()
+						=> await That(subject).All().AreUnique().WithCancellation(token);
+
+					await That(Act).Throws<InconclusiveException>()
+						.WithMessage("""
+						             Expected that subject
+						             is unique for all items,
+						             but could not verify, because it was already cancelled
+						             *
+						             """).AsWildcard();
+				}
+
 				[Fact]
 				public async Task ShouldUseCustomComparer()
 				{

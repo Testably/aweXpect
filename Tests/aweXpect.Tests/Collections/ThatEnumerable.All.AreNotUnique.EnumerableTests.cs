@@ -14,6 +14,28 @@ public sealed partial class ThatEnumerable
 			public sealed class EnumerableTests
 			{
 				[Fact]
+				public async Task ShouldUseCustomComparer()
+				{
+					IEnumerable subject = ToEnumerable([1, 1, 1,]);
+
+					async Task Act()
+						=> await That(subject).All().AreNotUnique().Using(new AllDifferentComparer());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not unique using AllDifferentComparer for all items,
+						             but none of 3 were
+
+						             Not matching items:
+						             [1, 1, 1]
+
+						             Collection:
+						             [1, 1, 1]
+						             """);
+				}
+
+				[Fact]
 				public async Task WhenAllItemsAreDuplicated_ShouldSucceed()
 				{
 					IEnumerable subject = ToEnumerable([1, 2, 1, 2,]);

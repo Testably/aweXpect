@@ -353,6 +353,25 @@ public sealed partial class ThatAsyncEnumerable
 			public sealed class MemberTests
 			{
 				[Fact]
+				public async Task ConsidersCancellationToken()
+				{
+					using CancellationTokenSource cts = new();
+					CancellationToken token = cts.Token;
+					IAsyncEnumerable<int> subject = GetCancellingAsyncEnumerable(5, cts, token);
+
+					async Task Act()
+						=> await That(subject).All().AreUnique(x => x * 2).WithCancellation(token);
+
+					await That(Act).Throws<InconclusiveException>()
+						.WithMessage("""
+						             Expected that subject
+						             is unique for x => x * 2 for all items,
+						             but could not verify, because it was already cancelled
+						             *
+						             """).AsWildcard();
+				}
+
+				[Fact]
 				public async Task ShouldUseCustomComparer()
 				{
 					IAsyncEnumerable<MyClass> subject = ToAsyncEnumerable([1, 1, 1,], x => new MyClass(x));
