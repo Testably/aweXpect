@@ -37,6 +37,20 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
+		public async Task WhenBoxedValueRefersBackToTheOwner_ShouldDetectTheRecursion()
+		{
+			Owner value = new();
+			value.Pair = new KeyValuePair<string, Owner>("self", value);
+			string expectedResult =
+				"ValueFormatters.KeyValuePairTests.Owner { Pair = [\"self\"] = ValueFormatters.KeyValuePairTests.Owner { *recursive* } }";
+
+			string result = Formatter.Format(value, FormattingOptions.SingleLine);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("the pair is rendered within the formatting context of its owner, so the cycle is detected");
+		}
+
+		[Fact]
 		public async Task WhenKeyAndValueAreNull_ShouldUseDefaultNullString()
 		{
 			string expectedResult = $"[{ValueFormatter.NullString}] = {ValueFormatter.NullString}";
@@ -63,6 +77,11 @@ public partial class ValueFormatters
 			await That(result).IsEqualTo(expectedResult).Because("the brackets already convey the pair structure");
 			await That(sb.ToString()).IsEqualTo(expectedResult)
 				.Because("the brackets already convey the pair structure");
+		}
+
+		private sealed class Owner
+		{
+			public KeyValuePair<string, Owner> Pair { get; set; }
 		}
 	}
 }

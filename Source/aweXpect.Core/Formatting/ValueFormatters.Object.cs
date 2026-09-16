@@ -24,10 +24,11 @@ public static partial class ValueFormatters
 			{
 				IncludeType = false,
 			};
+			context ??= new FormattingContext();
 			stringBuilder.Append('[');
-			Format(Formatter, stringBuilder, key, pairOptions);
+			Format(Formatter, stringBuilder, key, pairOptions, context);
 			stringBuilder.Append("] = ");
-			Format(Formatter, stringBuilder, pairValue, pairOptions);
+			Format(Formatter, stringBuilder, pairValue, pairOptions, context);
 		}
 		else if (HasDefaultToStringImplementation(value))
 		{
