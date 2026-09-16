@@ -56,8 +56,13 @@ internal static partial class Helper
 		startInfo.ArgumentList.Add("--verbosity");
 		startInfo.ArgumentList.Add("quiet");
 		startInfo.ArgumentList.Add("--nologo");
+		// A reusable MSBuild worker node or compiler server started by this build would inherit the redirected
+		// output pipes and outlive the build, so reading the output would never complete.
+		startInfo.ArgumentList.Add("--disable-build-servers");
 		// `%3B` is the MSBuild escape for `;`, which would otherwise separate properties.
 		startInfo.ArgumentList.Add("-p:WarningsNotAsErrors=CS1591%3BRS0016%3BRS0017");
+		// Only the compilation is needed; packing would require the analyzer projects to be built first.
+		startInfo.ArgumentList.Add("-p:GeneratePackageOnBuild=false");
 		startInfo.Environment["DOTNET_CLI_UI_LANGUAGE"] = "en-US";
 
 		using Process process = Process.Start(startInfo)!;
