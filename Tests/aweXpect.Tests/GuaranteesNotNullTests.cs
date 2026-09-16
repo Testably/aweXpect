@@ -815,9 +815,9 @@ public sealed class GuaranteesNotNullTests
 
 	private static IEnumerable<MethodInfo> GetContinuations(object expectation)
 		=> expectation.GetType()
-			.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
-			.Where(method => !method.IsSpecialName && !method.IsGenericMethodDefinition &&
-			                 method.ReturnType != typeof(void))
+			.GetMethods(BindingFlags.Public | BindingFlags.Instance)
+			.Where(method => method.DeclaringType != typeof(object) && !method.IsSpecialName &&
+			                 !method.IsGenericMethodDefinition && method.ReturnType != typeof(void))
 			.OrderBy(method => method.Name, StringComparer.Ordinal);
 
 	private static object? CreateContinuationArgument(ParameterInfo parameter, bool nullValues)

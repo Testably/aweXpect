@@ -205,5 +205,25 @@ public sealed partial class PropertyResultTests
 
 			await That(result?.TimeSpanValue).IsEqualTo(42.Seconds());
 		}
+
+		public sealed class GrammarTests
+		{
+			[Fact]
+			public async Task WhenActive_ShouldUseTheActiveVoice()
+			{
+				PropertyResult.TimeSpan<MyClass?, MyClass?, IThat<MyClass?>> sut =
+					MyClass.HasTimeSpanValue(42.Seconds(), ExpectationGrammars.Active);
+
+				async Task Act()
+					=> await sut.GreaterThan(43.Seconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             with TimeSpan value greater than 0:43,
+					             but it had TimeSpan value 0:42
+					             """);
+			}
+		}
 	}
 }

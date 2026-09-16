@@ -34,22 +34,19 @@ public class ThrownExceptionVocabularyCodeFixProvider : CodeFixProvider
 		foreach (Diagnostic diagnostic in context.Diagnostics)
 		{
 			if (root?.FindNode(diagnostic.Location.SourceSpan) is not SimpleNameSyntax name ||
-			    name.Parent is not MemberAccessExpressionSyntax memberAccess)
+			    name.Parent is not MemberAccessExpressionSyntax memberAccess ||
+			    !diagnostic.Properties.TryGetValue(ThrownExceptionVocabularyAnalyzer.TwinProperty,
+				    out string? twinName) || twinName is null)
 			{
 				continue;
 			}
 
-			if (diagnostic.Properties.TryGetValue(ThrownExceptionVocabularyAnalyzer.TwinProperty,
-				    out string? twinName) && twinName is not null)
-			{
-				context.RegisterCodeFix(
-					CodeAction.Create(
-						string.Format(Resources.aweXpect0003ReplaceCodeFixTitle, twinName),
-						_ => Task.FromResult(ReplaceWithTwin(context.Document, root, name, twinName)),
-						nameof(Resources.aweXpect0003ReplaceCodeFixTitle)),
-					diagnostic);
-			}
-
+			context.RegisterCodeFix(
+				CodeAction.Create(
+					string.Format(Resources.aweXpect0003ReplaceCodeFixTitle, twinName),
+					_ => Task.FromResult(ReplaceWithTwin(context.Document, root, name, twinName)),
+					nameof(Resources.aweXpect0003ReplaceCodeFixTitle)),
+				diagnostic);
 			context.RegisterCodeFix(
 				CodeAction.Create(
 					Resources.aweXpect0003InsertWhichCodeFixTitle,

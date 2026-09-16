@@ -16,28 +16,28 @@ namespace aweXpect.Analyzers;
 public class ThrownExceptionVocabularyAnalyzer : DiagnosticAnalyzer
 {
 	/// <summary>
-	///     The diagnostic property holding the name of the <c>With…</c> twin, when one exists.
+	///     The diagnostic property holding the name of the <c>With…</c> twin.
 	/// </summary>
 	internal const string TwinProperty = "Twin";
 
 	/// <summary>
-	///     The <c>Has…</c> expectations of <c>ThatException</c> with the name of their <c>With…</c> twin and the
-	///     argument counts for which the twin exists.
+	///     The <c>Has…</c> expectations of <c>ThatException</c> with the name of their <c>With…</c> twin, which
+	///     accepts the same arguments.
 	/// </summary>
-	private static readonly ImmutableDictionary<string, (string Twin, int[] ArgumentCounts)> Expectations =
-		new Dictionary<string, (string Twin, int[] ArgumentCounts)>
+	private static readonly ImmutableDictionary<string, string> Expectations =
+		new Dictionary<string, string>
 		{
-			["HasMessage"] = ("WithMessage", new[] { 0, 1, }),
-			["HasParamName"] = ("WithParamName", new[] { 0, 1, }),
-			["HasHResult"] = ("WithHResult", new[] { 1, }),
-			["HasInner"] = ("WithInner", new[] { 0, 1, 2, }),
-			["HasInnerException"] = ("WithInnerException", new[] { 0, 1, }),
-			["HasRecursiveInnerExceptions"] = ("WithRecursiveInnerExceptions", new[] { 1, }),
+			["HasMessage"] = "WithMessage",
+			["HasParamName"] = "WithParamName",
+			["HasHResult"] = "WithHResult",
+			["HasInner"] = "WithInner",
+			["HasInnerException"] = "WithInnerException",
+			["HasRecursiveInnerExceptions"] = "WithRecursiveInnerExceptions",
 		}.ToImmutableDictionary();
 
 	/// <inheritdoc />
 	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
-		[Rules.ThrownExceptionVocabularyRule, Rules.ThrownExceptionVocabularyWithoutTwinRule,];
+		[Rules.ThrownExceptionVocabularyRule,];
 
 	/// <inheritdoc />
 	public override void Initialize(AnalysisContext context)
@@ -52,8 +52,7 @@ public class ThrownExceptionVocabularyAnalyzer : DiagnosticAnalyzer
 	{
 		if (context.Operation is not IInvocationOperation invocation ||
 		    !IsThatExceptionMethod(invocation.TargetMethod) ||
-		    !Expectations.TryGetValue(invocation.TargetMethod.Name,
-			    out (string Twin, int[] ArgumentCounts) expectation))
+		    !Expectations.TryGetValue(invocation.TargetMethod.Name, out string? twin))
 		{
 			return;
 		}
@@ -64,22 +63,11 @@ public class ThrownExceptionVocabularyAnalyzer : DiagnosticAnalyzer
 			return;
 		}
 
-		int argumentCount = invocation.Arguments.Length - 1;
-		Location location = GetLocation(invocation, receiver);
-		if (expectation.ArgumentCounts.Contains(argumentCount))
-		{
-			context.ReportDiagnostic(Diagnostic.Create(Rules.ThrownExceptionVocabularyRule,
-				location,
-				ImmutableDictionary<string, string?>.Empty.Add(TwinProperty, expectation.Twin),
-				invocation.TargetMethod.Name,
-				expectation.Twin));
-		}
-		else
-		{
-			context.ReportDiagnostic(Diagnostic.Create(Rules.ThrownExceptionVocabularyWithoutTwinRule,
-				location,
-				invocation.TargetMethod.Name));
-		}
+		context.ReportDiagnostic(Diagnostic.Create(Rules.ThrownExceptionVocabularyRule,
+			GetLocation(invocation, receiver),
+			ImmutableDictionary<string, string?>.Empty.Add(TwinProperty, twin),
+			invocation.TargetMethod.Name,
+			twin));
 	}
 
 	private static bool IsThatExceptionMethod(IMethodSymbol method)

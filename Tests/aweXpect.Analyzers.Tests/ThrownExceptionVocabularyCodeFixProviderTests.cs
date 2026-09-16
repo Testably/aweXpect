@@ -184,7 +184,7 @@ public class ThrownExceptionVocabularyCodeFixProviderTests
 		ReplaceKey);
 
 	[Fact]
-	public async Task WhenNoTwinWithSameArityExists_ShouldOnlyOfferInsertWhich() => await Verifier.VerifyCodeFixAsync(
+	public async Task ShouldReplaceHasHResultWithoutArgumentWithWithHResult() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System;
 		using System.Threading.Tasks;
@@ -196,11 +196,10 @@ public class ThrownExceptionVocabularyCodeFixProviderTests
 		    {
 		        void Act() => throw new Exception("foo");
 
-		        await Expect.That(Act).Throws<Exception>().{|#0:HasHResult|}().EqualTo(42);
+		        await Expect.That(Act).Throws<Exception>().[|HasHResult|]().EqualTo(42);
 		    }
 		}
 		""",
-		[Verifier.Diagnostic(Rules.ThrownExceptionVocabularyWithoutTwinRule).WithLocation(0).WithArguments("HasHResult"),],
 		"""
 		using System;
 		using System.Threading.Tasks;
@@ -212,8 +211,9 @@ public class ThrownExceptionVocabularyCodeFixProviderTests
 		    {
 		        void Act() => throw new Exception("foo");
 
-		        await Expect.That(Act).Throws<Exception>().Which.HasHResult().EqualTo(42);
+		        await Expect.That(Act).Throws<Exception>().WithHResult().EqualTo(42);
 		    }
 		}
-		""");
+		""",
+		ReplaceKey);
 }

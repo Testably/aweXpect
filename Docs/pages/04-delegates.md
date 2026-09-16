@@ -133,6 +133,8 @@ void Act() => throw exception;
 
 await Expect.That(Act).Throws().WithHResult(12345)
   .Because("you can verify the `HResult`");
+await Expect.That(Act).Throws().WithHResult().GreaterThan(12340)
+  .Because("the `HResult` continues with the numeric comparison vocabulary");
 await Expect.That(Act).Throws()
   .Whose(e => e.HResult, h => h.IsGreaterThan(12340))
   .Because("you can verify arbitrary additional members");

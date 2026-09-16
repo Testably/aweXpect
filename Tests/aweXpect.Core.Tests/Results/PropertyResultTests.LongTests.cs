@@ -204,5 +204,25 @@ public sealed partial class PropertyResultTests
 
 			await That(result?.LongValue).IsEqualTo(42L);
 		}
+
+		public sealed class GrammarTests
+		{
+			[Fact]
+			public async Task WhenActive_ShouldUseTheActiveVoice()
+			{
+				PropertyResult.Long<MyClass?, MyClass?, IThat<MyClass?>> sut =
+					MyClass.HasLongValue(42L, ExpectationGrammars.Active);
+
+				async Task Act()
+					=> await sut.GreaterThan(43L);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             with long value greater than 43,
+					             but it had long value 42
+					             """);
+			}
+		}
 	}
 }

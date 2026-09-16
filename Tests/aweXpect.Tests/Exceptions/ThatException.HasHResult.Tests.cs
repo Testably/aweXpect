@@ -36,6 +36,24 @@ public sealed partial class ThatException
 					              """)
 					.Because("the continuation renders exactly like the HasHResult(expected) shorthand");
 			}
+
+			[Theory]
+			[AutoData]
+			public async Task WhenNested_ShouldReadAsAStatementAboutTheProperty(int hResult)
+			{
+				int expectedHResult = hResult + 1;
+				Exception subject = new("outer", new HResultException(hResult));
+
+				async Task Act()
+					=> await That(subject).HasInnerException(e => e.HasHResult(expectedHResult));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              has an inner exception whose HResult is equal to {expectedHResult},
+					              but it had HResult {hResult}
+					              """);
+			}
 		}
 
 		public sealed class Tests
