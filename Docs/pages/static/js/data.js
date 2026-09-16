@@ -3930,6 +3930,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 18:50:15 2026 \u002B0200",
         "message": "feat: render objects and boxed key-value pairs from the metadata registry (#1149)"
+      },
+      {
+        "sha": "486e1c09ab9f4591986a4d621011fa2afea4c3c4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 18:58:32 2026 \u002B0200",
+        "message": "feat: register the events of a recorded subject through the source generator (#1148)"
       }
     ],
     "labels": [
@@ -4587,7 +4593,8 @@ window.BENCHMARK_DATA = {
       "763e7578",
       "3a011705",
       "59750756",
-      "a9df7c2a"
+      "a9df7c2a",
+      "486e1c09"
     ],
     "datasets": [
       {
@@ -5248,7 +5255,8 @@ window.BENCHMARK_DATA = {
           204.8831177075704,
           250.18587831656137,
           177.46720306078592,
-          253.7201486315046
+          253.7201486315046,
+          244.59249210357666
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5721,6 +5729,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6583,7 +6592,8 @@ window.BENCHMARK_DATA = {
           204.35752204259236,
           235.1757512826186,
           213.5767141342163,
-          249.05672403176627
+          249.05672403176627,
+          248.96122046879358
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6776,6 +6786,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10731,6 +10742,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 18:50:15 2026 \u002B0200",
         "message": "feat: render objects and boxed key-value pairs from the metadata registry (#1149)"
+      },
+      {
+        "sha": "486e1c09ab9f4591986a4d621011fa2afea4c3c4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 18:58:32 2026 \u002B0200",
+        "message": "feat: register the events of a recorded subject through the source generator (#1148)"
       }
     ],
     "labels": [
@@ -11311,7 +11328,8 @@ window.BENCHMARK_DATA = {
       "763e7578",
       "3a011705",
       "59750756",
-      "a9df7c2a"
+      "a9df7c2a",
+      "486e1c09"
     ],
     "datasets": [
       {
@@ -11895,7 +11913,8 @@ window.BENCHMARK_DATA = {
           257640.27161458333,
           313474.94373372395,
           212859.1596110026,
-          302333.4135579427
+          302333.4135579427,
+          312978.3467610677
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12465,6 +12484,7 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542084,
+          617976,
           617976,
           617976,
           617976,
@@ -13076,7 +13096,8 @@ window.BENCHMARK_DATA = {
           1944879.146108774,
           2575158.3140625,
           1452274.2623697917,
-          2380478.3739583334
+          2380478.3739583334,
+          2400084.4453125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13665,6 +13686,7 @@ window.BENCHMARK_DATA = {
           4841648,
           4841651,
           4841609,
+          4841647,
           4841647
         ],
         "borderColor": "#FF671B",
@@ -17609,6 +17631,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 18:50:15 2026 \u002B0200",
         "message": "feat: render objects and boxed key-value pairs from the metadata registry (#1149)"
+      },
+      {
+        "sha": "486e1c09ab9f4591986a4d621011fa2afea4c3c4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 18:58:32 2026 \u002B0200",
+        "message": "feat: register the events of a recorded subject through the source generator (#1148)"
       }
     ],
     "labels": [
@@ -18266,7 +18294,8 @@ window.BENCHMARK_DATA = {
       "763e7578",
       "3a011705",
       "59750756",
-      "a9df7c2a"
+      "a9df7c2a",
+      "486e1c09"
     ],
     "datasets": [
       {
@@ -18927,7 +18956,8 @@ window.BENCHMARK_DATA = {
           400.83259906768797,
           458.5742767197745,
           309.30614109039306,
-          457.79335708618163
+          457.79335708618163,
+          464.8653025627136
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19574,6 +19604,7 @@ window.BENCHMARK_DATA = {
           1360,
           1360,
           1360,
+          1368,
           1368,
           1368,
           1368,
@@ -20262,7 +20293,8 @@ window.BENCHMARK_DATA = {
           423.6676195780436,
           455.18602970668246,
           349.63048515319826,
-          527.2408049901327
+          527.2408049901327,
+          501.41817881266275
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20455,6 +20487,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -24872,6 +24905,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 18:50:15 2026 \u002B0200",
         "message": "feat: render objects and boxed key-value pairs from the metadata registry (#1149)"
+      },
+      {
+        "sha": "486e1c09ab9f4591986a4d621011fa2afea4c3c4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 18:58:32 2026 \u002B0200",
+        "message": "feat: register the events of a recorded subject through the source generator (#1148)"
       }
     ],
     "labels": [
@@ -25529,7 +25568,8 @@ window.BENCHMARK_DATA = {
       "763e7578",
       "3a011705",
       "59750756",
-      "a9df7c2a"
+      "a9df7c2a",
+      "486e1c09"
     ],
     "datasets": [
       {
@@ -26190,7 +26230,8 @@ window.BENCHMARK_DATA = {
           224.4715517117427,
           271.2452363014221,
           183.1254425219127,
-          274.64652620951335
+          274.64652620951335,
+          262.69628829956054
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -26704,6 +26745,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -27525,7 +27567,8 @@ window.BENCHMARK_DATA = {
           207.47387848581587,
           239.5957540512085,
           183.8832524617513,
-          243.27342240015665
+          243.27342240015665,
+          240.46703370412192
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -27718,6 +27761,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -32135,6 +32179,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 18:50:15 2026 \u002B0200",
         "message": "feat: render objects and boxed key-value pairs from the metadata registry (#1149)"
+      },
+      {
+        "sha": "486e1c09ab9f4591986a4d621011fa2afea4c3c4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 18:58:32 2026 \u002B0200",
+        "message": "feat: register the events of a recorded subject through the source generator (#1148)"
       }
     ],
     "labels": [
@@ -32792,7 +32842,8 @@ window.BENCHMARK_DATA = {
       "763e7578",
       "3a011705",
       "59750756",
-      "a9df7c2a"
+      "a9df7c2a",
+      "486e1c09"
     ],
     "datasets": [
       {
@@ -33453,7 +33504,8 @@ window.BENCHMARK_DATA = {
           456.05161458651224,
           508.5778339249747,
           319.10603416883026,
-          556.0491337458293
+          556.0491337458293,
+          530.9222126801809
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34100,6 +34152,7 @@ window.BENCHMARK_DATA = {
           1128,
           1128,
           1128,
+          1256,
           1256,
           1256,
           1256,
@@ -34788,7 +34841,8 @@ window.BENCHMARK_DATA = {
           975.6958395640055,
           1155.7640056610107,
           824.2817416508992,
-          1209.2223745981853
+          1209.2223745981853,
+          1181.579424540202
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35217,6 +35271,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -39398,6 +39453,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 18:50:15 2026 \u002B0200",
         "message": "feat: render objects and boxed key-value pairs from the metadata registry (#1149)"
+      },
+      {
+        "sha": "486e1c09ab9f4591986a4d621011fa2afea4c3c4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 18:58:32 2026 \u002B0200",
+        "message": "feat: register the events of a recorded subject through the source generator (#1148)"
       }
     ],
     "labels": [
@@ -40055,7 +40116,8 @@ window.BENCHMARK_DATA = {
       "763e7578",
       "3a011705",
       "59750756",
-      "a9df7c2a"
+      "a9df7c2a",
+      "486e1c09"
     ],
     "datasets": [
       {
@@ -40716,7 +40778,8 @@ window.BENCHMARK_DATA = {
           1540.0985544840494,
           1942.7496509552002,
           1039.235434850057,
-          2004.4319291796003
+          2004.4319291796003,
+          1970.2472921098981
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -41363,6 +41426,7 @@ window.BENCHMARK_DATA = {
           2624,
           2624,
           2624,
+          2752,
           2752,
           2752,
           2752,
@@ -42051,7 +42115,8 @@ window.BENCHMARK_DATA = {
           1048.3148404439291,
           1282.7084517161052,
           998.9396559397379,
-          1440.2289797919136
+          1440.2289797919136,
+          1355.1610792795816
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -42244,6 +42309,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -46661,6 +46727,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 18:50:15 2026 \u002B0200",
         "message": "feat: render objects and boxed key-value pairs from the metadata registry (#1149)"
+      },
+      {
+        "sha": "486e1c09ab9f4591986a4d621011fa2afea4c3c4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 18:58:32 2026 \u002B0200",
+        "message": "feat: register the events of a recorded subject through the source generator (#1148)"
       }
     ],
     "labels": [
@@ -47318,7 +47390,8 @@ window.BENCHMARK_DATA = {
       "763e7578",
       "3a011705",
       "59750756",
-      "a9df7c2a"
+      "a9df7c2a",
+      "486e1c09"
     ],
     "datasets": [
       {
@@ -47979,7 +48052,8 @@ window.BENCHMARK_DATA = {
           2002.1590328216553,
           2576.206933339437,
           1375.347214126587,
-          2653.76585987636
+          2653.76585987636,
+          2591.235166696402
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -48626,6 +48700,7 @@ window.BENCHMARK_DATA = {
           2816,
           2816,
           2816,
+          2944,
           2944,
           2944,
           2944,
@@ -49314,7 +49389,8 @@ window.BENCHMARK_DATA = {
           16234.44164804312,
           25930.931333269393,
           12203.467697143555,
-          20816.53991088867
+          20816.53991088867,
+          20562.861098225912
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -49980,6 +50056,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
