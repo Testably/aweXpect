@@ -3834,6 +3834,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 10:53:10 2026 \u002B0200",
         "message": "fix: let the dashboard pass a run that produced no mutation report (#1137)"
+      },
+      {
+        "sha": "92d1944580383864a5d3f78acc294335ba38b733",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 12:07:55 2026 \u002B0200",
+        "message": "refactor!: replace \u0060AreAllUnique\u0060 with \u0060Elements.AreUnique()\u0060 / \u0060AreNotUnique()\u0060 (#1136)"
       }
     ],
     "labels": [
@@ -4475,7 +4481,8 @@ window.BENCHMARK_DATA = {
       "9d72f3f2",
       "b6c8f8a0",
       "081bd651",
-      "753cd961"
+      "753cd961",
+      "92d19445"
     ],
     "datasets": [
       {
@@ -5120,7 +5127,8 @@ window.BENCHMARK_DATA = {
           273.72809038162234,
           256.4923405329386,
           270.47141586939495,
-          241.59078941345214
+          241.59078941345214,
+          251.40182484899248
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5593,6 +5601,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6423,7 +6432,8 @@ window.BENCHMARK_DATA = {
           269.87966009775795,
           258.7779306631822,
           256.50651825391327,
-          248.39237417493547
+          248.39237417493547,
+          240.8214459101359
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6616,6 +6626,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10459,6 +10470,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 10:53:10 2026 \u002B0200",
         "message": "fix: let the dashboard pass a run that produced no mutation report (#1137)"
+      },
+      {
+        "sha": "92d1944580383864a5d3f78acc294335ba38b733",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 12:07:55 2026 \u002B0200",
+        "message": "refactor!: replace \u0060AreAllUnique\u0060 with \u0060Elements.AreUnique()\u0060 / \u0060AreNotUnique()\u0060 (#1136)"
       }
     ],
     "labels": [
@@ -11023,7 +11040,8 @@ window.BENCHMARK_DATA = {
       "9d72f3f2",
       "b6c8f8a0",
       "081bd651",
-      "753cd961"
+      "753cd961",
+      "92d19445"
     ],
     "datasets": [
       {
@@ -11591,7 +11609,8 @@ window.BENCHMARK_DATA = {
           313103.78349609376,
           314545.55390625,
           327024.4654947917,
-          300103.9351236979
+          300103.9351236979,
+          307677.30032784597
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12161,6 +12180,7 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542084,
+          617976,
           617976,
           617976,
           617976,
@@ -12740,7 +12760,8 @@ window.BENCHMARK_DATA = {
           2625909.8854166665,
           2610521.2452566964,
           2708283.4361979165,
-          2335981.8560697115
+          2335981.8560697115,
+          2612813.2177083334
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13313,7 +13334,8 @@ window.BENCHMARK_DATA = {
           4841647,
           4841651,
           4841651,
-          4841647
+          4841647,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17161,6 +17183,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 10:53:10 2026 \u002B0200",
         "message": "fix: let the dashboard pass a run that produced no mutation report (#1137)"
+      },
+      {
+        "sha": "92d1944580383864a5d3f78acc294335ba38b733",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 12:07:55 2026 \u002B0200",
+        "message": "refactor!: replace \u0060AreAllUnique\u0060 with \u0060Elements.AreUnique()\u0060 / \u0060AreNotUnique()\u0060 (#1136)"
       }
     ],
     "labels": [
@@ -17802,7 +17830,8 @@ window.BENCHMARK_DATA = {
       "9d72f3f2",
       "b6c8f8a0",
       "081bd651",
-      "753cd961"
+      "753cd961",
+      "92d19445"
     ],
     "datasets": [
       {
@@ -18447,7 +18476,8 @@ window.BENCHMARK_DATA = {
           461.8257578849792,
           474.93318353380477,
           495.7646186535175,
-          461.5401366551717
+          461.5401366551717,
+          453.90837942759197
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19094,6 +19124,7 @@ window.BENCHMARK_DATA = {
           1360,
           1360,
           1360,
+          1368,
           1368,
           1368,
           1368,
@@ -19750,7 +19781,8 @@ window.BENCHMARK_DATA = {
           480.7632736137935,
           504.21682192484536,
           547.2313723246257,
-          486.11460876464844
+          486.11460876464844,
+          486.0281050364176
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19943,6 +19975,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -24248,6 +24281,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 10:53:10 2026 \u002B0200",
         "message": "fix: let the dashboard pass a run that produced no mutation report (#1137)"
+      },
+      {
+        "sha": "92d1944580383864a5d3f78acc294335ba38b733",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 12:07:55 2026 \u002B0200",
+        "message": "refactor!: replace \u0060AreAllUnique\u0060 with \u0060Elements.AreUnique()\u0060 / \u0060AreNotUnique()\u0060 (#1136)"
       }
     ],
     "labels": [
@@ -24889,7 +24928,8 @@ window.BENCHMARK_DATA = {
       "9d72f3f2",
       "b6c8f8a0",
       "081bd651",
-      "753cd961"
+      "753cd961",
+      "92d19445"
     ],
     "datasets": [
       {
@@ -25534,7 +25574,8 @@ window.BENCHMARK_DATA = {
           259.16043017705283,
           257.07899941716875,
           280.53383081299916,
-          267.828190939767
+          267.828190939767,
+          263.1876878371605
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -26048,6 +26089,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -26837,7 +26879,8 @@ window.BENCHMARK_DATA = {
           245.1631186803182,
           236.7126715864454,
           266.4871666908264,
-          239.6877254486084
+          239.6877254486084,
+          240.1942369143168
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -27030,6 +27073,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -31335,6 +31379,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 10:53:10 2026 \u002B0200",
         "message": "fix: let the dashboard pass a run that produced no mutation report (#1137)"
+      },
+      {
+        "sha": "92d1944580383864a5d3f78acc294335ba38b733",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 12:07:55 2026 \u002B0200",
+        "message": "refactor!: replace \u0060AreAllUnique\u0060 with \u0060Elements.AreUnique()\u0060 / \u0060AreNotUnique()\u0060 (#1136)"
       }
     ],
     "labels": [
@@ -31976,7 +32026,8 @@ window.BENCHMARK_DATA = {
       "9d72f3f2",
       "b6c8f8a0",
       "081bd651",
-      "753cd961"
+      "753cd961",
+      "92d19445"
     ],
     "datasets": [
       {
@@ -32621,7 +32672,8 @@ window.BENCHMARK_DATA = {
           508.83996607462564,
           546.8898420969646,
           554.8398835500082,
-          537.2023598988851
+          537.2023598988851,
+          508.41211083730065
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33268,6 +33320,7 @@ window.BENCHMARK_DATA = {
           1128,
           1128,
           1128,
+          1256,
           1256,
           1256,
           1256,
@@ -33924,7 +33977,8 @@ window.BENCHMARK_DATA = {
           1180.9390767904429,
           1293.7900349934896,
           1226.763064956665,
-          1151.7505856922694
+          1151.7505856922694,
+          1204.8881548472814
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34353,6 +34407,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -38422,6 +38477,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 10:53:10 2026 \u002B0200",
         "message": "fix: let the dashboard pass a run that produced no mutation report (#1137)"
+      },
+      {
+        "sha": "92d1944580383864a5d3f78acc294335ba38b733",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 12:07:55 2026 \u002B0200",
+        "message": "refactor!: replace \u0060AreAllUnique\u0060 with \u0060Elements.AreUnique()\u0060 / \u0060AreNotUnique()\u0060 (#1136)"
       }
     ],
     "labels": [
@@ -39063,7 +39124,8 @@ window.BENCHMARK_DATA = {
       "9d72f3f2",
       "b6c8f8a0",
       "081bd651",
-      "753cd961"
+      "753cd961",
+      "92d19445"
     ],
     "datasets": [
       {
@@ -39708,7 +39770,8 @@ window.BENCHMARK_DATA = {
           1894.3747313363212,
           1977.2733469645182,
           1933.8181060791017,
-          1876.5541516817534
+          1876.5541516817534,
+          1962.5544964926582
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -40355,6 +40418,7 @@ window.BENCHMARK_DATA = {
           2624,
           2624,
           2624,
+          2752,
           2752,
           2752,
           2752,
@@ -41011,7 +41075,8 @@ window.BENCHMARK_DATA = {
           1408.0354794722336,
           1303.7993309020997,
           1347.267807143075,
-          1322.0371481577556
+          1322.0371481577556,
+          1309.8268162863594
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -41204,6 +41269,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -45509,6 +45575,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 10:53:10 2026 \u002B0200",
         "message": "fix: let the dashboard pass a run that produced no mutation report (#1137)"
+      },
+      {
+        "sha": "92d1944580383864a5d3f78acc294335ba38b733",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 12:07:55 2026 \u002B0200",
+        "message": "refactor!: replace \u0060AreAllUnique\u0060 with \u0060Elements.AreUnique()\u0060 / \u0060AreNotUnique()\u0060 (#1136)"
       }
     ],
     "labels": [
@@ -46150,7 +46222,8 @@ window.BENCHMARK_DATA = {
       "9d72f3f2",
       "b6c8f8a0",
       "081bd651",
-      "753cd961"
+      "753cd961",
+      "92d19445"
     ],
     "datasets": [
       {
@@ -46795,7 +46868,8 @@ window.BENCHMARK_DATA = {
           2470.5895595550537,
           2547.284422238668,
           2586.085273742676,
-          2469.415817006429
+          2469.415817006429,
+          2470.333965008075
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -47442,6 +47516,7 @@ window.BENCHMARK_DATA = {
           2816,
           2816,
           2816,
+          2944,
           2944,
           2944,
           2944,
@@ -48098,7 +48173,8 @@ window.BENCHMARK_DATA = {
           25044.89990641276,
           25662.806424654445,
           26990.944542439778,
-          20047.28773803711
+          20047.28773803711,
+          26411.143216814315
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -48743,6 +48819,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
