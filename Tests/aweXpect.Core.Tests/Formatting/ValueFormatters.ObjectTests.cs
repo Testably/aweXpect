@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using aweXpect.Core.Metadata;
 
 namespace aweXpect.Core.Tests.Formatting;
 
@@ -213,6 +214,27 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
+		public async Task WhenRegistered_ShouldDisplayOnlyTheRegisteredMembers()
+		{
+			TypeMetadataRegistry.RegisterProperty<RegisteredDummy, int>(nameof(RegisteredDummy.Registered),
+				x => x.Registered);
+			object value = new RegisteredDummy
+			{
+				Registered = 1,
+				NotRegistered = 2,
+			};
+			string expectedResult = "ValueFormatters.ObjectTests.RegisteredDummy { Registered = 1 }";
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value, FormattingOptions.SingleLine);
+			Formatter.Format(sb, value, FormattingOptions.SingleLine);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("a registered type is formatted through its registration instead of by reflection");
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
 		public async Task WithType_ShouldDisplayClassNameOnlyOnce()
 		{
 			object value = new EmptyClass();
@@ -252,6 +274,12 @@ public partial class ValueFormatters
 
 			// ReSharper disable once UnusedAutoPropertyAccessor.Local
 			public int Value { get; set; }
+		}
+
+		private sealed class RegisteredDummy
+		{
+			public int NotRegistered { get; set; }
+			public int Registered { get; set; }
 		}
 
 		private sealed class RecursiveDummy

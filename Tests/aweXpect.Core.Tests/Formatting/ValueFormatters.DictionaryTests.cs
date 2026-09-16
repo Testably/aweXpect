@@ -104,6 +104,22 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
+		public async Task WhenNotADictionaryAndBoxed_ShouldStillFormatKeyValuePairs()
+		{
+			string expectedResult = "[[\"1\"] = 1, [\"2\"] = 2]";
+			object value = Enumerable.Range(1, 2)
+				.Select(i => new KeyValuePair<string, int>(i.ToString(), i));
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("each boxed entry is formatted as a pair, even though the sequence type is no longer known");
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
 		public async Task WhenNull_ShouldUseDefaultNullString()
 		{
 			Dictionary<int, object>? value = null;
