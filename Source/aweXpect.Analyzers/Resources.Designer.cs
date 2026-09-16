@@ -123,7 +123,7 @@ namespace aweXpect.Analyzers {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Directly after &quot;Throws&quot; the expectation continues the sentence &quot;throws a …&quot;, so it must use the nested &quot;With…&quot;/&quot;Without…&quot; vocabulary. The &quot;Has…&quot;/&quot;DoesNotHave…&quot; vocabulary starts a standalone sentence about an exception and belongs after &quot;.Which&quot; (or on an exception subject). Using it directly after &quot;Throws&quot; produces an ungrammatical failure message..
+        ///   Looks up a localized string similar to Directly after &quot;Throws&quot; the expectation continues the sentence &quot;throws a …&quot;, so it must use the nested &quot;With…&quot; vocabulary. The &quot;Has…&quot; vocabulary starts a standalone sentence about an exception and belongs after &quot;.Which&quot; (or on an exception subject). Using it directly after &quot;Throws&quot; produces an ungrammatical failure message..
         /// </summary>
         internal static string aweXpect0003Description {
             get {
@@ -164,6 +164,15 @@ namespace aweXpect.Analyzers {
         internal static string aweXpect0003Title {
             get {
                 return ResourceManager.GetString("aweXpect0003Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Insert &quot;.Which&quot; before &quot;{0}&quot;.
+        /// </summary>
+        internal static string aweXpect0003WithoutTwinMessageFormat {
+            get {
+                return ResourceManager.GetString("aweXpect0003WithoutTwinMessageFormat", resourceCulture);
             }
         }
 

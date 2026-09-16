@@ -77,6 +77,8 @@ public static partial class CSharpCodeFixVerifier<TAnalyzer, TCodeFix>
 			TestCode = source,
 			FixedCode = fixedSource,
 			CodeActionEquivalenceKey = codeActionEquivalenceKey,
+			// Lets the `[|…|]` markup resolve to the first descriptor when an analyzer supports several
+			MarkupOptions = MarkupOptions.UseFirstDescriptor,
 			ReferenceAssemblies = ReferenceAssemblies.Net.Net90,
 			TestState =
 			{

@@ -17,6 +17,13 @@ internal static class Rules
 		CreateDescriptor("aweXpect0003", UsageCategory, DiagnosticSeverity.Warning);
 
 	/// <summary>
+	///     The same rule as <see cref="ThrownExceptionVocabularyRule" /> for a <c>Has…</c> expectation without a
+	///     <c>With…</c> twin, where the message can only suggest inserting <c>.Which</c>.
+	/// </summary>
+	public static readonly DiagnosticDescriptor ThrownExceptionVocabularyWithoutTwinRule =
+		CreateDescriptor("aweXpect0003", UsageCategory, DiagnosticSeverity.Warning, "WithoutTwinMessageFormat");
+
+	/// <summary>
 	///     The nullability warnings that are suppressed after an expectation that guarantees a not-null subject.
 	/// </summary>
 	public static readonly ImmutableArray<SuppressionDescriptor> IsNotNullSuppressions =
@@ -35,11 +42,11 @@ internal static class Rules
 	);
 
 	private static DiagnosticDescriptor CreateDescriptor(string diagnosticId, string category,
-		DiagnosticSeverity severity) => new(
+		DiagnosticSeverity severity, string messageFormatSuffix = "MessageFormat") => new(
 		diagnosticId,
 		new LocalizableResourceString(diagnosticId + "Title",
 			Resources.ResourceManager, typeof(Resources)),
-		new LocalizableResourceString(diagnosticId + "MessageFormat", Resources.ResourceManager,
+		new LocalizableResourceString(diagnosticId + messageFormatSuffix, Resources.ResourceManager,
 			typeof(Resources)),
 		category,
 		severity,

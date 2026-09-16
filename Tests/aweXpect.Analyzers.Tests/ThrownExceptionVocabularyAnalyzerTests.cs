@@ -183,6 +183,52 @@ public class ThrownExceptionVocabularyAnalyzerTests
 		);
 
 	[Fact]
+	public async Task WhenUsingHasHResultWithArgumentOnThrows_ShouldBeFlaggedWithTwin() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        void Act() => throw new Exception("foo");
+
+			        await Expect.That(Act).Throws<Exception>().{|#0:HasHResult|}(42);
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.ThrownExceptionVocabularyRule)
+				.WithLocation(0)
+				.WithArguments("HasHResult", "WithHResult")
+		);
+
+	[Fact]
+	public async Task WhenUsingHasHResultWithoutArgumentOnThrows_ShouldBeFlaggedWithoutTwin() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        void Act() => throw new Exception("foo");
+
+			        await Expect.That(Act).Throws<Exception>().{|#0:HasHResult|}().EqualTo(42);
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.ThrownExceptionVocabularyWithoutTwinRule)
+				.WithLocation(0)
+				.WithArguments("HasHResult")
+		);
+
+	[Fact]
 	public async Task WhenCalledAsStaticMethod_ShouldBeFlaggedOnTheWholeInvocation() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""

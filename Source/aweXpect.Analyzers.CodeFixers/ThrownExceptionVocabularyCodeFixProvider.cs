@@ -10,8 +10,8 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 namespace aweXpect.Analyzers.CodeFixers;
 
 /// <summary>
-///     A code fix provider that replaces a <c>Has…</c>/<c>DoesNotHave…</c> expectation bound directly on a thrown
-///     exception with its <c>With…</c>/<c>Without…</c> twin, or inserts <c>.Which</c> before it.
+///     A code fix provider that replaces a <c>Has…</c> expectation bound directly on a thrown exception with its
+///     <c>With…</c> twin, or inserts <c>.Which</c> before it.
 /// </summary>
 [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ThrownExceptionVocabularyCodeFixProvider))]
 [Shared]

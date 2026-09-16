@@ -47,7 +47,7 @@
 		<value>Replace "Equals" with "IsEqualTo"</value>
 	</data>
 	<data name="aweXpect0003Description" xml:space="preserve">
-		<value>Directly after "Throws" the expectation continues the sentence "throws a …", so it must use the nested "With…"/"Without…" vocabulary. The "Has…"/"DoesNotHave…" vocabulary starts a standalone sentence about an exception and belongs after ".Which" (or on an exception subject). Using it directly after "Throws" produces an ungrammatical failure message.</value>
+		<value>Directly after "Throws" the expectation continues the sentence "throws a …", so it must use the nested "With…" vocabulary. The "Has…" vocabulary starts a standalone sentence about an exception and belongs after ".Which" (or on an exception subject). Using it directly after "Throws" produces an ungrammatical failure message.</value>
 	</data>
 	<data name="aweXpect0003MessageFormat" xml:space="preserve">
 		<value>Replace "{0}" with "{1}" or insert ".Which" before it</value>
@@ -55,9 +55,13 @@
 	<data name="aweXpect0003Title" xml:space="preserve">
 		<value>Use "With…" instead of "Has…" directly after "Throws"</value>
 	</data>
+	<data name="aweXpect0003WithoutTwinMessageFormat" xml:space="preserve">
+		<value>Insert ".Which" before "{0}"</value>
+		<comment>Used when no "With…" twin with the same arguments exists, e.g. for the parameterless "HasHResult()".</comment>
+	</data>
 	<data name="aweXpect0003ReplaceCodeFixTitle" xml:space="preserve">
 		<value>Replace with "{0}"</value>
-		<comment>The title of the code fix that renames to the With…/Without… twin.</comment>
+		<comment>The title of the code fix that renames to the With… twin.</comment>
 	</data>
 	<data name="aweXpect0003InsertWhichCodeFixTitle" xml:space="preserve">
 		<value>Insert ".Which"</value>
