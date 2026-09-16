@@ -41,6 +41,19 @@ subject.OnThresholdReached(new ThresholdReachedEventArgs());
 await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached));
 ```
 
+You can also verify that a recording did not record an event:
+
+```csharp
+IEventRecording<MyClass> recording = subject.Record().Events();
+
+// Perform some action on the subject under test that must stay below the threshold
+
+// Expect that the ThresholdReached event was never triggered
+await Expect.That(recording).DidNotTrigger(nameof(MyClass.ThresholdReached));
+```
+
+This is equivalent to `.Triggered(nameof(MyClass.ThresholdReached)).Never()`.
+
 ## Filtering
 
 You can filter the recorded events based on their parameters.

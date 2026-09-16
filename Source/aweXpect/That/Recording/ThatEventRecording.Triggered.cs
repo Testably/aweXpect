@@ -31,4 +31,29 @@ public static partial class ThatEventRecording
 			quantifier,
 			options);
 	}
+
+	/// <summary>
+	///     Verifies that the subject has not triggered the expected <paramref name="eventName" />.
+	/// </summary>
+	/// <remarks>
+	///     This will stop the recording on the <see cref="IEventRecording{TSubject}" /> subject.
+	/// </remarks>
+	[GuaranteesNotNull]
+	public static EventTriggerResult<TSubject> DidNotTrigger<TSubject>(
+		this IThat<IEventRecording<TSubject>> subject,
+		string eventName)
+		where TSubject : notnull
+	{
+		Quantifier quantifier = new();
+		quantifier.Exactly(0);
+		TriggerEventFilter filter = new();
+		RepeatedCheckOptions options = new();
+		return new EventTriggerResult<TSubject>(
+			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new HaveTriggeredConstraint<TSubject>(it, grammars, eventName, filter, quantifier, options)),
+			subject,
+			filter,
+			quantifier,
+			options);
+	}
 }
