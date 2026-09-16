@@ -278,7 +278,8 @@ registration is compared through it, every other type is reflected over as befor
 member fails loudly instead of passing without verifying anything. The registration also feeds the failure
 message: a registered object is rendered from its registered members, so the message keeps listing them after
 trimming, while an unregistered object is rendered from whatever reflection still finds. Since a registration holds
-public instance members only, a registered object no longer lists its static members or indexers.
+public instance members only, a registered object no longer lists its static members, indexers or write-only
+properties.
 
 Some types cannot be seen by the generator, because it works from the types declared in your source:
 

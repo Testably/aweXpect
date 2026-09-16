@@ -87,16 +87,17 @@ public static partial class ValueFormatters
 			return false;
 		}
 
-		List<EquivalencyMember> members = GetMembers(type);
-		EquivalencyMember keyMember = members.FirstOrDefault(member => member.Name == "Key");
-		EquivalencyMember valueMember = members.FirstOrDefault(member => member.Name == "Value");
-		if (keyMember.GetValue is null || valueMember.GetValue is null)
+		Func<object, object?>? getKey = EquivalencyMembers.FindProperty(type,
+			nameof(KeyValuePair<object, object>.Key), IncludeMembers.Public);
+		Func<object, object?>? getValue = EquivalencyMembers.FindProperty(type,
+			nameof(KeyValuePair<object, object>.Value), IncludeMembers.Public);
+		if (getKey is null || getValue is null)
 		{
 			return false;
 		}
 
-		key = keyMember.GetValue(value);
-		pairValue = valueMember.GetValue(value);
+		key = getKey(value);
+		pairValue = getValue(value);
 		return true;
 	}
 
