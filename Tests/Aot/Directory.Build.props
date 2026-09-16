@@ -1,0 +1,38 @@
+<Project>
+
+	<Import Project="$(MSBuildThisFileDirectory)/../../Directory.Build.props"
+			Condition="Exists('$(MSBuildThisFileDirectory)/../../Directory.Build.props')"/>
+
+	<!--
+	    The smoke tests are console applications published with Native AOT, so that every expectation is exercised
+	    the way a consumer's trimmed application exercises it. They report their own result through the exit code
+	    instead of a test framework, because the test framework itself is part of what is verified.
+	-->
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<OutputType>Exe</OutputType>
+		<PublishAot>true</PublishAot>
+		<InvariantGlobalization>true</InvariantGlobalization>
+		<RootNamespace>aweXpect.Aot</RootNamespace>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<LangVersion>latest</LangVersion>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
+		<IsTestProject>false</IsTestProject>
+		<SonarQubeExclude>true</SonarQubeExclude>
+		<SignAssembly>False</SignAssembly>
+		<NoWarn>701;1702;CA1845</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="$(MSBuildThisFileDirectory)Shared/*.cs" Link="Shared/%(Filename)%(Extension)"/>
+		<ProjectReference Include="$(MSBuildThisFileDirectory)../../Source/aweXpect.Generators/aweXpect.Generators.csproj"
+						  OutputItemType="Analyzer"
+						  ReferenceOutputAssembly="false"/>
+		<ProjectReference Include="$(MSBuildThisFileDirectory)../../Source/aweXpect/aweXpect.csproj"/>
+	</ItemGroup>
+
+</Project>
