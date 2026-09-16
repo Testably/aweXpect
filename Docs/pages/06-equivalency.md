@@ -275,7 +275,9 @@ A source generator that ships with the `aweXpect` package closes this gap: for e
 fields and properties of the argument's type, of the subject's type and of every type reachable through their
 members. The registration runs when your assembly is loaded and needs no configuration. A type that has a
 registration is compared through it, every other type is reflected over as before. A type without any comparable
-member fails loudly instead of passing without verifying anything.
+member fails loudly instead of passing without verifying anything. The registration also feeds the failure
+message: a registered object is rendered from its registered members, so the message keeps listing them after
+trimming, while an unregistered object is rendered from whatever reflection still finds.
 
 Some types cannot be seen by the generator, because it works from the types declared in your source:
 

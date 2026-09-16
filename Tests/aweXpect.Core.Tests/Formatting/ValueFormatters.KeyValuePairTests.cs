@@ -22,6 +22,21 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
+		public async Task WhenBoxed_ShouldFormatKeyAndValue()
+		{
+			string expectedResult = "[\"foo\"] = 42";
+			object value = new KeyValuePair<string, int>("foo", 42);
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("a boxed pair has lost its type arguments, so the members are read through the registry or reflection");
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
 		public async Task WhenKeyAndValueAreNull_ShouldUseDefaultNullString()
 		{
 			string expectedResult = $"[{ValueFormatter.NullString}] = {ValueFormatter.NullString}";

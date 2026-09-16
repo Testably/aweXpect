@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using aweXpect.Core.Helpers;
+using aweXpect.Core.Metadata;
+using aweXpect.Equivalency;
 
 namespace aweXpect.Formatting;
 
@@ -14,6 +17,17 @@ public static partial class ValueFormatters
 		if (value.GetType() == typeof(object))
 		{
 			stringBuilder.Append($"System.Object (HashCode={value.GetHashCode()})");
+		}
+		else if (TryGetKeyValuePair(value, out object? key, out object? pairValue))
+		{
+			FormattingOptions pairOptions = options with
+			{
+				IncludeType = false,
+			};
+			stringBuilder.Append('[');
+			Format(Formatter, stringBuilder, key, pairOptions);
+			stringBuilder.Append("] = ");
+			Format(Formatter, stringBuilder, pairValue, pairOptions);
 		}
 		else if (HasDefaultToStringImplementation(value))
 		{
@@ -33,7 +47,57 @@ public static partial class ValueFormatters
 		}
 	}
 
-	private static MemberInfo[] GetMembers(Type type) => [..type.GetFields(), ..type.GetProperties(),];
+	/// <remarks>
+	///     A registered type is served from the <see cref="TypeMetadataRegistry" />, so that publishing with trimming
+	///     or Native AOT enabled does not remove the members from the message. Every other type is reflected over with
+	///     the default binding flags, as before.
+	/// </remarks>
+	private static List<EquivalencyMember> GetMembers(Type type)
+	{
+		if (TypeMetadataRegistry.Instance.TryGet(type, out TypeMetadataRegistry.TypeMetadata? metadata) &&
+		    !(metadata.Fields.IsEmpty && metadata.Properties.IsEmpty))
+		{
+			return metadata.Fields.Values.Concat(metadata.Properties.Values)
+				.OrderBy(member => member.Order)
+				.Select(member => new EquivalencyMember(member.Name, member.MemberType, member.GetValue))
+				.ToList();
+		}
+
+		return type.GetFields()
+			.Select(field => new EquivalencyMember(field.Name, field.FieldType, subject => field.GetValue(subject)))
+			.Concat(type.GetProperties()
+				.Select(property => new EquivalencyMember(property.Name, property.PropertyType,
+					subject => property.GetValue(subject))))
+			.ToList();
+	}
+
+	/// <remarks>
+	///     A <see cref="KeyValuePair{TKey,TValue}" /> that reaches the formatter boxed has lost its type arguments, so
+	///     its key and value are read like any other member; a pair whose members were removed by the trimmer keeps
+	///     the plain object rendering.
+	/// </remarks>
+	private static bool TryGetKeyValuePair(object value, out object? key, out object? pairValue)
+	{
+		key = null;
+		pairValue = null;
+		Type type = value.GetType();
+		if (!type.IsGenericType || type.GetGenericTypeDefinition() != typeof(KeyValuePair<,>))
+		{
+			return false;
+		}
+
+		List<EquivalencyMember> members = GetMembers(type);
+		EquivalencyMember keyMember = members.FirstOrDefault(member => member.Name == "Key");
+		EquivalencyMember valueMember = members.FirstOrDefault(member => member.Name == "Value");
+		if (keyMember.GetValue is null || valueMember.GetValue is null)
+		{
+			return false;
+		}
+
+		key = keyMember.GetValue(value);
+		pairValue = valueMember.GetValue(value);
+		return true;
+	}
 
 	private static bool HasDefaultToStringImplementation(object value)
 	{
@@ -44,13 +108,13 @@ public static partial class ValueFormatters
 
 	private static void WriteMemberValues(
 		object obj,
-		MemberInfo[] members,
+		List<EquivalencyMember> members,
 		StringBuilder stringBuilder,
 		int indentation,
 		FormattingOptions options,
 		FormattingContext context)
 	{
-		foreach (MemberInfo? member in members.OrderBy(mi => mi.Name, StringComparer.Ordinal))
+		foreach (EquivalencyMember member in members.OrderBy(member => member.Name, StringComparer.Ordinal))
 		{
 			WriteMemberValueTextFor(obj, member, stringBuilder, indentation, options, context);
 			if (options.UseLineBreaks)
@@ -68,7 +132,7 @@ public static partial class ValueFormatters
 
 	private static void WriteMemberValueTextFor(
 		object value,
-		MemberInfo member,
+		EquivalencyMember member,
 		StringBuilder stringBuilder,
 		int indentation,
 		FormattingOptions options,
@@ -78,18 +142,7 @@ public static partial class ValueFormatters
 
 		try
 		{
-			if (member is FieldInfo fi)
-			{
-				formattedValue = Formatter.Format(fi.GetValue(value), options, context);
-			}
-			else if (member is PropertyInfo pi)
-			{
-				formattedValue = Formatter.Format(pi.GetValue(value), options, context);
-			}
-			else
-			{
-				return;
-			}
+			formattedValue = Formatter.Format(member.GetValue(value), options, context);
 		}
 		catch (Exception ex)
 		{
@@ -130,8 +183,8 @@ public static partial class ValueFormatters
 			return;
 		}
 
-		MemberInfo[] members = GetMembers(type);
-		if (members.Length == 0)
+		List<EquivalencyMember> members = GetMembers(type);
+		if (members.Count == 0)
 		{
 			stringBuilder.Append(" { }");
 		}
