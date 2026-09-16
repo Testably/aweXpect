@@ -37,7 +37,6 @@ $DOTNET_PATH test aweXpect.slnx --configuration Release --no-build --framework n
 
 ### Available Fallout Build Targets
 Use `./build.sh --help` to see all targets. Key targets:
-- `ApiChecks` - API compatibility validation
 - `Compile` - Full solution build with versioning
 - `UnitTests` - Execute all unit tests
 - `CodeCoverage` - Unit tests with coverage analysis
@@ -60,11 +59,6 @@ Always test basic functionality after making changes:
 2. **Unit test validation**:
    ```bash
    ./build.sh UnitTests  # Or use fallback with --framework net8.0
-   ```
-
-3. **API compatibility**:
-   ```bash
-   ./build.sh ApiChecks  # Validates public API changes
    ```
 
 ### Testing Framework Support
@@ -144,21 +138,19 @@ public static AndOrResult<TType, TSubject> BeCustom<TType, TSubject>(
 ### Build Integration
 Always validate extensions work with all supported frameworks:
 1. Run framework-specific tests
-2. Ensure API compatibility with `ApiChecks`
-3. Verify performance impact with `Benchmarks`
+2. Verify performance impact with `Benchmarks`
 
 ## Common Development Tasks
 
 ### After Making Code Changes
 1. **Build**: `./build.sh Compile` (3+ minute timeout)
 2. **Test**: `./build.sh UnitTests` (10+ minute timeout) 
-3. **API Check**: `./build.sh ApiChecks` (5+ minute timeout)
-4. **Performance**: `./build.sh Benchmarks` (optional, 10+ minute timeout)
+3. **Performance**: `./build.sh Benchmarks` (optional, 10+ minute timeout)
 
 ### Before Committing
 Always run these validation steps:
 1. Full build and test cycle
-2. API compatibility validation
+2. Public API surface recorded in `Source/*/PublicAPI` (the build fails otherwise)
 3. Ensure all tests pass (12,000+ tests expected)
 
 ### CI/CD Pipeline

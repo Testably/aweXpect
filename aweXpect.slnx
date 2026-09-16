@@ -52,6 +52,7 @@
   </Folder>
   <Folder Name="/_/Source/">
     <File Path="Source/Directory.Build.props" />
+    <File Path="Source/Directory.Build.targets" />
   </Folder>
   <Folder Name="/_/Tests/">
     <File Path="Tests/Directory.Build.props" />
