@@ -99,6 +99,88 @@ public static partial class ThatAsyncEnumerable
 			options);
 	}
 
+	/// <summary>
+	///     Verifies that the collection does not have an item…
+	/// </summary>
+	[GuaranteesNotNull]
+	public static HasItemWithConditionResult<IAsyncEnumerable<TItem>?, TItem> DoesNotHaveItem<TItem>(
+		this IThat<IAsyncEnumerable<TItem>?> subject)
+	{
+		CollectionIndexOptions indexOptions = new();
+		PredicateOptions<TItem> options = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new HasItemWithConditionResult<IAsyncEnumerable<TItem>?, TItem>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new HasItemConstraint<TItem>(expectationBuilder, it, grammars,
+					x => options.Matches(x),
+					options.GetDescription,
+					indexOptions).Invert()),
+			subject,
+			indexOptions,
+			options);
+	}
+
+	/// <summary>
+	///     Verifies that the collection does not have an item matching the <paramref name="predicate" />…
+	/// </summary>
+	[GuaranteesNotNull]
+	public static HasItemResult<IAsyncEnumerable<TItem>?> DoesNotHaveItem<TItem>(
+		this IThat<IAsyncEnumerable<TItem>?> subject, Func<TItem, bool> predicate,
+		[CallerArgumentExpression("predicate")]
+		string doNotPopulateThisValue = "")
+	{
+		CollectionIndexOptions indexOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new HasItemResult<IAsyncEnumerable<TItem>?>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new HasItemConstraint<TItem>(expectationBuilder, it, grammars, predicate,
+					() => doNotPopulateThisValue, indexOptions).Invert()),
+			subject,
+			indexOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the collection does not have the <paramref name="unexpected" /> item…
+	/// </summary>
+	[GuaranteesNotNull]
+	public static ObjectHasItemResult<IAsyncEnumerable<TItem>?, TItem> DoesNotHaveItem<TItem>(
+		this IThat<IAsyncEnumerable<TItem>?> subject, TItem unexpected)
+	{
+		CollectionIndexOptions indexOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		ObjectEqualityOptions<TItem> options = new();
+		return new ObjectHasItemResult<IAsyncEnumerable<TItem>?, TItem>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new AsyncHasItemConstraint<TItem>(expectationBuilder, it, grammars,
+					a => options.AreConsideredEqual(a, unexpected),
+					() => $"{Formatter.Format(unexpected)}{options}",
+					indexOptions).Invert()),
+			subject,
+			indexOptions,
+			options);
+	}
+
+	/// <summary>
+	///     Verifies that the collection does not have the <paramref name="unexpected" /> item…
+	/// </summary>
+	[GuaranteesNotNull]
+	public static StringHasItemResult<IAsyncEnumerable<string?>?> DoesNotHaveItem(
+		this IThat<IAsyncEnumerable<string?>?> subject, string? unexpected)
+	{
+		CollectionIndexOptions indexOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		StringEqualityOptions options = new();
+		return new StringHasItemResult<IAsyncEnumerable<string?>?>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new AsyncHasItemConstraint<string?>(expectationBuilder, it, grammars,
+					a => options.AreConsideredEqual(a, unexpected),
+					() => options.GetExpectation(unexpected, grammars),
+					indexOptions).Invert()),
+			subject,
+			indexOptions,
+			options);
+	}
+
 	private sealed class HasItemConstraint<TItem>(
 		ExpectationBuilder expectationBuilder,
 		string it,
@@ -156,8 +238,9 @@ public static partial class ThatAsyncEnumerable
 
 				_hasIndex = true;
 				_actual = item;
-				Outcome = predicate(item) ? Outcome.Success : Outcome.Failure;
-				if (Outcome == Outcome.Success)
+				bool isMatch = predicate(item);
+				Outcome = isMatch ? Outcome.Success : Outcome.Failure;
+				if (isMatch)
 				{
 					break;
 				}
@@ -204,14 +287,9 @@ public static partial class ThatAsyncEnumerable
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_actual is null)
-			{
-				stringBuilder.ItWasNull(It, Grammars);
-			}
-			else
-			{
-				stringBuilder.Append(It).Append(" did");
-			}
+			stringBuilder.Append(It).Append(" had item ");
+			Formatter.Format(stringBuilder, _actual);
+			stringBuilder.Append(options.Match.GetDescription());
 		}
 	}
 
@@ -276,8 +354,9 @@ public static partial class ThatAsyncEnumerable
 
 				_hasIndex = true;
 				_actual = item;
-				Outcome = await predicate(item) ? Outcome.Success : Outcome.Failure;
-				if (Outcome == Outcome.Success)
+				bool isMatch = await predicate(item);
+				Outcome = isMatch ? Outcome.Success : Outcome.Failure;
+				if (isMatch)
 				{
 					break;
 				}
@@ -324,14 +403,9 @@ public static partial class ThatAsyncEnumerable
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_actual is null)
-			{
-				stringBuilder.ItWasNull(It, Grammars);
-			}
-			else
-			{
-				stringBuilder.Append(It).Append(" did");
-			}
+			stringBuilder.Append(It).Append(" had item ");
+			Formatter.Format(stringBuilder, _actual);
+			stringBuilder.Append(options.Match.GetDescription());
 		}
 	}
 }

@@ -565,6 +565,18 @@ await Expect.That(values).HasItemThat(it => it.IsEqualTo("1st item")).AtIndex(1)
 await Expect.That(values).HasItemThat(it => it.StartsWith("2nd").And.EndsWith("item")); // at any index
 ```
 
+Each of these expectations has a negated counterpart. It is satisfied when the index holds a different item, and also
+when the collection is too short to have an item at that index.
+
+```csharp
+IEnumerable<string> values = ["0th item", "1st item"];
+
+await Expect.That(values).DoesNotHaveItem("2nd item").AtIndex(1);
+await Expect.That(values).DoesNotHaveItem("0th item").AtIndex(4); // no item at index 4
+await Expect.That(values).DoesNotHaveItem().Matching(it => it.StartsWith("2nd")).AtIndex(1);
+await Expect.That(values).DoesNotHaveItemThat(it => it.StartsWith("2nd")).AtIndex(1);
+```
+
 *Note: The same expectation works also for `IAsyncEnumerable<T>`.*
 
 
