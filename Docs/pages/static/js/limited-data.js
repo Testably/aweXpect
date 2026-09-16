@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "f2e2904559de6678b28ded4254a12b3aa7bc20bd",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 15:33:08 2026 \u002B0200",
-        "message": "chore: verify the mutation dashboard upload and drop the concurrency override (#1074)"
-      },
-      {
         "sha": "9547e82c3df44b95f4bc13692f446a537c178588",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:12:13 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:41:47 2026 \u002B0200",
         "message": "feat: add a positional \u0060DidNotTrigger(eventName)\u0060 (#1140)"
+      },
+      {
+        "sha": "aa20367de76d9102d911bf0349edcaf309146b60",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 15:27:18 2026 \u002B0200",
+        "message": "feat!: add \u0060Keys\u0060 and \u0060Values\u0060 navigation for dictionaries and remove the dictionary-specific \u0060AreAllUnique\u0060 (#1134)"
       }
     ],
     "labels": [
-      "f2e29045",
       "9547e82c",
       "6870b4c9",
       "3e81a878",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "1155bcb9",
       "9da1cf49",
       "f39be118",
-      "2694582c"
+      "2694582c",
+      "aa20367d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          188.02120952606202,
           248.97076454162598,
           254.73397379655106,
           259.7866854349772,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           259.6582940541781,
           263.0858057339986,
           183.93454241752625,
-          251.53007752100626
+          251.53007752100626,
+          126.12150863238743
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          192.87963887055716,
           241.61465230354895,
           233.09332772890727,
           245.70672464370728,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           237.14610471044267,
           261.2859146935599,
           192.79404819011688,
-          247.8645476613726
+          247.8645476613726,
+          128.32302194436392
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "f2e2904559de6678b28ded4254a12b3aa7bc20bd",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 15:33:08 2026 \u002B0200",
-        "message": "chore: verify the mutation dashboard upload and drop the concurrency override (#1074)"
-      },
-      {
         "sha": "9547e82c3df44b95f4bc13692f446a537c178588",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:12:13 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:41:47 2026 \u002B0200",
         "message": "feat: add a positional \u0060DidNotTrigger(eventName)\u0060 (#1140)"
+      },
+      {
+        "sha": "aa20367de76d9102d911bf0349edcaf309146b60",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 15:27:18 2026 \u002B0200",
+        "message": "feat!: add \u0060Keys\u0060 and \u0060Values\u0060 navigation for dictionaries and remove the dictionary-specific \u0060AreAllUnique\u0060 (#1134)"
       }
     ],
     "labels": [
-      "f2e29045",
       "9547e82c",
       "6870b4c9",
       "3e81a878",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "1155bcb9",
       "9da1cf49",
       "f39be118",
-      "2694582c"
+      "2694582c",
+      "aa20367d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          225613.10516764323,
           302007.1185021034,
           311579.14092548075,
           317410.8760516827,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           327633.0501302083,
           331048.90040940506,
           230373.07579752605,
-          314467.8298339844
+          314467.8298339844,
+          167075.7402750651
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          335442,
           335444,
           335444,
           335444,
@@ -1066,6 +1065,7 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542084,
+          617976,
           617976,
           617976,
           617976,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1809507.5341796875,
           2722615.3565104166,
           2679827.9291666667,
           2817636.104266827,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2586987.552864583,
           2724957.017708333,
           1782350.6969401042,
-          2348554.0094866073
+          2348554.0094866073,
+          1245822.333705357
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841647,
           4841651,
           4841651,
           4841651,
@@ -1202,6 +1201,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841647,
+          4841647,
           4841647
         ],
         "borderColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "f2e2904559de6678b28ded4254a12b3aa7bc20bd",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 15:33:08 2026 \u002B0200",
-        "message": "chore: verify the mutation dashboard upload and drop the concurrency override (#1074)"
-      },
       {
         "sha": "9547e82c3df44b95f4bc13692f446a537c178588",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:41:47 2026 \u002B0200",
         "message": "feat: add a positional \u0060DidNotTrigger(eventName)\u0060 (#1140)"
+      },
+      {
+        "sha": "aa20367de76d9102d911bf0349edcaf309146b60",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 15:27:18 2026 \u002B0200",
+        "message": "feat!: add \u0060Keys\u0060 and \u0060Values\u0060 navigation for dictionaries and remove the dictionary-specific \u0060AreAllUnique\u0060 (#1134)"
       }
     ],
     "labels": [
-      "f2e29045",
       "9547e82c",
       "6870b4c9",
       "3e81a878",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "1155bcb9",
       "9da1cf49",
       "f39be118",
-      "2694582c"
+      "2694582c",
+      "aa20367d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          372.9074284689767,
           461.8416782787868,
           486.415011201586,
           525.063368661063,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           470.77930974960327,
           477.6969051996867,
           346.825883769989,
-          442.220506631411
+          442.220506631411,
+          230.93623633044106
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1673,7 +1673,7 @@ window.BENCHMARK_DATA = {
           1360,
           1360,
           1360,
-          1360,
+          1368,
           1368,
           1368,
           1368,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          388.7194734641484,
           469.7274462064107,
           482.7898104985555,
           519.8143531163533,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           466.8591782365526,
           527.1061539332072,
           382.2924120766776,
-          491.2416307742779
+          491.2416307742779,
+          254.6541428906577
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "f2e2904559de6678b28ded4254a12b3aa7bc20bd",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 15:33:08 2026 \u002B0200",
-        "message": "chore: verify the mutation dashboard upload and drop the concurrency override (#1074)"
-      },
-      {
         "sha": "9547e82c3df44b95f4bc13692f446a537c178588",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:12:13 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:41:47 2026 \u002B0200",
         "message": "feat: add a positional \u0060DidNotTrigger(eventName)\u0060 (#1140)"
+      },
+      {
+        "sha": "aa20367de76d9102d911bf0349edcaf309146b60",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 15:27:18 2026 \u002B0200",
+        "message": "feat!: add \u0060Keys\u0060 and \u0060Values\u0060 navigation for dictionaries and remove the dictionary-specific \u0060AreAllUnique\u0060 (#1134)"
       }
     ],
     "labels": [
-      "f2e29045",
       "9547e82c",
       "6870b4c9",
       "3e81a878",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "1155bcb9",
       "9da1cf49",
       "f39be118",
-      "2694582c"
+      "2694582c",
+      "aa20367d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          198.9648289510182,
           264.6084016731807,
           263.8104877131326,
           292.5610894203186,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           255.58846728006998,
           273.95314671198526,
           202.72048400243122,
-          262.6667138508388
+          262.6667138508388,
+          131.7098513160433
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          189.33685416834695,
           242.92863861719766,
           240.2802453358968,
           287.0345934232076,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           237.56093287467957,
           258.6540732383728,
           187.199236090978,
-          233.8532139778137
+          233.8532139778137,
+          126.57404637336731
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "f2e2904559de6678b28ded4254a12b3aa7bc20bd",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 15:33:08 2026 \u002B0200",
-        "message": "chore: verify the mutation dashboard upload and drop the concurrency override (#1074)"
-      },
-      {
         "sha": "9547e82c3df44b95f4bc13692f446a537c178588",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:12:13 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:41:47 2026 \u002B0200",
         "message": "feat: add a positional \u0060DidNotTrigger(eventName)\u0060 (#1140)"
+      },
+      {
+        "sha": "aa20367de76d9102d911bf0349edcaf309146b60",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 15:27:18 2026 \u002B0200",
+        "message": "feat!: add \u0060Keys\u0060 and \u0060Values\u0060 navigation for dictionaries and remove the dictionary-specific \u0060AreAllUnique\u0060 (#1134)"
       }
     ],
     "labels": [
-      "f2e29045",
       "9547e82c",
       "6870b4c9",
       "3e81a878",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "1155bcb9",
       "9da1cf49",
       "f39be118",
-      "2694582c"
+      "2694582c",
+      "aa20367d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          384.19529918034874,
           464.54025302614485,
           465.3481043302096,
           468.8646805445353,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           490.89194914499916,
           521.7357479731241,
           403.890355237325,
-          515.2771126202175
+          515.2771126202175,
+          255.7697854408851
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2889,7 +2889,7 @@ window.BENCHMARK_DATA = {
           1128,
           1128,
           1128,
-          1128,
+          1256,
           1256,
           1256,
           1256,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          899.5376797993978,
           1201.658662523542,
           1176.4259724617004,
           1249.799434153239,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1164.362004500169,
           1273.134701792399,
           872.9681192398072,
-          1124.8603125254313
+          1124.8603125254313,
+          614.7207274436951
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "f2e2904559de6678b28ded4254a12b3aa7bc20bd",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 15:33:08 2026 \u002B0200",
-        "message": "chore: verify the mutation dashboard upload and drop the concurrency override (#1074)"
-      },
-      {
         "sha": "9547e82c3df44b95f4bc13692f446a537c178588",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:12:13 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:41:47 2026 \u002B0200",
         "message": "feat: add a positional \u0060DidNotTrigger(eventName)\u0060 (#1140)"
+      },
+      {
+        "sha": "aa20367de76d9102d911bf0349edcaf309146b60",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 15:27:18 2026 \u002B0200",
+        "message": "feat!: add \u0060Keys\u0060 and \u0060Values\u0060 navigation for dictionaries and remove the dictionary-specific \u0060AreAllUnique\u0060 (#1134)"
       }
     ],
     "labels": [
-      "f2e29045",
       "9547e82c",
       "6870b4c9",
       "3e81a878",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "1155bcb9",
       "9da1cf49",
       "f39be118",
-      "2694582c"
+      "2694582c",
+      "aa20367d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1500.4603476206462,
           1929.1881154378254,
           1918.9761902945381,
           1911.5522774287633,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1888.4566846575055,
           2009.3580899919782,
           1449.5176886149816,
-          1882.2657455716815
+          1882.2657455716815,
+          1035.1073854764302
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3497,7 +3497,7 @@ window.BENCHMARK_DATA = {
           2624,
           2624,
           2624,
-          2624,
+          2752,
           2752,
           2752,
           2752,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1016.2394481386457,
           1316.3702767235893,
           1350.3056784409744,
           1294.8320435841879,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1286.7029768625896,
           1399.1628487904866,
           974.7943617502848,
-          1300.85202730619
+          1300.85202730619,
+          684.5522738456726
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "f2e2904559de6678b28ded4254a12b3aa7bc20bd",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 15:33:08 2026 \u002B0200",
-        "message": "chore: verify the mutation dashboard upload and drop the concurrency override (#1074)"
-      },
-      {
         "sha": "9547e82c3df44b95f4bc13692f446a537c178588",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 16:12:13 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:41:47 2026 \u002B0200",
         "message": "feat: add a positional \u0060DidNotTrigger(eventName)\u0060 (#1140)"
+      },
+      {
+        "sha": "aa20367de76d9102d911bf0349edcaf309146b60",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 15:27:18 2026 \u002B0200",
+        "message": "feat!: add \u0060Keys\u0060 and \u0060Values\u0060 navigation for dictionaries and remove the dictionary-specific \u0060AreAllUnique\u0060 (#1134)"
       }
     ],
     "labels": [
-      "f2e29045",
       "9547e82c",
       "6870b4c9",
       "3e81a878",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "1155bcb9",
       "9da1cf49",
       "f39be118",
-      "2694582c"
+      "2694582c",
+      "aa20367d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1951.5280904134115,
           2576.0701917012534,
           2657.3305276234946,
           2543.1785563151043,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2490.8498107910154,
           2551.3759628295898,
           1928.0050836290632,
-          2565.6355715433756
+          2565.6355715433756,
+          1324.0991307667323
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4105,7 +4105,7 @@ window.BENCHMARK_DATA = {
           2816,
           2816,
           2816,
-          2816,
+          2944,
           2944,
           2944,
           2944,
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          15669.362336222332,
           26675.440717424666,
           26724.738989257814,
           27291.032965087892,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           26092.071990966797,
           27594.802510579426,
           15316.923490397136,
-          19356.340165201822
+          19356.340165201822,
+          9916.93911743164
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4200,7 +4200,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33468,
           33471,
           33471,
@@ -4229,6 +4228,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
