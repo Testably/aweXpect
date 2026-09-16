@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "935bb1451af9f36c96bcf2fadc72b77c3de6fb54",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 12 22:57:37 2026 \u002B0200",
-        "message": "fix: display the difference towards \u0060MinValue\u0060 in number failure messages (#1059)"
-      },
-      {
         "sha": "543ef39f7bef756054a2cae06fd19157297f6996",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 07:49:54 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 06:29:35 2026 \u002B0200",
         "message": "fix: claim the project folder files with a pattern that can match them"
+      },
+      {
+        "sha": "a6d5da986a9532802dd7ec1ad57e79c080895150",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 07:43:34 2026 \u002B0200",
+        "message": "fix: tell the slices apart by the mutants they ran"
       }
     ],
     "labels": [
-      "935bb145",
       "543ef39f",
       "65f95731",
       "453a0e57",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "17052f40",
       "debf8049",
       "e730bf95",
-      "65c8528d"
+      "65c8528d",
+      "a6d5da98"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          281.56352847417196,
           249.18366251673018,
           250.8609804471334,
           234.92631273269654,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           250.21984214049118,
           238.01321502832266,
           254.38529607454936,
-          248.4514249165853
+          248.4514249165853,
+          283.4815231959025
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          266.9943772315979,
           246.28094317118328,
           233.7515582016536,
           229.21977038042886,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           246.26655778884887,
           232.07729390689306,
           268.6056815783183,
-          260.14416281382245
+          260.14416281382245,
+          273.63889627456666
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "935bb1451af9f36c96bcf2fadc72b77c3de6fb54",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 12 22:57:37 2026 \u002B0200",
-        "message": "fix: display the difference towards \u0060MinValue\u0060 in number failure messages (#1059)"
-      },
-      {
         "sha": "543ef39f7bef756054a2cae06fd19157297f6996",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 07:49:54 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 06:29:35 2026 \u002B0200",
         "message": "fix: claim the project folder files with a pattern that can match them"
+      },
+      {
+        "sha": "a6d5da986a9532802dd7ec1ad57e79c080895150",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 07:43:34 2026 \u002B0200",
+        "message": "fix: tell the slices apart by the mutants they ran"
       }
     ],
     "labels": [
-      "935bb145",
       "543ef39f",
       "65f95731",
       "453a0e57",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "17052f40",
       "debf8049",
       "e730bf95",
-      "65c8528d"
+      "65c8528d",
+      "a6d5da98"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          325843.86832682294,
           298770.44361979165,
           307137.03560965403,
           248087.43250450722,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           378122.3570963542,
           359753.4371861049,
           336696.07591145835,
-          376971.2715820313
+          376971.2715820313,
+          403607.07361778844
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1031,7 +1031,6 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
           335444,
           335442,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542084,
-          542085
+          542085,
+          542084
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2856284.6182291666,
           2692831.5122395833,
           2645156.8571428573,
           1833769.812109375,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2691490.117745536,
           2656361.561104911,
           2121308.9622395835,
-          2426398.605208333
+          2426398.605208333,
+          2852323.4205729165
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841648,
           4841647,
           4841651,
           4841609,
@@ -1202,6 +1201,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841613,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "935bb1451af9f36c96bcf2fadc72b77c3de6fb54",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 12 22:57:37 2026 \u002B0200",
-        "message": "fix: display the difference towards \u0060MinValue\u0060 in number failure messages (#1059)"
-      },
       {
         "sha": "543ef39f7bef756054a2cae06fd19157297f6996",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 06:29:35 2026 \u002B0200",
         "message": "fix: claim the project folder files with a pattern that can match them"
+      },
+      {
+        "sha": "a6d5da986a9532802dd7ec1ad57e79c080895150",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 07:43:34 2026 \u002B0200",
+        "message": "fix: tell the slices apart by the mutants they ran"
       }
     ],
     "labels": [
-      "935bb145",
       "543ef39f",
       "65f95731",
       "453a0e57",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "17052f40",
       "debf8049",
       "e730bf95",
-      "65c8528d"
+      "65c8528d",
+      "a6d5da98"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          541.9017120997111,
           505.5021213803972,
           481.8990478175027,
           410.0907859802246,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           490.7369747161865,
           430.87276567731584,
           452.197840486254,
-          456.83985471725464
+          456.83985471725464,
+          493.58852710723875
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          570.2607573100498,
           487.66618938446044,
           486.3925545056661,
           429.52131395339967,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           463.4168947660006,
           502.7744050392738,
           512.5203483581543,
-          511.47907301584877
+          511.47907301584877,
+          490.98782704671225
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "935bb1451af9f36c96bcf2fadc72b77c3de6fb54",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 12 22:57:37 2026 \u002B0200",
-        "message": "fix: display the difference towards \u0060MinValue\u0060 in number failure messages (#1059)"
-      },
-      {
         "sha": "543ef39f7bef756054a2cae06fd19157297f6996",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 07:49:54 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 06:29:35 2026 \u002B0200",
         "message": "fix: claim the project folder files with a pattern that can match them"
+      },
+      {
+        "sha": "a6d5da986a9532802dd7ec1ad57e79c080895150",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 07:43:34 2026 \u002B0200",
+        "message": "fix: tell the slices apart by the mutants they ran"
       }
     ],
     "labels": [
-      "935bb145",
       "543ef39f",
       "65f95731",
       "453a0e57",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "17052f40",
       "debf8049",
       "e730bf95",
-      "65c8528d"
+      "65c8528d",
+      "a6d5da98"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          300.1345632870992,
           292.19284489949547,
           258.00959533055624,
           227.71468903223675,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           266.84208323160806,
           248.98065288861594,
           266.4412367502848,
-          260.0524561882019
+          260.0524561882019,
+          273.80011316446155
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          286.254754002889,
           249.63275349934895,
           252.04729822703771,
           226.72246983846028,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           250.7939587434133,
           233.75534197262354,
           274.007928276062,
-          258.13585980733234
+          258.13585980733234,
+          286.9390425682068
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "935bb1451af9f36c96bcf2fadc72b77c3de6fb54",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 12 22:57:37 2026 \u002B0200",
-        "message": "fix: display the difference towards \u0060MinValue\u0060 in number failure messages (#1059)"
-      },
-      {
         "sha": "543ef39f7bef756054a2cae06fd19157297f6996",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 07:49:54 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 06:29:35 2026 \u002B0200",
         "message": "fix: claim the project folder files with a pattern that can match them"
+      },
+      {
+        "sha": "a6d5da986a9532802dd7ec1ad57e79c080895150",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 07:43:34 2026 \u002B0200",
+        "message": "fix: tell the slices apart by the mutants they ran"
       }
     ],
     "labels": [
-      "935bb145",
       "543ef39f",
       "65f95731",
       "453a0e57",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "17052f40",
       "debf8049",
       "e730bf95",
-      "65c8528d"
+      "65c8528d",
+      "a6d5da98"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          544.9427513758342,
           477.30670067242215,
           457.7422562326704,
           376.30130138397215,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           445.87982719285145,
           434.76134182856634,
           398.9302934964498,
-          455.2793807029724
+          455.2793807029724,
+          467.7995653833662
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1334.4067900521416,
           1248.4108057657877,
           1179.4223435719807,
           1027.0105902353923,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1168.7655032231257,
           1126.2487712860107,
           1100.7628861836024,
-          1166.936570576259
+          1166.936570576259,
+          1204.0937852223715
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "935bb1451af9f36c96bcf2fadc72b77c3de6fb54",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 12 22:57:37 2026 \u002B0200",
-        "message": "fix: display the difference towards \u0060MinValue\u0060 in number failure messages (#1059)"
-      },
-      {
         "sha": "543ef39f7bef756054a2cae06fd19157297f6996",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 07:49:54 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 06:29:35 2026 \u002B0200",
         "message": "fix: claim the project folder files with a pattern that can match them"
+      },
+      {
+        "sha": "a6d5da986a9532802dd7ec1ad57e79c080895150",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 07:43:34 2026 \u002B0200",
+        "message": "fix: tell the slices apart by the mutants they ran"
       }
     ],
     "labels": [
-      "935bb145",
       "543ef39f",
       "65f95731",
       "453a0e57",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "17052f40",
       "debf8049",
       "e730bf95",
-      "65c8528d"
+      "65c8528d",
+      "a6d5da98"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2061.384815470378,
           1946.7893300374349,
           1884.0970989227294,
           1273.1568255106608,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1861.6818230946858,
           1841.2285196940104,
           1287.7733272552491,
-          1828.1378362019857
+          1828.1378362019857,
+          1893.4208389009748
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1470.378264290946,
           1270.8310853413172,
           1299.141104037945,
           1170.0875072479248,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1295.5762007395426,
           1253.913455581665,
           1315.0816380182903,
-          1325.6420168876648
+          1325.6420168876648,
+          1280.2460991995674
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "935bb1451af9f36c96bcf2fadc72b77c3de6fb54",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 12 22:57:37 2026 \u002B0200",
-        "message": "fix: display the difference towards \u0060MinValue\u0060 in number failure messages (#1059)"
-      },
-      {
         "sha": "543ef39f7bef756054a2cae06fd19157297f6996",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 07:49:54 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 06:29:35 2026 \u002B0200",
         "message": "fix: claim the project folder files with a pattern that can match them"
+      },
+      {
+        "sha": "a6d5da986a9532802dd7ec1ad57e79c080895150",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 07:43:34 2026 \u002B0200",
+        "message": "fix: tell the slices apart by the mutants they ran"
       }
     ],
     "labels": [
-      "935bb145",
       "543ef39f",
       "65f95731",
       "453a0e57",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "17052f40",
       "debf8049",
       "e730bf95",
-      "65c8528d"
+      "65c8528d",
+      "a6d5da98"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2623.662196840559,
           2618.817142232259,
           2553.6197069803875,
           1675.1993885040283,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2556.625624847412,
           2496.28075000218,
           1838.3150026957194,
-          2415.468625288743
+          2415.468625288743,
+          2482.6679671151296
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27559.373363788312,
           28009.99229867118,
           26467.10194498698,
           15316.124305216472,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           27086.83559526716,
           26457.502580915178,
           16851.12421468099,
-          19935.378450666154
+          19935.378450666154,
+          27317.63968302409
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4195,7 +4195,6 @@ window.BENCHMARK_DATA = {
         "data": [
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4242,6 +4241,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
