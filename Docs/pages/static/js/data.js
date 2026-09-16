@@ -3798,6 +3798,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 21:39:39 2026 \u002B0200",
         "message": "chore: close the same gap for the \u0060aweXpect\u0060 slices"
+      },
+      {
+        "sha": "65c8528d71727dca977d30b9b503849f88ae20a6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 06:29:35 2026 \u002B0200",
+        "message": "fix: claim the project folder files with a pattern that can match them"
       }
     ],
     "labels": [
@@ -4433,7 +4439,8 @@ window.BENCHMARK_DATA = {
       "525e912c",
       "17052f40",
       "debf8049",
-      "e730bf95"
+      "e730bf95",
+      "65c8528d"
     ],
     "datasets": [
       {
@@ -5072,7 +5079,8 @@ window.BENCHMARK_DATA = {
           255.2726117769877,
           250.21984214049118,
           238.01321502832266,
-          254.38529607454936
+          254.38529607454936,
+          248.4514249165853
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5545,6 +5553,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6363,7 +6372,8 @@ window.BENCHMARK_DATA = {
           235.88093944958277,
           246.26655778884887,
           232.07729390689306,
-          268.6056815783183
+          268.6056815783183,
+          260.14416281382245
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6556,6 +6566,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10357,6 +10368,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 21:39:39 2026 \u002B0200",
         "message": "chore: close the same gap for the \u0060aweXpect\u0060 slices"
+      },
+      {
+        "sha": "65c8528d71727dca977d30b9b503849f88ae20a6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 06:29:35 2026 \u002B0200",
+        "message": "fix: claim the project folder files with a pattern that can match them"
       }
     ],
     "labels": [
@@ -10915,7 +10932,8 @@ window.BENCHMARK_DATA = {
       "525e912c",
       "17052f40",
       "debf8049",
-      "e730bf95"
+      "e730bf95",
+      "65c8528d"
     ],
     "datasets": [
       {
@@ -11477,7 +11495,8 @@ window.BENCHMARK_DATA = {
           387609.7756998698,
           378122.3570963542,
           359753.4371861049,
-          336696.07591145835
+          336696.07591145835,
+          376971.2715820313
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12044,7 +12063,8 @@ window.BENCHMARK_DATA = {
           542085,
           542084,
           542085,
-          542084
+          542084,
+          542085
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12614,7 +12634,8 @@ window.BENCHMARK_DATA = {
           2597183.655048077,
           2691490.117745536,
           2656361.561104911,
-          2121308.9622395835
+          2121308.9622395835,
+          2426398.605208333
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13181,7 +13202,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841613
+          4841613,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16993,6 +17015,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 21:39:39 2026 \u002B0200",
         "message": "chore: close the same gap for the \u0060aweXpect\u0060 slices"
+      },
+      {
+        "sha": "65c8528d71727dca977d30b9b503849f88ae20a6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 06:29:35 2026 \u002B0200",
+        "message": "fix: claim the project folder files with a pattern that can match them"
       }
     ],
     "labels": [
@@ -17628,7 +17656,8 @@ window.BENCHMARK_DATA = {
       "525e912c",
       "17052f40",
       "debf8049",
-      "e730bf95"
+      "e730bf95",
+      "65c8528d"
     ],
     "datasets": [
       {
@@ -18267,7 +18296,8 @@ window.BENCHMARK_DATA = {
           454.63850116729736,
           490.7369747161865,
           430.87276567731584,
-          452.197840486254
+          452.197840486254,
+          456.83985471725464
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18740,6 +18770,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1360,
           1360,
           1360,
           1360,
@@ -19558,7 +19589,8 @@ window.BENCHMARK_DATA = {
           470.06133098602294,
           463.4168947660006,
           502.7744050392738,
-          512.5203483581543
+          512.5203483581543,
+          511.47907301584877
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19751,6 +19783,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -24014,6 +24047,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 21:39:39 2026 \u002B0200",
         "message": "chore: close the same gap for the \u0060aweXpect\u0060 slices"
+      },
+      {
+        "sha": "65c8528d71727dca977d30b9b503849f88ae20a6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 06:29:35 2026 \u002B0200",
+        "message": "fix: claim the project folder files with a pattern that can match them"
       }
     ],
     "labels": [
@@ -24649,7 +24688,8 @@ window.BENCHMARK_DATA = {
       "525e912c",
       "17052f40",
       "debf8049",
-      "e730bf95"
+      "e730bf95",
+      "65c8528d"
     ],
     "datasets": [
       {
@@ -25288,7 +25328,8 @@ window.BENCHMARK_DATA = {
           266.18300444285074,
           266.84208323160806,
           248.98065288861594,
-          266.4412367502848
+          266.4412367502848,
+          260.0524561882019
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -25802,6 +25843,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -26579,7 +26621,8 @@ window.BENCHMARK_DATA = {
           258.6352137883504,
           250.7939587434133,
           233.75534197262354,
-          274.007928276062
+          274.007928276062,
+          258.13585980733234
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -26772,6 +26815,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -31035,6 +31079,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 21:39:39 2026 \u002B0200",
         "message": "chore: close the same gap for the \u0060aweXpect\u0060 slices"
+      },
+      {
+        "sha": "65c8528d71727dca977d30b9b503849f88ae20a6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 06:29:35 2026 \u002B0200",
+        "message": "fix: claim the project folder files with a pattern that can match them"
       }
     ],
     "labels": [
@@ -31670,7 +31720,8 @@ window.BENCHMARK_DATA = {
       "525e912c",
       "17052f40",
       "debf8049",
-      "e730bf95"
+      "e730bf95",
+      "65c8528d"
     ],
     "datasets": [
       {
@@ -32309,7 +32360,8 @@ window.BENCHMARK_DATA = {
           451.3546841825758,
           445.87982719285145,
           434.76134182856634,
-          398.9302934964498
+          398.9302934964498,
+          455.2793807029724
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32782,6 +32834,7 @@ window.BENCHMARK_DATA = {
           1136,
           1136,
           1136,
+          1128,
           1128,
           1128,
           1128,
@@ -33600,7 +33653,8 @@ window.BENCHMARK_DATA = {
           1137.5848183949788,
           1168.7655032231257,
           1126.2487712860107,
-          1100.7628861836024
+          1100.7628861836024,
+          1166.936570576259
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34029,6 +34083,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -38056,6 +38111,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 21:39:39 2026 \u002B0200",
         "message": "chore: close the same gap for the \u0060aweXpect\u0060 slices"
+      },
+      {
+        "sha": "65c8528d71727dca977d30b9b503849f88ae20a6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 06:29:35 2026 \u002B0200",
+        "message": "fix: claim the project folder files with a pattern that can match them"
       }
     ],
     "labels": [
@@ -38691,7 +38752,8 @@ window.BENCHMARK_DATA = {
       "525e912c",
       "17052f40",
       "debf8049",
-      "e730bf95"
+      "e730bf95",
+      "65c8528d"
     ],
     "datasets": [
       {
@@ -39330,7 +39392,8 @@ window.BENCHMARK_DATA = {
           1915.4286098480225,
           1861.6818230946858,
           1841.2285196940104,
-          1287.7733272552491
+          1287.7733272552491,
+          1828.1378362019857
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -39803,6 +39866,7 @@ window.BENCHMARK_DATA = {
           2632,
           2632,
           2632,
+          2624,
           2624,
           2624,
           2624,
@@ -40621,7 +40685,8 @@ window.BENCHMARK_DATA = {
           1285.010301208496,
           1295.5762007395426,
           1253.913455581665,
-          1315.0816380182903
+          1315.0816380182903,
+          1325.6420168876648
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40814,6 +40879,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -45077,6 +45143,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 21:39:39 2026 \u002B0200",
         "message": "chore: close the same gap for the \u0060aweXpect\u0060 slices"
+      },
+      {
+        "sha": "65c8528d71727dca977d30b9b503849f88ae20a6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 06:29:35 2026 \u002B0200",
+        "message": "fix: claim the project folder files with a pattern that can match them"
       }
     ],
     "labels": [
@@ -45712,7 +45784,8 @@ window.BENCHMARK_DATA = {
       "525e912c",
       "17052f40",
       "debf8049",
-      "e730bf95"
+      "e730bf95",
+      "65c8528d"
     ],
     "datasets": [
       {
@@ -46351,7 +46424,8 @@ window.BENCHMARK_DATA = {
           2612.7643934396597,
           2556.625624847412,
           2496.28075000218,
-          1838.3150026957194
+          1838.3150026957194,
+          2415.468625288743
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -46824,6 +46898,7 @@ window.BENCHMARK_DATA = {
           2824,
           2824,
           2824,
+          2816,
           2816,
           2816,
           2816,
@@ -47642,7 +47717,8 @@ window.BENCHMARK_DATA = {
           26717.905848185223,
           27086.83559526716,
           26457.502580915178,
-          16851.12421468099
+          16851.12421468099,
+          19935.378450666154
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -48286,7 +48362,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33465
+          33465,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
