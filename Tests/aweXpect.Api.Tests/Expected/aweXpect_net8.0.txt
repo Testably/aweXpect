@@ -487,8 +487,6 @@ namespace aweXpect
     {
         public static aweXpect.Results.AndOrResult<TEnum, aweXpect.Core.IThat<TEnum>> DoesNotHaveFlag<TEnum>(this aweXpect.Core.IThat<TEnum> subject, TEnum? unexpectedFlag)
             where TEnum :  struct, System.Enum { }
-        public static aweXpect.Results.AndOrResult<TEnum, aweXpect.Core.IThat<TEnum>> DoesNotHaveValue<TEnum>(this aweXpect.Core.IThat<TEnum> subject, long? unexpected)
-            where TEnum :  struct, System.Enum { }
         public static aweXpect.Results.AndOrResult<TEnum, aweXpect.Core.IThat<TEnum>> HasFlag<TEnum>(this aweXpect.Core.IThat<TEnum> subject, TEnum? expectedFlag)
             where TEnum :  struct, System.Enum { }
         public static aweXpect.Results.PropertyResult.Long<TEnum> HasValue<TEnum>(this aweXpect.Core.IThat<TEnum> subject)
@@ -1275,9 +1273,6 @@ namespace aweXpect
     {
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TEnum?, aweXpect.Core.IThat<TEnum?>> DoesNotHaveFlag<TEnum>(this aweXpect.Core.IThat<TEnum?> subject, TEnum? unexpectedFlag)
-            where TEnum :  struct, System.Enum { }
-        [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<TEnum?, aweXpect.Core.IThat<TEnum?>> DoesNotHaveValue<TEnum>(this aweXpect.Core.IThat<TEnum?> subject, long? unexpected)
             where TEnum :  struct, System.Enum { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TEnum?, aweXpect.Core.IThat<TEnum?>> HasFlag<TEnum>(this aweXpect.Core.IThat<TEnum?> subject, TEnum? expectedFlag)

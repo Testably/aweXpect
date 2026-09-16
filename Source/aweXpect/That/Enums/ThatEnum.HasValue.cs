@@ -22,13 +22,4 @@ public static partial class ThatEnum
 		long? expected)
 		where TEnum : struct, Enum
 		=> subject.HasValue().EqualTo(expected);
-
-	/// <summary>
-	///     Verifies that the underlying value of the subject is not equal to the <paramref name="unexpected" /> value.
-	/// </summary>
-	public static AndOrResult<TEnum, IThat<TEnum>> DoesNotHaveValue<TEnum>(
-		this IThat<TEnum> subject,
-		long? unexpected)
-		where TEnum : struct, Enum
-		=> subject.HasValue().NotEqualTo(unexpected);
 }

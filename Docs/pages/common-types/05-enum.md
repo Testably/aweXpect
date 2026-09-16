@@ -39,12 +39,13 @@ await Expect.That(Colors.Red).HasValue(1)
 await Expect.That(Colors.Red).HasValue().EqualTo(1)
   .Because("'Red' is 1");
 
-await Expect.That(Colors.Red).DoesNotHaveValue(2)
+await Expect.That(Colors.Red).HasValue().NotEqualTo(2)
   .Because("'Red' is 1");
 ```
 
-The `HasValue()` continuation supports the same comparisons as the other properties: `EqualTo`,
-`NotEqualTo`, `GreaterThan`, `GreaterThanOrEqualTo`, `LessThan`, `LessThanOrEqualTo` and `Between`.
+The `HasValue()` continuation compares the underlying numeric value and supports the same comparisons as the
+other properties: `EqualTo`, `NotEqualTo`, `GreaterThan`, `GreaterThanOrEqualTo`, `LessThan`,
+`LessThanOrEqualTo` and `Between`.
 
 ## Defined
 
