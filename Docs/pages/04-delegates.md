@@ -89,9 +89,16 @@ await Expect.That(Act).Throws().WithMessage("This is my exception text");
 await Expect.That(Act).Throws().WithMessage().NotEqualTo("some other text");
 await Expect.That(Act).Throws().WithMessage().Containing("my exception");
 await Expect.That(Act).Throws().WithMessage().NotContaining("something else");
+await Expect.That(Act).Throws().WithMessage().StartingWith("This is");
+await Expect.That(Act).Throws().WithMessage().NotStartingWith("That was");
+await Expect.That(Act).Throws().WithMessage().EndingWith("exception text");
+await Expect.That(Act).Throws().WithMessage().NotEndingWith("something else");
 ```
 
 `WithMessage(expected)` is the shorthand for `WithMessage().EqualTo(expected)`.
+
+Only `EqualTo` and `NotEqualTo` accept `null`; the other comparisons reject `null` and the empty string, because
+neither is a substring anything could meaningfully be checked against.
 
 You can use the same configuration options as when [comparing strings](/docs/expectations/common-types/string#equality).
 
@@ -143,6 +150,8 @@ void Act() => throw new ArgumentNullException("myParameter");
 await Expect.That(Act).Throws<ArgumentNullException>().WithParamName("myParameter");
 await Expect.That(Act).Throws<ArgumentNullException>().WithParamName().NotEqualTo("otherParameter");
 await Expect.That(Act).Throws<ArgumentNullException>().WithParamName().Containing("Parameter");
+await Expect.That(Act).Throws<ArgumentNullException>().WithParamName().StartingWith("my");
+await Expect.That(Act).Throws<ArgumentNullException>().WithParamName().EndingWith("Parameter");
 ```
 
 `WithParamName(expected)` is the shorthand for `WithParamName().EqualTo(expected)`, so a `null` argument requires the `ParamName` to be `null` as well.

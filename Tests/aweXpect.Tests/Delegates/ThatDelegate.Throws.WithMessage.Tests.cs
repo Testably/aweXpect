@@ -134,6 +134,28 @@ public sealed partial class ThatDelegate
 				}
 			}
 
+			public sealed class EndingWithTests
+			{
+				[Fact]
+				public async Task WhenMessageDoesNotEndWithExpected_ShouldFail()
+				{
+					Action action = () => throw new CustomException("foo and some other text");
+
+					async Task Act()
+						=> await That(action).Throws().WithMessage().EndingWith("foo");
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that action
+						             throws an exception with Message ending with "foo",
+						             but it was "foo and some other text"*
+
+						             Message:
+						             foo and some other text
+						             """).AsWildcard();
+				}
+			}
+
 			public sealed class EqualToTests
 			{
 				[Fact]
@@ -284,6 +306,28 @@ public sealed partial class ThatDelegate
 				}
 			}
 
+			public sealed class NotEndingWithTests
+			{
+				[Fact]
+				public async Task WhenMessageEndsWithUnexpected_ShouldFail()
+				{
+					Action action = () => throw new CustomException("some text before foo");
+
+					async Task Act()
+						=> await That(action).Throws().WithMessage().NotEndingWith("foo");
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that action
+						             throws an exception with Message not ending with "foo",
+						             but it was "some text before foo"
+
+						             Message:
+						             some text before foo
+						             """);
+				}
+			}
+
 			public sealed class NotEqualToTests
 			{
 				[Fact]
@@ -372,6 +416,50 @@ public sealed partial class ThatDelegate
 						=> await That(action).Throws().WithMessage().NotEqualTo(expected);
 
 					await That(Act).DoesNotThrow();
+				}
+			}
+
+			public sealed class NotStartingWithTests
+			{
+				[Fact]
+				public async Task WhenMessageStartsWithUnexpected_ShouldFail()
+				{
+					Action action = () => throw new CustomException("foo and some other text");
+
+					async Task Act()
+						=> await That(action).Throws().WithMessage().NotStartingWith("foo");
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that action
+						             throws an exception with Message not starting with "foo",
+						             but it was "foo and some other text"
+
+						             Message:
+						             foo and some other text
+						             """);
+				}
+			}
+
+			public sealed class StartingWithTests
+			{
+				[Fact]
+				public async Task WhenMessageDoesNotStartWithExpected_ShouldFail()
+				{
+					Action action = () => throw new CustomException("some text before foo");
+
+					async Task Act()
+						=> await That(action).Throws().WithMessage().StartingWith("foo");
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that action
+						             throws an exception with Message starting with "foo",
+						             but it was "some text before foo"*
+
+						             Message:
+						             some text before foo
+						             """).AsWildcard();
 				}
 			}
 
