@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "12db0a0c6aea5d4cf4521fd19ed08b7989c28e83",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 12 22:26:08 2026 \u002B0200",
-        "message": "feat: register the generated test framework adapter via a module initializer (#1054)"
-      },
-      {
         "sha": "935bb1451af9f36c96bcf2fadc72b77c3de6fb54",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 22:57:37 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 21:39:39 2026 \u002B0200",
         "message": "chore: close the same gap for the \u0060aweXpect\u0060 slices"
+      },
+      {
+        "sha": "65c8528d71727dca977d30b9b503849f88ae20a6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 06:29:35 2026 \u002B0200",
+        "message": "fix: claim the project folder files with a pattern that can match them"
       }
     ],
     "labels": [
-      "12db0a0c",
       "935bb145",
       "543ef39f",
       "65f95731",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "525e912c",
       "17052f40",
       "debf8049",
-      "e730bf95"
+      "e730bf95",
+      "65c8528d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          270.29099127451576,
           281.56352847417196,
           249.18366251673018,
           250.8609804471334,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           255.2726117769877,
           250.21984214049118,
           238.01321502832266,
-          254.38529607454936
+          254.38529607454936,
+          248.4514249165853
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          264.55369930267335,
           266.9943772315979,
           246.28094317118328,
           233.7515582016536,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           235.88093944958277,
           246.26655778884887,
           232.07729390689306,
-          268.6056815783183
+          268.6056815783183,
+          260.14416281382245
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "12db0a0c6aea5d4cf4521fd19ed08b7989c28e83",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 12 22:26:08 2026 \u002B0200",
-        "message": "feat: register the generated test framework adapter via a module initializer (#1054)"
-      },
-      {
         "sha": "935bb1451af9f36c96bcf2fadc72b77c3de6fb54",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 22:57:37 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 21:39:39 2026 \u002B0200",
         "message": "chore: close the same gap for the \u0060aweXpect\u0060 slices"
+      },
+      {
+        "sha": "65c8528d71727dca977d30b9b503849f88ae20a6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 06:29:35 2026 \u002B0200",
+        "message": "fix: claim the project folder files with a pattern that can match them"
       }
     ],
     "labels": [
-      "12db0a0c",
       "935bb145",
       "543ef39f",
       "65f95731",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "525e912c",
       "17052f40",
       "debf8049",
-      "e730bf95"
+      "e730bf95",
+      "65c8528d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          338345.6691545759,
           325843.86832682294,
           298770.44361979165,
           307137.03560965403,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           387609.7756998698,
           378122.3570963542,
           359753.4371861049,
-          336696.07591145835
+          336696.07591145835,
+          376971.2715820313
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1032,7 +1032,6 @@ window.BENCHMARK_DATA = {
           335444,
           335444,
           335444,
-          335444,
           335442,
           335444,
           335442,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           542085,
           542084,
           542085,
-          542084
+          542084,
+          542085
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2951527.1751802885,
           2856284.6182291666,
           2692831.5122395833,
           2645156.8571428573,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2597183.655048077,
           2691490.117745536,
           2656361.561104911,
-          2121308.9622395835
+          2121308.9622395835,
+          2426398.605208333
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841648,
           4841647,
           4841651,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841613
+          4841613,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "12db0a0c6aea5d4cf4521fd19ed08b7989c28e83",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 12 22:26:08 2026 \u002B0200",
-        "message": "feat: register the generated test framework adapter via a module initializer (#1054)"
-      },
       {
         "sha": "935bb1451af9f36c96bcf2fadc72b77c3de6fb54",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 21:39:39 2026 \u002B0200",
         "message": "chore: close the same gap for the \u0060aweXpect\u0060 slices"
+      },
+      {
+        "sha": "65c8528d71727dca977d30b9b503849f88ae20a6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 06:29:35 2026 \u002B0200",
+        "message": "fix: claim the project folder files with a pattern that can match them"
       }
     ],
     "labels": [
-      "12db0a0c",
       "935bb145",
       "543ef39f",
       "65f95731",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "525e912c",
       "17052f40",
       "debf8049",
-      "e730bf95"
+      "e730bf95",
+      "65c8528d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          517.3623763402303,
           541.9017120997111,
           505.5021213803972,
           481.8990478175027,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           454.63850116729736,
           490.7369747161865,
           430.87276567731584,
-          452.197840486254
+          452.197840486254,
+          456.83985471725464
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          537.0394381205241,
           570.2607573100498,
           487.66618938446044,
           486.3925545056661,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           470.06133098602294,
           463.4168947660006,
           502.7744050392738,
-          512.5203483581543
+          512.5203483581543,
+          511.47907301584877
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "12db0a0c6aea5d4cf4521fd19ed08b7989c28e83",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 12 22:26:08 2026 \u002B0200",
-        "message": "feat: register the generated test framework adapter via a module initializer (#1054)"
-      },
-      {
         "sha": "935bb1451af9f36c96bcf2fadc72b77c3de6fb54",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 22:57:37 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 21:39:39 2026 \u002B0200",
         "message": "chore: close the same gap for the \u0060aweXpect\u0060 slices"
+      },
+      {
+        "sha": "65c8528d71727dca977d30b9b503849f88ae20a6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 06:29:35 2026 \u002B0200",
+        "message": "fix: claim the project folder files with a pattern that can match them"
       }
     ],
     "labels": [
-      "12db0a0c",
       "935bb145",
       "543ef39f",
       "65f95731",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "525e912c",
       "17052f40",
       "debf8049",
-      "e730bf95"
+      "e730bf95",
+      "65c8528d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          274.451362546285,
           300.1345632870992,
           292.19284489949547,
           258.00959533055624,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           266.18300444285074,
           266.84208323160806,
           248.98065288861594,
-          266.4412367502848
+          266.4412367502848,
+          260.0524561882019
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          270.03851222991943,
           286.254754002889,
           249.63275349934895,
           252.04729822703771,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           258.6352137883504,
           250.7939587434133,
           233.75534197262354,
-          274.007928276062
+          274.007928276062,
+          258.13585980733234
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "12db0a0c6aea5d4cf4521fd19ed08b7989c28e83",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 12 22:26:08 2026 \u002B0200",
-        "message": "feat: register the generated test framework adapter via a module initializer (#1054)"
-      },
-      {
         "sha": "935bb1451af9f36c96bcf2fadc72b77c3de6fb54",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 22:57:37 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 21:39:39 2026 \u002B0200",
         "message": "chore: close the same gap for the \u0060aweXpect\u0060 slices"
+      },
+      {
+        "sha": "65c8528d71727dca977d30b9b503849f88ae20a6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 06:29:35 2026 \u002B0200",
+        "message": "fix: claim the project folder files with a pattern that can match them"
       }
     ],
     "labels": [
-      "12db0a0c",
       "935bb145",
       "543ef39f",
       "65f95731",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "525e912c",
       "17052f40",
       "debf8049",
-      "e730bf95"
+      "e730bf95",
+      "65c8528d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          514.9620515823365,
           544.9427513758342,
           477.30670067242215,
           457.7422562326704,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           451.3546841825758,
           445.87982719285145,
           434.76134182856634,
-          398.9302934964498
+          398.9302934964498,
+          455.2793807029724
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1337.4001406351724,
           1334.4067900521416,
           1248.4108057657877,
           1179.4223435719807,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1137.5848183949788,
           1168.7655032231257,
           1126.2487712860107,
-          1100.7628861836024
+          1100.7628861836024,
+          1166.936570576259
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "12db0a0c6aea5d4cf4521fd19ed08b7989c28e83",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 12 22:26:08 2026 \u002B0200",
-        "message": "feat: register the generated test framework adapter via a module initializer (#1054)"
-      },
-      {
         "sha": "935bb1451af9f36c96bcf2fadc72b77c3de6fb54",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 22:57:37 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 21:39:39 2026 \u002B0200",
         "message": "chore: close the same gap for the \u0060aweXpect\u0060 slices"
+      },
+      {
+        "sha": "65c8528d71727dca977d30b9b503849f88ae20a6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 06:29:35 2026 \u002B0200",
+        "message": "fix: claim the project folder files with a pattern that can match them"
       }
     ],
     "labels": [
-      "12db0a0c",
       "935bb145",
       "543ef39f",
       "65f95731",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "525e912c",
       "17052f40",
       "debf8049",
-      "e730bf95"
+      "e730bf95",
+      "65c8528d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2068.8246877034503,
           2061.384815470378,
           1946.7893300374349,
           1884.0970989227294,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1915.4286098480225,
           1861.6818230946858,
           1841.2285196940104,
-          1287.7733272552491
+          1287.7733272552491,
+          1828.1378362019857
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1426.1770524342855,
           1470.378264290946,
           1270.8310853413172,
           1299.141104037945,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1285.010301208496,
           1295.5762007395426,
           1253.913455581665,
-          1315.0816380182903
+          1315.0816380182903,
+          1325.6420168876648
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "12db0a0c6aea5d4cf4521fd19ed08b7989c28e83",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Sep 12 22:26:08 2026 \u002B0200",
-        "message": "feat: register the generated test framework adapter via a module initializer (#1054)"
-      },
-      {
         "sha": "935bb1451af9f36c96bcf2fadc72b77c3de6fb54",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 12 22:57:37 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 21:39:39 2026 \u002B0200",
         "message": "chore: close the same gap for the \u0060aweXpect\u0060 slices"
+      },
+      {
+        "sha": "65c8528d71727dca977d30b9b503849f88ae20a6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 06:29:35 2026 \u002B0200",
+        "message": "fix: claim the project folder files with a pattern that can match them"
       }
     ],
     "labels": [
-      "12db0a0c",
       "935bb145",
       "543ef39f",
       "65f95731",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "525e912c",
       "17052f40",
       "debf8049",
-      "e730bf95"
+      "e730bf95",
+      "65c8528d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2669.7861605326334,
           2623.662196840559,
           2618.817142232259,
           2553.6197069803875,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2612.7643934396597,
           2556.625624847412,
           2496.28075000218,
-          1838.3150026957194
+          1838.3150026957194,
+          2415.468625288743
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          28076.470477764422,
           27559.373363788312,
           28009.99229867118,
           26467.10194498698,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           26717.905848185223,
           27086.83559526716,
           26457.502580915178,
-          16851.12421468099
+          16851.12421468099,
+          19935.378450666154
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4196,7 +4196,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4242,7 +4241,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33465
+          33465,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
