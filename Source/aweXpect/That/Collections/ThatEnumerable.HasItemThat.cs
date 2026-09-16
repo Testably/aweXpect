@@ -54,6 +54,41 @@ public static partial class ThatEnumerable
 	}
 #endif
 
+	/// <summary>
+	///     Verifies that the collection does not have an item that complies with the <paramref name="expectations" />…
+	/// </summary>
+	[GuaranteesNotNull]
+	public static HasItemResult<IEnumerable<TItem>?> DoesNotHaveItemThat<TItem>(
+		this IThat<IEnumerable<TItem>?> subject, Action<IThatSubject<TItem>> expectations)
+	{
+		CollectionIndexOptions indexOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new HasItemResult<IEnumerable<TItem>?>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new HasItemThatConstraint<TItem>(expectationBuilder, it, grammars, expectations, indexOptions)
+					.Invert()),
+			subject,
+			indexOptions);
+	}
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that the collection does not have an item that complies with the <paramref name="expectations" />…
+	/// </summary>
+	public static HasItemResult<ImmutableArray<TItem>> DoesNotHaveItemThat<TItem>(
+		this IThat<ImmutableArray<TItem>> subject, Action<IThatSubject<TItem>> expectations)
+	{
+		CollectionIndexOptions indexOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new HasItemResult<ImmutableArray<TItem>>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new HasItemThatForEnumerableConstraint<ImmutableArray<TItem>, TItem>(
+					expectationBuilder, it, grammars, expectations, indexOptions).Invert()),
+			subject,
+			indexOptions);
+	}
+#endif
+
 	private sealed class HasItemThatConstraint<TItem> : ConstraintResult.WithNotNullValue<IEnumerable<TItem>?>,
 		IAsyncContextConstraint<IEnumerable<TItem>?>
 	{
@@ -123,7 +158,7 @@ public static partial class ThatEnumerable
 				_actual = item;
 				ConstraintResult isMatch = await _itemExpectationBuilder.IsMetBy(item, context, cancellationToken);
 				Outcome = isMatch.Outcome;
-				if (Outcome == Outcome.Success)
+				if (isMatch.Outcome == Outcome.Success)
 				{
 					break;
 				}
@@ -161,7 +196,11 @@ public static partial class ThatEnumerable
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(_it).Append(" did");
+		{
+			stringBuilder.Append(_it).Append(" had item ");
+			Formatter.Format(stringBuilder, _actual);
+			stringBuilder.Append(_options.Match.GetDescription());
+		}
 	}
 
 #if NET8_0_OR_GREATER
@@ -233,7 +272,7 @@ public static partial class ThatEnumerable
 				_actual = item;
 				ConstraintResult isMatch = await _itemExpectationBuilder.IsMetBy(item, context, cancellationToken);
 				Outcome = isMatch.Outcome;
-				if (Outcome == Outcome.Success)
+				if (isMatch.Outcome == Outcome.Success)
 				{
 					break;
 				}
@@ -271,7 +310,11 @@ public static partial class ThatEnumerable
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(_it).Append(" did");
+		{
+			stringBuilder.Append(_it).Append(" had item ");
+			Formatter.Format(stringBuilder, _actual);
+			stringBuilder.Append(_options.Match.GetDescription());
+		}
 	}
 #endif
 }

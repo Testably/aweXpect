@@ -32,6 +32,23 @@ public static partial class ThatAsyncEnumerable
 			indexOptions);
 	}
 
+	/// <summary>
+	///     Verifies that the collection does not have an item that complies with the <paramref name="expectations" />…
+	/// </summary>
+	[GuaranteesNotNull]
+	public static HasItemResult<IAsyncEnumerable<TItem>?> DoesNotHaveItemThat<TItem>(
+		this IThat<IAsyncEnumerable<TItem>?> subject, Action<IThatSubject<TItem>> expectations)
+	{
+		CollectionIndexOptions indexOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new HasItemResult<IAsyncEnumerable<TItem>?>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new HasItemThatConstraint<TItem>(expectationBuilder, it, grammars, expectations, indexOptions)
+					.Invert()),
+			subject,
+			indexOptions);
+	}
+
 	private sealed class HasItemThatConstraint<TItem> : ConstraintResult.WithNotNullValue<IAsyncEnumerable<TItem>?>,
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
@@ -102,7 +119,7 @@ public static partial class ThatAsyncEnumerable
 				_actual = item;
 				ConstraintResult isMatch = await _itemExpectationBuilder.IsMetBy(item, context, cancellationToken);
 				Outcome = isMatch.Outcome;
-				if (Outcome == Outcome.Success)
+				if (isMatch.Outcome == Outcome.Success)
 				{
 					break;
 				}
@@ -154,14 +171,9 @@ public static partial class ThatAsyncEnumerable
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_actual is null)
-			{
-				stringBuilder.ItWasNull(_it, Grammars);
-			}
-			else
-			{
-				stringBuilder.Append(_it).Append(" did");
-			}
+			stringBuilder.Append(_it).Append(" had item ");
+			Formatter.Format(stringBuilder, _actual);
+			stringBuilder.Append(_options.Match.GetDescription());
 		}
 	}
 }
