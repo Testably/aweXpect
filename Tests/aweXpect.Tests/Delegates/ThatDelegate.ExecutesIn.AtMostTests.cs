@@ -1,6 +1,4 @@
-﻿using System.Threading;
-
-namespace aweXpect.Tests;
+﻿namespace aweXpect.Tests;
 
 public sealed partial class ThatDelegate
 {
@@ -22,7 +20,7 @@ public sealed partial class ThatDelegate
 			[Fact]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				Action @delegate = () => { Thread.Sleep(50); };
+				Action @delegate = () => Task.Delay(50.Milliseconds()).Wait();
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds());

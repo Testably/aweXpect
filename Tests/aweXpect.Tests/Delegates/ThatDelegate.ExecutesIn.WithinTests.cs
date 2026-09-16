@@ -1,6 +1,4 @@
-﻿using System.Threading;
-
-namespace aweXpect.Tests;
+﻿namespace aweXpect.Tests;
 
 public sealed partial class ThatDelegate
 {
@@ -11,7 +9,7 @@ public sealed partial class ThatDelegate
 			[Fact]
 			public async Task WhenDelegateIsTooFast_ShouldFail()
 			{
-				Action @delegate = () => { Thread.Sleep(5); };
+				Action @delegate = () => Task.Delay(5.Milliseconds()).Wait();
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn(5000.Milliseconds()).Within(1123.Milliseconds());
@@ -27,7 +25,7 @@ public sealed partial class ThatDelegate
 			[Fact]
 			public async Task WhenDelegateTakesLongEnough_ShouldSucceed()
 			{
-				Action @delegate = () => { Thread.Sleep(50); };
+				Action @delegate = () => Task.Delay(50.Milliseconds()).Wait();
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn(50.Milliseconds()).Within(500.Milliseconds());
@@ -38,7 +36,7 @@ public sealed partial class ThatDelegate
 			[Fact]
 			public async Task WhenDelegateTakesTooLong_ShouldFail()
 			{
-				Action @delegate = () => { Thread.Sleep(50); };
+				Action @delegate = () => Task.Delay(50.Milliseconds()).Wait();
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn(10.Milliseconds()).Within(5.Milliseconds());
