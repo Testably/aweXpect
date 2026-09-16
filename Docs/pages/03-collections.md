@@ -96,7 +96,7 @@ This tolerance can be applied to `double`, `float`, `decimal` and `DateTime`.
 
 *Note: The same expectation works also for `IAsyncEnumerable<T>`.*
 
-## All be unique
+## Unique dictionary values
 
 For dictionaries, you can verify that all values are unique. The keys are completely ignored, as they are unique by
 design:
