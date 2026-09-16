@@ -179,3 +179,34 @@ await Expect.That(recording).DidNotTriggerPropertyChanged()
 await Expect.That(recording).DidNotTriggerPropertyChangedFor(x => x.MyProperty)
   .Because("it should not trigger for the 'MyProperty' property name");
 ```
+
+## Trimming and Native AOT
+
+A recording has to know the events of its subject and attach a handler to each of them. Reflection provides both
+under the JIT, but publishing with trimming or Native AOT enabled removes events that are only reached reflectively,
+and the handler for an event with value-type parameters cannot be bound without runtime code generation.
+
+The source generator that ships with the `aweXpect` package closes this gap: for every call site of `Record()`, it
+registers the public events of the subject's static type together with a handler factory, so the recording neither
+looks the events up nor binds a handler reflectively. The registration runs when your assembly is loaded and needs no
+configuration. A subject whose runtime type has a registration is recorded through it, every other subject is
+reflected over as before, and a registered handler takes any number of parameters.
+
+The generator works from the declared type, so the same limits apply as for
+[equivalency](/docs/expectations/equivalency#trimming-and-native-aot):
+
+- a subject declared as an interface, an abstract class or a base type only reveals the declared type; the recording
+  looks up the runtime type of the instance, which stays on reflection,
+- a `private`, `protected` or `file`-local type cannot be referenced by generated code and is reflected over,
+- a subject that reaches `Record()` through your own extension method is only registered if the extension's parameter
+  or type parameter carries `[RequiresEventMetadata]`,
+- an event whose handler returns a value or takes a parameter by reference cannot be recorded by the reflective path
+  either, and keeps its type on reflection,
+- a `struct` subject is never registered, because a handler added to a boxed copy never sees the caller's value.
+
+A type the generator did not see can be named explicitly with `[assembly: GenerateMetadata(typeof(MyClass))]`, which
+registers its members and its events.
+
+Under trimming, a recording of a subject without registration cannot tell a missing event from one the trimmer
+removed, so the error for an unknown event name, and for an event that a recording of all events did not find, asks
+you to root the type.

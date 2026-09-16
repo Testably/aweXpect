@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using aweXpect.Core.Helpers;
+using aweXpect.Core.Metadata;
 
 namespace aweXpect.Recording;
 
@@ -30,6 +31,24 @@ internal sealed class EventRecorder(string eventName) : IDisposable
 		_ms = null;
 #endif
 		_onDispose?.Invoke();
+	}
+
+	/// <summary>
+	///     Attaches to a registered event, whose handler is created by the registration instead of being bound
+	///     reflectively.
+	/// </summary>
+	public void Attach(object subject, TypeMetadataRegistry.RegisteredEvent @event)
+	{
+		Delegate handler = @event.CreateHandler(parameters =>
+		{
+			_eventQueue.Enqueue(new RecordedEvent(eventName, parameters));
+			NotifyRecordedEvent();
+		});
+		@event.AddHandler(subject, handler);
+
+		// The subject is held on purpose: its event already holds the handler and thereby this recorder, so nothing
+		// leaks, whereas a static event would otherwise keep the handler after the subject was collected.
+		_onDispose = () => @event.RemoveHandler(subject, handler);
 	}
 
 	public void Attach(WeakReference subject, EventInfo eventInfo)

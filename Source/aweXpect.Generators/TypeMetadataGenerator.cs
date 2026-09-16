@@ -1,4 +1,6 @@
+using System.Collections.Concurrent;
 using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -9,17 +11,21 @@ namespace aweXpect.Generators;
 
 /// <summary>
 ///     The <see cref="IIncrementalGenerator" /> that registers the members of every type reaching an equivalency
-///     comparison in <c>aweXpect.Core.Metadata.TypeMetadataRegistry</c>.
+///     comparison and the events of every type reaching an event recording in
+///     <c>aweXpect.Core.Metadata.TypeMetadataRegistry</c>.
 /// </summary>
 /// <remarks>
 ///     A call site whose parameter or type parameter carries <c>RequiresMemberMetadataAttribute</c> seeds the static
-///     type of its argument, and the walk follows the declared members transitively. Without the registration, the
-///     comparison has to reflect over the members, which publishing with trimming or Native AOT enabled removes.
+///     type of its argument, and the walk follows the declared members transitively. One carrying
+///     <c>RequiresEventMetadataAttribute</c> seeds the events of the static type. Without the registration, the
+///     comparison or recording has to reflect over the type, which publishing with trimming or Native AOT enabled
+///     removes.
 /// </remarks>
 [Generator]
 public class TypeMetadataGenerator : IIncrementalGenerator
 {
 	private const string MarkerAttribute = "aweXpect.Core.Metadata.RequiresMemberMetadataAttribute";
+	private const string EventMarkerAttribute = "aweXpect.Core.Metadata.RequiresEventMetadataAttribute";
 	private const string GenerateAttribute = "aweXpect.Core.Metadata.GenerateMetadataAttribute";
 	private const string Registry = "global::aweXpect.Core.Metadata.TypeMetadataRegistry";
 
@@ -29,7 +35,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 	private static readonly DiagnosticDescriptor NothingToRegister = new(
 		"aweXpect2001",
 		"The type yields no metadata registration",
-		"'{0}' yields no metadata registration, because it is compared by value, enumerated, abstract, an open generic, not accessible from this assembly, has no public instance members, or has a member the generated code cannot name; it stays on the reflection path",
+		"'{0}' yields no metadata registration, because it is compared by value, enumerated, abstract, an open generic, not accessible from this assembly, has neither public instance members nor public events, or has a member or event the generated code cannot name; it stays on the reflection path",
 		"aweXpect.Generators",
 		DiagnosticSeverity.Warning,
 		true);
@@ -68,35 +74,9 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		}
 
 		IMethodSymbol constructed = method.GetConstructedReducedFrom() ?? method;
-		IMethodSymbol definition = constructed.OriginalDefinition;
-		int reductionOffset = method.ReducedFrom is null ? 0 : 1;
 		MetadataWalker walker = new(context.SemanticModel.Compilation, cancellationToken);
-		bool hasMarkedParameter = false;
-
-		for (int i = 0; i < definition.Parameters.Length; i++)
-		{
-			if (!IsMarked(definition.Parameters[i]))
-			{
-				continue;
-			}
-
-			hasMarkedParameter = true;
-			ExpressionSyntax? argument = FindArgument(invocation, constructed.Parameters[i], i - reductionOffset);
-			if (argument is not null)
-			{
-				walker.Seed(context.SemanticModel.GetTypeInfo(argument, cancellationToken).Type);
-			}
-
-			walker.Seed(constructed.Parameters[i].Type);
-		}
-
-		for (int i = 0; i < definition.TypeParameters.Length; i++)
-		{
-			if (IsMarked(definition.TypeParameters[i]))
-			{
-				walker.Seed(constructed.TypeArguments[i]);
-			}
-		}
+		bool hasMarkedParameter = SeedArguments(context, invocation, walker, method, constructed, cancellationToken);
+		SeedTypeArguments(walker, constructed);
 
 		if (hasMarkedParameter && GetReceiverType(method, constructed) is INamedTypeSymbol { IsGenericType: true, } receiver)
 		{
@@ -107,6 +87,62 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		}
 
 		return walker.Registrations;
+	}
+
+	/// <summary>
+	///     Seeds the walk from every marked parameter and returns whether one carries the member marker.
+	/// </summary>
+	private static bool SeedArguments(GeneratorSyntaxContext context, InvocationExpressionSyntax invocation,
+		MetadataWalker walker, IMethodSymbol method, IMethodSymbol constructed, CancellationToken cancellationToken)
+	{
+		IMethodSymbol definition = constructed.OriginalDefinition;
+		int reductionOffset = method.ReducedFrom is null ? 0 : 1;
+		bool hasMarkedParameter = false;
+		for (int i = 0; i < definition.Parameters.Length; i++)
+		{
+			bool requiresMembers = IsMarked(definition.Parameters[i], MarkerAttribute);
+			bool requiresEvents = IsMarked(definition.Parameters[i], EventMarkerAttribute);
+			if (!requiresMembers && !requiresEvents)
+			{
+				continue;
+			}
+
+			ExpressionSyntax? argument = FindArgument(invocation, constructed.Parameters[i], i - reductionOffset);
+			ITypeSymbol? argumentType = argument is null
+				? null
+				: context.SemanticModel.GetTypeInfo(argument, cancellationToken).Type;
+			if (requiresMembers)
+			{
+				hasMarkedParameter = true;
+				walker.Seed(argumentType);
+				walker.Seed(constructed.Parameters[i].Type);
+			}
+
+			if (requiresEvents)
+			{
+				walker.SeedEvents(argumentType);
+				walker.SeedEvents(constructed.Parameters[i].Type);
+			}
+		}
+
+		return hasMarkedParameter;
+	}
+
+	private static void SeedTypeArguments(MetadataWalker walker, IMethodSymbol constructed)
+	{
+		IMethodSymbol definition = constructed.OriginalDefinition;
+		for (int i = 0; i < definition.TypeParameters.Length; i++)
+		{
+			if (IsMarked(definition.TypeParameters[i], MarkerAttribute))
+			{
+				walker.Seed(constructed.TypeArguments[i]);
+			}
+
+			if (IsMarked(definition.TypeParameters[i], EventMarkerAttribute))
+			{
+				walker.SeedEvents(constructed.TypeArguments[i]);
+			}
+		}
 	}
 
 	/// <remarks>
@@ -157,13 +193,14 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			    attribute.ConstructorArguments[0].Value is ITypeSymbol type)
 			{
 				walker.Seed(type);
+				walker.SeedEvents(type);
 				named.Add((type, attribute));
 			}
 		}
 
 		ImmutableArray<TypeRegistration> registrations = walker.Registrations;
 		ImmutableArray<UnregisteredType> unregistered = named
-			.Where(x => !registrations.Any(r => r.Key == SeedKey(x.Type)))
+			.Where(x => !registrations.Any(r => r.Key == SeedKey(x.Type) || r.Key == EventsKey(SeedKey(x.Type))))
 			.Select(x => UnregisteredType.Create(x.Type, x.Attribute))
 			.ToImmutableArray();
 		return new AssemblyRegistrations(new EquatableArray<TypeRegistration>(registrations),
@@ -195,10 +232,18 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		}
 	}
 
-	private static bool IsMarked(ISymbol symbol)
+	private static bool IsMarked(ISymbol symbol, string attribute)
 		=> symbol.GetAttributes().Any(x
-			=> x.AttributeClass?.Name == "RequiresMemberMetadataAttribute" &&
-			   x.AttributeClass.ToDisplayString() == MarkerAttribute);
+			=> x.AttributeClass is { } attributeClass &&
+			   attribute.EndsWith(attributeClass.Name, StringComparison.Ordinal) &&
+			   attributeClass.ToDisplayString() == attribute);
+
+	/// <remarks>
+	///     The events of a type are registered separately from its members, because a recording and a comparison seed
+	///     the walk independently, so the two registrations of one type must not collapse into each other.
+	/// </remarks>
+	private static string EventsKey(string typeName)
+		=> "events of " + typeName;
 
 	/// <remarks>
 	///     Registering against an older aweXpect.Core would not compile, so anything but a matching registry
@@ -264,11 +309,12 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		                internal static class TypeMetadataRegistration
 		                {
 		                	/// <summary>
-		                	///     Registers the members of the types that reach an equivalency comparison when the assembly is loaded.
+		                	///     Registers the members of the types that reach an equivalency comparison and the events of the types
+		                	///     that reach an event recording when the assembly is loaded.
 		                	/// </summary>
 		                	/// <remarks>
-		                	///     Without this registration, the members could only be found by reflection, which fails when the
-		                	///     application is published with trimming or Native AOT enabled.
+		                	///     Without this registration, the members and events could only be found by reflection, which fails
+		                	///     when the application is published with trimming or Native AOT enabled.
 		                	/// </remarks>
 		                	[System.Runtime.CompilerServices.ModuleInitializer]
 		                	internal static void Register()
@@ -345,6 +391,21 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 
 	private readonly record struct Member(ISymbol Symbol, string Name, ITypeSymbol Type, bool IsField);
 
+	/// <remarks>
+	///     Every call site walks with its own <see cref="MetadataWalker" />, but a compilation that imports every member
+	///     only needs to exist once per input compilation, so it is shared and dies with the compilation it was made for.
+	/// </remarks>
+	private static readonly ConditionalWeakTable<Compilation, AllImport> AllImports = new();
+
+	private sealed class AllImport(Compilation compilation)
+	{
+		public Compilation Compilation { get; } =
+			compilation.WithOptions(compilation.Options.WithMetadataImportOptions(MetadataImportOptions.All));
+
+		public ConcurrentDictionary<IAssemblySymbol, IAssemblySymbol?> Assemblies { get; } =
+			new(SymbolEqualityComparer.Default);
+	}
+
 	/// <summary>
 	///     Walks a type graph the way the equivalency comparison does, and collects a registration for every type
 	///     whose members it would compare.
@@ -356,7 +417,11 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 
 		private readonly HashSet<ITypeSymbol> _visited = new(SymbolEqualityComparer.Default);
 
+		private readonly HashSet<ITypeSymbol> _visitedEvents = new(SymbolEqualityComparer.Default);
+
 		private readonly Dictionary<IAssemblySymbol, bool> _isGlobal = new(SymbolEqualityComparer.Default);
+
+		private readonly Dictionary<INamedTypeSymbol, bool> _isUnambiguous = new(SymbolEqualityComparer.Default);
 
 		public ImmutableArray<TypeRegistration> Registrations => _registrations.ToImmutable();
 
@@ -421,6 +486,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			List<string> diagnosticIds = DiagnosticIds(type, members)
 				.Distinct().OrderBy(x => x, StringComparer.Ordinal).ToList();
 			if (members.Count == 0 || type.IsAbstract || type.IsStatic || !IsReferenceable(type) ||
+			    HasUnknownBase(type) ||
 			    members.Any(member => IsUnreferenceable(member) || !CanBeMemberType(member.Type) ||
 			                          !SyntaxFacts.IsValidIdentifier(member.Name) ||
 			                          !IsReferenceable(member.Type) ||
@@ -436,6 +502,115 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				_registrations.Add(new TypeRegistration(type.ToDisplayString(TypeFormat), source,
 					string.Join(",", diagnosticIds)));
 			}
+		}
+
+		/// <summary>
+		///     Registers the events of the <paramref name="type" /> the way <c>Type.GetEvents()</c> would return them.
+		/// </summary>
+		/// <remarks>
+		///     The recording looks the runtime type of its subject up, so an abstract class or an interface, which is
+		///     never the runtime type, yields nothing. A struct is skipped, because a handler added to a boxed copy
+		///     never sees the events of the caller's value.
+		/// </remarks>
+		public void SeedEvents(ITypeSymbol? type)
+		{
+			cancellationToken.ThrowIfCancellationRequested();
+			if (type is not INamedTypeSymbol { TypeKind: TypeKind.Class, IsAbstract: false, IsStatic: false, } named ||
+			    !IsWalkable(named) || !_visitedEvents.Add(named) || ContainsTypeParameter(named) ||
+			    !IsNameable(named) || !IsReferenceable(named) || HasUnknownBase(named))
+			{
+				return;
+			}
+
+			List<IEventSymbol> events = CollectEvents(named);
+			List<string> diagnosticIds = DiagnosticIds(events
+					.SelectMany(x => new ISymbol?[] { x, x.AddMethod, x.RemoveMethod, })
+					.Concat(events.SelectMany(x => TypeSymbols(x.Type)))
+					.Concat(events.SelectMany(x => TypeSymbols(x.ContainingType)))
+					.Concat(TypeSymbols(named)))
+				.Distinct().OrderBy(x => x, StringComparer.Ordinal).ToList();
+			if (events.Count == 0 || !events.All(CanBeRecorded) || !diagnosticIds.All(IsDiagnosticId))
+			{
+				return;
+			}
+
+			_registrations.Add(new TypeRegistration(EventsKey(named.ToDisplayString(TypeFormat)),
+				EmitEventRegistration(named, events), string.Join(",", diagnosticIds)));
+		}
+
+		/// <remarks>
+		///     Mirrors <c>Type.GetEvents()</c>, which returns public events hidden by name only: a base event is dropped
+		///     when a derived type declares any event of the same name, unless that declaration is private and sits on
+		///     a base of the reflected type, because private members of a base are never considered. Static events are
+		///     returned for the reflected type only, because the flags do not flatten the hierarchy.
+		/// </remarks>
+		private List<IEventSymbol> CollectEvents(INamedTypeSymbol type)
+		{
+			HashSet<string> names = new(StringComparer.Ordinal);
+			List<IEventSymbol> events = [];
+			for (INamedTypeSymbol? current = type;
+			     current is not null && current.SpecialType != SpecialType.System_Object;
+			     current = current.BaseType)
+			{
+				bool isInherited = !SymbolEqualityComparer.Default.Equals(current, type);
+				foreach (IEventSymbol @event in current.GetMembers().OfType<IEventSymbol>())
+				{
+					if (!names.Contains(@event.Name) && @event.DeclaredAccessibility == Accessibility.Public &&
+					    !(isInherited && @event.IsStatic))
+					{
+						events.Add(@event);
+					}
+				}
+
+				names.UnionWith(DeclaredMembers(current).OfType<IEventSymbol>()
+					.Where(@event => Hides(@event, current, type))
+					.Select(@event => @event.Name));
+			}
+
+			return events;
+		}
+
+		/// <remarks>
+		///     The generated handler is a lambda that boxes the arguments of the event, so it can take any number of
+		///     parameters of any type that can be boxed. A parameter passed by reference cannot be captured that way,
+		///     and a handler that returns a value cannot be bound by the reflective fallback either, so such an event
+		///     keeps its owner on the reflection path.
+		/// </remarks>
+		private bool CanBeRecorded(IEventSymbol @event)
+			=> SyntaxFacts.IsValidIdentifier(@event.Name) &&
+			   !IsUnreferenceable(@event) &&
+			   (@event.AddMethod is null || !IsUnreferenceable(@event.AddMethod)) &&
+			   (@event.RemoveMethod is null || !IsUnreferenceable(@event.RemoveMethod)) &&
+			   @event.Type is INamedTypeSymbol
+			   {
+				   TypeKind: TypeKind.Delegate, DelegateInvokeMethod: { ReturnsVoid: true, } invoke,
+			   } handler &&
+			   !ContainsTypeParameter(handler) && IsReferenceable(handler) &&
+			   IsReferenceable(@event.ContainingType) &&
+			   invoke.Parameters.All(parameter => parameter.RefKind == RefKind.None &&
+			                                      CanBeMemberType(parameter.Type) && IsReferenceable(parameter.Type));
+
+		private static string EmitEventRegistration(INamedTypeSymbol type, List<IEventSymbol> events)
+		{
+			StringBuilder sb = new();
+			string typeName = type.ToDisplayString(TypeFormat);
+			foreach (IEventSymbol @event in events)
+			{
+				string handler = @event.Type.ToDisplayString(TypeFormat);
+				int count = ((INamedTypeSymbol)@event.Type).DelegateInvokeMethod!.Parameters.Length;
+				string parameters = string.Join(", ", Enumerable.Range(1, count).Select(i => "arg" + i));
+				string arguments = string.Concat(Enumerable.Range(1, count).Select(i => "arg" + i + ", "));
+				string access = (@event.IsStatic ? typeName : Receiver(type, @event.ContainingType)) + "." +
+				                Identifier(@event.Name);
+				sb.Append("\t\t").Append(Registry).Append(".RegisterEvent<").Append(typeName).Append(">(\"")
+					.Append(@event.Name).AppendLine("\",")
+					.Append("\t\t\tcallback => new ").Append(handler).Append("((").Append(parameters)
+					.Append(") => callback(new object[] { ").Append(arguments).AppendLine("})),")
+					.Append("\t\t\t(o, h) => ").Append(access).Append(" += (").Append(handler).AppendLine(")h,")
+					.Append("\t\t\t(o, h) => ").Append(access).Append(" -= (").Append(handler).AppendLine(")h);");
+			}
+
+			return sb.ToString();
 		}
 
 		/// <remarks>
@@ -454,7 +629,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		///     their accessors take arguments. Fields and properties are tracked separately, because a field may hide
 		///     a property of the same name and reflection compares both.
 		/// </remarks>
-		private static List<Member> CollectMembers(INamedTypeSymbol type)
+		private List<Member> CollectMembers(INamedTypeSymbol type)
 		{
 			HashSet<string> fieldNames = new(StringComparer.Ordinal);
 			HashSet<string> propertyNames = new(StringComparer.Ordinal);
@@ -464,44 +639,131 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			     current is not null && current.SpecialType != SpecialType.System_Object;
 			     current = current.BaseType)
 			{
-				foreach (ISymbol symbol in current.GetMembers())
-				{
-					Member? member = symbol switch
-					{
-						IFieldSymbol field when IsComparedField(field) && fieldNames.Add(field.Name)
-							=> new Member(field, field.Name, field.Type, true),
-						IPropertySymbol { IsStatic: false, IsIndexer: false, } property
-							when Hides(property, current, type, propertySignatures) && IsComparedProperty(property) &&
-							     propertyNames.Add(property.Name)
-							=> new Member(property, property.Name, property.Type, false),
-						_ => null,
-					};
-					if (member is not null)
-					{
-						members.Add(member.Value);
-					}
-				}
+				members.AddRange(current.GetMembers()
+					.Select(symbol => ToMember(symbol, fieldNames, propertyNames, propertySignatures))
+					.OfType<Member>());
+				propertySignatures.UnionWith(DeclaredMembers(current).OfType<IPropertySymbol>()
+					.Where(property => property is { IsStatic: false, IsIndexer: false, } &&
+					                   Hides(property, current, type))
+					.Select(Signature));
 			}
 
 			return members;
 		}
 
 		/// <remarks>
-		///     The runtime drops a base property that a derived declaration hides by name and type, unless the hiding
-		///     declaration is private and sits on a base of the reflected type, because private members of a base are
-		///     never returned. So a private <see langword="new" /> property only hides on the walked type itself.
+		///     The name sets record what was collected so far, so a member of the same name on a base type is
+		///     dropped, and the signatures record what hides a base property, whether collected or not.
 		/// </remarks>
-		private static bool Hides(IPropertySymbol property, INamedTypeSymbol declaring, INamedTypeSymbol walked,
-			HashSet<string> signatures)
-		{
-			if (property.DeclaredAccessibility == Accessibility.Private &&
-			    !SymbolEqualityComparer.Default.Equals(declaring, walked))
+		private static Member? ToMember(ISymbol symbol, HashSet<string> fieldNames, HashSet<string> propertyNames,
+			HashSet<string> propertySignatures)
+			=> symbol switch
 			{
-				return false;
+				IFieldSymbol field when IsComparedField(field) && fieldNames.Add(field.Name)
+					=> new Member(field, field.Name, field.Type, true),
+				IPropertySymbol { IsStatic: false, IsIndexer: false, } property
+					when !propertySignatures.Contains(Signature(property)) && IsComparedProperty(property) &&
+					     propertyNames.Add(property.Name)
+					=> new Member(property, property.Name, property.Type, false),
+				_ => null,
+			};
+
+		/// <remarks>
+		///     The runtime drops a base member that a derived declaration hides, unless the hiding declaration is
+		///     private and sits on a base of the reflected type, because private members of a base are never
+		///     considered. So a private <see langword="new" /> member only hides on the walked type itself.
+		/// </remarks>
+		private static bool Hides(ISymbol member, INamedTypeSymbol declaring, INamedTypeSymbol walked)
+			=> member.DeclaredAccessibility != Accessibility.Private ||
+			   SymbolEqualityComparer.Default.Equals(declaring, walked);
+
+		/// <remarks>
+		///     Properties hide by name and type, so the signature is taken from the declaration, in which a substituted
+		///     type argument is still the type parameter.
+		/// </remarks>
+		private static string Signature(IPropertySymbol property)
+			=> property.Name + "|" + property.RefKind + "|" + MetadataSignature(property.OriginalDefinition.Type);
+
+		/// <remarks>
+		///     Roslyn imports only the public and protected members of a referenced assembly, but reflection hides a
+		///     base member behind a declaration of any accessibility, so the hiding pass reads a metadata type through a
+		///     compilation that imports everything. Its definition suffices, because hiding is decided by name and
+		///     declared signature, not by substituted types.
+		/// </remarks>
+		private IEnumerable<ISymbol> DeclaredMembers(INamedTypeSymbol type)
+		{
+			if (type.Locations.Any(location => location.IsInSource))
+			{
+				return type.GetMembers();
 			}
 
-			return signatures.Add(property.Name + "|" + property.RefKind + "|" +
-			                      MetadataSignature(property.OriginalDefinition.Type));
+			AllImport all = AllImports.GetValue(compilation, static c => new AllImport(c));
+			IAssemblySymbol? assembly = all.Assemblies.GetOrAdd(type.ContainingAssembly, containing => all.Compilation
+				.References
+				.Select(reference => all.Compilation.GetAssemblyOrModuleSymbol(reference))
+				.OfType<IAssemblySymbol>()
+				.FirstOrDefault(candidate => candidate.Identity.Equals(containing.Identity)));
+
+			return assembly?.GetTypeByMetadataName(FullMetadataName(type.OriginalDefinition))?.GetMembers() ??
+			       type.GetMembers();
+		}
+
+		/// <remarks>
+		///     A name that more than one assembly defines cannot be spelled out in the generated code, because the
+		///     compiler reports it as ambiguous, or as a conflict with the consumer's own declaration. An inaccessible
+		///     declaration, such as a polyfill compiled into a referenced library, does not take part in the lookup.
+		/// </remarks>
+		private bool IsUnambiguous(INamedTypeSymbol type)
+		{
+			INamedTypeSymbol definition = type.OriginalDefinition;
+			if (!_isUnambiguous.TryGetValue(definition, out bool isUnambiguous))
+			{
+				List<INamedTypeSymbol> candidates = compilation.GetTypesByMetadataName(FullMetadataName(definition))
+					.Where(candidate =>
+						SymbolEqualityComparer.Default.Equals(candidate.ContainingAssembly, compilation.Assembly) ||
+						compilation.IsSymbolAccessibleWithin(candidate, compilation.Assembly))
+					.ToList();
+				isUnambiguous = candidates.Count == 1 &&
+				                SymbolEqualityComparer.Default.Equals(candidates[0], definition);
+				_isUnambiguous[definition] = isUnambiguous;
+			}
+
+			return isUnambiguous;
+		}
+
+		private static string FullMetadataName(INamedTypeSymbol type)
+		{
+			StringBuilder name = new(type.MetadataName);
+			for (INamedTypeSymbol? containing = type.ContainingType;
+			     containing is not null;
+			     containing = containing.ContainingType)
+			{
+				name.Insert(0, '+').Insert(0, containing.MetadataName);
+			}
+
+			if (type.ContainingNamespace is { IsGlobalNamespace: false, } ns)
+			{
+				name.Insert(0, '.').Insert(0, ns.ToDisplayString());
+			}
+
+			return name.ToString();
+		}
+
+		/// <remarks>
+		///     A base type from an assembly the consumer does not reference has no visible members, so the walk would
+		///     register fewer members or events than reflection returns.
+		/// </remarks>
+		private static bool HasUnknownBase(INamedTypeSymbol type)
+		{
+			for (INamedTypeSymbol? current = type.BaseType; current is not null; current = current.BaseType)
+			{
+				if (current.TypeKind == TypeKind.Error)
+				{
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		/// <remarks>
@@ -643,9 +905,12 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		///     reachable through its declaring type.
 		/// </remarks>
 		private static string Receiver(INamedTypeSymbol type, Member member)
-			=> SymbolEqualityComparer.Default.Equals(member.Symbol.ContainingType, type)
+			=> Receiver(type, member.Symbol.ContainingType);
+
+		private static string Receiver(INamedTypeSymbol type, INamedTypeSymbol declaringType)
+			=> SymbolEqualityComparer.Default.Equals(declaringType, type)
 				? "o"
-				: $"(({member.Symbol.ContainingType.ToDisplayString(TypeFormat)})o)";
+				: $"(({declaringType.ToDisplayString(TypeFormat)})o)";
 
 		private static string Identifier(string name)
 			=> SyntaxFacts.GetKeywordKind(name) != SyntaxKind.None ||
@@ -678,7 +943,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 					.OfType<IPropertySymbol>().All(x => IsReferenceable(x.Type)),
 				INamedTypeSymbol named => !named.IsFileLocal && !IsUnreferenceable(named) &&
 				                          compilation.IsSymbolAccessibleWithin(named, compilation.Assembly) &&
-				                          IsGlobal(named) &&
+				                          IsGlobal(named) && IsUnambiguous(named) &&
 				                          named.TypeArguments.All(IsReferenceable) &&
 				                          (named.ContainingType is null || IsReferenceable(named.ContainingType)),
 				_ => true,
@@ -737,15 +1002,17 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		///     <c>CS0618</c> suppression in the generated file does not cover it.
 		/// </remarks>
 		private static IEnumerable<string> DiagnosticIds(INamedTypeSymbol type, List<Member> members)
-		{
-			IEnumerable<ISymbol> symbols = members
+			=> DiagnosticIds(members
 				.SelectMany(member => new[] { member.Symbol, (member.Symbol as IPropertySymbol)?.GetMethod, })
 				.Concat(members.SelectMany(member => TypeSymbols(member.Type)))
 				.Concat(members.SelectMany(member => TypeSymbols(member.Symbol.ContainingType)))
-				.Concat(TypeSymbols(type))
-				.Where(symbol => symbol is not null)!;
+				.Concat(TypeSymbols(type)));
+
+		private static IEnumerable<string> DiagnosticIds(IEnumerable<ISymbol?> symbols)
+		{
 			return symbols
-				.SelectMany(symbol => symbol.GetAttributes())
+				.Where(symbol => symbol is not null)
+				.SelectMany(symbol => symbol!.GetAttributes())
 				.Where(attribute => attribute.AttributeClass?.ToDisplayString() == "System.ObsoleteAttribute")
 				.Select(attribute => attribute.NamedArguments
 					.FirstOrDefault(argument => argument.Key == "DiagnosticId").Value.Value as string)

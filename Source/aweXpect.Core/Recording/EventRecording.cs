@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.Helpers;
+using aweXpect.Core.Metadata;
 #if NET8_0_OR_GREATER
 using System.Threading.Channels;
 #endif
@@ -14,6 +14,15 @@ namespace aweXpect.Recording;
 internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEventRecordingResult
 	where TSubject : notnull
 {
+	/// <remarks>
+	///     A registered type is served from the <see cref="TypeMetadataRegistry" /> and its events are known
+	///     completely, so a missing event is missing for sure. Reflection cannot tell a missing event from one that
+	///     publishing with trimming or Native AOT enabled removed.
+	/// </remarks>
+	private const string TrimmingHint =
+		". When publishing with trimming or Native AOT enabled, ensure that the type is rooted, so that its events are preserved.";
+
+	private readonly bool _isRegistered;
 	private readonly Dictionary<string, EventRecorder> _recorders = new();
 	private readonly string _subjectExpression;
 
@@ -24,7 +33,12 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 	public EventRecording(TSubject subject, string subjectExpression, params string[] eventNames)
 	{
 		_subjectExpression = subjectExpression;
-		EventInfo[] events = subject.GetType().GetEvents();
+		_isRegistered = TryGetRegistered(subject.GetType(), out List<RecordableEvent> events);
+		if (!_isRegistered)
+		{
+			events = Reflect(subject.GetType());
+		}
+
 		if (eventNames.Length == 0)
 		{
 			eventNames = events.Select(x => x.Name).ToArray();
@@ -34,51 +48,91 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 		{
 			EventRecorder recorder = new(eventName);
 			_recorders.Add(eventName, recorder);
-			EventInfo? @event = events.FirstOrDefault(x => x.Name == eventName);
+			RecordableEvent? @event = events.FirstOrDefault(x => x.Name == eventName);
 			if (@event == null)
 			{
-				throw new NotSupportedException($"Event {eventName} is not supported on {Formatter.Format(subject)}")
+				throw new NotSupportedException(
+						$"Event {eventName} is not supported on {Formatter.Format(subject)}{(_isRegistered ? "" : TrimmingHint)}")
 					.LogTrace();
 			}
 
-			recorder.Attach(new WeakReference(subject), @event);
+			@event.Attach(recorder, subject);
 		}
+	}
+
+	/// <remarks>
+	///     A type counts as registered only when it has an event: a registration of its members says nothing about the
+	///     events, so such a type is reflected over like an unregistered one.
+	/// </remarks>
+	private static bool TryGetRegistered(Type type, out List<RecordableEvent> events)
+	{
+		if (TypeMetadataRegistry.Instance.TryGet(type, out TypeMetadataRegistry.TypeMetadata? metadata) &&
+		    !metadata.Events.IsEmpty)
+		{
+			events = metadata.Events.Values
+				.OrderBy(x => x.Order)
+				.Select(x => new RecordableEvent(x.Name, (recorder, subject) => recorder.Attach(subject, x)))
+				.ToList();
+			return true;
+		}
+
+		events = [];
+		return false;
+	}
+
+	private static List<RecordableEvent> Reflect(Type type)
+		=> type.GetEvents()
+			.Select(x => new RecordableEvent(x.Name,
+				(recorder, subject) => recorder.Attach(new WeakReference(subject), x)))
+			.ToList();
+
+	private sealed class RecordableEvent(string name, Action<EventRecorder, object> attach)
+	{
+		public string Name { get; } = name;
+
+		public void Attach(EventRecorder recorder, object subject) => attach(recorder, subject);
 	}
 
 #if NET8_0_OR_GREATER
 	public async Task<IEventRecordingResult> StopWhen(Func<IEventRecordingResult, bool> areFound, TimeSpan timeout)
 	{
-		if (timeout > TimeSpan.Zero && !areFound(this))
+		try
 		{
-			Channel<bool> channel = Channel.CreateUnbounded<bool>();
-			using CancellationTokenSource cts = new(timeout);
-			CancellationToken token = cts.Token;
-			foreach (EventRecorder recorder in _recorders.Values)
+			if (timeout > TimeSpan.Zero && !areFound(this))
 			{
-				recorder.Register(channel.Writer);
-			}
-
-			try
-			{
-#pragma warning disable S3267 // https://rules.sonarsource.com/csharp/RSPEC-3267
-				await foreach (bool _ in channel.Reader.ReadAllAsync(token))
+				Channel<bool> channel = Channel.CreateUnbounded<bool>();
+				using CancellationTokenSource cts = new(timeout);
+				CancellationToken token = cts.Token;
+				foreach (EventRecorder recorder in _recorders.Values)
 				{
-					if (areFound(this))
-					{
-						break;
-					}
+					recorder.Register(channel.Writer);
 				}
+
+				try
+				{
+#pragma warning disable S3267 // https://rules.sonarsource.com/csharp/RSPEC-3267
+					await foreach (bool _ in channel.Reader.ReadAllAsync(token))
+					{
+						if (areFound(this))
+						{
+							break;
+						}
+					}
 #pragma warning restore S3267
-			}
-			catch (OperationCanceledException)
-			{
-				// Ignore cancellation
+				}
+				catch (OperationCanceledException)
+				{
+					// Ignore cancellation
+				}
 			}
 		}
-
-		foreach (EventRecorder recorder in _recorders.Values)
+		finally
 		{
-			recorder.Dispose();
+			// A predicate that throws must not leave the handlers attached to the subject.
+			foreach (EventRecorder recorder in _recorders.Values)
+			{
+				recorder.Dispose();
+			}
 		}
 
 		return this;
@@ -88,36 +142,42 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 	{
 		DateTime now = DateTime.Now;
 		DateTime endTime = now.Add(timeout);
-		if (timeout > TimeSpan.Zero && !areFound(this))
+		try
 		{
-			using (ManualResetEventSlim ms = new())
+			if (timeout > TimeSpan.Zero && !areFound(this))
 			{
-				foreach (EventRecorder recorder in _recorders.Values)
+				using (ManualResetEventSlim ms = new())
 				{
-					recorder.Register(ms);
-				}
-
-				while (true)
-				{
-					now = DateTime.Now;
-					if (now >= endTime)
+					foreach (EventRecorder recorder in _recorders.Values)
 					{
-						break;
+						recorder.Register(ms);
 					}
 
-					ms.Reset();
-					ms.Wait(endTime - now);
-					if (areFound(this))
+					while (true)
 					{
-						break;
+						now = DateTime.Now;
+						if (now >= endTime)
+						{
+							break;
+						}
+
+						ms.Reset();
+						ms.Wait(endTime - now);
+						if (areFound(this))
+						{
+							break;
+						}
 					}
 				}
 			}
 		}
-
-		foreach (EventRecorder recorder in _recorders.Values)
+		finally
 		{
-			recorder.Dispose();
+			// A predicate that throws must not leave the handlers attached to the subject.
+			foreach (EventRecorder recorder in _recorders.Values)
+			{
+				recorder.Dispose();
+			}
 		}
 
 		return Task.FromResult<IEventRecordingResult>(this);
@@ -128,15 +188,34 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 	///     Gets the number of recorded events for <paramref name="eventName" /> that match the <paramref name="filter" />.
 	/// </summary>
 	public int GetEventCount(string eventName, Func<object?[], bool>? filter = null)
-		=> _recorders[eventName].GetEventCount(filter);
+		=> GetRecorder(eventName).GetEventCount(filter);
 
 	/// <summary>
 	///     Returns a formatted string for the recorded events for <paramref name="eventName" />.
 	/// </summary>
 	public string ToString(string eventName)
-		=> _recorders[eventName].ToString();
+		=> GetRecorder(eventName).ToString();
 
 	/// <inheritdoc />
 	public override string ToString()
 		=> _subjectExpression;
+
+	/// <remarks>
+	///     A recording of all events silently records nothing when reflection finds none, which under trimming means
+	///     that they were removed, so the expectation that asks for the event has to fail loudly instead.
+	/// </remarks>
+	private EventRecorder GetRecorder(string eventName)
+	{
+		if (!_recorders.TryGetValue(eventName, out EventRecorder? recorder))
+		{
+			string recorded = _recorders.Count == 0
+				? "because no event was found"
+				: $"only {Formatter.Format(_recorders.Keys)}";
+			throw new NotSupportedException(
+					$"Event {eventName} was not recorded on {_subjectExpression}, {recorded}{(_isRegistered ? "" : TrimmingHint)}")
+				.LogTrace();
+		}
+
+		return recorder;
+	}
 }
