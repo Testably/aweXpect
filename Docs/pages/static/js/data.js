@@ -3882,6 +3882,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:41:47 2026 \u002B0200",
         "message": "feat: add a positional \u0060DidNotTrigger(eventName)\u0060 (#1140)"
+      },
+      {
+        "sha": "aa20367de76d9102d911bf0349edcaf309146b60",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 15:27:18 2026 \u002B0200",
+        "message": "feat!: add \u0060Keys\u0060 and \u0060Values\u0060 navigation for dictionaries and remove the dictionary-specific \u0060AreAllUnique\u0060 (#1134)"
       }
     ],
     "labels": [
@@ -4531,7 +4537,8 @@ window.BENCHMARK_DATA = {
       "1155bcb9",
       "9da1cf49",
       "f39be118",
-      "2694582c"
+      "2694582c",
+      "aa20367d"
     ],
     "datasets": [
       {
@@ -5184,7 +5191,8 @@ window.BENCHMARK_DATA = {
           259.6582940541781,
           263.0858057339986,
           183.93454241752625,
-          251.53007752100626
+          251.53007752100626,
+          126.12150863238743
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5657,6 +5665,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6503,7 +6512,8 @@ window.BENCHMARK_DATA = {
           237.14610471044267,
           261.2859146935599,
           192.79404819011688,
-          247.8645476613726
+          247.8645476613726,
+          128.32302194436392
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6696,6 +6706,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10595,6 +10606,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:41:47 2026 \u002B0200",
         "message": "feat: add a positional \u0060DidNotTrigger(eventName)\u0060 (#1140)"
+      },
+      {
+        "sha": "aa20367de76d9102d911bf0349edcaf309146b60",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 15:27:18 2026 \u002B0200",
+        "message": "feat!: add \u0060Keys\u0060 and \u0060Values\u0060 navigation for dictionaries and remove the dictionary-specific \u0060AreAllUnique\u0060 (#1134)"
       }
     ],
     "labels": [
@@ -11167,7 +11184,8 @@ window.BENCHMARK_DATA = {
       "1155bcb9",
       "9da1cf49",
       "f39be118",
-      "2694582c"
+      "2694582c",
+      "aa20367d"
     ],
     "datasets": [
       {
@@ -11743,7 +11761,8 @@ window.BENCHMARK_DATA = {
           327633.0501302083,
           331048.90040940506,
           230373.07579752605,
-          314467.8298339844
+          314467.8298339844,
+          167075.7402750651
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12313,6 +12332,7 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542084,
+          617976,
           617976,
           617976,
           617976,
@@ -12908,7 +12928,8 @@ window.BENCHMARK_DATA = {
           2586987.552864583,
           2724957.017708333,
           1782350.6969401042,
-          2348554.0094866073
+          2348554.0094866073,
+          1245822.333705357
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13488,6 +13509,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
+          4841647,
           4841647,
           4841647
         ],
@@ -17385,6 +17407,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:41:47 2026 \u002B0200",
         "message": "feat: add a positional \u0060DidNotTrigger(eventName)\u0060 (#1140)"
+      },
+      {
+        "sha": "aa20367de76d9102d911bf0349edcaf309146b60",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 15:27:18 2026 \u002B0200",
+        "message": "feat!: add \u0060Keys\u0060 and \u0060Values\u0060 navigation for dictionaries and remove the dictionary-specific \u0060AreAllUnique\u0060 (#1134)"
       }
     ],
     "labels": [
@@ -18034,7 +18062,8 @@ window.BENCHMARK_DATA = {
       "1155bcb9",
       "9da1cf49",
       "f39be118",
-      "2694582c"
+      "2694582c",
+      "aa20367d"
     ],
     "datasets": [
       {
@@ -18687,7 +18716,8 @@ window.BENCHMARK_DATA = {
           470.77930974960327,
           477.6969051996867,
           346.825883769989,
-          442.220506631411
+          442.220506631411,
+          230.93623633044106
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19334,6 +19364,7 @@ window.BENCHMARK_DATA = {
           1360,
           1360,
           1360,
+          1368,
           1368,
           1368,
           1368,
@@ -20006,7 +20037,8 @@ window.BENCHMARK_DATA = {
           466.8591782365526,
           527.1061539332072,
           382.2924120766776,
-          491.2416307742779
+          491.2416307742779,
+          254.6541428906577
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20199,6 +20231,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -24560,6 +24593,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:41:47 2026 \u002B0200",
         "message": "feat: add a positional \u0060DidNotTrigger(eventName)\u0060 (#1140)"
+      },
+      {
+        "sha": "aa20367de76d9102d911bf0349edcaf309146b60",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 15:27:18 2026 \u002B0200",
+        "message": "feat!: add \u0060Keys\u0060 and \u0060Values\u0060 navigation for dictionaries and remove the dictionary-specific \u0060AreAllUnique\u0060 (#1134)"
       }
     ],
     "labels": [
@@ -25209,7 +25248,8 @@ window.BENCHMARK_DATA = {
       "1155bcb9",
       "9da1cf49",
       "f39be118",
-      "2694582c"
+      "2694582c",
+      "aa20367d"
     ],
     "datasets": [
       {
@@ -25862,7 +25902,8 @@ window.BENCHMARK_DATA = {
           255.58846728006998,
           273.95314671198526,
           202.72048400243122,
-          262.6667138508388
+          262.6667138508388,
+          131.7098513160433
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -26376,6 +26417,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -27181,7 +27223,8 @@ window.BENCHMARK_DATA = {
           237.56093287467957,
           258.6540732383728,
           187.199236090978,
-          233.8532139778137
+          233.8532139778137,
+          126.57404637336731
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -27374,6 +27417,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -31735,6 +31779,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:41:47 2026 \u002B0200",
         "message": "feat: add a positional \u0060DidNotTrigger(eventName)\u0060 (#1140)"
+      },
+      {
+        "sha": "aa20367de76d9102d911bf0349edcaf309146b60",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 15:27:18 2026 \u002B0200",
+        "message": "feat!: add \u0060Keys\u0060 and \u0060Values\u0060 navigation for dictionaries and remove the dictionary-specific \u0060AreAllUnique\u0060 (#1134)"
       }
     ],
     "labels": [
@@ -32384,7 +32434,8 @@ window.BENCHMARK_DATA = {
       "1155bcb9",
       "9da1cf49",
       "f39be118",
-      "2694582c"
+      "2694582c",
+      "aa20367d"
     ],
     "datasets": [
       {
@@ -33037,7 +33088,8 @@ window.BENCHMARK_DATA = {
           490.89194914499916,
           521.7357479731241,
           403.890355237325,
-          515.2771126202175
+          515.2771126202175,
+          255.7697854408851
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33684,6 +33736,7 @@ window.BENCHMARK_DATA = {
           1128,
           1128,
           1128,
+          1256,
           1256,
           1256,
           1256,
@@ -34356,7 +34409,8 @@ window.BENCHMARK_DATA = {
           1164.362004500169,
           1273.134701792399,
           872.9681192398072,
-          1124.8603125254313
+          1124.8603125254313,
+          614.7207274436951
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34785,6 +34839,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -38910,6 +38965,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:41:47 2026 \u002B0200",
         "message": "feat: add a positional \u0060DidNotTrigger(eventName)\u0060 (#1140)"
+      },
+      {
+        "sha": "aa20367de76d9102d911bf0349edcaf309146b60",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 15:27:18 2026 \u002B0200",
+        "message": "feat!: add \u0060Keys\u0060 and \u0060Values\u0060 navigation for dictionaries and remove the dictionary-specific \u0060AreAllUnique\u0060 (#1134)"
       }
     ],
     "labels": [
@@ -39559,7 +39620,8 @@ window.BENCHMARK_DATA = {
       "1155bcb9",
       "9da1cf49",
       "f39be118",
-      "2694582c"
+      "2694582c",
+      "aa20367d"
     ],
     "datasets": [
       {
@@ -40212,7 +40274,8 @@ window.BENCHMARK_DATA = {
           1888.4566846575055,
           2009.3580899919782,
           1449.5176886149816,
-          1882.2657455716815
+          1882.2657455716815,
+          1035.1073854764302
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -40859,6 +40922,7 @@ window.BENCHMARK_DATA = {
           2624,
           2624,
           2624,
+          2752,
           2752,
           2752,
           2752,
@@ -41531,7 +41595,8 @@ window.BENCHMARK_DATA = {
           1286.7029768625896,
           1399.1628487904866,
           974.7943617502848,
-          1300.85202730619
+          1300.85202730619,
+          684.5522738456726
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -41724,6 +41789,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -46085,6 +46151,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 14:41:47 2026 \u002B0200",
         "message": "feat: add a positional \u0060DidNotTrigger(eventName)\u0060 (#1140)"
+      },
+      {
+        "sha": "aa20367de76d9102d911bf0349edcaf309146b60",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 15:27:18 2026 \u002B0200",
+        "message": "feat!: add \u0060Keys\u0060 and \u0060Values\u0060 navigation for dictionaries and remove the dictionary-specific \u0060AreAllUnique\u0060 (#1134)"
       }
     ],
     "labels": [
@@ -46734,7 +46806,8 @@ window.BENCHMARK_DATA = {
       "1155bcb9",
       "9da1cf49",
       "f39be118",
-      "2694582c"
+      "2694582c",
+      "aa20367d"
     ],
     "datasets": [
       {
@@ -47387,7 +47460,8 @@ window.BENCHMARK_DATA = {
           2490.8498107910154,
           2551.3759628295898,
           1928.0050836290632,
-          2565.6355715433756
+          2565.6355715433756,
+          1324.0991307667323
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -48034,6 +48108,7 @@ window.BENCHMARK_DATA = {
           2816,
           2816,
           2816,
+          2944,
           2944,
           2944,
           2944,
@@ -48706,7 +48781,8 @@ window.BENCHMARK_DATA = {
           26092.071990966797,
           27594.802510579426,
           15316.923490397136,
-          19356.340165201822
+          19356.340165201822,
+          9916.93911743164
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -49351,6 +49427,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
