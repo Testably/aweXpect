@@ -675,26 +675,32 @@ aweXpect.Results.ObjectHasItemResult<TCollection, TItem>.ObjectHasItemResult(awe
 aweXpect.Results.PropertyResult
 aweXpect.Results.PropertyResult.DateTimeKind<TItem>
 aweXpect.Results.PropertyResult.DateTimeKind<TItem>.DateTimeKind(aweXpect.Core.IThat<TItem>! subject, System.Func<TItem, System.DateTimeKind?>! mapper, string! propertyExpression) -> void
-aweXpect.Results.PropertyResult.DateTimeKind<TItem>.EqualTo(System.DateTimeKind expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
-aweXpect.Results.PropertyResult.DateTimeKind<TItem>.NotEqualTo(System.DateTimeKind unexpected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
+aweXpect.Results.PropertyResult.DateTimeKind<TValue, TType, TThat>
+aweXpect.Results.PropertyResult.DateTimeKind<TValue, TType, TThat>.DateTimeKind(TThat subject, System.Func<TValue, System.DateTimeKind?>! mapper, string! propertyExpression, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None) -> void
+aweXpect.Results.PropertyResult.DateTimeKind<TValue, TType, TThat>.EqualTo(System.DateTimeKind expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.DateTimeKind<TValue, TType, TThat>.NotEqualTo(System.DateTimeKind unexpected) -> aweXpect.Results.AndOrResult<TType, TThat>!
 aweXpect.Results.PropertyResult.Int<TItem>
-aweXpect.Results.PropertyResult.Int<TItem>.Between(int? minimum) -> aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!, int?>!
-aweXpect.Results.PropertyResult.Int<TItem>.EqualTo(int? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
-aweXpect.Results.PropertyResult.Int<TItem>.GreaterThan(int? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
-aweXpect.Results.PropertyResult.Int<TItem>.GreaterThanOrEqualTo(int? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
 aweXpect.Results.PropertyResult.Int<TItem>.Int(aweXpect.Core.IThat<TItem>! subject, System.Func<TItem, int?>! mapper, string! propertyExpression, System.Action<int?, string!>? validation = null) -> void
-aweXpect.Results.PropertyResult.Int<TItem>.LessThan(int? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
-aweXpect.Results.PropertyResult.Int<TItem>.LessThanOrEqualTo(int? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
-aweXpect.Results.PropertyResult.Int<TItem>.NotEqualTo(int? unexpected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
+aweXpect.Results.PropertyResult.Int<TValue, TType, TThat>
+aweXpect.Results.PropertyResult.Int<TValue, TType, TThat>.Between(int? minimum) -> aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TType, TThat>!, int?>!
+aweXpect.Results.PropertyResult.Int<TValue, TType, TThat>.EqualTo(int? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Int<TValue, TType, TThat>.GreaterThan(int? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Int<TValue, TType, TThat>.GreaterThanOrEqualTo(int? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Int<TValue, TType, TThat>.Int(TThat subject, System.Func<TValue, int?>! mapper, string! propertyExpression, System.Action<int?, string!>? validation = null, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None) -> void
+aweXpect.Results.PropertyResult.Int<TValue, TType, TThat>.LessThan(int? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Int<TValue, TType, TThat>.LessThanOrEqualTo(int? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Int<TValue, TType, TThat>.NotEqualTo(int? unexpected) -> aweXpect.Results.AndOrResult<TType, TThat>!
 aweXpect.Results.PropertyResult.Long<TItem>
-aweXpect.Results.PropertyResult.Long<TItem>.Between(long? minimum) -> aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!, long?>!
-aweXpect.Results.PropertyResult.Long<TItem>.EqualTo(long? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
-aweXpect.Results.PropertyResult.Long<TItem>.GreaterThan(long? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
-aweXpect.Results.PropertyResult.Long<TItem>.GreaterThanOrEqualTo(long? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
-aweXpect.Results.PropertyResult.Long<TItem>.LessThan(long? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
-aweXpect.Results.PropertyResult.Long<TItem>.LessThanOrEqualTo(long? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
 aweXpect.Results.PropertyResult.Long<TItem>.Long(aweXpect.Core.IThat<TItem>! subject, System.Func<TItem, long?>! mapper, string! propertyExpression, System.Action<long?, string!>? validation = null) -> void
-aweXpect.Results.PropertyResult.Long<TItem>.NotEqualTo(long? unexpected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
+aweXpect.Results.PropertyResult.Long<TValue, TType, TThat>
+aweXpect.Results.PropertyResult.Long<TValue, TType, TThat>.Between(long? minimum) -> aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TType, TThat>!, long?>!
+aweXpect.Results.PropertyResult.Long<TValue, TType, TThat>.EqualTo(long? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Long<TValue, TType, TThat>.GreaterThan(long? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Long<TValue, TType, TThat>.GreaterThanOrEqualTo(long? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Long<TValue, TType, TThat>.LessThan(long? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Long<TValue, TType, TThat>.LessThanOrEqualTo(long? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Long<TValue, TType, TThat>.Long(TThat subject, System.Func<TValue, long?>! mapper, string! propertyExpression, System.Action<long?, string!>? validation = null, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None) -> void
+aweXpect.Results.PropertyResult.Long<TValue, TType, TThat>.NotEqualTo(long? unexpected) -> aweXpect.Results.AndOrResult<TType, TThat>!
 aweXpect.Results.PropertyResult.String<TValue, TType, TThat>
 aweXpect.Results.PropertyResult.String<TValue, TType, TThat>.Containing(string! expected) -> aweXpect.Results.StringEqualityResult<TType, TThat>!
 aweXpect.Results.PropertyResult.String<TValue, TType, TThat>.EndingWith(string! expected) -> aweXpect.Results.StringEqualityResult<TType, TThat>!
@@ -706,14 +712,16 @@ aweXpect.Results.PropertyResult.String<TValue, TType, TThat>.NotStartingWith(str
 aweXpect.Results.PropertyResult.String<TValue, TType, TThat>.StartingWith(string! expected) -> aweXpect.Results.StringEqualityResult<TType, TThat>!
 aweXpect.Results.PropertyResult.String<TValue, TType, TThat>.String(TThat subject, System.Func<TValue, string?>! mapper, string! propertyExpression, System.Action<string?, string!>? validation = null, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None, bool includeValueInContext = false) -> void
 aweXpect.Results.PropertyResult.TimeSpan<TItem>
-aweXpect.Results.PropertyResult.TimeSpan<TItem>.Between(System.TimeSpan? minimum) -> aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!, System.TimeSpan?>!
-aweXpect.Results.PropertyResult.TimeSpan<TItem>.EqualTo(System.TimeSpan? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
-aweXpect.Results.PropertyResult.TimeSpan<TItem>.GreaterThan(System.TimeSpan? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
-aweXpect.Results.PropertyResult.TimeSpan<TItem>.GreaterThanOrEqualTo(System.TimeSpan? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
-aweXpect.Results.PropertyResult.TimeSpan<TItem>.LessThan(System.TimeSpan? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
-aweXpect.Results.PropertyResult.TimeSpan<TItem>.LessThanOrEqualTo(System.TimeSpan? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
-aweXpect.Results.PropertyResult.TimeSpan<TItem>.NotEqualTo(System.TimeSpan? unexpected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
 aweXpect.Results.PropertyResult.TimeSpan<TItem>.TimeSpan(aweXpect.Core.IThat<TItem>! subject, System.Func<TItem, System.TimeSpan?>! mapper, string! propertyExpression, System.Action<System.TimeSpan?, string!>? validation = null) -> void
+aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>
+aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>.Between(System.TimeSpan? minimum) -> aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TType, TThat>!, System.TimeSpan?>!
+aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>.EqualTo(System.TimeSpan? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>.GreaterThan(System.TimeSpan? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>.GreaterThanOrEqualTo(System.TimeSpan? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>.LessThan(System.TimeSpan? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>.LessThanOrEqualTo(System.TimeSpan? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>.NotEqualTo(System.TimeSpan? unexpected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>.TimeSpan(TThat subject, System.Func<TValue, System.TimeSpan?>! mapper, string! propertyExpression, System.Action<System.TimeSpan?, string!>? validation = null, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None) -> void
 aweXpect.Results.StringBlockCountResult<TType, TThat>
 aweXpect.Results.StringBlockCountResult<TType, TThat>.IgnoringCase(bool ignoreCase = true) -> aweXpect.Results.StringBlockCountResult<TType, TThat>!
 aweXpect.Results.StringBlockCountResult<TType, TThat>.StringBlockCountResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier! quantifier, aweXpect.Options.StringEqualityOptions! options) -> void

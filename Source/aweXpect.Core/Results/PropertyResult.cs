@@ -15,477 +15,428 @@ namespace aweXpect.Results;
 public static class PropertyResult
 {
 	/// <summary>
-	///     Result for an <see langword="int" /> property.
+	///     Result for an <see langword="int" /> property that continues on the <see cref="IThat{TItem}" /> subject.
 	/// </summary>
 	public class Int<TItem>(
 		IThat<TItem> subject,
 		Func<TItem, int?> mapper,
 		string propertyExpression,
 		Action<int?, string>? validation = null)
+		: Int<TItem, TItem, IThat<TItem>>(subject, mapper, propertyExpression, validation);
+
+	/// <summary>
+	///     Result for an <see langword="int" /> property of a <typeparamref name="TValue" /> which continues on
+	///     <typeparamref name="TThat" /> with an underlying value of type <typeparamref name="TType" />.
+	/// </summary>
+	/// <remarks>
+	///     See <see cref="String{TValue, TType, TThat}" /> for the role of the <paramref name="grammars" /> and of the
+	///     split between <typeparamref name="TValue" /> and <typeparamref name="TType" />.
+	/// </remarks>
+	public class Int<TValue, TType, TThat>(
+		TThat subject,
+		Func<TValue, int?> mapper,
+		string propertyExpression,
+		Action<int?, string>? validation = null,
+		ExpectationGrammars grammars = ExpectationGrammars.None)
+		where TThat : IThat<TType>
 	{
 		/// <summary>
 		///     …is equal to the <paramref name="expected" /> value.
 		/// </summary>
-		public AndOrResult<TItem, IThat<TItem>> EqualTo(
+		public AndOrResult<TType, TThat> EqualTo(
 			int? expected)
 		{
 			validation?.Invoke(expected, nameof(expected));
-			return new AndOrResult<TItem, IThat<TItem>>(subject.Get().ExpectationBuilder
-					.AddConstraint((it, grammars) =>
-						new StructPropertyConstraint<TItem, int>(
-							it, grammars,
-							expected,
-							mapper,
-							propertyExpression,
-							(a, e) => a?.Equals(e) == true,
-							$"has {propertyExpression} equal to {Formatter.Format(expected)}")),
-				subject);
+			return Add(expected, (a, e) => a?.Equals(e) == true,
+				$"equal to {Formatter.Format(expected)}");
 		}
 
 		/// <summary>
 		///     …is not equal to the <paramref name="unexpected" /> value.
 		/// </summary>
-		public AndOrResult<TItem, IThat<TItem>> NotEqualTo(
+		public AndOrResult<TType, TThat> NotEqualTo(
 			int? unexpected)
 		{
 			validation?.Invoke(unexpected, nameof(unexpected));
-			return new AndOrResult<TItem, IThat<TItem>>(subject.Get().ExpectationBuilder
-					.AddConstraint((it, grammars) =>
-						new StructPropertyConstraint<TItem, int>(
-							it, grammars,
-							unexpected,
-							mapper,
-							propertyExpression,
-							(a, u) => a?.Equals(u) != true,
-							$"has {propertyExpression} not equal to {Formatter.Format(unexpected)}")),
-				subject);
+			return Add(unexpected, (a, u) => a?.Equals(u) != true,
+				$"not equal to {Formatter.Format(unexpected)}");
 		}
 
 		/// <summary>
 		///     …is greater than the <paramref name="expected" /> value.
 		/// </summary>
-		public AndOrResult<TItem, IThat<TItem>> GreaterThan(
+		public AndOrResult<TType, TThat> GreaterThan(
 			int? expected)
 		{
 			validation?.Invoke(expected, nameof(expected));
-			return new AndOrResult<TItem, IThat<TItem>>(subject.Get().ExpectationBuilder
-					.AddConstraint((it, grammars) =>
-						new StructPropertyConstraint<TItem, int>(
-							it, grammars,
-							expected,
-							mapper,
-							propertyExpression,
-							(a, e) => a > e,
-							$"has {propertyExpression} greater than {Formatter.Format(expected)}")),
-				subject);
+			return Add(expected, (a, e) => a > e,
+				$"greater than {Formatter.Format(expected)}");
 		}
 
 		/// <summary>
 		///     …is greater than or equal to the <paramref name="expected" /> value.
 		/// </summary>
-		public AndOrResult<TItem, IThat<TItem>> GreaterThanOrEqualTo(
+		public AndOrResult<TType, TThat> GreaterThanOrEqualTo(
 			int? expected)
 		{
 			validation?.Invoke(expected, nameof(expected));
-			return new AndOrResult<TItem, IThat<TItem>>(subject.Get().ExpectationBuilder
-					.AddConstraint((it, grammars) =>
-						new StructPropertyConstraint<TItem, int>(
-							it, grammars,
-							expected,
-							mapper,
-							propertyExpression,
-							(a, e) => a >= e,
-							$"has {propertyExpression} greater than or equal to {Formatter.Format(expected)}")),
-				subject);
+			return Add(expected, (a, e) => a >= e,
+				$"greater than or equal to {Formatter.Format(expected)}");
 		}
 
 		/// <summary>
 		///     …is less than the <paramref name="expected" /> value.
 		/// </summary>
-		public AndOrResult<TItem, IThat<TItem>> LessThan(
+		public AndOrResult<TType, TThat> LessThan(
 			int? expected)
 		{
 			validation?.Invoke(expected, nameof(expected));
-			return new AndOrResult<TItem, IThat<TItem>>(subject.Get().ExpectationBuilder
-					.AddConstraint((it, grammars) =>
-						new StructPropertyConstraint<TItem, int>(
-							it, grammars,
-							expected,
-							mapper,
-							propertyExpression,
-							(a, e) => a < e,
-							$"has {propertyExpression} less than {Formatter.Format(expected)}")),
-				subject);
+			return Add(expected, (a, e) => a < e,
+				$"less than {Formatter.Format(expected)}");
 		}
 
 		/// <summary>
 		///     …is less than or equal to the <paramref name="expected" /> value.
 		/// </summary>
-		public AndOrResult<TItem, IThat<TItem>> LessThanOrEqualTo(
+		public AndOrResult<TType, TThat> LessThanOrEqualTo(
 			int? expected)
 		{
 			validation?.Invoke(expected, nameof(expected));
-			return new AndOrResult<TItem, IThat<TItem>>(subject.Get().ExpectationBuilder
-					.AddConstraint((it, grammars) =>
-						new StructPropertyConstraint<TItem, int>(
-							it, grammars,
-							expected,
-							mapper,
-							propertyExpression,
-							(a, e) => a <= e,
-							$"has {propertyExpression} less than or equal to {Formatter.Format(expected)}")),
-				subject);
+			return Add(expected, (a, e) => a <= e,
+				$"less than or equal to {Formatter.Format(expected)}");
 		}
 
 		/// <summary>
 		///     …is between the <paramref name="minimum" />…
 		/// </summary>
-		public BetweenResult<AndOrResult<TItem, IThat<TItem>>, int?> Between(
+		public BetweenResult<AndOrResult<TType, TThat>, int?> Between(
 			int? minimum)
 		{
 			validation?.Invoke(minimum, nameof(minimum));
-			return new BetweenResult<AndOrResult<TItem, IThat<TItem>>, int?>(maximum =>
+			return new BetweenResult<AndOrResult<TType, TThat>, int?>(maximum =>
 			{
 				validation?.Invoke(maximum, nameof(maximum));
-				return new AndOrResult<TItem, IThat<TItem>>(subject.Get().ExpectationBuilder
-						.AddConstraint((it, grammars) =>
-							new StructPropertyConstraint<TItem, int>(
-								it, grammars,
-								minimum,
-								mapper,
-								propertyExpression,
-								(a, e) => a >= e && a <= maximum,
-								$"has {propertyExpression} between {Formatter.Format(minimum)} and {Formatter.Format(maximum)}")),
-					subject);
+				return Add(minimum, (a, e) => a >= e && a <= maximum,
+					$"between {Formatter.Format(minimum)} and {Formatter.Format(maximum)}");
 			});
 		}
+
+		private AndOrResult<TType, TThat> Add(
+			int? expected,
+			Func<int?, int?, bool> condition,
+			string expectation)
+			=> new(subject.Get().ExpectationBuilder
+					.AddConstraint((it, constraintGrammars) =>
+						new StructPropertyConstraint<TValue, int>(
+							it, constraintGrammars | grammars,
+							expected,
+							mapper,
+							propertyExpression,
+							condition,
+							expectation)),
+				subject);
 	}
 
 	/// <summary>
-	///     Result for a <see langword="long" /> property.
+	///     Result for a <see langword="long" /> property that continues on the <see cref="IThat{TItem}" /> subject.
 	/// </summary>
 	public class Long<TItem>(
 		IThat<TItem> subject,
 		Func<TItem, long?> mapper,
 		string propertyExpression,
 		Action<long?, string>? validation = null)
+		: Long<TItem, TItem, IThat<TItem>>(subject, mapper, propertyExpression, validation);
+
+	/// <summary>
+	///     Result for a <see langword="long" /> property of a <typeparamref name="TValue" /> which continues on
+	///     <typeparamref name="TThat" /> with an underlying value of type <typeparamref name="TType" />.
+	/// </summary>
+	/// <remarks>
+	///     See <see cref="String{TValue, TType, TThat}" /> for the role of the <paramref name="grammars" /> and of the
+	///     split between <typeparamref name="TValue" /> and <typeparamref name="TType" />.
+	/// </remarks>
+	public class Long<TValue, TType, TThat>(
+		TThat subject,
+		Func<TValue, long?> mapper,
+		string propertyExpression,
+		Action<long?, string>? validation = null,
+		ExpectationGrammars grammars = ExpectationGrammars.None)
+		where TThat : IThat<TType>
 	{
 		/// <summary>
 		///     …is equal to the <paramref name="expected" /> value.
 		/// </summary>
-		public AndOrResult<TItem, IThat<TItem>> EqualTo(
+		public AndOrResult<TType, TThat> EqualTo(
 			long? expected)
 		{
 			validation?.Invoke(expected, nameof(expected));
-			return new AndOrResult<TItem, IThat<TItem>>(subject.Get().ExpectationBuilder
-					.AddConstraint((it, grammars) =>
-						new StructPropertyConstraint<TItem, long>(
-							it, grammars,
-							expected,
-							mapper,
-							propertyExpression,
-							(a, e) => a?.Equals(e) == true,
-							$"has {propertyExpression} equal to {Formatter.Format(expected)}")),
-				subject);
+			return Add(expected, (a, e) => a?.Equals(e) == true,
+				$"equal to {Formatter.Format(expected)}");
 		}
 
 		/// <summary>
 		///     …is not equal to the <paramref name="unexpected" /> value.
 		/// </summary>
-		public AndOrResult<TItem, IThat<TItem>> NotEqualTo(
+		public AndOrResult<TType, TThat> NotEqualTo(
 			long? unexpected)
 		{
 			validation?.Invoke(unexpected, nameof(unexpected));
-			return new AndOrResult<TItem, IThat<TItem>>(subject.Get().ExpectationBuilder
-					.AddConstraint((it, grammars) =>
-						new StructPropertyConstraint<TItem, long>(
-							it, grammars,
-							unexpected,
-							mapper,
-							propertyExpression,
-							(a, u) => a?.Equals(u) != true,
-							$"has {propertyExpression} not equal to {Formatter.Format(unexpected)}")),
-				subject);
+			return Add(unexpected, (a, u) => a?.Equals(u) != true,
+				$"not equal to {Formatter.Format(unexpected)}");
 		}
 
 		/// <summary>
 		///     …is greater than the <paramref name="expected" /> value.
 		/// </summary>
-		public AndOrResult<TItem, IThat<TItem>> GreaterThan(
+		public AndOrResult<TType, TThat> GreaterThan(
 			long? expected)
 		{
 			validation?.Invoke(expected, nameof(expected));
-			return new AndOrResult<TItem, IThat<TItem>>(subject.Get().ExpectationBuilder
-					.AddConstraint((it, grammars) =>
-						new StructPropertyConstraint<TItem, long>(
-							it, grammars,
-							expected,
-							mapper,
-							propertyExpression,
-							(a, e) => a > e,
-							$"has {propertyExpression} greater than {Formatter.Format(expected)}")),
-				subject);
+			return Add(expected, (a, e) => a > e,
+				$"greater than {Formatter.Format(expected)}");
 		}
 
 		/// <summary>
 		///     …is greater than or equal to the <paramref name="expected" /> value.
 		/// </summary>
-		public AndOrResult<TItem, IThat<TItem>> GreaterThanOrEqualTo(
+		public AndOrResult<TType, TThat> GreaterThanOrEqualTo(
 			long? expected)
 		{
 			validation?.Invoke(expected, nameof(expected));
-			return new AndOrResult<TItem, IThat<TItem>>(subject.Get().ExpectationBuilder
-					.AddConstraint((it, grammars) =>
-						new StructPropertyConstraint<TItem, long>(
-							it, grammars,
-							expected,
-							mapper,
-							propertyExpression,
-							(a, e) => a >= e,
-							$"has {propertyExpression} greater than or equal to {Formatter.Format(expected)}")),
-				subject);
+			return Add(expected, (a, e) => a >= e,
+				$"greater than or equal to {Formatter.Format(expected)}");
 		}
 
 		/// <summary>
 		///     …is less than the <paramref name="expected" /> value.
 		/// </summary>
-		public AndOrResult<TItem, IThat<TItem>> LessThan(
+		public AndOrResult<TType, TThat> LessThan(
 			long? expected)
 		{
 			validation?.Invoke(expected, nameof(expected));
-			return new AndOrResult<TItem, IThat<TItem>>(subject.Get().ExpectationBuilder
-					.AddConstraint((it, grammars) =>
-						new StructPropertyConstraint<TItem, long>(
-							it, grammars,
-							expected,
-							mapper,
-							propertyExpression,
-							(a, e) => a < e,
-							$"has {propertyExpression} less than {Formatter.Format(expected)}")),
-				subject);
+			return Add(expected, (a, e) => a < e,
+				$"less than {Formatter.Format(expected)}");
 		}
 
 		/// <summary>
 		///     …is less than or equal to the <paramref name="expected" /> value.
 		/// </summary>
-		public AndOrResult<TItem, IThat<TItem>> LessThanOrEqualTo(
+		public AndOrResult<TType, TThat> LessThanOrEqualTo(
 			long? expected)
 		{
 			validation?.Invoke(expected, nameof(expected));
-			return new AndOrResult<TItem, IThat<TItem>>(subject.Get().ExpectationBuilder
-					.AddConstraint((it, grammars) =>
-						new StructPropertyConstraint<TItem, long>(
-							it, grammars,
-							expected,
-							mapper,
-							propertyExpression,
-							(a, e) => a <= e,
-							$"has {propertyExpression} less than or equal to {Formatter.Format(expected)}")),
-				subject);
+			return Add(expected, (a, e) => a <= e,
+				$"less than or equal to {Formatter.Format(expected)}");
 		}
 
 		/// <summary>
 		///     …is between the <paramref name="minimum" />…
 		/// </summary>
-		public BetweenResult<AndOrResult<TItem, IThat<TItem>>, long?> Between(
+		public BetweenResult<AndOrResult<TType, TThat>, long?> Between(
 			long? minimum)
 		{
 			validation?.Invoke(minimum, nameof(minimum));
-			return new BetweenResult<AndOrResult<TItem, IThat<TItem>>, long?>(maximum =>
+			return new BetweenResult<AndOrResult<TType, TThat>, long?>(maximum =>
 			{
 				validation?.Invoke(maximum, nameof(maximum));
-				return new AndOrResult<TItem, IThat<TItem>>(subject.Get().ExpectationBuilder
-						.AddConstraint((it, grammars) =>
-							new StructPropertyConstraint<TItem, long>(
-								it, grammars,
-								minimum,
-								mapper,
-								propertyExpression,
-								(a, e) => a >= e && a <= maximum,
-								$"has {propertyExpression} between {Formatter.Format(minimum)} and {Formatter.Format(maximum)}")),
-					subject);
+				return Add(minimum, (a, e) => a >= e && a <= maximum,
+					$"between {Formatter.Format(minimum)} and {Formatter.Format(maximum)}");
 			});
 		}
+
+		private AndOrResult<TType, TThat> Add(
+			long? expected,
+			Func<long?, long?, bool> condition,
+			string expectation)
+			=> new(subject.Get().ExpectationBuilder
+					.AddConstraint((it, constraintGrammars) =>
+						new StructPropertyConstraint<TValue, long>(
+							it, constraintGrammars | grammars,
+							expected,
+							mapper,
+							propertyExpression,
+							condition,
+							expectation)),
+				subject);
 	}
 
 	/// <summary>
-	///     Result for a <see cref="DateTimeKind" /> property.
+	///     Result for a <see cref="DateTimeKind" /> property that continues on the <see cref="IThat{TItem}" /> subject.
 	/// </summary>
 	public class DateTimeKind<TItem>(
 		IThat<TItem> subject,
 		Func<TItem, DateTimeKind?> mapper,
 		string propertyExpression)
+		: DateTimeKind<TItem, TItem, IThat<TItem>>(subject, mapper, propertyExpression);
+
+	/// <summary>
+	///     Result for a <see cref="DateTimeKind" /> property of a <typeparamref name="TValue" /> which continues on
+	///     <typeparamref name="TThat" /> with an underlying value of type <typeparamref name="TType" />.
+	/// </summary>
+	/// <remarks>
+	///     See <see cref="String{TValue, TType, TThat}" /> for the role of the <paramref name="grammars" /> and of the
+	///     split between <typeparamref name="TValue" /> and <typeparamref name="TType" />.
+	/// </remarks>
+	public class DateTimeKind<TValue, TType, TThat>(
+		TThat subject,
+		Func<TValue, DateTimeKind?> mapper,
+		string propertyExpression,
+		ExpectationGrammars grammars = ExpectationGrammars.None)
+		where TThat : IThat<TType>
 	{
 		/// <summary>
 		///     …is equal to the <paramref name="expected" /> value.
 		/// </summary>
-		public AndOrResult<TItem, IThat<TItem>> EqualTo(
+		public AndOrResult<TType, TThat> EqualTo(
 			DateTimeKind expected)
-			=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-					new StructPropertyConstraint<TItem, DateTimeKind>(
-						it, grammars,
-						expected,
-						mapper,
-						propertyExpression,
-						(a, e) => a?.Equals(e) == true,
-						$"has {propertyExpression} equal to {Formatter.Format(expected)}")),
-				subject);
+			=> Add(expected, (a, e) => a?.Equals(e) == true,
+				$"equal to {Formatter.Format(expected)}");
 
 		/// <summary>
 		///     …is not equal to the <paramref name="unexpected" /> value.
 		/// </summary>
-		public AndOrResult<TItem, IThat<TItem>> NotEqualTo(
+		public AndOrResult<TType, TThat> NotEqualTo(
 			DateTimeKind unexpected)
-			=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-					new StructPropertyConstraint<TItem, DateTimeKind>(
-						it, grammars,
-						unexpected,
-						mapper,
-						propertyExpression,
-						(a, u) => a?.Equals(u) != true,
-						$"has {propertyExpression} not equal to {Formatter.Format(unexpected)}")),
+			=> Add(unexpected, (a, u) => a?.Equals(u) != true,
+				$"not equal to {Formatter.Format(unexpected)}");
+
+		private AndOrResult<TType, TThat> Add(
+			DateTimeKind expected,
+			Func<DateTimeKind?, DateTimeKind?, bool> condition,
+			string expectation)
+			=> new(subject.Get().ExpectationBuilder
+					.AddConstraint((it, constraintGrammars) =>
+						new StructPropertyConstraint<TValue, DateTimeKind>(
+							it, constraintGrammars | grammars,
+							expected,
+							mapper,
+							propertyExpression,
+							condition,
+							expectation)),
 				subject);
 	}
 
 	/// <summary>
-	///     Result for a <see cref="TimeSpan" /> property.
+	///     Result for a <see cref="TimeSpan" /> property that continues on the <see cref="IThat{TItem}" /> subject.
 	/// </summary>
 	public class TimeSpan<TItem>(
 		IThat<TItem> subject,
 		Func<TItem, TimeSpan?> mapper,
 		string propertyExpression,
 		Action<TimeSpan?, string>? validation = null)
+		: TimeSpan<TItem, TItem, IThat<TItem>>(subject, mapper, propertyExpression, validation);
+
+	/// <summary>
+	///     Result for a <see cref="TimeSpan" /> property of a <typeparamref name="TValue" /> which continues on
+	///     <typeparamref name="TThat" /> with an underlying value of type <typeparamref name="TType" />.
+	/// </summary>
+	/// <remarks>
+	///     See <see cref="String{TValue, TType, TThat}" /> for the role of the <paramref name="grammars" /> and of the
+	///     split between <typeparamref name="TValue" /> and <typeparamref name="TType" />.
+	/// </remarks>
+	public class TimeSpan<TValue, TType, TThat>(
+		TThat subject,
+		Func<TValue, TimeSpan?> mapper,
+		string propertyExpression,
+		Action<TimeSpan?, string>? validation = null,
+		ExpectationGrammars grammars = ExpectationGrammars.None)
+		where TThat : IThat<TType>
 	{
 		/// <summary>
 		///     …is equal to the <paramref name="expected" /> value.
 		/// </summary>
-		public AndOrResult<TItem, IThat<TItem>> EqualTo(
+		public AndOrResult<TType, TThat> EqualTo(
 			TimeSpan? expected)
 		{
 			validation?.Invoke(expected, nameof(expected));
-			return new AndOrResult<TItem, IThat<TItem>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-					new StructPropertyConstraint<TItem, TimeSpan>(
-						it, grammars,
-						expected,
-						mapper,
-						propertyExpression,
-						(a, e) => a?.Equals(e) == true,
-						$"has {propertyExpression} equal to {Formatter.Format(expected)}")),
-				subject);
+			return Add(expected, (a, e) => a?.Equals(e) == true,
+				$"equal to {Formatter.Format(expected)}");
 		}
 
 		/// <summary>
 		///     …is not equal to the <paramref name="unexpected" /> value.
 		/// </summary>
-		public AndOrResult<TItem, IThat<TItem>> NotEqualTo(
+		public AndOrResult<TType, TThat> NotEqualTo(
 			TimeSpan? unexpected)
 		{
 			validation?.Invoke(unexpected, nameof(unexpected));
-			return new AndOrResult<TItem, IThat<TItem>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-					new StructPropertyConstraint<TItem, TimeSpan>(
-						it, grammars,
-						unexpected,
-						mapper,
-						propertyExpression,
-						(a, u) => a?.Equals(u) != true,
-						$"has {propertyExpression} not equal to {Formatter.Format(unexpected)}")),
-				subject);
+			return Add(unexpected, (a, u) => a?.Equals(u) != true,
+				$"not equal to {Formatter.Format(unexpected)}");
 		}
 
 		/// <summary>
 		///     …is greater than the <paramref name="expected" /> value.
 		/// </summary>
-		public AndOrResult<TItem, IThat<TItem>> GreaterThan(
+		public AndOrResult<TType, TThat> GreaterThan(
 			TimeSpan? expected)
 		{
 			validation?.Invoke(expected, nameof(expected));
-			return new AndOrResult<TItem, IThat<TItem>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-					new StructPropertyConstraint<TItem, TimeSpan>(
-						it, grammars,
-						expected,
-						mapper,
-						propertyExpression,
-						(a, e) => a > e,
-						$"has {propertyExpression} greater than {Formatter.Format(expected)}")),
-				subject);
+			return Add(expected, (a, e) => a > e,
+				$"greater than {Formatter.Format(expected)}");
 		}
 
 		/// <summary>
 		///     …is greater than or equal to the <paramref name="expected" /> value.
 		/// </summary>
-		public AndOrResult<TItem, IThat<TItem>> GreaterThanOrEqualTo(
+		public AndOrResult<TType, TThat> GreaterThanOrEqualTo(
 			TimeSpan? expected)
 		{
 			validation?.Invoke(expected, nameof(expected));
-			return new AndOrResult<TItem, IThat<TItem>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-					new StructPropertyConstraint<TItem, TimeSpan>(
-						it, grammars,
-						expected,
-						mapper,
-						propertyExpression,
-						(a, e) => a >= e,
-						$"has {propertyExpression} greater than or equal to {Formatter.Format(expected)}")),
-				subject);
+			return Add(expected, (a, e) => a >= e,
+				$"greater than or equal to {Formatter.Format(expected)}");
 		}
 
 		/// <summary>
 		///     …is less than the <paramref name="expected" /> value.
 		/// </summary>
-		public AndOrResult<TItem, IThat<TItem>> LessThan(
+		public AndOrResult<TType, TThat> LessThan(
 			TimeSpan? expected)
 		{
 			validation?.Invoke(expected, nameof(expected));
-			return new AndOrResult<TItem, IThat<TItem>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-					new StructPropertyConstraint<TItem, TimeSpan>(
-						it, grammars,
-						expected,
-						mapper,
-						propertyExpression,
-						(a, e) => a < e,
-						$"has {propertyExpression} less than {Formatter.Format(expected)}")),
-				subject);
+			return Add(expected, (a, e) => a < e,
+				$"less than {Formatter.Format(expected)}");
 		}
 
 		/// <summary>
 		///     …is less than or equal to the <paramref name="expected" /> value.
 		/// </summary>
-		public AndOrResult<TItem, IThat<TItem>> LessThanOrEqualTo(
+		public AndOrResult<TType, TThat> LessThanOrEqualTo(
 			TimeSpan? expected)
 		{
 			validation?.Invoke(expected, nameof(expected));
-			return new AndOrResult<TItem, IThat<TItem>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-					new StructPropertyConstraint<TItem, TimeSpan>(
-						it, grammars,
-						expected,
-						mapper,
-						propertyExpression,
-						(a, e) => a <= e,
-						$"has {propertyExpression} less than or equal to {Formatter.Format(expected)}")),
-				subject);
+			return Add(expected, (a, e) => a <= e,
+				$"less than or equal to {Formatter.Format(expected)}");
 		}
 
 		/// <summary>
 		///     …is between the <paramref name="minimum" />…
 		/// </summary>
-		public BetweenResult<AndOrResult<TItem, IThat<TItem>>, TimeSpan?> Between(
+		public BetweenResult<AndOrResult<TType, TThat>, TimeSpan?> Between(
 			TimeSpan? minimum)
 		{
 			validation?.Invoke(minimum, nameof(minimum));
-			return new BetweenResult<AndOrResult<TItem, IThat<TItem>>, TimeSpan?>(maximum =>
+			return new BetweenResult<AndOrResult<TType, TThat>, TimeSpan?>(maximum =>
 			{
 				validation?.Invoke(maximum, nameof(maximum));
-				return new AndOrResult<TItem, IThat<TItem>>(subject.Get().ExpectationBuilder.AddConstraint(
-						(it, grammars) =>
-							new StructPropertyConstraint<TItem, TimeSpan>(
-								it, grammars,
-								minimum,
-								mapper,
-								propertyExpression,
-								(a, e) => a >= e && a <= maximum,
-								$"has {propertyExpression} between {Formatter.Format(minimum)} and {Formatter.Format(maximum)}")),
-					subject);
+				return Add(minimum, (a, e) => a >= e && a <= maximum,
+					$"between {Formatter.Format(minimum)} and {Formatter.Format(maximum)}");
 			});
 		}
+
+		private AndOrResult<TType, TThat> Add(
+			TimeSpan? expected,
+			Func<TimeSpan?, TimeSpan?, bool> condition,
+			string expectation)
+			=> new(subject.Get().ExpectationBuilder
+					.AddConstraint((it, constraintGrammars) =>
+						new StructPropertyConstraint<TValue, TimeSpan>(
+							it, constraintGrammars | grammars,
+							expected,
+							mapper,
+							propertyExpression,
+							condition,
+							expectation)),
+				subject);
 	}
 
 	/// <summary>
@@ -694,7 +645,7 @@ public static class PropertyResult
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(expectation);
+			=> Append(stringBuilder, "");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -703,10 +654,28 @@ public static class PropertyResult
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("not ").Append(expectation);
+			=> Append(stringBuilder, "not ");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);
+
+		private void Append(StringBuilder stringBuilder, string negation)
+		{
+			if (Grammars.HasFlag(ExpectationGrammars.Active))
+			{
+				stringBuilder.Append("with ").Append(propertyExpression).Append(' ').Append(negation);
+			}
+			else if (Grammars.HasFlag(ExpectationGrammars.Nested))
+			{
+				stringBuilder.Append(propertyExpression).Append(" is ").Append(negation);
+			}
+			else
+			{
+				stringBuilder.Append(negation).Append("has ").Append(propertyExpression).Append(' ');
+			}
+
+			stringBuilder.Append(expectation);
+		}
 	}
 
 	private sealed class StringConstraint<TItem>(

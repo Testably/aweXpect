@@ -55,10 +55,6 @@
 	<data name="aweXpect0003Title" xml:space="preserve">
 		<value>Use "With…" instead of "Has…" directly after "Throws"</value>
 	</data>
-	<data name="aweXpect0003WithoutTwinMessageFormat" xml:space="preserve">
-		<value>Insert ".Which" before "{0}"</value>
-		<comment>Used when no "With…" twin with the same arguments exists, e.g. for the parameterless "HasHResult()".</comment>
-	</data>
 	<data name="aweXpect0003ReplaceCodeFixTitle" xml:space="preserve">
 		<value>Replace with "{0}"</value>
 		<comment>The title of the code fix that renames to the With… twin.</comment>

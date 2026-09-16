@@ -168,15 +168,6 @@ namespace aweXpect.Analyzers {
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Insert &quot;.Which&quot; before &quot;{0}&quot;.
-        /// </summary>
-        internal static string aweXpect0003WithoutTwinMessageFormat {
-            get {
-                return ResourceManager.GetString("aweXpect0003WithoutTwinMessageFormat", resourceCulture);
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to The subject was verified to be not null by a preceding expectation..
         /// </summary>
         internal static string IsNotNullSuppressionJustification {

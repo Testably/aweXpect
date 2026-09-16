@@ -269,5 +269,102 @@ public sealed partial class PropertyResultTests
 				             but it was <null>
 				             """);
 		}
+
+		public sealed class GrammarTests
+		{
+			[Fact]
+			public async Task WhenActive_ShouldUseTheActiveVoice()
+			{
+				PropertyResult.Int<MyClass?, MyClass?, IThat<MyClass?>> sut =
+					MyClass.HasIntValue(42, ExpectationGrammars.Active);
+
+				async Task Act()
+					=> await sut.GreaterThan(43);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             with int value greater than 43,
+					             but it had int value 42
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenActiveAndNegated_ShouldNegateTheComparison()
+			{
+				MyClass subject = new();
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(s => MyClass.IntValueOf(s, ExpectationGrammars.Active)
+						.EqualTo(0));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             with int value not equal to 0,
+					             but it had int value 0
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNested_ShouldReadAsAStatementAboutTheProperty()
+			{
+				PropertyResult.Int<MyClass?, MyClass?, IThat<MyClass?>> sut =
+					MyClass.HasIntValue(42, ExpectationGrammars.Nested);
+
+				async Task Act()
+					=> await sut.GreaterThan(43);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             int value is greater than 43,
+					             but it had int value 42
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNestedAndNegated_ShouldNegateTheComparison()
+			{
+				MyClass subject = new();
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(s => MyClass.IntValueOf(s, ExpectationGrammars.Nested)
+						.EqualTo(0));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             int value is not equal to 0,
+					             but it had int value 0
+					             """);
+			}
+		}
+
+		public sealed class NarrowedTypeTests
+		{
+			[Fact]
+			public async Task WhenTheMapperIsTypedAtTheBaseType_ShouldFailForAMismatch()
+			{
+				async Task Act()
+					=> await MyClass.HasIntValueOfNarrowedSubject(42).EqualTo(43);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has int value equal to 43,
+					             but it had int value 42
+					             """)
+					.Because("a constraint typed at the narrowed type would silently never be matched");
+			}
+
+			[Fact]
+			public async Task WhenTheMapperIsTypedAtTheBaseType_ShouldReturnTheNarrowedType()
+			{
+				MyDerivedClass? result = await MyClass.HasIntValueOfNarrowedSubject(42).EqualTo(42);
+
+				await That(result?.IntValue).IsEqualTo(42);
+			}
+		}
 	}
 }

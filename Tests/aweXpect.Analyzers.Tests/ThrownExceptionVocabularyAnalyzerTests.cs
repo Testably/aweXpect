@@ -206,7 +206,7 @@ public class ThrownExceptionVocabularyAnalyzerTests
 		);
 
 	[Fact]
-	public async Task WhenUsingHasHResultWithoutArgumentOnThrows_ShouldBeFlaggedWithoutTwin() => await Verifier
+	public async Task WhenUsingHasHResultWithoutArgumentOnThrows_ShouldBeFlaggedWithTwin() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
 			using System;
@@ -223,9 +223,9 @@ public class ThrownExceptionVocabularyAnalyzerTests
 			    }
 			}
 			""",
-			Verifier.Diagnostic(Rules.ThrownExceptionVocabularyWithoutTwinRule)
+			Verifier.Diagnostic(Rules.ThrownExceptionVocabularyRule)
 				.WithLocation(0)
-				.WithArguments("HasHResult")
+				.WithArguments("HasHResult", "WithHResult")
 		);
 
 	[Fact]
