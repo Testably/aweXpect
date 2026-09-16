@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "9bafd873a029b4fb838148e109ab580b0172cbd6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 13:43:03 2026 \u002B0200",
-        "message": "fix!: reject a \u0060null\u0060 or empty \u0060expected\u0060 in \u0060Contains\u0060, \u0060StartsWith\u0060 and \u0060EndsWith\u0060 (#1069)"
-      },
-      {
         "sha": "8c0caeb22645c6a9ba59fe745ea8790abe1591a1",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 13:58:34 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 13:11:33 2026 \u002B0200",
         "message": "feat!: give every scalar \u0060Has\u2026\u0060 both shapes (#1135)"
+      },
+      {
+        "sha": "b96672f8c8483ae65c10d056b4d8af62327adffd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 13:40:05 2026 \u002B0200",
+        "message": "chore: replace PublicApiGenerator with Microsoft.CodeAnalysis.PublicApiAnalyzers (#1139)"
       }
     ],
     "labels": [
-      "9bafd873",
       "8c0caeb2",
       "dc29fb29",
       "c5c7f7d4",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "081bd651",
       "753cd961",
       "92d19445",
-      "90e4b8cd"
+      "90e4b8cd",
+      "b96672f8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          254.11032401598416,
           289.89639768600466,
           227.24173703193665,
           250.75973449434554,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           270.47141586939495,
           241.59078941345214,
           251.40182484899248,
-          269.4652423540751
+          269.4652423540751,
+          238.62320494651794
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          249.94736538614546,
           246.6084097226461,
           238.37522983551025,
           236.79322616870587,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           256.50651825391327,
           248.39237417493547,
           240.8214459101359,
-          265.20534236090526
+          265.20534236090526,
+          247.63670858970056
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "9bafd873a029b4fb838148e109ab580b0172cbd6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 13:43:03 2026 \u002B0200",
-        "message": "fix!: reject a \u0060null\u0060 or empty \u0060expected\u0060 in \u0060Contains\u0060, \u0060StartsWith\u0060 and \u0060EndsWith\u0060 (#1069)"
-      },
-      {
         "sha": "8c0caeb22645c6a9ba59fe745ea8790abe1591a1",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 13:58:34 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 13:11:33 2026 \u002B0200",
         "message": "feat!: give every scalar \u0060Has\u2026\u0060 both shapes (#1135)"
+      },
+      {
+        "sha": "b96672f8c8483ae65c10d056b4d8af62327adffd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 13:40:05 2026 \u002B0200",
+        "message": "chore: replace PublicApiGenerator with Microsoft.CodeAnalysis.PublicApiAnalyzers (#1139)"
       }
     ],
     "labels": [
-      "9bafd873",
       "8c0caeb2",
       "dc29fb29",
       "c5c7f7d4",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "081bd651",
       "753cd961",
       "92d19445",
-      "90e4b8cd"
+      "90e4b8cd",
+      "b96672f8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          309059.1347307478,
           332842.84283854166,
           239795.6194580078,
           300669.2333984375,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           327024.4654947917,
           300103.9351236979,
           307677.30032784597,
-          331970.5521158854
+          331970.5521158854,
+          304515.0453450521
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1029,7 +1029,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           335444,
-          335444,
           335442,
           335444,
           335444,
@@ -1072,6 +1071,7 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542084,
+          617976,
           617976,
           617976,
           617976,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2758251.6180245536,
           2732419.07421875,
           2002764.6549479167,
           2738172.296875,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2708283.4361979165,
           2335981.8560697115,
           2612813.2177083334,
-          2849435.1923076925
+          2849435.1923076925,
+          2373191.4619791666
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841651,
           4841609,
           4841651,
@@ -1202,6 +1201,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841647,
           4841651,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "9bafd873a029b4fb838148e109ab580b0172cbd6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 13:43:03 2026 \u002B0200",
-        "message": "fix!: reject a \u0060null\u0060 or empty \u0060expected\u0060 in \u0060Contains\u0060, \u0060StartsWith\u0060 and \u0060EndsWith\u0060 (#1069)"
-      },
       {
         "sha": "8c0caeb22645c6a9ba59fe745ea8790abe1591a1",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 13:11:33 2026 \u002B0200",
         "message": "feat!: give every scalar \u0060Has\u2026\u0060 both shapes (#1135)"
+      },
+      {
+        "sha": "b96672f8c8483ae65c10d056b4d8af62327adffd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 13:40:05 2026 \u002B0200",
+        "message": "chore: replace PublicApiGenerator with Microsoft.CodeAnalysis.PublicApiAnalyzers (#1139)"
       }
     ],
     "labels": [
-      "9bafd873",
       "8c0caeb2",
       "dc29fb29",
       "c5c7f7d4",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "081bd651",
       "753cd961",
       "92d19445",
-      "90e4b8cd"
+      "90e4b8cd",
+      "b96672f8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          479.3151646931966,
           534.572336265019,
           443.84056151707966,
           476.14383179800853,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           495.7646186535175,
           461.5401366551717,
           453.90837942759197,
-          477.80998727253507
+          477.80998727253507,
+          492.46140168507895
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1679,7 +1679,7 @@ window.BENCHMARK_DATA = {
           1360,
           1360,
           1360,
-          1360,
+          1368,
           1368,
           1368,
           1368,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          511.97983792622887,
           489.1645165761312,
           472.59745909372964,
           469.3356034755707,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           547.2313723246257,
           486.11460876464844,
           486.0281050364176,
-          515.6146961847941
+          515.6146961847941,
+          505.1754206929888
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "9bafd873a029b4fb838148e109ab580b0172cbd6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 13:43:03 2026 \u002B0200",
-        "message": "fix!: reject a \u0060null\u0060 or empty \u0060expected\u0060 in \u0060Contains\u0060, \u0060StartsWith\u0060 and \u0060EndsWith\u0060 (#1069)"
-      },
-      {
         "sha": "8c0caeb22645c6a9ba59fe745ea8790abe1591a1",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 13:58:34 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 13:11:33 2026 \u002B0200",
         "message": "feat!: give every scalar \u0060Has\u2026\u0060 both shapes (#1135)"
+      },
+      {
+        "sha": "b96672f8c8483ae65c10d056b4d8af62327adffd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 13:40:05 2026 \u002B0200",
+        "message": "chore: replace PublicApiGenerator with Microsoft.CodeAnalysis.PublicApiAnalyzers (#1139)"
       }
     ],
     "labels": [
-      "9bafd873",
       "8c0caeb2",
       "dc29fb29",
       "c5c7f7d4",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "081bd651",
       "753cd961",
       "92d19445",
-      "90e4b8cd"
+      "90e4b8cd",
+      "b96672f8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          270.2526925291334,
           266.25251153537204,
           247.98166553179422,
           259.7270631790161,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           280.53383081299916,
           267.828190939767,
           263.1876878371605,
-          281.56462043126425
+          281.56462043126425,
+          263.48430817921957
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          247.85641435782114,
           248.32830775578816,
           256.6069412867228,
           257.8425686518351,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           266.4871666908264,
           239.6877254486084,
           240.1942369143168,
-          273.2354783693949
+          273.2354783693949,
+          246.19449597138626
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "9bafd873a029b4fb838148e109ab580b0172cbd6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 13:43:03 2026 \u002B0200",
-        "message": "fix!: reject a \u0060null\u0060 or empty \u0060expected\u0060 in \u0060Contains\u0060, \u0060StartsWith\u0060 and \u0060EndsWith\u0060 (#1069)"
-      },
-      {
         "sha": "8c0caeb22645c6a9ba59fe745ea8790abe1591a1",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 13:58:34 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 13:11:33 2026 \u002B0200",
         "message": "feat!: give every scalar \u0060Has\u2026\u0060 both shapes (#1135)"
+      },
+      {
+        "sha": "b96672f8c8483ae65c10d056b4d8af62327adffd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 13:40:05 2026 \u002B0200",
+        "message": "chore: replace PublicApiGenerator with Microsoft.CodeAnalysis.PublicApiAnalyzers (#1139)"
       }
     ],
     "labels": [
-      "9bafd873",
       "8c0caeb2",
       "dc29fb29",
       "c5c7f7d4",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "081bd651",
       "753cd961",
       "92d19445",
-      "90e4b8cd"
+      "90e4b8cd",
+      "b96672f8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          477.642680199941,
           460.0800317128499,
           384.8767795562744,
           480.52882326566254,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           554.8398835500082,
           537.2023598988851,
           508.41211083730065,
-          543.9238265355428
+          543.9238265355428,
+          527.9870834986369
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2895,7 +2895,7 @@ window.BENCHMARK_DATA = {
           1128,
           1128,
           1128,
-          1128,
+          1256,
           1256,
           1256,
           1256,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1218.4707197825114,
           1193.0484619140625,
           1050.6551955086845,
           1228.212302271525,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1226.763064956665,
           1151.7505856922694,
           1204.8881548472814,
-          1276.4812213897706
+          1276.4812213897706,
+          1188.5228155576265
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "9bafd873a029b4fb838148e109ab580b0172cbd6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 13:43:03 2026 \u002B0200",
-        "message": "fix!: reject a \u0060null\u0060 or empty \u0060expected\u0060 in \u0060Contains\u0060, \u0060StartsWith\u0060 and \u0060EndsWith\u0060 (#1069)"
-      },
-      {
         "sha": "8c0caeb22645c6a9ba59fe745ea8790abe1591a1",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 13:58:34 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 13:11:33 2026 \u002B0200",
         "message": "feat!: give every scalar \u0060Has\u2026\u0060 both shapes (#1135)"
+      },
+      {
+        "sha": "b96672f8c8483ae65c10d056b4d8af62327adffd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 13:40:05 2026 \u002B0200",
+        "message": "chore: replace PublicApiGenerator with Microsoft.CodeAnalysis.PublicApiAnalyzers (#1139)"
       }
     ],
     "labels": [
-      "9bafd873",
       "8c0caeb2",
       "dc29fb29",
       "c5c7f7d4",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "081bd651",
       "753cd961",
       "92d19445",
-      "90e4b8cd"
+      "90e4b8cd",
+      "b96672f8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1955.5244827270508,
           2029.9102714538574,
           1262.6462652842204,
           1928.0085342407226,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1933.8181060791017,
           1876.5541516817534,
           1962.5544964926582,
-          2048.440956702599
+          2048.440956702599,
+          2032.3603190104166
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3503,7 +3503,7 @@ window.BENCHMARK_DATA = {
           2624,
           2624,
           2624,
-          2624,
+          2752,
           2752,
           2752,
           2752,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1369.0302020481654,
           1369.8892083849225,
           1248.5084645589193,
           1287.9860266367593,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1347.267807143075,
           1322.0371481577556,
           1309.8268162863594,
-          1407.2877241770427
+          1407.2877241770427,
+          1423.3367259979248
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "9bafd873a029b4fb838148e109ab580b0172cbd6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 13:43:03 2026 \u002B0200",
-        "message": "fix!: reject a \u0060null\u0060 or empty \u0060expected\u0060 in \u0060Contains\u0060, \u0060StartsWith\u0060 and \u0060EndsWith\u0060 (#1069)"
-      },
-      {
         "sha": "8c0caeb22645c6a9ba59fe745ea8790abe1591a1",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 13:58:34 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 13:11:33 2026 \u002B0200",
         "message": "feat!: give every scalar \u0060Has\u2026\u0060 both shapes (#1135)"
+      },
+      {
+        "sha": "b96672f8c8483ae65c10d056b4d8af62327adffd",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 13:40:05 2026 \u002B0200",
+        "message": "chore: replace PublicApiGenerator with Microsoft.CodeAnalysis.PublicApiAnalyzers (#1139)"
       }
     ],
     "labels": [
-      "9bafd873",
       "8c0caeb2",
       "dc29fb29",
       "c5c7f7d4",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "081bd651",
       "753cd961",
       "92d19445",
-      "90e4b8cd"
+      "90e4b8cd",
+      "b96672f8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2688.8983939034597,
           2725.5105266571045,
           1722.5688888549805,
           2584.997779573713,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2586.085273742676,
           2469.415817006429,
           2470.333965008075,
-          2592.1967231750486
+          2592.1967231750486,
+          2586.445989481608
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4111,7 +4111,7 @@ window.BENCHMARK_DATA = {
           2816,
           2816,
           2816,
-          2816,
+          2944,
           2944,
           2944,
           2944,
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27901.550914219446,
           27478.99108276367,
           15551.548243931362,
           27038.082265218098,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           26990.944542439778,
           20047.28773803711,
           26411.143216814315,
-          26415.914396158852
+          26415.914396158852,
+          20449.435106404624
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4194,7 +4194,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4235,6 +4234,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
