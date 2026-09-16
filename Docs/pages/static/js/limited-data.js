@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "c6732d628c93a0741e76938d64c8659abf7d613c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 14:34:48 2026 \u002B0200",
-        "message": "fix: resolve the packed README without relying on the solution directory (#1072)"
-      },
-      {
         "sha": "756e490e76e477f4b567e437f3852066737e1bd6",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 15:25:41 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 15:01:23 2026 \u002B0200",
         "message": "test: keep the API acceptance build from hanging and from packing (#1143)"
+      },
+      {
+        "sha": "f39be11861d3de3fe2481ee9fc237d4fab013cba",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 14:41:28 2026 \u002B0200",
+        "message": "feat: support \u0060Within\u0060 on \u0060DoesNotSatisfy\u0060 (#1141)"
       }
     ],
     "labels": [
-      "c6732d62",
       "756e490e",
       "f2e29045",
       "9547e82c",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "b96672f8",
       "c61848cb",
       "1155bcb9",
-      "9da1cf49"
+      "9da1cf49",
+      "f39be118"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          254.4613069466182,
           135.9181802749634,
           188.02120952606202,
           248.97076454162598,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           238.62320494651794,
           299.6421850522359,
           259.6582940541781,
-          263.0858057339986
+          263.0858057339986,
+          183.93454241752625
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          246.56261631647746,
           154.9280719246183,
           192.87963887055716,
           241.61465230354895,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           247.63670858970056,
           246.15056107838947,
           237.14610471044267,
-          261.2859146935599
+          261.2859146935599,
+          192.79404819011688
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "c6732d628c93a0741e76938d64c8659abf7d613c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 14:34:48 2026 \u002B0200",
-        "message": "fix: resolve the packed README without relying on the solution directory (#1072)"
-      },
-      {
         "sha": "756e490e76e477f4b567e437f3852066737e1bd6",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 15:25:41 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 15:01:23 2026 \u002B0200",
         "message": "test: keep the API acceptance build from hanging and from packing (#1143)"
+      },
+      {
+        "sha": "f39be11861d3de3fe2481ee9fc237d4fab013cba",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 14:41:28 2026 \u002B0200",
+        "message": "feat: support \u0060Within\u0060 on \u0060DoesNotSatisfy\u0060 (#1141)"
       }
     ],
     "labels": [
-      "c6732d62",
       "756e490e",
       "f2e29045",
       "9547e82c",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "b96672f8",
       "c61848cb",
       "1155bcb9",
-      "9da1cf49"
+      "9da1cf49",
+      "f39be118"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          317015.54552283656,
           169749.23313685827,
           225613.10516764323,
           302007.1185021034,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           304515.0453450521,
           313328.3829264323,
           327633.0501302083,
-          331048.90040940506
+          331048.90040940506,
+          230373.07579752605
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          335444,
           335442,
           335442,
           335444,
@@ -1068,6 +1067,7 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542084,
+          617976,
           617976,
           617976,
           617976,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2688861.4171875,
           1366076.2995256695,
           1809507.5341796875,
           2722615.3565104166,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2373191.4619791666,
           2652479.40234375,
           2586987.552864583,
-          2724957.017708333
+          2724957.017708333,
+          1782350.6969401042
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841647,
           4841647,
           4841651,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841651
+          4841651,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "c6732d628c93a0741e76938d64c8659abf7d613c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 14:34:48 2026 \u002B0200",
-        "message": "fix: resolve the packed README without relying on the solution directory (#1072)"
-      },
       {
         "sha": "756e490e76e477f4b567e437f3852066737e1bd6",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 15:01:23 2026 \u002B0200",
         "message": "test: keep the API acceptance build from hanging and from packing (#1143)"
+      },
+      {
+        "sha": "f39be11861d3de3fe2481ee9fc237d4fab013cba",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 14:41:28 2026 \u002B0200",
+        "message": "feat: support \u0060Within\u0060 on \u0060DoesNotSatisfy\u0060 (#1141)"
       }
     ],
     "labels": [
-      "c6732d62",
       "756e490e",
       "f2e29045",
       "9547e82c",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "b96672f8",
       "c61848cb",
       "1155bcb9",
-      "9da1cf49"
+      "9da1cf49",
+      "f39be118"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          520.978179693222,
           247.31512594223022,
           372.9074284689767,
           461.8416782787868,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           492.46140168507895,
           459.5840605894725,
           470.77930974960327,
-          477.6969051996867
+          477.6969051996867,
+          346.825883769989
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1675,7 +1675,7 @@ window.BENCHMARK_DATA = {
           1360,
           1360,
           1360,
-          1360,
+          1368,
           1368,
           1368,
           1368,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          548.5366251128061,
           280.42371861139935,
           388.7194734641484,
           469.7274462064107,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           505.1754206929888,
           477.3013547261556,
           466.8591782365526,
-          527.1061539332072
+          527.1061539332072,
+          382.2924120766776
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "c6732d628c93a0741e76938d64c8659abf7d613c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 14:34:48 2026 \u002B0200",
-        "message": "fix: resolve the packed README without relying on the solution directory (#1072)"
-      },
-      {
         "sha": "756e490e76e477f4b567e437f3852066737e1bd6",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 15:25:41 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 15:01:23 2026 \u002B0200",
         "message": "test: keep the API acceptance build from hanging and from packing (#1143)"
+      },
+      {
+        "sha": "f39be11861d3de3fe2481ee9fc237d4fab013cba",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 14:41:28 2026 \u002B0200",
+        "message": "feat: support \u0060Within\u0060 on \u0060DoesNotSatisfy\u0060 (#1141)"
       }
     ],
     "labels": [
-      "c6732d62",
       "756e490e",
       "f2e29045",
       "9547e82c",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "b96672f8",
       "c61848cb",
       "1155bcb9",
-      "9da1cf49"
+      "9da1cf49",
+      "f39be118"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          270.73044805526735,
           142.2691675345103,
           198.9648289510182,
           264.6084016731807,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           263.48430817921957,
           271.5729146003723,
           255.58846728006998,
-          273.95314671198526
+          273.95314671198526,
+          202.72048400243122
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          292.022051970164,
           140.3980232079824,
           189.33685416834695,
           242.92863861719766,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           246.19449597138626,
           244.04474773406983,
           237.56093287467957,
-          258.6540732383728
+          258.6540732383728,
+          187.199236090978
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "c6732d628c93a0741e76938d64c8659abf7d613c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 14:34:48 2026 \u002B0200",
-        "message": "fix: resolve the packed README without relying on the solution directory (#1072)"
-      },
-      {
         "sha": "756e490e76e477f4b567e437f3852066737e1bd6",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 15:25:41 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 15:01:23 2026 \u002B0200",
         "message": "test: keep the API acceptance build from hanging and from packing (#1143)"
+      },
+      {
+        "sha": "f39be11861d3de3fe2481ee9fc237d4fab013cba",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 14:41:28 2026 \u002B0200",
+        "message": "feat: support \u0060Within\u0060 on \u0060DoesNotSatisfy\u0060 (#1141)"
       }
     ],
     "labels": [
-      "c6732d62",
       "756e490e",
       "f2e29045",
       "9547e82c",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "b96672f8",
       "c61848cb",
       "1155bcb9",
-      "9da1cf49"
+      "9da1cf49",
+      "f39be118"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          493.8501781736101,
           273.5651867389679,
           384.19529918034874,
           464.54025302614485,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           527.9870834986369,
           528.8159358842032,
           490.89194914499916,
-          521.7357479731241
+          521.7357479731241,
+          403.890355237325
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2891,7 +2891,7 @@ window.BENCHMARK_DATA = {
           1128,
           1128,
           1128,
-          1128,
+          1256,
           1256,
           1256,
           1256,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1433.442033290863,
           681.5710824648539,
           899.5376797993978,
           1201.658662523542,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1188.5228155576265,
           1243.799567589393,
           1164.362004500169,
-          1273.134701792399
+          1273.134701792399,
+          872.9681192398072
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "c6732d628c93a0741e76938d64c8659abf7d613c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 14:34:48 2026 \u002B0200",
-        "message": "fix: resolve the packed README without relying on the solution directory (#1072)"
-      },
-      {
         "sha": "756e490e76e477f4b567e437f3852066737e1bd6",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 15:25:41 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 15:01:23 2026 \u002B0200",
         "message": "test: keep the API acceptance build from hanging and from packing (#1143)"
+      },
+      {
+        "sha": "f39be11861d3de3fe2481ee9fc237d4fab013cba",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 14:41:28 2026 \u002B0200",
+        "message": "feat: support \u0060Within\u0060 on \u0060DoesNotSatisfy\u0060 (#1141)"
       }
     ],
     "labels": [
-      "c6732d62",
       "756e490e",
       "f2e29045",
       "9547e82c",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "b96672f8",
       "c61848cb",
       "1155bcb9",
-      "9da1cf49"
+      "9da1cf49",
+      "f39be118"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2033.934630530221,
           1058.5298448290143,
           1500.4603476206462,
           1929.1881154378254,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2032.3603190104166,
           1925.7750849405925,
           1888.4566846575055,
-          2009.3580899919782
+          2009.3580899919782,
+          1449.5176886149816
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3499,7 +3499,7 @@ window.BENCHMARK_DATA = {
           2624,
           2624,
           2624,
-          2624,
+          2752,
           2752,
           2752,
           2752,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1467.3255128860474,
           740.1549100875854,
           1016.2394481386457,
           1316.3702767235893,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1423.3367259979248,
           1331.6969072977702,
           1286.7029768625896,
-          1399.1628487904866
+          1399.1628487904866,
+          974.7943617502848
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "c6732d628c93a0741e76938d64c8659abf7d613c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 14:34:48 2026 \u002B0200",
-        "message": "fix: resolve the packed README without relying on the solution directory (#1072)"
-      },
-      {
         "sha": "756e490e76e477f4b567e437f3852066737e1bd6",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 15:25:41 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 15:01:23 2026 \u002B0200",
         "message": "test: keep the API acceptance build from hanging and from packing (#1143)"
+      },
+      {
+        "sha": "f39be11861d3de3fe2481ee9fc237d4fab013cba",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 14:41:28 2026 \u002B0200",
+        "message": "feat: support \u0060Within\u0060 on \u0060DoesNotSatisfy\u0060 (#1141)"
       }
     ],
     "labels": [
-      "c6732d62",
       "756e490e",
       "f2e29045",
       "9547e82c",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "b96672f8",
       "c61848cb",
       "1155bcb9",
-      "9da1cf49"
+      "9da1cf49",
+      "f39be118"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2693.6567529531626,
           1356.5092997184167,
           1951.5280904134115,
           2576.0701917012534,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2586.445989481608,
           2544.9662017822266,
           2490.8498107910154,
-          2551.3759628295898
+          2551.3759628295898,
+          1928.0050836290632
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4107,7 +4107,7 @@ window.BENCHMARK_DATA = {
           2816,
           2816,
           2816,
-          2816,
+          2944,
           2944,
           2944,
           2944,
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27807.976272583008,
           10630.42140851702,
           15669.362336222332,
           26675.440717424666,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           20449.435106404624,
           26161.38968549456,
           26092.071990966797,
-          27594.802510579426
+          27594.802510579426,
+          15316.923490397136
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4202,7 +4202,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33468,
           33471,
           33471,
@@ -4231,6 +4230,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
