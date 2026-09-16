@@ -13,5 +13,14 @@ public static partial class ThatNullableTimeOnly
 	[GuaranteesNotNull]
 	public static PropertyResult.Int<TimeOnly?> HasMinute(this IThat<TimeOnly?> subject)
 		=> new(subject, a => a?.Minute, "minute");
+
+	/// <summary>
+	///     Verifies that the minute of the subject is equal to the <paramref name="expected" /> value.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<TimeOnly?, IThat<TimeOnly?>> HasMinute(
+		this IThat<TimeOnly?> subject,
+		int expected)
+		=> subject.HasMinute().EqualTo(expected);
 }
 #endif

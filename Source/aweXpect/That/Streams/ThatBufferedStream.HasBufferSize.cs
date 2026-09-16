@@ -22,5 +22,15 @@ public static partial class ThatBufferedStream
 					$"The {paramName} buffer size must be greater than or equal to zero.");
 			}
 		});
+
+	/// <summary>
+	///     Verifies that the buffer size of the <see cref="BufferedStream" /> subject is equal to the
+	///     <paramref name="expected" /> value.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<BufferedStream?, IThat<BufferedStream?>> HasBufferSize(
+		this IThat<BufferedStream?> subject,
+		int expected)
+		=> subject.HasBufferSize().EqualTo(expected);
 }
 #endif

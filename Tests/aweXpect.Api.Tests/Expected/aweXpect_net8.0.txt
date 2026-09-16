@@ -271,6 +271,8 @@ namespace aweXpect
     {
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.IO.BufferedStream?> HasBufferSize(this aweXpect.Core.IThat<System.IO.BufferedStream?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.IO.BufferedStream?, aweXpect.Core.IThat<System.IO.BufferedStream?>> HasBufferSize(this aweXpect.Core.IThat<System.IO.BufferedStream?> subject, int expected) { }
     }
     public static class ThatChar
     {
@@ -294,8 +296,11 @@ namespace aweXpect
     public static class ThatDateOnly
     {
         public static aweXpect.Results.PropertyResult.Int<System.DateOnly> HasDay(this aweXpect.Core.IThat<System.DateOnly> subject) { }
+        public static aweXpect.Results.AndOrResult<System.DateOnly, aweXpect.Core.IThat<System.DateOnly>> HasDay(this aweXpect.Core.IThat<System.DateOnly> subject, int expected) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateOnly> HasMonth(this aweXpect.Core.IThat<System.DateOnly> subject) { }
+        public static aweXpect.Results.AndOrResult<System.DateOnly, aweXpect.Core.IThat<System.DateOnly>> HasMonth(this aweXpect.Core.IThat<System.DateOnly> subject, int expected) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateOnly> HasYear(this aweXpect.Core.IThat<System.DateOnly> subject) { }
+        public static aweXpect.Results.AndOrResult<System.DateOnly, aweXpect.Core.IThat<System.DateOnly>> HasYear(this aweXpect.Core.IThat<System.DateOnly> subject, int expected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateOnly, aweXpect.Core.IThat<System.DateOnly>> IsAfter(this aweXpect.Core.IThat<System.DateOnly> subject, System.DateOnly? expected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateOnly, aweXpect.Core.IThat<System.DateOnly>> IsBefore(this aweXpect.Core.IThat<System.DateOnly> subject, System.DateOnly? expected) { }
         public static aweXpect.Results.BetweenResult<aweXpect.Results.TimeToleranceResult<System.DateOnly, aweXpect.Core.IThat<System.DateOnly>>, System.DateOnly?> IsBetween(this aweXpect.Core.IThat<System.DateOnly> subject, System.DateOnly? minimum) { }
@@ -318,13 +323,21 @@ namespace aweXpect
     public static class ThatDateTime
     {
         public static aweXpect.Results.PropertyResult.Int<System.DateTime> HasDay(this aweXpect.Core.IThat<System.DateTime> subject) { }
+        public static aweXpect.Results.AndOrResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> HasDay(this aweXpect.Core.IThat<System.DateTime> subject, int expected) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTime> HasHour(this aweXpect.Core.IThat<System.DateTime> subject) { }
+        public static aweXpect.Results.AndOrResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> HasHour(this aweXpect.Core.IThat<System.DateTime> subject, int expected) { }
         public static aweXpect.Results.PropertyResult.DateTimeKind<System.DateTime> HasKind(this aweXpect.Core.IThat<System.DateTime> subject) { }
+        public static aweXpect.Results.AndOrResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> HasKind(this aweXpect.Core.IThat<System.DateTime> subject, System.DateTimeKind expected) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTime> HasMillisecond(this aweXpect.Core.IThat<System.DateTime> subject) { }
+        public static aweXpect.Results.AndOrResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> HasMillisecond(this aweXpect.Core.IThat<System.DateTime> subject, int expected) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTime> HasMinute(this aweXpect.Core.IThat<System.DateTime> subject) { }
+        public static aweXpect.Results.AndOrResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> HasMinute(this aweXpect.Core.IThat<System.DateTime> subject, int expected) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTime> HasMonth(this aweXpect.Core.IThat<System.DateTime> subject) { }
+        public static aweXpect.Results.AndOrResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> HasMonth(this aweXpect.Core.IThat<System.DateTime> subject, int expected) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTime> HasSecond(this aweXpect.Core.IThat<System.DateTime> subject) { }
+        public static aweXpect.Results.AndOrResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> HasSecond(this aweXpect.Core.IThat<System.DateTime> subject, int expected) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTime> HasYear(this aweXpect.Core.IThat<System.DateTime> subject) { }
+        public static aweXpect.Results.AndOrResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> HasYear(this aweXpect.Core.IThat<System.DateTime> subject, int expected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsAfter(this aweXpect.Core.IThat<System.DateTime> subject, System.DateTime? expected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>> IsBefore(this aweXpect.Core.IThat<System.DateTime> subject, System.DateTime? expected) { }
         public static aweXpect.Results.BetweenResult<aweXpect.Results.TimeToleranceResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>>, System.DateTime?> IsBetween(this aweXpect.Core.IThat<System.DateTime> subject, System.DateTime? minimum) { }
@@ -347,13 +360,21 @@ namespace aweXpect
     public static class ThatDateTimeOffset
     {
         public static aweXpect.Results.PropertyResult.Int<System.DateTimeOffset> HasDay(this aweXpect.Core.IThat<System.DateTimeOffset> subject) { }
+        public static aweXpect.Results.AndOrResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> HasDay(this aweXpect.Core.IThat<System.DateTimeOffset> subject, int expected) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTimeOffset> HasHour(this aweXpect.Core.IThat<System.DateTimeOffset> subject) { }
+        public static aweXpect.Results.AndOrResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> HasHour(this aweXpect.Core.IThat<System.DateTimeOffset> subject, int expected) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTimeOffset> HasMillisecond(this aweXpect.Core.IThat<System.DateTimeOffset> subject) { }
+        public static aweXpect.Results.AndOrResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> HasMillisecond(this aweXpect.Core.IThat<System.DateTimeOffset> subject, int expected) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTimeOffset> HasMinute(this aweXpect.Core.IThat<System.DateTimeOffset> subject) { }
+        public static aweXpect.Results.AndOrResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> HasMinute(this aweXpect.Core.IThat<System.DateTimeOffset> subject, int expected) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTimeOffset> HasMonth(this aweXpect.Core.IThat<System.DateTimeOffset> subject) { }
+        public static aweXpect.Results.AndOrResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> HasMonth(this aweXpect.Core.IThat<System.DateTimeOffset> subject, int expected) { }
         public static aweXpect.Results.PropertyResult.TimeSpan<System.DateTimeOffset> HasOffset(this aweXpect.Core.IThat<System.DateTimeOffset> subject) { }
+        public static aweXpect.Results.AndOrResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> HasOffset(this aweXpect.Core.IThat<System.DateTimeOffset> subject, System.TimeSpan expected) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTimeOffset> HasSecond(this aweXpect.Core.IThat<System.DateTimeOffset> subject) { }
+        public static aweXpect.Results.AndOrResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> HasSecond(this aweXpect.Core.IThat<System.DateTimeOffset> subject, int expected) { }
         public static aweXpect.Results.PropertyResult.Int<System.DateTimeOffset> HasYear(this aweXpect.Core.IThat<System.DateTimeOffset> subject) { }
+        public static aweXpect.Results.AndOrResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> HasYear(this aweXpect.Core.IThat<System.DateTimeOffset> subject, int expected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsAfter(this aweXpect.Core.IThat<System.DateTimeOffset> subject, System.DateTimeOffset? expected) { }
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>> IsBefore(this aweXpect.Core.IThat<System.DateTimeOffset> subject, System.DateTimeOffset? expected) { }
         public static aweXpect.Results.BetweenResult<aweXpect.Results.TimeToleranceResult<System.DateTimeOffset, aweXpect.Core.IThat<System.DateTimeOffset>>, System.DateTimeOffset?> IsBetween(this aweXpect.Core.IThat<System.DateTimeOffset> subject, System.DateTimeOffset? minimum) { }
@@ -469,6 +490,8 @@ namespace aweXpect
         public static aweXpect.Results.AndOrResult<TEnum, aweXpect.Core.IThat<TEnum>> DoesNotHaveValue<TEnum>(this aweXpect.Core.IThat<TEnum> subject, long? unexpected)
             where TEnum :  struct, System.Enum { }
         public static aweXpect.Results.AndOrResult<TEnum, aweXpect.Core.IThat<TEnum>> HasFlag<TEnum>(this aweXpect.Core.IThat<TEnum> subject, TEnum? expectedFlag)
+            where TEnum :  struct, System.Enum { }
+        public static aweXpect.Results.PropertyResult.Long<TEnum> HasValue<TEnum>(this aweXpect.Core.IThat<TEnum> subject)
             where TEnum :  struct, System.Enum { }
         public static aweXpect.Results.AndOrResult<TEnum, aweXpect.Core.IThat<TEnum>> HasValue<TEnum>(this aweXpect.Core.IThat<TEnum> subject, long? expected)
             where TEnum :  struct, System.Enum { }
@@ -978,6 +1001,9 @@ namespace aweXpect
     public static class ThatException
     {
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.PropertyResult.Int<TException> HasHResult<TException>(this aweXpect.Core.IThat<TException> subject)
+            where TException : System.Exception? { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThat<TException>> HasHResult<TException>(this aweXpect.Core.IThat<TException> subject, int expected)
             where TException : System.Exception? { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -1081,9 +1107,15 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.DateOnly?> HasDay(this aweXpect.Core.IThat<System.DateOnly?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.DateOnly?, aweXpect.Core.IThat<System.DateOnly?>> HasDay(this aweXpect.Core.IThat<System.DateOnly?> subject, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.DateOnly?> HasMonth(this aweXpect.Core.IThat<System.DateOnly?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.DateOnly?, aweXpect.Core.IThat<System.DateOnly?>> HasMonth(this aweXpect.Core.IThat<System.DateOnly?> subject, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.DateOnly?> HasYear(this aweXpect.Core.IThat<System.DateOnly?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.DateOnly?, aweXpect.Core.IThat<System.DateOnly?>> HasYear(this aweXpect.Core.IThat<System.DateOnly?> subject, int expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateOnly?, aweXpect.Core.IThat<System.DateOnly?>> IsAfter(this aweXpect.Core.IThat<System.DateOnly?> subject, System.DateOnly? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -1118,19 +1150,35 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.DateTime?> HasDay(this aweXpect.Core.IThat<System.DateTime?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.DateTime?, aweXpect.Core.IThat<System.DateTime?>> HasDay(this aweXpect.Core.IThat<System.DateTime?> subject, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.DateTime?> HasHour(this aweXpect.Core.IThat<System.DateTime?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.DateTime?, aweXpect.Core.IThat<System.DateTime?>> HasHour(this aweXpect.Core.IThat<System.DateTime?> subject, int expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.DateTimeKind<System.DateTime?> HasKind(this aweXpect.Core.IThat<System.DateTime?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.DateTime?, aweXpect.Core.IThat<System.DateTime?>> HasKind(this aweXpect.Core.IThat<System.DateTime?> subject, System.DateTimeKind expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.DateTime?> HasMillisecond(this aweXpect.Core.IThat<System.DateTime?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.DateTime?, aweXpect.Core.IThat<System.DateTime?>> HasMillisecond(this aweXpect.Core.IThat<System.DateTime?> subject, int expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.DateTime?> HasMinute(this aweXpect.Core.IThat<System.DateTime?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.DateTime?, aweXpect.Core.IThat<System.DateTime?>> HasMinute(this aweXpect.Core.IThat<System.DateTime?> subject, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.DateTime?> HasMonth(this aweXpect.Core.IThat<System.DateTime?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.DateTime?, aweXpect.Core.IThat<System.DateTime?>> HasMonth(this aweXpect.Core.IThat<System.DateTime?> subject, int expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.DateTime?> HasSecond(this aweXpect.Core.IThat<System.DateTime?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.DateTime?, aweXpect.Core.IThat<System.DateTime?>> HasSecond(this aweXpect.Core.IThat<System.DateTime?> subject, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.DateTime?> HasYear(this aweXpect.Core.IThat<System.DateTime?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.DateTime?, aweXpect.Core.IThat<System.DateTime?>> HasYear(this aweXpect.Core.IThat<System.DateTime?> subject, int expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTime?, aweXpect.Core.IThat<System.DateTime?>> IsAfter(this aweXpect.Core.IThat<System.DateTime?> subject, System.DateTime? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -1165,19 +1213,35 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.DateTimeOffset?> HasDay(this aweXpect.Core.IThat<System.DateTimeOffset?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>> HasDay(this aweXpect.Core.IThat<System.DateTimeOffset?> subject, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.DateTimeOffset?> HasHour(this aweXpect.Core.IThat<System.DateTimeOffset?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>> HasHour(this aweXpect.Core.IThat<System.DateTimeOffset?> subject, int expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.DateTimeOffset?> HasMillisecond(this aweXpect.Core.IThat<System.DateTimeOffset?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>> HasMillisecond(this aweXpect.Core.IThat<System.DateTimeOffset?> subject, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.DateTimeOffset?> HasMinute(this aweXpect.Core.IThat<System.DateTimeOffset?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>> HasMinute(this aweXpect.Core.IThat<System.DateTimeOffset?> subject, int expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.DateTimeOffset?> HasMonth(this aweXpect.Core.IThat<System.DateTimeOffset?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>> HasMonth(this aweXpect.Core.IThat<System.DateTimeOffset?> subject, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.TimeSpan<System.DateTimeOffset?> HasOffset(this aweXpect.Core.IThat<System.DateTimeOffset?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>> HasOffset(this aweXpect.Core.IThat<System.DateTimeOffset?> subject, System.TimeSpan expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.DateTimeOffset?> HasSecond(this aweXpect.Core.IThat<System.DateTimeOffset?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>> HasSecond(this aweXpect.Core.IThat<System.DateTimeOffset?> subject, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.DateTimeOffset?> HasYear(this aweXpect.Core.IThat<System.DateTimeOffset?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>> HasYear(this aweXpect.Core.IThat<System.DateTimeOffset?> subject, int expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>> IsAfter(this aweXpect.Core.IThat<System.DateTimeOffset?> subject, System.DateTimeOffset? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -1217,6 +1281,9 @@ namespace aweXpect
             where TEnum :  struct, System.Enum { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TEnum?, aweXpect.Core.IThat<TEnum?>> HasFlag<TEnum>(this aweXpect.Core.IThat<TEnum?> subject, TEnum? expectedFlag)
+            where TEnum :  struct, System.Enum { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.PropertyResult.Long<TEnum?> HasValue<TEnum>(this aweXpect.Core.IThat<TEnum?> subject)
             where TEnum :  struct, System.Enum { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TEnum?, aweXpect.Core.IThat<TEnum?>> HasValue<TEnum>(this aweXpect.Core.IThat<TEnum?> subject, long? expected)
@@ -1261,11 +1328,19 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.TimeOnly?> HasHour(this aweXpect.Core.IThat<System.TimeOnly?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.TimeOnly?, aweXpect.Core.IThat<System.TimeOnly?>> HasHour(this aweXpect.Core.IThat<System.TimeOnly?> subject, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.TimeOnly?> HasMillisecond(this aweXpect.Core.IThat<System.TimeOnly?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.TimeOnly?, aweXpect.Core.IThat<System.TimeOnly?>> HasMillisecond(this aweXpect.Core.IThat<System.TimeOnly?> subject, int expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.TimeOnly?> HasMinute(this aweXpect.Core.IThat<System.TimeOnly?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.TimeOnly?, aweXpect.Core.IThat<System.TimeOnly?>> HasMinute(this aweXpect.Core.IThat<System.TimeOnly?> subject, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.TimeOnly?> HasSecond(this aweXpect.Core.IThat<System.TimeOnly?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.TimeOnly?, aweXpect.Core.IThat<System.TimeOnly?>> HasSecond(this aweXpect.Core.IThat<System.TimeOnly?> subject, int expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.TimeToleranceResult<System.TimeOnly?, aweXpect.Core.IThat<System.TimeOnly?>> IsAfter(this aweXpect.Core.IThat<System.TimeOnly?> subject, System.TimeOnly? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -1586,7 +1661,11 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Long<System.IO.Stream?> HasLength(this aweXpect.Core.IThat<System.IO.Stream?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.IO.Stream?, aweXpect.Core.IThat<System.IO.Stream?>> HasLength(this aweXpect.Core.IThat<System.IO.Stream?> subject, long expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Long<System.IO.Stream?> HasPosition(this aweXpect.Core.IThat<System.IO.Stream?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.IO.Stream?, aweXpect.Core.IThat<System.IO.Stream?>> HasPosition(this aweXpect.Core.IThat<System.IO.Stream?> subject, long expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.IO.Stream?, aweXpect.Core.IThat<System.IO.Stream?>> IsNotReadOnly(this aweXpect.Core.IThat<System.IO.Stream?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -1623,7 +1702,11 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<string?> HasLength(this aweXpect.Core.IThat<string?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>> HasLength(this aweXpect.Core.IThat<string?> subject, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<string?> HasLineCount(this aweXpect.Core.IThat<string?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>> HasLineCount(this aweXpect.Core.IThat<string?> subject, int expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<string?, aweXpect.Core.IThat<string?>> HasLines(this aweXpect.Core.IThat<string?> subject, System.Action<aweXpect.Core.IThatSubject<System.Collections.Generic.IEnumerable<string>>> expectations) { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -1665,9 +1748,13 @@ namespace aweXpect
     public static class ThatTimeOnly
     {
         public static aweXpect.Results.PropertyResult.Int<System.TimeOnly> HasHour(this aweXpect.Core.IThat<System.TimeOnly> subject) { }
+        public static aweXpect.Results.AndOrResult<System.TimeOnly, aweXpect.Core.IThat<System.TimeOnly>> HasHour(this aweXpect.Core.IThat<System.TimeOnly> subject, int expected) { }
         public static aweXpect.Results.PropertyResult.Int<System.TimeOnly> HasMillisecond(this aweXpect.Core.IThat<System.TimeOnly> subject) { }
+        public static aweXpect.Results.AndOrResult<System.TimeOnly, aweXpect.Core.IThat<System.TimeOnly>> HasMillisecond(this aweXpect.Core.IThat<System.TimeOnly> subject, int expected) { }
         public static aweXpect.Results.PropertyResult.Int<System.TimeOnly> HasMinute(this aweXpect.Core.IThat<System.TimeOnly> subject) { }
+        public static aweXpect.Results.AndOrResult<System.TimeOnly, aweXpect.Core.IThat<System.TimeOnly>> HasMinute(this aweXpect.Core.IThat<System.TimeOnly> subject, int expected) { }
         public static aweXpect.Results.PropertyResult.Int<System.TimeOnly> HasSecond(this aweXpect.Core.IThat<System.TimeOnly> subject) { }
+        public static aweXpect.Results.AndOrResult<System.TimeOnly, aweXpect.Core.IThat<System.TimeOnly>> HasSecond(this aweXpect.Core.IThat<System.TimeOnly> subject, int expected) { }
         public static aweXpect.Results.TimeToleranceResult<System.TimeOnly, aweXpect.Core.IThat<System.TimeOnly>> IsAfter(this aweXpect.Core.IThat<System.TimeOnly> subject, System.TimeOnly? expected) { }
         public static aweXpect.Results.TimeToleranceResult<System.TimeOnly, aweXpect.Core.IThat<System.TimeOnly>> IsBefore(this aweXpect.Core.IThat<System.TimeOnly> subject, System.TimeOnly? expected) { }
         public static aweXpect.Results.BetweenResult<aweXpect.Results.TimeToleranceResult<System.TimeOnly, aweXpect.Core.IThat<System.TimeOnly>>, System.TimeOnly?> IsBetween(this aweXpect.Core.IThat<System.TimeOnly> subject, System.TimeOnly? minimum) { }
@@ -1717,11 +1804,19 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.Version?> HasBuild(this aweXpect.Core.IThat<System.Version?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Version?, aweXpect.Core.IThat<System.Version?>> HasBuild(this aweXpect.Core.IThat<System.Version?> subject, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.Version?> HasMajor(this aweXpect.Core.IThat<System.Version?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Version?, aweXpect.Core.IThat<System.Version?>> HasMajor(this aweXpect.Core.IThat<System.Version?> subject, int expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.Version?> HasMinor(this aweXpect.Core.IThat<System.Version?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Version?, aweXpect.Core.IThat<System.Version?>> HasMinor(this aweXpect.Core.IThat<System.Version?> subject, int expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.PropertyResult.Int<System.Version?> HasRevision(this aweXpect.Core.IThat<System.Version?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Version?, aweXpect.Core.IThat<System.Version?>> HasRevision(this aweXpect.Core.IThat<System.Version?> subject, int expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<System.Version?, aweXpect.Core.IThat<System.Version?>>, System.Version?> IsBetween(this aweXpect.Core.IThat<System.Version?> subject, System.Version? minimum) { }
         [aweXpect.Core.GuaranteesNotNull]

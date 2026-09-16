@@ -25,7 +25,10 @@ You can verify, the length of the `Stream`:
 ```csharp
 Stream subject = new MemoryStream("foo"u8.ToArray());
 
+await Expect.That(subject).HasLength(3);
+// or more explicit
 await Expect.That(subject).HasLength().EqualTo(3);
+
 await Expect.That(subject).HasLength().NotEqualTo(4);
 
 await Expect.That(subject).HasLength().GreaterThan(2);
@@ -43,7 +46,10 @@ You can verify, the position of the `Stream`:
 Stream subject = new MemoryStream("foo"u8.ToArray());
 subject.Seek(2, SeekOrigin.Current);
 
+await Expect.That(subject).HasPosition(2);
+// or more explicit
 await Expect.That(subject).HasPosition().EqualTo(2);
+
 await Expect.That(subject).HasPosition().NotEqualTo(0);
 
 await Expect.That(subject).HasPosition().GreaterThan(1);
@@ -60,7 +66,10 @@ You can verify, the buffer size of the `BufferedStream`:
 ```csharp
 BufferedStream subject = new(new MemoryStream("foo"u8.ToArray()), 2);
 
+await Expect.That(subject).HasBufferSize(2);
+// or more explicit
 await Expect.That(subject).HasBufferSize().EqualTo(2);
+
 await Expect.That(subject).HasBufferSize().NotEqualTo(3);
 
 await Expect.That(subject).HasBufferSize().GreaterThan(1);

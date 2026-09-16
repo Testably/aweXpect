@@ -11,6 +11,10 @@ public static partial class ThatEnum
 	/// <summary>
 	///     Verifies that the subject has the <paramref name="expectedFlag" /> value.
 	/// </summary>
+	/// <remarks>
+	///     Unlike the other <c>Has…</c> expectations this one has no continuation: testing a flag asks whether a bit is
+	///     set, so the comparisons a continuation offers — greater than, between, … — have no meaning for it.
+	/// </remarks>
 	public static AndOrResult<TEnum, IThat<TEnum>> HasFlag<TEnum>(
 		this IThat<TEnum> subject,
 		TEnum? expectedFlag)

@@ -12,5 +12,13 @@ public static partial class ThatTimeOnly
 	/// </summary>
 	public static PropertyResult.Int<TimeOnly> HasMillisecond(this IThat<TimeOnly> subject)
 		=> new(subject, a => a.Millisecond, "millisecond");
+
+	/// <summary>
+	///     Verifies that the millisecond of the subject is equal to the <paramref name="expected" /> value.
+	/// </summary>
+	public static AndOrResult<TimeOnly, IThat<TimeOnly>> HasMillisecond(
+		this IThat<TimeOnly> subject,
+		int expected)
+		=> subject.HasMillisecond().EqualTo(expected);
 }
 #endif

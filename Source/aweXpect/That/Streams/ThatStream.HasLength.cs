@@ -21,4 +21,14 @@ public static partial class ThatStream
 					$"The {paramName} length must be greater than or equal to zero.");
 			}
 		});
+
+	/// <summary>
+	///     Verifies that the length of the <see cref="Stream" /> subject is equal to the <paramref name="expected" />
+	///     value.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<Stream?, IThat<Stream?>> HasLength(
+		this IThat<Stream?> subject,
+		long expected)
+		=> subject.HasLength().EqualTo(expected);
 }

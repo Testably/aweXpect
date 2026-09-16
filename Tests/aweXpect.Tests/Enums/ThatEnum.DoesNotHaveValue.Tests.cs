@@ -32,8 +32,8 @@ public sealed partial class ThatEnum
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              does not have value {Formatter.Format(unexpected)},
-					              but it was {Formatter.Format(subject)}
+					              has value not equal to {Formatter.Format(unexpected)},
+					              but it had value {Formatter.Format((long)subject)}
 					              """);
 			}
 

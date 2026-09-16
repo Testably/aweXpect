@@ -12,7 +12,10 @@ You can verify the individual components of the `Version`:
 ```csharp
 Version subject = new(1, 2, 3, 4);
 
+await Expect.That(subject).HasMajor(1);
+// or more explicit
 await Expect.That(subject).HasMajor().EqualTo(1);
+
 await Expect.That(subject).HasMinor().GreaterThan(1);
 await Expect.That(subject).HasBuild().LessThanOrEqualTo(3);
 await Expect.That(subject).HasRevision().NotEqualTo(5);
@@ -26,8 +29,8 @@ An unspecified build or revision is `-1`, not `0`:
 ```csharp
 Version subject = new(1, 2);
 
-await Expect.That(subject).HasBuild().EqualTo(-1);
-await Expect.That(subject).HasRevision().EqualTo(-1);
+await Expect.That(subject).HasBuild(-1);
+await Expect.That(subject).HasRevision(-1);
 ```
 
 ## Greater than

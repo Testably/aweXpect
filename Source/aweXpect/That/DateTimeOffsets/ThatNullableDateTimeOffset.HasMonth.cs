@@ -12,4 +12,13 @@ public static partial class ThatNullableDateTimeOffset
 	[GuaranteesNotNull]
 	public static PropertyResult.Int<DateTimeOffset?> HasMonth(this IThat<DateTimeOffset?> subject)
 		=> new(subject, a => a?.Month, "month");
+
+	/// <summary>
+	///     Verifies that the month of the subject is equal to the <paramref name="expected" /> value.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<DateTimeOffset?, IThat<DateTimeOffset?>> HasMonth(
+		this IThat<DateTimeOffset?> subject,
+		int expected)
+		=> subject.HasMonth().EqualTo(expected);
 }

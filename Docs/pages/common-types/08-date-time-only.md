@@ -171,6 +171,10 @@ You can verify, the properties of the `DateTime`:
 ```csharp
 DateOnly subject = new DateOnly(2024, 12, 31);
 
+await Expect.That(subject).HasYear(2024);
+await Expect.That(subject).HasMonth(12);
+await Expect.That(subject).HasDay(31);
+// or more explicit
 await Expect.That(subject).HasYear().EqualTo(2024);
 await Expect.That(subject).HasMonth().EqualTo(12);
 await Expect.That(subject).HasDay().EqualTo(31);
@@ -181,6 +185,11 @@ You can verify, the properties of the `TimeOnly`:
 ```csharp
 TimeOnly subject = new TimeOnly(15, 16, 17, 189);
 
+await Expect.That(subject).HasHour(15);
+await Expect.That(subject).HasMinute(16);
+await Expect.That(subject).HasSecond(17);
+await Expect.That(subject).HasMillisecond(189);
+// or more explicit
 await Expect.That(subject).HasHour().EqualTo(15);
 await Expect.That(subject).HasMinute().EqualTo(16);
 await Expect.That(subject).HasSecond().EqualTo(17);

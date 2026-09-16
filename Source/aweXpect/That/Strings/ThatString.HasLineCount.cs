@@ -25,4 +25,18 @@ public static partial class ThatString
 					$"The {paramName} line count must be greater than or equal to zero.");
 			}
 		});
+
+	/// <summary>
+	///     Verifies that the number of lines of the <see langword="string" /> subject is equal to the
+	///     <paramref name="expected" /> value.
+	/// </summary>
+	/// <remarks>
+	///     Lines are separated by <c>\r\n</c>, <c>\n</c> or <c>\r</c>.<br />
+	///     A single trailing line terminator does not start a new line, so <c>"a\nb\n"</c> has two lines.
+	/// </remarks>
+	[GuaranteesNotNull]
+	public static AndOrResult<string?, IThat<string?>> HasLineCount(
+		this IThat<string?> subject,
+		int expected)
+		=> subject.HasLineCount().EqualTo(expected);
 }
