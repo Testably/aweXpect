@@ -415,6 +415,13 @@ public sealed class GuaranteesNotNullTests
 			return false;
 		}
 
+		// A navigation such as `Values()` on a dictionary returns a new subject instead of an expectation. It verifies
+		// nothing itself; the expectations continued from it are covered in their own right.
+		if (IsSupportedReceiver(method.ReturnType))
+		{
+			return false;
+		}
+
 		Type? receiver = method.IsStatic
 			? method.GetParameters().FirstOrDefault()?.ParameterType
 			: method.DeclaringType;

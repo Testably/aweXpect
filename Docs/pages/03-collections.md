@@ -96,24 +96,6 @@ This tolerance can be applied to `double`, `float`, `decimal` and `DateTime`.
 
 *Note: The same expectation works also for `IAsyncEnumerable<T>`.*
 
-## Unique dictionary values
-
-For dictionaries, you can verify that all values are unique. The keys are completely ignored, as they are unique by
-design:
-
-```csharp
-IDictionary<int, int> subject = new Dictionary<int, int>
-{
-  { 1, 1 },
-  { 2, 1 }
-};
-
-// This following expectation will fail, even though the keys are unique!
-await Expect.That(subject).AreAllUnique();
-```
-
-For all other collections, uniqueness is an expectation on the [elements](#unique).
-
 ## Elements
 
 You can add expectations that a certain number of elements must meet.
@@ -176,6 +158,8 @@ strings:
 await Expect.That(albums).All().AreUnique().Using(new AlbumComparer());
 await Expect.That(["a", "b"]).All().AreUnique().IgnoringCase();
 ```
+
+For dictionaries, verify the [values](#keys-and-values) instead, as the keys are unique by design.
 
 *Note: The same expectation works also for `IAsyncEnumerable<T>`.*
 
@@ -616,3 +600,16 @@ await Expect.That(values).ContainsValues("foo", "bar");
 await Expect.That(values).DoesNotContainValue("something");
 await Expect.That(values).DoesNotContainValues("something", "else");
 ```
+
+### Keys and values
+
+You can continue with expectations on the keys or on the values of a dictionary:
+
+```csharp
+Dictionary<int, string> values = new() { { 42, "foo" }, { 43, "bar" } };
+
+await Expect.That(values).Keys.Contains(42);
+await Expect.That(values).Values.All().AreUnique();
+```
+
+The keys of a dictionary are unique by design, so its uniqueness is decided by the values alone.
