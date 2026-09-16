@@ -3822,6 +3822,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 09:10:55 2026 \u002B0200",
         "message": "chore: suppress the sonar findings that reflect deliberate design decisions (#1133)"
+      },
+      {
+        "sha": "081bd6510a50dbeefdf3cad3281891ab91dfd626",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 09:11:30 2026 \u002B0200",
+        "message": "refactor!: remove \u0060DoesNotHaveCount\u0060 in favour of \u0060HasCount().NotEqualTo()\u0060 (#1132)"
       }
     ],
     "labels": [
@@ -4461,7 +4467,8 @@ window.BENCHMARK_DATA = {
       "65c8528d",
       "a6d5da98",
       "9d72f3f2",
-      "b6c8f8a0"
+      "b6c8f8a0",
+      "081bd651"
     ],
     "datasets": [
       {
@@ -5104,7 +5111,8 @@ window.BENCHMARK_DATA = {
           248.4514249165853,
           283.4815231959025,
           273.72809038162234,
-          256.4923405329386
+          256.4923405329386,
+          270.47141586939495
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5577,6 +5585,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6403,7 +6412,8 @@ window.BENCHMARK_DATA = {
           260.14416281382245,
           273.63889627456666,
           269.87966009775795,
-          258.7779306631822
+          258.7779306631822,
+          256.50651825391327
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6596,6 +6606,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10425,6 +10436,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 09:10:55 2026 \u002B0200",
         "message": "chore: suppress the sonar findings that reflect deliberate design decisions (#1133)"
+      },
+      {
+        "sha": "081bd6510a50dbeefdf3cad3281891ab91dfd626",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 09:11:30 2026 \u002B0200",
+        "message": "refactor!: remove \u0060DoesNotHaveCount\u0060 in favour of \u0060HasCount().NotEqualTo()\u0060 (#1132)"
       }
     ],
     "labels": [
@@ -10987,7 +11004,8 @@ window.BENCHMARK_DATA = {
       "65c8528d",
       "a6d5da98",
       "9d72f3f2",
-      "b6c8f8a0"
+      "b6c8f8a0",
+      "081bd651"
     ],
     "datasets": [
       {
@@ -11553,7 +11571,8 @@ window.BENCHMARK_DATA = {
           376971.2715820313,
           403607.07361778844,
           313103.78349609376,
-          314545.55390625
+          314545.55390625,
+          327024.4654947917
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12123,6 +12142,7 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542084,
+          617976,
           617976,
           617976
         ],
@@ -12698,7 +12718,8 @@ window.BENCHMARK_DATA = {
           2426398.605208333,
           2852323.4205729165,
           2625909.8854166665,
-          2610521.2452566964
+          2610521.2452566964,
+          2708283.4361979165
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13269,6 +13290,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841647,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -17105,6 +17127,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 09:10:55 2026 \u002B0200",
         "message": "chore: suppress the sonar findings that reflect deliberate design decisions (#1133)"
+      },
+      {
+        "sha": "081bd6510a50dbeefdf3cad3281891ab91dfd626",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 09:11:30 2026 \u002B0200",
+        "message": "refactor!: remove \u0060DoesNotHaveCount\u0060 in favour of \u0060HasCount().NotEqualTo()\u0060 (#1132)"
       }
     ],
     "labels": [
@@ -17744,7 +17772,8 @@ window.BENCHMARK_DATA = {
       "65c8528d",
       "a6d5da98",
       "9d72f3f2",
-      "b6c8f8a0"
+      "b6c8f8a0",
+      "081bd651"
     ],
     "datasets": [
       {
@@ -18387,7 +18416,8 @@ window.BENCHMARK_DATA = {
           456.83985471725464,
           493.58852710723875,
           461.8257578849792,
-          474.93318353380477
+          474.93318353380477,
+          495.7646186535175
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19034,6 +19064,7 @@ window.BENCHMARK_DATA = {
           1360,
           1360,
           1360,
+          1368,
           1368,
           1368
         ],
@@ -19686,7 +19717,8 @@ window.BENCHMARK_DATA = {
           511.47907301584877,
           490.98782704671225,
           480.7632736137935,
-          504.21682192484536
+          504.21682192484536,
+          547.2313723246257
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19879,6 +19911,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -24170,6 +24203,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 09:10:55 2026 \u002B0200",
         "message": "chore: suppress the sonar findings that reflect deliberate design decisions (#1133)"
+      },
+      {
+        "sha": "081bd6510a50dbeefdf3cad3281891ab91dfd626",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 09:11:30 2026 \u002B0200",
+        "message": "refactor!: remove \u0060DoesNotHaveCount\u0060 in favour of \u0060HasCount().NotEqualTo()\u0060 (#1132)"
       }
     ],
     "labels": [
@@ -24809,7 +24848,8 @@ window.BENCHMARK_DATA = {
       "65c8528d",
       "a6d5da98",
       "9d72f3f2",
-      "b6c8f8a0"
+      "b6c8f8a0",
+      "081bd651"
     ],
     "datasets": [
       {
@@ -25452,7 +25492,8 @@ window.BENCHMARK_DATA = {
           260.0524561882019,
           273.80011316446155,
           259.16043017705283,
-          257.07899941716875
+          257.07899941716875,
+          280.53383081299916
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -25966,6 +26007,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -26751,7 +26793,8 @@ window.BENCHMARK_DATA = {
           258.13585980733234,
           286.9390425682068,
           245.1631186803182,
-          236.7126715864454
+          236.7126715864454,
+          266.4871666908264
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -26944,6 +26987,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -31235,6 +31279,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 09:10:55 2026 \u002B0200",
         "message": "chore: suppress the sonar findings that reflect deliberate design decisions (#1133)"
+      },
+      {
+        "sha": "081bd6510a50dbeefdf3cad3281891ab91dfd626",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 09:11:30 2026 \u002B0200",
+        "message": "refactor!: remove \u0060DoesNotHaveCount\u0060 in favour of \u0060HasCount().NotEqualTo()\u0060 (#1132)"
       }
     ],
     "labels": [
@@ -31874,7 +31924,8 @@ window.BENCHMARK_DATA = {
       "65c8528d",
       "a6d5da98",
       "9d72f3f2",
-      "b6c8f8a0"
+      "b6c8f8a0",
+      "081bd651"
     ],
     "datasets": [
       {
@@ -32517,7 +32568,8 @@ window.BENCHMARK_DATA = {
           455.2793807029724,
           467.7995653833662,
           508.83996607462564,
-          546.8898420969646
+          546.8898420969646,
+          554.8398835500082
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33164,6 +33216,7 @@ window.BENCHMARK_DATA = {
           1128,
           1128,
           1128,
+          1256,
           1256,
           1256
         ],
@@ -33816,7 +33869,8 @@ window.BENCHMARK_DATA = {
           1166.936570576259,
           1204.0937852223715,
           1180.9390767904429,
-          1293.7900349934896
+          1293.7900349934896,
+          1226.763064956665
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34245,6 +34299,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -38300,6 +38355,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 09:10:55 2026 \u002B0200",
         "message": "chore: suppress the sonar findings that reflect deliberate design decisions (#1133)"
+      },
+      {
+        "sha": "081bd6510a50dbeefdf3cad3281891ab91dfd626",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 09:11:30 2026 \u002B0200",
+        "message": "refactor!: remove \u0060DoesNotHaveCount\u0060 in favour of \u0060HasCount().NotEqualTo()\u0060 (#1132)"
       }
     ],
     "labels": [
@@ -38939,7 +39000,8 @@ window.BENCHMARK_DATA = {
       "65c8528d",
       "a6d5da98",
       "9d72f3f2",
-      "b6c8f8a0"
+      "b6c8f8a0",
+      "081bd651"
     ],
     "datasets": [
       {
@@ -39582,7 +39644,8 @@ window.BENCHMARK_DATA = {
           1828.1378362019857,
           1893.4208389009748,
           1894.3747313363212,
-          1977.2733469645182
+          1977.2733469645182,
+          1933.8181060791017
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -40229,6 +40292,7 @@ window.BENCHMARK_DATA = {
           2624,
           2624,
           2624,
+          2752,
           2752,
           2752
         ],
@@ -40881,7 +40945,8 @@ window.BENCHMARK_DATA = {
           1325.6420168876648,
           1280.2460991995674,
           1408.0354794722336,
-          1303.7993309020997
+          1303.7993309020997,
+          1347.267807143075
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -41074,6 +41139,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -45365,6 +45431,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 09:10:55 2026 \u002B0200",
         "message": "chore: suppress the sonar findings that reflect deliberate design decisions (#1133)"
+      },
+      {
+        "sha": "081bd6510a50dbeefdf3cad3281891ab91dfd626",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 09:11:30 2026 \u002B0200",
+        "message": "refactor!: remove \u0060DoesNotHaveCount\u0060 in favour of \u0060HasCount().NotEqualTo()\u0060 (#1132)"
       }
     ],
     "labels": [
@@ -46004,7 +46076,8 @@ window.BENCHMARK_DATA = {
       "65c8528d",
       "a6d5da98",
       "9d72f3f2",
-      "b6c8f8a0"
+      "b6c8f8a0",
+      "081bd651"
     ],
     "datasets": [
       {
@@ -46647,7 +46720,8 @@ window.BENCHMARK_DATA = {
           2415.468625288743,
           2482.6679671151296,
           2470.5895595550537,
-          2547.284422238668
+          2547.284422238668,
+          2586.085273742676
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -47294,6 +47368,7 @@ window.BENCHMARK_DATA = {
           2816,
           2816,
           2816,
+          2944,
           2944,
           2944
         ],
@@ -47946,7 +48021,8 @@ window.BENCHMARK_DATA = {
           19935.378450666154,
           27317.63968302409,
           25044.89990641276,
-          25662.806424654445
+          25662.806424654445,
+          26990.944542439778
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -48591,6 +48667,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
