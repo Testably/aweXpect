@@ -23,7 +23,7 @@ public sealed partial class ThatDelegate
 			[Fact]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				Action @delegate = () => { Thread.Sleep(50); };
+				Action @delegate = () => Task.Delay(50.Milliseconds()).Wait();
 
 				async Task Act()
 					=> await That(@delegate).ExecutesWithin(10.Milliseconds());
@@ -551,7 +551,7 @@ public sealed partial class ThatDelegate
 			{
 				Func<int> @delegate = () =>
 				{
-					Thread.Sleep(50);
+					Task.Delay(50.Milliseconds()).Wait();
 					return 0;
 				};
 
