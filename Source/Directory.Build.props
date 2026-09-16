@@ -26,10 +26,11 @@
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 	</PropertyGroup>
 
-	<!-- A local build only warns about a public API that is not declared yet, so a change can be iterated on before its
-	     entry is recorded. The Release build in the pipeline still fails on it. -->
+	<!-- A local build only warns about a public API that is not declared yet (RS0016) or that is declared but no longer
+	     exists (RS0017), so a change can be iterated on before the entries are updated. The Release build in the
+	     pipeline still fails on both. -->
 	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-		<WarningsNotAsErrors>$(WarningsNotAsErrors);RS0016</WarningsNotAsErrors>
+		<WarningsNotAsErrors>$(WarningsNotAsErrors);RS0016;RS0017</WarningsNotAsErrors>
 	</PropertyGroup>
 
 	<PropertyGroup>
