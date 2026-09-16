@@ -35,12 +35,14 @@ partial class Build
 	///     falls into the last slice instead of silently dropping out of the score.
 	///     The patterns start with <c>**/</c> because Stryker does not document what its globs are relative to, and end
 	///     in <c>/*.cs</c> because the subject folders are flat - a nested folder would fall into the last slice.
-	///     The files directly in the project folder match none of them, and Stryker mutates such a file in every slice
-	///     rather than in none, so the first slice claims them and every later slice inherits the exclusion.
+	///     Stryker matches the patterns against the path below the project, so a file directly in the project folder is
+	///     matched as a bare name that no <c>**/</c> pattern can reach - and a file that matches no pattern at all is
+	///     mutated in every slice rather than in none. <c>*.cs</c> is the only pattern that claims those, and the first
+	///     slice takes them so that every later slice inherits the exclusion.
 	/// </remarks>
 	private static readonly (string Name, string[] Patterns)[] MainMutationSlices =
 	[
-		("collections-enumerable", ["**/aweXpect/*.cs", "**/That/Collections/ThatEnumerable*.cs",]),
+		("collections-enumerable", ["*.cs", "**/That/Collections/ThatEnumerable*.cs",]),
 		("collections-other", ["**/That/Collections/*.cs",]),
 		("numbers", ["**/That/Numbers/*.cs",]),
 		("dates",
@@ -62,12 +64,12 @@ partial class Build
 	/// <remarks>
 	///     The <c>Core</c> folder is the only one with nested folders, so it is matched twice - once flat and once
 	///     recursively - because the last slice would otherwise silently pick up everything below it.
-	///     The files directly in the project folder match no <c>**/</c> pattern, and Stryker mutates them in every
-	///     slice rather than in none, so the first slice claims them explicitly and the others exclude them.
+	///     <c>Expect.cs</c>, <c>Fail.cs</c> and <c>Skip.cs</c> sit directly in the project folder, which is why the
+	///     first slice claims them with <c>*.cs</c> - see <see cref="MainMutationSlices" />.
 	/// </remarks>
 	private static readonly (string Name, string[] Patterns)[] CoreMutationSlices =
 	[
-		("engine", ["**/aweXpect.Core/*.cs", "**/Core/*.cs", "**/Core/**/*.cs",]),
+		("engine", ["*.cs", "**/Core/*.cs", "**/Core/**/*.cs",]),
 		("options", ["**/Options/*.cs",]),
 		("formatting", ["**/Formatting/*.cs", "**/Equivalency/*.cs",]),
 		("rest", []),
