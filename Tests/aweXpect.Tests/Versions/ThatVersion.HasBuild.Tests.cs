@@ -4,6 +4,55 @@ public sealed partial class ThatVersion
 {
 	public sealed class HasBuild
 	{
+		public sealed class Tests
+		{
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				Version? subject = null;
+				int expected = 1;
+
+				async Task Act()
+					=> await That(subject).HasBuild(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has build equal to 1,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenBuildOfSubjectIsDifferent_ShouldFail()
+			{
+				Version? subject = new(2010, 11, 12, 13);
+				int expected = 13;
+
+				async Task Act()
+					=> await That(subject).HasBuild(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              has build equal to {Formatter.Format(expected)},
+					              but it had build 12
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenBuildOfSubjectIsTheSame_ShouldSucceed()
+			{
+				Version? subject = new(2010, 11, 12, 13);
+				int expected = 12;
+
+				async Task Act()
+					=> await That(subject).HasBuild(expected);
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
 		public sealed class EqualToTests
 		{
 			[Fact]

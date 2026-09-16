@@ -5,6 +5,38 @@ public sealed partial class ThatDateOnly
 {
 	public sealed class HasDay
 	{
+		public sealed class Tests
+		{
+			[Fact]
+			public async Task WhenDayOfSubjectIsDifferent_ShouldFail()
+			{
+				DateOnly subject = new(2010, 11, 12);
+				int expected = 11;
+
+				async Task Act()
+					=> await That(subject).HasDay(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              has day equal to {Formatter.Format(expected)},
+					              but it had day 12
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenDayOfSubjectIsTheSame_ShouldSucceed()
+			{
+				DateOnly subject = new(2010, 11, 12);
+				int expected = 12;
+
+				async Task Act()
+					=> await That(subject).HasDay(expected);
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
 		public sealed class EqualToTests
 		{
 			[Fact]

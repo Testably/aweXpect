@@ -4,6 +4,75 @@ public sealed partial class ThatString
 {
 	public class HasLineCount
 	{
+		public sealed class Tests
+		{
+			[Fact]
+			public async Task WhenActualIsNull_ShouldFail()
+			{
+				string? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasLineCount(0);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has line count equal to 0,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenExpectedLineCountIsNegative_ShouldThrowArgumentOutOfRangeException()
+			{
+				string subject = "";
+
+				async Task Act()
+					=> await That(subject).HasLineCount(-1);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithMessage("*The expected line count must be greater than or equal to zero*")
+					.AsWildcard().And
+					.WithParamName("expected");
+			}
+
+			[Theory]
+			[InlineData("a\nb", 3)]
+			[InlineData("a\nb\n", 3)]
+			public async Task WhenLineCountDiffers_ShouldFail(string subject, int lineCount)
+			{
+				async Task Act()
+					=> await That(subject).HasLineCount(lineCount);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              has line count equal to {lineCount},
+					              but it had line count 2
+					              """);
+			}
+
+			[Theory]
+			[InlineData("", 0)]
+			[InlineData("a", 1)]
+			[InlineData("a\nb", 2)]
+			[InlineData("a\nb\n", 2)]
+			[InlineData("a\nb\n\n", 3)]
+			[InlineData("\n", 1)]
+			[InlineData("a\r\n", 1)]
+			[InlineData("a\r\nb\r\n", 2)]
+			[InlineData("\r\n", 1)]
+			[InlineData("\r", 1)]
+			[InlineData("one\r\ntwo\nthree\rfour", 4)]
+			public async Task WhenLineCountMatches_ShouldSucceed(string subject, int lineCount)
+			{
+				async Task Act()
+					=> await That(subject).HasLineCount(lineCount);
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
 		public sealed class EqualToTests
 		{
 			[Fact]

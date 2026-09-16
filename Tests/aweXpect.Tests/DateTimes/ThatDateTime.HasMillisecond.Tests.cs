@@ -4,6 +4,38 @@ public sealed partial class ThatDateTime
 {
 	public sealed class HasMillisecond
 	{
+		public sealed class Tests
+		{
+			[Fact]
+			public async Task WhenMillisecondOfSubjectIsDifferent_ShouldFail()
+			{
+				DateTime subject = new(2010, 11, 12, 13, 14, 15, 167);
+				int expected = 15;
+
+				async Task Act()
+					=> await That(subject).HasMillisecond(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              has millisecond equal to {Formatter.Format(expected)},
+					              but it had millisecond 167
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenMillisecondOfSubjectIsTheSame_ShouldSucceed()
+			{
+				DateTime subject = new(2010, 11, 12, 13, 14, 15, 167);
+				int expected = 167;
+
+				async Task Act()
+					=> await That(subject).HasMillisecond(expected);
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
 		public sealed class EqualToTests
 		{
 			[Fact]

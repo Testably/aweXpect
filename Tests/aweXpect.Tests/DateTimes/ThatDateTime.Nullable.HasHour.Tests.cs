@@ -6,6 +6,55 @@ public sealed partial class ThatDateTime
 	{
 		public sealed class HasHour
 		{
+			public sealed class Tests
+			{
+				[Fact]
+				public async Task WhenHourOfSubjectIsDifferent_ShouldFail()
+				{
+					DateTime? subject = new(2010, 11, 12, 13, 14, 15, 167);
+					int expected = 12;
+
+					async Task Act()
+						=> await That(subject).HasHour(expected);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              has hour equal to {Formatter.Format(expected)},
+						              but it had hour 13
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenHourOfSubjectIsTheSame_ShouldSucceed()
+				{
+					DateTime? subject = new(2010, 11, 12, 13, 14, 15, 167);
+					int expected = 13;
+
+					async Task Act()
+						=> await That(subject).HasHour(expected);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsNull_ShouldFail()
+				{
+					DateTime? subject = null;
+					int expected = 1;
+
+					async Task Act()
+						=> await That(subject).HasHour(expected);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             has hour equal to 1,
+						             but it was <null>
+						             """);
+				}
+			}
+
 			public sealed class EqualToTests
 			{
 				[Fact]
