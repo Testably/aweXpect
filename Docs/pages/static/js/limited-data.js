@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "0ee271ea4011da369e50f8e566bbbc91b7904429",
-        "author": "dependabot[bot]",
-        "date": "Mon Sep 14 08:08:45 2026 \u002B0000",
-        "message": "chore: Bump the xunit group with 2 updates (#1089)"
-      },
-      {
         "sha": "17ec8fe624fb23bc01190a54117de0c08f008f0f",
         "author": "dependabot[bot]",
         "date": "Mon Sep 14 08:21:22 2026 \u002B0000",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 18:50:15 2026 \u002B0200",
         "message": "feat: render objects and boxed key-value pairs from the metadata registry (#1149)"
+      },
+      {
+        "sha": "486e1c09ab9f4591986a4d621011fa2afea4c3c4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 18:58:32 2026 \u002B0200",
+        "message": "feat: register the events of a recorded subject through the source generator (#1148)"
       }
     ],
     "labels": [
-      "0ee271ea",
       "17ec8fe6",
       "6d1fd9f2",
       "5fdcb1f5",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "763e7578",
       "3a011705",
       "59750756",
-      "a9df7c2a"
+      "a9df7c2a",
+      "486e1c09"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          273.5617689352769,
           243.38492396899633,
           249.66410438219705,
           253.45660810470582,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           204.8831177075704,
           250.18587831656137,
           177.46720306078592,
-          253.7201486315046
+          253.7201486315046,
+          244.59249210357666
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          295.36873945823083,
           232.63954355035509,
           251.00914753400363,
           238.20291840235393,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           204.35752204259236,
           235.1757512826186,
           213.5767141342163,
-          249.05672403176627
+          249.05672403176627,
+          248.96122046879358
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "0ee271ea4011da369e50f8e566bbbc91b7904429",
-        "author": "dependabot[bot]",
-        "date": "Mon Sep 14 08:08:45 2026 \u002B0000",
-        "message": "chore: Bump the xunit group with 2 updates (#1089)"
-      },
-      {
         "sha": "17ec8fe624fb23bc01190a54117de0c08f008f0f",
         "author": "dependabot[bot]",
         "date": "Mon Sep 14 08:21:22 2026 \u002B0000",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 18:50:15 2026 \u002B0200",
         "message": "feat: render objects and boxed key-value pairs from the metadata registry (#1149)"
+      },
+      {
+        "sha": "486e1c09ab9f4591986a4d621011fa2afea4c3c4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 18:58:32 2026 \u002B0200",
+        "message": "feat: register the events of a recorded subject through the source generator (#1148)"
       }
     ],
     "labels": [
-      "0ee271ea",
       "17ec8fe6",
       "6d1fd9f2",
       "5fdcb1f5",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "763e7578",
       "3a011705",
       "59750756",
-      "a9df7c2a"
+      "a9df7c2a",
+      "486e1c09"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          399767.38720703125,
           374133.0217285156,
           377747.7562825521,
           380885.13536783855,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           257640.27161458333,
           313474.94373372395,
           212859.1596110026,
-          302333.4135579427
+          302333.4135579427,
+          312978.3467610677
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          542084,
           542085,
           542084,
           542085,
@@ -1058,6 +1057,7 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542084,
+          617976,
           617976,
           617976,
           617976,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2493686.390625,
           2570248.724479167,
           2424088.3388020834,
           2607126.966796875,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           1944879.146108774,
           2575158.3140625,
           1452274.2623697917,
-          2380478.3739583334
+          2380478.3739583334,
+          2400084.4453125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841635,
           4841651,
           4841647,
           4841651,
@@ -1202,6 +1201,7 @@ window.BENCHMARK_DATA = {
           4841648,
           4841651,
           4841609,
+          4841647,
           4841647
         ],
         "borderColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "0ee271ea4011da369e50f8e566bbbc91b7904429",
-        "author": "dependabot[bot]",
-        "date": "Mon Sep 14 08:08:45 2026 \u002B0000",
-        "message": "chore: Bump the xunit group with 2 updates (#1089)"
-      },
       {
         "sha": "17ec8fe624fb23bc01190a54117de0c08f008f0f",
         "author": "dependabot[bot]",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 18:50:15 2026 \u002B0200",
         "message": "feat: render objects and boxed key-value pairs from the metadata registry (#1149)"
+      },
+      {
+        "sha": "486e1c09ab9f4591986a4d621011fa2afea4c3c4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 18:58:32 2026 \u002B0200",
+        "message": "feat: register the events of a recorded subject through the source generator (#1148)"
       }
     ],
     "labels": [
-      "0ee271ea",
       "17ec8fe6",
       "6d1fd9f2",
       "5fdcb1f5",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "763e7578",
       "3a011705",
       "59750756",
-      "a9df7c2a"
+      "a9df7c2a",
+      "486e1c09"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          518.9379989917462,
           443.52883034486035,
           475.8615978240967,
           458.6794052441915,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           400.83259906768797,
           458.5742767197745,
           309.30614109039306,
-          457.79335708618163
+          457.79335708618163,
+          464.8653025627136
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1665,7 +1665,7 @@ window.BENCHMARK_DATA = {
           1360,
           1360,
           1360,
-          1360,
+          1368,
           1368,
           1368,
           1368,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          568.9296937355629,
           468.3997852461679,
           498.57393035888674,
           509.3773717880249,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           423.6676195780436,
           455.18602970668246,
           349.63048515319826,
-          527.2408049901327
+          527.2408049901327,
+          501.41817881266275
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "0ee271ea4011da369e50f8e566bbbc91b7904429",
-        "author": "dependabot[bot]",
-        "date": "Mon Sep 14 08:08:45 2026 \u002B0000",
-        "message": "chore: Bump the xunit group with 2 updates (#1089)"
-      },
-      {
         "sha": "17ec8fe624fb23bc01190a54117de0c08f008f0f",
         "author": "dependabot[bot]",
         "date": "Mon Sep 14 08:21:22 2026 \u002B0000",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 18:50:15 2026 \u002B0200",
         "message": "feat: render objects and boxed key-value pairs from the metadata registry (#1149)"
+      },
+      {
+        "sha": "486e1c09ab9f4591986a4d621011fa2afea4c3c4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 18:58:32 2026 \u002B0200",
+        "message": "feat: register the events of a recorded subject through the source generator (#1148)"
       }
     ],
     "labels": [
-      "0ee271ea",
       "17ec8fe6",
       "6d1fd9f2",
       "5fdcb1f5",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "763e7578",
       "3a011705",
       "59750756",
-      "a9df7c2a"
+      "a9df7c2a",
+      "486e1c09"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          302.6372409820557,
           249.44472227777754,
           269.57373355229697,
           260.13586384909496,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           224.4715517117427,
           271.2452363014221,
           183.1254425219127,
-          274.64652620951335
+          274.64652620951335,
+          262.69628829956054
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          319.19809678622653,
           241.04878514607748,
           244.01057580312093,
           247.2639165242513,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           207.47387848581587,
           239.5957540512085,
           183.8832524617513,
-          243.27342240015665
+          243.27342240015665,
+          240.46703370412192
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "0ee271ea4011da369e50f8e566bbbc91b7904429",
-        "author": "dependabot[bot]",
-        "date": "Mon Sep 14 08:08:45 2026 \u002B0000",
-        "message": "chore: Bump the xunit group with 2 updates (#1089)"
-      },
-      {
         "sha": "17ec8fe624fb23bc01190a54117de0c08f008f0f",
         "author": "dependabot[bot]",
         "date": "Mon Sep 14 08:21:22 2026 \u002B0000",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 18:50:15 2026 \u002B0200",
         "message": "feat: render objects and boxed key-value pairs from the metadata registry (#1149)"
+      },
+      {
+        "sha": "486e1c09ab9f4591986a4d621011fa2afea4c3c4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 18:58:32 2026 \u002B0200",
+        "message": "feat: register the events of a recorded subject through the source generator (#1148)"
       }
     ],
     "labels": [
-      "0ee271ea",
       "17ec8fe6",
       "6d1fd9f2",
       "5fdcb1f5",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "763e7578",
       "3a011705",
       "59750756",
-      "a9df7c2a"
+      "a9df7c2a",
+      "486e1c09"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          498.3817323684692,
           438.546740600041,
           470.68008817036946,
           445.21608165105187,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           456.05161458651224,
           508.5778339249747,
           319.10603416883026,
-          556.0491337458293
+          556.0491337458293,
+          530.9222126801809
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2881,7 +2881,7 @@ window.BENCHMARK_DATA = {
           1128,
           1128,
           1128,
-          1128,
+          1256,
           1256,
           1256,
           1256,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1367.508293560573,
           1178.6956462860107,
           1177.0053024291992,
           1180.4894489875207,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           975.6958395640055,
           1155.7640056610107,
           824.2817416508992,
-          1209.2223745981853
+          1209.2223745981853,
+          1181.579424540202
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "0ee271ea4011da369e50f8e566bbbc91b7904429",
-        "author": "dependabot[bot]",
-        "date": "Mon Sep 14 08:08:45 2026 \u002B0000",
-        "message": "chore: Bump the xunit group with 2 updates (#1089)"
-      },
-      {
         "sha": "17ec8fe624fb23bc01190a54117de0c08f008f0f",
         "author": "dependabot[bot]",
         "date": "Mon Sep 14 08:21:22 2026 \u002B0000",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 18:50:15 2026 \u002B0200",
         "message": "feat: render objects and boxed key-value pairs from the metadata registry (#1149)"
+      },
+      {
+        "sha": "486e1c09ab9f4591986a4d621011fa2afea4c3c4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 18:58:32 2026 \u002B0200",
+        "message": "feat: register the events of a recorded subject through the source generator (#1148)"
       }
     ],
     "labels": [
-      "0ee271ea",
       "17ec8fe6",
       "6d1fd9f2",
       "5fdcb1f5",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "763e7578",
       "3a011705",
       "59750756",
-      "a9df7c2a"
+      "a9df7c2a",
+      "486e1c09"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1763.101915105184,
           1935.638449350993,
           1867.5488277435302,
           1901.679819869995,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1540.0985544840494,
           1942.7496509552002,
           1039.235434850057,
-          2004.4319291796003
+          2004.4319291796003,
+          1970.2472921098981
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3489,7 +3489,7 @@ window.BENCHMARK_DATA = {
           2624,
           2624,
           2624,
-          2624,
+          2752,
           2752,
           2752,
           2752,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1491.4880906513758,
           1302.501866204398,
           1340.2610610961915,
           1308.885598863874,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1048.3148404439291,
           1282.7084517161052,
           998.9396559397379,
-          1440.2289797919136
+          1440.2289797919136,
+          1355.1610792795816
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "0ee271ea4011da369e50f8e566bbbc91b7904429",
-        "author": "dependabot[bot]",
-        "date": "Mon Sep 14 08:08:45 2026 \u002B0000",
-        "message": "chore: Bump the xunit group with 2 updates (#1089)"
-      },
-      {
         "sha": "17ec8fe624fb23bc01190a54117de0c08f008f0f",
         "author": "dependabot[bot]",
         "date": "Mon Sep 14 08:21:22 2026 \u002B0000",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 18:50:15 2026 \u002B0200",
         "message": "feat: render objects and boxed key-value pairs from the metadata registry (#1149)"
+      },
+      {
+        "sha": "486e1c09ab9f4591986a4d621011fa2afea4c3c4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 18:58:32 2026 \u002B0200",
+        "message": "feat: register the events of a recorded subject through the source generator (#1148)"
       }
     ],
     "labels": [
-      "0ee271ea",
       "17ec8fe6",
       "6d1fd9f2",
       "5fdcb1f5",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "763e7578",
       "3a011705",
       "59750756",
-      "a9df7c2a"
+      "a9df7c2a",
+      "486e1c09"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2239.05790125529,
           2468.7668718973796,
           2454.1506958007812,
           2482.5264661153155,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2002.1590328216553,
           2576.206933339437,
           1375.347214126587,
-          2653.76585987636
+          2653.76585987636,
+          2591.235166696402
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4097,7 +4097,7 @@ window.BENCHMARK_DATA = {
           2816,
           2816,
           2816,
-          2816,
+          2944,
           2944,
           2944,
           2944,
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          24298.394321695963,
           26020.990515572685,
           19912.0600789388,
           27732.19226989746,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           16234.44164804312,
           25930.931333269393,
           12203.467697143555,
-          20816.53991088867
+          20816.53991088867,
+          20562.861098225912
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33468,
           33471,
           33471,
           33471,
@@ -4242,6 +4241,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
