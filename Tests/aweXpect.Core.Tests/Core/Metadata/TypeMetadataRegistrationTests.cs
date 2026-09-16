@@ -1,4 +1,4 @@
-#if NET8_0_OR_GREATER && DEBUG
+#if NET8_0_OR_GREATER
 using aweXpect.Core.Metadata;
 using aweXpect.Core.Tests.Core.Metadata;
 
