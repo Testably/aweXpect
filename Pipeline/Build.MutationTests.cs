@@ -106,7 +106,10 @@ partial class Build
 		{
 			if (!File.Exists(ArtifactsDirectory / "aweXpect" / "PR.txt"))
 			{
-				Log.Debug("Missing PR.txt file in artifacts");
+				// The mutation tests write it when they run for a pull request, so without it there is no score to
+				// comment on - a run outside the default build scope never gets that far.
+				Log.Information("Missing PR.txt file in artifacts, so there is no mutation comment to write");
+				return;
 			}
 
 			string prNumber = File.ReadAllText(ArtifactsDirectory / "aweXpect" / "PR.txt");
@@ -171,7 +174,8 @@ partial class Build
 		.Executes(async () =>
 		{
 			ArtifactsDirectory.CreateDirectory();
-			await DownloadSlicedMutationReport(Solution.aweXpect.Name, "MutationTestsMain", MainMutationSlices);
+			bool hasMainReport =
+				await DownloadSlicedMutationReport(Solution.aweXpect.Name, "MutationTestsMain", MainMutationSlices);
 
 			Dictionary<Project, Project[]> projects = new()
 			{
@@ -179,14 +183,34 @@ partial class Build
 					Solution.aweXpect, [Solution.Tests.aweXpect_Tests, Solution.Tests.aweXpect_Internal_Tests,]
 				},
 			};
+			List<Project> projectsWithoutReport = hasMainReport ? [] : [Solution.aweXpect,];
 
 			// `MutationTestsCore` does not run on a tag, so there is no report to collect or publish for it.
 			if (Repository.Tags.Count == 0)
 			{
-				await DownloadSlicedMutationReport(Solution.aweXpect_Core.Name, "MutationTestsCore",
-					CoreMutationSlices);
+				if (!await DownloadSlicedMutationReport(Solution.aweXpect_Core.Name, "MutationTestsCore",
+					    CoreMutationSlices))
+				{
+					projectsWithoutReport.Add(Solution.aweXpect_Core);
+				}
+
 				projects.Add(Solution.aweXpect_Core,
 					[..FrameworkUnitTestProjects, Solution.Tests.aweXpect_Core_Tests,]);
+			}
+
+			if (projectsWithoutReport.Count == projects.Count)
+			{
+				// The mutation tests only run in the default build scope, so a run without any report is not a
+				// failure - it is one where they never executed, and there is nothing to publish.
+				Log.Information("No project produced a mutation report, so there is nothing to publish");
+				return;
+			}
+
+			if (projectsWithoutReport.Count > 0)
+			{
+				// One report but not the other means a run that was meant to publish and did not get that far.
+				Assert.Fail(
+					$"No mutation report for {string.Join(", ", projectsWithoutReport.Select(project => project.Name))}");
 			}
 
 			string apiKey = Environment.GetEnvironmentVariable("STRYKER_DASHBOARD_API_KEY");
@@ -226,7 +250,11 @@ partial class Build
 	///     The full run is sliced over parallel jobs, so the slice reports have to be merged back together. Pull requests
 	///     mutate only their own changes and stay unsliced, which is why a single artifact is still accepted.
 	/// </remarks>
-	private async Task DownloadSlicedMutationReport(string projectName, string artifactName,
+	/// <returns>
+	///     Whether a report was collected. An unsliced run whose mutation tests never executed uploads its artifact
+	///     without one.
+	/// </returns>
+	private async Task<bool> DownloadSlicedMutationReport(string projectName, string artifactName,
 		(string Name, string[] Patterns)[] slices)
 	{
 		AbsolutePath projectDirectory = ArtifactsDirectory / projectName;
@@ -246,7 +274,7 @@ partial class Build
 		{
 			Log.Information("Found no mutation slices for {Project}, so the run was not sliced", projectName);
 			await artifactName.DownloadArtifactTo(projectDirectory, GithubToken);
-			return;
+			return File.Exists(projectDirectory / "Stryker" / "reports" / "mutation-report.json");
 		}
 
 		if (sliceReports.Count != slices.Length)
@@ -262,6 +290,8 @@ partial class Build
 				projectDirectory / "BranchName.txt", true);
 			MergeMutationReports(sliceReports, projectDirectory);
 		}
+
+		return true;
 	}
 
 	/// <summary>
