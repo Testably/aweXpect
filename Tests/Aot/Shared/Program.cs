@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace aweXpect.Aot;
@@ -10,12 +9,14 @@ internal static class Program
 	///     Runs every check and returns a non-zero exit code when one of them fails.
 	/// </summary>
 	/// <remarks>
-	///     The same executable runs under the JIT and published with Native AOT, so a check states what has to hold
-	///     in both: the result the JIT produces, or a failure whose message names the fix.
+	///     The same program runs from the compiled output and published with Native AOT, so a check states what has
+	///     to hold in both: the result the compiled output produces, or a failure whose message names the fix. The
+	///     AOT feature switches apply to both runs, so only the missing assembly file tells the published one apart.
 	/// </remarks>
 	public static async Task<int> Main()
 	{
-		Console.WriteLine($"Framework: {Framework.Name}, dynamic code: {RuntimeFeature.IsDynamicCodeSupported}");
+		bool isPublished = typeof(Program).Assembly.Location.Length == 0;
+		Console.WriteLine($"Framework: {Framework.Name}, published: {isPublished}");
 		int failures = 0;
 		foreach (Check check in Checks.All)
 		{

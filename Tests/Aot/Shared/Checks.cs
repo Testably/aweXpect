@@ -23,14 +23,14 @@ internal static class Checks
 				Order expected = CreateOrder();
 				expected.Customer.Address.City = "Berlin";
 				await That(CreateOrder()).IsEquivalentTo(expected);
-			}, "differed", "City")),
+			}, "Customer.Address.City differed")),
 		new("a differing collection element fails and is named",
 			() => ShouldFail(async () =>
 			{
 				Order expected = CreateOrder();
 				expected.Items[1].Price = 99;
 				await That(CreateOrder()).IsEquivalentTo(expected);
-			}, "differed", "Price")),
+			}, "Items[1].Price differed")),
 		new("a subject the generator did not see fails loudly",
 			() => ShouldFailOrFailLoudly(async () =>
 			{
@@ -67,7 +67,7 @@ internal static class Checks
 		new("a subject recorded through an interface passes or fails loudly",
 			() => ShouldPassOrFailLoudly(async () =>
 			{
-				IPublisher publisher = new HiddenPublisher();
+				IPublisher publisher = CreateHiddenPublisher();
 				IEventRecording<IPublisher> recording = publisher.Record().Events();
 				publisher.RaiseChanged();
 				await That(recording).Triggered(nameof(IPublisher.Changed));
@@ -79,6 +79,7 @@ internal static class Checks
 				other.Id = 2;
 				await That(CreateOrder()).IsEqualTo(other);
 			}, "Id = 1", "Name = \"Alice\"", "City = \"Vienna\"")),
+		// The pair type is registered because the walk from the orders above follows `Order.Tags`.
 		new("a failure message renders a dictionary and a boxed pair",
 			() => ShouldFail(async () =>
 			{
@@ -86,6 +87,12 @@ internal static class Checks
 				await That(boxed).IsEqualTo(CreateOrder().Tags);
 			}, "[\"k\"] = 1", "[\"vip\"] = 1")),
 	];
+
+	/// <remarks>
+	///     Returns the interface on purpose: the generator registers the static type of a recorded subject, and the
+	///     check needs the runtime type to stay unregistered.
+	/// </remarks>
+	private static IPublisher CreateHiddenPublisher() => new HiddenPublisher();
 
 	private static Order CreateOrder()
 		=> new()
@@ -142,15 +149,8 @@ internal static class Checks
 		}
 		catch (Exception exception) when (exception.GetType().FullName == Framework.FailureExceptionName)
 		{
-			foreach (string part in parts)
-			{
-				if (!exception.Message.Contains(part, StringComparison.Ordinal))
-				{
-					return $"message lacks \"{part}\": {exception.Message}";
-				}
-			}
-
-			return null;
+			string? missing = Array.Find(parts, part => !exception.Message.Contains(part, StringComparison.Ordinal));
+			return missing is null ? null : $"message lacks \"{missing}\": {exception.Message}";
 		}
 		catch (Exception exception)
 		{

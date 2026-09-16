@@ -24,7 +24,9 @@ public sealed class Address
 
 public sealed class Item
 {
+#pragma warning disable S1104 // A public field is registered and compared differently from a property
 	public string Sku = "";
+#pragma warning restore S1104
 	public decimal Price { get; set; }
 }
 

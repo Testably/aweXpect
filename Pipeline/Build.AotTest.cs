@@ -20,7 +20,7 @@ partial class Build
 	];
 
 	/// <summary>
-	///     Runs the smoke tests under the JIT and again published with Native AOT for the current platform.
+	///     Runs the smoke tests from the compiled output and again published with Native AOT for the current platform.
 	/// </summary>
 	/// <remarks>
 	///     The trim analyzer checks annotations, not behaviour, so this is the only place that verifies that an
