@@ -10,6 +10,11 @@ public static partial class ThatNullableEnum
 	/// <summary>
 	///     Verifies that the underlying value of the subject…
 	/// </summary>
+	/// <remarks>
+	///     Unlike <see cref="Nullable{T}.HasValue" /> this does not ask whether the subject is set: the comparisons
+	///     apply to the underlying numeric value of the enum, and a <see langword="null" /> subject fails every one
+	///     of them. Use <c>IsNotNull()</c> to verify only that the subject has a value.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static PropertyResult.Long<TEnum?> HasValue<TEnum>(this IThat<TEnum?> subject)
 		where TEnum : struct, Enum

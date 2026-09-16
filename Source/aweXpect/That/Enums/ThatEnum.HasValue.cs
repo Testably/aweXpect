@@ -10,6 +10,10 @@ public static partial class ThatEnum
 	/// <summary>
 	///     Verifies that the underlying value of the subject…
 	/// </summary>
+	/// <remarks>
+	///     The comparisons apply to the underlying numeric value of the enum, so <c>HasValue().EqualTo(1)</c>
+	///     passes for the member declared as <c>= 1</c>.
+	/// </remarks>
 	public static PropertyResult.Long<TEnum> HasValue<TEnum>(this IThat<TEnum> subject)
 		where TEnum : struct, Enum
 		=> new(subject, a => Convert.ToInt64(a, CultureInfo.InvariantCulture), "value");
