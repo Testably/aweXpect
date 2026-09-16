@@ -156,6 +156,26 @@ await Expect.That(Act).Throws<ArgumentNullException>().WithParamName().EndingWit
 
 `WithParamName(expected)` is the shorthand for `WithParamName().EqualTo(expected)`, so a `null` argument requires the `ParamName` to be `null` as well.
 
+### `With…` after `Throws`, `Has…` on the exception
+
+Directly after `Throws`, an expectation continues the sentence "throws a `CustomException`", so it uses the
+`With…` vocabulary (`WithMessage`, `WithInnerException`, `WithHResult`, …). The same checks exist as `Has…`
+(`HasMessage`, `HasInnerException`, `HasHResult`, …) for an exception that is the subject itself, because there
+they start a new sentence. After `.Which` the thrown exception becomes the subject, so `Has…` applies again:
+
+```csharp
+void Act() => throw new CustomException("my exception");
+Exception exception = new CustomException("my exception");
+
+await Expect.That(Act).Throws<CustomException>().WithMessage("my exception");
+await Expect.That(Act).Throws<CustomException>().Which.HasMessage("my exception");
+await Expect.That(exception).HasMessage("my exception");
+```
+
+All three verify the same thing, but only the vocabulary that matches its position produces a readable failure
+message: `Has…` directly after `Throws` compiles, but reads "throws a CustomException has Message …". The analyzer
+rule `aweXpect0003` flags it and offers to switch to the `With…` twin or to insert `.Which`.
+
 ## Execution time
 
 You can verify that the execution time of a delegate:

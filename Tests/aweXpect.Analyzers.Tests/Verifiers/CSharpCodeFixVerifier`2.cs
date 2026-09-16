@@ -52,8 +52,10 @@ public static partial class CSharpCodeFixVerifier<TAnalyzer, TCodeFix>
 
 	/// <inheritdoc cref="CodeFixVerifier{TAnalyzer, TCodeFix, TTest, TVerifier}.VerifyCodeFixAsync(string, string)" />
 	public static async Task VerifyCodeFixAsync([StringSyntax("c#-test")] string source,
-		[StringSyntax("c#-test")] string fixedSource)
-		=> await VerifyCodeFixAsync(source, DiagnosticResult.EmptyDiagnosticResults, fixedSource);
+		[StringSyntax("c#-test")] string fixedSource,
+		string? codeActionEquivalenceKey = null)
+		=> await VerifyCodeFixAsync(source, DiagnosticResult.EmptyDiagnosticResults, fixedSource,
+			codeActionEquivalenceKey);
 
 	/// <inheritdoc
 	///     cref="CodeFixVerifier{TAnalyzer, TCodeFix, TTest, TVerifier}.VerifyCodeFixAsync(string, DiagnosticResult, string)" />
@@ -66,13 +68,17 @@ public static partial class CSharpCodeFixVerifier<TAnalyzer, TCodeFix>
 	public static async Task VerifyCodeFixAsync(
 		[StringSyntax("c#-test")] string source,
 		IEnumerable<DiagnosticResult> expected,
-		[StringSyntax("c#-test")] string fixedSource
+		[StringSyntax("c#-test")] string fixedSource,
+		string? codeActionEquivalenceKey = null
 	)
 	{
 		Test test = new()
 		{
 			TestCode = source,
 			FixedCode = fixedSource,
+			CodeActionEquivalenceKey = codeActionEquivalenceKey,
+			// Lets the `[|…|]` markup resolve to the first descriptor when an analyzer supports several
+			MarkupOptions = MarkupOptions.UseFirstDescriptor,
 			ReferenceAssemblies = ReferenceAssemblies.Net.Net90,
 			TestState =
 			{
