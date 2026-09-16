@@ -192,8 +192,10 @@ internal class ExpectationNode : Node
 
 	/// <inheritdoc cref="object.GetHashCode()" />
 	// ReSharper disable NonReadonlyMemberInGetHashCode
+#pragma warning disable S2328 // The node is built up incrementally, so the hash code can only be based on the mutable state
 	public override int GetHashCode()
 		=> _constraint?.GetType().GetHashCode() ?? 17
 			+ _inner?.GetHashCode() ?? 0;
+#pragma warning restore S2328
 	// ReSharper restore NonReadonlyMemberInGetHashCode
 }
