@@ -35,14 +35,10 @@ partial class Build
 	///     falls into the last slice instead of silently dropping out of the score.
 	///     The patterns start with <c>**/</c> because Stryker does not document what its globs are relative to, and end
 	///     in <c>/*.cs</c> because the subject folders are flat - a nested folder would fall into the last slice.
-	///     Stryker matches the patterns against the path below the project, so a file directly in the project folder is
-	///     matched as a bare name that no <c>**/</c> pattern can reach - and a file that matches no pattern at all is
-	///     mutated in every slice rather than in none. <c>*.cs</c> is the only pattern that claims those, and the first
-	///     slice takes them so that every later slice inherits the exclusion.
 	/// </remarks>
 	private static readonly (string Name, string[] Patterns)[] MainMutationSlices =
 	[
-		("collections-enumerable", ["*.cs", "**/That/Collections/ThatEnumerable*.cs",]),
+		("collections-enumerable", ["**/That/Collections/ThatEnumerable*.cs",]),
 		("collections-other", ["**/That/Collections/*.cs",]),
 		("numbers", ["**/That/Numbers/*.cs",]),
 		("dates",
@@ -64,12 +60,10 @@ partial class Build
 	/// <remarks>
 	///     The <c>Core</c> folder is the only one with nested folders, so it is matched twice - once flat and once
 	///     recursively - because the last slice would otherwise silently pick up everything below it.
-	///     <c>Expect.cs</c>, <c>Fail.cs</c> and <c>Skip.cs</c> sit directly in the project folder, which is why the
-	///     first slice claims them with <c>*.cs</c> - see <see cref="MainMutationSlices" />.
 	/// </remarks>
 	private static readonly (string Name, string[] Patterns)[] CoreMutationSlices =
 	[
-		("engine", ["*.cs", "**/Core/*.cs", "**/Core/**/*.cs",]),
+		("engine", ["**/Core/*.cs", "**/Core/**/*.cs",]),
 		("options", ["**/Options/*.cs",]),
 		("formatting", ["**/Formatting/*.cs", "**/Equivalency/*.cs",]),
 		("rest", []),
@@ -273,6 +267,10 @@ partial class Build
 	/// <summary>
 	///     Merges the <paramref name="sliceReports" /> into a single mutation report, by combining their files.
 	/// </summary>
+	/// <remarks>
+	///     Every slice reports every file, and the ones outside it keep their mutants with the status <c>Ignored</c>,
+	///     so only the mutants that a slice actually tested tell which slice a file belongs to.
+	/// </remarks>
 	private static void MergeMutationReports(List<(string Name, AbsolutePath Report)> sliceReports,
 		AbsolutePath projectDirectory)
 	{
@@ -287,7 +285,7 @@ partial class Build
 			int sliceMutants = 0;
 			foreach (KeyValuePair<string, JsonNode> file in slice["files"]!.AsObject())
 			{
-				int mutants = file.Value?["mutants"]?.AsArray().Count ?? 0;
+				int mutants = TestedMutants(file.Value);
 				sliceMutants += mutants;
 				if (!mergedFiles.TryGetPropertyValue(file.Key, out JsonNode existing))
 				{
@@ -300,12 +298,12 @@ partial class Build
 					continue;
 				}
 
-				if (mutants > 0 && existing?["mutants"]?.AsArray().Count > 0)
+				if (mutants > 0 && TestedMutants(existing) > 0)
 				{
-					// Both slices mutated the file, so its mutants would be counted twice in the score.
+					// Both slices tested the file, so its mutants would be counted twice in the score.
 					Assert.Fail(
-						$"The mutation slices '{contributingSlice[file.Key]}' ({existing["mutants"]!.AsArray().Count} " +
-						$"mutants) and '{name}' ({mutants} mutants) overlap in '{file.Key}'");
+						$"The mutation slices '{contributingSlice[file.Key]}' ({TestedMutants(existing)} mutants) " +
+						$"and '{name}' ({mutants} mutants) overlap in '{file.Key}'");
 				}
 				else if (mutants > 0)
 				{
@@ -326,6 +324,15 @@ partial class Build
 		Log.Information("Merged {SliceCount} slices into {FileCount} files with {Mutants} mutants",
 			sliceReports.Count, mergedFiles.Count, totalMutants);
 	}
+
+	/// <summary>
+	///     The mutants of the <paramref name="file" /> that its slice actually ran, which is what tells the slices
+	///     apart: a mutant the mutate filter removed is reported as <c>Ignored</c> and one that did not build as
+	///     <c>CompileError</c>, and every slice reports those for every file.
+	/// </summary>
+	private static int TestedMutants(JsonNode file)
+		=> file?["mutants"]?.AsArray()
+			.Count(mutant => mutant?["status"]?.GetValue<string>() is not ("Ignored" or "CompileError")) ?? 0;
 
 	private void ExecuteMutationTest(Project project, Project[] testProjects,
 		(string Name, string[] Patterns)[] slices)
