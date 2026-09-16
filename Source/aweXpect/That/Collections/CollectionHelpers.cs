@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Core.Constraints;
 using aweXpect.Customization;
 using aweXpect.Helpers;
 using aweXpect.Options;
@@ -36,6 +37,52 @@ internal static class CollectionHelpers
 		sb.Length--;
 		string failure = sb.ToString();
 		return failure;
+	}
+
+	/// <summary>
+	///     Continues the expectation on the collection that the <paramref name="memberAccessor" /> selects from the
+	///     subject, rendered as <c>has {memberName} which …</c>.
+	/// </summary>
+	internal static IThat<IEnumerable<TItem>?> ForCollectionMember<TSource, TItem>(
+		this IThat<TSource> subject,
+		Func<TSource, IEnumerable<TItem>?> memberAccessor,
+		string memberName)
+		=> new ThatSubject<IEnumerable<TItem>?>(subject.Get().ExpectationBuilder
+			.AddConstraint((it, grammars) => new HasCollectionMemberConstraint<TSource>(it, grammars, memberName))
+			.ForWhich(memberAccessor, " which ",
+				expectationGrammar: grammars => grammars | ExpectationGrammars.Plural));
+
+	/// <summary>
+	///     Names the member in the expectation text and rules a <see langword="null" /> subject out. A negation applies
+	///     to the continued expectation, so the text is the same in both grammars.
+	/// </summary>
+	private sealed class HasCollectionMemberConstraint<TSource>(
+		string it,
+		ExpectationGrammars grammars,
+		string memberName)
+		: ConstraintResult.WithNotNullValue<TSource>(it, grammars),
+			IValueConstraint<TSource>
+	{
+		public ConstraintResult IsMetBy(TSource actual)
+		{
+			Actual = actual;
+			Outcome = actual is null ? Outcome.Failure : Outcome.Success;
+			return this;
+		}
+
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("has ").Append(memberName);
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+		{
+		}
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> AppendNormalExpectation(stringBuilder, indentation);
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+		{
+		}
 	}
 
 	internal static string GetItemString(this EnumerableQuantifier quantifier)
