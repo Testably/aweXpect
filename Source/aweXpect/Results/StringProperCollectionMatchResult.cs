@@ -3,6 +3,7 @@ using aweXpect.Options;
 
 namespace aweXpect.Results;
 
+#pragma warning disable S110 // The result hierarchy is intentionally deep, so that each continuation inherits the complete vocabulary of its base
 /// <summary>
 ///     The result for verifying that a string collection contains or is contained in another collection.
 /// </summary>

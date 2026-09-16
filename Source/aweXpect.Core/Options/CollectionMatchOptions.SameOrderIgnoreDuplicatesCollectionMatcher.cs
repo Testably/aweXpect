@@ -108,6 +108,7 @@ public partial class CollectionMatchOptions
 				_foundItems.Add(value);
 			}
 
+#pragma warning disable S1871 // The identical branches record the same outcome for distinct reasons and are kept apart to stay readable
 			if (_matchIndex >= _expectedDistinctItems.Length)
 			{
 				if (!_uniqueItems.Add(value))
@@ -140,6 +141,7 @@ public partial class CollectionMatchOptions
 
 				await VerifyTheCurrentValueIsDifferentFromTheExpectedValue(value, options);
 			}
+#pragma warning restore S1871
 
 			_index++;
 			return (_additionalItems.Count + _incorrectItems.Count + _missingItems.Count >

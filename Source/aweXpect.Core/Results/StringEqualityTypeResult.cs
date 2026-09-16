@@ -4,6 +4,7 @@ using aweXpect.Options;
 
 namespace aweXpect.Results;
 
+#pragma warning disable S110 // The result hierarchy is intentionally deep, so that each continuation inherits the complete vocabulary of its base
 /// <summary>
 ///     Allows specifying the equality type for the string equality check.
 /// </summary>

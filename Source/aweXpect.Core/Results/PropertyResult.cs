@@ -643,7 +643,9 @@ public static class PropertyResult
 
 		private static void ThrowIfNullOrEmpty(string value, string paramName)
 		{
+#pragma warning disable S3236 // The caller information would name the local parameter instead of the public one it forwards
 			value.ThrowIfNull(paramName);
+#pragma warning restore S3236
 			if (value.Length == 0)
 			{
 				// ReSharper disable once LocalizableElement
