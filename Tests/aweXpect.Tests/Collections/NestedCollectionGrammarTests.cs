@@ -48,16 +48,6 @@ public sealed class NestedCollectionGrammar
 		}
 
 		[Fact]
-		public async Task DoesNotHaveCount_ShouldUsePluralVerb()
-		{
-			async Task Act()
-				=> await That("a\nb").HasLines(lines => lines.DoesNotHaveCount(2));
-
-			await That(Act).Throws<XunitException>()
-				.WithMessage("*has lines which do not have exactly 2 items,*").AsWildcard();
-		}
-
-		[Fact]
 		public async Task DoesNotStartWith_ShouldUsePluralVerb()
 		{
 			async Task Act()
@@ -75,6 +65,16 @@ public sealed class NestedCollectionGrammar
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""*has lines which end with ["a"],*""").AsWildcard();
+		}
+
+		[Fact]
+		public async Task HasCountNotEqualTo_ShouldUsePluralVerb()
+		{
+			async Task Act()
+				=> await That("a\nb").HasLines(lines => lines.HasCount().NotEqualTo(2));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("*has lines which do not have exactly 2 items,*").AsWildcard();
 		}
 
 		[Fact]

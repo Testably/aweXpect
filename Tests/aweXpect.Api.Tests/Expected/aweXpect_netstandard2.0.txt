@@ -357,12 +357,6 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>, TItem> DoesNotEndWith<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> subject, System.Collections.Generic.IEnumerable<TItem> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>> DoesNotHaveCount(this aweXpect.Core.IThat<System.Collections.IEnumerable?> subject, int unexpected) { }
-        [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>> DoesNotHaveCount<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> subject, int unexpected) { }
-        [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<TItem[], aweXpect.Core.IThat<TItem[]?>> DoesNotHaveCount<TItem>(this aweXpect.Core.IThat<TItem[]?> subject, int unexpected) { }
-        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityResult<System.Collections.Generic.IEnumerable<string?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?>> DoesNotStartWith(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> subject, params string[] unexpected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityResult<System.Collections.Generic.IEnumerable<string?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?>> DoesNotStartWith(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<string?>?> subject, System.Collections.Generic.IEnumerable<string?> unexpected, [System.Runtime.CompilerServices.CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "") { }

@@ -42,20 +42,5 @@ public static partial class ThatAsyncEnumerable
 					EnumerableQuantifier.Exactly(expected))),
 			subject);
 	}
-
-	/// <summary>
-	///     Verifies that the <paramref name="subject" /> does not have <paramref name="unexpected" /> items.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
-		DoesNotHaveCount<TItem>(this IThat<IAsyncEnumerable<TItem>?> subject, int unexpected)
-	{
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new AsyncCollectionCountConstraint<TItem>(
-					expectationBuilder, it, grammars, EnumerableQuantifier.Exactly(unexpected)).Invert()),
-			subject);
-	}
 }
 #endif
