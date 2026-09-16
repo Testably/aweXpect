@@ -3828,6 +3828,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 09:11:30 2026 \u002B0200",
         "message": "refactor!: remove \u0060DoesNotHaveCount\u0060 in favour of \u0060HasCount().NotEqualTo()\u0060 (#1132)"
+      },
+      {
+        "sha": "753cd9619f8490e91f5bf118d99495e72351a97c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 10:53:10 2026 \u002B0200",
+        "message": "fix: let the dashboard pass a run that produced no mutation report (#1137)"
       }
     ],
     "labels": [
@@ -4468,7 +4474,8 @@ window.BENCHMARK_DATA = {
       "a6d5da98",
       "9d72f3f2",
       "b6c8f8a0",
-      "081bd651"
+      "081bd651",
+      "753cd961"
     ],
     "datasets": [
       {
@@ -5112,7 +5119,8 @@ window.BENCHMARK_DATA = {
           283.4815231959025,
           273.72809038162234,
           256.4923405329386,
-          270.47141586939495
+          270.47141586939495,
+          241.59078941345214
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5585,6 +5593,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6413,7 +6422,8 @@ window.BENCHMARK_DATA = {
           273.63889627456666,
           269.87966009775795,
           258.7779306631822,
-          256.50651825391327
+          256.50651825391327,
+          248.39237417493547
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6606,6 +6616,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10442,6 +10453,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 09:11:30 2026 \u002B0200",
         "message": "refactor!: remove \u0060DoesNotHaveCount\u0060 in favour of \u0060HasCount().NotEqualTo()\u0060 (#1132)"
+      },
+      {
+        "sha": "753cd9619f8490e91f5bf118d99495e72351a97c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 10:53:10 2026 \u002B0200",
+        "message": "fix: let the dashboard pass a run that produced no mutation report (#1137)"
       }
     ],
     "labels": [
@@ -11005,7 +11022,8 @@ window.BENCHMARK_DATA = {
       "a6d5da98",
       "9d72f3f2",
       "b6c8f8a0",
-      "081bd651"
+      "081bd651",
+      "753cd961"
     ],
     "datasets": [
       {
@@ -11572,7 +11590,8 @@ window.BENCHMARK_DATA = {
           403607.07361778844,
           313103.78349609376,
           314545.55390625,
-          327024.4654947917
+          327024.4654947917,
+          300103.9351236979
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12142,6 +12161,7 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542084,
+          617976,
           617976,
           617976,
           617976
@@ -12719,7 +12739,8 @@ window.BENCHMARK_DATA = {
           2852323.4205729165,
           2625909.8854166665,
           2610521.2452566964,
-          2708283.4361979165
+          2708283.4361979165,
+          2335981.8560697115
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13291,7 +13312,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841647,
           4841651,
-          4841651
+          4841651,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17133,6 +17155,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 09:11:30 2026 \u002B0200",
         "message": "refactor!: remove \u0060DoesNotHaveCount\u0060 in favour of \u0060HasCount().NotEqualTo()\u0060 (#1132)"
+      },
+      {
+        "sha": "753cd9619f8490e91f5bf118d99495e72351a97c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 10:53:10 2026 \u002B0200",
+        "message": "fix: let the dashboard pass a run that produced no mutation report (#1137)"
       }
     ],
     "labels": [
@@ -17773,7 +17801,8 @@ window.BENCHMARK_DATA = {
       "a6d5da98",
       "9d72f3f2",
       "b6c8f8a0",
-      "081bd651"
+      "081bd651",
+      "753cd961"
     ],
     "datasets": [
       {
@@ -18417,7 +18446,8 @@ window.BENCHMARK_DATA = {
           493.58852710723875,
           461.8257578849792,
           474.93318353380477,
-          495.7646186535175
+          495.7646186535175,
+          461.5401366551717
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19064,6 +19094,7 @@ window.BENCHMARK_DATA = {
           1360,
           1360,
           1360,
+          1368,
           1368,
           1368,
           1368
@@ -19718,7 +19749,8 @@ window.BENCHMARK_DATA = {
           490.98782704671225,
           480.7632736137935,
           504.21682192484536,
-          547.2313723246257
+          547.2313723246257,
+          486.11460876464844
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19911,6 +19943,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -24209,6 +24242,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 09:11:30 2026 \u002B0200",
         "message": "refactor!: remove \u0060DoesNotHaveCount\u0060 in favour of \u0060HasCount().NotEqualTo()\u0060 (#1132)"
+      },
+      {
+        "sha": "753cd9619f8490e91f5bf118d99495e72351a97c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 10:53:10 2026 \u002B0200",
+        "message": "fix: let the dashboard pass a run that produced no mutation report (#1137)"
       }
     ],
     "labels": [
@@ -24849,7 +24888,8 @@ window.BENCHMARK_DATA = {
       "a6d5da98",
       "9d72f3f2",
       "b6c8f8a0",
-      "081bd651"
+      "081bd651",
+      "753cd961"
     ],
     "datasets": [
       {
@@ -25493,7 +25533,8 @@ window.BENCHMARK_DATA = {
           273.80011316446155,
           259.16043017705283,
           257.07899941716875,
-          280.53383081299916
+          280.53383081299916,
+          267.828190939767
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -26007,6 +26048,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -26794,7 +26836,8 @@ window.BENCHMARK_DATA = {
           286.9390425682068,
           245.1631186803182,
           236.7126715864454,
-          266.4871666908264
+          266.4871666908264,
+          239.6877254486084
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -26987,6 +27030,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -31285,6 +31329,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 09:11:30 2026 \u002B0200",
         "message": "refactor!: remove \u0060DoesNotHaveCount\u0060 in favour of \u0060HasCount().NotEqualTo()\u0060 (#1132)"
+      },
+      {
+        "sha": "753cd9619f8490e91f5bf118d99495e72351a97c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 10:53:10 2026 \u002B0200",
+        "message": "fix: let the dashboard pass a run that produced no mutation report (#1137)"
       }
     ],
     "labels": [
@@ -31925,7 +31975,8 @@ window.BENCHMARK_DATA = {
       "a6d5da98",
       "9d72f3f2",
       "b6c8f8a0",
-      "081bd651"
+      "081bd651",
+      "753cd961"
     ],
     "datasets": [
       {
@@ -32569,7 +32620,8 @@ window.BENCHMARK_DATA = {
           467.7995653833662,
           508.83996607462564,
           546.8898420969646,
-          554.8398835500082
+          554.8398835500082,
+          537.2023598988851
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33216,6 +33268,7 @@ window.BENCHMARK_DATA = {
           1128,
           1128,
           1128,
+          1256,
           1256,
           1256,
           1256
@@ -33870,7 +33923,8 @@ window.BENCHMARK_DATA = {
           1204.0937852223715,
           1180.9390767904429,
           1293.7900349934896,
-          1226.763064956665
+          1226.763064956665,
+          1151.7505856922694
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34299,6 +34353,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -38361,6 +38416,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 09:11:30 2026 \u002B0200",
         "message": "refactor!: remove \u0060DoesNotHaveCount\u0060 in favour of \u0060HasCount().NotEqualTo()\u0060 (#1132)"
+      },
+      {
+        "sha": "753cd9619f8490e91f5bf118d99495e72351a97c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 10:53:10 2026 \u002B0200",
+        "message": "fix: let the dashboard pass a run that produced no mutation report (#1137)"
       }
     ],
     "labels": [
@@ -39001,7 +39062,8 @@ window.BENCHMARK_DATA = {
       "a6d5da98",
       "9d72f3f2",
       "b6c8f8a0",
-      "081bd651"
+      "081bd651",
+      "753cd961"
     ],
     "datasets": [
       {
@@ -39645,7 +39707,8 @@ window.BENCHMARK_DATA = {
           1893.4208389009748,
           1894.3747313363212,
           1977.2733469645182,
-          1933.8181060791017
+          1933.8181060791017,
+          1876.5541516817534
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -40292,6 +40355,7 @@ window.BENCHMARK_DATA = {
           2624,
           2624,
           2624,
+          2752,
           2752,
           2752,
           2752
@@ -40946,7 +41010,8 @@ window.BENCHMARK_DATA = {
           1280.2460991995674,
           1408.0354794722336,
           1303.7993309020997,
-          1347.267807143075
+          1347.267807143075,
+          1322.0371481577556
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -41139,6 +41204,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -45437,6 +45503,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 09:11:30 2026 \u002B0200",
         "message": "refactor!: remove \u0060DoesNotHaveCount\u0060 in favour of \u0060HasCount().NotEqualTo()\u0060 (#1132)"
+      },
+      {
+        "sha": "753cd9619f8490e91f5bf118d99495e72351a97c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 10:53:10 2026 \u002B0200",
+        "message": "fix: let the dashboard pass a run that produced no mutation report (#1137)"
       }
     ],
     "labels": [
@@ -46077,7 +46149,8 @@ window.BENCHMARK_DATA = {
       "a6d5da98",
       "9d72f3f2",
       "b6c8f8a0",
-      "081bd651"
+      "081bd651",
+      "753cd961"
     ],
     "datasets": [
       {
@@ -46721,7 +46794,8 @@ window.BENCHMARK_DATA = {
           2482.6679671151296,
           2470.5895595550537,
           2547.284422238668,
-          2586.085273742676
+          2586.085273742676,
+          2469.415817006429
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -47368,6 +47442,7 @@ window.BENCHMARK_DATA = {
           2816,
           2816,
           2816,
+          2944,
           2944,
           2944,
           2944
@@ -48022,7 +48097,8 @@ window.BENCHMARK_DATA = {
           27317.63968302409,
           25044.89990641276,
           25662.806424654445,
-          26990.944542439778
+          26990.944542439778,
+          20047.28773803711
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -48667,6 +48743,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
