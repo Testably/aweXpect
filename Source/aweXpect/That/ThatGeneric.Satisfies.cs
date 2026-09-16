@@ -40,21 +40,23 @@ public static partial class ThatGeneric
 	///     Verifies the actual value to not satisfy the <paramref name="predicate" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<T, IThat<T>> DoesNotSatisfy<T>(this IThat<T> subject,
+	public static RepeatedCheckResult<T, IThat<T>> DoesNotSatisfy<T>(this IThat<T> subject,
 		Func<T, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
-		return new AndOrResult<T, IThat<T>>(subject.Get().ExpectationBuilder
+		RepeatedCheckOptions options = new();
+		return new RepeatedCheckResult<T, IThat<T>>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars) =>
 					new SatisfiesConstraint<T>(
 						it,
 						grammars,
 						predicate,
 						doNotPopulateThisValue.TrimCommonWhiteSpace(),
-						null).Invert()),
-			subject);
+						options).Invert()),
+			subject,
+			options);
 	}
 
 	private sealed class SatisfiesConstraint<T>(
@@ -62,20 +64,19 @@ public static partial class ThatGeneric
 		ExpectationGrammars grammars,
 		Func<T, bool> predicate,
 		string predicateExpression,
-		RepeatedCheckOptions? options)
+		RepeatedCheckOptions options)
 		: ConstraintResult.WithNotNullValue<T?>(it, grammars),
 			IAsyncConstraint<T>
 	{
 		public async Task<ConstraintResult> IsMetBy(T actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			if (predicate(actual))
+			if (IsMet(actual))
 			{
-				Outcome = Outcome.Success;
 				return this;
 			}
 
-			if (options != null && options.Timeout > TimeSpan.Zero)
+			if (options.Timeout > TimeSpan.Zero)
 			{
 				Stopwatch sw = new();
 				sw.Start();
@@ -90,16 +91,22 @@ public static partial class ThatGeneric
 						break;
 					}
 
-					if (predicate(actual))
+					if (IsMet(actual))
 					{
-						Outcome = Outcome.Success;
 						return this;
 					}
 				} while (sw.Elapsed <= options.Timeout && !cancellationToken.IsCancellationRequested);
 			}
 
-			Outcome = Outcome.Failure;
 			return this;
+		}
+
+		private bool IsMet(T actual)
+		{
+			bool isSatisfied = predicate(actual);
+			// The base class negates the outcome on read, so the raw predicate result is stored here.
+			Outcome = isSatisfied ? Outcome.Success : Outcome.Failure;
+			return isSatisfied != IsNegated;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
