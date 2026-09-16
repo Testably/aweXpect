@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Linq;
 using System.Threading;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Tests.TestHelpers;
@@ -7,6 +8,42 @@ namespace aweXpect.Core.Tests.Core;
 
 public class ExpectationBuilderTests
 {
+	[Fact]
+	public async Task AddContext_WhenTheTitleDiffersInCasing_ShouldAddBoth()
+	{
+		ManualExpectationBuilder<string> sut = new(null);
+
+		sut.AddContext(new ResultContext.Fixed("foo", "1"));
+		sut.AddContext(new ResultContext.Fixed("FOO", "2"));
+
+		await That(sut.GetContexts()).HasCount().EqualTo(2)
+			.Because("the title is compared ordinally, so a different spelling is a different block");
+	}
+
+	[Fact]
+	public async Task AddContext_WhenTheTitleIsAlreadyPresent_ShouldKeepTheFirstContext()
+	{
+		ManualExpectationBuilder<string> sut = new(null);
+
+		sut.AddContext(new ResultContext.Fixed("foo", "1"));
+		sut.AddContext(new ResultContext.Fixed("foo", "2"));
+
+		await That(sut.GetContexts()).HasCount().EqualTo(1)
+			.Because("a constraint appends its context whenever it is evaluated");
+		await That(await sut.GetContexts().Single().GetContent()).IsEqualTo("1");
+	}
+
+	[Fact]
+	public async Task AddContext_WithDifferentTitles_ShouldAddBoth()
+	{
+		ManualExpectationBuilder<string> sut = new(null);
+
+		sut.AddContext(new ResultContext.Fixed("foo", "1"));
+		sut.AddContext(new ResultContext.Fixed("bar", "1"));
+
+		await That(sut.GetContexts()).HasCount().EqualTo(2);
+	}
+
 	[Fact]
 	public async Task ForAsyncMember_ShouldUseAndResetExpectationGrammars()
 	{
@@ -336,6 +373,18 @@ public class ExpectationBuilderTests
 		await That(result.Outcome).IsEqualTo(Outcome.Success);
 		await That(result.GetExpectationText())
 			.IsEqualTo("is 123 whose string is \"123\" and whose length is 3");
+	}
+
+	[Fact]
+	public async Task UpdateContexts_WithADuplicateTitle_ShouldAddBoth()
+	{
+		ManualExpectationBuilder<string> sut = new(null);
+
+		sut.AddContext(new ResultContext.Fixed("foo", "1"));
+		sut.UpdateContexts(contexts => contexts.Add(new ResultContext.Fixed("foo", "2")));
+
+		await That(sut.GetContexts()).HasCount().EqualTo(2)
+			.Because("the explicit API is not subject to the duplicate check of AddContext");
 	}
 
 	[Fact]

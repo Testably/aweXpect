@@ -202,10 +202,8 @@ public sealed partial class ThatDelegate
 
 						             Message:
 						             bar
-
-						             Message:
-						             bar
-						             """);
+						             """)
+						.Because("both expectations inspect the same Message, which is only appended once");
 				}
 
 				[Fact]

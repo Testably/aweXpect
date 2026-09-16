@@ -86,10 +86,12 @@ You can verify the message of the thrown exception:
 void Act() => throw new CustomException("This is my exception text");
 
 await Expect.That(Act).Throws().WithMessage("This is my exception text");
-await Expect.That(Act).Throws().WithoutMessage("some other text");
-await Expect.That(Act).Throws().WithMessageContaining("my exception");
-await Expect.That(Act).Throws().WithoutMessageContaining("something else");
+await Expect.That(Act).Throws().WithMessage().NotEqualTo("some other text");
+await Expect.That(Act).Throws().WithMessage().Containing("my exception");
+await Expect.That(Act).Throws().WithMessage().NotContaining("something else");
 ```
+
+`WithMessage(expected)` is the shorthand for `WithMessage().EqualTo(expected)`.
 
 You can use the same configuration options as when [comparing strings](/docs/expectations/common-types/string#equality).
 
@@ -119,11 +121,9 @@ await Expect.That(Act).Throws().WithRecursiveInnerExceptions(innerExceptions => 
 You can recursively verify additional members of the exception:
 
 ```csharp
-var exception = new CustomException("outer", paramName: "paramName", hResult: 12345);
+var exception = new CustomException("outer", hResult: 12345);
 void Act() => throw exception;
 
-await Expect.That(Act).Throws().WithParamName("paramName")
-  .Because("you can verify the `paramName`");
 await Expect.That(Act).Throws().WithHResult(12345)
   .Because("you can verify the `HResult`");
 await Expect.That(Act).Throws()
@@ -134,6 +134,18 @@ await Expect.That(Act).Throws()
   .Because("you can access the thrown exception");
 
 ```
+
+The `ParamName` of an `ArgumentException` continues like the message:
+
+```csharp
+void Act() => throw new ArgumentNullException("myParameter");
+
+await Expect.That(Act).Throws<ArgumentNullException>().WithParamName("myParameter");
+await Expect.That(Act).Throws<ArgumentNullException>().WithParamName().NotEqualTo("otherParameter");
+await Expect.That(Act).Throws<ArgumentNullException>().WithParamName().Containing("Parameter");
+```
+
+`WithParamName(expected)` is the shorthand for `WithParamName().EqualTo(expected)`, so a `null` argument requires the `ParamName` to be `null` as well.
 
 ## Execution time
 

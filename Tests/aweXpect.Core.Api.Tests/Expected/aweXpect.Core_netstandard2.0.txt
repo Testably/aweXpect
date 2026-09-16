@@ -1335,13 +1335,14 @@ namespace aweXpect.Results
             public aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>> LessThanOrEqualTo(long? expected) { }
             public aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>> NotEqualTo(long? unexpected) { }
         }
-        public class String<TItem>
+        public class String<TValue, TType, TThat>
+            where TThat : aweXpect.Core.IThat<TType>
         {
-            public String(aweXpect.Core.IThat<TItem> subject, System.Func<TItem, string?> mapper, string propertyExpression, System.Action<string?, string>? validation = null) { }
-            public aweXpect.Results.StringEqualityResult<TItem, aweXpect.Core.IThat<TItem>> Containing(string? expected) { }
-            public aweXpect.Results.StringEqualityResult<TItem, aweXpect.Core.IThat<TItem>> EqualTo(string? expected) { }
-            public aweXpect.Results.StringEqualityResult<TItem, aweXpect.Core.IThat<TItem>> NotContaining(string? unexpected) { }
-            public aweXpect.Results.StringEqualityResult<TItem, aweXpect.Core.IThat<TItem>> NotEqualTo(string? unexpected) { }
+            public String(TThat subject, System.Func<TValue, string?> mapper, string propertyExpression, System.Action<string?, string>? validation = null, aweXpect.Core.ExpectationGrammars grammars = 0, bool includeValueInContext = false) { }
+            public aweXpect.Results.StringEqualityResult<TType, TThat> Containing(string? expected) { }
+            public aweXpect.Results.StringEqualityTypeResult<TType, TThat> EqualTo(string? expected) { }
+            public aweXpect.Results.StringEqualityResult<TType, TThat> NotContaining(string? unexpected) { }
+            public aweXpect.Results.StringEqualityTypeResult<TType, TThat> NotEqualTo(string? unexpected) { }
         }
         public class TimeSpan<TItem>
         {

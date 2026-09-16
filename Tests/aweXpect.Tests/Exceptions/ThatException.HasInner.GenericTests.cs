@@ -29,10 +29,8 @@ public sealed partial class ThatException
 
 						             Message:
 						             inner
-
-						             Message:
-						             inner
-						             """);
+						             """)
+						.Because("both expectations inspect the same Message, which is only appended once");
 				}
 
 				[Fact]

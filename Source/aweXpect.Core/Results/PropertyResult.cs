@@ -489,95 +489,91 @@ public static class PropertyResult
 	}
 
 	/// <summary>
-	///     Result for a <see langword="string" /> property.
+	///     Result for a <see langword="string" /> property of a <typeparamref name="TValue" /> which continues on
+	///     <typeparamref name="TThat" /> with an underlying value of type <typeparamref name="TType" />.
 	/// </summary>
-	public class String<TItem>(
-		IThat<TItem> subject,
-		Func<TItem, string?> mapper,
+	/// <remarks>
+	///     The <paramref name="grammars" /> travel with the continuation instead of with the method, so that the same
+	///     property reads in the active voice (<c>with Message equal to …</c>) when it is nested under another
+	///     expectation and as a standalone sentence (<c>has Message equal to …</c>) otherwise.
+	///     <para />
+	///     <typeparamref name="TValue" /> differs from <typeparamref name="TType" /> when the expectation is narrowed
+	///     to a subtype after the value was already provided, e.g. a delegate that supplies an
+	///     <see cref="Exception" /> to <c>Throws&lt;TException&gt;()</c>: the constraint has to accept the value the
+	///     source provides, while the result carries the narrowed type.
+	/// </remarks>
+	public class String<TValue, TType, TThat>(
+		TThat subject,
+		Func<TValue, string?> mapper,
 		string propertyExpression,
-		Action<string?, string>? validation = null)
+		Action<string?, string>? validation = null,
+		ExpectationGrammars grammars = ExpectationGrammars.None,
+		bool includeValueInContext = false)
+		where TThat : IThat<TType>
 	{
 		/// <summary>
-		///     …does not contain to the <paramref name="unexpected" /> value.
+		///     …contains the <paramref name="expected" /> value.
 		/// </summary>
-		public StringEqualityResult<TItem, IThat<TItem>> NotContaining(
-			string? unexpected)
-		{
-			validation?.Invoke(unexpected, nameof(unexpected));
-			StringEqualityOptions options = new();
-			options.Containing();
-			return new StringEqualityResult<TItem, IThat<TItem>>(subject.Get().ExpectationBuilder
-					.AddConstraint((it, grammars) =>
-						new StringConstraint<TItem>(
-							it, grammars,
-							unexpected,
-							mapper,
-							propertyExpression,
-							options).Invert()),
-				subject,
-				options);
-		}
-
-		/// <summary>
-		///     …contains to the <paramref name="expected" /> value.
-		/// </summary>
-		public StringEqualityResult<TItem, IThat<TItem>> Containing(
+		public StringEqualityResult<TType, TThat> Containing(
 			string? expected)
 		{
 			validation?.Invoke(expected, nameof(expected));
 			StringEqualityOptions options = new();
 			options.Containing();
-			return new StringEqualityResult<TItem, IThat<TItem>>(subject.Get().ExpectationBuilder
-					.AddConstraint((it, grammars) =>
-						new StringConstraint<TItem>(
-							it, grammars,
-							expected,
-							mapper,
-							propertyExpression,
-							options)),
-				subject,
-				options);
+			return new StringEqualityResult<TType, TThat>(Build(expected, options, false), subject, options);
 		}
 
 		/// <summary>
 		///     …is equal to the <paramref name="expected" /> value.
 		/// </summary>
-		public StringEqualityResult<TItem, IThat<TItem>> EqualTo(
+		public StringEqualityTypeResult<TType, TThat> EqualTo(
 			string? expected)
 		{
 			validation?.Invoke(expected, nameof(expected));
 			StringEqualityOptions options = new();
-			return new StringEqualityResult<TItem, IThat<TItem>>(subject.Get().ExpectationBuilder
-					.AddConstraint((it, grammars) =>
-						new StringConstraint<TItem>(
-							it, grammars,
-							expected,
-							mapper,
-							propertyExpression,
-							options)),
-				subject,
-				options);
+			return new StringEqualityTypeResult<TType, TThat>(Build(expected, options, false), subject, options);
+		}
+
+		/// <summary>
+		///     …does not contain the <paramref name="unexpected" /> value.
+		/// </summary>
+		public StringEqualityResult<TType, TThat> NotContaining(
+			string? unexpected)
+		{
+			validation?.Invoke(unexpected, nameof(unexpected));
+			StringEqualityOptions options = new();
+			options.Containing();
+			return new StringEqualityResult<TType, TThat>(Build(unexpected, options, true), subject, options);
 		}
 
 		/// <summary>
 		///     …is not equal to the <paramref name="unexpected" /> value.
 		/// </summary>
-		public StringEqualityResult<TItem, IThat<TItem>> NotEqualTo(
+		public StringEqualityTypeResult<TType, TThat> NotEqualTo(
 			string? unexpected)
 		{
 			validation?.Invoke(unexpected, nameof(unexpected));
 			StringEqualityOptions options = new();
-			return new StringEqualityResult<TItem, IThat<TItem>>(subject.Get().ExpectationBuilder
-					.AddConstraint((it, grammars) =>
-						new StringConstraint<TItem>(
-							it, grammars,
-							unexpected,
-							mapper,
-							propertyExpression,
-							options).Invert()),
-				subject,
-				options);
+			return new StringEqualityTypeResult<TType, TThat>(Build(unexpected, options, true), subject, options);
 		}
+
+		private ExpectationBuilder Build(
+			string? expected,
+			StringEqualityOptions options,
+			bool invert)
+			=> subject.Get().ExpectationBuilder
+				.AddConstraint((expectationBuilder, it, constraintGrammars) =>
+				{
+					StringConstraint<TValue> constraint = new(
+						includeValueInContext ? expectationBuilder : null,
+						it,
+						constraintGrammars | grammars,
+						expected,
+						mapper,
+						propertyExpression,
+						options);
+					return invert ? constraint.Invert() : constraint;
+				});
 	}
 
 	private sealed class StructPropertyConstraint<TItem, TProperty>(
@@ -618,6 +614,7 @@ public static class PropertyResult
 	}
 
 	private sealed class StringConstraint<TItem>(
+		ExpectationBuilder? expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		string? expected,
@@ -633,20 +630,37 @@ public static class PropertyResult
 			Actual = actual;
 			_value = mapper(actual);
 			Outcome = await options.AreConsideredEqual(_value, expected) ? Outcome.Success : Outcome.Failure;
+			if (expectationBuilder is not null && !string.IsNullOrEmpty(_value))
+			{
+				expectationBuilder.AddContext(new ResultContext.Fixed(propertyExpression, _value!));
+			}
+
 			return this;
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append($"has {propertyExpression} ");
-			stringBuilder.Append(options.GetExpectation(expected, Grammars));
+			ExpectationGrammars equalityGrammars = Grammars;
+			if (Grammars.HasFlag(ExpectationGrammars.Active))
+			{
+				stringBuilder.Append("with ").Append(propertyExpression).Append(' ');
+				equalityGrammars &= ~ExpectationGrammars.Active;
+			}
+			else if (Grammars.HasFlag(ExpectationGrammars.Nested))
+			{
+				stringBuilder.Append(propertyExpression).Append(' ');
+				equalityGrammars |= ExpectationGrammars.Active;
+			}
+			else
+			{
+				stringBuilder.Append("has ").Append(propertyExpression).Append(' ');
+			}
+
+			stringBuilder.Append(options.GetExpectation(expected, equalityGrammars));
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" had ").Append(propertyExpression).Append(' ');
-			Formatter.Format(stringBuilder, _value);
-		}
+			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, _value, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalExpectation(stringBuilder, indentation);
