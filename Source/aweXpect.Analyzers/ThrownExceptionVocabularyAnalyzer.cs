@@ -64,7 +64,7 @@ public class ThrownExceptionVocabularyAnalyzer : DiagnosticAnalyzer
 			return;
 		}
 
-		int argumentCount = invocation.Arguments.Length - (invocation.Instance is null ? 1 : 0);
+		int argumentCount = invocation.Arguments.Length - 1;
 		Location location = GetLocation(invocation, receiver);
 		if (expectation.ArgumentCounts.Contains(argumentCount))
 		{
@@ -94,7 +94,7 @@ public class ThrownExceptionVocabularyAnalyzer : DiagnosticAnalyzer
 	/// </summary>
 	private static IOperation? GetReceiver(IInvocationOperation invocation)
 	{
-		IOperation? receiver = invocation.Instance ?? invocation.Arguments.FirstOrDefault()?.Value;
+		IOperation? receiver = invocation.Arguments.FirstOrDefault()?.Value;
 		while (receiver is IConversionOperation conversion)
 		{
 			receiver = conversion.Operand;
