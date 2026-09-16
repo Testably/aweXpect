@@ -3888,6 +3888,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 15:27:18 2026 \u002B0200",
         "message": "feat!: add \u0060Keys\u0060 and \u0060Values\u0060 navigation for dictionaries and remove the dictionary-specific \u0060AreAllUnique\u0060 (#1134)"
+      },
+      {
+        "sha": "9be4b8ec166ec9041d944c859f908129e3462cfe",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 17:00:46 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.2 (#1147)"
       }
     ],
     "labels": [
@@ -4538,7 +4544,8 @@ window.BENCHMARK_DATA = {
       "9da1cf49",
       "f39be118",
       "2694582c",
-      "aa20367d"
+      "aa20367d",
+      "9be4b8ec"
     ],
     "datasets": [
       {
@@ -5192,7 +5199,8 @@ window.BENCHMARK_DATA = {
           263.0858057339986,
           183.93454241752625,
           251.53007752100626,
-          126.12150863238743
+          126.12150863238743,
+          247.66236193974814
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5665,6 +5673,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6513,7 +6522,8 @@ window.BENCHMARK_DATA = {
           261.2859146935599,
           192.79404819011688,
           247.8645476613726,
-          128.32302194436392
+          128.32302194436392,
+          235.957604101726
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6706,6 +6716,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10612,6 +10623,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 15:27:18 2026 \u002B0200",
         "message": "feat!: add \u0060Keys\u0060 and \u0060Values\u0060 navigation for dictionaries and remove the dictionary-specific \u0060AreAllUnique\u0060 (#1134)"
+      },
+      {
+        "sha": "9be4b8ec166ec9041d944c859f908129e3462cfe",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 17:00:46 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.2 (#1147)"
       }
     ],
     "labels": [
@@ -11185,7 +11202,8 @@ window.BENCHMARK_DATA = {
       "9da1cf49",
       "f39be118",
       "2694582c",
-      "aa20367d"
+      "aa20367d",
+      "9be4b8ec"
     ],
     "datasets": [
       {
@@ -11762,7 +11780,8 @@ window.BENCHMARK_DATA = {
           331048.90040940506,
           230373.07579752605,
           314467.8298339844,
-          167075.7402750651
+          167075.7402750651,
+          309632.21650390624
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12332,6 +12351,7 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542084,
+          617976,
           617976,
           617976,
           617976,
@@ -12929,7 +12949,8 @@ window.BENCHMARK_DATA = {
           2724957.017708333,
           1782350.6969401042,
           2348554.0094866073,
-          1245822.333705357
+          1245822.333705357,
+          2550777.1184895835
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13509,6 +13530,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
+          4841647,
           4841647,
           4841647,
           4841647
@@ -17413,6 +17435,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 15:27:18 2026 \u002B0200",
         "message": "feat!: add \u0060Keys\u0060 and \u0060Values\u0060 navigation for dictionaries and remove the dictionary-specific \u0060AreAllUnique\u0060 (#1134)"
+      },
+      {
+        "sha": "9be4b8ec166ec9041d944c859f908129e3462cfe",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 17:00:46 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.2 (#1147)"
       }
     ],
     "labels": [
@@ -18063,7 +18091,8 @@ window.BENCHMARK_DATA = {
       "9da1cf49",
       "f39be118",
       "2694582c",
-      "aa20367d"
+      "aa20367d",
+      "9be4b8ec"
     ],
     "datasets": [
       {
@@ -18717,7 +18746,8 @@ window.BENCHMARK_DATA = {
           477.6969051996867,
           346.825883769989,
           442.220506631411,
-          230.93623633044106
+          230.93623633044106,
+          459.48518797556557
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19364,6 +19394,7 @@ window.BENCHMARK_DATA = {
           1360,
           1360,
           1360,
+          1368,
           1368,
           1368,
           1368,
@@ -20038,7 +20069,8 @@ window.BENCHMARK_DATA = {
           527.1061539332072,
           382.2924120766776,
           491.2416307742779,
-          254.6541428906577
+          254.6541428906577,
+          460.8005311012268
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20231,6 +20263,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -24599,6 +24632,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 15:27:18 2026 \u002B0200",
         "message": "feat!: add \u0060Keys\u0060 and \u0060Values\u0060 navigation for dictionaries and remove the dictionary-specific \u0060AreAllUnique\u0060 (#1134)"
+      },
+      {
+        "sha": "9be4b8ec166ec9041d944c859f908129e3462cfe",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 17:00:46 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.2 (#1147)"
       }
     ],
     "labels": [
@@ -25249,7 +25288,8 @@ window.BENCHMARK_DATA = {
       "9da1cf49",
       "f39be118",
       "2694582c",
-      "aa20367d"
+      "aa20367d",
+      "9be4b8ec"
     ],
     "datasets": [
       {
@@ -25903,7 +25943,8 @@ window.BENCHMARK_DATA = {
           273.95314671198526,
           202.72048400243122,
           262.6667138508388,
-          131.7098513160433
+          131.7098513160433,
+          263.36252348239606
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -26417,6 +26458,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -27224,7 +27266,8 @@ window.BENCHMARK_DATA = {
           258.6540732383728,
           187.199236090978,
           233.8532139778137,
-          126.57404637336731
+          126.57404637336731,
+          234.77980106671652
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -27417,6 +27460,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -31785,6 +31829,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 15:27:18 2026 \u002B0200",
         "message": "feat!: add \u0060Keys\u0060 and \u0060Values\u0060 navigation for dictionaries and remove the dictionary-specific \u0060AreAllUnique\u0060 (#1134)"
+      },
+      {
+        "sha": "9be4b8ec166ec9041d944c859f908129e3462cfe",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 17:00:46 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.2 (#1147)"
       }
     ],
     "labels": [
@@ -32435,7 +32485,8 @@ window.BENCHMARK_DATA = {
       "9da1cf49",
       "f39be118",
       "2694582c",
-      "aa20367d"
+      "aa20367d",
+      "9be4b8ec"
     ],
     "datasets": [
       {
@@ -33089,7 +33140,8 @@ window.BENCHMARK_DATA = {
           521.7357479731241,
           403.890355237325,
           515.2771126202175,
-          255.7697854408851
+          255.7697854408851,
+          492.00807642936707
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33736,6 +33788,7 @@ window.BENCHMARK_DATA = {
           1128,
           1128,
           1128,
+          1256,
           1256,
           1256,
           1256,
@@ -34410,7 +34463,8 @@ window.BENCHMARK_DATA = {
           1273.134701792399,
           872.9681192398072,
           1124.8603125254313,
-          614.7207274436951
+          614.7207274436951,
+          1181.1749179840087
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34839,6 +34893,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -38971,6 +39026,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 15:27:18 2026 \u002B0200",
         "message": "feat!: add \u0060Keys\u0060 and \u0060Values\u0060 navigation for dictionaries and remove the dictionary-specific \u0060AreAllUnique\u0060 (#1134)"
+      },
+      {
+        "sha": "9be4b8ec166ec9041d944c859f908129e3462cfe",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 17:00:46 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.2 (#1147)"
       }
     ],
     "labels": [
@@ -39621,7 +39682,8 @@ window.BENCHMARK_DATA = {
       "9da1cf49",
       "f39be118",
       "2694582c",
-      "aa20367d"
+      "aa20367d",
+      "9be4b8ec"
     ],
     "datasets": [
       {
@@ -40275,7 +40337,8 @@ window.BENCHMARK_DATA = {
           2009.3580899919782,
           1449.5176886149816,
           1882.2657455716815,
-          1035.1073854764302
+          1035.1073854764302,
+          1966.861614227295
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -40922,6 +40985,7 @@ window.BENCHMARK_DATA = {
           2624,
           2624,
           2624,
+          2752,
           2752,
           2752,
           2752,
@@ -41596,7 +41660,8 @@ window.BENCHMARK_DATA = {
           1399.1628487904866,
           974.7943617502848,
           1300.85202730619,
-          684.5522738456726
+          684.5522738456726,
+          1290.9601651509604
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -41789,6 +41854,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -46157,6 +46223,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 15:27:18 2026 \u002B0200",
         "message": "feat!: add \u0060Keys\u0060 and \u0060Values\u0060 navigation for dictionaries and remove the dictionary-specific \u0060AreAllUnique\u0060 (#1134)"
+      },
+      {
+        "sha": "9be4b8ec166ec9041d944c859f908129e3462cfe",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 17:00:46 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.2 (#1147)"
       }
     ],
     "labels": [
@@ -46807,7 +46879,8 @@ window.BENCHMARK_DATA = {
       "9da1cf49",
       "f39be118",
       "2694582c",
-      "aa20367d"
+      "aa20367d",
+      "9be4b8ec"
     ],
     "datasets": [
       {
@@ -47461,7 +47534,8 @@ window.BENCHMARK_DATA = {
           2551.3759628295898,
           1928.0050836290632,
           2565.6355715433756,
-          1324.0991307667323
+          1324.0991307667323,
+          2513.970354715983
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -48108,6 +48182,7 @@ window.BENCHMARK_DATA = {
           2816,
           2816,
           2816,
+          2944,
           2944,
           2944,
           2944,
@@ -48782,7 +48857,8 @@ window.BENCHMARK_DATA = {
           27594.802510579426,
           15316.923490397136,
           19356.340165201822,
-          9916.93911743164
+          9916.93911743164,
+          26155.42914036342
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -49427,6 +49503,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
