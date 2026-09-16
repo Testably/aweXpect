@@ -155,6 +155,46 @@ public sealed partial class ThatException
 		public sealed class NegatedTests
 		{
 			[Fact]
+			public async Task WhenContainingIsNegated_ShouldReadAsNotContaining()
+			{
+				Exception subject = new("foo and bar");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(e => e.HasMessage().Containing("foo"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has Message not containing "foo",
+					             but it was "foo and bar"
+
+					             Message:
+					             foo and bar
+					             """)
+					.Because("the negation of the continuation reads like NotContaining spelled out");
+			}
+
+			[Fact]
+			public async Task WhenNotContainingIsNegated_ShouldReadAsContaining()
+			{
+				Exception subject = new("actual text");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(e => e.HasMessage().NotContaining("foo"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has Message containing "foo",
+					             but it was "actual text"
+
+					             Message:
+					             actual text
+					             """)
+					.Because("negating an inverted constraint restores the positive expectation");
+			}
+
+			[Fact]
 			public async Task WhenStringsAreEqual_ShouldFail()
 			{
 				string actual = "my text";
@@ -229,6 +269,19 @@ public sealed partial class ThatException
 					             has Message not containing "foo",
 					             but it was <null>
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenUnexpectedIsNull_ShouldSucceed()
+			{
+				string message = "foo and some other text";
+				MyException exception = new(message);
+
+				async Task Act()
+					=> await That(exception).HasMessage().NotContaining(null);
+
+				await That(Act).DoesNotThrow()
+					.Because("a null value is compared like any other value instead of skipping the check");
 			}
 
 			[Fact]

@@ -1378,9 +1378,9 @@ namespace aweXpect.Results
             where TThat : aweXpect.Core.IThat<TType>
         {
             public String(TThat subject, System.Func<TValue, string?> mapper, string propertyExpression, System.Action<string?, string>? validation = null, aweXpect.Core.ExpectationGrammars grammars = 0, bool includeValueInContext = false) { }
-            public aweXpect.Results.StringEqualityTypeResult<TType, TThat> Containing(string? expected) { }
+            public aweXpect.Results.StringEqualityResult<TType, TThat> Containing(string? expected) { }
             public aweXpect.Results.StringEqualityTypeResult<TType, TThat> EqualTo(string? expected) { }
-            public aweXpect.Results.StringEqualityTypeResult<TType, TThat> NotContaining(string? unexpected) { }
+            public aweXpect.Results.StringEqualityResult<TType, TThat> NotContaining(string? unexpected) { }
             public aweXpect.Results.StringEqualityTypeResult<TType, TThat> NotEqualTo(string? unexpected) { }
         }
         public class TimeSpan<TItem>

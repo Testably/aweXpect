@@ -407,6 +407,24 @@ public sealed partial class PropertyResultTests
 					             """)
 					.Because("the value is only appended as context when the property asks for it");
 			}
+
+			[Fact]
+			public async Task WhenTheValueIsEmpty_ShouldNotAppendTheValue()
+			{
+				StringProperty sut = MyClass.StringValueOf(MyClass.WithStringValue(""), true);
+
+				async Task Act()
+					=> await sut.EqualTo("bar");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has string value equal to "bar",
+					             but it was "" with a length of 0 which is shorter than the expected length of 3 and misses:
+					               "bar"
+					             """)
+					.Because("an empty value would only add an empty block");
+			}
 		}
 
 		public sealed class GrammarTests

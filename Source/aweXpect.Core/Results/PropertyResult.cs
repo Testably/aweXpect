@@ -514,18 +514,13 @@ public static class PropertyResult
 		/// <summary>
 		///     …contains the <paramref name="expected" /> value.
 		/// </summary>
-		/// <remarks>
-		///     The match type is part of the returned result, so a subsequent <c>AsWildcard()</c>, <c>AsRegex()</c>,
-		///     <c>AsPrefix()</c> or <c>AsSuffix()</c> replaces the containment with that match against the whole
-		///     value; the expectation text says which one was used.
-		/// </remarks>
-		public StringEqualityTypeResult<TType, TThat> Containing(
+		public StringEqualityResult<TType, TThat> Containing(
 			string? expected)
 		{
 			validation?.Invoke(expected, nameof(expected));
 			StringEqualityOptions options = new();
 			options.Containing();
-			return Create(expected, options, false);
+			return new StringEqualityResult<TType, TThat>(Build(expected, options, false), subject, options);
 		}
 
 		/// <summary>
@@ -535,24 +530,20 @@ public static class PropertyResult
 			string? expected)
 		{
 			validation?.Invoke(expected, nameof(expected));
-			return Create(expected, new StringEqualityOptions(), false);
+			StringEqualityOptions options = new();
+			return new StringEqualityTypeResult<TType, TThat>(Build(expected, options, false), subject, options);
 		}
 
 		/// <summary>
 		///     …does not contain the <paramref name="unexpected" /> value.
 		/// </summary>
-		/// <remarks>
-		///     The match type is part of the returned result, so a subsequent <c>AsWildcard()</c>, <c>AsRegex()</c>,
-		///     <c>AsPrefix()</c> or <c>AsSuffix()</c> replaces the containment with that match against the whole
-		///     value; the expectation text says which one was used.
-		/// </remarks>
-		public StringEqualityTypeResult<TType, TThat> NotContaining(
+		public StringEqualityResult<TType, TThat> NotContaining(
 			string? unexpected)
 		{
 			validation?.Invoke(unexpected, nameof(unexpected));
 			StringEqualityOptions options = new();
 			options.Containing();
-			return Create(unexpected, options, true);
+			return new StringEqualityResult<TType, TThat>(Build(unexpected, options, true), subject, options);
 		}
 
 		/// <summary>
@@ -562,28 +553,27 @@ public static class PropertyResult
 			string? unexpected)
 		{
 			validation?.Invoke(unexpected, nameof(unexpected));
-			return Create(unexpected, new StringEqualityOptions(), true);
+			StringEqualityOptions options = new();
+			return new StringEqualityTypeResult<TType, TThat>(Build(unexpected, options, true), subject, options);
 		}
 
-		private StringEqualityTypeResult<TType, TThat> Create(
+		private ExpectationBuilder Build(
 			string? expected,
 			StringEqualityOptions options,
 			bool invert)
-			=> new(subject.Get().ExpectationBuilder
-					.AddConstraint((expectationBuilder, it, constraintGrammars) =>
-					{
-						StringConstraint<TValue> constraint = new(
-							includeValueInContext ? expectationBuilder : null,
-							it,
-							constraintGrammars | grammars,
-							expected,
-							mapper,
-							propertyExpression,
-							options);
-						return invert ? constraint.Invert() : constraint;
-					}),
-				subject,
-				options);
+			=> subject.Get().ExpectationBuilder
+				.AddConstraint((expectationBuilder, it, constraintGrammars) =>
+				{
+					StringConstraint<TValue> constraint = new(
+						includeValueInContext ? expectationBuilder : null,
+						it,
+						constraintGrammars | grammars,
+						expected,
+						mapper,
+						propertyExpression,
+						options);
+					return invert ? constraint.Invert() : constraint;
+				});
 	}
 
 	private sealed class StructPropertyConstraint<TItem, TProperty>(

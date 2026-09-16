@@ -421,12 +421,24 @@ public abstract class ExpectationBuilder
 	}
 
 	/// <summary>
-	///     Adds the <paramref name="resultContext" /> to the context that is included in the failure message.
+	///     Adds the <paramref name="resultContext" /> to the context that is included in the failure message,
+	///     unless a context with the same <see cref="ResultContext.Title" /> was already added.
 	/// </summary>
+	/// <remarks>
+	///     A constraint adds its context while it is evaluated, so an expectation that inspects the same property
+	///     twice (<c>HasMessage().Containing("a").And.HasMessage().Containing("b")</c>) would otherwise repeat the
+	///     identical block. <see cref="UpdateContexts(Action{ResultContexts})" /> bypasses this and can add a
+	///     duplicate title deliberately.
+	/// </remarks>
 	public virtual ExpectationBuilder AddContext(ResultContext resultContext)
 	{
 		_contexts ??= new ResultContexts();
-		_contexts.Add(resultContext);
+		if (!_contexts.Any(existing
+			    => string.Equals(existing.Title, resultContext.Title, StringComparison.Ordinal)))
+		{
+			_contexts.Add(resultContext);
+		}
+
 		return this;
 	}
 
