@@ -25,14 +25,27 @@ public sealed partial class EventParityTests
 		(typeof(Corpus.GenericPublisherDerived), "aweXpect.Generators.Tests.Corpus.GenericPublisherDerived"),
 	];
 
-	private static readonly Lazy<GeneratorRunner.GeneratorResult> Result = new(() =>
+	private static readonly Lazy<GeneratorRunner.GeneratorResult> Result = new(()
+		=> GeneratorRunner.Run([Corpus(), Attributes(),]));
+
+	/// <remarks>
+	///     A subject usually lives in the assembly under test, whose non-public members Roslyn does not import by
+	///     default, so the corpus is also run as a referenced library.
+	/// </remarks>
+	private static readonly Lazy<GeneratorRunner.GeneratorResult> LibraryResult = new(()
+		=> GeneratorRunner.Run([Attributes(),],
+			additionalReferences: GeneratorRunner.CompileToReference("Corpus", Corpus())));
+
+	private static string Corpus()
 	{
 		using Stream stream = typeof(EventParityTests).Assembly.GetManifestResourceStream("Corpus.cs")!;
 		using StreamReader reader = new(stream);
-		string attributes = string.Join(Environment.NewLine, CorpusTypes.Select(x
+		return reader.ReadToEnd();
+	}
+
+	private static string Attributes()
+		=> string.Join(Environment.NewLine, CorpusTypes.Select(x
 			=> $"[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof({x.Name}))]"));
-		return GeneratorRunner.Run([reader.ReadToEnd(), attributes,]);
-	});
 
 	public static TheoryData<Type, string> Types
 	{
@@ -57,6 +70,14 @@ public sealed partial class EventParityTests
 			.Because("every corpus type is meant to be registered");
 	}
 
+	[Fact]
+	public async Task GeneratedRegistrations_WhenCorpusIsReferenced_ShouldCompileWithoutWarnings()
+	{
+		await That(LibraryResult.Value.Errors).IsEmpty();
+		await That(LibraryResult.Value.Warnings).IsEmpty();
+		await That(LibraryResult.Value.GeneratorDiagnostics).IsEmpty();
+	}
+
 	[Theory]
 	[MemberData(nameof(Types))]
 	public async Task RegisteredEvents_ShouldMatchReflection(Type type, string key)
@@ -67,6 +88,17 @@ public sealed partial class EventParityTests
 			.Because("every corpus type has public events, so reflection would return them");
 		await That(registrations[key]).IsEqualTo(ReflectedEvents(type)).InAnyOrder()
 			.Because("a registration that differs from reflection would record a different set of events under AOT");
+	}
+
+	[Theory]
+	[MemberData(nameof(Types))]
+	public async Task RegisteredEvents_WhenCorpusIsReferenced_ShouldMatchReflection(Type type, string key)
+	{
+		Dictionary<string, HashSet<string>> registrations = Parse(LibraryResult.Value.Generated);
+
+		await That(registrations).ContainsKey(key);
+		await That(registrations[key]).IsEqualTo(ReflectedEvents(type)).InAnyOrder()
+			.Because("a non-public hiding declaration in a referenced assembly is invisible to the default import");
 	}
 
 	/// <remarks>

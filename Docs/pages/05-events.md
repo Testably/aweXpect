@@ -1,4 +1,4 @@
-﻿# Events
+# Events
 
 Describes the possible expectations for verifying events.
 

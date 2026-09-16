@@ -65,6 +65,22 @@ public sealed class EventRecordingTests
 	}
 
 	[Fact]
+	public async Task WhenRegistered_ShouldRecordOnlyTheRegisteredEvents()
+	{
+		RegisterCustomEvent();
+		RegisteredClass subject = new();
+
+		void Act()
+			=> subject.Record().Events();
+
+		await That(Act).DoesNotThrow();
+		await That(() => subject.Record().Events(nameof(RegisteredClass.OtherEvent)))
+			.Throws<NotSupportedException>()
+			.WithMessage("Event OtherEvent is not supported on EventRecordingTests.RegisteredClass { }")
+			.Because("a registered type is served from the registry alone, so a missing event is missing for sure");
+	}
+
+	[Fact]
 	public async Task WhenRegistered_ShouldRecordThroughTheRegistration()
 	{
 		RegisterCustomEvent();
@@ -86,22 +102,6 @@ public sealed class EventRecordingTests
 			  CustomEvent(2)
 			]
 			""");
-	}
-
-	[Fact]
-	public async Task WhenRegistered_ShouldRecordOnlyTheRegisteredEvents()
-	{
-		RegisterCustomEvent();
-		RegisteredClass subject = new();
-
-		void Act()
-			=> subject.Record().Events();
-
-		await That(Act).DoesNotThrow();
-		await That(() => subject.Record().Events(nameof(RegisteredClass.OtherEvent)))
-			.Throws<NotSupportedException>()
-			.WithMessage("Event OtherEvent is not supported on EventRecordingTests.RegisteredClass { }")
-			.Because("a registered type is served from the registry alone, so a missing event is missing for sure");
 	}
 
 	[Fact]

@@ -44,15 +44,12 @@ internal sealed class EventRecorder(string eventName) : IDisposable
 			_eventQueue.Enqueue(new RecordedEvent(eventName, parameters));
 			NotifyRecordedEvent();
 		});
-		@event.AddHandler(subject.Target!, handler);
+		object target = subject.Target!;
+		@event.AddHandler(target, handler);
 
-		_onDispose = () =>
-		{
-			if (subject.Target is { } target)
-			{
-				@event.RemoveHandler(target, handler);
-			}
-		};
+		// The subject is held on purpose: its event already holds the handler and thereby this recorder, so nothing
+		// leaks, whereas a static event would otherwise keep the handler after the subject was collected.
+		_onDispose = () => @event.RemoveHandler(target, handler);
 	}
 
 	public void Attach(WeakReference subject, EventInfo eventInfo)

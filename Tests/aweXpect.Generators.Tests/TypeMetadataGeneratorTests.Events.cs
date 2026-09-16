@@ -1,3 +1,5 @@
+using Microsoft.CodeAnalysis;
+
 namespace aweXpect.Generators.Tests;
 
 public sealed partial class TypeMetadataGeneratorTests
@@ -63,6 +65,75 @@ public sealed partial class TypeMetadataGeneratorTests
 		                                  """;
 
 		[Fact]
+		public async Task WhenBaseEventIsHiddenNonPubliclyInAReferencedAssembly_ShouldNotRegisterIt()
+		{
+			MetadataReference library = GeneratorRunner.CompileToReference("Lib", """
+				using System;
+
+				namespace Lib;
+
+				public class Base
+				{
+					public event EventHandler? Changed;
+					public event EventHandler? Removed;
+				}
+
+				public class HidingPrivately : Base
+				{
+					private new event Action? Changed;
+					public event Action? Own;
+					public void Raise() => Changed?.Invoke();
+				}
+
+				public class HidingInternally : Base
+				{
+					internal new event Action? Removed;
+					public void Raise() => Removed?.Invoke();
+				}
+
+				public class Leaf : HidingInternally
+				{
+					public event Action? More;
+				}
+				""");
+
+			GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+				[Record("new Lib.HidingPrivately().Watch(); new Lib.Leaf().Watch();"),],
+				additionalReferences: [library,]);
+
+			await That(result.Errors).IsEmpty();
+			await That(result.Generated).Contains("RegisterEvent<global::Lib.HidingPrivately>(\"Own\",");
+			await That(result.Generated).Contains("RegisterEvent<global::Lib.HidingPrivately>(\"Removed\",");
+			await That(result.Generated).DoesNotContain("RegisterEvent<global::Lib.HidingPrivately>(\"Changed\",")
+				.Because(
+					"reflection hides the base event behind the private declaration, which the default metadata import does not even show");
+			await That(result.Generated).Contains("RegisterEvent<global::Lib.Leaf>(\"More\",");
+			await That(result.Generated).Contains("RegisterEvent<global::Lib.Leaf>(\"Changed\",");
+			await That(result.Generated).DoesNotContain("RegisterEvent<global::Lib.Leaf>(\"Removed\",")
+				.Because("an internal declaration on an intermediate base hides the base event as well");
+		}
+
+		[Fact]
+		public async Task WhenBaseTypeIsFromAnUnreferencedAssembly_ShouldNotRegisterTheType()
+		{
+			MetadataReference libraryA = GeneratorRunner.CompileToReference("LibA",
+				"namespace LibA { public class Publisher { public event System.EventHandler? FromA; } }");
+			MetadataReference libraryB = GeneratorRunner.CompileToReference("LibB",
+				"namespace LibB { public class Derived : LibA.Publisher { public event System.EventHandler? Own; public int Id { get; set; } } }",
+				libraryA);
+
+			GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+				["[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof(LibB.Derived))]",],
+				additionalReferences: [libraryB,]);
+
+			await That(result.Errors).IsEmpty();
+			await That(result.Generated).DoesNotContain("LibB.Derived")
+				.Because("the events and members of the unreferenced base are invisible, so a registration would fall short of reflection");
+			await That(result.GeneratorDiagnostics).HasSingle().Which
+				.Satisfies(x => x.Id == "aweXpect2001");
+		}
+
+		[Fact]
 		public async Task WhenEventHandlerHasARefParameter_ShouldNotRegisterTheType()
 		{
 			GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -71,6 +142,41 @@ public sealed partial class TypeMetadataGeneratorTests
 			await That(result.Errors).IsEmpty();
 			await That(result.Generated).DoesNotContain("RegisterEvent")
 				.Because("a parameter passed by reference cannot be boxed by the generated handler");
+		}
+
+		[Fact]
+		public async Task WhenEventHandlerParameterIsFromAnUnreferencedAssembly_ShouldNotRegisterTheType()
+		{
+			MetadataReference libraryA = GeneratorRunner.CompileToReference("LibA",
+				"namespace LibA { public class Args : System.EventArgs { } }");
+			MetadataReference libraryB = GeneratorRunner.CompileToReference("LibB", """
+				namespace LibB;
+
+				public delegate void Handler(LibA.Args args);
+				public delegate void ListHandler(System.Collections.Generic.List<LibA.Args> args);
+
+				public class Publisher
+				{
+					public event Handler? Changed;
+					public event System.EventHandler? Fine;
+				}
+
+				public class ListPublisher
+				{
+					public event ListHandler? Changed;
+					public event System.EventHandler? Fine;
+				}
+				""", libraryA);
+
+			GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+			[
+				"[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof(LibB.Publisher))]",
+				"[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof(LibB.ListPublisher))]",
+			], additionalReferences: [libraryB,]);
+
+			await That(result.Errors).IsEmpty()
+				.Because("a handler lambda that boxes a parameter of an unknown type would not compile");
+			await That(result.Generated).DoesNotContain("RegisterEvent");
 		}
 
 		[Fact]

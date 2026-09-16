@@ -389,6 +389,11 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 
 		private readonly Dictionary<IAssemblySymbol, bool> _isGlobal = new(SymbolEqualityComparer.Default);
 
+		private readonly Dictionary<IAssemblySymbol, IAssemblySymbol?> _allAssemblies =
+			new(SymbolEqualityComparer.Default);
+
+		private Compilation? _all;
+
 		public ImmutableArray<TypeRegistration> Registrations => _registrations.ToImmutable();
 
 		public void Seed(ITypeSymbol? type)
@@ -452,6 +457,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			List<string> diagnosticIds = DiagnosticIds(type, members)
 				.Distinct().OrderBy(x => x, StringComparer.Ordinal).ToList();
 			if (members.Count == 0 || type.IsAbstract || type.IsStatic || !IsReferenceable(type) ||
+			    HasUnknownBase(type) ||
 			    members.Any(member => IsUnreferenceable(member) || !CanBeMemberType(member.Type) ||
 			                          !SyntaxFacts.IsValidIdentifier(member.Name) ||
 			                          !IsReferenceable(member.Type) ||
@@ -482,7 +488,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			cancellationToken.ThrowIfCancellationRequested();
 			if (type is not INamedTypeSymbol { TypeKind: TypeKind.Class, IsAbstract: false, IsStatic: false, } named ||
 			    !IsWalkable(named) || !_visitedEvents.Add(named) || ContainsTypeParameter(named) ||
-			    !IsNameable(named) || !IsReferenceable(named))
+			    !IsNameable(named) || !IsReferenceable(named) || HasUnknownBase(named))
 			{
 				return;
 			}
@@ -509,7 +515,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		///     a base of the reflected type, because private members of a base are never considered. Static events are
 		///     returned for the reflected type only, because the flags do not flatten the hierarchy.
 		/// </remarks>
-		private static List<IEventSymbol> CollectEvents(INamedTypeSymbol type)
+		private List<IEventSymbol> CollectEvents(INamedTypeSymbol type)
 		{
 			HashSet<string> names = new(StringComparer.Ordinal);
 			List<IEventSymbol> events = [];
@@ -520,15 +526,18 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				bool isInherited = !SymbolEqualityComparer.Default.Equals(current, type);
 				foreach (IEventSymbol @event in current.GetMembers().OfType<IEventSymbol>())
 				{
-					if (isInherited && @event.DeclaredAccessibility == Accessibility.Private)
-					{
-						continue;
-					}
-
-					if (names.Add(@event.Name) && @event.DeclaredAccessibility == Accessibility.Public &&
+					if (!names.Contains(@event.Name) && @event.DeclaredAccessibility == Accessibility.Public &&
 					    !(isInherited && @event.IsStatic))
 					{
 						events.Add(@event);
+					}
+				}
+
+				foreach (IEventSymbol @event in DeclaredMembers(current).OfType<IEventSymbol>())
+				{
+					if (Hides(@event, current, type))
+					{
+						names.Add(@event.Name);
 					}
 				}
 			}
@@ -553,7 +562,8 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			   } handler &&
 			   !ContainsTypeParameter(handler) && IsReferenceable(handler) &&
 			   IsReferenceable(@event.ContainingType) &&
-			   invoke.Parameters.All(parameter => parameter.RefKind == RefKind.None && CanBeMemberType(parameter.Type));
+			   invoke.Parameters.All(parameter => parameter.RefKind == RefKind.None &&
+			                                      CanBeMemberType(parameter.Type) && IsReferenceable(parameter.Type));
 
 		private static string EmitEventRegistration(INamedTypeSymbol type, List<IEventSymbol> events)
 		{
@@ -594,7 +604,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		///     their accessors take arguments. Fields and properties are tracked separately, because a field may hide
 		///     a property of the same name and reflection compares both.
 		/// </remarks>
-		private static List<Member> CollectMembers(INamedTypeSymbol type)
+		private List<Member> CollectMembers(INamedTypeSymbol type)
 		{
 			HashSet<string> fieldNames = new(StringComparer.Ordinal);
 			HashSet<string> propertyNames = new(StringComparer.Ordinal);
@@ -611,7 +621,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 						IFieldSymbol field when IsComparedField(field) && fieldNames.Add(field.Name)
 							=> new Member(field, field.Name, field.Type, true),
 						IPropertySymbol { IsStatic: false, IsIndexer: false, } property
-							when Hides(property, current, type, propertySignatures) && IsComparedProperty(property) &&
+							when !propertySignatures.Contains(Signature(property)) && IsComparedProperty(property) &&
 							     propertyNames.Add(property.Name)
 							=> new Member(property, property.Name, property.Type, false),
 						_ => null,
@@ -621,27 +631,92 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 						members.Add(member.Value);
 					}
 				}
+
+				foreach (IPropertySymbol property in DeclaredMembers(current).OfType<IPropertySymbol>())
+				{
+					if (property is { IsStatic: false, IsIndexer: false, } && Hides(property, current, type))
+					{
+						propertySignatures.Add(Signature(property));
+					}
+				}
 			}
 
 			return members;
 		}
 
 		/// <remarks>
-		///     The runtime drops a base property that a derived declaration hides by name and type, unless the hiding
-		///     declaration is private and sits on a base of the reflected type, because private members of a base are
-		///     never returned. So a private <see langword="new" /> property only hides on the walked type itself.
+		///     The runtime drops a base member that a derived declaration hides, unless the hiding declaration is
+		///     private and sits on a base of the reflected type, because private members of a base are never
+		///     considered. So a private <see langword="new" /> member only hides on the walked type itself.
 		/// </remarks>
-		private static bool Hides(IPropertySymbol property, INamedTypeSymbol declaring, INamedTypeSymbol walked,
-			HashSet<string> signatures)
+		private static bool Hides(ISymbol member, INamedTypeSymbol declaring, INamedTypeSymbol walked)
+			=> member.DeclaredAccessibility != Accessibility.Private ||
+			   SymbolEqualityComparer.Default.Equals(declaring, walked);
+
+		/// <remarks>
+		///     Properties hide by name and type, so the signature is taken from the declaration, in which a substituted
+		///     type argument is still the type parameter.
+		/// </remarks>
+		private static string Signature(IPropertySymbol property)
+			=> property.Name + "|" + property.RefKind + "|" + MetadataSignature(property.OriginalDefinition.Type);
+
+		/// <remarks>
+		///     Roslyn imports only the public and protected members of a referenced assembly, but reflection hides a
+		///     base member behind a declaration of any accessibility, so the hiding pass reads a metadata type through a
+		///     compilation that imports everything. Its definition suffices, because hiding is decided by name and
+		///     declared signature, not by substituted types.
+		/// </remarks>
+		private IEnumerable<ISymbol> DeclaredMembers(INamedTypeSymbol type)
 		{
-			if (property.DeclaredAccessibility == Accessibility.Private &&
-			    !SymbolEqualityComparer.Default.Equals(declaring, walked))
+			if (type.Locations.Any(location => location.IsInSource))
 			{
-				return false;
+				return type.GetMembers();
 			}
 
-			return signatures.Add(property.Name + "|" + property.RefKind + "|" +
-			                      MetadataSignature(property.OriginalDefinition.Type));
+			_all ??= compilation.WithOptions(compilation.Options.WithMetadataImportOptions(MetadataImportOptions.All));
+			if (!_allAssemblies.TryGetValue(type.ContainingAssembly, out IAssemblySymbol? assembly))
+			{
+				assembly = _all.References
+					.Select(reference => _all.GetAssemblyOrModuleSymbol(reference))
+					.OfType<IAssemblySymbol>()
+					.FirstOrDefault(candidate => candidate.Identity.Equals(type.ContainingAssembly.Identity));
+				_allAssemblies[type.ContainingAssembly] = assembly;
+			}
+
+			return assembly?.GetTypeByMetadataName(FullMetadataName(type.OriginalDefinition))?.GetMembers() ??
+			       type.GetMembers();
+		}
+
+		private static string FullMetadataName(INamedTypeSymbol type)
+		{
+			string name = type.MetadataName;
+			for (INamedTypeSymbol? containing = type.ContainingType;
+			     containing is not null;
+			     containing = containing.ContainingType)
+			{
+				name = containing.MetadataName + "+" + name;
+			}
+
+			return type.ContainingNamespace is { IsGlobalNamespace: false, } ns
+				? ns.ToDisplayString() + "." + name
+				: name;
+		}
+
+		/// <remarks>
+		///     A base type from an assembly the consumer does not reference has no visible members, so the walk would
+		///     register fewer members or events than reflection returns.
+		/// </remarks>
+		private static bool HasUnknownBase(INamedTypeSymbol type)
+		{
+			for (INamedTypeSymbol? current = type.BaseType; current is not null; current = current.BaseType)
+			{
+				if (current.TypeKind == TypeKind.Error)
+				{
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		/// <remarks>
