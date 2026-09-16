@@ -274,10 +274,11 @@ A source generator that ships with the `aweXpect` package closes this gap: for e
 `IsEquivalentTo`, `IsNotEquivalentTo`, `AreEquivalentTo` or switches to `Equivalent()`, it registers the public
 fields and properties of the argument's type, of the subject's type and of every type reachable through their
 members. The registration runs when your assembly is loaded and needs no configuration. A type that has a
-registration is compared through it, every other type is reflected over as before. A type without any comparable
-member fails loudly instead of passing without verifying anything. The registration also feeds the failure
-message: a registered object is rendered from its registered members, so the message keeps listing them after
-trimming, while an unregistered object is rendered from whatever reflection still finds. Since a registration holds
+registration is compared through it, every other type is reflected over under the JIT and fails with an error
+naming the fix where reflection is switched off, as described below. A type without any comparable member fails
+loudly instead of passing without verifying anything. The registration also feeds the failure message: a registered
+object is rendered from its registered members, so the message keeps listing them after trimming, while an
+unregistered object is rendered as `{ *unregistered* }` where reflection is switched off. Since a registration holds
 public instance members only, a registered object no longer lists its static members, indexers or write-only
 properties.
 
@@ -313,7 +314,19 @@ The walk follows every member type the comparison would visit, including framewo
 too. Members whose getter is marked with `RequiresUnreferencedCode` or `RequiresDynamicCode` cannot be registered, so
 their type stays on the reflection path.
 
-Two limits remain under trimming. Only public members are registered, so a comparison that requests
-`IncludeMembers.Internal` or `IncludeMembers.Private` reflects over the whole type, and a trimmed member is left out
-of the comparison. And a type the generator did not see whose members were all removed by the trimmer fails with an
-error that names the type and asks you to root it.
+Reflection over a type without a registration is switched off when you publish with trimming or Native AOT
+enabled, because the trimmer removes members that only reflection reaches, and a comparison would silently verify
+less than it claims to. Such a comparison fails with an error that names the type and asks you to register it. The
+same applies to a comparison that requests `IncludeMembers.Internal` or `IncludeMembers.Private`, because only public
+members are registered. The `aweXpect.ReflectionFallback.IsSupported` runtime switch forces the fallback either way,
+and the `AweXpectReflectionFallback` property of your project sets that switch:
+
+```xml
+<PropertyGroup>
+  <AweXpectReflectionFallback>true</AweXpectReflectionFallback>
+</PropertyGroup>
+```
+
+With the fallback forced on, a trimmed application reflects over whatever the trimmer left, which is best effort: a
+type whose members were all removed still fails with an error that asks you to root it, but a type that lost only
+some of them is compared through the rest.

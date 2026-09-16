@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using aweXpect.Core;
 using aweXpect.Core.Helpers;
 using aweXpect.Core.Metadata;
 using aweXpect.Equivalency;
@@ -51,17 +52,22 @@ public static partial class ValueFormatters
 	/// <remarks>
 	///     A registered type is served from the <see cref="TypeMetadataRegistry" />, so that publishing with trimming
 	///     or Native AOT enabled does not remove the members from the message. Every other type is reflected over with
-	///     the default binding flags, as before.
+	///     the default binding flags, as before, or yields <see langword="null" /> where reflection is unavailable,
+	///     because a message must not throw for what it cannot show.
 	/// </remarks>
-	private static List<EquivalencyMember> GetMembers(Type type)
+	private static List<EquivalencyMember>? GetMembers(Type type)
 	{
 		if (TypeMetadataRegistry.Instance.TryGet(type, out TypeMetadataRegistry.TypeMetadata? metadata) &&
 		    !(metadata.Fields.IsEmpty && metadata.Properties.IsEmpty))
 		{
 			return metadata.Fields.Values.Concat(metadata.Properties.Values)
-				.OrderBy(member => member.Order)
 				.Select(member => new EquivalencyMember(member.Name, member.MemberType, member.GetValue))
 				.ToList();
+		}
+
+		if (!ReflectionFallback.IsSupported)
+		{
+			return null;
 		}
 
 		return type.GetFields()
@@ -82,7 +88,8 @@ public static partial class ValueFormatters
 		key = null;
 		pairValue = null;
 		Type type = value.GetType();
-		if (!type.IsGenericType || type.GetGenericTypeDefinition() != typeof(KeyValuePair<,>))
+		if (!type.IsGenericType || type.GetGenericTypeDefinition() != typeof(KeyValuePair<,>) ||
+		    !(ReflectionFallback.IsSupported || EquivalencyMembers.IsRegistered(type)))
 		{
 			return false;
 		}
@@ -185,8 +192,12 @@ public static partial class ValueFormatters
 			return;
 		}
 
-		List<EquivalencyMember> members = GetMembers(type);
-		if (members.Count == 0)
+		List<EquivalencyMember>? members = GetMembers(type);
+		if (members is null)
+		{
+			stringBuilder.Append(" { *unregistered* }");
+		}
+		else if (members.Count == 0)
 		{
 			stringBuilder.Append(" { }");
 		}

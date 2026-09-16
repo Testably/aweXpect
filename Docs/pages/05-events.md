@@ -207,6 +207,9 @@ The generator works from the declared type, so the same limits apply as for
 A type the generator did not see can be named explicitly with `[assembly: GenerateMetadata(typeof(MyClass))]`, which
 registers its members and its events.
 
-Under trimming, a recording of a subject without registration cannot tell a missing event from one the trimmer
-removed, so the error for an unknown event name, and for an event that a recording of all events did not find, asks
-you to root the type.
+Reflection over a subject without a registration is switched off when you publish with trimming or Native AOT
+enabled, because the trimmer removes events that only reflection reaches and the reflective recorder needs runtime
+code generation. Recording such a subject fails with an error that names the type and asks you to register it. The
+`aweXpect.ReflectionFallback.IsSupported` runtime switch forces the fallback either way, as described for
+[equivalency](/docs/expectations/equivalency#trimming-and-native-aot); with the fallback forced on, the error for an
+unknown event name, and for an event that a recording of all events did not find, asks you to root the type instead.

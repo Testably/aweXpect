@@ -86,6 +86,12 @@ internal static class EquivalencyMembers
 		return property is null ? null : Accessor(property);
 	}
 
+	/// <summary>
+	///     Whether the public members of the <paramref name="type" /> are registered.
+	/// </summary>
+	public static bool IsRegistered(Type type)
+		=> TryGetRegistered(type, IncludeMembers.Public, out _);
+
 	/// <remarks>
 	///     A type counts as registered only when it has a field or a property: an event-only registration says nothing
 	///     about the members, so such a type is reflected over like an unregistered one.

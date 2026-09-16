@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using aweXpect.Core;
-#if !NET8_0_OR_GREATER
+#if NET8_0_OR_GREATER
+using System.Numerics;
+#else
 using System.Globalization;
 #endif
 
@@ -111,80 +113,73 @@ internal static class ObjectEqualityOptions
 			}
 		}
 
+		/// <remarks>
+		///     Every number is converted with the truncating conversion of generic math, which saturates where an
+		///     explicit cast would wrap or throw, and which needs no <see langword="dynamic" /> binder, unavailable when
+		///     publishing with Native AOT enabled. The caller converts in both directions, so a saturated value never
+		///     counts as equal on its own.
+		/// </remarks>
 		private static bool IsEqualWhenConverted(object source, object target, Type targetType)
 		{
 			try
 			{
 #if NET8_0_OR_GREATER
-				dynamic sourceNumber = source;
-				object? convertedNumber = null;
-				if (targetType == typeof(int))
+				return source switch
 				{
-					convertedNumber = (int)sourceNumber;
-				}
-				else if (targetType == typeof(long))
-				{
-					convertedNumber = (long)sourceNumber;
-				}
-				else if (targetType == typeof(float))
-				{
-					convertedNumber = (float)sourceNumber;
-				}
-				else if (targetType == typeof(double))
-				{
-					convertedNumber = (double)sourceNumber;
-				}
-				else if (targetType == typeof(decimal))
-				{
-					convertedNumber = (decimal)sourceNumber;
-				}
-				else if (targetType == typeof(sbyte))
-				{
-					convertedNumber = (sbyte)sourceNumber;
-				}
-				else if (targetType == typeof(byte))
-				{
-					convertedNumber = (byte)sourceNumber;
-				}
-				else if (targetType == typeof(short))
-				{
-					convertedNumber = (short)sourceNumber;
-				}
-				else if (targetType == typeof(ushort))
-				{
-					convertedNumber = (ushort)sourceNumber;
-				}
-				else if (targetType == typeof(uint))
-				{
-					convertedNumber = (uint)sourceNumber;
-				}
-				else if (targetType == typeof(ulong))
-				{
-					convertedNumber = (ulong)sourceNumber;
-				}
-				else if (targetType == typeof(Int128))
-				{
-					convertedNumber = (Int128)sourceNumber;
-				}
-				else if (targetType == typeof(UInt128))
-				{
-					convertedNumber = (UInt128)sourceNumber;
-				}
-				else if (targetType == typeof(Half))
-				{
-					convertedNumber = (Half)sourceNumber;
-				}
+					int number => IsEqualWhenConverted(number, target),
+					long number => IsEqualWhenConverted(number, target),
+					float number => IsEqualWhenConverted(number, target),
+					double number => IsEqualWhenConverted(number, target),
+					decimal number => IsEqualWhenConverted(number, target),
+					sbyte number => IsEqualWhenConverted(number, target),
+					byte number => IsEqualWhenConverted(number, target),
+					short number => IsEqualWhenConverted(number, target),
+					ushort number => IsEqualWhenConverted(number, target),
+					uint number => IsEqualWhenConverted(number, target),
+					ulong number => IsEqualWhenConverted(number, target),
+					Int128 number => IsEqualWhenConverted(number, target),
+					UInt128 number => IsEqualWhenConverted(number, target),
+					nint number => IsEqualWhenConverted(number, target),
+					nuint number => IsEqualWhenConverted(number, target),
+					Half number => IsEqualWhenConverted(number, target),
+					_ => false,
+				};
 #else
 				object? convertedNumber =
 					Convert.ChangeType(source, targetType, CultureInfo.InvariantCulture);
-#endif
 				return target.Equals(convertedNumber);
+#endif
 			}
 			catch
 			{
 				return false;
 			}
 		}
+
+#if NET8_0_OR_GREATER
+		private static bool IsEqualWhenConverted<TSource>(TSource source, object target)
+			where TSource : INumberBase<TSource>
+			=> target switch
+			{
+				int number => number.Equals(int.CreateTruncating(source)),
+				long number => number.Equals(long.CreateTruncating(source)),
+				float number => number.Equals(float.CreateTruncating(source)),
+				double number => number.Equals(double.CreateTruncating(source)),
+				decimal number => number.Equals(decimal.CreateTruncating(source)),
+				sbyte number => number.Equals(sbyte.CreateTruncating(source)),
+				byte number => number.Equals(byte.CreateTruncating(source)),
+				short number => number.Equals(short.CreateTruncating(source)),
+				ushort number => number.Equals(ushort.CreateTruncating(source)),
+				uint number => number.Equals(uint.CreateTruncating(source)),
+				ulong number => number.Equals(ulong.CreateTruncating(source)),
+				Int128 number => number.Equals(Int128.CreateTruncating(source)),
+				UInt128 number => number.Equals(UInt128.CreateTruncating(source)),
+				nint number => number.Equals(nint.CreateTruncating(source)),
+				nuint number => number.Equals(nuint.CreateTruncating(source)),
+				Half number => number.Equals(Half.CreateTruncating(source)),
+				_ => false,
+			};
+#endif
 
 		/// <inheritdoc cref="IObjectMatchType.GetExpectation(string, ExpectationGrammars)" />
 		public string GetExpectation(string expected, ExpectationGrammars grammars)

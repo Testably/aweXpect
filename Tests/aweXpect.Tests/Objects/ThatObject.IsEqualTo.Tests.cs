@@ -159,6 +159,12 @@ public sealed partial class ThatObject
 					(Int128)9, (UInt128)9
 				},
 				{
+					(nint)10, 10
+				},
+				{
+					(nuint)11, 11.0
+				},
+				{
 					(Half)10, (float)10
 				},
 #endif

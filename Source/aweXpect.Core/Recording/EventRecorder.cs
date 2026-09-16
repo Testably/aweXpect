@@ -8,6 +8,7 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using aweXpect.Core;
 using aweXpect.Core.Helpers;
 using aweXpect.Core.Metadata;
 
@@ -53,6 +54,13 @@ internal sealed class EventRecorder(string eventName) : IDisposable
 
 	public void Attach(WeakReference subject, EventInfo eventInfo)
 	{
+		// Unreachable, because the events are only ever found by the guarded reflection, but the analyzer does not
+		// follow guards across methods.
+		if (!ReflectionFallback.IsSupported)
+		{
+			throw ReflectionFallback.NotSupported(eventInfo.ReflectedType!, "events").LogTrace();
+		}
+
 		MethodInfo handlerType = eventInfo.EventHandlerType!.GetMethod("Invoke")!;
 		Delegate? handler = null;
 		foreach (MethodInfo method in typeof(EventRecorder).GetMethods().Where(x => x.Name == nameof(RecordEvent)))

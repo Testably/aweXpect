@@ -66,6 +66,12 @@ public static partial class ThatObject
 					return type.IsAssignableFrom(actualGenericType);
 				}
 
+				if (!ReflectionFallback.IsSupported)
+				{
+					throw ReflectionFallback.NotSupported($"The interfaces of {Formatter.Format(actualType)}",
+						"Check against a constructed interface instead of its generic definition.");
+				}
+
 				Type[] interfaces = actualGenericType.GetInterfaces();
 				return interfaces
 					.Any(childInterface =>
