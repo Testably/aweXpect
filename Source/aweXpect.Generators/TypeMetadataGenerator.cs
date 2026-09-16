@@ -700,16 +700,20 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 
 		/// <remarks>
 		///     A name that more than one assembly defines cannot be spelled out in the generated code, because the
-		///     compiler reports it as ambiguous, or as a conflict with the consumer's own declaration.
+		///     compiler reports it as ambiguous, or as a conflict with the consumer's own declaration. An inaccessible
+		///     declaration, such as a polyfill compiled into a referenced library, does not take part in the lookup.
 		/// </remarks>
 		private bool IsUnambiguous(INamedTypeSymbol type)
 		{
 			INamedTypeSymbol definition = type.OriginalDefinition;
 			if (!_isUnambiguous.TryGetValue(definition, out bool isUnambiguous))
 			{
-				ImmutableArray<INamedTypeSymbol> candidates =
-					compilation.GetTypesByMetadataName(FullMetadataName(definition));
-				isUnambiguous = candidates.Length == 1 &&
+				List<INamedTypeSymbol> candidates = compilation.GetTypesByMetadataName(FullMetadataName(definition))
+					.Where(candidate =>
+						SymbolEqualityComparer.Default.Equals(candidate.ContainingAssembly, compilation.Assembly) ||
+						compilation.IsSymbolAccessibleWithin(candidate, compilation.Assembly))
+					.ToList();
+				isUnambiguous = candidates.Count == 1 &&
 				                SymbolEqualityComparer.Default.Equals(candidates[0], definition);
 				_isUnambiguous[definition] = isUnambiguous;
 			}

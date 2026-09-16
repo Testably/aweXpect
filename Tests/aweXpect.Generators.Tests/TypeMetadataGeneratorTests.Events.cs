@@ -134,6 +134,32 @@ public sealed partial class TypeMetadataGeneratorTests
 		}
 
 		[Fact]
+		public async Task WhenBaseTypeNameIsAlsoDeclaredInternallyElsewhere_ShouldRegisterTheType()
+		{
+			MetadataReference library = GeneratorRunner.CompileToReference("Lib", """
+				namespace Lib;
+
+				public class Args : System.EventArgs { }
+				public delegate void Handler(Args args);
+
+				public class Publisher
+				{
+					public event Handler? Changed;
+				}
+				""");
+			MetadataReference polyfill = GeneratorRunner.CompileToReference("Polyfill",
+				"namespace Lib { internal class Args { } internal delegate void Handler(int x); }");
+
+			GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+				[Record("new Lib.Publisher().Watch();"),],
+				additionalReferences: [library, polyfill,]);
+
+			await That(result.Errors).IsEmpty();
+			await That(result.Generated).Contains("RegisterEvent<global::Lib.Publisher>(\"Changed\",")
+				.Because("an inaccessible declaration of the same name does not take part in the lookup");
+		}
+
+		[Fact]
 		public async Task WhenEventHandlerHasARefParameter_ShouldNotRegisterTheType()
 		{
 			GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
