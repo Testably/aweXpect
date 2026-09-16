@@ -1,0 +1,1141 @@
+#nullable enable
+abstract aweXpect.Core.Constraints.ConstraintResult.AppendExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+abstract aweXpect.Core.Constraints.ConstraintResult.AppendResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+abstract aweXpect.Core.Constraints.ConstraintResult.Negate() -> aweXpect.Core.Constraints.ConstraintResult!
+abstract aweXpect.Core.Constraints.ConstraintResult.TryGetValue<TValue>(out TValue? value) -> bool
+abstract aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.AppendNegatedExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+abstract aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.AppendNegatedResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+abstract aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.AppendNormalExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+abstract aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.AppendNormalResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+abstract aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.AppendNegatedExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+abstract aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.AppendNegatedResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+abstract aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.AppendNormalExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+abstract aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.AppendNormalResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+abstract aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.AppendNegatedExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+abstract aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.AppendNegatedResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+abstract aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.AppendNormalExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+abstract aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.AppendNormalResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+abstract aweXpect.Core.ResultContext.GetContent(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<string?>!
+abstract aweXpect.Equivalency.EquivalencyExpectationBuilder.IsMetBy<TValue>(TValue value, aweXpect.Core.EvaluationContext.IEvaluationContext! context, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<aweXpect.Core.Constraints.ConstraintResult!>!
+abstract aweXpect.Equivalency.MemberToIgnore.IgnoreMember(string! memberPath, System.Type! memberType) -> bool
+abstract aweXpect.Results.Expectation.Combination.CheckOutcome(aweXpect.Core.Constraints.Outcome? previous, aweXpect.Core.Constraints.Outcome current) -> aweXpect.Core.Constraints.Outcome
+abstract aweXpect.Results.Expectation.Combination.GetSubjectLine() -> string!
+aweXpect.Core.Adapters.ITestFrameworkAdapter
+aweXpect.Core.Adapters.ITestFrameworkAdapter.Fail(string! message) -> void
+aweXpect.Core.Adapters.ITestFrameworkAdapter.Fail(string! message, System.Exception! innerException) -> void
+aweXpect.Core.Adapters.ITestFrameworkAdapter.Inconclusive(string! message) -> void
+aweXpect.Core.Adapters.ITestFrameworkAdapter.IsAvailable.get -> bool
+aweXpect.Core.Adapters.ITestFrameworkAdapter.Skip(string! message) -> void
+aweXpect.Core.Adapters.TestFrameworkRegistry
+aweXpect.Core.Constraints.ConstraintResult
+aweXpect.Core.Constraints.ConstraintResult.ConstraintResult(aweXpect.Core.Constraints.FurtherProcessingStrategy furtherProcessingStrategy) -> void
+aweXpect.Core.Constraints.ConstraintResult.ConstraintResult(aweXpect.Core.ExpectationGrammars grammars) -> void
+aweXpect.Core.Constraints.ConstraintResult.ExpectationOnly<T>
+aweXpect.Core.Constraints.ConstraintResult.ExpectationOnly<T>.ExpectationOnly(aweXpect.Core.ExpectationGrammars grammars, string? expectation = null, string? negatedExpectation = null) -> void
+aweXpect.Core.Constraints.ConstraintResult.ExpectationOnly<T>.IsMetBy(T actual) -> aweXpect.Core.Constraints.ConstraintResult!
+aweXpect.Core.Constraints.ConstraintResult.FurtherProcessingStrategy.get -> aweXpect.Core.Constraints.FurtherProcessingStrategy
+aweXpect.Core.Constraints.ConstraintResult.FurtherProcessingStrategy.set -> void
+aweXpect.Core.Constraints.ConstraintResult.Grammars.get -> aweXpect.Core.ExpectationGrammars
+aweXpect.Core.Constraints.ConstraintResult.Grammars.set -> void
+aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>
+aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.Actual.get -> T?
+aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.Actual.set -> void
+aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.IsNegated.get -> bool
+aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.It.get -> string!
+aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.WithEqualToValue(string! it, aweXpect.Core.ExpectationGrammars grammars, bool isExpectedNull) -> void
+aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>
+aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.Actual.get -> T?
+aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.Actual.set -> void
+aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.IsNegated.get -> bool
+aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.It.get -> string!
+aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.WithNotNullValue(string! it, aweXpect.Core.ExpectationGrammars grammars) -> void
+aweXpect.Core.Constraints.ConstraintResult.WithValue<T>
+aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.Actual.get -> T?
+aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.Actual.set -> void
+aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.IsNegated.get -> bool
+aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.WithValue(aweXpect.Core.ExpectationGrammars grammars) -> void
+aweXpect.Core.Constraints.ConstraintResultExtensions
+aweXpect.Core.Constraints.FurtherProcessingStrategy
+aweXpect.Core.Constraints.FurtherProcessingStrategy.Continue = 0 -> aweXpect.Core.Constraints.FurtherProcessingStrategy
+aweXpect.Core.Constraints.FurtherProcessingStrategy.IgnoreCompletely = 1 -> aweXpect.Core.Constraints.FurtherProcessingStrategy
+aweXpect.Core.Constraints.FurtherProcessingStrategy.IgnoreResult = 2 -> aweXpect.Core.Constraints.FurtherProcessingStrategy
+aweXpect.Core.Constraints.IAsyncConstraint<TValue>
+aweXpect.Core.Constraints.IAsyncConstraint<TValue>.IsMetBy(TValue actual, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<aweXpect.Core.Constraints.ConstraintResult!>!
+aweXpect.Core.Constraints.IAsyncContextConstraint<TValue>
+aweXpect.Core.Constraints.IAsyncContextConstraint<TValue>.IsMetBy(TValue actual, aweXpect.Core.EvaluationContext.IEvaluationContext! context, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<aweXpect.Core.Constraints.ConstraintResult!>!
+aweXpect.Core.Constraints.IConstraint
+aweXpect.Core.Constraints.IConstraint.AppendExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+aweXpect.Core.Constraints.IContextConstraint<TValue>
+aweXpect.Core.Constraints.IContextConstraint<TValue>.IsMetBy(TValue actual, aweXpect.Core.EvaluationContext.IEvaluationContext! context) -> aweXpect.Core.Constraints.ConstraintResult!
+aweXpect.Core.Constraints.IValueConstraint<TValue>
+aweXpect.Core.Constraints.IValueConstraint<TValue>.IsMetBy(TValue actual) -> aweXpect.Core.Constraints.ConstraintResult!
+aweXpect.Core.Constraints.Outcome
+aweXpect.Core.Constraints.Outcome.Failure = 1 -> aweXpect.Core.Constraints.Outcome
+aweXpect.Core.Constraints.Outcome.Success = 0 -> aweXpect.Core.Constraints.Outcome
+aweXpect.Core.Constraints.Outcome.Undecided = 2 -> aweXpect.Core.Constraints.Outcome
+aweXpect.Core.EvaluationContext.IEvaluationContext
+aweXpect.Core.EvaluationContext.IEvaluationContext.Store<T>(string! key, T value) -> void
+aweXpect.Core.EvaluationContext.IEvaluationContext.TryReceive<T>(string! key, out T? value) -> bool
+aweXpect.Core.ExpectationBuilder
+aweXpect.Core.ExpectationBuilder.AddConstraint<TValue>(System.Func<aweXpect.Core.ExpectationBuilder!, string!, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IAsyncConstraint<TValue>!>! constraintBuilder) -> aweXpect.Core.ExpectationBuilder!
+aweXpect.Core.ExpectationBuilder.AddConstraint<TValue>(System.Func<aweXpect.Core.ExpectationBuilder!, string!, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IAsyncContextConstraint<TValue>!>! constraintBuilder) -> aweXpect.Core.ExpectationBuilder!
+aweXpect.Core.ExpectationBuilder.AddConstraint<TValue>(System.Func<aweXpect.Core.ExpectationBuilder!, string!, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IContextConstraint<TValue>!>! constraintBuilder) -> aweXpect.Core.ExpectationBuilder!
+aweXpect.Core.ExpectationBuilder.AddConstraint<TValue>(System.Func<aweXpect.Core.ExpectationBuilder!, string!, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IValueConstraint<TValue>!>! constraintBuilder) -> aweXpect.Core.ExpectationBuilder!
+aweXpect.Core.ExpectationBuilder.AddConstraint<TValue>(System.Func<string!, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IAsyncConstraint<TValue>!>! constraintBuilder) -> aweXpect.Core.ExpectationBuilder!
+aweXpect.Core.ExpectationBuilder.AddConstraint<TValue>(System.Func<string!, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IAsyncContextConstraint<TValue>!>! constraintBuilder) -> aweXpect.Core.ExpectationBuilder!
+aweXpect.Core.ExpectationBuilder.AddConstraint<TValue>(System.Func<string!, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IContextConstraint<TValue>!>! constraintBuilder) -> aweXpect.Core.ExpectationBuilder!
+aweXpect.Core.ExpectationBuilder.AddConstraint<TValue>(System.Func<string!, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IValueConstraint<TValue>!>! constraintBuilder) -> aweXpect.Core.ExpectationBuilder!
+aweXpect.Core.ExpectationBuilder.And(string! textSeparator = " and ") -> aweXpect.Core.ExpectationBuilder!
+aweXpect.Core.ExpectationBuilder.CancellationToken.get -> System.Threading.CancellationToken?
+aweXpect.Core.ExpectationBuilder.ExpectationBuilder(string! subjectExpression, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None) -> void
+aweXpect.Core.ExpectationBuilder.ExpectationGrammars.get -> aweXpect.Core.ExpectationGrammars
+aweXpect.Core.ExpectationBuilder.ForAsyncMember<TSource, TTarget>(aweXpect.Core.MemberAccessor<TSource, System.Threading.Tasks.Task<TTarget>!>! memberAccessor, System.Action<aweXpect.Core.MemberAccessor!, System.Text.StringBuilder!>? expectationTextGenerator = null, bool replaceIt = true) -> aweXpect.Core.ExpectationBuilder.MemberExpectationBuilder<TSource, TTarget>!
+aweXpect.Core.ExpectationBuilder.ForMember<TSource, TTarget>(aweXpect.Core.MemberAccessor<TSource, TTarget>! memberAccessor, System.Action<aweXpect.Core.MemberAccessor!, System.Text.StringBuilder!>? expectationTextGenerator = null, bool replaceIt = true) -> aweXpect.Core.ExpectationBuilder.MemberExpectationBuilder<TSource, TTarget>!
+aweXpect.Core.ExpectationBuilder.ForWhich<TSource, TTarget>(System.Func<TSource, System.Threading.Tasks.Task<TTarget?>!>! asyncMemberAccessor, string? separator = null) -> aweXpect.Core.ExpectationBuilder!
+aweXpect.Core.ExpectationBuilder.ForWhich<TSource, TTarget>(System.Func<TSource, TTarget?>! memberAccessor, string? separator = null, string? replaceIt = null, System.Func<aweXpect.Core.ExpectationGrammars, aweXpect.Core.ExpectationGrammars>? expectationGrammar = null) -> aweXpect.Core.ExpectationBuilder!
+aweXpect.Core.ExpectationBuilder.MemberExpectationBuilder<TSource, TMember>
+aweXpect.Core.ExpectationBuilder.MemberExpectationBuilder<TSource, TMember>.AddExpectations(System.Action<aweXpect.Core.ExpectationBuilder!>! expectation, System.Func<aweXpect.Core.ExpectationGrammars, aweXpect.Core.ExpectationGrammars>? expectationGrammars = null) -> aweXpect.Core.ExpectationBuilder!
+aweXpect.Core.ExpectationBuilder.MemberExpectationBuilder<TSource, TMember>.AddExpectations<TNarrowed>(System.Action<aweXpect.Core.ExpectationBuilder!>! expectation, System.Func<aweXpect.Core.ExpectationGrammars, aweXpect.Core.ExpectationGrammars>? expectationGrammars = null) -> aweXpect.Core.ExpectationBuilder!
+aweXpect.Core.ExpectationBuilder.MemberExpectationBuilder<TSource, TMember>.Validate(System.Func<string!, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IValueConstraint<TSource>!>! constraintBuilder) -> aweXpect.Core.ExpectationBuilder.MemberExpectationBuilder<TSource, TMember>!
+aweXpect.Core.ExpectationBuilder.Timeout.get -> System.TimeSpan?
+aweXpect.Core.ExpectationBuilder.WithCancellation(System.Threading.CancellationToken cancellationToken) -> void
+aweXpect.Core.ExpectationBuilder.WithTimeout(System.TimeSpan timeout) -> void
+aweXpect.Core.ExpectationBuilderExtensions
+aweXpect.Core.ExpectationGrammars
+aweXpect.Core.ExpectationGrammars.Active = 8 -> aweXpect.Core.ExpectationGrammars
+aweXpect.Core.ExpectationGrammars.Negated = 16 -> aweXpect.Core.ExpectationGrammars
+aweXpect.Core.ExpectationGrammars.Nested = 2 -> aweXpect.Core.ExpectationGrammars
+aweXpect.Core.ExpectationGrammars.None = 0 -> aweXpect.Core.ExpectationGrammars
+aweXpect.Core.ExpectationGrammars.Plural = 4 -> aweXpect.Core.ExpectationGrammars
+aweXpect.Core.ExpectationGrammarsExtensions
+aweXpect.Core.GuaranteesNotNullAttribute
+aweXpect.Core.GuaranteesNotNullAttribute.GuaranteesNotNullAttribute() -> void
+aweXpect.Core.Helpers.MemberVisibilities
+aweXpect.Core.Helpers.MemberVisibilities.ExplicitlyImplemented = 4 -> aweXpect.Core.Helpers.MemberVisibilities
+aweXpect.Core.Helpers.MemberVisibilities.Internal = 1 -> aweXpect.Core.Helpers.MemberVisibilities
+aweXpect.Core.Helpers.MemberVisibilities.None = 0 -> aweXpect.Core.Helpers.MemberVisibilities
+aweXpect.Core.Helpers.MemberVisibilities.Public = 2 -> aweXpect.Core.Helpers.MemberVisibilities
+aweXpect.Core.ICollectionMatcher<T, T2>
+aweXpect.Core.ICollectionMatcher<T, T2>.Verify(string! it, T value, aweXpect.Core.IOptionsEquality<T2>! options, int maximumNumber) -> System.Threading.Tasks.Task<(bool, string?)>!
+aweXpect.Core.ICollectionMatcher<T, T2>.VerifyComplete(string! it, aweXpect.Core.IOptionsEquality<T2>! options, int maximumNumber) -> System.Threading.Tasks.Task<(bool, string?)>!
+aweXpect.Core.IDescribableSubject
+aweXpect.Core.IDescribableSubject.GetDescription() -> string!
+aweXpect.Core.IExpectThat<T>
+aweXpect.Core.IExpectThat<T>.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
+aweXpect.Core.IObjectMatchType
+aweXpect.Core.IObjectMatchType.AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected) -> System.Threading.Tasks.Task<bool>!
+aweXpect.Core.IObjectMatchType.GetExpectation(string! expected, aweXpect.Core.ExpectationGrammars grammars) -> string!
+aweXpect.Core.IObjectMatchType.GetExtendedFailure(string! it, aweXpect.Core.ExpectationGrammars grammars, object? actual, object? expected) -> string!
+aweXpect.Core.IOptionsEquality<TSubject>
+aweXpect.Core.IOptionsEquality<TSubject>.AreConsideredEqual<TExpected>(TSubject actual, TExpected expected) -> System.Threading.Tasks.Task<bool>!
+aweXpect.Core.IOptionsProvider<TOptions>
+aweXpect.Core.IOptionsProvider<TOptions>.Options.get -> TOptions
+aweXpect.Core.IStringMatchType
+aweXpect.Core.IStringMatchType.AreConsideredEqual(string? actual, string? expected, bool ignoreCase, System.Collections.Generic.IEqualityComparer<string!>? comparer) -> System.Threading.Tasks.Task<bool>!
+aweXpect.Core.IStringMatchType.GetExpectation(string? expected, aweXpect.Core.ExpectationGrammars grammars) -> string!
+aweXpect.Core.IStringMatchType.GetExtendedFailure(string! it, string? actual, string? expected, bool ignoreCase, System.Collections.Generic.IEqualityComparer<string!>! comparer, aweXpect.Core.StringDifferenceSettings? settings) -> string!
+aweXpect.Core.IStringMatchType.GetOptionString(bool ignoreCase, System.Collections.Generic.IEqualityComparer<string!>? comparer) -> string!
+aweXpect.Core.IStringMatchType.GetTypeString() -> string!
+aweXpect.Core.IThat<T>
+aweXpect.Core.IThat<T>.Equals(object? obj) -> bool
+aweXpect.Core.IThat<T>.GetHashCode() -> int
+aweXpect.Core.IThat<T>.GetType() -> System.Type!
+aweXpect.Core.IThat<T>.ToString() -> string?
+aweXpect.Core.IThatDelegateThrows<T>
+aweXpect.Core.IThatSubject<T>
+aweXpect.Core.IThatSubject<T>.Is<TType>() -> aweXpect.Results.AndOrWhoseResult<TType, aweXpect.Core.IThatSubject<T>!>!
+aweXpect.Core.IThatSubject<T>.IsExactly<TType>() -> aweXpect.Results.AndOrWhoseResult<TType, aweXpect.Core.IThatSubject<T>!>!
+aweXpect.Core.IThatSubject<T>.IsNot<TType>() -> aweXpect.Results.AndOrResult<T, aweXpect.Core.IThatSubject<T>!>!
+aweXpect.Core.IThatSubject<T>.IsNotExactly<TType>() -> aweXpect.Results.AndOrResult<T, aweXpect.Core.IThatSubject<T>!>!
+aweXpect.Core.ManualExpectationBuilder<TValue>
+aweXpect.Core.ManualExpectationBuilder<TValue>.AppendExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+aweXpect.Core.ManualExpectationBuilder<TValue>.Equals(aweXpect.Core.ManualExpectationBuilder<TValue>? x, aweXpect.Core.ManualExpectationBuilder<TValue>? y) -> bool
+aweXpect.Core.ManualExpectationBuilder<TValue>.GetHashCode(aweXpect.Core.ManualExpectationBuilder<TValue>! obj) -> int
+aweXpect.Core.ManualExpectationBuilder<TValue>.IsMetBy(TValue value, aweXpect.Core.EvaluationContext.IEvaluationContext! context, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<aweXpect.Core.Constraints.ConstraintResult!>!
+aweXpect.Core.ManualExpectationBuilder<TValue>.ManualExpectationBuilder(aweXpect.Core.ExpectationBuilder? inner, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None) -> void
+aweXpect.Core.MemberAccessor
+aweXpect.Core.MemberAccessor.MemberAccessor(string! name) -> void
+aweXpect.Core.MemberAccessor<TSource, TTarget>
+aweXpect.Core.Metadata.GenerateMetadataAttribute
+aweXpect.Core.Metadata.GenerateMetadataAttribute.GenerateMetadataAttribute(System.Type! type) -> void
+aweXpect.Core.Metadata.GenerateMetadataAttribute.Type.get -> System.Type!
+aweXpect.Core.Metadata.RequiresEventMetadataAttribute
+aweXpect.Core.Metadata.RequiresEventMetadataAttribute.RequiresEventMetadataAttribute() -> void
+aweXpect.Core.Metadata.RequiresMemberMetadataAttribute
+aweXpect.Core.Metadata.RequiresMemberMetadataAttribute.RequiresMemberMetadataAttribute() -> void
+aweXpect.Core.Metadata.TypeMetadataRegistry
+aweXpect.Core.ResultContext
+aweXpect.Core.ResultContext.AsyncCallback
+aweXpect.Core.ResultContext.AsyncCallback.AsyncCallback(string! title, System.Func<System.Threading.CancellationToken, System.Threading.Tasks.Task<string?>!>! callback, int priority = 0) -> void
+aweXpect.Core.ResultContext.Fixed
+aweXpect.Core.ResultContext.Fixed.Fixed(string! title, string? content, int priority = 0) -> void
+aweXpect.Core.ResultContext.Priority.get -> int
+aweXpect.Core.ResultContext.ResultContext(string! title, int priority = 0) -> void
+aweXpect.Core.ResultContext.SyncCallback
+aweXpect.Core.ResultContext.SyncCallback.SyncCallback(string! title, System.Func<string?>! callback, int priority = 0) -> void
+aweXpect.Core.ResultContext.Title.get -> string!
+aweXpect.Core.ResultContext.Title.set -> void
+aweXpect.Core.ResultContexts
+aweXpect.Core.ResultContexts.Add(aweXpect.Core.ResultContext! context) -> aweXpect.Core.ResultContexts!
+aweXpect.Core.ResultContexts.Clear() -> aweXpect.Core.ResultContexts!
+aweXpect.Core.ResultContexts.Close() -> aweXpect.Core.ResultContexts!
+aweXpect.Core.ResultContexts.GetEnumerator() -> System.Collections.Generic.IEnumerator<aweXpect.Core.ResultContext!>!
+aweXpect.Core.ResultContexts.Open() -> aweXpect.Core.ResultContexts!
+aweXpect.Core.ResultContexts.Remove(System.Predicate<aweXpect.Core.ResultContext!>! predicate) -> aweXpect.Core.ResultContexts!
+aweXpect.Core.ResultContexts.Remove(string! title, System.StringComparison stringComparison = System.StringComparison.OrdinalIgnoreCase) -> aweXpect.Core.ResultContexts!
+aweXpect.Core.ResultContexts.ResultContexts() -> void
+aweXpect.Core.Sources.DelegateValue
+aweXpect.Core.Sources.DelegateValue.DelegateValue(System.Exception? exception, System.TimeSpan duration, bool isNull = false) -> void
+aweXpect.Core.Sources.DelegateValue.Duration.get -> System.TimeSpan
+aweXpect.Core.Sources.DelegateValue.Exception.get -> System.Exception?
+aweXpect.Core.Sources.DelegateValue.IsNull.get -> bool
+aweXpect.Core.Sources.DelegateValue<TValue>
+aweXpect.Core.Sources.DelegateValue<TValue>.DelegateValue(in TValue? value, System.Exception? exception, System.TimeSpan duration, bool isNull = false) -> void
+aweXpect.Core.Sources.DelegateValue<TValue>.Value.get -> TValue?
+aweXpect.Core.StringDifference
+aweXpect.Core.StringDifference.IndexOfFirstMismatch(aweXpect.Core.StringDifference.MatchType matchType) -> int
+aweXpect.Core.StringDifference.MatchType
+aweXpect.Core.StringDifference.MatchType.Equality = 0 -> aweXpect.Core.StringDifference.MatchType
+aweXpect.Core.StringDifference.MatchType.Prefix = 3 -> aweXpect.Core.StringDifference.MatchType
+aweXpect.Core.StringDifference.MatchType.Regex = 2 -> aweXpect.Core.StringDifference.MatchType
+aweXpect.Core.StringDifference.MatchType.Suffix = 4 -> aweXpect.Core.StringDifference.MatchType
+aweXpect.Core.StringDifference.MatchType.Wildcard = 1 -> aweXpect.Core.StringDifference.MatchType
+aweXpect.Core.StringDifference.StringDifference(string? actual, string? expected, System.Collections.Generic.IEqualityComparer<string!>? comparer = null, aweXpect.Core.StringDifferenceSettings? settings = null) -> void
+aweXpect.Core.StringDifference.ToString(string! prefix) -> string!
+aweXpect.Core.StringDifferenceSettings
+aweXpect.Core.StringDifferenceSettings.IgnoredColumnsPerLine.get -> System.Collections.Generic.IReadOnlyList<int>?
+aweXpect.Core.StringDifferenceSettings.IgnoredTrailingColumns.get -> int
+aweXpect.Core.StringDifferenceSettings.IgnoredTrailingLines.get -> int
+aweXpect.Core.StringDifferenceSettings.MatchType.get -> aweXpect.Core.StringDifference.MatchType
+aweXpect.Core.StringDifferenceSettings.StringDifferenceSettings(int ignoredTrailingLines, int ignoredTrailingColumns) -> void
+aweXpect.Core.StringDifferenceSettings.StringDifferenceSettings(int ignoredTrailingLines, int ignoredTrailingColumns, System.Collections.Generic.IReadOnlyList<int>? ignoredColumnsPerLine) -> void
+aweXpect.Core.StringDifferenceSettingsExtensions
+aweXpect.Core.ThatBool
+aweXpect.Core.ThatBool.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
+aweXpect.Core.ThatBool.ThatBool(aweXpect.Core.ExpectationBuilder! expectationBuilder) -> void
+aweXpect.Core.ThatSubject<T>
+aweXpect.Core.ThatSubject<T>.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
+aweXpect.Core.ThatSubject<T>.Is<TType>() -> aweXpect.Results.AndOrWhoseResult<TType, aweXpect.Core.IThatSubject<T>!>!
+aweXpect.Core.ThatSubject<T>.IsExactly<TType>() -> aweXpect.Results.AndOrWhoseResult<TType, aweXpect.Core.IThatSubject<T>!>!
+aweXpect.Core.ThatSubject<T>.IsNot<TType>() -> aweXpect.Results.AndOrResult<T, aweXpect.Core.IThatSubject<T>!>!
+aweXpect.Core.ThatSubject<T>.IsNotExactly<TType>() -> aweXpect.Results.AndOrResult<T, aweXpect.Core.IThatSubject<T>!>!
+aweXpect.Core.ThatSubject<T>.ThatSubject() -> void
+aweXpect.Core.ThatSubject<T>.ThatSubject(aweXpect.Core.ExpectationBuilder! expectationBuilder) -> void
+aweXpect.Core.Times
+aweXpect.Core.Times.Times() -> void
+aweXpect.Core.Times.Times(int value) -> void
+aweXpect.Core.Times.Value.get -> int
+aweXpect.Core.TimesExtensions
+aweXpect.Customization.AwexpectCustomization
+aweXpect.Customization.AwexpectCustomization.AwexpectCustomization() -> void
+aweXpect.Customization.AwexpectCustomization.EnableTracing(aweXpect.Customization.ITraceWriter! traceWriter) -> aweXpect.Customization.CustomizationLifetime!
+aweXpect.Customization.AwexpectCustomization.Equivalency() -> aweXpect.Customization.AwexpectCustomization.EquivalencyCustomization!
+aweXpect.Customization.AwexpectCustomization.EquivalencyCustomization
+aweXpect.Customization.AwexpectCustomization.EquivalencyCustomization.DefaultEquivalencyOptions.get -> aweXpect.Customization.ICustomizationValueSetter<aweXpect.Equivalency.EquivalencyOptions!>!
+aweXpect.Customization.AwexpectCustomization.EquivalencyCustomization.Get() -> aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue!
+aweXpect.Customization.AwexpectCustomization.EquivalencyCustomization.Update(System.Func<aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue!, aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue!>! update) -> aweXpect.Customization.CustomizationLifetime!
+aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue
+aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue.DefaultEquivalencyOptions.get -> aweXpect.Equivalency.EquivalencyOptions!
+aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue.DefaultEquivalencyOptions.init -> void
+aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue.EquivalencyCustomizationValue() -> void
+aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue.EquivalencyCustomizationValue(aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue! original) -> void
+aweXpect.Customization.AwexpectCustomization.Formatting() -> aweXpect.Customization.AwexpectCustomization.FormattingCustomization!
+aweXpect.Customization.AwexpectCustomization.FormattingCustomization
+aweXpect.Customization.AwexpectCustomization.FormattingCustomization.Get() -> aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue!
+aweXpect.Customization.AwexpectCustomization.FormattingCustomization.MaximumNumberOfCollectionItems.get -> aweXpect.Customization.ICustomizationValueSetter<int>!
+aweXpect.Customization.AwexpectCustomization.FormattingCustomization.MaximumStringLength.get -> aweXpect.Customization.ICustomizationValueSetter<int>!
+aweXpect.Customization.AwexpectCustomization.FormattingCustomization.MinimumNumberOfCharactersAfterStringDifference.get -> aweXpect.Customization.ICustomizationValueSetter<int>!
+aweXpect.Customization.AwexpectCustomization.FormattingCustomization.Update(System.Func<aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue!, aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue!>! update) -> aweXpect.Customization.CustomizationLifetime!
+aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue
+aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.FormattingCustomizationValue() -> void
+aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.FormattingCustomizationValue(aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue! original) -> void
+aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.MaximumNumberOfCollectionItems.get -> int
+aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.MaximumNumberOfCollectionItems.init -> void
+aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.MaximumStringLength.get -> int
+aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.MaximumStringLength.init -> void
+aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.MinimumNumberOfCharactersAfterStringDifference.get -> int
+aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.MinimumNumberOfCharactersAfterStringDifference.init -> void
+aweXpect.Customization.AwexpectCustomization.Reflection() -> aweXpect.Customization.AwexpectCustomization.ReflectionCustomization!
+aweXpect.Customization.AwexpectCustomization.ReflectionCustomization
+aweXpect.Customization.AwexpectCustomization.ReflectionCustomization.ExcludedAssemblyPrefixes.get -> aweXpect.Customization.ICustomizationValueSetter<string![]!>!
+aweXpect.Customization.AwexpectCustomization.ReflectionCustomization.Get() -> aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue!
+aweXpect.Customization.AwexpectCustomization.ReflectionCustomization.Update(System.Func<aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue!, aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue!>! update) -> aweXpect.Customization.CustomizationLifetime!
+aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue
+aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue.ExcludedAssemblyPrefixes.get -> string![]!
+aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue.ExcludedAssemblyPrefixes.init -> void
+aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue.ReflectionCustomizationValue() -> void
+aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue.ReflectionCustomizationValue(aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue! original) -> void
+aweXpect.Customization.AwexpectCustomization.Settings() -> aweXpect.Customization.AwexpectCustomization.SettingsCustomization!
+aweXpect.Customization.AwexpectCustomization.SettingsCustomization
+aweXpect.Customization.AwexpectCustomization.SettingsCustomization.DefaultCheckInterval.get -> aweXpect.Customization.ICustomizationValueSetter<System.TimeSpan>!
+aweXpect.Customization.AwexpectCustomization.SettingsCustomization.DefaultEventuallyTimeout.get -> aweXpect.Customization.ICustomizationValueSetter<System.TimeSpan>!
+aweXpect.Customization.AwexpectCustomization.SettingsCustomization.DefaultSignalerTimeout.get -> aweXpect.Customization.ICustomizationValueSetter<System.TimeSpan>!
+aweXpect.Customization.AwexpectCustomization.SettingsCustomization.DefaultTimeComparisonTolerance.get -> aweXpect.Customization.ICustomizationValueSetter<System.TimeSpan>!
+aweXpect.Customization.AwexpectCustomization.SettingsCustomization.Get() -> aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue!
+aweXpect.Customization.AwexpectCustomization.SettingsCustomization.TestCancellation.get -> aweXpect.Customization.ICustomizationValueSetter<aweXpect.Customization.TestCancellation?>!
+aweXpect.Customization.AwexpectCustomization.SettingsCustomization.Update(System.Func<aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue!, aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue!>! update) -> aweXpect.Customization.CustomizationLifetime!
+aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue
+aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.DefaultCheckInterval.get -> System.TimeSpan
+aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.DefaultCheckInterval.init -> void
+aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.DefaultEventuallyTimeout.get -> System.TimeSpan
+aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.DefaultEventuallyTimeout.init -> void
+aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.DefaultSignalerTimeout.get -> System.TimeSpan
+aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.DefaultSignalerTimeout.init -> void
+aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.DefaultTimeComparisonTolerance.get -> System.TimeSpan
+aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.DefaultTimeComparisonTolerance.init -> void
+aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.SettingsCustomizationValue() -> void
+aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.SettingsCustomizationValue(aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue! original) -> void
+aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.TestCancellation.get -> aweXpect.Customization.TestCancellation?
+aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.TestCancellation.init -> void
+aweXpect.Customization.CustomizationLifetime
+aweXpect.Customization.CustomizationLifetime.CustomizationLifetime(System.Action! callback) -> void
+aweXpect.Customization.CustomizationLifetime.Dispose() -> void
+aweXpect.Customization.Customize
+aweXpect.Customization.IAwexpectCustomization
+aweXpect.Customization.IAwexpectCustomization.Get<TValue>(string! key, TValue defaultValue) -> TValue
+aweXpect.Customization.IAwexpectCustomization.Set<TValue>(string! key, TValue value) -> aweXpect.Customization.CustomizationLifetime!
+aweXpect.Customization.ICustomizationValueSetter<TValue>
+aweXpect.Customization.ICustomizationValueSetter<TValue>.Get() -> TValue
+aweXpect.Customization.ICustomizationValueSetter<TValue>.Set(TValue value) -> aweXpect.Customization.CustomizationLifetime!
+aweXpect.Customization.ICustomizationValueUpdater<TValue>
+aweXpect.Customization.ICustomizationValueUpdater<TValue>.Get() -> TValue
+aweXpect.Customization.ICustomizationValueUpdater<TValue>.Update(System.Func<TValue, TValue>! update) -> aweXpect.Customization.CustomizationLifetime!
+aweXpect.Customization.ITraceWriter
+aweXpect.Customization.ITraceWriter.WriteException(System.Exception! exception) -> void
+aweXpect.Customization.ITraceWriter.WriteMessage(string! message) -> void
+aweXpect.Customization.TestCancellation
+aweXpect.Delegates.ThatDelegate
+aweXpect.Delegates.ThatDelegate.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
+aweXpect.Delegates.ThatDelegate.ThatDelegate(aweXpect.Core.ExpectationBuilder! expectationBuilder) -> void
+aweXpect.Delegates.ThatDelegate.Throws() -> aweXpect.Delegates.ThatDelegateThrows<System.Exception!>!
+aweXpect.Delegates.ThatDelegate.Throws(System.Type! exceptionType) -> aweXpect.Delegates.ThatDelegateThrows<System.Exception!>!
+aweXpect.Delegates.ThatDelegate.Throws<TException>() -> aweXpect.Delegates.ThatDelegateThrows<TException!>!
+aweXpect.Delegates.ThatDelegate.ThrowsExactly(System.Type! exceptionType) -> aweXpect.Delegates.ThatDelegateThrows<System.Exception!>!
+aweXpect.Delegates.ThatDelegate.ThrowsExactly<TException>() -> aweXpect.Delegates.ThatDelegateThrows<TException!>!
+aweXpect.Delegates.ThatDelegate.ThrowsOption
+aweXpect.Delegates.ThatDelegate.ThrowsOption.DoCheckThrow.get -> bool
+aweXpect.Delegates.ThatDelegate.ThrowsOption.DoCheckThrow.set -> void
+aweXpect.Delegates.ThatDelegate.ThrowsOption.ExecutionTimeOptions.get -> aweXpect.Options.TimeSpanEqualityOptions?
+aweXpect.Delegates.ThatDelegate.ThrowsOption.ExecutionTimeOptions.set -> void
+aweXpect.Delegates.ThatDelegate.ThrowsOption.ThrowsOption() -> void
+aweXpect.Delegates.ThatDelegate.WithValue<T>
+aweXpect.Delegates.ThatDelegate.WithValue<T>.DoesNotThrow() -> aweXpect.Results.DelegateWithValueResult<T>!
+aweXpect.Delegates.ThatDelegate.WithValue<T>.DoesNotThrow(System.Type! exceptionType) -> aweXpect.Results.DelegateWithValueResult<T>!
+aweXpect.Delegates.ThatDelegate.WithValue<T>.DoesNotThrow<TException>() -> aweXpect.Results.DelegateWithValueResult<T>!
+aweXpect.Delegates.ThatDelegate.WithValue<T>.DoesNotThrowExactly(System.Type! exceptionType) -> aweXpect.Results.DelegateWithValueResult<T>!
+aweXpect.Delegates.ThatDelegate.WithValue<T>.DoesNotThrowExactly<TException>() -> aweXpect.Results.DelegateWithValueResult<T>!
+aweXpect.Delegates.ThatDelegate.WithValue<T>.Eventually() -> aweXpect.Core.IThatSubject<T>!
+aweXpect.Delegates.ThatDelegate.WithValue<T>.ExecutesIn() -> aweXpect.Results.ExecutesInResult<aweXpect.Results.AndResult<aweXpect.Delegates.ThatDelegate.WithValue<T>!>!>!
+aweXpect.Delegates.ThatDelegate.WithValue<T>.ExecutesIn(System.TimeSpan expected) -> aweXpect.Results.ExecutesInToleranceResult<aweXpect.Results.AndResult<aweXpect.Delegates.ThatDelegate.WithValue<T>!>!>!
+aweXpect.Delegates.ThatDelegate.WithValue<T>.WithValue(aweXpect.Core.ExpectationBuilder! expectationBuilder) -> void
+aweXpect.Delegates.ThatDelegate.WithoutValue
+aweXpect.Delegates.ThatDelegate.WithoutValue.DoesNotThrow() -> aweXpect.Results.ExpectationResult!
+aweXpect.Delegates.ThatDelegate.WithoutValue.DoesNotThrow(System.Type! exceptionType) -> aweXpect.Results.ExpectationResult!
+aweXpect.Delegates.ThatDelegate.WithoutValue.DoesNotThrow<TException>() -> aweXpect.Results.ExpectationResult!
+aweXpect.Delegates.ThatDelegate.WithoutValue.DoesNotThrowExactly(System.Type! exceptionType) -> aweXpect.Results.ExpectationResult!
+aweXpect.Delegates.ThatDelegate.WithoutValue.DoesNotThrowExactly<TException>() -> aweXpect.Results.ExpectationResult!
+aweXpect.Delegates.ThatDelegate.WithoutValue.ExecutesIn() -> aweXpect.Results.ExecutesInResult<aweXpect.Results.AndResult<aweXpect.Delegates.ThatDelegate.WithoutValue!>!>!
+aweXpect.Delegates.ThatDelegate.WithoutValue.ExecutesIn(System.TimeSpan expected) -> aweXpect.Results.ExecutesInToleranceResult<aweXpect.Results.AndResult<aweXpect.Delegates.ThatDelegate.WithoutValue!>!>!
+aweXpect.Delegates.ThatDelegate.WithoutValue.WithoutValue(aweXpect.Core.ExpectationBuilder! expectationBuilder) -> void
+aweXpect.Delegates.ThatDelegateThrows<TException>
+aweXpect.Delegates.ThatDelegateThrows<TException>.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
+aweXpect.Delegates.ThatDelegateThrows<TException>.OnlyIf(bool predicate) -> aweXpect.Delegates.ThatDelegateThrows<TException?>!
+aweXpect.Delegates.ThatDelegateThrows<TException>.ThatDelegateThrows(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Delegates.ThatDelegate.ThrowsOption! throwOptions) -> void
+aweXpect.Delegates.ThatDelegateThrows<TException>.ThrowOptions.get -> aweXpect.Delegates.ThatDelegate.ThrowsOption!
+aweXpect.Delegates.ThatDelegateThrows<TException>.Which.get -> aweXpect.Core.IThat<TException>!
+aweXpect.Delegates.ThatDelegateThrows<TException>.Whose<TMember>(System.Func<TException, TMember?>! memberSelector, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
+aweXpect.Delegates.ThatDelegateThrows<TException>.WithInner(System.Type! innerExceptionType) -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
+aweXpect.Delegates.ThatDelegateThrows<TException>.WithInner(System.Type! innerExceptionType, System.Action<aweXpect.Core.IThatSubject<System.Exception?>!>! expectations) -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
+aweXpect.Delegates.ThatDelegateThrows<TException>.WithInner<TInnerException>() -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
+aweXpect.Delegates.ThatDelegateThrows<TException>.WithInner<TInnerException>(System.Action<aweXpect.Core.IThatSubject<TInnerException?>!>! expectations) -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
+aweXpect.Delegates.ThatDelegateThrows<TException>.WithInnerException() -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
+aweXpect.Delegates.ThatDelegateThrows<TException>.WithInnerException(System.Action<aweXpect.Core.IThatSubject<System.Exception?>!>! expectations) -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
+aweXpect.Delegates.ThatDelegateThrows<TException>.Within(System.TimeSpan duration) -> aweXpect.Delegates.ThatDelegateThrows<TException>!
+aweXpect.Equivalency.EquivalencyComparison
+aweXpect.Equivalency.EquivalencyComparisonType
+aweXpect.Equivalency.EquivalencyComparisonType.ByMembers = 1 -> aweXpect.Equivalency.EquivalencyComparisonType
+aweXpect.Equivalency.EquivalencyComparisonType.ByValue = 0 -> aweXpect.Equivalency.EquivalencyComparisonType
+aweXpect.Equivalency.EquivalencyDefaults
+aweXpect.Equivalency.EquivalencyExpectationBuilder
+aweXpect.Equivalency.EquivalencyExpectationBuilder.AppendExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+aweXpect.Equivalency.EquivalencyExpectationBuilder.EquivalencyExpectationBuilder() -> void
+aweXpect.Equivalency.EquivalencyOptions
+aweXpect.Equivalency.EquivalencyOptions.CustomOptions.get -> System.Collections.Generic.Dictionary<System.Type!, aweXpect.Equivalency.EquivalencyTypeOptions!>!
+aweXpect.Equivalency.EquivalencyOptions.CustomOptions.init -> void
+aweXpect.Equivalency.EquivalencyOptions.DefaultComparisonTypeSelector.get -> System.Func<System.Type!, aweXpect.Equivalency.EquivalencyComparisonType>!
+aweXpect.Equivalency.EquivalencyOptions.DefaultComparisonTypeSelector.init -> void
+aweXpect.Equivalency.EquivalencyOptions.EquivalencyOptions() -> void
+aweXpect.Equivalency.EquivalencyOptions.EquivalencyOptions(aweXpect.Equivalency.EquivalencyOptions! original) -> void
+aweXpect.Equivalency.EquivalencyOptions.For<TMember>(System.Func<aweXpect.Equivalency.EquivalencyTypeOptions!, aweXpect.Equivalency.EquivalencyTypeOptions!>! options) -> aweXpect.Equivalency.EquivalencyOptions!
+aweXpect.Equivalency.EquivalencyOptions<TExpected>
+aweXpect.Equivalency.EquivalencyOptions<TExpected>.EquivalencyOptions(aweXpect.Equivalency.EquivalencyOptions! inner) -> void
+aweXpect.Equivalency.EquivalencyOptions<TExpected>.EquivalencyOptions(aweXpect.Equivalency.EquivalencyOptions<TExpected>! original) -> void
+aweXpect.Equivalency.EquivalencyOptions<TExpected>.For<TMember>(System.Func<aweXpect.Equivalency.EquivalencyTypeOptions!, aweXpect.Equivalency.EquivalencyTypeOptions!>! options) -> aweXpect.Equivalency.EquivalencyOptions<TExpected>!
+aweXpect.Equivalency.EquivalencyTypeOptions
+aweXpect.Equivalency.EquivalencyTypeOptions.ComparisonType.get -> aweXpect.Equivalency.EquivalencyComparisonType?
+aweXpect.Equivalency.EquivalencyTypeOptions.ComparisonType.init -> void
+aweXpect.Equivalency.EquivalencyTypeOptions.EquivalencyTypeOptions() -> void
+aweXpect.Equivalency.EquivalencyTypeOptions.EquivalencyTypeOptions(aweXpect.Equivalency.EquivalencyTypeOptions! original) -> void
+aweXpect.Equivalency.EquivalencyTypeOptions.Fields.get -> aweXpect.Equivalency.IncludeMembers
+aweXpect.Equivalency.EquivalencyTypeOptions.Fields.init -> void
+aweXpect.Equivalency.EquivalencyTypeOptions.IgnoreCollectionOrder.get -> bool
+aweXpect.Equivalency.EquivalencyTypeOptions.IgnoreCollectionOrder.init -> void
+aweXpect.Equivalency.EquivalencyTypeOptions.MembersToIgnore.get -> aweXpect.Equivalency.MemberToIgnore![]!
+aweXpect.Equivalency.EquivalencyTypeOptions.MembersToIgnore.init -> void
+aweXpect.Equivalency.EquivalencyTypeOptions.Properties.get -> aweXpect.Equivalency.IncludeMembers
+aweXpect.Equivalency.EquivalencyTypeOptions.Properties.init -> void
+aweXpect.Equivalency.IncludeMembers
+aweXpect.Equivalency.IncludeMembers.Internal = 4 -> aweXpect.Equivalency.IncludeMembers
+aweXpect.Equivalency.IncludeMembers.None = 0 -> aweXpect.Equivalency.IncludeMembers
+aweXpect.Equivalency.IncludeMembers.Private = 8 -> aweXpect.Equivalency.IncludeMembers
+aweXpect.Equivalency.IncludeMembers.Public = 2 -> aweXpect.Equivalency.IncludeMembers
+aweXpect.Equivalency.It
+aweXpect.Equivalency.It.IsEquivalent<T>
+aweXpect.Equivalency.It.IsEquivalent<T>.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
+aweXpect.Equivalency.It.IsEquivalent<T>.IsEquivalent() -> void
+aweXpect.Equivalency.It.IsEquivalent<T>.That.get -> aweXpect.Core.IThat<T>!
+aweXpect.Equivalency.MemberToIgnore
+aweXpect.Equivalency.MemberToIgnore.ByFieldPredicate
+aweXpect.Equivalency.MemberToIgnore.ByFieldPredicate.ByFieldPredicate(System.Func<string!, System.Type!, bool>! predicate, string! description) -> void
+aweXpect.Equivalency.MemberToIgnore.ByName
+aweXpect.Equivalency.MemberToIgnore.ByName.ByName(string! memberName) -> void
+aweXpect.Equivalency.MemberToIgnore.ByPredicate
+aweXpect.Equivalency.MemberToIgnore.ByPredicate.ByPredicate(System.Func<string!, System.Type!, bool>! predicate, string! description) -> void
+aweXpect.Equivalency.MemberToIgnore.ByPropertyPredicate
+aweXpect.Equivalency.MemberToIgnore.ByPropertyPredicate.ByPropertyPredicate(System.Func<string!, System.Type!, bool>! predicate, string! description) -> void
+aweXpect.Equivalency.MemberToIgnore.MemberToIgnore() -> void
+aweXpect.Expect
+aweXpect.Fail
+aweXpect.FailException
+aweXpect.FailException.FailException(string! message) -> void
+aweXpect.FailException.FailException(string! message, System.Exception? innerException) -> void
+aweXpect.Formatting.Format
+aweXpect.Formatting.FormattingContext
+aweXpect.Formatting.FormattingContext.FormattedObjects.get -> System.Collections.Generic.HashSet<object!>!
+aweXpect.Formatting.FormattingContext.FormattingContext() -> void
+aweXpect.Formatting.FormattingOptions
+aweXpect.Formatting.FormattingOptions.FormattingOptions() -> void
+aweXpect.Formatting.FormattingOptions.FormattingOptions(aweXpect.Formatting.FormattingOptions! original) -> void
+aweXpect.Formatting.FormattingOptions.IncludeType.get -> bool
+aweXpect.Formatting.FormattingOptions.IncludeType.init -> void
+aweXpect.Formatting.FormattingOptions.Indentation.get -> string!
+aweXpect.Formatting.FormattingOptions.Indentation.init -> void
+aweXpect.Formatting.FormattingOptions.UseLineBreaks.get -> bool
+aweXpect.Formatting.FormattingOptions.UseLineBreaks.init -> void
+aweXpect.Formatting.IValueFormatter
+aweXpect.Formatting.IValueFormatter.TryFormat(System.Text.StringBuilder! stringBuilder, object! value, aweXpect.Formatting.FormattingOptions? options) -> bool
+aweXpect.Formatting.ValueFormatter
+aweXpect.Formatting.ValueFormatters
+aweXpect.InconclusiveException
+aweXpect.InconclusiveException.InconclusiveException(string! message) -> void
+aweXpect.Options.CollectionIndexOptions
+aweXpect.Options.CollectionIndexOptions.CollectionIndexOptions() -> void
+aweXpect.Options.CollectionIndexOptions.IMatch
+aweXpect.Options.CollectionIndexOptions.IMatch.GetDescription() -> string!
+aweXpect.Options.CollectionIndexOptions.IMatch.OnlySingleIndex() -> bool
+aweXpect.Options.CollectionIndexOptions.IMatchFromBeginning
+aweXpect.Options.CollectionIndexOptions.IMatchFromBeginning.FromEnd() -> aweXpect.Options.CollectionIndexOptions.IMatchFromEnd!
+aweXpect.Options.CollectionIndexOptions.IMatchFromBeginning.MatchesIndex(int index) -> bool?
+aweXpect.Options.CollectionIndexOptions.IMatchFromEnd
+aweXpect.Options.CollectionIndexOptions.IMatchFromEnd.MatchesIndex(int index, int? count) -> bool?
+aweXpect.Options.CollectionIndexOptions.Match.get -> aweXpect.Options.CollectionIndexOptions.IMatch!
+aweXpect.Options.CollectionIndexOptions.SetMatch(aweXpect.Options.CollectionIndexOptions.IMatch! match) -> void
+aweXpect.Options.CollectionMatchOptions
+aweXpect.Options.CollectionMatchOptions.CollectionMatchOptions(aweXpect.Options.CollectionMatchOptions.EquivalenceRelations equivalenceRelations = aweXpect.Options.CollectionMatchOptions.EquivalenceRelations.Equivalent) -> void
+aweXpect.Options.CollectionMatchOptions.EquivalenceRelations
+aweXpect.Options.CollectionMatchOptions.EquivalenceRelations.Contains = 8 -> aweXpect.Options.CollectionMatchOptions.EquivalenceRelations
+aweXpect.Options.CollectionMatchOptions.EquivalenceRelations.ContainsProperly = 10 -> aweXpect.Options.CollectionMatchOptions.EquivalenceRelations
+aweXpect.Options.CollectionMatchOptions.EquivalenceRelations.Equivalent = 1 -> aweXpect.Options.CollectionMatchOptions.EquivalenceRelations
+aweXpect.Options.CollectionMatchOptions.EquivalenceRelations.IsContainedIn = 4 -> aweXpect.Options.CollectionMatchOptions.EquivalenceRelations
+aweXpect.Options.CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly = 6 -> aweXpect.Options.CollectionMatchOptions.EquivalenceRelations
+aweXpect.Options.CollectionMatchOptions.ExpectationItem<TItem>
+aweXpect.Options.CollectionMatchOptions.ExpectationItem<TItem>.ExpectationItem(System.Action<aweXpect.Core.IThatSubject<TItem?>!>! expectation, aweXpect.Core.ExpectationGrammars grammars, aweXpect.Core.EvaluationContext.IEvaluationContext! context, System.Threading.CancellationToken cancellationToken) -> void
+aweXpect.Options.CollectionMatchOptions.ExpectationItem<TItem>.IsMetBy(TItem value) -> System.Threading.Tasks.Task<bool>!
+aweXpect.Options.CollectionMatchOptions.GetCollectionMatcher<T, T2>(System.Collections.Generic.IEnumerable<System.Linq.Expressions.Expression<System.Func<T, bool>!>!>! expected) -> aweXpect.Core.ICollectionMatcher<T, T2>!
+aweXpect.Options.CollectionMatchOptions.GetCollectionMatcher<T, T2>(System.Collections.Generic.IEnumerable<T>! expected) -> aweXpect.Core.ICollectionMatcher<T, T2>!
+aweXpect.Options.CollectionMatchOptions.GetCollectionMatcher<T, T2>(System.Collections.Generic.IEnumerable<aweXpect.Options.CollectionMatchOptions.ExpectationItem<T>!>! expected) -> aweXpect.Core.ICollectionMatcher<T, T2>!
+aweXpect.Options.CollectionMatchOptions.GetExpectation(string! expectedExpression, aweXpect.Core.ExpectationGrammars grammars) -> string!
+aweXpect.Options.CollectionMatchOptions.IgnoringDuplicates() -> void
+aweXpect.Options.CollectionMatchOptions.IgnoringInterspersedItems() -> void
+aweXpect.Options.CollectionMatchOptions.InAnyOrder() -> void
+aweXpect.Options.CollectionMatchOptions.SetEquivalenceRelation(aweXpect.Options.CollectionMatchOptions.EquivalenceRelations equivalenceRelation) -> void
+aweXpect.Options.CollectionOrderOptions<TItem>
+aweXpect.Options.CollectionOrderOptions<TItem>.CollectionOrderOptions() -> void
+aweXpect.Options.CollectionOrderOptions<TItem>.CollectionOrderOptions(aweXpect.Options.CollectionOrderOptions<TItem>! original) -> void
+aweXpect.Options.CollectionOrderOptions<TItem>.GetComparer() -> System.Collections.Generic.IComparer<TItem>!
+aweXpect.Options.CollectionOrderOptions<TItem>.SetComparer(System.Collections.Generic.IComparer<TItem>! comparer) -> void
+aweXpect.Options.NumberTolerance<TNumber>
+aweXpect.Options.NumberTolerance<TNumber>.CalculateDifference(TNumber? actual, TNumber? expected) -> TNumber?
+aweXpect.Options.NumberTolerance<TNumber>.IsWithinTolerance(TNumber? actual, TNumber? expected) -> bool
+aweXpect.Options.NumberTolerance<TNumber>.NumberTolerance(System.Func<TNumber, TNumber, TNumber?>! calculateDifference) -> void
+aweXpect.Options.NumberTolerance<TNumber>.SetTolerance(TNumber tolerance) -> void
+aweXpect.Options.NumberTolerance<TNumber>.Tolerance.get -> TNumber?
+aweXpect.Options.ObjectEqualityOptions<TSubject>
+aweXpect.Options.ObjectEqualityOptions<TSubject>.AreConsideredEqual<TExpected>(TSubject actual, TExpected expected) -> System.Threading.Tasks.Task<bool>!
+aweXpect.Options.ObjectEqualityOptions<TSubject>.Equals() -> aweXpect.Options.ObjectEqualityOptions<TSubject>!
+aweXpect.Options.ObjectEqualityOptions<TSubject>.GetExpectation(string! expectedExpression, aweXpect.Core.ExpectationGrammars grammars) -> string!
+aweXpect.Options.ObjectEqualityOptions<TSubject>.GetExtendedFailure(string! it, aweXpect.Core.ExpectationGrammars grammars, object? actual, object? expected) -> string!
+aweXpect.Options.ObjectEqualityOptions<TSubject>.MatchType -> aweXpect.Core.IObjectMatchType!
+aweXpect.Options.ObjectEqualityOptions<TSubject>.ObjectEqualityOptions() -> void
+aweXpect.Options.ObjectEqualityOptions<TSubject>.SetMatchType(aweXpect.Core.IObjectMatchType! matchType) -> void
+aweXpect.Options.ObjectEqualityOptions<TSubject>.Using(System.Collections.Generic.IEqualityComparer<object!>! comparer) -> aweXpect.Options.ObjectEqualityOptions<TSubject>!
+aweXpect.Options.ObjectEqualityWithToleranceOptions<TSubject, TTolerance>
+aweXpect.Options.ObjectEqualityWithToleranceOptions<TSubject, TTolerance>.ObjectEqualityWithToleranceOptions(System.Func<TSubject, TSubject, TTolerance, bool>! isWithinTolerance, System.Func<TTolerance, string!>? toString = null) -> void
+aweXpect.Options.ObjectEqualityWithToleranceOptions<TSubject, TTolerance>.Within(TTolerance tolerance) -> aweXpect.Options.ObjectEqualityOptions<TSubject>!
+aweXpect.Options.Quantifier
+aweXpect.Options.Quantifier.AtLeast(int minimum) -> void
+aweXpect.Options.Quantifier.AtMost(int maximum) -> void
+aweXpect.Options.Quantifier.Between(int minimum, int maximum) -> void
+aweXpect.Options.Quantifier.Check(int amount, bool isLast) -> bool?
+aweXpect.Options.Quantifier.DeterminableAmount.get -> int
+aweXpect.Options.Quantifier.Exactly(int expected) -> void
+aweXpect.Options.Quantifier.IsNever.get -> bool
+aweXpect.Options.Quantifier.LessThan(int maximum) -> void
+aweXpect.Options.Quantifier.MoreThan(int minimum) -> void
+aweXpect.Options.Quantifier.Negate() -> void
+aweXpect.Options.Quantifier.Quantifier() -> void
+aweXpect.Options.SignalerOptions
+aweXpect.Options.SignalerOptions.SignalerOptions() -> void
+aweXpect.Options.SignalerOptions.SignalerOptions(aweXpect.Options.SignalerOptions! original) -> void
+aweXpect.Options.SignalerOptions.Timeout.get -> System.TimeSpan?
+aweXpect.Options.SignalerOptions.Timeout.set -> void
+aweXpect.Options.SignalerOptions<TParameter>
+aweXpect.Options.SignalerOptions<TParameter>.Matches(TParameter parameter) -> bool
+aweXpect.Options.SignalerOptions<TParameter>.SignalerOptions() -> void
+aweXpect.Options.SignalerOptions<TParameter>.SignalerOptions(aweXpect.Options.SignalerOptions<TParameter>! original) -> void
+aweXpect.Options.SignalerOptions<TParameter>.WithPredicate(System.Func<TParameter, bool>! predicate, string! predicateExpression) -> void
+aweXpect.Options.StringEqualityOptions
+aweXpect.Options.StringEqualityOptions.AreConsideredEqual<TExpected>(string? actual, TExpected expected) -> System.Threading.Tasks.Task<bool>!
+aweXpect.Options.StringEqualityOptions.AsBlock() -> aweXpect.Options.StringEqualityOptions!
+aweXpect.Options.StringEqualityOptions.AsPrefix() -> aweXpect.Options.StringEqualityOptions!
+aweXpect.Options.StringEqualityOptions.AsRegex() -> aweXpect.Options.StringEqualityOptions!
+aweXpect.Options.StringEqualityOptions.AsSuffix() -> aweXpect.Options.StringEqualityOptions!
+aweXpect.Options.StringEqualityOptions.AsWildcard() -> aweXpect.Options.StringEqualityOptions!
+aweXpect.Options.StringEqualityOptions.Containing() -> aweXpect.Options.StringEqualityOptions!
+aweXpect.Options.StringEqualityOptions.CountOccurrences(string! actual, string! expected) -> System.Threading.Tasks.Task<int>!
+aweXpect.Options.StringEqualityOptions.Exactly() -> aweXpect.Options.StringEqualityOptions!
+aweXpect.Options.StringEqualityOptions.GetExpectation(string? expected, aweXpect.Core.ExpectationGrammars grammars) -> string!
+aweXpect.Options.StringEqualityOptions.GetExtendedFailure(string! it, aweXpect.Core.ExpectationGrammars grammars, string? actual, string? expected) -> string!
+aweXpect.Options.StringEqualityOptions.IgnoringCase(bool ignoreCase = true) -> aweXpect.Options.StringEqualityOptions!
+aweXpect.Options.StringEqualityOptions.IgnoringIndentation(bool ignoreIndentation = true) -> aweXpect.Options.StringEqualityOptions!
+aweXpect.Options.StringEqualityOptions.IgnoringLeadingWhiteSpace(bool ignoreLeadingWhiteSpace = true) -> aweXpect.Options.StringEqualityOptions!
+aweXpect.Options.StringEqualityOptions.IgnoringNewlineStyle(bool ignoreNewlineStyle = true) -> aweXpect.Options.StringEqualityOptions!
+aweXpect.Options.StringEqualityOptions.IgnoringTrailingWhiteSpace(bool ignoreTrailingWhiteSpace = true) -> aweXpect.Options.StringEqualityOptions!
+aweXpect.Options.StringEqualityOptions.SetMatchType(aweXpect.Core.IStringMatchType! matchType) -> void
+aweXpect.Options.StringEqualityOptions.StringEqualityOptions() -> void
+aweXpect.Options.StringEqualityOptions.UsingComparer(System.Collections.Generic.IEqualityComparer<string!>? comparer) -> aweXpect.Options.StringEqualityOptions!
+aweXpect.Options.TimeSpanEqualityOptions
+aweXpect.Options.TimeSpanEqualityOptions.AppendFailureResult(System.Text.StringBuilder! stringBuilder, System.TimeSpan actual) -> void
+aweXpect.Options.TimeSpanEqualityOptions.AppendTo(System.Text.StringBuilder! stringBuilder, string! prefix) -> void
+aweXpect.Options.TimeSpanEqualityOptions.Approximately(System.TimeSpan expected, System.TimeSpan tolerance) -> void
+aweXpect.Options.TimeSpanEqualityOptions.AtLeast(System.TimeSpan minimum) -> void
+aweXpect.Options.TimeSpanEqualityOptions.AtMost(System.TimeSpan maximum) -> void
+aweXpect.Options.TimeSpanEqualityOptions.Between(System.TimeSpan minimum, System.TimeSpan maximum) -> void
+aweXpect.Options.TimeSpanEqualityOptions.IsWithinLimit(System.TimeSpan? actual) -> bool
+aweXpect.Options.TimeSpanEqualityOptions.TimeSpanEqualityOptions() -> void
+aweXpect.Options.TimeSpanEqualityOptions.Within(System.TimeSpan duration) -> void
+aweXpect.Options.TimeTolerance
+aweXpect.Options.TimeTolerance.SetTolerance(System.TimeSpan tolerance) -> void
+aweXpect.Options.TimeTolerance.TimeTolerance() -> void
+aweXpect.Options.TimeTolerance.ToDayString() -> string!
+aweXpect.Options.TimeTolerance.Tolerance.get -> System.TimeSpan?
+aweXpect.Options.TriggerEventFilter
+aweXpect.Options.TriggerEventFilter.AddPredicate(System.Func<object?[]!, bool>! predicate, string! predicateExpression) -> void
+aweXpect.Options.TriggerEventFilter.IsMatch(object?[]! parameters) -> bool
+aweXpect.Options.TriggerEventFilter.TriggerEventFilter() -> void
+aweXpect.Recording.IEventRecording<TSubject>
+aweXpect.Recording.IEventRecording<TSubject>.StopWhen(System.Func<aweXpect.Recording.IEventRecordingResult!, bool>! areFound, System.TimeSpan timeout) -> System.Threading.Tasks.Task<aweXpect.Recording.IEventRecordingResult!>!
+aweXpect.Recording.IEventRecordingResult
+aweXpect.Recording.IEventRecordingResult.GetEventCount(string! eventName, System.Func<object?[]!, bool>? filter = null) -> int
+aweXpect.Recording.IEventRecordingResult.ToString(string! eventName) -> string!
+aweXpect.Recording.RecordExtensions
+aweXpect.Recording.RecordingFactory<TSubject>
+aweXpect.Recording.RecordingFactory<TSubject>.Events(params string![]! eventNames) -> aweXpect.Recording.IEventRecording<TSubject>!
+aweXpect.Recording.RecordingFactory<TSubject>.RecordingFactory(TSubject subject, string! subjectExpression) -> void
+aweXpect.Results.AndOrResult<TThat>
+aweXpect.Results.AndOrResult<TThat>.And.get -> TThat
+aweXpect.Results.AndOrResult<TThat>.AndOrResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue) -> void
+aweXpect.Results.AndOrResult<TThat>.Or.get -> TThat
+aweXpect.Results.AndOrResult<TType, TThat, TSelf>
+aweXpect.Results.AndOrResult<TType, TThat, TSelf>.And.get -> TThat
+aweXpect.Results.AndOrResult<TType, TThat, TSelf>.AndOrResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue) -> void
+aweXpect.Results.AndOrResult<TType, TThat, TSelf>.Or.get -> TThat
+aweXpect.Results.AndOrResult<TType, TThat>
+aweXpect.Results.AndOrResult<TType, TThat>.AndOrResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue) -> void
+aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>
+aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>.AdditionalAndOrWhoseResult
+aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>.AdditionalAndOrWhoseResult.AdditionalAndOrWhoseResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue) -> void
+aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>.AndOrWhoseResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue) -> void
+aweXpect.Results.AndOrWhoseResult<TType, TThat>
+aweXpect.Results.AndOrWhoseResult<TType, TThat>.AndOrWhoseResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue) -> void
+aweXpect.Results.AndResult<TThat>
+aweXpect.Results.AndResult<TThat>.And.get -> TThat
+aweXpect.Results.AndResult<TThat>.AndResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue) -> void
+aweXpect.Results.AndResult<TType, TThat, TSelf>
+aweXpect.Results.AndResult<TType, TThat, TSelf>.And.get -> TThat
+aweXpect.Results.AndResult<TType, TThat, TSelf>.AndResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue) -> void
+aweXpect.Results.AndResult<TType, TThat>
+aweXpect.Results.AndResult<TType, TThat>.AndResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue) -> void
+aweXpect.Results.BetweenResult<TTarget, TType>
+aweXpect.Results.BetweenResult<TTarget, TType>.And(TType maximum) -> TTarget
+aweXpect.Results.BetweenResult<TTarget, TType>.BetweenResult(System.Func<TType, TTarget>! callback) -> void
+aweXpect.Results.BetweenResult<TTarget>
+aweXpect.Results.BetweenResult<TTarget>.And(aweXpect.Core.Times maximum) -> TTarget
+aweXpect.Results.BetweenResult<TTarget>.BetweenResult(System.Func<int, TTarget>! callback) -> void
+aweXpect.Results.CollectionOrderResult<TMember, TType, TThat>
+aweXpect.Results.CollectionOrderResult<TMember, TType, TThat>.CollectionOrderResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.CollectionOrderOptions<TMember>! options) -> void
+aweXpect.Results.CollectionOrderResult<TMember, TType, TThat>.Using(System.Collections.Generic.IComparer<TMember>! comparer) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.CountResult<TType, TThat, TSelf>
+aweXpect.Results.CountResult<TType, TThat, TSelf>.AtLeast() -> aweXpect.Results.CountTimesResult<TSelf!>!
+aweXpect.Results.CountResult<TType, TThat, TSelf>.AtLeast(aweXpect.Core.Times minimum) -> TSelf!
+aweXpect.Results.CountResult<TType, TThat, TSelf>.AtMost() -> aweXpect.Results.CountTimesResult<TSelf!>!
+aweXpect.Results.CountResult<TType, TThat, TSelf>.AtMost(aweXpect.Core.Times maximum) -> TSelf!
+aweXpect.Results.CountResult<TType, TThat, TSelf>.Between(int minimum) -> aweXpect.Results.BetweenResult<TSelf!>!
+aweXpect.Results.CountResult<TType, TThat, TSelf>.CountResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier! quantifier) -> void
+aweXpect.Results.CountResult<TType, TThat, TSelf>.Exactly(aweXpect.Core.Times expected) -> TSelf!
+aweXpect.Results.CountResult<TType, TThat, TSelf>.LessThan() -> aweXpect.Results.CountTimesResult<TSelf!>!
+aweXpect.Results.CountResult<TType, TThat, TSelf>.LessThan(aweXpect.Core.Times maximum) -> TSelf!
+aweXpect.Results.CountResult<TType, TThat, TSelf>.MoreThan() -> aweXpect.Results.CountTimesResult<TSelf!>!
+aweXpect.Results.CountResult<TType, TThat, TSelf>.MoreThan(aweXpect.Core.Times minimum) -> TSelf!
+aweXpect.Results.CountResult<TType, TThat, TSelf>.Never() -> TSelf!
+aweXpect.Results.CountResult<TType, TThat, TSelf>.Once() -> TSelf!
+aweXpect.Results.CountResult<TType, TThat, TSelf>.Twice() -> TSelf!
+aweXpect.Results.CountResult<TType, TThat>
+aweXpect.Results.CountResult<TType, TThat>.CountResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier! quantifier) -> void
+aweXpect.Results.CountTimesResult<TTarget>
+aweXpect.Results.CountTimesResult<TTarget>.CountTimesResult(System.Func<int, TTarget>! callback) -> void
+aweXpect.Results.CountTimesResult<TTarget>.Once() -> TTarget
+aweXpect.Results.CountTimesResult<TTarget>.Twice() -> TTarget
+aweXpect.Results.DelegateWithValueResult<T>
+aweXpect.Results.DelegateWithValueResult<T>.AndWhoseResult.get -> aweXpect.Core.IThat<T>!
+aweXpect.Results.DelegateWithValueResult<T>.DelegateWithValueResult(aweXpect.Core.ExpectationBuilder! expectationBuilder) -> void
+aweXpect.Results.ExecutesInResult<TResult>
+aweXpect.Results.ExecutesInResult<TResult>.AtLeast(System.TimeSpan minimum) -> TResult
+aweXpect.Results.ExecutesInResult<TResult>.AtMost(System.TimeSpan maximum) -> TResult
+aweXpect.Results.ExecutesInResult<TResult>.Between(System.TimeSpan minimum) -> aweXpect.Results.ExecutesInResult<TResult>.BetweenResult!
+aweXpect.Results.ExecutesInResult<TResult>.BetweenResult
+aweXpect.Results.ExecutesInResult<TResult>.BetweenResult.And(System.TimeSpan maximum) -> TResult
+aweXpect.Results.ExecutesInResult<TResult>.BetweenResult.BetweenResult(System.Func<System.TimeSpan, TResult>! callback) -> void
+aweXpect.Results.ExecutesInResult<TResult>.ExecutesInResult(TResult returnValue, aweXpect.Options.TimeSpanEqualityOptions! options) -> void
+aweXpect.Results.ExecutesInToleranceResult<TResult>
+aweXpect.Results.ExecutesInToleranceResult<TResult>.ExecutesInToleranceResult(TResult returnValue, aweXpect.Options.TimeSpanEqualityOptions! options, System.TimeSpan expected) -> void
+aweXpect.Results.ExecutesInToleranceResult<TResult>.Within(System.TimeSpan tolerance) -> TResult
+aweXpect.Results.Expectation
+aweXpect.Results.Expectation.Combination
+aweXpect.Results.Expectation.Combination.All
+aweXpect.Results.Expectation.Combination.All.All(aweXpect.Results.Expectation![]! expectations) -> void
+aweXpect.Results.Expectation.Combination.Any
+aweXpect.Results.Expectation.Combination.Any.Any(aweXpect.Results.Expectation![]! expectations) -> void
+aweXpect.Results.Expectation.Combination.Combination(aweXpect.Results.Expectation![]! expectations) -> void
+aweXpect.Results.Expectation.Combination.GetAwaiter() -> System.Runtime.CompilerServices.TaskAwaiter
+aweXpect.Results.Expectation.Expectation() -> void
+aweXpect.Results.Expectation.GetType() -> System.Type!
+aweXpect.Results.ExpectationResult
+aweXpect.Results.ExpectationResult.Because(System.Threading.Tasks.Task<string?>! reason) -> aweXpect.Results.ExpectationResult!
+aweXpect.Results.ExpectationResult.Because(string? reason) -> aweXpect.Results.ExpectationResult!
+aweXpect.Results.ExpectationResult.ExpectationResult(aweXpect.Core.ExpectationBuilder! expectationBuilder) -> void
+aweXpect.Results.ExpectationResult.GetAwaiter() -> System.Runtime.CompilerServices.TaskAwaiter
+aweXpect.Results.ExpectationResult.WithCancellation(System.Threading.CancellationToken cancellationToken) -> aweXpect.Results.ExpectationResult!
+aweXpect.Results.ExpectationResult.WithTimeout(System.TimeSpan timeout) -> aweXpect.Results.ExpectationResult!
+aweXpect.Results.ExpectationResult<TType, TSelf>
+aweXpect.Results.ExpectationResult<TType, TSelf>.Because(System.Threading.Tasks.Task<string?>! reason) -> TSelf!
+aweXpect.Results.ExpectationResult<TType, TSelf>.Because(string? reason) -> TSelf!
+aweXpect.Results.ExpectationResult<TType, TSelf>.ExpectationResult(aweXpect.Core.ExpectationBuilder! expectationBuilder) -> void
+aweXpect.Results.ExpectationResult<TType, TSelf>.GetAwaiter() -> System.Runtime.CompilerServices.TaskAwaiter<TType>
+aweXpect.Results.ExpectationResult<TType, TSelf>.WithCancellation(System.Threading.CancellationToken cancellationToken) -> TSelf!
+aweXpect.Results.ExpectationResult<TType, TSelf>.WithTimeout(System.TimeSpan timeout) -> TSelf!
+aweXpect.Results.ExpectationResult<TType>
+aweXpect.Results.ExpectationResult<TType>.ExpectationResult(aweXpect.Core.ExpectationBuilder! expectationBuilder) -> void
+aweXpect.Results.HasItemResult<TCollection>
+aweXpect.Results.HasItemResult<TCollection>.AtIndex(int index) -> aweXpect.Results.HasItemResultAtIndex<TCollection>!
+aweXpect.Results.HasItemResult<TCollection>.HasItemResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<TCollection>! collection, aweXpect.Options.CollectionIndexOptions! collectionIndexOptions) -> void
+aweXpect.Results.HasItemResultAtIndex<TCollection>
+aweXpect.Results.HasItemResultAtIndex<TCollection>.FromEnd() -> aweXpect.Results.AndOrResult<TCollection, aweXpect.Core.IThat<TCollection>!>!
+aweXpect.Results.HasItemResultAtIndex<TCollection>.HasItemResultAtIndex(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<TCollection>! collection, aweXpect.Options.CollectionIndexOptions! collectionIndexOptions) -> void
+aweXpect.Results.NullableNumberToleranceResult<TType, TThat, TSelf>
+aweXpect.Results.NullableNumberToleranceResult<TType, TThat, TSelf>.NullableNumberToleranceResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.NumberTolerance<TType>! options) -> void
+aweXpect.Results.NullableNumberToleranceResult<TType, TThat, TSelf>.Within(TType tolerance) -> TSelf!
+aweXpect.Results.NullableNumberToleranceResult<TType, TThat>
+aweXpect.Results.NullableNumberToleranceResult<TType, TThat>.NullableNumberToleranceResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.NumberTolerance<TType>! options) -> void
+aweXpect.Results.NumberToleranceResult<TType, TThat, TSelf>
+aweXpect.Results.NumberToleranceResult<TType, TThat, TSelf>.NumberToleranceResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.NumberTolerance<TType>! options) -> void
+aweXpect.Results.NumberToleranceResult<TType, TThat, TSelf>.Within(TType tolerance) -> TSelf!
+aweXpect.Results.NumberToleranceResult<TType, TThat>
+aweXpect.Results.NumberToleranceResult<TType, TThat>.NumberToleranceResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.NumberTolerance<TType>! options) -> void
+aweXpect.Results.ObjectEqualityResult<TType, TThat, TElement, TSelf>
+aweXpect.Results.ObjectEqualityResult<TType, TThat, TElement, TSelf>.ObjectEqualityResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.ObjectEqualityOptions<TElement>! options) -> void
+aweXpect.Results.ObjectEqualityResult<TType, TThat, TElement, TSelf>.Using(System.Collections.Generic.IEqualityComparer<object!>! comparer) -> TSelf!
+aweXpect.Results.ObjectEqualityResult<TType, TThat, TElement>
+aweXpect.Results.ObjectEqualityResult<TType, TThat, TElement>.ObjectEqualityResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.ObjectEqualityOptions<TElement>! options) -> void
+aweXpect.Results.ObjectHasItemResult<TCollection, TItem, TSelf>
+aweXpect.Results.ObjectHasItemResult<TCollection, TItem, TSelf>.ObjectHasItemResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<TCollection>! collection, aweXpect.Options.CollectionIndexOptions! collectionIndexOptions, aweXpect.Options.ObjectEqualityOptions<TItem>! options) -> void
+aweXpect.Results.ObjectHasItemResult<TCollection, TItem, TSelf>.Using(System.Collections.Generic.IEqualityComparer<object!>! comparer) -> TSelf!
+aweXpect.Results.ObjectHasItemResult<TCollection, TItem>
+aweXpect.Results.ObjectHasItemResult<TCollection, TItem>.ObjectHasItemResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<TCollection>! collection, aweXpect.Options.CollectionIndexOptions! collectionIndexOptions, aweXpect.Options.ObjectEqualityOptions<TItem>! options) -> void
+aweXpect.Results.PropertyResult
+aweXpect.Results.PropertyResult.DateTimeKind<TItem>
+aweXpect.Results.PropertyResult.DateTimeKind<TItem>.DateTimeKind(aweXpect.Core.IThat<TItem>! subject, System.Func<TItem, System.DateTimeKind?>! mapper, string! propertyExpression) -> void
+aweXpect.Results.PropertyResult.DateTimeKind<TItem>.EqualTo(System.DateTimeKind expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
+aweXpect.Results.PropertyResult.DateTimeKind<TItem>.NotEqualTo(System.DateTimeKind unexpected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
+aweXpect.Results.PropertyResult.Int<TItem>
+aweXpect.Results.PropertyResult.Int<TItem>.Between(int? minimum) -> aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!, int?>!
+aweXpect.Results.PropertyResult.Int<TItem>.EqualTo(int? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
+aweXpect.Results.PropertyResult.Int<TItem>.GreaterThan(int? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
+aweXpect.Results.PropertyResult.Int<TItem>.GreaterThanOrEqualTo(int? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
+aweXpect.Results.PropertyResult.Int<TItem>.Int(aweXpect.Core.IThat<TItem>! subject, System.Func<TItem, int?>! mapper, string! propertyExpression, System.Action<int?, string!>? validation = null) -> void
+aweXpect.Results.PropertyResult.Int<TItem>.LessThan(int? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
+aweXpect.Results.PropertyResult.Int<TItem>.LessThanOrEqualTo(int? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
+aweXpect.Results.PropertyResult.Int<TItem>.NotEqualTo(int? unexpected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
+aweXpect.Results.PropertyResult.Long<TItem>
+aweXpect.Results.PropertyResult.Long<TItem>.Between(long? minimum) -> aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!, long?>!
+aweXpect.Results.PropertyResult.Long<TItem>.EqualTo(long? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
+aweXpect.Results.PropertyResult.Long<TItem>.GreaterThan(long? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
+aweXpect.Results.PropertyResult.Long<TItem>.GreaterThanOrEqualTo(long? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
+aweXpect.Results.PropertyResult.Long<TItem>.LessThan(long? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
+aweXpect.Results.PropertyResult.Long<TItem>.LessThanOrEqualTo(long? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
+aweXpect.Results.PropertyResult.Long<TItem>.Long(aweXpect.Core.IThat<TItem>! subject, System.Func<TItem, long?>! mapper, string! propertyExpression, System.Action<long?, string!>? validation = null) -> void
+aweXpect.Results.PropertyResult.Long<TItem>.NotEqualTo(long? unexpected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
+aweXpect.Results.PropertyResult.String<TValue, TType, TThat>
+aweXpect.Results.PropertyResult.String<TValue, TType, TThat>.Containing(string! expected) -> aweXpect.Results.StringEqualityResult<TType, TThat>!
+aweXpect.Results.PropertyResult.String<TValue, TType, TThat>.EndingWith(string! expected) -> aweXpect.Results.StringEqualityResult<TType, TThat>!
+aweXpect.Results.PropertyResult.String<TValue, TType, TThat>.EqualTo(string? expected) -> aweXpect.Results.StringEqualityTypeResult<TType, TThat>!
+aweXpect.Results.PropertyResult.String<TValue, TType, TThat>.NotContaining(string! unexpected) -> aweXpect.Results.StringEqualityResult<TType, TThat>!
+aweXpect.Results.PropertyResult.String<TValue, TType, TThat>.NotEndingWith(string! unexpected) -> aweXpect.Results.StringEqualityResult<TType, TThat>!
+aweXpect.Results.PropertyResult.String<TValue, TType, TThat>.NotEqualTo(string? unexpected) -> aweXpect.Results.StringEqualityTypeResult<TType, TThat>!
+aweXpect.Results.PropertyResult.String<TValue, TType, TThat>.NotStartingWith(string! unexpected) -> aweXpect.Results.StringEqualityResult<TType, TThat>!
+aweXpect.Results.PropertyResult.String<TValue, TType, TThat>.StartingWith(string! expected) -> aweXpect.Results.StringEqualityResult<TType, TThat>!
+aweXpect.Results.PropertyResult.String<TValue, TType, TThat>.String(TThat subject, System.Func<TValue, string?>! mapper, string! propertyExpression, System.Action<string?, string!>? validation = null, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None, bool includeValueInContext = false) -> void
+aweXpect.Results.PropertyResult.TimeSpan<TItem>
+aweXpect.Results.PropertyResult.TimeSpan<TItem>.Between(System.TimeSpan? minimum) -> aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!, System.TimeSpan?>!
+aweXpect.Results.PropertyResult.TimeSpan<TItem>.EqualTo(System.TimeSpan? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
+aweXpect.Results.PropertyResult.TimeSpan<TItem>.GreaterThan(System.TimeSpan? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
+aweXpect.Results.PropertyResult.TimeSpan<TItem>.GreaterThanOrEqualTo(System.TimeSpan? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
+aweXpect.Results.PropertyResult.TimeSpan<TItem>.LessThan(System.TimeSpan? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
+aweXpect.Results.PropertyResult.TimeSpan<TItem>.LessThanOrEqualTo(System.TimeSpan? expected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
+aweXpect.Results.PropertyResult.TimeSpan<TItem>.NotEqualTo(System.TimeSpan? unexpected) -> aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!
+aweXpect.Results.PropertyResult.TimeSpan<TItem>.TimeSpan(aweXpect.Core.IThat<TItem>! subject, System.Func<TItem, System.TimeSpan?>! mapper, string! propertyExpression, System.Action<System.TimeSpan?, string!>? validation = null) -> void
+aweXpect.Results.StringBlockCountResult<TType, TThat>
+aweXpect.Results.StringBlockCountResult<TType, TThat>.IgnoringCase(bool ignoreCase = true) -> aweXpect.Results.StringBlockCountResult<TType, TThat>!
+aweXpect.Results.StringBlockCountResult<TType, TThat>.StringBlockCountResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier! quantifier, aweXpect.Options.StringEqualityOptions! options) -> void
+aweXpect.Results.StringBlockCountResult<TType, TThat>.Using(System.Collections.Generic.IEqualityComparer<string!>! comparer) -> aweXpect.Results.StringBlockCountResult<TType, TThat>!
+aweXpect.Results.StringCountResult<TType, TThat, TSelf>
+aweXpect.Results.StringCountResult<TType, TThat, TSelf>.IgnoringCase(bool ignoreCase = true) -> TSelf!
+aweXpect.Results.StringCountResult<TType, TThat, TSelf>.IgnoringIndentation(bool ignoreIndentation = true) -> TSelf!
+aweXpect.Results.StringCountResult<TType, TThat, TSelf>.IgnoringNewlineStyle(bool ignoreNewlineStyle = true) -> TSelf!
+aweXpect.Results.StringCountResult<TType, TThat, TSelf>.StringCountResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier! quantifier, aweXpect.Options.StringEqualityOptions! options) -> void
+aweXpect.Results.StringCountResult<TType, TThat, TSelf>.Using(System.Collections.Generic.IEqualityComparer<string!>! comparer) -> TSelf!
+aweXpect.Results.StringCountResult<TType, TThat>
+aweXpect.Results.StringCountResult<TType, TThat>.StringCountResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier! quantifier, aweXpect.Options.StringEqualityOptions! options) -> void
+aweXpect.Results.StringEqualityResult<TType, TThat, TSelf>
+aweXpect.Results.StringEqualityResult<TType, TThat, TSelf>.IgnoringCase(bool ignoreCase = true) -> TSelf!
+aweXpect.Results.StringEqualityResult<TType, TThat, TSelf>.IgnoringIndentation(bool ignoreIndentation = true) -> TSelf!
+aweXpect.Results.StringEqualityResult<TType, TThat, TSelf>.IgnoringLeadingWhiteSpace(bool ignoreLeadingWhiteSpace = true) -> TSelf!
+aweXpect.Results.StringEqualityResult<TType, TThat, TSelf>.IgnoringNewlineStyle(bool ignoreNewlineStyle = true) -> TSelf!
+aweXpect.Results.StringEqualityResult<TType, TThat, TSelf>.IgnoringTrailingWhiteSpace(bool ignoreTrailingWhiteSpace = true) -> TSelf!
+aweXpect.Results.StringEqualityResult<TType, TThat, TSelf>.StringEqualityResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.StringEqualityOptions! options) -> void
+aweXpect.Results.StringEqualityResult<TType, TThat, TSelf>.Using(System.Collections.Generic.IEqualityComparer<string!>! comparer) -> TSelf!
+aweXpect.Results.StringEqualityResult<TType, TThat>
+aweXpect.Results.StringEqualityResult<TType, TThat>.StringEqualityResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.StringEqualityOptions! options) -> void
+aweXpect.Results.StringEqualityTypeCountResult<TType, TThat>
+aweXpect.Results.StringEqualityTypeCountResult<TType, TThat>.AsBlock() -> aweXpect.Results.StringBlockCountResult<TType, TThat>!
+aweXpect.Results.StringEqualityTypeCountResult<TType, TThat>.AsPrefix() -> aweXpect.Results.StringCountResult<TType, TThat>!
+aweXpect.Results.StringEqualityTypeCountResult<TType, TThat>.AsRegex() -> aweXpect.Results.StringCountResult<TType, TThat>!
+aweXpect.Results.StringEqualityTypeCountResult<TType, TThat>.AsSuffix() -> aweXpect.Results.StringCountResult<TType, TThat>!
+aweXpect.Results.StringEqualityTypeCountResult<TType, TThat>.AsWildcard() -> aweXpect.Results.StringCountResult<TType, TThat>!
+aweXpect.Results.StringEqualityTypeCountResult<TType, TThat>.StringEqualityTypeCountResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier! quantifier, aweXpect.Options.StringEqualityOptions! options) -> void
+aweXpect.Results.StringEqualityTypeResult<TType, TThat, TSelf>
+aweXpect.Results.StringEqualityTypeResult<TType, TThat, TSelf>.AsPrefix() -> TSelf!
+aweXpect.Results.StringEqualityTypeResult<TType, TThat, TSelf>.AsRegex() -> TSelf!
+aweXpect.Results.StringEqualityTypeResult<TType, TThat, TSelf>.AsSuffix() -> TSelf!
+aweXpect.Results.StringEqualityTypeResult<TType, TThat, TSelf>.AsWildcard() -> TSelf!
+aweXpect.Results.StringEqualityTypeResult<TType, TThat, TSelf>.StringEqualityTypeResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.StringEqualityOptions! options) -> void
+aweXpect.Results.StringEqualityTypeResult<TType, TThat>
+aweXpect.Results.StringEqualityTypeResult<TType, TThat>.StringEqualityTypeResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.StringEqualityOptions! options) -> void
+aweXpect.Results.StringHasItemResult<TCollection, TSelf>
+aweXpect.Results.StringHasItemResult<TCollection, TSelf>.AsPrefix() -> TSelf!
+aweXpect.Results.StringHasItemResult<TCollection, TSelf>.AsRegex() -> TSelf!
+aweXpect.Results.StringHasItemResult<TCollection, TSelf>.AsSuffix() -> TSelf!
+aweXpect.Results.StringHasItemResult<TCollection, TSelf>.AsWildcard() -> TSelf!
+aweXpect.Results.StringHasItemResult<TCollection, TSelf>.IgnoringCase(bool ignoreCase = true) -> TSelf!
+aweXpect.Results.StringHasItemResult<TCollection, TSelf>.IgnoringIndentation(bool ignoreIndentation = true) -> TSelf!
+aweXpect.Results.StringHasItemResult<TCollection, TSelf>.IgnoringLeadingWhiteSpace(bool ignoreLeadingWhiteSpace = true) -> TSelf!
+aweXpect.Results.StringHasItemResult<TCollection, TSelf>.IgnoringNewlineStyle(bool ignoreNewlineStyle = true) -> TSelf!
+aweXpect.Results.StringHasItemResult<TCollection, TSelf>.IgnoringTrailingWhiteSpace(bool ignoreTrailingWhiteSpace = true) -> TSelf!
+aweXpect.Results.StringHasItemResult<TCollection, TSelf>.StringHasItemResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<TCollection>! collection, aweXpect.Options.CollectionIndexOptions! collectionIndexOptions, aweXpect.Options.StringEqualityOptions! options) -> void
+aweXpect.Results.StringHasItemResult<TCollection, TSelf>.Using(System.Collections.Generic.IEqualityComparer<string!>! comparer) -> TSelf!
+aweXpect.Results.StringHasItemResult<TCollection>
+aweXpect.Results.StringHasItemResult<TCollection>.StringHasItemResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<TCollection>! collection, aweXpect.Options.CollectionIndexOptions! collectionIndexOptions, aweXpect.Options.StringEqualityOptions! options) -> void
+aweXpect.Results.TimeToleranceResult<TType, TThat, TSelf>
+aweXpect.Results.TimeToleranceResult<TType, TThat, TSelf>.TimeToleranceResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.TimeTolerance! options) -> void
+aweXpect.Results.TimeToleranceResult<TType, TThat, TSelf>.Within(System.TimeSpan tolerance) -> TSelf!
+aweXpect.Results.TimeToleranceResult<TType, TThat>
+aweXpect.Results.TimeToleranceResult<TType, TThat>.TimeToleranceResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.TimeTolerance! options) -> void
+aweXpect.Results.ToleranceEqualityResult<TType, TThat, TElement, TTolerance, TSelf>
+aweXpect.Results.ToleranceEqualityResult<TType, TThat, TElement, TTolerance, TSelf>.ToleranceEqualityResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.ObjectEqualityWithToleranceOptions<TElement, TTolerance>! options) -> void
+aweXpect.Results.ToleranceEqualityResult<TType, TThat, TElement, TTolerance, TSelf>.Within(TTolerance tolerance) -> aweXpect.Results.AndOrResult<TType, TThat, TSelf!>!
+aweXpect.Results.ToleranceEqualityResult<TType, TThat, TElement, TTolerance>
+aweXpect.Results.ToleranceEqualityResult<TType, TThat, TElement, TTolerance>.ToleranceEqualityResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.ObjectEqualityWithToleranceOptions<TElement, TTolerance>! options) -> void
+aweXpect.Signaling.Signaler
+aweXpect.Signaling.Signaler.IsSignaled(aweXpect.Core.Times? amount = null) -> bool
+aweXpect.Signaling.Signaler.Signal() -> void
+aweXpect.Signaling.Signaler.Signaler() -> void
+aweXpect.Signaling.Signaler.Wait(System.TimeSpan? timeout = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> aweXpect.Signaling.SignalerResult!
+aweXpect.Signaling.Signaler.Wait(aweXpect.Core.Times amount, System.TimeSpan? timeout = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> aweXpect.Signaling.SignalerResult!
+aweXpect.Signaling.Signaler<TParameter>
+aweXpect.Signaling.Signaler<TParameter>.IsSignaled(aweXpect.Core.Times? amount = null) -> bool
+aweXpect.Signaling.Signaler<TParameter>.Signal(TParameter parameter) -> void
+aweXpect.Signaling.Signaler<TParameter>.Signaler() -> void
+aweXpect.Signaling.Signaler<TParameter>.Wait(System.Func<TParameter, bool>? predicate = null, System.TimeSpan? timeout = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> aweXpect.Signaling.SignalerResult<TParameter>!
+aweXpect.Signaling.Signaler<TParameter>.Wait(aweXpect.Core.Times amount, System.Func<TParameter, bool>? predicate = null, System.TimeSpan? timeout = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> aweXpect.Signaling.SignalerResult<TParameter>!
+aweXpect.Signaling.SignalerResult
+aweXpect.Signaling.SignalerResult.Count.get -> int
+aweXpect.Signaling.SignalerResult.IsSuccess.get -> bool
+aweXpect.Signaling.SignalerResult.SignalerResult(bool isSuccess, int counter) -> void
+aweXpect.Signaling.SignalerResult<TParameter>
+aweXpect.Signaling.SignalerResult<TParameter>.Parameters.get -> TParameter[]!
+aweXpect.Signaling.SignalerResult<TParameter>.SignalerResult(bool isSuccess, TParameter[]! parameters) -> void
+aweXpect.Skip
+aweXpect.SkipException
+aweXpect.SkipException.SkipException(string! message) -> void
+aweXpect.Synchronous.Synchronously
+aweXpect.Synchronous.SynchronouslyExtensions
+override aweXpect.Core.Constraints.ConstraintResult.ExpectationOnly<T>.AppendExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+override aweXpect.Core.Constraints.ConstraintResult.ExpectationOnly<T>.AppendResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+override aweXpect.Core.Constraints.ConstraintResult.ExpectationOnly<T>.Negate() -> aweXpect.Core.Constraints.ConstraintResult!
+override aweXpect.Core.Constraints.ConstraintResult.ExpectationOnly<T>.Outcome.get -> aweXpect.Core.Constraints.Outcome
+override aweXpect.Core.Constraints.ConstraintResult.ExpectationOnly<T>.Outcome.set -> void
+override aweXpect.Core.Constraints.ConstraintResult.ExpectationOnly<T>.TryGetValue<TValue>(out TValue? value) -> bool
+override aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.Negate() -> aweXpect.Core.Constraints.ConstraintResult!
+override aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.Outcome.get -> aweXpect.Core.Constraints.Outcome
+override aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.Outcome.set -> void
+override aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.TryGetValue<TValue>(out TValue? value) -> bool
+override aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.Negate() -> aweXpect.Core.Constraints.ConstraintResult!
+override aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.Outcome.get -> aweXpect.Core.Constraints.Outcome
+override aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.Outcome.set -> void
+override aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.TryGetValue<TValue>(out TValue? value) -> bool
+override aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.Negate() -> aweXpect.Core.Constraints.ConstraintResult!
+override aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.Outcome.get -> aweXpect.Core.Constraints.Outcome
+override aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.Outcome.set -> void
+override aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.TryGetValue<TValue>(out TValue? value) -> bool
+override aweXpect.Core.ManualExpectationBuilder<TValue>.AddContext(aweXpect.Core.ResultContext! resultContext) -> aweXpect.Core.ExpectationBuilder!
+override aweXpect.Core.ManualExpectationBuilder<TValue>.Equals(object? obj) -> bool
+override aweXpect.Core.ManualExpectationBuilder<TValue>.GetHashCode() -> int
+override aweXpect.Core.ManualExpectationBuilder<TValue>.ToString() -> string!
+override aweXpect.Core.ManualExpectationBuilder<TValue>.UpdateContexts(System.Action<aweXpect.Core.ResultContexts!>! callback) -> aweXpect.Core.ExpectationBuilder!
+override aweXpect.Core.MemberAccessor.ToString() -> string!
+override aweXpect.Core.MemberAccessor<TSource, TTarget>.Equals(object? obj) -> bool
+override aweXpect.Core.MemberAccessor<TSource, TTarget>.GetHashCode() -> int
+override aweXpect.Core.ResultContext.AsyncCallback.GetContent(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<string?>!
+override aweXpect.Core.ResultContext.Fixed.GetContent(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<string?>!
+override aweXpect.Core.ResultContext.SyncCallback.GetContent(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<string?>!
+override aweXpect.Core.Sources.DelegateValue.ToString() -> string!
+override aweXpect.Core.Sources.DelegateValue<TValue>.ToString() -> string!
+override aweXpect.Core.StringDifference.ToString() -> string!
+override aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue.Equals(object? obj) -> bool
+override aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue.GetHashCode() -> int
+override aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue.ToString() -> string!
+override aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.Equals(object? obj) -> bool
+override aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.GetHashCode() -> int
+override aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.ToString() -> string!
+override aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue.Equals(object? obj) -> bool
+override aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue.GetHashCode() -> int
+override aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue.ToString() -> string!
+override aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.Equals(object? obj) -> bool
+override aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.GetHashCode() -> int
+override aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.ToString() -> string!
+override aweXpect.Equivalency.EquivalencyExpectationBuilder.AddContext(aweXpect.Core.ResultContext! resultContext) -> aweXpect.Core.ExpectationBuilder!
+override aweXpect.Equivalency.EquivalencyExpectationBuilder.UpdateContexts(System.Action<aweXpect.Core.ResultContexts!>! callback) -> aweXpect.Core.ExpectationBuilder!
+override aweXpect.Equivalency.EquivalencyOptions.<Clone>$() -> aweXpect.Equivalency.EquivalencyTypeOptions!
+override aweXpect.Equivalency.EquivalencyOptions.EqualityContract.get -> System.Type!
+override aweXpect.Equivalency.EquivalencyOptions.Equals(object? obj) -> bool
+override aweXpect.Equivalency.EquivalencyOptions.GetHashCode() -> int
+override aweXpect.Equivalency.EquivalencyOptions.PrintMembers(System.Text.StringBuilder! builder) -> bool
+override aweXpect.Equivalency.EquivalencyOptions.ToString() -> string!
+override aweXpect.Equivalency.EquivalencyOptions<TExpected>.<Clone>$() -> aweXpect.Equivalency.EquivalencyTypeOptions!
+override aweXpect.Equivalency.EquivalencyOptions<TExpected>.EqualityContract.get -> System.Type!
+override aweXpect.Equivalency.EquivalencyOptions<TExpected>.Equals(object? obj) -> bool
+override aweXpect.Equivalency.EquivalencyOptions<TExpected>.GetHashCode() -> int
+override aweXpect.Equivalency.EquivalencyOptions<TExpected>.PrintMembers(System.Text.StringBuilder! builder) -> bool
+override aweXpect.Equivalency.EquivalencyOptions<TExpected>.ToString() -> string!
+override aweXpect.Equivalency.EquivalencyTypeOptions.Equals(object? obj) -> bool
+override aweXpect.Equivalency.EquivalencyTypeOptions.GetHashCode() -> int
+override aweXpect.Equivalency.EquivalencyTypeOptions.ToString() -> string!
+override aweXpect.Equivalency.It.IsEquivalent<T>.ToString() -> string?
+override aweXpect.Equivalency.MemberToIgnore.ByName.IgnoreMember(string! memberPath, System.Type! memberType) -> bool
+override aweXpect.Equivalency.MemberToIgnore.ByName.ToString() -> string!
+override aweXpect.Equivalency.MemberToIgnore.ByPredicate.IgnoreMember(string! memberPath, System.Type! memberType) -> bool
+override aweXpect.Equivalency.MemberToIgnore.ByPredicate.ToString() -> string!
+override aweXpect.Formatting.FormattingOptions.Equals(object? obj) -> bool
+override aweXpect.Formatting.FormattingOptions.GetHashCode() -> int
+override aweXpect.Formatting.FormattingOptions.ToString() -> string!
+override aweXpect.Options.CollectionMatchOptions.ExpectationItem<TItem>.Equals(object? obj) -> bool
+override aweXpect.Options.CollectionMatchOptions.ExpectationItem<TItem>.GetHashCode() -> int
+override aweXpect.Options.CollectionMatchOptions.ExpectationItem<TItem>.ToString() -> string!
+override aweXpect.Options.CollectionOrderOptions<TItem>.Equals(object? obj) -> bool
+override aweXpect.Options.CollectionOrderOptions<TItem>.GetHashCode() -> int
+override aweXpect.Options.CollectionOrderOptions<TItem>.ToString() -> string!
+override aweXpect.Options.NumberTolerance<TNumber>.ToString() -> string!
+override aweXpect.Options.ObjectEqualityOptions<TSubject>.ToString() -> string?
+override aweXpect.Options.Quantifier.ToString() -> string!
+override aweXpect.Options.SignalerOptions.Equals(object? obj) -> bool
+override aweXpect.Options.SignalerOptions.GetHashCode() -> int
+override aweXpect.Options.SignalerOptions.ToString() -> string!
+override aweXpect.Options.SignalerOptions<TParameter>.<Clone>$() -> aweXpect.Options.SignalerOptions!
+override aweXpect.Options.SignalerOptions<TParameter>.EqualityContract.get -> System.Type!
+override aweXpect.Options.SignalerOptions<TParameter>.Equals(object? obj) -> bool
+override aweXpect.Options.SignalerOptions<TParameter>.GetHashCode() -> int
+override aweXpect.Options.SignalerOptions<TParameter>.PrintMembers(System.Text.StringBuilder! builder) -> bool
+override aweXpect.Options.SignalerOptions<TParameter>.ToString() -> string!
+override aweXpect.Options.StringEqualityOptions.ToString() -> string!
+override aweXpect.Options.TimeTolerance.ToString() -> string!
+override aweXpect.Options.TriggerEventFilter.ToString() -> string!
+override aweXpect.Results.Expectation.Combination.All.CheckOutcome(aweXpect.Core.Constraints.Outcome? previous, aweXpect.Core.Constraints.Outcome current) -> aweXpect.Core.Constraints.Outcome
+override aweXpect.Results.Expectation.Combination.All.GetSubjectLine() -> string!
+override aweXpect.Results.Expectation.Combination.Any.CheckOutcome(aweXpect.Core.Constraints.Outcome? previous, aweXpect.Core.Constraints.Outcome current) -> aweXpect.Core.Constraints.Outcome
+override aweXpect.Results.Expectation.Combination.Any.GetSubjectLine() -> string!
+override aweXpect.Results.Expectation.Equals(object? obj) -> bool
+override aweXpect.Results.Expectation.GetHashCode() -> int
+override aweXpect.Results.Expectation.ToString() -> string?
+override aweXpect.Results.ExpectationResult.ToString() -> string?
+override aweXpect.Results.ExpectationResult<TType, TSelf>.ToString() -> string?
+override sealed aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.AppendExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+override sealed aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.AppendResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+override sealed aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.AppendExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+override sealed aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.AppendResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+override sealed aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.AppendExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+override sealed aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.AppendResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+override sealed aweXpect.Equivalency.EquivalencyOptions.Equals(aweXpect.Equivalency.EquivalencyTypeOptions? other) -> bool
+override sealed aweXpect.Equivalency.EquivalencyOptions<TExpected>.Equals(aweXpect.Equivalency.EquivalencyOptions? other) -> bool
+override sealed aweXpect.Options.SignalerOptions<TParameter>.Equals(aweXpect.Options.SignalerOptions? other) -> bool
+static aweXpect.Core.Adapters.TestFrameworkRegistry.Register(aweXpect.Core.Adapters.ITestFrameworkAdapter! testFrameworkAdapter, bool overwrite = true) -> void
+static aweXpect.Core.Constraints.ConstraintResultExtensions.AppendExpectationText(this aweXpect.Core.Constraints.ConstraintResult! inner, System.Action<System.Text.StringBuilder!>? suffix) -> aweXpect.Core.Constraints.ConstraintResult!
+static aweXpect.Core.Constraints.ConstraintResultExtensions.Fail<T>(this aweXpect.Core.Constraints.ConstraintResult! inner, string! failure, T value) -> aweXpect.Core.Constraints.ConstraintResult!
+static aweXpect.Core.Constraints.ConstraintResultExtensions.HasSameResultTextAs(this aweXpect.Core.Constraints.ConstraintResult! left, aweXpect.Core.Constraints.ConstraintResult! right) -> bool
+static aweXpect.Core.Constraints.ConstraintResultExtensions.Invert<T>(this T! constraintResult) -> T!
+static aweXpect.Core.Constraints.ConstraintResultExtensions.PrependExpectationText(this aweXpect.Core.Constraints.ConstraintResult! inner, System.Action<System.Text.StringBuilder!>? prefix) -> aweXpect.Core.Constraints.ConstraintResult!
+static aweXpect.Core.Constraints.ConstraintResultExtensions.UseValue<T>(this aweXpect.Core.Constraints.ConstraintResult! inner, T value) -> aweXpect.Core.Constraints.ConstraintResult!
+static aweXpect.Core.ExpectationBuilderExtensions.ForMember<TSource, TTarget>(this aweXpect.Core.ExpectationBuilder! expectationBuilder, System.Func<TSource, TTarget>! memberSelector, string! displayName, bool replaceIt = true) -> aweXpect.Core.ExpectationBuilder.MemberExpectationBuilder<TSource, TTarget>!
+static aweXpect.Core.ExpectationGrammarsExtensions.HasAnyFlag(this aweXpect.Core.ExpectationGrammars grammars, params aweXpect.Core.ExpectationGrammars[]! flags) -> bool
+static aweXpect.Core.ExpectationGrammarsExtensions.IsNegated(this aweXpect.Core.ExpectationGrammars grammars) -> bool
+static aweXpect.Core.ExpectationGrammarsExtensions.IsNested(this aweXpect.Core.ExpectationGrammars grammars) -> bool
+static aweXpect.Core.ExpectationGrammarsExtensions.IsPlural(this aweXpect.Core.ExpectationGrammars grammars) -> bool
+static aweXpect.Core.ExpectationGrammarsExtensions.Negate(this aweXpect.Core.ExpectationGrammars grammars) -> aweXpect.Core.ExpectationGrammars
+static aweXpect.Core.MemberAccessor<TSource, TTarget>.FromExpression(System.Linq.Expressions.Expression<System.Func<TSource, TTarget>!>! expression) -> aweXpect.Core.MemberAccessor<TSource, TTarget>!
+static aweXpect.Core.MemberAccessor<TSource, TTarget>.FromFunc(System.Func<TSource, TTarget>! func, string! name) -> aweXpect.Core.MemberAccessor<TSource, TTarget>!
+static aweXpect.Core.MemberAccessor<TSource, TTarget>.FromFuncAsMemberAccessor(System.Func<TSource, TTarget>! func, string! name) -> aweXpect.Core.MemberAccessor<TSource, TTarget>!
+static aweXpect.Core.Metadata.TypeMetadataRegistry.RegisterEvent<T>(string! name, System.Func<System.Action<object?[]!>!, System.Delegate!>! createHandler, System.Action<T, System.Delegate!>! addHandler, System.Action<T, System.Delegate!>! removeHandler) -> void
+static aweXpect.Core.Metadata.TypeMetadataRegistry.RegisterField<T, TMember>(T probe, string! name, System.Func<T, TMember>! getValue) -> void
+static aweXpect.Core.Metadata.TypeMetadataRegistry.RegisterField<T, TMember>(string! name, System.Func<T, TMember>! getValue) -> void
+static aweXpect.Core.Metadata.TypeMetadataRegistry.RegisterProperty<T, TMember>(T probe, string! name, System.Func<T, TMember>! getValue) -> void
+static aweXpect.Core.Metadata.TypeMetadataRegistry.RegisterProperty<T, TMember>(string! name, System.Func<T, TMember>! getValue) -> void
+static aweXpect.Core.StringDifferenceSettingsExtensions.WithMatchType(this aweXpect.Core.StringDifferenceSettings? settings, aweXpect.Core.StringDifference.MatchType matchType) -> aweXpect.Core.StringDifferenceSettings!
+static aweXpect.Core.Times.implicit operator aweXpect.Core.Times(int value) -> aweXpect.Core.Times
+static aweXpect.Core.Times.implicit operator int(aweXpect.Core.Times value) -> int
+static aweXpect.Core.TimesExtensions.Times(this int value) -> aweXpect.Core.Times
+static aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue.operator !=(aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue? left, aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue? right) -> bool
+static aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue.operator ==(aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue? left, aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue? right) -> bool
+static aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.operator !=(aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue? left, aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue? right) -> bool
+static aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.operator ==(aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue? left, aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue? right) -> bool
+static aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue.operator !=(aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue? left, aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue? right) -> bool
+static aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue.operator ==(aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue? left, aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue? right) -> bool
+static aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.operator !=(aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue? left, aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue? right) -> bool
+static aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.operator ==(aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue? left, aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue? right) -> bool
+static aweXpect.Customization.Customize.aweXpect.get -> aweXpect.Customization.AwexpectCustomization!
+static aweXpect.Customization.TestCancellation.FromCancellationToken(System.Func<System.Threading.CancellationToken>! cancellationTokenFactory) -> aweXpect.Customization.TestCancellation!
+static aweXpect.Customization.TestCancellation.FromTimeout(System.TimeSpan timeout) -> aweXpect.Customization.TestCancellation!
+static aweXpect.Customization.TestCancellation.None() -> aweXpect.Customization.TestCancellation!
+static aweXpect.Equivalency.EquivalencyComparison.Compare<TActual, TExpected>(TActual actual, TExpected expected, aweXpect.Equivalency.EquivalencyOptions! equivalencyOptions, System.Text.StringBuilder! failureBuilder) -> System.Threading.Tasks.Task<bool>!
+static aweXpect.Equivalency.EquivalencyDefaults.DefaultComparisonType(System.Type! type) -> aweXpect.Equivalency.EquivalencyComparisonType
+static aweXpect.Equivalency.EquivalencyOptions.operator !=(aweXpect.Equivalency.EquivalencyOptions? left, aweXpect.Equivalency.EquivalencyOptions? right) -> bool
+static aweXpect.Equivalency.EquivalencyOptions.operator ==(aweXpect.Equivalency.EquivalencyOptions? left, aweXpect.Equivalency.EquivalencyOptions? right) -> bool
+static aweXpect.Equivalency.EquivalencyOptions<TExpected>.operator !=(aweXpect.Equivalency.EquivalencyOptions<TExpected>? left, aweXpect.Equivalency.EquivalencyOptions<TExpected>? right) -> bool
+static aweXpect.Equivalency.EquivalencyOptions<TExpected>.operator ==(aweXpect.Equivalency.EquivalencyOptions<TExpected>? left, aweXpect.Equivalency.EquivalencyOptions<TExpected>? right) -> bool
+static aweXpect.Equivalency.EquivalencyTypeOptions.operator !=(aweXpect.Equivalency.EquivalencyTypeOptions? left, aweXpect.Equivalency.EquivalencyTypeOptions? right) -> bool
+static aweXpect.Equivalency.EquivalencyTypeOptions.operator ==(aweXpect.Equivalency.EquivalencyTypeOptions? left, aweXpect.Equivalency.EquivalencyTypeOptions? right) -> bool
+static aweXpect.Equivalency.It.Is<T>() -> aweXpect.Equivalency.It.IsEquivalent<T>!
+static aweXpect.Expect.That(System.Action! delegate, string! doNotPopulateThisValue = "") -> aweXpect.Delegates.ThatDelegate.WithoutValue!
+static aweXpect.Expect.That(System.Action<System.Threading.CancellationToken>! delegate, string! doNotPopulateThisValue = "") -> aweXpect.Delegates.ThatDelegate.WithoutValue!
+static aweXpect.Expect.That(System.Func<System.Threading.CancellationToken, System.Threading.Tasks.Task!>! delegate, string! doNotPopulateThisValue = "") -> aweXpect.Delegates.ThatDelegate.WithoutValue!
+static aweXpect.Expect.That(System.Func<System.Threading.Tasks.Task!>! delegate, string! doNotPopulateThisValue = "") -> aweXpect.Delegates.ThatDelegate.WithoutValue!
+static aweXpect.Expect.That(bool subject, string! doNotPopulateThisValue = "") -> aweXpect.Core.ThatBool!
+static aweXpect.Expect.That<T>(System.Threading.Tasks.Task<T>! subject, string! doNotPopulateThisValue = "") -> aweXpect.Core.IThatSubject<T>!
+static aweXpect.Expect.That<T>(T subject, string! doNotPopulateThisValue = "") -> aweXpect.Core.IThatSubject<T>!
+static aweXpect.Expect.That<T>(T[]? subject, string! doNotPopulateThisValue = "") -> aweXpect.Core.IThatSubject<T[]?>!
+static aweXpect.Expect.That<TValue>(System.Func<System.Threading.CancellationToken, System.Threading.Tasks.Task<TValue>!>! delegate, string! doNotPopulateThisValue = "") -> aweXpect.Delegates.ThatDelegate.WithValue<TValue>!
+static aweXpect.Expect.That<TValue>(System.Func<System.Threading.CancellationToken, TValue>! delegate, string! doNotPopulateThisValue = "") -> aweXpect.Delegates.ThatDelegate.WithValue<TValue>!
+static aweXpect.Expect.That<TValue>(System.Func<System.Threading.Tasks.Task<TValue>!>! delegate, string! doNotPopulateThisValue = "") -> aweXpect.Delegates.ThatDelegate.WithValue<TValue>!
+static aweXpect.Expect.That<TValue>(System.Func<TValue>! delegate, string! doNotPopulateThisValue = "") -> aweXpect.Delegates.ThatDelegate.WithValue<TValue>!
+static aweXpect.Expect.ThatAll(params aweXpect.Results.Expectation![]! expectations) -> aweXpect.Results.Expectation.Combination.All!
+static aweXpect.Expect.ThatAny(params aweXpect.Results.Expectation![]! expectations) -> aweXpect.Results.Expectation.Combination.Any!
+static aweXpect.Fail.Inconclusive(string! reason) -> void
+static aweXpect.Fail.Test(string! reason) -> void
+static aweXpect.Fail.Test(string! reason, System.Exception? innerException) -> void
+static aweXpect.Fail.Unless(bool condition, string! reason) -> void
+static aweXpect.Fail.Unless(bool condition, string! reason, System.Exception? innerException) -> void
+static aweXpect.Fail.When(bool condition, string! reason) -> void
+static aweXpect.Fail.When(bool condition, string! reason, System.Exception? innerException) -> void
+static aweXpect.Formatting.Format.Formatter.get -> aweXpect.Formatting.ValueFormatter!
+static aweXpect.Formatting.FormattingOptions.Indented(string? indentation = null, bool includeType = false) -> aweXpect.Formatting.FormattingOptions!
+static aweXpect.Formatting.FormattingOptions.MultipleLines.get -> aweXpect.Formatting.FormattingOptions!
+static aweXpect.Formatting.FormattingOptions.SingleLine.get -> aweXpect.Formatting.FormattingOptions!
+static aweXpect.Formatting.FormattingOptions.WithType.get -> aweXpect.Formatting.FormattingOptions!
+static aweXpect.Formatting.FormattingOptions.operator !=(aweXpect.Formatting.FormattingOptions? left, aweXpect.Formatting.FormattingOptions? right) -> bool
+static aweXpect.Formatting.FormattingOptions.operator ==(aweXpect.Formatting.FormattingOptions? left, aweXpect.Formatting.FormattingOptions? right) -> bool
+static aweXpect.Formatting.ValueFormatter.Register(aweXpect.Formatting.IValueFormatter! formatter) -> System.IDisposable!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.DateTime value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.DateTime? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.DateTimeOffset value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.DateTimeOffset? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Enum? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Guid value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Guid? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Net.HttpStatusCode? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, System.Collections.IEnumerable? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, System.DateTime value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, System.DateTime? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, System.DateTimeOffset value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, System.DateTimeOffset? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, System.Enum? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, System.Guid value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, System.Guid? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, System.Net.HttpStatusCode? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, System.TimeSpan value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, System.TimeSpan? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, System.Type? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, bool value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, bool? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, byte value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, byte? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, char value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, char? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, decimal value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, decimal? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, double value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, double? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, float value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, float? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, int value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, int? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, long value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, long? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, nint value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, nint? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, nuint value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, nuint? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, object? value, aweXpect.Formatting.FormattingOptions? options = null, aweXpect.Formatting.FormattingContext? context = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, sbyte value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, sbyte? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, short value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, short? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, string? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, uint value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, uint? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, ulong value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, ulong? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, ushort value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, ushort? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.TimeSpan value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.TimeSpan? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Type? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, bool value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, bool? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, byte value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, byte? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, char value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, char? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, decimal value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, decimal? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, double value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, double? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, float value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, float? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, int value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, int? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, long value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, long? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, nint value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, nint? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, nuint value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, nuint? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, object? value, aweXpect.Formatting.FormattingOptions? options = null, aweXpect.Formatting.FormattingContext? context = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, sbyte value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, sbyte? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, short value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, short? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, string? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, uint value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, uint? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, ulong value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, ulong? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, ushort value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, ushort? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format<T>(this aweXpect.Formatting.ValueFormatter! formatter, System.Collections.Generic.IEnumerable<T>? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format<T>(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, System.Collections.Generic.IEnumerable<T>? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format<TKey, TValue>(this aweXpect.Formatting.ValueFormatter! formatter, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format<TKey, TValue>(this aweXpect.Formatting.ValueFormatter! formatter, System.Collections.Generic.KeyValuePair<TKey, TValue> value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format<TKey, TValue>(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format<TKey, TValue>(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, System.Collections.Generic.KeyValuePair<TKey, TValue> value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Options.CollectionOrderOptions<TItem>.operator !=(aweXpect.Options.CollectionOrderOptions<TItem>? left, aweXpect.Options.CollectionOrderOptions<TItem>? right) -> bool
+static aweXpect.Options.CollectionOrderOptions<TItem>.operator ==(aweXpect.Options.CollectionOrderOptions<TItem>? left, aweXpect.Options.CollectionOrderOptions<TItem>? right) -> bool
+static aweXpect.Options.Quantifier.Never() -> aweXpect.Options.Quantifier!
+static aweXpect.Options.SignalerOptions.operator !=(aweXpect.Options.SignalerOptions? left, aweXpect.Options.SignalerOptions? right) -> bool
+static aweXpect.Options.SignalerOptions.operator ==(aweXpect.Options.SignalerOptions? left, aweXpect.Options.SignalerOptions? right) -> bool
+static aweXpect.Options.SignalerOptions<TParameter>.operator !=(aweXpect.Options.SignalerOptions<TParameter>? left, aweXpect.Options.SignalerOptions<TParameter>? right) -> bool
+static aweXpect.Options.SignalerOptions<TParameter>.operator ==(aweXpect.Options.SignalerOptions<TParameter>? left, aweXpect.Options.SignalerOptions<TParameter>? right) -> bool
+static aweXpect.Recording.RecordExtensions.Record<TSubject>(this TSubject subject, string! doNotPopulateThisValue = "") -> aweXpect.Recording.RecordingFactory<TSubject>!
+static aweXpect.Skip.Test(string! reason) -> void
+static aweXpect.Skip.Unless(bool condition, string! reason) -> void
+static aweXpect.Skip.When(bool condition, string! reason) -> void
+static aweXpect.Synchronous.Synchronously.Verify(aweXpect.Results.ExpectationResult! result) -> void
+static aweXpect.Synchronous.Synchronously.Verify<TType, TSelf>(aweXpect.Results.ExpectationResult<TType, TSelf!>! result) -> TType
+static aweXpect.Synchronous.SynchronouslyExtensions.VerifySynchronously(this aweXpect.Results.ExpectationResult! result) -> void
+static aweXpect.Synchronous.SynchronouslyExtensions.VerifySynchronously<TType, TSelf>(this aweXpect.Results.ExpectationResult<TType, TSelf!>! result) -> TType
+static readonly aweXpect.Formatting.ValueFormatter.NullString -> string!
+virtual aweXpect.Core.Constraints.ConstraintResult.ExpectationOnly<T>.AppendNegatedExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+virtual aweXpect.Core.Constraints.ConstraintResult.ExpectationOnly<T>.AppendNormalExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+virtual aweXpect.Core.Constraints.ConstraintResult.FailureCause.get -> System.Exception?
+virtual aweXpect.Core.Constraints.ConstraintResult.Outcome.get -> aweXpect.Core.Constraints.Outcome
+virtual aweXpect.Core.Constraints.ConstraintResult.Outcome.set -> void
+virtual aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.AppendUndecidedResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+virtual aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.AppendUndecidedResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+virtual aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.AppendUndecidedResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+virtual aweXpect.Core.ExpectationBuilder.AddContext(aweXpect.Core.ResultContext! resultContext) -> aweXpect.Core.ExpectationBuilder!
+virtual aweXpect.Core.ExpectationBuilder.UpdateContexts(System.Action<aweXpect.Core.ResultContexts!>! callback) -> aweXpect.Core.ExpectationBuilder!
+virtual aweXpect.Core.ManualExpectationBuilder<TValue>.Equals(aweXpect.Core.ManualExpectationBuilder<TValue>! other) -> bool
+virtual aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue.<Clone>$() -> aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue!
+virtual aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue.EqualityContract.get -> System.Type!
+virtual aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue.Equals(aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue? other) -> bool
+virtual aweXpect.Customization.AwexpectCustomization.EquivalencyCustomizationValue.PrintMembers(System.Text.StringBuilder! builder) -> bool
+virtual aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.<Clone>$() -> aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue!
+virtual aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.EqualityContract.get -> System.Type!
+virtual aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.Equals(aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue? other) -> bool
+virtual aweXpect.Customization.AwexpectCustomization.FormattingCustomizationValue.PrintMembers(System.Text.StringBuilder! builder) -> bool
+virtual aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue.<Clone>$() -> aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue!
+virtual aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue.EqualityContract.get -> System.Type!
+virtual aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue.Equals(aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue? other) -> bool
+virtual aweXpect.Customization.AwexpectCustomization.ReflectionCustomizationValue.PrintMembers(System.Text.StringBuilder! builder) -> bool
+virtual aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.<Clone>$() -> aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue!
+virtual aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.EqualityContract.get -> System.Type!
+virtual aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.Equals(aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue? other) -> bool
+virtual aweXpect.Customization.AwexpectCustomization.SettingsCustomizationValue.PrintMembers(System.Text.StringBuilder! builder) -> bool
+virtual aweXpect.Equivalency.EquivalencyOptions.Equals(aweXpect.Equivalency.EquivalencyOptions? other) -> bool
+virtual aweXpect.Equivalency.EquivalencyOptions<TExpected>.Equals(aweXpect.Equivalency.EquivalencyOptions<TExpected>? other) -> bool
+virtual aweXpect.Equivalency.EquivalencyTypeOptions.<Clone>$() -> aweXpect.Equivalency.EquivalencyTypeOptions!
+virtual aweXpect.Equivalency.EquivalencyTypeOptions.EqualityContract.get -> System.Type!
+virtual aweXpect.Equivalency.EquivalencyTypeOptions.Equals(aweXpect.Equivalency.EquivalencyTypeOptions? other) -> bool
+virtual aweXpect.Equivalency.EquivalencyTypeOptions.PrintMembers(System.Text.StringBuilder! builder) -> bool
+virtual aweXpect.Formatting.FormattingOptions.<Clone>$() -> aweXpect.Formatting.FormattingOptions!
+virtual aweXpect.Formatting.FormattingOptions.EqualityContract.get -> System.Type!
+virtual aweXpect.Formatting.FormattingOptions.Equals(aweXpect.Formatting.FormattingOptions? other) -> bool
+virtual aweXpect.Formatting.FormattingOptions.PrintMembers(System.Text.StringBuilder! builder) -> bool
+virtual aweXpect.Options.CollectionOrderOptions<TItem>.<Clone>$() -> aweXpect.Options.CollectionOrderOptions<TItem>!
+virtual aweXpect.Options.CollectionOrderOptions<TItem>.EqualityContract.get -> System.Type!
+virtual aweXpect.Options.CollectionOrderOptions<TItem>.Equals(aweXpect.Options.CollectionOrderOptions<TItem>? other) -> bool
+virtual aweXpect.Options.CollectionOrderOptions<TItem>.PrintMembers(System.Text.StringBuilder! builder) -> bool
+virtual aweXpect.Options.SignalerOptions.<Clone>$() -> aweXpect.Options.SignalerOptions!
+virtual aweXpect.Options.SignalerOptions.EqualityContract.get -> System.Type!
+virtual aweXpect.Options.SignalerOptions.Equals(aweXpect.Options.SignalerOptions? other) -> bool
+virtual aweXpect.Options.SignalerOptions.PrintMembers(System.Text.StringBuilder! builder) -> bool
+virtual aweXpect.Options.SignalerOptions<TParameter>.Equals(aweXpect.Options.SignalerOptions<TParameter>? other) -> bool
+~aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>.AdditionalAndOrWhoseResult.AndWhose<TMember>(System.Func<TType, TMember?>! memberSelector, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>.AdditionalAndOrWhoseResult!
+~aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>.Whose<TMember>(System.Func<TType, TMember?>! memberSelector, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>.AdditionalAndOrWhoseResult!
