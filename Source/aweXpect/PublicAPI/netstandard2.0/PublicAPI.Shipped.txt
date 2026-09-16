@@ -264,21 +264,33 @@ static aweXpect.ThatBool.IsEqualTo(this aweXpect.Core.IThat<bool>! subject, bool
 static aweXpect.ThatBool.IsFalse(this aweXpect.Core.IThat<bool>! subject) -> aweXpect.Results.AndOrResult<bool, aweXpect.Core.IThat<bool>!>!
 static aweXpect.ThatBool.IsNotEqualTo(this aweXpect.Core.IThat<bool>! subject, bool unexpected) -> aweXpect.Results.AndOrResult<bool, aweXpect.Core.IThat<bool>!>!
 static aweXpect.ThatBool.IsTrue(this aweXpect.Core.IThat<bool>! subject) -> aweXpect.Results.AndOrResult<bool, aweXpect.Core.IThat<bool>!>!
+static aweXpect.ThatChar.IsADigit(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsALetter(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsANumber(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
+static aweXpect.ThatChar.IsAnAsciiDigit(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
+static aweXpect.ThatChar.IsAnAsciiHexDigit(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsAnAsciiLetter(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
+static aweXpect.ThatChar.IsControl(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsEqualTo(this aweXpect.Core.IThat<char>! subject, char? expected) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
+static aweXpect.ThatChar.IsLowerCased(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
+static aweXpect.ThatChar.IsNotADigit(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsNotALetter(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsNotANumber(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
+static aweXpect.ThatChar.IsNotAnAsciiDigit(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
+static aweXpect.ThatChar.IsNotAnAsciiHexDigit(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsNotAnAsciiLetter(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
+static aweXpect.ThatChar.IsNotControl(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsNotEqualTo(this aweXpect.Core.IThat<char>! subject, char? unexpected) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
+static aweXpect.ThatChar.IsNotLowerCased(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsNotOneOf(this aweXpect.Core.IThat<char>! subject, System.Collections.Generic.IEnumerable<char>! unexpected) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsNotOneOf(this aweXpect.Core.IThat<char>! subject, System.Collections.Generic.IEnumerable<char?>! unexpected) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsNotOneOf(this aweXpect.Core.IThat<char>! subject, params char?[]! unexpected) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
+static aweXpect.ThatChar.IsNotUpperCased(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsNotWhiteSpace(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsOneOf(this aweXpect.Core.IThat<char>! subject, System.Collections.Generic.IEnumerable<char>! expected) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsOneOf(this aweXpect.Core.IThat<char>! subject, System.Collections.Generic.IEnumerable<char?>! expected) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsOneOf(this aweXpect.Core.IThat<char>! subject, params char?[]! expected) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
+static aweXpect.ThatChar.IsUpperCased(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsWhiteSpace(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatDateTime.HasDay(this aweXpect.Core.IThat<System.DateTime>! subject) -> aweXpect.Results.PropertyResult.Int<System.DateTime>!
 static aweXpect.ThatDateTime.HasDay(this aweXpect.Core.IThat<System.DateTime>! subject, int expected) -> aweXpect.Results.AndOrResult<System.DateTime, aweXpect.Core.IThat<System.DateTime>!>!
@@ -612,21 +624,33 @@ static aweXpect.ThatNullableBool.IsNotNull(this aweXpect.Core.IThat<bool?>! subj
 static aweXpect.ThatNullableBool.IsNotTrue(this aweXpect.Core.IThat<bool?>! subject) -> aweXpect.Results.AndOrResult<bool?, aweXpect.Core.IThat<bool?>!>!
 static aweXpect.ThatNullableBool.IsNull(this aweXpect.Core.IThat<bool?>! subject) -> aweXpect.Results.AndOrResult<bool?, aweXpect.Core.IThat<bool?>!>!
 static aweXpect.ThatNullableBool.IsTrue(this aweXpect.Core.IThat<bool?>! subject) -> aweXpect.Results.AndOrResult<bool?, aweXpect.Core.IThat<bool?>!>!
+static aweXpect.ThatNullableChar.IsADigit(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsALetter(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsANumber(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
+static aweXpect.ThatNullableChar.IsAnAsciiDigit(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
+static aweXpect.ThatNullableChar.IsAnAsciiHexDigit(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsAnAsciiLetter(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
+static aweXpect.ThatNullableChar.IsControl(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsEqualTo(this aweXpect.Core.IThat<char?>! subject, char? expected) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
+static aweXpect.ThatNullableChar.IsLowerCased(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
+static aweXpect.ThatNullableChar.IsNotADigit(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsNotALetter(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsNotANumber(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
+static aweXpect.ThatNullableChar.IsNotAnAsciiDigit(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
+static aweXpect.ThatNullableChar.IsNotAnAsciiHexDigit(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsNotAnAsciiLetter(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
+static aweXpect.ThatNullableChar.IsNotControl(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsNotEqualTo(this aweXpect.Core.IThat<char?>! subject, char? unexpected) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
+static aweXpect.ThatNullableChar.IsNotLowerCased(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsNotOneOf(this aweXpect.Core.IThat<char?>! subject, System.Collections.Generic.IEnumerable<char>! unexpected) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsNotOneOf(this aweXpect.Core.IThat<char?>! subject, System.Collections.Generic.IEnumerable<char?>! unexpected) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsNotOneOf(this aweXpect.Core.IThat<char?>! subject, params char?[]! unexpected) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
+static aweXpect.ThatNullableChar.IsNotUpperCased(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsNotWhiteSpace(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsOneOf(this aweXpect.Core.IThat<char?>! subject, System.Collections.Generic.IEnumerable<char>! expected) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsOneOf(this aweXpect.Core.IThat<char?>! subject, System.Collections.Generic.IEnumerable<char?>! expected) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsOneOf(this aweXpect.Core.IThat<char?>! subject, params char?[]! expected) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
+static aweXpect.ThatNullableChar.IsUpperCased(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsWhiteSpace(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableDateTime.HasDay(this aweXpect.Core.IThat<System.DateTime?>! subject) -> aweXpect.Results.PropertyResult.Int<System.DateTime?>!
 static aweXpect.ThatNullableDateTime.HasDay(this aweXpect.Core.IThat<System.DateTime?>! subject, int expected) -> aweXpect.Results.AndOrResult<System.DateTime?, aweXpect.Core.IThat<System.DateTime?>!>!
