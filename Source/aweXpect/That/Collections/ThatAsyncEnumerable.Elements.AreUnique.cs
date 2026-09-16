@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
-using aweXpect.Customization;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -249,15 +248,10 @@ public static partial class ThatAsyncEnumerable
 		Func<TItem, TMember> memberAccessor,
 		Func<TMember, TMember, ValueTask<bool>> areConsideredEqual,
 		bool expectUnique)
-		: ConstraintResult.WithNotNullValue<IAsyncEnumerable<TItem>?>(it, grammars),
+		: QuantifiedCollectionConstraint<IAsyncEnumerable<TItem>?, TItem>(expectationBuilder, it, grammars,
+				quantifier, expectationText, "were"),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
-		private int _matchingCount;
-		private LimitedCollection<TItem>? _matchingItems;
-		private int _notMatchingCount;
-		private LimitedCollection<TItem>? _notMatchingItems;
-		private int? _totalCount;
-
 		public async Task<ConstraintResult> IsMetBy(
 			IAsyncEnumerable<TItem>? actual,
 			IEvaluationContext context,
@@ -272,125 +266,29 @@ public static partial class ThatAsyncEnumerable
 
 			IAsyncEnumerable<TItem> materialized =
 				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual);
-			List<TMember> distinctMembers = [];
-			List<int> occurrences = [];
-			List<TItem> items = [];
-			List<int> memberIndexes = [];
+			OccurrenceCounter<TMember> occurrences = new(areConsideredEqual);
+			List<(TItem Item, int MemberIndex)> items = [];
 			await foreach (TItem item in materialized.WithCancellation(cancellationToken))
 			{
-				TMember member = memberAccessor(item);
-				int memberIndex = await distinctMembers.IndexOfAsync(member, areConsideredEqual);
-				if (memberIndex < 0)
-				{
-					memberIndex = distinctMembers.Count;
-					distinctMembers.Add(member);
-					occurrences.Add(0);
-				}
-
-				occurrences[memberIndex]++;
-				items.Add(item);
-				memberIndexes.Add(memberIndex);
+				items.Add((item, await occurrences.Add(memberAccessor(item))));
 			}
 
+			List<TItem> collection = items.ConvertAll(x => x.Item);
 			if (cancellationToken.IsCancellationRequested)
 			{
 				Outcome = Outcome.Undecided;
-				expectationBuilder.AddCollectionContext(items, true);
+				ExpectationBuilder.AddCollectionContext(collection, true);
 				return this;
 			}
 
-			int maxItems = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get() + 1;
-			_matchingCount = 0;
-			_notMatchingCount = 0;
-			_matchingItems = new LimitedCollection<TItem>(maxItems);
-			_notMatchingItems = new LimitedCollection<TItem>(maxItems);
-			for (int i = 0; i < items.Count; i++)
+			foreach ((TItem item, int memberIndex) in items)
 			{
-				bool isUnique = occurrences[memberIndexes[i]] == 1;
-				if (isUnique == expectUnique)
-				{
-					_matchingCount++;
-					_matchingItems.Add(items[i]);
-				}
-				else
-				{
-					_notMatchingCount++;
-					_notMatchingItems.Add(items[i]);
-				}
+				Record(item, occurrences.IsUnique(memberIndex) == expectUnique);
 			}
 
-			_totalCount = items.Count;
-			Outcome = quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
-			AppendContexts();
-			expectationBuilder.AddCollectionContext(items);
+			Complete();
+			ExpectationBuilder.AddCollectionContext(collection);
 			return this;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Grammars.HasFlag(ExpectationGrammars.Nested))
-			{
-				stringBuilder.Append(quantifier);
-				stringBuilder.Append(' ');
-				stringBuilder.Append(expectationText(Grammars));
-			}
-			else
-			{
-				stringBuilder.Append(expectationText(Grammars));
-				stringBuilder.Append(" for ");
-				stringBuilder.Append(quantifier);
-				stringBuilder.Append(' ');
-				stringBuilder.Append(quantifier.GetItemString());
-			}
-		}
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> quantifier.AppendResult(stringBuilder, Grammars, _matchingCount, _notMatchingCount, _totalCount,
-				"were");
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Grammars.HasFlag(ExpectationGrammars.Nested))
-			{
-				stringBuilder.Append("not ");
-				stringBuilder.Append(quantifier);
-				stringBuilder.Append(' ');
-				stringBuilder.Append(expectationText(Grammars));
-			}
-			else
-			{
-				stringBuilder.Append(expectationText(Grammars));
-				stringBuilder.Append(" for ");
-				stringBuilder.Append(quantifier);
-				stringBuilder.Append(' ');
-				stringBuilder.Append(quantifier.GetItemString());
-			}
-		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> quantifier.AppendResult(stringBuilder, Grammars, _matchingCount, _notMatchingCount, _totalCount,
-				"were");
-
-		private void AppendContexts()
-		{
-			EnumerableQuantifier.QuantifierContexts quantifierContexts = quantifier.GetQuantifierContext();
-			if (quantifierContexts.HasFlag(EnumerableQuantifier.QuantifierContexts.MatchingItems) &&
-			    _matchingItems?.Count > 0)
-			{
-				expectationBuilder.AddContext(new ResultContext.SyncCallback("Matching items",
-						() => Formatter.Format(_matchingItems,
-							typeof(TItem).GetFormattingOption(_matchingItems?.Count)),
-						int.MaxValue));
-			}
-
-			if (quantifierContexts.HasFlag(EnumerableQuantifier.QuantifierContexts.NotMatchingItems) &&
-			    _notMatchingItems?.Count > 0)
-			{
-				expectationBuilder.AddContext(new ResultContext.SyncCallback("Not matching items",
-						() => Formatter.Format(_notMatchingItems,
-							typeof(TItem).GetFormattingOption(_notMatchingItems?.Count)),
-						int.MaxValue));
-			}
 		}
 	}
 }

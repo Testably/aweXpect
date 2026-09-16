@@ -36,27 +36,4 @@ internal static class LinqAsyncHelpers
 
 		return false;
 	}
-
-#if NET8_0_OR_GREATER
-	public static async ValueTask<int> IndexOfAsync<TSource>(
-		this List<TSource> source,
-		TSource value,
-		Func<TSource, TSource, ValueTask<bool>> areConsideredEqual)
-#else
-	public static async Task<int> IndexOfAsync<TSource>(
-		this List<TSource> source,
-		TSource value,
-		Func<TSource, TSource, Task<bool>> areConsideredEqual)
-#endif
-	{
-		for (int i = 0; i < source.Count; i++)
-		{
-			if (await areConsideredEqual(value, source[i]))
-			{
-				return i;
-			}
-		}
-
-		return -1;
-	}
 }
