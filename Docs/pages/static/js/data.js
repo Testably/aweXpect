@@ -3912,6 +3912,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 18:12:24 2026 \u002B0200",
         "message": "feat: add analyzer rule \u0060aweXpect0003\u0060 for the \u0060With\u2026\u0060/\u0060Has\u2026\u0060 exception pairing (#1146)"
+      },
+      {
+        "sha": "3a011705c7acc04af336c006d9722bbd28bf011f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 18:40:42 2026 \u002B0200",
+        "message": "feat: expose the remaining \u0060char\u0060 predicates (#1151)"
       }
     ],
     "labels": [
@@ -4566,7 +4572,8 @@ window.BENCHMARK_DATA = {
       "9be4b8ec",
       "e5e13677",
       "e5ae83c4",
-      "763e7578"
+      "763e7578",
+      "3a011705"
     ],
     "datasets": [
       {
@@ -5224,7 +5231,8 @@ window.BENCHMARK_DATA = {
           247.66236193974814,
           265.86803882462635,
           286.55735638936363,
-          204.8831177075704
+          204.8831177075704,
+          250.18587831656137
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5697,6 +5705,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6553,7 +6562,8 @@ window.BENCHMARK_DATA = {
           235.957604101726,
           239.0194797515869,
           258.2686364991324,
-          204.35752204259236
+          204.35752204259236,
+          235.1757512826186
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6746,6 +6756,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10680,6 +10691,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 18:12:24 2026 \u002B0200",
         "message": "feat: add analyzer rule \u0060aweXpect0003\u0060 for the \u0060With\u2026\u0060/\u0060Has\u2026\u0060 exception pairing (#1146)"
+      },
+      {
+        "sha": "3a011705c7acc04af336c006d9722bbd28bf011f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 18:40:42 2026 \u002B0200",
+        "message": "feat: expose the remaining \u0060char\u0060 predicates (#1151)"
       }
     ],
     "labels": [
@@ -11257,7 +11274,8 @@ window.BENCHMARK_DATA = {
       "9be4b8ec",
       "e5e13677",
       "e5ae83c4",
-      "763e7578"
+      "763e7578",
+      "3a011705"
     ],
     "datasets": [
       {
@@ -11838,7 +11856,8 @@ window.BENCHMARK_DATA = {
           309632.21650390624,
           306123.58328951325,
           323477.4386858259,
-          257640.27161458333
+          257640.27161458333,
+          313474.94373372395
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12408,6 +12427,7 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542084,
+          617976,
           617976,
           617976,
           617976,
@@ -13013,7 +13033,8 @@ window.BENCHMARK_DATA = {
           2550777.1184895835,
           2518065.354910714,
           2755319.0290178573,
-          1944879.146108774
+          1944879.146108774,
+          2575158.3140625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13599,7 +13620,8 @@ window.BENCHMARK_DATA = {
           4841647,
           4841651,
           4841651,
-          4841648
+          4841648,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17525,6 +17547,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 18:12:24 2026 \u002B0200",
         "message": "feat: add analyzer rule \u0060aweXpect0003\u0060 for the \u0060With\u2026\u0060/\u0060Has\u2026\u0060 exception pairing (#1146)"
+      },
+      {
+        "sha": "3a011705c7acc04af336c006d9722bbd28bf011f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 18:40:42 2026 \u002B0200",
+        "message": "feat: expose the remaining \u0060char\u0060 predicates (#1151)"
       }
     ],
     "labels": [
@@ -18179,7 +18207,8 @@ window.BENCHMARK_DATA = {
       "9be4b8ec",
       "e5e13677",
       "e5ae83c4",
-      "763e7578"
+      "763e7578",
+      "3a011705"
     ],
     "datasets": [
       {
@@ -18837,7 +18866,8 @@ window.BENCHMARK_DATA = {
           459.48518797556557,
           446.8440067584698,
           496.19235967000327,
-          400.83259906768797
+          400.83259906768797,
+          458.5742767197745
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19484,6 +19514,7 @@ window.BENCHMARK_DATA = {
           1360,
           1360,
           1360,
+          1368,
           1368,
           1368,
           1368,
@@ -20166,7 +20197,8 @@ window.BENCHMARK_DATA = {
           460.8005311012268,
           460.00257263183596,
           507.2081116994222,
-          423.6676195780436
+          423.6676195780436,
+          455.18602970668246
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20359,6 +20391,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -24755,6 +24788,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 18:12:24 2026 \u002B0200",
         "message": "feat: add analyzer rule \u0060aweXpect0003\u0060 for the \u0060With\u2026\u0060/\u0060Has\u2026\u0060 exception pairing (#1146)"
+      },
+      {
+        "sha": "3a011705c7acc04af336c006d9722bbd28bf011f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 18:40:42 2026 \u002B0200",
+        "message": "feat: expose the remaining \u0060char\u0060 predicates (#1151)"
       }
     ],
     "labels": [
@@ -25409,7 +25448,8 @@ window.BENCHMARK_DATA = {
       "9be4b8ec",
       "e5e13677",
       "e5ae83c4",
-      "763e7578"
+      "763e7578",
+      "3a011705"
     ],
     "datasets": [
       {
@@ -26067,7 +26107,8 @@ window.BENCHMARK_DATA = {
           263.36252348239606,
           260.43323510487875,
           276.0557094256083,
-          224.4715517117427
+          224.4715517117427,
+          271.2452363014221
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -26581,6 +26622,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -27396,7 +27438,8 @@ window.BENCHMARK_DATA = {
           234.77980106671652,
           226.8797260761261,
           257.68343985875447,
-          207.47387848581587
+          207.47387848581587,
+          239.5957540512085
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -27589,6 +27632,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -31985,6 +32029,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 18:12:24 2026 \u002B0200",
         "message": "feat: add analyzer rule \u0060aweXpect0003\u0060 for the \u0060With\u2026\u0060/\u0060Has\u2026\u0060 exception pairing (#1146)"
+      },
+      {
+        "sha": "3a011705c7acc04af336c006d9722bbd28bf011f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 18:40:42 2026 \u002B0200",
+        "message": "feat: expose the remaining \u0060char\u0060 predicates (#1151)"
       }
     ],
     "labels": [
@@ -32639,7 +32689,8 @@ window.BENCHMARK_DATA = {
       "9be4b8ec",
       "e5e13677",
       "e5ae83c4",
-      "763e7578"
+      "763e7578",
+      "3a011705"
     ],
     "datasets": [
       {
@@ -33297,7 +33348,8 @@ window.BENCHMARK_DATA = {
           492.00807642936707,
           491.4921590941293,
           513.8926253000895,
-          456.05161458651224
+          456.05161458651224,
+          508.5778339249747
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33944,6 +33996,7 @@ window.BENCHMARK_DATA = {
           1128,
           1128,
           1128,
+          1256,
           1256,
           1256,
           1256,
@@ -34626,7 +34679,8 @@ window.BENCHMARK_DATA = {
           1181.1749179840087,
           1163.9258127212524,
           1249.217861175537,
-          975.6958395640055
+          975.6958395640055,
+          1155.7640056610107
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35055,6 +35109,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -39215,6 +39270,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 18:12:24 2026 \u002B0200",
         "message": "feat: add analyzer rule \u0060aweXpect0003\u0060 for the \u0060With\u2026\u0060/\u0060Has\u2026\u0060 exception pairing (#1146)"
+      },
+      {
+        "sha": "3a011705c7acc04af336c006d9722bbd28bf011f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 18:40:42 2026 \u002B0200",
+        "message": "feat: expose the remaining \u0060char\u0060 predicates (#1151)"
       }
     ],
     "labels": [
@@ -39869,7 +39930,8 @@ window.BENCHMARK_DATA = {
       "9be4b8ec",
       "e5e13677",
       "e5ae83c4",
-      "763e7578"
+      "763e7578",
+      "3a011705"
     ],
     "datasets": [
       {
@@ -40527,7 +40589,8 @@ window.BENCHMARK_DATA = {
           1966.861614227295,
           1852.0058815819878,
           2015.617419687907,
-          1540.0985544840494
+          1540.0985544840494,
+          1942.7496509552002
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -41174,6 +41237,7 @@ window.BENCHMARK_DATA = {
           2624,
           2624,
           2624,
+          2752,
           2752,
           2752,
           2752,
@@ -41856,7 +41920,8 @@ window.BENCHMARK_DATA = {
           1290.9601651509604,
           1331.342593129476,
           1402.462478129069,
-          1048.3148404439291
+          1048.3148404439291,
+          1282.7084517161052
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -42049,6 +42114,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -46445,6 +46511,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 18:12:24 2026 \u002B0200",
         "message": "feat: add analyzer rule \u0060aweXpect0003\u0060 for the \u0060With\u2026\u0060/\u0060Has\u2026\u0060 exception pairing (#1146)"
+      },
+      {
+        "sha": "3a011705c7acc04af336c006d9722bbd28bf011f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 18:40:42 2026 \u002B0200",
+        "message": "feat: expose the remaining \u0060char\u0060 predicates (#1151)"
       }
     ],
     "labels": [
@@ -47099,7 +47171,8 @@ window.BENCHMARK_DATA = {
       "9be4b8ec",
       "e5e13677",
       "e5ae83c4",
-      "763e7578"
+      "763e7578",
+      "3a011705"
     ],
     "datasets": [
       {
@@ -47757,7 +47830,8 @@ window.BENCHMARK_DATA = {
           2513.970354715983,
           2455.5898460388185,
           2607.561673227946,
-          2002.1590328216553
+          2002.1590328216553,
+          2576.206933339437
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -48404,6 +48478,7 @@ window.BENCHMARK_DATA = {
           2816,
           2816,
           2816,
+          2944,
           2944,
           2944,
           2944,
@@ -49086,7 +49161,8 @@ window.BENCHMARK_DATA = {
           26155.42914036342,
           25413.76973470052,
           27385.67385253906,
-          16234.44164804312
+          16234.44164804312,
+          25930.931333269393
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -49731,6 +49807,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
