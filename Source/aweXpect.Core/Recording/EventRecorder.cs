@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using aweXpect.Core.Helpers;
+using aweXpect.Core.Metadata;
 
 namespace aweXpect.Recording;
 
@@ -30,6 +31,28 @@ internal sealed class EventRecorder(string eventName) : IDisposable
 		_ms = null;
 #endif
 		_onDispose?.Invoke();
+	}
+
+	/// <summary>
+	///     Attaches to a registered event, whose handler is created by the registration instead of being bound
+	///     reflectively.
+	/// </summary>
+	public void Attach(WeakReference subject, TypeMetadataRegistry.RegisteredEvent @event)
+	{
+		Delegate handler = @event.CreateHandler(parameters =>
+		{
+			_eventQueue.Enqueue(new RecordedEvent(eventName, parameters));
+			NotifyRecordedEvent();
+		});
+		@event.AddHandler(subject.Target!, handler);
+
+		_onDispose = () =>
+		{
+			if (subject.Target is { } target)
+			{
+				@event.RemoveHandler(target, handler);
+			}
+		};
 	}
 
 	public void Attach(WeakReference subject, EventInfo eventInfo)

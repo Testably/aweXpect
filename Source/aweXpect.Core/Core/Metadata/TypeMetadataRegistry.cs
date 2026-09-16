@@ -90,7 +90,8 @@ public static class TypeMetadataRegistry
 
 		public void AddEvent(Type type, string name, Func<Action<object?[]>, Delegate> createHandler,
 			Action<object, Delegate> addHandler, Action<object, Delegate> removeHandler)
-			=> GetOrAdd(type).Events[name] = new RegisteredEvent(name, createHandler, addHandler, removeHandler);
+			=> GetOrAdd(type).Events[name] =
+				new RegisteredEvent(name, createHandler, addHandler, removeHandler, NextOrder());
 
 		/// <summary>
 		///     Whether any member or event was registered for the <paramref name="type" />.
@@ -102,7 +103,8 @@ public static class TypeMetadataRegistry
 
 		/// <remarks>
 		///     Registrations keep the order the generator emitted them in, so that a failure message lists the members of
-		///     a registered type in the same order as the reflected one.
+		///     a registered type in the same order as the reflected one, and a recording attaches to the events in the
+		///     order reflection would return them.
 		/// </remarks>
 		private int NextOrder() => Interlocked.Increment(ref _order);
 	}
@@ -126,11 +128,13 @@ public static class TypeMetadataRegistry
 		string name,
 		Func<Action<object?[]>, Delegate> createHandler,
 		Action<object, Delegate> addHandler,
-		Action<object, Delegate> removeHandler)
+		Action<object, Delegate> removeHandler,
+		int order)
 	{
 		public string Name { get; } = name;
 		public Func<Action<object?[]>, Delegate> CreateHandler { get; } = createHandler;
 		public Action<object, Delegate> AddHandler { get; } = addHandler;
 		public Action<object, Delegate> RemoveHandler { get; } = removeHandler;
+		public int Order { get; } = order;
 	}
 }

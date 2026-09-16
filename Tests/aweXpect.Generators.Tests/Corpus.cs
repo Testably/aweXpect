@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace aweXpect.Generators.Tests;
@@ -167,5 +167,135 @@ public static class Corpus
 		public int Public = 4;
 
 		public override string ToString() => $"{_private}{Internal}{Protected}{Public}";
+	}
+
+	public interface IHasEvent
+	{
+		event EventHandler Happened;
+	}
+
+	public class Publisher
+	{
+		public delegate void CountedHandler(int count, string name, bool flag, DateTime at, int? optional);
+
+		public event EventHandler? Changed;
+		public event CountedHandler? Counted;
+		public static event EventHandler? StaticChanged;
+		internal event EventHandler? Internal;
+		protected event EventHandler? Protected;
+		private event EventHandler? Private;
+
+		public void Raise()
+		{
+			Changed?.Invoke(this, EventArgs.Empty);
+			Counted?.Invoke(1, "", true, DateTime.MinValue, null);
+			StaticChanged?.Invoke(this, EventArgs.Empty);
+			Internal?.Invoke(this, EventArgs.Empty);
+			Protected?.Invoke(this, EventArgs.Empty);
+			Private?.Invoke(this, EventArgs.Empty);
+		}
+	}
+
+	public class PublisherDerived : Publisher
+	{
+		public event Action? Own;
+
+		public void RaiseOwn() => Own?.Invoke();
+	}
+
+	public class PublisherHiding : Publisher
+	{
+		public new event Action? Changed;
+
+		public void RaiseHiding() => Changed?.Invoke();
+	}
+
+	public class PublisherHidingPrivately : Publisher
+	{
+		public event Action? Own;
+		private new event Action? Changed;
+
+		public void RaiseHidingPrivately()
+		{
+			Own?.Invoke();
+			Changed?.Invoke();
+		}
+	}
+
+	public class PublisherHidingPrivatelyDerived : PublisherHidingPrivately
+	{
+		public event Action? More;
+
+		public void RaiseMore() => More?.Invoke();
+	}
+
+	public class PublisherHidingInternally : Publisher
+	{
+		public event Action? Own;
+		internal new event Action? Changed;
+
+		public void RaiseHidingInternally()
+		{
+			Own?.Invoke();
+			Changed?.Invoke();
+		}
+	}
+
+	public class PublisherHidingByProperty : Publisher
+	{
+		public new int Changed { get; set; }
+	}
+
+	public class PublisherWithExplicitInterface : IHasEvent
+	{
+		public event Action? Own;
+
+		event EventHandler IHasEvent.Happened
+		{
+			add { }
+			remove { }
+		}
+
+		public void RaiseOwn() => Own?.Invoke();
+	}
+
+	public class PublisherWithKeywords
+	{
+		public event Action? @event;
+
+		public void RaiseEvent() => @event?.Invoke();
+	}
+
+	public class PublisherWithObsolete
+	{
+		[Obsolete("gone")] public event Action? Old;
+		public event Action? Current;
+
+		public void RaiseAll()
+		{
+#pragma warning disable CS0618
+			Old?.Invoke();
+#pragma warning restore CS0618
+			Current?.Invoke();
+		}
+	}
+
+	public class GenericPublisher<T>
+	{
+		public event EventHandler<T>? Received;
+		public event Action<List<T>>? Batched;
+
+		public void Raise(T value)
+		{
+			Received?.Invoke(this, value);
+			Batched?.Invoke([value,]);
+		}
+	}
+
+	public class GenericPublisherDerived : GenericPublisher<int>
+	{
+		public event Action? Own;
+
+		public void RaiseOwn() => Own?.Invoke();
 	}
 }
