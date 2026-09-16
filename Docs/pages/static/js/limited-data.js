@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "80d7a636894ca1e3cc4ea5deadedd7d2e07cd9c2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 09:12:19 2026 \u002B0200",
-        "message": "fix!: fail the negated boolean, number, enum and type expectations for a \u0060null\u0060 subject (#1065)"
-      },
-      {
         "sha": "dfb520f6e4b0f9b7624205da8b2c42609ca9fa6f",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 12:59:16 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 10:53:10 2026 \u002B0200",
         "message": "fix: let the dashboard pass a run that produced no mutation report (#1137)"
+      },
+      {
+        "sha": "92d1944580383864a5d3f78acc294335ba38b733",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 12:07:55 2026 \u002B0200",
+        "message": "refactor!: replace \u0060AreAllUnique\u0060 with \u0060Elements.AreUnique()\u0060 / \u0060AreNotUnique()\u0060 (#1136)"
       }
     ],
     "labels": [
-      "80d7a636",
       "dfb520f6",
       "9bafd873",
       "8c0caeb2",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "9d72f3f2",
       "b6c8f8a0",
       "081bd651",
-      "753cd961"
+      "753cd961",
+      "92d19445"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          242.9484498500824,
           209.59045723279317,
           254.11032401598416,
           289.89639768600466,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           273.72809038162234,
           256.4923405329386,
           270.47141586939495,
-          241.59078941345214
+          241.59078941345214,
+          251.40182484899248
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          247.74600553512573,
           217.12616160710652,
           249.94736538614546,
           246.6084097226461,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           269.87966009775795,
           258.7779306631822,
           256.50651825391327,
-          248.39237417493547
+          248.39237417493547,
+          240.8214459101359
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "80d7a636894ca1e3cc4ea5deadedd7d2e07cd9c2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 09:12:19 2026 \u002B0200",
-        "message": "fix!: fail the negated boolean, number, enum and type expectations for a \u0060null\u0060 subject (#1065)"
-      },
-      {
         "sha": "dfb520f6e4b0f9b7624205da8b2c42609ca9fa6f",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 12:59:16 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 10:53:10 2026 \u002B0200",
         "message": "fix: let the dashboard pass a run that produced no mutation report (#1137)"
+      },
+      {
+        "sha": "92d1944580383864a5d3f78acc294335ba38b733",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 12:07:55 2026 \u002B0200",
+        "message": "refactor!: replace \u0060AreAllUnique\u0060 with \u0060Elements.AreUnique()\u0060 / \u0060AreNotUnique()\u0060 (#1136)"
       }
     ],
     "labels": [
-      "80d7a636",
       "dfb520f6",
       "9bafd873",
       "8c0caeb2",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "9d72f3f2",
       "b6c8f8a0",
       "081bd651",
-      "753cd961"
+      "753cd961",
+      "92d19445"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          286452.7508370536,
           206855.57451520648,
           309059.1347307478,
           332842.84283854166,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           313103.78349609376,
           314545.55390625,
           327024.4654947917,
-          300103.9351236979
+          300103.9351236979,
+          307677.30032784597
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          335444,
           335442,
           335444,
           335444,
@@ -1074,6 +1073,7 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542084,
+          617976,
           617976,
           617976,
           617976,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2333736.3889508927,
           1629775.4592447917,
           2758251.6180245536,
           2732419.07421875,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2625909.8854166665,
           2610521.2452566964,
           2708283.4361979165,
-          2335981.8560697115
+          2335981.8560697115,
+          2612813.2177083334
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841647,
           4841611,
           4841651,
           4841651,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841647,
           4841651,
           4841651,
-          4841647
+          4841647,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "80d7a636894ca1e3cc4ea5deadedd7d2e07cd9c2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 09:12:19 2026 \u002B0200",
-        "message": "fix!: fail the negated boolean, number, enum and type expectations for a \u0060null\u0060 subject (#1065)"
-      },
       {
         "sha": "dfb520f6e4b0f9b7624205da8b2c42609ca9fa6f",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 10:53:10 2026 \u002B0200",
         "message": "fix: let the dashboard pass a run that produced no mutation report (#1137)"
+      },
+      {
+        "sha": "92d1944580383864a5d3f78acc294335ba38b733",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 12:07:55 2026 \u002B0200",
+        "message": "refactor!: replace \u0060AreAllUnique\u0060 with \u0060Elements.AreUnique()\u0060 / \u0060AreNotUnique()\u0060 (#1136)"
       }
     ],
     "labels": [
-      "80d7a636",
       "dfb520f6",
       "9bafd873",
       "8c0caeb2",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "9d72f3f2",
       "b6c8f8a0",
       "081bd651",
-      "753cd961"
+      "753cd961",
+      "92d19445"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          524.0201873779297,
           339.1529517491659,
           479.3151646931966,
           534.572336265019,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           461.8257578849792,
           474.93318353380477,
           495.7646186535175,
-          461.5401366551717
+          461.5401366551717,
+          453.90837942759197
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1681,7 +1681,7 @@ window.BENCHMARK_DATA = {
           1360,
           1360,
           1360,
-          1360,
+          1368,
           1368,
           1368,
           1368,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          485.92426039377847,
           391.57037830352783,
           511.97983792622887,
           489.1645165761312,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           480.7632736137935,
           504.21682192484536,
           547.2313723246257,
-          486.11460876464844
+          486.11460876464844,
+          486.0281050364176
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "80d7a636894ca1e3cc4ea5deadedd7d2e07cd9c2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 09:12:19 2026 \u002B0200",
-        "message": "fix!: fail the negated boolean, number, enum and type expectations for a \u0060null\u0060 subject (#1065)"
-      },
-      {
         "sha": "dfb520f6e4b0f9b7624205da8b2c42609ca9fa6f",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 12:59:16 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 10:53:10 2026 \u002B0200",
         "message": "fix: let the dashboard pass a run that produced no mutation report (#1137)"
+      },
+      {
+        "sha": "92d1944580383864a5d3f78acc294335ba38b733",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 12:07:55 2026 \u002B0200",
+        "message": "refactor!: replace \u0060AreAllUnique\u0060 with \u0060Elements.AreUnique()\u0060 / \u0060AreNotUnique()\u0060 (#1136)"
       }
     ],
     "labels": [
-      "80d7a636",
       "dfb520f6",
       "9bafd873",
       "8c0caeb2",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "9d72f3f2",
       "b6c8f8a0",
       "081bd651",
-      "753cd961"
+      "753cd961",
+      "92d19445"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          255.62491631507874,
           209.0020554432502,
           270.2526925291334,
           266.25251153537204,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           259.16043017705283,
           257.07899941716875,
           280.53383081299916,
-          267.828190939767
+          267.828190939767,
+          263.1876878371605
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          245.76577932494027,
           219.0480896949768,
           247.85641435782114,
           248.32830775578816,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           245.1631186803182,
           236.7126715864454,
           266.4871666908264,
-          239.6877254486084
+          239.6877254486084,
+          240.1942369143168
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "80d7a636894ca1e3cc4ea5deadedd7d2e07cd9c2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 09:12:19 2026 \u002B0200",
-        "message": "fix!: fail the negated boolean, number, enum and type expectations for a \u0060null\u0060 subject (#1065)"
-      },
-      {
         "sha": "dfb520f6e4b0f9b7624205da8b2c42609ca9fa6f",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 12:59:16 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 10:53:10 2026 \u002B0200",
         "message": "fix: let the dashboard pass a run that produced no mutation report (#1137)"
+      },
+      {
+        "sha": "92d1944580383864a5d3f78acc294335ba38b733",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 12:07:55 2026 \u002B0200",
+        "message": "refactor!: replace \u0060AreAllUnique\u0060 with \u0060Elements.AreUnique()\u0060 / \u0060AreNotUnique()\u0060 (#1136)"
       }
     ],
     "labels": [
-      "80d7a636",
       "dfb520f6",
       "9bafd873",
       "8c0caeb2",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "9d72f3f2",
       "b6c8f8a0",
       "081bd651",
-      "753cd961"
+      "753cd961",
+      "92d19445"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          495.42105700174966,
           349.1342089653015,
           477.642680199941,
           460.0800317128499,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           508.83996607462564,
           546.8898420969646,
           554.8398835500082,
-          537.2023598988851
+          537.2023598988851,
+          508.41211083730065
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2897,7 +2897,7 @@ window.BENCHMARK_DATA = {
           1128,
           1128,
           1128,
-          1128,
+          1256,
           1256,
           1256,
           1256,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1182.0531973520915,
           898.5017230987548,
           1218.4707197825114,
           1193.0484619140625,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1180.9390767904429,
           1293.7900349934896,
           1226.763064956665,
-          1151.7505856922694
+          1151.7505856922694,
+          1204.8881548472814
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "80d7a636894ca1e3cc4ea5deadedd7d2e07cd9c2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 09:12:19 2026 \u002B0200",
-        "message": "fix!: fail the negated boolean, number, enum and type expectations for a \u0060null\u0060 subject (#1065)"
-      },
-      {
         "sha": "dfb520f6e4b0f9b7624205da8b2c42609ca9fa6f",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 12:59:16 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 10:53:10 2026 \u002B0200",
         "message": "fix: let the dashboard pass a run that produced no mutation report (#1137)"
+      },
+      {
+        "sha": "92d1944580383864a5d3f78acc294335ba38b733",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 12:07:55 2026 \u002B0200",
+        "message": "refactor!: replace \u0060AreAllUnique\u0060 with \u0060Elements.AreUnique()\u0060 / \u0060AreNotUnique()\u0060 (#1136)"
       }
     ],
     "labels": [
-      "80d7a636",
       "dfb520f6",
       "9bafd873",
       "8c0caeb2",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "9d72f3f2",
       "b6c8f8a0",
       "081bd651",
-      "753cd961"
+      "753cd961",
+      "92d19445"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1897.1561297098795,
           1025.3441064198812,
           1955.5244827270508,
           2029.9102714538574,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1894.3747313363212,
           1977.2733469645182,
           1933.8181060791017,
-          1876.5541516817534
+          1876.5541516817534,
+          1962.5544964926582
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3505,7 +3505,7 @@ window.BENCHMARK_DATA = {
           2624,
           2624,
           2624,
-          2624,
+          2752,
           2752,
           2752,
           2752,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1352.2423076629639,
           1033.1778022766114,
           1369.0302020481654,
           1369.8892083849225,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1408.0354794722336,
           1303.7993309020997,
           1347.267807143075,
-          1322.0371481577556
+          1322.0371481577556,
+          1309.8268162863594
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "80d7a636894ca1e3cc4ea5deadedd7d2e07cd9c2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 13 09:12:19 2026 \u002B0200",
-        "message": "fix!: fail the negated boolean, number, enum and type expectations for a \u0060null\u0060 subject (#1065)"
-      },
-      {
         "sha": "dfb520f6e4b0f9b7624205da8b2c42609ca9fa6f",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Sep 13 12:59:16 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 10:53:10 2026 \u002B0200",
         "message": "fix: let the dashboard pass a run that produced no mutation report (#1137)"
+      },
+      {
+        "sha": "92d1944580383864a5d3f78acc294335ba38b733",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Sep 16 12:07:55 2026 \u002B0200",
+        "message": "refactor!: replace \u0060AreAllUnique\u0060 with \u0060Elements.AreUnique()\u0060 / \u0060AreNotUnique()\u0060 (#1136)"
       }
     ],
     "labels": [
-      "80d7a636",
       "dfb520f6",
       "9bafd873",
       "8c0caeb2",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "9d72f3f2",
       "b6c8f8a0",
       "081bd651",
-      "753cd961"
+      "753cd961",
+      "92d19445"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2571.071692911784,
           1470.7018271854945,
           2688.8983939034597,
           2725.5105266571045,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2470.5895595550537,
           2547.284422238668,
           2586.085273742676,
-          2469.415817006429
+          2469.415817006429,
+          2470.333965008075
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4113,7 +4113,7 @@ window.BENCHMARK_DATA = {
           2816,
           2816,
           2816,
-          2816,
+          2944,
           2944,
           2944,
           2944,
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          19494.986265055337,
           13859.130200899564,
           27901.550914219446,
           27478.99108276367,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           25044.89990641276,
           25662.806424654445,
           26990.944542439778,
-          20047.28773803711
+          20047.28773803711,
+          26411.143216814315
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33465,
           33471,
           33471,
@@ -4237,6 +4236,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
