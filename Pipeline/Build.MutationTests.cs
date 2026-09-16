@@ -36,7 +36,7 @@ partial class Build
 	///     The patterns start with <c>**/</c> because Stryker does not document what its globs are relative to, and end
 	///     in <c>/*.cs</c> because the subject folders are flat - a nested folder would fall into the last slice.
 	/// </remarks>
-	private static readonly (string Name, string[] Patterns)[] MutationSlices =
+	private static readonly (string Name, string[] Patterns)[] MainMutationSlices =
 	[
 		("collections-enumerable", ["**/That/Collections/ThatEnumerable*.cs",]),
 		("collections-other", ["**/That/Collections/*.cs",]),
@@ -46,6 +46,26 @@ partial class Build
 			"**/That/DateOnlys/*.cs", "**/That/DateTimeOffsets/*.cs", "**/That/DateTimes/*.cs",
 			"**/That/TimeOnlys/*.cs", "**/That/TimeSpans/*.cs",
 		]),
+		("infrastructure",
+		[
+			"**/Helpers/*.cs", "**/Results/*.cs", "**/Equivalency/*.cs", "**/Options/*.cs", "**/Polyfills/*.cs",
+		]),
+		("rest", []),
+	];
+
+	/// <summary>
+	///     Disjoint slices of the mutated <c>aweXpect.Core</c> source, following the same rules as
+	///     <see cref="MainMutationSlices" />.
+	/// </summary>
+	/// <remarks>
+	///     The <c>Core</c> folder is the only one with nested folders, so it is matched twice - once flat and once
+	///     recursively - because the last slice would otherwise silently pick up everything below it.
+	/// </remarks>
+	private static readonly (string Name, string[] Patterns)[] CoreMutationSlices =
+	[
+		("engine", ["**/Core/*.cs", "**/Core/**/*.cs",]),
+		("options", ["**/Options/*.cs",]),
+		("formatting", ["**/Formatting/*.cs", "**/Equivalency/*.cs",]),
 		("rest", []),
 	];
 
@@ -59,11 +79,11 @@ partial class Build
 		.DependsOn(Compile)
 		.OnlyWhenDynamic(() => !DisableMutationTests)
 		.OnlyWhenDynamic(() => BuildScope == BuildScope.Default)
-		.OnlyWhenDynamic(() => Repository.Branch != "main" && Repository.Tags.Count == 0)
+		.OnlyWhenDynamic(() => Repository.Tags.Count == 0)
 		.Executes(() =>
 		{
 			ExecuteMutationTest(Solution.aweXpect_Core,
-				[..FrameworkUnitTestProjects, Solution.Tests.aweXpect_Core_Tests,]);
+				[..FrameworkUnitTestProjects, Solution.Tests.aweXpect_Core_Tests,], CoreMutationSlices);
 		});
 
 	Target MutationTestsMain => _ => _
@@ -73,7 +93,7 @@ partial class Build
 		.Executes(() =>
 		{
 			ExecuteMutationTest(Solution.aweXpect,
-				[Solution.Tests.aweXpect_Tests, Solution.Tests.aweXpect_Internal_Tests,]);
+				[Solution.Tests.aweXpect_Tests, Solution.Tests.aweXpect_Internal_Tests,], MainMutationSlices);
 		});
 
 	Target MutationTestsComment => _ => _
@@ -151,30 +171,22 @@ partial class Build
 		.Executes(async () =>
 		{
 			ArtifactsDirectory.CreateDirectory();
-			await "MutationTestsCore".DownloadArtifactTo(ArtifactsDirectory / "aweXpect.Core", GithubToken);
-			await DownloadMainMutationReport();
+			await DownloadSlicedMutationReport(Solution.aweXpect.Name, "MutationTestsMain", MainMutationSlices);
 
-			Dictionary<Project, Project[]> projects;
-			if (Repository.Branch != "main" && Repository.Tags.Count == 0)
+			Dictionary<Project, Project[]> projects = new()
 			{
-				projects = new Dictionary<Project, Project[]>
 				{
-					{
-						Solution.aweXpect, [Solution.Tests.aweXpect_Tests, Solution.Tests.aweXpect_Internal_Tests,]
-					},
-					{
-						Solution.aweXpect_Core, [..FrameworkUnitTestProjects, Solution.Tests.aweXpect_Core_Tests,]
-					},
-				};
-			}
-			else
+					Solution.aweXpect, [Solution.Tests.aweXpect_Tests, Solution.Tests.aweXpect_Internal_Tests,]
+				},
+			};
+
+			// `MutationTestsCore` does not run on a tag, so there is no report to collect or publish for it.
+			if (Repository.Tags.Count == 0)
 			{
-				projects = new Dictionary<Project, Project[]>
-				{
-					{
-						Solution.aweXpect, [Solution.Tests.aweXpect_Tests, Solution.Tests.aweXpect_Internal_Tests,]
-					},
-				};
+				await DownloadSlicedMutationReport(Solution.aweXpect_Core.Name, "MutationTestsCore",
+					CoreMutationSlices);
+				projects.Add(Solution.aweXpect_Core,
+					[..FrameworkUnitTestProjects, Solution.Tests.aweXpect_Core_Tests,]);
 			}
 
 			string apiKey = Environment.GetEnvironmentVariable("STRYKER_DASHBOARD_API_KEY");
@@ -207,20 +219,22 @@ partial class Build
 		});
 
 	/// <summary>
-	///     Collects the <c>aweXpect</c> mutation report into the single-report layout that the dashboard upload expects.
+	///     Collects the <paramref name="projectName" /> mutation report into the single-report layout that the dashboard
+	///     upload expects, by merging the <paramref name="slices" /> published as <paramref name="artifactName" />.
 	/// </summary>
 	/// <remarks>
 	///     The full run is sliced over parallel jobs, so the slice reports have to be merged back together. Pull requests
 	///     mutate only their own changes and stay unsliced, which is why a single artifact is still accepted.
 	/// </remarks>
-	private async Task DownloadMainMutationReport()
+	private async Task DownloadSlicedMutationReport(string projectName, string artifactName,
+		(string Name, string[] Patterns)[] slices)
 	{
-		AbsolutePath projectDirectory = ArtifactsDirectory / "aweXpect";
+		AbsolutePath projectDirectory = ArtifactsDirectory / projectName;
 		List<(string Name, AbsolutePath Report)> sliceReports = [];
-		foreach ((string name, string[] _) in MutationSlices)
+		foreach ((string name, string[] _) in slices)
 		{
 			AbsolutePath sliceDirectory = projectDirectory / name;
-			await $"MutationTestsMain-{name}".DownloadArtifactTo(sliceDirectory, GithubToken);
+			await $"{artifactName}-{name}".DownloadArtifactTo(sliceDirectory, GithubToken);
 			AbsolutePath report = sliceDirectory / "Stryker" / "reports" / "mutation-report.json";
 			if (File.Exists(report))
 			{
@@ -230,16 +244,16 @@ partial class Build
 
 		if (sliceReports.Count == 0)
 		{
-			Log.Information("Found no mutation slices, so the run was not sliced");
-			await "MutationTestsMain".DownloadArtifactTo(projectDirectory, GithubToken);
+			Log.Information("Found no mutation slices for {Project}, so the run was not sliced", projectName);
+			await artifactName.DownloadArtifactTo(projectDirectory, GithubToken);
 			return;
 		}
 
-		if (sliceReports.Count != MutationSlices.Length)
+		if (sliceReports.Count != slices.Length)
 		{
 			// Publishing now would drop the mutants of the missing slices and report a score for a subset of the source.
 			Assert.Fail(
-				$"Only {sliceReports.Count} of {MutationSlices.Length} mutation slices reported: " +
+				$"Only {sliceReports.Count} of {slices.Length} {projectName} mutation slices reported: " +
 				$"{string.Join(", ", sliceReports.Select(slice => slice.Name))}");
 		}
 		else
@@ -253,11 +267,16 @@ partial class Build
 	/// <summary>
 	///     Merges the <paramref name="sliceReports" /> into a single mutation report, by combining their files.
 	/// </summary>
+	/// <remarks>
+	///     Every slice reports every file, and the ones outside it keep their mutants with the status <c>Ignored</c>,
+	///     so only the mutants that a slice actually tested tell which slice a file belongs to.
+	/// </remarks>
 	private static void MergeMutationReports(List<(string Name, AbsolutePath Report)> sliceReports,
 		AbsolutePath projectDirectory)
 	{
 		JsonObject merged = null;
 		JsonObject mergedFiles = new();
+		Dictionary<string, string> contributingSlice = new();
 		int totalMutants = 0;
 		foreach ((string name, AbsolutePath report) in sliceReports)
 		{
@@ -266,22 +285,30 @@ partial class Build
 			int sliceMutants = 0;
 			foreach (KeyValuePair<string, JsonNode> file in slice["files"]!.AsObject())
 			{
-				int mutants = file.Value?["mutants"]?.AsArray().Count ?? 0;
+				int mutants = TestedMutants(file.Value);
 				sliceMutants += mutants;
 				if (!mergedFiles.TryGetPropertyValue(file.Key, out JsonNode existing))
 				{
 					mergedFiles[file.Key] = file.Value?.DeepClone();
+					if (mutants > 0)
+					{
+						contributingSlice[file.Key] = name;
+					}
+
 					continue;
 				}
 
-				if (mutants > 0 && existing?["mutants"]?.AsArray().Count > 0)
+				if (mutants > 0 && TestedMutants(existing) > 0)
 				{
-					// Both slices mutated the file, so its mutants would be counted twice in the score.
-					Assert.Fail($"The mutation slices overlap in '{file.Key}'");
+					// Both slices tested the file, so its mutants would be counted twice in the score.
+					Assert.Fail(
+						$"The mutation slices '{contributingSlice[file.Key]}' ({TestedMutants(existing)} mutants) " +
+						$"and '{name}' ({mutants} mutants) overlap in '{file.Key}'");
 				}
 				else if (mutants > 0)
 				{
 					mergedFiles[file.Key] = file.Value?.DeepClone();
+					contributingSlice[file.Key] = name;
 				}
 			}
 
@@ -298,7 +325,17 @@ partial class Build
 			sliceReports.Count, mergedFiles.Count, totalMutants);
 	}
 
-	private void ExecuteMutationTest(Project project, Project[] testProjects)
+	/// <summary>
+	///     The mutants of the <paramref name="file" /> that its slice actually ran, which is what tells the slices
+	///     apart: a mutant the mutate filter removed is reported as <c>Ignored</c> and one that did not build as
+	///     <c>CompileError</c>, and every slice reports those for every file.
+	/// </summary>
+	private static int TestedMutants(JsonNode file)
+		=> file?["mutants"]?.AsArray()
+			.Count(mutant => mutant?["status"]?.GetValue<string>() is not ("Ignored" or "CompileError")) ?? 0;
+
+	private void ExecuteMutationTest(Project project, Project[] testProjects,
+		(string Name, string[] Patterns)[] slices)
 	{
 		AbsolutePath toolPath = TestResultsDirectory / "dotnet-stryker";
 		AbsolutePath configFile = toolPath / "Stryker.Config.json";
@@ -331,7 +368,7 @@ partial class Build
 		string mutateSection = "";
 		if (!string.IsNullOrEmpty(MutationSlice))
 		{
-			string[] patterns = GetMutatePatterns(MutationSlice);
+			string[] patterns = GetMutatePatterns(slices, MutationSlice);
 			Log.Information("Mutate the slice '{MutationSlice}': {Patterns}", MutationSlice,
 				string.Join(" ", patterns));
 			mutateSection = $"\"mutate\": [\n\t\t\t{string.Join(",\n\t\t\t",
@@ -447,20 +484,20 @@ partial class Build
 	///     The last slice declares no patterns of its own, so it is left with nothing but exclusions - which Stryker
 	///     reads as "mutate every file that does not match one of them".
 	/// </remarks>
-	static string[] GetMutatePatterns(string sliceName)
+	static string[] GetMutatePatterns((string Name, string[] Patterns)[] slices, string sliceName)
 	{
-		int index = Array.FindIndex(MutationSlices, slice => slice.Name == sliceName);
+		int index = Array.FindIndex(slices, slice => slice.Name == sliceName);
 		if (index < 0)
 		{
 			throw new ArgumentException(
-				$"Unknown mutation slice '{sliceName}'. Use one of: {string.Join(", ", MutationSlices.Select(slice => slice.Name))}",
+				$"Unknown mutation slice '{sliceName}'. Use one of: {string.Join(", ", slices.Select(slice => slice.Name))}",
 				nameof(sliceName));
 		}
 
 		return
 		[
-			..MutationSlices[index].Patterns,
-			..MutationSlices.Take(index).SelectMany(slice => slice.Patterns)
+			..slices[index].Patterns,
+			..slices.Take(index).SelectMany(slice => slice.Patterns)
 				.Select(pattern => "!" + pattern),
 		];
 	}

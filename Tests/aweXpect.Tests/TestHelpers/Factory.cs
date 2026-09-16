@@ -6,6 +6,17 @@ namespace aweXpect.Tests;
 
 internal static class Factory
 {
+	/// <summary>
+	///     The number of items after which an "infinite" sequence throws instead of yielding more.
+	/// </summary>
+	/// <remarks>
+	///     The expectations stop enumerating after a handful of items, so this limit is never reached. It only takes
+	///     effect when they fail to stop early - most notably under a mutant that drops the check which ends the
+	///     enumeration. Without it such a mutant buffers items until the test host runs out of memory, which costs
+	///     the mutation tests tens of seconds per mutant instead of failing immediately.
+	/// </remarks>
+	private const int SafetyLimit = 1000;
+
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Returns an "infinite" <see cref="IAsyncEnumerable{T}" /> of fibonacci numbers.
@@ -22,7 +33,8 @@ internal static class Factory
 			await Task.Yield();
 			yield return b;
 			(a, b) = (b, a + b);
-		} while (++iterations < maxIterations && !cancellationToken.IsCancellationRequested);
+			ThrowIfEnumeratedTooFar(++iterations, maxIterations);
+		} while (iterations < maxIterations && !cancellationToken.IsCancellationRequested);
 	}
 #endif
 
@@ -43,7 +55,8 @@ internal static class Factory
 			await Task.Yield();
 			yield return mapper(b);
 			(a, b) = (b, a + b);
-		} while (++iterations < maxIterations && !cancellationToken.IsCancellationRequested);
+			ThrowIfEnumeratedTooFar(++iterations, maxIterations);
+		} while (iterations < maxIterations && !cancellationToken.IsCancellationRequested);
 	}
 #endif
 
@@ -59,7 +72,8 @@ internal static class Factory
 		{
 			await Task.Yield();
 			yield return value;
-		} while (++iterations < maxIterations);
+			ThrowIfEnumeratedTooFar(++iterations, maxIterations);
+		} while (iterations < maxIterations);
 	}
 #endif
 
@@ -75,7 +89,8 @@ internal static class Factory
 		{
 			yield return b;
 			(a, b) = (b, a + b);
-		} while (++iterations < maxIterations);
+			ThrowIfEnumeratedTooFar(++iterations, maxIterations);
+		} while (iterations < maxIterations);
 	}
 
 	/// <summary>
@@ -90,7 +105,8 @@ internal static class Factory
 		{
 			yield return mapper(b);
 			(a, b) = (b, a + b);
-		} while (++iterations < maxIterations);
+			ThrowIfEnumeratedTooFar(++iterations, maxIterations);
+		} while (iterations < maxIterations);
 	}
 
 	/// <summary>
@@ -102,6 +118,20 @@ internal static class Factory
 		do
 		{
 			yield return value;
-		} while (++iterations < maxIterations);
+			ThrowIfEnumeratedTooFar(++iterations, maxIterations);
+		} while (iterations < maxIterations);
+	}
+
+	/// <summary>
+	///     Throws when the consumer is about to enumerate beyond the <see cref="SafetyLimit" /> of an otherwise
+	///     unbounded sequence.
+	/// </summary>
+	private static void ThrowIfEnumeratedTooFar(int iterations, int maxIterations)
+	{
+		if (iterations >= SafetyLimit && iterations < maxIterations)
+		{
+			throw new InvalidOperationException(
+				$"The expectation enumerated more than {SafetyLimit} items instead of stopping early.");
+		}
 	}
 }
