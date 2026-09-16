@@ -533,7 +533,6 @@ public sealed partial class TypeMetadataGeneratorTests
 				.Because("the two registrations of one type are kept apart, so neither drops the other");
 		}
 
-#if DEBUG
 		[Fact]
 		public async Task WhenSubjectIsRecordedDirectly_ShouldRegisterItsEvents()
 		{
@@ -554,11 +553,10 @@ public sealed partial class TypeMetadataGeneratorTests
 			await That(result.Generated).Contains("RegisterEvent<global::Models.Publisher>(\"Changed\",")
 				.Because("the marker on Record itself is what makes a plain call site register its subject");
 		}
-#endif
 
 		/// <remarks>
-		///     The marker on <c>Record</c> itself only reaches this project once the branch's <c>aweXpect.Core</c> is
-		///     released, so the tests mark an extension of their own and leave the direct call to a Debug-only test.
+		///     The tests mark an extension of their own, so that a change to the marker on <c>Record</c> itself only
+		///     shows in the test for the direct call.
 		/// </remarks>
 		private static string Record(string statement)
 			=> $$"""

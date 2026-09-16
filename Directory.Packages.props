@@ -3,7 +3,7 @@
 		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageVersion Include="aweXpect" Version="3.0.0-pre.2" />
+		<PackageVersion Include="aweXpect" Version="3.0.0-pre.3" />
 		<PackageVersion Include="aweXpect.Core" Version="3.0.0-pre.6" />
 		<PackageVersion Include="aweXpect.Chronology" Version="1.1.0" />
 	</ItemGroup>
