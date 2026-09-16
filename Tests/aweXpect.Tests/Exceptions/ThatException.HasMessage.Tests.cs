@@ -63,24 +63,29 @@ public sealed partial class ThatException
 			}
 
 			[Fact]
-			public async Task WhenExpectedIsNull_ShouldFail()
+			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
-				string message = "foo and some other text";
-				MyException exception = new(message);
+				MyException exception = new("foo and some other text");
 
 				async Task Act()
-					=> await That(exception).HasMessage().Containing(null);
+					=> await That(exception).HasMessage().Containing("");
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that exception
-					             has Message containing <null>,
-					             but it was "foo and some other text"
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'expected' string cannot be empty.").AsPrefix().And
+					.WithParamName("expected");
+			}
 
-					             Message:
-					             foo and some other text
-					             """)
-					.Because("a null value is compared like any other value instead of skipping the check");
+			[Fact]
+			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				MyException exception = new("foo and some other text");
+
+				async Task Act()
+					=> await That(exception).HasMessage().Containing(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The expected cannot be null.").AsPrefix();
 			}
 
 			[Fact]
@@ -97,6 +102,39 @@ public sealed partial class ThatException
 					             has Message containing "foo",
 					             but it was <null>
 					             """);
+			}
+		}
+
+		public sealed class EndingWithTests
+		{
+			[Fact]
+			public async Task WhenMessageDoesNotEndWithExpected_ShouldFail()
+			{
+				MyException exception = new("foo and some other text");
+
+				async Task Act()
+					=> await That(exception).HasMessage().EndingWith("foo");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that exception
+					             has Message ending with "foo",
+					             but it was "foo and some other text"*
+
+					             Message:
+					             foo and some other text
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenMessageEndsWithExpected_ShouldSucceed()
+			{
+				MyException exception = new("some text before foo");
+
+				async Task Act()
+					=> await That(exception).HasMessage().EndingWith("foo");
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 
@@ -272,16 +310,29 @@ public sealed partial class ThatException
 			}
 
 			[Fact]
-			public async Task WhenUnexpectedIsNull_ShouldSucceed()
+			public async Task WhenUnexpectedIsEmpty_ShouldThrowArgumentException()
 			{
-				string message = "foo and some other text";
-				MyException exception = new(message);
+				MyException exception = new("foo and some other text");
 
 				async Task Act()
-					=> await That(exception).HasMessage().NotContaining(null);
+					=> await That(exception).HasMessage().NotContaining("");
 
-				await That(Act).DoesNotThrow()
-					.Because("a null value is compared like any other value instead of skipping the check");
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'unexpected' string cannot be empty.").AsPrefix().And
+					.WithParamName("unexpected");
+			}
+
+			[Fact]
+			public async Task WhenUnexpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				MyException exception = new("foo and some other text");
+
+				async Task Act()
+					=> await That(exception).HasMessage().NotContaining(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The unexpected cannot be null.").AsPrefix();
 			}
 
 			[Fact]
@@ -317,6 +368,39 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that exception
 					             has Message not containing "foo",
+					             but it was "some text before foo"
+
+					             Message:
+					             some text before foo
+					             """);
+			}
+		}
+
+		public sealed class NotEndingWithTests
+		{
+			[Fact]
+			public async Task WhenMessageDoesNotEndWithUnexpected_ShouldSucceed()
+			{
+				MyException exception = new("foo and some other text");
+
+				async Task Act()
+					=> await That(exception).HasMessage().NotEndingWith("foo");
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenMessageEndsWithUnexpected_ShouldFail()
+			{
+				MyException exception = new("some text before foo");
+
+				async Task Act()
+					=> await That(exception).HasMessage().NotEndingWith("foo");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that exception
+					             has Message not ending with "foo",
 					             but it was "some text before foo"
 
 					             Message:
@@ -374,6 +458,72 @@ public sealed partial class ThatException
 					             has Message not equal to "expected text",
 					             but it was <null>
 					             """);
+			}
+		}
+
+		public sealed class NotStartingWithTests
+		{
+			[Fact]
+			public async Task WhenMessageDoesNotStartWithUnexpected_ShouldSucceed()
+			{
+				MyException exception = new("some text before foo");
+
+				async Task Act()
+					=> await That(exception).HasMessage().NotStartingWith("foo");
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenMessageStartsWithUnexpected_ShouldFail()
+			{
+				MyException exception = new("foo and some other text");
+
+				async Task Act()
+					=> await That(exception).HasMessage().NotStartingWith("foo");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that exception
+					             has Message not starting with "foo",
+					             but it was "foo and some other text"
+
+					             Message:
+					             foo and some other text
+					             """);
+			}
+		}
+
+		public sealed class StartingWithTests
+		{
+			[Fact]
+			public async Task WhenMessageDoesNotStartWithExpected_ShouldFail()
+			{
+				MyException exception = new("some text before foo");
+
+				async Task Act()
+					=> await That(exception).HasMessage().StartingWith("foo");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that exception
+					             has Message starting with "foo",
+					             but it was "some text before foo"*
+
+					             Message:
+					             some text before foo
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenMessageStartsWithExpected_ShouldSucceed()
+			{
+				MyException exception = new("foo and some other text");
+
+				async Task Act()
+					=> await That(exception).HasMessage().StartingWith("foo");
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 

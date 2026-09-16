@@ -72,6 +72,32 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Fact]
+		public async Task Containing_WhenExpectedIsEmpty_ShouldThrowArgumentException()
+		{
+			StringProperty sut = MyClass.HasStringValue("foo");
+
+			async Task Act()
+				=> await sut.Containing("");
+
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage("The 'expected' string cannot be empty.").AsPrefix().And
+				.WithParamName("expected");
+		}
+
+		[Fact]
+		public async Task Containing_WhenExpectedIsNull_ShouldThrowArgumentNullException()
+		{
+			StringProperty sut = MyClass.HasStringValue("foo");
+
+			async Task Act()
+				=> await sut.Containing(null!);
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("expected").And
+				.WithMessage("The expected cannot be null.").AsPrefix();
+		}
+
+		[Fact]
 		public async Task Containing_WhenSubjectIsNull_ShouldFail()
 		{
 			StringProperty sut = MyClass.HasStringValueOfNullSubject();
@@ -85,6 +111,77 @@ public sealed partial class PropertyResultTests
 				             has string value containing "foo",
 				             but it was <null>
 				             """);
+		}
+
+		[Theory]
+		[InlineData("foo", "bar")]
+		[InlineData("foobar", "FOOBAR")]
+		[InlineData("foobar", "foo")]
+		public async Task EndingWith_ShouldFailWhenActualDoesNotEndWithExpected(string actual, string expected)
+		{
+			StringProperty sut = MyClass.HasStringValue(actual);
+
+			async Task Act()
+				=> await sut.EndingWith(expected);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage($"""
+				              Expected that subject
+				              has string value ending with "{expected}",
+				              but it was "{actual}"*
+				              """).AsWildcard();
+		}
+
+		[Fact]
+		public async Task EndingWith_ShouldTriggerValidation()
+		{
+			Signaler<string?> signal = new();
+			PropertyResult.String<string, string, IThat<string>> sut = new(new Dummy(), _ => "x", "y", (e, _) =>
+			{
+				signal.Signal(e);
+			});
+
+			_ = sut.EndingWith("foo");
+
+			await That(signal).Signaled().With(e => e == "foo");
+		}
+
+		[Theory]
+		[InlineData("foo", "foo")]
+		[InlineData("foobar", "bar")]
+		public async Task EndingWith_ShouldVerifyThatActualEndsWithExpected(string actual, string expected)
+		{
+			StringProperty sut = MyClass.HasStringValue(actual);
+
+			MyClass? result = await sut.EndingWith(expected);
+
+			await That(result?.StringValue).IsEqualTo(actual);
+		}
+
+		[Fact]
+		public async Task EndingWith_WhenExpectedIsEmpty_ShouldThrowArgumentException()
+		{
+			StringProperty sut = MyClass.HasStringValue("foo");
+
+			async Task Act()
+				=> await sut.EndingWith("");
+
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage("The 'expected' string cannot be empty.").AsPrefix().And
+				.WithParamName("expected");
+		}
+
+		[Fact]
+		public async Task EndingWith_WhenExpectedIsNull_ShouldThrowArgumentNullException()
+		{
+			StringProperty sut = MyClass.HasStringValue("foo");
+
+			async Task Act()
+				=> await sut.EndingWith(null!);
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("expected").And
+				.WithMessage("The expected cannot be null.").AsPrefix();
 		}
 
 		[Theory]
@@ -248,6 +345,103 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Fact]
+		public async Task NotContaining_WhenUnexpectedIsEmpty_ShouldThrowArgumentException()
+		{
+			StringProperty sut = MyClass.HasStringValue("foo");
+
+			async Task Act()
+				=> await sut.NotContaining("");
+
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage("The 'unexpected' string cannot be empty.").AsPrefix().And
+				.WithParamName("unexpected");
+		}
+
+		[Fact]
+		public async Task NotContaining_WhenUnexpectedIsNull_ShouldThrowArgumentNullException()
+		{
+			StringProperty sut = MyClass.HasStringValue("foo");
+
+			async Task Act()
+				=> await sut.NotContaining(null!);
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("unexpected").And
+				.WithMessage("The unexpected cannot be null.").AsPrefix();
+		}
+
+		[Theory]
+		[InlineData("foo", "foo")]
+		[InlineData("foobar", "bar")]
+		public async Task NotEndingWith_ShouldFailWhenActualEndsWithUnexpected(string actual, string unexpected)
+		{
+			StringProperty sut = MyClass.HasStringValue(actual);
+
+			async Task Act()
+				=> await sut.NotEndingWith(unexpected);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage($"""
+				              Expected that subject
+				              has string value not ending with "{unexpected}",
+				              but it was "{actual}"
+				              """);
+		}
+
+		[Fact]
+		public async Task NotEndingWith_ShouldTriggerValidation()
+		{
+			Signaler<string?> signal = new();
+			PropertyResult.String<string, string, IThat<string>> sut = new(new Dummy(), _ => "x", "y", (e, _) =>
+			{
+				signal.Signal(e);
+			});
+
+			_ = sut.NotEndingWith("foo");
+
+			await That(signal).Signaled().With(e => e == "foo");
+		}
+
+		[Theory]
+		[InlineData("foo", "bar")]
+		[InlineData("foobar", "FOOBAR")]
+		[InlineData("foobar", "foo")]
+		public async Task NotEndingWith_ShouldVerifyThatActualDoesNotEndWithUnexpected(string actual, string unexpected)
+		{
+			StringProperty sut = MyClass.HasStringValue(actual);
+
+			MyClass? result = await sut.NotEndingWith(unexpected);
+
+			await That(result?.StringValue).IsEqualTo(actual);
+		}
+
+		[Fact]
+		public async Task NotEndingWith_WhenUnexpectedIsEmpty_ShouldThrowArgumentException()
+		{
+			StringProperty sut = MyClass.HasStringValue("foo");
+
+			async Task Act()
+				=> await sut.NotEndingWith("");
+
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage("The 'unexpected' string cannot be empty.").AsPrefix().And
+				.WithParamName("unexpected");
+		}
+
+		[Fact]
+		public async Task NotEndingWith_WhenUnexpectedIsNull_ShouldThrowArgumentNullException()
+		{
+			StringProperty sut = MyClass.HasStringValue("foo");
+
+			async Task Act()
+				=> await sut.NotEndingWith(null!);
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("unexpected").And
+				.WithMessage("The unexpected cannot be null.").AsPrefix();
+		}
+
+		[Fact]
 		public async Task NotEqualTo_ShouldFailWhenActualDoesNotEqualExpected()
 		{
 			StringProperty sut = MyClass.HasStringValue("foo");
@@ -343,6 +537,149 @@ public sealed partial class PropertyResultTests
 				             has string value not equal to "foo",
 				             but it was <null>
 				             """);
+		}
+
+		[Theory]
+		[InlineData("foo", "foo")]
+		[InlineData("foobar", "foo")]
+		public async Task NotStartingWith_ShouldFailWhenActualStartsWithUnexpected(string actual, string unexpected)
+		{
+			StringProperty sut = MyClass.HasStringValue(actual);
+
+			async Task Act()
+				=> await sut.NotStartingWith(unexpected);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage($"""
+				              Expected that subject
+				              has string value not starting with "{unexpected}",
+				              but it was "{actual}"
+				              """);
+		}
+
+		[Fact]
+		public async Task NotStartingWith_ShouldTriggerValidation()
+		{
+			Signaler<string?> signal = new();
+			PropertyResult.String<string, string, IThat<string>> sut = new(new Dummy(), _ => "x", "y", (e, _) =>
+			{
+				signal.Signal(e);
+			});
+
+			_ = sut.NotStartingWith("foo");
+
+			await That(signal).Signaled().With(e => e == "foo");
+		}
+
+		[Theory]
+		[InlineData("foo", "bar")]
+		[InlineData("foobar", "FOOBAR")]
+		[InlineData("foobar", "bar")]
+		public async Task NotStartingWith_ShouldVerifyThatActualDoesNotStartWithUnexpected(string actual,
+			string unexpected)
+		{
+			StringProperty sut = MyClass.HasStringValue(actual);
+
+			MyClass? result = await sut.NotStartingWith(unexpected);
+
+			await That(result?.StringValue).IsEqualTo(actual);
+		}
+
+		[Fact]
+		public async Task NotStartingWith_WhenUnexpectedIsEmpty_ShouldThrowArgumentException()
+		{
+			StringProperty sut = MyClass.HasStringValue("foo");
+
+			async Task Act()
+				=> await sut.NotStartingWith("");
+
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage("The 'unexpected' string cannot be empty.").AsPrefix().And
+				.WithParamName("unexpected");
+		}
+
+		[Fact]
+		public async Task NotStartingWith_WhenUnexpectedIsNull_ShouldThrowArgumentNullException()
+		{
+			StringProperty sut = MyClass.HasStringValue("foo");
+
+			async Task Act()
+				=> await sut.NotStartingWith(null!);
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("unexpected").And
+				.WithMessage("The unexpected cannot be null.").AsPrefix();
+		}
+
+		[Theory]
+		[InlineData("foo", "bar")]
+		[InlineData("foobar", "FOOBAR")]
+		[InlineData("foobar", "bar")]
+		public async Task StartingWith_ShouldFailWhenActualDoesNotStartWithExpected(string actual, string expected)
+		{
+			StringProperty sut = MyClass.HasStringValue(actual);
+
+			async Task Act()
+				=> await sut.StartingWith(expected);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage($"""
+				              Expected that subject
+				              has string value starting with "{expected}",
+				              but it was "{actual}"*
+				              """).AsWildcard();
+		}
+
+		[Fact]
+		public async Task StartingWith_ShouldTriggerValidation()
+		{
+			Signaler<string?> signal = new();
+			PropertyResult.String<string, string, IThat<string>> sut = new(new Dummy(), _ => "x", "y", (e, _) =>
+			{
+				signal.Signal(e);
+			});
+
+			_ = sut.StartingWith("foo");
+
+			await That(signal).Signaled().With(e => e == "foo");
+		}
+
+		[Theory]
+		[InlineData("foo", "foo")]
+		[InlineData("foobar", "foo")]
+		public async Task StartingWith_ShouldVerifyThatActualStartsWithExpected(string actual, string expected)
+		{
+			StringProperty sut = MyClass.HasStringValue(actual);
+
+			MyClass? result = await sut.StartingWith(expected);
+
+			await That(result?.StringValue).IsEqualTo(actual);
+		}
+
+		[Fact]
+		public async Task StartingWith_WhenExpectedIsEmpty_ShouldThrowArgumentException()
+		{
+			StringProperty sut = MyClass.HasStringValue("foo");
+
+			async Task Act()
+				=> await sut.StartingWith("");
+
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage("The 'expected' string cannot be empty.").AsPrefix().And
+				.WithParamName("expected");
+		}
+
+		[Fact]
+		public async Task StartingWith_WhenExpectedIsNull_ShouldThrowArgumentNullException()
+		{
+			StringProperty sut = MyClass.HasStringValue("foo");
+
+			async Task Act()
+				=> await sut.StartingWith(null!);
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("expected").And
+				.WithMessage("The expected cannot be null.").AsPrefix();
 		}
 
 		public sealed class ContextTests
