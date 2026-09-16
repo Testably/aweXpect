@@ -19,12 +19,12 @@ public sealed partial class ThatSignaler
 
 				async Task Act() =>
 					await That(signaler).Signaled().AtLeast(2.Times()).With(x => x > 0)
-						.WhoseParameters.AreAllUnique().WithCancellation(token);
+						.WhoseParameters.All().AreUnique().WithCancellation(token);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that signaler
-					             has recorded the callback at least twice with x => x > 0 and whose parameters only have unique items,
+					             has recorded the callback at least twice with x => x > 0 and whose parameters all are unique,
 					             but it was never recorded
 					             
 					             Collection:
