@@ -8,23 +8,23 @@ public sealed class NestedCollectionGrammar
 	public sealed class Tests
 	{
 		[Fact]
-		public async Task AreAllUnique_ShouldUsePluralVerb()
+		public async Task AreUnique_ShouldUsePluralVerb()
 		{
 			async Task Act()
-				=> await That("a\na").HasLines(lines => lines.AreAllUnique());
+				=> await That("a\na").HasLines(lines => lines.All().AreUnique());
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("*has lines which only have unique items,*").AsWildcard();
+				.WithMessage("*has lines which all are unique,*").AsWildcard();
 		}
 
 		[Fact]
-		public async Task AreAllUniqueWithMemberAccessor_ShouldUsePluralVerb()
+		public async Task AreUniqueWithMemberAccessor_ShouldUsePluralVerb()
 		{
 			async Task Act()
-				=> await That("a\nb").HasLines(lines => lines.AreAllUnique(l => l!.Length));
+				=> await That("a\nb").HasLines(lines => lines.All().AreUnique(l => l!.Length));
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("*has lines which only have unique items for l => l!.Length,*").AsWildcard();
+				.WithMessage("*has lines which all are unique for l => l!.Length,*").AsWildcard();
 		}
 
 		[Fact]
@@ -153,10 +153,10 @@ public sealed class NestedCollectionGrammar
 			IEnumerable<string> subject = ["a", "a",];
 
 			async Task Act()
-				=> await That(subject).AreAllUnique();
+				=> await That(subject).All().AreUnique();
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("*only has unique items,*").AsWildcard();
+				.WithMessage("*is unique for all items,*").AsWildcard();
 		}
 
 		[Fact]

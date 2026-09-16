@@ -60,6 +60,30 @@ internal static class ElementExpectations
 		};
 
 	/// <summary>
+	///     …is unique within the collection.
+	/// </summary>
+	public static string IsUnique(ExpectationGrammars grammars, object options)
+		=> (grammars.IsPlural(), grammars.IsNegated()) switch
+		{
+			(true, false) => $"are unique{options}",
+			(false, false) => $"is unique{options}",
+			(true, true) => $"are not unique{options}",
+			(false, true) => $"is not unique{options}",
+		};
+
+	/// <summary>
+	///     …is unique within the collection for the <paramref name="memberAccessor" />.
+	/// </summary>
+	public static string IsUniqueFor(ExpectationGrammars grammars, string memberAccessor, object options)
+		=> (grammars.IsPlural(), grammars.IsNegated()) switch
+		{
+			(true, false) => $"are unique for {memberAccessor}{options}",
+			(false, false) => $"is unique for {memberAccessor}{options}",
+			(true, true) => $"are not unique for {memberAccessor}{options}",
+			(false, true) => $"is not unique for {memberAccessor}{options}",
+		};
+
+	/// <summary>
 	///     …satisfies the <paramref name="predicate" />.
 	/// </summary>
 	public static string Satisfies(ExpectationGrammars grammars, string predicate)

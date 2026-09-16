@@ -96,17 +96,10 @@ This tolerance can be applied to `double`, `float`, `decimal` and `DateTime`.
 
 *Note: The same expectation works also for `IAsyncEnumerable<T>`.*
 
-## All be unique
+## Unique dictionary values
 
-You can verify that all items in a collection are unique.
-
-```csharp
-await Expect.That([1, 2, 3]).AreAllUnique();
-```
-
-*Note: The same expectation works also for `IAsyncEnumerable<T>`.*
-
-For dictionaries, this expectation only verifies the values, as the keys are unique by design:
+For dictionaries, you can verify that all values are unique. The keys are completely ignored, as they are unique by
+design:
 
 ```csharp
 IDictionary<int, int> subject = new Dictionary<int, int>
@@ -118,6 +111,8 @@ IDictionary<int, int> subject = new Dictionary<int, int>
 // This following expectation will fail, even though the keys are unique!
 await Expect.That(subject).AreAllUnique();
 ```
+
+For all other collections, uniqueness is an expectation on the [elements](#unique).
 
 ## Elements
 
@@ -151,6 +146,35 @@ await Expect.That([1, 2, 3]).AtMost(1).Satisfy(item => item < 0);
 await Expect.That([1, 2, 3]).Between(2).And(3).Satisfy(item => item > 0);
 await Expect.That([1, 2, 3]).Exactly(1).Satisfy(item => item == 2);
 await Expect.That([1, 2, 3]).None().Satisfy(item => item < 0);
+```
+
+*Note: The same expectation works also for `IAsyncEnumerable<T>`.*
+
+### Unique
+
+You can verify how many items in a collection occur exactly once:
+
+```csharp
+await Expect.That([1, 2, 3]).All().AreUnique();
+await Expect.That([1, 2, 3, 1]).AtLeast(1).AreNotUnique();
+await Expect.That([1, 2, 1, 2]).None().AreUnique();
+await Expect.That([1, 2, 3, 4, 5, 5]).AtLeast(4).AreUnique();
+```
+
+For objects, you can also verify the uniqueness of a member:
+
+```csharp
+Album[] albums = //...
+
+await Expect.That(albums).All().AreUnique(x => x.Title);
+```
+
+You can also use a [custom comparer](/docs/expectations/common-types/object#custom-comparer), or ignore the case of
+strings:
+
+```csharp
+await Expect.That(albums).All().AreUnique().Using(new AlbumComparer());
+await Expect.That(["a", "b"]).All().AreUnique().IgnoringCase();
 ```
 
 *Note: The same expectation works also for `IAsyncEnumerable<T>`.*

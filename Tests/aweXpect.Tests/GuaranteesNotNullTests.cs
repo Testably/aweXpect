@@ -88,7 +88,7 @@ public sealed class GuaranteesNotNullTests
 	{
 		List<MethodInfo> marked = GetMarkedExpectations().ToList();
 
-		await That(marked.Select(GetIdentifier)).AreAllUnique()
+		await That(marked.Select(GetIdentifier)).All().AreUnique()
 			.Because("each marked expectation must map to exactly one test case");
 		await That(marked.Where(CanHaveNullSubject)).IsNotEmpty()
 			.Because("the reflection lookup must not silently degrade into an empty test set");
