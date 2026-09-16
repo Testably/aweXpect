@@ -89,6 +89,28 @@ await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached))
 The `.Within(TimeSpan)` method will wait up to 3 seconds for the expected events and
 finish successfully as soon as the events are triggered.
 
+More precisely, it stops as soon as the outcome can no longer change, and otherwise waits for the
+whole timeout. For an expectation with an upper bound (`DidNotTrigger`, `Never()`,
+`AtMost(2.Times())`, `Exactly(1)`) that means the opposite: it waits out the timeout to be sure no
+further event arrives, and returns early only when one event too many is recorded.
+
+```csharp
+IEventRecording<MyClass> recording = subject.Record().Events();
+
+// Waits for 3 seconds and expects that no ThresholdReached event is triggered in that time
+await Expect.That(recording).DidNotTrigger(nameof(MyClass.ThresholdReached))
+  .Within(3.Seconds());
+```
+
+Note that `.Within(TimeSpan)` has to be specified before the occurrence constraint, because
+`Never()` and its siblings no longer give access to it:
+
+```csharp
+await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached))
+  .Within(3.Seconds())
+  .Never();
+```
+
 ### Sender
 
 When you follow

@@ -40,7 +40,7 @@ public static partial class ThatEventRecording
 			}
 
 			_result = await actual.StopWhen(result =>
-				quantifier.Check(result.GetEventCount(eventName, filter.IsMatch), true) == true, options.Timeout);
+				quantifier.Check(result.GetEventCount(eventName, filter.IsMatch), false) != null, options.Timeout);
 			int eventCount = _result.GetEventCount(eventName, filter.IsMatch);
 			Outcome = quantifier.Check(eventCount, true) == true ? Outcome.Success : Outcome.Failure;
 			return this;
@@ -56,7 +56,7 @@ public static partial class ThatEventRecording
 					stringBuilder.Append(" on ").Append(_actual);
 				}
 
-				stringBuilder.Append(filter);
+				stringBuilder.Append(filter).Append(options);
 			}
 			else
 			{

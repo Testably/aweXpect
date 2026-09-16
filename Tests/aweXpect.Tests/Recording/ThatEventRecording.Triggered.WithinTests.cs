@@ -9,6 +9,96 @@ public sealed partial class ThatEventRecording
 		public sealed class WithinTests
 		{
 			[Fact]
+			public async Task AtMost_WhenEventIsTriggeredFewEnoughTimesWithinTimeout_ShouldSucceed()
+			{
+				CustomEventWithoutParametersClass sut = new();
+				IEventRecording<CustomEventWithoutParametersClass> recording =
+					sut.Record().Events();
+
+				sut.NotifyCustomEvent();
+
+				async Task Act() =>
+					await That(recording)
+						.Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
+						.Within(50.Milliseconds())
+						.AtMost(1);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task AtMost_WhenEventIsTriggeredTooOftenWithinTimeout_ShouldFail()
+			{
+				CustomEventWithoutParametersClass sut = new();
+				IEventRecording<CustomEventWithoutParametersClass> recording =
+					sut.Record().Events();
+
+				_ = Task.Delay(20.Milliseconds())
+					.ContinueWith(_ => sut.NotifyCustomEvents(2));
+
+				async Task Act() =>
+					await That(recording)
+						.Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
+						.Within(5.Seconds())
+						.AtMost(1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that recording
+					             has recorded the CustomEvent event on sut at most once within 0:05,
+					             but it was recorded twice in [
+					               CustomEvent(),
+					               CustomEvent()
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task Never_WhenEventIsNotTriggeredWithinTimeout_ShouldSucceed()
+			{
+				CustomEventWithoutParametersClass sut = new();
+				IEventRecording<CustomEventWithoutParametersClass> recording =
+					sut.Record().Events();
+
+				_ = Task.Delay(2000.Milliseconds())
+					.ContinueWith(_ => sut.NotifyCustomEvent());
+
+				async Task Act() =>
+					await That(recording)
+						.Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
+						.Within(10.Milliseconds())
+						.Never();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task Never_WhenEventIsTriggeredWithinTimeout_ShouldFail()
+			{
+				CustomEventWithoutParametersClass sut = new();
+				IEventRecording<CustomEventWithoutParametersClass> recording =
+					sut.Record().Events();
+
+				_ = Task.Delay(20.Milliseconds())
+					.ContinueWith(_ => sut.NotifyCustomEvent());
+
+				async Task Act() =>
+					await That(recording)
+						.Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
+						.Within(5.Seconds())
+						.Never();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that recording
+					             has never recorded the CustomEvent event on sut within 0:05,
+					             but it was recorded once in [
+					               CustomEvent()
+					             ]
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenEventWith1ParameterIsNotTriggeredWithinTimeout_ShouldFail()
 			{
 				CustomEventWithParametersClass<string> sut = new();
