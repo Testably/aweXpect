@@ -13,6 +13,9 @@ internal static class Rules
 	public static readonly DiagnosticDescriptor EqualsRule =
 		CreateDescriptor("aweXpect0002", UsageCategory, DiagnosticSeverity.Error);
 
+	public static readonly DiagnosticDescriptor ThrownExceptionVocabularyRule =
+		CreateDescriptor("aweXpect0003", UsageCategory, DiagnosticSeverity.Warning);
+
 	/// <summary>
 	///     The nullability warnings that are suppressed after an expectation that guarantees a not-null subject.
 	/// </summary>

@@ -121,6 +121,51 @@ namespace aweXpect.Analyzers {
                 return ResourceManager.GetString("aweXpect0002Title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Directly after &quot;Throws&quot; the expectation continues the sentence &quot;throws a …&quot;, so it must use the nested &quot;With…&quot;/&quot;Without…&quot; vocabulary. The &quot;Has…&quot;/&quot;DoesNotHave…&quot; vocabulary starts a standalone sentence about an exception and belongs after &quot;.Which&quot; (or on an exception subject). Using it directly after &quot;Throws&quot; produces an ungrammatical failure message..
+        /// </summary>
+        internal static string aweXpect0003Description {
+            get {
+                return ResourceManager.GetString("aweXpect0003Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insert &quot;.Which&quot;.
+        /// </summary>
+        internal static string aweXpect0003InsertWhichCodeFixTitle {
+            get {
+                return ResourceManager.GetString("aweXpect0003InsertWhichCodeFixTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Replace &quot;{0}&quot; with &quot;{1}&quot; or insert &quot;.Which&quot; before it.
+        /// </summary>
+        internal static string aweXpect0003MessageFormat {
+            get {
+                return ResourceManager.GetString("aweXpect0003MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Replace with &quot;{0}&quot;.
+        /// </summary>
+        internal static string aweXpect0003ReplaceCodeFixTitle {
+            get {
+                return ResourceManager.GetString("aweXpect0003ReplaceCodeFixTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use &quot;With…&quot; instead of &quot;Has…&quot; directly after &quot;Throws&quot;.
+        /// </summary>
+        internal static string aweXpect0003Title {
+            get {
+                return ResourceManager.GetString("aweXpect0003Title", resourceCulture);
+            }
+        }
 
         /// <summary>
         ///   Looks up a localized string similar to The subject was verified to be not null by a preceding expectation..

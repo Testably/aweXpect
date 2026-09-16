@@ -23,6 +23,21 @@ public static AndOrResult<string, IThat<string>> IsAbsolutePath(this IThat<strin
 }
 ```
 
+### Expectations on thrown exceptions
+
+Expectations on an exception come in two shapes that share one constraint and differ only in their grammar:
+
+- `Has…` / `DoesNotHave…` on `IThat<TException>` describes the exception as a standalone sentence
+  ("has Message equal to …"). It applies to an exception subject, including the thrown exception after `.Which`.
+- `With…` / `Without…` on `ThatDelegateThrows<TException>` continues the sentence started by `Throws`
+  ("throws a CustomException with Message equal to …"). It passes
+  `ExpectationGrammars.Active | ExpectationGrammars.Nested` to the constraint.
+
+Keep the two in sync: give every `Has…` a `With…` twin with the same parameters and vice versa, so that the same
+check is available in both positions. `ThatDelegateThrows<TException>` is itself an `IThat<TException>`, so the
+`Has…` shape also binds directly after `Throws`; there it skips the `which` connective and produces an
+ungrammatical message, which is what the analyzer rule `aweXpect0003` reports.
+
 ### ExpectationBuilder
 
 The next step is to extract the `ExpectationBuilder`. In order to keep the automatic code suggestions for developers
