@@ -1,4 +1,6 @@
+using System.Collections.Concurrent;
 using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -374,6 +376,21 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 
 	private readonly record struct Member(ISymbol Symbol, string Name, ITypeSymbol Type, bool IsField);
 
+	/// <remarks>
+	///     Every call site walks with its own <see cref="MetadataWalker" />, but a compilation that imports every member
+	///     only needs to exist once per input compilation, so it is shared and dies with the compilation it was made for.
+	/// </remarks>
+	private static readonly ConditionalWeakTable<Compilation, AllImport> AllImports = new();
+
+	private sealed class AllImport(Compilation compilation)
+	{
+		public Compilation Compilation { get; } =
+			compilation.WithOptions(compilation.Options.WithMetadataImportOptions(MetadataImportOptions.All));
+
+		public ConcurrentDictionary<IAssemblySymbol, IAssemblySymbol?> Assemblies { get; } =
+			new(SymbolEqualityComparer.Default);
+	}
+
 	/// <summary>
 	///     Walks a type graph the way the equivalency comparison does, and collects a registration for every type
 	///     whose members it would compare.
@@ -389,10 +406,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 
 		private readonly Dictionary<IAssemblySymbol, bool> _isGlobal = new(SymbolEqualityComparer.Default);
 
-		private readonly Dictionary<IAssemblySymbol, IAssemblySymbol?> _allAssemblies =
-			new(SymbolEqualityComparer.Default);
-
-		private Compilation? _all;
+		private readonly Dictionary<INamedTypeSymbol, bool> _isUnambiguous = new(SymbolEqualityComparer.Default);
 
 		public ImmutableArray<TypeRegistration> Registrations => _registrations.ToImmutable();
 
@@ -673,18 +687,34 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				return type.GetMembers();
 			}
 
-			_all ??= compilation.WithOptions(compilation.Options.WithMetadataImportOptions(MetadataImportOptions.All));
-			if (!_allAssemblies.TryGetValue(type.ContainingAssembly, out IAssemblySymbol? assembly))
-			{
-				assembly = _all.References
-					.Select(reference => _all.GetAssemblyOrModuleSymbol(reference))
-					.OfType<IAssemblySymbol>()
-					.FirstOrDefault(candidate => candidate.Identity.Equals(type.ContainingAssembly.Identity));
-				_allAssemblies[type.ContainingAssembly] = assembly;
-			}
+			AllImport all = AllImports.GetValue(compilation, static c => new AllImport(c));
+			IAssemblySymbol? assembly = all.Assemblies.GetOrAdd(type.ContainingAssembly, containing => all.Compilation
+				.References
+				.Select(reference => all.Compilation.GetAssemblyOrModuleSymbol(reference))
+				.OfType<IAssemblySymbol>()
+				.FirstOrDefault(candidate => candidate.Identity.Equals(containing.Identity)));
 
 			return assembly?.GetTypeByMetadataName(FullMetadataName(type.OriginalDefinition))?.GetMembers() ??
 			       type.GetMembers();
+		}
+
+		/// <remarks>
+		///     A name that more than one assembly defines cannot be spelled out in the generated code, because the
+		///     compiler reports it as ambiguous, or as a conflict with the consumer's own declaration.
+		/// </remarks>
+		private bool IsUnambiguous(INamedTypeSymbol type)
+		{
+			INamedTypeSymbol definition = type.OriginalDefinition;
+			if (!_isUnambiguous.TryGetValue(definition, out bool isUnambiguous))
+			{
+				ImmutableArray<INamedTypeSymbol> candidates =
+					compilation.GetTypesByMetadataName(FullMetadataName(definition));
+				isUnambiguous = candidates.Length == 1 &&
+				                SymbolEqualityComparer.Default.Equals(candidates[0], definition);
+				_isUnambiguous[definition] = isUnambiguous;
+			}
+
+			return isUnambiguous;
 		}
 
 		private static string FullMetadataName(INamedTypeSymbol type)
@@ -896,7 +926,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 					.OfType<IPropertySymbol>().All(x => IsReferenceable(x.Type)),
 				INamedTypeSymbol named => !named.IsFileLocal && !IsUnreferenceable(named) &&
 				                          compilation.IsSymbolAccessibleWithin(named, compilation.Assembly) &&
-				                          IsGlobal(named) &&
+				                          IsGlobal(named) && IsUnambiguous(named) &&
 				                          named.TypeArguments.All(IsReferenceable) &&
 				                          (named.ContainingType is null || IsReferenceable(named.ContainingType)),
 				_ => true,

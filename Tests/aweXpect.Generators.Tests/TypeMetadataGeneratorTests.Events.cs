@@ -298,6 +298,35 @@ public sealed partial class TypeMetadataGeneratorTests
 		}
 
 		[Fact]
+		public async Task WhenBaseTypeNameExistsInTwoReferencedAssemblies_ShouldNotRegisterTheType()
+		{
+			MetadataReference first = GeneratorRunner.CompileToReference("Dup1", """
+				namespace Dup;
+
+				public class Same
+				{
+					public event System.Action? Changed;
+					public int Id { get; set; }
+				}
+				""");
+			MetadataReference second = GeneratorRunner.CompileToReference("Dup2",
+				"namespace Dup { public class Same { public event System.Action? Other; } }");
+			MetadataReference third = GeneratorRunner.CompileToReference("Dup3",
+				"namespace Dup3 { public class Leaf : Dup.Same { public event System.Action? Own; public int Count { get; set; } } }",
+				first);
+
+			GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+			[
+				Record("new Dup3.Leaf().Watch();"),
+				"[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof(Dup3.Leaf))]",
+			], additionalReferences: [first, second, third,]);
+
+			await That(result.Errors).IsEmpty()
+				.Because("the cast to the base type would be reported as ambiguous in the generated file");
+			await That(result.Generated).DoesNotContain("Dup3.Leaf");
+		}
+
+		[Fact]
 		public async Task WhenSubjectHasNoEvents_ShouldNotRegisterIt()
 		{
 			GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
