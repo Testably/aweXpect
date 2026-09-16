@@ -139,7 +139,10 @@ You can verify that the `string` has the expected length:
 ```csharp
 string subject = "Abbey Road";
 
+await Expect.That(subject).HasLength(10);
+// or more explicit
 await Expect.That(subject).HasLength().EqualTo(10);
+
 await Expect.That(subject).HasLength().NotEqualTo(9);
 
 await Expect.That(subject).HasLength().GreaterThan(8);
@@ -160,7 +163,10 @@ string subject = """
                  Over me
                  """;
 
+await Expect.That(subject).HasLineCount(3);
+// or more explicit
 await Expect.That(subject).HasLineCount().EqualTo(3);
+
 await Expect.That(subject).HasLineCount().NotEqualTo(4);
 await Expect.That(subject).HasLineCount().GreaterThan(2);
 await Expect.That(subject).HasLineCount().LessThanOrEqualTo(3);

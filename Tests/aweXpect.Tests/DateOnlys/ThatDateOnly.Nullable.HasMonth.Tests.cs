@@ -7,6 +7,55 @@ public sealed partial class ThatDateOnly
 	{
 		public sealed class HasMonth
 		{
+			public sealed class Tests
+			{
+				[Fact]
+				public async Task WhenMonthOfSubjectIsDifferent_ShouldFail()
+				{
+					DateOnly? subject = new(2010, 11, 12);
+					int expected = 12;
+
+					async Task Act()
+						=> await That(subject).HasMonth(expected);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              has month equal to {Formatter.Format(expected)},
+						              but it had month 11
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenMonthOfSubjectIsTheSame_ShouldSucceed()
+				{
+					DateOnly? subject = new(2010, 11, 12);
+					int expected = 11;
+
+					async Task Act()
+						=> await That(subject).HasMonth(expected);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsNull_ShouldFail()
+				{
+					DateOnly? subject = null;
+					int expected = 1;
+
+					async Task Act()
+						=> await That(subject).HasMonth(expected);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             has month equal to 1,
+						             but it was <null>
+						             """);
+				}
+			}
+
 			public sealed class EqualToTests
 			{
 				[Fact]

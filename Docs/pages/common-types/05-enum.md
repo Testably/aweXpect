@@ -35,9 +35,17 @@ enum Colors { Red = 1, Green = 2, Blue = 3, Yellow = 4 }
 
 await Expect.That(Colors.Red).HasValue(1)
   .Because("'Red' is 1");
-await Expect.That(Colors.Red).DoesNotHaveValue(2)
+// or more explicit
+await Expect.That(Colors.Red).HasValue().EqualTo(1)
+  .Because("'Red' is 1");
+
+await Expect.That(Colors.Red).HasValue().NotEqualTo(2)
   .Because("'Red' is 1");
 ```
+
+The `HasValue()` continuation compares the underlying numeric value and supports the same comparisons as the
+other properties: `EqualTo`, `NotEqualTo`, `GreaterThan`, `GreaterThanOrEqualTo`, `LessThan`,
+`LessThanOrEqualTo` and `Between`.
 
 ## Defined
 
@@ -64,3 +72,6 @@ await Expect.That(subject).HasFlag(RegexOptions.IgnoreCase)
 await Expect.That(subject).DoesNotHaveFlag(RegexOptions.ExplicitCapture)
   .Because("it does not have the 'ExplicitCapture' flag");
 ```
+
+`HasFlag` is the one `Has…` expectation without a continuation: it asks whether a bit is set, not how two
+ordered values compare, so `GreaterThan`, `Between` and the rest would have no meaning for it.

@@ -4,6 +4,38 @@ public sealed partial class ThatDateTimeOffset
 {
 	public sealed class HasDay
 	{
+		public sealed class Tests
+		{
+			[Fact]
+			public async Task WhenDayOfSubjectIsDifferent_ShouldFail()
+			{
+				DateTimeOffset subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
+				int expected = 11;
+
+				async Task Act()
+					=> await That(subject).HasDay(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              has day equal to {Formatter.Format(expected)},
+					              but it had day 12
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenDayOfSubjectIsTheSame_ShouldSucceed()
+			{
+				DateTimeOffset subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
+				int expected = 12;
+
+				async Task Act()
+					=> await That(subject).HasDay(expected);
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
 		public sealed class EqualToTests
 		{
 			[Fact]

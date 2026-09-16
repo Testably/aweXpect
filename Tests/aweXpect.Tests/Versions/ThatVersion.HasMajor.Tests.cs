@@ -4,6 +4,55 @@ public sealed partial class ThatVersion
 {
 	public sealed class HasMajor
 	{
+		public sealed class Tests
+		{
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				Version? subject = null;
+				int expected = 1;
+
+				async Task Act()
+					=> await That(subject).HasMajor(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has major equal to 1,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenMajorOfSubjectIsDifferent_ShouldFail()
+			{
+				Version? subject = new(2010, 11, 12, 13);
+				int expected = 2011;
+
+				async Task Act()
+					=> await That(subject).HasMajor(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              has major equal to {Formatter.Format(expected)},
+					              but it had major 2010
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenMajorOfSubjectIsTheSame_ShouldSucceed()
+			{
+				Version? subject = new(2010, 11, 12, 13);
+				int expected = 2010;
+
+				async Task Act()
+					=> await That(subject).HasMajor(expected);
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
 		public sealed class EqualToTests
 		{
 			[Fact]

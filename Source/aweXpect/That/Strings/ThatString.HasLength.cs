@@ -20,4 +20,14 @@ public static partial class ThatString
 					$"The {paramName} length must be greater than or equal to zero.");
 			}
 		});
+
+	/// <summary>
+	///     Verifies that the length of the <see langword="string" /> subject is equal to the
+	///     <paramref name="expected" /> value.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<string?, IThat<string?>> HasLength(
+		this IThat<string?> subject,
+		int expected)
+		=> subject.HasLength().EqualTo(expected);
 }

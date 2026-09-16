@@ -5,6 +5,38 @@ public sealed partial class ThatTimeOnly
 {
 	public sealed class HasHour
 	{
+		public sealed class Tests
+		{
+			[Fact]
+			public async Task WhenHourOfSubjectIsDifferent_ShouldFail()
+			{
+				TimeOnly subject = new(13, 14, 15);
+				int expected = 14;
+
+				async Task Act()
+					=> await That(subject).HasHour(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              has hour equal to {Formatter.Format(expected)},
+					              but it had hour 13
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenHourOfSubjectIsTheSame_ShouldSucceed()
+			{
+				TimeOnly subject = new(13, 14, 15);
+				int expected = 13;
+
+				async Task Act()
+					=> await That(subject).HasHour(expected);
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
 		public sealed class EqualToTests
 		{
 			[Fact]

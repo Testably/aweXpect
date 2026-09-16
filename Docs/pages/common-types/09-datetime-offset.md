@@ -158,6 +158,14 @@ DateTime subject = new DateTime(2024, 12, 31, 15, 16, 17, 189, DateTimeKind.Utc)
 // or
 DateTimeOffset subject = new DateTimeOffset(2024, 12, 31, 15, 16, 17, 189, TimeSpan.FromMinutes(90));
 
+await Expect.That(subject).HasYear(2024);
+await Expect.That(subject).HasMonth(12);
+await Expect.That(subject).HasDay(31);
+await Expect.That(subject).HasHour(15);
+await Expect.That(subject).HasMinute(16);
+await Expect.That(subject).HasSecond(17);
+await Expect.That(subject).HasMillisecond(189);
+// or more explicit
 await Expect.That(subject).HasYear().EqualTo(2024);
 await Expect.That(subject).HasMonth().EqualTo(12);
 await Expect.That(subject).HasDay().EqualTo(31);
@@ -170,12 +178,16 @@ await Expect.That(subject).HasMillisecond().EqualTo(189);
 For `DateTime` you can also verify the `Kind` property:
 
 ```csharp
+await Expect.That(subject).HasKind(DateTimeKind.Utc);
+// or more explicit
 await Expect.That(subject).HasKind().EqualTo(DateTimeKind.Utc);
 ```
 
 For `DateTimeOffset` you can also verify the `Offset` property:
 
 ```csharp
+await Expect.That(subject).HasOffset(TimeSpan.FromMinutes(90));
+// or more explicit
 await Expect.That(subject).HasOffset().EqualTo(TimeSpan.FromMinutes(90));
 ```
 

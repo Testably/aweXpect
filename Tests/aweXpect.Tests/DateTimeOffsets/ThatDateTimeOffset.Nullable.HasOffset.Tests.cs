@@ -6,6 +6,55 @@ public sealed partial class ThatDateTimeOffset
 	{
 		public sealed class HasOffset
 		{
+			public sealed class Tests
+			{
+				[Fact]
+				public async Task WhenOffsetOfSubjectIsDifferent_ShouldFail()
+				{
+					DateTimeOffset? subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
+					TimeSpan expected = 1.Hours();
+
+					async Task Act()
+						=> await That(subject).HasOffset(expected);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              has offset equal to {Formatter.Format(expected)},
+						              but it had offset 2:00:00
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenOffsetOfSubjectIsTheSame_ShouldSucceed()
+				{
+					DateTimeOffset? subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
+					TimeSpan expected = 2.Hours();
+
+					async Task Act()
+						=> await That(subject).HasOffset(expected);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsNull_ShouldFail()
+				{
+					DateTimeOffset? subject = null;
+					TimeSpan expected = 2.Hours();
+
+					async Task Act()
+						=> await That(subject).HasOffset(expected);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             has offset equal to 2:00:00,
+						             but it was <null>
+						             """);
+				}
+			}
+
 			public sealed class EqualToTests
 			{
 				[Fact]
