@@ -26,6 +26,12 @@
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 	</PropertyGroup>
 
+	<!-- A local build only warns about a public API that is not declared yet, so a change can be iterated on before its
+	     entry is recorded. The Release build in the pipeline still fails on it. -->
+	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+		<WarningsNotAsErrors>$(WarningsNotAsErrors);RS0016</WarningsNotAsErrors>
+	</PropertyGroup>
+
 	<PropertyGroup>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
