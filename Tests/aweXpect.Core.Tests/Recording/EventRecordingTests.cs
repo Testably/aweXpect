@@ -36,6 +36,22 @@ public sealed class EventRecordingTests
 	}
 
 	[Fact]
+	public async Task WhenNoEventWasFound_ShouldThrowNotSupportedException()
+	{
+		WithoutEvents sut = new();
+		IEventRecording<WithoutEvents> recording = sut.Record().Events();
+		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+
+		void Act()
+			=> result.GetEventCount("CustomEvent");
+
+		await That(Act).Throws<NotSupportedException>()
+			.WithMessage(
+				"Event CustomEvent was not recorded on sut, because no event was found. When publishing with trimming or Native AOT enabled, ensure that the type is rooted, so that its events are preserved.")
+			.Because("a recording that found no event at all is the symptom of a trimmed type, so the message must not read like a bug");
+	}
+
+	[Fact]
 	public async Task WhenNoFilterIsApplied_ShouldCountAllRecordings()
 	{
 		CustomEventClass subject = new();
@@ -92,14 +108,14 @@ public sealed class EventRecordingTests
 		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
 		subject.NotifyCustomEvent(3);
 
-		await That(result.GetEventCount(nameof(RegisteredClass.CustomEvent), p => p[0] is 2)).IsEqualTo(1)
-			.Because("the registered handler boxes the value-type argument itself");
+		await That(result.GetEventCount(nameof(RegisteredClass.CustomEvent), p => p[0] is 20)).IsEqualTo(1)
+			.Because("the registered factory produced the recorded arguments, which reflection could not have done");
 		await That(result.GetEventCount(nameof(RegisteredClass.CustomEvent))).IsEqualTo(2)
 			.Because("stopping the recording removes the registered handler");
 		await That(result.ToString(nameof(RegisteredClass.CustomEvent))).IsEqualTo("""
 			[
-			  CustomEvent(1),
-			  CustomEvent(2)
+			  CustomEvent(10),
+			  CustomEvent(20)
 			]
 			""");
 	}
@@ -118,6 +134,21 @@ public sealed class EventRecordingTests
 		await That(Act).Throws<NotSupportedException>()
 			.WithMessage("Event OtherEvent was not recorded on sut, only [\"CustomEvent\"]")
 			.Because("a registered type is served from the registry alone, so nothing could have been removed");
+	}
+
+	[Fact]
+	public async Task WhenStopPredicateThrows_ShouldStillStopListening()
+	{
+		CustomEventClass subject = new();
+		IEventRecording<CustomEventClass> recording = subject.Record().Events();
+
+		async Task Act()
+			=> await recording.StopWhen(_ => throw new InvalidOperationException("boom"), TimeSpan.FromSeconds(1));
+
+		await That(Act).Throws<InvalidOperationException>().WithMessage("boom");
+		subject.NotifyCustomEvent(1);
+		await That(subject.HasSubscribers()).IsFalse()
+			.Because("a predicate that throws must not leave the handler attached to the subject");
 	}
 
 	[Fact]
@@ -149,7 +180,7 @@ public sealed class EventRecordingTests
 
 	private static void RegisterCustomEvent()
 		=> TypeMetadataRegistry.RegisterEvent<RegisteredClass>(nameof(RegisteredClass.CustomEvent),
-			record => new RegisteredClass.CustomEventDelegate(arg1 => record([arg1,])),
+			record => new RegisteredClass.CustomEventDelegate(arg1 => record([arg1 * 10,])),
 			(subject, handler) => subject.CustomEvent += (RegisteredClass.CustomEventDelegate)handler,
 			(subject, handler) => subject.CustomEvent -= (RegisteredClass.CustomEventDelegate)handler);
 
@@ -158,6 +189,8 @@ public sealed class EventRecordingTests
 		public delegate void CustomEventDelegate(int arg1);
 
 		public event CustomEventDelegate? CustomEvent;
+
+		public bool HasSubscribers() => CustomEvent is not null;
 
 		public void NotifyCustomEvent(int arg1)
 			=> CustomEvent?.Invoke(arg1);
@@ -174,6 +207,8 @@ public sealed class EventRecordingTests
 		public void NotifyCustomEvent(int arg1)
 			=> CustomEvent?.Invoke(arg1);
 	}
+
+	private sealed class WithoutEvents;
 
 	private sealed class RegisteredClass
 	{

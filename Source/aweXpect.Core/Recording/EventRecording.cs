@@ -56,7 +56,7 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 					.LogTrace();
 			}
 
-			@event.Attach(recorder, new WeakReference(subject));
+			@event.Attach(recorder, subject);
 		}
 	}
 
@@ -82,50 +82,57 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 
 	private static List<RecordableEvent> Reflect(Type type)
 		=> type.GetEvents()
-			.Select(x => new RecordableEvent(x.Name, (recorder, subject) => recorder.Attach(subject, x)))
+			.Select(x => new RecordableEvent(x.Name,
+				(recorder, subject) => recorder.Attach(new WeakReference(subject), x)))
 			.ToList();
 
-	private sealed class RecordableEvent(string name, Action<EventRecorder, WeakReference> attach)
+	private sealed class RecordableEvent(string name, Action<EventRecorder, object> attach)
 	{
 		public string Name { get; } = name;
 
-		public void Attach(EventRecorder recorder, WeakReference subject) => attach(recorder, subject);
+		public void Attach(EventRecorder recorder, object subject) => attach(recorder, subject);
 	}
 
 #if NET8_0_OR_GREATER
 	public async Task<IEventRecordingResult> StopWhen(Func<IEventRecordingResult, bool> areFound, TimeSpan timeout)
 	{
-		if (timeout > TimeSpan.Zero && !areFound(this))
+		try
 		{
-			Channel<bool> channel = Channel.CreateUnbounded<bool>();
-			using CancellationTokenSource cts = new(timeout);
-			CancellationToken token = cts.Token;
-			foreach (EventRecorder recorder in _recorders.Values)
+			if (timeout > TimeSpan.Zero && !areFound(this))
 			{
-				recorder.Register(channel.Writer);
-			}
-
-			try
-			{
-#pragma warning disable S3267 // https://rules.sonarsource.com/csharp/RSPEC-3267
-				await foreach (bool _ in channel.Reader.ReadAllAsync(token))
+				Channel<bool> channel = Channel.CreateUnbounded<bool>();
+				using CancellationTokenSource cts = new(timeout);
+				CancellationToken token = cts.Token;
+				foreach (EventRecorder recorder in _recorders.Values)
 				{
-					if (areFound(this))
-					{
-						break;
-					}
+					recorder.Register(channel.Writer);
 				}
+
+				try
+				{
+#pragma warning disable S3267 // https://rules.sonarsource.com/csharp/RSPEC-3267
+					await foreach (bool _ in channel.Reader.ReadAllAsync(token))
+					{
+						if (areFound(this))
+						{
+							break;
+						}
+					}
 #pragma warning restore S3267
-			}
-			catch (OperationCanceledException)
-			{
-				// Ignore cancellation
+				}
+				catch (OperationCanceledException)
+				{
+					// Ignore cancellation
+				}
 			}
 		}
-
-		foreach (EventRecorder recorder in _recorders.Values)
+		finally
 		{
-			recorder.Dispose();
+			// A predicate that throws must not leave the handlers attached to the subject.
+			foreach (EventRecorder recorder in _recorders.Values)
+			{
+				recorder.Dispose();
+			}
 		}
 
 		return this;
@@ -135,36 +142,42 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 	{
 		DateTime now = DateTime.Now;
 		DateTime endTime = now.Add(timeout);
-		if (timeout > TimeSpan.Zero && !areFound(this))
+		try
 		{
-			using (ManualResetEventSlim ms = new())
+			if (timeout > TimeSpan.Zero && !areFound(this))
 			{
-				foreach (EventRecorder recorder in _recorders.Values)
+				using (ManualResetEventSlim ms = new())
 				{
-					recorder.Register(ms);
-				}
-
-				while (true)
-				{
-					now = DateTime.Now;
-					if (now >= endTime)
+					foreach (EventRecorder recorder in _recorders.Values)
 					{
-						break;
+						recorder.Register(ms);
 					}
 
-					ms.Reset();
-					ms.Wait(endTime - now);
-					if (areFound(this))
+					while (true)
 					{
-						break;
+						now = DateTime.Now;
+						if (now >= endTime)
+						{
+							break;
+						}
+
+						ms.Reset();
+						ms.Wait(endTime - now);
+						if (areFound(this))
+						{
+							break;
+						}
 					}
 				}
 			}
 		}
-
-		foreach (EventRecorder recorder in _recorders.Values)
+		finally
 		{
-			recorder.Dispose();
+			// A predicate that throws must not leave the handlers attached to the subject.
+			foreach (EventRecorder recorder in _recorders.Values)
+			{
+				recorder.Dispose();
+			}
 		}
 
 		return Task.FromResult<IEventRecordingResult>(this);
@@ -183,6 +196,10 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 	public string ToString(string eventName)
 		=> GetRecorder(eventName).ToString();
 
+	/// <inheritdoc />
+	public override string ToString()
+		=> _subjectExpression;
+
 	/// <remarks>
 	///     A recording of all events silently records nothing when reflection finds none, which under trimming means
 	///     that they were removed, so the expectation that asks for the event has to fail loudly instead.
@@ -191,15 +208,14 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 	{
 		if (!_recorders.TryGetValue(eventName, out EventRecorder? recorder))
 		{
+			string recorded = _recorders.Count == 0
+				? "because no event was found"
+				: $"only {Formatter.Format(_recorders.Keys)}";
 			throw new NotSupportedException(
-					$"Event {eventName} was not recorded on {_subjectExpression}, only {Formatter.Format(_recorders.Keys)}{(_isRegistered ? "" : TrimmingHint)}")
+					$"Event {eventName} was not recorded on {_subjectExpression}, {recorded}{(_isRegistered ? "" : TrimmingHint)}")
 				.LogTrace();
 		}
 
 		return recorder;
 	}
-
-	/// <inheritdoc />
-	public override string ToString()
-		=> _subjectExpression;
 }

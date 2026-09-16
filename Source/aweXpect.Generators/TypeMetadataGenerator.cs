@@ -74,11 +74,30 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		}
 
 		IMethodSymbol constructed = method.GetConstructedReducedFrom() ?? method;
+		MetadataWalker walker = new(context.SemanticModel.Compilation, cancellationToken);
+		bool hasMarkedParameter = SeedArguments(context, invocation, walker, method, constructed, cancellationToken);
+		SeedTypeArguments(walker, constructed);
+
+		if (hasMarkedParameter && GetReceiverType(method, constructed) is INamedTypeSymbol { IsGenericType: true, } receiver)
+		{
+			foreach (ITypeSymbol typeArgument in receiver.TypeArguments)
+			{
+				walker.Seed(typeArgument);
+			}
+		}
+
+		return walker.Registrations;
+	}
+
+	/// <summary>
+	///     Seeds the walk from every marked parameter and returns whether one carries the member marker.
+	/// </summary>
+	private static bool SeedArguments(GeneratorSyntaxContext context, InvocationExpressionSyntax invocation,
+		MetadataWalker walker, IMethodSymbol method, IMethodSymbol constructed, CancellationToken cancellationToken)
+	{
 		IMethodSymbol definition = constructed.OriginalDefinition;
 		int reductionOffset = method.ReducedFrom is null ? 0 : 1;
-		MetadataWalker walker = new(context.SemanticModel.Compilation, cancellationToken);
 		bool hasMarkedParameter = false;
-
 		for (int i = 0; i < definition.Parameters.Length; i++)
 		{
 			bool requiresMembers = IsMarked(definition.Parameters[i], MarkerAttribute);
@@ -106,6 +125,12 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			}
 		}
 
+		return hasMarkedParameter;
+	}
+
+	private static void SeedTypeArguments(MetadataWalker walker, IMethodSymbol constructed)
+	{
+		IMethodSymbol definition = constructed.OriginalDefinition;
 		for (int i = 0; i < definition.TypeParameters.Length; i++)
 		{
 			if (IsMarked(definition.TypeParameters[i], MarkerAttribute))
@@ -118,16 +143,6 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				walker.SeedEvents(constructed.TypeArguments[i]);
 			}
 		}
-
-		if (hasMarkedParameter && GetReceiverType(method, constructed) is INamedTypeSymbol { IsGenericType: true, } receiver)
-		{
-			foreach (ITypeSymbol typeArgument in receiver.TypeArguments)
-			{
-				walker.Seed(typeArgument);
-			}
-		}
-
-		return walker.Registrations;
 	}
 
 	/// <remarks>
@@ -547,13 +562,9 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 					}
 				}
 
-				foreach (IEventSymbol @event in DeclaredMembers(current).OfType<IEventSymbol>())
-				{
-					if (Hides(@event, current, type))
-					{
-						names.Add(@event.Name);
-					}
-				}
+				names.UnionWith(DeclaredMembers(current).OfType<IEventSymbol>()
+					.Where(@event => Hides(@event, current, type))
+					.Select(@event => @event.Name));
 			}
 
 			return events;
@@ -628,35 +639,34 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			     current is not null && current.SpecialType != SpecialType.System_Object;
 			     current = current.BaseType)
 			{
-				foreach (ISymbol symbol in current.GetMembers())
-				{
-					Member? member = symbol switch
-					{
-						IFieldSymbol field when IsComparedField(field) && fieldNames.Add(field.Name)
-							=> new Member(field, field.Name, field.Type, true),
-						IPropertySymbol { IsStatic: false, IsIndexer: false, } property
-							when !propertySignatures.Contains(Signature(property)) && IsComparedProperty(property) &&
-							     propertyNames.Add(property.Name)
-							=> new Member(property, property.Name, property.Type, false),
-						_ => null,
-					};
-					if (member is not null)
-					{
-						members.Add(member.Value);
-					}
-				}
-
-				foreach (IPropertySymbol property in DeclaredMembers(current).OfType<IPropertySymbol>())
-				{
-					if (property is { IsStatic: false, IsIndexer: false, } && Hides(property, current, type))
-					{
-						propertySignatures.Add(Signature(property));
-					}
-				}
+				members.AddRange(current.GetMembers()
+					.Select(symbol => ToMember(symbol, fieldNames, propertyNames, propertySignatures))
+					.OfType<Member>());
+				propertySignatures.UnionWith(DeclaredMembers(current).OfType<IPropertySymbol>()
+					.Where(property => property is { IsStatic: false, IsIndexer: false, } &&
+					                   Hides(property, current, type))
+					.Select(Signature));
 			}
 
 			return members;
 		}
+
+		/// <remarks>
+		///     The name sets record what was collected so far, so a member of the same name on a base type is
+		///     dropped, and the signatures record what hides a base property, whether collected or not.
+		/// </remarks>
+		private static Member? ToMember(ISymbol symbol, HashSet<string> fieldNames, HashSet<string> propertyNames,
+			HashSet<string> propertySignatures)
+			=> symbol switch
+			{
+				IFieldSymbol field when IsComparedField(field) && fieldNames.Add(field.Name)
+					=> new Member(field, field.Name, field.Type, true),
+				IPropertySymbol { IsStatic: false, IsIndexer: false, } property
+					when !propertySignatures.Contains(Signature(property)) && IsComparedProperty(property) &&
+					     propertyNames.Add(property.Name)
+					=> new Member(property, property.Name, property.Type, false),
+				_ => null,
+			};
 
 		/// <remarks>
 		///     The runtime drops a base member that a derived declaration hides, unless the hiding declaration is
@@ -723,17 +733,20 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 
 		private static string FullMetadataName(INamedTypeSymbol type)
 		{
-			string name = type.MetadataName;
+			StringBuilder name = new(type.MetadataName);
 			for (INamedTypeSymbol? containing = type.ContainingType;
 			     containing is not null;
 			     containing = containing.ContainingType)
 			{
-				name = containing.MetadataName + "+" + name;
+				name.Insert(0, '+').Insert(0, containing.MetadataName);
 			}
 
-			return type.ContainingNamespace is { IsGlobalNamespace: false, } ns
-				? ns.ToDisplayString() + "." + name
-				: name;
+			if (type.ContainingNamespace is { IsGlobalNamespace: false, } ns)
+			{
+				name.Insert(0, '.').Insert(0, ns.ToDisplayString());
+			}
+
+			return name.ToString();
 		}
 
 		/// <remarks>
