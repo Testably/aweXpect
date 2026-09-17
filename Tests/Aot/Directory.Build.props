@@ -16,6 +16,16 @@
 		<RootNamespace>aweXpect.Aot</RootNamespace>
 	</PropertyGroup>
 
+	<!--
+	    A warning from the trimmer or the AOT compiler means that a reflective fallback escaped its guard, so it fails
+	    the publish, and the site is named instead of being rolled up per assembly.
+	-->
+	<PropertyGroup>
+		<ILLinkTreatWarningsAsErrors>true</ILLinkTreatWarningsAsErrors>
+		<IlcTreatWarningsAsErrors>true</IlcTreatWarningsAsErrors>
+		<TrimmerSingleWarn>false</TrimmerSingleWarn>
+	</PropertyGroup>
+
 	<PropertyGroup>
 		<LangVersion>latest</LangVersion>
 		<ImplicitUsings>disable</ImplicitUsings>
