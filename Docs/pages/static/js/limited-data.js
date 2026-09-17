@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "5fdcb1f59ebb651c58adbf7b37ccc83c09ab6e0f",
-        "author": "dependabot[bot]",
-        "date": "Mon Sep 14 09:06:43 2026 \u002B0000",
-        "message": "chore: Bump TUnit and TUnit.Assertions (#1088)"
-      },
-      {
         "sha": "6d14d7ab536c43591fbb0b88bdd31d801ad6f166",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 12:00:34 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 22:23:21 2026 \u002B0200",
         "message": "test: add smoke tests that run expectations published with Native AOT (#1155)"
+      },
+      {
+        "sha": "bfe87b26aec42f58dddef28ca89357497259aebc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 17 10:48:16 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.0.0-pre.7 (#1157)"
       }
     ],
     "labels": [
-      "5fdcb1f5",
       "6d14d7ab",
       "fd00414e",
       "dfdf055d",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "a9df7c2a",
       "486e1c09",
       "0a262eb0",
-      "a76d38bc"
+      "a76d38bc",
+      "bfe87b26"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          253.45660810470582,
           263.6970933505467,
           183.11750654073862,
           241.6897472313472,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           253.7201486315046,
           244.59249210357666,
           270.85448837280273,
-          273.18455450875416
+          273.18455450875416,
+          251.942622756958
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          238.20291840235393,
           241.76030870846338,
           190.08391800948553,
           249.49964272181194,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           249.05672403176627,
           248.96122046879358,
           260.3876066889082,
-          261.3479655129569
+          261.3479655129569,
+          237.87964490743784
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "5fdcb1f59ebb651c58adbf7b37ccc83c09ab6e0f",
-        "author": "dependabot[bot]",
-        "date": "Mon Sep 14 09:06:43 2026 \u002B0000",
-        "message": "chore: Bump TUnit and TUnit.Assertions (#1088)"
-      },
-      {
         "sha": "6d14d7ab536c43591fbb0b88bdd31d801ad6f166",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 12:00:34 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 22:23:21 2026 \u002B0200",
         "message": "test: add smoke tests that run expectations published with Native AOT (#1155)"
+      },
+      {
+        "sha": "bfe87b26aec42f58dddef28ca89357497259aebc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 17 10:48:16 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.0.0-pre.7 (#1157)"
       }
     ],
     "labels": [
-      "5fdcb1f5",
       "6d14d7ab",
       "fd00414e",
       "dfdf055d",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "a9df7c2a",
       "486e1c09",
       "0a262eb0",
-      "a76d38bc"
+      "a76d38bc",
+      "bfe87b26"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          380885.13536783855,
           377538.96295572916,
           272909.063264974,
           310160.52689034597,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           302333.4135579427,
           312978.3467610677,
           325071.93896484375,
-          321078.1545061384
+          321078.1545061384,
+          303390.3163736979
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1029,7 +1029,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           542085,
-          542085,
           542084,
           542084,
           542085,
@@ -1055,6 +1054,7 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542084,
+          617976,
           617976,
           617976,
           617976,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2607126.966796875,
           2656590.2580915177,
           1761810.0951450893,
           1961056.0255301339,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2380478.3739583334,
           2400084.4453125,
           2623216.2726004464,
-          2525943.1462053573
+          2525943.1462053573,
+          2645086.19921875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841651,
           4841647,
           4841610,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841647,
           4841647,
           4841651,
-          4841647
+          4841647,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "5fdcb1f59ebb651c58adbf7b37ccc83c09ab6e0f",
-        "author": "dependabot[bot]",
-        "date": "Mon Sep 14 09:06:43 2026 \u002B0000",
-        "message": "chore: Bump TUnit and TUnit.Assertions (#1088)"
-      },
       {
         "sha": "6d14d7ab536c43591fbb0b88bdd31d801ad6f166",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 22:23:21 2026 \u002B0200",
         "message": "test: add smoke tests that run expectations published with Native AOT (#1155)"
+      },
+      {
+        "sha": "bfe87b26aec42f58dddef28ca89357497259aebc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 17 10:48:16 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.0.0-pre.7 (#1157)"
       }
     ],
     "labels": [
-      "5fdcb1f5",
       "6d14d7ab",
       "fd00414e",
       "dfdf055d",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "a9df7c2a",
       "486e1c09",
       "0a262eb0",
-      "a76d38bc"
+      "a76d38bc",
+      "bfe87b26"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          458.6794052441915,
           449.50483423868815,
           354.6007298787435,
           417.8039389610291,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           457.79335708618163,
           464.8653025627136,
           521.0086565653484,
-          501.76086069742837
+          501.76086069742837,
+          451.9543407758077
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1662,7 +1662,7 @@ window.BENCHMARK_DATA = {
           1360,
           1360,
           1360,
-          1360,
+          1368,
           1368,
           1368,
           1368,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          509.3773717880249,
           495.2988224665324,
           368.87855978012084,
           460.89590808323453,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           527.2408049901327,
           501.41817881266275,
           536.9860134760539,
-          537.8096458435059
+          537.8096458435059,
+          490.5272623697917
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "5fdcb1f59ebb651c58adbf7b37ccc83c09ab6e0f",
-        "author": "dependabot[bot]",
-        "date": "Mon Sep 14 09:06:43 2026 \u002B0000",
-        "message": "chore: Bump TUnit and TUnit.Assertions (#1088)"
-      },
-      {
         "sha": "6d14d7ab536c43591fbb0b88bdd31d801ad6f166",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 12:00:34 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 22:23:21 2026 \u002B0200",
         "message": "test: add smoke tests that run expectations published with Native AOT (#1155)"
+      },
+      {
+        "sha": "bfe87b26aec42f58dddef28ca89357497259aebc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 17 10:48:16 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.0.0-pre.7 (#1157)"
       }
     ],
     "labels": [
-      "5fdcb1f5",
       "6d14d7ab",
       "fd00414e",
       "dfdf055d",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "a9df7c2a",
       "486e1c09",
       "0a262eb0",
-      "a76d38bc"
+      "a76d38bc",
+      "bfe87b26"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          260.13586384909496,
           263.9802384058634,
           193.41651456696647,
           253.78392321268717,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           274.64652620951335,
           262.69628829956054,
           266.74531742504666,
-          268.9094391822815
+          268.9094391822815,
+          257.069694348744
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          247.2639165242513,
           242.94598509470623,
           189.79524131615958,
           266.45659490994046,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           243.27342240015665,
           240.46703370412192,
           255.77929112116496,
-          248.79020455678304
+          248.79020455678304,
+          229.52865512554462
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "5fdcb1f59ebb651c58adbf7b37ccc83c09ab6e0f",
-        "author": "dependabot[bot]",
-        "date": "Mon Sep 14 09:06:43 2026 \u002B0000",
-        "message": "chore: Bump TUnit and TUnit.Assertions (#1088)"
-      },
-      {
         "sha": "6d14d7ab536c43591fbb0b88bdd31d801ad6f166",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 12:00:34 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 22:23:21 2026 \u002B0200",
         "message": "test: add smoke tests that run expectations published with Native AOT (#1155)"
+      },
+      {
+        "sha": "bfe87b26aec42f58dddef28ca89357497259aebc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 17 10:48:16 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.0.0-pre.7 (#1157)"
       }
     ],
     "labels": [
-      "5fdcb1f5",
       "6d14d7ab",
       "fd00414e",
       "dfdf055d",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "a9df7c2a",
       "486e1c09",
       "0a262eb0",
-      "a76d38bc"
+      "a76d38bc",
+      "bfe87b26"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          445.21608165105187,
           456.6439706166585,
           347.501420434316,
           388.8420433998108,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           556.0491337458293,
           530.9222126801809,
           552.7171988805135,
-          527.2178064346314
+          527.2178064346314,
+          511.90796089172363
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2878,7 +2878,7 @@ window.BENCHMARK_DATA = {
           1128,
           1128,
           1128,
-          1128,
+          1256,
           1256,
           1256,
           1256,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1180.4894489875207,
           1200.081512069702,
           855.7843433788845,
           1076.598162206014,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1209.2223745981853,
           1181.579424540202,
           1353.2015585581462,
-          1209.7258975982666
+          1209.7258975982666,
+          1203.140624364217
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "5fdcb1f59ebb651c58adbf7b37ccc83c09ab6e0f",
-        "author": "dependabot[bot]",
-        "date": "Mon Sep 14 09:06:43 2026 \u002B0000",
-        "message": "chore: Bump TUnit and TUnit.Assertions (#1088)"
-      },
-      {
         "sha": "6d14d7ab536c43591fbb0b88bdd31d801ad6f166",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 12:00:34 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 22:23:21 2026 \u002B0200",
         "message": "test: add smoke tests that run expectations published with Native AOT (#1155)"
+      },
+      {
+        "sha": "bfe87b26aec42f58dddef28ca89357497259aebc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 17 10:48:16 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.0.0-pre.7 (#1157)"
       }
     ],
     "labels": [
-      "5fdcb1f5",
       "6d14d7ab",
       "fd00414e",
       "dfdf055d",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "a9df7c2a",
       "486e1c09",
       "0a262eb0",
-      "a76d38bc"
+      "a76d38bc",
+      "bfe87b26"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1901.679819869995,
           1896.2060609545026,
           1445.4109486171178,
           1263.9480908257622,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2004.4319291796003,
           1970.2472921098981,
           1948.6488013634314,
-          1934.9957221984864
+          1934.9957221984864,
+          1892.393015797933
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3486,7 +3486,7 @@ window.BENCHMARK_DATA = {
           2624,
           2624,
           2624,
-          2624,
+          2752,
           2752,
           2752,
           2752,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1308.885598863874,
           1361.9800455729167,
           1004.3867805480957,
           1267.9197845458984,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1440.2289797919136,
           1355.1610792795816,
           1354.7050312587194,
-          1395.7494214375813
+          1395.7494214375813,
+          1334.5563105265298
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "5fdcb1f59ebb651c58adbf7b37ccc83c09ab6e0f",
-        "author": "dependabot[bot]",
-        "date": "Mon Sep 14 09:06:43 2026 \u002B0000",
-        "message": "chore: Bump TUnit and TUnit.Assertions (#1088)"
-      },
-      {
         "sha": "6d14d7ab536c43591fbb0b88bdd31d801ad6f166",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 12:00:34 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 22:23:21 2026 \u002B0200",
         "message": "test: add smoke tests that run expectations published with Native AOT (#1155)"
+      },
+      {
+        "sha": "bfe87b26aec42f58dddef28ca89357497259aebc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 17 10:48:16 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.0.0-pre.7 (#1157)"
       }
     ],
     "labels": [
-      "5fdcb1f5",
       "6d14d7ab",
       "fd00414e",
       "dfdf055d",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "a9df7c2a",
       "486e1c09",
       "0a262eb0",
-      "a76d38bc"
+      "a76d38bc",
+      "bfe87b26"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2482.5264661153155,
           2531.095802307129,
           1894.7102771759032,
           1661.151132447379,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2653.76585987636,
           2591.235166696402,
           2564.683331044515,
-          2590.8276851360615
+          2590.8276851360615,
+          2503.3692482539586
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4094,7 +4094,7 @@ window.BENCHMARK_DATA = {
           2816,
           2816,
           2816,
-          2816,
+          2944,
           2944,
           2944,
           2944,
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27732.19226989746,
           26807.29797973633,
           14984.105593167818,
           15686.815439860025,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           20816.53991088867,
           20562.861098225912,
           27377.6610521589,
-          20174.856549944197
+          20174.856549944197,
+          26529.481919352213
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33471,
           33471,
           33465,
@@ -4239,6 +4238,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
