@@ -1,4 +1,5 @@
-﻿using aweXpect.Core.Metadata;
+﻿using System.Runtime.CompilerServices;
+using aweXpect.Core.Metadata;
 using aweXpect.Recording;
 
 namespace aweXpect.Core.Tests.Recording;
@@ -33,6 +34,32 @@ public sealed class EventRecordingTests
 			.WithMessage(
 				"Event OtherEvent was not recorded on sut, only [\"CustomEvent\"]. When publishing with trimming or Native AOT enabled, ensure that the type is rooted, so that its events are preserved.")
 			.Because("a recording of all events records nothing when the trimmer removed them, so the access has to fail loudly");
+	}
+
+	[Fact]
+	public async Task WhenHandlerReturnsAValue_ShouldThrowNotSupportedException()
+	{
+		ReturningHandlerClass sut = new();
+
+		void Act()
+			=> sut.Record().Events();
+
+		await That(Act).Throws<NotSupportedException>()
+			.WithMessage("The CustomEvent event cannot be recorded, because its handler returns int")
+			.Because("the recorder cannot supply a return value, so the reason has to be named instead of a binding error");
+	}
+
+	[Fact]
+	public async Task WhenHandlerTakesAParameterByReference_ShouldThrowNotSupportedException()
+	{
+		ByReferenceHandlerClass sut = new();
+
+		void Act()
+			=> sut.Record().Events();
+
+		await That(Act).Throws<NotSupportedException>()
+			.WithMessage("The CustomEvent event cannot be recorded, because its handler takes the parameter value by reference")
+			.Because("a by-reference parameter cannot be boxed into the recorded arguments");
 	}
 
 	[Fact]
@@ -137,18 +164,18 @@ public sealed class EventRecordingTests
 	}
 
 	[Fact]
-	public async Task WhenStopPredicateThrows_ShouldStillStopListening()
+	public async Task WhenStopIsCalled_ShouldRemoveAStaticHandler()
 	{
-		CustomEventClass subject = new();
-		IEventRecording<CustomEventClass> recording = subject.Record().Events();
+		IEventRecording<StaticEventClass> recording = RecordStaticEvent();
+		GC.Collect();
+		GC.WaitForPendingFinalizers();
 
-		async Task Act()
-			=> await recording.StopWhen(_ => throw new InvalidOperationException("boom"), TimeSpan.FromSeconds(1));
+		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+		StaticEventClass.NotifyStaticEvent();
 
-		await That(Act).Throws<InvalidOperationException>().WithMessage("boom");
-		subject.NotifyCustomEvent(1);
-		await That(subject.HasSubscribers()).IsFalse()
-			.Because("a predicate that throws must not leave the handler attached to the subject");
+		await That(StaticEventClass.HasSubscribers()).IsFalse()
+			.Because("a static handler does not need the subject to be removed, so a collected subject must not keep it attached");
+		await That(result.GetEventCount(nameof(StaticEventClass.StaticEvent))).IsEqualTo(0);
 	}
 
 	[Fact]
@@ -177,6 +204,25 @@ public sealed class EventRecordingTests
 
 		await That(() => recording.StopWhen(_ => false, TimeSpan.Zero)).DoesNotThrow();
 	}
+
+	[Fact]
+	public async Task WhenStopPredicateThrows_ShouldStillStopListening()
+	{
+		CustomEventClass subject = new();
+		IEventRecording<CustomEventClass> recording = subject.Record().Events();
+
+		async Task Act()
+			=> await recording.StopWhen(_ => throw new InvalidOperationException("boom"), TimeSpan.FromSeconds(1));
+
+		await That(Act).Throws<InvalidOperationException>().WithMessage("boom");
+		subject.NotifyCustomEvent(1);
+		await That(subject.HasSubscribers()).IsFalse()
+			.Because("a predicate that throws must not leave the handler attached to the subject");
+	}
+
+	[MethodImpl(MethodImplOptions.NoInlining)]
+	private static IEventRecording<StaticEventClass> RecordStaticEvent()
+		=> new StaticEventClass().Record().Events(nameof(StaticEventClass.StaticEvent));
 
 	private static void RegisterCustomEvent()
 		=> TypeMetadataRegistry.RegisterEvent<RegisteredClass>(nameof(RegisteredClass.CustomEvent),
@@ -209,6 +255,33 @@ public sealed class EventRecordingTests
 	}
 
 	private sealed class WithoutEvents;
+
+	private sealed class StaticEventClass
+	{
+		public static event EventHandler? StaticEvent;
+
+		public static bool HasSubscribers() => StaticEvent is not null;
+
+		public static void NotifyStaticEvent() => StaticEvent?.Invoke(null, EventArgs.Empty);
+	}
+
+	private sealed class ReturningHandlerClass
+	{
+		public delegate int CustomEventDelegate(int value);
+
+#pragma warning disable CS0067 // Event is never used
+		public event CustomEventDelegate? CustomEvent;
+#pragma warning restore CS0067 // Event is never used
+	}
+
+	private sealed class ByReferenceHandlerClass
+	{
+		public delegate void CustomEventDelegate(ref int value);
+
+#pragma warning disable CS0067 // Event is never used
+		public event CustomEventDelegate? CustomEvent;
+#pragma warning restore CS0067 // Event is never used
+	}
 
 	private sealed class RegisteredClass
 	{
