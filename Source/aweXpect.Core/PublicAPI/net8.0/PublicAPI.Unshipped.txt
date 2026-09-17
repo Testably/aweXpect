@@ -1,6 +1,3 @@
 #nullable enable
 aweXpect.Core.ReflectionFallback
-const aweXpect.Core.ReflectionFallback.SwitchName = "aweXpect.ReflectionFallback.IsSupported" -> string!
 static aweXpect.Core.ReflectionFallback.IsSupported.get -> bool
-static aweXpect.Core.ReflectionFallback.NotSupported(string! what, string! remedy) -> System.NotSupportedException!
-static aweXpect.Core.ReflectionFallback.NotSupported(System.Type! type, string! members) -> System.NotSupportedException!

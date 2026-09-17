@@ -384,5 +384,5 @@ public static IEventRecording<T> Watch<T>([RequiresEventMetadata] this T subject
 ```
 
 An extension that reflects over a subject itself should guard the reflection with `ReflectionFallback.IsSupported`
-and throw `ReflectionFallback.NotSupported(...)` otherwise, so that it fails the same way and honours the same runtime
-switch as the built-in expectations.
+and fail with a message that names the `aweXpect.ReflectionFallback.IsSupported` runtime switch otherwise, so that it
+behaves the same way as the built-in expectations.

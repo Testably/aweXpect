@@ -15,14 +15,14 @@ namespace aweXpect.Core;
 ///     and the <see cref="SwitchName" /> runtime switch forces it either way.
 ///     <para />
 ///     An extension that reflects over a subject should guard its reflection with <see cref="IsSupported" /> and
-///     throw <see cref="NotSupported(string, string)" /> otherwise, so that it fails the same way when the fallback is unavailable.
+///     fail with a message naming the switch otherwise.
 /// </remarks>
 public static class ReflectionFallback
 {
 	/// <summary>
 	///     The name of the runtime switch that forces the fallback on or off.
 	/// </summary>
-	public const string SwitchName = "aweXpect.ReflectionFallback.IsSupported";
+	internal const string SwitchName = "aweXpect.ReflectionFallback.IsSupported";
 
 	/// <summary>
 	///     Whether the fallback is available.
@@ -50,7 +50,7 @@ public static class ReflectionFallback
 	/// <summary>
 	///     The exception for <paramref name="what" /> the fallback cannot provide, naming the <paramref name="remedy" />.
 	/// </summary>
-	public static NotSupportedException NotSupported(string what, string remedy)
+	internal static NotSupportedException NotSupported(string what, string remedy)
 		=> new(
 			$"{what} cannot be found by reflection, which is switched off when publishing with trimming or Native AOT enabled. {remedy} Alternatively, set the runtime switch '{SwitchName}' to true to reflect anyway.");
 
@@ -61,7 +61,7 @@ public static class ReflectionFallback
 	///     A compiler-generated type, such as an anonymous one, cannot be named in an attribute, so the generator has
 	///     to see it at a marked call site instead.
 	/// </remarks>
-	public static NotSupportedException NotSupported(Type type, string members)
+	internal static NotSupportedException NotSupported(Type type, string members)
 		=> NotSupported($"The {members} of {Formatter.Format(type)}",
 			type.Name.Length > 0 && type.Name[0] == '<'
 				? "Let the source generator see the type at a marked call site."
