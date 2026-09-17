@@ -3948,6 +3948,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 22:23:21 2026 \u002B0200",
         "message": "test: add smoke tests that run expectations published with Native AOT (#1155)"
+      },
+      {
+        "sha": "bfe87b26aec42f58dddef28ca89357497259aebc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 17 10:48:16 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.0.0-pre.7 (#1157)"
       }
     ],
     "labels": [
@@ -4608,7 +4614,8 @@ window.BENCHMARK_DATA = {
       "a9df7c2a",
       "486e1c09",
       "0a262eb0",
-      "a76d38bc"
+      "a76d38bc",
+      "bfe87b26"
     ],
     "datasets": [
       {
@@ -5272,7 +5279,8 @@ window.BENCHMARK_DATA = {
           253.7201486315046,
           244.59249210357666,
           270.85448837280273,
-          273.18455450875416
+          273.18455450875416,
+          251.942622756958
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5745,6 +5753,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6613,7 +6622,8 @@ window.BENCHMARK_DATA = {
           249.05672403176627,
           248.96122046879358,
           260.3876066889082,
-          261.3479655129569
+          261.3479655129569,
+          237.87964490743784
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6806,6 +6816,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10782,6 +10793,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 22:23:21 2026 \u002B0200",
         "message": "test: add smoke tests that run expectations published with Native AOT (#1155)"
+      },
+      {
+        "sha": "bfe87b26aec42f58dddef28ca89357497259aebc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 17 10:48:16 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.0.0-pre.7 (#1157)"
       }
     ],
     "labels": [
@@ -11365,7 +11382,8 @@ window.BENCHMARK_DATA = {
       "a9df7c2a",
       "486e1c09",
       "0a262eb0",
-      "a76d38bc"
+      "a76d38bc",
+      "bfe87b26"
     ],
     "datasets": [
       {
@@ -11952,7 +11970,8 @@ window.BENCHMARK_DATA = {
           302333.4135579427,
           312978.3467610677,
           325071.93896484375,
-          321078.1545061384
+          321078.1545061384,
+          303390.3163736979
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12522,6 +12541,7 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542084,
+          617976,
           617976,
           617976,
           617976,
@@ -13139,7 +13159,8 @@ window.BENCHMARK_DATA = {
           2380478.3739583334,
           2400084.4453125,
           2623216.2726004464,
-          2525943.1462053573
+          2525943.1462053573,
+          2645086.19921875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13731,7 +13752,8 @@ window.BENCHMARK_DATA = {
           4841647,
           4841647,
           4841651,
-          4841647
+          4841647,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17693,6 +17715,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 22:23:21 2026 \u002B0200",
         "message": "test: add smoke tests that run expectations published with Native AOT (#1155)"
+      },
+      {
+        "sha": "bfe87b26aec42f58dddef28ca89357497259aebc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 17 10:48:16 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.0.0-pre.7 (#1157)"
       }
     ],
     "labels": [
@@ -18353,7 +18381,8 @@ window.BENCHMARK_DATA = {
       "a9df7c2a",
       "486e1c09",
       "0a262eb0",
-      "a76d38bc"
+      "a76d38bc",
+      "bfe87b26"
     ],
     "datasets": [
       {
@@ -19017,7 +19046,8 @@ window.BENCHMARK_DATA = {
           457.79335708618163,
           464.8653025627136,
           521.0086565653484,
-          501.76086069742837
+          501.76086069742837,
+          451.9543407758077
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19664,6 +19694,7 @@ window.BENCHMARK_DATA = {
           1360,
           1360,
           1360,
+          1368,
           1368,
           1368,
           1368,
@@ -20358,7 +20389,8 @@ window.BENCHMARK_DATA = {
           527.2408049901327,
           501.41817881266275,
           536.9860134760539,
-          537.8096458435059
+          537.8096458435059,
+          490.5272623697917
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20551,6 +20583,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -24989,6 +25022,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 22:23:21 2026 \u002B0200",
         "message": "test: add smoke tests that run expectations published with Native AOT (#1155)"
+      },
+      {
+        "sha": "bfe87b26aec42f58dddef28ca89357497259aebc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 17 10:48:16 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.0.0-pre.7 (#1157)"
       }
     ],
     "labels": [
@@ -25649,7 +25688,8 @@ window.BENCHMARK_DATA = {
       "a9df7c2a",
       "486e1c09",
       "0a262eb0",
-      "a76d38bc"
+      "a76d38bc",
+      "bfe87b26"
     ],
     "datasets": [
       {
@@ -26313,7 +26353,8 @@ window.BENCHMARK_DATA = {
           274.64652620951335,
           262.69628829956054,
           266.74531742504666,
-          268.9094391822815
+          268.9094391822815,
+          257.069694348744
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -26827,6 +26868,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -27654,7 +27696,8 @@ window.BENCHMARK_DATA = {
           243.27342240015665,
           240.46703370412192,
           255.77929112116496,
-          248.79020455678304
+          248.79020455678304,
+          229.52865512554462
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -27847,6 +27890,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -32285,6 +32329,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 22:23:21 2026 \u002B0200",
         "message": "test: add smoke tests that run expectations published with Native AOT (#1155)"
+      },
+      {
+        "sha": "bfe87b26aec42f58dddef28ca89357497259aebc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 17 10:48:16 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.0.0-pre.7 (#1157)"
       }
     ],
     "labels": [
@@ -32945,7 +32995,8 @@ window.BENCHMARK_DATA = {
       "a9df7c2a",
       "486e1c09",
       "0a262eb0",
-      "a76d38bc"
+      "a76d38bc",
+      "bfe87b26"
     ],
     "datasets": [
       {
@@ -33609,7 +33660,8 @@ window.BENCHMARK_DATA = {
           556.0491337458293,
           530.9222126801809,
           552.7171988805135,
-          527.2178064346314
+          527.2178064346314,
+          511.90796089172363
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34256,6 +34308,7 @@ window.BENCHMARK_DATA = {
           1128,
           1128,
           1128,
+          1256,
           1256,
           1256,
           1256,
@@ -34950,7 +35003,8 @@ window.BENCHMARK_DATA = {
           1209.2223745981853,
           1181.579424540202,
           1353.2015585581462,
-          1209.7258975982666
+          1209.7258975982666,
+          1203.140624364217
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35379,6 +35433,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -39581,6 +39636,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 22:23:21 2026 \u002B0200",
         "message": "test: add smoke tests that run expectations published with Native AOT (#1155)"
+      },
+      {
+        "sha": "bfe87b26aec42f58dddef28ca89357497259aebc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 17 10:48:16 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.0.0-pre.7 (#1157)"
       }
     ],
     "labels": [
@@ -40241,7 +40302,8 @@ window.BENCHMARK_DATA = {
       "a9df7c2a",
       "486e1c09",
       "0a262eb0",
-      "a76d38bc"
+      "a76d38bc",
+      "bfe87b26"
     ],
     "datasets": [
       {
@@ -40905,7 +40967,8 @@ window.BENCHMARK_DATA = {
           2004.4319291796003,
           1970.2472921098981,
           1948.6488013634314,
-          1934.9957221984864
+          1934.9957221984864,
+          1892.393015797933
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -41552,6 +41615,7 @@ window.BENCHMARK_DATA = {
           2624,
           2624,
           2624,
+          2752,
           2752,
           2752,
           2752,
@@ -42246,7 +42310,8 @@ window.BENCHMARK_DATA = {
           1440.2289797919136,
           1355.1610792795816,
           1354.7050312587194,
-          1395.7494214375813
+          1395.7494214375813,
+          1334.5563105265298
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -42439,6 +42504,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -46877,6 +46943,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 16 22:23:21 2026 \u002B0200",
         "message": "test: add smoke tests that run expectations published with Native AOT (#1155)"
+      },
+      {
+        "sha": "bfe87b26aec42f58dddef28ca89357497259aebc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 17 10:48:16 2026 \u002B0200",
+        "message": "chore: bump aweXpect.Core to v3.0.0-pre.7 (#1157)"
       }
     ],
     "labels": [
@@ -47537,7 +47609,8 @@ window.BENCHMARK_DATA = {
       "a9df7c2a",
       "486e1c09",
       "0a262eb0",
-      "a76d38bc"
+      "a76d38bc",
+      "bfe87b26"
     ],
     "datasets": [
       {
@@ -48201,7 +48274,8 @@ window.BENCHMARK_DATA = {
           2653.76585987636,
           2591.235166696402,
           2564.683331044515,
-          2590.8276851360615
+          2590.8276851360615,
+          2503.3692482539586
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -48848,6 +48922,7 @@ window.BENCHMARK_DATA = {
           2816,
           2816,
           2816,
+          2944,
           2944,
           2944,
           2944,
@@ -49542,7 +49617,8 @@ window.BENCHMARK_DATA = {
           20816.53991088867,
           20562.861098225912,
           27377.6610521589,
-          20174.856549944197
+          20174.856549944197,
+          26529.481919352213
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -50208,6 +50284,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
