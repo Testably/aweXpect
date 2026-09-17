@@ -85,7 +85,7 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 		=> ReflectionFallback.IsSupported
 			? type.GetEvents()
 				.Select(x => new RecordableEvent(x.Name,
-					(recorder, subject) => recorder.Attach(new WeakReference(subject), x)))
+					(recorder, subject) => recorder.Attach(subject, x)))
 				.ToList()
 			: throw ReflectionFallback.NotSupported(type, "events").LogTrace();
 

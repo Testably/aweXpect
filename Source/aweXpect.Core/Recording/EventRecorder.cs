@@ -52,7 +52,7 @@ internal sealed class EventRecorder(string eventName) : IDisposable
 		_onDispose = () => @event.RemoveHandler(subject, handler);
 	}
 
-	public void Attach(WeakReference subject, EventInfo eventInfo)
+	public void Attach(object subject, EventInfo eventInfo)
 	{
 		// Unreachable, because the events are only ever found by the guarded reflection, but the analyzer does not
 		// follow guards across methods.
@@ -62,6 +62,21 @@ internal sealed class EventRecorder(string eventName) : IDisposable
 		}
 
 		MethodInfo handlerType = eventInfo.EventHandlerType!.GetMethod("Invoke")!;
+		if (handlerType.ReturnType != typeof(void))
+		{
+			throw new NotSupportedException(
+					$"The {eventName} event cannot be recorded, because its handler returns {Formatter.Format(handlerType.ReturnType)}")
+				.LogTrace();
+		}
+
+		ParameterInfo? byReference = handlerType.GetParameters().FirstOrDefault(x => x.ParameterType.IsByRef);
+		if (byReference is not null)
+		{
+			throw new NotSupportedException(
+					$"The {eventName} event cannot be recorded, because its handler takes the parameter {byReference.Name} by reference")
+				.LogTrace();
+		}
+
 		Delegate? handler = null;
 		foreach (MethodInfo method in typeof(EventRecorder).GetMethods().Where(x => x.Name == nameof(RecordEvent)))
 		{
@@ -87,15 +102,11 @@ internal sealed class EventRecorder(string eventName) : IDisposable
 				.LogTrace();
 		}
 
-		eventInfo.AddEventHandler(subject.Target, handler);
+		eventInfo.AddEventHandler(subject, handler);
 
-		_onDispose = () =>
-		{
-			if (subject.Target is not null)
-			{
-				eventInfo.RemoveEventHandler(subject.Target, handler);
-			}
-		};
+		// The subject is held on purpose: its event already holds the handler and thereby this recorder, so nothing
+		// leaks, whereas a static event would otherwise keep the handler after the subject was collected.
+		_onDispose = () => eventInfo.RemoveEventHandler(subject, handler);
 	}
 
 	public void RecordEvent()
