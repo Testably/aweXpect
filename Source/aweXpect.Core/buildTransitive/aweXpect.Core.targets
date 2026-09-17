@@ -1,0 +1,25 @@
+<Project>
+
+	<!--
+	    A type without a registration is reflected over, which is unreliable when publishing with trimming or Native
+	    AOT enabled, so the fallback is switched off there and such a type fails with a message naming the fix. Set
+	    `AweXpectReflectionFallback` to `true` to keep reflecting anyway, or to `false` to reject it under the JIT.
+	-->
+	<PropertyGroup>
+		<_AweXpectReflectionFallback>$(AweXpectReflectionFallback)</_AweXpectReflectionFallback>
+		<_AweXpectReflectionFallback Condition="'$(_AweXpectReflectionFallback)' == '' and ('$(PublishTrimmed)' == 'true' or '$(PublishAot)' == 'true')">false</_AweXpectReflectionFallback>
+	</PropertyGroup>
+
+	<!--
+	    The option is replaced rather than added, so that a second import through a project reference next to the
+	    package adds it once. A consumer's own option for the switch is replaced as well; the property is the way to
+	    set it.
+	-->
+	<ItemGroup Condition="'$(_AweXpectReflectionFallback)' != ''">
+		<RuntimeHostConfigurationOption Remove="aweXpect.ReflectionFallback.IsSupported"/>
+		<RuntimeHostConfigurationOption Include="aweXpect.ReflectionFallback.IsSupported"
+										Value="$(_AweXpectReflectionFallback)"
+										Trim="true"/>
+	</ItemGroup>
+
+</Project>

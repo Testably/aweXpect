@@ -66,6 +66,12 @@ public static partial class ThatObject
 					return type.IsAssignableFrom(actualGenericType);
 				}
 
+				if (!ReflectionFallback.IsSupported)
+				{
+					throw new NotSupportedException(
+						$"The interfaces of {Formatter.Format(actualType)} cannot be found by reflection, which is switched off when publishing with trimming or Native AOT enabled. Check against a constructed interface instead of its generic definition. Alternatively, set the runtime switch 'aweXpect.ReflectionFallback.IsSupported' to true to reflect anyway.");
+				}
+
 				Type[] interfaces = actualGenericType.GetInterfaces();
 				return interfaces
 					.Any(childInterface =>

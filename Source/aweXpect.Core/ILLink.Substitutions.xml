@@ -1,0 +1,9 @@
+<!-- Lets a trimmer that predates FeatureSwitchDefinitionAttribute fold the fallback guard as well. -->
+<linker>
+	<assembly fullname="aweXpect.Core">
+		<type fullname="aweXpect.Core.ReflectionFallback">
+			<method signature="System.Boolean get_IsSupported()" body="stub" value="false"
+					feature="aweXpect.ReflectionFallback.IsSupported" featurevalue="false"/>
+		</type>
+	</assembly>
+</linker>

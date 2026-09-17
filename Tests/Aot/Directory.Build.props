@@ -35,4 +35,7 @@
 		<ProjectReference Include="$(MSBuildThisFileDirectory)../../Source/aweXpect/aweXpect.csproj"/>
 	</ItemGroup>
 
+	<!-- A project reference does not import the package targets that a consumer gets. -->
+	<Import Project="$(MSBuildThisFileDirectory)../../Source/aweXpect.Core/buildTransitive/aweXpect.Core.targets"/>
+
 </Project>

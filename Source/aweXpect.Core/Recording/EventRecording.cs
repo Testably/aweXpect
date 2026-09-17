@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using aweXpect.Core;
 using aweXpect.Core.Helpers;
 using aweXpect.Core.Metadata;
 #if NET8_0_OR_GREATER
@@ -81,10 +82,12 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 	}
 
 	private static List<RecordableEvent> Reflect(Type type)
-		=> type.GetEvents()
-			.Select(x => new RecordableEvent(x.Name,
-				(recorder, subject) => recorder.Attach(new WeakReference(subject), x)))
-			.ToList();
+		=> ReflectionFallback.IsSupported
+			? type.GetEvents()
+				.Select(x => new RecordableEvent(x.Name,
+					(recorder, subject) => recorder.Attach(new WeakReference(subject), x)))
+				.ToList()
+			: throw ReflectionFallback.NotSupported(type, "events").LogTrace();
 
 	private sealed class RecordableEvent(string name, Action<EventRecorder, object> attach)
 	{

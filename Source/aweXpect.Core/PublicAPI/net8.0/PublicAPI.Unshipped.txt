@@ -1,1 +1,3 @@
 #nullable enable
+aweXpect.Core.ReflectionFallback
+static aweXpect.Core.ReflectionFallback.IsSupported.get -> bool

@@ -3,6 +3,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using aweXpect.Core;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Equivalency;
 
@@ -83,15 +85,19 @@ internal static class IncludeMembersExtensions
 
 	private static FieldInfo[] GetAllFields(Type type, IncludeMembers includeMembers)
 		=> AllFields.GetOrAdd((type, GetBindingFlags(includeMembers)), static key
-			=> MostDerived(key.Item1.GetFields(key.Item2)));
+			=> ReflectionFallback.IsSupported
+				? MostDerived(key.Item1.GetFields(key.Item2))
+				: throw ReflectionFallback.NotSupported(key.Item1, "fields").LogTrace());
 
 	/// <remarks>
 	///     An indexer is a property whose getter takes arguments, so its value cannot be read for the comparison.
 	/// </remarks>
 	private static PropertyInfo[] GetAllProperties(Type type, IncludeMembers includeMembers)
 		=> AllProperties.GetOrAdd((type, GetBindingFlags(includeMembers)), static key
-			=> MostDerived(key.Item1.GetProperties(key.Item2)
-				.Where(property => property.CanRead && property.GetIndexParameters().Length == 0)));
+			=> ReflectionFallback.IsSupported
+				? MostDerived(key.Item1.GetProperties(key.Item2)
+					.Where(property => property.CanRead && property.GetIndexParameters().Length == 0))
+				: throw ReflectionFallback.NotSupported(key.Item1, "properties").LogTrace());
 
 	/// <remarks>
 	///     A member is included when it has one of the requested visibilities. Requiring all of them at once would

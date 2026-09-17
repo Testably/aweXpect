@@ -11,11 +11,11 @@ internal static class Program
 	/// <remarks>
 	///     The same program runs from the compiled output and published with Native AOT, so a check states what has
 	///     to hold in both: the result the compiled output produces, or a failure whose message names the fix. The
-	///     AOT feature switches apply to both runs, so only the missing assembly file tells the published one apart.
+	///     AOT feature switches apply to both runs, so only the missing dependency file tells the published one apart.
 	/// </remarks>
 	public static async Task<int> Main()
 	{
-		bool isPublished = typeof(Program).Assembly.Location.Length == 0;
+		bool isPublished = AppContext.GetData("APP_CONTEXT_DEPS_FILES") is null;
 		Console.WriteLine($"Framework: {Framework.Name}, published: {isPublished}");
 		int failures = 0;
 		foreach (Check check in Checks.All)
