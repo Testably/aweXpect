@@ -3960,6 +3960,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 17 13:15:14 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.4 and fail the smoke tests on trim warnings (#1158)"
+      },
+      {
+        "sha": "9e372b47e6bc3ae82f7aa11e23319e8d05cc1d8c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 17 13:36:41 2026 \u002B0200",
+        "message": "fix: let the reflective recorder release static handlers and name unbindable handlers (#1159)"
       }
     ],
     "labels": [
@@ -4622,7 +4628,8 @@ window.BENCHMARK_DATA = {
       "0a262eb0",
       "a76d38bc",
       "bfe87b26",
-      "256937ca"
+      "256937ca",
+      "9e372b47"
     ],
     "datasets": [
       {
@@ -5288,7 +5295,8 @@ window.BENCHMARK_DATA = {
           270.85448837280273,
           273.18455450875416,
           251.942622756958,
-          240.5099015235901
+          240.5099015235901,
+          258.94757595062254
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5761,6 +5769,7 @@ window.BENCHMARK_DATA = {
           712,
           712,
           712,
+          696,
           696,
           696,
           696,
@@ -6633,7 +6642,8 @@ window.BENCHMARK_DATA = {
           260.3876066889082,
           261.3479655129569,
           237.87964490743784,
-          258.75712037086487
+          258.75712037086487,
+          284.532284450531
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6826,6 +6836,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10816,6 +10827,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 17 13:15:14 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.4 and fail the smoke tests on trim warnings (#1158)"
+      },
+      {
+        "sha": "9e372b47e6bc3ae82f7aa11e23319e8d05cc1d8c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 17 13:36:41 2026 \u002B0200",
+        "message": "fix: let the reflective recorder release static handlers and name unbindable handlers (#1159)"
       }
     ],
     "labels": [
@@ -11401,7 +11418,8 @@ window.BENCHMARK_DATA = {
       "0a262eb0",
       "a76d38bc",
       "bfe87b26",
-      "256937ca"
+      "256937ca",
+      "9e372b47"
     ],
     "datasets": [
       {
@@ -11990,7 +12008,8 @@ window.BENCHMARK_DATA = {
           325071.93896484375,
           321078.1545061384,
           303390.3163736979,
-          297280.58162434894
+          297280.58162434894,
+          318864.2989676339
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12560,6 +12579,7 @@ window.BENCHMARK_DATA = {
           542084,
           542085,
           542084,
+          617976,
           617976,
           617976,
           617976,
@@ -13181,7 +13201,8 @@ window.BENCHMARK_DATA = {
           2623216.2726004464,
           2525943.1462053573,
           2645086.19921875,
-          2266648.5515625
+          2266648.5515625,
+          2462532.89375
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13774,6 +13795,7 @@ window.BENCHMARK_DATA = {
           4841647,
           4841651,
           4841647,
+          4841651,
           4841651,
           4841651
         ],
@@ -17749,6 +17771,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 17 13:15:14 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.4 and fail the smoke tests on trim warnings (#1158)"
+      },
+      {
+        "sha": "9e372b47e6bc3ae82f7aa11e23319e8d05cc1d8c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 17 13:36:41 2026 \u002B0200",
+        "message": "fix: let the reflective recorder release static handlers and name unbindable handlers (#1159)"
       }
     ],
     "labels": [
@@ -18411,7 +18439,8 @@ window.BENCHMARK_DATA = {
       "0a262eb0",
       "a76d38bc",
       "bfe87b26",
-      "256937ca"
+      "256937ca",
+      "9e372b47"
     ],
     "datasets": [
       {
@@ -19077,7 +19106,8 @@ window.BENCHMARK_DATA = {
           521.0086565653484,
           501.76086069742837,
           451.9543407758077,
-          448.54104007993425
+          448.54104007993425,
+          448.95081618626915
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19724,6 +19754,7 @@ window.BENCHMARK_DATA = {
           1360,
           1360,
           1360,
+          1368,
           1368,
           1368,
           1368,
@@ -20422,7 +20453,8 @@ window.BENCHMARK_DATA = {
           536.9860134760539,
           537.8096458435059,
           490.5272623697917,
-          498.14485263824463
+          498.14485263824463,
+          495.09659112294514
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20615,6 +20647,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -25067,6 +25100,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 17 13:15:14 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.4 and fail the smoke tests on trim warnings (#1158)"
+      },
+      {
+        "sha": "9e372b47e6bc3ae82f7aa11e23319e8d05cc1d8c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 17 13:36:41 2026 \u002B0200",
+        "message": "fix: let the reflective recorder release static handlers and name unbindable handlers (#1159)"
       }
     ],
     "labels": [
@@ -25729,7 +25768,8 @@ window.BENCHMARK_DATA = {
       "0a262eb0",
       "a76d38bc",
       "bfe87b26",
-      "256937ca"
+      "256937ca",
+      "9e372b47"
     ],
     "datasets": [
       {
@@ -26395,7 +26435,8 @@ window.BENCHMARK_DATA = {
           266.74531742504666,
           268.9094391822815,
           257.069694348744,
-          259.34549614361356
+          259.34549614361356,
+          265.6497843106588
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -26909,6 +26950,7 @@ window.BENCHMARK_DATA = {
           808,
           808,
           808,
+          864,
           864,
           864,
           864,
@@ -27740,7 +27782,8 @@ window.BENCHMARK_DATA = {
           255.77929112116496,
           248.79020455678304,
           229.52865512554462,
-          253.9226801554362
+          253.9226801554362,
+          243.09207551819938
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -27933,6 +27976,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -32385,6 +32429,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 17 13:15:14 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.4 and fail the smoke tests on trim warnings (#1158)"
+      },
+      {
+        "sha": "9e372b47e6bc3ae82f7aa11e23319e8d05cc1d8c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 17 13:36:41 2026 \u002B0200",
+        "message": "fix: let the reflective recorder release static handlers and name unbindable handlers (#1159)"
       }
     ],
     "labels": [
@@ -33047,7 +33097,8 @@ window.BENCHMARK_DATA = {
       "0a262eb0",
       "a76d38bc",
       "bfe87b26",
-      "256937ca"
+      "256937ca",
+      "9e372b47"
     ],
     "datasets": [
       {
@@ -33713,7 +33764,8 @@ window.BENCHMARK_DATA = {
           552.7171988805135,
           527.2178064346314,
           511.90796089172363,
-          510.2206741968791
+          510.2206741968791,
+          542.7885704040527
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34360,6 +34412,7 @@ window.BENCHMARK_DATA = {
           1128,
           1128,
           1128,
+          1256,
           1256,
           1256,
           1256,
@@ -35058,7 +35111,8 @@ window.BENCHMARK_DATA = {
           1353.2015585581462,
           1209.7258975982666,
           1203.140624364217,
-          1159.5472478230795
+          1159.5472478230795,
+          1204.099277496338
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35487,6 +35541,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -39703,6 +39758,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 17 13:15:14 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.4 and fail the smoke tests on trim warnings (#1158)"
+      },
+      {
+        "sha": "9e372b47e6bc3ae82f7aa11e23319e8d05cc1d8c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 17 13:36:41 2026 \u002B0200",
+        "message": "fix: let the reflective recorder release static handlers and name unbindable handlers (#1159)"
       }
     ],
     "labels": [
@@ -40365,7 +40426,8 @@ window.BENCHMARK_DATA = {
       "0a262eb0",
       "a76d38bc",
       "bfe87b26",
-      "256937ca"
+      "256937ca",
+      "9e372b47"
     ],
     "datasets": [
       {
@@ -41031,7 +41093,8 @@ window.BENCHMARK_DATA = {
           1948.6488013634314,
           1934.9957221984864,
           1892.393015797933,
-          1863.4957852363586
+          1863.4957852363586,
+          1970.669078009469
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -41678,6 +41741,7 @@ window.BENCHMARK_DATA = {
           2624,
           2624,
           2624,
+          2752,
           2752,
           2752,
           2752,
@@ -42376,7 +42440,8 @@ window.BENCHMARK_DATA = {
           1354.7050312587194,
           1395.7494214375813,
           1334.5563105265298,
-          1335.7106372833252
+          1335.7106372833252,
+          1379.4092335019793
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -42569,6 +42634,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -47021,6 +47087,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 17 13:15:14 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.4 and fail the smoke tests on trim warnings (#1158)"
+      },
+      {
+        "sha": "9e372b47e6bc3ae82f7aa11e23319e8d05cc1d8c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Sep 17 13:36:41 2026 \u002B0200",
+        "message": "fix: let the reflective recorder release static handlers and name unbindable handlers (#1159)"
       }
     ],
     "labels": [
@@ -47683,7 +47755,8 @@ window.BENCHMARK_DATA = {
       "0a262eb0",
       "a76d38bc",
       "bfe87b26",
-      "256937ca"
+      "256937ca",
+      "9e372b47"
     ],
     "datasets": [
       {
@@ -48349,7 +48422,8 @@ window.BENCHMARK_DATA = {
           2564.683331044515,
           2590.8276851360615,
           2503.3692482539586,
-          2466.2980736952563
+          2466.2980736952563,
+          2576.014488728841
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -48996,6 +49070,7 @@ window.BENCHMARK_DATA = {
           2816,
           2816,
           2816,
+          2944,
           2944,
           2944,
           2944,
@@ -49694,7 +49769,8 @@ window.BENCHMARK_DATA = {
           27377.6610521589,
           20174.856549944197,
           26529.481919352213,
-          19562.031495157877
+          19562.031495157877,
+          20710.378143310547
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -50360,6 +50436,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
