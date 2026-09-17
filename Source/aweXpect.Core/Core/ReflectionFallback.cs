@@ -34,10 +34,17 @@ public static class ReflectionFallback
 #endif
 	public static bool IsSupported { get; } = AppContext.TryGetSwitch(SwitchName, out bool isSupported)
 		? isSupported
+		: IsSupportedByDefault;
+
+	/// <remarks>
+	///     Without the switch, the fallback follows dynamic code support, which Native AOT lacks; a target that
+	///     cannot be published that way always has it.
+	/// </remarks>
+	private static bool IsSupportedByDefault
 #if NET8_0_OR_GREATER
-		: RuntimeFeature.IsDynamicCodeSupported;
+		=> RuntimeFeature.IsDynamicCodeSupported;
 #else
-		: true;
+		=> true;
 #endif
 
 	/// <summary>
@@ -56,7 +63,7 @@ public static class ReflectionFallback
 	/// </remarks>
 	public static NotSupportedException NotSupported(Type type, string members)
 		=> NotSupported($"The {members} of {Formatter.Format(type)}",
-			type.Name.StartsWith("<", StringComparison.Ordinal)
+			type.Name.Length > 0 && type.Name[0] == '<'
 				? "Let the source generator see the type at a marked call site."
 				: $"Register the type, for example with [assembly: GenerateMetadata(typeof({Formatter.Format(type)}))].");
 }

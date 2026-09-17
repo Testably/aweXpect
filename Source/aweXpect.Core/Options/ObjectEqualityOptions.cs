@@ -86,8 +86,8 @@ internal static class ObjectEqualityOptions
 			return actualType != expectedType
 			       && IsNumericType(actual)
 			       && IsNumericType(expected)
-			       && IsEqualWhenConverted(actual, expected, expectedType)
-			       && IsEqualWhenConverted(expected, actual, actualType);
+			       && IsEqualWhenConverted(actual, expected)
+			       && IsEqualWhenConverted(expected, actual);
 
 			bool IsNumericType(object obj)
 			{
@@ -119,7 +119,7 @@ internal static class ObjectEqualityOptions
 		///     publishing with Native AOT enabled. The caller converts in both directions, so a saturated value never
 		///     counts as equal on its own.
 		/// </remarks>
-		private static bool IsEqualWhenConverted(object source, object target, Type targetType)
+		private static bool IsEqualWhenConverted(object source, object target)
 		{
 			try
 			{
@@ -146,7 +146,7 @@ internal static class ObjectEqualityOptions
 				};
 #else
 				object? convertedNumber =
-					Convert.ChangeType(source, targetType, CultureInfo.InvariantCulture);
+					Convert.ChangeType(source, target.GetType(), CultureInfo.InvariantCulture);
 				return target.Equals(convertedNumber);
 #endif
 			}
