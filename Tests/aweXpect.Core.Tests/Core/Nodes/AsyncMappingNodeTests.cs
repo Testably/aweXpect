@@ -2,9 +2,11 @@
 using System.Threading;
 using aweXpect.Chronology;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Helpers;
 using aweXpect.Core.Nodes;
 using aweXpect.Core.Sources;
 using aweXpect.Core.Tests.TestHelpers;
+using aweXpect.Results;
 
 namespace aweXpect.Core.Tests.Core.Nodes;
 
@@ -148,5 +150,67 @@ public class AsyncMappingNodeTests
 		await That(negated.Outcome).IsEqualTo(Outcome.Failure);
 		await That(sb.ToString()).IsEqualTo("yeah!");
 		await That(negated.GetResultText()).IsEqualTo("it was <null>");
+	}
+
+	[Fact]
+	public async Task WhenNegated_WithValidation_AndFailingMemberExpectation_ShouldSucceed()
+	{
+		string subject = "foo";
+
+		async Task Act()
+			=> await That(subject).DoesNotComplyWith(it => HasLength(it, length => length.IsEqualTo(4)));
+
+		await That(Act).DoesNotThrow();
+	}
+
+	[Fact]
+	public async Task WhenNegated_WithValidation_ShouldNegateValidation()
+	{
+		string subject = "foo";
+
+		async Task Act()
+			=> await That(subject).DoesNotComplyWith(it => HasLength(it, length => length.IsEqualTo(3)));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             does not have a length which is equal to 3,
+			             but it had
+			             """);
+	}
+
+	private static AndOrResult<string?, IThat<string?>> HasLength(
+		IThat<string?> subject,
+		Action<IThat<int>> expectations)
+		=> new(subject.Get().ExpectationBuilder
+				.ForAsyncMember(
+					MemberAccessor<string?, Task<int>>.FromFunc(s => Task.FromResult(s!.Length), " which "),
+					replaceIt: false)
+				.Validate((it, grammars) => new HasLengthConstraint(it, grammars))
+				.AddExpectations(e => expectations(new ThatSubject<int>(e))),
+			subject);
+
+	private sealed class HasLengthConstraint(string it, ExpectationGrammars grammars)
+		: ConstraintResult.WithNotNullValue<string?>(it, grammars),
+			IValueConstraint<string?>
+	{
+		public ConstraintResult IsMetBy(string? actual)
+		{
+			Actual = actual;
+			Outcome = actual is null ? Outcome.Failure : Outcome.Success;
+			return this;
+		}
+
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("has a length");
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" was <null>");
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("does not have a length");
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" had");
 	}
 }

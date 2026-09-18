@@ -195,6 +195,7 @@ internal class AsyncMappingNode<TSource, TTarget> : ExpectationNode
 				};
 			}
 
+			_left.Negate();
 			return this;
 		}
 	}
