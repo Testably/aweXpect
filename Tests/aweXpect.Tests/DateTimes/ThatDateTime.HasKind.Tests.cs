@@ -99,5 +99,35 @@ public sealed partial class ThatDateTime
 					              """);
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenKindDiffers_ShouldSucceed()
+			{
+				DateTime subject = new(2010, 11, 12, 0, 0, 0, DateTimeKind.Utc);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasKind(DateTimeKind.Local));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenKindMatches_ShouldFail()
+			{
+				DateTime subject = new(2010, 11, 12, 0, 0, 0, DateTimeKind.Utc);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasKind(DateTimeKind.Utc));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have kind equal to Utc,
+					             but it had kind Utc
+					             """);
+			}
+		}
 	}
 }

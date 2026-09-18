@@ -353,5 +353,35 @@ public sealed partial class ThatDateTimeOffset
 					              """);
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenOffsetDiffers_ShouldSucceed()
+			{
+				DateTimeOffset subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasOffset(1.Hours()));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenOffsetMatches_ShouldFail()
+			{
+				DateTimeOffset subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasOffset(2.Hours()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have offset equal to 2:00:00,
+					             but it had offset 2:00:00
+					             """);
+			}
+		}
 	}
 }
