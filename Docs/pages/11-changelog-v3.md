@@ -169,6 +169,11 @@ need an update.
   renders `is not equal to collection …` instead of `does not match collection …`.
 - `DoesNotHaveItem(1).AtIndex(0)` names the item it found: `but it had item 1 at index 0` instead of `but it did`.
 - A `Never()` quantifier appends its `within` window when one was given.
+- Every equivalency member difference renders as a `Property X differed:` block with `Found:` and `Expected:` lines.
+  A `null` on one side previously read `Property Value was <null> instead of "Foo"`, and an `It.Is<T>()` member read
+  `Property IntValue was 1` or, on a type mismatch, `Property StringValue was string`. An `It.Is<T>()` member now
+  shows its expectation as `Expected` and, on a type mismatch, the found type in parentheses:
+  `Found: "abc" (string)`.
 
 ## Timeouts on negative event expectations
 

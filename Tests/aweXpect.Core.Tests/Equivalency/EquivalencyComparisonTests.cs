@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text;
 using aweXpect.Core.Metadata;
 using aweXpect.Equivalency;
@@ -6,6 +7,30 @@ namespace aweXpect.Core.Tests.Equivalency;
 
 public sealed class EquivalencyComparisonTests
 {
+	[Fact]
+	public async Task WhenActualMemberIsNull_ShouldReportFoundAndExpected()
+	{
+		var actual = new
+		{
+			Value = (string?)null,
+		};
+		var expected = new
+		{
+			Value = (string?)"Foo",
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                       Found: <null>
+		                                                    Expected: "Foo"
+		                                                """).IgnoringNewlineStyle();
+	}
+
 	[Fact]
 	public async Task WhenActualMemberIsMoreVisibleThanRequested_ShouldStillCompareIt()
 	{
@@ -33,7 +58,12 @@ public sealed class EquivalencyComparisonTests
 		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
 
 		await That(result).IsFalse();
-		await That(failureBuilder.ToString()).Contains("Property Value was <null> instead of 1")
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                       Found: <null>
+		                                                    Expected: 1
+		                                                """).IgnoringNewlineStyle()
 			.Because("a registration cannot call a non-public getter, so reflection must not read one either");
 	}
 
@@ -56,6 +86,36 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenCollectionElementDiffers_ShouldReportTheElementIndex()
+	{
+		var actual = new
+		{
+			Values = new[]
+			{
+				1, 2, 3,
+			},
+		};
+		var expected = new
+		{
+			Values = new[]
+			{
+				1, 5, 3,
+			},
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element Values[1] differed:
+		                                                       Found: 2
+		                                                    Expected: 5
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
 	public async Task WhenComparedByValue_ShouldReportTheDifferenceInsteadOfThrowing()
 	{
 		ValueLikeWithoutMembers actual = new(1);
@@ -71,6 +131,56 @@ public sealed class EquivalencyComparisonTests
 		await That(result).IsFalse();
 		await That(failureBuilder.ToString()).Contains("It differed:")
 			.Because("comparing by value is the documented remedy for types without comparable members");
+	}
+
+	[Fact]
+	public async Task WhenDictionaryValueDiffers_ShouldReportTheKey()
+	{
+		Dictionary<string, int> actual = new()
+		{
+			["A"] = 1,
+			["B"] = 2,
+		};
+		Dictionary<string, int> expected = new()
+		{
+			["A"] = 1,
+			["B"] = 3,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [B] differed:
+		                                                       Found: 2
+		                                                    Expected: 3
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenExpectedMemberIsNull_ShouldReportFoundAndExpected()
+	{
+		var actual = new
+		{
+			Value = (int?)1,
+		};
+		var expected = new
+		{
+			Value = (int?)null,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                       Found: 1
+		                                                    Expected: <null>
+		                                                """).IgnoringNewlineStyle();
 	}
 
 	[Theory]
@@ -104,6 +214,104 @@ public sealed class EquivalencyComparisonTests
 			.Because("reflection wraps the exception, while a registered accessor lets it through, so both paths have to agree");
 	}
 
+	[Fact]
+	public async Task WhenItIsMemberDoesNotMatch_ShouldReportTheExpectationAsExpected()
+	{
+		var actual = new
+		{
+			Value = 1,
+		};
+		var expected = new
+		{
+			Value = It.Is<int>().That.IsGreaterThan(2),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                       Found: 1
+		                                                    Expected: is int that is greater than 2
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenItIsMemberExpectationSpansMultipleLines_ShouldIndentTheContinuationLines()
+	{
+		var actual = new
+		{
+			Value = new WithPublicValue(1),
+		};
+		var expected = new
+		{
+			Value = It.Is<WithPublicValue>().That.IsEquivalentTo(new WithPublicValue(2)),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                       Found: EquivalencyComparisonTests.WithPublicValue { Value = 1 }
+		                                                    Expected: is EquivalencyComparisonTests.WithPublicValue that is equivalent to EquivalencyComparisonTests.WithPublicValue {
+		                                                        Value = 2
+		                                                      }
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenItIsMemberHasADifferentType_ShouldIncludeTheFoundType()
+	{
+		var actual = new
+		{
+			Value = "abc",
+		};
+		var expected = new
+		{
+			Value = It.Is<DateTime>(),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                       Found: "abc" (string)
+		                                                    Expected: is DateTime
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenItIsMemberIsNull_ShouldNotIncludeAType()
+	{
+		var actual = new
+		{
+			Value = (string?)null,
+		};
+		var expected = new
+		{
+			Value = It.Is<string>().That.IsEmpty(),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                       Found: <null>
+		                                                    Expected: is string that is empty
+		                                                """).IgnoringNewlineStyle();
+	}
+
 	[Theory]
 	[InlineData("foo", "foo", true)]
 	[InlineData("foo", "bar", false)]
@@ -118,6 +326,66 @@ public sealed class EquivalencyComparisonTests
 
 		await That(result).IsEqualTo(expectedResult)
 			.Because("reflection returns both declarations, but only the one on the most derived type is visible");
+	}
+
+	[Fact]
+	public async Task WhenMultipleMembersDiffer_ShouldSeparateThemWithAnd()
+	{
+		var actual = new
+		{
+			First = 1,
+			Second = (string?)null,
+		};
+		var expected = new
+		{
+			First = 2,
+			Second = (string?)"Foo",
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property First differed:
+		                                                       Found: 1
+		                                                    Expected: 2
+		                                                and
+		                                                  Property Second differed:
+		                                                       Found: <null>
+		                                                    Expected: "Foo"
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenNestedMemberDiffers_ShouldReportTheFullMemberPath()
+	{
+		var actual = new
+		{
+			Inner = new
+			{
+				Value = (string?)null,
+			},
+		};
+		var expected = new
+		{
+			Inner = new
+			{
+				Value = (string?)"Foo",
+			},
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Inner.Value differed:
+		                                                       Found: <null>
+		                                                    Expected: "Foo"
+		                                                """).IgnoringNewlineStyle();
 	}
 
 	[Fact]
@@ -147,6 +415,54 @@ public sealed class EquivalencyComparisonTests
 			.WithMessage(
 				"It has no members that could be compared on EquivalencyComparisonTests.ClassWithOnlyPrivateState, which would make the equivalency comparison succeed without verifying anything.*")
 			.AsWildcard();
+	}
+
+	[Fact]
+	public async Task WhenStringMemberIsLong_ShouldTruncateIt()
+	{
+		var actual = new
+		{
+			Value = new string('a', 120),
+		};
+		var expected = new
+		{
+			Value = new string('b', 120),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo($"""
+
+		                                                   Property Value differed:
+		                                                        Found: "{new string('a', 100)}…"
+		                                                     Expected: "{new string('b', 100)}…"
+		                                                 """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenStringMemberIsMultiLine_ShouldRenderItOnASingleLine()
+	{
+		var actual = new
+		{
+			Value = "foo\nbar",
+		};
+		var expected = new
+		{
+			Value = "foo\nbaz",
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                       Found: "foo\nbar"
+		                                                    Expected: "foo\nbaz"
+		                                                """).IgnoringNewlineStyle();
 	}
 
 	[Fact]

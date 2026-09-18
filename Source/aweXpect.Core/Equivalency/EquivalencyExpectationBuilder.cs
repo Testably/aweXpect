@@ -67,6 +67,8 @@ internal class EquivalencyExpectationBuilder<T> : EquivalencyExpectationBuilder
 		return _result;
 	}
 
+	internal override bool IsOfExpectedType(object value) => value is T;
+
 	private sealed class NotMatchingTypesResult : ConstraintResult
 	{
 		private readonly ConstraintResult? _inner;
@@ -122,6 +124,8 @@ public abstract class EquivalencyExpectationBuilder : ExpectationBuilder
 		TValue value,
 		IEvaluationContext context,
 		CancellationToken cancellationToken);
+
+	internal abstract bool IsOfExpectedType(object value);
 
 	/// <inheritdoc cref="ExpectationBuilder.IsMet(Node, EvaluationContext, ITimeSystem, TimeSpan?, CancellationToken)" />
 	internal override Task<ConstraintResult> IsMet(Node rootNode,
