@@ -435,6 +435,38 @@ public sealed partial class ThatAsyncEnumerable
 					             [1, 2, 3]
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				IAsyncEnumerable<int>? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasSingle());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have a single item,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_WithPredicate_ShouldFail()
+			{
+				IAsyncEnumerable<int>? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasSingle().Matching(_ => true));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have a single item matching _ => true,
+					             but it was <null>
+					             """);
+			}
 		}
 
 		public sealed class WhichTests
