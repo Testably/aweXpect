@@ -19,12 +19,12 @@ public class EventTriggerResult<TSubject>(
 	RepeatedCheckOptions options)
 	: CountResult<IEventRecording<TSubject>, IThat<IEventRecording<TSubject>>, EventTriggerResult<TSubject>>(
 			expectationBuilder, returnValue, quantifier),
-		EventTriggerResult<TSubject>.IExtensions,
+		EventTriggerResult<TSubject>.ICustomParameterFilter,
 		IOptionsProvider<RepeatedCheckOptions>
 	where TSubject : notnull
 {
-	/// <inheritdoc cref="IExtensions.WithParameter{TParameter}(string, int?, Func{TParameter, bool})" />
-	EventTriggerResult<TSubject> IExtensions.WithParameter<TParameter>(
+	/// <inheritdoc cref="ICustomParameterFilter.WithParameter{TParameter}(string, int?, Func{TParameter, bool})" />
+	EventTriggerResult<TSubject> ICustomParameterFilter.WithParameter<TParameter>(
 		string expression,
 		int? position,
 		Func<TParameter, bool> predicate)
@@ -125,7 +125,7 @@ public class EventTriggerResult<TSubject>(
 	/// <summary>
 	///     Gives access to additional methods for extensions.
 	/// </summary>
-	public interface IExtensions
+	public interface ICustomParameterFilter
 	{
 		/// <summary>
 		///     Adds a parameter predicate on the parameter at the given zero-based <paramref name="position" /> of type

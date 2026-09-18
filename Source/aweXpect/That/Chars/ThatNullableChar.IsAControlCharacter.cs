@@ -6,7 +6,7 @@ using aweXpect.SourceGenerators;
 
 namespace aweXpect;
 
-[CreateExpectationOnNullable<char>("Is{Not}Control", "char.IsControl({value}.Value)",
+[CreateExpectationOnNullable<char>("Is{Not}AControlCharacter", "char.IsControl({value}.Value)",
 	ExpectationText = "is {not} a control character",
 	Remarks = """
 	          This means, that the specified Unicode character is categorized as a control character.<br />

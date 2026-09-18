@@ -88,6 +88,17 @@ public sealed partial class ThatEnum
 				}
 
 				[Fact]
+				public async Task WhenUnexpectedIsANamedArgument_ShouldSucceed()
+				{
+					MyColors? subject = MyColors.Yellow | MyColors.Red;
+
+					async Task Act()
+						=> await That(subject).DoesNotHaveFlag(unexpected: MyColors.Blue);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
 				public async Task WhenUnexpectedIsNull_ShouldSucceed()
 				{
 					MyColors? subject = MyColors.Yellow;

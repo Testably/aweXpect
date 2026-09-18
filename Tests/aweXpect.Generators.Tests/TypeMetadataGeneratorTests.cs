@@ -585,6 +585,20 @@ public sealed partial class TypeMetadataGeneratorTests
 	}
 
 	[Fact]
+	public async Task WhenMemberIsAnExpectation_ShouldNotRegisterItsMembers()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			Models,
+			Call("Expect.That(new Models.Other()).IsEquivalentTo(new { Count = aweXpect.Equivalency.It.Is<int>() });"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).DoesNotContain("\"ExpectationBuilder\"")
+			.Because("an expectation is evaluated against the actual value instead of being compared member by member");
+	}
+
+	[Fact]
 	public async Task WhenMemberIsHidden_ShouldRegisterTheMostDerivedDeclaration()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(

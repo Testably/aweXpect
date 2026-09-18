@@ -13,16 +13,19 @@ namespace aweXpect.Core;
 /// <summary>
 ///     Wraps the <see cref="ExpectationBuilder" /> for a bool.
 /// </summary>
-[DebuggerDisplay("ThatBool: {ExpectationBuilder}")]
-public class ThatBool : ExpectationResult<bool>, IExpectThat<bool>
+/// <remarks>
+///     Awaiting it without any expectation verifies that the subject is <see langword="true" />.
+/// </remarks>
+[DebuggerDisplay("ThatBoolSubject: {ExpectationBuilder}")]
+public class ThatBoolSubject : ExpectationResult<bool>, IExpectThat<bool>
 {
-	/// <inheritdoc cref="ThatBool" />
-	public ThatBool(ExpectationBuilder expectationBuilder) : this(
+	/// <inheritdoc cref="ThatBoolSubject" />
+	public ThatBoolSubject(ExpectationBuilder expectationBuilder) : this(
 		new WithDefaultExpectationBuilderProxy(expectationBuilder))
 	{
 	}
 
-	private ThatBool(WithDefaultExpectationBuilderProxy expectationBuilder) : base(expectationBuilder)
+	private ThatBoolSubject(WithDefaultExpectationBuilderProxy expectationBuilder) : base(expectationBuilder)
 	{
 		ExpectationBuilder = expectationBuilder;
 	}

@@ -31,12 +31,12 @@ public abstract partial class ThatDelegate
 				new DoesNotThrowConstraint(it, grammars, typeof(TException))));
 
 		/// <summary>
-		///     Verifies that the delegate does not throw an exception of type <paramref name="exceptionType" />.
+		///     Verifies that the delegate does not throw an exception of type <paramref name="type" />.
 		/// </summary>
 		[GuaranteesNotNull]
-		public DelegateWithValueResult<T> DoesNotThrow(Type exceptionType)
+		public DelegateWithValueResult<T> DoesNotThrow(Type type)
 			=> new(ExpectationBuilder.AddConstraint((it, grammars) =>
-				new DoesNotThrowConstraint(it, grammars, exceptionType)));
+				new DoesNotThrowConstraint(it, grammars, type)));
 
 		private sealed class DoesNotThrowConstraint(
 			string it,

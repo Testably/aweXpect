@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Helpers;
 using aweXpect.Options;
@@ -7,34 +8,34 @@ using aweXpect.Options;
 namespace aweXpect.Results;
 
 /// <summary>
-///     The result for verifying that a collection contains a single item.
+///     The result for verifying that an asynchronous collection contains a single item.
 /// </summary>
 /// <remarks>
 ///     <seealso cref="ExpectationResult{TType,TSelf}" />
 /// </remarks>
-public class SingleItemResult<TCollection, TItem>
-	: ExpectationResult<TItem, SingleItemResult<TCollection, TItem>>,
+public class AsyncSingleItemResult<TCollection, TItem>
+	: ExpectationResult<TItem, AsyncSingleItemResult<TCollection, TItem>>,
 		IOptionsProvider<PredicateOptions<TItem>>
 {
+	private readonly Func<TCollection, Task<TItem?>> _asyncMemberAccessor;
 	private readonly ExpectationBuilder _expectationBuilder;
-	private readonly Func<TCollection, TItem?> _memberAccessor;
 	private readonly PredicateOptions<TItem> _options;
 
-	internal SingleItemResult(ExpectationBuilder expectationBuilder,
+	internal AsyncSingleItemResult(ExpectationBuilder expectationBuilder,
 		PredicateOptions<TItem> options,
-		Func<TCollection, TItem?> memberAccessor)
+		Func<TCollection, Task<TItem?>> asyncMemberAccessor)
 		: base(expectationBuilder)
 	{
 		_expectationBuilder = expectationBuilder;
 		_options = options;
-		_memberAccessor = memberAccessor;
+		_asyncMemberAccessor = asyncMemberAccessor;
 	}
 
 	/// <summary>
-	///     Further expectations on the single <typeparamref name="TItem" />
+	///     Further expectations on the single item.
 	/// </summary>
 	public IThat<TItem> Which
-		=> new ThatSubject<TItem>(_expectationBuilder.ForWhich(_memberAccessor, " which "));
+		=> new ThatSubject<TItem>(_expectationBuilder.ForWhich(_asyncMemberAccessor, " which "));
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	PredicateOptions<TItem> IOptionsProvider<PredicateOptions<TItem>>.Options => _options;
@@ -42,7 +43,7 @@ public class SingleItemResult<TCollection, TItem>
 	/// <summary>
 	///     …that satisfies the <paramref name="predicate" />.
 	/// </summary>
-	public SingleItemResult<TCollection, TItem> Matching(Func<TItem, bool> predicate,
+	public AsyncSingleItemResult<TCollection, TItem> Matching(Func<TItem, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{
@@ -55,7 +56,7 @@ public class SingleItemResult<TCollection, TItem>
 	/// <summary>
 	///     …of type <typeparamref name="T" />.
 	/// </summary>
-	public SingleItemResult<TCollection, T> Matching<T>()
+	public AsyncSingleItemResult<TCollection, T> Matching<T>()
 	{
 		_options.SetPredicate(item => item is T,
 			$" of type {Formatter.Format(typeof(T))}");
@@ -65,7 +66,7 @@ public class SingleItemResult<TCollection, TItem>
 	/// <summary>
 	///     …of type <typeparamref name="T" /> that satisfies the <paramref name="predicate" />.
 	/// </summary>
-	public SingleItemResult<TCollection, T> Matching<T>(Func<T, bool> predicate,
+	public AsyncSingleItemResult<TCollection, T> Matching<T>(Func<T, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{
@@ -75,6 +76,7 @@ public class SingleItemResult<TCollection, TItem>
 		return Cast<T>(x => (T)(object)x!);
 	}
 
-	private SingleItemResult<TCollection, T> Cast<T>(Func<TItem?, T> memberAccessor)
-		=> new(_expectationBuilder, new PredicateOptions<T>(), x => memberAccessor(_memberAccessor(x)));
+	private AsyncSingleItemResult<TCollection, T> Cast<T>(Func<TItem?, T> memberAccessor)
+		=> new(_expectationBuilder, new PredicateOptions<T>(),
+			async x => memberAccessor(await _asyncMemberAccessor(x)));
 }

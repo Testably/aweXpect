@@ -2,7 +2,7 @@
 
 namespace aweXpect;
 
-[CreateExpectationOn<char>("Is{Not}Control", "char.IsControl({value})",
+[CreateExpectationOn<char>("Is{Not}AControlCharacter", "char.IsControl({value})",
 	ExpectationText = "is {not} a control character",
 	Remarks = """
 	          This means, that the specified Unicode character is categorized as a control character.<br />

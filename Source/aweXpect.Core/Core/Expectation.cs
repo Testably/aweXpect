@@ -8,11 +8,10 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Helpers;
 
-namespace aweXpect.Results;
+namespace aweXpect.Core;
 
 /// <summary>
 ///     Base class for expectation results.

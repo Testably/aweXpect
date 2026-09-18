@@ -31,7 +31,7 @@ public sealed class EventTriggerResultTests
 	}
 
 	[Fact]
-	public async Task WhenCastingToIExtensions_CanSpecifyNameOfParameter()
+	public async Task WhenCastingToICustomParameterFilter_CanSpecifyNameOfParameter()
 	{
 		CustomEventWithParametersClass<string> sut = new();
 		IEventRecording<CustomEventWithParametersClass<string>> recording = sut.Record().Events();
@@ -40,7 +40,7 @@ public sealed class EventTriggerResultTests
 		sut.NotifyCustomEvent("bar");
 
 		async Task Act() =>
-			await ((EventTriggerResult<CustomEventWithParametersClass<string>>.IExtensions)That(recording)
+			await ((EventTriggerResult<CustomEventWithParametersClass<string>>.ICustomParameterFilter)That(recording)
 					.Triggered(nameof(CustomEventWithParametersClass<string>.CustomEvent)))
 				.WithParameter<string>(" with my parameter", null, s => s == "foo")
 				.AtLeast().Twice();
@@ -126,7 +126,7 @@ public sealed class EventTriggerResultTests
 		sut.NotifyCustomEvent("bar", 2, "foo");
 
 		async Task Act() =>
-			await ((EventTriggerResult<CustomEventWithParametersClass<string, int, string>>.IExtensions)That(recording)
+			await ((EventTriggerResult<CustomEventWithParametersClass<string, int, string>>.ICustomParameterFilter)That(recording)
 					.Triggered(nameof(CustomEventWithParametersClass<string, int, string>.CustomEvent)))
 				.WithParameter<string>(" with my parameter", null, s => s == "foo")
 				.AtLeast(2.Times());
@@ -149,7 +149,7 @@ public sealed class EventTriggerResultTests
 		sut.NotifyCustomEvent("bar", "baz", "foo");
 
 		async Task Act() =>
-			await ((EventTriggerResult<CustomEventWithParametersClass<string, string, string>>.IExtensions)
+			await ((EventTriggerResult<CustomEventWithParametersClass<string, string, string>>.ICustomParameterFilter)
 					That(recording)
 						.Triggered(nameof(CustomEventWithParametersClass<string, string, string>.CustomEvent)))
 				.WithParameter<string>(" with my parameter", position, s => s == "foo");
