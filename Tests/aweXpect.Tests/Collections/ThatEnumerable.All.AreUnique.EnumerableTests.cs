@@ -460,7 +460,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not unique by x => (string)x! for all items,
+						             is unique by x => (string)x! for not all items,
 						             but all 2 were
 
 						             Collection:
