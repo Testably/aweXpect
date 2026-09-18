@@ -69,7 +69,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 1 for at most one item,
-					             but at least 2 were
+					             but at least 2 of at least 2 were
 
 					             Matching items:
 					             [1, 1, (… and maybe others)]
@@ -147,7 +147,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 1 for at most 3 items,
-					             but at least 4 were
+					             but at least 4 of at least 4 were
 
 					             Matching items:
 					             [1, 1, 1, 1, (… and maybe others)]
@@ -188,7 +188,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to "foo" ignoring case for at most one item,
-					             but at least 2 were
+					             but at least 2 of at least 2 were
 
 					             Matching items:
 					             [
@@ -229,7 +229,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to "foo" for at most one item,
-					             but at least 2 were
+					             but at least 2 of at least 2 were
 
 					             Matching items:
 					             [

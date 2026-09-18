@@ -125,7 +125,8 @@ public static partial class ThatEnumerable
 			}
 
 			protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-				=> _quantifier.AppendResult(stringBuilder, Grammars, _matchingCount, _notMatchingCount, _totalCount);
+				=> _quantifier.AppendResult(stringBuilder, Grammars, _matchingCount, _notMatchingCount, _totalCount,
+					"were");
 
 			protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			{
@@ -136,7 +137,7 @@ public static partial class ThatEnumerable
 
 			protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 				=> _quantifier.AppendResult(stringBuilder, Grammars, _matchingCount, _notMatchingCount,
-					_totalCount);
+					_totalCount, "were");
 
 			private void AppendContexts(bool isIncomplete)
 			{
@@ -271,7 +272,8 @@ public static partial class ThatEnumerable
 			}
 
 			protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-				=> _quantifier.AppendResult(stringBuilder, Grammars, _matchingCount, _notMatchingCount, _totalCount);
+				=> _quantifier.AppendResult(stringBuilder, Grammars, _matchingCount, _notMatchingCount, _totalCount,
+					"were");
 
 			protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			{
@@ -282,7 +284,7 @@ public static partial class ThatEnumerable
 
 			protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 				=> _quantifier.AppendResult(stringBuilder, Grammars, _matchingCount, _notMatchingCount,
-					_totalCount);
+					_totalCount, "were");
 
 			private void AppendContexts(bool isIncomplete)
 			{
@@ -424,7 +426,8 @@ public static partial class ThatEnumerable
 			}
 
 			protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-				=> _quantifier.AppendResult(stringBuilder, Grammars, _matchingCount, _notMatchingCount, _totalCount);
+				=> _quantifier.AppendResult(stringBuilder, Grammars, _matchingCount, _notMatchingCount, _totalCount,
+					"were");
 
 			protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			{
@@ -435,7 +438,7 @@ public static partial class ThatEnumerable
 
 			protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 				=> _quantifier.AppendResult(stringBuilder, Grammars, _matchingCount, _notMatchingCount,
-					_totalCount);
+					_totalCount, "were");
 
 			private void AppendContexts(bool isIncomplete)
 			{
@@ -566,7 +569,8 @@ public static partial class ThatEnumerable
 			}
 
 			protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-				=> _quantifier.AppendResult(stringBuilder, Grammars, _matchingCount, _notMatchingCount, _totalCount);
+				=> _quantifier.AppendResult(stringBuilder, Grammars, _matchingCount, _notMatchingCount, _totalCount,
+					"were");
 
 			protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			{
@@ -577,7 +581,7 @@ public static partial class ThatEnumerable
 
 			protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 				=> _quantifier.AppendResult(stringBuilder, Grammars, _matchingCount, _notMatchingCount,
-					_totalCount);
+					_totalCount, "were");
 
 			private void AppendContexts(bool isIncomplete)
 			{

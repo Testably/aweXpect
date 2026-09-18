@@ -52,7 +52,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has recursive inner exceptions of which all satisfy e => e.Message != "inner3A",
-					             but not all did
+					             but only 2 of at least 3 did
 					             
 					             Not matching items:
 					             [
@@ -87,7 +87,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has recursive inner exceptions of which none satisfy e => e.Message != "inner3A",
-					             but at least one did
+					             but at least 1 of at least 1 did
 					             
 					             Matching items:
 					             [

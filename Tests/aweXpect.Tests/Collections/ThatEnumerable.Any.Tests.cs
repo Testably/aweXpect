@@ -48,7 +48,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 99 for at least one item,
-					             but found only 0
+					             but none of 5 were
 
 					             Collection:
 					             [1, 2, 3, 4, 5]
@@ -67,7 +67,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 1 for at least one item,
-					             but found only 0
+					             but none of 0 were
 
 					             Collection:
 					             []
@@ -116,7 +116,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             satisfies x => x is int for at least one item,
-					             but only 0 of 3 did
+					             but none of 3 did
 
 					             Collection:
 					             [
@@ -153,7 +153,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             starts with "b" for at least one item,
-					             but found only 0
+					             but none of 2 were
 
 					             Collection:
 					             [
@@ -190,7 +190,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 99 for at least one item,
-					             but found only 0
+					             but none of 3 were
 
 					             Collection:
 					             [1, 2, 3]
@@ -225,7 +225,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is greater than 2 for not at least one item,
-					             but found 3
+					             but 3 of 5 were
 
 					             Collection:
 					             [1, 2, 3, 4, 5]

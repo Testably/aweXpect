@@ -94,7 +94,7 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that action
 					             throws an exception with recursive inner exceptions of which all satisfy _ => false,
-					             but not all did
+					             but none of at least 1 did
 
 					             Not matching items:
 					             [

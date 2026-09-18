@@ -70,7 +70,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             satisfies x => x == 1 for all items,
-						             but not all did
+						             but only 2 of at least 3 did
 
 						             Not matching items:
 						             [2, (… and maybe others)]

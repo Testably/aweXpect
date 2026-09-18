@@ -19,7 +19,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is greater than 2 for not more than 2 items,
-					             but found 3
+					             but 3 of 5 were
 
 					             Not matching items:
 					             [1, 2]

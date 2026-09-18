@@ -37,7 +37,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             satisfies x => x <= 1 for all items,
-						             but not all did
+						             but only 2 of at least 11 did
 
 						             Not matching items:
 						             [2, 3, 5, 8, 13, 21, 34, 55, 89, (… and maybe others)]
@@ -71,7 +71,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             satisfies x => x is > 4 and < 6 for all items,
-						             but not all did
+						             but only 1 of at least 11 did
 
 						             Not matching items:
 						             [
