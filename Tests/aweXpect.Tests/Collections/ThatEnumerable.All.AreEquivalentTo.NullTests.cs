@@ -42,7 +42,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is equivalent to null for all items,
+						             is equivalent to <null> for all items,
 						             but only 1 of 2 were
 
 						             Not matching items:
@@ -67,8 +67,62 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is equivalent to null for all items,
+						             is equivalent to <null> for all items,
 						             but it was <null>
+
+						             Equivalency options:
+						              - include public fields and properties
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenExpectedIsNullVariable_ShouldRenderNull()
+				{
+					IEnumerable<int?> subject = new int?[]
+					{
+						null, 1,
+					};
+					int? expected = null;
+
+					async Task Act()
+						=> await That(subject).All().AreEquivalentTo(expected);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equivalent to <null> for all items,
+						             but only 1 of 2 were
+
+						             Not matching items:
+						             [1]
+
+						             Collection:
+						             [<null>, 1]
+
+						             Equivalency options:
+						              - include public fields and properties
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenNegated_ShouldRenderNull()
+				{
+					IEnumerable<int?> subject = new int?[]
+					{
+						null, null,
+					};
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.All().AreEquivalentTo(null));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not equivalent to <null> for all items,
+						             but all 2 were
+
+						             Collection:
+						             [<null>, <null>]
 
 						             Equivalency options:
 						              - include public fields and properties
@@ -103,7 +157,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is equivalent to null for all items,
+						             is equivalent to <null> for all items,
 						             but only 1 of 2 were
 
 						             Not matching items:
@@ -145,7 +199,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is equivalent to null for all items,
+						             is equivalent to <null> for all items,
 						             but only 1 of 2 were
 
 						             Not matching items:
