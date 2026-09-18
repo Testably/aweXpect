@@ -4,6 +4,7 @@ namespace aweXpect.Core.Tests.Delegates;
 
 public sealed partial class ThatDelegateTests
 {
+#pragma warning disable CA2263 // these tests deliberately cover the Type overloads
 	public sealed class ParameterNameTests
 	{
 		[Fact]
@@ -106,4 +107,5 @@ public sealed partial class ThatDelegateTests
 			await That(Act).DoesNotThrow();
 		}
 	}
+#pragma warning restore CA2263
 }
