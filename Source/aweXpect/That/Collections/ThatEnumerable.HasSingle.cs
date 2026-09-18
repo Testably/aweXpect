@@ -181,6 +181,13 @@ public static partial class ThatEnumerable
 			}
 		}
 
+		/// <inheritdoc cref="ConstraintResult.Outcome" />
+		public override Outcome Outcome
+		{
+			get => _actual is null ? Outcome.Failure : base.Outcome;
+			protected set => base.Outcome = value;
+		}
+
 		public override ConstraintResult Negate()
 		{
 			base.Negate();
@@ -298,6 +305,13 @@ public static partial class ThatEnumerable
 					: " had the single matching item ");
 				Formatter.Format(stringBuilder, Actual);
 			}
+		}
+
+		/// <inheritdoc cref="ConstraintResult.Outcome" />
+		public override Outcome Outcome
+		{
+			get => _actual is null ? Outcome.Failure : base.Outcome;
+			protected set => base.Outcome = value;
 		}
 
 		public override ConstraintResult Negate()
