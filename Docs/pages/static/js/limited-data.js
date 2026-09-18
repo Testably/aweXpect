@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "5fa9d810916df1aeb52d14a67bc165c4c7d1bfe0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 14 17:27:47 2026 \u002B0200",
-        "message": "refactor: drop the GuaranteesNotNull markings that can never suppress anything (#1097)"
-      },
-      {
         "sha": "2274a820443f74d11a338b3e5d034e9e4a386e28",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 22:12:29 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 22:10:56 2026 \u002B0200",
         "message": "feat: add missing collection overloads for non-generic \u0060IEnumerable\u0060 and \u0060ImmutableArray\u003CT\u003E\u0060 (#1199)"
+      },
+      {
+        "sha": "592eda32d642229da7b36f89eea3f0537508b1a1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 22:11:12 2026 \u002B0200",
+        "message": "fix: report the full value count for \u0060ContainsKeys(\u2026).WhoseValues\u0060 (#1203)"
       }
     ],
     "labels": [
-      "5fa9d810",
       "2274a820",
       "7a595a63",
       "a9d6112f",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "e00183f5",
       "34d794ec",
       "f9b4540a",
-      "00dff638"
+      "00dff638",
+      "592eda32"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          257.5374924023946,
           196.90801135698953,
           269.8032855669657,
           249.30110273361205,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           306.65425740755524,
           337.75201447804767,
           302.21210071018766,
-          338.3181185086568
+          338.3181185086568,
+          231.47678319613138
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -464,7 +464,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
-          696,
+          840,
           840,
           840,
           840,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          271.99132073720295,
           196.11365172068278,
           292.3035370826721,
           251.50414164861044,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           255.23794501168388,
           254.61803455352782,
           250.2746205670493,
-          251.7722088609423
+          251.7722088609423,
+          198.7654082775116
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "5fa9d810916df1aeb52d14a67bc165c4c7d1bfe0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 14 17:27:47 2026 \u002B0200",
-        "message": "refactor: drop the GuaranteesNotNull markings that can never suppress anything (#1097)"
-      },
-      {
         "sha": "2274a820443f74d11a338b3e5d034e9e4a386e28",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 22:12:29 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 22:10:56 2026 \u002B0200",
         "message": "feat: add missing collection overloads for non-generic \u0060IEnumerable\u0060 and \u0060ImmutableArray\u003CT\u003E\u0060 (#1199)"
+      },
+      {
+        "sha": "592eda32d642229da7b36f89eea3f0537508b1a1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 22:11:12 2026 \u002B0200",
+        "message": "fix: report the full value count for \u0060ContainsKeys(\u2026).WhoseValues\u0060 (#1203)"
       }
     ],
     "labels": [
-      "5fa9d810",
       "2274a820",
       "7a595a63",
       "a9d6112f",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "e00183f5",
       "34d794ec",
       "f9b4540a",
-      "00dff638"
+      "00dff638",
+      "592eda32"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          383259.0914388021,
           282997.7490559896,
           352153.7346888951,
           367216.8917317708,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           326566.2730794271,
           345701.63971354166,
           316975.791796875,
-          322006.48678385414
+          322006.48678385414,
+          252500.36003766741
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1030,7 +1030,6 @@ window.BENCHMARK_DATA = {
         "data": [
           542084,
           542084,
-          542084,
           542085,
           542085,
           542084,
@@ -1073,6 +1072,7 @@ window.BENCHMARK_DATA = {
           617976,
           617976,
           617976,
+          618120,
           618120,
           618120,
           618120,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2397191.646354167,
           1836027.2087239583,
           2258618.474739583,
           2347232.1354166665,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2588997.383072917,
           2772641.68359375,
           2531028.349739583,
-          2641841.021614583
+          2641841.021614583,
+          1906932.693638393
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841635,
           4841648,
           4841613,
           4841647,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841651
+          4841651,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "5fa9d810916df1aeb52d14a67bc165c4c7d1bfe0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 14 17:27:47 2026 \u002B0200",
-        "message": "refactor: drop the GuaranteesNotNull markings that can never suppress anything (#1097)"
-      },
       {
         "sha": "2274a820443f74d11a338b3e5d034e9e4a386e28",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 22:10:56 2026 \u002B0200",
         "message": "feat: add missing collection overloads for non-generic \u0060IEnumerable\u0060 and \u0060ImmutableArray\u003CT\u003E\u0060 (#1199)"
+      },
+      {
+        "sha": "592eda32d642229da7b36f89eea3f0537508b1a1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 22:11:12 2026 \u002B0200",
+        "message": "fix: report the full value count for \u0060ContainsKeys(\u2026).WhoseValues\u0060 (#1203)"
       }
     ],
     "labels": [
-      "5fa9d810",
       "2274a820",
       "7a595a63",
       "a9d6112f",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "e00183f5",
       "34d794ec",
       "f9b4540a",
-      "00dff638"
+      "00dff638",
+      "592eda32"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          494.7722628275553,
           363.58683786392214,
           525.800393308912,
           469.3274403254191,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           538.1694253512791,
           577.7639307022094,
           530.6930157343546,
-          538.7581422170003
+          538.7581422170003,
+          399.44025967915854
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1653,7 +1653,6 @@ window.BENCHMARK_DATA = {
           1360,
           1360,
           1360,
-          1360,
           1368,
           1368,
           1368,
@@ -1681,6 +1680,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1512,
           1512,
           1512,
           1512,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          528.4363608678182,
           399.7704559961955,
           590.330544980367,
           488.87791239420574,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           518.6470956802368,
           555.1492535273234,
           479.2288476058415,
-          507.55058492933
+          507.55058492933,
+          405.4112504209791
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "5fa9d810916df1aeb52d14a67bc165c4c7d1bfe0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 14 17:27:47 2026 \u002B0200",
-        "message": "refactor: drop the GuaranteesNotNull markings that can never suppress anything (#1097)"
-      },
-      {
         "sha": "2274a820443f74d11a338b3e5d034e9e4a386e28",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 22:12:29 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 22:10:56 2026 \u002B0200",
         "message": "feat: add missing collection overloads for non-generic \u0060IEnumerable\u0060 and \u0060ImmutableArray\u003CT\u003E\u0060 (#1199)"
+      },
+      {
+        "sha": "592eda32d642229da7b36f89eea3f0537508b1a1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 22:11:12 2026 \u002B0200",
+        "message": "fix: report the full value count for \u0060ContainsKeys(\u2026).WhoseValues\u0060 (#1203)"
       }
     ],
     "labels": [
-      "5fa9d810",
       "2274a820",
       "7a595a63",
       "a9d6112f",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "e00183f5",
       "34d794ec",
       "f9b4540a",
-      "00dff638"
+      "00dff638",
+      "592eda32"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          275.06960776646935,
           206.19679361979166,
           309.70217558542885,
           311.4363928159078,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           323.1038678487142,
           348.18458862304686,
           307.96899785314287,
-          308.0331859248025
+          308.0331859248025,
+          251.0540198326111
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2288,7 +2288,7 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
-          864,
+          1008,
           1008,
           1008,
           1008,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          276.23029589653015,
           190.39022885836087,
           332.3568512916565,
           245.01674894186166,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           258.2499782562256,
           285.1541458129883,
           258.28920259475706,
-          256.62382987340294
+          256.62382987340294,
+          188.4669912815094
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "5fa9d810916df1aeb52d14a67bc165c4c7d1bfe0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 14 17:27:47 2026 \u002B0200",
-        "message": "refactor: drop the GuaranteesNotNull markings that can never suppress anything (#1097)"
-      },
-      {
         "sha": "2274a820443f74d11a338b3e5d034e9e4a386e28",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 22:12:29 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 22:10:56 2026 \u002B0200",
         "message": "feat: add missing collection overloads for non-generic \u0060IEnumerable\u0060 and \u0060ImmutableArray\u003CT\u003E\u0060 (#1199)"
+      },
+      {
+        "sha": "592eda32d642229da7b36f89eea3f0537508b1a1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 22:11:12 2026 \u002B0200",
+        "message": "fix: report the full value count for \u0060ContainsKeys(\u2026).WhoseValues\u0060 (#1203)"
       }
     ],
     "labels": [
-      "5fa9d810",
       "2274a820",
       "7a595a63",
       "a9d6112f",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "e00183f5",
       "34d794ec",
       "f9b4540a",
-      "00dff638"
+      "00dff638",
+      "592eda32"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          477.94668610890704,
           355.2072853020259,
           447.0760128339132,
           458.56294771341175,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           590.45237159729,
           603.0279440198626,
           546.6077763484075,
-          553.947010676066
+          553.947010676066,
+          447.68320550918577
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2869,7 +2869,6 @@ window.BENCHMARK_DATA = {
           1128,
           1128,
           1128,
-          1128,
           1256,
           1256,
           1256,
@@ -2897,6 +2896,7 @@ window.BENCHMARK_DATA = {
           1256,
           1256,
           1256,
+          1400,
           1400,
           1400,
           1400,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1341.652505329677,
           883.0441282908122,
           1277.3768961588542,
           1128.3526980536324,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1185.8738259633383,
           1327.5965039571126,
           1216.9129625467153,
-          1258.8664143880208
+          1258.8664143880208,
+          944.0233445485433
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "5fa9d810916df1aeb52d14a67bc165c4c7d1bfe0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 14 17:27:47 2026 \u002B0200",
-        "message": "refactor: drop the GuaranteesNotNull markings that can never suppress anything (#1097)"
-      },
-      {
         "sha": "2274a820443f74d11a338b3e5d034e9e4a386e28",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 22:12:29 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 22:10:56 2026 \u002B0200",
         "message": "feat: add missing collection overloads for non-generic \u0060IEnumerable\u0060 and \u0060ImmutableArray\u003CT\u003E\u0060 (#1199)"
+      },
+      {
+        "sha": "592eda32d642229da7b36f89eea3f0537508b1a1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 22:11:12 2026 \u002B0200",
+        "message": "fix: report the full value count for \u0060ContainsKeys(\u2026).WhoseValues\u0060 (#1203)"
       }
     ],
     "labels": [
-      "5fa9d810",
       "2274a820",
       "7a595a63",
       "a9d6112f",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "e00183f5",
       "34d794ec",
       "f9b4540a",
-      "00dff638"
+      "00dff638",
+      "592eda32"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1670.9143939971923,
           1410.924646105085,
           1422.3141540527345,
           1808.64620413099,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2019.8510101863317,
           2122.979504449027,
           2134.2143231709797,
-          2227.4863881429037
+          2227.4863881429037,
+          1734.0955317361015
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3477,7 +3477,6 @@ window.BENCHMARK_DATA = {
           2624,
           2624,
           2624,
-          2624,
           2752,
           2752,
           2752,
@@ -3505,6 +3504,7 @@ window.BENCHMARK_DATA = {
           2752,
           2752,
           2752,
+          3104,
           3104,
           3104,
           3104,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1437.5937737782797,
           1009.9652674538748,
           1444.8710503896077,
           1321.148864618937,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1315.3896138509115,
           1399.3660079956055,
           1370.7772269930158,
-          1325.5950056711833
+          1325.5950056711833,
+          1095.7212844576154
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "5fa9d810916df1aeb52d14a67bc165c4c7d1bfe0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 14 17:27:47 2026 \u002B0200",
-        "message": "refactor: drop the GuaranteesNotNull markings that can never suppress anything (#1097)"
-      },
-      {
         "sha": "2274a820443f74d11a338b3e5d034e9e4a386e28",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 22:12:29 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 22:10:56 2026 \u002B0200",
         "message": "feat: add missing collection overloads for non-generic \u0060IEnumerable\u0060 and \u0060ImmutableArray\u003CT\u003E\u0060 (#1199)"
+      },
+      {
+        "sha": "592eda32d642229da7b36f89eea3f0537508b1a1",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 22:11:12 2026 \u002B0200",
+        "message": "fix: report the full value count for \u0060ContainsKeys(\u2026).WhoseValues\u0060 (#1203)"
       }
     ],
     "labels": [
-      "5fa9d810",
       "2274a820",
       "7a595a63",
       "a9d6112f",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "e00183f5",
       "34d794ec",
       "f9b4540a",
-      "00dff638"
+      "00dff638",
+      "592eda32"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2179.668372599284,
           1916.8696338653565,
           1870.5654805501301,
           2491.4571551005047,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2583.1968972342356,
           2728.427665201823,
           2713.9010078430174,
-          2825.083543141683
+          2825.083543141683,
+          2213.5933113098145
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4085,7 +4085,6 @@ window.BENCHMARK_DATA = {
           2816,
           2816,
           2816,
-          2816,
           2944,
           2944,
           2944,
@@ -4113,6 +4112,7 @@ window.BENCHMARK_DATA = {
           2944,
           2944,
           2944,
+          3296,
           3296,
           3296,
           3296,
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          24276.291119384765,
           15356.671731131417,
           17557.282236735027,
           19817.087254115515,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           27306.86591491699,
           27231.05518798828,
           27495.22459411621,
-          27270.3803914388
+          27270.3803914388,
+          16602.52258504232
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33468,
           33471,
           33465,
           33471,
@@ -4238,6 +4237,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
