@@ -375,11 +375,9 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("""
 				             Expected that () => AlwaysThrows()
 				             is equal to 1 within 0:00.050,
-				             but it did throw a ThatDelegateTests.EventuallyTests.MyException
-
-				             Exception:
-				             *
-				             """).AsWildcard();
+				             but it did throw a ThatDelegateTests.EventuallyTests.MyException:
+				               always broken
+				             """);
 			await That(exception.InnerException).Is<MyException>()
 				.Whose(e => e.Message, m => m.IsEqualTo("always broken"));
 		}

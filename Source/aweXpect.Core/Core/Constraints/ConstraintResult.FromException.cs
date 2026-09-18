@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
-using aweXpect.Core.Helpers;
+using aweXpect.Delegates;
 
 namespace aweXpect.Core.Constraints;
 
@@ -24,14 +24,12 @@ public abstract partial class ConstraintResult
 		/// </summary>
 		public FromException(
 			ConstraintResult inner,
-			Exception exception,
-			ExpectationBuilder expectationBuilder)
+			Exception exception)
 			: base(inner.Grammars)
 		{
 			_inner = inner;
 			_exception = exception;
 			FurtherProcessingStrategy = inner.FurtherProcessingStrategy;
-			expectationBuilder.AddContext(new ResultContext.Fixed("Exception", exception.ToString()));
 		}
 
 		public override Outcome Outcome
@@ -51,17 +49,8 @@ public abstract partial class ConstraintResult
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder
-				.Append("it did throw ");
-
-			Type? exceptionType = _exception.GetType();
-			if (exceptionType == typeof(Exception))
-			{
-				stringBuilder.Append("an exception");
-			}
-			else
-			{
-				stringBuilder.Append(Formatter.Format(exceptionType).PrependAOrAn());
-			}
+				.Append("it did throw ")
+				.Append(ThatDelegate.FormatForMessage(_exception, indentation));
 		}
 
 		/// <inheritdoc cref="ConstraintResult.TryGetValue{TValue}(out TValue)" />

@@ -13,8 +13,7 @@ public partial class ConstraintResultTests
 		{
 			DummyConstraintResult inner = new(Outcome.Success, "foo");
 			Exception exception = new("bar");
-			DummyExpectationBuilder expectationBuilder = new();
-			ConstraintResult sut = new ConstraintResult.FromException(inner, exception, expectationBuilder);
+			ConstraintResult sut = new ConstraintResult.FromException(inner, exception);
 			StringBuilder sb = new();
 
 			sut.AppendExpectation(sb);
@@ -27,13 +26,12 @@ public partial class ConstraintResultTests
 		{
 			DummyConstraintResult inner = new(Outcome.Success, "foo");
 			Exception exception = new("bar");
-			DummyExpectationBuilder expectationBuilder = new();
-			ConstraintResult sut = new ConstraintResult.FromException(inner, exception, expectationBuilder);
+			ConstraintResult sut = new ConstraintResult.FromException(inner, exception);
 			StringBuilder sb = new();
 
 			sut.AppendResult(sb);
 
-			await That(sb.ToString()).IsEqualTo("it did throw an exception");
+			await That(sb.ToString()).IsEqualTo($"it did throw an Exception:{Environment.NewLine}  bar");
 		}
 
 		[Fact]
@@ -41,13 +39,12 @@ public partial class ConstraintResultTests
 		{
 			DummyConstraintResult inner = new(Outcome.Success, "foo");
 			ArgumentException exception = new("bar");
-			DummyExpectationBuilder expectationBuilder = new();
-			ConstraintResult sut = new ConstraintResult.FromException(inner, exception, expectationBuilder);
+			ConstraintResult sut = new ConstraintResult.FromException(inner, exception);
 			StringBuilder sb = new();
 
 			sut.AppendResult(sb);
 
-			await That(sb.ToString()).IsEqualTo("it did throw an ArgumentException");
+			await That(sb.ToString()).IsEqualTo($"it did throw an ArgumentException:{Environment.NewLine}  bar");
 		}
 
 		[Fact]
@@ -55,8 +52,7 @@ public partial class ConstraintResultTests
 		{
 			DummyConstraintResult inner = new(Outcome.Success, "foo");
 			Exception exception = new("bar");
-			DummyExpectationBuilder expectationBuilder = new();
-			ConstraintResult sut = new ConstraintResult.FromException(inner, exception, expectationBuilder);
+			ConstraintResult sut = new ConstraintResult.FromException(inner, exception);
 
 			await That(sut.FailureCause).IsSameAs(exception);
 		}
@@ -69,8 +65,7 @@ public partial class ConstraintResultTests
 		{
 			DummyConstraintResult inner = new(innerOutcome, "foo");
 			Exception exception = new("bar");
-			DummyExpectationBuilder expectationBuilder = new();
-			MyFromExceptionConstraintResult sut = new(inner, exception, expectationBuilder);
+			MyFromExceptionConstraintResult sut = new(inner, exception);
 
 			sut.Negate();
 
@@ -83,8 +78,7 @@ public partial class ConstraintResultTests
 		{
 			DummyConstraintResult inner = new(Outcome.Success, "foo");
 			Exception exception = new("bar");
-			DummyExpectationBuilder expectationBuilder = new();
-			ConstraintResult sut = new ConstraintResult.FromException(inner, exception, expectationBuilder);
+			ConstraintResult sut = new ConstraintResult.FromException(inner, exception);
 
 			await That(sut.Outcome).IsEqualTo(Outcome.Failure);
 		}
@@ -94,8 +88,7 @@ public partial class ConstraintResultTests
 		{
 			DummyConstraintResult inner = new(Outcome.Success, "foo");
 			Exception exception = new("bar");
-			DummyExpectationBuilder expectationBuilder = new();
-			MyFromExceptionConstraintResult sut = new(inner, exception, expectationBuilder);
+			MyFromExceptionConstraintResult sut = new(inner, exception);
 			sut.SetOutcome(Outcome.Undecided);
 
 			await That(sut.Outcome).IsEqualTo(Outcome.Failure);
@@ -104,9 +97,8 @@ public partial class ConstraintResultTests
 
 		private class MyFromExceptionConstraintResult(
 			ConstraintResult inner,
-			Exception exception,
-			ExpectationBuilder expectationBuilder)
-			: ConstraintResult.FromException(inner, exception, expectationBuilder)
+			Exception exception)
+			: ConstraintResult.FromException(inner, exception)
 		{
 			public void SetOutcome(Outcome outcome) => Outcome = outcome;
 		}

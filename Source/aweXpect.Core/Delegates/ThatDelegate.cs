@@ -19,17 +19,17 @@ public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder
 	/// </summary>
 	public ExpectationBuilder ExpectationBuilder { get; } = expectationBuilder;
 
-	internal static string FormatForMessage(Exception? exception)
+	internal static string FormatForMessage(Exception? exception, string? indentation, string relation = "")
 	{
 		if (exception is null)
 		{
 			return "<null>";
 		}
 
-		string message = Formatter.Format(exception.GetType()).PrependAOrAn();
+		string message = (relation + Formatter.Format(exception.GetType())).PrependAOrAn();
 		if (!string.IsNullOrEmpty(exception.Message))
 		{
-			message += ":" + Environment.NewLine + exception.Message.Indent();
+			message += ":" + Environment.NewLine + exception.Message.Indent(indentation + "  ");
 		}
 
 		return message;
