@@ -147,6 +147,25 @@ public sealed partial class ThatAsyncEnumerable
 				}
 
 				[Fact]
+				public async Task WhenSubjectIsNull_NegatedShouldFail()
+				{
+					IAsyncEnumerable<int>? subject = null;
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.All().AreEquivalentTo(42));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not equivalent to 42 for all items,
+						             but it was <null>
+
+						             Equivalency options:
+						              - include public fields and properties
+						             """);
+				}
+
+				[Fact]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					int constantValue = 42;
