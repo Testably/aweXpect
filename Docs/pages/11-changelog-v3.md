@@ -171,6 +171,11 @@ need an update.
   `whose Message.Length is …` and `but Message.Length was …` instead of `whose .Message.Length is …`.
 - `DoesNotHaveItem(1).AtIndex(0)` names the item it found: `but it had item 1 at index 0` instead of `but it did`.
 - A `Never()` quantifier appends its `within` window when one was given.
+- `DidNotSignal()` renders `has never recorded the callback` like `Signaled().Never()` instead of
+  `does not have recorded the callback`, and `DidNotSignal(3.Times())` renders
+  `has recorded the callback less than 3 times` like `Signaled().LessThan(3.Times())`.
+- A negated `Exactly` or `Between` quantifier reads `not exactly once` instead of `not once` and
+  `not between 3 and 5 times` instead of `outside 3 and 5 times`.
 - Every equivalency member difference renders as a `Property X differed:` block with `Found:` and `Expected:` lines.
   A `null` on one side previously read `Property Value was <null> instead of "Foo"`, and an `It.Is<T>()` member read
   `Property IntValue was 1` or, on a type mismatch, `Property StringValue was string`. An `It.Is<T>()` member now
