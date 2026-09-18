@@ -76,18 +76,6 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
-				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldSucceed()
-				{
-					ImmutableArray<decimal?> subject = [1.1m, null, 2.3m, 3.1m,];
-					IEnumerable<decimal?> expected = [1.0m, null, 2.0m, 3.0m,];
-
-					async Task Act()
-						=> await That(subject).IsNotEqualTo(expected).Within(0.2m).InAnyOrder();
-
-					await That(Act).DoesNotThrow();
-				}
-
-				[Fact]
 				public async Task WhenExpectedItemsAreNotNullable_ShouldSucceed()
 				{
 					ImmutableArray<decimal?> subject = [1.1m, 2.3m, 3.1m,];
@@ -95,6 +83,18 @@ public sealed partial class ThatEnumerable
 
 					async Task Act()
 						=> await That(subject).IsNotEqualTo(expected).Within(0.2m);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldSucceed()
+				{
+					ImmutableArray<decimal?> subject = [1.1m, null, 2.3m, 3.1m,];
+					IEnumerable<decimal?> expected = [1.0m, null, 2.0m, 3.0m,];
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo(expected).Within(0.2m).InAnyOrder();
 
 					await That(Act).DoesNotThrow();
 				}
@@ -215,10 +215,10 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
-				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldSucceed()
+				public async Task WhenExpectedItemsAreNotNullable_ShouldSucceed()
 				{
-					ImmutableArray<double?> subject = [1.1, null, 2.3, 3.1,];
-					IEnumerable<double?> expected = [1.0, null, 2.0, 3.0,];
+					ImmutableArray<double?> subject = [1.1, 2.3, 3.1,];
+					IEnumerable<double> expected = [1.0, 2.0, 3.0,];
 
 					async Task Act()
 						=> await That(subject).IsNotEqualTo(expected).Within(0.2);
@@ -227,10 +227,10 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
-				public async Task WhenExpectedItemsAreNotNullable_ShouldSucceed()
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldSucceed()
 				{
-					ImmutableArray<double?> subject = [1.1, 2.3, 3.1,];
-					IEnumerable<double> expected = [1.0, 2.0, 3.0,];
+					ImmutableArray<double?> subject = [1.1, null, 2.3, 3.1,];
+					IEnumerable<double?> expected = [1.0, null, 2.0, 3.0,];
 
 					async Task Act()
 						=> await That(subject).IsNotEqualTo(expected).Within(0.2);
@@ -354,10 +354,10 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
-				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldSucceed()
+				public async Task WhenExpectedItemsAreNotNullable_ShouldSucceed()
 				{
-					ImmutableArray<float?> subject = [1.1F, null, 2.3F, 3.1F,];
-					IEnumerable<float?> expected = [1.0F, null, 2.0F, 3.0F,];
+					ImmutableArray<float?> subject = [1.1F, 2.3F, 3.1F,];
+					IEnumerable<float> expected = [1.0F, 2.0F, 3.0F,];
 
 					async Task Act()
 						=> await That(subject).IsNotEqualTo(expected).Within(0.2F);
@@ -366,13 +366,13 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
-				public async Task WhenExpectedItemsAreNotNullable_ShouldSucceed()
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldSucceed()
 				{
-					ImmutableArray<float?> subject = [1.1f, 2.3f, 3.1f,];
-					IEnumerable<float> expected = [1.0f, 2.0f, 3.0f,];
+					ImmutableArray<float?> subject = [1.1F, null, 2.3F, 3.1F,];
+					IEnumerable<float?> expected = [1.0F, null, 2.0F, 3.0F,];
 
 					async Task Act()
-						=> await That(subject).IsNotEqualTo(expected).Within(0.2f);
+						=> await That(subject).IsNotEqualTo(expected).Within(0.2F);
 
 					await That(Act).DoesNotThrow();
 				}
@@ -451,13 +451,11 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
-				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldSucceed()
+				public async Task WhenExpectedItemsAreNotNullable_ShouldSucceed()
 				{
 					DateTime now = DateTime.Now;
-					ImmutableArray<DateTime?> subject =
-						[now.AddHours(1), null, now.AddHours(2), now.AddHours(3),];
-					IEnumerable<DateTime?> expected =
-						[now.AddHours(1).AddMinutes(1), null, now.AddHours(2).AddMinutes(-2), now.AddHours(3),];
+					ImmutableArray<DateTime?> subject = [now.AddHours(1), now.AddHours(2),];
+					IEnumerable<DateTime> expected = [now.AddHours(1), now.AddHours(2).AddMinutes(-2),];
 
 					async Task Act()
 						=> await That(subject).IsNotEqualTo(expected).Within(1.Minutes());
@@ -466,11 +464,13 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
-				public async Task WhenExpectedItemsAreNotNullable_ShouldSucceed()
+				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldSucceed()
 				{
 					DateTime now = DateTime.Now;
-					ImmutableArray<DateTime?> subject = [now.AddHours(1), now.AddHours(2),];
-					IEnumerable<DateTime> expected = [now.AddHours(1), now.AddHours(2).AddMinutes(-2),];
+					ImmutableArray<DateTime?> subject =
+						[now.AddHours(1), null, now.AddHours(2), now.AddHours(3),];
+					IEnumerable<DateTime?> expected =
+						[now.AddHours(1).AddMinutes(1), null, now.AddHours(2).AddMinutes(-2), now.AddHours(3),];
 
 					async Task Act()
 						=> await That(subject).IsNotEqualTo(expected).Within(1.Minutes());
