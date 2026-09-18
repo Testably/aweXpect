@@ -243,6 +243,23 @@ public sealed partial class PropertyResultTests
 			}
 
 			[Fact]
+			public async Task WhenNegated_WithNotEqualTo_ShouldExpectEquality()
+			{
+				MyClass subject = new();
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(s => MyClass.TimeSpanValueOf(s, ExpectationGrammars.None)
+						.NotEqualTo(1.Seconds()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has TimeSpan value equal to 0:01,
+					             but it had TimeSpan value 0:00
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenPluralAndNegated_ShouldUseThePluralVerb()
 			{
 				MyClass subject = new();

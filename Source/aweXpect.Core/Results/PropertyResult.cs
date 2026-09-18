@@ -59,7 +59,8 @@ public static class PropertyResult
 		{
 			validation?.Invoke(unexpected, nameof(unexpected));
 			return Add(unexpected, (a, u) => a?.Equals(u) != true,
-				$"not equal to {Formatter.Format(unexpected)}");
+				$"not equal to {Formatter.Format(unexpected)}",
+				$"equal to {Formatter.Format(unexpected)}");
 		}
 
 		/// <summary>
@@ -124,7 +125,8 @@ public static class PropertyResult
 		private AndOrResult<TType, TThat> Add(
 			int? expected,
 			Func<int?, int?, bool> condition,
-			string expectation)
+			string expectation,
+			string? negatedExpectation = null)
 			=> new(subject.Get().ExpectationBuilder
 					.AddConstraint((it, constraintGrammars) =>
 						new StructPropertyConstraint<TValue, int>(
@@ -133,7 +135,8 @@ public static class PropertyResult
 							mapper,
 							propertyExpression,
 							condition,
-							expectation)),
+							expectation,
+							negatedExpectation)),
 				subject);
 	}
 
@@ -182,7 +185,8 @@ public static class PropertyResult
 		{
 			validation?.Invoke(unexpected, nameof(unexpected));
 			return Add(unexpected, (a, u) => a?.Equals(u) != true,
-				$"not equal to {Formatter.Format(unexpected)}");
+				$"not equal to {Formatter.Format(unexpected)}",
+				$"equal to {Formatter.Format(unexpected)}");
 		}
 
 		/// <summary>
@@ -247,7 +251,8 @@ public static class PropertyResult
 		private AndOrResult<TType, TThat> Add(
 			long? expected,
 			Func<long?, long?, bool> condition,
-			string expectation)
+			string expectation,
+			string? negatedExpectation = null)
 			=> new(subject.Get().ExpectationBuilder
 					.AddConstraint((it, constraintGrammars) =>
 						new StructPropertyConstraint<TValue, long>(
@@ -256,7 +261,8 @@ public static class PropertyResult
 							mapper,
 							propertyExpression,
 							condition,
-							expectation)),
+							expectation,
+							negatedExpectation)),
 				subject);
 	}
 
@@ -298,12 +304,14 @@ public static class PropertyResult
 		public AndOrResult<TType, TThat> NotEqualTo(
 			DateTimeKind unexpected)
 			=> Add(unexpected, (a, u) => a?.Equals(u) != true,
-				$"not equal to {Formatter.Format(unexpected)}");
+				$"not equal to {Formatter.Format(unexpected)}",
+				$"equal to {Formatter.Format(unexpected)}");
 
 		private AndOrResult<TType, TThat> Add(
 			DateTimeKind expected,
 			Func<DateTimeKind?, DateTimeKind?, bool> condition,
-			string expectation)
+			string expectation,
+			string? negatedExpectation = null)
 			=> new(subject.Get().ExpectationBuilder
 					.AddConstraint((it, constraintGrammars) =>
 						new StructPropertyConstraint<TValue, DateTimeKind>(
@@ -312,7 +320,8 @@ public static class PropertyResult
 							mapper,
 							propertyExpression,
 							condition,
-							expectation)),
+							expectation,
+							negatedExpectation)),
 				subject);
 	}
 
@@ -361,7 +370,8 @@ public static class PropertyResult
 		{
 			validation?.Invoke(unexpected, nameof(unexpected));
 			return Add(unexpected, (a, u) => a?.Equals(u) != true,
-				$"not equal to {Formatter.Format(unexpected)}");
+				$"not equal to {Formatter.Format(unexpected)}",
+				$"equal to {Formatter.Format(unexpected)}");
 		}
 
 		/// <summary>
@@ -426,7 +436,8 @@ public static class PropertyResult
 		private AndOrResult<TType, TThat> Add(
 			TimeSpan? expected,
 			Func<TimeSpan?, TimeSpan?, bool> condition,
-			string expectation)
+			string expectation,
+			string? negatedExpectation = null)
 			=> new(subject.Get().ExpectationBuilder
 					.AddConstraint((it, constraintGrammars) =>
 						new StructPropertyConstraint<TValue, TimeSpan>(
@@ -435,7 +446,8 @@ public static class PropertyResult
 							mapper,
 							propertyExpression,
 							condition,
-							expectation)),
+							expectation,
+							negatedExpectation)),
 				subject);
 	}
 
@@ -630,7 +642,8 @@ public static class PropertyResult
 		Func<TItem, TProperty?> mapper,
 		string propertyExpression,
 		Func<TProperty?, TProperty?, bool> condition,
-		string expectation) : ConstraintResult.WithNotNullValue<TItem>(it, grammars),
+		string expectation,
+		string? negatedExpectation) : ConstraintResult.WithNotNullValue<TItem>(it, grammars),
 		IValueConstraint<TItem>
 		where TProperty : struct
 	{
@@ -645,7 +658,7 @@ public static class PropertyResult
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> Append(stringBuilder, false);
+			=> Append(stringBuilder, false, expectation);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -653,13 +666,15 @@ public static class PropertyResult
 			Formatter.Format(stringBuilder, _value);
 		}
 
+		// A comparison that is itself a negation (`not equal to`) is negated by its positive counterpart instead of by
+		// a second `not`.
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> Append(stringBuilder, true);
+			=> Append(stringBuilder, negatedExpectation is null, negatedExpectation ?? expectation);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);
 
-		private void Append(StringBuilder stringBuilder, bool isNegated)
+		private void Append(StringBuilder stringBuilder, bool isNegated, string comparison)
 		{
 			string negation = isNegated ? "not " : "";
 			if (Grammars.HasFlag(ExpectationGrammars.Active))
@@ -678,7 +693,7 @@ public static class PropertyResult
 					.Append(propertyExpression).Append(' ');
 			}
 
-			stringBuilder.Append(expectation);
+			stringBuilder.Append(comparison);
 		}
 	}
 
