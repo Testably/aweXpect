@@ -645,7 +645,7 @@ public static class PropertyResult
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> Append(stringBuilder, "");
+			=> Append(stringBuilder, false);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -654,13 +654,14 @@ public static class PropertyResult
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> Append(stringBuilder, "not ");
+			=> Append(stringBuilder, true);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);
 
-		private void Append(StringBuilder stringBuilder, string negation)
+		private void Append(StringBuilder stringBuilder, bool isNegated)
 		{
+			string negation = isNegated ? "not " : "";
 			if (Grammars.HasFlag(ExpectationGrammars.Active))
 			{
 				stringBuilder.Append("with ").Append(propertyExpression).Append(' ').Append(negation);
@@ -671,7 +672,10 @@ public static class PropertyResult
 			}
 			else
 			{
-				stringBuilder.Append(negation).Append("has ").Append(propertyExpression).Append(' ');
+				stringBuilder.Append(isNegated
+						? Grammars.Verb("does not have ", "do not have ")
+						: Grammars.Verb("has ", "have "))
+					.Append(propertyExpression).Append(' ');
 			}
 
 			stringBuilder.Append(expectation);
@@ -718,7 +722,7 @@ public static class PropertyResult
 			}
 			else
 			{
-				stringBuilder.Append("has ").Append(propertyExpression).Append(' ');
+				stringBuilder.Append(Grammars.Verb("has ", "have ")).Append(propertyExpression).Append(' ');
 			}
 
 			stringBuilder.Append(options.GetExpectation(expected, equalityGrammars));

@@ -132,7 +132,7 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              not has HResult equal to {hResult},
+					              does not have HResult equal to {hResult},
 					              but it had HResult {hResult}
 					              """);
 			}

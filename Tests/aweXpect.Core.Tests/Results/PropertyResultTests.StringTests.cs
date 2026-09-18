@@ -799,6 +799,38 @@ public sealed partial class PropertyResultTests
 					             but it was "foo"*
 					             """).AsWildcard();
 			}
+
+			[Fact]
+			public async Task WhenNegated_ShouldNegateTheComparison()
+			{
+				async Task Act()
+					=> await MyClass.WithStringValue("foo")
+						.DoesNotComplyWith(s => MyClass.StringValueOf(s).EqualTo("foo"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has string value not equal to "foo",
+					             but it was "foo"
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenPlural_ShouldUseThePluralVerb()
+			{
+				PropertyResult.String<MyClass?, MyClass?, IThat<MyClass?>> sut =
+					MyClass.HasStringValue("foo", ExpectationGrammars.Plural);
+
+				async Task Act()
+					=> await sut.EqualTo("bar");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             have string value equal to "bar",
+					             but it was "foo"*
+					             """).AsWildcard();
+			}
 		}
 
 		public sealed class NarrowedTypeTests
