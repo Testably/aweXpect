@@ -243,6 +243,21 @@ public sealed class OrNodeTests
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
 
+	[Theory]
+	[InlineData(Outcome.Success)]
+	[InlineData(Outcome.Failure)]
+	public async Task NegatedOutcome_WhenOperandStaysFailedUnderNegation_ShouldFail(Outcome other)
+	{
+		OrNode node = new(new DummyNode("", () => new ConstraintResult.FromException(
+			new DummyConstraintResult(Outcome.Failure), new Exception("foo"))));
+		node.AddNode(new DummyNode("", () => new DummyConstraintResult(other)));
+
+		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
+		result.Negate();
+
+		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+	}
+
 	[Fact]
 	public async Task NegatedResult_ShouldUseAndAsSeparator()
 	{

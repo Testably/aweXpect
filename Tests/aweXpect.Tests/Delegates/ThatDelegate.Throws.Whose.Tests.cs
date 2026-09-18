@@ -213,7 +213,7 @@ public sealed partial class ThatDelegate
 			public sealed class AsyncMemberFaultTests
 			{
 				[Fact]
-				public async Task WhenAsyncMemberFaults_ShouldPropagateException()
+				public async Task WhenAsyncMemberFaults_ShouldFail()
 				{
 					void Delegate() => throw new AsyncException(1);
 
@@ -221,13 +221,18 @@ public sealed partial class ThatDelegate
 						=> await That(Delegate).Throws<AsyncException>()
 							.Whose(e => e.FaultedAsync(), v => v.IsEqualTo(1));
 
-					await That(Act).ThrowsExactly<InvalidOperationException>()
-						.WithMessage("async member failed");
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that Delegate
+						             throws a ThatDelegate.Throws.Whose.AsyncException whose FaultedAsync() is equal to 1,
+						             but FaultedAsync() did throw an InvalidOperationException:
+						               async member failed
+						             """);
 				}
 
 #if NET8_0_OR_GREATER
 				[Fact]
-				public async Task WhenValueTaskMemberFaults_ShouldPropagateException()
+				public async Task WhenValueTaskMemberFaults_ShouldFail()
 				{
 					void Delegate() => throw new AsyncException(1);
 
@@ -235,8 +240,13 @@ public sealed partial class ThatDelegate
 						=> await That(Delegate).Throws<AsyncException>()
 							.Whose(e => e.FaultedValueTaskAsync(), v => v.IsEqualTo(1));
 
-					await That(Act).ThrowsExactly<InvalidOperationException>()
-						.WithMessage("async member failed");
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that Delegate
+						             throws a ThatDelegate.Throws.Whose.AsyncException whose FaultedValueTaskAsync() is equal to 1,
+						             but FaultedValueTaskAsync() did throw an InvalidOperationException:
+						               async member failed
+						             """);
 				}
 #endif
 			}

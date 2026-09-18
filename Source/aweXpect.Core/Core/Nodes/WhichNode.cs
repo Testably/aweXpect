@@ -238,8 +238,8 @@ internal class WhichNode<TSource, TMember> : Node
 		{
 			if (_isNegated)
 			{
-				// A negated whole phrase only fails when both parts were met, or for a null subject.
-				(_right is NullSubjectResult ? _right : _left).AppendResult(stringBuilder, indentation);
+				// A negated whole phrase only fails when both parts were met, or when the member was not evaluated.
+				(_right is IUnevaluatedMemberResult ? _right : _left).AppendResult(stringBuilder, indentation);
 			}
 			else if (_left.Outcome == Outcome.Failure)
 			{
@@ -283,7 +283,7 @@ internal class WhichNode<TSource, TMember> : Node
 
 		public override ConstraintResult Negate()
 		{
-			if (_right is not NullSubjectResult)
+			if (_right is not IUnevaluatedMemberResult)
 			{
 				Outcome = Outcome switch
 				{

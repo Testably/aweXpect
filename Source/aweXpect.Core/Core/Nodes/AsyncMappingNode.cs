@@ -45,7 +45,17 @@ internal class AsyncMappingNode<TSource, TTarget> : ExpectationNode
 
 		if (value is TSource typedValue)
 		{
-			TTarget matchingValue = await _memberAccessor.AccessMember(typedValue);
+			TTarget matchingValue;
+			try
+			{
+				matchingValue = await _memberAccessor.AccessMember(typedValue);
+			}
+			catch (Exception exception) when (!MemberExceptionResult.IsCancellationOf(exception, cancellationToken))
+			{
+				ConstraintResult result = await IsMetByMember(default, context, cancellationToken);
+				return MemberExceptionResult.Create(result, exception, _memberAccessor.ToString().Trim(), value);
+			}
+
 			ConstraintResult memberResult = await IsMetByMember(matchingValue, context, cancellationToken);
 			return memberResult.UseValue(value);
 		}
@@ -185,7 +195,7 @@ internal class AsyncMappingNode<TSource, TTarget> : ExpectationNode
 
 		public override ConstraintResult Negate()
 		{
-			if (_right is not NullSubjectResult)
+			if (_right is not IUnevaluatedMemberResult)
 			{
 				Outcome = Outcome switch
 				{

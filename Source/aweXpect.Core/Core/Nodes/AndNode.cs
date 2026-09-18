@@ -191,6 +191,15 @@ internal class AndNode : Node
 				(_, _) => Outcome.Undecided,
 			};
 
+		private static Outcome Or(Outcome left, Outcome right)
+			=> (left, right) switch
+			{
+				(Outcome.Failure, Outcome.Failure) => Outcome.Failure,
+				(_, Outcome.Success) => Outcome.Success,
+				(Outcome.Success, _) => Outcome.Success,
+				(_, _) => Outcome.Undecided,
+			};
+
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			_left.AppendExpectation(stringBuilder);
@@ -246,14 +255,13 @@ internal class AndNode : Node
 		public override ConstraintResult Negate()
 		{
 			_isNegated = !_isNegated;
-			Outcome = Outcome switch
-			{
-				Outcome.Failure => Outcome.Success,
-				Outcome.Success => Outcome.Failure,
-				_ => Outcome,
-			};
 			_left.Negate();
 			_right.Negate();
+			// Combine the negated operands (De Morgan) instead of flipping the outcome, so that an operand which stays
+			// failed under negation (e.g. an unevaluated member) also keeps the combination failed.
+			Outcome = _isNegated
+				? Or(_left.Outcome, _right.Outcome)
+				: And(_left.Outcome, _right.Outcome);
 			return this;
 		}
 	}
