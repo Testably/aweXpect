@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "3a66050e2f75de139debf131e02a3ed53a6d3d3a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 14 16:32:29 2026 \u002B0200",
-        "message": "fix: keep a runaway mutant from taking down the mutation runner (#1093)"
-      },
-      {
         "sha": "5fa9d810916df1aeb52d14a67bc165c4c7d1bfe0",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 17:27:47 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 22:05:15 2026 \u002B0200",
         "message": "chore: silence the Sonar findings on recently touched code (#1202)"
+      },
+      {
+        "sha": "00dff638f2875ed74793ae1d3a15444b8034904f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 22:10:56 2026 \u002B0200",
+        "message": "feat: add missing collection overloads for non-generic \u0060IEnumerable\u0060 and \u0060ImmutableArray\u003CT\u003E\u0060 (#1199)"
       }
     ],
     "labels": [
-      "3a66050e",
       "5fa9d810",
       "2274a820",
       "7a595a63",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "1305e06f",
       "e00183f5",
       "34d794ec",
-      "f9b4540a"
+      "f9b4540a",
+      "00dff638"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          254.31283381779988,
           257.5374924023946,
           196.90801135698953,
           269.8032855669657,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           306.1412992477417,
           306.65425740755524,
           337.75201447804767,
-          302.21210071018766
+          302.21210071018766,
+          338.3181185086568
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -465,7 +465,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
-          696,
+          840,
           840,
           840,
           840,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          237.89337490002313,
           271.99132073720295,
           196.11365172068278,
           292.3035370826721,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           249.71533705393475,
           255.23794501168388,
           254.61803455352782,
-          250.2746205670493
+          250.2746205670493,
+          251.7722088609423
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "3a66050e2f75de139debf131e02a3ed53a6d3d3a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 14 16:32:29 2026 \u002B0200",
-        "message": "fix: keep a runaway mutant from taking down the mutation runner (#1093)"
-      },
-      {
         "sha": "5fa9d810916df1aeb52d14a67bc165c4c7d1bfe0",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 17:27:47 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 22:05:15 2026 \u002B0200",
         "message": "chore: silence the Sonar findings on recently touched code (#1202)"
+      },
+      {
+        "sha": "00dff638f2875ed74793ae1d3a15444b8034904f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 22:10:56 2026 \u002B0200",
+        "message": "feat: add missing collection overloads for non-generic \u0060IEnumerable\u0060 and \u0060ImmutableArray\u003CT\u003E\u0060 (#1199)"
       }
     ],
     "labels": [
-      "3a66050e",
       "5fa9d810",
       "2274a820",
       "7a595a63",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "1305e06f",
       "e00183f5",
       "34d794ec",
-      "f9b4540a"
+      "f9b4540a",
+      "00dff638"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          395099.5535807292,
           383259.0914388021,
           282997.7490559896,
           352153.7346888951,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           318501.8701497396,
           326566.2730794271,
           345701.63971354166,
-          316975.791796875
+          316975.791796875,
+          322006.48678385414
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          542085,
           542084,
           542084,
           542084,
@@ -1074,6 +1073,7 @@ window.BENCHMARK_DATA = {
           617976,
           617976,
           617976,
+          618120,
           618120,
           618120,
           618120,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2802643.9260602677,
           2397191.646354167,
           1836027.2087239583,
           2258618.474739583,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2599195.6180245536,
           2588997.383072917,
           2772641.68359375,
-          2531028.349739583
+          2531028.349739583,
+          2641841.021614583
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841635,
           4841648,
           4841613,
@@ -1202,6 +1201,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "3a66050e2f75de139debf131e02a3ed53a6d3d3a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 14 16:32:29 2026 \u002B0200",
-        "message": "fix: keep a runaway mutant from taking down the mutation runner (#1093)"
-      },
       {
         "sha": "5fa9d810916df1aeb52d14a67bc165c4c7d1bfe0",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 22:05:15 2026 \u002B0200",
         "message": "chore: silence the Sonar findings on recently touched code (#1202)"
+      },
+      {
+        "sha": "00dff638f2875ed74793ae1d3a15444b8034904f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 22:10:56 2026 \u002B0200",
+        "message": "feat: add missing collection overloads for non-generic \u0060IEnumerable\u0060 and \u0060ImmutableArray\u003CT\u003E\u0060 (#1199)"
       }
     ],
     "labels": [
-      "3a66050e",
       "5fa9d810",
       "2274a820",
       "7a595a63",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "1305e06f",
       "e00183f5",
       "34d794ec",
-      "f9b4540a"
+      "f9b4540a",
+      "00dff638"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          521.6478244917733,
           494.7722628275553,
           363.58683786392214,
           525.800393308912,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           531.7529220581055,
           538.1694253512791,
           577.7639307022094,
-          530.6930157343546
+          530.6930157343546,
+          538.7581422170003
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1654,7 +1654,6 @@ window.BENCHMARK_DATA = {
           1360,
           1360,
           1360,
-          1360,
           1368,
           1368,
           1368,
@@ -1682,6 +1681,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1512,
           1512,
           1512,
           1512,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          538.4961628232684,
           528.4363608678182,
           399.7704559961955,
           590.330544980367,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           492.4942326863607,
           518.6470956802368,
           555.1492535273234,
-          479.2288476058415
+          479.2288476058415,
+          507.55058492933
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "3a66050e2f75de139debf131e02a3ed53a6d3d3a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 14 16:32:29 2026 \u002B0200",
-        "message": "fix: keep a runaway mutant from taking down the mutation runner (#1093)"
-      },
-      {
         "sha": "5fa9d810916df1aeb52d14a67bc165c4c7d1bfe0",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 17:27:47 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 22:05:15 2026 \u002B0200",
         "message": "chore: silence the Sonar findings on recently touched code (#1202)"
+      },
+      {
+        "sha": "00dff638f2875ed74793ae1d3a15444b8034904f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 22:10:56 2026 \u002B0200",
+        "message": "feat: add missing collection overloads for non-generic \u0060IEnumerable\u0060 and \u0060ImmutableArray\u003CT\u003E\u0060 (#1199)"
       }
     ],
     "labels": [
-      "3a66050e",
       "5fa9d810",
       "2274a820",
       "7a595a63",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "1305e06f",
       "e00183f5",
       "34d794ec",
-      "f9b4540a"
+      "f9b4540a",
+      "00dff638"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          281.6811509450277,
           275.06960776646935,
           206.19679361979166,
           309.70217558542885,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           301.0016506635226,
           323.1038678487142,
           348.18458862304686,
-          307.96899785314287
+          307.96899785314287,
+          308.0331859248025
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2289,7 +2289,7 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
-          864,
+          1008,
           1008,
           1008,
           1008,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          288.50390370686847,
           276.23029589653015,
           190.39022885836087,
           332.3568512916565,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           243.2290725026812,
           258.2499782562256,
           285.1541458129883,
-          258.28920259475706
+          258.28920259475706,
+          256.62382987340294
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "3a66050e2f75de139debf131e02a3ed53a6d3d3a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 14 16:32:29 2026 \u002B0200",
-        "message": "fix: keep a runaway mutant from taking down the mutation runner (#1093)"
-      },
-      {
         "sha": "5fa9d810916df1aeb52d14a67bc165c4c7d1bfe0",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 17:27:47 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 22:05:15 2026 \u002B0200",
         "message": "chore: silence the Sonar findings on recently touched code (#1202)"
+      },
+      {
+        "sha": "00dff638f2875ed74793ae1d3a15444b8034904f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 22:10:56 2026 \u002B0200",
+        "message": "feat: add missing collection overloads for non-generic \u0060IEnumerable\u0060 and \u0060ImmutableArray\u003CT\u003E\u0060 (#1199)"
       }
     ],
     "labels": [
-      "3a66050e",
       "5fa9d810",
       "2274a820",
       "7a595a63",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "1305e06f",
       "e00183f5",
       "34d794ec",
-      "f9b4540a"
+      "f9b4540a",
+      "00dff638"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          494.18738918304444,
           477.94668610890704,
           355.2072853020259,
           447.0760128339132,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           576.9623188018799,
           590.45237159729,
           603.0279440198626,
-          546.6077763484075
+          546.6077763484075,
+          553.947010676066
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2870,7 +2870,6 @@ window.BENCHMARK_DATA = {
           1128,
           1128,
           1128,
-          1128,
           1256,
           1256,
           1256,
@@ -2898,6 +2897,7 @@ window.BENCHMARK_DATA = {
           1256,
           1256,
           1256,
+          1400,
           1400,
           1400,
           1400,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1370.0128548940022,
           1341.652505329677,
           883.0441282908122,
           1277.3768961588542,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1192.900960786002,
           1185.8738259633383,
           1327.5965039571126,
-          1216.9129625467153
+          1216.9129625467153,
+          1258.8664143880208
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "3a66050e2f75de139debf131e02a3ed53a6d3d3a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 14 16:32:29 2026 \u002B0200",
-        "message": "fix: keep a runaway mutant from taking down the mutation runner (#1093)"
-      },
-      {
         "sha": "5fa9d810916df1aeb52d14a67bc165c4c7d1bfe0",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 17:27:47 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 22:05:15 2026 \u002B0200",
         "message": "chore: silence the Sonar findings on recently touched code (#1202)"
+      },
+      {
+        "sha": "00dff638f2875ed74793ae1d3a15444b8034904f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 22:10:56 2026 \u002B0200",
+        "message": "feat: add missing collection overloads for non-generic \u0060IEnumerable\u0060 and \u0060ImmutableArray\u003CT\u003E\u0060 (#1199)"
       }
     ],
     "labels": [
-      "3a66050e",
       "5fa9d810",
       "2274a820",
       "7a595a63",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "1305e06f",
       "e00183f5",
       "34d794ec",
-      "f9b4540a"
+      "f9b4540a",
+      "00dff638"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1941.6528345743816,
           1670.9143939971923,
           1410.924646105085,
           1422.3141540527345,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2024.6299023946126,
           2019.8510101863317,
           2122.979504449027,
-          2134.2143231709797
+          2134.2143231709797,
+          2227.4863881429037
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3478,7 +3478,6 @@ window.BENCHMARK_DATA = {
           2624,
           2624,
           2624,
-          2624,
           2752,
           2752,
           2752,
@@ -3506,6 +3505,7 @@ window.BENCHMARK_DATA = {
           2752,
           2752,
           2752,
+          3104,
           3104,
           3104,
           3104,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1400.2874593734741,
           1437.5937737782797,
           1009.9652674538748,
           1444.8710503896077,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1350.3154574076334,
           1315.3896138509115,
           1399.3660079956055,
-          1370.7772269930158
+          1370.7772269930158,
+          1325.5950056711833
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "3a66050e2f75de139debf131e02a3ed53a6d3d3a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 14 16:32:29 2026 \u002B0200",
-        "message": "fix: keep a runaway mutant from taking down the mutation runner (#1093)"
-      },
-      {
         "sha": "5fa9d810916df1aeb52d14a67bc165c4c7d1bfe0",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 17:27:47 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 22:05:15 2026 \u002B0200",
         "message": "chore: silence the Sonar findings on recently touched code (#1202)"
+      },
+      {
+        "sha": "00dff638f2875ed74793ae1d3a15444b8034904f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 22:10:56 2026 \u002B0200",
+        "message": "feat: add missing collection overloads for non-generic \u0060IEnumerable\u0060 and \u0060ImmutableArray\u003CT\u003E\u0060 (#1199)"
       }
     ],
     "labels": [
-      "3a66050e",
       "5fa9d810",
       "2274a820",
       "7a595a63",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "1305e06f",
       "e00183f5",
       "34d794ec",
-      "f9b4540a"
+      "f9b4540a",
+      "00dff638"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2660.4840303148544,
           2179.668372599284,
           1916.8696338653565,
           1870.5654805501301,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2581.742345937093,
           2583.1968972342356,
           2728.427665201823,
-          2713.9010078430174
+          2713.9010078430174,
+          2825.083543141683
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4086,7 +4086,6 @@ window.BENCHMARK_DATA = {
           2816,
           2816,
           2816,
-          2816,
           2944,
           2944,
           2944,
@@ -4114,6 +4113,7 @@ window.BENCHMARK_DATA = {
           2944,
           2944,
           2944,
+          3296,
           3296,
           3296,
           3296,
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          28238.857125418526,
           24276.291119384765,
           15356.671731131417,
           17557.282236735027,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           26294.660250150242,
           27306.86591491699,
           27231.05518798828,
-          27495.22459411621
+          27495.22459411621,
+          27270.3803914388
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33468,
           33471,
           33465,
@@ -4239,6 +4238,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
