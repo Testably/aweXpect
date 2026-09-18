@@ -85,7 +85,7 @@ The following expectations now **fail** for a `null` subject where they succeede
 
 One change goes the other way: `IsSameAs(null)` and `IsNotSameAs(other)` now **succeed** for a `null` subject, because
 identity is a comparison and `ReferenceEquals(null, null)` is `true`. Previously `IsSameAs(null)` failed with
-"refers to <null>, but it was <null>".
+`refers to <null>, but it was <null>`.
 
 Every expectation that a `null` subject cannot satisfy carries a `[GuaranteesNotNull]` attribute, and the analyzer
 reads it to suppress a CS8602 on the subject after the expectation ran. In v2 only three expectations were recognised
