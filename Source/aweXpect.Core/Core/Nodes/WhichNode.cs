@@ -235,8 +235,7 @@ internal class WhichNode<TSource, TMember> : Node
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			_left.AppendExpectation(stringBuilder);
-			stringBuilder.Append(_separator);
-			_right.AppendExpectation(stringBuilder);
+			stringBuilder.AppendSeparatedExpectation(_separator, _right);
 		}
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)

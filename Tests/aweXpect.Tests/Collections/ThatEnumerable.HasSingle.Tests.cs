@@ -585,6 +585,22 @@ public sealed partial class ThatEnumerable
 					             but it was <null>
 					             """);
 			}
+
+			[Fact]
+			public async Task WithWhose_ShouldNotRepeatConnector()
+			{
+				IEnumerable<string> subject = ToEnumerable(["foo",]);
+
+				async Task Act()
+					=> await That(subject).HasSingle().Which.Whose(x => x.Length, l => l.IsEqualTo(4));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a single item whose Length is equal to 4,
+					             but Length was 3 which differs by -1
+					             """);
+			}
 		}
 	}
 }

@@ -709,6 +709,23 @@ public sealed class WhichNodeTests
 		await That(result.GetResultText()).IsEqualTo("r2");
 	}
 
+	[Theory]
+	[InlineData(" which ", "whose bar", "foo whose bar")]
+	[InlineData(" which ", "is bar", "foo which is bar")]
+	[InlineData(" whose value ", "whose bar", "foo whose value whose bar")]
+	public async Task WhenSeparatorEndsWithWhich_ShouldOnlyDropItBeforeWhose(
+		string separator, string rightExpectation, string expectedExpectation)
+	{
+		WhichNode<string, int> whichNode = new(new DummyNode("",
+			() => new DummyConstraintResult(Outcome.Failure, "foo")), _ => 3, separator);
+		whichNode.AddNode(new DummyNode("",
+			() => new DummyConstraintResult(Outcome.Failure, rightExpectation)));
+
+		ConstraintResult result = await whichNode.IsMetBy("", null!, CancellationToken.None);
+
+		await That(result.GetExpectationText()).IsEqualTo(expectedExpectation);
+	}
+
 	[Fact]
 	public async Task WhichCreatesGoodMessage()
 	{
@@ -740,6 +757,22 @@ public sealed class WhichNodeTests
 
 			             Expected:
 			             bar
+			             """);
+	}
+
+	[Fact]
+	public async Task WhichWithWhose_ShouldNotRepeatConnector()
+	{
+		string[] subject = ["foo",];
+
+		async Task Act()
+			=> await That(subject).HasSingle().Which.Whose(x => x.Length, l => l.IsEqualTo(4));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             has a single item whose Length is equal to 4,
+			             but Length was 3 which differs by -1
 			             """);
 	}
 
