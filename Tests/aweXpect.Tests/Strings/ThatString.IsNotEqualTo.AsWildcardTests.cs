@@ -24,12 +24,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             does not match "*ME ME*",
 					             but it was "some message"
-
-					             Actual:
-					             some message
-					             
-					             Expected:
-					             *ME ME*
 					             """);
 			}
 		}

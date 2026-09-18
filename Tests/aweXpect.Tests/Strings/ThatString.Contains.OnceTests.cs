@@ -34,12 +34,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             contains "detective" exactly once,
 					             but it did not contain "detective" in "In this text in between the word an investigator should find the word 'IN' multiple times."
-					             
-					             Actual:
-					             In this text in between the word an investigator should find the word 'IN' multiple times.
-					             
-					             Expected:
-					             detective
 					             """);
 			}
 
@@ -58,12 +52,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             contains "word" exactly once,
 					             but it contained "word" twice in "In this text in between the word an investigator should find the word 'IN' multiple times."
-					             
-					             Actual:
-					             In this text in between the word an investigator should find the word 'IN' multiple times.
-					             
-					             Expected:
-					             word
 					             """);
 			}
 		}

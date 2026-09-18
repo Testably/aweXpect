@@ -32,12 +32,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             does not start with "some",
 					             but it was "some text"
-					             
-					             Actual:
-					             some text
-					             
-					             Expected:
-					             some
 					             """);
 			}
 
@@ -71,12 +65,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             does not start with "sOmE" using IgnoreCaseForVocalsComparer,
 					             but it was "some arbitrary text"
-					             
-					             Actual:
-					             some arbitrary text
-					             
-					             Expected:
-					             sOmE
 					             """);
 			}
 
@@ -120,12 +108,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             does not start with "SOME" ignoring case,
 					             but it was "some text"
-					             
-					             Actual:
-					             some text
-					             
-					             Expected:
-					             SOME
 					             """);
 			}
 
@@ -143,12 +125,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             does not start with "some text",
 					             but it was "some text"
-					             
-					             Actual:
-					             some text
-					             
-					             Expected:
-					             some text
 					             """);
 			}
 

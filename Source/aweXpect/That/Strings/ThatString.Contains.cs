@@ -90,10 +90,10 @@ public static partial class ThatString
 			Outcome = quantifier.Check(_actualCount, true) ?? _isNegated ? Outcome.Success : Outcome.Failure;
 			if (Outcome != Outcome.Success && !string.IsNullOrEmpty(actual))
 			{
-				expectationBuilder.AddContext(new ResultContext.Fixed("Actual", actual));
+				expectationBuilder.AddStringContext("Actual", actual, this);
 				if (!string.IsNullOrEmpty(expected))
 				{
-					expectationBuilder.AddContext(new ResultContext.Fixed("Expected", expected));
+					expectationBuilder.AddStringContext("Expected", expected, this);
 				}
 			}
 			

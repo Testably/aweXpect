@@ -54,18 +54,6 @@ public class ExpectTests
 				                     "subject B"
 				                     "subject C"
 				                              ↑ (expected)
-				             
-				             [02] Actual:
-				             subject C
-				             
-				             [02] Expected:
-				             subject B
-				             
-				             [03] Actual:
-				             subject B
-				             
-				             [03] Expected:
-				             subject C
 				             """);
 		}
 
@@ -139,18 +127,6 @@ public class ExpectTests
 				                       "subject B"
 				                       "subject C"
 				                                ↑ (expected)
-				             
-				             [03] Actual:
-				             some unexpected value
-				             
-				             [03] Expected:
-				             subject B
-				             
-				             [04] Actual:
-				             subject B
-				             
-				             [04] Expected:
-				             subject C
 				             """);
 		}
 
@@ -256,24 +232,6 @@ public class ExpectTests
 				                     "subject Z"
 				                     "subject C"
 				                              ↑ (expected)
-				             
-				             [01] Actual:
-				             subject X
-				             
-				             [01] Expected:
-				             subject A
-				             
-				             [02] Actual:
-				             subject Y
-				             
-				             [02] Expected:
-				             subject B
-				             
-				             [03] Actual:
-				             subject Z
-				             
-				             [03] Expected:
-				             subject C
 				             """);
 		}
 
@@ -331,24 +289,6 @@ public class ExpectTests
 				                       "subject Z"
 				                       "subject C"
 				                                ↑ (expected)
-				             
-				             [02] Actual:
-				             subject X
-				             
-				             [02] Expected:
-				             subject A
-				             
-				             [03] Actual:
-				             some unexpected value
-				             
-				             [03] Expected:
-				             subject B
-				             
-				             [04] Actual:
-				             subject Z
-				             
-				             [04] Expected:
-				             subject C
 				             """);
 		}
 

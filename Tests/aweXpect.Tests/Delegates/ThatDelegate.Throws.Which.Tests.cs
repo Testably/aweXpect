@@ -77,12 +77,6 @@ public sealed partial class ThatDelegate
 						               "ShouldIncludeWhichInErrorMessage"
 						               "foo"
 						                ↑ (expected)
-
-						             Actual:
-						             ShouldIncludeWhichInErrorMessage
-
-						             Expected:
-						             foo
 						             """);
 				}
 

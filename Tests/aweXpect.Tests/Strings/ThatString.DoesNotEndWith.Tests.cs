@@ -20,12 +20,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             does not end with "TEXT" ignoring case,
 					             but it was "some text"
-					             
-					             Actual:
-					             some text
-					             
-					             Expected:
-					             TEXT
 					             """);
 			}
 
@@ -57,12 +51,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             does not end with "tExt" using IgnoreCaseForVocalsComparer,
 					             but it was "some arbitrary text"
-					             
-					             Actual:
-					             some arbitrary text
-					             
-					             Expected:
-					             tExt
 					             """);
 			}
 
@@ -108,12 +96,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             does not end with "text",
 					             but it was "some text"
-					             
-					             Actual:
-					             some text
-					             
-					             Expected:
-					             text
 					             """);
 			}
 
@@ -143,12 +125,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             does not end with "some text",
 					             but it was "some text"
-					             
-					             Actual:
-					             some text
-					             
-					             Expected:
-					             some text
 					             """);
 			}
 
