@@ -41,6 +41,94 @@ public class AndOrWhoseResultTests
 			             """);
 	}
 
+	[Fact]
+	public async Task Whose_WithCast_ShouldKeepWholeSelectorBody()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose(o => (bool?)o.Value1, f => f.IsEqualTo(true));
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that sut
+			             is type AndOrWhoseResultTests.MyClass whose (bool?)o.Value1 is True,
+			             but (bool?)o.Value1 was False
+			             """);
+	}
+
+	[Fact]
+	public async Task Whose_WithCastParameter_ShouldKeepWholeSelectorBody()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose(f => ((MyClass)f).Value1, f => f.IsTrue());
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that sut
+			             is type AndOrWhoseResultTests.MyClass whose ((MyClass)f).Value1 is True,
+			             but ((MyClass)f).Value1 was False
+			             """);
+	}
+
+	[Fact]
+	public async Task Whose_WithIdentity_ShouldRenderIt()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose(f => f, f => f.IsNull());
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that sut
+			             is type AndOrWhoseResultTests.MyClass whose it is null,
+			             but it was AndOrWhoseResultTests.MyClass {
+			                 Value1 = False,
+			                 Value2 = False
+			               }
+			             """);
+	}
+
+	[Fact]
+	public async Task Whose_WithNullConditional_ShouldOmitParameter()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose(f => f?.Value1, f => f.IsEqualTo(true));
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that sut
+			             is type AndOrWhoseResultTests.MyClass whose Value1 is True,
+			             but Value1 was False
+			             """);
+	}
+
+	[Fact]
+	public async Task Whose_WithParenthesizedParameter_ShouldOmitParameter()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose((f) => f.Value1, f => f.IsTrue());
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that sut
+			             is type AndOrWhoseResultTests.MyClass whose Value1 is True,
+			             but Value1 was False
+			             """);
+	}
+
 	[Theory]
 	[InlineData(true, true, true)]
 	[InlineData(true, false, false)]
