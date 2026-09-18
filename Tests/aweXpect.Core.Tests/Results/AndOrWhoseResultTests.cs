@@ -16,11 +16,28 @@ public class AndOrWhoseResultTests
 		await That(Act).Throws()
 			.WithMessage("""
 			             Expected that sut
-			             is type AndOrWhoseResultTests.MyClass whose .Value1 is True and whose .Value2 is True and refers to AndOrWhoseResultTests.MyClass {
+			             is type AndOrWhoseResultTests.MyClass whose Value1 is True and whose Value2 is True and refers to AndOrWhoseResultTests.MyClass {
 			                 Value1 = False,
 			                 Value2 = False
 			               },
-			             but .Value1 was False and .Value2 was False
+			             but Value1 was False and Value2 was False
+			             """);
+	}
+
+	[Fact]
+	public async Task Whose_WithNestedMemberPath_ShouldOmitLeadingDot()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose(f => f.Value1.ToString().Length, f => f.IsLessThan(5));
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that sut
+			             is type AndOrWhoseResultTests.MyClass whose Value1.ToString().Length is less than 5,
+			             but Value1.ToString().Length was 5
 			             """);
 	}
 
@@ -45,8 +62,8 @@ public class AndOrWhoseResultTests
 		await That(Act).Throws().OnlyIf(!expectSuccess)
 			.WithMessage($"""
 			              Expected that sut
-			              is type AndOrWhoseResultTests.MyClass whose .Value1 is True and whose .Value2 is True,
-			              but {(value1 ? "" : ".Value1 was False")}{(!value1 && !value2 ? " and " : "")}{(value2 ? "" : ".Value2 was False")}
+			              is type AndOrWhoseResultTests.MyClass whose Value1 is True and whose Value2 is True,
+			              but {(value1 ? "" : "Value1 was False")}{(!value1 && !value2 ? " and " : "")}{(value2 ? "" : "Value2 was False")}
 			              """);
 	}
 

@@ -21,8 +21,8 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is exactly type ThatObject.MyClass whose .Value is less than 42,
-					             but .Value was 42
+					             is exactly type ThatObject.MyClass whose Value is less than 42,
+					             but Value was 42
 					             """);
 			}
 

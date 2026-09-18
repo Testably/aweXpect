@@ -33,8 +33,8 @@ e.g.
 
 > ```
 > Expected subject to
-> whose .TrackCount be greater than 1 and whose .Title be equal to "Dark Side of the Moon",
-> but .TrackCount was 1 and .Title was "Dark Side of the Sun" which differs at index 17:
+> whose TrackCount be greater than 1 and whose Title be equal to "Dark Side of the Moon",
+> but TrackCount was 1 and Title was "Dark Side of the Sun" which differs at index 17:
 >                      ↓ (actual)
 >   "Dark Side of the Sun"
 >   "Dark Side of the Moon"

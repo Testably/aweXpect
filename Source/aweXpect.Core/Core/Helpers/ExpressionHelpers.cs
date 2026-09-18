@@ -24,8 +24,12 @@ internal static class ExpressionHelpers
 		StringBuilder path = new();
 		while (memberExpression != null)
 		{
+			if (path.Length > 0)
+			{
+				path.Insert(0, ".");
+			}
+
 			path.Insert(0, memberExpression.Member.Name);
-			path.Insert(0, ".");
 			memberExpression = GetMemberExpression(memberExpression.Expression);
 		}
 

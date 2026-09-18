@@ -74,7 +74,7 @@ public class MemberAccessor<TSource, TTarget> : MemberAccessor
 
 	private static string ExtractMemberPath(string expression)
 	{
-		// Example: "x => x.Foo" would result in ".Foo"
+		// Example: "x => x.Foo" would result in "Foo"
 		int idx = expression.IndexOf("=>", StringComparison.Ordinal);
 		if (idx > 0)
 		{
@@ -83,6 +83,10 @@ public class MemberAccessor<TSource, TTarget> : MemberAccessor
 			if (idx > 0)
 			{
 				expression = expression.Substring(idx + prefix.Length).TrimStart();
+				if (expression.StartsWith(".", StringComparison.Ordinal))
+				{
+					expression = expression.Substring(1);
+				}
 			}
 		}
 
