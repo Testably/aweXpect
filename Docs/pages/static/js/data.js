@@ -3984,6 +3984,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 20:56:20 2026 \u002B0200",
         "message": "fix: render a negated quantifier as \u0060for not all items\u0060 (#1198)"
+      },
+      {
+        "sha": "34d794ecd4612241cbba134f8a1de02916b80459",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 21:55:41 2026 \u002B0200",
+        "message": "fix: render every quantifier result as \u0060N of M\u0060 (#1201)"
       }
     ],
     "labels": [
@@ -4650,7 +4656,8 @@ window.BENCHMARK_DATA = {
       "9e372b47",
       "5a801961",
       "1305e06f",
-      "e00183f5"
+      "e00183f5",
+      "34d794ec"
     ],
     "datasets": [
       {
@@ -5320,7 +5327,8 @@ window.BENCHMARK_DATA = {
           258.94757595062254,
           218.62173357009888,
           306.1412992477417,
-          306.65425740755524
+          306.65425740755524,
+          337.75201447804767
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5994,6 +6002,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          840,
           840,
           840
         ],
@@ -6673,7 +6682,8 @@ window.BENCHMARK_DATA = {
           284.532284450531,
           231.4863794485728,
           249.71533705393475,
-          255.23794501168388
+          255.23794501168388,
+          254.61803455352782
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6866,6 +6876,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10884,6 +10895,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 20:56:20 2026 \u002B0200",
         "message": "fix: render a negated quantifier as \u0060for not all items\u0060 (#1198)"
+      },
+      {
+        "sha": "34d794ecd4612241cbba134f8a1de02916b80459",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 21:55:41 2026 \u002B0200",
+        "message": "fix: render every quantifier result as \u0060N of M\u0060 (#1201)"
       }
     ],
     "labels": [
@@ -11473,7 +11490,8 @@ window.BENCHMARK_DATA = {
       "9e372b47",
       "5a801961",
       "1305e06f",
-      "e00183f5"
+      "e00183f5",
+      "34d794ec"
     ],
     "datasets": [
       {
@@ -12066,7 +12084,8 @@ window.BENCHMARK_DATA = {
           318864.2989676339,
           252249.9796875,
           318501.8701497396,
-          326566.2730794271
+          326566.2730794271,
+          345701.63971354166
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12663,6 +12682,7 @@ window.BENCHMARK_DATA = {
           617976,
           617976,
           617976,
+          618120,
           618120,
           618120
         ],
@@ -13265,7 +13285,8 @@ window.BENCHMARK_DATA = {
           2462532.89375,
           1794733.3513020833,
           2599195.6180245536,
-          2588997.383072917
+          2588997.383072917,
+          2772641.68359375
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13862,6 +13883,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841609,
+          4841651,
           4841651,
           4841651
         ],
@@ -17861,6 +17883,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 20:56:20 2026 \u002B0200",
         "message": "fix: render a negated quantifier as \u0060for not all items\u0060 (#1198)"
+      },
+      {
+        "sha": "34d794ecd4612241cbba134f8a1de02916b80459",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 21:55:41 2026 \u002B0200",
+        "message": "fix: render every quantifier result as \u0060N of M\u0060 (#1201)"
       }
     ],
     "labels": [
@@ -18527,7 +18555,8 @@ window.BENCHMARK_DATA = {
       "9e372b47",
       "5a801961",
       "1305e06f",
-      "e00183f5"
+      "e00183f5",
+      "34d794ec"
     ],
     "datasets": [
       {
@@ -19197,7 +19226,8 @@ window.BENCHMARK_DATA = {
           448.95081618626915,
           388.24630062920704,
           531.7529220581055,
-          538.1694253512791
+          538.1694253512791,
+          577.7639307022094
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19871,6 +19901,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1512,
           1512,
           1512
         ],
@@ -20550,7 +20581,8 @@ window.BENCHMARK_DATA = {
           495.09659112294514,
           443.9078366279602,
           492.4942326863607,
-          518.6470956802368
+          518.6470956802368,
+          555.1492535273234
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20743,6 +20775,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -25223,6 +25256,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 20:56:20 2026 \u002B0200",
         "message": "fix: render a negated quantifier as \u0060for not all items\u0060 (#1198)"
+      },
+      {
+        "sha": "34d794ecd4612241cbba134f8a1de02916b80459",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 21:55:41 2026 \u002B0200",
+        "message": "fix: render every quantifier result as \u0060N of M\u0060 (#1201)"
       }
     ],
     "labels": [
@@ -25889,7 +25928,8 @@ window.BENCHMARK_DATA = {
       "9e372b47",
       "5a801961",
       "1305e06f",
-      "e00183f5"
+      "e00183f5",
+      "34d794ec"
     ],
     "datasets": [
       {
@@ -26559,7 +26599,8 @@ window.BENCHMARK_DATA = {
           265.6497843106588,
           231.98326710065206,
           301.0016506635226,
-          323.1038678487142
+          323.1038678487142,
+          348.18458862304686
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27233,6 +27274,7 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
+          1008,
           1008,
           1008
         ],
@@ -27912,7 +27954,8 @@ window.BENCHMARK_DATA = {
           243.09207551819938,
           227.02876474062603,
           243.2290725026812,
-          258.2499782562256
+          258.2499782562256,
+          285.1541458129883
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28105,6 +28148,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -32585,6 +32629,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 20:56:20 2026 \u002B0200",
         "message": "fix: render a negated quantifier as \u0060for not all items\u0060 (#1198)"
+      },
+      {
+        "sha": "34d794ecd4612241cbba134f8a1de02916b80459",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 21:55:41 2026 \u002B0200",
+        "message": "fix: render every quantifier result as \u0060N of M\u0060 (#1201)"
       }
     ],
     "labels": [
@@ -33251,7 +33301,8 @@ window.BENCHMARK_DATA = {
       "9e372b47",
       "5a801961",
       "1305e06f",
-      "e00183f5"
+      "e00183f5",
+      "34d794ec"
     ],
     "datasets": [
       {
@@ -33921,7 +33972,8 @@ window.BENCHMARK_DATA = {
           542.7885704040527,
           410.8887882868449,
           576.9623188018799,
-          590.45237159729
+          590.45237159729,
+          603.0279440198626
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34595,6 +34647,7 @@ window.BENCHMARK_DATA = {
           1256,
           1256,
           1256,
+          1400,
           1400,
           1400
         ],
@@ -35274,7 +35327,8 @@ window.BENCHMARK_DATA = {
           1204.099277496338,
           1003.8728504180908,
           1192.900960786002,
-          1185.8738259633383
+          1185.8738259633383,
+          1327.5965039571126
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35703,6 +35757,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -39947,6 +40002,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 20:56:20 2026 \u002B0200",
         "message": "fix: render a negated quantifier as \u0060for not all items\u0060 (#1198)"
+      },
+      {
+        "sha": "34d794ecd4612241cbba134f8a1de02916b80459",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 21:55:41 2026 \u002B0200",
+        "message": "fix: render every quantifier result as \u0060N of M\u0060 (#1201)"
       }
     ],
     "labels": [
@@ -40613,7 +40674,8 @@ window.BENCHMARK_DATA = {
       "9e372b47",
       "5a801961",
       "1305e06f",
-      "e00183f5"
+      "e00183f5",
+      "34d794ec"
     ],
     "datasets": [
       {
@@ -41283,7 +41345,8 @@ window.BENCHMARK_DATA = {
           1970.669078009469,
           1242.9716849009196,
           2024.6299023946126,
-          2019.8510101863317
+          2019.8510101863317,
+          2122.979504449027
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -41957,6 +42020,7 @@ window.BENCHMARK_DATA = {
           2752,
           2752,
           2752,
+          3104,
           3104,
           3104
         ],
@@ -42636,7 +42700,8 @@ window.BENCHMARK_DATA = {
           1379.4092335019793,
           1161.6914187113443,
           1350.3154574076334,
-          1315.3896138509115
+          1315.3896138509115,
+          1399.3660079956055
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -42829,6 +42894,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -47309,6 +47375,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 20:56:20 2026 \u002B0200",
         "message": "fix: render a negated quantifier as \u0060for not all items\u0060 (#1198)"
+      },
+      {
+        "sha": "34d794ecd4612241cbba134f8a1de02916b80459",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 21:55:41 2026 \u002B0200",
+        "message": "fix: render every quantifier result as \u0060N of M\u0060 (#1201)"
       }
     ],
     "labels": [
@@ -47975,7 +48047,8 @@ window.BENCHMARK_DATA = {
       "9e372b47",
       "5a801961",
       "1305e06f",
-      "e00183f5"
+      "e00183f5",
+      "34d794ec"
     ],
     "datasets": [
       {
@@ -48645,7 +48718,8 @@ window.BENCHMARK_DATA = {
           2576.014488728841,
           1651.6465266301082,
           2581.742345937093,
-          2583.1968972342356
+          2583.1968972342356,
+          2728.427665201823
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -49319,6 +49393,7 @@ window.BENCHMARK_DATA = {
           2944,
           2944,
           2944,
+          3296,
           3296,
           3296
         ],
@@ -49998,7 +50073,8 @@ window.BENCHMARK_DATA = {
           20710.378143310547,
           14474.885506184895,
           26294.660250150242,
-          27306.86591491699
+          27306.86591491699,
+          27231.05518798828
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -50672,6 +50748,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471
         ],
