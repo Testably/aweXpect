@@ -49,8 +49,8 @@ public sealed partial class ThatSignaler
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback less than 3 times within 0:00.040,
-					             but it was recorded 3 times
-					             """);
+					             but it was recorded 3 times after 0:*
+					             """).AsWildcard();
 			}
 
 			[Fact]
@@ -110,8 +110,8 @@ public sealed partial class ThatSignaler
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback exactly twice within 0:00.040,
-					             but it was recorded 3 times
-					             """);
+					             but it was recorded 3 times after 0:*
+					             """).AsWildcard();
 			}
 
 			[Fact]
@@ -128,8 +128,8 @@ public sealed partial class ThatSignaler
 					.WithMessage("""
 					             Expected that signaler
 					             has never recorded the callback within 0:00.040,
-					             but it was recorded once
-					             """);
+					             but it was recorded once after 0:*
+					             """).AsWildcard();
 			}
 
 			[Fact]
@@ -162,8 +162,8 @@ public sealed partial class ThatSignaler
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback between 1 and 3 times within 0:00.040,
-					             but it was recorded 4 times
-					             """);
+					             but it was recorded 4 times after 0:*
+					             """).AsWildcard();
 			}
 
 			[Fact]
@@ -186,8 +186,8 @@ public sealed partial class ThatSignaler
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at most twice within 0:10,
-					             but it was recorded 3 times
-					             """);
+					             but it was recorded 3 times after 0:*
+					             """).AsWildcard();
 			}
 
 			[Fact]
@@ -205,8 +205,8 @@ public sealed partial class ThatSignaler
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback exactly once within 0:00.040,
-					             but it was recorded twice
-					             """);
+					             but it was recorded twice after 0:*
+					             """).AsWildcard();
 			}
 
 			[Fact]
@@ -271,8 +271,8 @@ public sealed partial class ThatSignaler
 					               1,
 					               2,
 					               3
-					             ]
-					             """);
+					             ] after 0:*
+					             """).AsWildcard();
 			}
 
 			[Fact]

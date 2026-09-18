@@ -351,8 +351,8 @@ public sealed partial class ThatEventRecording
 					             but it was recorded twice in [
 					               CustomEvent(),
 					               CustomEvent()
-					             ]
-					             """);
+					             ] within 0:*
+					             """).AsWildcard();
 			}
 
 			[Theory]

@@ -1,4 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
@@ -27,6 +29,8 @@ public static partial class ThatEventRecording
 	{
 		private IEventRecording<TSubject>? _actual;
 		private IEventRecordingResult? _result;
+		private bool _stoppedEarly;
+		private TimeSpan? _waitedTime;
 
 		public async Task<ConstraintResult> IsMetBy(IEventRecording<TSubject> actual,
 			CancellationToken cancellationToken)
@@ -39,9 +43,16 @@ public static partial class ThatEventRecording
 				return this;
 			}
 
+			Stopwatch stopwatch = Stopwatch.StartNew();
 			_result = await actual.StopWhen(result =>
 				quantifier.Check(result.GetEventCount(eventName, filter.IsMatch), false) != null, options.Timeout);
 			int eventCount = _result.GetEventCount(eventName, filter.IsMatch);
+			if (options.Timeout > TimeSpan.Zero)
+			{
+				_waitedTime = stopwatch.Elapsed;
+				_stoppedEarly = quantifier.Check(eventCount, false) != null;
+			}
+
 			Outcome = quantifier.Check(eventCount, true) == true ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
@@ -99,6 +110,11 @@ public static partial class ThatEventRecording
 
 			stringBuilder.Append("in ");
 			stringBuilder.Append(_result?.ToString(eventName));
+			if (_waitedTime is not null)
+			{
+				stringBuilder.Append(_stoppedEarly ? " after " : " within ");
+				Formatter.Format(stringBuilder, _waitedTime.Value);
+			}
 		}
 
 		/// <inheritdoc cref="ConstraintResult.TryGetValue{TValue}(out TValue)" />

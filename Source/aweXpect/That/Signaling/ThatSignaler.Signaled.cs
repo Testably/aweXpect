@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -203,6 +204,18 @@ public static partial class ThatSignaler
 		}
 	}
 
+	private static void AppendWaitedTime(StringBuilder stringBuilder, TimeSpan? waitedTime, bool? isSuccess)
+	{
+		if (waitedTime is null)
+		{
+			return;
+		}
+
+		// A successful wait stopped as soon as enough signals were received, otherwise the timeout expired.
+		stringBuilder.Append(isSuccess == true ? " after " : " within ");
+		Formatter.Format(stringBuilder, waitedTime.Value);
+	}
+
 	private sealed class SignaledConstraint(
 		string it,
 		ExpectationGrammars grammars,
@@ -210,6 +223,8 @@ public static partial class ThatSignaler
 		SignalerOptions options)
 		: ConstraintResult.WithNotNullValue<SignalerResult>(it, grammars), IAsyncConstraint<Signaler>
 	{
+		private TimeSpan? _waitedTime;
+
 		public async Task<ConstraintResult> IsMetBy(Signaler actual, CancellationToken cancellationToken)
 		{
 			// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
@@ -223,10 +238,16 @@ public static partial class ThatSignaler
 			TimeSpan? timeout = determinableAmount > 0 ? options.Timeout : TimeSpan.Zero;
 			// A single signal must not be awaited through the Times overload: it leaves the signaler with a disposed
 			// CountdownEvent, so that any later Signal() would throw an ObjectDisposedException.
-			Actual = await Task.Run(()
-					=> determinableAmount > 1
+			Actual = await Task.Run(() =>
+				{
+					// Measured inside the task, so that a busy thread pool does not count as waited time.
+					Stopwatch stopwatch = Stopwatch.StartNew();
+					SignalerResult result = determinableAmount > 1
 						? actual.Wait(determinableAmount.Times(), timeout, cancellationToken)
-						: actual.Wait(timeout, cancellationToken),
+						: actual.Wait(timeout, cancellationToken);
+					_waitedTime = options.Timeout is null ? null : stopwatch.Elapsed;
+					return result;
+				},
 				CancellationToken.None);
 
 			Outcome = quantifier.Check(Actual.Count, true) == true ? Outcome.Success : Outcome.Failure;
@@ -240,6 +261,7 @@ public static partial class ThatSignaler
 		{
 			stringBuilder.Append(It).Append(" was ");
 			AppendOccurrences(stringBuilder, quantifier, Actual?.Count ?? 0);
+			AppendWaitedTime(stringBuilder, _waitedTime, Actual?.IsSuccess);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -258,6 +280,7 @@ public static partial class ThatSignaler
 			IAsyncConstraint<Signaler<TParameter>>
 	{
 		private int _actualCount;
+		private TimeSpan? _waitedTime;
 
 		public async Task<ConstraintResult> IsMetBy(
 			Signaler<TParameter> actual,
@@ -275,10 +298,16 @@ public static partial class ThatSignaler
 			TimeSpan? timeout = determinableAmount > 0 ? options.Timeout : TimeSpan.Zero;
 			// A single signal must not be awaited through the Times overload: it leaves the signaler with a disposed
 			// CountdownEvent, so that any later Signal() would throw an ObjectDisposedException.
-			Actual = await Task.Run(()
-					=> determinableAmount > 1
+			Actual = await Task.Run(() =>
+				{
+					// Measured inside the task, so that a busy thread pool does not count as waited time.
+					Stopwatch stopwatch = Stopwatch.StartNew();
+					SignalerResult<TParameter> result = determinableAmount > 1
 						? actual.Wait(determinableAmount.Times(), o.Matches, timeout, cancellationToken)
-						: actual.Wait(o.Matches, timeout, cancellationToken),
+						: actual.Wait(o.Matches, timeout, cancellationToken);
+					_waitedTime = o.Timeout is null ? null : stopwatch.Elapsed;
+					return result;
+				},
 				CancellationToken.None);
 
 			_actualCount = Actual.Parameters.Count(p => o.Matches(p));
@@ -300,6 +329,8 @@ public static partial class ThatSignaler
 				stringBuilder.Append(" in ");
 				ValueFormatters.Format(Formatter, stringBuilder, Actual.Parameters, FormattingOptions.MultipleLines);
 			}
+
+			AppendWaitedTime(stringBuilder, _waitedTime, Actual?.IsSuccess);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
