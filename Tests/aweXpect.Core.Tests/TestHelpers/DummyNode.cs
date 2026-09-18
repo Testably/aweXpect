@@ -2,7 +2,6 @@
 using System.Threading;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
-using aweXpect.Core.Helpers;
 using aweXpect.Core.Nodes;
 
 namespace aweXpect.Core.Tests.TestHelpers;
@@ -11,7 +10,6 @@ internal class DummyNode(string name, Func<ConstraintResult>? result = null) : N
 {
 	private readonly string _name = name;
 	public MemberAccessor? MappingMemberAccessor { get; private set; }
-	public string? ReceivedReason { get; private set; }
 
 	public override void AddConstraint(IConstraint constraint)
 		=> throw new NotSupportedException();
@@ -67,9 +65,6 @@ internal class DummyNode(string name, Func<ConstraintResult>? result = null) : N
 		CancellationToken cancellationToken)
 		where TValue : default
 		=> result == null ? throw new NotSupportedException() : Task.FromResult(result());
-
-	public override void SetReason(IBecauseReason becauseReason)
-		=> ReceivedReason = becauseReason.ToString();
 
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 		=> stringBuilder.Append(_name);

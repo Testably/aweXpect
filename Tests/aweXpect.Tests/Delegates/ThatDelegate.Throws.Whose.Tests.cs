@@ -100,7 +100,7 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that Delegate
-						              throws a HResultException whose HResult is equal to {hResult} and with HResult equal to {otherHResult},
+						              throws an HResultException whose HResult is equal to {hResult} and with HResult equal to {otherHResult},
 						              but it had HResult {hResult}
 						              """);
 				}
@@ -121,7 +121,7 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that Delegate
-						              throws a HResultException whose HResult is equal to {expectedHResult} and with HResult equal to {hResult},
+						              throws an HResultException whose HResult is equal to {expectedHResult} and with HResult equal to {hResult},
 						              but HResult was {hResult} which differs by -1
 						              """);
 				}

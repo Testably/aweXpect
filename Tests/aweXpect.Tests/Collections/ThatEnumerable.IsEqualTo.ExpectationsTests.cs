@@ -212,7 +212,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
-				IEnumerable<int> subject = Enumerable.Range(1, 11);
+				IEnumerable<int> subject = Enumerable.Range(1, 11).ToArray();
 				IEnumerable<Action<IThat<int>>>? expected = null;
 
 				async Task Act()
@@ -236,7 +236,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}

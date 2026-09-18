@@ -215,6 +215,16 @@ need an update.
 - A member selector reads `by`: `is unique by x => x.Value for all items` instead of
   `is unique for x => x.Value for all items`, and `is in ascending order by x => x.Value using MyComparer` instead of
   `is in ascending order using MyComparer for x => x.Value`.
+- The `Because(…)` reason follows the whole expectation, including constraints combined with `And` or `Or` and the
+  timeout of `Eventually()`: `is True and is False, because …` instead of `is True, because … and is False`, and
+  `is equal to 1 within 0:00.050, because …` instead of `is equal to 1, because … within 0:00.050`. Several reasons
+  are listed in the order they were given.
+- The article before an exception type follows its sound: an initialism is read letter by letter
+  (`throws an HResultException` instead of `throws a HResultException`), and a "U" read as "you" takes "a"
+  (`a UserException`, `a UriFormatException`).
+- A failed `IsParsableInto` separates the reason with a comma: `but it was not, because the input string …`.
+- `DoesNotThrow().AndWhoseResult` reads `does not throw any exception and its result is equal to 5` instead of
+  `… and whose result is equal to 5`.
 
 ## Timeouts on negative event expectations
 

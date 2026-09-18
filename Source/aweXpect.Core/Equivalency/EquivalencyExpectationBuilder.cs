@@ -41,7 +41,7 @@ internal class EquivalencyExpectationBuilder<T> : EquivalencyExpectationBuilder
 	{
 		if (value is T typedValue)
 		{
-			_result = await GetRootNode().IsMetBy(typedValue, context, cancellationToken);
+			_result = await ApplyReasons(await GetRootNode().IsMetBy(typedValue, context, cancellationToken));
 		}
 		else if (value is null)
 		{
@@ -55,7 +55,7 @@ internal class EquivalencyExpectationBuilder<T> : EquivalencyExpectationBuilder
 				// ReSharper disable ExpressionIsAlwaysNull
 				// typedDefault is used to have the correct generic overload in `IsMetBy`.
 				_result = new NotMatchingTypesResult(typedDefault,
-					await GetRootNode().IsMetBy(typedDefault, context, cancellationToken));
+					await ApplyReasons(await GetRootNode().IsMetBy(typedDefault, context, cancellationToken)));
 				// ReSharper restore ExpressionIsAlwaysNull
 			}
 		}

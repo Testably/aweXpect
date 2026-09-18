@@ -37,7 +37,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             is parsable into int,
-					             but it was not because the input string 'abc' was not in a correct format
+					             but it was not, because the input string 'abc' was not in a correct format
 					             """);
 			}
 
@@ -66,7 +66,7 @@ public sealed partial class ThatString
 					.WithMessage($"""
 					              Expected that subject
 					              is parsable into uint using {cultureName},
-					              but it was not because the input string '{subject}' was not in a correct format
+					              but it was not, because the input string '{subject}' was not in a correct format
 					              """);
 			}
 
@@ -114,7 +114,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             is parsable into TimeSpan which is less than 0:10,
-					             but it was not because string 'abc' was not recognized as a valid TimeSpan
+					             but it was not, because string 'abc' was not recognized as a valid TimeSpan
 					             """);
 			}
 

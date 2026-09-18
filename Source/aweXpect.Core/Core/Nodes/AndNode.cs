@@ -111,19 +111,6 @@ internal class AndNode : Node
 		yield return (_currentSeparator ?? DefaultSeparator, Current);
 	}
 
-	/// <inheritdoc cref="Node.SetReason(IBecauseReason)" />
-	public override void SetReason(IBecauseReason becauseReason)
-	{
-		if (_nodes.Any() && Current is ExpectationNode expectationNode && expectationNode.IsEmpty())
-		{
-			_nodes[^1].Item2.SetReason(becauseReason);
-		}
-		else
-		{
-			Current.SetReason(becauseReason);
-		}
-	}
-
 	/// <inheritdoc />
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{

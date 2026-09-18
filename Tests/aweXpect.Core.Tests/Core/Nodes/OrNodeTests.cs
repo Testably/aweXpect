@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using System.Threading;
 using aweXpect.Core.Constraints;
-using aweXpect.Core.Helpers;
 using aweXpect.Core.Nodes;
 using aweXpect.Core.Tests.TestHelpers;
 
@@ -280,50 +279,6 @@ public sealed class OrNodeTests
 		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
 
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
-	}
-
-	[Fact]
-	public async Task SetReason_WithAdditionalNodes_ShouldUseCurrentNode()
-	{
-		DummyNode node1 = new("node1");
-		DummyNode node2 = new("node2");
-		DummyNode current = new("current");
-		OrNode node = new(node1);
-		node.AddNode(node2);
-		node.AddNode(current);
-
-		node.SetReason(new BecauseReason("bar"));
-
-		await That(current.ReceivedReason).IsEqualTo(", because bar");
-		await That(node1.ReceivedReason).IsNull();
-		await That(node2.ReceivedReason).IsNull();
-	}
-
-	[Fact]
-	public async Task SetReason_WithAdditionalNodes_WhenCurrentNodeIsEmptyExpectationNode_ShouldUseLastNode()
-	{
-		DummyNode node1 = new("node1");
-		DummyNode node2 = new("node2");
-		ExpectationNode current = new();
-		OrNode node = new(node1);
-		node.AddNode(node2);
-		node.AddNode(current);
-
-		node.SetReason(new BecauseReason("bar"));
-
-		await That(node1.ReceivedReason).IsNull();
-		await That(node2.ReceivedReason).IsEqualTo(", because bar");
-	}
-
-	[Fact]
-	public async Task SetReason_WithoutAdditionalNodes_ShouldSetReasonForCurrentNode()
-	{
-		DummyNode current = new("current");
-		OrNode node = new(current);
-
-		node.SetReason(new BecauseReason("bar"));
-
-		await That(current.ReceivedReason).IsEqualTo(", because bar");
 	}
 
 	[Fact]

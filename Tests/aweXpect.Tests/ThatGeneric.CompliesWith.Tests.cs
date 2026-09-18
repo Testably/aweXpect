@@ -23,6 +23,22 @@ public sealed partial class ThatGeneric
 				await That(Act).DoesNotThrow();
 			}
 
+			[Fact]
+			public async Task WhenInnerExpectationHasReason_ShouldAppendItAfterTheInnerExpectation()
+			{
+				int subject = 1;
+
+				async Task Act()
+					=> await That(subject).CompliesWith(x => x.IsEqualTo(2).Because("of reasons").Or.IsEqualTo(3));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to 2 or is equal to 3, because of reasons,
+					             but it was 1 which differs by -1 and it was 1 which differs by -2
+					             """);
+			}
+
 			[Theory]
 			[InlineData(1, true)]
 			[InlineData(2, false)]
