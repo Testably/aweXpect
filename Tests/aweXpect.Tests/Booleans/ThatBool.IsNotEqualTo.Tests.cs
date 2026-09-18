@@ -33,7 +33,7 @@ public sealed partial class ThatBool
 					.WithMessage($"""
 					              Expected that subject
 					              is not {Formatter.Format(unexpected)},
-					              but it was
+					              but it was {Formatter.Format(subject)}
 					              """);
 			}
 
@@ -52,7 +52,7 @@ public sealed partial class ThatBool
 					.WithMessage($"""
 					              Expected that subject
 					              is not {Formatter.Format(unexpected)}, because {reason},
-					              but it was
+					              but it was {Formatter.Format(subject)}
 					              """);
 			}
 		}

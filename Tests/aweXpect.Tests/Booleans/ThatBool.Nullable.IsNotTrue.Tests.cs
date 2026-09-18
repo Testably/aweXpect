@@ -49,7 +49,7 @@ public sealed partial class ThatBool
 						.WithMessage("""
 						             Expected that subject
 						             is not True, because we want to test the failure,
-						             but it was
+						             but it was True
 						             """);
 				}
 			}
