@@ -39,6 +39,22 @@ public sealed partial class ThatDictionary
 			}
 
 			[Fact]
+			public async Task WhenSubjectIsNull_NegatedShouldFail()
+			{
+				IDictionary<int, string>? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.Keys.Contains(0));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has keys which contain 0 at least once,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IDictionary<int, string>? subject = null;

@@ -395,6 +395,42 @@ public sealed class WhichNodeTests
 			             """);
 	}
 
+	[Theory]
+	[InlineData(Outcome.Success)]
+	[InlineData(Outcome.Failure)]
+	public async Task IsMetBy_WithNullValue_ShouldFailAlsoWhenNegated(Outcome parentOutcome)
+	{
+		WhichNode<string, int> whichNode = new(new DummyNode("", () => new DummyConstraintResult(parentOutcome)),
+			s => s.Length);
+		whichNode.AddNode(new ExpectationNode());
+		whichNode.AddConstraint(new DummyConstraint("", () => new DummyConstraintResult(Outcome.Success)));
+
+		ConstraintResult result = await whichNode.IsMetBy<string?>(null, null!, CancellationToken.None);
+		Outcome outcome = result.Outcome;
+		result.Negate();
+
+		await That(outcome).IsEqualTo(Outcome.Failure);
+		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+	}
+
+	[Fact]
+	public async Task IsMetBy_WithNullValueAndWithoutParent_ShouldFailAlsoWhenNegated()
+	{
+		WhichNode<string, int> whichNode = new(null, s => s.Length);
+		whichNode.AddNode(new ExpectationNode());
+		whichNode.AddConstraint(new DummyConstraint("c2",
+			() => new DummyConstraintResult<int>(Outcome.Failure, 0, "e2")));
+		StringBuilder sb = new();
+
+		ConstraintResult result = await whichNode.IsMetBy<string?>(null, null!, CancellationToken.None);
+		ConstraintResult negated = result.Negate();
+
+		negated.AppendExpectation(sb);
+		await That(negated.Outcome).IsEqualTo(Outcome.Failure);
+		await That(sb.ToString()).IsEqualTo("e2");
+		await That(negated.GetResultText()).IsEqualTo("it was <null>");
+	}
+
 	[Fact]
 	public async Task IsMetBy_WithoutInnerNode_ShouldThrowInvalidOperationException()
 	{

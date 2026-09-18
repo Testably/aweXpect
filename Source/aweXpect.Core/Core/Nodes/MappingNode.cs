@@ -40,7 +40,7 @@ internal class MappingNode<TSource, TTarget> : ExpectationNode
 		if (value is null || value is DelegateValue { IsNull: true, })
 		{
 			ConstraintResult result = await IsMetByMember(default, context, cancellationToken);
-			return result.Fail("it was <null>", value);
+			return NullSubjectResult.Create(result, value);
 		}
 
 		if (value is TSource typedValue)
@@ -186,12 +186,16 @@ internal class MappingNode<TSource, TTarget> : ExpectationNode
 
 		public override ConstraintResult Negate()
 		{
-			Outcome = Outcome switch
+			if (_right is not NullSubjectResult)
 			{
-				Outcome.Failure => Outcome.Success,
-				Outcome.Success => Outcome.Failure,
-				_ => Outcome,
-			};
+				Outcome = Outcome switch
+				{
+					Outcome.Failure => Outcome.Success,
+					Outcome.Success => Outcome.Failure,
+					_ => Outcome,
+				};
+			}
+
 			_left.Negate();
 			return this;
 		}

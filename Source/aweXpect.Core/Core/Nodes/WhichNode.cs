@@ -104,7 +104,8 @@ internal class WhichNode<TSource, TMember> : Node
 
 		if (value is null || value is DelegateValue { IsNull: true, })
 		{
-			ConstraintResult nullResult = await _inner.IsMetBy<TMember>(default, context, cancellationToken);
+			ConstraintResult nullResult = NullSubjectResult.Create(
+				await _inner.IsMetBy<TMember>(default, context, cancellationToken), default(TMember));
 			return CombineResults(parentResult, nullResult, _separator ?? "",
 				FurtherProcessingStrategy.IgnoreResult, default);
 		}
@@ -274,12 +275,16 @@ internal class WhichNode<TSource, TMember> : Node
 
 		public override ConstraintResult Negate()
 		{
-			Outcome = Outcome switch
+			if (_right is not NullSubjectResult)
 			{
-				Outcome.Failure => Outcome.Success,
-				Outcome.Success => Outcome.Failure,
-				_ => Outcome,
-			};
+				Outcome = Outcome switch
+				{
+					Outcome.Failure => Outcome.Success,
+					Outcome.Success => Outcome.Failure,
+					_ => Outcome,
+				};
+			}
+
 			return this;
 		}
 	}

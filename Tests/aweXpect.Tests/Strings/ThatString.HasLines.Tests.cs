@@ -156,7 +156,7 @@ public sealed partial class ThatString
 		public sealed class NegatedTests
 		{
 			[Fact]
-			public async Task WhenActualIsNull_ShouldSucceed()
+			public async Task WhenActualIsNull_ShouldFail()
 			{
 				string? subject = null;
 
@@ -164,7 +164,12 @@ public sealed partial class ThatString
 					=> await That(subject).DoesNotComplyWith(it => it
 						.HasLines(lines => lines.Contains("Ready")));
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have lines which contain "Ready" at least once,
+					             but it was <null>
+					             """);
 			}
 
 			[Fact]
