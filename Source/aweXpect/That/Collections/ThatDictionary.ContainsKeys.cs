@@ -27,6 +27,7 @@ public static partial class ThatDictionary
 			expected,
 			dictionary => expected
 				.Select(key => key is not null && dictionary.TryGetValue(key, out TValue? value) ? value : default)
+				.ToArray()
 		);
 	}
 
@@ -49,6 +50,7 @@ public static partial class ThatDictionary
 			expected,
 			dictionary => expected
 				.Select(key => key is not null && dictionary.TryGetValue(key, out TValue? value) ? value : default)
+				.ToArray()
 		);
 	}
 

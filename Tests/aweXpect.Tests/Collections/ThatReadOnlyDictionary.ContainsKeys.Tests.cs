@@ -119,8 +119,7 @@ public sealed partial class ThatReadOnlyDictionary
 
 					             Not matching items:
 					             [
-					               <null>,
-					               (… and maybe others)
+					               <null>
 					             ]
 
 					             Collection:
@@ -149,12 +148,11 @@ public sealed partial class ThatReadOnlyDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [1, 2] whose values are equal to "foo" for all items,
-					             but only 1 of at least 2 were
+					             but only 1 of 2 were
 
 					             Not matching items:
 					             [
-					               "bar",
-					               (… and maybe others)
+					               "bar"
 					             ]
 
 					             Collection:
@@ -184,12 +182,11 @@ public sealed partial class ThatReadOnlyDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [2] whose values are equal to "foo" for all items,
-					             but none of at least 1 were
+					             but none of 1 were
 
 					             Not matching items:
 					             [
-					               "bar",
-					               (… and maybe others)
+					               "bar"
 					             ]
 
 					             Collection:
@@ -236,7 +233,8 @@ public sealed partial class ThatReadOnlyDictionary
 					             Not matching items:
 					             [
 					               "foo",
-					               (… and maybe others)
+					               <null>,
+					               "baz"
 					             ]
 
 					             Collection:
