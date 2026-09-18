@@ -43,7 +43,7 @@ public sealed partial class ThatDelegateTests
 					.Whose(e => e.FaultedAsync(), v => v.IsEqualTo(1));
 
 			await That(Act).ThrowsExactly<InvalidOperationException>()
-				.WithMessage("async member failed");
+				.WithMessage("async member failed for 1");
 		}
 
 		private sealed class AsyncException(int value) : Exception
@@ -51,7 +51,7 @@ public sealed partial class ThatDelegateTests
 			public async Task<int> FaultedAsync()
 			{
 				await Task.Yield();
-				throw new InvalidOperationException("async member failed");
+				throw new InvalidOperationException($"async member failed for {value}");
 			}
 
 			public Task<int> GetValueAsync() => Task.FromResult(value);
