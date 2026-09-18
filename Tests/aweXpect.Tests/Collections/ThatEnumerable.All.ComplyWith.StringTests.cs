@@ -63,6 +63,30 @@ public sealed partial class ThatEnumerable
 						             but it was <null>
 						             """);
 				}
+
+				[Fact]
+				public async Task WhenAllItemsComplyUnderNegation_ShouldFail()
+				{
+					IEnumerable<string?> subject = ["apple", "ant", "avocado",];
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it
+							=> it.All().ComplyWith(x => x.StartsWith("a")));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             starts with "a" for not all items,
+						             but all 3 were
+
+						             Collection:
+						             [
+						               "apple",
+						               "ant",
+						               "avocado"
+						             ]
+						             """);
+				}
 			}
 		}
 	}

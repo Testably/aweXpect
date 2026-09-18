@@ -74,8 +74,28 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             exactly one for is equal to 3 item,
-					             but it did
+					             is equal to 3 for not exactly one item,
+					             but found 1
+
+					             Collection:
+					             [1, 2, 3, 4, 5]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenExactlyTheExpectedNumberComplies_ShouldFail()
+			{
+				int[] subject = [1, 2, 3, 4, 5,];
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it
+						=> it.Exactly(3).ComplyWith(x => x.IsGreaterThan(2)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is greater than 2 for not exactly 3 items,
+					             but found 3
 
 					             Collection:
 					             [1, 2, 3, 4, 5]
