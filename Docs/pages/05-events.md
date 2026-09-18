@@ -129,7 +129,7 @@ IEventRecording<MyClass> recording = subject.Record().Events();
 subject.OnThresholdReached(new ThresholdReachedEventArgs(5));
 
 await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached))
-  .With<ThresholdReachedEventArgs>(e => e < 10);
+  .With<ThresholdReachedEventArgs>(e => e.Threshold < 10);
 ```
 
 ## Counting
@@ -143,7 +143,7 @@ subject.OnThresholdReached(new ThresholdReachedEventArgs(5));
 subject.OnThresholdReached(new ThresholdReachedEventArgs(15));
 
 await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached))
-  .Between(1).And(2.Times();
+  .Between(1).And(2.Times());
 ```
 
 You can use the same occurrence constraints as in the [contain](/docs/expectations/collections#contain) method:

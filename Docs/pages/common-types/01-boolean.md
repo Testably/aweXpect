@@ -41,6 +41,10 @@ await Expect.That(subject).IsNotTrue()
   .Because("it could be false or null");
 ```
 
+*Note: on a `bool?`, `IsTrue()` and `IsFalse()` compare the subject against `true` or `false` instead of inspecting it.
+Therefore `null` is treated as an ordinary value: `IsNotTrue()`, `IsNotFalse()` and
+`DoesNotComplyWith(it => it.IsTrue())` succeed for a `null` subject.*
+
 ## Implication
 
 You can verify that `a` implies `b` (*find [here](https://mathworld.wolfram.com/Implies.html) a mathematical
