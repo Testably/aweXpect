@@ -53,7 +53,9 @@ aweXpect.Core.Constraints.ConstraintResult.WithValue<T>
 aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.Actual.get -> T?
 aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.Actual.set -> void
 aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.IsNegated.get -> bool
+aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.It.get -> string!
 aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.WithValue(aweXpect.Core.ExpectationGrammars grammars) -> void
+aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.WithValue(string! it, aweXpect.Core.ExpectationGrammars grammars) -> void
 aweXpect.Core.Constraints.ConstraintResultExtensions
 aweXpect.Core.Constraints.FurtherProcessingStrategy
 aweXpect.Core.Constraints.FurtherProcessingStrategy.Continue = 0 -> aweXpect.Core.Constraints.FurtherProcessingStrategy

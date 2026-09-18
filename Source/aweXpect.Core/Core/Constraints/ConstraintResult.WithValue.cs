@@ -29,10 +29,23 @@ public abstract partial class ConstraintResult
 	{
 		private Outcome _outcome = Outcome.Undecided;
 
+		/// <inheritdoc cref="WithValue{T}" />
+		/// <param name="it">The name of the subject in the result, e.g. a member path in a nested expectation.</param>
+		/// <param name="grammars">The grammars of the expectation.</param>
+		public WithValue(string it, ExpectationGrammars grammars) : this(grammars)
+		{
+			It = it;
+		}
+
 		/// <summary>
 		///     Flag indicating if the constraint is negated.
 		/// </summary>
 		protected bool IsNegated { get; private set; }
+
+		/// <summary>
+		///     The `it` parameter.
+		/// </summary>
+		protected string It { get; } = "it";
 
 		/// <summary>
 		///     The actual value.
@@ -84,7 +97,7 @@ public abstract partial class ConstraintResult
 		///     is <see cref="Outcome.Undecided" />.
 		/// </summary>
 		protected virtual void AppendUndecidedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(CancelledResult);
+			=> stringBuilder.Append(It).Append(CancelledResultSuffix);
 
 		/// <inheritdoc cref="ConstraintResult.AppendExpectation(StringBuilder, string?)" />
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]

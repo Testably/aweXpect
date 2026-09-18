@@ -95,6 +95,17 @@ public partial class ConstraintResultTests
 			await That(resultText).IsEqualTo("it could not be verified, because it was already cancelled");
 		}
 
+		[Fact]
+		public async Task AppendResult_WhenUndecided_ShouldStartWithIt()
+		{
+			ConstraintResult sut = new MyWithNotNullValueDummy<int?>(0, it: "Items");
+
+			string resultText = sut.GetResultText();
+
+			await That(sut.Outcome).IsEqualTo(Outcome.Undecided);
+			await That(resultText).IsEqualTo("Items could not be verified, because it was already cancelled");
+		}
+
 		[Theory]
 		[InlineData(Outcome.Success, Outcome.Failure)]
 		[InlineData(Outcome.Failure, Outcome.Success)]

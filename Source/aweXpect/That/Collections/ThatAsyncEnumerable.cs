@@ -212,7 +212,7 @@ public static partial class ThatAsyncEnumerable
 #else
 			Func<TItem, Task<bool>> predicate,
 #endif
-			string verb) : base(grammars)
+			string verb) : base(it, grammars)
 		{
 			_expectationBuilder = expectationBuilder;
 			_it = it;
