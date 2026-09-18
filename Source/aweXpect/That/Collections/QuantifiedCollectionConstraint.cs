@@ -51,13 +51,13 @@ internal abstract class QuantifiedCollectionConstraint<TValue, TItem>(
 
 		if (isMatch)
 		{
+			_matchingItems.Add(item, _matchingCount + _notMatchingCount);
 			_matchingCount++;
-			_matchingItems.Add(item);
 		}
 		else
 		{
+			_notMatchingItems.Add(item, _matchingCount + _notMatchingCount);
 			_notMatchingCount++;
-			_notMatchingItems.Add(item);
 		}
 	}
 
@@ -71,18 +71,18 @@ internal abstract class QuantifiedCollectionConstraint<TValue, TItem>(
 
 		EnumerableQuantifier.QuantifierContexts quantifierContexts = quantifier.GetQuantifierContext();
 		if (quantifierContexts.HasFlag(EnumerableQuantifier.QuantifierContexts.MatchingItems) &&
-		    _matchingItems?.Count > 0)
+		    _matchingItems is { Count: > 0 } matchingItems)
 		{
 			ExpectationBuilder.AddContext(new ResultContext.SyncCallback("Matching items",
-				() => Formatter.Format(_matchingItems, ItemType.GetFormattingOption(_matchingItems?.Count)),
+				() => matchingItems.Format(Actual, ItemType),
 				int.MaxValue));
 		}
 
 		if (quantifierContexts.HasFlag(EnumerableQuantifier.QuantifierContexts.NotMatchingItems) &&
-		    _notMatchingItems?.Count > 0)
+		    _notMatchingItems is { Count: > 0 } notMatchingItems)
 		{
 			ExpectationBuilder.AddContext(new ResultContext.SyncCallback("Not matching items",
-				() => Formatter.Format(_notMatchingItems, ItemType.GetFormattingOption(_notMatchingItems?.Count)),
+				() => notMatchingItems.Format(Actual, ItemType),
 				int.MaxValue));
 		}
 	}

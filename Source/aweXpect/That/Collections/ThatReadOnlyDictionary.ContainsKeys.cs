@@ -28,9 +28,9 @@ public static partial class ThatReadOnlyDictionary
 				new ContainKeysConstraint<TKey, TValue>(expectationBuilder, it, grammars, expected)),
 			subject,
 			expected,
-			dictionary => expected
-				.Select(key => key is not null && dictionary.TryGetValue(key, out TValue? value) ? value : default)
-				.ToArray()
+			dictionary => new KeyedValues<TKey, TValue?>(expected
+				.Where(key => key is not null && dictionary.ContainsKey(key))
+				.Select(key => new KeyValuePair<TKey, TValue?>(key, dictionary[key])))
 		);
 	}
 
@@ -53,9 +53,9 @@ public static partial class ThatReadOnlyDictionary
 				new ContainKeysConstraint<TKey, TValue>(expectationBuilder, it, grammars, expected)),
 			subject,
 			expected,
-			dictionary => expected
-				.Select(key => dictionary.TryGetValue(key, out TValue? value) ? value : default)
-				.ToArray()
+			dictionary => new KeyedValues<TKey, TValue?>(expected
+				.Where(dictionary.ContainsKey)
+				.Select(key => new KeyValuePair<TKey, TValue?>(key, dictionary[key])))
 		);
 	}
 

@@ -130,17 +130,28 @@ internal static class CollectionHelpers
 			{
 				contexts
 					.Add(new ResultContext.SyncCallback("Collection",
-						() => Formatter.Format(value, typeof(TItem).GetFormattingOption(value switch
-						{
-							ICollection<TItem> coll => coll.Count,
-							LimitedCollection<TItem> limited => limited.Count,
-							ICountable countable => countable.Count,
-							_ => null,
-						})).AppendIsIncomplete(isIncomplete),
+						() => (value is IKeyedCollection keyed
+							? keyed.Format()
+							: Formatter.Format(value, typeof(TItem).GetFormattingOption(value switch
+							{
+								ICollection<TItem> coll => coll.Count,
+								LimitedCollection<TItem> limited => limited.Count,
+								ICountable countable => countable.Count,
+								_ => null,
+							}))).AppendIsIncomplete(isIncomplete),
 						-1));
 			}
 		});
 	}
+
+	/// <summary>
+	///     Formats the <paramref name="items" /> recorded from the <paramref name="source" /> collection, together with
+	///     their keys when the source is an <see cref="IKeyedCollection" />.
+	/// </summary>
+	internal static string Format<TItem>(this LimitedCollection<TItem> items, object? source, Type itemType)
+		=> source is IKeyedCollection keyed
+			? keyed.Format(items.Indices)
+			: Formatter.Format(items, itemType.GetFormattingOption(items.Count));
 
 	internal static ExpectationBuilder AddCollectionContext(this ExpectationBuilder expectationBuilder,
 		IEnumerable? value, bool isIncomplete = false)
