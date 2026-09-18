@@ -151,7 +151,6 @@ public static partial class ThatAsyncEnumerable
 		/// <inheritdoc cref="ConstraintResult.Outcome" />
 		public override Outcome Outcome
 		{
-			// A null collection has no single item, so it fails also when negated.
 			get => _actual is null ? Outcome.Failure : base.Outcome;
 			protected set => base.Outcome = value;
 		}
