@@ -50,7 +50,7 @@ internal static class CollectionHelpers
 		=> new ThatSubject<IEnumerable<TItem>?>(subject.Get().ExpectationBuilder
 			.AddConstraint((it, grammars) => new HasCollectionMemberConstraint<TSource>(it, grammars, memberName))
 			.ForWhich(memberAccessor, " which ",
-				expectationGrammar: grammars => grammars | ExpectationGrammars.Plural));
+				expectationGrammar: grammars => grammars | ExpectationGrammars.Plural, negateMemberOnly: true));
 
 	/// <summary>
 	///     Names the member in the expectation text and rules a <see langword="null" /> subject out. A negation applies

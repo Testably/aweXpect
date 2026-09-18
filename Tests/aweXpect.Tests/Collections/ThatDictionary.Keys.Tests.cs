@@ -39,6 +39,49 @@ public sealed partial class ThatDictionary
 			}
 
 			[Fact]
+			public async Task WhenNegatedExpectationOnKeysFails_ShouldFail()
+			{
+				IDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.Keys.Contains(2));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has keys which do not contain 2,
+					             but it contained it at least once
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNegatedExpectationOnKeysIsSatisfied_ShouldSucceed()
+			{
+				IDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.Keys.Contains(4));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_NegatedShouldFail()
+			{
+				IDictionary<int, string>? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.Keys.Contains(0));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has keys which do not contain 0,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IDictionary<int, string>? subject = null;

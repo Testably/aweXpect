@@ -196,7 +196,7 @@ public sealed partial class ThatException
 			}
 
 			[Fact]
-			public async Task WhenSubjectIsNull_ShouldSucceed()
+			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Exception? subject = null;
 
@@ -204,7 +204,12 @@ public sealed partial class ThatException
 					=> await That(subject).DoesNotComplyWith(it => it
 						.HasRecursiveInnerExceptions(c => c.IsEmpty()));
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have recursive inner exceptions which are empty,
+					             but it was <null>
+					             """);
 			}
 		}
 	}

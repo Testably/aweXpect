@@ -351,11 +351,17 @@ public abstract class ExpectationBuilder
 	/// <summary>
 	///     Specifies a mapping to add expectations on the member from the <paramref name="memberAccessor" />.
 	/// </summary>
+	/// <remarks>
+	///     Set <paramref name="negateMemberOnly" /> when the previous expectation only navigates to the member, so that
+	///     a negation applies to the member expectation ("has keys which do not contain 0") instead of the whole
+	///     expectation ("does not have a single item which is equal to 3").
+	/// </remarks>
 	public ExpectationBuilder ForWhich<TSource, TTarget>(
 		Func<TSource, TTarget?> memberAccessor,
 		string? separator = null,
 		string? replaceIt = null,
-		Func<ExpectationGrammars, ExpectationGrammars>? expectationGrammar = null)
+		Func<ExpectationGrammars, ExpectationGrammars>? expectationGrammar = null,
+		bool negateMemberOnly = false)
 	{
 		if (_whichNode != null)
 		{
@@ -381,7 +387,7 @@ public abstract class ExpectationBuilder
 			ExpectationGrammars = expectationGrammar(ExpectationGrammars);
 		}
 
-		_whichNode = new WhichNode<TSource, TTarget>(parentNode, memberAccessor, separator);
+		_whichNode = new WhichNode<TSource, TTarget>(parentNode, memberAccessor, separator, negateMemberOnly);
 		return this;
 	}
 

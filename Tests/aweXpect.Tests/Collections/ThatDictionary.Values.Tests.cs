@@ -83,6 +83,22 @@ public sealed partial class ThatDictionary
 			}
 
 			[Fact]
+			public async Task WhenSubjectIsNull_NegatedShouldFail()
+			{
+				IDictionary<int, int>? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.Values.All().AreUnique());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has values which are not unique for all items,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IDictionary<int, int>? subject = null;

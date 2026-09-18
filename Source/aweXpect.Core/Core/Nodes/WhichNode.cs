@@ -14,6 +14,7 @@ internal class WhichNode<TSource, TMember> : Node
 {
 	private readonly Func<TSource, Task<TMember?>>? _asyncMemberAccessor;
 	private readonly Func<TSource, TMember?>? _memberAccessor;
+	private readonly bool _negateMemberOnly;
 	private readonly Node? _parent;
 	private readonly string? _separator;
 	private Node? _inner;
@@ -21,11 +22,13 @@ internal class WhichNode<TSource, TMember> : Node
 	public WhichNode(
 		Node? parent,
 		Func<TSource, TMember?> memberAccessor,
-		string? separator = null)
+		string? separator = null,
+		bool negateMemberOnly = false)
 	{
 		_parent = parent;
 		_memberAccessor = memberAccessor;
 		_separator = separator;
+		_negateMemberOnly = negateMemberOnly;
 	}
 
 	public WhichNode(
@@ -104,7 +107,8 @@ internal class WhichNode<TSource, TMember> : Node
 
 		if (value is null || value is DelegateValue { IsNull: true, })
 		{
-			ConstraintResult nullResult = await _inner.IsMetBy<TMember>(default, context, cancellationToken);
+			ConstraintResult nullResult = NullSubjectResult.Create(
+				await _inner.IsMetBy<TMember>(default, context, cancellationToken), default(TMember));
 			return CombineResults(parentResult, nullResult, _separator ?? "",
 				FurtherProcessingStrategy.IgnoreResult, default);
 		}
@@ -158,7 +162,7 @@ internal class WhichNode<TSource, TMember> : Node
 	/// <inheritdoc cref="object.GetHashCode()" />
 	public override int GetHashCode() => _parent?.GetHashCode() ?? 17;
 
-	private static ConstraintResult CombineResults(ConstraintResult? leftResult,
+	private ConstraintResult CombineResults(ConstraintResult? leftResult,
 		ConstraintResult rightResult,
 		string separator,
 		FurtherProcessingStrategy? furtherProcessingStrategy,
@@ -171,7 +175,7 @@ internal class WhichNode<TSource, TMember> : Node
 
 		return new WhichConstraintResult(leftResult, rightResult, separator,
 			furtherProcessingStrategy ?? FurtherProcessingStrategy.Continue,
-			value);
+			value, _negateMemberOnly);
 	}
 
 	/// <inheritdoc cref="Node.SetReason(IBecauseReason)" />
@@ -191,23 +195,28 @@ internal class WhichNode<TSource, TMember> : Node
 
 	private sealed class WhichConstraintResult : ConstraintResult
 	{
-		private readonly ConstraintResult _left;
-		private readonly ConstraintResult _right;
+		private readonly bool _negateMemberOnly;
 		private readonly string _separator;
 
 		// ReSharper disable once ReplaceWithPrimaryConstructorParameter
 		private readonly TMember? _value;
 
+		private bool _isNegated;
+		private ConstraintResult _left;
+		private ConstraintResult _right;
+
 		public WhichConstraintResult(ConstraintResult left,
 			ConstraintResult right,
 			string separator,
 			FurtherProcessingStrategy furtherProcessingStrategy,
-			TMember? value) : base(furtherProcessingStrategy)
+			TMember? value,
+			bool negateMemberOnly) : base(furtherProcessingStrategy)
 		{
 			_left = left;
 			_right = right;
 			_separator = separator;
 			_value = value;
+			_negateMemberOnly = negateMemberOnly;
 			Outcome = And(left.Outcome, right.Outcome);
 		}
 
@@ -232,7 +241,12 @@ internal class WhichNode<TSource, TMember> : Node
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_left.Outcome == Outcome.Failure)
+			if (_isNegated)
+			{
+				// A negated whole phrase only fails when both parts were met, or for a null subject.
+				(_right is NullSubjectResult ? _right : _left).AppendResult(stringBuilder, indentation);
+			}
+			else if (_left.Outcome == Outcome.Failure)
 			{
 				_left.AppendResult(stringBuilder, indentation);
 			}
@@ -274,12 +288,26 @@ internal class WhichNode<TSource, TMember> : Node
 
 		public override ConstraintResult Negate()
 		{
-			Outcome = Outcome switch
+			if (_right is not NullSubjectResult)
 			{
-				Outcome.Failure => Outcome.Success,
-				Outcome.Success => Outcome.Failure,
-				_ => Outcome,
-			};
+				Outcome = Outcome switch
+				{
+					Outcome.Failure => Outcome.Success,
+					Outcome.Success => Outcome.Failure,
+					_ => Outcome,
+				};
+			}
+
+			if (_negateMemberOnly)
+			{
+				_right = _right.Negate();
+			}
+			else
+			{
+				_left = _left.Negate();
+				_isNegated = !_isNegated;
+			}
+
 			return this;
 		}
 	}

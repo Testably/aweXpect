@@ -30,8 +30,7 @@ public sealed class GuaranteesNotNullTests
 	public async Task EveryExpectation_ShouldFailForANullSubjectWhenNegated()
 	{
 		List<string> deviations = Observations
-			.Where(observation => observation.FailsWhenNegated == false && !IsExemptWhenNegated(observation.Name) &&
-			                      !NegationAwaitingACoreRelease.Contains(observation.Identifier))
+			.Where(observation => observation.FailsWhenNegated == false && !IsExemptWhenNegated(observation.Name))
 			.Select(observation => observation.Identifier)
 			.Distinct().OrderBy(identifier => identifier, StringComparer.Ordinal)
 			.ToList();
@@ -127,22 +126,6 @@ public sealed class GuaranteesNotNullTests
 		"IsNullOrWhiteSpace",
 		"IsNotFalse",
 		"IsNotTrue",
-	};
-
-	/// <summary>
-	///     These nest an inner expectation, so the negation is applied by <c>MappingNode</c> in `aweXpect.Core`, which
-	///     flips the composite outcome without being able to tell a subject that was ruled out as <see langword="null" />
-	///     from one whose expectation was merely unmet. Their outer constraints already derive from
-	///     <see cref="ConstraintResult.WithNotNullValue{T}" /> and fail correctly on their own; only the composite does
-	///     not. Fixing that needs the node to be told, which is a core change and therefore a core release.
-	/// </summary>
-	private static readonly HashSet<string> NegationAwaitingACoreRelease = new(StringComparer.Ordinal)
-	{
-		"ThatException.HasInner(IThat<Exception>,Type,Action<IThatSubject<Exception>>)",
-		"ThatException.HasInner<TInnerException>(IThat<Exception>,Action<IThatSubject<TInnerException>>)",
-		"ThatException.HasInnerException(IThat<Exception>,Action<IThatSubject<Exception>>)",
-		"ThatException.HasRecursiveInnerExceptions(IThat<Exception>,Action<IThatSubject<IEnumerable<Exception>>>)",
-		"ThatString.HasLines(IThat<String>,Action<IThatSubject<IEnumerable<String>>>)",
 	};
 
 	private static IReadOnlyList<Observation>? _observations;

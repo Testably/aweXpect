@@ -40,6 +40,22 @@ public sealed partial class ThatReadOnlyDictionary
 			}
 
 			[Fact]
+			public async Task WhenSubjectIsNull_NegatedShouldFail()
+			{
+				IReadOnlyDictionary<int, string>? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.Keys.Contains(0));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has keys which do not contain 0,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IReadOnlyDictionary<int, string>? subject = null;

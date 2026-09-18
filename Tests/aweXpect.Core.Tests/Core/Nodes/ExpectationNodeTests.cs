@@ -116,6 +116,22 @@ public class ExpectationNodeTests
 		await That(value).IsNull();
 	}
 
+	[Theory]
+	[InlineData(Outcome.Success)]
+	[InlineData(Outcome.Failure)]
+	public async Task AddAsyncMapping_WhenSubjectIsNull_NegatedResult_ShouldStillFail(Outcome node1)
+	{
+		ExpectationNode node = new();
+		node.AddConstraint(new DummyValueConstraint<string>(_ => new DummyConstraintResult(node1, "foo1", "bar1")));
+		node.AddAsyncMapping(MemberAccessor<string, Task<int>>.FromFunc(s => Task.FromResult(s.Length), " length: "))
+			.AddConstraint(new DummyValueConstraint<int>(_ => new DummyConstraintResult(Outcome.Success, "foo2", "bar2")));
+
+		ConstraintResult result = await node.IsMetBy<string?>(null, null!, CancellationToken.None);
+		result.Negate();
+
+		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+	}
+
 	[Fact]
 	public async Task AddAsyncMapping_WithCustomExpectationTextGenerator_ShouldUseIt()
 	{
@@ -308,6 +324,22 @@ public class ExpectationNodeTests
 
 		await That(result).IsFalse();
 		await That(value).IsNull();
+	}
+
+	[Theory]
+	[InlineData(Outcome.Success)]
+	[InlineData(Outcome.Failure)]
+	public async Task AddMapping_WhenSubjectIsNull_NegatedResult_ShouldStillFail(Outcome node1)
+	{
+		ExpectationNode node = new();
+		node.AddConstraint(new DummyValueConstraint<string>(_ => new DummyConstraintResult(node1, "foo1", "bar1")));
+		node.AddMapping(MemberAccessor<string, int>.FromFunc(s => s.Length, " length: "))
+			.AddConstraint(new DummyValueConstraint<int>(_ => new DummyConstraintResult(Outcome.Success, "foo2", "bar2")));
+
+		ConstraintResult result = await node.IsMetBy<string?>(null, null!, CancellationToken.None);
+		result.Negate();
+
+		await That(result.Outcome).IsEqualTo(Outcome.Failure);
 	}
 
 	[Fact]
