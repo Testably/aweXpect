@@ -611,4 +611,14 @@ public static partial class ThatEnumerable
 			}
 		}
 	}
+
+	public partial class ElementsForStructEnumerable<TEnumerable>
+	{
+		/// <summary>
+		///     …comply with the <paramref name="expectations" />.
+		/// </summary>
+		public ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, string?>
+			ComplyWith(Action<IThatSubject<string?>> expectations)
+			=> new ElementsForStructEnumerable<TEnumerable, string?>(_subject, _quantifier).ComplyWith(expectations);
+	}
 }

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
@@ -10,7 +12,6 @@ using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
-using System.Collections;
 using System.Collections.Immutable;
 #endif
 
@@ -32,6 +33,24 @@ public static partial class ThatEnumerable
 		return new HasItemResult<IEnumerable<TItem>?>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemThatConstraint<TItem>(expectationBuilder, it, grammars, expectations, indexOptions)),
+			subject,
+			indexOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the collection has an item that complies with the <paramref name="expectations" />…
+	/// </summary>
+	[OverloadResolutionPriority(-1)]
+	[GuaranteesNotNull]
+	public static HasItemResult<IEnumerable?> HasItemThat(
+		this IThat<IEnumerable?> subject, Action<IThatSubject<object?>> expectations)
+	{
+		CollectionIndexOptions indexOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new HasItemResult<IEnumerable?>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new HasItemThatForEnumerableConstraint<IEnumerable, object?>(
+					expectationBuilder, it, grammars, expectations, indexOptions)),
 			subject,
 			indexOptions);
 	}
@@ -67,6 +86,24 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new HasItemThatConstraint<TItem>(expectationBuilder, it, grammars, expectations, indexOptions)
 					.Invert()),
+			subject,
+			indexOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the collection does not have an item that complies with the <paramref name="expectations" />…
+	/// </summary>
+	[OverloadResolutionPriority(-1)]
+	[GuaranteesNotNull]
+	public static HasItemResult<IEnumerable?> DoesNotHaveItemThat(
+		this IThat<IEnumerable?> subject, Action<IThatSubject<object?>> expectations)
+	{
+		CollectionIndexOptions indexOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new HasItemResult<IEnumerable?>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new HasItemThatForEnumerableConstraint<IEnumerable, object?>(
+					expectationBuilder, it, grammars, expectations, indexOptions).Invert()),
 			subject,
 			indexOptions);
 	}
@@ -203,7 +240,6 @@ public static partial class ThatEnumerable
 		}
 	}
 
-#if NET8_0_OR_GREATER
 	private sealed class HasItemThatForEnumerableConstraint<TEnumerable, TItem> :
 		ConstraintResult.WithNotNullValue<TEnumerable>,
 		IAsyncContextConstraint<TEnumerable>
@@ -214,6 +250,7 @@ public static partial class ThatEnumerable
 		private readonly ManualExpectationBuilder<TItem> _itemExpectationBuilder;
 		private readonly CollectionIndexOptions _options;
 		private object? _actual;
+		private bool _hasIndex;
 
 		public HasItemThatForEnumerableConstraint(ExpectationBuilder expectationBuilder,
 			string it,
@@ -241,6 +278,7 @@ public static partial class ThatEnumerable
 
 			IEnumerable materialized = context.UseMaterializedEnumerable(actual);
 			_expectationBuilder.AddCollectionContext(materialized);
+			_hasIndex = false;
 			Outcome = Outcome.Failure;
 
 			int? count = null;
@@ -269,6 +307,7 @@ public static partial class ThatEnumerable
 					continue;
 				}
 
+				_hasIndex = true;
 				_actual = item;
 				ConstraintResult isMatch = await _itemExpectationBuilder.IsMetBy(item, context, cancellationToken);
 				Outcome = isMatch.Outcome;
@@ -290,7 +329,7 @@ public static partial class ThatEnumerable
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_actual is not null)
+			if (_hasIndex)
 			{
 				stringBuilder.Append(_it).Append(" had item ");
 				Formatter.Format(stringBuilder, _actual);
@@ -316,5 +355,4 @@ public static partial class ThatEnumerable
 			stringBuilder.Append(_options.Match.GetDescription());
 		}
 	}
-#endif
 }

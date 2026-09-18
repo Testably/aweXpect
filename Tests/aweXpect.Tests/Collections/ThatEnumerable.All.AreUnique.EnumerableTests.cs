@@ -376,6 +376,113 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 			}
+
+			public sealed class EnumerableStringMemberTests
+			{
+				[Fact]
+				public async Task WhenAllMembersAreUnique_ShouldSucceed()
+				{
+					IEnumerable subject = new[] { "a", "b", "c", };
+
+					async Task Act()
+						=> await That(subject).All().AreUnique(x => (string)x!);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenMembersDifferInCasing_ShouldSucceed()
+				{
+					IEnumerable subject = new[] { "a", "A", };
+
+					async Task Act()
+						=> await That(subject).All().AreUnique(x => (string)x!);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenMembersDifferInCasingAndCasingIsIgnored_ShouldFail()
+				{
+					IEnumerable subject = new[] { "a", "b", "A", };
+
+					async Task Act()
+						=> await That(subject).All().AreUnique(x => (string)x!).IgnoringCase();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is unique by x => (string)x! ignoring case for all items,
+						             but only 1 of 3 were
+
+						             Not matching items:
+						             [
+						               "a",
+						               "A"
+						             ]
+
+						             Collection:
+						             [
+						               "a",
+						               "b",
+						               "A"
+						             ]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsNull_ShouldFail()
+				{
+					IEnumerable? subject = null;
+
+					async Task Act()
+						=> await That(subject)!.All().AreUnique(x => (string)x!);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is unique by x => (string)x! for all items,
+						             but it was <null>
+						             """);
+				}
+			}
+
+			public sealed class EnumerableNegatedStringMemberTests
+			{
+				[Fact]
+				public async Task WhenAllMembersAreUnique_ShouldFail()
+				{
+					IEnumerable subject = new[] { "a", "b", };
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.All().AreUnique(x => (string)x!));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not unique by x => (string)x! for all items,
+						             but all 2 were
+
+						             Collection:
+						             [
+						               "a",
+						               "b"
+						             ]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenMembersDifferOnlyInCasingAndCasingIsIgnored_ShouldSucceed()
+				{
+					IEnumerable subject = new[] { "a", "A", };
+
+					async Task Act()
+						=> await That(subject)
+							.DoesNotComplyWith(it => it.All().AreUnique(x => (string)x!).IgnoringCase());
+
+					await That(Act).DoesNotThrow();
+				}
+			}
 		}
 	}
 }

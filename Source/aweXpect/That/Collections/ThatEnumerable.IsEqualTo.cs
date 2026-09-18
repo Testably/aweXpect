@@ -466,6 +466,344 @@ public static partial class ThatEnumerable
 	}
 #endif
 
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that the collection matches the <paramref name="expected" /> collection.
+	/// </summary>
+	public static ObjectCollectionMatchWithToleranceResult<ImmutableArray<double>, IThat<ImmutableArray<double>>,
+			double, double>
+		IsEqualTo(
+			this IThat<ImmutableArray<double>> subject,
+			IEnumerable<double> expected,
+			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+	{
+		ObjectEqualityWithToleranceOptions<double, double> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateDouble();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCollectionMatchWithToleranceResult<ImmutableArray<double>, IThat<ImmutableArray<double>>,
+			double, double>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToForEnumerableConstraint<ImmutableArray<double>, double, double>(
+					expectationBuilder, it, grammars,
+					doNotPopulateThisValue,
+					expected,
+					options,
+					matchOptions)),
+			subject,
+			options,
+			matchOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the collection matches the <paramref name="expected" /> collection.
+	/// </summary>
+	public static ObjectCollectionMatchWithToleranceResult<ImmutableArray<double?>, IThat<ImmutableArray<double?>>,
+			double?, double>
+		IsEqualTo(
+			this IThat<ImmutableArray<double?>> subject,
+			IEnumerable<double?> expected,
+			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+	{
+		ObjectEqualityWithToleranceOptions<double?, double> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateNullableDouble();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCollectionMatchWithToleranceResult<ImmutableArray<double?>, IThat<ImmutableArray<double?>>,
+			double?, double>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToForEnumerableConstraint<ImmutableArray<double?>, double?, double?>(
+					expectationBuilder, it, grammars,
+					doNotPopulateThisValue,
+					expected,
+					options,
+					matchOptions)),
+			subject,
+			options,
+			matchOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the collection matches the <paramref name="expected" /> collection.
+	/// </summary>
+	public static ObjectCollectionMatchWithToleranceResult<ImmutableArray<double?>, IThat<ImmutableArray<double?>>,
+			double?, double>
+		IsEqualTo(
+			this IThat<ImmutableArray<double?>> subject,
+			IEnumerable<double> expected,
+			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+	{
+		ObjectEqualityWithToleranceOptions<double?, double> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateNullableDouble();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCollectionMatchWithToleranceResult<ImmutableArray<double?>, IThat<ImmutableArray<double?>>,
+			double?, double>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToForEnumerableConstraint<ImmutableArray<double?>, double?, double?>(
+					expectationBuilder, it, grammars,
+					doNotPopulateThisValue,
+					expected.Cast<double?>(),
+					options,
+					matchOptions)),
+			subject,
+			options,
+			matchOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the collection matches the <paramref name="expected" /> collection.
+	/// </summary>
+	public static ObjectCollectionMatchWithToleranceResult<ImmutableArray<decimal>, IThat<ImmutableArray<decimal>>,
+			decimal, decimal>
+		IsEqualTo(
+			this IThat<ImmutableArray<decimal>> subject,
+			IEnumerable<decimal> expected,
+			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+	{
+		ObjectEqualityWithToleranceOptions<decimal, decimal> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateDecimal();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCollectionMatchWithToleranceResult<ImmutableArray<decimal>, IThat<ImmutableArray<decimal>>,
+			decimal, decimal>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToForEnumerableConstraint<ImmutableArray<decimal>, decimal, decimal>(
+					expectationBuilder, it, grammars,
+					doNotPopulateThisValue,
+					expected,
+					options,
+					matchOptions)),
+			subject,
+			options,
+			matchOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the collection matches the <paramref name="expected" /> collection.
+	/// </summary>
+	public static ObjectCollectionMatchWithToleranceResult<ImmutableArray<decimal?>, IThat<ImmutableArray<decimal?>>,
+			decimal?, decimal>
+		IsEqualTo(
+			this IThat<ImmutableArray<decimal?>> subject,
+			IEnumerable<decimal?> expected,
+			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+	{
+		ObjectEqualityWithToleranceOptions<decimal?, decimal> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateNullableDecimal();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCollectionMatchWithToleranceResult<ImmutableArray<decimal?>, IThat<ImmutableArray<decimal?>>,
+			decimal?, decimal>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToForEnumerableConstraint<ImmutableArray<decimal?>, decimal?, decimal?>(
+					expectationBuilder, it, grammars,
+					doNotPopulateThisValue,
+					expected,
+					options,
+					matchOptions)),
+			subject,
+			options,
+			matchOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the collection matches the <paramref name="expected" /> collection.
+	/// </summary>
+	public static ObjectCollectionMatchWithToleranceResult<ImmutableArray<decimal?>, IThat<ImmutableArray<decimal?>>,
+			decimal?, decimal>
+		IsEqualTo(
+			this IThat<ImmutableArray<decimal?>> subject,
+			IEnumerable<decimal> expected,
+			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+	{
+		ObjectEqualityWithToleranceOptions<decimal?, decimal> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateNullableDecimal();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCollectionMatchWithToleranceResult<ImmutableArray<decimal?>, IThat<ImmutableArray<decimal?>>,
+			decimal?, decimal>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToForEnumerableConstraint<ImmutableArray<decimal?>, decimal?, decimal?>(
+					expectationBuilder, it, grammars,
+					doNotPopulateThisValue,
+					expected.Cast<decimal?>(),
+					options,
+					matchOptions)),
+			subject,
+			options,
+			matchOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the collection matches the <paramref name="expected" /> collection.
+	/// </summary>
+	public static ObjectCollectionMatchWithToleranceResult<ImmutableArray<float>, IThat<ImmutableArray<float>>,
+			float, float>
+		IsEqualTo(
+			this IThat<ImmutableArray<float>> subject,
+			IEnumerable<float> expected,
+			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+	{
+		ObjectEqualityWithToleranceOptions<float, float> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateFloat();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCollectionMatchWithToleranceResult<ImmutableArray<float>, IThat<ImmutableArray<float>>,
+			float, float>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToForEnumerableConstraint<ImmutableArray<float>, float, float>(
+					expectationBuilder, it, grammars,
+					doNotPopulateThisValue,
+					expected,
+					options,
+					matchOptions)),
+			subject,
+			options,
+			matchOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the collection matches the <paramref name="expected" /> collection.
+	/// </summary>
+	public static ObjectCollectionMatchWithToleranceResult<ImmutableArray<float?>, IThat<ImmutableArray<float?>>,
+			float?, float>
+		IsEqualTo(
+			this IThat<ImmutableArray<float?>> subject,
+			IEnumerable<float?> expected,
+			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+	{
+		ObjectEqualityWithToleranceOptions<float?, float> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateNullableFloat();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCollectionMatchWithToleranceResult<ImmutableArray<float?>, IThat<ImmutableArray<float?>>,
+			float?, float>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToForEnumerableConstraint<ImmutableArray<float?>, float?, float?>(
+					expectationBuilder, it, grammars,
+					doNotPopulateThisValue,
+					expected,
+					options,
+					matchOptions)),
+			subject,
+			options,
+			matchOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the collection matches the <paramref name="expected" /> collection.
+	/// </summary>
+	public static ObjectCollectionMatchWithToleranceResult<ImmutableArray<float?>, IThat<ImmutableArray<float?>>,
+			float?, float>
+		IsEqualTo(
+			this IThat<ImmutableArray<float?>> subject,
+			IEnumerable<float> expected,
+			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+	{
+		ObjectEqualityWithToleranceOptions<float?, float> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateNullableFloat();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCollectionMatchWithToleranceResult<ImmutableArray<float?>, IThat<ImmutableArray<float?>>,
+			float?, float>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToForEnumerableConstraint<ImmutableArray<float?>, float?, float?>(
+					expectationBuilder, it, grammars,
+					doNotPopulateThisValue,
+					expected.Cast<float?>(),
+					options,
+					matchOptions)),
+			subject,
+			options,
+			matchOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the collection matches the <paramref name="expected" /> collection.
+	/// </summary>
+	public static ObjectCollectionMatchWithToleranceResult<ImmutableArray<DateTime>, IThat<ImmutableArray<DateTime>>,
+			DateTime, TimeSpan>
+		IsEqualTo(
+			this IThat<ImmutableArray<DateTime>> subject,
+			IEnumerable<DateTime> expected,
+			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+	{
+		ObjectEqualityWithToleranceOptions<DateTime, TimeSpan> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateDateTime();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCollectionMatchWithToleranceResult<ImmutableArray<DateTime>, IThat<ImmutableArray<DateTime>>,
+			DateTime, TimeSpan>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToForEnumerableConstraint<ImmutableArray<DateTime>, DateTime, DateTime>(
+					expectationBuilder, it, grammars,
+					doNotPopulateThisValue,
+					expected,
+					options,
+					matchOptions)),
+			subject,
+			options,
+			matchOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the collection matches the <paramref name="expected" /> collection.
+	/// </summary>
+	public static ObjectCollectionMatchWithToleranceResult<ImmutableArray<DateTime?>, IThat<ImmutableArray<DateTime?>>,
+			DateTime?, TimeSpan>
+		IsEqualTo(
+			this IThat<ImmutableArray<DateTime?>> subject,
+			IEnumerable<DateTime?> expected,
+			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+	{
+		ObjectEqualityWithToleranceOptions<DateTime?, TimeSpan> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateNullableDateTime();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCollectionMatchWithToleranceResult<ImmutableArray<DateTime?>, IThat<ImmutableArray<DateTime?>>,
+			DateTime?, TimeSpan>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToForEnumerableConstraint<ImmutableArray<DateTime?>, DateTime?, DateTime?>(
+					expectationBuilder, it, grammars,
+					doNotPopulateThisValue,
+					expected,
+					options,
+					matchOptions)),
+			subject,
+			options,
+			matchOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the collection matches the <paramref name="expected" /> collection.
+	/// </summary>
+	public static ObjectCollectionMatchWithToleranceResult<ImmutableArray<DateTime?>, IThat<ImmutableArray<DateTime?>>,
+			DateTime?, TimeSpan>
+		IsEqualTo(
+			this IThat<ImmutableArray<DateTime?>> subject,
+			IEnumerable<DateTime> expected,
+			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+	{
+		ObjectEqualityWithToleranceOptions<DateTime?, TimeSpan> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateNullableDateTime();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCollectionMatchWithToleranceResult<ImmutableArray<DateTime?>, IThat<ImmutableArray<DateTime?>>,
+			DateTime?, TimeSpan>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToForEnumerableConstraint<ImmutableArray<DateTime?>, DateTime?, DateTime?>(
+					expectationBuilder, it, grammars,
+					doNotPopulateThisValue,
+					expected.Cast<DateTime?>(),
+					options,
+					matchOptions)),
+			subject,
+			options,
+			matchOptions);
+	}
+#endif
+
 	/// <summary>
 	///     Verifies that the collection matches the <paramref name="expected" /> collection of predicates.
 	/// </summary>
@@ -966,6 +1304,356 @@ public static partial class ThatEnumerable
 					grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					unexpected,
+					options,
+					matchOptions).Invert()),
+			subject,
+			options,
+			matchOptions);
+	}
+#endif
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection.
+	/// </summary>
+	public static ObjectCollectionMatchWithToleranceResult<ImmutableArray<double>, IThat<ImmutableArray<double>>,
+			double, double>
+		IsNotEqualTo(
+			this IThat<ImmutableArray<double>> subject,
+			IEnumerable<double> unexpected,
+			[CallerArgumentExpression("unexpected")]
+			string doNotPopulateThisValue = "")
+	{
+		ObjectEqualityWithToleranceOptions<double, double> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateDouble();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCollectionMatchWithToleranceResult<ImmutableArray<double>, IThat<ImmutableArray<double>>,
+			double, double>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToForEnumerableConstraint<ImmutableArray<double>, double, double>(
+					expectationBuilder, it, grammars,
+					doNotPopulateThisValue,
+					unexpected,
+					options,
+					matchOptions).Invert()),
+			subject,
+			options,
+			matchOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection.
+	/// </summary>
+	public static ObjectCollectionMatchWithToleranceResult<ImmutableArray<double?>, IThat<ImmutableArray<double?>>,
+			double?, double>
+		IsNotEqualTo(
+			this IThat<ImmutableArray<double?>> subject,
+			IEnumerable<double?> unexpected,
+			[CallerArgumentExpression("unexpected")]
+			string doNotPopulateThisValue = "")
+	{
+		ObjectEqualityWithToleranceOptions<double?, double> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateNullableDouble();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCollectionMatchWithToleranceResult<ImmutableArray<double?>, IThat<ImmutableArray<double?>>,
+			double?, double>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToForEnumerableConstraint<ImmutableArray<double?>, double?, double?>(
+					expectationBuilder, it, grammars,
+					doNotPopulateThisValue,
+					unexpected,
+					options,
+					matchOptions).Invert()),
+			subject,
+			options,
+			matchOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection.
+	/// </summary>
+	public static ObjectCollectionMatchWithToleranceResult<ImmutableArray<double?>, IThat<ImmutableArray<double?>>,
+			double?, double>
+		IsNotEqualTo(
+			this IThat<ImmutableArray<double?>> subject,
+			IEnumerable<double> unexpected,
+			[CallerArgumentExpression("unexpected")]
+			string doNotPopulateThisValue = "")
+	{
+		ObjectEqualityWithToleranceOptions<double?, double> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateNullableDouble();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCollectionMatchWithToleranceResult<ImmutableArray<double?>, IThat<ImmutableArray<double?>>,
+			double?, double>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToForEnumerableConstraint<ImmutableArray<double?>, double?, double?>(
+					expectationBuilder, it, grammars,
+					doNotPopulateThisValue,
+					unexpected.Cast<double?>(),
+					options,
+					matchOptions).Invert()),
+			subject,
+			options,
+			matchOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection.
+	/// </summary>
+	public static ObjectCollectionMatchWithToleranceResult<ImmutableArray<decimal>, IThat<ImmutableArray<decimal>>,
+			decimal, decimal>
+		IsNotEqualTo(
+			this IThat<ImmutableArray<decimal>> subject,
+			IEnumerable<decimal> unexpected,
+			[CallerArgumentExpression("unexpected")]
+			string doNotPopulateThisValue = "")
+	{
+		ObjectEqualityWithToleranceOptions<decimal, decimal> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateDecimal();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCollectionMatchWithToleranceResult<ImmutableArray<decimal>, IThat<ImmutableArray<decimal>>,
+			decimal, decimal>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToForEnumerableConstraint<ImmutableArray<decimal>, decimal, decimal>(
+					expectationBuilder, it, grammars,
+					doNotPopulateThisValue,
+					unexpected,
+					options,
+					matchOptions).Invert()),
+			subject,
+			options,
+			matchOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection.
+	/// </summary>
+	public static ObjectCollectionMatchWithToleranceResult<ImmutableArray<decimal?>, IThat<ImmutableArray<decimal?>>,
+			decimal?, decimal>
+		IsNotEqualTo(
+			this IThat<ImmutableArray<decimal?>> subject,
+			IEnumerable<decimal?> unexpected,
+			[CallerArgumentExpression("unexpected")]
+			string doNotPopulateThisValue = "")
+	{
+		ObjectEqualityWithToleranceOptions<decimal?, decimal> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateNullableDecimal();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCollectionMatchWithToleranceResult<ImmutableArray<decimal?>, IThat<ImmutableArray<decimal?>>,
+			decimal?, decimal>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToForEnumerableConstraint<ImmutableArray<decimal?>, decimal?, decimal?>(
+					expectationBuilder, it, grammars,
+					doNotPopulateThisValue,
+					unexpected,
+					options,
+					matchOptions).Invert()),
+			subject,
+			options,
+			matchOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection.
+	/// </summary>
+	public static ObjectCollectionMatchWithToleranceResult<ImmutableArray<decimal?>, IThat<ImmutableArray<decimal?>>,
+			decimal?, decimal>
+		IsNotEqualTo(
+			this IThat<ImmutableArray<decimal?>> subject,
+			IEnumerable<decimal> unexpected,
+			[CallerArgumentExpression("unexpected")]
+			string doNotPopulateThisValue = "")
+	{
+		ObjectEqualityWithToleranceOptions<decimal?, decimal> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateNullableDecimal();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCollectionMatchWithToleranceResult<ImmutableArray<decimal?>, IThat<ImmutableArray<decimal?>>,
+			decimal?, decimal>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToForEnumerableConstraint<ImmutableArray<decimal?>, decimal?, decimal?>(
+					expectationBuilder, it, grammars,
+					doNotPopulateThisValue,
+					unexpected.Cast<decimal?>(),
+					options,
+					matchOptions).Invert()),
+			subject,
+			options,
+			matchOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection.
+	/// </summary>
+	public static ObjectCollectionMatchWithToleranceResult<ImmutableArray<float>, IThat<ImmutableArray<float>>,
+			float, float>
+		IsNotEqualTo(
+			this IThat<ImmutableArray<float>> subject,
+			IEnumerable<float> unexpected,
+			[CallerArgumentExpression("unexpected")]
+			string doNotPopulateThisValue = "")
+	{
+		ObjectEqualityWithToleranceOptions<float, float> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateFloat();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCollectionMatchWithToleranceResult<ImmutableArray<float>, IThat<ImmutableArray<float>>,
+			float, float>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToForEnumerableConstraint<ImmutableArray<float>, float, float>(
+					expectationBuilder, it, grammars,
+					doNotPopulateThisValue,
+					unexpected,
+					options,
+					matchOptions).Invert()),
+			subject,
+			options,
+			matchOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection.
+	/// </summary>
+	public static ObjectCollectionMatchWithToleranceResult<ImmutableArray<float?>, IThat<ImmutableArray<float?>>,
+			float?, float>
+		IsNotEqualTo(
+			this IThat<ImmutableArray<float?>> subject,
+			IEnumerable<float?> unexpected,
+			[CallerArgumentExpression("unexpected")]
+			string doNotPopulateThisValue = "")
+	{
+		ObjectEqualityWithToleranceOptions<float?, float> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateNullableFloat();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCollectionMatchWithToleranceResult<ImmutableArray<float?>, IThat<ImmutableArray<float?>>,
+			float?, float>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToForEnumerableConstraint<ImmutableArray<float?>, float?, float?>(
+					expectationBuilder, it, grammars,
+					doNotPopulateThisValue,
+					unexpected,
+					options,
+					matchOptions).Invert()),
+			subject,
+			options,
+			matchOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection.
+	/// </summary>
+	public static ObjectCollectionMatchWithToleranceResult<ImmutableArray<float?>, IThat<ImmutableArray<float?>>,
+			float?, float>
+		IsNotEqualTo(
+			this IThat<ImmutableArray<float?>> subject,
+			IEnumerable<float> unexpected,
+			[CallerArgumentExpression("unexpected")]
+			string doNotPopulateThisValue = "")
+	{
+		ObjectEqualityWithToleranceOptions<float?, float> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateNullableFloat();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCollectionMatchWithToleranceResult<ImmutableArray<float?>, IThat<ImmutableArray<float?>>,
+			float?, float>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToForEnumerableConstraint<ImmutableArray<float?>, float?, float?>(
+					expectationBuilder, it, grammars,
+					doNotPopulateThisValue,
+					unexpected.Cast<float?>(),
+					options,
+					matchOptions).Invert()),
+			subject,
+			options,
+			matchOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection.
+	/// </summary>
+	public static ObjectCollectionMatchWithToleranceResult<ImmutableArray<DateTime>, IThat<ImmutableArray<DateTime>>,
+			DateTime, TimeSpan>
+		IsNotEqualTo(
+			this IThat<ImmutableArray<DateTime>> subject,
+			IEnumerable<DateTime> unexpected,
+			[CallerArgumentExpression("unexpected")]
+			string doNotPopulateThisValue = "")
+	{
+		ObjectEqualityWithToleranceOptions<DateTime, TimeSpan> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateDateTime();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCollectionMatchWithToleranceResult<ImmutableArray<DateTime>, IThat<ImmutableArray<DateTime>>,
+			DateTime, TimeSpan>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToForEnumerableConstraint<ImmutableArray<DateTime>, DateTime, DateTime>(
+					expectationBuilder, it, grammars,
+					doNotPopulateThisValue,
+					unexpected,
+					options,
+					matchOptions).Invert()),
+			subject,
+			options,
+			matchOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection.
+	/// </summary>
+	public static ObjectCollectionMatchWithToleranceResult<ImmutableArray<DateTime?>, IThat<ImmutableArray<DateTime?>>,
+			DateTime?, TimeSpan>
+		IsNotEqualTo(
+			this IThat<ImmutableArray<DateTime?>> subject,
+			IEnumerable<DateTime?> unexpected,
+			[CallerArgumentExpression("unexpected")]
+			string doNotPopulateThisValue = "")
+	{
+		ObjectEqualityWithToleranceOptions<DateTime?, TimeSpan> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateNullableDateTime();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCollectionMatchWithToleranceResult<ImmutableArray<DateTime?>, IThat<ImmutableArray<DateTime?>>,
+			DateTime?, TimeSpan>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToForEnumerableConstraint<ImmutableArray<DateTime?>, DateTime?, DateTime?>(
+					expectationBuilder, it, grammars,
+					doNotPopulateThisValue,
+					unexpected,
+					options,
+					matchOptions).Invert()),
+			subject,
+			options,
+			matchOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection.
+	/// </summary>
+	public static ObjectCollectionMatchWithToleranceResult<ImmutableArray<DateTime?>, IThat<ImmutableArray<DateTime?>>,
+			DateTime?, TimeSpan>
+		IsNotEqualTo(
+			this IThat<ImmutableArray<DateTime?>> subject,
+			IEnumerable<DateTime> unexpected,
+			[CallerArgumentExpression("unexpected")]
+			string doNotPopulateThisValue = "")
+	{
+		ObjectEqualityWithToleranceOptions<DateTime?, TimeSpan> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateNullableDateTime();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCollectionMatchWithToleranceResult<ImmutableArray<DateTime?>, IThat<ImmutableArray<DateTime?>>,
+			DateTime?, TimeSpan>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToForEnumerableConstraint<ImmutableArray<DateTime?>, DateTime?, DateTime?>(
+					expectationBuilder, it, grammars,
+					doNotPopulateThisValue,
+					unexpected.Cast<DateTime?>(),
 					options,
 					matchOptions).Invert()),
 			subject,

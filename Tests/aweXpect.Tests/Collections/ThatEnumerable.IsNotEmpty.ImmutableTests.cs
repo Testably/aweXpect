@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#if NET8_0_OR_GREATER
+using System.Collections.Immutable;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -8,35 +9,12 @@ public sealed partial class ThatEnumerable
 {
 	public sealed partial class IsNotEmpty
 	{
-		public sealed class Tests
+		public sealed class ImmutableTests
 		{
-			[Fact]
-			public async Task DoesNotEnumerateTwice()
-			{
-				ThrowWhenIteratingTwiceEnumerable subject = new();
-
-				async Task Act()
-					=> await That(subject).IsNotEmpty()
-						.And.IsNotEmpty();
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task DoesNotMaterializeEnumerable()
-			{
-				IEnumerable<int> subject = Factory.GetFibonacciNumbers();
-
-				async Task Act()
-					=> await That(subject).IsNotEmpty();
-
-				await That(Act).DoesNotThrow();
-			}
-
 			[Fact]
 			public async Task WhenArrayContainsValues_ShouldSucceed()
 			{
-				string[] subject = ["foo",];
+				ImmutableArray<string> subject = ["foo",];
 
 				async Task Act()
 					=> await That(subject).IsNotEmpty();
@@ -47,7 +25,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task WhenArrayIsEmpty_ShouldFail()
 			{
-				string[] subject = [];
+				ImmutableArray<string> subject = [];
 
 				async Task Act()
 					=> await That(subject).IsNotEmpty();
@@ -63,7 +41,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task WhenEnumerableContainsValues_ShouldSucceed()
 			{
-				IEnumerable<int> subject = ToEnumerable([1, 1, 2,]);
+				ImmutableArray<int> subject = [1, 1, 2,];
 
 				async Task Act()
 					=> await That(subject).IsNotEmpty();
@@ -74,7 +52,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task WhenEnumerableIsEmpty_ShouldFail()
 			{
-				IEnumerable<int> subject = ToEnumerable((int[]) []);
+				ImmutableArray<int> subject = [];
 
 				async Task Act()
 					=> await That(subject).IsNotEmpty();
@@ -86,22 +64,7 @@ public sealed partial class ThatEnumerable
 					             but it was
 					             """);
 			}
-
-			[Fact]
-			public async Task WhenSubjectIsNull_ShouldFail()
-			{
-				IEnumerable<int>? subject = null;
-
-				async Task Act()
-					=> await That(subject).IsNotEmpty();
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not empty,
-					             but it was <null>
-					             """);
-			}
 		}
 	}
 }
+#endif
