@@ -129,11 +129,9 @@ public static partial class ThatEnumerable
 
 			protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			{
-				stringBuilder.Append(_quantifier);
-				stringBuilder.Append(For);
 				_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
-				stringBuilder.Append(' ');
-				stringBuilder.Append(_quantifier.GetItemString());
+				stringBuilder.Append(For);
+				_quantifier.AppendNegated(stringBuilder);
 			}
 
 			protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
@@ -277,11 +275,9 @@ public static partial class ThatEnumerable
 
 			protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			{
-				stringBuilder.Append(_quantifier);
-				stringBuilder.Append(For);
 				_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
-				stringBuilder.Append(' ');
-				stringBuilder.Append(_quantifier.GetItemString());
+				stringBuilder.Append(For);
+				_quantifier.AppendNegated(stringBuilder);
 			}
 
 			protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
@@ -432,11 +428,9 @@ public static partial class ThatEnumerable
 
 			protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			{
-				stringBuilder.Append(_quantifier);
-				stringBuilder.Append(For);
 				_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
-				stringBuilder.Append(' ');
-				stringBuilder.Append(_quantifier.GetItemString());
+				stringBuilder.Append(For);
+				_quantifier.AppendNegated(stringBuilder);
 			}
 
 			protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
@@ -576,11 +570,9 @@ public static partial class ThatEnumerable
 
 			protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			{
-				stringBuilder.Append(_quantifier);
-				stringBuilder.Append(For);
 				_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
-				stringBuilder.Append(' ');
-				stringBuilder.Append(_quantifier.GetItemString());
+				stringBuilder.Append(For);
+				_quantifier.AppendNegated(stringBuilder);
 			}
 
 			protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)

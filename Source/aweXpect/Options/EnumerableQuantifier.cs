@@ -68,4 +68,10 @@ public abstract partial class EnumerableQuantifier
 		int notMatchingCount,
 		int? totalCount,
 		string? verb = null);
+
+	/// <summary>
+	///     Appends the negated quantifier together with the item noun, e.g. <c>not all items</c>.
+	/// </summary>
+	internal virtual void AppendNegated(StringBuilder stringBuilder)
+		=> stringBuilder.Append("not ").Append(this).Append(' ').Append(this.GetItemString());
 }

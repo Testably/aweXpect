@@ -53,7 +53,7 @@ public abstract partial class EnumerableQuantifier
 			int? totalCount,
 			string? verb = null)
 		{
-			if (matchingCount > maximum)
+			if (matchingCount > maximum || grammars.IsNegated())
 			{
 				if (totalCount.HasValue)
 				{

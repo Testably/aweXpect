@@ -149,15 +149,13 @@ public static partial class ThatAsyncEnumerable
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(_quantifier);
-			stringBuilder.Append(" for ");
 			_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
-			stringBuilder.Append(' ');
-			stringBuilder.Append(_quantifier.GetItemString());
+			stringBuilder.Append(" for ");
+			_quantifier.AppendNegated(stringBuilder);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> _quantifier.AppendResult(stringBuilder, _grammars, _matchingCount, _notMatchingCount, _totalCount);
+			=> _quantifier.AppendResult(stringBuilder, Grammars, _matchingCount, _notMatchingCount, _totalCount);
 
 		private void AppendContexts(bool isIncomplete)
 		{
