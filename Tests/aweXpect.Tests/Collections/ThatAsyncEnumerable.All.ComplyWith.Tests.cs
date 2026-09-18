@@ -49,8 +49,8 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<InconclusiveException>()
 						.WithMessage("""
 						             Expected that subject
-						             whose .Items is less than 6 for all items,
-						             but .Items could not be verified, because it was already cancelled
+						             whose Items is less than 6 for all items,
+						             but Items could not be verified, because it was already cancelled
 						             *
 						             """).AsWildcard();
 				}
