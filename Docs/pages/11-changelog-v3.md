@@ -226,6 +226,10 @@ expectation with `Within(…)` now observes the window it asks for.
   extension page.
 - The `[GuaranteesNotNull]` attribute in `aweXpect.Core` marks an expectation that a `null` subject can never satisfy,
   and the source generator emits it for expectations derived from `ConstraintResult.WithNotNullValue`.
+- The option types follow the result vocabulary: `StringEqualityOptions.UsingComparer(comparer)` is renamed to
+  `Using(comparer)` like `ObjectEqualityOptions.Using`, `StringEqualityOptions.Exactly()` is removed because exact
+  matching is the default, and `TimeSpanEqualityOptions.Approximately(expected, tolerance)` is internal; construct an
+  `ExecutesInToleranceResult` to get the tolerance continuation `ExecutesIn(expected).Within(tolerance)`.
 
 ## New expectations
 

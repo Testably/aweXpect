@@ -60,7 +60,7 @@ public class TimeSpanEqualityOptions
 	///     Verifies that the value is approximately <paramref name="expected" />,
 	///     using the provided <paramref name="tolerance" />.
 	/// </summary>
-	public void Approximately(TimeSpan expected, TimeSpan tolerance)
+	internal void Approximately(TimeSpan expected, TimeSpan tolerance)
 	{
 		if (tolerance < TimeSpan.Zero)
 		{

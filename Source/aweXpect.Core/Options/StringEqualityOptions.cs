@@ -210,7 +210,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     If set to <see langword="null" /> (default), uses the <see cref="StringComparer.Ordinal" /> or
 	///     <see cref="StringComparer.OrdinalIgnoreCase" /> depending on whether the casing is ignored.
 	/// </remarks>
-	public StringEqualityOptions UsingComparer(IEqualityComparer<string>? comparer)
+	public StringEqualityOptions Using(IEqualityComparer<string>? comparer)
 	{
 		_comparer = comparer;
 		return this;

@@ -197,7 +197,7 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task CountOccurrences_WhenComparerIsUsed_ShouldUseComparer()
 		{
 			StringEqualityOptions sut = new();
-			sut.AsBlock().UsingComparer(StringComparer.OrdinalIgnoreCase);
+			sut.AsBlock().Using(StringComparer.OrdinalIgnoreCase);
 
 			int result = await sut.CountOccurrences("  FOO\n  bar", "foo\nBAR");
 

@@ -11,15 +11,6 @@ public partial class StringEqualityOptions
 {
 	private static readonly IStringMatchType ExactMatch = new ExactMatchType();
 
-	/// <summary>
-	///     Interprets the expected <see langword="string" /> to be exactly equal.
-	/// </summary>
-	public StringEqualityOptions Exactly()
-	{
-		_matchType = ExactMatch;
-		return this;
-	}
-
 	private sealed class ExactMatchType : IStringMatchType
 	{
 		private static int GetIndexOfFirstMatch(string stringWithLeadingWhitespace, string value,
