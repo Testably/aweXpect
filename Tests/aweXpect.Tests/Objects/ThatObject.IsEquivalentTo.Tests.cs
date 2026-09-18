@@ -187,7 +187,9 @@ public sealed partial class ThatObject
 					                 Value = "Foo"
 					               },
 					             but it was not:
-					               Property Value was <null> instead of "Foo"
+					               Property Value differed:
+					                    Found: <null>
+					                 Expected: "Foo"
 
 					             Equivalency options:
 					              - include public fields and properties
@@ -483,7 +485,9 @@ public sealed partial class ThatObject
 					                 Value = "Foo"
 					               },
 					             but it was not:
-					               Property Inner.Inner.Value was <null> instead of "Baz"
+					               Property Inner.Inner.Value differed:
+					                    Found: <null>
+					                 Expected: "Baz"
 
 					             Equivalency options:
 					              - include public fields and properties

@@ -252,13 +252,15 @@ Equivalency options:
  - include public fields and properties
 ```
 
-When the playlist-filter pattern with `It.Is<T>()` fails, the failure renders each member's expectation inline:
+When the playlist-filter pattern with `It.Is<T>()` fails, the member's expectation is rendered as `Expected`:
 
 ```
 Expected that midnight
 is equivalent to { Title = is string that is not empty, PlayCount = is int that is greater than 2 },
 but it was not:
-  Property PlayCount was 1
+  Property PlayCount differed:
+       Found: 1
+    Expected: is int that is greater than 2
 
 Equivalency options:
  - include public fields and properties

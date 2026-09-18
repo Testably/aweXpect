@@ -24,19 +24,7 @@ public static partial class EquivalencyComparison
 	{
 		if (!actual.Equals(expected))
 		{
-			failureBuilder.AppendLine();
-			if (failureBuilder.Length > 2)
-			{
-				failureBuilder.AppendLine("and");
-			}
-
-			failureBuilder.Append("  ");
-			failureBuilder.Append(GetMemberPath(memberType, memberPath));
-			failureBuilder.AppendLine(" differed:");
-			failureBuilder.Append("       Found: ");
-			Formatter.Format(failureBuilder, actual, FormattingOptions.SingleLine);
-			failureBuilder.AppendLine().Append("    Expected: ");
-			Formatter.Format(failureBuilder, expected, FormattingOptions.SingleLine);
+			AppendDifference(failureBuilder, memberType, memberPath, actual, expected);
 			return false;
 		}
 
@@ -51,6 +39,22 @@ public static partial class EquivalencyComparison
 			return true;
 		}
 
+		AppendDifference(failureBuilder, memberType, memberPath, actual, expected);
+		return false;
+	}
+
+	private static void AppendDifference<TActual, TExpected>(StringBuilder failureBuilder,
+		MemberType memberType, string memberPath, TActual actual, TExpected expected)
+	{
+		AppendDifferenceHeader(failureBuilder, memberType, memberPath);
+		Formatter.Format(failureBuilder, actual, FormattingOptions.SingleLine);
+		failureBuilder.AppendLine().Append("    Expected: ");
+		Formatter.Format(failureBuilder, expected, FormattingOptions.SingleLine);
+	}
+
+	private static void AppendDifferenceHeader(StringBuilder failureBuilder, MemberType memberType,
+		string memberPath)
+	{
 		failureBuilder.AppendLine();
 		if (failureBuilder.Length > 2)
 		{
@@ -59,11 +63,8 @@ public static partial class EquivalencyComparison
 
 		failureBuilder.Append("  ");
 		failureBuilder.Append(GetMemberPath(memberType, memberPath));
-		failureBuilder.Append(" was ");
-		Formatter.Format(failureBuilder, actual, FormattingOptions.SingleLine);
-		failureBuilder.Append(" instead of ");
-		Formatter.Format(failureBuilder, expected, FormattingOptions.SingleLine);
-		return false;
+		failureBuilder.AppendLine(" differed:");
+		failureBuilder.Append("       Found: ");
 	}
 
 	private static string ConcatMemberPath(string memberPath, string memberName)
@@ -139,15 +140,17 @@ public static partial class EquivalencyComparison
 
 			if (result.Outcome == Outcome.Failure)
 			{
-				failureBuilder.AppendLine();
-				if (failureBuilder.Length > 2)
+				AppendDifferenceHeader(failureBuilder, memberType, memberPath);
+				Formatter.Format(failureBuilder, actual, FormattingOptions.SingleLine);
+				if (actual is not null && !equivalencyExpectationBuilder.IsOfExpectedType(actual))
 				{
-					failureBuilder.AppendLine("and");
+					failureBuilder.Append(" (");
+					Formatter.Format(failureBuilder, actual.GetType());
+					failureBuilder.Append(')');
 				}
 
-				failureBuilder.Append("  ");
-				failureBuilder.Append(GetMemberPath(memberType, memberPath));
-				result.AppendResult(failureBuilder, "  ");
+				failureBuilder.AppendLine().Append("    Expected: ");
+				failureBuilder.Append(equivalencyExpectationBuilder.ToString().Indent("    ", false));
 				return false;
 			}
 		}
@@ -266,19 +269,7 @@ public static partial class EquivalencyComparison
 		{
 			if (actual.GetType() != expected.GetType())
 			{
-				failureBuilder.AppendLine();
-				if (failureBuilder.Length > 2)
-				{
-					failureBuilder.AppendLine("and");
-				}
-
-				failureBuilder.Append("  ");
-				failureBuilder.Append(GetMemberPath(memberType, memberPath));
-				failureBuilder.AppendLine(" differed:");
-				failureBuilder.Append("       Found: ");
-				Formatter.Format(failureBuilder, actual, FormattingOptions.SingleLine);
-				failureBuilder.AppendLine().Append("    Expected: ");
-				Formatter.Format(failureBuilder, expected, FormattingOptions.SingleLine);
+				AppendDifference(failureBuilder, memberType, memberPath, actual, expected);
 				result = false;
 			}
 			else if (typeOptions.Fields != IncludeMembers.None || typeOptions.Properties != IncludeMembers.None)

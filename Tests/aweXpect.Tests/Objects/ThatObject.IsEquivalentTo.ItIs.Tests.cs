@@ -35,13 +35,13 @@ public sealed partial class ThatObject
 						             Expected that subject
 						             is equivalent to { StringValue = is string that is equal to "folly", IntValue = is int that is less than 2, BoolValue = True },
 						             but it was not:
-						               Property StringValue was "foo" which differs at index 2:
-						                    ↓ (actual)
-						                 "foo"
-						                 "folly"
-						                    ↑ (expected)
+						               Property StringValue differed:
+						                    Found: "foo"
+						                 Expected: is string that is equal to "folly"
 						             and
-						               Property IntValue was 42
+						               Property IntValue differed:
+						                    Found: 42
+						                 Expected: is int that is less than 2
 						             and
 						               Property BoolValue differed:
 						                    Found: False
@@ -94,7 +94,9 @@ public sealed partial class ThatObject
 						             Expected that subject
 						             is equivalent to { StringValue = is string that is not empty, IntValue = is int that is less than 2 },
 						             but it was not:
-						               Property IntValue was 42
+						               Property IntValue differed:
+						                    Found: 42
+						                 Expected: is int that is less than 2
 
 						             Equivalency options:
 						              - include public fields and properties
@@ -128,9 +130,13 @@ public sealed partial class ThatObject
 						             Expected that subject
 						             is equivalent to { StringValue = is string that is empty, NullableIntValue = is int? that is equal to 0, IntValue = is int that is greater than 2 },
 						             but it was not:
-						               Property StringValue was <null>
+						               Property StringValue differed:
+						                    Found: <null>
+						                 Expected: is string that is empty
 						             and
-						               Property NullableIntValue was <null>
+						               Property NullableIntValue differed:
+						                    Found: <null>
+						                 Expected: is int? that is equal to 0
 
 						             Equivalency options:
 						              - include public fields and properties
@@ -159,9 +165,13 @@ public sealed partial class ThatObject
 						             Expected that subject
 						             is equivalent to { StringValue = is DateTime, IntValue = is int that is greater than 2 },
 						             but it was not:
-						               Property StringValue was string
+						               Property StringValue differed:
+						                    Found: "foo" (string)
+						                 Expected: is DateTime
 						             and
-						               Property IntValue was 1
+						               Property IntValue differed:
+						                    Found: 1
+						                 Expected: is int that is greater than 2
 
 						             Equivalency options:
 						              - include public fields and properties
@@ -190,7 +200,9 @@ public sealed partial class ThatObject
 						             Expected that subject
 						             is equivalent to { StringValue = is string that is null, IntValue = is int that is greater than 2 },
 						             but it was not:
-						               Property StringValue was ""
+						               Property StringValue differed:
+						                    Found: ""
+						                 Expected: is string that is null
 
 						             Equivalency options:
 						              - include public fields and properties

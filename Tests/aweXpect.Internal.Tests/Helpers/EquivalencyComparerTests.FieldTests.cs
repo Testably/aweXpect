@@ -59,7 +59,9 @@ public sealed partial class EquivalencyComparerTests
 			await That(result).IsFalse();
 			await That(failure).IsEqualTo($"""
 			                               it was not:
-			                                 Field MyValue was {Formatter.Format(actualValue)} instead of {Formatter.Format(expectedValue)}
+			                                 Field MyValue differed:
+			                                      Found: {Formatter.Format(actualValue)}
+			                                   Expected: {Formatter.Format(expectedValue)}
 			                               """);
 		}
 
