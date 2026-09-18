@@ -78,19 +78,59 @@ public class MemberAccessor<TSource, TTarget> : MemberAccessor
 		int idx = expression.IndexOf("=>", StringComparison.Ordinal);
 		if (idx > 0)
 		{
-			string? prefix = expression.Substring(0, idx).Trim();
-			idx = expression.IndexOf(prefix, idx, StringComparison.Ordinal);
-			if (idx > 0)
+			string parameter = expression.Substring(0, idx).Trim();
+			if (parameter.Length > 2 && parameter[0] == '(' && parameter[parameter.Length - 1] == ')')
 			{
-				expression = expression.Substring(idx + prefix.Length).TrimStart();
-				if (expression.Length > 0 && expression[0] == '.')
+				parameter = parameter.Substring(1, parameter.Length - 2).Trim();
+			}
+
+			if (IsIdentifier(parameter))
+			{
+				string body = expression.Substring(idx + 2).Trim();
+				if (body == parameter)
 				{
-					expression = expression.Substring(1);
+					return "it ";
 				}
+
+				// Only a leading parameter access is stripped; any other body (e.g. a cast) is kept whole,
+				// because removing the parameter from it would no longer read as the selected member.
+				if (body.StartsWith(parameter + "?.", StringComparison.Ordinal))
+				{
+					body = body.Substring(parameter.Length + 2);
+				}
+				else if (body.StartsWith(parameter + ".", StringComparison.Ordinal))
+				{
+					body = body.Substring(parameter.Length + 1);
+				}
+				else if (body.StartsWith(parameter + "[", StringComparison.Ordinal))
+				{
+					body = body.Substring(parameter.Length);
+				}
+
+				return $"{body} ";
 			}
 		}
 
 		return $"{expression} ";
+	}
+
+	private static bool IsIdentifier(string value)
+	{
+		int start = value.Length > 1 && value[0] == '@' ? 1 : 0;
+		if (value.Length == start || char.IsDigit(value[start]))
+		{
+			return false;
+		}
+
+		for (int i = start; i < value.Length; i++)
+		{
+			if (!char.IsLetterOrDigit(value[i]) && value[i] != '_')
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	internal TTarget AccessMember(TSource value) => _accessor.Invoke(value);
