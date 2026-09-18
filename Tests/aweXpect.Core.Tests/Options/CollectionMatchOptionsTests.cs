@@ -18,7 +18,7 @@ public class CollectionMatchOptionsTests
 				.WithMessage("""
 				             Expected that subject
 				             contains collection [3,] in order,
-				             but it lacked the 1 expected item
+				             but it lacked the one expected item
 
 				             Collection:
 				             [1, 2]
@@ -40,7 +40,7 @@ public class CollectionMatchOptionsTests
 				.WithMessage("""
 				             Expected that subject
 				             contains collection [3, 3,] in order ignoring duplicates,
-				             but it lacked the 1 unique expected item
+				             but it lacked the one unique expected item
 
 				             Collection:
 				             [1, 2]

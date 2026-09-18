@@ -201,7 +201,7 @@ need an update.
 - A quantifier nested under `HasLines`, `HasRecursiveInnerExceptions` or `WithRecursiveInnerExceptions` reads
   `recursive inner exceptions of which at least 2 are of type X` instead of `which at least 2 are of type X`.
 - Item counts agree with their number: `but it contained only 3 items and misses 1 item` and
-  `but it lacked the 1 expected item` instead of `misses 1 items` and `lacked all 1 expected items`.
+  `but it lacked the one expected item` instead of `misses 1 items` and `lacked all 1 expected items`.
 - An expectation used as an item of an expected collection renders as `an item that is equal to "x"` instead of
   `it is equal to "x"`, e.g. `contained item "d" at index 3 instead of an item that is equal to "x"`.
 - A member selector reads `by`: `is unique by x => x.Value for all items` instead of

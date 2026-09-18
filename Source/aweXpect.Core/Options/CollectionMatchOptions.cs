@@ -238,8 +238,8 @@ public partial class CollectionMatchOptions(
 		{
 			yield return (total, ignoringDuplicates) switch
 			{
-				(1, true) => "lacked the 1 unique expected item",
-				(1, false) => "lacked the 1 expected item",
+				(1, true) => "lacked the one unique expected item",
+				(1, false) => "lacked the one expected item",
 				(_, true) => $"lacked all {total} unique expected items",
 				(_, false) => $"lacked all {total} expected items",
 			};
