@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Text;
 #if !NET8_0_OR_GREATER
 using aweXpect.Options;
@@ -55,11 +56,17 @@ public static partial class ThatNumber
 	/// <remarks>
 	///     The signed difference is preferred, because the magnitude of a difference towards
 	///     <c>MinValue</c> is not representable, while the difference itself is. For unsigned types it is the other
-	///     way round, so the magnitude with an explicit sign remains as fallback.
+	///     way round, so the magnitude with an explicit sign remains as fallback. When neither is representable, the
+	///     difference is calculated in a wider type.
 	/// </remarks>
 	private static void AppendDifference<TNumber>(StringBuilder stringBuilder, TNumber? actual, TNumber? expected)
 		where TNumber : struct, INumber<TNumber>
 	{
+		if (actual is null || expected is null)
+		{
+			return;
+		}
+
 		try
 		{
 			checked
@@ -87,19 +94,32 @@ public static partial class ThatNumber
 				{
 					stringBuilder.Append(actual > expected ? " which differs by " : " which differs by -");
 					Formatter.Format(stringBuilder, magnitude);
+					return;
 				}
 			}
 		}
 		catch (OverflowException)
 		{
-			// Do not display the difference in case of overflow.
+			// Fall back to the wider type below.
+		}
+
+		try
+		{
+			AppendWideDifference(stringBuilder, typeof(TNumber) == typeof(float) || typeof(TNumber) == typeof(Half)
+				? double.CreateChecked(actual.Value) - double.CreateChecked(expected.Value)
+				: decimal.CreateChecked(actual.Value) - decimal.CreateChecked(expected.Value));
+		}
+		catch (Exception ex) when (ex is OverflowException or NotSupportedException)
+		{
+			// Do not display the difference, if it overflows even in the wider type or cannot be converted to it.
 		}
 	}
 #else
 	/// <remarks>
 	///     The signed difference is preferred, because the magnitude of a difference towards
 	///     <c>MinValue</c> is not representable, while the difference itself is. For unsigned types it is the other
-	///     way round, so the magnitude with an explicit sign remains as fallback.
+	///     way round, so the magnitude with an explicit sign remains as fallback. When neither is representable, the
+	///     difference is calculated in a wider type.
 	/// </remarks>
 	private static void AppendDifference<TNumber>(StringBuilder stringBuilder, TNumber? actual, TNumber? expected,
 		NumberTolerance<TNumber> options)
@@ -127,12 +147,15 @@ public static partial class ThatNumber
 					? " which differs by "
 					: " which differs by -");
 				Formatter.Format(stringBuilder, magnitude);
+				return;
 			}
 		}
 		catch (OverflowException)
 		{
-			// Do not display the difference in case of overflow.
+			// Fall back to the wider type below.
 		}
+
+		AppendWideDifference(stringBuilder, CalculateWideDifference(actual.Value, expected.Value));
 	}
 
 	/// <remarks>
@@ -154,5 +177,37 @@ public static partial class ThatNumber
 				=> (TNumber)(object)(long)((decimal)a - e),
 			_ => null,
 		};
+
+	/// <remarks>
+	///     Only the signed integer types and <see langword="float" /> are listed, because the magnitude of every other
+	///     type is either representable or has no wider type.
+	/// </remarks>
+	private static object? CalculateWideDifference<TNumber>(TNumber actual, TNumber expected)
+		where TNumber : struct, IComparable<TNumber>
+		=> (actual, expected) switch
+		{
+			(sbyte a, sbyte e) => (decimal)a - e,
+			(short a, short e) => (decimal)a - e,
+			(int a, int e) => (decimal)a - e,
+			(long a, long e) => (decimal)a - e,
+			(float a, float e) => (double)a - e,
+			_ => null,
+		};
 #endif
+
+	private static void AppendWideDifference(StringBuilder stringBuilder, object? difference)
+	{
+		switch (difference)
+		{
+			// The decimal formatter would render a trailing ".0" for the difference of two integers.
+			case decimal integerDifference:
+				stringBuilder.Append(" which differs by ")
+					.Append(integerDifference.ToString(CultureInfo.InvariantCulture));
+				break;
+			case double floatingPointDifference when IsFinite(floatingPointDifference):
+				stringBuilder.Append(" which differs by ");
+				Formatter.Format(stringBuilder, floatingPointDifference);
+				break;
+		}
+	}
 }

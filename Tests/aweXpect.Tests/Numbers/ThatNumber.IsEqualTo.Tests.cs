@@ -1132,24 +1132,6 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData((sbyte)0, sbyte.MinValue)]
-			[InlineData(sbyte.MaxValue, sbyte.MinValue)]
-			public async Task ForSbyte_WhenDifferenceIsNotRepresentable_ShouldOmitTheDifference(
-				sbyte subject, sbyte? expected)
-			{
-				async Task Act()
-					=> await That(subject).IsEqualTo(expected);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              is equal to {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
-					              """)
-					.Because("a difference above sbyte.MaxValue cannot be displayed as an sbyte");
-			}
-
-			[Theory]
 			[AutoData]
 			public async Task ForSbyte_WhenExpectedIsNull_ShouldFail(
 				sbyte subject)
@@ -1384,215 +1366,427 @@ public sealed partial class ThatNumber
 
 		public sealed class OverflowTests
 		{
-			[Fact]
-			public async Task DecimalDifferenceOverflow_ShouldFail()
+			[Theory]
+			[InlineData(byte.MinValue, byte.MaxValue, "-255")]
+			[InlineData(byte.MaxValue, byte.MinValue, "255")]
+			public async Task ForByte_WhenDifferenceOverflows_ShouldIncludeTheDifference(
+				byte subject, byte expected, string expectedDifference)
 			{
-				async Task Action()
-					=> await That(decimal.MinValue).IsEqualTo(decimal.MaxValue);
+				byte? nullableSubject = subject;
 
-				await That(Action).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that decimal.MinValue
-					             is equal to decimal.MaxValue,
-					             but it was decimal.MinValue
-					             """);
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				async Task ActNullable()
+					=> await That(nullableSubject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              """);
+				await That(ActNullable).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that nullableSubject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              """);
+			}
+
+			[Theory]
+			[InlineData(true)]
+			[InlineData(false)]
+			public async Task ForDecimal_WhenDifferenceIsNotRepresentable_ShouldOmitTheDifference(
+				bool isSubjectMinValue)
+			{
+				decimal subject = isSubjectMinValue ? decimal.MinValue : decimal.MaxValue;
+				decimal expected = isSubjectMinValue ? decimal.MaxValue : decimal.MinValue;
+				decimal? nullableSubject = subject;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				async Task ActNullable()
+					=> await That(nullableSubject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)}
+					              """);
+				await That(ActNullable).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that nullableSubject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)}
+					              """);
+			}
+
+			[Theory]
+			[InlineData(double.MinValue, double.MaxValue)]
+			[InlineData(double.MaxValue, double.MinValue)]
+			public async Task ForDouble_WhenDifferenceIsNotRepresentable_ShouldOmitTheDifference(
+				double subject, double expected)
+			{
+				double? nullableSubject = subject;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				async Task ActNullable()
+					=> await That(nullableSubject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)}
+					              """);
+				await That(ActNullable).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that nullableSubject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)}
+					              """);
+			}
+
+			[Theory]
+			[InlineData(float.MinValue, float.MaxValue, -6.805646932770577E+38)]
+			[InlineData(float.MaxValue, float.MinValue, 6.805646932770577E+38)]
+			public async Task ForFloat_WhenDifferenceOverflows_ShouldIncludeTheDifference(
+				float subject, float expected, double expectedDifference)
+			{
+				float? nullableSubject = subject;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				async Task ActNullable()
+					=> await That(nullableSubject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)} which differs by {Formatter.Format(expectedDifference)}
+					              """);
+				await That(ActNullable).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that nullableSubject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)} which differs by {Formatter.Format(expectedDifference)}
+					              """);
+			}
+
+			[Theory]
+			[InlineData(float.PositiveInfinity, float.MinValue)]
+			[InlineData(float.NegativeInfinity, float.MaxValue)]
+			public async Task ForFloat_WhenDifferenceIsNotRepresentable_ShouldOmitTheDifference(
+				float subject, float expected)
+			{
+				float? nullableSubject = subject;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				async Task ActNullable()
+					=> await That(nullableSubject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)}
+					              """);
+				await That(ActNullable).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that nullableSubject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)}
+					              """);
+			}
+
+			[Theory]
+			[InlineData(int.MinValue, int.MaxValue, "-4294967295")]
+			[InlineData(int.MaxValue, int.MinValue, "4294967295")]
+			public async Task ForInt_WhenDifferenceOverflows_ShouldIncludeTheDifference(
+				int subject, int expected, string expectedDifference)
+			{
+				int? nullableSubject = subject;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				async Task ActNullable()
+					=> await That(nullableSubject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              """);
+				await That(ActNullable).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that nullableSubject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              """);
+			}
+
+			[Theory]
+			[InlineData(long.MinValue, long.MaxValue, "-18446744073709551615")]
+			[InlineData(long.MaxValue, long.MinValue, "18446744073709551615")]
+			public async Task ForLong_WhenDifferenceOverflows_ShouldIncludeTheDifference(
+				long subject, long expected, string expectedDifference)
+			{
+				long? nullableSubject = subject;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				async Task ActNullable()
+					=> await That(nullableSubject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              """);
+				await That(ActNullable).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that nullableSubject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              """);
+			}
+
+			[Theory]
+			[InlineData(sbyte.MinValue, sbyte.MaxValue, "-255")]
+			[InlineData(sbyte.MaxValue, sbyte.MinValue, "255")]
+			[InlineData((sbyte)0, sbyte.MinValue, "128")]
+			public async Task ForSbyte_WhenDifferenceOverflows_ShouldIncludeTheDifference(
+				sbyte subject, sbyte expected, string expectedDifference)
+			{
+				sbyte? nullableSubject = subject;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				async Task ActNullable()
+					=> await That(nullableSubject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              """);
+				await That(ActNullable).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that nullableSubject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              """);
+			}
+
+			[Theory]
+			[InlineData(short.MinValue, short.MaxValue, "-65535")]
+			[InlineData(short.MaxValue, short.MinValue, "65535")]
+			public async Task ForShort_WhenDifferenceOverflows_ShouldIncludeTheDifference(
+				short subject, short expected, string expectedDifference)
+			{
+				short? nullableSubject = subject;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				async Task ActNullable()
+					=> await That(nullableSubject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              """);
+				await That(ActNullable).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that nullableSubject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              """);
+			}
+
+			[Theory]
+			[InlineData(uint.MinValue, uint.MaxValue, "-4294967295")]
+			[InlineData(uint.MaxValue, uint.MinValue, "4294967295")]
+			public async Task ForUint_WhenDifferenceOverflows_ShouldIncludeTheDifference(
+				uint subject, uint expected, string expectedDifference)
+			{
+				uint? nullableSubject = subject;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				async Task ActNullable()
+					=> await That(nullableSubject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              """);
+				await That(ActNullable).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that nullableSubject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              """);
+			}
+
+			[Theory]
+			[InlineData(ulong.MinValue, ulong.MaxValue, "-18446744073709551615")]
+			[InlineData(ulong.MaxValue, ulong.MinValue, "18446744073709551615")]
+			public async Task ForUlong_WhenDifferenceOverflows_ShouldIncludeTheDifference(
+				ulong subject, ulong expected, string expectedDifference)
+			{
+				ulong? nullableSubject = subject;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				async Task ActNullable()
+					=> await That(nullableSubject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              """);
+				await That(ActNullable).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that nullableSubject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              """);
+			}
+
+			[Theory]
+			[InlineData(ushort.MinValue, ushort.MaxValue, "-65535")]
+			[InlineData(ushort.MaxValue, ushort.MinValue, "65535")]
+			public async Task ForUshort_WhenDifferenceOverflows_ShouldIncludeTheDifference(
+				ushort subject, ushort expected, string expectedDifference)
+			{
+				ushort? nullableSubject = subject;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				async Task ActNullable()
+					=> await That(nullableSubject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              """);
+				await That(ActNullable).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that nullableSubject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)} which differs by {expectedDifference}
+					              """);
+			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task ForHalf_WhenDifferenceOverflows_ShouldIncludeTheDifference()
+			{
+				Half subject = Half.MinValue;
+				Half expected = Half.MaxValue;
+				Half? nullableSubject = subject;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				async Task ActNullable()
+					=> await That(nullableSubject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)} which differs by {Formatter.Format(-131008.0)}
+					              """);
+				await That(ActNullable).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that nullableSubject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)} which differs by {Formatter.Format(-131008.0)}
+					              """);
 			}
 
 			[Fact]
-			public async Task DoubleDifferenceOverflow_ShouldFail()
+			public async Task ForNint_WhenDifferenceOverflows_ShouldIncludeTheDifference()
 			{
-				async Task Action()
-					=> await That(double.MinValue).IsEqualTo(double.MaxValue);
+				nint subject = nint.MinValue;
+				nint expected = nint.MaxValue;
+				nint? nullableSubject = subject;
 
-				await That(Action).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that double.MinValue
-					             is equal to double.MaxValue,
-					             but it was double.MinValue
-					             """);
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				async Task ActNullable()
+					=> await That(nullableSubject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)} which differs by -{Formatter.Format(nuint.MaxValue)}
+					              """);
+				await That(ActNullable).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that nullableSubject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)} which differs by -{Formatter.Format(nuint.MaxValue)}
+					              """);
 			}
 
 			[Fact]
-			public async Task FloatDifferenceOverflow_ShouldFail()
+			public async Task ForNuint_WhenDifferenceOverflows_ShouldIncludeTheDifference()
 			{
-				async Task Action()
-					=> await That(float.MinValue).IsEqualTo(float.MaxValue);
+				nuint subject = nuint.MinValue;
+				nuint expected = nuint.MaxValue;
+				nuint? nullableSubject = subject;
 
-				await That(Action).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that float.MinValue
-					             is equal to float.MaxValue,
-					             but it was float.MinValue
-					             """);
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				async Task ActNullable()
+					=> await That(nullableSubject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)} which differs by -{Formatter.Format(nuint.MaxValue)}
+					              """);
+				await That(ActNullable).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that nullableSubject
+					              is equal to {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)} which differs by -{Formatter.Format(nuint.MaxValue)}
+					              """);
 			}
-
-			[Fact]
-			public async Task IntDifferenceOverflow_ShouldFail()
-			{
-				async Task Action()
-					=> await That(int.MinValue).IsEqualTo(int.MaxValue);
-
-				await That(Action).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that int.MinValue
-					             is equal to 2147483647,
-					             but it was -2147483648
-					             """);
-			}
-
-			[Fact]
-			public async Task LongDifferenceOverflow_ShouldFail()
-			{
-				async Task Action()
-					=> await That(long.MinValue).IsEqualTo(long.MaxValue);
-
-				await That(Action).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that long.MinValue
-					             is equal to 9223372036854775807,
-					             but it was -9223372036854775808
-					             """);
-			}
-
-			[Fact]
-			public async Task NullableDecimalDifferenceOverflow_ShouldFail()
-			{
-				decimal? minValue = decimal.MinValue;
-
-				async Task Action()
-					=> await That(minValue).IsEqualTo(decimal.MaxValue);
-
-				await That(Action).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that minValue
-					             is equal to decimal.MaxValue,
-					             but it was decimal.MinValue
-					             """);
-			}
-
-			[Fact]
-			public async Task NullableDoubleDifferenceOverflow_ShouldFail()
-			{
-				double? minValue = double.MinValue;
-
-				async Task Action()
-					=> await That(minValue).IsEqualTo(double.MaxValue);
-
-				await That(Action).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that minValue
-					             is equal to double.MaxValue,
-					             but it was double.MinValue
-					             """);
-			}
-
-			[Fact]
-			public async Task NullableFloatDifferenceOverflow_ShouldFail()
-			{
-				float? minValue = float.MinValue;
-
-				async Task Action()
-					=> await That(minValue).IsEqualTo(float.MaxValue);
-
-				await That(Action).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that minValue
-					             is equal to float.MaxValue,
-					             but it was float.MinValue
-					             """);
-			}
-
-			[Fact]
-			public async Task NullableIntDifferenceOverflow_ShouldFail()
-			{
-				int? minValue = int.MinValue;
-
-				async Task Action()
-					=> await That(minValue).IsEqualTo(int.MaxValue);
-
-				await That(Action).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that minValue
-					             is equal to 2147483647,
-					             but it was -2147483648
-					             """);
-			}
-
-			[Fact]
-			public async Task NullableLongDifferenceOverflow_ShouldFail()
-			{
-				long? minValue = long.MinValue;
-
-				async Task Action()
-					=> await That(minValue).IsEqualTo(long.MaxValue);
-
-				await That(Action).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that minValue
-					             is equal to 9223372036854775807,
-					             but it was -9223372036854775808
-					             """);
-			}
-
-			[Fact]
-			public async Task NullableSbyteDifferenceOverflow_ShouldFail()
-			{
-				sbyte? minValue = sbyte.MinValue;
-
-				async Task Action()
-					=> await That(minValue).IsEqualTo(sbyte.MaxValue);
-
-				await That(Action).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that minValue
-					             is equal to 127,
-					             but it was -128
-					             """);
-			}
-
-			[Fact]
-			public async Task NullableShortDifferenceOverflow_ShouldFail()
-			{
-				short? minValue = short.MinValue;
-
-				async Task Action()
-					=> await That(minValue).IsEqualTo(short.MaxValue);
-
-				await That(Action).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that minValue
-					             is equal to 32767,
-					             but it was -32768
-					             """);
-			}
-
-			[Fact]
-			public async Task SbyteDifferenceOverflow_ShouldFail()
-			{
-				async Task Action()
-					=> await That(sbyte.MinValue).IsEqualTo(sbyte.MaxValue);
-
-				await That(Action).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that sbyte.MinValue
-					             is equal to 127,
-					             but it was -128
-					             """);
-			}
-
-			[Fact]
-			public async Task ShortDifferenceOverflow_ShouldFail()
-			{
-				async Task Action()
-					=> await That(short.MinValue).IsEqualTo(short.MaxValue);
-
-				await That(Action).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that short.MinValue
-					             is equal to 32767,
-					             but it was -32768
-					             """);
-			}
+#endif
 		}
 	}
 }
