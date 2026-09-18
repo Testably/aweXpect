@@ -2,7 +2,10 @@ using System.Text;
 
 namespace aweXpect.Core.Constraints;
 
-internal sealed class IsExactlyOfTypeConstraint<TActual, TType>(string it, ExpectationGrammars grammars)
+internal sealed class IsExactlyOfTypeConstraint<TActual, TType>(
+	ExpectationBuilder expectationBuilder,
+	string it,
+	ExpectationGrammars grammars)
 	: ConstraintResult.WithNotNullValue<TActual>(it, grammars),
 		IValueConstraint<TActual>
 {
@@ -10,6 +13,12 @@ internal sealed class IsExactlyOfTypeConstraint<TActual, TType>(string it, Expec
 	{
 		Actual = actual;
 		Outcome = actual?.GetType() == typeof(TType) ? Outcome.Success : Outcome.Failure;
+		if (Outcome == Outcome.Failure && actual is not null)
+		{
+			expectationBuilder.AddContext(new ResultContext.Fixed("Actual",
+				Formatter.Format(actual, FormattingOptions.MultipleLines)));
+		}
+
 		return this;
 	}
 
@@ -22,7 +31,7 @@ internal sealed class IsExactlyOfTypeConstraint<TActual, TType>(string it, Expec
 	protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 	{
 		stringBuilder.Append(It).Append(" was ");
-		Formatter.Format(stringBuilder, Actual, FormattingOptions.Indented(indentation, true));
+		Formatter.Format(stringBuilder, Actual!.GetType());
 	}
 
 	protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

@@ -58,6 +58,25 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
+			public async Task WhenNestedInHasInnerException_ShouldFail()
+			{
+				Exception subject = new("outer", new ArgumentException("inner"));
+
+				async Task Act()
+					=> await That(subject).HasInnerException(it => it.Is<InvalidCastException>());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an inner exception whose is type InvalidCastException,
+					             but it was ArgumentException
+
+					             Actual:
+					             ArgumentException: inner
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				object? subject = null;
@@ -90,9 +109,12 @@ public sealed partial class ThatObject
 					.WithMessage($$"""
 					               Expected that subject
 					               is type ThatObject.OtherClass, because we want to test the failure,
-					               but it was ThatObject.MyClass {
-					                   Value = {{value}}
-					                 }
+					               but it was ThatObject.MyClass
+
+					               Actual:
+					               ThatObject.MyClass {
+					                 Value = {{value}}
+					               }
 					               """);
 			}
 
@@ -124,9 +146,12 @@ public sealed partial class ThatObject
 					.WithMessage($$"""
 					               Expected that subject
 					               is type ThatObject.MyClass, because {{reason}},
-					               but it was ThatObject.MyBaseClass {
-					                   Value = {{value}}
-					                 }
+					               but it was ThatObject.MyBaseClass
+
+					               Actual:
+					               ThatObject.MyBaseClass {
+					                 Value = {{value}}
+					               }
 					               """);
 			}
 
@@ -156,6 +181,25 @@ public sealed partial class ThatObject
 				object? result = await That(subject).Is(typeof(MyClass));
 
 				await That(result).IsSameAs(subject);
+			}
+
+			[Fact]
+			public async Task WhenSingleItemDoesNotMatch_ShouldFail()
+			{
+				object[] subject = [new List<int>(),];
+
+				async Task Act()
+					=> await That(subject).HasSingle().Which.Is(typeof(IDictionary<,>));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a single item which is type IDictionary<, >,
+					             but it was List<int>
+
+					             Actual:
+					             []
+					             """);
 			}
 
 			[Fact]
@@ -191,9 +235,12 @@ public sealed partial class ThatObject
 					.WithMessage($$"""
 					               Expected that subject
 					               is type ThatObject.OtherClass, because we want to test the failure,
-					               but it was ThatObject.MyClass {
-					                   Value = {{value}}
-					                 }
+					               but it was ThatObject.MyClass
+
+					               Actual:
+					               ThatObject.MyClass {
+					                 Value = {{value}}
+					               }
 					               """);
 			}
 
@@ -238,9 +285,12 @@ public sealed partial class ThatObject
 					.WithMessage($$"""
 					               Expected that subject
 					               is type ThatObject.MyClass, because {{reason}},
-					               but it was ThatObject.MyBaseClass {
-					                   Value = {{value}}
-					                 }
+					               but it was ThatObject.MyBaseClass
+
+					               Actual:
+					               ThatObject.MyBaseClass {
+					                 Value = {{value}}
+					               }
 					               """);
 			}
 
@@ -289,7 +339,10 @@ public sealed partial class ThatObject
 					.WithMessage("""
 					             Expected that subject
 					             is type IDictionary<, >,
-					             but it was List<string> []
+					             but it was List<string>
+
+					             Actual:
+					             []
 					             """);
 			}
 		}
