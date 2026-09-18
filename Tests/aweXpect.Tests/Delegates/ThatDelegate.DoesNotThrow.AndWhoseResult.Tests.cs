@@ -18,7 +18,7 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that @delegate
-						             does not throw any exception and whose result is greater than 5,
+						             does not throw any exception and its result is greater than 5,
 						             but it did throw a ThatDelegate.CustomException:
 						               WhenDelegateThrows_ShouldFail
 						             """);
@@ -35,7 +35,7 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that @delegate
-						              does not throw any exception and whose result is less than {value},
+						              does not throw any exception and its result is less than {value},
 						              but the result was {value}
 						              """);
 				}
@@ -63,7 +63,7 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that @delegate
-						             does not throw a ThatDelegate.CustomException and whose result is equal to 5,
+						             does not throw a ThatDelegate.CustomException and its result is equal to 5,
 						             but it did throw a ThatDelegate.CustomException:
 						               WhenDelegateThrowsExpectedException_ShouldFail
 						             """);
@@ -80,7 +80,7 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that @delegate
-						             does not throw a ThatDelegate.OtherException and whose result is equal to 5,
+						             does not throw a ThatDelegate.OtherException and its result is equal to 5,
 						             but it did throw a ThatDelegate.CustomException:
 						               WhenDelegateThrowsOtherException_ShouldFail
 						             """);
@@ -98,7 +98,7 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that @delegate
-						              does not throw a ThatDelegate.CustomException and whose result is equal to {value + 1},
+						              does not throw a ThatDelegate.CustomException and its result is equal to {value + 1},
 						              but the result was {value} which differs by -1
 						              """);
 				}
@@ -126,7 +126,7 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that @delegate
-						             does not throw a ThatDelegate.CustomException and whose result is equal to 5,
+						             does not throw a ThatDelegate.CustomException and its result is equal to 5,
 						             but it did throw a ThatDelegate.CustomException:
 						               WhenDelegateThrowsExpectedException_ShouldFail
 						             """);
@@ -143,7 +143,7 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that @delegate
-						             does not throw a ThatDelegate.OtherException and whose result is equal to 5,
+						             does not throw a ThatDelegate.OtherException and its result is equal to 5,
 						             but it did throw a ThatDelegate.CustomException:
 						               WhenDelegateThrowsOtherException_ShouldFail
 						             """);
@@ -161,7 +161,7 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that @delegate
-						              does not throw a ThatDelegate.CustomException and whose result is equal to {value + 1},
+						              does not throw a ThatDelegate.CustomException and its result is equal to {value + 1},
 						              but the result was {value} which differs by -1
 						              """);
 				}
