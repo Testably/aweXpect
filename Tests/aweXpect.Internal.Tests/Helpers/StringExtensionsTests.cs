@@ -91,6 +91,21 @@ public sealed class StringExtensionsTests
 		[InlineData("bee", "a bee")]
 		[InlineData("Exception", "an Exception")]
 		[InlineData("NotSupportedException", "a NotSupportedException")]
+		[InlineData("ArgumentException", "an ArgumentException")]
+		[InlineData("HashSet<int>", "a HashSet<int>")]
+		[InlineData("Hero", "a Hero")]
+		[InlineData("HResultException", "an HResultException")]
+		[InlineData("IOException", "an IOException")]
+		[InlineData("SMTPException", "an SMTPException")]
+		[InlineData("X509Exception", "an X509Exception")]
+		[InlineData("TException", "a TException")]
+		[InlineData("UInt32", "a UInt32")]
+		[InlineData("User", "a User")]
+		[InlineData("UriFormatException", "a UriFormatException")]
+		[InlineData("UnauthorizedAccessException", "an UnauthorizedAccessException")]
+		[InlineData("Update", "an Update")]
+		[InlineData("H", "an H")]
+		[InlineData("U", "a U")]
 		public async Task ShouldReturnExpectedValue(string input, string expected)
 		{
 			string result = input.PrependAOrAn();

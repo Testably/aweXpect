@@ -24,15 +24,38 @@ internal static class StringExtensions
 		       + value.Replace("\n", $"\n{indentation}");
 	}
 
+	/// <summary>
+	///     Prepends the indefinite article that matches the sound of the first letter of the <paramref name="value" />.
+	/// </summary>
+	/// <remarks>
+	///     An initialism (an uppercase letter that stands alone or is followed by an uppercase letter or a digit, e.g.
+	///     "HResult", "IOException" or "UInt32") is read letter by letter, so it takes "an" when the name of its
+	///     first letter starts with a vowel sound (A, E, F, H, I, L, M, N, O, R, S, X).<br />
+	///     Any other value takes "an" when it starts with a vowel, except for a "U" followed by a single consonant other
+	///     than "n" and a vowel, which is read as "you" (e.g. "User", "Uri" or "Utility").
+	/// </remarks>
 	public static string PrependAOrAn(this string value)
 	{
-		char[] vocals = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U',];
-		if (value.Length > 0 && vocals.Contains(value[0]))
+		bool startsWithVowelSound;
+		if (value.Length > 0 && char.IsUpper(value[0]) &&
+		    (value.Length == 1 || char.IsUpper(value[1]) || char.IsDigit(value[1])))
 		{
-			return $"an {value}";
+			startsWithVowelSound =
+				value[0] is 'A' or 'E' or 'F' or 'H' or 'I' or 'L' or 'M' or 'N' or 'O' or 'R' or 'S' or 'X';
+		}
+		else if (value.Length > 2 && value[0] is 'U' or 'u' && value[1] != 'n' && !IsVowel(value[1]) &&
+		         IsVowel(value[2]))
+		{
+			startsWithVowelSound = false;
+		}
+		else
+		{
+			startsWithVowelSound = value.Length > 0 && IsVowel(value[0]);
 		}
 
-		return $"a {value}";
+		return startsWithVowelSound ? $"an {value}" : $"a {value}";
+
+		static bool IsVowel(char c) => c is 'a' or 'e' or 'i' or 'o' or 'u' or 'A' or 'E' or 'I' or 'O' or 'U';
 	}
 
 	/// <summary>

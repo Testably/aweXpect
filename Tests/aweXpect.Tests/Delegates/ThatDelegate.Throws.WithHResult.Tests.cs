@@ -47,7 +47,7 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that Delegate
-						              throws a HResultException with HResult less than {hResult},
+						              throws an HResultException with HResult less than {hResult},
 						              but it had HResult {hResult}
 						              """);
 				}
