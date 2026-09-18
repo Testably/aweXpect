@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "23133e352519fba3293b7ae48dffb83acae9b30e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 14 16:26:53 2026 \u002B0200",
-        "message": "docs: state the null rule that extension authors must follow (#1100)"
-      },
-      {
         "sha": "dbd64a16d11ee01297b0d19a48d884bd201dc648",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 16:27:25 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 20:56:20 2026 \u002B0200",
         "message": "fix: render a negated quantifier as \u0060for not all items\u0060 (#1198)"
+      },
+      {
+        "sha": "34d794ecd4612241cbba134f8a1de02916b80459",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 21:55:41 2026 \u002B0200",
+        "message": "fix: render every quantifier result as \u0060N of M\u0060 (#1201)"
       }
     ],
     "labels": [
-      "23133e35",
       "dbd64a16",
       "3a66050e",
       "5fa9d810",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "9e372b47",
       "5a801961",
       "1305e06f",
-      "e00183f5"
+      "e00183f5",
+      "34d794ec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          272.7071217757005,
           282.5873665968577,
           254.31283381779988,
           257.5374924023946,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           258.94757595062254,
           218.62173357009888,
           306.1412992477417,
-          306.65425740755524
+          306.65425740755524,
+          337.75201447804767
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -467,7 +467,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
-          696,
+          840,
           840,
           840
         ],
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          239.39834238688152,
           244.30020138422648,
           237.89337490002313,
           271.99132073720295,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           284.532284450531,
           231.4863794485728,
           249.71533705393475,
-          255.23794501168388
+          255.23794501168388,
+          254.61803455352782
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "23133e352519fba3293b7ae48dffb83acae9b30e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 14 16:26:53 2026 \u002B0200",
-        "message": "docs: state the null rule that extension authors must follow (#1100)"
-      },
-      {
         "sha": "dbd64a16d11ee01297b0d19a48d884bd201dc648",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 16:27:25 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 20:56:20 2026 \u002B0200",
         "message": "fix: render a negated quantifier as \u0060for not all items\u0060 (#1198)"
+      },
+      {
+        "sha": "34d794ecd4612241cbba134f8a1de02916b80459",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 21:55:41 2026 \u002B0200",
+        "message": "fix: render every quantifier result as \u0060N of M\u0060 (#1201)"
       }
     ],
     "labels": [
-      "23133e35",
       "dbd64a16",
       "3a66050e",
       "5fa9d810",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "9e372b47",
       "5a801961",
       "1305e06f",
-      "e00183f5"
+      "e00183f5",
+      "34d794ec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          398807.8967122396,
           406313.1495186942,
           395099.5535807292,
           383259.0914388021,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           318864.2989676339,
           252249.9796875,
           318501.8701497396,
-          326566.2730794271
+          326566.2730794271,
+          345701.63971354166
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          542085,
           542085,
           542085,
           542084,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           617976,
           617976,
           618120,
+          618120,
           618120
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2660831.3231770834,
           2648058.49375,
           2802643.9260602677,
           2397191.646354167,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2462532.89375,
           1794733.3513020833,
           2599195.6180245536,
-          2588997.383072917
+          2588997.383072917,
+          2772641.68359375
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841651,
           4841651,
           4841635,
@@ -1202,6 +1201,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841609,
           4841651,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "23133e352519fba3293b7ae48dffb83acae9b30e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 14 16:26:53 2026 \u002B0200",
-        "message": "docs: state the null rule that extension authors must follow (#1100)"
-      },
       {
         "sha": "dbd64a16d11ee01297b0d19a48d884bd201dc648",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 20:56:20 2026 \u002B0200",
         "message": "fix: render a negated quantifier as \u0060for not all items\u0060 (#1198)"
+      },
+      {
+        "sha": "34d794ecd4612241cbba134f8a1de02916b80459",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 21:55:41 2026 \u002B0200",
+        "message": "fix: render every quantifier result as \u0060N of M\u0060 (#1201)"
       }
     ],
     "labels": [
-      "23133e35",
       "dbd64a16",
       "3a66050e",
       "5fa9d810",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "9e372b47",
       "5a801961",
       "1305e06f",
-      "e00183f5"
+      "e00183f5",
+      "34d794ec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          468.19346981048585,
           486.34537158693587,
           521.6478244917733,
           494.7722628275553,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           448.95081618626915,
           388.24630062920704,
           531.7529220581055,
-          538.1694253512791
+          538.1694253512791,
+          577.7639307022094
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1636,7 +1636,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1360,
           1360,
           1360,
           1360,
@@ -1685,6 +1684,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1512,
+          1512,
           1512
         ],
         "borderColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          510.66202341715496,
           489.4366489137922,
           538.4961628232684,
           528.4363608678182,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           495.09659112294514,
           443.9078366279602,
           492.4942326863607,
-          518.6470956802368
+          518.6470956802368,
+          555.1492535273234
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "23133e352519fba3293b7ae48dffb83acae9b30e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 14 16:26:53 2026 \u002B0200",
-        "message": "docs: state the null rule that extension authors must follow (#1100)"
-      },
-      {
         "sha": "dbd64a16d11ee01297b0d19a48d884bd201dc648",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 16:27:25 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 20:56:20 2026 \u002B0200",
         "message": "fix: render a negated quantifier as \u0060for not all items\u0060 (#1198)"
+      },
+      {
+        "sha": "34d794ecd4612241cbba134f8a1de02916b80459",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 21:55:41 2026 \u002B0200",
+        "message": "fix: render every quantifier result as \u0060N of M\u0060 (#1201)"
       }
     ],
     "labels": [
-      "23133e35",
       "dbd64a16",
       "3a66050e",
       "5fa9d810",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "9e372b47",
       "5a801961",
       "1305e06f",
-      "e00183f5"
+      "e00183f5",
+      "34d794ec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          252.94306329318457,
           267.9070954004923,
           281.6811509450277,
           275.06960776646935,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           265.6497843106588,
           231.98326710065206,
           301.0016506635226,
-          323.1038678487142
+          323.1038678487142,
+          348.18458862304686
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2291,7 +2291,7 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
-          864,
+          1008,
           1008,
           1008
         ],
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          243.92973760196142,
           249.65470666885375,
           288.50390370686847,
           276.23029589653015,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           243.09207551819938,
           227.02876474062603,
           243.2290725026812,
-          258.2499782562256
+          258.2499782562256,
+          285.1541458129883
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "23133e352519fba3293b7ae48dffb83acae9b30e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 14 16:26:53 2026 \u002B0200",
-        "message": "docs: state the null rule that extension authors must follow (#1100)"
-      },
-      {
         "sha": "dbd64a16d11ee01297b0d19a48d884bd201dc648",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 16:27:25 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 20:56:20 2026 \u002B0200",
         "message": "fix: render a negated quantifier as \u0060for not all items\u0060 (#1198)"
+      },
+      {
+        "sha": "34d794ecd4612241cbba134f8a1de02916b80459",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 21:55:41 2026 \u002B0200",
+        "message": "fix: render every quantifier result as \u0060N of M\u0060 (#1201)"
       }
     ],
     "labels": [
-      "23133e35",
       "dbd64a16",
       "3a66050e",
       "5fa9d810",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "9e372b47",
       "5a801961",
       "1305e06f",
-      "e00183f5"
+      "e00183f5",
+      "34d794ec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          446.7085044542948,
           454.5175503094991,
           494.18738918304444,
           477.94668610890704,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           542.7885704040527,
           410.8887882868449,
           576.9623188018799,
-          590.45237159729
+          590.45237159729,
+          603.0279440198626
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2852,7 +2852,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1128,
           1128,
           1128,
           1128,
@@ -2901,6 +2900,7 @@ window.BENCHMARK_DATA = {
           1256,
           1256,
           1400,
+          1400,
           1400
         ],
         "borderColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1280.4255312601724,
           1223.4176754270281,
           1370.0128548940022,
           1341.652505329677,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1204.099277496338,
           1003.8728504180908,
           1192.900960786002,
-          1185.8738259633383
+          1185.8738259633383,
+          1327.5965039571126
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "23133e352519fba3293b7ae48dffb83acae9b30e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 14 16:26:53 2026 \u002B0200",
-        "message": "docs: state the null rule that extension authors must follow (#1100)"
-      },
-      {
         "sha": "dbd64a16d11ee01297b0d19a48d884bd201dc648",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 16:27:25 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 20:56:20 2026 \u002B0200",
         "message": "fix: render a negated quantifier as \u0060for not all items\u0060 (#1198)"
+      },
+      {
+        "sha": "34d794ecd4612241cbba134f8a1de02916b80459",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 21:55:41 2026 \u002B0200",
+        "message": "fix: render every quantifier result as \u0060N of M\u0060 (#1201)"
       }
     ],
     "labels": [
-      "23133e35",
       "dbd64a16",
       "3a66050e",
       "5fa9d810",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "9e372b47",
       "5a801961",
       "1305e06f",
-      "e00183f5"
+      "e00183f5",
+      "34d794ec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1957.9608357747395,
           1916.6552419662476,
           1941.6528345743816,
           1670.9143939971923,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1970.669078009469,
           1242.9716849009196,
           2024.6299023946126,
-          2019.8510101863317
+          2019.8510101863317,
+          2122.979504449027
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3460,7 +3460,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          2624,
           2624,
           2624,
           2624,
@@ -3509,6 +3508,7 @@ window.BENCHMARK_DATA = {
           2752,
           2752,
           3104,
+          3104,
           3104
         ],
         "borderColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1445.2837228139242,
           1366.0677769524711,
           1400.2874593734741,
           1437.5937737782797,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1379.4092335019793,
           1161.6914187113443,
           1350.3154574076334,
-          1315.3896138509115
+          1315.3896138509115,
+          1399.3660079956055
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "23133e352519fba3293b7ae48dffb83acae9b30e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 14 16:26:53 2026 \u002B0200",
-        "message": "docs: state the null rule that extension authors must follow (#1100)"
-      },
-      {
         "sha": "dbd64a16d11ee01297b0d19a48d884bd201dc648",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 14 16:27:25 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 20:56:20 2026 \u002B0200",
         "message": "fix: render a negated quantifier as \u0060for not all items\u0060 (#1198)"
+      },
+      {
+        "sha": "34d794ecd4612241cbba134f8a1de02916b80459",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 21:55:41 2026 \u002B0200",
+        "message": "fix: render every quantifier result as \u0060N of M\u0060 (#1201)"
       }
     ],
     "labels": [
-      "23133e35",
       "dbd64a16",
       "3a66050e",
       "5fa9d810",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "9e372b47",
       "5a801961",
       "1305e06f",
-      "e00183f5"
+      "e00183f5",
+      "34d794ec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2651.728740946452,
           2535.7885340372723,
           2660.4840303148544,
           2179.668372599284,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2576.014488728841,
           1651.6465266301082,
           2581.742345937093,
-          2583.1968972342356
+          2583.1968972342356,
+          2728.427665201823
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4068,7 +4068,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          2816,
           2816,
           2816,
           2816,
@@ -4117,6 +4116,7 @@ window.BENCHMARK_DATA = {
           2944,
           2944,
           3296,
+          3296,
           3296
         ],
         "borderColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          28410.73045654297,
           27259.131116739907,
           28238.857125418526,
           24276.291119384765,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           20710.378143310547,
           14474.885506184895,
           26294.660250150242,
-          27306.86591491699
+          27306.86591491699,
+          27231.05518798828
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4193,7 +4193,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33471,
           33471,
           33468,
@@ -4241,6 +4240,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471
         ],
