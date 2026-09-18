@@ -190,10 +190,43 @@ public class AndOrWhoseResultTests
 			             """);
 	}
 
+	[Fact]
+	public async Task Whose_WhenAsyncMemberFaults_ShouldPropagateException()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose(f => f.FaultedAsync(), f => f.IsTrue());
+
+		await That(Act).ThrowsExactly<InvalidOperationException>()
+			.WithMessage("async member failed");
+	}
+
+	[Fact]
+	public async Task AndWhose_WhenAsyncMemberFaults_ShouldPropagateException()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose(f => f.Value2, f => f.IsFalse())
+				.AndWhose(f => f.FaultedAsync(), f => f.IsTrue());
+
+		await That(Act).ThrowsExactly<InvalidOperationException>()
+			.WithMessage("async member failed");
+	}
+
 	private sealed class MyClass
 	{
 		public bool Value1 { get; set; }
 		public bool Value2 { get; set; }
+
+		public async Task<bool> FaultedAsync()
+		{
+			await Task.Yield();
+			throw new InvalidOperationException("async member failed");
+		}
 
 		public Task<bool> GetValue1Async() => Task.FromResult(Value1);
 	}

@@ -33,8 +33,27 @@ public sealed partial class ThatDelegateTests
 			await That(Act).DoesNotThrow();
 		}
 
+		[Fact]
+		public async Task Throws_Whose_WhenAsyncMemberFaults_ShouldPropagateException()
+		{
+			void Delegate() => throw new AsyncException(1);
+
+			async Task Act()
+				=> await That(Delegate).Throws<AsyncException>()
+					.Whose(e => e.FaultedAsync(), v => v.IsEqualTo(1));
+
+			await That(Act).ThrowsExactly<InvalidOperationException>()
+				.WithMessage("async member failed");
+		}
+
 		private sealed class AsyncException(int value) : Exception
 		{
+			public async Task<int> FaultedAsync()
+			{
+				await Task.Yield();
+				throw new InvalidOperationException("async member failed");
+			}
+
 			public Task<int> GetValueAsync() => Task.FromResult(value);
 		}
 	}

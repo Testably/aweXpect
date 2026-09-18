@@ -210,8 +210,53 @@ public sealed partial class ThatDelegate
 #endif
 			}
 
+			public sealed class AsyncMemberFaultTests
+			{
+				[Fact]
+				public async Task WhenAsyncMemberFaults_ShouldPropagateException()
+				{
+					void Delegate() => throw new AsyncException(1);
+
+					async Task Act()
+						=> await That(Delegate).Throws<AsyncException>()
+							.Whose(e => e.FaultedAsync(), v => v.IsEqualTo(1));
+
+					await That(Act).ThrowsExactly<InvalidOperationException>()
+						.WithMessage("async member failed");
+				}
+
+#if NET8_0_OR_GREATER
+				[Fact]
+				public async Task WhenValueTaskMemberFaults_ShouldPropagateException()
+				{
+					void Delegate() => throw new AsyncException(1);
+
+					async Task Act()
+						=> await That(Delegate).Throws<AsyncException>()
+							.Whose(e => e.FaultedValueTaskAsync(), v => v.IsEqualTo(1));
+
+					await That(Act).ThrowsExactly<InvalidOperationException>()
+						.WithMessage("async member failed");
+				}
+#endif
+			}
+
 			private sealed class AsyncException(int value) : Exception
 			{
+				public async Task<int> FaultedAsync()
+				{
+					await Task.Yield();
+					throw new InvalidOperationException("async member failed");
+				}
+
+#if NET8_0_OR_GREATER
+				public async ValueTask<int> FaultedValueTaskAsync()
+				{
+					await Task.Yield();
+					throw new InvalidOperationException("async member failed");
+				}
+#endif
+
 				public Task<int> GetValueAsync() => Task.FromResult(value);
 
 #if NET8_0_OR_GREATER

@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Tests;
+﻿using System.Threading;
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatGeneric
 {
@@ -252,6 +254,94 @@ public sealed partial class ThatGeneric
 					             does not throw any exception and its result is not null and whose GetValueAsync() is equal to 2,
 					             but GetValueAsync() was 1 which differs by -1
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenAsyncMemberFaults_ShouldPropagateException()
+			{
+				ThrowingClass subject = new();
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.FaultedAsync(), v => v.IsEqualTo(1));
+
+				await That(Act).ThrowsExactly<InvalidOperationException>()
+					.WithMessage("async member failed");
+			}
+
+			[Fact]
+			public async Task WhenAsyncMemberFaults_ShouldPropagateExceptionEvenIfOtherBranchSucceeds()
+			{
+				ThrowingClass subject = new();
+
+				async Task Act()
+					=> await That(subject)
+						.Whose(o => o.FaultedAsync(), v => v.IsEqualTo(1)).Or
+						.Whose(o => o.Value, v => v.IsEqualTo(0));
+
+				await That(Act).ThrowsExactly<InvalidOperationException>()
+					.WithMessage("async member failed");
+			}
+
+			[Fact]
+			public async Task WhenAsyncMemberIsCanceled_ShouldPropagateCancellation()
+			{
+				ThrowingClass subject = new();
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.CanceledAsync(), v => v.IsEqualTo(1));
+
+				await That(Act).Throws<OperationCanceledException>();
+			}
+
+			[Fact]
+			public async Task WhenAsyncMemberThrowsBeforeReturningTask_ShouldPropagateException()
+			{
+				ThrowingClass subject = new();
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.ThrowsBeforeReturningTask(), v => v.IsEqualTo(1));
+
+				await That(Act).ThrowsExactly<InvalidOperationException>()
+					.WithMessage("thrown before returning the task");
+			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task WhenValueTaskMemberFaults_ShouldPropagateException()
+			{
+				ThrowingClass subject = new();
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.FaultedValueTaskAsync(), v => v.IsEqualTo(1));
+
+				await That(Act).ThrowsExactly<InvalidOperationException>()
+					.WithMessage("async member failed");
+			}
+#endif
+
+			private sealed class ThrowingClass
+			{
+				public int Value { get; set; }
+
+				public Task<int> CanceledAsync()
+					=> Task.FromCanceled<int>(new CancellationToken(true));
+
+				public async Task<int> FaultedAsync()
+				{
+					await Task.Yield();
+					throw new InvalidOperationException("async member failed");
+				}
+
+				public Task<int> ThrowsBeforeReturningTask()
+					=> throw new InvalidOperationException("thrown before returning the task");
+
+#if NET8_0_OR_GREATER
+				public async ValueTask<int> FaultedValueTaskAsync()
+				{
+					await Task.Yield();
+					throw new InvalidOperationException("async member failed");
+				}
+#endif
 			}
 
 			private sealed class MyClass

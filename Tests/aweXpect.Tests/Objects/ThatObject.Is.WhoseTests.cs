@@ -174,9 +174,65 @@ public sealed partial class ThatObject
 			}
 #endif
 
+			[Fact]
+			public async Task WhenAsyncMemberFaults_ShouldPropagateException()
+			{
+				object subject = new AsyncClass();
+
+				async Task Act()
+					=> await That(subject).Is<AsyncClass>()
+						.Whose(it => it.FaultedAsync(), value => value.IsEqualTo(42));
+
+				await That(Act).ThrowsExactly<InvalidOperationException>()
+					.WithMessage("async member failed");
+			}
+
+			[Fact]
+			public async Task WhenAsyncMemberInAndWhoseFaults_ShouldPropagateException()
+			{
+				object subject = new AsyncClass();
+
+				async Task Act()
+					=> await That(subject).Is<AsyncClass>()
+						.Whose(it => it.Value, value => value.IsEqualTo(0))
+						.AndWhose(it => it.FaultedAsync(), value => value.IsEqualTo(42));
+
+				await That(Act).ThrowsExactly<InvalidOperationException>()
+					.WithMessage("async member failed");
+			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task WhenValueTaskMemberFaults_ShouldPropagateException()
+			{
+				object subject = new AsyncClass();
+
+				async Task Act()
+					=> await That(subject).Is<AsyncClass>()
+						.Whose(it => it.FaultedValueTaskAsync(), value => value.IsEqualTo(42));
+
+				await That(Act).ThrowsExactly<InvalidOperationException>()
+					.WithMessage("async member failed");
+			}
+#endif
+
 			private sealed class AsyncClass
 			{
 				public int Value { get; set; }
+
+				public async Task<int> FaultedAsync()
+				{
+					await Task.Yield();
+					throw new InvalidOperationException("async member failed");
+				}
+
+#if NET8_0_OR_GREATER
+				public async ValueTask<int> FaultedValueTaskAsync()
+				{
+					await Task.Yield();
+					throw new InvalidOperationException("async member failed");
+				}
+#endif
 
 				public async Task<int> GetValueAsync()
 				{
