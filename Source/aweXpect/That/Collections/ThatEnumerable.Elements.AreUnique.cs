@@ -254,6 +254,15 @@ public static partial class ThatEnumerable
 			=> AreUniqueCore(memberAccessor, doNotPopulateThisValue, true);
 
 		/// <summary>
+		///     …have unique members specified by the <paramref name="memberAccessor" />.
+		/// </summary>
+		public StringEqualityResult<TEnumerable, IThat<TEnumerable?>> AreUnique(
+			Func<object?, string> memberAccessor,
+			[CallerArgumentExpression("memberAccessor")]
+			string doNotPopulateThisValue = "")
+			=> AreUniqueCore(memberAccessor, doNotPopulateThisValue, true);
+
+		/// <summary>
 		///     …are not unique, i.e. they occur more than once in the collection.
 		/// </summary>
 		public ObjectEqualityResult<TEnumerable, IThat<TEnumerable?>, object?> AreNotUnique()
@@ -264,6 +273,15 @@ public static partial class ThatEnumerable
 		/// </summary>
 		public ObjectEqualityResult<TEnumerable, IThat<TEnumerable?>, TMember> AreNotUnique<TMember>(
 			Func<object?, TMember> memberAccessor,
+			[CallerArgumentExpression("memberAccessor")]
+			string doNotPopulateThisValue = "")
+			=> AreUniqueCore(memberAccessor, doNotPopulateThisValue, false);
+
+		/// <summary>
+		///     …have duplicate members specified by the <paramref name="memberAccessor" />.
+		/// </summary>
+		public StringEqualityResult<TEnumerable, IThat<TEnumerable?>> AreNotUnique(
+			Func<object?, string> memberAccessor,
 			[CallerArgumentExpression("memberAccessor")]
 			string doNotPopulateThisValue = "")
 			=> AreUniqueCore(memberAccessor, doNotPopulateThisValue, false);
@@ -294,6 +312,26 @@ public static partial class ThatEnumerable
 			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable?>, TMember>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new AreUniqueForEnumerableConstraint<TEnumerable, TMember>(
+						expectationBuilder, it, grammars,
+						_quantifier,
+						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
+							memberAccessorExpression.TrimCommonWhiteSpace(), options),
+						memberAccessor,
+						(a, b) => options.AreConsideredEqual(a, b),
+						expectUnique)),
+				_subject,
+				options);
+		}
+
+		private StringEqualityResult<TEnumerable, IThat<TEnumerable?>> AreUniqueCore(
+			Func<object?, string> memberAccessor, string memberAccessorExpression, bool expectUnique)
+		{
+			memberAccessor.ThrowIfNull();
+			StringEqualityOptions options = new();
+			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
+			return new StringEqualityResult<TEnumerable, IThat<TEnumerable?>>(
+				expectationBuilder.AddConstraint((it, grammars)
+					=> new AreUniqueForEnumerableConstraint<TEnumerable, string>(
 						expectationBuilder, it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),

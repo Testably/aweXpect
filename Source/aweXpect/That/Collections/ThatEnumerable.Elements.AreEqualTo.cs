@@ -266,6 +266,198 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     …are equal to the <paramref name="expected" /> value.
 	/// </summary>
+	public static ToleranceEqualityResult<TEnumerable, IThat<TEnumerable>, double, double>
+		AreEqualTo<TEnumerable>(this ElementsForStructEnumerable<TEnumerable, double> elements, double expected)
+		where TEnumerable : struct, IEnumerable<double>
+	{
+		IElementsForStructEnumerable<TEnumerable, double> iElements = elements;
+		ObjectEqualityWithToleranceOptions<double, double> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateDouble();
+		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
+		return new ToleranceEqualityResult<TEnumerable, IThat<TEnumerable>, double, double>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new AsyncCollectionForEnumerableConstraint<TEnumerable>(
+					expectationBuilder,
+					it, grammars,
+					iElements.Quantifier,
+					g => ElementExpectations.IsEqualTo(g, Formatter.Format(expected), options),
+					a => options.AreConsideredEqual((double)a!, expected),
+					"were")),
+			iElements.Subject,
+			options);
+	}
+
+	/// <summary>
+	///     …are equal to the <paramref name="expected" /> value.
+	/// </summary>
+	public static ToleranceEqualityResult<TEnumerable, IThat<TEnumerable>, double?, double>
+		AreEqualTo<TEnumerable>(this ElementsForStructEnumerable<TEnumerable, double?> elements, double? expected)
+		where TEnumerable : struct, IEnumerable<double?>
+	{
+		IElementsForStructEnumerable<TEnumerable, double?> iElements = elements;
+		ObjectEqualityWithToleranceOptions<double?, double> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateNullableDouble();
+		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
+		return new ToleranceEqualityResult<TEnumerable, IThat<TEnumerable>, double?, double>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new AsyncCollectionForEnumerableConstraint<TEnumerable>(
+					expectationBuilder,
+					it, grammars,
+					iElements.Quantifier,
+					g => ElementExpectations.IsEqualTo(g, Formatter.Format(expected), options),
+					a => options.AreConsideredEqual((double?)a, expected),
+					"were")),
+			iElements.Subject,
+			options);
+	}
+
+	/// <summary>
+	///     …are equal to the <paramref name="expected" /> value.
+	/// </summary>
+	public static ToleranceEqualityResult<TEnumerable, IThat<TEnumerable>, float, float>
+		AreEqualTo<TEnumerable>(this ElementsForStructEnumerable<TEnumerable, float> elements, float expected)
+		where TEnumerable : struct, IEnumerable<float>
+	{
+		IElementsForStructEnumerable<TEnumerable, float> iElements = elements;
+		ObjectEqualityWithToleranceOptions<float, float> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateFloat();
+		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
+		return new ToleranceEqualityResult<TEnumerable, IThat<TEnumerable>, float, float>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new AsyncCollectionForEnumerableConstraint<TEnumerable>(
+					expectationBuilder,
+					it, grammars,
+					iElements.Quantifier,
+					g => ElementExpectations.IsEqualTo(g, Formatter.Format(expected), options),
+					a => options.AreConsideredEqual((float)a!, expected),
+					"were")),
+			iElements.Subject,
+			options);
+	}
+
+	/// <summary>
+	///     …are equal to the <paramref name="expected" /> value.
+	/// </summary>
+	public static ToleranceEqualityResult<TEnumerable, IThat<TEnumerable>, float?, float>
+		AreEqualTo<TEnumerable>(this ElementsForStructEnumerable<TEnumerable, float?> elements, float? expected)
+		where TEnumerable : struct, IEnumerable<float?>
+	{
+		IElementsForStructEnumerable<TEnumerable, float?> iElements = elements;
+		ObjectEqualityWithToleranceOptions<float?, float> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateNullableFloat();
+		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
+		return new ToleranceEqualityResult<TEnumerable, IThat<TEnumerable>, float?, float>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new AsyncCollectionForEnumerableConstraint<TEnumerable>(
+					expectationBuilder,
+					it, grammars,
+					iElements.Quantifier,
+					g => ElementExpectations.IsEqualTo(g, Formatter.Format(expected), options),
+					a => options.AreConsideredEqual((float?)a, expected),
+					"were")),
+			iElements.Subject,
+			options);
+	}
+
+	/// <summary>
+	///     …are equal to the <paramref name="expected" /> value.
+	/// </summary>
+	public static ToleranceEqualityResult<TEnumerable, IThat<TEnumerable>, decimal, decimal>
+		AreEqualTo<TEnumerable>(this ElementsForStructEnumerable<TEnumerable, decimal> elements, decimal expected)
+		where TEnumerable : struct, IEnumerable<decimal>
+	{
+		IElementsForStructEnumerable<TEnumerable, decimal> iElements = elements;
+		ObjectEqualityWithToleranceOptions<decimal, decimal> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateDecimal();
+		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
+		return new ToleranceEqualityResult<TEnumerable, IThat<TEnumerable>, decimal, decimal>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new AsyncCollectionForEnumerableConstraint<TEnumerable>(
+					expectationBuilder,
+					it, grammars,
+					iElements.Quantifier,
+					g => ElementExpectations.IsEqualTo(g, Formatter.Format(expected), options),
+					a => options.AreConsideredEqual((decimal)a!, expected),
+					"were")),
+			iElements.Subject,
+			options);
+	}
+
+	/// <summary>
+	///     …are equal to the <paramref name="expected" /> value.
+	/// </summary>
+	public static ToleranceEqualityResult<TEnumerable, IThat<TEnumerable>, decimal?, decimal>
+		AreEqualTo<TEnumerable>(this ElementsForStructEnumerable<TEnumerable, decimal?> elements, decimal? expected)
+		where TEnumerable : struct, IEnumerable<decimal?>
+	{
+		IElementsForStructEnumerable<TEnumerable, decimal?> iElements = elements;
+		ObjectEqualityWithToleranceOptions<decimal?, decimal> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateNullableDecimal();
+		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
+		return new ToleranceEqualityResult<TEnumerable, IThat<TEnumerable>, decimal?, decimal>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new AsyncCollectionForEnumerableConstraint<TEnumerable>(
+					expectationBuilder,
+					it, grammars,
+					iElements.Quantifier,
+					g => ElementExpectations.IsEqualTo(g, Formatter.Format(expected), options),
+					a => options.AreConsideredEqual((decimal?)a, expected),
+					"were")),
+			iElements.Subject,
+			options);
+	}
+
+	/// <summary>
+	///     …are equal to the <paramref name="expected" /> value.
+	/// </summary>
+	public static ToleranceEqualityResult<TEnumerable, IThat<TEnumerable>, DateTime, TimeSpan>
+		AreEqualTo<TEnumerable>(this ElementsForStructEnumerable<TEnumerable, DateTime> elements, DateTime expected)
+		where TEnumerable : struct, IEnumerable<DateTime>
+	{
+		IElementsForStructEnumerable<TEnumerable, DateTime> iElements = elements;
+		ObjectEqualityWithToleranceOptions<DateTime, TimeSpan> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateDateTime();
+		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
+		return new ToleranceEqualityResult<TEnumerable, IThat<TEnumerable>, DateTime, TimeSpan>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new AsyncCollectionForEnumerableConstraint<TEnumerable>(
+					expectationBuilder,
+					it, grammars,
+					iElements.Quantifier,
+					g => ElementExpectations.IsEqualTo(g, Formatter.Format(expected), options),
+					a => options.AreConsideredEqual((DateTime)a!, expected),
+					"were")),
+			iElements.Subject,
+			options);
+	}
+
+	/// <summary>
+	///     …are equal to the <paramref name="expected" /> value.
+	/// </summary>
+	public static ToleranceEqualityResult<TEnumerable, IThat<TEnumerable>, DateTime?, TimeSpan>
+		AreEqualTo<TEnumerable>(this ElementsForStructEnumerable<TEnumerable, DateTime?> elements, DateTime? expected)
+		where TEnumerable : struct, IEnumerable<DateTime?>
+	{
+		IElementsForStructEnumerable<TEnumerable, DateTime?> iElements = elements;
+		ObjectEqualityWithToleranceOptions<DateTime?, TimeSpan> options =
+			ObjectEqualityWithToleranceOptionsFactory.CreateNullableDateTime();
+		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
+		return new ToleranceEqualityResult<TEnumerable, IThat<TEnumerable>, DateTime?, TimeSpan>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new AsyncCollectionForEnumerableConstraint<TEnumerable>(
+					expectationBuilder,
+					it, grammars,
+					iElements.Quantifier,
+					g => ElementExpectations.IsEqualTo(g, Formatter.Format(expected), options),
+					a => options.AreConsideredEqual((DateTime?)a, expected),
+					"were")),
+			iElements.Subject,
+			options);
+	}
+
+	/// <summary>
+	///     …are equal to the <paramref name="expected" /> value.
+	/// </summary>
 	public static StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>> AreEqualTo(
 		this Elements elements,
 		string? expected)

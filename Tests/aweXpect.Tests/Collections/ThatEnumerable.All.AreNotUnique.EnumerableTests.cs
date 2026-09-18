@@ -82,6 +82,66 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 			}
+
+			public sealed class EnumerableStringMemberTests
+			{
+				[Fact]
+				public async Task WhenAllMembersAreDuplicatedIgnoringCase_ShouldSucceed()
+				{
+					IEnumerable subject = new[] { "a", "A", "b", "B", };
+
+					async Task Act()
+						=> await That(subject).All().AreNotUnique(x => (string)x!).IgnoringCase();
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenSomeMembersAreUnique_ShouldFail()
+				{
+					IEnumerable subject = new[] { "a", "A", "b", "b", };
+
+					async Task Act()
+						=> await That(subject).All().AreNotUnique(x => (string)x!);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not unique by x => (string)x! for all items,
+						             but only 2 of 4 were
+
+						             Not matching items:
+						             [
+						               "a",
+						               "A"
+						             ]
+
+						             Collection:
+						             [
+						               "a",
+						               "A",
+						               "b",
+						               "b"
+						             ]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsNull_ShouldFail()
+				{
+					IEnumerable? subject = null;
+
+					async Task Act()
+						=> await That(subject)!.All().AreNotUnique(x => (string)x!);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not unique by x => (string)x! for all items,
+						             but it was <null>
+						             """);
+				}
+			}
 		}
 	}
 }

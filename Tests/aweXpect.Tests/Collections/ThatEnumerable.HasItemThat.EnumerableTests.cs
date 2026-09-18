@@ -1,5 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-using System.Collections.Immutable;
+﻿using System.Collections;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -9,31 +8,54 @@ public sealed partial class ThatEnumerable
 {
 	public sealed partial class HasItemThat
 	{
-		public sealed class ImmutableTests
+		public sealed class EnumerableTests
 		{
 			[Fact]
-			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldSucceed()
+			public async Task DoesNotEnumerateTwice()
 			{
-				ImmutableArray<int> subject = [0, 1, 2,];
+				IEnumerable subject = new ThrowWhenIteratingTwiceEnumerable();
+
+				async Task Act()
+					=> await That(subject).HasItemThat(it => it.IsNotNull())
+						.And.HasItemThat(it => it.IsNotNull()).AtIndex(0);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task DoesNotMaterializeEnumerable()
+			{
+				IEnumerable subject = Factory.GetFibonacciNumbers();
+
+				async Task Act()
+					=> await That(subject).HasItemThat(it => it.IsEqualTo(5));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldFail()
+			{
+				IEnumerable subject = new[] { 0, 1, 2, };
 
 				async Task Act()
 					=> await That(subject).HasItemThat(it => it.IsEqualTo(1)).AtIndex(2);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              has item that is equal to 1 at index 2,
-					              but it had item 2 at index 2
+					.WithMessage("""
+					             Expected that subject
+					             has item that is equal to 1 at index 2,
+					             but it had item 2 at index 2
 
-					              Collection:
-					              {Formatter.Format(subject)}
-					              """);
+					             Collection:
+					             [0, 1, 2]
+					             """);
 			}
 
 			[Fact]
 			public async Task WhenEnumerableContainsExpectedItemAtGivenIndex_ShouldSucceed()
 			{
-				ImmutableArray<int> subject = [0, 1, 2,];
+				IEnumerable subject = new[] { 0, 1, 2, };
 
 				async Task Act()
 					=> await That(subject).HasItemThat(it => it.IsEqualTo(2)).AtIndex(2);
@@ -44,26 +66,26 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task WhenEnumerableContainsNoItemAtGivenIndex_ShouldFail()
 			{
-				ImmutableArray<int> subject = [0, 1, 2,];
+				IEnumerable subject = new[] { 0, 1, 2, };
 
 				async Task Act()
 					=> await That(subject).HasItemThat(it => it.IsEqualTo(3)).AtIndex(3);
 
 				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              has item that is equal to 3 at index 3,
-					              but it did not contain any item at index 3
+					.WithMessage("""
+					             Expected that subject
+					             has item that is equal to 3 at index 3,
+					             but it did not contain any item at index 3
 
-					              Collection:
-					              {Formatter.Format(subject)}
-					              """);
+					             Collection:
+					             [0, 1, 2]
+					             """);
 			}
 
 			[Fact]
 			public async Task WhenEnumerableContainsNullItemAtGivenIndex_ShouldFail()
 			{
-				ImmutableArray<string?> subject = ["a", null,];
+				IEnumerable subject = new[] { "a", null, };
 
 				async Task Act()
 					=> await That(subject).HasItemThat(it => it.IsNotNull()).AtIndex(1);
@@ -85,7 +107,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task WhenEnumerableIsEmpty_ShouldFail()
 			{
-				ImmutableArray<int> subject = [];
+				IEnumerable subject = Array.Empty<int>();
 
 				async Task Act()
 					=> await That(subject).HasItemThat(it => it.IsNotEqualTo(0));
@@ -102,55 +124,39 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
-			public async Task WithInvalidMatch_ShouldNotMatch()
+			public async Task WhenSubjectIsNull_ShouldFail()
 			{
-				ImmutableArray<int> subject = [0, 1, 2, 3, 4,];
+				IEnumerable? subject = null;
 
 				async Task Act()
-					=> await That(subject).HasItemThat(it => it.IsEqualTo(2)).WithInvalidMatch();
+					=> await That(subject).HasItemThat(it => it.IsNotEqualTo(0));
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has item that is equal to 2 with invalid match,
-					             but it did not contain any item with invalid match
-
-					             Collection:
-					             [0, 1, 2, 3, 4]
+					             has item that is not equal to 0,
+					             but it was <null>
 					             """);
 			}
 
 			[Fact]
-			public async Task WithMultipleFailures_ShouldIncludeCollectionOnlyOnce()
+			public async Task WithFromEnd_WhenEnumerableContainsExpectedItemAtGivenIndex_ShouldSucceed()
 			{
-				ImmutableArray<string> subject = ["a", "b", "c",];
+				IEnumerable subject = new[] { 0, 1, 2, };
 
 				async Task Act()
-					=> await That(subject).HasItemThat(x => x.StartsWith("a").And.EndsWith("b")).AtIndex(0).And
-						.HasItemThat(x => x.Contains("c").IgnoringCase()).AtIndex(1);
+					=> await That(subject).HasItemThat(it => it.IsEqualTo(1)).AtIndex(1).FromEnd();
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             has item that starts with "a" and ends with "b" at index 0 and has item that contains "c" at least once ignoring case at index 1,
-					             but it had item "a" at index 0 and it had item "b" at index 1
-
-					             Collection:
-					             [
-					               "a",
-					               "b",
-					               "c"
-					             ]
-					             """);
+				await That(Act).DoesNotThrow();
 			}
 		}
 
-		public sealed class ImmutableNegatedTests
+		public sealed class EnumerableNegatedTests
 		{
 			[Fact]
 			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldSucceed()
 			{
-				ImmutableArray<int> subject = [0, 1, 2,];
+				IEnumerable subject = new[] { 0, 1, 2, };
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it
@@ -162,7 +168,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task WhenEnumerableContainsExpectedItemAtGivenIndex_ShouldFail()
 			{
-				ImmutableArray<int> subject = [0, 1, 2,];
+				IEnumerable subject = new[] { 0, 1, 2, };
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it
@@ -178,7 +184,23 @@ public sealed partial class ThatEnumerable
 					             [0, 1, 2]
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				IEnumerable? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it
+						.HasItemThat(x => x.IsNotEqualTo(0)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have item that is not equal to 0,
+					             but it was <null>
+					             """);
+			}
 		}
 	}
 }
-#endif
