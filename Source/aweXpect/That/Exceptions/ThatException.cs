@@ -67,6 +67,7 @@ public static partial class ThatException
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" had");
+			=> stringBuilder.Append(It).Append(" had ")
+				.Append(Actual!.InnerException!.FormatForMessage(indentation, "inner "));
 	}
 }
