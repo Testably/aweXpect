@@ -178,18 +178,6 @@ internal static class CollectionHelpers
 			}
 		});
 	}
-
-	/// <summary>
-	///     The materialized items can be only the first items of the asynchronous enumerable, so their count must not be
-	///     rendered as the number of remaining items.
-	/// </summary>
-	private static IEnumerable<TItem> HideCount<TItem>(IEnumerable<TItem> items)
-	{
-		foreach (TItem item in items)
-		{
-			yield return item;
-		}
-	}
 #endif
 
 	internal static ExpectationBuilder AddCollectionContext<TKey, TValue>(this ExpectationBuilder expectationBuilder,
@@ -235,6 +223,20 @@ internal static class CollectionHelpers
 			}
 		});
 	}
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     The materialized items can be only the first items of the asynchronous enumerable, so their count must not be
+	///     rendered as the number of remaining items.
+	/// </summary>
+	private static IEnumerable<TItem> HideCount<TItem>(IEnumerable<TItem> items)
+	{
+		foreach (TItem item in items)
+		{
+			yield return item;
+		}
+	}
+#endif
 
 	internal static bool ExceedsFormatterLimit<TItem>(this IEnumerable<TItem> subject)
 	{

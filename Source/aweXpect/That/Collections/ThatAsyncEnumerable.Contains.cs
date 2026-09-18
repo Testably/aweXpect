@@ -392,7 +392,6 @@ public static partial class ThatAsyncEnumerable
 		: ConstraintResult(grammars),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
-		private LimitedCollection<TItem> _items = new();
 		private IAsyncEnumerable<TItem>? _actual;
 		private int _count;
 		private bool _isFinished;
@@ -412,14 +411,14 @@ public static partial class ThatAsyncEnumerable
 				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual);
 			int maximumNumberOfCollectionItems =
 				Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
-			_items = new LimitedCollection<TItem>(maximumNumberOfCollectionItems + 1);
+			LimitedCollection<TItem> items = new(maximumNumberOfCollectionItems + 1);
 			_count = 0;
 			bool isFailed = false;
 			await foreach (TItem item in materializedEnumerable.WithCancellation(cancellationToken))
 			{
-				if (_items.Count <= maximumNumberOfCollectionItems)
+				if (items.Count <= maximumNumberOfCollectionItems)
 				{
-					_items.Add(item);
+					items.Add(item);
 				}
 
 				if (predicate(item))
@@ -438,15 +437,15 @@ public static partial class ThatAsyncEnumerable
 					}
 				}
 
-				if (_items.Count > maximumNumberOfCollectionItems && isFailed)
+				if (items.Count > maximumNumberOfCollectionItems && isFailed)
 				{
 					Outcome = Outcome.Failure;
-					expectationBuilder.AddCollectionContext(_items, true);
+					expectationBuilder.AddCollectionContext(items, true);
 					return this;
 				}
 			}
 
-			expectationBuilder.AddCollectionContext(_items);
+			expectationBuilder.AddCollectionContext(items);
 			if (quantifier.Check(_count, true) ?? _isNegated)
 			{
 				Outcome = Outcome.Success;
@@ -552,7 +551,6 @@ public static partial class ThatAsyncEnumerable
 		: ConstraintResult(grammars),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
-		private LimitedCollection<TItem> _items = new();
 		private IAsyncEnumerable<TItem>? _actual;
 		private int _count;
 		private bool _isFinished;
@@ -572,14 +570,14 @@ public static partial class ThatAsyncEnumerable
 				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual);
 			int maximumNumberOfCollectionItems =
 				Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
-			_items = new LimitedCollection<TItem>(maximumNumberOfCollectionItems + 1);
+			LimitedCollection<TItem> items = new(maximumNumberOfCollectionItems + 1);
 			_count = 0;
 			bool isFailed = false;
 			await foreach (TItem item in materializedEnumerable.WithCancellation(cancellationToken))
 			{
-				if (_items.Count <= maximumNumberOfCollectionItems)
+				if (items.Count <= maximumNumberOfCollectionItems)
 				{
-					_items.Add(item);
+					items.Add(item);
 				}
 
 				if (await predicate(item))
@@ -598,15 +596,15 @@ public static partial class ThatAsyncEnumerable
 					}
 				}
 
-				if (_items.Count > maximumNumberOfCollectionItems && isFailed)
+				if (items.Count > maximumNumberOfCollectionItems && isFailed)
 				{
 					Outcome = Outcome.Failure;
-					expectationBuilder.AddCollectionContext(_items, true);
+					expectationBuilder.AddCollectionContext(items, true);
 					return this;
 				}
 			}
 
-			expectationBuilder.AddCollectionContext(_items);
+			expectationBuilder.AddCollectionContext(items);
 			if (quantifier.Check(_count, true) ?? _isNegated)
 			{
 				Outcome = Outcome.Success;
