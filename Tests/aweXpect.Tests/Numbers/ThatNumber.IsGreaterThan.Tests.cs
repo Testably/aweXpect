@@ -133,6 +133,18 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
+			[InlineData(5.0, double.NegativeInfinity)]
+			[InlineData(double.PositiveInfinity, 1.0)]
+			[InlineData(double.PositiveInfinity, double.NegativeInfinity)]
+			public async Task ForDouble_WhenSubjectOrExpectedIsInfinity_ShouldSucceed(
+				double subject, double expected)
+			{
+				async Task Act() => await That(subject).IsGreaterThan(expected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Theory]
 			[InlineData(double.NaN, 0.0)]
 			[InlineData(0.0, double.NaN)]
 			public async Task ForDouble_WhenSubjectOrExpectedIsNaN_ShouldFail(

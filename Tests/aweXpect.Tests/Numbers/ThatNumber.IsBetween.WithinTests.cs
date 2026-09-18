@@ -107,7 +107,7 @@ public sealed partial class ThatNumber
 			}
 
 			[Fact]
-			public async Task ForDouble_WhenMinimumIsNaN_ShouldFail()
+			public async Task ForDouble_WhenMinimumIsNaN_ShouldThrowArgumentOutOfRangeException()
 			{
 				double subject = 13.0;
 				double minimum = double.NaN;
@@ -116,7 +116,9 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsBetween(minimum).And(maximum).Within(0.1);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("minimum").And
+					.WithMessage("The minimum must not be NaN.").AsPrefix();
 			}
 
 			[Theory]

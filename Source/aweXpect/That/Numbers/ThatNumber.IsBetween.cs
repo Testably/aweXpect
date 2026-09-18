@@ -91,6 +91,8 @@ public static partial class ThatNumber
 			TNumber? maximum,
 			NumberTolerance<TNumber> options) : base(it, grammars)
 		{
+			minimum.ThrowIfNaN();
+			maximum.ThrowIfNaN();
 			if (maximum < minimum)
 			{
 				// ReSharper disable once LocalizableElement
@@ -153,6 +155,8 @@ public static partial class ThatNumber
 			TNumber? maximum,
 			NumberTolerance<TNumber> options) : base(it, grammars)
 		{
+			minimum.ThrowIfNaN();
+			maximum.ThrowIfNaN();
 			if (maximum < minimum)
 			{
 				// ReSharper disable once LocalizableElement
@@ -1005,6 +1009,8 @@ public static partial class ThatNumber
 			TNumber? maximum,
 			NumberTolerance<TNumber> options) : base(it, grammars)
 		{
+			minimum.ThrowIfNaN();
+			maximum.ThrowIfNaN();
 			if (maximum != null && minimum != null &&
 			    maximum.Value.CompareTo(minimum.Value) < 0)
 			{
@@ -1068,6 +1074,8 @@ public static partial class ThatNumber
 			TNumber? maximum,
 			NumberTolerance<TNumber> options) : base(it, grammars)
 		{
+			minimum.ThrowIfNaN();
+			maximum.ThrowIfNaN();
 			if (maximum != null && minimum != null &&
 			    maximum.Value.CompareTo(minimum.Value) < 0)
 			{
