@@ -64,6 +64,19 @@ public sealed partial class ThatException
 						             inner
 						             """);
 				}
+
+				[Fact]
+				public async Task WhenTypeIsANamedArgument_ShouldSucceed()
+				{
+					Exception subject = new("outer",
+						new CustomException("inner"));
+
+					async Task Act()
+						=> await That(subject).HasInner(type: typeof(CustomException),
+							expectations: e => e.HasMessage("inner"));
+
+					await That(Act).DoesNotThrow();
+				}
 			}
 
 			public sealed class TypeTests
@@ -113,6 +126,18 @@ public sealed partial class ThatException
 						             has an inner ThatException.CustomException,
 						             but it was <null>
 						             """);
+				}
+
+				[Fact]
+				public async Task WhenTypeIsANamedArgument_ShouldSucceed()
+				{
+					Exception subject = new("outer",
+						new CustomException("inner"));
+
+					async Task Act()
+						=> await That(subject).HasInner(type: typeof(CustomException));
+
+					await That(Act).DoesNotThrow();
 				}
 			}
 

@@ -5,26 +5,27 @@ using aweXpect.Results;
 
 namespace aweXpect.Internal.Tests.Results;
 
-public sealed class SingleItemResultTests
+public sealed class AsyncSingleItemResultTests
 {
 	[Fact]
 	public async Task ShouldBeOptionsProvider_ForPredicateOptions()
 	{
 		PredicateOptions<int> options = new();
-		SingleItemResult<string[], int> sut = CreateSut(Array.Empty<string>(), options, s => s.Length);
+		AsyncSingleItemResult<string[], int> sut = CreateSut(Array.Empty<string>(), options,
+			s => Task.FromResult(s.Length));
 
 		await That(sut).Is<IOptionsProvider<PredicateOptions<int>>>()
 			.Whose(x => x.Options, it => it.IsSameAs(options));
 	}
 
-	private static SingleItemResult<TCollection, TItem> CreateSut<TCollection, TItem>(TCollection subject,
+	private static AsyncSingleItemResult<TCollection, TItem> CreateSut<TCollection, TItem>(TCollection subject,
 		PredicateOptions<TItem> options,
-		Func<TCollection, TItem?> memberAccessor)
+		Func<TCollection, Task<TItem?>> memberAccessor)
 	{
 #pragma warning disable aweXpect0001
 		IThat<TCollection> source = That(subject);
 #pragma warning restore aweXpect0001
-		return new SingleItemResult<TCollection, TItem>(source.Get().ExpectationBuilder,
+		return new AsyncSingleItemResult<TCollection, TItem>(source.Get().ExpectationBuilder,
 			options, memberAccessor);
 	}
 }

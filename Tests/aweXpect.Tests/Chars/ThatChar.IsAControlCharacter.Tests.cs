@@ -2,7 +2,7 @@
 
 public sealed partial class ThatChar
 {
-	public sealed class IsControl
+	public sealed class IsAControlCharacter
 	{
 		public sealed class Tests
 		{
@@ -17,7 +17,7 @@ public sealed partial class ThatChar
 			public async Task WhenSubjectIsAControlCharacter_ShouldSucceed(char subject)
 			{
 				async Task Act()
-					=> await That(subject).IsControl();
+					=> await That(subject).IsAControlCharacter();
 
 				await That(Act).DoesNotThrow();
 			}
@@ -31,7 +31,7 @@ public sealed partial class ThatChar
 			public async Task WhenSubjectIsNoControlCharacter_ShouldFail(char subject)
 			{
 				async Task Act()
-					=> await That(subject).IsControl();
+					=> await That(subject).IsAControlCharacter();
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -55,7 +55,7 @@ public sealed partial class ThatChar
 			public async Task WhenSubjectIsAControlCharacter_ShouldFail(char subject)
 			{
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsControl());
+					=> await That(subject).DoesNotComplyWith(it => it.IsAControlCharacter());
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -74,7 +74,7 @@ public sealed partial class ThatChar
 			public async Task WhenSubjectIsNoControlCharacter_ShouldSucceed(char subject)
 			{
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.IsControl());
+					=> await That(subject).DoesNotComplyWith(it => it.IsAControlCharacter());
 
 				await That(Act).DoesNotThrow();
 			}

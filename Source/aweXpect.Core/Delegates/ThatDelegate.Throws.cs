@@ -44,17 +44,17 @@ public abstract partial class ThatDelegate
 	}
 
 	/// <summary>
-	///     Verifies that the delegate throws an exception of type <paramref name="exceptionType" />.
+	///     Verifies that the delegate throws an exception of type <paramref name="type" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public ThatDelegateThrows<Exception> Throws(Type exceptionType)
+	public ThatDelegateThrows<Exception> Throws(Type type)
 	{
 		ThrowsOption throwOptions = new();
 		return new ThatDelegateThrows<Exception>(ExpectationBuilder
 				.AddConstraint((it, grammars)
 					=> new DelegateIsNotNullWithinTimeoutConstraint(it, grammars, throwOptions))
 				.ForWhich<DelegateValue, Exception?>(d => d.Exception)
-				.AddConstraint((it, grammars) => new ThrowsConstraint(it, grammars, exceptionType, throwOptions))
+				.AddConstraint((it, grammars) => new ThrowsConstraint(it, grammars, type, throwOptions))
 				.And(" "),
 			throwOptions);
 	}

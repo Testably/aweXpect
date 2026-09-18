@@ -23,12 +23,12 @@ public abstract partial class ThatDelegate
 				new DoesNotThrowExactlyConstraint(it, grammars, typeof(TException))));
 
 		/// <summary>
-		///     Verifies that the delegate does not throw an exception of type <paramref name="exceptionType" />.
+		///     Verifies that the delegate does not throw an exception of type <paramref name="type" />.
 		/// </summary>
 		[GuaranteesNotNull]
-		public DelegateWithValueResult<T> DoesNotThrowExactly(Type exceptionType)
+		public DelegateWithValueResult<T> DoesNotThrowExactly(Type type)
 			=> new(ExpectationBuilder.AddConstraint((it, grammars) =>
-				new DoesNotThrowExactlyConstraint(it, grammars, exceptionType)));
+				new DoesNotThrowExactlyConstraint(it, grammars, type)));
 
 		private sealed class DoesNotThrowExactlyConstraint(
 			string it,

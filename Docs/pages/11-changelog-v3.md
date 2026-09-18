@@ -253,6 +253,24 @@ expectation with `Within(…)` now observes the window it asks for.
   `Using(comparer)` like `ObjectEqualityOptions.Using`, `StringEqualityOptions.Exactly()` is removed because exact
   matching is the default, and `TimeSpanEqualityOptions.Approximately(expected, tolerance)` is internal; construct an
   `ExecutesInToleranceResult` to get the tolerance continuation `ExecutesIn(expected).Within(tolerance)`.
+- `HasItemResultAtIndex<TCollection>`, the result of `HasItem(…).AtIndex(n)`, is renamed to
+  `HasItemAtIndexResult<TCollection>` so that it ends in `Result` like every other result type.
+- `Expectation` with its nested `Combination.All` and `Combination.Any` moved from `aweXpect.Results` to
+  `aweXpect.Core`. It is the base class of every result and the parameter type of `Expect.ThatAll` and
+  `Expect.ThatAny`, not a result itself.
+- `aweXpect.Core.ThatBool`, the type returned by `Expect.That(bool)`, is renamed to `ThatBoolSubject`, so it no longer
+  shares its name with the static class `aweXpect.ThatBool` that holds the boolean expectations.
+- `SingleItemResult<TCollection, TItem>.Async`, the result of `HasSingle()` on an `IAsyncEnumerable<T>`, is replaced by
+  the top-level `AsyncSingleItemResult<TCollection, TItem>` in `aweXpect.Results`.
+- `EventTriggerResult<TSubject>.IExtensions` is renamed to `EventTriggerResult<TSubject>.ICustomParameterFilter`, after
+  the `WithParameter(expression, position, predicate)` method it offers to extensions.
+- The parameter of `Throws().OnlyIf(…)` is named `condition` instead of `predicate`, as it is a `bool`. This only
+  affects a call with a named argument.
+- The parameters of `HasFlag(…)` and `DoesNotHaveFlag(…)` are named `expected` and `unexpected` instead of
+  `expectedFlag` and `unexpectedFlag`, like on every other expectation. This only affects a call with a named argument.
+- The `Type` parameter of `Throws(…)`, `ThrowsExactly(…)`, `DoesNotThrow(…)`, `DoesNotThrowExactly(…)`,
+  `WithInner(…)` and `HasInner(…)` is named `type` instead of `exceptionType` or `innerExceptionType`, like on
+  `Is(…)` and `Elements().Are(…)`. This only affects a call with a named argument.
 
 ## New expectations
 
@@ -269,8 +287,8 @@ expectation with `Within(…)` now observes the window it asks for.
 - **Version** gains comparisons (`IsGreaterThan`, `IsBetween`, …) and the components `HasMajor`, `HasMinor`,
   `HasBuild` and `HasRevision`. See [Version](/docs/expectations/common-types/version).
 - **Guid** gains `IsOneOf` and `IsNotOneOf`.
-- **Char** gains `IsADigit`, `IsAnAsciiDigit`, `IsAnAsciiHexDigit`, `IsUpperCased`, `IsLowerCased` and `IsControl`
-  with their negations.
+- **Char** gains `IsADigit`, `IsAnAsciiDigit`, `IsAnAsciiHexDigit`, `IsUpperCased`, `IsLowerCased` and
+  `IsAControlCharacter` with their negations.
 
 ## Analyzer
 

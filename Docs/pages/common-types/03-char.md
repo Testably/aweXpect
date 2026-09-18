@@ -112,7 +112,7 @@ This verifies that the subject is categorized as an uppercase or lowercase lette
 You can verify that the `char` is a control character.
 
 ```csharp
-await Expect.That('\n').IsControl();
+await Expect.That('\n').IsAControlCharacter();
 ```
 
 This verifies that the subject is categorized as a control character

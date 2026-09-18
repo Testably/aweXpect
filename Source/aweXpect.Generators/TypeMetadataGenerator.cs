@@ -1067,7 +1067,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		{
 			for (INamedTypeSymbol? current = type; current is not null; current = current.BaseType)
 			{
-				if (current.ToDisplayString() == "aweXpect.Results.Expectation")
+				if (current.ToDisplayString() == "aweXpect.Core.Expectation")
 				{
 					return true;
 				}

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Sources;
 using aweXpect.Delegates;
-using aweXpect.Results;
 
 namespace aweXpect;
 
@@ -206,7 +205,7 @@ public static class Expect
 	/// <summary>
 	///     Specify expectations for the current boolean <paramref name="subject" />.
 	/// </summary>
-	public static ThatBool That(bool subject,
+	public static ThatBoolSubject That(bool subject,
 		[CallerArgumentExpression("subject")] string doNotPopulateThisValue = "")
 		=> new(new ExpectationBuilder<bool>(
 			new ValueSource<bool>(subject), doNotPopulateThisValue));
