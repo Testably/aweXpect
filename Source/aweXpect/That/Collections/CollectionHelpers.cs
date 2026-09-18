@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
@@ -106,6 +107,7 @@ internal static class CollectionHelpers
 						() => Formatter.Format(value, typeof(TItem).GetFormattingOption(value switch
 						{
 							ICollection<TItem> coll => coll.Count,
+							LimitedCollection<TItem> limited => limited.Count,
 							ICountable countable => countable.Count,
 							_ => null,
 						})).AppendIsIncomplete(isIncomplete),
@@ -169,12 +171,24 @@ internal static class CollectionHelpers
 			{
 				contexts
 					.Add(new ResultContext.SyncCallback("Collection",
-						() => Formatter.Format(value.MaterializedItems,
+						() => Formatter.Format(HideCount(value.MaterializedItems),
 								typeof(TItem).GetFormattingOption(value.Count))
 							.AppendIsIncomplete(isIncomplete),
 						-1));
 			}
 		});
+	}
+
+	/// <summary>
+	///     The materialized items can be only the first items of the asynchronous enumerable, so their count must not be
+	///     rendered as the number of remaining items.
+	/// </summary>
+	private static IEnumerable<TItem> HideCount<TItem>(IEnumerable<TItem> items)
+	{
+		foreach (TItem item in items)
+		{
+			yield return item;
+		}
 	}
 #endif
 
@@ -260,6 +274,10 @@ internal static class CollectionHelpers
 		{
 			return formattedItems;
 		}
+
+		// The count of a collection whose enumeration stopped early does not tell how many items remain.
+		formattedItems = Regex.Replace(formattedItems, @"\(… and \d+ more\)(?=(\r?\n)?\]$)", "…",
+			RegexOptions.None, TimeSpan.FromSeconds(1));
 
 		if (formattedItems.EndsWith("…]"))
 		{

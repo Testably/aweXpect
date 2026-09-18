@@ -4,7 +4,11 @@ using aweXpect.Customization;
 
 namespace aweXpect;
 
-internal class LimitedCollection<T> : ICollection<T>
+/// <summary>
+///     Buffers up to a limit of items, but deliberately is no <see cref="ICollection{T}" />: its count is not the
+///     number of items that were added, so the formatter must not render it as the remaining item count.
+/// </summary>
+internal class LimitedCollection<T> : IEnumerable<T>
 {
 	private readonly List<T> _buffer;
 	private readonly int _limit;
@@ -31,22 +35,6 @@ internal class LimitedCollection<T> : ICollection<T>
 			_buffer.Add(item);
 		}
 	}
-
-	/// <inheritdoc cref="ICollection{T}.Clear()" />
-	public void Clear()
-		=> _buffer.Clear();
-
-	/// <inheritdoc cref="ICollection{T}.Contains(T)" />
-	public bool Contains(T item)
-		=> _buffer.Contains(item);
-
-	/// <inheritdoc cref="ICollection{T}.CopyTo(T[], int)" />
-	public void CopyTo(T[] array, int arrayIndex)
-		=> _buffer.CopyTo(array, arrayIndex);
-
-	/// <inheritdoc cref="ICollection{T}.Remove(T)" />
-	public bool Remove(T item)
-		=> _buffer.Remove(item);
 
 	/// <inheritdoc cref="ICollection{T}.Count" />
 	public int Count

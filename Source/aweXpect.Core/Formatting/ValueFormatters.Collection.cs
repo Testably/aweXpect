@@ -22,7 +22,7 @@ public static partial class ValueFormatters
 		FormattingOptions? options = null)
 	{
 		StringBuilder stringBuilder = new();
-		Format(formatter, stringBuilder, (IEnumerable?)value, options);
+		Format(formatter, stringBuilder, value, options);
 		return stringBuilder.ToString();
 	}
 
@@ -55,11 +55,13 @@ public static partial class ValueFormatters
 		}
 		else if (value is IDictionary dictionary)
 		{
-			FormatItems(formatter, stringBuilder, value, GetEntries(dictionary), options, FormatDictionaryEntry);
+			FormatItems(formatter, stringBuilder, value, GetEntries(dictionary), dictionary.Count, options,
+				FormatDictionaryEntry);
 		}
 		else
 		{
-			FormatItems(formatter, stringBuilder, value, value.Cast<object?>(), options, FormatItem);
+			FormatItems(formatter, stringBuilder, value, value.Cast<object?>(), (value as ICollection)?.Count,
+				options, FormatItem);
 		}
 	}
 
@@ -72,7 +74,15 @@ public static partial class ValueFormatters
 		StringBuilder stringBuilder,
 		IEnumerable<T>? value,
 		FormattingOptions? options = null)
-		=> Format(formatter, stringBuilder, (IEnumerable?)value, options);
+	{
+		if (value is null or IDictionary)
+		{
+			Format(formatter, stringBuilder, (IEnumerable?)value, options);
+			return;
+		}
+
+		FormatItems(formatter, stringBuilder, value, value.Cast<object?>(), GetCount(value), options, FormatItem);
+	}
 
 	/// <summary>
 	///     Appends the formatted <paramref name="value" /> according to the <paramref name="options" />
@@ -90,7 +100,7 @@ public static partial class ValueFormatters
 			return;
 		}
 
-		FormatItems(formatter, stringBuilder, value, value, options, FormatKeyValuePair);
+		FormatItems(formatter, stringBuilder, value, value, GetCount(value), options, FormatKeyValuePair);
 	}
 
 	private static string FormatDictionaryEntry(
@@ -118,6 +128,7 @@ public static partial class ValueFormatters
 		StringBuilder stringBuilder,
 		IEnumerable value,
 		IEnumerable<T> items,
+		int? totalCount,
 		FormattingOptions? options,
 		Func<ValueFormatter, T, FormattingOptions, string> formatItem)
 	{
@@ -168,7 +179,15 @@ public static partial class ValueFormatters
 		if (hasMoreValues)
 		{
 			const char ellipsis = '\u2026';
-			stringBuilder.Append(ellipsis);
+			if (totalCount > maxCount)
+			{
+				stringBuilder.Append('(').Append(ellipsis).Append(" and ").Append(totalCount - maxCount)
+					.Append(" more)");
+			}
+			else
+			{
+				stringBuilder.Append(ellipsis);
+			}
 		}
 
 		if (options.UseLineBreaks && isNotEmpty)
@@ -188,6 +207,18 @@ public static partial class ValueFormatters
 		{
 			IncludeType = false,
 		});
+
+	/// <summary>
+	///     Only reads a count the collection already knows, so that a lazy sequence is not enumerated twice.
+	/// </summary>
+	private static int? GetCount<T>(IEnumerable<T> value)
+		=> value switch
+		{
+			ICollection collection => collection.Count,
+			ICollection<T> collection => collection.Count,
+			IReadOnlyCollection<T> collection => collection.Count,
+			_ => null,
+		};
 
 	private static IEnumerable<DictionaryEntry> GetEntries(IDictionary dictionary)
 	{

@@ -50,7 +50,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task CompletelyDifferentCollections_ShouldFail()
 			{
-				IEnumerable<int> subject = Enumerable.Range(1, 11);
+				IEnumerable<int> subject = Enumerable.Range(1, 11).ToArray();
 				IEnumerable<Action<IThat<int>>> expected =
 				[
 					a => a.IsEqualTo(100),
@@ -87,7 +87,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -102,7 +102,7 @@ public sealed partial class ThatEnumerable
 					               it is equal to 107,
 					               it is equal to 108,
 					               it is equal to 109,
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}
@@ -711,7 +711,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task CompletelyDifferentCollections_ShouldFail()
 			{
-				IEnumerable<int> subject = Enumerable.Range(1, 11);
+				IEnumerable<int> subject = Enumerable.Range(1, 11).ToArray();
 				IEnumerable<Action<IThat<int>>> expected =
 				[
 					a => a.IsEqualTo(100),
@@ -748,7 +748,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -763,7 +763,7 @@ public sealed partial class ThatEnumerable
 					               it is equal to 107,
 					               it is equal to 108,
 					               it is equal to 109,
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}
@@ -1272,7 +1272,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task CompletelyDifferentCollections_ShouldFail()
 			{
-				IEnumerable<int> subject = Enumerable.Range(1, 11);
+				IEnumerable<int> subject = Enumerable.Range(1, 11).ToArray();
 				IEnumerable<Action<IThat<int>>> expected =
 				[
 					a => a.IsEqualTo(100),
@@ -1309,7 +1309,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -1324,7 +1324,7 @@ public sealed partial class ThatEnumerable
 					               it is equal to 107,
 					               it is equal to 108,
 					               it is equal to 109,
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}
@@ -1863,7 +1863,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task CompletelyDifferentCollections_ShouldFail()
 			{
-				IEnumerable<int> subject = Enumerable.Range(1, 11);
+				IEnumerable<int> subject = Enumerable.Range(1, 11).ToArray();
 				IEnumerable<Action<IThat<int>>> expected =
 				[
 					a => a.IsEqualTo(100),
@@ -1900,7 +1900,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -1915,7 +1915,7 @@ public sealed partial class ThatEnumerable
 					               it is equal to 107,
 					               it is equal to 108,
 					               it is equal to 109,
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}

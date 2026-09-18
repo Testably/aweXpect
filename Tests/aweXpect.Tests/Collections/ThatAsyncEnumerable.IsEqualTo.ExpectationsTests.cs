@@ -103,7 +103,7 @@ public sealed partial class ThatAsyncEnumerable
 					               it is equal to 107,
 					               it is equal to 108,
 					               it is equal to 109,
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}
@@ -764,7 +764,7 @@ public sealed partial class ThatAsyncEnumerable
 					               it is equal to 107,
 					               it is equal to 108,
 					               it is equal to 109,
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}
@@ -1325,7 +1325,7 @@ public sealed partial class ThatAsyncEnumerable
 					               it is equal to 107,
 					               it is equal to 108,
 					               it is equal to 109,
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}
@@ -1916,7 +1916,7 @@ public sealed partial class ThatAsyncEnumerable
 					               it is equal to 107,
 					               it is equal to 108,
 					               it is equal to 109,
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}

@@ -28,6 +28,23 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
+		public async Task ShouldNameTheNumberOfRemainingEntries()
+		{
+			string expectedResult =
+				"{[1] = 1, [2] = 2, [3] = 3, [4] = 4, [5] = 5, [6] = 6, [7] = 7, [8] = 8, [9] = 9, [10] = 10, (… and 2 more)}";
+			Dictionary<int, int> value = Enumerable.Range(1, 12).ToDictionary(i => i, i => i);
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult);
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Fact]
 		public async Task ShouldFormatNestedGenericValues()
 		{
 			string expectedResult = "{[\"a\"] = [1, 2], [\"b\"] = [3]}";

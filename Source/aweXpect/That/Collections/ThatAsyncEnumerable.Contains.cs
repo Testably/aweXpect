@@ -392,7 +392,7 @@ public static partial class ThatAsyncEnumerable
 		: ConstraintResult(grammars),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
-		private readonly List<TItem> _items = [];
+		private LimitedCollection<TItem> _items = new();
 		private IAsyncEnumerable<TItem>? _actual;
 		private int _count;
 		private bool _isFinished;
@@ -412,6 +412,7 @@ public static partial class ThatAsyncEnumerable
 				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual);
 			int maximumNumberOfCollectionItems =
 				Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
+			_items = new LimitedCollection<TItem>(maximumNumberOfCollectionItems + 1);
 			_count = 0;
 			bool isFailed = false;
 			await foreach (TItem item in materializedEnumerable.WithCancellation(cancellationToken))
@@ -551,7 +552,7 @@ public static partial class ThatAsyncEnumerable
 		: ConstraintResult(grammars),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
-		private readonly List<TItem> _items = [];
+		private LimitedCollection<TItem> _items = new();
 		private IAsyncEnumerable<TItem>? _actual;
 		private int _count;
 		private bool _isFinished;
@@ -571,6 +572,7 @@ public static partial class ThatAsyncEnumerable
 				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual);
 			int maximumNumberOfCollectionItems =
 				Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
+			_items = new LimitedCollection<TItem>(maximumNumberOfCollectionItems + 1);
 			_count = 0;
 			bool isFailed = false;
 			await foreach (TItem item in materializedEnumerable.WithCancellation(cancellationToken))

@@ -194,6 +194,10 @@ need an update.
 - A type check (`Is`, `IsExactly`, `IsNot` and `IsNotExactly`, generic or with a `Type` argument) names only the
   actual type: `but it was List<string>` instead of `but it was List<string> []`. The formatted value is appended
   as an `Actual` context instead.
+- A collection cut off at `MaximumNumberOfCollectionItems` names the number of remaining items when its size is known
+  without enumerating it (an array, `ICollection`, `ICollection<T>` or `IReadOnlyCollection<T>`):
+  `[1, 2, 3, (… and 7 more)]` instead of `[1, 2, 3, …]`. A lazy sequence keeps the plain `…`, and a collection whose
+  enumeration stopped early keeps `(… and maybe others)`.
 
 ## Timeouts on negative event expectations
 

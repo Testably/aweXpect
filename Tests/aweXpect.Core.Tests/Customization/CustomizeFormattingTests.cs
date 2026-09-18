@@ -20,12 +20,12 @@ public sealed class CustomizeFormattingTests
 		int[] items = Enumerable.Range(1, 6).ToArray();
 		using (IDisposable _ = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(3))
 		{
-			await That(ValueFormatters.Format(Formatter, items)).IsEqualTo("[1, 2, 3, …]");
+			await That(ValueFormatters.Format(Formatter, items)).IsEqualTo("[1, 2, 3, (… and 3 more)]");
 		}
 
 		using (IDisposable _ = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(5))
 		{
-			await That(ValueFormatters.Format(Formatter, items)).IsEqualTo("[1, 2, 3, 4, 5, …]");
+			await That(ValueFormatters.Format(Formatter, items)).IsEqualTo("[1, 2, 3, 4, 5, (… and 1 more)]");
 		}
 
 		await That(ValueFormatters.Format(Formatter, items)).IsEqualTo("[1, 2, 3, 4, 5, 6]");
