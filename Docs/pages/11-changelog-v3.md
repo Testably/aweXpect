@@ -176,6 +176,13 @@ need an update.
   `Property IntValue was 1` or, on a type mismatch, `Property StringValue was string`. An `It.Is<T>()` member now
   shows its expectation as `Expected` and, on a type mismatch, the found type in parentheses:
   `Found: "abc" (string)`.
+- An unexpected exception renders in one shape: its type in the `but` clause and its message indented below a colon.
+  A `Task<T>` subject that throws now reads `but it did throw a NotSupportedException:` followed by the message,
+  instead of the bare type name plus a separate `Exception:` section with the full `ToString()`. The exception is
+  still forwarded as `InnerException` of the assertion exception, so its stack trace remains available there.
+- `HasInner` and `WithInner` name the relation when the inner exception has the wrong type:
+  `but it was an inner ArgumentException:` instead of `but it was an ArgumentException:`.
+- The message of an unexpected exception is indented along with the rest of the result inside `Expect.ThatAll`.
 
 ## Timeouts on negative event expectations
 

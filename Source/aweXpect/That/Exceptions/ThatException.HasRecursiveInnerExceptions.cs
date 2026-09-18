@@ -65,7 +65,7 @@ public static partial class ThatException
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" was ");
-			stringBuilder.Append(Actual!.FormatForMessage());
+			stringBuilder.Append(Actual!.FormatForMessage(indentation));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

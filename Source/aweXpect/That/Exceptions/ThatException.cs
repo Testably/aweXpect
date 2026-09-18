@@ -49,7 +49,7 @@ public static partial class ThatException
 			else
 			{
 				stringBuilder.Append(It).Append(" was ");
-				stringBuilder.Append(Actual.InnerException.FormatForMessage());
+				stringBuilder.Append(Actual.InnerException.FormatForMessage(indentation, "inner "));
 			}
 		}
 

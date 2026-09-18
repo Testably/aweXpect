@@ -28,12 +28,12 @@ internal static class ExceptionHelpers
 		}
 	}
 
-	public static string FormatForMessage(this Exception exception)
+	public static string FormatForMessage(this Exception exception, string? indentation, string relation = "")
 	{
-		string message = Formatter.Format(exception.GetType()).PrependAOrAn();
+		string message = (relation + Formatter.Format(exception.GetType())).PrependAOrAn();
 		if (!string.IsNullOrEmpty(exception.Message))
 		{
-			message += ":" + Environment.NewLine + exception.Message.Indent();
+			message += ":" + Environment.NewLine + exception.Message.Indent(indentation + "  ");
 		}
 
 		return message;

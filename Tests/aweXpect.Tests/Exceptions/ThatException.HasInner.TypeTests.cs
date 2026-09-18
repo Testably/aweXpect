@@ -20,7 +20,7 @@ public sealed partial class ThatException
 						.WithMessage("""
 						             Expected that subject
 						             has an inner ThatException.CustomException whose Message is equal to "inner",
-						             but it was an Exception:
+						             but it was an inner Exception:
 						               inner
 						             
 						             Message:
@@ -81,7 +81,7 @@ public sealed partial class ThatException
 						.WithMessage("""
 						             Expected that subject
 						             has an inner ThatException.CustomException,
-						             but it was an Exception:
+						             but it was an inner Exception:
 						               inner
 						             """);
 				}

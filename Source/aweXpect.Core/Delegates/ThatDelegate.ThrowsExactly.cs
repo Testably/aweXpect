@@ -110,7 +110,7 @@ public abstract partial class ThatDelegate
 			else
 			{
 				stringBuilder.Append(it).Append(" did throw ");
-				stringBuilder.Append(FormatForMessage(_actual));
+				stringBuilder.Append(FormatForMessage(_actual, indentation));
 			}
 		}
 

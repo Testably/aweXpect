@@ -67,7 +67,7 @@ public class DelegateWithValueResult<T>(ExpectationBuilder expectationBuilder)
 			if (_actual?.Exception is not null)
 			{
 				stringBuilder.Append(it).Append(" did throw ");
-				stringBuilder.Append(ThatDelegate.FormatForMessage(_actual.Exception));
+				stringBuilder.Append(ThatDelegate.FormatForMessage(_actual.Exception, indentation));
 			}
 		}
 

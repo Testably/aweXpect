@@ -192,7 +192,7 @@ public sealed class OrNodeTests
 		Exception exception = new("foo");
 		OrNode node = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Failure, "left", "-")));
 		node.AddNode(new DummyNode("", () => new ConstraintResult.FromException(
-			new DummyConstraintResult(Outcome.Failure, "right"), exception, new DummyExpectationBuilder())));
+			new DummyConstraintResult(Outcome.Failure, "right"), exception)));
 
 		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
 
@@ -204,7 +204,7 @@ public sealed class OrNodeTests
 	{
 		Exception exception = new("foo");
 		OrNode node = new(new DummyNode("", () => new ConstraintResult.FromException(
-			new DummyConstraintResult(Outcome.Failure, "left"), exception, new DummyExpectationBuilder())));
+			new DummyConstraintResult(Outcome.Failure, "left"), exception)));
 		node.AddNode(new DummyNode("", () => new DummyConstraintResult(Outcome.Failure, "right", "-")));
 
 		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);

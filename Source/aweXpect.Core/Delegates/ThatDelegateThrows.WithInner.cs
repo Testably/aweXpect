@@ -106,7 +106,7 @@ public partial class ThatDelegateThrows<TException>
 			else
 			{
 				stringBuilder.Append(It).Append(" was ");
-				stringBuilder.Append(ThatDelegate.FormatForMessage(Actual.InnerException));
+				stringBuilder.Append(ThatDelegate.FormatForMessage(Actual.InnerException, indentation, "inner "));
 			}
 		}
 

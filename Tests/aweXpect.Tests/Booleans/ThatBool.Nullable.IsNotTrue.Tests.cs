@@ -32,11 +32,9 @@ public sealed partial class ThatBool
 						.WithMessage("""
 						             Expected that subject
 						             is not True, because the exception should be logged,
-						             but it did throw a NotSupportedException
-
-						             Exception:
-						             System.NotSupportedException: When Task throws an exception
-						             """).AsPrefix();
+						             but it did throw a NotSupportedException:
+						               When Task throws an exception
+						             """);
 				}
 
 				[Fact]

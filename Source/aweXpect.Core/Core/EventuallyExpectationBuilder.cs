@@ -207,8 +207,8 @@ internal class EventuallyExpectationBuilder<TValue>(
 		return result.AppendExpectationText(sb => sb.Append(" within ").Append(Formatter.Format(timeout)));
 	}
 
-	private ConstraintResult WithFailureCause(ConstraintResult result, Exception? failure)
-		=> failure is null ? result : new ConstraintResult.FromException(result, failure, this);
+	private static ConstraintResult WithFailureCause(ConstraintResult result, Exception? failure)
+		=> failure is null ? result : new ConstraintResult.FromException(result, failure);
 
 	private void RestoreContexts(List<ResultContext> initialContexts)
 		=> UpdateContexts(contexts =>

@@ -86,7 +86,7 @@ public abstract partial class ThatDelegate
 							break;
 						case false when _actual.Exception is not null:
 							stringBuilder.Append(it).Append(" did throw ");
-							stringBuilder.Append(FormatForMessage(_actual.Exception));
+							stringBuilder.Append(FormatForMessage(_actual.Exception, indentation));
 							break;
 					}
 				}

@@ -115,7 +115,7 @@ public static partial class ThatDelegate
 			else if (_actual.Exception is { } exception)
 			{
 				stringBuilder.Append(it).Append(" did throw ");
-				stringBuilder.Append(exception.FormatForMessage());
+				stringBuilder.Append(exception.FormatForMessage(indentation));
 			}
 			else
 			{
@@ -204,7 +204,7 @@ public static partial class ThatDelegate
 			else if (_actual.Exception is { } exception)
 			{
 				stringBuilder.Append(it).Append(" did throw ");
-				stringBuilder.Append(exception.FormatForMessage());
+				stringBuilder.Append(exception.FormatForMessage(indentation));
 			}
 			else
 			{
