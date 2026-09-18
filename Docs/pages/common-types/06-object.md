@@ -47,6 +47,26 @@ Album subject = new("Abbey Road");
 await Expect.That(subject).IsEqualTo(new Album("Revolver")).Using(new AlbumComparer());
 ```
 
+### `IEquatable<T>`
+
+You can verify that the `object` is equal to a value by using its `IEquatable<T>` implementation, also when the value
+has a different type:
+
+```csharp
+class TrackId(long value) : IEquatable<long>
+{
+  public bool Equals(long other) => value == other;
+}
+TrackId subject = new(42);
+
+await Expect.That(subject).IsEquatableTo(42L);
+await Expect.That(subject).IsNotEquatableTo(7L);
+```
+
+*Note: this inspects the subject by calling its `IEquatable<T>.Equals(T)` method. Therefore,
+`IsEquatableTo` and `IsNotEquatableTo` fail for a `null` subject, even `IsEquatableTo(null)`, whereas `IsEqualTo(null)`
+succeeds.*
+
 ## Equivalency
 
 You can verify that the `object` is structurally equivalent to another one. See the
