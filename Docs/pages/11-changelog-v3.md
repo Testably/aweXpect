@@ -164,6 +164,9 @@ need an update.
   shorthand for the continuation.
 - A struct property nested under `HasInnerException` reads `whose HResult is equal to 42` instead of
   `whose has HResult equal to 42`.
+- Collection equality reads like the other collection relations: `IsEqualTo(expected)` renders
+  `is equal to collection expected in order` instead of `matches collection expected in order`, and `IsNotEqualTo`
+  renders `is not equal to collection …` instead of `does not match collection …`.
 - `DoesNotHaveItem(1).AtIndex(0)` names the item it found: `but it had item 1 at index 0` instead of `but it did`.
 - A `Never()` quantifier appends its `within` window when one was given.
 

@@ -171,8 +171,8 @@ public partial class CollectionMatchOptions(
 			(EquivalenceRelations.IsContainedInProperly, true)
 				=> $"{grammars.Verb("is", "are")} not contained in collection {expectedExpression} " +
 				   "which has at least one additional item",
-			(_, false) => $"{grammars.Verb("matches", "match")} collection {expectedExpression}",
-			(_, true) => $"{grammars.Verb("does not match", "do not match")} collection {expectedExpression}",
+			(_, false) => $"{grammars.Verb("is", "are")} equal to collection {expectedExpression}",
+			(_, true) => $"{grammars.Verb("is", "are")} not equal to collection {expectedExpression}",
 		};
 
 	private static string? ReturnErrorString(string it, List<string> errors)

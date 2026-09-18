@@ -515,7 +515,7 @@ public sealed partial class ThatDelegateTests
 			XunitException exception = await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that Subject
-				             matches collection [3, 4,] in order within 0:00.500,
+				             is equal to collection [3, 4,] in order within 0:00.500,
 				             but it*
 				             """).AsWildcard();
 			await That(counter.EvaluationCount).IsGreaterThan(1);
