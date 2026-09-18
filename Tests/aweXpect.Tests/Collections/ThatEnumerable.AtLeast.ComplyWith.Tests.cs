@@ -29,7 +29,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 99 for at least one item,
-					             but found only 0
+					             but none of 5 were
 
 					             Collection:
 					             [1, 2, 3, 4, 5]
@@ -52,7 +52,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is greater than 2 for not at least 2 items,
-					             but found 3
+					             but 3 of 5 were
 
 					             Collection:
 					             [1, 2, 3, 4, 5]

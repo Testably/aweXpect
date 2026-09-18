@@ -59,7 +59,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 5 for no items,
-					             but at least one was
+					             but at least 1 of at least 11 were
 
 					             Matching items:
 					             [5, (… and maybe others)]
@@ -162,7 +162,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is greater than 5 for at least one item,
-					             but found 0
+					             but none of 5 were
 
 					             Collection:
 					             [1, 2, 3, 4, 5]

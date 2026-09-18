@@ -54,7 +54,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 1 for all items,
-					             but not all were
+					             but only 2 of at least 11 were
 					             """).AsPrefix();
 			}
 

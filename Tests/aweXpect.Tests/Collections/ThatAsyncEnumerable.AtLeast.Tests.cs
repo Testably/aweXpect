@@ -232,7 +232,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is greater than 2 for not at least 2 items,
-					             but found 3
+					             but 3 of 5 were
 
 					             Collection:
 					             [1, 2, 3, 4, 5]

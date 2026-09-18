@@ -55,23 +55,9 @@ public abstract partial class EnumerableQuantifier
 			{
 				stringBuilder.Append("all ").Append(matchingCount).Append(' ').Append(verb);
 			}
-			else if (totalCount.HasValue)
-			{
-				if (matchingCount == 0)
-				{
-					stringBuilder.Append("none");
-				}
-				else
-				{
-					stringBuilder.Append("only ").Append(matchingCount);
-				}
-
-				stringBuilder.Append(" of ").Append(totalCount.Value).Append(' ')
-					.Append(verb);
-			}
 			else
 			{
-				stringBuilder.Append("not all ").Append(verb);
+				AppendCounts(stringBuilder, matchingCount, notMatchingCount, totalCount, verb, true);
 			}
 		}
 	}

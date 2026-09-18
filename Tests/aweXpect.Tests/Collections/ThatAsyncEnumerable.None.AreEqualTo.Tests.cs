@@ -60,7 +60,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is equal to 5 for no items,
-						             but at least one was
+						             but at least 1 of at least 11 were
 
 						             Matching items:
 						             [5, (… and maybe others)]

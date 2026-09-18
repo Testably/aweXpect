@@ -67,7 +67,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is not unique for at least one item,
-						             but only 0 of 3 were
+						             but none of 3 were
 
 						             Collection:
 						             [1, 2, 3]

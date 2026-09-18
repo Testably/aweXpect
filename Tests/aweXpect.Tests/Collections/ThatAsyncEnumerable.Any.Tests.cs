@@ -32,7 +32,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 99 for at least one item,
-					             but found only 0
+					             but none of 3 were
 
 					             Collection:
 					             [1, 2, 3]
@@ -97,7 +97,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             starts with "b" for at least one item,
-					             but found only 0
+					             but none of 2 were
 
 					             Collection:
 					             [
@@ -123,7 +123,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is greater than 2 for not at least one item,
-					             but found 3
+					             but 3 of 5 were
 
 					             Collection:
 					             [1, 2, 3, 4, 5]

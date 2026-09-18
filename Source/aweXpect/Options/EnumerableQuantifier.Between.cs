@@ -52,46 +52,7 @@ public abstract partial class EnumerableQuantifier
 			int notMatchingCount,
 			int? totalCount,
 			string? verb = null)
-		{
-			if (matchingCount > maximum || grammars.IsNegated())
-			{
-				if (totalCount.HasValue)
-				{
-					if (verb != null)
-					{
-						stringBuilder.Append(matchingCount).Append(" of ").Append(totalCount.Value)
-							.Append(' ').Append(verb);
-					}
-					else
-					{
-						stringBuilder.Append("found ").Append(matchingCount);
-					}
-				}
-				else
-				{
-					if (verb != null)
-					{
-						stringBuilder.Append("at least ").Append(matchingCount)
-							.Append(' ').Append(verb);
-					}
-					else
-					{
-						stringBuilder.Append("found at least ").Append(matchingCount);
-					}
-				}
-			}
-			else if (totalCount.HasValue)
-			{
-				if (verb != null)
-				{
-					stringBuilder.Append("only ").Append(matchingCount).Append(" of ").Append(totalCount.Value)
-						.Append(' ').Append(verb);
-				}
-				else
-				{
-					stringBuilder.Append("found only ").Append(matchingCount);
-				}
-			}
-		}
+			=> AppendCounts(stringBuilder, matchingCount, notMatchingCount, totalCount, verb,
+				matchingCount <= maximum && !grammars.IsNegated());
 	}
 }

@@ -57,23 +57,6 @@ public abstract partial class EnumerableQuantifier
 			int notMatchingCount,
 			int? totalCount,
 			string? verb = null)
-		{
-			if (verb != null)
-			{
-				if (totalCount.HasValue)
-				{
-					stringBuilder.Append(matchingCount).Append(" of ").Append(totalCount.Value)
-						.Append(' ').Append(verb);
-				}
-				else
-				{
-					stringBuilder.Append("at least one ").Append(verb == "were" ? "was" : verb);
-				}
-			}
-			else
-			{
-				stringBuilder.Append("found ").Append(matchingCount);
-			}
-		}
+			=> AppendCounts(stringBuilder, matchingCount, notMatchingCount, totalCount, verb, false);
 	}
 }

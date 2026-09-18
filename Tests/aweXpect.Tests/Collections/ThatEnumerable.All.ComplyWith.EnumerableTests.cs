@@ -71,7 +71,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is equal to 1 for all items,
-						             but not all were
+						             but only 2 of at least 3 were
 
 						             Not matching items:
 						             [2, (… and maybe others)]
@@ -108,7 +108,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is equal to 1 for all items,
-						             but not all were
+						             but only 4 of at least 5 were
 
 						             Not matching items:
 						             [2, (… and maybe others)]
@@ -171,7 +171,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to 1 for all items,
-						             but not all were
+						             but none of at least 1 were
 
 						             Not matching items:
 						             [1, (… and maybe others)]

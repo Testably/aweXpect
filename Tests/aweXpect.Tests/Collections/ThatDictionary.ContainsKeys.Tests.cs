@@ -148,7 +148,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [1, 2] whose values are equal to "foo" for all items,
-					             but not all were
+					             but only 1 of at least 2 were
 
 					             Not matching items:
 					             [
@@ -183,7 +183,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [2] whose values are equal to "foo" for all items,
-					             but not all were
+					             but none of at least 1 were
 
 					             Not matching items:
 					             [

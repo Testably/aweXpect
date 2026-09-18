@@ -70,7 +70,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 1 for exactly one item,
-					             but at least 2 were
+					             but at least 2 of at least 2 were
 
 					             Collection:
 					             [
@@ -131,7 +131,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 1 for exactly 3 items,
-					             but at least 4 were
+					             but at least 4 of at least 4 were
 
 					             Collection:
 					             [1, 1, 1, 1, 2, 2, 3]

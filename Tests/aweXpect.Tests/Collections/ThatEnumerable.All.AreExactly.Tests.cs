@@ -25,7 +25,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is exactly of type ThatEnumerable.All.AreExactly.MyClass for all items,
-						             but not all were
+						             but none of at least 1 were
 
 						             Not matching items:
 						             [
@@ -86,7 +86,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is exactly of type ThatEnumerable.All.AreExactly.MyBaseClass for all items,
-						             but not all were
+						             but none of at least 1 were
 
 						             Not matching items:
 						             [
@@ -175,7 +175,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is exactly of type ThatEnumerable.All.AreExactly.MyClass for all items,
-						             but not all were
+						             but none of at least 1 were
 
 						             Not matching items:
 						             [
@@ -249,7 +249,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is exactly of type ThatEnumerable.All.AreExactly.MyBaseClass for all items,
-						             but not all were
+						             but none of at least 1 were
 
 						             Not matching items:
 						             [
