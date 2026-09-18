@@ -118,7 +118,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not equivalent to <null> for all items,
+						             is equivalent to <null> for not all items,
 						             but all 2 were
 
 						             Collection:

@@ -144,7 +144,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not unique for all items,
+						             is unique for not all items,
 						             but all 3 were
 
 						             Collection:
@@ -536,7 +536,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not unique by x => x.Value for all items,
+						             is unique by x => x.Value for not all items,
 						             but all 3 were
 
 						             Collection:

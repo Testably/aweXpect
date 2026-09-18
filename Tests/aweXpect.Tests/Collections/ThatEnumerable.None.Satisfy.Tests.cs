@@ -153,6 +153,52 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 			}
+
+			public sealed class NegatedTests
+			{
+				[Fact]
+				public async Task WhenNoItemSatisfiesThePredicate_ShouldFail()
+				{
+					IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.None().Satisfy(x => x > 5));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             satisfies x => x > 5 for at least one item,
+						             *
+						             """).AsWildcard();
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsNull_ShouldFail()
+				{
+					IEnumerable<int>? subject = null;
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.None().Satisfy(x => x > 5));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             satisfies x => x > 5 for at least one item,
+						             but it was <null>
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenOneItemSatisfiesThePredicate_ShouldSucceed()
+				{
+					IEnumerable<int> subject = ToEnumerable([1, 6, 3,]);
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.None().Satisfy(x => x > 5));
+
+					await That(Act).DoesNotThrow();
+				}
+			}
 		}
 	}
 }

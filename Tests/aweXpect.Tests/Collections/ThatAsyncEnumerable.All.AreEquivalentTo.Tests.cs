@@ -157,7 +157,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not equivalent to 42 for all items,
+						             is equivalent to 42 for not all items,
 						             but it was <null>
 
 						             Equivalency options:
