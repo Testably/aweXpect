@@ -30,11 +30,11 @@ public sealed partial class ThatDelegate
 
 					              Collection:
 					              [
-					                aweXpect.Tests.ThatDelegate+OtherException: WhenAnyInnerExceptionDoesMatch_ShouldSucceed*,
-					                System.AggregateException: *,
-					                aweXpect.Tests.ThatDelegate+OtherException: WhenAnyInnerExceptionDoesMatch_ShouldSucceed*,
-					                aweXpect.Tests.ThatDelegate+OtherException: WhenAnyInnerExceptionDoesMatch_ShouldSucceed*,
-					                aweXpect.Tests.ThatDelegate+CustomException: WhenAnyInnerExceptionDoesMatch_ShouldSucceed*
+					                ThatDelegate.OtherException: WhenAnyInnerExceptionDoesMatch_ShouldSucceed*,
+					                AggregateException: *,
+					                ThatDelegate.OtherException: WhenAnyInnerExceptionDoesMatch_ShouldSucceed*,
+					                ThatDelegate.OtherException: WhenAnyInnerExceptionDoesMatch_ShouldSucceed*,
+					                ThatDelegate.CustomException: WhenAnyInnerExceptionDoesMatch_ShouldSucceed*
 					              ]
 					              """).AsWildcard();
 			}
@@ -64,7 +64,7 @@ public sealed partial class ThatDelegate
 					             Expected that action
 					             throws an exception with recursive inner exceptions which are empty,
 					             but recursive inner exceptions were [
-					               aweXpect.Tests.ThatDelegate+CustomException: WhenExpectingInnerExceptionsToBeEmpty_ShouldFail
+					               ThatDelegate.CustomException: WhenExpectingInnerExceptionsToBeEmpty_ShouldFail
 					             ]
 					             """);
 			}
@@ -85,13 +85,13 @@ public sealed partial class ThatDelegate
 
 					             Not matching items:
 					             [
-					               aweXpect.Tests.ThatDelegate+CustomException: WhenInnerExceptionDoesNotMatch_ShouldFail,
+					               ThatDelegate.CustomException: WhenInnerExceptionDoesNotMatch_ShouldFail,
 					               (… and maybe others)
 					             ]
 
 					             Collection:
 					             [
-					               aweXpect.Tests.ThatDelegate+CustomException: WhenInnerExceptionDoesNotMatch_ShouldFail
+					               ThatDelegate.CustomException: WhenInnerExceptionDoesNotMatch_ShouldFail
 					             ]
 					             """);
 			}

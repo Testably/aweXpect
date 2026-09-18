@@ -993,6 +993,7 @@ static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.Value
 static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.DateTimeOffset value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
 static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.DateTimeOffset? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
 static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Enum? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Exception? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
 static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Guid value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
 static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Guid? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
 static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Net.HttpStatusCode? value, aweXpect.Formatting.FormattingOptions? options = null) -> string!
@@ -1002,6 +1003,7 @@ static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.Value
 static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, System.DateTimeOffset value, aweXpect.Formatting.FormattingOptions? options = null) -> void
 static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, System.DateTimeOffset? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
 static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, System.Enum? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
+static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, System.Exception? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
 static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, System.Guid value, aweXpect.Formatting.FormattingOptions? options = null) -> void
 static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, System.Guid? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
 static aweXpect.Formatting.ValueFormatters.Format(this aweXpect.Formatting.ValueFormatter! formatter, System.Text.StringBuilder! stringBuilder, System.Net.HttpStatusCode? value, aweXpect.Formatting.FormattingOptions? options = null) -> void
