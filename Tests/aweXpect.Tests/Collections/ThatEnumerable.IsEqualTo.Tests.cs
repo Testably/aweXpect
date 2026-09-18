@@ -188,7 +188,22 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in order,
-					             but it cannot compare to <null>
+					             but the expected collection was <null>
+
+					             Collection:
+					             [
+					               1,
+					               2,
+					               3,
+					               4,
+					               5,
+					               6,
+					               7,
+					               8,
+					               9,
+					               10,
+					               …
+					             ]
 					             """);
 			}
 			
