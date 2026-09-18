@@ -83,7 +83,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not match collection unexpected in order,
+					             is not equal to collection unexpected in order,
 					             but it was <null>
 					             """);
 			}
@@ -231,7 +231,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not match collection unexpected in order,
+					             is not equal to collection unexpected in order,
 					             but it did
 
 					             Collection:
@@ -372,7 +372,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not match collection unexpected in order ignoring duplicates,
+					             is not equal to collection unexpected in order ignoring duplicates,
 					             but it did
 
 					             Collection:
@@ -404,7 +404,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not match collection unexpected in order ignoring duplicates,
+					             is not equal to collection unexpected in order ignoring duplicates,
 					             but it did
 
 					             Collection:
@@ -436,7 +436,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not match collection unexpected in order ignoring duplicates,
+					             is not equal to collection unexpected in order ignoring duplicates,
 					             but it did
 
 					             Collection:
@@ -468,7 +468,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not match collection unexpected in order ignoring duplicates,
+					             is not equal to collection unexpected in order ignoring duplicates,
 					             but it did
 
 					             Collection:
@@ -500,7 +500,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not match collection unexpected in order ignoring duplicates,
+					             is not equal to collection unexpected in order ignoring duplicates,
 					             but it did
 
 					             Collection:
@@ -556,7 +556,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not match collection unexpected in order ignoring duplicates,
+					             is not equal to collection unexpected in order ignoring duplicates,
 					             but it did
 
 					             Collection:
@@ -673,7 +673,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not match collection unexpected in any order,
+					             is not equal to collection unexpected in any order,
 					             but it did
 
 					             Collection:
@@ -788,7 +788,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not match collection unexpected in any order,
+					             is not equal to collection unexpected in any order,
 					             but it did
 
 					             Collection:
@@ -917,7 +917,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not match collection unexpected in any order ignoring duplicates,
+					             is not equal to collection unexpected in any order ignoring duplicates,
 					             but it did
 
 					             Collection:
@@ -948,7 +948,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not match collection unexpected in any order ignoring duplicates,
+					             is not equal to collection unexpected in any order ignoring duplicates,
 					             but it did
 
 					             Collection:
@@ -980,7 +980,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not match collection unexpected in any order ignoring duplicates,
+					             is not equal to collection unexpected in any order ignoring duplicates,
 					             but it did
 
 					             Collection:
@@ -1012,7 +1012,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not match collection unexpected in any order ignoring duplicates,
+					             is not equal to collection unexpected in any order ignoring duplicates,
 					             but it did
 
 					             Collection:
@@ -1044,7 +1044,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not match collection unexpected in any order ignoring duplicates,
+					             is not equal to collection unexpected in any order ignoring duplicates,
 					             but it did
 
 					             Collection:
@@ -1076,7 +1076,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not match collection unexpected in any order ignoring duplicates,
+					             is not equal to collection unexpected in any order ignoring duplicates,
 					             but it did
 
 					             Collection:
@@ -1132,7 +1132,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not match collection unexpected in any order ignoring duplicates,
+					             is not equal to collection unexpected in any order ignoring duplicates,
 					             but it did
 
 					             Collection:

@@ -4,7 +4,7 @@ Describes the possible expectations for collections.
 
 ## Equality
 
-You can verify that a collection matches another collection:
+You can verify that a collection is equal to another collection:
 
 ```csharp
 IEnumerable<int> values = Enumerable.Range(1, 3);

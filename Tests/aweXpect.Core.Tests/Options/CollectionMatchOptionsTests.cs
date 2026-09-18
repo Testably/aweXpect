@@ -8,13 +8,13 @@ public class CollectionMatchOptionsTests
 	{
 		[Theory]
 		[InlineData(CollectionMatchOptions.EquivalenceRelations.Equivalent,
-			ExpectationGrammars.None, "matches collection [1] in order")]
+			ExpectationGrammars.None, "is equal to collection [1] in order")]
 		[InlineData(CollectionMatchOptions.EquivalenceRelations.Equivalent,
-			ExpectationGrammars.Plural, "match collection [1] in order")]
+			ExpectationGrammars.Plural, "are equal to collection [1] in order")]
 		[InlineData(CollectionMatchOptions.EquivalenceRelations.Equivalent,
-			ExpectationGrammars.Negated, "does not match collection [1] in order")]
+			ExpectationGrammars.Negated, "is not equal to collection [1] in order")]
 		[InlineData(CollectionMatchOptions.EquivalenceRelations.Equivalent,
-			ExpectationGrammars.Plural | ExpectationGrammars.Negated, "do not match collection [1] in order")]
+			ExpectationGrammars.Plural | ExpectationGrammars.Negated, "are not equal to collection [1] in order")]
 		[InlineData(CollectionMatchOptions.EquivalenceRelations.Contains,
 			ExpectationGrammars.None, "contains collection [1] in order")]
 		[InlineData(CollectionMatchOptions.EquivalenceRelations.Contains,
