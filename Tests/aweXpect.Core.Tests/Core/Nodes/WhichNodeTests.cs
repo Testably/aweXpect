@@ -433,10 +433,47 @@ public sealed class WhichNodeTests
 	}
 
 	[Fact]
-	public async Task Negate_ShouldNegateTheContinuedExpectation()
+	public async Task Negate_ShouldNegateTheWholeExpectation()
 	{
 		WhichNode<string, int> whichNode = new(
-			new DummyNode("", () => new DummyConstraintResult(Outcome.Success, "e1")), s => s.Length, " which ");
+			new DummyNode("", () => new NegatableConstraintResult(Outcome.Success, "1")), s => s.Length, " which ");
+		whichNode.AddNode(new ExpectationNode());
+		whichNode.AddConstraint(new DummyConstraint("", () => new NegatableConstraintResult(Outcome.Success)));
+		StringBuilder sb = new();
+
+		ConstraintResult result = await whichNode.IsMetBy("foo", null!, CancellationToken.None);
+		ConstraintResult negated = result.Negate();
+
+		negated.AppendExpectation(sb);
+		await That(negated.Outcome).IsEqualTo(Outcome.Failure);
+		await That(sb.ToString()).IsEqualTo("not e1 which e2");
+		await That(negated.GetResultText()).IsEqualTo("not r1");
+	}
+
+	[Fact]
+	public async Task Negate_WithNullValue_ShouldNegateTheWholeExpectationAndStayFailed()
+	{
+		WhichNode<string, int> whichNode = new(
+			new DummyNode("", () => new NegatableConstraintResult(Outcome.Failure, "1")), s => s.Length, " which ");
+		whichNode.AddNode(new ExpectationNode());
+		whichNode.AddConstraint(new DummyConstraint("", () => new NegatableConstraintResult(Outcome.Success)));
+		StringBuilder sb = new();
+
+		ConstraintResult result = await whichNode.IsMetBy<string?>(null, null!, CancellationToken.None);
+		ConstraintResult negated = result.Negate();
+
+		negated.AppendExpectation(sb);
+		await That(negated.Outcome).IsEqualTo(Outcome.Failure);
+		await That(sb.ToString()).IsEqualTo("not e1 which e2");
+		await That(negated.GetResultText()).IsEqualTo("it was <null>");
+	}
+
+	[Fact]
+	public async Task Negate_WithNegateMemberOnly_ShouldNegateTheContinuedExpectation()
+	{
+		WhichNode<string, int> whichNode = new(
+			new DummyNode("", () => new DummyConstraintResult(Outcome.Success, "e1")), s => s.Length, " which ",
+			true);
 		whichNode.AddNode(new ExpectationNode());
 		whichNode.AddConstraint(new DummyConstraint("", () => new NegatableConstraintResult(Outcome.Success)));
 		StringBuilder sb = new();
@@ -451,11 +488,11 @@ public sealed class WhichNodeTests
 	}
 
 	[Fact]
-	public async Task Negate_WithNullValue_ShouldNegateTheContinuedExpectationAndStayFailed()
+	public async Task Negate_WithNegateMemberOnlyAndNullValue_ShouldNegateTheContinuedExpectationAndStayFailed()
 	{
 		WhichNode<string, int> whichNode = new(
 			new DummyNode("", () => new DummyConstraintResult(Outcome.Failure, "e1", "it was <null>")), s => s.Length,
-			" which ");
+			" which ", true);
 		whichNode.AddNode(new ExpectationNode());
 		whichNode.AddConstraint(new DummyConstraint("", () => new NegatableConstraintResult(Outcome.Success)));
 		StringBuilder sb = new();
@@ -706,7 +743,7 @@ public sealed class WhichNodeTests
 			             """);
 	}
 
-	private sealed class NegatableConstraintResult(Outcome outcome)
+	private sealed class NegatableConstraintResult(Outcome outcome, string id = "2")
 		: ConstraintResult(FurtherProcessingStrategy.Continue)
 	{
 		private bool _isNegated;
@@ -714,10 +751,10 @@ public sealed class WhichNodeTests
 		public override Outcome Outcome { get; protected set; } = outcome;
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(_isNegated ? "not e2" : "e2");
+			=> stringBuilder.Append(_isNegated ? "not e" : "e").Append(id);
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(_isNegated ? "not r2" : "r2");
+			=> stringBuilder.Append(_isNegated ? "not r" : "r").Append(id);
 
 		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
 		{
