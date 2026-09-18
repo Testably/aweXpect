@@ -628,11 +628,9 @@ public static partial class ThatEnumerable
 			}
 			else
 			{
-				stringBuilder.Append(_expectationText(Grammars));
+				stringBuilder.Append(_expectationText(Grammars.Negate()));
 				stringBuilder.Append(For);
-				stringBuilder.Append(_quantifier);
-				stringBuilder.Append(' ');
-				stringBuilder.Append(_quantifier.GetItemString());
+				_quantifier.AppendNegated(stringBuilder);
 			}
 		}
 
@@ -789,11 +787,9 @@ public static partial class ThatEnumerable
 			}
 			else
 			{
-				stringBuilder.Append(_expectationText(Grammars));
+				stringBuilder.Append(_expectationText(Grammars.Negate()));
 				stringBuilder.Append(For);
-				stringBuilder.Append(_quantifier);
-				stringBuilder.Append(' ');
-				stringBuilder.Append(_quantifier.GetItemString());
+				_quantifier.AppendNegated(stringBuilder);
 			}
 		}
 
@@ -950,14 +946,12 @@ public static partial class ThatEnumerable
 			{
 				stringBuilder.Append(_expectationText(Grammars.Negate()));
 				stringBuilder.Append(For);
-				stringBuilder.Append(_quantifier);
-				stringBuilder.Append(' ');
-				stringBuilder.Append(_quantifier.GetItemString());
+				_quantifier.AppendNegated(stringBuilder);
 			}
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> _quantifier.AppendResult(stringBuilder, Grammars.Negate(), _matchingCount, _notMatchingCount,
+			=> _quantifier.AppendResult(stringBuilder, Grammars, _matchingCount, _notMatchingCount,
 				_totalCount, _verb);
 
 		private void AppendContexts(bool isIncomplete)
@@ -1119,14 +1113,12 @@ public static partial class ThatEnumerable
 			{
 				stringBuilder.Append(_expectationText(Grammars.Negate()));
 				stringBuilder.Append(For);
-				stringBuilder.Append(_quantifier);
-				stringBuilder.Append(' ');
-				stringBuilder.Append(_quantifier.GetItemString());
+				_quantifier.AppendNegated(stringBuilder);
 			}
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> _quantifier.AppendResult(stringBuilder, Grammars.Negate(), _matchingCount, _notMatchingCount,
+			=> _quantifier.AppendResult(stringBuilder, Grammars, _matchingCount, _notMatchingCount,
 				_totalCount, _verb);
 
 		private void AppendContexts(bool isIncomplete)

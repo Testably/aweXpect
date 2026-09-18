@@ -125,7 +125,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is not equal to 0 for at most one item,
+					             is equal to 0 for not at most one item,
 					             but it was <null>
 					             """);
 			}

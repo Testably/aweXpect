@@ -108,11 +108,18 @@ internal abstract class QuantifiedCollectionConstraint<TValue, TItem>(
 		}
 		else
 		{
-			stringBuilder.Append(expectationText(Grammars));
+			stringBuilder.Append(expectationText(isNegated ? Grammars.Negate() : Grammars));
 			stringBuilder.Append(For);
-			stringBuilder.Append(quantifier);
-			stringBuilder.Append(' ');
-			stringBuilder.Append(quantifier.GetItemString());
+			if (isNegated)
+			{
+				quantifier.AppendNegated(stringBuilder);
+			}
+			else
+			{
+				stringBuilder.Append(quantifier);
+				stringBuilder.Append(' ');
+				stringBuilder.Append(quantifier.GetItemString());
+			}
 		}
 	}
 }

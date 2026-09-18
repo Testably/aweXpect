@@ -141,11 +141,9 @@ public static partial class ThatAsyncEnumerable
 			}
 			else
 			{
-				stringBuilder.Append(_expectationText(Grammars));
+				stringBuilder.Append(_expectationText(Grammars.Negate()));
 				stringBuilder.Append(" for ");
-				stringBuilder.Append(_quantifier);
-				stringBuilder.Append(' ');
-				stringBuilder.Append(_quantifier.GetItemString());
+				_quantifier.AppendNegated(stringBuilder);
 			}
 		}
 
@@ -308,11 +306,9 @@ public static partial class ThatAsyncEnumerable
 			}
 			else
 			{
-				stringBuilder.Append(_expectationText(_grammars.Negate()));
+				stringBuilder.Append(_expectationText(_grammars));
 				stringBuilder.Append(" for ");
-				stringBuilder.Append(_quantifier);
-				stringBuilder.Append(' ');
-				stringBuilder.Append(_quantifier.GetItemString());
+				_quantifier.AppendNegated(stringBuilder);
 			}
 		}
 

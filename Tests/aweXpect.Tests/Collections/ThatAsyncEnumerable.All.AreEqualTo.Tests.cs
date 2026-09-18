@@ -150,7 +150,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not equal to 42 for all items,
+						             is equal to 42 for not all items,
 						             but it was <null>
 						             """);
 				}
@@ -341,6 +341,39 @@ public sealed partial class ThatAsyncEnumerable
 						             is equal to "foo" for all items,
 						             but it was <null>
 						             """);
+				}
+			}
+
+			public sealed class NegatedItemTests
+			{
+				[Fact]
+				public async Task WhenAllItemsMatch_ShouldFail()
+				{
+					IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 1, 1,]);
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.All().AreEqualTo(1));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equal to 1 for not all items,
+						             but all 3 were
+
+						             Collection:
+						             [1, 1, 1]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenOneItemDoesNotMatch_ShouldSucceed()
+				{
+					IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 1,]);
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.All().AreEqualTo(1));
+
+					await That(Act).DoesNotThrow();
 				}
 			}
 		}

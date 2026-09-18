@@ -155,6 +155,42 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 			}
+
+			public sealed class EnumerableNegatedTests
+			{
+				[Fact]
+				public async Task WhenAllItemsMatch_ShouldFail()
+				{
+					IEnumerable subject = ToEnumerable([1, 1, 1,]);
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.All().AreEquivalentTo(1));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equivalent to 1 for not all items,
+						             but all 3 were
+
+						             Collection:
+						             [1, 1, 1]
+
+						             Equivalency options:
+						              - include public fields and properties
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenOneItemDoesNotMatch_ShouldSucceed()
+				{
+					IEnumerable subject = ToEnumerable([1, 2, 1,]);
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.All().AreEquivalentTo(1));
+
+					await That(Act).DoesNotThrow();
+				}
+			}
 		}
 	}
 }
