@@ -30,6 +30,7 @@ public static partial class ThatReadOnlyDictionary
 			expected,
 			dictionary => expected
 				.Select(key => key is not null && dictionary.TryGetValue(key, out TValue? value) ? value : default)
+				.ToArray()
 		);
 	}
 
@@ -54,6 +55,7 @@ public static partial class ThatReadOnlyDictionary
 			expected,
 			dictionary => expected
 				.Select(key => dictionary.TryGetValue(key, out TValue? value) ? value : default)
+				.ToArray()
 		);
 	}
 
