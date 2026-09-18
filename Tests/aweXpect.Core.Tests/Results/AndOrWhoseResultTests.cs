@@ -155,9 +155,84 @@ public class AndOrWhoseResultTests
 			              """);
 	}
 
+	[Fact]
+	public async Task Whose_WithAsyncMember_ShouldVerifyAwaitedValue()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose(f => f.GetValue1Async(), f => f.IsTrue());
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that sut
+			             is type AndOrWhoseResultTests.MyClass whose GetValue1Async() is True,
+			             but GetValue1Async() was False
+			             """);
+	}
+
+	[Fact]
+	public async Task AndWhose_WithAsyncMember_ShouldVerifyAwaitedValue()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose(f => f.Value2, f => f.IsFalse())
+				.AndWhose(f => f.GetValue1Async(), f => f.IsTrue());
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that sut
+			             is type AndOrWhoseResultTests.MyClass whose Value2 is False and whose GetValue1Async() is True,
+			             but GetValue1Async() was False
+			             """);
+	}
+
+	[Fact]
+	public async Task Whose_WhenAsyncMemberFaults_ShouldPropagateException()
+	{
+		ThrowingClass sut = new("async member failed");
+
+		async Task Act()
+			=> await That(sut).Is<ThrowingClass>()
+				.Whose(f => f.FaultedAsync(), f => f.IsTrue());
+
+		await That(Act).ThrowsExactly<InvalidOperationException>()
+			.WithMessage("async member failed");
+	}
+
+	[Fact]
+	public async Task AndWhose_WhenAsyncMemberFaults_ShouldPropagateException()
+	{
+		ThrowingClass sut = new("async member failed");
+
+		async Task Act()
+			=> await That(sut).Is<ThrowingClass>()
+				.Whose(f => f.Value, f => f.IsFalse())
+				.AndWhose(f => f.FaultedAsync(), f => f.IsTrue());
+
+		await That(Act).ThrowsExactly<InvalidOperationException>()
+			.WithMessage("async member failed");
+	}
+
 	private sealed class MyClass
 	{
 		public bool Value1 { get; set; }
 		public bool Value2 { get; set; }
+
+		public Task<bool> GetValue1Async() => Task.FromResult(Value1);
+	}
+
+	private sealed class ThrowingClass(string message)
+	{
+		public bool Value { get; set; }
+
+		public async Task<bool> FaultedAsync()
+		{
+			await Task.Yield();
+			throw new InvalidOperationException(message);
+		}
 	}
 }

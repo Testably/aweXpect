@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Tests;
+﻿using System.Threading;
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatGeneric
 {
@@ -129,9 +131,236 @@ public sealed partial class ThatGeneric
 				await That(Act).DoesNotThrow();
 			}
 
+			[Fact]
+			public async Task WhenAsyncMemberConditionIsNotSatisfied_ShouldFail()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.GetValueAsync(), v => v.IsEqualTo(2));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose GetValueAsync() is equal to 2,
+					             but GetValueAsync() was 1 which differs by -1
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenAsyncMemberConditionIsSatisfied_ShouldSucceed()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.GetValueAsync(), v => v.IsEqualTo(1));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldNotInvokeAsyncMemberSelector()
+			{
+				MyClass? subject = null;
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.GetValueAsync(), v => v.IsEqualTo(1));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose GetValueAsync() is equal to 1,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenAsyncLambdaIsUsed_ShouldVerifyAwaitedValue()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).Whose(async o => await o.GetValueAsync(), v => v.IsEqualTo(2));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose async o => await o.GetValueAsync() is equal to 2,
+					             but async o => await o.GetValueAsync() was 1 which differs by -1
+					             """);
+			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task WhenValueTaskMemberConditionIsNotSatisfied_ShouldFail()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.GetValueAsValueTaskAsync(), v => v.IsEqualTo(2));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose GetValueAsValueTaskAsync() is equal to 2,
+					             but GetValueAsValueTaskAsync() was 1 which differs by -1
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenValueTaskMemberConditionIsSatisfied_ShouldSucceed()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.GetValueAsValueTaskAsync(), v => v.IsEqualTo(1));
+
+				await That(Act).DoesNotThrow();
+			}
+#endif
+
+			[Fact]
+			public async Task WhenAsyncMemberIsChainedAfterDelegateResult_ShouldVerifyAwaitedValue()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(() => subject)
+						.DoesNotThrow()
+						.AndWhoseResult.IsNotNull()
+						.And.Whose(o => o.GetValueAsync(), v => v.IsEqualTo(2));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that () => subject
+					             does not throw any exception and its result is not null and whose GetValueAsync() is equal to 2,
+					             but GetValueAsync() was 1 which differs by -1
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenAsyncMemberFaults_ShouldPropagateException()
+			{
+				ThrowingClass subject = new();
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.FaultedAsync(), v => v.IsEqualTo(1));
+
+				await That(Act).ThrowsExactly<InvalidOperationException>()
+					.WithMessage("async member failed");
+			}
+
+			[Fact]
+			public async Task WhenAsyncMemberFaults_ShouldPropagateExceptionEvenIfOtherBranchSucceeds()
+			{
+				ThrowingClass subject = new();
+
+				async Task Act()
+					=> await That(subject)
+						.Whose(o => o.FaultedAsync(), v => v.IsEqualTo(1)).Or
+						.Whose(o => o.Value, v => v.IsEqualTo(0));
+
+				await That(Act).ThrowsExactly<InvalidOperationException>()
+					.WithMessage("async member failed");
+			}
+
+			[Fact]
+			public async Task WhenAsyncMemberIsCanceled_ShouldPropagateCancellation()
+			{
+				ThrowingClass subject = new();
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.CanceledAsync(), v => v.IsEqualTo(1));
+
+				await That(Act).Throws<OperationCanceledException>();
+			}
+
+			[Fact]
+			public async Task WhenAsyncMemberThrowsBeforeReturningTask_ShouldPropagateException()
+			{
+				ThrowingClass subject = new();
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.ThrowsBeforeReturningTask(), v => v.IsEqualTo(1));
+
+				await That(Act).ThrowsExactly<InvalidOperationException>()
+					.WithMessage("thrown before returning the task");
+			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task WhenValueTaskMemberFaults_ShouldPropagateException()
+			{
+				ThrowingClass subject = new();
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.FaultedValueTaskAsync(), v => v.IsEqualTo(1));
+
+				await That(Act).ThrowsExactly<InvalidOperationException>()
+					.WithMessage("async member failed");
+			}
+#endif
+
+			private sealed class ThrowingClass
+			{
+				public int Value { get; set; }
+
+				public Task<int> CanceledAsync()
+					=> Task.FromCanceled<int>(new CancellationToken(true));
+
+				public async Task<int> FaultedAsync()
+				{
+					await Task.Yield();
+					throw new InvalidOperationException("async member failed");
+				}
+
+				public Task<int> ThrowsBeforeReturningTask()
+					=> throw new InvalidOperationException("thrown before returning the task");
+
+#if NET8_0_OR_GREATER
+				public async ValueTask<int> FaultedValueTaskAsync()
+				{
+					await Task.Yield();
+					throw new InvalidOperationException("async member failed");
+				}
+#endif
+			}
+
 			private sealed class MyClass
 			{
 				public int Value { get; set; }
+
+				public async Task<int> GetValueAsync()
+				{
+					await Task.Yield();
+					return Value;
+				}
+
+#if NET8_0_OR_GREATER
+				public async ValueTask<int> GetValueAsValueTaskAsync()
+				{
+					await Task.Yield();
+					return Value;
+				}
+#endif
 			}
 
 			private sealed class MyCombinationClass

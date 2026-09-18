@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using aweXpect.Core;
 
 namespace aweXpect.Results;
@@ -9,7 +10,7 @@ namespace aweXpect.Results;
 ///     <para />
 ///     In addition to the combinations from <see cref="AndOrResult{TType,TThat}" />, allows accessing
 ///     underlying
-///     properties with <see cref="AndOrWhoseResult{TResult,TValue,TSelf}.Whose{TMember}" />.
+///     properties with <see cref="AndOrWhoseResult{TResult,TValue,TSelf}.Whose{TMember}(Func{TResult,TMember}, Action{IThatSubject{TMember}}, string)" />.
 /// </summary>
 public class AndOrWhoseResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,
@@ -21,7 +22,7 @@ public class AndOrWhoseResult<TType, TThat>(
 ///     The result of an expectation with an underlying value of type <typeparamref name="TType" />.
 ///     <para />
 ///     In addition to the combinations from <see cref="AndOrResult{TType,TThat}" />, allows accessing
-///     underlying members with <see cref="Whose{TMember}" />.
+///     underlying members with <see cref="Whose{TMember}(Func{TType,TMember}, Action{IThatSubject{TMember}}, string)" />.
 /// </summary>
 public class AndOrWhoseResult<TType, TThat, TSelf>(
 	ExpectationBuilder expectationBuilder,
@@ -51,10 +52,45 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 			_returnValue);
 
 	/// <summary>
+	///     Allows specifying <paramref name="expectations" /> on the awaited result of the member selected by the
+	///     <paramref name="memberSelector" />.
+	/// </summary>
+	[OverloadResolutionPriority(2)]
+	public AdditionalAndOrWhoseResult
+		Whose<TMember>(
+			Func<TType, Task<TMember>> memberSelector,
+			Action<IThatSubject<TMember?>> expectations,
+			[CallerArgumentExpression("memberSelector")]
+			string doNotPopulateThisValue = "")
+		=> new(
+			_expectationBuilder
+				.ForAsyncMember(
+					MemberAccessor<TType, Task<TMember>>.FromFuncAsMemberAccessor(memberSelector,
+						doNotPopulateThisValue),
+					(member, stringBuilder) => stringBuilder.Append(" whose ").Append(member))
+				.AddExpectations(e => expectations(new ThatSubject<TMember?>(e))),
+			_returnValue);
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Allows specifying <paramref name="expectations" /> on the awaited result of the member selected by the
+	///     <paramref name="memberSelector" />.
+	/// </summary>
+	[OverloadResolutionPriority(1)]
+	public AdditionalAndOrWhoseResult
+		Whose<TMember>(
+			Func<TType, ValueTask<TMember>> memberSelector,
+			Action<IThatSubject<TMember?>> expectations,
+			[CallerArgumentExpression("memberSelector")]
+			string doNotPopulateThisValue = "")
+		=> Whose(x => memberSelector(x).AsTask(), expectations, doNotPopulateThisValue);
+#endif
+
+	/// <summary>
 	///     The result of an additional expectation for the underlying type.
 	///     <para />
 	///     In addition to the combinations from <see cref="AndOrResult{TType,TThat}" />, allows accessing
-	///     underlying members with <see cref="AndWhose{TMember}" />.
+	///     underlying members with <see cref="AndWhose{TMember}(Func{TType,TMember}, Action{IThatSubject{TMember}}, string)" />.
 	/// </summary>
 	public class AdditionalAndOrWhoseResult(
 		ExpectationBuilder expectationBuilder,
@@ -86,5 +122,44 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 						=> expectations(new ThatSubject<TMember?>(e))),
 				_returnValue);
 		}
+
+		/// <summary>
+		///     Allows specifying <paramref name="expectations" /> on the awaited result of the member selected by the
+		///     <paramref name="memberSelector" />.
+		/// </summary>
+		[OverloadResolutionPriority(2)]
+		public AdditionalAndOrWhoseResult
+			AndWhose<TMember>(
+				Func<TType, Task<TMember>> memberSelector,
+				Action<IThatSubject<TMember?>> expectations,
+				[CallerArgumentExpression("memberSelector")]
+				string doNotPopulateThisValue = "")
+		{
+			_expectationBuilder.And(" and");
+			return new AdditionalAndOrWhoseResult(
+				_expectationBuilder
+					.ForAsyncMember(
+						MemberAccessor<TType, Task<TMember>>.FromFuncAsMemberAccessor(memberSelector,
+							doNotPopulateThisValue),
+						(member, stringBuilder) => stringBuilder.Append(" whose ").Append(member))
+					.AddExpectations(e
+						=> expectations(new ThatSubject<TMember?>(e))),
+				_returnValue);
+		}
+
+#if NET8_0_OR_GREATER
+		/// <summary>
+		///     Allows specifying <paramref name="expectations" /> on the awaited result of the member selected by the
+		///     <paramref name="memberSelector" />.
+		/// </summary>
+		[OverloadResolutionPriority(1)]
+		public AdditionalAndOrWhoseResult
+			AndWhose<TMember>(
+				Func<TType, ValueTask<TMember>> memberSelector,
+				Action<IThatSubject<TMember?>> expectations,
+				[CallerArgumentExpression("memberSelector")]
+				string doNotPopulateThisValue = "")
+			=> AndWhose(x => memberSelector(x).AsTask(), expectations, doNotPopulateThisValue);
+#endif
 	}
 }

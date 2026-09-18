@@ -41,6 +41,13 @@ e.g.
 >                      ↑ (expected)
 > ```
 
+When the selector returns a `Task<T>` or `ValueTask<T>`, the expectations apply to the awaited result, e.g.
+
+```csharp
+  await Expect.That(subject)
+    .Whose(x => x.LoadTitleAsync(), x => x.IsEqualTo("Dark Side of the Moon"));
+```
+
 ## On different subjects
 
 Use the `Expect.ThatAll` or `Expect.ThatAny` syntax to combine arbitrary expectations, e.g.

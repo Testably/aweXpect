@@ -155,6 +155,113 @@ public sealed partial class ThatDelegate
 
 					await That(Act).DoesNotThrow();
 				}
+
+				[Theory]
+				[AutoData]
+				public async Task WhenAsyncMemberIsDifferent_ShouldFail(int value)
+				{
+					int expectedValue = value + 1;
+					void Delegate() => throw new AsyncException(value);
+
+					async Task Act()
+						=> await That(Delegate).Throws<AsyncException>()
+							.Whose(e => e.GetValueAsync(), v => v.IsEqualTo(expectedValue));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that Delegate
+						              throws a ThatDelegate.Throws.Whose.AsyncException whose GetValueAsync() is equal to {expectedValue},
+						              but GetValueAsync() was {value} which differs by -1
+						              """);
+				}
+
+				[Theory]
+				[AutoData]
+				public async Task WhenAsyncMemberMatchesExpected_ShouldSucceed(int value)
+				{
+					void Delegate() => throw new AsyncException(value);
+
+					async Task Act()
+						=> await That(Delegate).Throws<AsyncException>()
+							.Whose(e => e.GetValueAsync(), v => v.IsEqualTo(value));
+
+					await That(Act).DoesNotThrow();
+				}
+
+#if NET8_0_OR_GREATER
+				[Theory]
+				[AutoData]
+				public async Task WhenValueTaskMemberIsDifferent_ShouldFail(int value)
+				{
+					int expectedValue = value + 1;
+					void Delegate() => throw new AsyncException(value);
+
+					async Task Act()
+						=> await That(Delegate).Throws<AsyncException>()
+							.Whose(e => e.GetValueAsValueTaskAsync(), v => v.IsEqualTo(expectedValue));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that Delegate
+						              throws a ThatDelegate.Throws.Whose.AsyncException whose GetValueAsValueTaskAsync() is equal to {expectedValue},
+						              but GetValueAsValueTaskAsync() was {value} which differs by -1
+						              """);
+				}
+#endif
+			}
+
+			public sealed class AsyncMemberFaultTests
+			{
+				[Fact]
+				public async Task WhenAsyncMemberFaults_ShouldPropagateException()
+				{
+					void Delegate() => throw new AsyncException(1);
+
+					async Task Act()
+						=> await That(Delegate).Throws<AsyncException>()
+							.Whose(e => e.FaultedAsync(), v => v.IsEqualTo(1));
+
+					await That(Act).ThrowsExactly<InvalidOperationException>()
+						.WithMessage("async member failed");
+				}
+
+#if NET8_0_OR_GREATER
+				[Fact]
+				public async Task WhenValueTaskMemberFaults_ShouldPropagateException()
+				{
+					void Delegate() => throw new AsyncException(1);
+
+					async Task Act()
+						=> await That(Delegate).Throws<AsyncException>()
+							.Whose(e => e.FaultedValueTaskAsync(), v => v.IsEqualTo(1));
+
+					await That(Act).ThrowsExactly<InvalidOperationException>()
+						.WithMessage("async member failed");
+				}
+#endif
+			}
+
+			private sealed class AsyncException(int value) : Exception
+			{
+				public async Task<int> FaultedAsync()
+				{
+					await Task.Yield();
+					throw new InvalidOperationException("async member failed");
+				}
+
+#if NET8_0_OR_GREATER
+				public async ValueTask<int> FaultedValueTaskAsync()
+				{
+					await Task.Yield();
+					throw new InvalidOperationException("async member failed");
+				}
+#endif
+
+				public Task<int> GetValueAsync() => Task.FromResult(value);
+
+#if NET8_0_OR_GREATER
+				public ValueTask<int> GetValueAsValueTaskAsync() => new(value);
+#endif
 			}
 
 			private sealed class MyException(Base payload) : Exception
