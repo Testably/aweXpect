@@ -4008,6 +4008,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 22:11:12 2026 \u002B0200",
         "message": "fix: report the full value count for \u0060ContainsKeys(\u2026).WhoseValues\u0060 (#1203)"
+      },
+      {
+        "sha": "969656cff867c7de34de48b469c72b2f51d0e53d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 23:22:02 2026 \u002B0200",
+        "message": "fix: list the values of ContainsKeys(\u2026).WhoseValues together with their keys (#1204)"
       }
     ],
     "labels": [
@@ -4678,7 +4684,8 @@ window.BENCHMARK_DATA = {
       "34d794ec",
       "f9b4540a",
       "00dff638",
-      "592eda32"
+      "592eda32",
+      "969656cf"
     ],
     "datasets": [
       {
@@ -5352,7 +5359,8 @@ window.BENCHMARK_DATA = {
           337.75201447804767,
           302.21210071018766,
           338.3181185086568,
-          231.47678319613138
+          231.47678319613138,
+          329.0090421267918
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6026,6 +6034,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          840,
           840,
           840,
           840,
@@ -6713,7 +6722,8 @@ window.BENCHMARK_DATA = {
           254.61803455352782,
           250.2746205670493,
           251.7722088609423,
-          198.7654082775116
+          198.7654082775116,
+          254.24044408798218
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6906,6 +6916,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10952,6 +10963,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 22:11:12 2026 \u002B0200",
         "message": "fix: report the full value count for \u0060ContainsKeys(\u2026).WhoseValues\u0060 (#1203)"
+      },
+      {
+        "sha": "969656cff867c7de34de48b469c72b2f51d0e53d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 23:22:02 2026 \u002B0200",
+        "message": "fix: list the values of ContainsKeys(\u2026).WhoseValues together with their keys (#1204)"
       }
     ],
     "labels": [
@@ -11545,7 +11562,8 @@ window.BENCHMARK_DATA = {
       "34d794ec",
       "f9b4540a",
       "00dff638",
-      "592eda32"
+      "592eda32",
+      "969656cf"
     ],
     "datasets": [
       {
@@ -12142,7 +12160,8 @@ window.BENCHMARK_DATA = {
           345701.63971354166,
           316975.791796875,
           322006.48678385414,
-          252500.36003766741
+          252500.36003766741,
+          316448.8670572917
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12739,6 +12758,7 @@ window.BENCHMARK_DATA = {
           617976,
           617976,
           617976,
+          618120,
           618120,
           618120,
           618120,
@@ -13349,7 +13369,8 @@ window.BENCHMARK_DATA = {
           2772641.68359375,
           2531028.349739583,
           2641841.021614583,
-          1906932.693638393
+          1906932.693638393,
+          2675879.283072917
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13951,7 +13972,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841647
+          4841647,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17973,6 +17995,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 22:11:12 2026 \u002B0200",
         "message": "fix: report the full value count for \u0060ContainsKeys(\u2026).WhoseValues\u0060 (#1203)"
+      },
+      {
+        "sha": "969656cff867c7de34de48b469c72b2f51d0e53d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 23:22:02 2026 \u002B0200",
+        "message": "fix: list the values of ContainsKeys(\u2026).WhoseValues together with their keys (#1204)"
       }
     ],
     "labels": [
@@ -18643,7 +18671,8 @@ window.BENCHMARK_DATA = {
       "34d794ec",
       "f9b4540a",
       "00dff638",
-      "592eda32"
+      "592eda32",
+      "969656cf"
     ],
     "datasets": [
       {
@@ -19317,7 +19346,8 @@ window.BENCHMARK_DATA = {
           577.7639307022094,
           530.6930157343546,
           538.7581422170003,
-          399.44025967915854
+          399.44025967915854,
+          619.8084933417184
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19991,6 +20021,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1512,
           1512,
           1512,
           1512,
@@ -20678,7 +20709,8 @@ window.BENCHMARK_DATA = {
           555.1492535273234,
           479.2288476058415,
           507.55058492933,
-          405.4112504209791
+          405.4112504209791,
+          495.2215061187744
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20871,6 +20903,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -25379,6 +25412,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 22:11:12 2026 \u002B0200",
         "message": "fix: report the full value count for \u0060ContainsKeys(\u2026).WhoseValues\u0060 (#1203)"
+      },
+      {
+        "sha": "969656cff867c7de34de48b469c72b2f51d0e53d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 23:22:02 2026 \u002B0200",
+        "message": "fix: list the values of ContainsKeys(\u2026).WhoseValues together with their keys (#1204)"
       }
     ],
     "labels": [
@@ -26049,7 +26088,8 @@ window.BENCHMARK_DATA = {
       "34d794ec",
       "f9b4540a",
       "00dff638",
-      "592eda32"
+      "592eda32",
+      "969656cf"
     ],
     "datasets": [
       {
@@ -26723,7 +26763,8 @@ window.BENCHMARK_DATA = {
           348.18458862304686,
           307.96899785314287,
           308.0331859248025,
-          251.0540198326111
+          251.0540198326111,
+          315.9520732334682
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27397,6 +27438,7 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
+          1008,
           1008,
           1008,
           1008,
@@ -28084,7 +28126,8 @@ window.BENCHMARK_DATA = {
           285.1541458129883,
           258.28920259475706,
           256.62382987340294,
-          188.4669912815094
+          188.4669912815094,
+          250.61726773579915
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28277,6 +28320,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -32785,6 +32829,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 22:11:12 2026 \u002B0200",
         "message": "fix: report the full value count for \u0060ContainsKeys(\u2026).WhoseValues\u0060 (#1203)"
+      },
+      {
+        "sha": "969656cff867c7de34de48b469c72b2f51d0e53d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 23:22:02 2026 \u002B0200",
+        "message": "fix: list the values of ContainsKeys(\u2026).WhoseValues together with their keys (#1204)"
       }
     ],
     "labels": [
@@ -33455,7 +33505,8 @@ window.BENCHMARK_DATA = {
       "34d794ec",
       "f9b4540a",
       "00dff638",
-      "592eda32"
+      "592eda32",
+      "969656cf"
     ],
     "datasets": [
       {
@@ -34129,7 +34180,8 @@ window.BENCHMARK_DATA = {
           603.0279440198626,
           546.6077763484075,
           553.947010676066,
-          447.68320550918577
+          447.68320550918577,
+          610.8395245869955
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34803,6 +34855,7 @@ window.BENCHMARK_DATA = {
           1256,
           1256,
           1256,
+          1400,
           1400,
           1400,
           1400,
@@ -35490,7 +35543,8 @@ window.BENCHMARK_DATA = {
           1327.5965039571126,
           1216.9129625467153,
           1258.8664143880208,
-          944.0233445485433
+          944.0233445485433,
+          1314.844744873047
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35919,6 +35973,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -40191,6 +40246,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 22:11:12 2026 \u002B0200",
         "message": "fix: report the full value count for \u0060ContainsKeys(\u2026).WhoseValues\u0060 (#1203)"
+      },
+      {
+        "sha": "969656cff867c7de34de48b469c72b2f51d0e53d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 23:22:02 2026 \u002B0200",
+        "message": "fix: list the values of ContainsKeys(\u2026).WhoseValues together with their keys (#1204)"
       }
     ],
     "labels": [
@@ -40861,7 +40922,8 @@ window.BENCHMARK_DATA = {
       "34d794ec",
       "f9b4540a",
       "00dff638",
-      "592eda32"
+      "592eda32",
+      "969656cf"
     ],
     "datasets": [
       {
@@ -41535,7 +41597,8 @@ window.BENCHMARK_DATA = {
           2122.979504449027,
           2134.2143231709797,
           2227.4863881429037,
-          1734.0955317361015
+          1734.0955317361015,
+          2129.4109537942068
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -42209,6 +42272,7 @@ window.BENCHMARK_DATA = {
           2752,
           2752,
           2752,
+          3104,
           3104,
           3104,
           3104,
@@ -42896,7 +42960,8 @@ window.BENCHMARK_DATA = {
           1399.3660079956055,
           1370.7772269930158,
           1325.5950056711833,
-          1095.7212844576154
+          1095.7212844576154,
+          1342.2186517079672
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -43089,6 +43154,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -47597,6 +47663,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 22:11:12 2026 \u002B0200",
         "message": "fix: report the full value count for \u0060ContainsKeys(\u2026).WhoseValues\u0060 (#1203)"
+      },
+      {
+        "sha": "969656cff867c7de34de48b469c72b2f51d0e53d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 23:22:02 2026 \u002B0200",
+        "message": "fix: list the values of ContainsKeys(\u2026).WhoseValues together with their keys (#1204)"
       }
     ],
     "labels": [
@@ -48267,7 +48339,8 @@ window.BENCHMARK_DATA = {
       "34d794ec",
       "f9b4540a",
       "00dff638",
-      "592eda32"
+      "592eda32",
+      "969656cf"
     ],
     "datasets": [
       {
@@ -48941,7 +49014,8 @@ window.BENCHMARK_DATA = {
           2728.427665201823,
           2713.9010078430174,
           2825.083543141683,
-          2213.5933113098145
+          2213.5933113098145,
+          2740.8627700805664
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -49615,6 +49689,7 @@ window.BENCHMARK_DATA = {
           2944,
           2944,
           2944,
+          3296,
           3296,
           3296,
           3296,
@@ -50302,7 +50377,8 @@ window.BENCHMARK_DATA = {
           27231.05518798828,
           27495.22459411621,
           27270.3803914388,
-          16602.52258504232
+          16602.52258504232,
+          26567.815239539512
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -50976,6 +51052,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
