@@ -272,12 +272,12 @@ public sealed partial class ThatReadOnlyDictionary
 				IReadOnlyDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
 
 				async Task Act()
-					=> await That(subject).ContainsKeys(1, 2).WhoseValues.Satisfy(v => v.StartsWith("f"));
+					=> await That(subject).ContainsKeys(1, 2).WhoseValues.Satisfy(v => v?.StartsWith("fo") == true);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains keys [1, 2] whose values satisfy v => v.StartsWith("f") for all items,
+					             contains keys [1, 2] whose values satisfy v => v?.StartsWith("fo") == true for all items,
 					             but only 1 of 2 did
 
 					             Not matching items:

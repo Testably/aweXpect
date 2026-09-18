@@ -144,15 +144,6 @@ internal static class CollectionHelpers
 		});
 	}
 
-	/// <summary>
-	///     Formats the <paramref name="items" /> recorded from the <paramref name="source" /> collection, together with
-	///     their keys when the source is an <see cref="IKeyedCollection" />.
-	/// </summary>
-	internal static string Format<TItem>(this LimitedCollection<TItem> items, object? source, Type itemType)
-		=> source is IKeyedCollection keyed
-			? keyed.Format(items.Indices)
-			: Formatter.Format(items, itemType.GetFormattingOption(items.Count));
-
 	internal static ExpectationBuilder AddCollectionContext(this ExpectationBuilder expectationBuilder,
 		IEnumerable? value, bool isIncomplete = false)
 	{
@@ -260,6 +251,15 @@ internal static class CollectionHelpers
 			}
 		});
 	}
+
+	/// <summary>
+	///     Formats the <paramref name="items" /> recorded from the <paramref name="source" /> collection, together with
+	///     their keys when the source is an <see cref="IKeyedCollection" />.
+	/// </summary>
+	internal static string Format<TItem>(this LimitedCollection<TItem> items, object? source, Type itemType)
+		=> source is IKeyedCollection keyed
+			? keyed.Format(items.Indices)
+			: Formatter.Format(items, itemType.GetFormattingOption(items.Count));
 
 #if NET8_0_OR_GREATER
 	/// <summary>
