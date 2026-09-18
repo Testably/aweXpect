@@ -102,7 +102,7 @@ public sealed partial class ThatAsyncEnumerable
 					               a => (a == 107),
 					               a => (a == 108),
 					               a => (a == 109),
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}
@@ -750,7 +750,7 @@ public sealed partial class ThatAsyncEnumerable
 					               a => (a == 107),
 					               a => (a == 108),
 					               a => (a == 109),
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}
@@ -1296,7 +1296,7 @@ public sealed partial class ThatAsyncEnumerable
 					               a => (a == 107),
 					               a => (a == 108),
 					               a => (a == 109),
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}
@@ -1872,7 +1872,7 @@ public sealed partial class ThatAsyncEnumerable
 					               a => (a == 107),
 					               a => (a == 108),
 					               a => (a == 109),
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}

@@ -40,7 +40,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -55,7 +55,7 @@ public sealed partial class ThatEnumerable
 					               107,
 					               108,
 					               109,
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}
@@ -478,7 +478,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -493,7 +493,7 @@ public sealed partial class ThatEnumerable
 					               107,
 					               108,
 					               109,
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}
@@ -853,7 +853,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -868,7 +868,7 @@ public sealed partial class ThatEnumerable
 					               107,
 					               108,
 					               109,
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}
@@ -1256,7 +1256,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -1271,7 +1271,7 @@ public sealed partial class ThatEnumerable
 					               107,
 					               108,
 					               109,
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}
@@ -1610,7 +1610,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -1625,7 +1625,7 @@ public sealed partial class ThatEnumerable
 					               107,
 					               108,
 					               109,
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}
@@ -2063,7 +2063,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -2078,7 +2078,7 @@ public sealed partial class ThatEnumerable
 					               107,
 					               108,
 					               109,
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}
@@ -2561,7 +2561,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -2576,7 +2576,7 @@ public sealed partial class ThatEnumerable
 					               107,
 					               108,
 					               109,
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}
@@ -3012,7 +3012,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -3027,7 +3027,7 @@ public sealed partial class ThatEnumerable
 					               107,
 					               108,
 					               109,
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}
