@@ -9,7 +9,6 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Helpers;
-using aweXpect.Results;
 
 namespace aweXpect.Equivalency;
 

@@ -153,7 +153,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has values which are unique for x => x.Value for all items,
+					             has values which are unique by x => x.Value for all items,
 					             but only 1 of 3 were
 					             *
 					             """).AsWildcard();

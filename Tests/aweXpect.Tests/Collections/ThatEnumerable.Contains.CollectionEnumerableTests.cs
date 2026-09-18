@@ -16,7 +16,7 @@ public sealed partial class ThatEnumerable
 			public async Task CompletelyDifferentCollections_ShouldFail()
 			{
 				IEnumerable subject = Enumerable.Range(1, 11);
-				IEnumerable<int> expected = Enumerable.Range(100, 21);
+				IEnumerable<int> expected = Enumerable.Range(100, 21).ToArray();
 
 				async Task Act()
 					=> await That(subject).Contains(expected);
@@ -54,7 +54,7 @@ public sealed partial class ThatEnumerable
 					               107,
 					               108,
 					               109,
-					               …
+					               (… and 11 more)
 					             ]
 					             """);
 			}
@@ -504,7 +504,7 @@ public sealed partial class ThatEnumerable
 			public async Task CompletelyDifferentCollections_ShouldFail()
 			{
 				IEnumerable subject = Enumerable.Range(1, 11);
-				IEnumerable<int> expected = Enumerable.Range(100, 11);
+				IEnumerable<int> expected = Enumerable.Range(100, 11).ToArray();
 
 				async Task Act()
 					=> await That(subject).Contains(expected).IgnoringDuplicates();
@@ -542,7 +542,7 @@ public sealed partial class ThatEnumerable
 					               107,
 					               108,
 					               109,
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}
@@ -926,7 +926,7 @@ public sealed partial class ThatEnumerable
 			public async Task CompletelyDifferentCollections_ShouldFail()
 			{
 				IEnumerable subject = Enumerable.Range(1, 11);
-				IEnumerable<int> expected = Enumerable.Range(100, 11);
+				IEnumerable<int> expected = Enumerable.Range(100, 11).ToArray();
 
 				async Task Act()
 					=> await That(subject).Contains(expected).InAnyOrder();
@@ -964,7 +964,7 @@ public sealed partial class ThatEnumerable
 					               107,
 					               108,
 					               109,
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}
@@ -1340,7 +1340,7 @@ public sealed partial class ThatEnumerable
 			public async Task CompletelyDifferentCollections_ShouldFail()
 			{
 				IEnumerable subject = Enumerable.Range(1, 11);
-				IEnumerable<int> expected = Enumerable.Range(100, 11);
+				IEnumerable<int> expected = Enumerable.Range(100, 11).ToArray();
 
 				async Task Act()
 					=> await That(subject).Contains(expected).InAnyOrder().IgnoringDuplicates();
@@ -1378,7 +1378,7 @@ public sealed partial class ThatEnumerable
 					               107,
 					               108,
 					               109,
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}
@@ -1742,7 +1742,7 @@ public sealed partial class ThatEnumerable
 			public async Task CompletelyDifferentCollections_ShouldFail()
 			{
 				IEnumerable subject = Enumerable.Range(1, 11);
-				IEnumerable<int> expected = Enumerable.Range(100, 21);
+				IEnumerable<int> expected = Enumerable.Range(100, 21).ToArray();
 
 				async Task Act()
 					=> await That(subject).Contains(expected).Properly();
@@ -1780,7 +1780,7 @@ public sealed partial class ThatEnumerable
 					               107,
 					               108,
 					               109,
-					               …
+					               (… and 11 more)
 					             ]
 					             """);
 			}
@@ -2213,7 +2213,7 @@ public sealed partial class ThatEnumerable
 			public async Task CompletelyDifferentCollections_ShouldFail()
 			{
 				IEnumerable subject = Enumerable.Range(1, 11);
-				IEnumerable<int> expected = Enumerable.Range(100, 11);
+				IEnumerable<int> expected = Enumerable.Range(100, 11).ToArray();
 
 				async Task Act()
 					=> await That(subject).Contains(expected).Properly().IgnoringDuplicates();
@@ -2251,7 +2251,7 @@ public sealed partial class ThatEnumerable
 					               107,
 					               108,
 					               109,
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}
@@ -2765,7 +2765,7 @@ public sealed partial class ThatEnumerable
 			public async Task CompletelyDifferentCollections_ShouldFail()
 			{
 				IEnumerable subject = Enumerable.Range(1, 11);
-				IEnumerable<int> expected = Enumerable.Range(100, 11);
+				IEnumerable<int> expected = Enumerable.Range(100, 11).ToArray();
 
 				async Task Act()
 					=> await That(subject).Contains(expected).Properly().InAnyOrder();
@@ -2803,7 +2803,7 @@ public sealed partial class ThatEnumerable
 					               107,
 					               108,
 					               109,
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}
@@ -3229,7 +3229,7 @@ public sealed partial class ThatEnumerable
 			public async Task CompletelyDifferentCollections_ShouldFail()
 			{
 				IEnumerable subject = Enumerable.Range(1, 11);
-				IEnumerable<int> expected = Enumerable.Range(100, 11);
+				IEnumerable<int> expected = Enumerable.Range(100, 11).ToArray();
 
 				async Task Act()
 					=> await That(subject).Contains(expected).Properly().InAnyOrder().IgnoringDuplicates();
@@ -3267,7 +3267,7 @@ public sealed partial class ThatEnumerable
 					               107,
 					               108,
 					               109,
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}

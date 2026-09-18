@@ -38,32 +38,32 @@ public static partial class ThatException
 			subject);
 
 	/// <summary>
-	///     Verifies that the actual exception has an inner exception of type <paramref name="innerExceptionType" /> which
+	///     Verifies that the actual exception has an inner exception of type <paramref name="type" /> which
 	///     satisfies the <paramref name="expectations" />.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<Exception?, IThat<Exception?>> HasInner(
 		this IThat<Exception?> subject,
-		Type innerExceptionType,
+		Type type,
 		Action<IThatSubject<Exception?>> expectations)
 		=> new(subject.Get().ExpectationBuilder
 				.ForMember<Exception?, Exception?>(e => e?.InnerException,
 					" whose ",
 					false)
 				.Validate((it, grammars)
-					=> new HasInnerExceptionValueConstraint(innerExceptionType, it, grammars))
+					=> new HasInnerExceptionValueConstraint(type, it, grammars))
 				.AddExpectations(e => expectations(new ThatSubject<Exception?>(e)),
 					grammars => grammars | ExpectationGrammars.Nested),
 			subject);
 
 	/// <summary>
-	///     Verifies that the actual exception has an inner exception of type <paramref name="innerExceptionType" />.
+	///     Verifies that the actual exception has an inner exception of type <paramref name="type" />.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<Exception?, IThat<Exception?>> HasInner(
 		this IThat<Exception?> subject,
-		Type innerExceptionType)
+		Type type)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new HasInnerExceptionValueConstraint(innerExceptionType, it, grammars)),
+				=> new HasInnerExceptionValueConstraint(type, it, grammars)),
 			subject);
 }

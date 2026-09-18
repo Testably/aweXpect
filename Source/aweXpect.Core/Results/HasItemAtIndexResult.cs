@@ -9,7 +9,7 @@ namespace aweXpect.Results;
 /// <remarks>
 ///     <seealso cref="ExpectationResult{TType,TSelf}" />
 /// </remarks>
-public class HasItemResultAtIndex<TCollection>(
+public class HasItemAtIndexResult<TCollection>(
 	ExpectationBuilder expectationBuilder,
 	IThat<TCollection> collection,
 	CollectionIndexOptions collectionIndexOptions)

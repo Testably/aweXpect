@@ -22,6 +22,11 @@ aweXpect.Options.RepeatedCheckOptions.Interval.get -> aweXpect.Options.ICheckInt
 aweXpect.Options.RepeatedCheckOptions.RepeatedCheckOptions() -> void
 aweXpect.Options.RepeatedCheckOptions.Timeout.get -> System.TimeSpan
 aweXpect.Options.RepeatedCheckOptions.Within(System.TimeSpan timeout) -> void
+aweXpect.Results.AsyncSingleItemResult<TCollection, TItem>
+aweXpect.Results.AsyncSingleItemResult<TCollection, TItem>.Matching(System.Func<TItem, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.AsyncSingleItemResult<TCollection, TItem>!
+aweXpect.Results.AsyncSingleItemResult<TCollection, TItem>.Matching<T>() -> aweXpect.Results.AsyncSingleItemResult<TCollection, T>!
+aweXpect.Results.AsyncSingleItemResult<TCollection, TItem>.Matching<T>(System.Func<T, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.AsyncSingleItemResult<TCollection, T>!
+aweXpect.Results.AsyncSingleItemResult<TCollection, TItem>.Which.get -> aweXpect.Core.IThat<TItem>!
 aweXpect.Results.CollectionCountResult<TReturn>
 aweXpect.Results.CollectionCountResult<TReturn>.Between(int minimum) -> aweXpect.Results.BetweenResult<TReturn>!
 aweXpect.Results.CollectionCountResult<TReturn>.CollectionCountResult(System.Func<aweXpect.Options.EnumerableQuantifier!, bool, TReturn>! factory) -> void
@@ -44,8 +49,8 @@ aweXpect.Results.ContainsKeysResult<TCollection, TThat, TKey, TValue>
 aweXpect.Results.ContainsKeysResult<TCollection, TThat, TKey, TValue>.WhoseValues.get -> aweXpect.ThatEnumerable.Elements<TValue>!
 aweXpect.Results.EventTriggerResult<TSubject>
 aweXpect.Results.EventTriggerResult<TSubject>.EventTriggerResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<aweXpect.Recording.IEventRecording<TSubject>!>! returnValue, aweXpect.Options.TriggerEventFilter! filter, aweXpect.Options.Quantifier! quantifier, aweXpect.Options.RepeatedCheckOptions! options) -> void
-aweXpect.Results.EventTriggerResult<TSubject>.IExtensions
-aweXpect.Results.EventTriggerResult<TSubject>.IExtensions.WithParameter<TParameter>(string! expression, int? position, System.Func<TParameter, bool>! predicate) -> aweXpect.Results.EventTriggerResult<TSubject>!
+aweXpect.Results.EventTriggerResult<TSubject>.ICustomParameterFilter
+aweXpect.Results.EventTriggerResult<TSubject>.ICustomParameterFilter.WithParameter<TParameter>(string! expression, int? position, System.Func<TParameter, bool>! predicate) -> aweXpect.Results.EventTriggerResult<TSubject>!
 aweXpect.Results.EventTriggerResult<TSubject>.With<TEventArgs>(System.Func<TEventArgs!, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.EventTriggerResult<TSubject>!
 aweXpect.Results.EventTriggerResult<TSubject>.WithParameter<TParameter>(System.Func<TParameter, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.EventTriggerResult<TSubject>!
 aweXpect.Results.EventTriggerResult<TSubject>.WithParameter<TParameter>(int position, System.Func<TParameter, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.EventTriggerResult<TSubject>!
@@ -113,11 +118,6 @@ aweXpect.Results.SignalTimeoutResult<TParameter>.SignalTimeoutResult(aweXpect.Co
 aweXpect.Results.SignalTimeoutResult<TParameter>.With(System.Func<TParameter, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.SignalTimeoutResult<TParameter>!
 aweXpect.Results.SignalTimeoutResult<TParameter>.Within(System.TimeSpan timeout) -> aweXpect.Results.SignalTimeoutResult<TParameter>!
 aweXpect.Results.SingleItemResult<TCollection, TItem>
-aweXpect.Results.SingleItemResult<TCollection, TItem>.Async
-aweXpect.Results.SingleItemResult<TCollection, TItem>.Async.Matching(System.Func<TItem, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.SingleItemResult<TCollection, TItem>.Async!
-aweXpect.Results.SingleItemResult<TCollection, TItem>.Async.Matching<T>() -> aweXpect.Results.SingleItemResult<TCollection, T>.Async!
-aweXpect.Results.SingleItemResult<TCollection, TItem>.Async.Matching<T>(System.Func<T, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.SingleItemResult<TCollection, T>.Async!
-aweXpect.Results.SingleItemResult<TCollection, TItem>.Async.Which.get -> aweXpect.Core.IThat<TItem>!
 aweXpect.Results.SingleItemResult<TCollection, TItem>.Matching(System.Func<TItem, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.SingleItemResult<TCollection, TItem>!
 aweXpect.Results.SingleItemResult<TCollection, TItem>.Matching<T>() -> aweXpect.Results.SingleItemResult<TCollection, T>!
 aweXpect.Results.SingleItemResult<TCollection, TItem>.Matching<T>(System.Func<T, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.SingleItemResult<TCollection, T>!
@@ -365,7 +365,7 @@ static aweXpect.ThatAsyncEnumerable.HasItem<TItem>(this aweXpect.Core.IThat<Syst
 static aweXpect.ThatAsyncEnumerable.HasItem<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TItem>?>! subject, System.Func<TItem, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.HasItemResult<System.Collections.Generic.IAsyncEnumerable<TItem>?>!
 static aweXpect.ThatAsyncEnumerable.HasItem<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TItem>?>! subject, TItem expected) -> aweXpect.Results.ObjectHasItemResult<System.Collections.Generic.IAsyncEnumerable<TItem>?, TItem>!
 static aweXpect.ThatAsyncEnumerable.HasItemThat<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TItem>?>! subject, System.Action<aweXpect.Core.IThatSubject<TItem>!>! expectations) -> aweXpect.Results.HasItemResult<System.Collections.Generic.IAsyncEnumerable<TItem>?>!
-static aweXpect.ThatAsyncEnumerable.HasSingle<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TItem>?>! subject) -> aweXpect.Results.SingleItemResult<System.Collections.Generic.IAsyncEnumerable<TItem>!, TItem>.Async!
+static aweXpect.ThatAsyncEnumerable.HasSingle<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TItem>?>! subject) -> aweXpect.Results.AsyncSingleItemResult<System.Collections.Generic.IAsyncEnumerable<TItem>!, TItem>!
 static aweXpect.ThatAsyncEnumerable.IsContainedIn(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<string?>?>! subject, System.Collections.Generic.IEnumerable<string?>! expected, string! doNotPopulateThisValue = "") -> aweXpect.Results.StringProperCollectionMatchResult<System.Collections.Generic.IAsyncEnumerable<string?>!, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<string?>?>!>!
 static aweXpect.ThatAsyncEnumerable.IsContainedIn<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TItem>?>! subject, System.Collections.Generic.IEnumerable<System.Action<aweXpect.Core.IThatSubject<TItem?>!>!>! expected, string! doNotPopulateThisValue = "") -> aweXpect.Results.ProperCollectionMatchResult<System.Collections.Generic.IAsyncEnumerable<TItem>!, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TItem>?>!, TItem>!
 static aweXpect.ThatAsyncEnumerable.IsContainedIn<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TItem>?>! subject, System.Collections.Generic.IEnumerable<System.Linq.Expressions.Expression<System.Func<TItem, bool>!>!>! expected, string! doNotPopulateThisValue = "") -> aweXpect.Results.ProperCollectionMatchResult<System.Collections.Generic.IAsyncEnumerable<TItem>!, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TItem>?>!, TItem>!
@@ -425,22 +425,22 @@ static aweXpect.ThatBool.IsNotEqualTo(this aweXpect.Core.IThat<bool>! subject, b
 static aweXpect.ThatBool.IsTrue(this aweXpect.Core.IThat<bool>! subject) -> aweXpect.Results.AndOrResult<bool, aweXpect.Core.IThat<bool>!>!
 static aweXpect.ThatBufferedStream.HasBufferSize(this aweXpect.Core.IThat<System.IO.BufferedStream?>! subject) -> aweXpect.Results.PropertyResult.Int<System.IO.BufferedStream?>!
 static aweXpect.ThatBufferedStream.HasBufferSize(this aweXpect.Core.IThat<System.IO.BufferedStream?>! subject, int expected) -> aweXpect.Results.AndOrResult<System.IO.BufferedStream?, aweXpect.Core.IThat<System.IO.BufferedStream?>!>!
+static aweXpect.ThatChar.IsAControlCharacter(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsADigit(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsALetter(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsANumber(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsAnAsciiDigit(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsAnAsciiHexDigit(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsAnAsciiLetter(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
-static aweXpect.ThatChar.IsControl(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsEqualTo(this aweXpect.Core.IThat<char>! subject, char? expected) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsLowerCased(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
+static aweXpect.ThatChar.IsNotAControlCharacter(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsNotADigit(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsNotALetter(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsNotANumber(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsNotAnAsciiDigit(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsNotAnAsciiHexDigit(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsNotAnAsciiLetter(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
-static aweXpect.ThatChar.IsNotControl(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsNotEqualTo(this aweXpect.Core.IThat<char>! subject, char? unexpected) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsNotLowerCased(this aweXpect.Core.IThat<char>! subject) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsNotOneOf(this aweXpect.Core.IThat<char>! subject, System.Collections.Generic.IEnumerable<char>! unexpected) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
@@ -576,8 +576,8 @@ static aweXpect.ThatDictionary.get_Keys<TKey, TValue>(aweXpect.Core.IThat<System
 static aweXpect.ThatDictionary.get_Keys<TKey, TValue>(aweXpect.Core.IThat<System.Collections.Generic.IDictionary<TKey, TValue>?>! subject) -> aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TKey>?>!
 static aweXpect.ThatDictionary.get_Values<TKey, TValue>(aweXpect.Core.IThat<System.Collections.Generic.Dictionary<TKey, TValue>?>! subject) -> aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TValue>?>!
 static aweXpect.ThatDictionary.get_Values<TKey, TValue>(aweXpect.Core.IThat<System.Collections.Generic.IDictionary<TKey, TValue>?>! subject) -> aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TValue>?>!
-static aweXpect.ThatEnum.DoesNotHaveFlag<TEnum>(this aweXpect.Core.IThat<TEnum>! subject, TEnum? unexpectedFlag) -> aweXpect.Results.AndOrResult<TEnum, aweXpect.Core.IThat<TEnum>!>!
-static aweXpect.ThatEnum.HasFlag<TEnum>(this aweXpect.Core.IThat<TEnum>! subject, TEnum? expectedFlag) -> aweXpect.Results.AndOrResult<TEnum, aweXpect.Core.IThat<TEnum>!>!
+static aweXpect.ThatEnum.DoesNotHaveFlag<TEnum>(this aweXpect.Core.IThat<TEnum>! subject, TEnum? unexpected) -> aweXpect.Results.AndOrResult<TEnum, aweXpect.Core.IThat<TEnum>!>!
+static aweXpect.ThatEnum.HasFlag<TEnum>(this aweXpect.Core.IThat<TEnum>! subject, TEnum? expected) -> aweXpect.Results.AndOrResult<TEnum, aweXpect.Core.IThat<TEnum>!>!
 static aweXpect.ThatEnum.HasValue<TEnum>(this aweXpect.Core.IThat<TEnum>! subject) -> aweXpect.Results.PropertyResult.Long<TEnum>!
 static aweXpect.ThatEnum.HasValue<TEnum>(this aweXpect.Core.IThat<TEnum>! subject, long? expected) -> aweXpect.Results.AndOrResult<TEnum, aweXpect.Core.IThat<TEnum>!>!
 static aweXpect.ThatEnum.IsDefined<TEnum>(this aweXpect.Core.IThat<TEnum>! subject) -> aweXpect.Results.AndOrResult<TEnum, aweXpect.Core.IThat<TEnum>!>!
@@ -846,8 +846,8 @@ static aweXpect.ThatEventRecording.TriggeredPropertyChangedFor<TSubject, TProper
 static aweXpect.ThatEventRecording.TriggeredPropertyChangedFor<TSubject>(this aweXpect.Core.IThat<aweXpect.Recording.IEventRecording<TSubject>!>! subject, string? propertyName) -> aweXpect.Results.EventTriggerResult<TSubject>!
 static aweXpect.ThatException.HasHResult<TException>(this aweXpect.Core.IThat<TException>! subject) -> aweXpect.Results.PropertyResult.Int<TException>!
 static aweXpect.ThatException.HasHResult<TException>(this aweXpect.Core.IThat<TException>! subject, int expected) -> aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThat<TException>!>!
-static aweXpect.ThatException.HasInner(this aweXpect.Core.IThat<System.Exception?>! subject, System.Type! innerExceptionType) -> aweXpect.Results.AndOrResult<System.Exception?, aweXpect.Core.IThat<System.Exception?>!>!
-static aweXpect.ThatException.HasInner(this aweXpect.Core.IThat<System.Exception?>! subject, System.Type! innerExceptionType, System.Action<aweXpect.Core.IThatSubject<System.Exception?>!>! expectations) -> aweXpect.Results.AndOrResult<System.Exception?, aweXpect.Core.IThat<System.Exception?>!>!
+static aweXpect.ThatException.HasInner(this aweXpect.Core.IThat<System.Exception?>! subject, System.Type! type) -> aweXpect.Results.AndOrResult<System.Exception?, aweXpect.Core.IThat<System.Exception?>!>!
+static aweXpect.ThatException.HasInner(this aweXpect.Core.IThat<System.Exception?>! subject, System.Type! type, System.Action<aweXpect.Core.IThatSubject<System.Exception?>!>! expectations) -> aweXpect.Results.AndOrResult<System.Exception?, aweXpect.Core.IThat<System.Exception?>!>!
 static aweXpect.ThatException.HasInner<TInnerException>(this aweXpect.Core.IThat<System.Exception?>! subject) -> aweXpect.Results.AndOrResult<System.Exception?, aweXpect.Core.IThat<System.Exception?>!>!
 static aweXpect.ThatException.HasInner<TInnerException>(this aweXpect.Core.IThat<System.Exception?>! subject, System.Action<aweXpect.Core.IThatSubject<TInnerException?>!>! expectations) -> aweXpect.Results.AndOrResult<System.Exception?, aweXpect.Core.IThat<System.Exception?>!>!
 static aweXpect.ThatException.HasInnerException(this aweXpect.Core.IThat<System.Exception?>! subject) -> aweXpect.Results.AndOrResult<System.Exception?, aweXpect.Core.IThat<System.Exception?>!>!
@@ -883,22 +883,22 @@ static aweXpect.ThatNullableBool.IsNotNull(this aweXpect.Core.IThat<bool?>! subj
 static aweXpect.ThatNullableBool.IsNotTrue(this aweXpect.Core.IThat<bool?>! subject) -> aweXpect.Results.AndOrResult<bool?, aweXpect.Core.IThat<bool?>!>!
 static aweXpect.ThatNullableBool.IsNull(this aweXpect.Core.IThat<bool?>! subject) -> aweXpect.Results.AndOrResult<bool?, aweXpect.Core.IThat<bool?>!>!
 static aweXpect.ThatNullableBool.IsTrue(this aweXpect.Core.IThat<bool?>! subject) -> aweXpect.Results.AndOrResult<bool?, aweXpect.Core.IThat<bool?>!>!
+static aweXpect.ThatNullableChar.IsAControlCharacter(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsADigit(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsALetter(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsANumber(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsAnAsciiDigit(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsAnAsciiHexDigit(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsAnAsciiLetter(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
-static aweXpect.ThatNullableChar.IsControl(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsEqualTo(this aweXpect.Core.IThat<char?>! subject, char? expected) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsLowerCased(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
+static aweXpect.ThatNullableChar.IsNotAControlCharacter(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsNotADigit(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsNotALetter(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsNotANumber(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsNotAnAsciiDigit(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsNotAnAsciiHexDigit(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsNotAnAsciiLetter(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
-static aweXpect.ThatNullableChar.IsNotControl(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsNotEqualTo(this aweXpect.Core.IThat<char?>! subject, char? unexpected) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsNotLowerCased(this aweXpect.Core.IThat<char?>! subject) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 static aweXpect.ThatNullableChar.IsNotOneOf(this aweXpect.Core.IThat<char?>! subject, System.Collections.Generic.IEnumerable<char>! unexpected) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
@@ -1003,8 +1003,8 @@ static aweXpect.ThatNullableDateTimeOffset.IsOnOrBefore(this aweXpect.Core.IThat
 static aweXpect.ThatNullableDateTimeOffset.IsOneOf(this aweXpect.Core.IThat<System.DateTimeOffset?>! subject, System.Collections.Generic.IEnumerable<System.DateTimeOffset>! expected) -> aweXpect.Results.TimeToleranceResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>!>!
 static aweXpect.ThatNullableDateTimeOffset.IsOneOf(this aweXpect.Core.IThat<System.DateTimeOffset?>! subject, System.Collections.Generic.IEnumerable<System.DateTimeOffset?>! expected) -> aweXpect.Results.TimeToleranceResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>!>!
 static aweXpect.ThatNullableDateTimeOffset.IsOneOf(this aweXpect.Core.IThat<System.DateTimeOffset?>! subject, params System.DateTimeOffset?[]! expected) -> aweXpect.Results.TimeToleranceResult<System.DateTimeOffset?, aweXpect.Core.IThat<System.DateTimeOffset?>!>!
-static aweXpect.ThatNullableEnum.DoesNotHaveFlag<TEnum>(this aweXpect.Core.IThat<TEnum?>! subject, TEnum? unexpectedFlag) -> aweXpect.Results.AndOrResult<TEnum?, aweXpect.Core.IThat<TEnum?>!>!
-static aweXpect.ThatNullableEnum.HasFlag<TEnum>(this aweXpect.Core.IThat<TEnum?>! subject, TEnum? expectedFlag) -> aweXpect.Results.AndOrResult<TEnum?, aweXpect.Core.IThat<TEnum?>!>!
+static aweXpect.ThatNullableEnum.DoesNotHaveFlag<TEnum>(this aweXpect.Core.IThat<TEnum?>! subject, TEnum? unexpected) -> aweXpect.Results.AndOrResult<TEnum?, aweXpect.Core.IThat<TEnum?>!>!
+static aweXpect.ThatNullableEnum.HasFlag<TEnum>(this aweXpect.Core.IThat<TEnum?>! subject, TEnum? expected) -> aweXpect.Results.AndOrResult<TEnum?, aweXpect.Core.IThat<TEnum?>!>!
 static aweXpect.ThatNullableEnum.HasValue<TEnum>(this aweXpect.Core.IThat<TEnum?>! subject) -> aweXpect.Results.PropertyResult.Long<TEnum?>!
 static aweXpect.ThatNullableEnum.HasValue<TEnum>(this aweXpect.Core.IThat<TEnum?>! subject, long? expected) -> aweXpect.Results.AndOrResult<TEnum?, aweXpect.Core.IThat<TEnum?>!>!
 static aweXpect.ThatNullableEnum.IsDefined<TEnum>(this aweXpect.Core.IThat<TEnum?>! subject) -> aweXpect.Results.AndOrResult<TEnum?, aweXpect.Core.IThat<TEnum?>!>!

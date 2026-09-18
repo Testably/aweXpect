@@ -60,7 +60,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is in descending order for x => x is MyIntClass c ? c.Value : 0,
+					             is in descending order by x => x is MyIntClass c ? c.Value : 0,
 					             but it had 1 before 3 which is not in descending order
 
 					             Collection:

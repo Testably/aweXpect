@@ -52,7 +52,7 @@ public static partial class ThatAsyncEnumerable
 				new IsInOrderConstraint<TItem, TMember>(
 					expectationBuilder, it, grammars,
 					memberAccessor, SortOrder.Descending, options,
-					$" for {doNotPopulateThisValue.TrimCommonWhiteSpace()}")),
+					$" by {doNotPopulateThisValue.TrimCommonWhiteSpace()}")),
 			subject,
 			options);
 	}
@@ -95,7 +95,7 @@ public static partial class ThatAsyncEnumerable
 				new IsInOrderConstraint<TItem, TMember>(
 					expectationBuilder, it, grammars,
 					memberAccessor, SortOrder.Descending, options,
-					$" for {doNotPopulateThisValue.TrimCommonWhiteSpace()}").Invert()),
+					$" by {doNotPopulateThisValue.TrimCommonWhiteSpace()}").Invert()),
 			subject,
 			options);
 	}

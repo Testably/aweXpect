@@ -603,8 +603,7 @@ public static partial class ThatEnumerable
 		{
 			if (Grammars.HasFlag(ExpectationGrammars.Nested))
 			{
-				stringBuilder.Append(_quantifier);
-				stringBuilder.Append(' ');
+				stringBuilder.AppendNestedQuantifier(_quantifier, false);
 				stringBuilder.Append(_expectationText(Grammars));
 			}
 			else
@@ -624,9 +623,7 @@ public static partial class ThatEnumerable
 		{
 			if (Grammars.HasFlag(ExpectationGrammars.Nested))
 			{
-				stringBuilder.Append("not ");
-				stringBuilder.Append(_quantifier);
-				stringBuilder.Append(' ');
+				stringBuilder.AppendNestedQuantifier(_quantifier, true);
 				stringBuilder.Append(_expectationText(Grammars));
 			}
 			else
@@ -766,8 +763,7 @@ public static partial class ThatEnumerable
 		{
 			if (Grammars.HasFlag(ExpectationGrammars.Nested))
 			{
-				stringBuilder.Append(_quantifier);
-				stringBuilder.Append(' ');
+				stringBuilder.AppendNestedQuantifier(_quantifier, false);
 				stringBuilder.Append(_expectationText(Grammars));
 			}
 			else
@@ -788,9 +784,7 @@ public static partial class ThatEnumerable
 		{
 			if (Grammars.HasFlag(ExpectationGrammars.Nested))
 			{
-				stringBuilder.Append("not ");
-				stringBuilder.Append(_quantifier);
-				stringBuilder.Append(' ');
+				stringBuilder.AppendNestedQuantifier(_quantifier, true);
 				stringBuilder.Append(_expectationText(Grammars));
 			}
 			else
@@ -929,8 +923,7 @@ public static partial class ThatEnumerable
 		{
 			if (Grammars.HasFlag(ExpectationGrammars.Nested))
 			{
-				stringBuilder.Append(_quantifier);
-				stringBuilder.Append(' ');
+				stringBuilder.AppendNestedQuantifier(_quantifier, false);
 				stringBuilder.Append(_expectationText(Grammars));
 			}
 			else
@@ -950,9 +943,7 @@ public static partial class ThatEnumerable
 		{
 			if (Grammars.HasFlag(ExpectationGrammars.Nested))
 			{
-				stringBuilder.Append("not ");
-				stringBuilder.Append(_quantifier);
-				stringBuilder.Append(' ');
+				stringBuilder.AppendNestedQuantifier(_quantifier, true);
 				stringBuilder.Append(_expectationText(Grammars));
 			}
 			else
@@ -1101,8 +1092,7 @@ public static partial class ThatEnumerable
 		{
 			if (Grammars.HasFlag(ExpectationGrammars.Nested))
 			{
-				stringBuilder.Append(_quantifier);
-				stringBuilder.Append(' ');
+				stringBuilder.AppendNestedQuantifier(_quantifier, false);
 				stringBuilder.Append(_expectationText(Grammars));
 			}
 			else
@@ -1122,9 +1112,7 @@ public static partial class ThatEnumerable
 		{
 			if (Grammars.HasFlag(ExpectationGrammars.Nested))
 			{
-				stringBuilder.Append("not ");
-				stringBuilder.Append(_quantifier);
-				stringBuilder.Append(' ');
+				stringBuilder.AppendNestedQuantifier(_quantifier, true);
 				stringBuilder.Append(_expectationText(Grammars));
 			}
 			else
@@ -1421,7 +1409,7 @@ public static partial class ThatEnumerable
 		{
 			stringBuilder.Append(Grammars.Verb("is in ", "are in ")).Append(sortOrder.ToString().ToLower())
 				.Append(SortOrder);
-			stringBuilder.Append(options).Append(memberExpression);
+			stringBuilder.Append(memberExpression).Append(options);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -1431,7 +1419,7 @@ public static partial class ThatEnumerable
 		{
 			stringBuilder.Append(Grammars.Verb("is not in ", "are not in ")).Append(sortOrder.ToString().ToLower())
 				.Append(SortOrder);
-			stringBuilder.Append(options).Append(memberExpression);
+			stringBuilder.Append(memberExpression).Append(options);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
@@ -1502,7 +1490,7 @@ public static partial class ThatEnumerable
 		{
 			stringBuilder.Append(Grammars.Verb("is in ", "are in ")).Append(sortOrder.ToString().ToLower())
 				.Append(SortOrder);
-			stringBuilder.Append(options).Append(memberExpression);
+			stringBuilder.Append(memberExpression).Append(options);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -1512,7 +1500,7 @@ public static partial class ThatEnumerable
 		{
 			stringBuilder.Append(Grammars.Verb("is not in ", "are not in ")).Append(sortOrder.ToString().ToLower())
 				.Append(SortOrder);
-			stringBuilder.Append(options).Append(memberExpression);
+			stringBuilder.Append(memberExpression).Append(options);
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)

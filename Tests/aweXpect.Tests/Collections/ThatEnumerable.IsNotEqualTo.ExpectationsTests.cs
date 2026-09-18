@@ -335,9 +335,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -541,9 +541,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -578,10 +578,10 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -616,9 +616,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -653,10 +653,10 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -691,9 +691,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -764,9 +764,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -934,9 +934,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -1094,9 +1094,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -1284,9 +1284,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -1321,9 +1321,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -1358,10 +1358,10 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -1396,9 +1396,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -1433,10 +1433,10 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -1471,9 +1471,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -1544,9 +1544,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}

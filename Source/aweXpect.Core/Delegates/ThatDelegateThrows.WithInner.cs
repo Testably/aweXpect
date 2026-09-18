@@ -40,30 +40,30 @@ public partial class ThatDelegateThrows<TException>
 			this);
 
 	/// <summary>
-	///     Verifies that the thrown exception has an inner exception of type <paramref name="innerExceptionType" /> which
+	///     Verifies that the thrown exception has an inner exception of type <paramref name="type" /> which
 	///     satisfies the <paramref name="expectations" />.
 	/// </summary>
 	public AndOrResult<TException, ThatDelegateThrows<TException>> WithInner(
-		Type innerExceptionType,
+		Type type,
 		Action<IThatSubject<Exception?>> expectations)
 		=> new(ExpectationBuilder
 				.ForMember<Exception, Exception?>(e => e.InnerException,
 					" whose ",
 					false)
 				.Validate((it, grammars)
-					=> new HasInnerExceptionValueConstraint(innerExceptionType, it, grammars))
+					=> new HasInnerExceptionValueConstraint(type, it, grammars))
 				.AddExpectations(e => expectations(new ThatSubject<Exception?>(e)),
 					grammars => grammars | ExpectationGrammars.Nested),
 			this);
 
 	/// <summary>
-	///     Verifies that the actual exception has an inner exception of type <paramref name="innerExceptionType" />.
+	///     Verifies that the actual exception has an inner exception of type <paramref name="type" />.
 	/// </summary>
 	public AndOrResult<TException, ThatDelegateThrows<TException>> WithInner(
-		Type innerExceptionType)
+		Type type)
 		=> new(ExpectationBuilder
 				.AddConstraint((it, grammars) =>
-					new HasInnerExceptionValueConstraint(innerExceptionType, it,
+					new HasInnerExceptionValueConstraint(type, it,
 						grammars | ExpectationGrammars.Nested)),
 			this);
 

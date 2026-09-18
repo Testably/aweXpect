@@ -212,7 +212,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is unique for x => (x as MyClass)?.Value for all items,
+						             is unique by x => (x as MyClass)?.Value for all items,
 						             but only 2 of 4 were
 
 						             Not matching items:
@@ -261,7 +261,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is unique for x => (x as MyClass)?.Value for all items,
+						             is unique by x => (x as MyClass)?.Value for all items,
 						             but only 2 of 6 were
 
 						             Not matching items:
@@ -325,7 +325,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is unique for x => (x as MyClass)?.Value for all items,
+						             is unique by x => (x as MyClass)?.Value for all items,
 						             but it was <null>
 						             """);
 				}
@@ -344,7 +344,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not unique for x => (x as MyClass)?.Value for all items,
+						             is not unique by x => (x as MyClass)?.Value for all items,
 						             but all 3 were
 
 						             Collection:

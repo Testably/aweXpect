@@ -20,12 +20,12 @@ public static partial class ThatAsyncEnumerable
 	///     Verifies that the collection contains exactly one item.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static SingleItemResult<IAsyncEnumerable<TItem>, TItem>.Async HasSingle<TItem>(
+	public static AsyncSingleItemResult<IAsyncEnumerable<TItem>, TItem> HasSingle<TItem>(
 		this IThat<IAsyncEnumerable<TItem>?> subject)
 	{
 		PredicateOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new SingleItemResult<IAsyncEnumerable<TItem>, TItem>.Async(
+		return new AsyncSingleItemResult<IAsyncEnumerable<TItem>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new HasSingleConstraint<TItem>(expectationBuilder, it, grammars, options)),
 			options,

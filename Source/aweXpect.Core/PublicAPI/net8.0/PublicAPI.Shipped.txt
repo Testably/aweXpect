@@ -15,11 +15,11 @@ abstract aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.AppendNegatedEx
 abstract aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.AppendNegatedResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
 abstract aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.AppendNormalExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
 abstract aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.AppendNormalResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+abstract aweXpect.Core.Expectation.Combination.CheckOutcome(aweXpect.Core.Constraints.Outcome? previous, aweXpect.Core.Constraints.Outcome current) -> aweXpect.Core.Constraints.Outcome
+abstract aweXpect.Core.Expectation.Combination.GetSubjectLine() -> string!
 abstract aweXpect.Core.ResultContext.GetContent(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<string?>!
 abstract aweXpect.Equivalency.EquivalencyExpectationBuilder.IsMetBy<TValue>(TValue value, aweXpect.Core.EvaluationContext.IEvaluationContext! context, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<aweXpect.Core.Constraints.ConstraintResult!>!
 abstract aweXpect.Equivalency.MemberToIgnore.IgnoreMember(string! memberPath, System.Type! memberType) -> bool
-abstract aweXpect.Results.Expectation.Combination.CheckOutcome(aweXpect.Core.Constraints.Outcome? previous, aweXpect.Core.Constraints.Outcome current) -> aweXpect.Core.Constraints.Outcome
-abstract aweXpect.Results.Expectation.Combination.GetSubjectLine() -> string!
 aweXpect.Core.Adapters.ITestFrameworkAdapter
 aweXpect.Core.Adapters.ITestFrameworkAdapter.Fail(string! message) -> void
 aweXpect.Core.Adapters.ITestFrameworkAdapter.Fail(string! message, System.Exception! innerException) -> void
@@ -77,6 +77,16 @@ aweXpect.Core.Constraints.Outcome.Undecided = 2 -> aweXpect.Core.Constraints.Out
 aweXpect.Core.EvaluationContext.IEvaluationContext
 aweXpect.Core.EvaluationContext.IEvaluationContext.Store<T>(string! key, T value) -> void
 aweXpect.Core.EvaluationContext.IEvaluationContext.TryReceive<T>(string! key, out T? value) -> bool
+aweXpect.Core.Expectation
+aweXpect.Core.Expectation.Combination
+aweXpect.Core.Expectation.Combination.All
+aweXpect.Core.Expectation.Combination.All.All(aweXpect.Core.Expectation![]! expectations) -> void
+aweXpect.Core.Expectation.Combination.Any
+aweXpect.Core.Expectation.Combination.Any.Any(aweXpect.Core.Expectation![]! expectations) -> void
+aweXpect.Core.Expectation.Combination.Combination(aweXpect.Core.Expectation![]! expectations) -> void
+aweXpect.Core.Expectation.Combination.GetAwaiter() -> System.Runtime.CompilerServices.TaskAwaiter
+aweXpect.Core.Expectation.Expectation() -> void
+aweXpect.Core.Expectation.GetType() -> System.Type!
 aweXpect.Core.ExpectationBuilder
 aweXpect.Core.ExpectationBuilder.AddConstraint<TValue>(System.Func<aweXpect.Core.ExpectationBuilder!, string!, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IAsyncConstraint<TValue>!>! constraintBuilder) -> aweXpect.Core.ExpectationBuilder!
 aweXpect.Core.ExpectationBuilder.AddConstraint<TValue>(System.Func<aweXpect.Core.ExpectationBuilder!, string!, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IAsyncContextConstraint<TValue>!>! constraintBuilder) -> aweXpect.Core.ExpectationBuilder!
@@ -223,9 +233,9 @@ aweXpect.Core.StringDifferenceSettings.MatchType.get -> aweXpect.Core.StringDiff
 aweXpect.Core.StringDifferenceSettings.StringDifferenceSettings(int ignoredTrailingLines, int ignoredTrailingColumns) -> void
 aweXpect.Core.StringDifferenceSettings.StringDifferenceSettings(int ignoredTrailingLines, int ignoredTrailingColumns, System.Collections.Generic.IReadOnlyList<int>? ignoredColumnsPerLine) -> void
 aweXpect.Core.StringDifferenceSettingsExtensions
-aweXpect.Core.ThatBool
-aweXpect.Core.ThatBool.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
-aweXpect.Core.ThatBool.ThatBool(aweXpect.Core.ExpectationBuilder! expectationBuilder) -> void
+aweXpect.Core.ThatBoolSubject
+aweXpect.Core.ThatBoolSubject.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
+aweXpect.Core.ThatBoolSubject.ThatBoolSubject(aweXpect.Core.ExpectationBuilder! expectationBuilder) -> void
 aweXpect.Core.ThatSubject<T>
 aweXpect.Core.ThatSubject<T>.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
 aweXpect.Core.ThatSubject<T>.Is<TType>() -> aweXpect.Results.AndOrWhoseResult<TType, aweXpect.Core.IThatSubject<T>!>!
@@ -321,9 +331,9 @@ aweXpect.Delegates.ThatDelegate
 aweXpect.Delegates.ThatDelegate.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
 aweXpect.Delegates.ThatDelegate.ThatDelegate(aweXpect.Core.ExpectationBuilder! expectationBuilder) -> void
 aweXpect.Delegates.ThatDelegate.Throws() -> aweXpect.Delegates.ThatDelegateThrows<System.Exception!>!
-aweXpect.Delegates.ThatDelegate.Throws(System.Type! exceptionType) -> aweXpect.Delegates.ThatDelegateThrows<System.Exception!>!
+aweXpect.Delegates.ThatDelegate.Throws(System.Type! type) -> aweXpect.Delegates.ThatDelegateThrows<System.Exception!>!
 aweXpect.Delegates.ThatDelegate.Throws<TException>() -> aweXpect.Delegates.ThatDelegateThrows<TException!>!
-aweXpect.Delegates.ThatDelegate.ThrowsExactly(System.Type! exceptionType) -> aweXpect.Delegates.ThatDelegateThrows<System.Exception!>!
+aweXpect.Delegates.ThatDelegate.ThrowsExactly(System.Type! type) -> aweXpect.Delegates.ThatDelegateThrows<System.Exception!>!
 aweXpect.Delegates.ThatDelegate.ThrowsExactly<TException>() -> aweXpect.Delegates.ThatDelegateThrows<TException!>!
 aweXpect.Delegates.ThatDelegate.ThrowsOption
 aweXpect.Delegates.ThatDelegate.ThrowsOption.DoCheckThrow.get -> bool
@@ -333,9 +343,9 @@ aweXpect.Delegates.ThatDelegate.ThrowsOption.ExecutionTimeOptions.set -> void
 aweXpect.Delegates.ThatDelegate.ThrowsOption.ThrowsOption() -> void
 aweXpect.Delegates.ThatDelegate.WithValue<T>
 aweXpect.Delegates.ThatDelegate.WithValue<T>.DoesNotThrow() -> aweXpect.Results.DelegateWithValueResult<T>!
-aweXpect.Delegates.ThatDelegate.WithValue<T>.DoesNotThrow(System.Type! exceptionType) -> aweXpect.Results.DelegateWithValueResult<T>!
+aweXpect.Delegates.ThatDelegate.WithValue<T>.DoesNotThrow(System.Type! type) -> aweXpect.Results.DelegateWithValueResult<T>!
 aweXpect.Delegates.ThatDelegate.WithValue<T>.DoesNotThrow<TException>() -> aweXpect.Results.DelegateWithValueResult<T>!
-aweXpect.Delegates.ThatDelegate.WithValue<T>.DoesNotThrowExactly(System.Type! exceptionType) -> aweXpect.Results.DelegateWithValueResult<T>!
+aweXpect.Delegates.ThatDelegate.WithValue<T>.DoesNotThrowExactly(System.Type! type) -> aweXpect.Results.DelegateWithValueResult<T>!
 aweXpect.Delegates.ThatDelegate.WithValue<T>.DoesNotThrowExactly<TException>() -> aweXpect.Results.DelegateWithValueResult<T>!
 aweXpect.Delegates.ThatDelegate.WithValue<T>.Eventually() -> aweXpect.Core.IThatSubject<T>!
 aweXpect.Delegates.ThatDelegate.WithValue<T>.ExecutesIn() -> aweXpect.Results.ExecutesInResult<aweXpect.Results.AndResult<aweXpect.Delegates.ThatDelegate.WithValue<T>!>!>!
@@ -343,22 +353,22 @@ aweXpect.Delegates.ThatDelegate.WithValue<T>.ExecutesIn(System.TimeSpan expected
 aweXpect.Delegates.ThatDelegate.WithValue<T>.WithValue(aweXpect.Core.ExpectationBuilder! expectationBuilder) -> void
 aweXpect.Delegates.ThatDelegate.WithoutValue
 aweXpect.Delegates.ThatDelegate.WithoutValue.DoesNotThrow() -> aweXpect.Results.ExpectationResult!
-aweXpect.Delegates.ThatDelegate.WithoutValue.DoesNotThrow(System.Type! exceptionType) -> aweXpect.Results.ExpectationResult!
+aweXpect.Delegates.ThatDelegate.WithoutValue.DoesNotThrow(System.Type! type) -> aweXpect.Results.ExpectationResult!
 aweXpect.Delegates.ThatDelegate.WithoutValue.DoesNotThrow<TException>() -> aweXpect.Results.ExpectationResult!
-aweXpect.Delegates.ThatDelegate.WithoutValue.DoesNotThrowExactly(System.Type! exceptionType) -> aweXpect.Results.ExpectationResult!
+aweXpect.Delegates.ThatDelegate.WithoutValue.DoesNotThrowExactly(System.Type! type) -> aweXpect.Results.ExpectationResult!
 aweXpect.Delegates.ThatDelegate.WithoutValue.DoesNotThrowExactly<TException>() -> aweXpect.Results.ExpectationResult!
 aweXpect.Delegates.ThatDelegate.WithoutValue.ExecutesIn() -> aweXpect.Results.ExecutesInResult<aweXpect.Results.AndResult<aweXpect.Delegates.ThatDelegate.WithoutValue!>!>!
 aweXpect.Delegates.ThatDelegate.WithoutValue.ExecutesIn(System.TimeSpan expected) -> aweXpect.Results.ExecutesInToleranceResult<aweXpect.Results.AndResult<aweXpect.Delegates.ThatDelegate.WithoutValue!>!>!
 aweXpect.Delegates.ThatDelegate.WithoutValue.WithoutValue(aweXpect.Core.ExpectationBuilder! expectationBuilder) -> void
 aweXpect.Delegates.ThatDelegateThrows<TException>
 aweXpect.Delegates.ThatDelegateThrows<TException>.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
-aweXpect.Delegates.ThatDelegateThrows<TException>.OnlyIf(bool predicate) -> aweXpect.Delegates.ThatDelegateThrows<TException?>!
+aweXpect.Delegates.ThatDelegateThrows<TException>.OnlyIf(bool condition) -> aweXpect.Delegates.ThatDelegateThrows<TException?>!
 aweXpect.Delegates.ThatDelegateThrows<TException>.ThatDelegateThrows(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Delegates.ThatDelegate.ThrowsOption! throwOptions) -> void
 aweXpect.Delegates.ThatDelegateThrows<TException>.ThrowOptions.get -> aweXpect.Delegates.ThatDelegate.ThrowsOption!
 aweXpect.Delegates.ThatDelegateThrows<TException>.Which.get -> aweXpect.Core.IThat<TException>!
 aweXpect.Delegates.ThatDelegateThrows<TException>.Whose<TMember>(System.Func<TException, TMember?>! memberSelector, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
-aweXpect.Delegates.ThatDelegateThrows<TException>.WithInner(System.Type! innerExceptionType) -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
-aweXpect.Delegates.ThatDelegateThrows<TException>.WithInner(System.Type! innerExceptionType, System.Action<aweXpect.Core.IThatSubject<System.Exception?>!>! expectations) -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
+aweXpect.Delegates.ThatDelegateThrows<TException>.WithInner(System.Type! type) -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
+aweXpect.Delegates.ThatDelegateThrows<TException>.WithInner(System.Type! type, System.Action<aweXpect.Core.IThatSubject<System.Exception?>!>! expectations) -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
 aweXpect.Delegates.ThatDelegateThrows<TException>.WithInner<TInnerException>() -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
 aweXpect.Delegates.ThatDelegateThrows<TException>.WithInner<TInnerException>(System.Action<aweXpect.Core.IThatSubject<TInnerException?>!>! expectations) -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
 aweXpect.Delegates.ThatDelegateThrows<TException>.WithInnerException() -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
@@ -631,16 +641,6 @@ aweXpect.Results.ExecutesInResult<TResult>.ExecutesInResult(TResult returnValue,
 aweXpect.Results.ExecutesInToleranceResult<TResult>
 aweXpect.Results.ExecutesInToleranceResult<TResult>.ExecutesInToleranceResult(TResult returnValue, aweXpect.Options.TimeSpanEqualityOptions! options, System.TimeSpan expected) -> void
 aweXpect.Results.ExecutesInToleranceResult<TResult>.Within(System.TimeSpan tolerance) -> TResult
-aweXpect.Results.Expectation
-aweXpect.Results.Expectation.Combination
-aweXpect.Results.Expectation.Combination.All
-aweXpect.Results.Expectation.Combination.All.All(aweXpect.Results.Expectation![]! expectations) -> void
-aweXpect.Results.Expectation.Combination.Any
-aweXpect.Results.Expectation.Combination.Any.Any(aweXpect.Results.Expectation![]! expectations) -> void
-aweXpect.Results.Expectation.Combination.Combination(aweXpect.Results.Expectation![]! expectations) -> void
-aweXpect.Results.Expectation.Combination.GetAwaiter() -> System.Runtime.CompilerServices.TaskAwaiter
-aweXpect.Results.Expectation.Expectation() -> void
-aweXpect.Results.Expectation.GetType() -> System.Type!
 aweXpect.Results.ExpectationResult
 aweXpect.Results.ExpectationResult.Because(System.Threading.Tasks.Task<string?>! reason) -> aweXpect.Results.ExpectationResult!
 aweXpect.Results.ExpectationResult.Because(string? reason) -> aweXpect.Results.ExpectationResult!
@@ -657,12 +657,12 @@ aweXpect.Results.ExpectationResult<TType, TSelf>.WithCancellation(System.Threadi
 aweXpect.Results.ExpectationResult<TType, TSelf>.WithTimeout(System.TimeSpan timeout) -> TSelf!
 aweXpect.Results.ExpectationResult<TType>
 aweXpect.Results.ExpectationResult<TType>.ExpectationResult(aweXpect.Core.ExpectationBuilder! expectationBuilder) -> void
+aweXpect.Results.HasItemAtIndexResult<TCollection>
+aweXpect.Results.HasItemAtIndexResult<TCollection>.FromEnd() -> aweXpect.Results.AndOrResult<TCollection, aweXpect.Core.IThat<TCollection>!>!
+aweXpect.Results.HasItemAtIndexResult<TCollection>.HasItemAtIndexResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<TCollection>! collection, aweXpect.Options.CollectionIndexOptions! collectionIndexOptions) -> void
 aweXpect.Results.HasItemResult<TCollection>
-aweXpect.Results.HasItemResult<TCollection>.AtIndex(int index) -> aweXpect.Results.HasItemResultAtIndex<TCollection>!
+aweXpect.Results.HasItemResult<TCollection>.AtIndex(int index) -> aweXpect.Results.HasItemAtIndexResult<TCollection>!
 aweXpect.Results.HasItemResult<TCollection>.HasItemResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<TCollection>! collection, aweXpect.Options.CollectionIndexOptions! collectionIndexOptions) -> void
-aweXpect.Results.HasItemResultAtIndex<TCollection>
-aweXpect.Results.HasItemResultAtIndex<TCollection>.FromEnd() -> aweXpect.Results.AndOrResult<TCollection, aweXpect.Core.IThat<TCollection>!>!
-aweXpect.Results.HasItemResultAtIndex<TCollection>.HasItemResultAtIndex(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<TCollection>! collection, aweXpect.Options.CollectionIndexOptions! collectionIndexOptions) -> void
 aweXpect.Results.NullableNumberToleranceResult<TType, TThat, TSelf>
 aweXpect.Results.NullableNumberToleranceResult<TType, TThat, TSelf>.NullableNumberToleranceResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.NumberTolerance<TType>! options) -> void
 aweXpect.Results.NullableNumberToleranceResult<TType, TThat, TSelf>.Within(TType tolerance) -> TSelf!
@@ -836,6 +836,13 @@ override aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.Negate() -> awe
 override aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.Outcome.get -> aweXpect.Core.Constraints.Outcome
 override aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.Outcome.set -> void
 override aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.TryGetValue<TValue>(out TValue? value) -> bool
+override aweXpect.Core.Expectation.Combination.All.CheckOutcome(aweXpect.Core.Constraints.Outcome? previous, aweXpect.Core.Constraints.Outcome current) -> aweXpect.Core.Constraints.Outcome
+override aweXpect.Core.Expectation.Combination.All.GetSubjectLine() -> string!
+override aweXpect.Core.Expectation.Combination.Any.CheckOutcome(aweXpect.Core.Constraints.Outcome? previous, aweXpect.Core.Constraints.Outcome current) -> aweXpect.Core.Constraints.Outcome
+override aweXpect.Core.Expectation.Combination.Any.GetSubjectLine() -> string!
+override aweXpect.Core.Expectation.Equals(object? obj) -> bool
+override aweXpect.Core.Expectation.GetHashCode() -> int
+override aweXpect.Core.Expectation.ToString() -> string?
 override aweXpect.Core.ManualExpectationBuilder<TValue>.AddContext(aweXpect.Core.ResultContext! resultContext) -> aweXpect.Core.ExpectationBuilder!
 override aweXpect.Core.ManualExpectationBuilder<TValue>.Equals(object? obj) -> bool
 override aweXpect.Core.ManualExpectationBuilder<TValue>.GetHashCode() -> int
@@ -908,13 +915,6 @@ override aweXpect.Options.SignalerOptions<TParameter>.ToString() -> string!
 override aweXpect.Options.StringEqualityOptions.ToString() -> string!
 override aweXpect.Options.TimeTolerance.ToString() -> string!
 override aweXpect.Options.TriggerEventFilter.ToString() -> string!
-override aweXpect.Results.Expectation.Combination.All.CheckOutcome(aweXpect.Core.Constraints.Outcome? previous, aweXpect.Core.Constraints.Outcome current) -> aweXpect.Core.Constraints.Outcome
-override aweXpect.Results.Expectation.Combination.All.GetSubjectLine() -> string!
-override aweXpect.Results.Expectation.Combination.Any.CheckOutcome(aweXpect.Core.Constraints.Outcome? previous, aweXpect.Core.Constraints.Outcome current) -> aweXpect.Core.Constraints.Outcome
-override aweXpect.Results.Expectation.Combination.Any.GetSubjectLine() -> string!
-override aweXpect.Results.Expectation.Equals(object? obj) -> bool
-override aweXpect.Results.Expectation.GetHashCode() -> int
-override aweXpect.Results.Expectation.ToString() -> string?
 override aweXpect.Results.ExpectationResult.ToString() -> string?
 override aweXpect.Results.ExpectationResult<TType, TSelf>.ToString() -> string?
 override sealed aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.AppendExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
@@ -978,7 +978,7 @@ static aweXpect.Expect.That(System.Func<System.Threading.CancellationToken, Syst
 static aweXpect.Expect.That(System.Func<System.Threading.CancellationToken, System.Threading.Tasks.ValueTask>! delegate, string! doNotPopulateThisValue = "") -> aweXpect.Delegates.ThatDelegate.WithoutValue!
 static aweXpect.Expect.That(System.Func<System.Threading.Tasks.Task!>! delegate, string! doNotPopulateThisValue = "") -> aweXpect.Delegates.ThatDelegate.WithoutValue!
 static aweXpect.Expect.That(System.Func<System.Threading.Tasks.ValueTask>! delegate, string! doNotPopulateThisValue = "") -> aweXpect.Delegates.ThatDelegate.WithoutValue!
-static aweXpect.Expect.That(bool subject, string! doNotPopulateThisValue = "") -> aweXpect.Core.ThatBool!
+static aweXpect.Expect.That(bool subject, string! doNotPopulateThisValue = "") -> aweXpect.Core.ThatBoolSubject!
 static aweXpect.Expect.That<T>(System.ReadOnlySpan<T> subject, string! doNotPopulateThisValue = "") -> aweXpect.Core.IThat<aweXpect.Core.SpanWrapper<T>!>!
 static aweXpect.Expect.That<T>(System.Span<T> subject, string! doNotPopulateThisValue = "") -> aweXpect.Core.IThat<aweXpect.Core.SpanWrapper<T>!>!
 static aweXpect.Expect.That<T>(System.Threading.Tasks.Task<T>! subject, string! doNotPopulateThisValue = "") -> aweXpect.Core.IThatSubject<T>!
@@ -991,8 +991,8 @@ static aweXpect.Expect.That<TValue>(System.Func<System.Threading.CancellationTok
 static aweXpect.Expect.That<TValue>(System.Func<System.Threading.Tasks.Task<TValue>!>! delegate, string! doNotPopulateThisValue = "") -> aweXpect.Delegates.ThatDelegate.WithValue<TValue>!
 static aweXpect.Expect.That<TValue>(System.Func<System.Threading.Tasks.ValueTask<TValue>>! delegate, string! doNotPopulateThisValue = "") -> aweXpect.Delegates.ThatDelegate.WithValue<TValue>!
 static aweXpect.Expect.That<TValue>(System.Func<TValue>! delegate, string! doNotPopulateThisValue = "") -> aweXpect.Delegates.ThatDelegate.WithValue<TValue>!
-static aweXpect.Expect.ThatAll(params aweXpect.Results.Expectation![]! expectations) -> aweXpect.Results.Expectation.Combination.All!
-static aweXpect.Expect.ThatAny(params aweXpect.Results.Expectation![]! expectations) -> aweXpect.Results.Expectation.Combination.Any!
+static aweXpect.Expect.ThatAll(params aweXpect.Core.Expectation![]! expectations) -> aweXpect.Core.Expectation.Combination.All!
+static aweXpect.Expect.ThatAny(params aweXpect.Core.Expectation![]! expectations) -> aweXpect.Core.Expectation.Combination.Any!
 static aweXpect.Fail.Inconclusive(string! reason) -> void
 static aweXpect.Fail.Test(string! reason) -> void
 static aweXpect.Fail.Test(string! reason, System.Exception? innerException) -> void

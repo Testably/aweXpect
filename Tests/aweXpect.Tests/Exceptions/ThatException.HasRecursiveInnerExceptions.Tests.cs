@@ -38,7 +38,7 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has recursive inner exceptions which all satisfy e => e.Message != "inner3A",
+					             has recursive inner exceptions of which all satisfy e => e.Message != "inner3A",
 					             but not all did
 					             
 					             Not matching items:
@@ -73,7 +73,7 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has recursive inner exceptions which none satisfy e => e.Message != "inner3A",
+					             has recursive inner exceptions of which none satisfy e => e.Message != "inner3A",
 					             but at least one did
 					             
 					             Matching items:
@@ -128,7 +128,7 @@ public sealed partial class ThatException
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have recursive inner exceptions which all satisfy e => e.Message.StartsWith("inner"),
+					             does not have recursive inner exceptions of which all satisfy e => e.Message.StartsWith("inner"),
 					             but it had
 
 					             Collection:

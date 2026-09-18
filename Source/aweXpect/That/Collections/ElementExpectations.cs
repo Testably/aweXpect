@@ -77,10 +77,10 @@ internal static class ElementExpectations
 	public static string IsUniqueFor(ExpectationGrammars grammars, string memberAccessor, object options)
 		=> (grammars.IsPlural(), grammars.IsNegated()) switch
 		{
-			(true, false) => $"are unique for {memberAccessor}{options}",
-			(false, false) => $"is unique for {memberAccessor}{options}",
-			(true, true) => $"are not unique for {memberAccessor}{options}",
-			(false, true) => $"is not unique for {memberAccessor}{options}",
+			(true, false) => $"are unique by {memberAccessor}{options}",
+			(false, false) => $"is unique by {memberAccessor}{options}",
+			(true, true) => $"are not unique by {memberAccessor}{options}",
+			(false, true) => $"is not unique by {memberAccessor}{options}",
 		};
 
 	/// <summary>

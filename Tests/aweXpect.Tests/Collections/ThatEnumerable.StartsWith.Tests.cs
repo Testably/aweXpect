@@ -89,12 +89,33 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             starts with expected,
-					             but it contained only 3 items and misses 1 items: [
+					             but it contained only 3 items and misses 1 item: [
 					               4
 					             ]
 
 					             Collection:
 					             [1, 2, 3]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectHasOnlyOneItemAndMissesOne_ShouldUseSingular()
+			{
+				IEnumerable<int> subject = ToEnumerable([1,]);
+
+				async Task Act()
+					=> await That(subject).StartsWith(1, 2);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             starts with [1, 2],
+					             but it contained only 1 item and misses 1 item: [
+					               2
+					             ]
+
+					             Collection:
+					             [1]
 					             """);
 			}
 

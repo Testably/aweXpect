@@ -302,8 +302,8 @@ public static partial class ThatAsyncEnumerable
 			}
 			else
 			{
-				stringBuilder.Append(_it).Append(" contained only ").Append(_index).Append(" items and misses ")
-					.Append(_expected.Length - _index).Append(" items: ");
+				stringBuilder.Append(_it).Append(" contained only ").AppendItemCount(_index).Append(" and misses ")
+					.AppendItemCount(_expected.Length - _index).Append(": ");
 				Formatter.Format(stringBuilder, _expected.Skip(_index), FormattingOptions.MultipleLines);
 			}
 		}

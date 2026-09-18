@@ -9,7 +9,7 @@ namespace aweXpect;
 public static partial class ThatEnum
 {
 	/// <summary>
-	///     Verifies that the subject has the <paramref name="expectedFlag" /> value.
+	///     Verifies that the subject has the <paramref name="expected" /> value.
 	/// </summary>
 	/// <remarks>
 	///     Unlike the other <c>Has…</c> expectations this one has no continuation: testing a flag asks whether a bit is
@@ -17,21 +17,21 @@ public static partial class ThatEnum
 	/// </remarks>
 	public static AndOrResult<TEnum, IThat<TEnum>> HasFlag<TEnum>(
 		this IThat<TEnum> subject,
-		TEnum? expectedFlag)
+		TEnum? expected)
 		where TEnum : struct, Enum
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new HasFlagConstraint<TEnum>(it, grammars, expectedFlag)),
+				new HasFlagConstraint<TEnum>(it, grammars, expected)),
 			subject);
 
 	/// <summary>
-	///     Verifies that the subject does not have the <paramref name="unexpectedFlag" /> value.
+	///     Verifies that the subject does not have the <paramref name="unexpected" /> value.
 	/// </summary>
 	public static AndOrResult<TEnum, IThat<TEnum>> DoesNotHaveFlag<TEnum>(
 		this IThat<TEnum> subject,
-		TEnum? unexpectedFlag)
+		TEnum? unexpected)
 		where TEnum : struct, Enum
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new HasFlagConstraint<TEnum>(it, grammars, unexpectedFlag).Invert()),
+				new HasFlagConstraint<TEnum>(it, grammars, unexpected).Invert()),
 			subject);
 
 	private sealed class HasFlagConstraint<TEnum>(string it, ExpectationGrammars grammars, TEnum? expectedFlag)

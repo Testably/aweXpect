@@ -79,9 +79,12 @@ public sealed partial class ThatObject
 					.WithMessage($$"""
 					               Expected that subject
 					               is exactly type ThatObject.OtherClass, because we want to test the failure,
-					               but it was ThatObject.MyClass {
-					                   Value = {{value}}
-					                 }
+					               but it was ThatObject.MyClass
+
+					               Actual:
+					               ThatObject.MyClass {
+					                 Value = {{value}}
+					               }
 					               """);
 			}
 
@@ -102,9 +105,12 @@ public sealed partial class ThatObject
 					.WithMessage($$"""
 					               Expected that subject
 					               is exactly type ThatObject.MyBaseClass, because we want to test the failure,
-					               but it was ThatObject.MyClass {
-					                   Value = {{value}}
-					                 }
+					               but it was ThatObject.MyClass
+
+					               Actual:
+					               ThatObject.MyClass {
+					                 Value = {{value}}
+					               }
 					               """);
 			}
 
@@ -125,9 +131,12 @@ public sealed partial class ThatObject
 					.WithMessage($$"""
 					               Expected that subject
 					               is exactly type ThatObject.MyClass, because {{reason}},
-					               but it was ThatObject.MyBaseClass {
-					                   Value = {{value}}
-					                 }
+					               but it was ThatObject.MyBaseClass
+
+					               Actual:
+					               ThatObject.MyBaseClass {
+					                 Value = {{value}}
+					               }
 					               """);
 			}
 
@@ -192,9 +201,12 @@ public sealed partial class ThatObject
 					.WithMessage($$"""
 					               Expected that subject
 					               is exactly type ThatObject.OtherClass, because we want to test the failure,
-					               but it was ThatObject.MyClass {
-					                   Value = {{value}}
-					                 }
+					               but it was ThatObject.MyClass
+
+					               Actual:
+					               ThatObject.MyClass {
+					                 Value = {{value}}
+					               }
 					               """);
 			}
 
@@ -228,9 +240,12 @@ public sealed partial class ThatObject
 					.WithMessage($$"""
 					               Expected that subject
 					               is exactly type ThatObject.MyBaseClass, because we want to test the failure,
-					               but it was ThatObject.MyClass {
-					                   Value = {{value}}
-					                 }
+					               but it was ThatObject.MyClass
+
+					               Actual:
+					               ThatObject.MyClass {
+					                 Value = {{value}}
+					               }
 					               """);
 			}
 
@@ -251,9 +266,12 @@ public sealed partial class ThatObject
 					.WithMessage($$"""
 					               Expected that subject
 					               is exactly type ThatObject.MyClass, because {{reason}},
-					               but it was ThatObject.MyBaseClass {
-					                   Value = {{value}}
-					                 }
+					               but it was ThatObject.MyBaseClass
+
+					               Actual:
+					               ThatObject.MyBaseClass {
+					                 Value = {{value}}
+					               }
 					               """);
 			}
 
@@ -280,7 +298,10 @@ public sealed partial class ThatObject
 					.WithMessage("""
 					             Expected that subject
 					             is exactly type IList<>,
-					             but it was List<string> []
+					             but it was List<string>
+
+					             Actual:
+					             []
 					             """);
 			}
 
@@ -307,7 +328,10 @@ public sealed partial class ThatObject
 					.WithMessage("""
 					             Expected that subject
 					             is exactly type IDictionary<, >,
-					             but it was List<string> []
+					             but it was List<string>
+
+					             Actual:
+					             []
 					             """);
 			}
 		}

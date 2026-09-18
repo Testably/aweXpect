@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
@@ -88,6 +89,32 @@ internal static class CollectionHelpers
 	internal static string GetItemString(this EnumerableQuantifier quantifier)
 		=> quantifier.IsSingle() ? "item" : "items";
 
+	/// <summary>
+	///     Appends the <paramref name="quantifier" /> of a nested collection expectation, e.g. in
+	///     <c>has lines which …</c>.
+	/// </summary>
+	/// <remarks>
+	///     The parent renders the separator <c>" which "</c> before it knows that a quantifier follows, and
+	///     <c>which at least 2 are …</c> is not grammatical, so the separator is completed to <c>" of which "</c>.
+	/// </remarks>
+	internal static void AppendNestedQuantifier(this StringBuilder stringBuilder, EnumerableQuantifier quantifier,
+		bool isNegated)
+	{
+		const string which = " which ";
+		if (stringBuilder.Length >= which.Length &&
+		    stringBuilder.ToString(stringBuilder.Length - which.Length, which.Length) == which)
+		{
+			stringBuilder.Insert(stringBuilder.Length - which.Length + 1, "of ");
+		}
+
+		if (isNegated)
+		{
+			stringBuilder.Append("not ");
+		}
+
+		stringBuilder.Append(quantifier).Append(' ');
+	}
+
 	internal static ExpectationBuilder AddCollectionContext<TItem>(this ExpectationBuilder expectationBuilder,
 		IEnumerable<TItem>? value, bool isIncomplete = false)
 	{
@@ -106,6 +133,7 @@ internal static class CollectionHelpers
 						() => Formatter.Format(value, typeof(TItem).GetFormattingOption(value switch
 						{
 							ICollection<TItem> coll => coll.Count,
+							LimitedCollection<TItem> limited => limited.Count,
 							ICountable countable => countable.Count,
 							_ => null,
 						})).AppendIsIncomplete(isIncomplete),
@@ -169,7 +197,7 @@ internal static class CollectionHelpers
 			{
 				contexts
 					.Add(new ResultContext.SyncCallback("Collection",
-						() => Formatter.Format(value.MaterializedItems,
+						() => Formatter.Format(HideCount(value.MaterializedItems),
 								typeof(TItem).GetFormattingOption(value.Count))
 							.AppendIsIncomplete(isIncomplete),
 						-1));
@@ -222,6 +250,20 @@ internal static class CollectionHelpers
 		});
 	}
 
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     The materialized items can be only the first items of the asynchronous enumerable, so their count must not be
+	///     rendered as the number of remaining items.
+	/// </summary>
+	private static IEnumerable<TItem> HideCount<TItem>(IEnumerable<TItem> items)
+	{
+		foreach (TItem item in items)
+		{
+			yield return item;
+		}
+	}
+#endif
+
 	internal static bool ExceedsFormatterLimit<TItem>(this IEnumerable<TItem> subject)
 	{
 		int limit = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
@@ -260,6 +302,10 @@ internal static class CollectionHelpers
 		{
 			return formattedItems;
 		}
+
+		// The count of a collection whose enumeration stopped early does not tell how many items remain.
+		formattedItems = Regex.Replace(formattedItems, @"\(… and \d+ more\)(?=(\r?\n)?\]$)", "…",
+			RegexOptions.None, TimeSpan.FromSeconds(1));
 
 		if (formattedItems.EndsWith("…]"))
 		{

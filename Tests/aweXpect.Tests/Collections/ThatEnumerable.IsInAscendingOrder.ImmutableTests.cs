@@ -124,7 +124,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is in ascending order for x => x is MyIntClass c ? c.Value : 0,
+					             is in ascending order by x => x is MyIntClass c ? c.Value : 0,
 					             but it had 3 before 1 which is not in ascending order
 
 					             Collection:
@@ -173,7 +173,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is in ascending order for x => x is MyStringClass c ? c.Value : "",
+					             is in ascending order by x => x is MyStringClass c ? c.Value : "",
 					             but it had "a" before "A" which is not in ascending order
 
 					             Collection:
@@ -212,7 +212,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is in ascending order for x => x is MyStringClass c ? c.Value : "",
+					             is in ascending order by x => x is MyStringClass c ? c.Value : "",
 					             but it had "c" before "a" which is not in ascending order
 
 					             Collection:

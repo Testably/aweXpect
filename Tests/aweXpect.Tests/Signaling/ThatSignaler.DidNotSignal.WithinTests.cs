@@ -59,7 +59,7 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that signaler
-					             does not have recorded the callback within 0:10,
+					             has never recorded the callback within 0:10,
 					             but it was recorded once
 					             """);
 			}
@@ -78,7 +78,7 @@ public sealed partial class ThatSignaler
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that signaler
-					             does not have recorded the callback within 0:10,
+					             has never recorded the callback within 0:10,
 					             but it was recorded once in [
 					               "foo"
 					             ]

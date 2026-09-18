@@ -26,10 +26,10 @@ public class HasItemResult<TCollection>(
 	/// <summary>
 	///     …at the given <paramref name="index" />.
 	/// </summary>
-	public HasItemResultAtIndex<TCollection> AtIndex(int index)
+	public HasItemAtIndexResult<TCollection> AtIndex(int index)
 	{
 		collectionIndexOptions.SetMatch(new HasItemResultAtIndexMatch(index));
-		return new HasItemResultAtIndex<TCollection>(_expectationBuilder, _collection, collectionIndexOptions);
+		return new HasItemAtIndexResult<TCollection>(_expectationBuilder, _collection, collectionIndexOptions);
 	}
 
 	private sealed class HasItemResultAtIndexMatch : CollectionIndexOptions.IMatchFromBeginning

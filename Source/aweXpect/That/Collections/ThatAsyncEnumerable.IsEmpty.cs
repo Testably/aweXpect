@@ -41,7 +41,7 @@ public static partial class ThatAsyncEnumerable
 		: ConstraintResult.WithNotNullValue<IAsyncEnumerable<TItem>?>(it, grammars),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
-		private readonly List<TItem> _items = [];
+		private LimitedCollection<TItem> _items = new();
 
 		public async Task<ConstraintResult> IsMetBy(
 			IAsyncEnumerable<TItem>? actual,
@@ -63,6 +63,7 @@ public static partial class ThatAsyncEnumerable
 			{
 				int maximumNumberOfCollectionItems =
 					Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
+				_items = new LimitedCollection<TItem>(maximumNumberOfCollectionItems + 1);
 				_items.Add(enumerator.Current);
 				while (await enumerator.MoveNextAsync())
 				{

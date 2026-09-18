@@ -9,6 +9,17 @@ public sealed partial class ThatEnum
 			public sealed class Tests
 			{
 				[Fact]
+				public async Task WhenExpectedIsANamedArgument_ShouldSucceed()
+				{
+					MyColors? subject = MyColors.Yellow | MyColors.Red;
+
+					async Task Act()
+						=> await That(subject).HasFlag(expected: MyColors.Red);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
 				public async Task WhenExpectedIsNull_ShouldFail()
 				{
 					MyColors? subject = MyColors.Yellow;

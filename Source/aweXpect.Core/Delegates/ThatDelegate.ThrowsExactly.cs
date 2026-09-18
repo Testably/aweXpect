@@ -29,17 +29,17 @@ public abstract partial class ThatDelegate
 	}
 
 	/// <summary>
-	///     Verifies that the delegate throws exactly an exception of type <paramref name="exceptionType" />.
+	///     Verifies that the delegate throws exactly an exception of type <paramref name="type" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public ThatDelegateThrows<Exception> ThrowsExactly(Type exceptionType)
+	public ThatDelegateThrows<Exception> ThrowsExactly(Type type)
 	{
 		ThrowsOption throwOptions = new();
 		return new ThatDelegateThrows<Exception>(ExpectationBuilder
 				.AddConstraint((it, grammars)
 					=> new DelegateIsNotNullWithinTimeoutConstraint(it, grammars, throwOptions))
 				.ForWhich<DelegateValue, Exception?>(d => d.Exception)
-				.AddConstraint((it, grammars) => new ThrowsExactlyConstraint(it, grammars, exceptionType, throwOptions))
+				.AddConstraint((it, grammars) => new ThrowsExactlyConstraint(it, grammars, type, throwOptions))
 				.And(" "),
 			throwOptions);
 	}

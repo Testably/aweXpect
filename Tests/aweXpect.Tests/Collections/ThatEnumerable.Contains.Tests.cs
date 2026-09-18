@@ -224,6 +224,24 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Theory]
+			[InlineData(1, "not exactly once")]
+			[InlineData(2, "not exactly twice")]
+			public async Task ShouldSupportExactly_WhenNegated(int times, string expectedOccurrences)
+			{
+				IEnumerable<int> subject = new[] { 1, 2, 1, }.Take(times + 1);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.Contains(1).Exactly(times));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              contains 1 {expectedOccurrences},
+					              but it contained it*
+					              """).AsWildcard();
+			}
+
+			[Theory]
 			[InlineData(2, false)]
 			[InlineData(3, true)]
 			public async Task ShouldSupportLessThan(int maximum, bool expectSuccess)

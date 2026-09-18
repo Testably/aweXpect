@@ -8,13 +8,23 @@ public sealed class NestedCollectionGrammar
 	public sealed class Tests
 	{
 		[Fact]
+		public async Task AtLeast_ShouldUseOfWhich()
+		{
+			async Task Act()
+				=> await That("a\nb").HasLines(lines => lines.AtLeast(2).AreEqualTo("a"));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""*has lines of which at least 2 are equal to "a",*""").AsWildcard();
+		}
+
+		[Fact]
 		public async Task AreUnique_ShouldUsePluralVerb()
 		{
 			async Task Act()
 				=> await That("a\na").HasLines(lines => lines.All().AreUnique());
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("*has lines which all are unique,*").AsWildcard();
+				.WithMessage("*has lines of which all are unique,*").AsWildcard();
 		}
 
 		[Fact]
@@ -24,7 +34,7 @@ public sealed class NestedCollectionGrammar
 				=> await That("a\nb").HasLines(lines => lines.All().AreUnique(l => l!.Length));
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("*has lines which all are unique for l => l!.Length,*").AsWildcard();
+				.WithMessage("*has lines of which all are unique by l => l!.Length,*").AsWildcard();
 		}
 
 		[Fact]

@@ -22,6 +22,14 @@ await Expect.That(false).IsFalse();
 await Expect.That(true).IsTrue();
 ```
 
+Awaiting a `bool` without any expectation is a shorthand for `IsTrue()`:
+
+```csharp
+bool isValid = true;
+
+await Expect.That(isValid);
+```
+
 The negation is only available for nullable booleans:
 
 ```csharp

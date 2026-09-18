@@ -179,7 +179,7 @@ public sealed partial class ThatEnumerable
 						               21,
 						               34,
 						               55,
-						               …
+						               (… and 10 more)
 						             ]
 						             """);
 				}

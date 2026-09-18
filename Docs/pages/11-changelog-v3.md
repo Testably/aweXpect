@@ -171,6 +171,11 @@ need an update.
   `whose Message.Length is …` and `but Message.Length was …` instead of `whose .Message.Length is …`.
 - `DoesNotHaveItem(1).AtIndex(0)` names the item it found: `but it had item 1 at index 0` instead of `but it did`.
 - A `Never()` quantifier appends its `within` window when one was given.
+- `DidNotSignal()` renders `has never recorded the callback` like `Signaled().Never()` instead of
+  `does not have recorded the callback`, and `DidNotSignal(3.Times())` renders
+  `has recorded the callback less than 3 times` like `Signaled().LessThan(3.Times())`.
+- A negated `Exactly` or `Between` quantifier reads `not exactly once` instead of `not once` and
+  `not between 3 and 5 times` instead of `outside 3 and 5 times`.
 - Every equivalency member difference renders as a `Property X differed:` block with `Found:` and `Expected:` lines.
   A `null` on one side previously read `Property Value was <null> instead of "Foo"`, and an `It.Is<T>()` member read
   `Property IntValue was 1` or, on a type mismatch, `Property StringValue was string`. An `It.Is<T>()` member now
@@ -191,6 +196,25 @@ need an update.
   `but it cannot compare to <null>` and adds the `Collection:` context of the subject.
 - A negated bool expectation names the value: `IsNotTrue()` renders `is not True, but it was True` instead of
   `but it was`, which also completes a negated combination such as `is not True or is not True, but it was True`.
+- A `Whose` directly after a `Which` no longer repeats the connector: `Throws<MyException>().Which.Whose(…)` renders
+  `throws a MyException whose …` instead of `throws a MyException which whose …`, and `HasSingle().Which.Whose(…)`
+  renders `has a single item whose …`.
+- A type check (`Is`, `IsExactly`, `IsNot` and `IsNotExactly`, generic or with a `Type` argument) names only the
+  actual type: `but it was List<string>` instead of `but it was List<string> []`. The formatted value is appended
+  as an `Actual` context instead.
+- A collection cut off at `MaximumNumberOfCollectionItems` names the number of remaining items when its size is known
+  without enumerating it (an array, `ICollection`, `ICollection<T>` or `IReadOnlyCollection<T>`):
+  `[1, 2, 3, (… and 7 more)]` instead of `[1, 2, 3, …]`. A lazy sequence keeps the plain `…`, and a collection whose
+  enumeration stopped early keeps `(… and maybe others)`.
+- A quantifier nested under `HasLines`, `HasRecursiveInnerExceptions` or `WithRecursiveInnerExceptions` reads
+  `recursive inner exceptions of which at least 2 are of type X` instead of `which at least 2 are of type X`.
+- Item counts agree with their number: `but it contained only 3 items and misses 1 item` and
+  `but it lacked the one expected item` instead of `misses 1 items` and `lacked all 1 expected items`.
+- An expectation used as an item of an expected collection renders as `an item that is equal to "x"` instead of
+  `it is equal to "x"`, e.g. `contained item "d" at index 3 instead of an item that is equal to "x"`.
+- A member selector reads `by`: `is unique by x => x.Value for all items` instead of
+  `is unique for x => x.Value for all items`, and `is in ascending order by x => x.Value using MyComparer` instead of
+  `is in ascending order using MyComparer for x => x.Value`.
 
 ## Timeouts on negative event expectations
 
@@ -250,6 +274,24 @@ expectation with `Within(…)` now observes the window it asks for.
   `Using(comparer)` like `ObjectEqualityOptions.Using`, `StringEqualityOptions.Exactly()` is removed because exact
   matching is the default, and `TimeSpanEqualityOptions.Approximately(expected, tolerance)` is internal; construct an
   `ExecutesInToleranceResult` to get the tolerance continuation `ExecutesIn(expected).Within(tolerance)`.
+- `HasItemResultAtIndex<TCollection>`, the result of `HasItem(…).AtIndex(n)`, is renamed to
+  `HasItemAtIndexResult<TCollection>` so that it ends in `Result` like every other result type.
+- `Expectation` with its nested `Combination.All` and `Combination.Any` moved from `aweXpect.Results` to
+  `aweXpect.Core`. It is the base class of every result and the parameter type of `Expect.ThatAll` and
+  `Expect.ThatAny`, not a result itself.
+- `aweXpect.Core.ThatBool`, the type returned by `Expect.That(bool)`, is renamed to `ThatBoolSubject`, so it no longer
+  shares its name with the static class `aweXpect.ThatBool` that holds the boolean expectations.
+- `SingleItemResult<TCollection, TItem>.Async`, the result of `HasSingle()` on an `IAsyncEnumerable<T>`, is replaced by
+  the top-level `AsyncSingleItemResult<TCollection, TItem>` in `aweXpect.Results`.
+- `EventTriggerResult<TSubject>.IExtensions` is renamed to `EventTriggerResult<TSubject>.ICustomParameterFilter`, after
+  the `WithParameter(expression, position, predicate)` method it offers to extensions.
+- The parameter of `Throws().OnlyIf(…)` is named `condition` instead of `predicate`, as it is a `bool`. This only
+  affects a call with a named argument.
+- The parameters of `HasFlag(…)` and `DoesNotHaveFlag(…)` are named `expected` and `unexpected` instead of
+  `expectedFlag` and `unexpectedFlag`, like on every other expectation. This only affects a call with a named argument.
+- The `Type` parameter of `Throws(…)`, `ThrowsExactly(…)`, `DoesNotThrow(…)`, `DoesNotThrowExactly(…)`,
+  `WithInner(…)` and `HasInner(…)` is named `type` instead of `exceptionType` or `innerExceptionType`, like on
+  `Is(…)` and `Elements().Are(…)`. This only affects a call with a named argument.
 
 ## New expectations
 
@@ -266,8 +308,8 @@ expectation with `Within(…)` now observes the window it asks for.
 - **Version** gains comparisons (`IsGreaterThan`, `IsBetween`, …) and the components `HasMajor`, `HasMinor`,
   `HasBuild` and `HasRevision`. See [Version](/docs/expectations/common-types/version).
 - **Guid** gains `IsOneOf` and `IsNotOneOf`.
-- **Char** gains `IsADigit`, `IsAnAsciiDigit`, `IsAnAsciiHexDigit`, `IsUpperCased`, `IsLowerCased` and `IsControl`
-  with their negations.
+- **Char** gains `IsADigit`, `IsAnAsciiDigit`, `IsAnAsciiHexDigit`, `IsUpperCased`, `IsLowerCased` and
+  `IsAControlCharacter` with their negations.
 
 ## Analyzer
 

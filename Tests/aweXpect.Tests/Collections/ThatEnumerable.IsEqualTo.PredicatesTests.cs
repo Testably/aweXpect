@@ -50,7 +50,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task CompletelyDifferentCollections_ShouldFail()
 			{
-				IEnumerable<int> subject = Enumerable.Range(1, 11);
+				IEnumerable<int> subject = Enumerable.Range(1, 11).ToArray();
 				IEnumerable<Expression<Func<int, bool>>> expected =
 				[
 					a => a == 100,
@@ -87,7 +87,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -102,7 +102,7 @@ public sealed partial class ThatEnumerable
 					               a => (a == 107),
 					               a => (a == 108),
 					               a => (a == 109),
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}
@@ -751,7 +751,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task CompletelyDifferentCollections_ShouldFail()
 			{
-				IEnumerable<int> subject = Enumerable.Range(1, 11);
+				IEnumerable<int> subject = Enumerable.Range(1, 11).ToArray();
 				IEnumerable<Expression<Func<int, bool>>> expected =
 				[
 					a => a == 100,
@@ -788,7 +788,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -803,7 +803,7 @@ public sealed partial class ThatEnumerable
 					               a => (a == 107),
 					               a => (a == 108),
 					               a => (a == 109),
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}
@@ -1312,7 +1312,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task CompletelyDifferentCollections_ShouldFail()
 			{
-				IEnumerable<int> subject = Enumerable.Range(1, 11);
+				IEnumerable<int> subject = Enumerable.Range(1, 11).ToArray();
 				IEnumerable<Expression<Func<int, bool>>> expected =
 				[
 					a => a == 100,
@@ -1349,7 +1349,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -1364,7 +1364,7 @@ public sealed partial class ThatEnumerable
 					               a => (a == 107),
 					               a => (a == 108),
 					               a => (a == 109),
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}
@@ -1902,7 +1902,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task CompletelyDifferentCollections_ShouldFail()
 			{
-				IEnumerable<int> subject = Enumerable.Range(1, 11);
+				IEnumerable<int> subject = Enumerable.Range(1, 11).ToArray();
 				IEnumerable<Expression<Func<int, bool>>> expected =
 				[
 					a => a == 100,
@@ -1939,7 +1939,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -1954,7 +1954,7 @@ public sealed partial class ThatEnumerable
 					               a => (a == 107),
 					               a => (a == 108),
 					               a => (a == 109),
-					               …
+					               (… and 1 more)
 					             ]
 					             """);
 			}
