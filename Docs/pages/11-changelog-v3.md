@@ -188,6 +188,9 @@ need an update.
 - `HasInner` and `WithInner` name the relation when the inner exception has the wrong type:
   `but it was an inner ArgumentException:` instead of `but it was an ArgumentException:`.
 - The message of an unexpected exception is indented along with the rest of the result inside `Expect.ThatAll`.
+- A `Whose` directly after a `Which` no longer repeats the connector: `Throws<MyException>().Which.Whose(…)` renders
+  `throws a MyException whose …` instead of `throws a MyException which whose …`, and `HasSingle().Which.Whose(…)`
+  renders `has a single item whose …`.
 - A type check (`Is`, `IsExactly`, `IsNot` and `IsNotExactly`, generic or with a `Type` argument) names only the
   actual type: `but it was List<string>` instead of `but it was List<string> []`. The formatted value is appended
   as an `Actual` context instead.

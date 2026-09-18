@@ -278,6 +278,23 @@ public sealed class AndNodeTests
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
 
+	[Theory]
+	[InlineData(" which ", "whose bar", "foo whose bar")]
+	[InlineData(" which ", "is bar", "foo which is bar")]
+	[InlineData(" which ", "whosever bar", "foo which whosever bar")]
+	[InlineData(" and ", "whose bar", "foo and whose bar")]
+	public async Task Result_WithSeparator_ShouldOnlyDropWhichBeforeWhose(
+		string separator, string rightExpectation, string expectedExpectation)
+	{
+		AndNode node = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Failure, "foo")));
+		node.AddNode(new DummyNode("", () => new DummyConstraintResult(Outcome.Failure, rightExpectation)),
+			separator);
+
+		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
+
+		await That(result.GetExpectationText()).IsEqualTo(expectedExpectation);
+	}
+
 	[Fact]
 	public async Task SetReason_WithAdditionalNodes_ShouldUseCurrentNode()
 	{

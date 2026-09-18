@@ -210,13 +210,12 @@ internal class AndNode : Node
 			if (_separator == DefaultSeparator && _isNegated)
 			{
 				stringBuilder.Append(" or ");
+				_right.AppendExpectation(stringBuilder);
 			}
 			else
 			{
-				stringBuilder.Append(_separator);
+				stringBuilder.AppendSeparatedExpectation(_separator, _right);
 			}
-
-			_right.AppendExpectation(stringBuilder);
 		}
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
