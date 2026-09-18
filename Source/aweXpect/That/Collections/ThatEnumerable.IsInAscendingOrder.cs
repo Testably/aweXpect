@@ -58,7 +58,7 @@ public static partial class ThatEnumerable
 					memberAccessor,
 					aweXpect.SortOrder.Ascending,
 					options,
-					$" for {doNotPopulateThisValue.TrimCommonWhiteSpace()}")),
+					$" by {doNotPopulateThisValue.TrimCommonWhiteSpace()}")),
 			subject,
 			options);
 	}
@@ -105,7 +105,7 @@ public static partial class ThatEnumerable
 					memberAccessor,
 					aweXpect.SortOrder.Ascending,
 					options,
-					$" for {doNotPopulateThisValue.TrimCommonWhiteSpace()}")),
+					$" by {doNotPopulateThisValue.TrimCommonWhiteSpace()}")),
 			subject,
 			options);
 	}
@@ -154,7 +154,7 @@ public static partial class ThatEnumerable
 					memberAccessor,
 					aweXpect.SortOrder.Ascending,
 					options,
-					$" for {doNotPopulateThisValue.TrimCommonWhiteSpace()}")),
+					$" by {doNotPopulateThisValue.TrimCommonWhiteSpace()}")),
 			subject,
 			options);
 	}
@@ -203,7 +203,7 @@ public static partial class ThatEnumerable
 					memberAccessor,
 					aweXpect.SortOrder.Ascending,
 					options,
-					$" for {doNotPopulateThisValue.TrimCommonWhiteSpace()}").Invert()),
+					$" by {doNotPopulateThisValue.TrimCommonWhiteSpace()}").Invert()),
 			subject,
 			options);
 	}
@@ -250,7 +250,7 @@ public static partial class ThatEnumerable
 					memberAccessor,
 					aweXpect.SortOrder.Ascending,
 					options,
-					$" for {doNotPopulateThisValue.TrimCommonWhiteSpace()}").Invert()),
+					$" by {doNotPopulateThisValue.TrimCommonWhiteSpace()}").Invert()),
 			subject,
 			options);
 	}
@@ -297,7 +297,7 @@ public static partial class ThatEnumerable
 					memberAccessor,
 					aweXpect.SortOrder.Ascending,
 					options,
-					$" for {doNotPopulateThisValue.TrimCommonWhiteSpace()}").Invert()),
+					$" by {doNotPopulateThisValue.TrimCommonWhiteSpace()}").Invert()),
 			subject,
 			options);
 	}

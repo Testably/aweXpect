@@ -103,13 +103,7 @@ internal abstract class QuantifiedCollectionConstraint<TValue, TItem>(
 	{
 		if (Grammars.HasFlag(ExpectationGrammars.Nested))
 		{
-			if (isNegated)
-			{
-				stringBuilder.Append("not ");
-			}
-
-			stringBuilder.Append(quantifier);
-			stringBuilder.Append(' ');
+			stringBuilder.AppendNestedQuantifier(quantifier, isNegated);
 			stringBuilder.Append(expectationText(Grammars));
 		}
 		else

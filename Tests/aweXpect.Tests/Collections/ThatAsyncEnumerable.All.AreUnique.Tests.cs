@@ -332,7 +332,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is unique for x => x! ignoring case for all items,
+						             is unique by x => x! ignoring case for all items,
 						             but none of 2 were
 
 						             Not matching items:
@@ -365,7 +365,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<InconclusiveException>()
 						.WithMessage("""
 						             Expected that subject
-						             is unique for x => x * 2 for all items,
+						             is unique by x => x * 2 for all items,
 						             but it could not be verified, because it was already cancelled
 						             *
 						             """).AsWildcard();
@@ -404,7 +404,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is unique for x => x.Value for all items,
+						             is unique by x => x.Value for all items,
 						             but only 2 of 4 were
 
 						             Not matching items:
@@ -453,7 +453,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is unique for x => x.Value for all items,
+						             is unique by x => x.Value for all items,
 						             but only 2 of 6 were
 
 						             Not matching items:
@@ -517,7 +517,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is unique for x => x.Value for all items,
+						             is unique by x => x.Value for all items,
 						             but it was <null>
 						             """);
 				}
@@ -536,7 +536,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not unique for x => x.Value for all items,
+						             is not unique by x => x.Value for all items,
 						             but all 3 were
 
 						             Collection:
@@ -617,7 +617,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is unique for x => x.Value ignoring case for all items,
+						             is unique by x => x.Value ignoring case for all items,
 						             but none of 2 were
 
 						             Not matching items:
@@ -654,7 +654,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is unique for x => x.Value for all items,
+						             is unique by x => x.Value for all items,
 						             but only 2 of 4 were
 
 						             Not matching items:
@@ -697,7 +697,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is unique for x => x.Value for all items,
+						             is unique by x => x.Value for all items,
 						             but only 2 of 6 were
 
 						             Not matching items:
@@ -751,7 +751,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is unique for x => x.Value for all items,
+						             is unique by x => x.Value for all items,
 						             but it was <null>
 						             """);
 				}

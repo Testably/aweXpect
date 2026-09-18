@@ -184,7 +184,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not unique for x => x! ignoring case for all items,
+						             is not unique by x => x! ignoring case for all items,
 						             but only 2 of 3 were
 
 						             Not matching items:
@@ -237,7 +237,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is not unique for x => x.Value for all items,
+						             is not unique by x => x.Value for all items,
 						             but only 2 of 3 were
 
 						             Not matching items:

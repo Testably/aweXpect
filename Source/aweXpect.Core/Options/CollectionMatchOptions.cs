@@ -236,10 +236,12 @@ public partial class CollectionMatchOptions(
 		bool hasMissingItems = missingItems.Any();
 		if (total == missingItems.Count)
 		{
-			yield return ignoringDuplicates switch
+			yield return (total, ignoringDuplicates) switch
 			{
-				true => $"lacked all {total} unique expected items",
-				false => $"lacked all {total} expected items",
+				(1, true) => "lacked the one unique expected item",
+				(1, false) => "lacked the one expected item",
+				(_, true) => $"lacked all {total} unique expected items",
+				(_, false) => $"lacked all {total} expected items",
 			};
 			yield break;
 		}
@@ -405,7 +407,13 @@ public partial class CollectionMatchOptions(
 		public override int GetHashCode() => ItemExpectationBuilder.GetHashCode();
 
 		/// <inheritdoc cref="object.ToString()" />
-		public override string ToString() => ItemExpectationBuilder.ToString();
+		public override string ToString()
+		{
+			StringBuilder sb = new();
+			sb.Append("an item that ");
+			ItemExpectationBuilder.AppendExpectation(sb);
+			return sb.ToString();
+		}
 	}
 
 	internal sealed class ExpectationItemEqualityComparer<TItem> : IEqualityComparer<ExpectationItem<TItem>>

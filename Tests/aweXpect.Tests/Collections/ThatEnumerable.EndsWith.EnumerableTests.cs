@@ -93,6 +93,27 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenSubjectHasOnlyOneItemAndMissesOne_ShouldUseSingular()
+			{
+				IEnumerable subject = ToEnumerable([2,]);
+
+				async Task Act()
+					=> await That(subject).EndsWith(1, 2);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             ends with [1, 2],
+					             but it contained only 1 item and misses 1 item: [
+					               1
+					             ]
+
+					             Collection:
+					             [2]
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				IEnumerable subject = ToEnumerable(1, 2);

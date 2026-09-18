@@ -68,7 +68,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             starts with expected,
-					             but it contained only 3 items and misses 1 items: [
+					             but it contained only 3 items and misses 1 item: [
 					               4
 					             ]
 

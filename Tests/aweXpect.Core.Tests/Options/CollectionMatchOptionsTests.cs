@@ -4,6 +4,110 @@ namespace aweXpect.Core.Tests.Options;
 
 public class CollectionMatchOptionsTests
 {
+	public class FailureMessageTests
+	{
+		[Fact]
+		public async Task WhenAllOfOneExpectedItemIsMissing_ShouldUseSingular()
+		{
+			int[] subject = [1, 2,];
+
+			async Task Act()
+				=> await That(subject).Contains([3,]);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains collection [3,] in order,
+				             but it lacked the one expected item
+
+				             Collection:
+				             [1, 2]
+
+				             Expected:
+				             [3]
+				             """);
+		}
+
+		[Fact]
+		public async Task WhenAllOfOneUniqueExpectedItemIsMissing_ShouldUseSingular()
+		{
+			int[] subject = [1, 2,];
+
+			async Task Act()
+				=> await That(subject).Contains([3, 3,]).IgnoringDuplicates();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains collection [3, 3,] in order ignoring duplicates,
+				             but it lacked the one unique expected item
+
+				             Collection:
+				             [1, 2]
+
+				             Expected:
+				             [3, 3]
+				             """);
+		}
+
+		[Fact]
+		public async Task WhenAllOfTwoExpectedItemsAreMissing_ShouldUsePlural()
+		{
+			int[] subject = [1, 2,];
+
+			async Task Act()
+				=> await That(subject).Contains([3, 4,]);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains collection [3, 4,] in order,
+				             but it lacked all 2 expected items
+
+				             Collection:
+				             [1, 2]
+
+				             Expected:
+				             [3, 4]
+				             """);
+		}
+
+		[Fact]
+		public async Task WhenExpectationItemIsNotMet_ShouldDescribeItAsAnItem()
+		{
+			string[] subject = ["a", "b",];
+			Action<IThat<string?>>[] expected =
+			[
+				x => x.IsEqualTo("a"),
+				x => x.IsEqualTo("c"),
+			];
+
+			async Task Act()
+				=> await That(subject).Contains(expected);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains collection expected in order,
+				             but it
+				               contained item "b" at index 1 instead of an item that is equal to "c" and
+				               lacked 1 of 2 expected items: an item that is equal to "c"
+
+				             Collection:
+				             [
+				               "a",
+				               "b"
+				             ]
+
+				             Expected:
+				             [
+				               an item that is equal to "a",
+				               an item that is equal to "c"
+				             ]
+				             """);
+		}
+	}
+
 	public class GetExpectationTests
 	{
 		[Theory]
