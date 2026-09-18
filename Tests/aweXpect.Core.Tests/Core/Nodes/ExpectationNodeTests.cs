@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using System.Threading;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Nodes;
@@ -870,12 +871,13 @@ public class ExpectationNodeTests
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			string text = stringBuilder.ToString();
-			stringBuilder.Append("follows \"").Append(text.Substring(Math.Max(0, text.Length - 6))).Append('"');
+			int start = Math.Max(0, text.Length - 6);
+			stringBuilder.Append("follows \"").Append(text, start, text.Length - start).Append('"');
 		}
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null) { }
 
-		public override bool TryGetValue<TValue>(out TValue? value) where TValue : default
+		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
 		{
 			value = default;
 			return false;
