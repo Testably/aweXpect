@@ -49,9 +49,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             ends with <null>,
 					             but it was "some text"
-
-					             Actual:
-					             some text
 					             """);
 			}
 
@@ -94,12 +91,6 @@ public sealed partial class ThatString
 					             ends with " \t some text",
 					             but it was "some text" which is shorter than the expected length of 12 and misses the prefix:
 					               " \t "
-					             
-					             Actual:
-					             some text
-					             
-					             Expected:
-					              	 some text
 					             """);
 			}
 
@@ -121,12 +112,6 @@ public sealed partial class ThatString
 					                   "some text"
 					               "some text \t "
 					                            ↑ (expected suffix)
-					             
-					             Actual:
-					             some text
-					             
-					             Expected:
-					             some text 	 
 					             """);
 			}
 
@@ -148,12 +133,6 @@ public sealed partial class ThatString
 					               "and some text \t "
 					                       "some text"
 					                                ↑ (expected suffix)
-					             
-					             Actual:
-					             and some text 	 
-					             
-					             Expected:
-					             some text
 					             """);
 			}
 
@@ -172,12 +151,6 @@ public sealed partial class ThatString
 					             ends with "some text without out",
 					             but it was "text without out" which is shorter than the expected length of 21 and misses the prefix:
 					               "some "
-					             
-					             Actual:
-					             text without out
-					             
-					             Expected:
-					             some text without out
 					             """);
 			}
 
@@ -211,12 +184,6 @@ public sealed partial class ThatString
 					               "actual text"
 					                "other text"
 					                     ↑ (expected suffix)
-					             
-					             Actual:
-					             actual text
-					             
-					             Expected:
-					             other text
 					             """);
 			}
 		}
@@ -237,9 +204,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             does not end with "text without out" ignoring case,
 					             but it was "some text without out"
-
-					             Actual:
-					             some text without out
 					             """);
 			}
 
@@ -258,9 +222,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             does not end with "text wIthOUt OUt" using IgnoreCaseForVocalsComparer,
 					             but it was "some text without out"
-
-					             Actual:
-					             some text without out
 					             """);
 			}
 		}

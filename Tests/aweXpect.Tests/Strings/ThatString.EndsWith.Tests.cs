@@ -29,12 +29,6 @@ public sealed partial class ThatString
 					               "some arbitrary text"
 					                              "Text"
 					                               ↑ (expected suffix)
-
-					             Actual:
-					             some arbitrary text
-					             
-					             Expected:
-					             Text
 					             """);
 			}
 
@@ -57,12 +51,6 @@ public sealed partial class ThatString
 					               "some arbitrary text"
 					                              "SOME"
 					                                  ↑ (expected suffix)
-
-					             Actual:
-					             some arbitrary text
-					             
-					             Expected:
-					             SOME
 					             """);
 			}
 
@@ -99,12 +87,6 @@ public sealed partial class ThatString
 					               "some arbitrary text"
 					                              "Text"
 					                               ↑ (expected suffix)
-
-					             Actual:
-					             some arbitrary text
-					             
-					             Expected:
-					             Text
 					             """);
 			}
 
@@ -171,12 +153,6 @@ public sealed partial class ThatString
 					               "some arbitrary text"
 					                              "some"
 					                                  ↑ (expected suffix)
-
-					             Actual:
-					             some arbitrary text
-					             
-					             Expected:
-					             some
 					             """);
 			}
 
@@ -236,12 +212,6 @@ public sealed partial class ThatString
 					             ends with "more than text",
 					             but it was "text" which is shorter than the expected length of 14 and misses the prefix:
 					               "more than "
-
-					             Actual:
-					             text
-					             
-					             Expected:
-					             more than text
 					             """);
 			}
 		}

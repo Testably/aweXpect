@@ -74,12 +74,6 @@ public sealed partial class ThatDictionary
 					               "bar"
 					               "foo"
 					                ↑ (expected)
-
-					             Actual:
-					             bar
-					             
-					             Expected:
-					             foo
 					             """);
 			}
 

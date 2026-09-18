@@ -51,9 +51,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             is equal to <null>,
 					             but it was "some text"
-
-					             Actual:
-					             some text
 					             """);
 			}
 
@@ -90,12 +87,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             is equal to " \t some text",
 					             but it was "some text" which misses some whitespace (" \t " at the beginning)
-
-					             Actual:
-					             some text
-					             
-					             Expected:
-					              	 some text
 					             """);
 			}
 
@@ -113,12 +104,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             is equal to "some text \t ",
 					             but it was "some text" which misses some whitespace (" \t " at the end)
-
-					             Actual:
-					             some text
-					             
-					             Expected:
-					             some text 	 
 					             """);
 			}
 
@@ -136,12 +121,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             is equal to "some text",
 					             but it was " \t some text" which has unexpected whitespace (" \t " at the beginning)
-
-					             Actual:
-					              	 some text
-					             
-					             Expected:
-					             some text
 					             """);
 			}
 
@@ -159,12 +138,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             is equal to "some text",
 					             but it was "some text \t " which has unexpected whitespace (" \t " at the end)
-
-					             Actual:
-					             some text 	 
-					             
-					             Expected:
-					             some text
 					             """);
 			}
 
@@ -183,12 +156,6 @@ public sealed partial class ThatString
 					             is equal to "some text with",
 					             but it was "some text without out" with a length of 21 which is longer than the expected length of 14 and has superfluous:
 					               "out out"
-
-					             Actual:
-					             some text without out
-					             
-					             Expected:
-					             some text with
 					             """);
 			}
 
@@ -207,12 +174,6 @@ public sealed partial class ThatString
 					             is equal to "some text without out",
 					             but it was "some text with" with a length of 14 which is shorter than the expected length of 21 and misses:
 					               "out out"
-
-					             Actual:
-					             some text with
-					             
-					             Expected:
-					             some text without out
 					             """);
 			}
 
@@ -246,12 +207,6 @@ public sealed partial class ThatString
 					               "actual text"
 					               "expected other text"
 					                ↑ (expected)
-
-					             Actual:
-					             actual text
-					             
-					             Expected:
-					             expected other text
 					             """);
 			}
 		}
@@ -279,9 +234,6 @@ public sealed partial class ThatString
 
 					              Actual:
 					              {subject}
-
-					              Expected:
-					              {expected}
 					              """);
 			}
 
@@ -375,7 +327,6 @@ public sealed partial class ThatString
 		public sealed class IgnoringLeadingWhiteSpaceTests
 		{
 			[Theory]
-			[InlineAutoData("foo", " bar", 0)]
 			[InlineAutoData(" foo", "bar", 1)]
 			[InlineAutoData(" \tfoo", "bar", 2)]
 			public async Task ShouldIncludeCorrectIndexInMessage(
@@ -396,14 +347,31 @@ public sealed partial class ThatString
 
 					              Actual:
 					              {subject}
-					              
-					              Expected:
-					              {expected}
 					              """);
 			}
 
+			[Fact]
+			public async Task ShouldIncludeCorrectIndexInMessage_WhenOnlyExpectedHasLeadingWhiteSpace()
+			{
+				string subject = "foo";
+				string expected = " bar";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).IgnoringLeadingWhiteSpace();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to " bar" ignoring leading white-space,
+					             but it was "foo" which differs at index 0:
+					                ↓ (actual)
+					               "foo"
+					               "bar"
+					                ↑ (expected)
+					             """);
+			}
+
 			[Theory]
-			[InlineAutoData("foo\nbar", " \n bar", 1, 1)]
 			[InlineAutoData(" \n\n foo", "bar", 3, 2)]
 			[InlineAutoData(" \r\n \tfoo", "bar", 2, 3)]
 			public async Task ShouldIncludeCorrectLineAndColumnInMessage(
@@ -424,10 +392,28 @@ public sealed partial class ThatString
 
 					              Actual:
 					              {subject}
-					              
-					              Expected:
-					              {expected}
 					              """);
+			}
+
+			[Fact]
+			public async Task ShouldIncludeCorrectLineAndColumnInMessage_WhenOnlyExpectedHasLeadingWhiteSpace()
+			{
+				string subject = "foo\nbar";
+				string expected = " \n bar";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).IgnoringLeadingWhiteSpace();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to " \n bar" ignoring leading white-space,
+					             but it was "foo\nbar" which differs on line 1 and column 1:
+					                ↓ (actual)
+					               "foo\nbar"
+					               "bar"
+					                ↑ (expected)
+					             """);
 			}
 
 			[Theory]
@@ -466,12 +452,6 @@ public sealed partial class ThatString
 					                "foo\nbar"
 					                "foo\nbaz"
 					                        ↑ (expected)
-
-					              Actual:
-					              {subject}
-					              
-					              Expected:
-					              {expected}
 					              """);
 			}
 
@@ -515,9 +495,6 @@ public sealed partial class ThatString
 
 					              Actual:
 					              {subject}
-					              
-					              Expected:
-					              foo-bar
 					              """);
 			}
 
@@ -542,9 +519,6 @@ public sealed partial class ThatString
 
 					             Actual:
 					             foo-boo	
-					             
-					             Expected:
-					             foo-bar
 					             """);
 			}
 

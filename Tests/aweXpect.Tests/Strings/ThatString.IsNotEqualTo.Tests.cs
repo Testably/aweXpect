@@ -133,12 +133,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             is not equal to "foo",
 					             but it was "foo"
-
-					             Actual:
-					             foo
-					             
-					             Expected:
-					             foo
 					             """);
 			}
 
@@ -174,12 +168,6 @@ public sealed partial class ThatString
 					              Expected that subject
 					              is not equal to "{unexpected.DisplayWhitespace()}" ignoring leading white-space,
 					              but it was "{subject.DisplayWhitespace()}"
-
-					              Actual:
-					              {subject}
-					              
-					              Expected:
-					              {unexpected}
 					              """);
 			}
 		}
@@ -204,12 +192,6 @@ public sealed partial class ThatString
 					              Expected that subject
 					              is not equal to "{unexpected.DisplayWhitespace()}" ignoring newline style,
 					              but it was "{subject.DisplayWhitespace()}"
-					              
-					              Actual:
-					              {subject}
-					              
-					              Expected:
-					              {unexpected}
 					              """);
 			}
 		}
@@ -233,12 +215,6 @@ public sealed partial class ThatString
 					              Expected that subject
 					              is not equal to "{unexpected.DisplayWhitespace()}" ignoring trailing white-space,
 					              but it was "{subject.DisplayWhitespace()}"
-
-					              Actual:
-					              {subject}
-					              
-					              Expected:
-					              {unexpected}
 					              """);
 			}
 		}

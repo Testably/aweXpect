@@ -21,12 +21,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             does not contain "INVESTIGATOR" ignoring case,
 					             but it contained "INVESTIGATOR" once in "In this text in between the word an investigator should find the word 'IN' multiple times."
-					             
-					             Actual:
-					             In this text in between the word an investigator should find the word 'IN' multiple times.
-					             
-					             Expected:
-					             INVESTIGATOR
 					             """);
 			}
 
@@ -46,12 +40,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             does not contain "InvEstIgAtOr" using IgnoreCaseForVocalsComparer,
 					             but it contained "InvEstIgAtOr" once in "In this text in between the word an investigator should find the word 'IN' multiple times."
-					             
-					             Actual:
-					             In this text in between the word an investigator should find the word 'IN' multiple times.
-					             
-					             Expected:
-					             InvEstIgAtOr
 					             """);
 			}
 
@@ -97,12 +85,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             does not contain "me",
 					             but it contained "me" once in "some text"
-					             
-					             Actual:
-					             some text
-					             
-					             Expected:
-					             me
 					             """);
 			}
 
@@ -136,12 +118,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             does not contain "in" at least 3 times,
 					             but it contained "in" 3 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
-					             
-					             Actual:
-					             In this text in between the word an investigator should find the word 'IN' multiple times.
-					             
-					             Expected:
-					             in
 					             """);
 			}
 
@@ -217,12 +193,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             does not contain "text that does not occur" at most once,
 					             but it did not contain "text that does not occur" in "In this text in between the word an investigator should find the word 'IN' multiple times."
-					             
-					             Actual:
-					             In this text in between the word an investigator should find the word 'IN' multiple times.
-					             
-					             Expected:
-					             text that does not occur
 					             """);
 			}
 
@@ -241,12 +211,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             does not contain "in" at most 3 times,
 					             but it contained "in" 3 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
-					             
-					             Actual:
-					             In this text in between the word an investigator should find the word 'IN' multiple times.
-					             
-					             Expected:
-					             in
 					             """);
 			}
 
@@ -309,12 +273,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             does not contain "in" between 1 and 4 times,
 					             but it contained "in" 3 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
-					             
-					             Actual:
-					             In this text in between the word an investigator should find the word 'IN' multiple times.
-					             
-					             Expected:
-					             in
 					             """);
 			}
 
@@ -348,12 +306,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             does not contain "in" exactly 3 times,
 					             but it contained "in" 3 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
-					             
-					             Actual:
-					             In this text in between the word an investigator should find the word 'IN' multiple times.
-					             
-					             Expected:
-					             in
 					             """);
 			}
 
@@ -420,12 +372,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             does not contain "in" exactly 3 times,
 					             but it contained "in" 3 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
-					             
-					             Actual:
-					             In this text in between the word an investigator should find the word 'IN' multiple times.
-					             
-					             Expected:
-					             in
 					             """);
 			}
 
@@ -473,12 +419,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             does not contain "text that does not occur" less than once,
 					             but it did not contain "text that does not occur" in "In this text in between the word an investigator should find the word 'IN' multiple times."
-					             
-					             Actual:
-					             In this text in between the word an investigator should find the word 'IN' multiple times.
-					             
-					             Expected:
-					             text that does not occur
 					             """);
 			}
 
@@ -523,12 +463,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             does not contain "in" less than 4 times,
 					             but it contained "in" 3 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
-					             
-					             Actual:
-					             In this text in between the word an investigator should find the word 'IN' multiple times.
-					             
-					             Expected:
-					             in
 					             """);
 			}
 
@@ -578,12 +512,6 @@ public sealed partial class ThatString
 					              Expected that subject
 					              does not contain "in" more than twice,
 					              but it contained "in" 3 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
-					              
-					              Actual:
-					              In this text in between the word an investigator should find the word 'IN' multiple times.
-					              
-					              Expected:
-					              in
 					              """);
 			}
 
@@ -635,12 +563,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             does not contain "investigator" exactly once,
 					             but it contained "investigator" once in "In this text in between the word an investigator should find the word 'IN' multiple times."
-					             
-					             Actual:
-					             In this text in between the word an investigator should find the word 'IN' multiple times.
-					             
-					             Expected:
-					             investigator
 					             """);
 			}
 

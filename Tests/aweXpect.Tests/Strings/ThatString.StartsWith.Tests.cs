@@ -30,12 +30,6 @@ public sealed partial class ThatString
 					               "Some arbitrary text"
 					               "SOME"
 					                 ↑ (expected prefix)
-
-					             Actual:
-					             Some arbitrary text
-					             
-					             Expected:
-					             SOME
 					             """);
 			}
 
@@ -58,12 +52,6 @@ public sealed partial class ThatString
 					               "some arbitrary text"
 					               "TEXT"
 					                ↑ (expected prefix)
-
-					             Actual:
-					             some arbitrary text
-					             
-					             Expected:
-					             TEXT
 					             """);
 			}
 
@@ -102,9 +90,6 @@ public sealed partial class ThatString
 
 					             Actual:
 					                 some arbitrary text
-
-					             Expected:
-					             other
 					             """);
 			}
 
@@ -128,12 +113,6 @@ public sealed partial class ThatString
 					               "some arbitrary text"
 					               "SOME"
 					                ↑ (expected prefix)
-
-					             Actual:
-					             some arbitrary text
-					             
-					             Expected:
-					             SOME
 					             """);
 			}
 
@@ -200,12 +179,6 @@ public sealed partial class ThatString
 					               "some arbitrary text"
 					               "text"
 					                ↑ (expected prefix)
-
-					             Actual:
-					             some arbitrary text
-					             
-					             Expected:
-					             text
 					             """);
 			}
 
@@ -253,12 +226,6 @@ public sealed partial class ThatString
 					             starts with "text and more",
 					             but it was "text" with a length of 4 which is shorter than the expected length of 13 and misses:
 					               " and more"
-
-					             Actual:
-					             text
-					             
-					             Expected:
-					             text and more
 					             """);
 			}
 

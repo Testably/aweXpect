@@ -72,11 +72,11 @@ public static partial class ThatString
 			Outcome = await options.AreConsideredEqual(actual, expected) ? Outcome.Success : Outcome.Failure;
 			if (!string.IsNullOrEmpty(actual))
 			{
-				expectationBuilder.AddContext(new ResultContext.Fixed("Actual", actual));
+				expectationBuilder.AddStringContext("Actual", actual, this);
 
 				if (Outcome != Outcome.Success && !string.IsNullOrEmpty(expected))
 				{
-					expectationBuilder.AddContext(new ResultContext.Fixed("Expected", expected));
+					expectationBuilder.AddStringContext("Expected", expected, this);
 				}
 			}
 

@@ -49,9 +49,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             starts with <null>,
 					             but it was "some text"
-
-					             Actual:
-					             some text
 					             """);
 			}
 
@@ -81,12 +78,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             starts with " \t some text",
 					             but it was "some text" which misses some whitespace (" \t " at the beginning)
-
-					             Actual:
-					             some text
-					             
-					             Expected:
-					              	 some text
 					             """);
 			}
 
@@ -105,12 +96,6 @@ public sealed partial class ThatString
 					             starts with "some text \t ",
 					             but it was "some text" with a length of 9 which is shorter than the expected length of 12 and misses:
 					               " 	 "
-
-					             Actual:
-					             some text
-					             
-					             Expected:
-					             some text 	 
 					             """);
 			}
 
@@ -128,12 +113,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             starts with "some text",
 					             but it was " \t some text and more" which has unexpected whitespace (" \t " at the beginning)
-
-					             Actual:
-					              	 some text and more
-					             
-					             Expected:
-					             some text
 					             """);
 			}
 
@@ -152,12 +131,6 @@ public sealed partial class ThatString
 					             starts with "some text without out",
 					             but it was "some text with" with a length of 14 which is shorter than the expected length of 21 and misses:
 					               "out out"
-
-					             Actual:
-					             some text with
-					             
-					             Expected:
-					             some text without out
 					             """);
 			}
 
@@ -191,12 +164,6 @@ public sealed partial class ThatString
 					               "actual text"
 					               "expected other text"
 					                ↑ (expected prefix)
-
-					             Actual:
-					             actual text
-					             
-					             Expected:
-					             expected other text
 					             """);
 			}
 
@@ -229,9 +196,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             does not start with "some text without" ignoring case,
 					             but it was "some text without out"
-
-					             Actual:
-					             some text without out
 					             """);
 			}
 
@@ -250,9 +214,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             does not start with "sOmE text wIthOUt" using IgnoreCaseForVocalsComparer,
 					             but it was "some text without out"
-
-					             Actual:
-					             some text without out
 					             """);
 			}
 		}

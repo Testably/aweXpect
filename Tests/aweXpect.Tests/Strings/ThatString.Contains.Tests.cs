@@ -76,12 +76,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             contains "not" at least once,
 					             but it did not contain "not" in "some text"
-
-					             Actual:
-					             some text
-
-					             Expected:
-					             not
 					             """);
 			}
 		}
@@ -102,12 +96,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             contains "bar" at least once as block,
 					             but it did not contain "bar" in "foo"
-
-					             Actual:
-					             foo
-
-					             Expected:
-					             bar
 					             """);
 			}
 
@@ -186,12 +174,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             contains "int Foo" at least once as block,
 					             but it did not contain "int Foo" in "public int Foo;"
-
-					             Actual:
-					             public int Foo;
-
-					             Expected:
-					             int Foo
 					             """);
 			}
 
@@ -209,12 +191,6 @@ public sealed partial class ThatString
 					              Expected that subject
 					              contains "a\nb" at least once as block,
 					              but it did not contain "a\nb" in "    a\nb"
-
-					              Actual:
-					              {subject}
-
-					              Expected:
-					              {expected}
 					              """);
 			}
 
@@ -244,12 +220,6 @@ public sealed partial class ThatString
 					              Expected that subject
 					              does not contain "a\nb" as block,
 					              but it contained "a\nb" once in "  a\n  b"
-
-					              Actual:
-					              {subject}
-
-					              Expected:
-					              {expected}
 					              """);
 			}
 		}
@@ -271,12 +241,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             contains "in" at least 7 times ignoring case,
 					             but it contained "in" 5 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
-
-					             Actual:
-					             In this text in between the word an investigator should find the word 'IN' multiple times.
-
-					             Expected:
-					             in
 					             """);
 			}
 
@@ -311,12 +275,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             contains "bar" at least once ignoring indentation,
 					             but it did not contain "bar" in "foo"
-
-					             Actual:
-					             foo
-
-					             Expected:
-					             bar
 					             """);
 			}
 
@@ -431,12 +389,6 @@ public sealed partial class ThatString
 					             Expected that subject
 					             contains "in" exactly 5 times using IgnoreCaseForVocalsComparer,
 					             but it contained "in" 4 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
-
-					             Actual:
-					             In this text in between the word an investigator should find the word 'IN' multiple times.
-
-					             Expected:
-					             in
 					             """);
 			}
 		}
