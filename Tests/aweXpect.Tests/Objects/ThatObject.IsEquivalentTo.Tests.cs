@@ -32,6 +32,45 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
+			public async Task ChainedWithAnd_WhenBothFail_ShouldIncludeEachFailureOnce()
+			{
+				OuterClass subject = new();
+				OuterClass expected1 = new()
+				{
+					Value = "Foo",
+				};
+				OuterClass expected2 = new()
+				{
+					Value = "Bar",
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected1).And.IsEquivalentTo(expected2);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to ThatObject.OuterClass {
+					                 Inner = <null>,
+					                 Value = "Foo"
+					               } and is equivalent to ThatObject.OuterClass {
+					                 Inner = <null>,
+					                 Value = "Bar"
+					               },
+					             but it was not:
+					               Property Value differed:
+					                    Found: <null>
+					                 Expected: "Foo" and it was not:
+					               Property Value differed:
+					                    Found: <null>
+					                 Expected: "Bar"
+
+					             Equivalency options:
+					              - include public fields and properties
+					             """);
+			}
+
+			[Fact]
 			public async Task IgnoringMismatchingProperties_ShouldBeEquivalent()
 			{
 				OuterClass subject = new()
