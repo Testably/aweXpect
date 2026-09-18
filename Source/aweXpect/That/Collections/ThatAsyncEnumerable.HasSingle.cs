@@ -54,6 +54,7 @@ public static partial class ThatAsyncEnumerable
 		private IAsyncEnumerable<TItem>? _actual;
 		private int _count;
 		private bool _isEmpty;
+		private IMaterializedEnumerable<TItem>? _materialized;
 
 		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
@@ -67,6 +68,7 @@ public static partial class ThatAsyncEnumerable
 
 			IAsyncEnumerable<TItem> materialized =
 				context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual);
+			_materialized = materialized as IMaterializedEnumerable<TItem>;
 			_count = 0;
 			_isEmpty = true;
 
@@ -88,7 +90,7 @@ public static partial class ThatAsyncEnumerable
 			Outcome = _count == 1 ? Outcome.Success : Outcome.Failure;
 			if (_count > 1)
 			{
-				await expectationBuilder.AddCollectionContext(materialized as IMaterializedEnumerable<TItem>);
+				await expectationBuilder.AddCollectionContext(_materialized);
 			}
 
 			return this;
@@ -139,8 +141,24 @@ public static partial class ThatAsyncEnumerable
 			}
 			else
 			{
-				stringBuilder.Append(It).Append(" did");
+				stringBuilder.Append(It).Append(options.GetDescription().Length == 0
+					? " had the single item "
+					: " had the single matching item ");
+				Formatter.Format(stringBuilder, Actual);
 			}
+		}
+
+		public override ConstraintResult Negate()
+		{
+			base.Negate();
+			// The collection context is only added once the negation is known, as it would otherwise also appear when a
+			// continuation on the single item fails.
+			if (IsNegated && _count == 1)
+			{
+				expectationBuilder.AddCollectionContext(_materialized?.MaterializedItems);
+			}
+
+			return this;
 		}
 	}
 }

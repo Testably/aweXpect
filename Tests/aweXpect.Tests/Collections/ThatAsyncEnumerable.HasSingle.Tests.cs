@@ -399,7 +399,10 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not have a single item,
-					             but it did
+					             but it had the single item 1
+
+					             Collection:
+					             [1]
 					             """);
 			}
 
@@ -412,6 +415,25 @@ public sealed partial class ThatAsyncEnumerable
 					=> await That(subject).DoesNotComplyWith(it => it.HasSingle());
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenOnlyOneElementMatchesPredicate_ShouldFail()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasSingle().Matching(x => x > 2));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have a single item matching x => x > 2,
+					             but it had the single matching item 3
+
+					             Collection:
+					             [1, 2, 3]
+					             """);
 			}
 		}
 

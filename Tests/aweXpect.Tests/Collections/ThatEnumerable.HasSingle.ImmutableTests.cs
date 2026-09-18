@@ -334,7 +334,10 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not have a single item,
-					             but it did
+					             but it had the single item 1
+
+					             Collection:
+					             [1]
 					             """);
 			}
 
