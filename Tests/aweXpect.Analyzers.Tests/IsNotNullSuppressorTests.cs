@@ -318,6 +318,25 @@ public class IsNotNullSuppressorTests
 		);
 
 	[Fact]
+	public async Task WhenExpectationRequiresNotExactlyOfType_ShouldSuppressWarning() => await Verifier
+		.VerifySuppressorAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest(object? subject)
+			    {
+			        await Expect.That(subject).IsNotExactly<string>();
+			        _ = {|#0:subject|}.ToString();
+			    }
+			}
+			""",
+			SuppressedNullabilityWarning("CS8602")
+		);
+
+	[Fact]
 	public async Task WhenExpectationRequiresNotNullOrEmpty_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -373,6 +392,25 @@ public class IsNotNullSuppressorTests
 			}
 			""",
 			SuppressedNullabilityWarning()
+		);
+
+	[Fact]
+	public async Task WhenExpectationRequiresNotOfType_ShouldSuppressWarning() => await Verifier
+		.VerifySuppressorAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest(object? subject)
+			    {
+			        await Expect.That(subject).IsNot<string>();
+			        _ = {|#0:subject|}.ToString();
+			    }
+			}
+			""",
+			SuppressedNullabilityWarning("CS8602")
 		);
 
 	[Fact]

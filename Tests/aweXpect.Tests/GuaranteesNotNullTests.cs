@@ -45,8 +45,7 @@ public sealed class GuaranteesNotNullTests
 	public async Task EveryExpectationThatFails_ShouldGuaranteeNotNull()
 	{
 		List<string> unmarked = Observations
-			.Where(observation => observation.Fails && !IsExempt(observation.Name) && !observation.IsMarked &&
-			                      !AwaitingACoreRelease.Contains(observation.Identifier))
+			.Where(observation => observation.Fails && !IsExempt(observation.Name) && !observation.IsMarked)
 			.Select(observation => observation.Identifier)
 			.Distinct().OrderBy(identifier => identifier, StringComparer.Ordinal)
 			.ToList();
@@ -128,17 +127,6 @@ public sealed class GuaranteesNotNullTests
 		"IsNullOrWhiteSpace",
 		"IsNotFalse",
 		"IsNotTrue",
-	};
-
-	/// <summary>
-	///     `aweXpect` consumes `aweXpect.Core` as a released package outside Debug, so an attribute added to
-	///     the core interface would be missing from the Release test run and fail the converse assertion
-	///     below. These two qualify and are marked with the next core release instead.
-	/// </summary>
-	private static readonly HashSet<string> AwaitingACoreRelease = new(StringComparer.Ordinal)
-	{
-		"IThatSubject<T>.IsNot<TType>()",
-		"IThatSubject<T>.IsNotExactly<TType>()",
 	};
 
 	/// <summary>

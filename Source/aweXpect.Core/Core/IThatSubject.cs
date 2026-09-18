@@ -21,6 +21,7 @@ public interface IThatSubject<T> : IThat<T>
 	/// <summary>
 	///     Verifies that the subject is not of type <typeparamref name="TType" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	AndOrResult<T, IThatSubject<T>> IsNot<TType>();
 
 	/// <summary>
@@ -32,5 +33,6 @@ public interface IThatSubject<T> : IThat<T>
 	/// <summary>
 	///     Verifies that the subject is not exactly of type <typeparamref name="TType" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	AndOrResult<T, IThatSubject<T>> IsNotExactly<TType>();
 }
