@@ -23,6 +23,19 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
+			public async Task WhenExpectationsAreEmpty_ShouldThrowArgumentException()
+			{
+				string subject = "Starting up\nReady";
+
+				async Task Act()
+					=> await That(subject).HasLines(_ => { });
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("You must add at least one expectation in the expectations callback.*").AsWildcard()
+					.And.WithParamName("expectations");
+			}
+
+			[Fact]
 			public async Task WhenLineIsMissing_ShouldFail()
 			{
 				string subject = "Starting up\nConnected to database\nReady";

@@ -23,6 +23,19 @@ public sealed partial class ThatException
 			}
 
 			[Fact]
+			public async Task WhenExpectationsAreEmpty_ShouldThrowArgumentException()
+			{
+				Exception subject = new("outer", new Exception("inner"));
+
+				async Task Act()
+					=> await That(subject).HasRecursiveInnerExceptions(_ => { });
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("You must add at least one expectation in the expectations callback.*").AsWildcard()
+					.And.WithParamName("expectations");
+			}
+
+			[Fact]
 			public async Task WhenInnerExceptionsDoNotMatchTheCondition_ForAll_ShouldFail()
 			{
 				Exception subject = new("outer",
