@@ -37,8 +37,8 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
 						              Expected that Delegate
-						              throws an exception which whose .HResult is equal to {expectedHResult},
-						              but .HResult was {hResult} which differs by -1
+						              throws an exception which whose HResult is equal to {expectedHResult},
+						              but HResult was {hResult} which differs by -1
 						              """);
 				}
 			}
@@ -71,8 +71,8 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that Delegate
-						             throws a MyException which whose .Message is equal to "foo",
-						             but .Message was "ShouldIncludeWhichInErrorMessa…" which differs at index 0:
+						             throws a MyException which whose Message is equal to "foo",
+						             but Message was "ShouldIncludeWhichInErrorMessa…" which differs at index 0:
 						                ↓ (actual)
 						               "ShouldIncludeWhichInErrorMessage"
 						               "foo"

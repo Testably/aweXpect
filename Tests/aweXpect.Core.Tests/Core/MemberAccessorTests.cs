@@ -3,7 +3,7 @@
 public sealed class MemberAccessorTests
 {
 	[Theory]
-	[InlineData(".Length ", true)]
+	[InlineData("Length ", true)]
 	[InlineData(".SomethingElse ", false)]
 	public async Task Equals_ShouldCompareStringRepresentation(string otherStringRepresentation, bool expectedResult)
 	{
@@ -52,7 +52,16 @@ public sealed class MemberAccessorTests
 		MemberAccessor<string, int> subject = MemberAccessor<string, int>
 			.FromExpression(x => x.Length);
 
-		await That(subject.ToString()).IsEqualTo(".Length ");
+		await That(subject.ToString()).IsEqualTo("Length ");
+	}
+
+	[Fact]
+	public async Task FromExpression_WithNestedMembers_ShouldKeepInnerDots()
+	{
+		MemberAccessor<Exception, int> subject = MemberAccessor<Exception, int>
+			.FromExpression(x => x.Message.Length);
+
+		await That(subject.ToString()).IsEqualTo("Message.Length ");
 	}
 
 	[Theory]
@@ -69,10 +78,22 @@ public sealed class MemberAccessorTests
 
 	[Theory]
 	[InlineData("Foo", "Foo ")]
-	[InlineData("x => x.Foo", ".Foo ")]
-	[InlineData("  x => x.Foo", ".Foo ")]
-	[InlineData("x => x.Foo  ", ".Foo ")]
-	[InlineData("itIs => itIs.Foo  ", ".Foo ")]
+	[InlineData(".Foo", ".Foo ")]
+	[InlineData("x => x.Foo", "Foo ")]
+	[InlineData("  x => x.Foo", "Foo ")]
+	[InlineData("x => x.Foo  ", "Foo ")]
+	[InlineData("itIs => itIs.Foo  ", "Foo ")]
+	[InlineData("x => x.Message.Length", "Message.Length ")]
+	[InlineData("x => x[0]", "[0] ")]
+	[InlineData("x => x.Items[0].Name", "Items[0].Name ")]
+	[InlineData("x => x.Items.Count()", "Items.Count() ")]
+	[InlineData("x => (int)x.Value", "Value ")]
+	[InlineData("x => x?.Value", "?.Value ")]
+	[InlineData("x => x", " ")]
+	[InlineData("x => { return x.Value; }", "Value; } ")]
+	[InlineData("_ => _.Value", "Value ")]
+	[InlineData("_ => 42", "_ => 42 ")]
+	[InlineData("selector", "selector ")]
 	public async Task FromFuncAsMemberAccessor_ShouldTryToExtractMemberAccessor(string expression, string expected)
 	{
 		MemberAccessor<string, int> subject = MemberAccessor<string, int>

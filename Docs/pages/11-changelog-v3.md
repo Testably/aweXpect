@@ -167,6 +167,8 @@ need an update.
 - Collection equality reads like the other collection relations: `IsEqualTo(expected)` renders
   `is equal to collection expected in order` instead of `matches collection expected in order`, and `IsNotEqualTo`
   renders `is not equal to collection …` instead of `does not match collection …`.
+- A member selected with `Whose(x => x.Message.Length, …)` renders without the leading dot:
+  `whose Message.Length is …` and `but Message.Length was …` instead of `whose .Message.Length is …`.
 - `DoesNotHaveItem(1).AtIndex(0)` names the item it found: `but it had item 1 at index 0` instead of `but it did`.
 - A `Never()` quantifier appends its `within` window when one was given.
 - Every equivalency member difference renders as a `Property X differed:` block with `Found:` and `Expected:` lines.
