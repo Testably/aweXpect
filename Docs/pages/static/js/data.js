@@ -4014,6 +4014,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 23:22:02 2026 \u002B0200",
         "message": "fix: list the values of ContainsKeys(\u2026).WhoseValues together with their keys (#1204)"
+      },
+      {
+        "sha": "b3903651c892d61d3a8b2746b266a1dd831b8a4a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 19 00:28:44 2026 \u002B0200",
+        "message": "fix: reject NaN bounds in \u0060IsBetween\u0060 and compare infinite numbers correctly (#1206)"
       }
     ],
     "labels": [
@@ -4685,7 +4691,8 @@ window.BENCHMARK_DATA = {
       "f9b4540a",
       "00dff638",
       "592eda32",
-      "969656cf"
+      "969656cf",
+      "b3903651"
     ],
     "datasets": [
       {
@@ -5360,7 +5367,8 @@ window.BENCHMARK_DATA = {
           302.21210071018766,
           338.3181185086568,
           231.47678319613138,
-          329.0090421267918
+          329.0090421267918,
+          219.59215790430704
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6034,6 +6042,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          840,
           840,
           840,
           840,
@@ -6723,7 +6732,8 @@ window.BENCHMARK_DATA = {
           250.2746205670493,
           251.7722088609423,
           198.7654082775116,
-          254.24044408798218
+          254.24044408798218,
+          198.509849357605
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6916,6 +6926,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10969,6 +10980,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 23:22:02 2026 \u002B0200",
         "message": "fix: list the values of ContainsKeys(\u2026).WhoseValues together with their keys (#1204)"
+      },
+      {
+        "sha": "b3903651c892d61d3a8b2746b266a1dd831b8a4a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 19 00:28:44 2026 \u002B0200",
+        "message": "fix: reject NaN bounds in \u0060IsBetween\u0060 and compare infinite numbers correctly (#1206)"
       }
     ],
     "labels": [
@@ -11563,7 +11580,8 @@ window.BENCHMARK_DATA = {
       "f9b4540a",
       "00dff638",
       "592eda32",
-      "969656cf"
+      "969656cf",
+      "b3903651"
     ],
     "datasets": [
       {
@@ -12161,7 +12179,8 @@ window.BENCHMARK_DATA = {
           316975.791796875,
           322006.48678385414,
           252500.36003766741,
-          316448.8670572917
+          316448.8670572917,
+          243099.75709635418
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12758,6 +12777,7 @@ window.BENCHMARK_DATA = {
           617976,
           617976,
           617976,
+          618120,
           618120,
           618120,
           618120,
@@ -13370,7 +13390,8 @@ window.BENCHMARK_DATA = {
           2531028.349739583,
           2641841.021614583,
           1906932.693638393,
-          2675879.283072917
+          2675879.283072917,
+          1805507.6053185095
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13973,7 +13994,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841647,
-          4841651
+          4841651,
+          4841648
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18001,6 +18023,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 23:22:02 2026 \u002B0200",
         "message": "fix: list the values of ContainsKeys(\u2026).WhoseValues together with their keys (#1204)"
+      },
+      {
+        "sha": "b3903651c892d61d3a8b2746b266a1dd831b8a4a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 19 00:28:44 2026 \u002B0200",
+        "message": "fix: reject NaN bounds in \u0060IsBetween\u0060 and compare infinite numbers correctly (#1206)"
       }
     ],
     "labels": [
@@ -18672,7 +18700,8 @@ window.BENCHMARK_DATA = {
       "f9b4540a",
       "00dff638",
       "592eda32",
-      "969656cf"
+      "969656cf",
+      "b3903651"
     ],
     "datasets": [
       {
@@ -19347,7 +19376,8 @@ window.BENCHMARK_DATA = {
           530.6930157343546,
           538.7581422170003,
           399.44025967915854,
-          619.8084933417184
+          619.8084933417184,
+          399.77437041600547
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20021,6 +20051,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1512,
           1512,
           1512,
           1512,
@@ -20710,7 +20741,8 @@ window.BENCHMARK_DATA = {
           479.2288476058415,
           507.55058492933,
           405.4112504209791,
-          495.2215061187744
+          495.2215061187744,
+          375.07692857889026
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20903,6 +20935,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -25418,6 +25451,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 23:22:02 2026 \u002B0200",
         "message": "fix: list the values of ContainsKeys(\u2026).WhoseValues together with their keys (#1204)"
+      },
+      {
+        "sha": "b3903651c892d61d3a8b2746b266a1dd831b8a4a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 19 00:28:44 2026 \u002B0200",
+        "message": "fix: reject NaN bounds in \u0060IsBetween\u0060 and compare infinite numbers correctly (#1206)"
       }
     ],
     "labels": [
@@ -26089,7 +26128,8 @@ window.BENCHMARK_DATA = {
       "f9b4540a",
       "00dff638",
       "592eda32",
-      "969656cf"
+      "969656cf",
+      "b3903651"
     ],
     "datasets": [
       {
@@ -26764,7 +26804,8 @@ window.BENCHMARK_DATA = {
           307.96899785314287,
           308.0331859248025,
           251.0540198326111,
-          315.9520732334682
+          315.9520732334682,
+          277.8195514996847
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27438,6 +27479,7 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
+          1008,
           1008,
           1008,
           1008,
@@ -28127,7 +28169,8 @@ window.BENCHMARK_DATA = {
           258.28920259475706,
           256.62382987340294,
           188.4669912815094,
-          250.61726773579915
+          250.61726773579915,
+          184.86165196555
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28320,6 +28363,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -32835,6 +32879,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 23:22:02 2026 \u002B0200",
         "message": "fix: list the values of ContainsKeys(\u2026).WhoseValues together with their keys (#1204)"
+      },
+      {
+        "sha": "b3903651c892d61d3a8b2746b266a1dd831b8a4a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 19 00:28:44 2026 \u002B0200",
+        "message": "fix: reject NaN bounds in \u0060IsBetween\u0060 and compare infinite numbers correctly (#1206)"
       }
     ],
     "labels": [
@@ -33506,7 +33556,8 @@ window.BENCHMARK_DATA = {
       "f9b4540a",
       "00dff638",
       "592eda32",
-      "969656cf"
+      "969656cf",
+      "b3903651"
     ],
     "datasets": [
       {
@@ -34181,7 +34232,8 @@ window.BENCHMARK_DATA = {
           546.6077763484075,
           553.947010676066,
           447.68320550918577,
-          610.8395245869955
+          610.8395245869955,
+          447.3989498615265
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34855,6 +34907,7 @@ window.BENCHMARK_DATA = {
           1256,
           1256,
           1256,
+          1400,
           1400,
           1400,
           1400,
@@ -35544,7 +35597,8 @@ window.BENCHMARK_DATA = {
           1216.9129625467153,
           1258.8664143880208,
           944.0233445485433,
-          1314.844744873047
+          1314.844744873047,
+          870.425428537222
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35973,6 +36027,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -40252,6 +40307,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 23:22:02 2026 \u002B0200",
         "message": "fix: list the values of ContainsKeys(\u2026).WhoseValues together with their keys (#1204)"
+      },
+      {
+        "sha": "b3903651c892d61d3a8b2746b266a1dd831b8a4a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 19 00:28:44 2026 \u002B0200",
+        "message": "fix: reject NaN bounds in \u0060IsBetween\u0060 and compare infinite numbers correctly (#1206)"
       }
     ],
     "labels": [
@@ -40923,7 +40984,8 @@ window.BENCHMARK_DATA = {
       "f9b4540a",
       "00dff638",
       "592eda32",
-      "969656cf"
+      "969656cf",
+      "b3903651"
     ],
     "datasets": [
       {
@@ -41598,7 +41660,8 @@ window.BENCHMARK_DATA = {
           2134.2143231709797,
           2227.4863881429037,
           1734.0955317361015,
-          2129.4109537942068
+          2129.4109537942068,
+          1600.9962807973227
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -42272,6 +42335,7 @@ window.BENCHMARK_DATA = {
           2752,
           2752,
           2752,
+          3104,
           3104,
           3104,
           3104,
@@ -42961,7 +43025,8 @@ window.BENCHMARK_DATA = {
           1370.7772269930158,
           1325.5950056711833,
           1095.7212844576154,
-          1342.2186517079672
+          1342.2186517079672,
+          998.9218976338705
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -43154,6 +43219,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -47669,6 +47735,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 23:22:02 2026 \u002B0200",
         "message": "fix: list the values of ContainsKeys(\u2026).WhoseValues together with their keys (#1204)"
+      },
+      {
+        "sha": "b3903651c892d61d3a8b2746b266a1dd831b8a4a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 19 00:28:44 2026 \u002B0200",
+        "message": "fix: reject NaN bounds in \u0060IsBetween\u0060 and compare infinite numbers correctly (#1206)"
       }
     ],
     "labels": [
@@ -48340,7 +48412,8 @@ window.BENCHMARK_DATA = {
       "f9b4540a",
       "00dff638",
       "592eda32",
-      "969656cf"
+      "969656cf",
+      "b3903651"
     ],
     "datasets": [
       {
@@ -49015,7 +49088,8 @@ window.BENCHMARK_DATA = {
           2713.9010078430174,
           2825.083543141683,
           2213.5933113098145,
-          2740.8627700805664
+          2740.8627700805664,
+          2065.619392101581
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -49689,6 +49763,7 @@ window.BENCHMARK_DATA = {
           2944,
           2944,
           2944,
+          3296,
           3296,
           3296,
           3296,
@@ -50378,7 +50453,8 @@ window.BENCHMARK_DATA = {
           27495.22459411621,
           27270.3803914388,
           16602.52258504232,
-          26567.815239539512
+          26567.815239539512,
+          15144.957088216146
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -51052,6 +51128,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
