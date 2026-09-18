@@ -178,10 +178,6 @@ internal class WhichNode<TSource, TMember> : Node
 			value, _negateMemberOnly);
 	}
 
-	/// <inheritdoc cref="Node.SetReason(IBecauseReason)" />
-	public override void SetReason(IBecauseReason becauseReason)
-		=> _inner?.SetReason(becauseReason);
-
 	/// <inheritdoc />
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{

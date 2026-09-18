@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
-using aweXpect.Core.Helpers;
 
 namespace aweXpect.Core.Nodes;
 
@@ -59,11 +58,6 @@ internal abstract class Node
 		TValue? value,
 		IEvaluationContext context,
 		CancellationToken cancellationToken);
-
-	/// <summary>
-	///     Set the <paramref name="becauseReason" /> on the current node.
-	/// </summary>
-	public abstract void SetReason(IBecauseReason becauseReason);
 
 	/// <summary>
 	///     Appends the expectation to the <paramref name="stringBuilder" />.

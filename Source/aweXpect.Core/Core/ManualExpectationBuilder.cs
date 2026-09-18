@@ -33,7 +33,7 @@ public class ManualExpectationBuilder<TValue>(
 		TValue value,
 		IEvaluationContext context,
 		CancellationToken cancellationToken)
-		=> await GetRootNode().IsMetBy(value, context, cancellationToken);
+		=> await ApplyReasons(await GetRootNode().IsMetBy(value, context, cancellationToken));
 
 	/// <inheritdoc />
 	internal override Task<ConstraintResult> IsMet(Node rootNode,

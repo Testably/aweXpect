@@ -22,8 +22,26 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that () => counter.Value
-				             is equal to 1, because of reasons within 0:00.050,
+				             is equal to 1 within 0:00.050, because of reasons,
 				             but it was 0 which differs by -1
+				             """);
+		}
+
+		[Fact]
+		public async Task Because_WhenCombinedWithOr_ShouldBeAppendedAfterTheTimeout()
+		{
+			Counter counter = new();
+
+			async Task Act()
+				=> await That(() => counter.Value).Eventually().IsEqualTo(1).Because("of reasons")
+					.Or.IsEqualTo(2)
+					.WithTimeout(VeryLowTimeout);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that () => counter.Value
+				             is equal to 1 or is equal to 2 within 0:00.050, because of reasons,
+				             but it was 0 which differs by -1 and it was 0 which differs by -2
 				             """);
 		}
 

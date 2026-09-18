@@ -30,6 +30,8 @@ public abstract class ExpectationBuilder
 
 	private Node _node = new ExpectationNode();
 
+	private List<IBecauseReason>? _reasons;
+
 	private ITimeSystem? _timeSystem;
 
 	private Node? _whichNode;
@@ -306,21 +308,36 @@ public abstract class ExpectationBuilder
 		=> Timeout = timeout;
 
 	/// <summary>
-	///     Adds a <paramref name="reason" /> to the current expectation constraint.
+	///     Adds a <paramref name="reason" /> to the expectation.
 	/// </summary>
 	internal void AddReason(string reason)
-	{
-		BecauseReason becauseReason = new(reason);
-		_node.SetReason(becauseReason);
-	}
+		=> (_reasons ??= []).Add(new BecauseReason(reason));
 
 	/// <summary>
-	///     Adds a <paramref name="reason" /> to the current expectation constraint.
+	///     Adds a <paramref name="reason" /> to the expectation.
 	/// </summary>
 	internal void AddReason(Task<string?> reason)
+		=> (_reasons ??= []).Add(new AsyncBecauseReason(reason));
+
+	/// <summary>
+	///     Appends the reasons to the expectation of the <paramref name="result" />.
+	/// </summary>
+	/// <remarks>
+	///     The reasons are applied to the whole expectation instead of to the constraint they were given for, so that
+	///     they follow every suffix, e.g. constraints combined with <c>And</c> or <c>Or</c> and the timeout of
+	///     <c>Eventually</c>.
+	/// </remarks>
+	internal async Task<ConstraintResult> ApplyReasons(ConstraintResult result)
 	{
-		AsyncBecauseReason becauseReason = new(reason);
-		_node.SetReason(becauseReason);
+		if (_reasons is not null)
+		{
+			foreach (IBecauseReason reason in _reasons)
+			{
+				result = await reason.ApplyTo(result);
+			}
+		}
+
+		return result;
 	}
 
 	/// <summary>
@@ -509,7 +526,7 @@ public abstract class ExpectationBuilder
 		return _node;
 	}
 
-	internal Task<ConstraintResult> IsMet()
+	internal async Task<ConstraintResult> IsMet()
 	{
 		EvaluationContext.EvaluationContext context = new();
 		ITimeSystem timeSystem = _timeSystem ?? RealTimeSystem.Instance;
@@ -517,8 +534,9 @@ public abstract class ExpectationBuilder
 		CancellationToken cancellationToken = CancellationToken ??
 		                                      testCancellation?.CancellationTokenFactory?.Invoke() ??
 		                                      System.Threading.CancellationToken.None;
-		return IsMet(GetRootNode(), context, timeSystem, Timeout ?? testCancellation?.Timeout,
+		ConstraintResult result = await IsMet(GetRootNode(), context, timeSystem, Timeout ?? testCancellation?.Timeout,
 			cancellationToken);
+		return await ApplyReasons(result);
 	}
 
 	internal abstract Task<ConstraintResult> IsMet(Node rootNode,

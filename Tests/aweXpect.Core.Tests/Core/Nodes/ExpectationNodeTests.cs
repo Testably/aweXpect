@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using System.Threading;
 using aweXpect.Core.Constraints;
-using aweXpect.Core.Helpers;
 using aweXpect.Core.Nodes;
 using aweXpect.Core.Tests.TestHelpers;
 
@@ -529,21 +528,6 @@ public class ExpectationNodeTests
 	}
 
 	[Fact]
-	public async Task IsMetBy_WhenAsyncConstraintReturns_ShouldApplyBecauseReason()
-	{
-		ExpectationNode node = new();
-		node.AddConstraint(new DummyAsyncConstraint<int>(_
-			=> Task.FromResult<ConstraintResult>(new DummyConstraintResult(Outcome.Success, "foo"))));
-		node.SetReason(new BecauseReason("my reason"));
-		StringBuilder sb = new();
-
-		ConstraintResult result = await node.IsMetBy(44, null!, CancellationToken.None);
-
-		result.AppendExpectation(sb);
-		await That(sb.ToString()).IsEqualTo("foo, because my reason");
-	}
-
-	[Fact]
 	public async Task IsMetBy_WhenAsyncConstraintThrowsException_ShouldThrowInvalidOperationException()
 	{
 		MyException exception = new();
@@ -558,21 +542,6 @@ public class ExpectationNodeTests
 			.WithMessage("""
 			             Error evaluating DummyAsyncConstraint<int> constraint with value 44: IsMetBy_WhenAsyncConstraintThrowsException_ShouldThrowInvalidOperationException
 			             """);
-	}
-
-	[Fact]
-	public async Task IsMetBy_WhenAsyncContextConstraintReturns_ShouldApplyBecauseReason()
-	{
-		ExpectationNode node = new();
-		node.AddConstraint(new DummyAsyncContextConstraint<int>(_
-			=> Task.FromResult<ConstraintResult>(new DummyConstraintResult(Outcome.Success, "foo"))));
-		node.SetReason(new BecauseReason("my reason"));
-		StringBuilder sb = new();
-
-		ConstraintResult result = await node.IsMetBy(44, null!, CancellationToken.None);
-
-		result.AppendExpectation(sb);
-		await That(sb.ToString()).IsEqualTo("foo, because my reason");
 	}
 
 	[Fact]
@@ -593,20 +562,6 @@ public class ExpectationNodeTests
 	}
 
 	[Fact]
-	public async Task IsMetBy_WhenContextConstraintReturns_ShouldApplyBecauseReason()
-	{
-		ExpectationNode node = new();
-		node.AddConstraint(new DummyContextConstraint<int>(_ => new DummyConstraintResult(Outcome.Success, "foo")));
-		node.SetReason(new BecauseReason("my reason"));
-		StringBuilder sb = new();
-
-		ConstraintResult result = await node.IsMetBy(44, null!, CancellationToken.None);
-
-		result.AppendExpectation(sb);
-		await That(sb.ToString()).IsEqualTo("foo, because my reason");
-	}
-
-	[Fact]
 	public async Task IsMetBy_WhenContextConstraintThrowsException_ShouldThrowInvalidOperationException()
 	{
 		MyException exception = new();
@@ -621,20 +576,6 @@ public class ExpectationNodeTests
 			.WithMessage("""
 			             Error evaluating DummyContextConstraint<int> constraint with value 43: IsMetBy_WhenContextConstraintThrowsException_ShouldThrowInvalidOperationException
 			             """);
-	}
-
-	[Fact]
-	public async Task IsMetBy_WhenValueConstraintReturns_ShouldApplyBecauseReason()
-	{
-		ExpectationNode node = new();
-		node.AddConstraint(new DummyValueConstraint<int>(_ => new DummyConstraintResult(Outcome.Success, "foo")));
-		node.SetReason(new BecauseReason("my reason"));
-		StringBuilder sb = new();
-
-		ConstraintResult result = await node.IsMetBy(44, null!, CancellationToken.None);
-
-		result.AppendExpectation(sb);
-		await That(sb.ToString()).IsEqualTo("foo, because my reason");
 	}
 
 	[Fact]

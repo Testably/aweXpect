@@ -2,7 +2,6 @@
 using System.Text;
 using System.Threading;
 using aweXpect.Core.Constraints;
-using aweXpect.Core.Helpers;
 using aweXpect.Core.Nodes;
 using aweXpect.Core.Tests.TestHelpers;
 
@@ -551,35 +550,6 @@ public sealed class WhichNodeTests
 		ConstraintResult result = await whichNode.IsMetBy("", null!, CancellationToken.None);
 
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
-	}
-
-	[Fact]
-	public async Task SetReason_InnerIsNull_ShouldNotThrow()
-	{
-		DummyNode node1 = new("", () => new DummyConstraintResult<string?>(Outcome.Success, "1", "e1"));
-		WhichNode<string, int> whichNode = new(node1, s => s.Length);
-
-		void Act() => whichNode.SetReason(new BecauseReason("bc"));
-
-		await That(Act).DoesNotThrow();
-	}
-
-	[Fact]
-	public async Task SetReason_ShouldBeForwardedToInnerNode()
-	{
-		DummyNode node1 = new("", () => new DummyConstraintResult<string?>(Outcome.Success, "1", "e1"));
-		WhichNode<string, int> whichNode = new(node1, s => s.Length);
-		whichNode.AddNode(new ExpectationNode());
-		whichNode.AddConstraint(new DummyConstraint("c2",
-			() => new DummyConstraintResult<int>(Outcome.Success, 4, "e2")));
-		whichNode.SetReason(new BecauseReason("bc"));
-		StringBuilder sb = new();
-
-		ConstraintResult result = await whichNode.IsMetBy("foo", null!, CancellationToken.None);
-
-		result.AppendExpectation(sb);
-		await That(result.Outcome).IsEqualTo(Outcome.Success);
-		await That(sb.ToString()).IsEqualTo("e1e2, because bc");
 	}
 
 	[Fact]

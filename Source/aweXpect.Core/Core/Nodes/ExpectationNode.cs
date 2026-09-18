@@ -15,8 +15,6 @@ internal class ExpectationNode : Node
 
 	private Node? _inner;
 
-	private IBecauseReason? _reason;
-
 	/// <inheritdoc />
 	public override void AddConstraint(IConstraint constraint)
 	{
@@ -133,11 +131,6 @@ internal class ExpectationNode : Node
 			{
 				result = await asyncContextConstraint.IsMetBy(value, context, cancellationToken);
 			}
-
-			if (_reason is not null && result is not null)
-			{
-				result = await _reason.ApplyTo(result);
-			}
 		}
 		catch (Exception e) when (e is not ArgumentException && _constraint is not null)
 		{
@@ -158,9 +151,6 @@ internal class ExpectationNode : Node
 				$"The expectation node does not support {Formatter.Format(typeof(TValue))} with value {Formatter.Format(value)}")
 			.LogTrace();
 	}
-
-	/// <inheritdoc cref="Node.SetReason(IBecauseReason)" />
-	public override void SetReason(IBecauseReason becauseReason) => _reason = becauseReason;
 
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{

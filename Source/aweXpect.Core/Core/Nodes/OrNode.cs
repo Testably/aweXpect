@@ -7,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
-using aweXpect.Core.Helpers;
 
 namespace aweXpect.Core.Nodes;
 
@@ -103,19 +102,6 @@ internal class OrNode : Node
 		}
 
 		yield return (_currentSeparator ?? DefaultSeparator, Current);
-	}
-
-	/// <inheritdoc cref="Node.SetReason(IBecauseReason)" />
-	public override void SetReason(IBecauseReason becauseReason)
-	{
-		if (_nodes.Any() && Current is ExpectationNode expectationNode && expectationNode.IsEmpty())
-		{
-			_nodes[^1].Item2.SetReason(becauseReason);
-		}
-		else
-		{
-			Current.SetReason(becauseReason);
-		}
 	}
 
 	/// <inheritdoc />
