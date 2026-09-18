@@ -47,8 +47,8 @@ public sealed partial class ThatEventRecording
 					                 }, PropertyChangedEventArgs {
 					                   PropertyName = "MyValue"
 					                 })
-					             ]
-					             """);
+					             ] after 0:*
+					             """).AsWildcard();
 			}
 		}
 	}

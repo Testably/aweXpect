@@ -60,8 +60,8 @@ public sealed partial class ThatSignaler
 					.WithMessage("""
 					             Expected that signaler
 					             has never recorded the callback within 0:10,
-					             but it was recorded once
-					             """);
+					             but it was recorded once after 0:*
+					             """).AsWildcard();
 			}
 
 			[Fact]
@@ -81,8 +81,8 @@ public sealed partial class ThatSignaler
 					             has never recorded the callback within 0:10,
 					             but it was recorded once in [
 					               "foo"
-					             ]
-					             """);
+					             ] after 0:*
+					             """).AsWildcard();
 			}
 		}
 	}

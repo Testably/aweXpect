@@ -28,8 +28,8 @@ public sealed partial class ThatSignaler
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least once within 0:00.040,
-					             but it was never recorded
-					             """);
+					             but it was never recorded within 0:*
+					             """).AsWildcard();
 				cts.Cancel();
 			}
 
@@ -50,8 +50,8 @@ public sealed partial class ThatSignaler
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least once within 0:00.040,
-					             but it was never recorded
-					             """);
+					             but it was never recorded within 0:*
+					             """).AsWildcard();
 				cts.Cancel();
 			}
 

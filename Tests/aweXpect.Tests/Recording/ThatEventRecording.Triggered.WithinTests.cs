@@ -49,8 +49,8 @@ public sealed partial class ThatEventRecording
 					             but it was recorded twice in [
 					               CustomEvent(),
 					               CustomEvent()
-					             ]
-					             """);
+					             ] after 0:*
+					             """).AsWildcard();
 			}
 
 			[Fact]
@@ -113,8 +113,8 @@ public sealed partial class ThatEventRecording
 					             has never recorded the CustomEvent event on sut within 0:05,
 					             but it was recorded once in [
 					               CustomEvent()
-					             ]
-					             """);
+					             ] after 0:*
+					             """).AsWildcard();
 			}
 
 			[Fact]
@@ -139,8 +139,8 @@ public sealed partial class ThatEventRecording
 					             has never recorded the CustomEvent event on sut within 0:05,
 					             but it was recorded once in [
 					               CustomEvent()
-					             ]
-					             """);
+					             ] after 0:*
+					             """).AsWildcard();
 			}
 
 			[Fact]
@@ -162,8 +162,8 @@ public sealed partial class ThatEventRecording
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once within 0:00.010,
-					             but it was never recorded in []
-					             """);
+					             but it was never recorded in [] within 0:*
+					             """).AsWildcard();
 			}
 
 			[Fact]
@@ -203,8 +203,8 @@ public sealed partial class ThatEventRecording
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once within 0:00.010,
-					             but it was never recorded in []
-					             """);
+					             but it was never recorded in [] within 0:*
+					             """).AsWildcard();
 			}
 
 			[Fact]
@@ -244,8 +244,8 @@ public sealed partial class ThatEventRecording
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once within 0:00.010,
-					             but it was never recorded in []
-					             """);
+					             but it was never recorded in [] within 0:*
+					             """).AsWildcard();
 			}
 
 			[Fact]
@@ -285,8 +285,8 @@ public sealed partial class ThatEventRecording
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once within 0:00.010,
-					             but it was never recorded in []
-					             """);
+					             but it was never recorded in [] within 0:*
+					             """).AsWildcard();
 			}
 
 			[Fact]
@@ -326,8 +326,8 @@ public sealed partial class ThatEventRecording
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once within 0:00.010,
-					             but it was never recorded in []
-					             """);
+					             but it was never recorded in [] within 0:*
+					             """).AsWildcard();
 			}
 
 			[Fact]

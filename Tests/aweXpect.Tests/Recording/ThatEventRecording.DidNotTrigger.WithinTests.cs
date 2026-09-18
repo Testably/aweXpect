@@ -43,8 +43,8 @@ public sealed partial class ThatEventRecording
 					             has never recorded the CustomEvent event on sut within 0:05,
 					             but it was recorded once in [
 					               CustomEvent()
-					             ]
-					             """);
+					             ] after 0:*
+					             """).AsWildcard();
 			}
 		}
 	}
