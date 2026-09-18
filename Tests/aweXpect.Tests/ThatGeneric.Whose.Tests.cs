@@ -76,6 +76,22 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
+			[Fact]
+			public async Task WhenExpectationsAreEmpty_ShouldThrowArgumentException()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.Value, _ => { });
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("You must add at least one expectation in the expectations callback.*").AsWildcard()
+					.And.WithParamName("expectations");
+			}
+
 			[Theory]
 			[AutoData]
 			public async Task WhenConditionIsNotSatisfied_ShouldFail(int value)

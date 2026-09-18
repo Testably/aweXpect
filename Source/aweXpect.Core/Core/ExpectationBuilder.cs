@@ -237,6 +237,7 @@ public abstract class ExpectationBuilder
 				expectationBuilderCallback.Invoke(this);
 			}
 
+			ThrowIfEmpty(_node);
 			mappingNode.AddNode(_node);
 			_node = root;
 			if (replaceIt)
@@ -285,6 +286,7 @@ public abstract class ExpectationBuilder
 				expectationBuilderCallback.Invoke(this);
 			}
 
+			ThrowIfEmpty(_node);
 			mappingNode.AddNode(_node);
 			_node = root;
 			if (replaceIt)
@@ -294,6 +296,17 @@ public abstract class ExpectationBuilder
 
 			return this;
 		});
+
+	// An empty member node cannot be evaluated, and silently skipping it would hide a forgotten expectation.
+	private static void ThrowIfEmpty(Node memberNode)
+	{
+		if (memberNode is ExpectationNode expectationNode && expectationNode.IsEmpty())
+		{
+			throw new ArgumentException("You must add at least one expectation in the expectations callback.",
+					"expectations")
+				.LogTrace();
+		}
+	}
 
 	/// <summary>
 	///     Adds a <paramref name="cancellationToken" /> to be used by the constraints.

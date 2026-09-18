@@ -1,6 +1,5 @@
 ﻿using System;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
 using aweXpect.Results;
 
 namespace aweXpect.Delegates;
@@ -21,9 +20,7 @@ public partial class ThatDelegateThrows<TException>
 					(_, s) => s.Append(" whose "),
 					false)
 				.Validate((it, grammars)
-					=> new ConstraintResult.ExpectationOnly<Exception?>(grammars,
-						"with an inner exception",
-						"without an inner exception"))
+					=> new HasInnerExceptionValueConstraint(typeof(Exception), it, grammars))
 				.AddExpectations(e => expectations(new ThatSubject<Exception?>(e)),
 					grammars => grammars | ExpectationGrammars.Nested),
 			this);

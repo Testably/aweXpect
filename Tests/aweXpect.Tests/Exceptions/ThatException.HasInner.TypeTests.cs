@@ -9,6 +9,19 @@ public sealed partial class ThatException
 			public sealed class ExpectationsTests
 			{
 				[Fact]
+				public async Task WhenExpectationsAreEmpty_ShouldThrowArgumentException()
+				{
+					Exception subject = new("outer", new CustomException("inner"));
+
+					async Task Act()
+						=> await That(subject).HasInner(typeof(CustomException), _ => { });
+
+					await That(Act).Throws<ArgumentException>()
+						.WithMessage("You must add at least one expectation in the expectations callback.*").AsWildcard()
+						.And.WithParamName("expectations");
+				}
+
+				[Fact]
 				public async Task WhenInnerExceptionHasCorrectMessageButUnexpectedType_ShouldFail()
 				{
 					Exception subject = new("outer", new Exception("inner"));
