@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using aweXpect.Options;
 #if NET8_0_OR_GREATER
 using System.Numerics;
@@ -16,7 +17,7 @@ internal static class NumberToleranceExtensions
 		where TNumber : struct, IComparable<TNumber>
 #endif
 	{
-		if (!IsFiniteValue(actual) || !IsFiniteValue(expected))
+		if (!IsComparable(actual) || !IsComparable(expected))
 		{
 			return false;
 		}
@@ -44,7 +45,7 @@ internal static class NumberToleranceExtensions
 		where TNumber : struct, IComparable<TNumber>
 #endif
 	{
-		if (!IsFiniteValue(actual) || !IsFiniteValue(expected))
+		if (!IsComparable(actual) || !IsComparable(expected))
 		{
 			return false;
 		}
@@ -81,7 +82,7 @@ internal static class NumberToleranceExtensions
 		where TNumber : struct, IComparable<TNumber>
 #endif
 	{
-		if (!IsFiniteValue(actual) || !IsFiniteValue(expected))
+		if (!IsComparable(actual) || !IsComparable(expected))
 		{
 			return false;
 		}
@@ -109,7 +110,7 @@ internal static class NumberToleranceExtensions
 		where TNumber : struct, IComparable<TNumber>
 #endif
 	{
-		if (!IsFiniteValue(actual) || !IsFiniteValue(expected))
+		if (!IsComparable(actual) || !IsComparable(expected))
 		{
 			return false;
 		}
@@ -129,7 +130,22 @@ internal static class NumberToleranceExtensions
 		return diff is not null && diff.Value.CompareTo(tolerance.Tolerance.Value) <= 0;
 	}
 
-	private static bool IsFiniteValue<TNumber>(TNumber? value)
+	public static void ThrowIfNaN<TNumber>(this TNumber? value,
+		[CallerArgumentExpression(nameof(value))] string? paramName = null)
+#if NET8_0_OR_GREATER
+		where TNumber : struct, INumber<TNumber>
+#else
+		where TNumber : struct, IComparable<TNumber>
+#endif
+	{
+		if (IsNaN(value))
+		{
+			// ReSharper disable once LocalizableElement
+			throw new ArgumentOutOfRangeException(paramName, $"The {paramName} must not be NaN.");
+		}
+	}
+
+	private static bool IsNaN<TNumber>(TNumber? value)
 #if NET8_0_OR_GREATER
 		where TNumber : struct, INumber<TNumber>
 #else
@@ -137,14 +153,25 @@ internal static class NumberToleranceExtensions
 #endif
 		=> value switch
 		{
-			null => false,
-			double d => !double.IsNaN(d) && !double.IsInfinity(d),
-			float f => !float.IsNaN(f) && !float.IsInfinity(f),
+			double d => double.IsNaN(d),
+			float f => float.IsNaN(f),
 #if NET8_0_OR_GREATER
-			Half h => !Half.IsNaN(h) && !Half.IsInfinity(h),
+			Half h => Half.IsNaN(h),
 #endif
-			_ => true,
+			_ => false,
 		};
+
+	/// <summary>
+	///     Infinite values compare correctly, but <c>NaN</c> sorts below everything in <see cref="IComparable{T}" />
+	///     and would otherwise satisfy any lower bound.
+	/// </summary>
+	private static bool IsComparable<TNumber>(TNumber? value)
+#if NET8_0_OR_GREATER
+		where TNumber : struct, INumber<TNumber>
+#else
+		where TNumber : struct, IComparable<TNumber>
+#endif
+		=> value is not null && !IsNaN(value);
 
 	private static TNumber? TryCalculateDifference<TNumber>(
 		NumberTolerance<TNumber> tolerance, TNumber actual, TNumber expected)

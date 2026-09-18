@@ -104,6 +104,22 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
+			[InlineData(double.NaN, 1.0, "minimum")]
+			[InlineData(1.0, double.NaN, "maximum")]
+			public async Task ForDouble_WhenMinimumOrMaximumIsNaN_ShouldThrowArgumentOutOfRangeException(
+				double minimum, double maximum, string paramName)
+			{
+				double subject = 2;
+
+				async Task Act()
+					=> await That(subject).IsNotBetween(minimum).And(maximum);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName(paramName).And
+					.WithMessage($"The {paramName} must not be NaN.").AsPrefix();
+			}
+
+			[Theory]
 			[InlineData(null, 1.1)]
 			[InlineData(1.1, null)]
 			public async Task ForDouble_WhenMinimumOrMaximumIsNull_ShouldSucceed(double? minimum, double? maximum)

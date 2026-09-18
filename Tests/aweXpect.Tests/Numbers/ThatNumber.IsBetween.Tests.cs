@@ -114,6 +114,36 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
+			[InlineData(double.NegativeInfinity, 3.0)]
+			[InlineData(1.0, double.PositiveInfinity)]
+			[InlineData(double.NegativeInfinity, double.PositiveInfinity)]
+			public async Task ForDouble_WhenBoundIsInfinity_ShouldSucceed(double minimum, double maximum)
+			{
+				double subject = 2;
+
+				async Task Act()
+					=> await That(subject).IsBetween(minimum).And(maximum);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Theory]
+			[InlineData(double.NaN, 1.0, "minimum")]
+			[InlineData(1.0, double.NaN, "maximum")]
+			public async Task ForDouble_WhenMinimumOrMaximumIsNaN_ShouldThrowArgumentOutOfRangeException(
+				double minimum, double maximum, string paramName)
+			{
+				double subject = 2;
+
+				async Task Act()
+					=> await That(subject).IsBetween(minimum).And(maximum);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName(paramName).And
+					.WithMessage($"The {paramName} must not be NaN.").AsPrefix();
+			}
+
+			[Theory]
 			[InlineData(null, 1.1)]
 			[InlineData(1.1, null)]
 			public async Task ForDouble_WhenMinimumOrMaximumIsNull_ShouldFail(double? minimum, double? maximum)
@@ -129,6 +159,17 @@ public sealed partial class ThatNumber
 					              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
 					              but it was {Formatter.Format(subject)}
 					              """);
+			}
+
+			[Fact]
+			public async Task ForDouble_WhenSubjectIsInfinity_ShouldSucceed()
+			{
+				double subject = double.PositiveInfinity;
+
+				async Task Act()
+					=> await That(subject).IsBetween(0.0).And(double.PositiveInfinity);
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[Theory]
@@ -489,6 +530,22 @@ public sealed partial class ThatNumber
 					              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
 					              but it was {Formatter.Format(subject)}
 					              """);
+			}
+
+			[Theory]
+			[InlineData(double.NaN, 1.0, "minimum")]
+			[InlineData(1.0, double.NaN, "maximum")]
+			public async Task ForNullableDouble_WhenMinimumOrMaximumIsNaN_ShouldThrowArgumentOutOfRangeException(
+				double minimum, double maximum, string paramName)
+			{
+				double? subject = 2;
+
+				async Task Act()
+					=> await That(subject).IsBetween(minimum).And(maximum);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName(paramName).And
+					.WithMessage($"The {paramName} must not be NaN.").AsPrefix();
 			}
 
 			[Theory]
