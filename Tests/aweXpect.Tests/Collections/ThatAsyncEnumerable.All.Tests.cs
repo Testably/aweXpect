@@ -26,7 +26,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is less than 6 for all items,
-					             but could not verify, because it was already cancelled
+					             but it could not be verified, because it was already cancelled
 					             """).AsPrefix();
 			}
 

@@ -95,7 +95,7 @@ public abstract partial class ConstraintResult
 		///     is <see cref="Outcome.Undecided" />.
 		/// </summary>
 		protected virtual void AppendUndecidedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("could not verify, because it was already cancelled");
+			=> stringBuilder.Append(CancelledResult);
 
 		/// <inheritdoc cref="ConstraintResult.AppendExpectation(StringBuilder, string?)" />
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
