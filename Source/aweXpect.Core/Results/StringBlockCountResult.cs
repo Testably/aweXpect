@@ -36,7 +36,7 @@ public class StringBlockCountResult<TType, TThat>(
 	public StringBlockCountResult<TType, TThat> Using(
 		IEqualityComparer<string> comparer)
 	{
-		options.UsingComparer(comparer);
+		options.Using(comparer);
 		return this;
 	}
 }

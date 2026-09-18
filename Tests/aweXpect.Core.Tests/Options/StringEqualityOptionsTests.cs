@@ -295,7 +295,7 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task ToString_WhenIndentationIsIgnoredWithComparer_ShouldIncludeOptions()
 		{
 			StringEqualityOptions sut = new();
-			sut.UsingComparer(StringComparer.Ordinal).IgnoringIndentation();
+			sut.Using(StringComparer.Ordinal).IgnoringIndentation();
 
 			string result = sut.ToString();
 

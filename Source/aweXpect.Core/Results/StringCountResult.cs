@@ -84,7 +84,7 @@ public class StringCountResult<TType, TThat, TSelf>(
 	public TSelf Using(
 		IEqualityComparer<string> comparer)
 	{
-		options.UsingComparer(comparer);
+		options.Using(comparer);
 		return (TSelf)this;
 	}
 }

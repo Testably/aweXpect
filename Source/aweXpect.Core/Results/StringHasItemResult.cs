@@ -112,7 +112,7 @@ public class StringHasItemResult<TCollection, TSelf>(
 	public TSelf Using(
 		IEqualityComparer<string> comparer)
 	{
-		options.UsingComparer(comparer);
+		options.Using(comparer);
 		return (TSelf)this;
 	}
 

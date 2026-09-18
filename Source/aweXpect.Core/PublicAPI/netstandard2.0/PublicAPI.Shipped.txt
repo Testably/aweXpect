@@ -513,7 +513,6 @@ aweXpect.Options.StringEqualityOptions.AsSuffix() -> aweXpect.Options.StringEqua
 aweXpect.Options.StringEqualityOptions.AsWildcard() -> aweXpect.Options.StringEqualityOptions!
 aweXpect.Options.StringEqualityOptions.Containing() -> aweXpect.Options.StringEqualityOptions!
 aweXpect.Options.StringEqualityOptions.CountOccurrences(string! actual, string! expected) -> System.Threading.Tasks.Task<int>!
-aweXpect.Options.StringEqualityOptions.Exactly() -> aweXpect.Options.StringEqualityOptions!
 aweXpect.Options.StringEqualityOptions.GetExpectation(string? expected, aweXpect.Core.ExpectationGrammars grammars) -> string!
 aweXpect.Options.StringEqualityOptions.GetExtendedFailure(string! it, aweXpect.Core.ExpectationGrammars grammars, string? actual, string? expected) -> string!
 aweXpect.Options.StringEqualityOptions.IgnoringCase(bool ignoreCase = true) -> aweXpect.Options.StringEqualityOptions!
@@ -523,11 +522,10 @@ aweXpect.Options.StringEqualityOptions.IgnoringNewlineStyle(bool ignoreNewlineSt
 aweXpect.Options.StringEqualityOptions.IgnoringTrailingWhiteSpace(bool ignoreTrailingWhiteSpace = true) -> aweXpect.Options.StringEqualityOptions!
 aweXpect.Options.StringEqualityOptions.SetMatchType(aweXpect.Core.IStringMatchType! matchType) -> void
 aweXpect.Options.StringEqualityOptions.StringEqualityOptions() -> void
-aweXpect.Options.StringEqualityOptions.UsingComparer(System.Collections.Generic.IEqualityComparer<string!>? comparer) -> aweXpect.Options.StringEqualityOptions!
+aweXpect.Options.StringEqualityOptions.Using(System.Collections.Generic.IEqualityComparer<string!>? comparer) -> aweXpect.Options.StringEqualityOptions!
 aweXpect.Options.TimeSpanEqualityOptions
 aweXpect.Options.TimeSpanEqualityOptions.AppendFailureResult(System.Text.StringBuilder! stringBuilder, System.TimeSpan actual) -> void
 aweXpect.Options.TimeSpanEqualityOptions.AppendTo(System.Text.StringBuilder! stringBuilder, string! prefix) -> void
-aweXpect.Options.TimeSpanEqualityOptions.Approximately(System.TimeSpan expected, System.TimeSpan tolerance) -> void
 aweXpect.Options.TimeSpanEqualityOptions.AtLeast(System.TimeSpan minimum) -> void
 aweXpect.Options.TimeSpanEqualityOptions.AtMost(System.TimeSpan maximum) -> void
 aweXpect.Options.TimeSpanEqualityOptions.Between(System.TimeSpan minimum, System.TimeSpan maximum) -> void
