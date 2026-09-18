@@ -4020,6 +4020,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 19 00:28:44 2026 \u002B0200",
         "message": "fix: reject NaN bounds in \u0060IsBetween\u0060 and compare infinite numbers correctly (#1206)"
+      },
+      {
+        "sha": "6dc5c037da2607a638681bb4135bb4108ce259ee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 19 00:29:46 2026 \u002B0200",
+        "message": "fix: omit the Actual and Expected sections when the message shows the value completely (#1207)"
       }
     ],
     "labels": [
@@ -4692,7 +4698,8 @@ window.BENCHMARK_DATA = {
       "00dff638",
       "592eda32",
       "969656cf",
-      "b3903651"
+      "b3903651",
+      "6dc5c037"
     ],
     "datasets": [
       {
@@ -5368,7 +5375,8 @@ window.BENCHMARK_DATA = {
           338.3181185086568,
           231.47678319613138,
           329.0090421267918,
-          219.59215790430704
+          219.59215790430704,
+          280.34887494359697
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6042,6 +6050,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          840,
           840,
           840,
           840,
@@ -6733,7 +6742,8 @@ window.BENCHMARK_DATA = {
           251.7722088609423,
           198.7654082775116,
           254.24044408798218,
-          198.509849357605
+          198.509849357605,
+          247.91028543881006
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6926,6 +6936,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10986,6 +10997,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 19 00:28:44 2026 \u002B0200",
         "message": "fix: reject NaN bounds in \u0060IsBetween\u0060 and compare infinite numbers correctly (#1206)"
+      },
+      {
+        "sha": "6dc5c037da2607a638681bb4135bb4108ce259ee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 19 00:29:46 2026 \u002B0200",
+        "message": "fix: omit the Actual and Expected sections when the message shows the value completely (#1207)"
       }
     ],
     "labels": [
@@ -11581,7 +11598,8 @@ window.BENCHMARK_DATA = {
       "00dff638",
       "592eda32",
       "969656cf",
-      "b3903651"
+      "b3903651",
+      "6dc5c037"
     ],
     "datasets": [
       {
@@ -12180,7 +12198,8 @@ window.BENCHMARK_DATA = {
           322006.48678385414,
           252500.36003766741,
           316448.8670572917,
-          243099.75709635418
+          243099.75709635418,
+          297940.5680454799
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12777,6 +12796,7 @@ window.BENCHMARK_DATA = {
           617976,
           617976,
           617976,
+          618120,
           618120,
           618120,
           618120,
@@ -13391,7 +13411,8 @@ window.BENCHMARK_DATA = {
           2641841.021614583,
           1906932.693638393,
           2675879.283072917,
-          1805507.6053185095
+          1805507.6053185095,
+          2265258.637920673
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13995,7 +14016,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841647,
           4841651,
-          4841648
+          4841648,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18029,6 +18051,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 19 00:28:44 2026 \u002B0200",
         "message": "fix: reject NaN bounds in \u0060IsBetween\u0060 and compare infinite numbers correctly (#1206)"
+      },
+      {
+        "sha": "6dc5c037da2607a638681bb4135bb4108ce259ee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 19 00:29:46 2026 \u002B0200",
+        "message": "fix: omit the Actual and Expected sections when the message shows the value completely (#1207)"
       }
     ],
     "labels": [
@@ -18701,7 +18729,8 @@ window.BENCHMARK_DATA = {
       "00dff638",
       "592eda32",
       "969656cf",
-      "b3903651"
+      "b3903651",
+      "6dc5c037"
     ],
     "datasets": [
       {
@@ -19377,7 +19406,8 @@ window.BENCHMARK_DATA = {
           538.7581422170003,
           399.44025967915854,
           619.8084933417184,
-          399.77437041600547
+          399.77437041600547,
+          502.5646817525228
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20051,6 +20081,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1512,
           1512,
           1512,
           1512,
@@ -20742,7 +20773,8 @@ window.BENCHMARK_DATA = {
           507.55058492933,
           405.4112504209791,
           495.2215061187744,
-          375.07692857889026
+          375.07692857889026,
+          504.80152123769125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20935,6 +20967,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -25457,6 +25490,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 19 00:28:44 2026 \u002B0200",
         "message": "fix: reject NaN bounds in \u0060IsBetween\u0060 and compare infinite numbers correctly (#1206)"
+      },
+      {
+        "sha": "6dc5c037da2607a638681bb4135bb4108ce259ee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 19 00:29:46 2026 \u002B0200",
+        "message": "fix: omit the Actual and Expected sections when the message shows the value completely (#1207)"
       }
     ],
     "labels": [
@@ -26129,7 +26168,8 @@ window.BENCHMARK_DATA = {
       "00dff638",
       "592eda32",
       "969656cf",
-      "b3903651"
+      "b3903651",
+      "6dc5c037"
     ],
     "datasets": [
       {
@@ -26805,7 +26845,8 @@ window.BENCHMARK_DATA = {
           308.0331859248025,
           251.0540198326111,
           315.9520732334682,
-          277.8195514996847
+          277.8195514996847,
+          310.0526204109192
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27479,6 +27520,7 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
+          1008,
           1008,
           1008,
           1008,
@@ -28170,7 +28212,8 @@ window.BENCHMARK_DATA = {
           256.62382987340294,
           188.4669912815094,
           250.61726773579915,
-          184.86165196555
+          184.86165196555,
+          264.69958817164104
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28363,6 +28406,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -32885,6 +32929,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 19 00:28:44 2026 \u002B0200",
         "message": "fix: reject NaN bounds in \u0060IsBetween\u0060 and compare infinite numbers correctly (#1206)"
+      },
+      {
+        "sha": "6dc5c037da2607a638681bb4135bb4108ce259ee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 19 00:29:46 2026 \u002B0200",
+        "message": "fix: omit the Actual and Expected sections when the message shows the value completely (#1207)"
       }
     ],
     "labels": [
@@ -33557,7 +33607,8 @@ window.BENCHMARK_DATA = {
       "00dff638",
       "592eda32",
       "969656cf",
-      "b3903651"
+      "b3903651",
+      "6dc5c037"
     ],
     "datasets": [
       {
@@ -34233,7 +34284,8 @@ window.BENCHMARK_DATA = {
           553.947010676066,
           447.68320550918577,
           610.8395245869955,
-          447.3989498615265
+          447.3989498615265,
+          577.2993154525757
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34914,7 +34966,8 @@ window.BENCHMARK_DATA = {
           1400,
           1400,
           1400,
-          1400
+          1400,
+          1496
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35598,7 +35651,8 @@ window.BENCHMARK_DATA = {
           1258.8664143880208,
           944.0233445485433,
           1314.844744873047,
-          870.425428537222
+          870.425428537222,
+          1091.1853406270345
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36027,6 +36081,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -40313,6 +40368,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 19 00:28:44 2026 \u002B0200",
         "message": "fix: reject NaN bounds in \u0060IsBetween\u0060 and compare infinite numbers correctly (#1206)"
+      },
+      {
+        "sha": "6dc5c037da2607a638681bb4135bb4108ce259ee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 19 00:29:46 2026 \u002B0200",
+        "message": "fix: omit the Actual and Expected sections when the message shows the value completely (#1207)"
       }
     ],
     "labels": [
@@ -40985,7 +41046,8 @@ window.BENCHMARK_DATA = {
       "00dff638",
       "592eda32",
       "969656cf",
-      "b3903651"
+      "b3903651",
+      "6dc5c037"
     ],
     "datasets": [
       {
@@ -41661,7 +41723,8 @@ window.BENCHMARK_DATA = {
           2227.4863881429037,
           1734.0955317361015,
           2129.4109537942068,
-          1600.9962807973227
+          1600.9962807973227,
+          2008.913465499878
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -42335,6 +42398,7 @@ window.BENCHMARK_DATA = {
           2752,
           2752,
           2752,
+          3104,
           3104,
           3104,
           3104,
@@ -43026,7 +43090,8 @@ window.BENCHMARK_DATA = {
           1325.5950056711833,
           1095.7212844576154,
           1342.2186517079672,
-          998.9218976338705
+          998.9218976338705,
+          1259.1583348682948
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -43219,6 +43284,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -47741,6 +47807,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 19 00:28:44 2026 \u002B0200",
         "message": "fix: reject NaN bounds in \u0060IsBetween\u0060 and compare infinite numbers correctly (#1206)"
+      },
+      {
+        "sha": "6dc5c037da2607a638681bb4135bb4108ce259ee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Sep 19 00:29:46 2026 \u002B0200",
+        "message": "fix: omit the Actual and Expected sections when the message shows the value completely (#1207)"
       }
     ],
     "labels": [
@@ -48413,7 +48485,8 @@ window.BENCHMARK_DATA = {
       "00dff638",
       "592eda32",
       "969656cf",
-      "b3903651"
+      "b3903651",
+      "6dc5c037"
     ],
     "datasets": [
       {
@@ -49089,7 +49162,8 @@ window.BENCHMARK_DATA = {
           2825.083543141683,
           2213.5933113098145,
           2740.8627700805664,
-          2065.619392101581
+          2065.619392101581,
+          2617.9306003863994
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -49763,6 +49837,7 @@ window.BENCHMARK_DATA = {
           2944,
           2944,
           2944,
+          3296,
           3296,
           3296,
           3296,
@@ -50454,7 +50529,8 @@ window.BENCHMARK_DATA = {
           27270.3803914388,
           16602.52258504232,
           26567.815239539512,
-          15144.957088216146
+          15144.957088216146,
+          19340.236243111747
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -51128,6 +51204,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
