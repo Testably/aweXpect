@@ -20,11 +20,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains value <null>,
-					             but it contained only [
-					               41,
-					               42,
-					               43
-					             ]
+					             but it did not contain <null>
 
 					             Dictionary:
 					             {[1] = 41, [2] = 42, [3] = 43}
@@ -81,11 +77,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains value 2,
-					             but it contained only [
-					               41,
-					               42,
-					               43
-					             ]
+					             but it did not contain 2
 
 					             Dictionary:
 					             {[1] = 41, [2] = 42, [3] = 43}
