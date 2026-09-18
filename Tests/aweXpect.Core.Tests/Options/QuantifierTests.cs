@@ -211,6 +211,50 @@ public class QuantifierTests
 			.WithMessage("*The parameter 'expected' must be non-negative*").AsWildcard();
 	}
 
+	[Theory]
+	[InlineData("AtLeast", 1, "never")]
+	[InlineData("AtLeast", 2, "less than twice")]
+	[InlineData("AtLeast", 3, "less than 3 times")]
+	[InlineData("AtMost", 0, "at least once")]
+	[InlineData("AtMost", 1, "more than once")]
+	[InlineData("AtMost", 3, "more than 3 times")]
+	[InlineData("Between", 3, "not between 3 and 5 times")]
+	[InlineData("Exactly", 0, "at least once")]
+	[InlineData("Exactly", 1, "not exactly once")]
+	[InlineData("Exactly", 2, "not exactly twice")]
+	[InlineData("Exactly", 3, "not exactly 3 times")]
+	[InlineData("LessThan", 1, "at least once")]
+	[InlineData("LessThan", 4, "at least 4 times")]
+	[InlineData("MoreThan", 1, "at most once")]
+	[InlineData("MoreThan", 2, "at most twice")]
+	[InlineData("MoreThan", 3, "at most 3 times")]
+	public async Task ToString_WhenNegated_ShouldDescribeTheComplement(string method, int value, string expected)
+	{
+		Quantifier sut = Configure(method switch
+		{
+			"AtLeast" => q => q.AtLeast(value),
+			"AtMost" => q => q.AtMost(value),
+			"Between" => q => q.Between(value, 5),
+			"Exactly" => q => q.Exactly(value),
+			"LessThan" => q => q.LessThan(value),
+			_ => q => q.MoreThan(value),
+		});
+
+		sut.Negate();
+
+		await That(sut.ToString()).IsEqualTo(expected);
+	}
+
+	[Fact]
+	public async Task ToString_WhenNegatedDefault_ShouldBeNever()
+	{
+		Quantifier sut = new();
+
+		sut.Negate();
+
+		await That(sut.ToString()).IsEqualTo("never");
+	}
+
 	private static Quantifier Configure(Action<Quantifier> configure)
 	{
 		Quantifier quantifier = new();
