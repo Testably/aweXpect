@@ -19,8 +19,9 @@ public static partial class ThatObject
 		where T : class
 	{
 		type.ThrowIfNull();
-		return new AndOrResult<T?, IThat<T?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsOfTypeConstraint(it, grammars, type)),
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new AndOrResult<T?, IThat<T?>>(expectationBuilder.AddConstraint((it, grammars)
+				=> new IsOfTypeConstraint(expectationBuilder, it, grammars, type)),
 			subject);
 	}
 
@@ -34,12 +35,17 @@ public static partial class ThatObject
 		where T : class
 	{
 		type.ThrowIfNull();
-		return new AndOrResult<T?, IThat<T?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsOfTypeConstraint(it, grammars, type).Invert()),
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new AndOrResult<T?, IThat<T?>>(expectationBuilder.AddConstraint((it, grammars)
+				=> new IsOfTypeConstraint(expectationBuilder, it, grammars, type).Invert()),
 			subject);
 	}
 
-	private sealed class IsOfTypeConstraint(string it, ExpectationGrammars grammars, Type type)
+	private sealed class IsOfTypeConstraint(
+		ExpectationBuilder expectationBuilder,
+		string it,
+		ExpectationGrammars grammars,
+		Type type)
 		: ConstraintResult.WithNotNullValue<object>(it, grammars),
 			IValueConstraint<object?>
 	{
@@ -47,6 +53,12 @@ public static partial class ThatObject
 		{
 			Actual = actual;
 			Outcome = IsOrImplements(type, actual) ? Outcome.Success : Outcome.Failure;
+			if (Outcome == Outcome.Failure && actual is not null)
+			{
+				expectationBuilder.AddContext(new ResultContext.Fixed("Actual",
+					Formatter.Format(actual, FormattingOptions.MultipleLines)));
+			}
+
 			return this;
 		}
 
@@ -96,7 +108,7 @@ public static partial class ThatObject
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" was ");
-			Formatter.Format(stringBuilder, Actual, FormattingOptions.Indented(indentation, true));
+			Formatter.Format(stringBuilder, Actual!.GetType());
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

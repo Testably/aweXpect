@@ -244,7 +244,6 @@ public class Quantifier
 		{
 			(true, 1, null) => "never",
 			(true, _, 0) => "at least once",
-			(true, 1, 1) => "not once",
 			(true, null, 1) => "more than once",
 			(_, _, _) => null,
 		};
@@ -268,7 +267,7 @@ public class Quantifier
 			return _allowEqual ? $"more than {ToTimesString(_maximum)}" : $"at least {ToTimesString(_maximum)}";
 		}
 
-		return $"outside {_minimum} and {_maximum} times";
+		return $"not between {_minimum} and {_maximum} times";
 	}
 
 	/// <summary>

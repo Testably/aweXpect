@@ -88,9 +88,12 @@ public sealed partial class ThatObject
 					.WithMessage($$"""
 					               Expected that subject
 					               is not type ThatObject.MyBaseClass, because we want to test the failure,
-					               but it was ThatObject.MyClass {
-					                   Value = {{value}}
-					                 }
+					               but it was ThatObject.MyClass
+
+					               Actual:
+					               ThatObject.MyClass {
+					                 Value = {{value}}
+					               }
 					               """);
 			}
 
@@ -122,9 +125,12 @@ public sealed partial class ThatObject
 					.WithMessage($$"""
 					               Expected that subject
 					               is not type ThatObject.MyClass, because {{reason}},
-					               but it was ThatObject.MyClass {
-					                   Value = {{value}}
-					                 }
+					               but it was ThatObject.MyClass
+
+					               Actual:
+					               ThatObject.MyClass {
+					                 Value = {{value}}
+					               }
 					               """);
 			}
 		}
@@ -202,9 +208,12 @@ public sealed partial class ThatObject
 					.WithMessage($$"""
 					               Expected that subject
 					               is not type ThatObject.MyBaseClass, because we want to test the failure,
-					               but it was ThatObject.MyClass {
-					                   Value = {{value}}
-					                 }
+					               but it was ThatObject.MyClass
+
+					               Actual:
+					               ThatObject.MyClass {
+					                 Value = {{value}}
+					               }
 					               """);
 			}
 
@@ -236,9 +245,12 @@ public sealed partial class ThatObject
 					.WithMessage($$"""
 					               Expected that subject
 					               is not type ThatObject.MyClass, because {{reason}},
-					               but it was ThatObject.MyClass {
-					                   Value = {{value}}
-					                 }
+					               but it was ThatObject.MyClass
+
+					               Actual:
+					               ThatObject.MyClass {
+					                 Value = {{value}}
+					               }
 					               """);
 			}
 		}

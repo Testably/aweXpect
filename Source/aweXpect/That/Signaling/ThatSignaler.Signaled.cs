@@ -16,15 +16,6 @@ public static partial class ThatSignaler
 	private const string Times = " times";
 
 	/// <summary>
-	///     The occurrences of a <see cref="Quantifier" /> that was never further specified.
-	/// </summary>
-	/// <remarks>
-	///     They are left out of the negated expectation, so that <c>DidNotSignal()</c> keeps reading as
-	///     "does not have recorded the callback" instead of adding a redundant "at least once".
-	/// </remarks>
-	private static readonly string DefaultOccurrences = new Quantifier().ToString();
-
-	/// <summary>
 	///     Verifies that the expected callback was signaled at least once.
 	/// </summary>
 	[GuaranteesNotNull]
@@ -178,14 +169,10 @@ public static partial class ThatSignaler
 	private static void AppendNegatedCallbackExpectation(StringBuilder stringBuilder, Quantifier quantifier,
 		SignalerOptions options)
 	{
-		stringBuilder.Append("does not have recorded the callback");
-		string occurrences = quantifier.ToString();
-		if (occurrences != DefaultOccurrences)
-		{
-			stringBuilder.Append(' ').Append(occurrences);
-		}
-
-		stringBuilder.Append(options);
+		// Rendering the complementary quantifier makes e.g. DidNotSignal() read like Signaled().Never().
+		quantifier.Negate();
+		AppendNormalCallbackExpectation(stringBuilder, quantifier, options);
+		quantifier.Negate();
 	}
 
 	private static void AppendOccurrences(StringBuilder stringBuilder, Quantifier quantifier, int count)
