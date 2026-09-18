@@ -65,14 +65,16 @@ public sealed partial class ThatEnum
 			}
 
 			[Fact]
-			public async Task WhenUnexpectedIsNull_ShouldSucceed()
+			public async Task WhenUnexpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				MyColors subject = MyColors.Yellow;
 
 				async Task Act()
 					=> await That(subject).DoesNotHaveFlag(null);
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The unexpected cannot be null.").AsPrefix();
 			}
 		}
 	}
