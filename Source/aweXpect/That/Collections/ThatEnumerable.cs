@@ -23,7 +23,7 @@ public static partial class ThatEnumerable
 {
 	private const string For = " for ";
 	private const string SortOrder = " order";
-	private const string CannotCompareToNull = " cannot compare to <null>";
+	private const string ExpectedCollectionWasNull = "the expected collection was <null>";
 
 	private sealed class IsEqualToConstraint<TItem, TMatch>(
 		ExpectationBuilder expectationBuilder,
@@ -50,9 +50,17 @@ public static partial class ThatEnumerable
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			if (actual is null || expected is null)
+			if (actual is null)
 			{
-				Outcome = actual is null && expected is null ? Outcome.Success : Outcome.Failure;
+				Outcome = expected is null ? Outcome.Success : Outcome.Failure;
+				return this;
+			}
+
+			if (expected is null)
+			{
+				Outcome = Outcome.Failure;
+				expectationBuilder.AddCollectionContext(
+					context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual));
 				return this;
 			}
 
@@ -110,7 +118,7 @@ public static partial class ThatEnumerable
 		{
 			if (expected is null)
 			{
-				stringBuilder.Append(It).Append(CannotCompareToNull);
+				stringBuilder.Append(ExpectedCollectionWasNull);
 			}
 			else if (_failure is not null)
 			{
@@ -125,7 +133,7 @@ public static partial class ThatEnumerable
 		{
 			if (expected is null)
 			{
-				stringBuilder.Append(It).Append(CannotCompareToNull);
+				stringBuilder.Append(ExpectedCollectionWasNull);
 			}
 			else
 			{
@@ -160,9 +168,17 @@ public static partial class ThatEnumerable
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			if (actual is null || expected is null)
+			if (actual is null)
 			{
-				Outcome = actual is null && expected is null ? Outcome.Success : Outcome.Failure;
+				Outcome = expected is null ? Outcome.Success : Outcome.Failure;
+				return this;
+			}
+
+			if (expected is null)
+			{
+				Outcome = Outcome.Failure;
+				expectationBuilder.AddCollectionContext(
+					context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual));
 				return this;
 			}
 
@@ -219,7 +235,7 @@ public static partial class ThatEnumerable
 		{
 			if (expected is null)
 			{
-				stringBuilder.Append(It).Append(CannotCompareToNull);
+				stringBuilder.Append(ExpectedCollectionWasNull);
 			}
 			else if (_failure is not null)
 			{
@@ -234,7 +250,7 @@ public static partial class ThatEnumerable
 		{
 			if (expected is null)
 			{
-				stringBuilder.Append(It).Append(CannotCompareToNull);
+				stringBuilder.Append(ExpectedCollectionWasNull);
 			}
 			else
 			{
@@ -278,9 +294,17 @@ public static partial class ThatEnumerable
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			if (actual is null || expected is null)
+			if (actual is null)
 			{
-				Outcome = actual is null && expected is null ? Outcome.Success : Outcome.Failure;
+				Outcome = expected is null ? Outcome.Success : Outcome.Failure;
+				return this;
+			}
+
+			if (expected is null)
+			{
+				Outcome = Outcome.Failure;
+				expectationBuilder.AddCollectionContext(
+					context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual));
 				return this;
 			}
 
@@ -336,7 +360,7 @@ public static partial class ThatEnumerable
 		{
 			if (expected is null)
 			{
-				stringBuilder.Append(It).Append(CannotCompareToNull);
+				stringBuilder.Append(ExpectedCollectionWasNull);
 			}
 			else if (_failure is not null)
 			{
@@ -351,7 +375,7 @@ public static partial class ThatEnumerable
 		{
 			if (expected is null)
 			{
-				stringBuilder.Append(It).Append(CannotCompareToNull);
+				stringBuilder.Append(ExpectedCollectionWasNull);
 			}
 			else
 			{
@@ -397,9 +421,16 @@ public static partial class ThatEnumerable
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			if (actual is null || expected is null)
+			if (actual is null)
 			{
-				Outcome = actual is null && expected is null ? Outcome.Success : Outcome.Failure;
+				Outcome = expected is null ? Outcome.Success : Outcome.Failure;
+				return this;
+			}
+
+			if (expected is null)
+			{
+				Outcome = Outcome.Failure;
+				expectationBuilder.AddCollectionContext(context.UseMaterializedEnumerable(actual));
 				return this;
 			}
 
@@ -456,7 +487,7 @@ public static partial class ThatEnumerable
 		{
 			if (expected is null)
 			{
-				stringBuilder.Append(It).Append(CannotCompareToNull);
+				stringBuilder.Append(ExpectedCollectionWasNull);
 			}
 			else if (_failure is not null)
 			{
@@ -471,7 +502,7 @@ public static partial class ThatEnumerable
 		{
 			if (expected is null)
 			{
-				stringBuilder.Append(It).Append(CannotCompareToNull);
+				stringBuilder.Append(ExpectedCollectionWasNull);
 			}
 			else
 			{

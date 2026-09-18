@@ -39,9 +39,6 @@ public static partial class ThatBool
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It);
-			stringBuilder.Append(" was");
-		}
+			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }

@@ -498,9 +498,17 @@ public static partial class ThatAsyncEnumerable
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			if (actual is null || expected is null)
+			if (actual is null)
 			{
-				Outcome = actual is null && expected is null ? Outcome.Success : Outcome.Failure;
+				Outcome = expected is null ? Outcome.Success : Outcome.Failure;
+				return this;
+			}
+
+			if (expected is null)
+			{
+				Outcome = Outcome.Failure;
+				await expectationBuilder.AddCollectionContext(
+					context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual) as IMaterializedEnumerable<TItem>);
 				return this;
 			}
 
@@ -574,7 +582,7 @@ public static partial class ThatAsyncEnumerable
 		{
 			if (expected is null)
 			{
-				stringBuilder.Append(It).Append(" cannot compare to <null>");
+				stringBuilder.Append("the expected collection was <null>");
 			}
 			else if (_failure is not null)
 			{
@@ -589,7 +597,7 @@ public static partial class ThatAsyncEnumerable
 		{
 			if (expected is null)
 			{
-				stringBuilder.Append(It).Append(" cannot compare to <null>");
+				stringBuilder.Append("the expected collection was <null>");
 			}
 			else
 			{
@@ -625,9 +633,17 @@ public static partial class ThatAsyncEnumerable
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			if (actual is null || expected is null)
+			if (actual is null)
 			{
-				Outcome = actual is null && expected is null ? Outcome.Success : Outcome.Failure;
+				Outcome = expected is null ? Outcome.Success : Outcome.Failure;
+				return this;
+			}
+
+			if (expected is null)
+			{
+				Outcome = Outcome.Failure;
+				await expectationBuilder.AddCollectionContext(
+					context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual) as IMaterializedEnumerable<TItem>);
 				return this;
 			}
 
@@ -700,7 +716,7 @@ public static partial class ThatAsyncEnumerable
 		{
 			if (expected is null)
 			{
-				stringBuilder.Append(It).Append(" cannot compare to <null>");
+				stringBuilder.Append("the expected collection was <null>");
 			}
 			else if (_failure is not null)
 			{
@@ -715,7 +731,7 @@ public static partial class ThatAsyncEnumerable
 		{
 			if (expected is null)
 			{
-				stringBuilder.Append(It).Append(" cannot compare to <null>");
+				stringBuilder.Append("the expected collection was <null>");
 			}
 			else
 			{
@@ -760,9 +776,17 @@ public static partial class ThatAsyncEnumerable
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			if (actual is null || expected is null)
+			if (actual is null)
 			{
-				Outcome = actual is null && expected is null ? Outcome.Success : Outcome.Failure;
+				Outcome = expected is null ? Outcome.Success : Outcome.Failure;
+				return this;
+			}
+
+			if (expected is null)
+			{
+				Outcome = Outcome.Failure;
+				await expectationBuilder.AddCollectionContext(
+					context.UseMaterializedAsyncEnumerable<TItem, IAsyncEnumerable<TItem>>(actual) as IMaterializedEnumerable<TItem>);
 				return this;
 			}
 
@@ -834,7 +858,7 @@ public static partial class ThatAsyncEnumerable
 		{
 			if (expected is null)
 			{
-				stringBuilder.Append(It).Append(" cannot compare to <null>");
+				stringBuilder.Append("the expected collection was <null>");
 			}
 			else if (_failure is not null)
 			{
@@ -849,7 +873,7 @@ public static partial class ThatAsyncEnumerable
 		{
 			if (expected is null)
 			{
-				stringBuilder.Append(It).Append(" cannot compare to <null>");
+				stringBuilder.Append("the expected collection was <null>");
 			}
 			else
 			{

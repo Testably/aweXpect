@@ -188,6 +188,14 @@ need an update.
 - `HasInner` and `WithInner` name the relation when the inner exception has the wrong type:
   `but it was an inner ArgumentException:` instead of `but it was an ArgumentException:`.
 - The message of an unexpected exception is indented along with the rest of the result inside `Expect.ThatAll`.
+- A negated `HasInner` or `HasInnerException` names the inner exception it found in the same shape:
+  `but it had an inner CustomException:` followed by the indented message, instead of `but it had`.
+- A negated `HasSingle` names the item it found and adds the `Collection:` context: `but it had the single item 42`
+  (or `the single matching item 42` with a predicate) instead of `but it did`.
+- Collection equality with a `null` expected collection reads `but the expected collection was <null>` instead of
+  `but it cannot compare to <null>` and adds the `Collection:` context of the subject.
+- A negated bool expectation names the value: `IsNotTrue()` renders `is not True, but it was True` instead of
+  `but it was`, which also completes a negated combination such as `is not True or is not True, but it was True`.
 - A `Whose` directly after a `Which` no longer repeats the connector: `Throws<MyException>().Which.Whose(…)` renders
   `throws a MyException whose …` instead of `throws a MyException which whose …`, and `HasSingle().Which.Whose(…)`
   renders `has a single item whose …`.
