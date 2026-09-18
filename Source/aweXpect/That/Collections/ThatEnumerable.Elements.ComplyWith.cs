@@ -82,13 +82,13 @@ public static partial class ThatEnumerable
 					ConstraintResult isMatch = await _itemExpectationBuilder.IsMetBy(item, context, cancellationToken);
 					if (isMatch.Outcome == Outcome.Success)
 					{
+						_matchingItems.Add(item, _matchingCount + _notMatchingCount);
 						_matchingCount++;
-						_matchingItems.Add(item);
 					}
 					else
 					{
+						_notMatchingItems.Add(item, _matchingCount + _notMatchingCount);
 						_notMatchingCount++;
-						_notMatchingItems.Add(item);
 					}
 
 					if (cancelEarly && _quantifier.IsDeterminable(_matchingCount, _notMatchingCount))
@@ -143,21 +143,18 @@ public static partial class ThatEnumerable
 			{
 				EnumerableQuantifier.QuantifierContexts quantifierContexts = _quantifier.GetQuantifierContext();
 				if (quantifierContexts.HasFlag(EnumerableQuantifier.QuantifierContexts.MatchingItems) &&
-				    _matchingItems?.Count > 0)
+				    _matchingItems is { Count: > 0 } matchingItems)
 				{
 					_expectationBuilder.AddContext(new ResultContext.SyncCallback("Matching items",
-							() => Formatter.Format(_matchingItems, typeof(TItem).GetFormattingOption(_matchingItems?.Count))
-								.AppendIsIncomplete(isIncomplete),
+							() => matchingItems.Format(Actual, typeof(TItem)).AppendIsIncomplete(isIncomplete),
 							int.MaxValue));
 				}
 
 				if (quantifierContexts.HasFlag(EnumerableQuantifier.QuantifierContexts.NotMatchingItems) &&
-				    _notMatchingItems?.Count > 0)
+				    _notMatchingItems is { Count: > 0 } notMatchingItems)
 				{
 					_expectationBuilder.AddContext(new ResultContext.SyncCallback("Not matching items",
-							() => Formatter.Format(_notMatchingItems,
-									typeof(TItem).GetFormattingOption(_notMatchingItems?.Count))
-								.AppendIsIncomplete(isIncomplete),
+							() => notMatchingItems.Format(Actual, typeof(TItem)).AppendIsIncomplete(isIncomplete),
 							int.MaxValue));
 				}
 			}

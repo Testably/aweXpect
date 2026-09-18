@@ -116,15 +116,8 @@ public sealed partial class ThatDictionary
 					               0
 					             ]
 
-					             Not matching items:
-					             [
-					               <null>
-					             ]
-
 					             Collection:
-					             [
-					               <null>
-					             ]
+					             []
 
 					             Dictionary:
 					             {
@@ -151,13 +144,83 @@ public sealed partial class ThatDictionary
 
 					             Not matching items:
 					             [
-					               "bar"
+					               [2] = "bar"
 					             ]
 
 					             Collection:
 					             [
-					               "foo",
-					               "bar"
+					               [1] = "foo",
+					               [2] = "bar"
+					             ]
+
+					             Dictionary:
+					             {
+					               [1] = "foo",
+					               [2] = "bar",
+					               [3] = "baz"
+					             }
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenKeysExist_ButValuesAreNotUnique_ShouldFail()
+			{
+				IDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "foo",]);
+
+				async Task Act()
+					=> await That(subject).ContainsKeys(1, 2, 3).WhoseValues.AreUnique();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains keys [1, 2, 3] whose values are unique for all items,
+					             but only 1 of 3 were
+
+					             Not matching items:
+					             [
+					               [1] = "foo",
+					               [3] = "foo"
+					             ]
+
+					             Collection:
+					             [
+					               [1] = "foo",
+					               [2] = "bar",
+					               [3] = "foo"
+					             ]
+
+					             Dictionary:
+					             {
+					               [1] = "foo",
+					               [2] = "bar",
+					               [3] = "foo"
+					             }
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenKeysExist_ButValuesDoNotComply_ShouldFail()
+			{
+				IDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
+
+				async Task Act()
+					=> await That(subject).ContainsKeys(1, 2).WhoseValues.ComplyWith(v => v.StartsWith("f"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains keys [1, 2] whose values starts with "f" for all items,
+					             but only 1 of 2 were
+
+					             Not matching items:
+					             [
+					               [2] = "bar"
+					             ]
+
+					             Collection:
+					             [
+					               [1] = "foo",
+					               [2] = "bar"
 					             ]
 
 					             Dictionary:
@@ -185,12 +248,46 @@ public sealed partial class ThatDictionary
 
 					             Not matching items:
 					             [
-					               "bar"
+					               [2] = "bar"
 					             ]
 
 					             Collection:
 					             [
-					               "bar"
+					               [2] = "bar"
+					             ]
+
+					             Dictionary:
+					             {
+					               [1] = "foo",
+					               [2] = "bar",
+					               [3] = "baz"
+					             }
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenKeysExist_ButValuesDoNotSatisfy_ShouldFail()
+			{
+				IDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
+
+				async Task Act()
+					=> await That(subject).ContainsKeys(1, 2).WhoseValues.Satisfy(v => v?.StartsWith("fo") == true);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains keys [1, 2] whose values satisfy v => v?.StartsWith("fo") == true for all items,
+					             but only 1 of 2 did
+
+					             Not matching items:
+					             [
+					               [2] = "bar"
+					             ]
+
+					             Collection:
+					             [
+					               [1] = "foo",
+					               [2] = "bar"
 					             ]
 
 					             Dictionary:
@@ -231,16 +328,14 @@ public sealed partial class ThatDictionary
 
 					             Not matching items:
 					             [
-					               "foo",
-					               <null>,
-					               "baz"
+					               [1] = "foo",
+					               [3] = "baz"
 					             ]
 
 					             Collection:
 					             [
-					               "foo",
-					               <null>,
-					               "baz"
+					               [1] = "foo",
+					               [3] = "baz"
 					             ]
 
 					             Dictionary:

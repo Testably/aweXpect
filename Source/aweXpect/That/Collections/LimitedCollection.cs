@@ -11,13 +11,21 @@ namespace aweXpect;
 internal class LimitedCollection<T> : IEnumerable<T>
 {
 	private readonly List<T> _buffer;
+	private readonly List<int> _indices;
 	private readonly int _limit;
 
 	public LimitedCollection(int? limit = null)
 	{
 		_limit = limit ?? Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get() + 1;
 		_buffer = new List<T>(_limit);
+		_indices = new List<int>(_limit);
 	}
+
+	/// <summary>
+	///     The positions in the source collection of the items added with <see cref="Add(T, int)" />.
+	/// </summary>
+	public IEnumerable<int> Indices
+		=> _indices;
 
 	/// <inheritdoc cref="IEnumerable{T}.GetEnumerator()" />
 	public IEnumerator<T> GetEnumerator()
@@ -33,6 +41,18 @@ internal class LimitedCollection<T> : IEnumerable<T>
 		if (!IsReadOnly)
 		{
 			_buffer.Add(item);
+		}
+	}
+
+	/// <summary>
+	///     Adds the <paramref name="item" /> found at <paramref name="index" /> in the source collection.
+	/// </summary>
+	public void Add(T item, int index)
+	{
+		if (!IsReadOnly)
+		{
+			_buffer.Add(item);
+			_indices.Add(index);
 		}
 	}
 
