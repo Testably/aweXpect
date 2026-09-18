@@ -110,9 +110,12 @@ public sealed partial class ThatObject
 					.WithMessage($$"""
 					               Expected that subject
 					               is not exactly type ThatObject.MyClass, because {{reason}},
-					               but it was ThatObject.MyClass {
-					                   Value = {{value}}
-					                 }
+					               but it was ThatObject.MyClass
+
+					               Actual:
+					               ThatObject.MyClass {
+					                 Value = {{value}}
+					               }
 					               """);
 			}
 		}
@@ -212,9 +215,12 @@ public sealed partial class ThatObject
 					.WithMessage($$"""
 					               Expected that subject
 					               is not exactly type ThatObject.MyClass, because {{reason}},
-					               but it was ThatObject.MyClass {
-					                   Value = {{value}}
-					                 }
+					               but it was ThatObject.MyClass
+
+					               Actual:
+					               ThatObject.MyClass {
+					                 Value = {{value}}
+					               }
 					               """);
 			}
 		}
