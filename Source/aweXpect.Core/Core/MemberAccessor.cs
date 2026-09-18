@@ -83,7 +83,7 @@ public class MemberAccessor<TSource, TTarget> : MemberAccessor
 			if (idx > 0)
 			{
 				expression = expression.Substring(idx + prefix.Length).TrimStart();
-				if (expression.StartsWith(".", StringComparison.Ordinal))
+				if (expression.Length > 0 && expression[0] == '.')
 				{
 					expression = expression.Substring(1);
 				}
