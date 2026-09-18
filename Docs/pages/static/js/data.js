@@ -3990,6 +3990,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 21:55:41 2026 \u002B0200",
         "message": "fix: render every quantifier result as \u0060N of M\u0060 (#1201)"
+      },
+      {
+        "sha": "f9b4540abbc178d56806b31b651ec7abd049f27e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 22:05:15 2026 \u002B0200",
+        "message": "chore: silence the Sonar findings on recently touched code (#1202)"
       }
     ],
     "labels": [
@@ -4657,7 +4663,8 @@ window.BENCHMARK_DATA = {
       "5a801961",
       "1305e06f",
       "e00183f5",
-      "34d794ec"
+      "34d794ec",
+      "f9b4540a"
     ],
     "datasets": [
       {
@@ -5328,7 +5335,8 @@ window.BENCHMARK_DATA = {
           218.62173357009888,
           306.1412992477417,
           306.65425740755524,
-          337.75201447804767
+          337.75201447804767,
+          302.21210071018766
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6002,6 +6010,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          840,
           840,
           840,
           840
@@ -6683,7 +6692,8 @@ window.BENCHMARK_DATA = {
           231.4863794485728,
           249.71533705393475,
           255.23794501168388,
-          254.61803455352782
+          254.61803455352782,
+          250.2746205670493
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6876,6 +6886,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -10901,6 +10912,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 21:55:41 2026 \u002B0200",
         "message": "fix: render every quantifier result as \u0060N of M\u0060 (#1201)"
+      },
+      {
+        "sha": "f9b4540abbc178d56806b31b651ec7abd049f27e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 22:05:15 2026 \u002B0200",
+        "message": "chore: silence the Sonar findings on recently touched code (#1202)"
       }
     ],
     "labels": [
@@ -11491,7 +11508,8 @@ window.BENCHMARK_DATA = {
       "5a801961",
       "1305e06f",
       "e00183f5",
-      "34d794ec"
+      "34d794ec",
+      "f9b4540a"
     ],
     "datasets": [
       {
@@ -12085,7 +12103,8 @@ window.BENCHMARK_DATA = {
           252249.9796875,
           318501.8701497396,
           326566.2730794271,
-          345701.63971354166
+          345701.63971354166,
+          316975.791796875
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12682,6 +12701,7 @@ window.BENCHMARK_DATA = {
           617976,
           617976,
           617976,
+          618120,
           618120,
           618120,
           618120
@@ -13286,7 +13306,8 @@ window.BENCHMARK_DATA = {
           1794733.3513020833,
           2599195.6180245536,
           2588997.383072917,
-          2772641.68359375
+          2772641.68359375,
+          2531028.349739583
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13883,6 +13904,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841609,
+          4841651,
           4841651,
           4841651,
           4841651
@@ -17889,6 +17911,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 21:55:41 2026 \u002B0200",
         "message": "fix: render every quantifier result as \u0060N of M\u0060 (#1201)"
+      },
+      {
+        "sha": "f9b4540abbc178d56806b31b651ec7abd049f27e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 22:05:15 2026 \u002B0200",
+        "message": "chore: silence the Sonar findings on recently touched code (#1202)"
       }
     ],
     "labels": [
@@ -18556,7 +18584,8 @@ window.BENCHMARK_DATA = {
       "5a801961",
       "1305e06f",
       "e00183f5",
-      "34d794ec"
+      "34d794ec",
+      "f9b4540a"
     ],
     "datasets": [
       {
@@ -19227,7 +19256,8 @@ window.BENCHMARK_DATA = {
           388.24630062920704,
           531.7529220581055,
           538.1694253512791,
-          577.7639307022094
+          577.7639307022094,
+          530.6930157343546
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19901,6 +19931,7 @@ window.BENCHMARK_DATA = {
           1368,
           1368,
           1368,
+          1512,
           1512,
           1512,
           1512
@@ -20582,7 +20613,8 @@ window.BENCHMARK_DATA = {
           443.9078366279602,
           492.4942326863607,
           518.6470956802368,
-          555.1492535273234
+          555.1492535273234,
+          479.2288476058415
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20775,6 +20807,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -25262,6 +25295,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 21:55:41 2026 \u002B0200",
         "message": "fix: render every quantifier result as \u0060N of M\u0060 (#1201)"
+      },
+      {
+        "sha": "f9b4540abbc178d56806b31b651ec7abd049f27e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 22:05:15 2026 \u002B0200",
+        "message": "chore: silence the Sonar findings on recently touched code (#1202)"
       }
     ],
     "labels": [
@@ -25929,7 +25968,8 @@ window.BENCHMARK_DATA = {
       "5a801961",
       "1305e06f",
       "e00183f5",
-      "34d794ec"
+      "34d794ec",
+      "f9b4540a"
     ],
     "datasets": [
       {
@@ -26600,7 +26640,8 @@ window.BENCHMARK_DATA = {
           231.98326710065206,
           301.0016506635226,
           323.1038678487142,
-          348.18458862304686
+          348.18458862304686,
+          307.96899785314287
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27274,6 +27315,7 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
+          1008,
           1008,
           1008,
           1008
@@ -27955,7 +27997,8 @@ window.BENCHMARK_DATA = {
           227.02876474062603,
           243.2290725026812,
           258.2499782562256,
-          285.1541458129883
+          285.1541458129883,
+          258.28920259475706
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28148,6 +28191,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -32635,6 +32679,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 21:55:41 2026 \u002B0200",
         "message": "fix: render every quantifier result as \u0060N of M\u0060 (#1201)"
+      },
+      {
+        "sha": "f9b4540abbc178d56806b31b651ec7abd049f27e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 22:05:15 2026 \u002B0200",
+        "message": "chore: silence the Sonar findings on recently touched code (#1202)"
       }
     ],
     "labels": [
@@ -33302,7 +33352,8 @@ window.BENCHMARK_DATA = {
       "5a801961",
       "1305e06f",
       "e00183f5",
-      "34d794ec"
+      "34d794ec",
+      "f9b4540a"
     ],
     "datasets": [
       {
@@ -33973,7 +34024,8 @@ window.BENCHMARK_DATA = {
           410.8887882868449,
           576.9623188018799,
           590.45237159729,
-          603.0279440198626
+          603.0279440198626,
+          546.6077763484075
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34647,6 +34699,7 @@ window.BENCHMARK_DATA = {
           1256,
           1256,
           1256,
+          1400,
           1400,
           1400,
           1400
@@ -35328,7 +35381,8 @@ window.BENCHMARK_DATA = {
           1003.8728504180908,
           1192.900960786002,
           1185.8738259633383,
-          1327.5965039571126
+          1327.5965039571126,
+          1216.9129625467153
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35757,6 +35811,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -40008,6 +40063,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 21:55:41 2026 \u002B0200",
         "message": "fix: render every quantifier result as \u0060N of M\u0060 (#1201)"
+      },
+      {
+        "sha": "f9b4540abbc178d56806b31b651ec7abd049f27e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 22:05:15 2026 \u002B0200",
+        "message": "chore: silence the Sonar findings on recently touched code (#1202)"
       }
     ],
     "labels": [
@@ -40675,7 +40736,8 @@ window.BENCHMARK_DATA = {
       "5a801961",
       "1305e06f",
       "e00183f5",
-      "34d794ec"
+      "34d794ec",
+      "f9b4540a"
     ],
     "datasets": [
       {
@@ -41346,7 +41408,8 @@ window.BENCHMARK_DATA = {
           1242.9716849009196,
           2024.6299023946126,
           2019.8510101863317,
-          2122.979504449027
+          2122.979504449027,
+          2134.2143231709797
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -42020,6 +42083,7 @@ window.BENCHMARK_DATA = {
           2752,
           2752,
           2752,
+          3104,
           3104,
           3104,
           3104
@@ -42701,7 +42765,8 @@ window.BENCHMARK_DATA = {
           1161.6914187113443,
           1350.3154574076334,
           1315.3896138509115,
-          1399.3660079956055
+          1399.3660079956055,
+          1370.7772269930158
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -42894,6 +42959,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -47381,6 +47447,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 21:55:41 2026 \u002B0200",
         "message": "fix: render every quantifier result as \u0060N of M\u0060 (#1201)"
+      },
+      {
+        "sha": "f9b4540abbc178d56806b31b651ec7abd049f27e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Sep 18 22:05:15 2026 \u002B0200",
+        "message": "chore: silence the Sonar findings on recently touched code (#1202)"
       }
     ],
     "labels": [
@@ -48048,7 +48120,8 @@ window.BENCHMARK_DATA = {
       "5a801961",
       "1305e06f",
       "e00183f5",
-      "34d794ec"
+      "34d794ec",
+      "f9b4540a"
     ],
     "datasets": [
       {
@@ -48719,7 +48792,8 @@ window.BENCHMARK_DATA = {
           1651.6465266301082,
           2581.742345937093,
           2583.1968972342356,
-          2728.427665201823
+          2728.427665201823,
+          2713.9010078430174
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -49393,6 +49467,7 @@ window.BENCHMARK_DATA = {
           2944,
           2944,
           2944,
+          3296,
           3296,
           3296,
           3296
@@ -50074,7 +50149,8 @@ window.BENCHMARK_DATA = {
           14474.885506184895,
           26294.660250150242,
           27306.86591491699,
-          27231.05518798828
+          27231.05518798828,
+          27495.22459411621
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -50748,6 +50824,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471
