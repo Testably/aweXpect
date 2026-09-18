@@ -146,8 +146,6 @@ public static partial class ThatReadOnlyDictionary
 		{
 			stringBuilder.Append(It).Append(" did not contain ");
 			Formatter.Format(stringBuilder, _missingKeys, FormattingOptions.MultipleLines);
-			stringBuilder.Append(" in ");
-			Formatter.Format(stringBuilder, Actual!.Keys, FormattingOptions.MultipleLines);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

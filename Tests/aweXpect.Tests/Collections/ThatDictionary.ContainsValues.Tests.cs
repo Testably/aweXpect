@@ -71,10 +71,6 @@ public sealed partial class ThatDictionary
 					             contains values [42, 2],
 					             but it did not contain [
 					               2
-					             ] in [
-					               41,
-					               42,
-					               43
 					             ]
 
 					             Dictionary:
@@ -96,10 +92,6 @@ public sealed partial class ThatDictionary
 					             contains values [42, <null>],
 					             but it did not contain [
 					               <null>
-					             ] in [
-					               41,
-					               42,
-					               43
 					             ]
 
 					             Dictionary:

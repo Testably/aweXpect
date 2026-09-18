@@ -136,8 +136,6 @@ public static partial class ThatDictionary
 		{
 			stringBuilder.Append(It).Append(" did not contain ");
 			Formatter.Format(stringBuilder, _missingValues, FormattingOptions.MultipleLines);
-			stringBuilder.Append(" in ");
-			Formatter.Format(stringBuilder, Actual!.Values, FormattingOptions.MultipleLines);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

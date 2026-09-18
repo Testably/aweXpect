@@ -60,10 +60,6 @@ public sealed partial class ThatDictionary
 					             contains keys [0, 2],
 					             but it did not contain [
 					               0
-					             ] in [
-					               1,
-					               2,
-					               3
 					             ]
 
 					             Dictionary:
@@ -118,10 +114,6 @@ public sealed partial class ThatDictionary
 					             contains keys [0] whose values are equal to "bar" for all items,
 					             but it did not contain [
 					               0
-					             ] in [
-					               1,
-					               2,
-					               3
 					             ]
 
 					             Not matching items:
@@ -238,10 +230,6 @@ public sealed partial class ThatDictionary
 					             contains keys [1, 0, 3] whose values are equal to "bar" for all items,
 					             but it did not contain [
 					               0
-					             ] in [
-					               1,
-					               2,
-					               3
 					             ]
 
 					             Not matching items:

@@ -31,11 +31,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains key 0,
-					             but it contained only [
-					               1,
-					               2,
-					               3
-					             ]
+					             but it did not contain 0
 
 					             Dictionary:
 					             {[1] = 0, [2] = 0, [3] = 0}
@@ -126,11 +122,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains key 0 whose value is equal to "bar",
-					             but it contained only [
-					               1,
-					               2,
-					               3
-					             ]
+					             but it did not contain 0
 
 					             Dictionary:
 					             {
@@ -169,11 +161,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains key 4 and contains key 5,
-					             but it contained only [
-					               1,
-					               2,
-					               3
-					             ]
+					             but it did not contain 4 and it did not contain 5
 					             
 					             Dictionary:
 					             {
