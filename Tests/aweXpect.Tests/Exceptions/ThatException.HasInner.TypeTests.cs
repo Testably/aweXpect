@@ -4,6 +4,7 @@ public sealed partial class ThatException
 {
 	public sealed partial class HasInner
 	{
+#pragma warning disable CA2263 // these tests deliberately cover the Type overloads
 		public sealed class Type
 		{
 			public sealed class ExpectationsTests
@@ -248,5 +249,6 @@ public sealed partial class ThatException
 				}
 			}
 		}
+#pragma warning restore CA2263
 	}
 }

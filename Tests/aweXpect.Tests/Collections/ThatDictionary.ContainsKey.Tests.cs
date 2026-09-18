@@ -100,7 +100,7 @@ public sealed partial class ThatDictionary
 				IDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
 
 				async Task Act()
-					=> await That(subject).ContainsKey(2).WhoseValue.Whose(x => x.Length, l => l.IsEqualTo(4));
+					=> await That(subject).ContainsKey(2).WhoseValue.Whose(x => x?.Length, l => l.IsEqualTo(4));
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
