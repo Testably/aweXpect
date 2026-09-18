@@ -22,6 +22,7 @@ public readonly struct ThatSubject<T>(ExpectationBuilder expectationBuilder)
 			this);
 
 	/// <inheritdoc cref="IThatSubject{T}.IsNot{TType}" />
+	[GuaranteesNotNull]
 	public AndOrResult<T, IThatSubject<T>> IsNot<TType>()
 		=> new(ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsOfTypeConstraint<T, TType>(it, grammars).Invert()),
@@ -35,6 +36,7 @@ public readonly struct ThatSubject<T>(ExpectationBuilder expectationBuilder)
 			this);
 
 	/// <inheritdoc cref="IThatSubject{T}.IsNotExactly{TType}" />
+	[GuaranteesNotNull]
 	public AndOrResult<T, IThatSubject<T>> IsNotExactly<TType>()
 		=> new(ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsExactlyOfTypeConstraint<T, TType>(it, grammars).Invert()),
