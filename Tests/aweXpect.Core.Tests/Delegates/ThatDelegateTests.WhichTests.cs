@@ -31,14 +31,14 @@ public sealed partial class ThatDelegateTests
 
 			async Task Act()
 				=> await That(Delegate).Throws<MyException>()
-					.Which.IsNotNull()
-					.And.Whose(e => e.HResult, h => h.IsEqualTo(5));
+					.Which.HasHResult(5)
+					.And.Whose(e => e.InnerException, i => i.IsNull());
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that Delegate
-				             throws a MyException which is not null and whose HResult is equal to 5,
-				             but HResult was -2146233088 which differs by -2146233093
+				             throws a MyException which has HResult equal to 5 and whose InnerException is null,
+				             but it had HResult -2146233088
 				             """);
 		}
 
