@@ -70,7 +70,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is not in descending order for x => x is MyIntClass c ? c.Value : 0,
+					             is not in descending order by x => x is MyIntClass c ? c.Value : 0,
 					             but it was
 
 					             Collection:

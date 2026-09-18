@@ -57,16 +57,16 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to 100,
-					               it is equal to 101,
-					               it is equal to 102,
-					               it is equal to 103,
-					               it is equal to 104,
-					               it is equal to 105,
-					               it is equal to 106,
-					               it is equal to 107,
-					               it is equal to 108,
-					               it is equal to 109,
+					               an item that is equal to 100,
+					               an item that is equal to 101,
+					               an item that is equal to 102,
+					               an item that is equal to 103,
+					               an item that is equal to 104,
+					               an item that is equal to 105,
+					               an item that is equal to 106,
+					               an item that is equal to 107,
+					               an item that is equal to 108,
+					               an item that is equal to 109,
 					               (… and 1 more)
 					             ]
 					             """);
@@ -97,9 +97,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -147,16 +147,16 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to 101,
-					               it is equal to 102,
-					               it is equal to 103,
-					               it is equal to 104,
-					               it is equal to 105,
-					               it is equal to 106,
-					               it is equal to 107,
-					               it is equal to 108,
-					               it is equal to 109,
-					               it is equal to 110
+					               an item that is equal to 101,
+					               an item that is equal to 102,
+					               an item that is equal to 103,
+					               an item that is equal to 104,
+					               an item that is equal to 105,
+					               an item that is equal to 106,
+					               an item that is equal to 107,
+					               an item that is equal to 108,
+					               an item that is equal to 109,
+					               an item that is equal to 110
 					             ]
 					             """);
 			}
@@ -252,12 +252,12 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected in order,
 					             but it
-					               contained item "d" at index 3 instead of it is equal to "x" and
-					               contained item "e" at index 4 instead of it is equal to "y" and
+					               contained item "d" at index 3 instead of an item that is equal to "x" and
+					               contained item "e" at index 4 instead of an item that is equal to "y" and
 					               lacked 3 of 6 expected items:
-					                 it is equal to "x",
-					                 it is equal to "y",
-					                 it is equal to "z"
+					                 an item that is equal to "x",
+					                 an item that is equal to "y",
+					                 an item that is equal to "z"
 
 					             Collection:
 					             [
@@ -270,12 +270,12 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "x",
-					               it is equal to "y",
-					               it is equal to "z"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "x",
+					               an item that is equal to "y",
+					               an item that is equal to "z"
 					             ]
 					             """);
 			}
@@ -313,12 +313,12 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "d",
-					               it is equal to "e"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "d",
+					               an item that is equal to "e"
 					             ]
 					             """);
 			}
@@ -376,8 +376,8 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected in order,
 					             but it
-					               contained item "c" at index 1 instead of it is equal to "b" and
-					               contained item "b" at index 2 instead of it is equal to "c"
+					               contained item "c" at index 1 instead of an item that is equal to "b" and
+					               contained item "b" at index 2 instead of an item that is equal to "c"
 
 					             Collection:
 					             [
@@ -388,9 +388,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -431,7 +431,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order,
-					             but it lacked 1 of 4 expected items: it is equal to "c"
+					             but it lacked 1 of 4 expected items: an item that is equal to "c"
 
 					             Collection:
 					             [
@@ -442,10 +442,10 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -487,9 +487,9 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected in order,
 					             but it
-					               contained item "b" at index 1 instead of it is equal to "a" and
-					               contained item "c" at index 2 instead of it is equal to "b" and
-					               lacked 1 of 4 expected items: it is equal to "a"
+					               contained item "b" at index 1 instead of an item that is equal to "a" and
+					               contained item "c" at index 2 instead of an item that is equal to "b" and
+					               lacked 1 of 4 expected items: an item that is equal to "a"
 
 					             Collection:
 					             [
@@ -500,10 +500,10 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -574,7 +574,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order,
-					             but it lacked 1 of 4 expected items: it is equal to "d"
+					             but it lacked 1 of 4 expected items: an item that is equal to "d"
 
 					             Collection:
 					             [
@@ -585,10 +585,10 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "d"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "d"
 					             ]
 					             """);
 			}
@@ -614,8 +614,8 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected in order,
 					             but it lacked 2 of 5 expected items:
-					               it is equal to "d",
-					               it is equal to "e"
+					               an item that is equal to "d",
+					               an item that is equal to "e"
 
 					             Collection:
 					             [
@@ -626,11 +626,11 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "d",
-					               it is equal to "e"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "d",
+					               an item that is equal to "e"
 					             ]
 					             """);
 			}
@@ -700,16 +700,16 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to 100,
-					               it is equal to 101,
-					               it is equal to 102,
-					               it is equal to 103,
-					               it is equal to 104,
-					               it is equal to 105,
-					               it is equal to 106,
-					               it is equal to 107,
-					               it is equal to 108,
-					               it is equal to 109,
+					               an item that is equal to 100,
+					               an item that is equal to 101,
+					               an item that is equal to 102,
+					               an item that is equal to 103,
+					               an item that is equal to 104,
+					               an item that is equal to 105,
+					               an item that is equal to 106,
+					               an item that is equal to 107,
+					               an item that is equal to 108,
+					               an item that is equal to 109,
 					               (… and 1 more)
 					             ]
 					             """);
@@ -740,9 +740,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -772,9 +772,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "a",
-					               it is equal to "b"
+					               an item that is equal to "a",
+					               an item that is equal to "a",
+					               an item that is equal to "b"
 					             ]
 					             """);
 			}
@@ -822,16 +822,16 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to 101,
-					               it is equal to 102,
-					               it is equal to 103,
-					               it is equal to 104,
-					               it is equal to 105,
-					               it is equal to 106,
-					               it is equal to 107,
-					               it is equal to 108,
-					               it is equal to 109,
-					               it is equal to 110
+					               an item that is equal to 101,
+					               an item that is equal to 102,
+					               an item that is equal to 103,
+					               an item that is equal to 104,
+					               an item that is equal to 105,
+					               an item that is equal to 106,
+					               an item that is equal to 107,
+					               an item that is equal to 108,
+					               an item that is equal to 109,
+					               an item that is equal to 110
 					             ]
 					             """);
 			}
@@ -886,12 +886,12 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected in order ignoring duplicates,
 					             but it
-					               contained item "d" at index 3 instead of it is equal to "x" and
-					               contained item "e" at index 4 instead of it is equal to "y" and
+					               contained item "d" at index 3 instead of an item that is equal to "x" and
+					               contained item "e" at index 4 instead of an item that is equal to "y" and
 					               lacked 3 of 6 expected items:
-					                 it is equal to "x",
-					                 it is equal to "y",
-					                 it is equal to "z"
+					                 an item that is equal to "x",
+					                 an item that is equal to "y",
+					                 an item that is equal to "z"
 
 					             Collection:
 					             [
@@ -904,12 +904,12 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "x",
-					               it is equal to "y",
-					               it is equal to "z"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "x",
+					               an item that is equal to "y",
+					               an item that is equal to "z"
 					             ]
 					             """);
 			}
@@ -947,12 +947,12 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "d",
-					               it is equal to "e"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "d",
+					               an item that is equal to "e"
 					             ]
 					             """);
 			}
@@ -1010,8 +1010,8 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected in order ignoring duplicates,
 					             but it
-					               contained item "c" at index 1 instead of it is equal to "b" and
-					               contained item "b" at index 2 instead of it is equal to "c"
+					               contained item "c" at index 1 instead of an item that is equal to "b" and
+					               contained item "b" at index 2 instead of an item that is equal to "c"
 
 					             Collection:
 					             [
@@ -1022,9 +1022,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -1165,7 +1165,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order ignoring duplicates,
-					             but it lacked 1 of 4 expected items: it is equal to "d"
+					             but it lacked 1 of 4 expected items: an item that is equal to "d"
 
 					             Collection:
 					             [
@@ -1176,10 +1176,10 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "d"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "d"
 					             ]
 					             """);
 			}
@@ -1205,8 +1205,8 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected in order ignoring duplicates,
 					             but it lacked 2 of 5 expected items:
-					               it is equal to "d",
-					               it is equal to "e"
+					               an item that is equal to "d",
+					               an item that is equal to "e"
 
 					             Collection:
 					             [
@@ -1217,11 +1217,11 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "d",
-					               it is equal to "e"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "d",
+					               an item that is equal to "e"
 					             ]
 					             """);
 			}
@@ -1291,16 +1291,16 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to 100,
-					               it is equal to 101,
-					               it is equal to 102,
-					               it is equal to 103,
-					               it is equal to 104,
-					               it is equal to 105,
-					               it is equal to 106,
-					               it is equal to 107,
-					               it is equal to 108,
-					               it is equal to 109,
+					               an item that is equal to 100,
+					               an item that is equal to 101,
+					               an item that is equal to 102,
+					               an item that is equal to 103,
+					               an item that is equal to 104,
+					               an item that is equal to 105,
+					               an item that is equal to 106,
+					               an item that is equal to 107,
+					               an item that is equal to 108,
+					               an item that is equal to 109,
 					               (… and 1 more)
 					             ]
 					             """);
@@ -1331,9 +1331,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -1381,16 +1381,16 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to 101,
-					               it is equal to 102,
-					               it is equal to 103,
-					               it is equal to 104,
-					               it is equal to 105,
-					               it is equal to 106,
-					               it is equal to 107,
-					               it is equal to 108,
-					               it is equal to 109,
-					               it is equal to 110
+					               an item that is equal to 101,
+					               an item that is equal to 102,
+					               an item that is equal to 103,
+					               an item that is equal to 104,
+					               an item that is equal to 105,
+					               an item that is equal to 106,
+					               an item that is equal to 107,
+					               an item that is equal to 108,
+					               an item that is equal to 109,
+					               an item that is equal to 110
 					             ]
 					             """);
 			}
@@ -1445,9 +1445,9 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected in any order,
 					             but it lacked 3 of 6 expected items:
-					               it is equal to "x",
-					               it is equal to "y",
-					               it is equal to "z"
+					               an item that is equal to "x",
+					               an item that is equal to "y",
+					               an item that is equal to "z"
 
 					             Collection:
 					             [
@@ -1460,12 +1460,12 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "x",
-					               it is equal to "y",
-					               it is equal to "z"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "x",
+					               an item that is equal to "y",
+					               an item that is equal to "z"
 					             ]
 					             """);
 			}
@@ -1492,8 +1492,8 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected in any order,
 					             but it lacked 2 of 6 expected items:
-					               it is equal to "a",
-					               it is equal to "e"
+					               an item that is equal to "a",
+					               an item that is equal to "e"
 
 					             Collection:
 					             [
@@ -1505,12 +1505,12 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "d",
-					               it is equal to "e"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "d",
+					               an item that is equal to "e"
 					             ]
 					             """);
 			}
@@ -1602,7 +1602,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in any order,
-					             but it lacked 1 of 4 expected items: it is equal to "c"
+					             but it lacked 1 of 4 expected items: an item that is equal to "c"
 
 					             Collection:
 					             [
@@ -1613,10 +1613,10 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -1657,7 +1657,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in any order,
-					             but it lacked 1 of 4 expected items: it is equal to "a"
+					             but it lacked 1 of 4 expected items: an item that is equal to "a"
 
 					             Collection:
 					             [
@@ -1668,10 +1668,10 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -1712,7 +1712,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in any order,
-					             but it lacked 1 of 4 expected items: it is equal to "d"
+					             but it lacked 1 of 4 expected items: an item that is equal to "d"
 
 					             Collection:
 					             [
@@ -1723,10 +1723,10 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "d"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "d"
 					             ]
 					             """);
 			}
@@ -1752,8 +1752,8 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected in any order,
 					             but it lacked 2 of 5 expected items:
-					               it is equal to "d",
-					               it is equal to "e"
+					               an item that is equal to "d",
+					               an item that is equal to "e"
 
 					             Collection:
 					             [
@@ -1764,11 +1764,11 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "d",
-					               it is equal to "e"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "d",
+					               an item that is equal to "e"
 					             ]
 					             """);
 			}
@@ -1839,16 +1839,16 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to 100,
-					               it is equal to 101,
-					               it is equal to 102,
-					               it is equal to 103,
-					               it is equal to 104,
-					               it is equal to 105,
-					               it is equal to 106,
-					               it is equal to 107,
-					               it is equal to 108,
-					               it is equal to 109,
+					               an item that is equal to 100,
+					               an item that is equal to 101,
+					               an item that is equal to 102,
+					               an item that is equal to 103,
+					               an item that is equal to 104,
+					               an item that is equal to 105,
+					               an item that is equal to 106,
+					               an item that is equal to 107,
+					               an item that is equal to 108,
+					               an item that is equal to 109,
 					               (… and 1 more)
 					             ]
 					             """);
@@ -1881,11 +1881,11 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "a"
+					               an item that is equal to "a",
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "a"
 					             ]
 					             """);
 			}
@@ -1915,9 +1915,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "a",
-					               it is equal to "b"
+					               an item that is equal to "a",
+					               an item that is equal to "a",
+					               an item that is equal to "b"
 					             ]
 					             """);
 			}
@@ -1965,16 +1965,16 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to 101,
-					               it is equal to 102,
-					               it is equal to 103,
-					               it is equal to 104,
-					               it is equal to 105,
-					               it is equal to 106,
-					               it is equal to 107,
-					               it is equal to 108,
-					               it is equal to 109,
-					               it is equal to 110
+					               an item that is equal to 101,
+					               an item that is equal to 102,
+					               an item that is equal to 103,
+					               an item that is equal to 104,
+					               an item that is equal to 105,
+					               an item that is equal to 106,
+					               an item that is equal to 107,
+					               an item that is equal to 108,
+					               an item that is equal to 109,
+					               an item that is equal to 110
 					             ]
 					             """);
 			}
@@ -2029,9 +2029,9 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected in any order ignoring duplicates,
 					             but it lacked 3 of 6 expected items:
-					               it is equal to "x",
-					               it is equal to "y",
-					               it is equal to "z"
+					               an item that is equal to "x",
+					               an item that is equal to "y",
+					               an item that is equal to "z"
 
 					             Collection:
 					             [
@@ -2044,12 +2044,12 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "x",
-					               it is equal to "y",
-					               it is equal to "z"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "x",
+					               an item that is equal to "y",
+					               an item that is equal to "z"
 					             ]
 					             """);
 			}
@@ -2076,8 +2076,8 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected in any order ignoring duplicates,
 					             but it lacked 2 of 5 expected items:
-					               it is equal to "a",
-					               it is equal to "e"
+					               an item that is equal to "a",
+					               an item that is equal to "e"
 
 					             Collection:
 					             [
@@ -2089,12 +2089,12 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "d",
-					               it is equal to "e"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "d",
+					               an item that is equal to "e"
 					             ]
 					             """);
 			}
@@ -2256,7 +2256,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in any order ignoring duplicates,
-					             but it lacked 1 of 4 expected items: it is equal to "d"
+					             but it lacked 1 of 4 expected items: an item that is equal to "d"
 
 					             Collection:
 					             [
@@ -2267,10 +2267,10 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "d"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "d"
 					             ]
 					             """);
 			}
@@ -2296,8 +2296,8 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected in any order ignoring duplicates,
 					             but it lacked 2 of 5 expected items:
-					               it is equal to "d",
-					               it is equal to "e"
+					               an item that is equal to "d",
+					               an item that is equal to "e"
 
 					             Collection:
 					             [
@@ -2308,11 +2308,11 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "d",
-					               it is equal to "e"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "d",
+					               an item that is equal to "e"
 					             ]
 					             """);
 			}
@@ -2382,16 +2382,16 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to 100,
-					               it is equal to 101,
-					               it is equal to 102,
-					               it is equal to 103,
-					               it is equal to 104,
-					               it is equal to 105,
-					               it is equal to 106,
-					               it is equal to 107,
-					               it is equal to 108,
-					               it is equal to 109,
+					               an item that is equal to 100,
+					               an item that is equal to 101,
+					               an item that is equal to 102,
+					               an item that is equal to 103,
+					               an item that is equal to 104,
+					               an item that is equal to 105,
+					               an item that is equal to 106,
+					               an item that is equal to 107,
+					               an item that is equal to 108,
+					               an item that is equal to 109,
 					               (… and 1 more)
 					             ]
 					             """);
@@ -2424,9 +2424,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -2474,16 +2474,16 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to 101,
-					               it is equal to 102,
-					               it is equal to 103,
-					               it is equal to 104,
-					               it is equal to 105,
-					               it is equal to 106,
-					               it is equal to 107,
-					               it is equal to 108,
-					               it is equal to 109,
-					               it is equal to 110
+					               an item that is equal to 101,
+					               an item that is equal to 102,
+					               an item that is equal to 103,
+					               an item that is equal to 104,
+					               an item that is equal to 105,
+					               an item that is equal to 106,
+					               an item that is equal to 107,
+					               an item that is equal to 108,
+					               an item that is equal to 109,
+					               an item that is equal to 110
 					             ]
 					             """);
 			}
@@ -2510,13 +2510,13 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in order,
 					             but it
-					               contained item "d" at index 3 instead of it is equal to "x" and
-					               contained item "e" at index 4 instead of it is equal to "y" and
+					               contained item "d" at index 3 instead of an item that is equal to "x" and
+					               contained item "e" at index 4 instead of an item that is equal to "y" and
 					               did not contain any additional items and
 					               lacked 3 of 6 expected items:
-					                 it is equal to "x",
-					                 it is equal to "y",
-					                 it is equal to "z"
+					                 an item that is equal to "x",
+					                 an item that is equal to "y",
+					                 an item that is equal to "z"
 
 					             Collection:
 					             [
@@ -2529,12 +2529,12 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "x",
-					               it is equal to "y",
-					               it is equal to "z"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "x",
+					               an item that is equal to "y",
+					               an item that is equal to "z"
 					             ]
 					             """);
 			}
@@ -2574,12 +2574,12 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "d",
-					               it is equal to "e"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "d",
+					               an item that is equal to "e"
 					             ]
 					             """);
 			}
@@ -2637,8 +2637,8 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in order,
 					             but it
-					               contained item "c" at index 1 instead of it is equal to "b" and
-					               contained item "b" at index 2 instead of it is equal to "c" and
+					               contained item "c" at index 1 instead of an item that is equal to "b" and
+					               contained item "b" at index 2 instead of an item that is equal to "c" and
 					               did not contain any additional items
 
 					             Collection:
@@ -2650,9 +2650,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -2695,7 +2695,7 @@ public sealed partial class ThatEnumerable
 					             contains collection expected and at least one additional item in order,
 					             but it
 					               did not contain any additional items and
-					               lacked 1 of 4 expected items: it is equal to "c"
+					               lacked 1 of 4 expected items: an item that is equal to "c"
 
 					             Collection:
 					             [
@@ -2706,10 +2706,10 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -2751,10 +2751,10 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in order,
 					             but it
-					               contained item "b" at index 1 instead of it is equal to "a" and
-					               contained item "c" at index 2 instead of it is equal to "b" and
+					               contained item "b" at index 1 instead of an item that is equal to "a" and
+					               contained item "c" at index 2 instead of an item that is equal to "b" and
 					               did not contain any additional items and
-					               lacked 1 of 4 expected items: it is equal to "a"
+					               lacked 1 of 4 expected items: an item that is equal to "a"
 
 					             Collection:
 					             [
@@ -2765,10 +2765,10 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -2811,7 +2811,7 @@ public sealed partial class ThatEnumerable
 					             contains collection expected and at least one additional item in order,
 					             but it
 					               did not contain any additional items and
-					               lacked 1 of 4 expected items: it is equal to "d"
+					               lacked 1 of 4 expected items: an item that is equal to "d"
 
 					             Collection:
 					             [
@@ -2822,10 +2822,10 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "d"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "d"
 					             ]
 					             """);
 			}
@@ -2853,8 +2853,8 @@ public sealed partial class ThatEnumerable
 					             but it
 					               did not contain any additional items and
 					               lacked 2 of 5 expected items:
-					                 it is equal to "d",
-					                 it is equal to "e"
+					                 an item that is equal to "d",
+					                 an item that is equal to "e"
 
 					             Collection:
 					             [
@@ -2865,11 +2865,11 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "d",
-					               it is equal to "e"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "d",
+					               an item that is equal to "e"
 					             ]
 					             """);
 			}
@@ -2904,9 +2904,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -2959,16 +2959,16 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to 100,
-					               it is equal to 101,
-					               it is equal to 102,
-					               it is equal to 103,
-					               it is equal to 104,
-					               it is equal to 105,
-					               it is equal to 106,
-					               it is equal to 107,
-					               it is equal to 108,
-					               it is equal to 109,
+					               an item that is equal to 100,
+					               an item that is equal to 101,
+					               an item that is equal to 102,
+					               an item that is equal to 103,
+					               an item that is equal to 104,
+					               an item that is equal to 105,
+					               an item that is equal to 106,
+					               an item that is equal to 107,
+					               an item that is equal to 108,
+					               an item that is equal to 109,
 					               (… and 1 more)
 					             ]
 					             """);
@@ -3001,9 +3001,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -3035,9 +3035,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "a",
-					               it is equal to "b"
+					               an item that is equal to "a",
+					               an item that is equal to "a",
+					               an item that is equal to "b"
 					             ]
 					             """);
 			}
@@ -3085,16 +3085,16 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to 101,
-					               it is equal to 102,
-					               it is equal to 103,
-					               it is equal to 104,
-					               it is equal to 105,
-					               it is equal to 106,
-					               it is equal to 107,
-					               it is equal to 108,
-					               it is equal to 109,
-					               it is equal to 110
+					               an item that is equal to 101,
+					               an item that is equal to 102,
+					               an item that is equal to 103,
+					               an item that is equal to 104,
+					               an item that is equal to 105,
+					               an item that is equal to 106,
+					               an item that is equal to 107,
+					               an item that is equal to 108,
+					               an item that is equal to 109,
+					               an item that is equal to 110
 					             ]
 					             """);
 			}
@@ -3121,12 +3121,12 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in order ignoring duplicates,
 					             but it
-					               contained item "d" at index 3 instead of it is equal to "x" and
-					               contained item "e" at index 4 instead of it is equal to "y" and
+					               contained item "d" at index 3 instead of an item that is equal to "x" and
+					               contained item "e" at index 4 instead of an item that is equal to "y" and
 					               lacked 3 of 6 expected items:
-					                 it is equal to "x",
-					                 it is equal to "y",
-					                 it is equal to "z"
+					                 an item that is equal to "x",
+					                 an item that is equal to "y",
+					                 an item that is equal to "z"
 
 					             Collection:
 					             [
@@ -3139,12 +3139,12 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "x",
-					               it is equal to "y",
-					               it is equal to "z"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "x",
+					               an item that is equal to "y",
+					               an item that is equal to "z"
 					             ]
 					             """);
 			}
@@ -3184,12 +3184,12 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "d",
-					               it is equal to "e"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "d",
+					               an item that is equal to "e"
 					             ]
 					             """);
 			}
@@ -3247,8 +3247,8 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in order ignoring duplicates,
 					             but it
-					               contained item "c" at index 1 instead of it is equal to "b" and
-					               contained item "b" at index 2 instead of it is equal to "c" and
+					               contained item "c" at index 1 instead of an item that is equal to "b" and
+					               contained item "b" at index 2 instead of an item that is equal to "c" and
 					               did not contain any additional items
 
 					             Collection:
@@ -3260,9 +3260,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -3297,9 +3297,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -3334,10 +3334,10 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -3372,9 +3372,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -3409,10 +3409,10 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -3447,9 +3447,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -3475,7 +3475,7 @@ public sealed partial class ThatEnumerable
 					             contains collection expected and at least one additional item in order ignoring duplicates,
 					             but it
 					               did not contain any additional items and
-					               lacked 1 of 4 expected items: it is equal to "d"
+					               lacked 1 of 4 expected items: an item that is equal to "d"
 
 					             Collection:
 					             [
@@ -3486,10 +3486,10 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "d"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "d"
 					             ]
 					             """);
 			}
@@ -3517,8 +3517,8 @@ public sealed partial class ThatEnumerable
 					             but it
 					               did not contain any additional items and
 					               lacked 2 of 5 expected items:
-					                 it is equal to "d",
-					                 it is equal to "e"
+					                 an item that is equal to "d",
+					                 an item that is equal to "e"
 
 					             Collection:
 					             [
@@ -3529,11 +3529,11 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "d",
-					               it is equal to "e"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "d",
+					               an item that is equal to "e"
 					             ]
 					             """);
 			}
@@ -3567,9 +3567,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -3622,16 +3622,16 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to 100,
-					               it is equal to 101,
-					               it is equal to 102,
-					               it is equal to 103,
-					               it is equal to 104,
-					               it is equal to 105,
-					               it is equal to 106,
-					               it is equal to 107,
-					               it is equal to 108,
-					               it is equal to 109,
+					               an item that is equal to 100,
+					               an item that is equal to 101,
+					               an item that is equal to 102,
+					               an item that is equal to 103,
+					               an item that is equal to 104,
+					               an item that is equal to 105,
+					               an item that is equal to 106,
+					               an item that is equal to 107,
+					               an item that is equal to 108,
+					               an item that is equal to 109,
 					               (… and 1 more)
 					             ]
 					             """);
@@ -3664,9 +3664,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -3714,16 +3714,16 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to 101,
-					               it is equal to 102,
-					               it is equal to 103,
-					               it is equal to 104,
-					               it is equal to 105,
-					               it is equal to 106,
-					               it is equal to 107,
-					               it is equal to 108,
-					               it is equal to 109,
-					               it is equal to 110
+					               an item that is equal to 101,
+					               an item that is equal to 102,
+					               an item that is equal to 103,
+					               an item that is equal to 104,
+					               an item that is equal to 105,
+					               an item that is equal to 106,
+					               an item that is equal to 107,
+					               an item that is equal to 108,
+					               an item that is equal to 109,
+					               an item that is equal to 110
 					             ]
 					             """);
 			}
@@ -3750,9 +3750,9 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in any order,
 					             but it lacked 3 of 6 expected items:
-					               it is equal to "x",
-					               it is equal to "y",
-					               it is equal to "z"
+					               an item that is equal to "x",
+					               an item that is equal to "y",
+					               an item that is equal to "z"
 
 					             Collection:
 					             [
@@ -3765,12 +3765,12 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "x",
-					               it is equal to "y",
-					               it is equal to "z"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "x",
+					               an item that is equal to "y",
+					               an item that is equal to "z"
 					             ]
 					             """);
 			}
@@ -3799,8 +3799,8 @@ public sealed partial class ThatEnumerable
 					             but it
 					               did not contain any additional items and
 					               lacked 2 of 6 expected items:
-					                 it is equal to "a",
-					                 it is equal to "e"
+					                 an item that is equal to "a",
+					                 an item that is equal to "e"
 
 					             Collection:
 					             [
@@ -3812,12 +3812,12 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "d",
-					               it is equal to "e"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "d",
+					               an item that is equal to "e"
 					             ]
 					             """);
 			}
@@ -3885,9 +3885,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -3930,7 +3930,7 @@ public sealed partial class ThatEnumerable
 					             contains collection expected and at least one additional item in any order,
 					             but it
 					               did not contain any additional items and
-					               lacked 1 of 4 expected items: it is equal to "c"
+					               lacked 1 of 4 expected items: an item that is equal to "c"
 
 					             Collection:
 					             [
@@ -3941,10 +3941,10 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -3987,7 +3987,7 @@ public sealed partial class ThatEnumerable
 					             contains collection expected and at least one additional item in any order,
 					             but it
 					               did not contain any additional items and
-					               lacked 1 of 4 expected items: it is equal to "a"
+					               lacked 1 of 4 expected items: an item that is equal to "a"
 
 					             Collection:
 					             [
@@ -3998,10 +3998,10 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -4044,7 +4044,7 @@ public sealed partial class ThatEnumerable
 					             contains collection expected and at least one additional item in any order,
 					             but it
 					               did not contain any additional items and
-					               lacked 1 of 4 expected items: it is equal to "d"
+					               lacked 1 of 4 expected items: an item that is equal to "d"
 
 					             Collection:
 					             [
@@ -4055,10 +4055,10 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "d"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "d"
 					             ]
 					             """);
 			}
@@ -4086,8 +4086,8 @@ public sealed partial class ThatEnumerable
 					             but it
 					               did not contain any additional items and
 					               lacked 2 of 5 expected items:
-					                 it is equal to "d",
-					                 it is equal to "e"
+					                 an item that is equal to "d",
+					                 an item that is equal to "e"
 
 					             Collection:
 					             [
@@ -4098,11 +4098,11 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "d",
-					               it is equal to "e"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "d",
+					               an item that is equal to "e"
 					             ]
 					             """);
 			}
@@ -4137,9 +4137,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -4192,16 +4192,16 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to 100,
-					               it is equal to 101,
-					               it is equal to 102,
-					               it is equal to 103,
-					               it is equal to 104,
-					               it is equal to 105,
-					               it is equal to 106,
-					               it is equal to 107,
-					               it is equal to 108,
-					               it is equal to 109,
+					               an item that is equal to 100,
+					               an item that is equal to 101,
+					               an item that is equal to 102,
+					               an item that is equal to 103,
+					               an item that is equal to 104,
+					               an item that is equal to 105,
+					               an item that is equal to 106,
+					               an item that is equal to 107,
+					               an item that is equal to 108,
+					               an item that is equal to 109,
 					               (… and 1 more)
 					             ]
 					             """);
@@ -4236,11 +4236,11 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "a"
+					               an item that is equal to "a",
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "a"
 					             ]
 					             """);
 			}
@@ -4272,9 +4272,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "a",
-					               it is equal to "b"
+					               an item that is equal to "a",
+					               an item that is equal to "a",
+					               an item that is equal to "b"
 					             ]
 					             """);
 			}
@@ -4322,16 +4322,16 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to 101,
-					               it is equal to 102,
-					               it is equal to 103,
-					               it is equal to 104,
-					               it is equal to 105,
-					               it is equal to 106,
-					               it is equal to 107,
-					               it is equal to 108,
-					               it is equal to 109,
-					               it is equal to 110
+					               an item that is equal to 101,
+					               an item that is equal to 102,
+					               an item that is equal to 103,
+					               an item that is equal to 104,
+					               an item that is equal to 105,
+					               an item that is equal to 106,
+					               an item that is equal to 107,
+					               an item that is equal to 108,
+					               an item that is equal to 109,
+					               an item that is equal to 110
 					             ]
 					             """);
 			}
@@ -4358,9 +4358,9 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in any order ignoring duplicates,
 					             but it lacked 3 of 6 expected items:
-					               it is equal to "x",
-					               it is equal to "y",
-					               it is equal to "z"
+					               an item that is equal to "x",
+					               an item that is equal to "y",
+					               an item that is equal to "z"
 
 					             Collection:
 					             [
@@ -4373,12 +4373,12 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "x",
-					               it is equal to "y",
-					               it is equal to "z"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "x",
+					               an item that is equal to "y",
+					               an item that is equal to "z"
 					             ]
 					             """);
 			}
@@ -4407,8 +4407,8 @@ public sealed partial class ThatEnumerable
 					             but it
 					               did not contain any additional items and
 					               lacked 2 of 5 expected items:
-					                 it is equal to "a",
-					                 it is equal to "e"
+					                 an item that is equal to "a",
+					                 an item that is equal to "e"
 
 					             Collection:
 					             [
@@ -4420,12 +4420,12 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "d",
-					               it is equal to "e"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "d",
+					               an item that is equal to "e"
 					             ]
 					             """);
 			}
@@ -4493,9 +4493,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -4530,9 +4530,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -4567,10 +4567,10 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -4605,9 +4605,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -4642,10 +4642,10 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -4680,9 +4680,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -4708,7 +4708,7 @@ public sealed partial class ThatEnumerable
 					             contains collection expected and at least one additional item in any order ignoring duplicates,
 					             but it
 					               did not contain any additional items and
-					               lacked 1 of 4 expected items: it is equal to "d"
+					               lacked 1 of 4 expected items: an item that is equal to "d"
 
 					             Collection:
 					             [
@@ -4719,10 +4719,10 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "d"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "d"
 					             ]
 					             """);
 			}
@@ -4750,8 +4750,8 @@ public sealed partial class ThatEnumerable
 					             but it
 					               did not contain any additional items and
 					               lacked 2 of 5 expected items:
-					                 it is equal to "d",
-					                 it is equal to "e"
+					                 an item that is equal to "d",
+					                 an item that is equal to "e"
 
 					             Collection:
 					             [
@@ -4762,11 +4762,11 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c",
-					               it is equal to "d",
-					               it is equal to "e"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c",
+					               an item that is equal to "d",
+					               an item that is equal to "e"
 					             ]
 					             """);
 			}
@@ -4800,9 +4800,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -5005,9 +5005,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}
@@ -5089,9 +5089,9 @@ public sealed partial class ThatEnumerable
 
 					             Expected:
 					             [
-					               it is equal to "a",
-					               it is equal to "b",
-					               it is equal to "c"
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
 					             ]
 					             """);
 			}

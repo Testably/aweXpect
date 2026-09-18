@@ -3772,7 +3772,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage($$"""
 					               Expected that subject
 					               contains collection [regex,] in order as regex,
-					               but it lacked all 1 expected items
+					               but it lacked the 1 expected item
 					               
 					               Collection:
 					               [
@@ -3802,7 +3802,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              contains collection [wildcard,] in order as wildcard,
-					              but it lacked all 1 expected items
+					              but it lacked the 1 expected item
 					              
 					              Collection:
 					              [
@@ -3832,7 +3832,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              contains collection [match,] in order ignoring case,
-					              but it lacked all 1 expected items
+					              but it lacked the 1 expected item
 					              
 					              Collection:
 					              [

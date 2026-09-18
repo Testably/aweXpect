@@ -134,7 +134,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is not in descending order for x => x is MyIntClass c ? c.Value : 0,
+					             is not in descending order by x => x is MyIntClass c ? c.Value : 0,
 					             but it was
 
 					             Collection:
@@ -178,7 +178,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is not in descending order using OrdinalIgnoreCaseComparer for x => x is MyStringClass c ? c.Value : "",
+					             is not in descending order by x => x is MyStringClass c ? c.Value : "" using OrdinalIgnoreCaseComparer,
 					             but it was
 
 					             Collection:
@@ -216,7 +216,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is not in descending order for x => x is MyStringClass c ? c.Value : "",
+					             is not in descending order by x => x is MyStringClass c ? c.Value : "",
 					             but it was
 
 					             Collection:

@@ -89,6 +89,32 @@ internal static class CollectionHelpers
 	internal static string GetItemString(this EnumerableQuantifier quantifier)
 		=> quantifier.IsSingle() ? "item" : "items";
 
+	/// <summary>
+	///     Appends the <paramref name="quantifier" /> of a nested collection expectation, e.g. in
+	///     <c>has lines which …</c>.
+	/// </summary>
+	/// <remarks>
+	///     The parent renders the separator <c>" which "</c> before it knows that a quantifier follows, and
+	///     <c>which at least 2 are …</c> is not grammatical, so the separator is completed to <c>" of which "</c>.
+	/// </remarks>
+	internal static void AppendNestedQuantifier(this StringBuilder stringBuilder, EnumerableQuantifier quantifier,
+		bool isNegated)
+	{
+		const string which = " which ";
+		if (stringBuilder.Length >= which.Length &&
+		    stringBuilder.ToString(stringBuilder.Length - which.Length, which.Length) == which)
+		{
+			stringBuilder.Insert(stringBuilder.Length - which.Length + 1, "of ");
+		}
+
+		if (isNegated)
+		{
+			stringBuilder.Append("not ");
+		}
+
+		stringBuilder.Append(quantifier).Append(' ');
+	}
+
 	internal static ExpectationBuilder AddCollectionContext<TItem>(this ExpectationBuilder expectationBuilder,
 		IEnumerable<TItem>? value, bool isIncomplete = false)
 	{
