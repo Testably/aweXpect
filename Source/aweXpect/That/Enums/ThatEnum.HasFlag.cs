@@ -19,9 +19,12 @@ public static partial class ThatEnum
 		this IThat<TEnum> subject,
 		TEnum? expected)
 		where TEnum : struct, Enum
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new HasFlagConstraint<TEnum>(it, grammars, expected)),
+	{
+		expected.ThrowIfNull();
+		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				new HasFlagConstraint<TEnum>(it, grammars, expected!.Value)),
 			subject);
+	}
 
 	/// <summary>
 	///     Verifies that the subject does not have the <paramref name="unexpected" /> value.
@@ -30,11 +33,14 @@ public static partial class ThatEnum
 		this IThat<TEnum> subject,
 		TEnum? unexpected)
 		where TEnum : struct, Enum
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new HasFlagConstraint<TEnum>(it, grammars, unexpected).Invert()),
+	{
+		unexpected.ThrowIfNull();
+		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+				new HasFlagConstraint<TEnum>(it, grammars, unexpected!.Value).Invert()),
 			subject);
+	}
 
-	private sealed class HasFlagConstraint<TEnum>(string it, ExpectationGrammars grammars, TEnum? expectedFlag)
+	private sealed class HasFlagConstraint<TEnum>(string it, ExpectationGrammars grammars, TEnum expectedFlag)
 		: ConstraintResult.WithNotNullValue<TEnum>(it, grammars),
 			IValueConstraint<TEnum>
 		where TEnum : struct, Enum
@@ -42,7 +48,7 @@ public static partial class ThatEnum
 		public ConstraintResult IsMetBy(TEnum actual)
 		{
 			Actual = actual;
-			Outcome = expectedFlag != null && actual.HasFlag(expectedFlag) ? Outcome.Success : Outcome.Failure;
+			Outcome = actual.HasFlag(expectedFlag) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 

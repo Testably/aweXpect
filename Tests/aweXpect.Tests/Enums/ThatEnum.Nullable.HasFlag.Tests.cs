@@ -20,35 +20,29 @@ public sealed partial class ThatEnum
 				}
 
 				[Fact]
-				public async Task WhenExpectedIsNull_ShouldFail()
+				public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 				{
 					MyColors? subject = MyColors.Yellow;
 
 					async Task Act()
 						=> await That(subject).HasFlag(null);
 
-					await That(Act).Throws<XunitException>()
-						.WithMessage($"""
-						              Expected that subject
-						              has flag <null>,
-						              but it was {Formatter.Format(subject)}
-						              """);
+					await That(Act).Throws<ArgumentNullException>()
+						.WithParamName("expected").And
+						.WithMessage("The expected cannot be null.").AsPrefix();
 				}
 
 				[Fact]
-				public async Task WhenSubjectAndExpectedIsNull_ShouldFail()
+				public async Task WhenSubjectAndExpectedIsNull_ShouldThrowArgumentNullException()
 				{
 					MyColors? subject = null;
 
 					async Task Act()
 						=> await That(subject).HasFlag(null);
 
-					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that subject
-						             has flag <null>,
-						             but it was <null>
-						             """);
+					await That(Act).Throws<ArgumentNullException>()
+						.WithParamName("expected").And
+						.WithMessage("The expected cannot be null.").AsPrefix();
 				}
 
 				[Theory]

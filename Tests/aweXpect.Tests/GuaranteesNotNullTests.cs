@@ -229,6 +229,11 @@ public sealed class GuaranteesNotNullTests
 				{
 					observed = true;
 				}
+				catch (ArgumentNullException) when (nullValues)
+				{
+					// A guard that rejects the null argument lets no null subject pass, so the run with non-null
+					// arguments decides.
+				}
 				catch (Exception)
 				{
 					return false;
