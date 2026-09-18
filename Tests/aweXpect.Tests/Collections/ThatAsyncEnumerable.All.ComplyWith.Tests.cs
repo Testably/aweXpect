@@ -146,6 +146,42 @@ public sealed partial class ThatAsyncEnumerable
 				}
 
 				[Fact]
+				public async Task WhenItemsAreCollections_ShouldVerifyEachItem()
+				{
+					IAsyncEnumerable<int[]> subject = ToAsyncEnumerable<int[]>([1, 2,], [1, 3,]);
+
+					async Task Act()
+						=> await That(subject).All().ComplyWith(x => x.IsNotEqualTo([1, 3,]));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not equal to collection [1, 3,] in order for all items,
+						             but only 1 of 2 were
+
+						             Not matching items:
+						             [
+						               [
+						                 1,
+						                 3
+						               ]
+						             ]
+
+						             Collection:
+						             [
+						               [
+						                 1,
+						                 2
+						               ],
+						               [
+						                 1,
+						                 3
+						               ]
+						             ]
+						             """);
+				}
+
+				[Fact]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IAsyncEnumerable<int>? subject = null;

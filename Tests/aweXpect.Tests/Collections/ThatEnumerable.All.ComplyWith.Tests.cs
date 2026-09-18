@@ -158,6 +158,92 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
+				public async Task WhenItemsAreCollections_ShouldVerifyEachItem()
+				{
+					int[][] subject = [[1, 2,], [1, 3,],];
+
+					async Task Act()
+						=> await That(subject).All().ComplyWith(x => x.IsEqualTo([1, 2,]));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equal to collection [1, 2,] in order for all items,
+						             but only 1 of 2 were
+
+						             Not matching items:
+						             [
+						               [
+						                 1,
+						                 3
+						               ]
+						             ]
+
+						             Collection:
+						             [
+						               [
+						                 1,
+						                 2
+						               ],
+						               [
+						                 1,
+						                 3
+						               ]
+						             ]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenItemsAreLazyCollections_ShouldVerifyEachItem()
+				{
+					IEnumerable<IEnumerable<int>> subject =
+						ToEnumerable<IEnumerable<int>>(ToEnumerable([1, 2,]), ToEnumerable([1, 3,]));
+
+					async Task Act()
+						=> await That(subject).All().ComplyWith(x => x.HasItem(2));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             has item 2 for all items,
+						             but not all were
+
+						             Not matching items:
+						             [
+						               [
+						                 1,
+						                 3
+						               ],
+						               (… and maybe others)
+						             ]
+
+						             Collection:
+						             [
+						               [
+						                 1,
+						                 2
+						               ],
+						               [
+						                 1,
+						                 3
+						               ]
+						             ]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenItemsAreLazyCollectionsThatComply_ShouldSucceed()
+				{
+					IEnumerable<IEnumerable<int>> subject =
+						ToEnumerable<IEnumerable<int>>(ToEnumerable([1, 2,]), ToEnumerable([2, 3,]));
+
+					async Task Act()
+						=> await That(subject).All().ComplyWith(x => x.HasItem(2));
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IEnumerable<int>? subject = null;
