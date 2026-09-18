@@ -50,9 +50,7 @@ internal sealed class EquivalencyComparer(EquivalencyOptions equivalencyOptions)
 			return _failureBuilder.ToString();
 		}
 
-		_failureBuilder.Insert(0, " was not:");
-		_failureBuilder.Insert(0, it);
-		return _failureBuilder.ToString();
+		return $"{it} was not:{_failureBuilder}";
 	}
 
 	private static bool HandleSpecialCases<TActual, TExpected>(TActual actual, TExpected expected,
