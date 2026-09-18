@@ -21,7 +21,7 @@ public static partial class ThatBool
 			subject);
 
 	private sealed class ImpliesConstraint(string it, ExpectationGrammars grammars, bool consequent)
-		: ConstraintResult.WithValue<bool>(grammars),
+		: ConstraintResult.WithValue<bool>(it, grammars),
 			IValueConstraint<bool>
 	{
 		public ConstraintResult IsMetBy(bool actual)
@@ -39,7 +39,7 @@ public static partial class ThatBool
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it);
+			stringBuilder.Append(It);
 			stringBuilder.Append(" did not");
 		}
 
@@ -51,7 +51,7 @@ public static partial class ThatBool
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it);
+			stringBuilder.Append(It);
 			stringBuilder.Append(" did");
 		}
 	}

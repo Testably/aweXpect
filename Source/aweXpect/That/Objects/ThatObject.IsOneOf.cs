@@ -82,7 +82,7 @@ public static partial class ThatObject
 		ExpectationGrammars grammars,
 		IEnumerable<TExpected?> expected,
 		ObjectEqualityOptions<TSubject> options)
-		: ConstraintResult.WithValue<TSubject>(grammars),
+		: ConstraintResult.WithValue<TSubject>(it, grammars),
 			IAsyncConstraint<TSubject>
 	{
 		public async Task<ConstraintResult> IsMetBy(TSubject actual, CancellationToken cancellationToken)
@@ -114,7 +114,7 @@ public static partial class ThatObject
 				Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(it, Grammars, Actual, expected));
+			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, Actual, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(

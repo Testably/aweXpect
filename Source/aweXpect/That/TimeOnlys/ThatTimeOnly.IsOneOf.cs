@@ -108,7 +108,7 @@ public static partial class ThatTimeOnly
 		ExpectationGrammars grammars,
 		IEnumerable<TimeOnly?> expected,
 		TimeTolerance tolerance)
-		: ConstraintResult.WithValue<TimeOnly?>(grammars),
+		: ConstraintResult.WithValue<TimeOnly?>(it, grammars),
 			IValueConstraint<TimeOnly>
 	{
 		public ConstraintResult IsMetBy(TimeOnly actual)
@@ -147,7 +147,7 @@ public static partial class ThatTimeOnly
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" was ");
+			stringBuilder.Append(It).Append(" was ");
 			Formatter.Format(stringBuilder, Actual);
 		}
 

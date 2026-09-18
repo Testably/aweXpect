@@ -146,7 +146,7 @@ public static partial class ThatObject
 		ExpectationGrammars grammars,
 		T? expected,
 		ObjectEqualityOptions<T> options)
-		: ConstraintResult.WithValue<T>(grammars),
+		: ConstraintResult.WithValue<T>(it, grammars),
 			IAsyncConstraint<T>
 		where T : struct
 	{
@@ -162,14 +162,14 @@ public static partial class ThatObject
 				Formatter.Format(expected, FormattingOptions.Indented()), Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(it, Grammars, Actual, expected));
+			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, Actual, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(
 				Formatter.Format(expected, FormattingOptions.Indented()), Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(it, Grammars, Actual, expected));
+			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, Actual, expected));
 	}
 
 	private sealed class IsNullableEqualToConstraint<T>(

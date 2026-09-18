@@ -52,7 +52,7 @@ public static partial class ThatObject
 	private sealed class IsNullConstraint<T>(
 		string it,
 		ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<T>(grammars),
+		: ConstraintResult.WithValue<T>(it, grammars),
 			IValueConstraint<T>
 	{
 		public ConstraintResult IsMetBy(T actual)
@@ -67,7 +67,7 @@ public static partial class ThatObject
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" was ");
+			stringBuilder.Append(It).Append(" was ");
 			Formatter.Format(stringBuilder, Actual, FormattingOptions.Indented(indentation));
 		}
 
@@ -75,6 +75,6 @@ public static partial class ThatObject
 			=> stringBuilder.Append("is not null");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(it).Append(" was");
+			=> stringBuilder.Append(It).Append(" was");
 	}
 }

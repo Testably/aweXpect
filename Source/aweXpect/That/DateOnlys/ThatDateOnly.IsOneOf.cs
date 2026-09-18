@@ -108,7 +108,7 @@ public static partial class ThatDateOnly
 		ExpectationGrammars grammars,
 		IEnumerable<DateOnly?> expected,
 		TimeTolerance tolerance)
-		: ConstraintResult.WithValue<DateOnly>(grammars),
+		: ConstraintResult.WithValue<DateOnly>(it, grammars),
 			IValueConstraint<DateOnly>
 	{
 		public ConstraintResult IsMetBy(DateOnly actual)
@@ -145,7 +145,7 @@ public static partial class ThatDateOnly
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" was ");
+			stringBuilder.Append(It).Append(" was ");
 			Formatter.Format(stringBuilder, Actual);
 		}
 

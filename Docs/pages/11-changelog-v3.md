@@ -224,6 +224,9 @@ expectation with `Within(…)` now observes the window it asks for.
 - The three `ConstraintResult` base classes document how they treat a `null` actual, and the
   [null rule](/docs/expectations/write-extension#constraints) that an extension has to follow is stated on the
   extension page.
+- `ConstraintResult.WithValue<T>` takes the name of the subject like `WithNotNullValue<T>` and `WithEqualToValue<T>`:
+  its constructor is `WithValue<T>(string it, ExpectationGrammars grammars)`, and the name is available as the
+  inherited `It` property. A derived class passes its `it` to the base and uses `It` in its own result texts.
 - The `[GuaranteesNotNull]` attribute in `aweXpect.Core` marks an expectation that a `null` subject can never satisfy,
   and the source generator emits it for expectations derived from `ConstraintResult.WithNotNullValue`.
 

@@ -107,7 +107,7 @@ public static partial class ThatDateTime
 		ExpectationGrammars grammars,
 		IEnumerable<DateTime?> expected,
 		TimeTolerance tolerance)
-		: ConstraintResult.WithValue<DateTime>(grammars),
+		: ConstraintResult.WithValue<DateTime>(it, grammars),
 			IValueConstraint<DateTime>
 	{
 		public ConstraintResult IsMetBy(DateTime actual)
@@ -146,7 +146,7 @@ public static partial class ThatDateTime
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" was ");
+			stringBuilder.Append(It).Append(" was ");
 			Formatter.Format(stringBuilder, Actual);
 		}
 

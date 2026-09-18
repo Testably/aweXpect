@@ -193,7 +193,7 @@ public partial class ConstraintResultTests
 				string negatedResult = "",
 				string? undecidedResult = null,
 				Outcome? outcome = null,
-				ExpectationGrammars grammars = ExpectationGrammars.None) : base(grammars)
+				ExpectationGrammars grammars = ExpectationGrammars.None) : base("it", grammars)
 			{
 				_expectation = expectation;
 				_negatedExpectation = negatedExpectation;

@@ -50,7 +50,7 @@ public static partial class ThatNumber
 			subject);
 
 	private sealed class IsNaNConstraint<TNumber>(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<TNumber>(grammars),
+		: ConstraintResult.WithValue<TNumber>(it, grammars),
 			IValueConstraint<TNumber>
 		where TNumber : struct, IFloatingPoint<TNumber>
 	{
@@ -66,7 +66,7 @@ public static partial class ThatNumber
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" was ");
+			stringBuilder.Append(It).Append(" was ");
 			Formatter.Format(stringBuilder, Actual);
 		}
 
@@ -179,7 +179,7 @@ public static partial class ThatNumber
 	private sealed class IsFloatNaNConstraint(
 		string it,
 		ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<float>(grammars),
+		: ConstraintResult.WithValue<float>(it, grammars),
 			IValueConstraint<float>
 	{
 		public ConstraintResult IsMetBy(float actual)
@@ -194,7 +194,7 @@ public static partial class ThatNumber
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" was ");
+			stringBuilder.Append(It).Append(" was ");
 			Formatter.Format(stringBuilder, Actual);
 		}
 
@@ -208,7 +208,7 @@ public static partial class ThatNumber
 	private sealed class IsDoubleNaNConstraint(
 		string it,
 		ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<double>(grammars),
+		: ConstraintResult.WithValue<double>(it, grammars),
 			IValueConstraint<double>
 	{
 		public ConstraintResult IsMetBy(double actual)
@@ -223,7 +223,7 @@ public static partial class ThatNumber
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" was ");
+			stringBuilder.Append(It).Append(" was ");
 			Formatter.Format(stringBuilder, Actual);
 		}
 

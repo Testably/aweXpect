@@ -89,7 +89,7 @@ public static partial class ThatNumber
 			ExpectationGrammars grammars,
 			TNumber? minimum,
 			TNumber? maximum,
-			NumberTolerance<TNumber> options) : base(grammars)
+			NumberTolerance<TNumber> options) : base(it, grammars)
 		{
 			if (maximum < minimum)
 			{
@@ -1003,7 +1003,7 @@ public static partial class ThatNumber
 			ExpectationGrammars grammars,
 			TNumber? minimum,
 			TNumber? maximum,
-			NumberTolerance<TNumber> options) : base(grammars)
+			NumberTolerance<TNumber> options) : base(it, grammars)
 		{
 			if (maximum != null && minimum != null &&
 			    maximum.Value.CompareTo(minimum.Value) < 0)

@@ -25,17 +25,9 @@ public abstract partial class ConstraintResult
 	///     - <see cref="AppendNormalResult" /> / <see cref="AppendNegatedResult" />
 	///     which add the normal and negated result strings
 	/// </remarks>
-	public abstract class WithValue<T>(ExpectationGrammars grammars) : ConstraintResult(grammars)
+	public abstract class WithValue<T>(string it, ExpectationGrammars grammars) : ConstraintResult(grammars)
 	{
 		private Outcome _outcome = Outcome.Undecided;
-
-		/// <inheritdoc cref="WithValue{T}" />
-		/// <param name="it">The name of the subject in the result, e.g. a member path in a nested expectation.</param>
-		/// <param name="grammars">The grammars of the expectation.</param>
-		public WithValue(string it, ExpectationGrammars grammars) : this(grammars)
-		{
-			It = it;
-		}
 
 		/// <summary>
 		///     Flag indicating if the constraint is negated.
@@ -45,7 +37,7 @@ public abstract partial class ConstraintResult
 		/// <summary>
 		///     The `it` parameter.
 		/// </summary>
-		protected string It { get; } = "it";
+		protected string It { get; } = it;
 
 		/// <summary>
 		///     The actual value.

@@ -48,7 +48,7 @@ public static partial class ThatAsyncEnumerable
 		string it,
 		ExpectationGrammars grammars,
 		PredicateOptions<TItem> options)
-		: ConstraintResult.WithValue<TItem?>(grammars),
+		: ConstraintResult.WithValue<TItem?>(it, grammars),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
 		private IAsyncEnumerable<TItem>? _actual;
@@ -113,17 +113,17 @@ public static partial class ThatAsyncEnumerable
 		{
 			if (_actual is null)
 			{
-				stringBuilder.ItWasNull(it, Grammars);
+				stringBuilder.ItWasNull(It, Grammars);
 			}
 			else if (_count == 0)
 			{
-				stringBuilder.Append(it).Append(_isEmpty
-					? Grammars.SubjectVerb(it, " was empty", " were empty")
+				stringBuilder.Append(It).Append(_isEmpty
+					? Grammars.SubjectVerb(It, " was empty", " were empty")
 					: " did not contain any matching item");
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" contained more than one item");
+				stringBuilder.Append(It).Append(" contained more than one item");
 			}
 		}
 
@@ -135,11 +135,11 @@ public static partial class ThatAsyncEnumerable
 		{
 			if (_actual is null)
 			{
-				stringBuilder.ItWasNull(it, Grammars);
+				stringBuilder.ItWasNull(It, Grammars);
 			}
 			else
 			{
-				stringBuilder.Append(it).Append(" did");
+				stringBuilder.Append(It).Append(" did");
 			}
 		}
 	}

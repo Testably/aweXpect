@@ -64,7 +64,7 @@ public static partial class ThatNullableChar
 			subject);
 
 	private sealed class IsOneOfConstraint(string it, ExpectationGrammars grammars, IEnumerable<char?> expected)
-		: ConstraintResult.WithValue<char?>(grammars),
+		: ConstraintResult.WithValue<char?>(it, grammars),
 			IValueConstraint<char?>
 	{
 		public ConstraintResult IsMetBy(char? actual)
@@ -98,7 +98,7 @@ public static partial class ThatNullableChar
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" was ");
+			stringBuilder.Append(It).Append(" was ");
 			Formatter.Format(stringBuilder, Actual);
 		}
 

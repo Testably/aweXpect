@@ -71,7 +71,7 @@ public static partial class ThatNullableEnum
 			subject);
 
 	private sealed class IsOneOfConstraint<TEnum>(string it, ExpectationGrammars grammars, IEnumerable<TEnum?> expected)
-		: ConstraintResult.WithValue<TEnum?>(grammars),
+		: ConstraintResult.WithValue<TEnum?>(it, grammars),
 			IValueConstraint<TEnum?>
 		where TEnum : struct, Enum
 	{
@@ -106,7 +106,7 @@ public static partial class ThatNullableEnum
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" was ");
+			stringBuilder.Append(It).Append(" was ");
 			Formatter.Format(stringBuilder, Actual);
 		}
 
