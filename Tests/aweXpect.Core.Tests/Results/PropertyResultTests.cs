@@ -52,6 +52,10 @@ public sealed partial class PropertyResultTests
 				source, a => a?.DateTimeKindValue, "kind value", grammars);
 		}
 
+		public static PropertyResult.DateTimeKind<MyClass?, MyClass?, IThat<MyClass?>> DateTimeKindValueOf(
+			IThat<MyClass?> source, ExpectationGrammars grammars)
+			=> new(source, a => a?.DateTimeKindValue, "kind value", grammars);
+
 		public static PropertyResult.Int<MyClass?> HasIntValue(int intValue)
 		{
 			MyClass subject = new()
@@ -135,6 +139,10 @@ public sealed partial class PropertyResultTests
 				source, a => a?.LongValue, "long value", grammars: grammars);
 		}
 
+		public static PropertyResult.Long<MyClass?, MyClass?, IThat<MyClass?>> LongValueOf(IThat<MyClass?> source,
+			ExpectationGrammars grammars)
+			=> new(source, a => a?.LongValue, "long value", grammars: grammars);
+
 		public static StringProperty HasStringValue(string stringValue,
 			ExpectationGrammars grammars = ExpectationGrammars.None)
 		{
@@ -201,9 +209,13 @@ public sealed partial class PropertyResultTests
 				source, a => a?.TimeSpanValue, "TimeSpan value", grammars: grammars);
 		}
 
-		public static StringProperty StringValueOf(IThat<MyClass?> source, bool includeValueInContext = false)
-			=> new(source, a => a?.StringValue, "string value", null, ExpectationGrammars.None,
-				includeValueInContext);
+		public static PropertyResult.TimeSpan<MyClass?, MyClass?, IThat<MyClass?>> TimeSpanValueOf(
+			IThat<MyClass?> source, ExpectationGrammars grammars)
+			=> new(source, a => a?.TimeSpanValue, "TimeSpan value", grammars: grammars);
+
+		public static StringProperty StringValueOf(IThat<MyClass?> source, bool includeValueInContext = false,
+			ExpectationGrammars grammars = ExpectationGrammars.None)
+			=> new(source, a => a?.StringValue, "string value", null, grammars, includeValueInContext);
 
 		/// <summary>
 		///     The source of a <see cref="StringValueOf" />, so that two properties can share one expectation builder.

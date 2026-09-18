@@ -521,6 +521,36 @@ public sealed partial class ThatBufferedStream
 					.WithParamName("unexpected");
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenBufferSizeDiffers_ShouldSucceed()
+			{
+				using BufferedStream subject = GetBufferedStream(8);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasBufferSize(9));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenBufferSizeMatches_ShouldFail()
+			{
+				using BufferedStream subject = GetBufferedStream(8);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasBufferSize(8));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have buffer size equal to 8,
+					             but it had buffer size 8
+					             """);
+			}
+		}
 	}
 }
 #endif

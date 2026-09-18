@@ -126,5 +126,35 @@ public sealed partial class ThatEnum
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenValueDiffers_ShouldSucceed()
+			{
+				MyColors subject = MyColors.Yellow;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasValue((long)subject + 1));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenValueMatches_ShouldFail()
+			{
+				MyColors subject = MyColors.Yellow;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasValue((long)subject));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              does not have value equal to {Formatter.Format((long)subject)},
+					              but it had value {Formatter.Format((long)subject)}
+					              """);
+			}
+		}
 	}
 }
