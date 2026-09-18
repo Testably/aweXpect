@@ -128,7 +128,7 @@ public static partial class ThatSpan
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" was not because ").Append(_exceptionMessage);
+			=> stringBuilder.Append(It).Append(" was not, because ").Append(_exceptionMessage);
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -198,7 +198,7 @@ public static partial class ThatSpan
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" was not because ").Append(_exceptionMessage);
+			=> stringBuilder.Append(It).Append(" was not, because ").Append(_exceptionMessage);
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{

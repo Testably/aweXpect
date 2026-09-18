@@ -70,6 +70,25 @@ public sealed partial class ThatString
 					              """);
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenStringIsNotParsable_ShouldFail()
+			{
+				string subject = "abc";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNotParsableInto<int>());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is parsable into int,
+					             but it was not, because the input string 'abc' was not in a correct format
+					             """);
+			}
+		}
 	}
 }
 #endif
