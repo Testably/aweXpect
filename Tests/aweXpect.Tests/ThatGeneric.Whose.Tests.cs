@@ -129,9 +129,148 @@ public sealed partial class ThatGeneric
 				await That(Act).DoesNotThrow();
 			}
 
+			[Fact]
+			public async Task WhenAsyncMemberConditionIsNotSatisfied_ShouldFail()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.GetValueAsync(), v => v.IsEqualTo(2));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose GetValueAsync() is equal to 2,
+					             but GetValueAsync() was 1 which differs by -1
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenAsyncMemberConditionIsSatisfied_ShouldSucceed()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.GetValueAsync(), v => v.IsEqualTo(1));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldNotInvokeAsyncMemberSelector()
+			{
+				MyClass? subject = null;
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.GetValueAsync(), v => v.IsEqualTo(1));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose GetValueAsync() is equal to 1,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenAsyncLambdaIsUsed_ShouldVerifyAwaitedValue()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).Whose(async o => await o.GetValueAsync(), v => v.IsEqualTo(2));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose async o => await o.GetValueAsync() is equal to 2,
+					             but async o => await o.GetValueAsync() was 1 which differs by -1
+					             """);
+			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task WhenValueTaskMemberConditionIsNotSatisfied_ShouldFail()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.GetValueAsValueTaskAsync(), v => v.IsEqualTo(2));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose GetValueAsValueTaskAsync() is equal to 2,
+					             but GetValueAsValueTaskAsync() was 1 which differs by -1
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenValueTaskMemberConditionIsSatisfied_ShouldSucceed()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.GetValueAsValueTaskAsync(), v => v.IsEqualTo(1));
+
+				await That(Act).DoesNotThrow();
+			}
+#endif
+
+			[Fact]
+			public async Task WhenAsyncMemberIsChainedAfterDelegateResult_ShouldVerifyAwaitedValue()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(() => subject)
+						.DoesNotThrow()
+						.AndWhoseResult.IsNotNull()
+						.And.Whose(o => o.GetValueAsync(), v => v.IsEqualTo(2));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that () => subject
+					             does not throw any exception and its result is not null and whose GetValueAsync() is equal to 2,
+					             but GetValueAsync() was 1 which differs by -1
+					             """);
+			}
+
 			private sealed class MyClass
 			{
 				public int Value { get; set; }
+
+				public async Task<int> GetValueAsync()
+				{
+					await Task.Yield();
+					return Value;
+				}
+
+#if NET8_0_OR_GREATER
+				public async ValueTask<int> GetValueAsValueTaskAsync()
+				{
+					await Task.Yield();
+					return Value;
+				}
+#endif
 			}
 
 			private sealed class MyCombinationClass

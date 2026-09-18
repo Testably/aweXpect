@@ -74,6 +74,124 @@ public sealed partial class ThatObject
 
 				await That(Act).Throws<XunitException>();
 			}
+
+			[Fact]
+			public async Task WhenAsyncMemberDoesNotMatch_ShouldFail()
+			{
+				object subject = new AsyncClass
+				{
+					Value = 42,
+				};
+
+				async Task Act()
+					=> await That(subject).Is<AsyncClass>()
+						.Whose(it => it.GetValueAsync(), value => value.IsLessThan(42));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is type ThatObject.Is.WhoseTests.AsyncClass whose GetValueAsync() is less than 42,
+					             but GetValueAsync() was 42
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenAsyncMemberMatches_ShouldSucceed()
+			{
+				object subject = new AsyncClass
+				{
+					Value = 42,
+				};
+
+				async Task Act()
+					=> await That(subject).Is<AsyncClass>()
+						.Whose(it => it.GetValueAsync(), value => value.IsEqualTo(42));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenAsyncMemberIsCombinedWithAndWhose_ShouldVerifyBoth()
+			{
+				object subject = new AsyncClass
+				{
+					Value = 42,
+				};
+
+				async Task Act()
+					=> await That(subject).Is<AsyncClass>()
+						.Whose(it => it.Value, value => value.IsEqualTo(42))
+						.AndWhose(it => it.GetValueAsync(), value => value.IsLessThan(42));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is type ThatObject.Is.WhoseTests.AsyncClass whose Value is equal to 42 and whose GetValueAsync() is less than 42,
+					             but GetValueAsync() was 42
+					             """);
+			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task WhenValueTaskMemberDoesNotMatch_ShouldFail()
+			{
+				object subject = new AsyncClass
+				{
+					Value = 42,
+				};
+
+				async Task Act()
+					=> await That(subject).Is<AsyncClass>()
+						.Whose(it => it.GetValueAsValueTaskAsync(), value => value.IsLessThan(42));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is type ThatObject.Is.WhoseTests.AsyncClass whose GetValueAsValueTaskAsync() is less than 42,
+					             but GetValueAsValueTaskAsync() was 42
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenValueTaskMemberIsCombinedWithAndWhose_ShouldVerifyBoth()
+			{
+				object subject = new AsyncClass
+				{
+					Value = 42,
+				};
+
+				async Task Act()
+					=> await That(subject).Is<AsyncClass>()
+						.Whose(it => it.Value, value => value.IsEqualTo(42))
+						.AndWhose(it => it.GetValueAsValueTaskAsync(), value => value.IsLessThan(42));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is type ThatObject.Is.WhoseTests.AsyncClass whose Value is equal to 42 and whose GetValueAsValueTaskAsync() is less than 42,
+					             but GetValueAsValueTaskAsync() was 42
+					             """);
+			}
+#endif
+
+			private sealed class AsyncClass
+			{
+				public int Value { get; set; }
+
+				public async Task<int> GetValueAsync()
+				{
+					await Task.Yield();
+					return Value;
+				}
+
+#if NET8_0_OR_GREATER
+				public async ValueTask<int> GetValueAsValueTaskAsync()
+				{
+					await Task.Yield();
+					return Value;
+				}
+#endif
+			}
 		}
 
 		public sealed class AndWhoseTests
