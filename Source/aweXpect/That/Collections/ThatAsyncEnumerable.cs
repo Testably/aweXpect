@@ -178,13 +178,12 @@ public static partial class ThatAsyncEnumerable
 	}
 
 	private sealed class AsyncCollectionConstraint<TItem>
-		: ConstraintResult.WithValue<IAsyncEnumerable<TItem>?>,
+		: ConstraintResult.WithNotNullValue<IAsyncEnumerable<TItem>?>,
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
 		private readonly ExpectationBuilder _expectationBuilder;
 		private readonly Func<ExpectationGrammars, string> _expectationText;
 		private readonly ExpectationGrammars _grammars;
-		private readonly string _it;
 #if NET8_0_OR_GREATER
 		private readonly Func<TItem, ValueTask<bool>> _predicate;
 #else
@@ -212,7 +211,6 @@ public static partial class ThatAsyncEnumerable
 			string verb) : base(it, grammars)
 		{
 			_expectationBuilder = expectationBuilder;
-			_it = it;
 			_grammars = grammars;
 			_quantifier = quantifier;
 			_expectationText = expectationText;
@@ -298,17 +296,8 @@ public static partial class ThatAsyncEnumerable
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Actual is null)
-			{
-				stringBuilder.ItWasNull(_it, _grammars);
-			}
-			else
-			{
-				_quantifier.AppendResult(stringBuilder, _grammars, _matchingCount, _notMatchingCount, _totalCount,
-					_verb);
-			}
-		}
+			=> _quantifier.AppendResult(stringBuilder, _grammars, _matchingCount, _notMatchingCount, _totalCount,
+				_verb);
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -328,17 +317,8 @@ public static partial class ThatAsyncEnumerable
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Actual is null)
-			{
-				stringBuilder.ItWasNull(_it, _grammars);
-			}
-			else
-			{
-				_quantifier.AppendResult(stringBuilder, _grammars.Negate(), _matchingCount, _notMatchingCount,
-					_totalCount, _verb);
-			}
-		}
+			=> _quantifier.AppendResult(stringBuilder, _grammars.Negate(), _matchingCount, _notMatchingCount,
+				_totalCount, _verb);
 
 		private void AppendContexts(bool isIncomplete)
 		{

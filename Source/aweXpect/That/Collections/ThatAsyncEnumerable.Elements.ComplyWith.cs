@@ -50,12 +50,11 @@ public static partial class ThatAsyncEnumerable
 	}
 
 	private sealed class ComplyWithConstraint<TItem>
-		: ConstraintResult.WithValue<IAsyncEnumerable<TItem>?>,
+		: ConstraintResult.WithNotNullValue<IAsyncEnumerable<TItem>?>,
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
 		private readonly ExpectationBuilder _expectationBuilder;
 		private readonly ExpectationGrammars _grammars;
-		private readonly string _it;
 		private readonly ManualExpectationBuilder<TItem> _itemExpectationBuilder;
 		private readonly EnumerableQuantifier _quantifier;
 		private int _matchingCount;
@@ -69,7 +68,6 @@ public static partial class ThatAsyncEnumerable
 			Action<IThatSubject<TItem>> expectations) : base(it, grammars)
 		{
 			_expectationBuilder = expectationBuilder;
-			_it = it;
 			_grammars = grammars;
 			_quantifier = quantifier;
 			_itemExpectationBuilder = new ManualExpectationBuilder<TItem>(null, grammars & ~ExpectationGrammars.Plural);
@@ -147,16 +145,7 @@ public static partial class ThatAsyncEnumerable
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Actual is null)
-			{
-				stringBuilder.ItWasNull(_it, Grammars);
-			}
-			else
-			{
-				_quantifier.AppendResult(stringBuilder, _grammars, _matchingCount, _notMatchingCount, _totalCount);
-			}
-		}
+			=> _quantifier.AppendResult(stringBuilder, _grammars, _matchingCount, _notMatchingCount, _totalCount);
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -168,16 +157,7 @@ public static partial class ThatAsyncEnumerable
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Actual is null)
-			{
-				stringBuilder.ItWasNull(_it, Grammars);
-			}
-			else
-			{
-				_quantifier.AppendResult(stringBuilder, _grammars, _matchingCount, _notMatchingCount, _totalCount);
-			}
-		}
+			=> _quantifier.AppendResult(stringBuilder, _grammars, _matchingCount, _notMatchingCount, _totalCount);
 
 		private void AppendContexts(bool isIncomplete)
 		{

@@ -182,6 +182,22 @@ public sealed partial class ThatAsyncEnumerable
 				}
 
 				[Fact]
+				public async Task WhenSubjectIsNull_NegatedShouldFail()
+				{
+					IAsyncEnumerable<int>? subject = null;
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.All().ComplyWith(x => x.IsEqualTo(0)));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             all for is equal to 0 items,
+						             but it was <null>
+						             """);
+				}
+
+				[Fact]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IAsyncEnumerable<int>? subject = null;
