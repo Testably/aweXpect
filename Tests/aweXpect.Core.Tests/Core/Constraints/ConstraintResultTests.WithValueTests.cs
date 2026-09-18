@@ -66,7 +66,18 @@ public partial class ConstraintResultTests
 			string resultText = sut.GetResultText();
 
 			await That(sut.Outcome).IsEqualTo(Outcome.Undecided);
-			await That(resultText).IsEqualTo("could not verify, because it was already cancelled");
+			await That(resultText).IsEqualTo("it could not be verified, because it was already cancelled");
+		}
+
+		[Fact]
+		public async Task AppendResult_WhenUndecided_ShouldStartWithIt()
+		{
+			ConstraintResult sut = new MyWithValueWithItDummy("Items");
+
+			string resultText = sut.GetResultText();
+
+			await That(sut.Outcome).IsEqualTo(Outcome.Undecided);
+			await That(resultText).IsEqualTo("Items could not be verified, because it was already cancelled");
 		}
 
 		[Theory]
@@ -182,7 +193,7 @@ public partial class ConstraintResultTests
 				string negatedResult = "",
 				string? undecidedResult = null,
 				Outcome? outcome = null,
-				ExpectationGrammars grammars = ExpectationGrammars.None) : base(grammars)
+				ExpectationGrammars grammars = ExpectationGrammars.None) : base("it", grammars)
 			{
 				_expectation = expectation;
 				_negatedExpectation = negatedExpectation;
@@ -220,6 +231,26 @@ public partial class ConstraintResultTests
 				}
 
 				base.AppendUndecidedResult(stringBuilder, indentation);
+			}
+		}
+
+		private sealed class MyWithValueWithItDummy(string it)
+			: ConstraintResult.WithValue<int>(it, ExpectationGrammars.None)
+		{
+			protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+			{
+			}
+
+			protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+			{
+			}
+
+			protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			{
+			}
+
+			protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			{
 			}
 		}
 	}

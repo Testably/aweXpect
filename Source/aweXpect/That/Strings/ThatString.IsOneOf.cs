@@ -76,7 +76,7 @@ public static partial class ThatString
 		ExpectationGrammars grammars,
 		IEnumerable<string?> expectedValues,
 		StringEqualityOptions options)
-		: ConstraintResult.WithValue<string?>(grammars),
+		: ConstraintResult.WithValue<string?>(it, grammars),
 			IAsyncConstraint<string?>
 	{
 		public async Task<ConstraintResult> IsMetBy(string? actual, CancellationToken cancellationToken)
@@ -113,7 +113,7 @@ public static partial class ThatString
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" was ");
+			stringBuilder.Append(It).Append(" was ");
 			Formatter.Format(stringBuilder, Actual);
 		}
 

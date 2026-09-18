@@ -113,7 +113,27 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is unique for all items,
-						             but could not verify, because it was already cancelled
+						             but it could not be verified, because it was already cancelled
+						             *
+						             """).AsWildcard();
+				}
+
+				[Fact]
+				public async Task ConsidersCancellationToken_WhenNested_ShouldNameTheMember()
+				{
+					using CancellationTokenSource cts = new();
+					CancellationToken token = cts.Token;
+					Container subject = new(GetCancellingEnumerable(5, cts));
+
+					async Task Act()
+						=> await That(subject).Whose(c => c.Items, items => items.All().AreUnique())
+							.WithCancellation(token);
+
+					await That(Act).Throws<InconclusiveException>()
+						.WithMessage("""
+						             Expected that subject
+						             whose .Items is unique for all items,
+						             but .Items could not be verified, because it was already cancelled
 						             *
 						             """).AsWildcard();
 				}
@@ -329,7 +349,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is unique for x => x * 2 for all items,
-						             but could not verify, because it was already cancelled
+						             but it could not be verified, because it was already cancelled
 						             *
 						             """).AsWildcard();
 				}

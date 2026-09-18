@@ -72,6 +72,11 @@ public partial class ThatAsyncEnumerable
 	///     Returns an <see cref="IAsyncEnumerable{T}" /> with incrementing numbers, starting with 0, which cancels the
 	///     <paramref name="cancellationTokenSource" /> after <paramref name="cancelAfter" /> iteration.
 	/// </summary>
+	private sealed class Container(IAsyncEnumerable<int> items)
+	{
+		public IAsyncEnumerable<int> Items { get; } = items;
+	}
+
 	private static async IAsyncEnumerable<int> GetCancellingAsyncEnumerable(
 		int cancelAfter,
 		CancellationTokenSource cancellationTokenSource,

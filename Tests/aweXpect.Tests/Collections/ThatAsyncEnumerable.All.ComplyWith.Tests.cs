@@ -28,11 +28,31 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is less than 6 for all items,
-						             but could not verify, because it was already cancelled
+						             but it could not be verified, because it was already cancelled
 
 						             Collection:
 						             [0, 1, 2, 3, 4, (… and maybe others)]
 						             """);
+				}
+
+				[Fact]
+				public async Task ConsidersCancellationToken_WhenNested_ShouldNameTheMember()
+				{
+					using CancellationTokenSource cts = new();
+					CancellationToken token = cts.Token;
+					Container subject = new(GetCancellingAsyncEnumerable(5, cts, token));
+
+					async Task Act()
+						=> await That(subject).Whose(c => c.Items, items => items.All().ComplyWith(x => x.IsLessThan(6)))
+							.WithCancellation(token);
+
+					await That(Act).Throws<InconclusiveException>()
+						.WithMessage("""
+						             Expected that subject
+						             whose .Items is less than 6 for all items,
+						             but .Items could not be verified, because it was already cancelled
+						             *
+						             """).AsWildcard();
 				}
 
 				[Fact]

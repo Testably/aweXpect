@@ -60,7 +60,7 @@ public abstract partial class ThatDelegate
 	}
 
 	private sealed class DoNothingConstraint<T>()
-		: ConstraintResult.WithValue<T>(ExpectationGrammars.None), IValueConstraint<T>
+		: ConstraintResult.WithValue<T>("it", ExpectationGrammars.None), IValueConstraint<T>
 	{
 		public ConstraintResult IsMetBy(T actual)
 		{

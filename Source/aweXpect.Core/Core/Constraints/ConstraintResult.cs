@@ -9,6 +9,8 @@ namespace aweXpect.Core.Constraints;
 /// </summary>
 public abstract partial class ConstraintResult
 {
+	internal const string CancelledResultSuffix = " could not be verified, because it was already cancelled";
+
 	/// <summary>
 	///     Initializes a new instance of <see cref="ConstraintResult" />.
 	/// </summary>

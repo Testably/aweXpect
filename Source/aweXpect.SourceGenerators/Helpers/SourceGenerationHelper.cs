@@ -178,7 +178,7 @@ internal static class SourceGenerationHelper
 		{
 			result += $$"""
 			            	private sealed class {{expectationToGenerate.Name}}Constraint(string it, ExpectationGrammars grammars)
-			            		: ConstraintResult.WithValue<{{expectationToGenerate.TargetType}}>(grammars),
+			            		: ConstraintResult.WithValue<{{expectationToGenerate.TargetType}}>(it, grammars),
 			            			IValueConstraint<{{expectationToGenerate.TargetType}}>
 			            	{
 			            		public ConstraintResult IsMetBy({{expectationToGenerate.TargetType}} actual)
@@ -193,7 +193,7 @@ internal static class SourceGenerationHelper
 			            	
 			            		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			            		{
-			            			stringBuilder.Append(it).Append(" was ");
+			            			stringBuilder.Append(It).Append(" was ");
 			            			Formatter.Format(stringBuilder, Actual);
 			            		}
 			            	

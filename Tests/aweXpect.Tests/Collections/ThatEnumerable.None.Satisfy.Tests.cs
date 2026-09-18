@@ -28,7 +28,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             satisfies item => item < 0 for no items,
-						             but could not verify, because it was already cancelled
+						             but it could not be verified, because it was already cancelled
 
 						             Collection:
 						             [

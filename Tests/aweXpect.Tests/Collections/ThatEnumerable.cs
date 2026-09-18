@@ -112,6 +112,11 @@ public partial class ThatEnumerable
 		#endregion
 	}
 
+	private sealed class Container(IEnumerable<int> items)
+	{
+		public IEnumerable<int> Items { get; } = items;
+	}
+
 	public class InnerClass
 	{
 		public IEnumerable<string>? Collection { get; set; }

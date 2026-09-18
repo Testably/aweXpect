@@ -66,7 +66,7 @@ public static partial class ThatAsyncEnumerable
 
 		public ComplyWithConstraint(ExpectationBuilder expectationBuilder, string it, ExpectationGrammars grammars,
 			EnumerableQuantifier quantifier,
-			Action<IThatSubject<TItem>> expectations) : base(grammars)
+			Action<IThatSubject<TItem>> expectations) : base(it, grammars)
 		{
 			_expectationBuilder = expectationBuilder;
 			_it = it;

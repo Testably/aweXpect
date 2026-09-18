@@ -107,7 +107,7 @@ public static partial class ThatNullableDateTimeOffset
 		ExpectationGrammars grammars,
 		IEnumerable<DateTimeOffset?> expected,
 		TimeTolerance tolerance)
-		: ConstraintResult.WithValue<DateTimeOffset?>(grammars),
+		: ConstraintResult.WithValue<DateTimeOffset?>(it, grammars),
 			IValueConstraint<DateTimeOffset?>
 	{
 		public ConstraintResult IsMetBy(DateTimeOffset? actual)
@@ -154,7 +154,7 @@ public static partial class ThatNullableDateTimeOffset
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" was ");
+			stringBuilder.Append(It).Append(" was ");
 			Formatter.Format(stringBuilder, Actual);
 		}
 

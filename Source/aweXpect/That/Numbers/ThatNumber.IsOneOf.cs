@@ -210,7 +210,7 @@ public static partial class ThatNumber
 		ExpectationGrammars grammars,
 		IEnumerable<TNumber> expected,
 		NumberTolerance<TNumber> options)
-		: ConstraintResult.WithValue<TNumber>(grammars),
+		: ConstraintResult.WithValue<TNumber>(it, grammars),
 			IValueConstraint<TNumber>
 		where TNumber : struct, INumber<TNumber>
 	{
@@ -246,7 +246,7 @@ public static partial class ThatNumber
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" was ");
+			stringBuilder.Append(It).Append(" was ");
 			Formatter.Format(stringBuilder, Actual);
 		}
 
@@ -266,7 +266,7 @@ public static partial class ThatNumber
 		ExpectationGrammars grammars,
 		IEnumerable<TNumber> expected,
 		NumberTolerance<TNumber> options)
-		: ConstraintResult.WithValue<TNumber?>(grammars),
+		: ConstraintResult.WithValue<TNumber?>(it, grammars),
 			IValueConstraint<TNumber?>
 		where TNumber : struct, INumber<TNumber>
 	{
@@ -302,7 +302,7 @@ public static partial class ThatNumber
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" was ");
+			stringBuilder.Append(It).Append(" was ");
 			Formatter.Format(stringBuilder, Actual);
 		}
 
@@ -322,7 +322,7 @@ public static partial class ThatNumber
 		ExpectationGrammars grammars,
 		IEnumerable<TNumber?> expected,
 		NumberTolerance<TNumber> options)
-		: ConstraintResult.WithValue<TNumber>(grammars),
+		: ConstraintResult.WithValue<TNumber>(it, grammars),
 			IValueConstraint<TNumber>
 		where TNumber : struct, INumber<TNumber>
 	{
@@ -358,7 +358,7 @@ public static partial class ThatNumber
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" was ");
+			stringBuilder.Append(It).Append(" was ");
 			Formatter.Format(stringBuilder, Actual);
 		}
 
@@ -378,7 +378,7 @@ public static partial class ThatNumber
 		ExpectationGrammars grammars,
 		IEnumerable<TNumber?> expected,
 		NumberTolerance<TNumber> options)
-		: ConstraintResult.WithValue<TNumber?>(grammars),
+		: ConstraintResult.WithValue<TNumber?>(it, grammars),
 			IValueConstraint<TNumber?>
 		where TNumber : struct, INumber<TNumber>
 	{
@@ -414,7 +414,7 @@ public static partial class ThatNumber
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" was ");
+			stringBuilder.Append(It).Append(" was ");
 			Formatter.Format(stringBuilder, Actual);
 		}
 
@@ -2414,7 +2414,7 @@ public static partial class ThatNumber
 		ExpectationGrammars grammars,
 		IEnumerable<TNumber> expected,
 		NumberTolerance<TNumber> options)
-		: ConstraintResult.WithValue<TNumber>(grammars),
+		: ConstraintResult.WithValue<TNumber>(it, grammars),
 			IValueConstraint<TNumber>
 		where TNumber : struct, IComparable<TNumber>
 	{
@@ -2450,7 +2450,7 @@ public static partial class ThatNumber
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" was ");
+			stringBuilder.Append(It).Append(" was ");
 			Formatter.Format(stringBuilder, Actual);
 		}
 
@@ -2470,7 +2470,7 @@ public static partial class ThatNumber
 		ExpectationGrammars grammars,
 		IEnumerable<TNumber> expected,
 		NumberTolerance<TNumber> options)
-		: ConstraintResult.WithValue<TNumber?>(grammars),
+		: ConstraintResult.WithValue<TNumber?>(it, grammars),
 			IValueConstraint<TNumber?>
 		where TNumber : struct, IComparable<TNumber>
 	{
@@ -2506,7 +2506,7 @@ public static partial class ThatNumber
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" was ");
+			stringBuilder.Append(It).Append(" was ");
 			Formatter.Format(stringBuilder, Actual);
 		}
 
@@ -2526,7 +2526,7 @@ public static partial class ThatNumber
 		ExpectationGrammars grammars,
 		IEnumerable<TNumber?> expected,
 		NumberTolerance<TNumber> options)
-		: ConstraintResult.WithValue<TNumber>(grammars),
+		: ConstraintResult.WithValue<TNumber>(it, grammars),
 			IValueConstraint<TNumber>
 		where TNumber : struct, IComparable<TNumber>
 	{
@@ -2562,7 +2562,7 @@ public static partial class ThatNumber
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" was ");
+			stringBuilder.Append(It).Append(" was ");
 			Formatter.Format(stringBuilder, Actual);
 		}
 
@@ -2582,7 +2582,7 @@ public static partial class ThatNumber
 		ExpectationGrammars grammars,
 		IEnumerable<TNumber?> expected,
 		NumberTolerance<TNumber> options)
-		: ConstraintResult.WithValue<TNumber?>(grammars),
+		: ConstraintResult.WithValue<TNumber?>(it, grammars),
 			IValueConstraint<TNumber?>
 		where TNumber : struct, IComparable<TNumber>
 	{
@@ -2618,7 +2618,7 @@ public static partial class ThatNumber
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" was ");
+			stringBuilder.Append(It).Append(" was ");
 			Formatter.Format(stringBuilder, Actual);
 		}
 

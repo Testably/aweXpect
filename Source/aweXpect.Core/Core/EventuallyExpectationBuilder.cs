@@ -240,7 +240,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 
 		/// <inheritdoc cref="ConstraintResult.AppendResult(StringBuilder, string?)" />
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("it could not be verified, because it was already cancelled");
+			=> stringBuilder.Append("it").Append(CancelledResultSuffix);
 
 		/// <inheritdoc cref="ConstraintResult.TryGetValue{TValue}(out TValue)" />
 		public override bool TryGetValue<T>([NotNullWhen(true)] out T? value) where T : default

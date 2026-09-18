@@ -125,6 +125,9 @@ in most cases with one of the following helper classes:
   Ensures consistent `null`-handling when comparing two values for equality. Similar to `ConstraintResult.WithValue<T>`,
   but you have to also provide a flag, indicating if the expected value is `null` or not.
 
+All three take the name of the subject (`it`) and the `grammars` in their constructor and expose the name as the
+inherited `It` property, which the default result texts use.
+
 Which of the three to pick is decided by how your expectation treats a `null` subject, and that follows one rule:
 
 > A `null` subject fails an expectation **and its negation**, unless the expectation is *about* `null` - equality and

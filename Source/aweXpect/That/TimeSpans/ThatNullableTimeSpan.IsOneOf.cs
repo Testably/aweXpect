@@ -106,7 +106,7 @@ public static partial class ThatNullableTimeSpan
 		ExpectationGrammars grammars,
 		IEnumerable<TimeSpan?> expected,
 		TimeTolerance tolerance)
-		: ConstraintResult.WithValue<TimeSpan?>(grammars),
+		: ConstraintResult.WithValue<TimeSpan?>(it, grammars),
 			IValueConstraint<TimeSpan?>
 	{
 		public ConstraintResult IsMetBy(TimeSpan? actual)
@@ -150,7 +150,7 @@ public static partial class ThatNullableTimeSpan
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" was ");
+			stringBuilder.Append(It).Append(" was ");
 			Formatter.Format(stringBuilder, Actual);
 		}
 

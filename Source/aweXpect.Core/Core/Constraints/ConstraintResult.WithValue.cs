@@ -25,7 +25,7 @@ public abstract partial class ConstraintResult
 	///     - <see cref="AppendNormalResult" /> / <see cref="AppendNegatedResult" />
 	///     which add the normal and negated result strings
 	/// </remarks>
-	public abstract class WithValue<T>(ExpectationGrammars grammars) : ConstraintResult(grammars)
+	public abstract class WithValue<T>(string it, ExpectationGrammars grammars) : ConstraintResult(grammars)
 	{
 		private Outcome _outcome = Outcome.Undecided;
 
@@ -33,6 +33,11 @@ public abstract partial class ConstraintResult
 		///     Flag indicating if the constraint is negated.
 		/// </summary>
 		protected bool IsNegated { get; private set; }
+
+		/// <summary>
+		///     The `it` parameter.
+		/// </summary>
+		protected string It { get; } = it;
 
 		/// <summary>
 		///     The actual value.
@@ -84,7 +89,7 @@ public abstract partial class ConstraintResult
 		///     is <see cref="Outcome.Undecided" />.
 		/// </summary>
 		protected virtual void AppendUndecidedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("could not verify, because it was already cancelled");
+			=> stringBuilder.Append(It).Append(CancelledResultSuffix);
 
 		/// <inheritdoc cref="ConstraintResult.AppendExpectation(StringBuilder, string?)" />
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
