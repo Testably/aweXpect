@@ -43,6 +43,23 @@ public sealed partial class PropertyResultTests
 			}
 
 			[Fact]
+			public async Task WhenNegated_WithNotEqualTo_ShouldExpectEquality()
+			{
+				MyClass subject = new();
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(s => MyClass.DateTimeKindValueOf(s, ExpectationGrammars.None)
+						.NotEqualTo(DateTimeKind.Utc));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has kind value equal to Utc,
+					             but it had kind value Unspecified
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenPluralAndNegated_ShouldUseThePluralVerb()
 			{
 				MyClass subject = new();
