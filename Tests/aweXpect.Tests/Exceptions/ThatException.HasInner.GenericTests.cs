@@ -20,7 +20,7 @@ public sealed partial class ThatException
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has an inner ThatException.CustomException whose Message is equal to "inner" and Message is equal to "other",
+						             has an inner ThatException.CustomException whose Message is equal to "inner" and whose Message is equal to "other",
 						             but it was "inner" which differs at index 0:
 						                ↓ (actual)
 						               "inner"
@@ -124,6 +124,51 @@ public sealed partial class ThatException
 				}
 
 				[Fact]
+				public async Task WhenInnerExceptionIsNotEquivalent_ShouldFail()
+				{
+					Exception subject = new("outer", new CustomException("inner"));
+
+					async Task Act()
+						=> await That(subject)
+							.HasInner<CustomException>(e => e.IsEquivalentTo(new
+							{
+								Message = "other",
+							}));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             has an inner ThatException.CustomException which is equivalent to { Message = other },
+						             but it was not:
+						               Property Message differed:
+						                    Found: "inner"
+						                 Expected: "other"
+
+						             Equivalency options:
+						              - include public fields and properties
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenInnerExceptionIsNotOfTheNestedType_ShouldFail()
+				{
+					Exception subject = new("outer", new Exception("inner"));
+
+					async Task Act()
+						=> await That(subject).HasInner<Exception>(e => e.Is<CustomException>());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             has an inner exception which is type ThatException.CustomException,
+						             but it was Exception
+
+						             Actual:
+						             Exception: inner
+						             """);
+				}
+
+				[Fact]
 				public async Task WhenInnerExceptionIsNullAndExpectationsAreTypedAtTheInnerExceptionType_ShouldFail()
 				{
 					Exception subject = new("outer");
@@ -135,7 +180,7 @@ public sealed partial class ThatException
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has an inner ThatException.CustomException whose satisfies i => i?.Message == "inner",
+						             has an inner ThatException.CustomException which satisfies i => i?.Message == "inner",
 						             but it was <null>
 						             """);
 				}
@@ -170,7 +215,7 @@ public sealed partial class ThatException
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has an inner ThatException.CustomException whose satisfies i => i?.Message == "inner",
+						             has an inner ThatException.CustomException which satisfies i => i?.Message == "inner",
 						             but it was an inner Exception:
 						               inner
 						             """);
@@ -188,7 +233,7 @@ public sealed partial class ThatException
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has an inner ThatException.CustomException whose satisfies i => i?.Message == "inner",
+						             has an inner ThatException.CustomException which satisfies i => i?.Message == "inner",
 						             but it was <null>
 						             """);
 				}
@@ -270,7 +315,7 @@ public sealed partial class ThatException
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             does not have an inner ThatException.CustomException whose satisfies i => i?.Message == "inner",
+						             does not have an inner ThatException.CustomException which satisfies i => i?.Message == "inner",
 						             but it had an inner ThatException.CustomException:
 						               inner
 						             """);

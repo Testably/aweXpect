@@ -795,7 +795,7 @@ public sealed partial class PropertyResultTests
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             string value is equal to "bar",
+					             whose string value is equal to "bar",
 					             but it was "foo"*
 					             """).AsWildcard();
 			}

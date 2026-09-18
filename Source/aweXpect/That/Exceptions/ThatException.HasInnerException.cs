@@ -26,7 +26,7 @@ public partial class ThatException
 		Action<IThatSubject<Exception?>> expectations)
 		=> new(subject.Get().ExpectationBuilder
 				.ForMember<Exception, Exception?>(e => e.InnerException,
-					" whose ",
+					" which ",
 					false)
 				.Validate((it, grammars)
 					=> new HasInnerExceptionValueConstraint(typeof(Exception), it, grammars))

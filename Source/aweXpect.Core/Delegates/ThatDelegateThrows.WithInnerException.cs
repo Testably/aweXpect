@@ -17,7 +17,7 @@ public partial class ThatDelegateThrows<TException>
 					MemberAccessor<Exception?, Exception?>.FromFunc(
 						e => e?.InnerException,
 						"the inner exception"),
-					(_, s) => s.Append(" whose "),
+					(_, s) => s.Append(" which "),
 					false)
 				.Validate((it, grammars)
 					=> new HasInnerExceptionValueConstraint(typeof(Exception), it, grammars))

@@ -19,7 +19,7 @@ public partial class ThatDelegateThrows<TException>
 		where TInnerException : Exception
 		=> new(ExpectationBuilder
 				.ForMember<Exception, Exception?>(e => e.InnerException,
-					" whose ",
+					" which ",
 					false)
 				.Validate((it, grammars)
 					=> new HasInnerExceptionValueConstraint(typeof(TInnerException), it,
@@ -48,7 +48,7 @@ public partial class ThatDelegateThrows<TException>
 		Action<IThatSubject<Exception?>> expectations)
 		=> new(ExpectationBuilder
 				.ForMember<Exception, Exception?>(e => e.InnerException,
-					" whose ",
+					" which ",
 					false)
 				.Validate((it, grammars)
 					=> new HasInnerExceptionValueConstraint(type, it, grammars))

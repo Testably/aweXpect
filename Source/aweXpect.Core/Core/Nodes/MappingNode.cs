@@ -138,12 +138,9 @@ internal class MappingNode<TSource, TTarget> : ExpectationNode
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			_left.AppendExpectation(stringBuilder);
-			if (_expectationTextGenerator is not null)
-			{
-				_expectationTextGenerator(_memberAccessor, stringBuilder);
-			}
-
-			_right.AppendExpectation(stringBuilder);
+			StringBuilder separator = new();
+			_expectationTextGenerator?.Invoke(_memberAccessor, separator);
+			stringBuilder.AppendSeparatedExpectation(separator.ToString(), _right);
 		}
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)

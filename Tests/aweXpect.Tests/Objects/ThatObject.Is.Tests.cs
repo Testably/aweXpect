@@ -68,7 +68,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has an inner exception whose is type InvalidCastException,
+					             has an inner exception which is type InvalidCastException,
 					             but it was ArgumentException
 
 					             Actual:

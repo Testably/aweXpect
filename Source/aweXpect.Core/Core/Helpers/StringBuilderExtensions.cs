@@ -23,6 +23,7 @@ internal static class StringBuilderExtensions
 		ConstraintResult right)
 	{
 		const string which = "which ";
+		const string whose = "whose ";
 		if (!separator.EndsWith(which, StringComparison.Ordinal))
 		{
 			stringBuilder.Append(separator);
@@ -30,18 +31,19 @@ internal static class StringBuilderExtensions
 			return;
 		}
 
-		StringBuilder rightExpectation = new();
+		// The right expectation is rendered after the separator, because nested quantifiers inspect the preceding text.
+		StringBuilder rightExpectation = new(separator);
 		right.AppendExpectation(rightExpectation);
-		string rightText = rightExpectation.ToString();
-		if (rightText.StartsWith("whose ", StringComparison.Ordinal))
+		string text = rightExpectation.ToString();
+		if (text.StartsWith(separator, StringComparison.Ordinal) &&
+		    string.CompareOrdinal(text, separator.Length, whose, 0, whose.Length) == 0)
 		{
 			stringBuilder.Append(separator, 0, separator.Length - which.Length);
+			stringBuilder.Append(text, separator.Length, text.Length - separator.Length);
 		}
 		else
 		{
-			stringBuilder.Append(separator);
+			stringBuilder.Append(text);
 		}
-
-		stringBuilder.Append(rightText);
 	}
 }
