@@ -683,7 +683,7 @@ public static class PropertyResult
 			}
 			else if (Grammars.HasFlag(ExpectationGrammars.Nested))
 			{
-				stringBuilder.Append(propertyExpression).Append(" is ").Append(negation);
+				stringBuilder.Append("whose ").Append(propertyExpression).Append(" is ").Append(negation);
 			}
 			else
 			{
@@ -732,7 +732,7 @@ public static class PropertyResult
 			}
 			else if (Grammars.HasFlag(ExpectationGrammars.Nested))
 			{
-				stringBuilder.Append(propertyExpression).Append(' ');
+				stringBuilder.Append("whose ").Append(propertyExpression).Append(' ');
 				equalityGrammars |= ExpectationGrammars.Active;
 			}
 			else

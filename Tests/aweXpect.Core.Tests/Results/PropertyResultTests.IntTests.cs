@@ -369,7 +369,7 @@ public sealed partial class PropertyResultTests
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             int value is greater than 43,
+					             whose int value is greater than 43,
 					             but it had int value 42
 					             """);
 			}
@@ -386,7 +386,7 @@ public sealed partial class PropertyResultTests
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             int value is not equal to 0,
+					             whose int value is not equal to 0,
 					             but it had int value 0
 					             """);
 			}
@@ -403,7 +403,7 @@ public sealed partial class PropertyResultTests
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             int value is equal to 1,
+					             whose int value is equal to 1,
 					             but it had int value 0
 					             """);
 			}

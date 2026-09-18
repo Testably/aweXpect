@@ -54,7 +54,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that Delegate
-				             throws a MyException with an inner exception whose is null,
+				             throws a MyException with an inner exception which is null,
 				             but it was <null>
 				             """);
 		}
@@ -116,6 +116,180 @@ public sealed partial class ThatDelegateTests
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage("You must add at least one expectation in the expectations callback.*").AsWildcard()
 				.And.WithParamName("expectations");
+		}
+
+		[Fact]
+		public async Task WithInner_Generic_WithMemberExpectation_ShouldUseWhose()
+		{
+			void Delegate() => throw new MyException("outer", new MyException("inner"));
+
+			async Task Act()
+				=> await That(Delegate).Throws<MyException>()
+					.WithInner<MyException>(e => e.HasMessage("foo"));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that Delegate
+				             throws a MyException with an inner MyException whose Message is equal to "foo",
+				             but it was "inner" which differs at index 0:
+				                ↓ (actual)
+				               "inner"
+				               "foo"
+				                ↑ (expected)
+
+				             Message:
+				             inner
+				             """);
+		}
+
+		[Fact]
+		public async Task WithInner_Generic_WithOtherAndMemberExpectation_ShouldUseBothConnectors()
+		{
+			void Delegate() => throw new MyException("outer", new MyException("inner"));
+
+			async Task Act()
+				=> await That(Delegate).Throws<MyException>()
+					.WithInner<MyException>(e => e.Satisfies(i => i?.Message == "foo").And.HasMessage("foo"));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that Delegate
+				             throws a MyException with an inner MyException which satisfies i => i?.Message == "foo" and whose Message is equal to "foo",
+				             but it was MyException: inner and it was "inner" which differs at index 0:
+				                ↓ (actual)
+				               "inner"
+				               "foo"
+				                ↑ (expected)
+
+				             Message:
+				             inner
+				             """);
+		}
+
+		[Fact]
+		public async Task WithInner_Generic_WithOtherExpectation_ShouldUseWhich()
+		{
+			void Delegate() => throw new MyException("outer", new MyException("inner"));
+
+			async Task Act()
+				=> await That(Delegate).Throws<MyException>()
+					.WithInner<MyException>(e => e.Satisfies(i => i?.Message == "foo"));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that Delegate
+				             throws a MyException with an inner MyException which satisfies i => i?.Message == "foo",
+				             but it was MyException: inner
+				             """);
+		}
+
+		[Fact]
+		public async Task WithInner_Generic_WithWhose_ShouldNotRepeatConnector()
+		{
+			void Delegate() => throw new MyException("outer", new MyException("inner"));
+
+			async Task Act()
+				=> await That(Delegate).Throws<MyException>()
+					.WithInner<MyException>(e => e.Whose(i => i?.Message, m => m.IsEqualTo("foo")));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that Delegate
+				             throws a MyException with an inner MyException whose Message is equal to "foo",
+				             but Message was "inner" which differs at index 0:
+				                ↓ (actual)
+				               "inner"
+				               "foo"
+				                ↑ (expected)
+
+				             Actual:
+				             inner
+
+				             Expected:
+				             foo
+				             """);
+		}
+
+		[Fact]
+		public async Task WithInner_Type_WithMemberExpectation_ShouldUseWhose()
+		{
+			void Delegate() => throw new MyException("outer", new MyException("inner"));
+
+			async Task Act()
+				=> await That(Delegate).Throws<MyException>()
+					.WithInner(typeof(MyException), e => e.HasMessage("foo"));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that Delegate
+				             throws a MyException with an inner MyException whose Message is equal to "foo",
+				             but it was "inner" which differs at index 0:
+				                ↓ (actual)
+				               "inner"
+				               "foo"
+				                ↑ (expected)
+
+				             Message:
+				             inner
+				             """);
+		}
+
+		[Fact]
+		public async Task WithInner_Type_WithOtherExpectation_ShouldUseWhich()
+		{
+			void Delegate() => throw new MyException("outer", new MyException("inner"));
+
+			async Task Act()
+				=> await That(Delegate).Throws<MyException>()
+					.WithInner(typeof(MyException), e => e.IsNull());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that Delegate
+				             throws a MyException with an inner MyException which is null,
+				             but it was MyException: inner
+				             """);
+		}
+
+		[Fact]
+		public async Task WithInnerException_WithMemberExpectation_ShouldUseWhose()
+		{
+			void Delegate() => throw new MyException("outer", new MyException("inner"));
+
+			async Task Act()
+				=> await That(Delegate).Throws<MyException>()
+					.WithInnerException(e => e.HasMessage("foo"));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that Delegate
+				             throws a MyException with an inner exception whose Message is equal to "foo",
+				             but it was "inner" which differs at index 0:
+				                ↓ (actual)
+				               "inner"
+				               "foo"
+				                ↑ (expected)
+
+				             Message:
+				             inner
+				             """);
+		}
+
+		[Fact]
+		public async Task WithInnerException_WithOtherExpectation_ShouldUseWhich()
+		{
+			void Delegate() => throw new MyException("outer", new MyException("inner"));
+
+			async Task Act()
+				=> await That(Delegate).Throws<MyException>()
+					.WithInnerException(e => e.Satisfies(i => i?.Message == "foo"));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that Delegate
+				             throws a MyException with an inner exception which satisfies i => i?.Message == "foo",
+				             but it was MyException: inner
+				             """);
 		}
 	}
 }

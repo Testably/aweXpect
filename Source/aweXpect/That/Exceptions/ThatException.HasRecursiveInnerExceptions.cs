@@ -54,7 +54,7 @@ public static partial class ThatException
 			}
 			else if (Grammars.HasFlag(ExpectationGrammars.Nested))
 			{
-				stringBuilder.Append("recursive inner exceptions are");
+				stringBuilder.Append("whose recursive inner exceptions are");
 			}
 			else
 			{
@@ -76,7 +76,7 @@ public static partial class ThatException
 			}
 			else if (Grammars.HasFlag(ExpectationGrammars.Nested))
 			{
-				stringBuilder.Append("recursive inner exceptions are not");
+				stringBuilder.Append("whose recursive inner exceptions are not");
 			}
 			else
 			{

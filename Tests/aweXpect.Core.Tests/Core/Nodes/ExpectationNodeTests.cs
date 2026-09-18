@@ -274,6 +274,37 @@ public class ExpectationNodeTests
 		await That(resultSb.ToString()).IsEqualTo(expectedResult);
 	}
 
+	[Theory]
+	[InlineData(" which ", "whose bar", "foo whose bar")]
+	[InlineData(" which ", "is bar", "foo which is bar")]
+	[InlineData(" whose ", "whose bar", "foo whose whose bar")]
+	public async Task AddMapping_WhenSeparatorEndsWithWhich_ShouldOnlyDropItBeforeWhose(
+		string separator, string rightExpectation, string expectedExpectation)
+	{
+		ExpectationNode node = new();
+		node.AddConstraint(new DummyValueConstraint<string>(_ => new DummyConstraintResult(Outcome.Failure, "foo")));
+		node.AddMapping(MemberAccessor<string, int>.FromFunc(s => s.Length, separator))
+			.AddConstraint(new DummyValueConstraint<int>(_
+				=> new DummyConstraintResult(Outcome.Failure, rightExpectation)));
+
+		ConstraintResult result = await node.IsMetBy("foobar", null!, CancellationToken.None);
+
+		await That(result.GetExpectationText()).IsEqualTo(expectedExpectation);
+	}
+
+	[Fact]
+	public async Task AddMapping_WhenSeparatorEndsWithWhich_ShouldRenderRightExpectationAfterIt()
+	{
+		ExpectationNode node = new();
+		node.AddConstraint(new DummyValueConstraint<string>(_ => new DummyConstraintResult(Outcome.Failure, "foo")));
+		node.AddMapping(MemberAccessor<string, int>.FromFunc(s => s.Length, " which "))
+			.AddConstraint(new DummyValueConstraint<int>(_ => new PrecedingTextConstraintResult()));
+
+		ConstraintResult result = await node.IsMetBy("foobar", null!, CancellationToken.None);
+
+		await That(result.GetExpectationText()).IsEqualTo("foo which follows \"which \"");
+	}
+
 	[Fact]
 	public async Task AddMapping_TryGetValue_ShouldGetValueFromLeftNode()
 	{
@@ -832,6 +863,25 @@ public class ExpectationNodeTests
 
 		await That(result).IsFalse();
 		await That(value).IsNull();
+	}
+
+	private sealed class PrecedingTextConstraintResult() : ConstraintResult(FurtherProcessingStrategy.Continue)
+	{
+		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+		{
+			string text = stringBuilder.ToString();
+			stringBuilder.Append("follows \"").Append(text.Substring(Math.Max(0, text.Length - 6))).Append('"');
+		}
+
+		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null) { }
+
+		public override bool TryGetValue<TValue>(out TValue? value) where TValue : default
+		{
+			value = default;
+			return false;
+		}
+
+		public override ConstraintResult Negate() => this;
 	}
 
 	private sealed class UnsupportedConstraint : IConstraint
