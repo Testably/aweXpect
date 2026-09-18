@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using System.Threading;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Helpers;
@@ -432,6 +433,43 @@ public sealed class WhichNodeTests
 	}
 
 	[Fact]
+	public async Task Negate_ShouldNegateTheContinuedExpectation()
+	{
+		WhichNode<string, int> whichNode = new(
+			new DummyNode("", () => new DummyConstraintResult(Outcome.Success, "e1")), s => s.Length, " which ");
+		whichNode.AddNode(new ExpectationNode());
+		whichNode.AddConstraint(new DummyConstraint("", () => new NegatableConstraintResult(Outcome.Success)));
+		StringBuilder sb = new();
+
+		ConstraintResult result = await whichNode.IsMetBy("foo", null!, CancellationToken.None);
+		ConstraintResult negated = result.Negate();
+
+		negated.AppendExpectation(sb);
+		await That(negated.Outcome).IsEqualTo(Outcome.Failure);
+		await That(sb.ToString()).IsEqualTo("e1 which not e2");
+		await That(negated.GetResultText()).IsEqualTo("not r2");
+	}
+
+	[Fact]
+	public async Task Negate_WithNullValue_ShouldNegateTheContinuedExpectationAndStayFailed()
+	{
+		WhichNode<string, int> whichNode = new(
+			new DummyNode("", () => new DummyConstraintResult(Outcome.Failure, "e1", "it was <null>")), s => s.Length,
+			" which ");
+		whichNode.AddNode(new ExpectationNode());
+		whichNode.AddConstraint(new DummyConstraint("", () => new NegatableConstraintResult(Outcome.Success)));
+		StringBuilder sb = new();
+
+		ConstraintResult result = await whichNode.IsMetBy<string?>(null, null!, CancellationToken.None);
+		ConstraintResult negated = result.Negate();
+
+		negated.AppendExpectation(sb);
+		await That(negated.Outcome).IsEqualTo(Outcome.Failure);
+		await That(sb.ToString()).IsEqualTo("e1 which not e2");
+		await That(negated.GetResultText()).IsEqualTo("it was <null>");
+	}
+
+	[Fact]
 	public async Task IsMetBy_WithoutInnerNode_ShouldThrowInvalidOperationException()
 	{
 		DummyNode node1 = new("", () => new DummyConstraintResult<string?>(Outcome.Success, "1", ""));
@@ -666,6 +704,38 @@ public sealed class WhichNodeTests
 			             Expected:
 			             bar
 			             """);
+	}
+
+	private sealed class NegatableConstraintResult(Outcome outcome)
+		: ConstraintResult(FurtherProcessingStrategy.Continue)
+	{
+		private bool _isNegated;
+
+		public override Outcome Outcome { get; protected set; } = outcome;
+
+		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(_isNegated ? "not e2" : "e2");
+
+		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(_isNegated ? "not r2" : "r2");
+
+		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+		{
+			value = default;
+			return false;
+		}
+
+		public override ConstraintResult Negate()
+		{
+			_isNegated = !_isNegated;
+			Outcome = Outcome switch
+			{
+				Outcome.Failure => Outcome.Success,
+				Outcome.Success => Outcome.Failure,
+				_ => Outcome,
+			};
+			return this;
+		}
 	}
 
 	private sealed class Dummy

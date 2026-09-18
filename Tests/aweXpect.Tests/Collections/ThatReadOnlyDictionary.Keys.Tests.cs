@@ -50,7 +50,7 @@ public sealed partial class ThatReadOnlyDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has keys which contain 0 at least once,
+					             has keys which do not contain 0,
 					             but it was <null>
 					             """);
 			}

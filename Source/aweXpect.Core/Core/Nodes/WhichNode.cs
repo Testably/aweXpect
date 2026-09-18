@@ -193,11 +193,12 @@ internal class WhichNode<TSource, TMember> : Node
 	private sealed class WhichConstraintResult : ConstraintResult
 	{
 		private readonly ConstraintResult _left;
-		private readonly ConstraintResult _right;
 		private readonly string _separator;
 
 		// ReSharper disable once ReplaceWithPrimaryConstructorParameter
 		private readonly TMember? _value;
+
+		private ConstraintResult _right;
 
 		public WhichConstraintResult(ConstraintResult left,
 			ConstraintResult right,
@@ -285,6 +286,9 @@ internal class WhichNode<TSource, TMember> : Node
 				};
 			}
 
+			// The parent only leads to the member ("has keys which …"), so the negation belongs to the continued
+			// expectation: "has keys which do not contain 0".
+			_right = _right.Negate();
 			return this;
 		}
 	}
