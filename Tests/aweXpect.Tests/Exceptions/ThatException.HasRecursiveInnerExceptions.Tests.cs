@@ -43,16 +43,16 @@ public sealed partial class ThatException
 					             
 					             Not matching items:
 					             [
-					               System.Exception: inner3A,
+					               Exception: inner3A,
 					               (… and maybe others)
 					             ]
 					             
 					             Collection:
 					             [
-					               System.Exception: inner1*,
-					               System.AggregateException:*,
-					               System.Exception: inner3A*,
-					               System.Exception: inner3B*
+					               Exception: inner1*,
+					               AggregateException:*,
+					               Exception: inner3A*,
+					               Exception: inner3B*
 					             ]
 					             """).AsWildcard();
 			}
@@ -78,16 +78,16 @@ public sealed partial class ThatException
 					             
 					             Matching items:
 					             [
-					               System.Exception: inner1*,
+					               Exception: inner1*,
 					               (… and maybe others)
 					             ]
 					             
 					             Collection:
 					             [
-					               System.Exception: inner1*,
-					               System.AggregateException:*,
-					               System.Exception: inner3A*,
-					               System.Exception: inner3B*
+					               Exception: inner1*,
+					               AggregateException:*,
+					               Exception: inner3A*,
+					               Exception: inner3B*
 					             ]
 					             """).AsWildcard();
 			}
@@ -133,10 +133,10 @@ public sealed partial class ThatException
 
 					             Collection:
 					             [
-					               System.Exception: inner1*,
-					               System.AggregateException:*,
-					               System.Exception: inner3A*,
-					               System.Exception: inner3B*
+					               Exception: inner1*,
+					               AggregateException:*,
+					               Exception: inner3A*,
+					               Exception: inner3B*
 					             ]
 					             """).AsWildcard();
 			}
@@ -158,7 +158,7 @@ public sealed partial class ThatException
 					             
 					             Collection:
 					             [
-					               System.ArgumentException: inner
+					               ArgumentException: inner
 					             ]
 					             """);
 			}

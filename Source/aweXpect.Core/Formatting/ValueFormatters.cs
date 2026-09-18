@@ -62,6 +62,9 @@ public static partial class ValueFormatters
 			case Type typeValue:
 				Format(formatter, stringBuilder, typeValue, options);
 				return;
+			case Exception exceptionValue:
+				Format(formatter, stringBuilder, exceptionValue, options);
+				return;
 			case IEnumerable enumerableValue:
 				Format(formatter, stringBuilder, enumerableValue, options);
 				return;

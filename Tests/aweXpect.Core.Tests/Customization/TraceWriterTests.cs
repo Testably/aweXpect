@@ -57,7 +57,7 @@ public class TraceWriterTests
 
 		await That(traceWriter.Messages).HasCount(2);
 		await That(traceWriter.Messages[0])
-			.IsEqualTo("Checking expectation for callback delegate throwing System.Exception: foo")
+			.IsEqualTo("Checking expectation for callback delegate throwing Exception: foo after ")
 			.AsPrefix();
 		await That(traceWriter.Messages[1])
 			.IsEqualTo("  Successfully verified that callback does not execute within 0:01.500");
@@ -75,7 +75,7 @@ public class TraceWriterTests
 
 		await That(traceWriter.Messages).HasCount(2);
 		await That(traceWriter.Messages[0])
-			.IsEqualTo("Checking expectation for callback delegate returning int throwing System.Exception: foo")
+			.IsEqualTo("Checking expectation for callback delegate returning int throwing Exception: foo after ")
 			.AsPrefix();
 		await That(traceWriter.Messages[1])
 			.IsEqualTo("  Successfully verified that callback does not execute within 0:01.500");
