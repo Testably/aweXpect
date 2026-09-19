@@ -77,7 +77,7 @@ public partial class CollectionMatchOptions
 		private readonly List<T> _foundItems = new();
 		private readonly bool _ignoreInterspersedItems;
 		private readonly Dictionary<int, (T Item, T3 Expected)> _incorrectItems = new();
-		private readonly List<T> _matchingItems = new();
+		private readonly List<(int Index, T Item)> _matchingItems = new();
 		private readonly List<T3> _missingItems = new();
 		private readonly int _totalExpectedItems;
 		private readonly HashSet<T> _uniqueItems = new();
@@ -264,16 +264,16 @@ public partial class CollectionMatchOptions
 
 			if (await AreConsideredEqual(value, _expectedDistinctItems[_matchIndex], options))
 			{
-				for (int i = _index - _matchingItems.Count; i < _index; i++)
+				foreach ((int index, T matchingItem) in _matchingItems)
 				{
-					_additionalItems.Add(i, _matchingItems[i]);
+					_additionalItems.Add(index, matchingItem);
 				}
 
 				_matchingItems.Clear();
 				_matchIndex++;
 				_maxMatchIndex = Math.Max(_matchIndex, _maxMatchIndex);
 				_expectationIndex = 0;
-				_matchingItems.Add(value);
+				_matchingItems.Add((_index, value));
 			}
 			else if (_expectationIndex < 0 || _expectationIndex >= _expectedDistinctItems.Length)
 			{
@@ -295,7 +295,7 @@ public partial class CollectionMatchOptions
 			_matchIndex++;
 			_maxMatchIndex = Math.Max(_matchIndex, _maxMatchIndex);
 			_expectationIndex++;
-			_matchingItems.Add(value);
+			_matchingItems.Add((_index, value));
 			_uniqueItems.Add(value);
 			foreach (int key in await Filter(_additionalItems, item => options.AreConsideredEqual(item.Value, value),
 				         x => x.Key))

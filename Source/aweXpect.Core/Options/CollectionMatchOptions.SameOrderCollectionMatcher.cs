@@ -70,7 +70,7 @@ public partial class CollectionMatchOptions
 		private readonly List<T> _foundItems = new();
 		private readonly bool _ignoreInterspersedItems;
 		private readonly Dictionary<int, (T Item, T3 Expected)> _incorrectItems = new();
-		private readonly List<T> _matchingItems = new();
+		private readonly List<(int Index, T Item)> _matchingItems = new();
 		private readonly List<T3> _missingItems = new();
 		private readonly int _totalExpectedItems;
 		private int _expectationIndex = -1;
@@ -218,9 +218,9 @@ public partial class CollectionMatchOptions
 			{
 				if (!movedMatch)
 				{
-					for (int i = _index - _matchingItems.Count; i < _index; i++)
+					foreach ((int index, T matchingItem) in _matchingItems)
 					{
-						_additionalItems.Add(i, _matchingItems[i]);
+						_additionalItems.Add(index, matchingItem);
 					}
 				}
 
@@ -228,7 +228,7 @@ public partial class CollectionMatchOptions
 				_matchIndex++;
 				_maxMatchIndex = Math.Max(_matchIndex, _maxMatchIndex);
 				_expectationIndex = 0;
-				_matchingItems.Add(value);
+				_matchingItems.Add((_index, value));
 			}
 			else if (movedMatch || _expectationIndex < 0 || _expectationIndex >= _expectedItems.Length)
 			{
@@ -256,7 +256,7 @@ public partial class CollectionMatchOptions
 					bool couldBeMatch = true;
 					for (int j = 0; j < _matchingItems.Count; j++)
 					{
-						if (!await AreConsideredEqual(_matchingItems[j], _expectedItems[j + i], options))
+						if (!await AreConsideredEqual(_matchingItems[j].Item, _expectedItems[j + i], options))
 						{
 							couldBeMatch = false;
 						}
@@ -285,7 +285,7 @@ public partial class CollectionMatchOptions
 			_matchIndex++;
 			_maxMatchIndex = Math.Max(_matchIndex, _maxMatchIndex);
 			_expectationIndex++;
-			_matchingItems.Add(value);
+			_matchingItems.Add((_index, value));
 		}
 
 #if NET8_0_OR_GREATER
