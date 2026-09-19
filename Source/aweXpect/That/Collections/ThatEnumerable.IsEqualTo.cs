@@ -413,6 +413,36 @@ public static partial class ThatEnumerable
 			matchOptions);
 	}
 
+	/// <summary>
+	///     Verifies that the collection matches the <paramref name="expected" /> collection.
+	/// </summary>
+	/// <remarks>
+	///     Without this overload an untyped <see cref="IEnumerable" /> would bind to the equality expectation for objects,
+	///     which compares the instances by reference. A multi-dimensional array has no shape as an
+	///     <see cref="IEnumerable" />, so it is compared by its flattened content.
+	/// </remarks>
+	[OverloadResolutionPriority(-2)]
+	public static ObjectCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, object?>
+		IsEqualTo(
+			this IThat<IEnumerable?> subject,
+			IEnumerable expected,
+			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+	{
+		ObjectEqualityOptions<object?> options = new();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, object?>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToForEnumerableConstraint<IEnumerable, object?, object?>(expectationBuilder, it, grammars,
+					doNotPopulateThisValue.TrimCommonWhiteSpace(),
+					expected?.Cast<object?>(),
+					options,
+					matchOptions)),
+			subject,
+			options,
+			matchOptions);
+	}
+
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that the collection matches the <paramref name="expected" /> collection.
@@ -1311,6 +1341,37 @@ public static partial class ThatEnumerable
 				=> new IsEqualToForEnumerableConstraint<IEnumerable, TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
 					unexpected,
+					options,
+					matchOptions).Invert()),
+			subject,
+			options,
+			matchOptions);
+	}
+
+	/// <summary>
+	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection.
+	/// </summary>
+	/// <remarks>
+	///     Without this overload an untyped <see cref="IEnumerable" /> would bind to the equality expectation for objects,
+	///     which compares the instances by reference. A multi-dimensional array has no shape as an
+	///     <see cref="IEnumerable" />, so it is compared by its flattened content.
+	/// </remarks>
+	[OverloadResolutionPriority(-2)]
+	public static ObjectCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, object?>
+		IsNotEqualTo(
+			this IThat<IEnumerable?> subject,
+			IEnumerable unexpected,
+			[CallerArgumentExpression("unexpected")]
+			string doNotPopulateThisValue = "")
+	{
+		ObjectEqualityOptions<object?> options = new();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, object?>(
+			expectationBuilder.AddConstraint((it, grammars)
+				=> new IsEqualToForEnumerableConstraint<IEnumerable, object?, object?>(expectationBuilder, it, grammars,
+					doNotPopulateThisValue.TrimCommonWhiteSpace(),
+					unexpected?.Cast<object?>(),
 					options,
 					matchOptions).Invert()),
 			subject,
