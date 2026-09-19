@@ -165,21 +165,10 @@ public static partial class ThatDictionary
 				}
 			}
 
-			int count = 0;
-			List<TKey> additionalKeys = [];
-			foreach (KeyValuePair<TKey, TValue> pair in actual)
-			{
-				count++;
-				if (!matchedKeys.Contains(pair.Key))
-				{
-					additionalKeys.Add(pair.Key);
-				}
-			}
-
 			List<string> errors = [];
 			errors.AddRange(MissingKeysError(missingKeys));
 			errors.AddRange(incorrectValues);
-			errors.AddRange(AdditionalKeysError(additionalKeys, count, matchedKeys.Count));
+			errors.AddRange(AdditionalKeysError(actual, matchedKeys));
 			_failure = errors.Count == 0 ? null : $"{It} {string.Join(" and ", errors)}";
 			Outcome = _failure is null ? Outcome.Success : Outcome.Failure;
 			return this;
@@ -202,8 +191,20 @@ public static partial class ThatDictionary
 		///     The names are only reported when as many were found as the entry count asks for, because a key comparer that
 		///     considers more keys equal than the default one lets the scan for names overshoot.
 		/// </summary>
-		private static IEnumerable<string> AdditionalKeysError(List<TKey> additionalKeys, int count, int matchedCount)
+		private static IEnumerable<string> AdditionalKeysError(TDictionary actual, HashSet<TKey> matchedKeys)
 		{
+			int count = 0;
+			List<TKey> additionalKeys = [];
+			foreach (KeyValuePair<TKey, TValue> pair in actual)
+			{
+				count++;
+				if (!matchedKeys.Contains(pair.Key))
+				{
+					additionalKeys.Add(pair.Key);
+				}
+			}
+
+			int matchedCount = matchedKeys.Count;
 			if (count == matchedCount)
 			{
 				yield break;

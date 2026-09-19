@@ -13,6 +13,18 @@ namespace aweXpect;
 public static partial class ThatDictionary
 {
 	/// <summary>
+	///     Verifies that the dictionary contains the <paramref name="expectedKey" /> with the
+	///     <paramref name="expectedValue" />.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static ObjectEqualityResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>, TValue>
+		Contains<TKey, TValue>(
+			this IThat<IDictionary<TKey, TValue>?> subject,
+			TKey expectedKey,
+			TValue expectedValue)
+		=> subject.Contains(new KeyValuePair<TKey, TValue>(expectedKey, expectedValue));
+
+	/// <summary>
 	///     Verifies that the dictionary contains the <paramref name="expected" /> entry.
 	/// </summary>
 	[GuaranteesNotNull]
@@ -30,6 +42,24 @@ public static partial class ThatDictionary
 			subject,
 			options);
 	}
+
+	/// <summary>
+	///     Verifies that the dictionary contains the <paramref name="expectedKey" /> with the
+	///     <paramref name="expectedValue" />.
+	/// </summary>
+	/// <remarks>
+	///     Most dictionaries implement both dictionary interfaces, so the two overloads must share a declaring type for the
+	///     priority to decide between them.
+	/// </remarks>
+	[OverloadResolutionPriority(-1)]
+	[GuaranteesNotNull]
+	public static ObjectEqualityResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>,
+			TValue>
+		Contains<TKey, TValue>(
+			this IThat<IReadOnlyDictionary<TKey, TValue>?> subject,
+			TKey expectedKey,
+			TValue expectedValue)
+		=> subject.Contains(new KeyValuePair<TKey, TValue>(expectedKey, expectedValue));
 
 	/// <summary>
 	///     Verifies that the dictionary contains the <paramref name="expected" /> entry.
@@ -58,6 +88,18 @@ public static partial class ThatDictionary
 	}
 
 	/// <summary>
+	///     Verifies that the dictionary does not contain the <paramref name="unexpectedKey" /> with the
+	///     <paramref name="unexpectedValue" />.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static ObjectEqualityResult<IDictionary<TKey, TValue>, IThat<IDictionary<TKey, TValue>?>, TValue>
+		DoesNotContain<TKey, TValue>(
+			this IThat<IDictionary<TKey, TValue>?> subject,
+			TKey unexpectedKey,
+			TValue unexpectedValue)
+		=> subject.DoesNotContain(new KeyValuePair<TKey, TValue>(unexpectedKey, unexpectedValue));
+
+	/// <summary>
 	///     Verifies that the dictionary does not contain the <paramref name="unexpected" /> entry.
 	/// </summary>
 	[GuaranteesNotNull]
@@ -75,6 +117,24 @@ public static partial class ThatDictionary
 			subject,
 			options);
 	}
+
+	/// <summary>
+	///     Verifies that the dictionary does not contain the <paramref name="unexpectedKey" /> with the
+	///     <paramref name="unexpectedValue" />.
+	/// </summary>
+	/// <remarks>
+	///     Most dictionaries implement both dictionary interfaces, so the two overloads must share a declaring type for the
+	///     priority to decide between them.
+	/// </remarks>
+	[OverloadResolutionPriority(-1)]
+	[GuaranteesNotNull]
+	public static ObjectEqualityResult<IReadOnlyDictionary<TKey, TValue>, IThat<IReadOnlyDictionary<TKey, TValue>?>,
+			TValue>
+		DoesNotContain<TKey, TValue>(
+			this IThat<IReadOnlyDictionary<TKey, TValue>?> subject,
+			TKey unexpectedKey,
+			TValue unexpectedValue)
+		=> subject.DoesNotContain(new KeyValuePair<TKey, TValue>(unexpectedKey, unexpectedValue));
 
 	/// <summary>
 	///     Verifies that the dictionary does not contain the <paramref name="unexpected" /> entry.

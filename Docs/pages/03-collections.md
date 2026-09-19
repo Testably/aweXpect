@@ -610,8 +610,16 @@ You can verify that a dictionary contains the `expected` entry, which is looked 
 ```csharp
 Dictionary<int, string> values = new() { { 42, "foo" }, { 43, "bar" } };
 
+await Expect.That(values).Contains(42, "foo");
+await Expect.That(values).DoesNotContain(42, "bar");
+```
+
+The entry can also be given as a `KeyValuePair<TKey, TValue>`:
+
+```csharp
+Dictionary<int, string> values = new() { { 42, "foo" }, { 43, "bar" } };
+
 await Expect.That(values).Contains(new KeyValuePair<int, string>(42, "foo"));
-await Expect.That(values).DoesNotContain(new KeyValuePair<int, string>(42, "bar"));
 ```
 
 ### Contain key(s)
