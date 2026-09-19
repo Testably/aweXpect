@@ -23,14 +23,6 @@ public sealed partial class StringEqualityOptionsTests
 				               "foo\nbar"
 				               "FOO\nBAR"
 				                ↑ (expected)
-
-				             Actual:
-				             foo
-				             bar
-				             
-				             Expected:
-				             FOO
-				             BAR
 				             """).IgnoringNewlineStyle();
 		}
 
@@ -51,12 +43,6 @@ public sealed partial class StringEqualityOptionsTests
 				               "foo"
 				               "bar"
 				                ↑ (expected)
-
-				             Actual:
-				             foo
-				             
-				             Expected:
-				             bar
 				             """);
 		}
 
@@ -77,14 +63,6 @@ public sealed partial class StringEqualityOptionsTests
 				               "foo\nbar"
 				               "\tsomething\r\nelse"
 				                ↑ (expected)
-
-				             Actual:
-				             foo
-				             bar
-				             
-				             Expected:
-				             	something
-				             else
 				             """).IgnoringNewlineStyle();
 		}
 
@@ -124,9 +102,6 @@ public sealed partial class StringEqualityOptionsTests
 				             Expected that sut
 				             is equal to <null>,
 				             but it was "foo"
-
-				             Actual:
-				             foo
 				             """);
 		}
 

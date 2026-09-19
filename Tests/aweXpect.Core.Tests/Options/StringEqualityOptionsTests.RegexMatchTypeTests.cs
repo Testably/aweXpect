@@ -35,14 +35,6 @@ public sealed partial class StringEqualityOptionsTests
 				               "foo\nbar"
 				               "FOO\nBAR"
 				               ↑ (regex pattern)
-
-				             Actual:
-				             foo
-				             bar
-				             
-				             Expected:
-				             FOO
-				             BAR
 				             """).IgnoringNewlineStyle();
 		}
 
@@ -63,12 +55,6 @@ public sealed partial class StringEqualityOptionsTests
 				               "foo"
 				               "bar"
 				               ↑ (regex pattern)
-
-				             Actual:
-				             foo
-				             
-				             Expected:
-				             bar
 				             """);
 		}
 
@@ -89,14 +75,6 @@ public sealed partial class StringEqualityOptionsTests
 				               "foo\nbar"
 				               "\tsomething\r\nelse"
 				               ↑ (regex pattern)
-
-				             Actual:
-				             foo
-				             bar
-				             
-				             Expected:
-				             	something
-				             else
 				             """).IgnoringNewlineStyle();
 		}
 
@@ -148,9 +126,6 @@ public sealed partial class StringEqualityOptionsTests
 				             Expected that sut
 				             matches regex <null>,
 				             but could not compare the <null> regex with "foo"
-
-				             Actual:
-				             foo
 				             """);
 		}
 
