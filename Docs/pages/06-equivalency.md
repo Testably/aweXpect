@@ -69,7 +69,9 @@ By default, equivalency:
 - Compares **public fields** and **public properties**.
 - Recurses into nested objects.
 - Treats primitives, `enum`, `string`, `decimal`, `DateTime`, `DateTimeOffset`, `TimeSpan` and `Guid` as
-  *value types* and compares them with `Equals`. Everything else is compared **by members**.
+  *value types* and compares them with `Equals`. The same applies to handles that describe something else instead of
+  carrying state of their own: `MemberInfo` (and therefore `Type`), `Assembly`, `Module`, `Delegate`, `Uri` and
+  `CultureInfo`, including anything derived from them. Everything else is compared **by members**.
 - Respects collection **order** when comparing `IEnumerable<T>`.
 - Detects cyclic references so two graphs that reference themselves do not cause infinite recursion. An instance
   that is referenced more than once is still compared against each of its expected counterparts.
