@@ -332,7 +332,7 @@ public sealed partial class ThatDelegate
 			[Fact]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				ValueTask Delegate(CancellationToken token) => new(Task.Delay(50.Milliseconds(), token));
+				ValueTask Delegate(CancellationToken token) => new(Task.Delay(6.Seconds(), token));
 
 				async Task Act()
 					=> await That(Delegate).ExecutesWithin(10.Milliseconds());
@@ -484,7 +484,7 @@ public sealed partial class ThatDelegate
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
 				ValueTask<int> Delegate(CancellationToken token)
-					=> new(Task.Delay(50.Milliseconds(), token).ContinueWith(_ => 1, token));
+					=> new(Task.Delay(6.Seconds(), token).ContinueWith(_ => 1, token));
 
 				async Task Act()
 					=> await That(Delegate).ExecutesWithin(10.Milliseconds());
