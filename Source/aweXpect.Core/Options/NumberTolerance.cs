@@ -27,6 +27,13 @@ public class NumberTolerance<TNumber>(
 	/// </summary>
 	public void SetTolerance(TNumber tolerance)
 	{
+		if (IsNaN(tolerance))
+		{
+			throw new ArgumentOutOfRangeException(nameof(tolerance),
+					"Tolerance must not be NaN")
+				.LogTrace();
+		}
+
 		if (tolerance.CompareTo(default) < 0)
 		{
 			throw new ArgumentOutOfRangeException(nameof(tolerance),
@@ -36,6 +43,20 @@ public class NumberTolerance<TNumber>(
 
 		Tolerance = tolerance;
 	}
+
+#if NET8_0_OR_GREATER
+	private static bool IsNaN(TNumber tolerance) => TNumber.IsNaN(tolerance);
+#else
+	/// <remarks>
+	///     Without generic math the check has to be written out per type; only the floating point types can be NaN.
+	/// </remarks>
+	private static bool IsNaN(TNumber tolerance) => tolerance switch
+	{
+		double d => double.IsNaN(d),
+		float f => float.IsNaN(f),
+		_ => false,
+	};
+#endif
 
 	/// <inheritdoc />
 	public override string ToString()

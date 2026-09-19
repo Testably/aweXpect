@@ -125,6 +125,18 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
+			[Fact]
+			public async Task ForDouble_WhenToleranceIsNaN_ShouldThrowArgumentOutOfRangeException()
+			{
+				async Task Act()
+					=> await That(12.5).IsEqualTo(12.5).Within(double.NaN);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithMessage("Tolerance must not be NaN*").AsWildcard().And
+					.WithParamName("tolerance")
+					.Because("NaN is not a negative tolerance, so it needs its own message");
+			}
+
 			[Theory]
 			[AutoData]
 			public async Task
@@ -180,6 +192,18 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
+			[Fact]
+			public async Task ForFloat_WhenToleranceIsNaN_ShouldThrowArgumentOutOfRangeException()
+			{
+				async Task Act()
+					=> await That(12.5F).IsEqualTo(12.5F).Within(float.NaN);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithMessage("Tolerance must not be NaN*").AsWildcard().And
+					.WithParamName("tolerance")
+					.Because("NaN is not a negative tolerance, so it needs its own message");
+			}
+
 			[Theory]
 			[AutoData]
 			public async Task
@@ -193,6 +217,20 @@ public sealed partial class ThatNumber
 					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task ForHalf_WhenToleranceIsNaN_ShouldThrowArgumentOutOfRangeException()
+			{
+				async Task Act()
+					=> await That((Half)12.5).IsEqualTo((Half)12.5).Within(Half.NaN);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithMessage("Tolerance must not be NaN*").AsWildcard().And
+					.WithParamName("tolerance")
+					.Because("NaN is not a negative tolerance, so it needs its own message");
+			}
+#endif
 
 			[Theory]
 			[InlineData(5, 6)]
@@ -399,6 +437,20 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
+			[Fact]
+			public async Task ForNullableDouble_WhenToleranceIsNaN_ShouldThrowArgumentOutOfRangeException()
+			{
+				double? subject = 12.5;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(12.5).Within(double.NaN);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithMessage("Tolerance must not be NaN*").AsWildcard().And
+					.WithParamName("tolerance")
+					.Because("NaN is not a negative tolerance, so it needs its own message");
+			}
+
 			[Theory]
 			[AutoData]
 			public async Task
@@ -454,6 +506,20 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
+			[Fact]
+			public async Task ForNullableFloat_WhenToleranceIsNaN_ShouldThrowArgumentOutOfRangeException()
+			{
+				float? subject = 12.5F;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(12.5F).Within(float.NaN);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithMessage("Tolerance must not be NaN*").AsWildcard().And
+					.WithParamName("tolerance")
+					.Because("NaN is not a negative tolerance, so it needs its own message");
+			}
+
 			[Theory]
 			[AutoData]
 			public async Task
@@ -467,6 +533,22 @@ public sealed partial class ThatNumber
 					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task ForNullableHalf_WhenToleranceIsNaN_ShouldThrowArgumentOutOfRangeException()
+			{
+				Half? subject = (Half)12.5;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo((Half)12.5).Within(Half.NaN);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithMessage("Tolerance must not be NaN*").AsWildcard().And
+					.WithParamName("tolerance")
+					.Because("NaN is not a negative tolerance, so it needs its own message");
+			}
+#endif
 
 			[Theory]
 			[InlineData(5, 6)]

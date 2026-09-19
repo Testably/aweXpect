@@ -41,6 +41,58 @@ public class NumberToleranceTests
 	}
 
 	[Fact]
+	public async Task WhenDoubleToleranceIsNaN_ShouldThrowArgumentOutOfRangeException()
+	{
+		NumberTolerance<double> sut = new((_, _) => null);
+
+		void Act() => sut.SetTolerance(double.NaN);
+
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithMessage("Tolerance must not be NaN*").AsWildcard().And
+			.WithParamName("tolerance")
+			.Because("NaN is neither negative nor a usable tolerance");
+	}
+
+	[Fact]
+	public async Task WhenDoubleToleranceIsPositive_ShouldNotThrow()
+	{
+		NumberTolerance<double> sut = new((_, _) => null);
+
+		void Act() => sut.SetTolerance(0.1);
+
+		await That(Act).DoesNotThrow();
+		await That(sut.Tolerance).IsEqualTo(0.1);
+	}
+
+	[Fact]
+	public async Task WhenFloatToleranceIsNaN_ShouldThrowArgumentOutOfRangeException()
+	{
+		NumberTolerance<float> sut = new((_, _) => null);
+
+		void Act() => sut.SetTolerance(float.NaN);
+
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithMessage("Tolerance must not be NaN*").AsWildcard().And
+			.WithParamName("tolerance")
+			.Because("NaN is neither negative nor a usable tolerance");
+	}
+
+#if NET8_0_OR_GREATER
+	[Fact]
+	public async Task WhenHalfToleranceIsNaN_ShouldThrowArgumentOutOfRangeException()
+	{
+		NumberTolerance<Half> sut = new((_, _) => null);
+
+		void Act() => sut.SetTolerance(Half.NaN);
+
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithMessage("Tolerance must not be NaN*").AsWildcard().And
+			.WithParamName("tolerance")
+			.Because("NaN is neither negative nor a usable tolerance");
+	}
+#endif
+
+	[Fact]
 	public async Task WhenToleranceIsNegative_ShouldThrowArgumentOutOfRangeException()
 	{
 		NumberTolerance<int> sut = new((_, _) => null);
