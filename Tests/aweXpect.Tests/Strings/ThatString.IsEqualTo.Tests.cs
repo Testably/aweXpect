@@ -38,6 +38,24 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
+			public async Task WhenExpectedIsEmpty_ShouldFail()
+			{
+				string subject = "some text";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo("");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to "",
+					             but it was "some text" with a length of 9 which is longer than the expected length of 0 and has superfluous:
+					               "some text"
+					             """)
+					.Because("comparing a string against the empty string is a legitimate expectation");
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				string subject = "some text";

@@ -111,6 +111,9 @@ await Expect.That(subject).IsEqualTo("Abbey").AsPrefix();
 await Expect.That(subject).IsEqualTo("Road").AsSuffix();
 ```
 
+An empty prefix or suffix is rejected with an `ArgumentException`, because every subject starts and ends with the empty
+string, so such an expectation says nothing about the subject.
+
 ## One of
 
 You can verify that the `string` is one of many alternatives.  

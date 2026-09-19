@@ -403,12 +403,20 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     Verifies that the <paramref name="expected" /> value is a usable pattern for the current match type.
 	/// </summary>
 	/// <remarks>
-	///     A <see langword="null" /> pattern matches no value and an empty regex pattern matches every value, so one of
-	///     the two polarities of such an expectation can never fail. This can only be detected while the expectation is
-	///     verified, because the match type can also be set after the pattern.
+	///     A <see langword="null" /> pattern matches no value and an empty regex, prefix or suffix pattern matches every
+	///     value, so such an expectation says nothing about the subject. This can only be detected while the expectation
+	///     is verified, because the match type can also be set after the pattern.
 	/// </remarks>
 	private void ValidatePattern(string? expected)
 	{
+		if (expected?.Length == 0 && _matchType is PrefixMatchType or SuffixMatchType)
+		{
+			// ReSharper disable once LocalizableElement
+			throw Tracing.WriteException(new ArgumentException(
+				$"The 'expected' {(_matchType is PrefixMatchType ? "prefix" : "suffix")} cannot be empty.",
+				nameof(expected)));
+		}
+
 		bool isRegex = _matchType is RegexMatchType;
 		if (!isRegex && _matchType is not WildcardMatchType)
 		{

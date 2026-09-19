@@ -36,6 +36,35 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
+			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
+			{
+				string subject = "some text";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo("").AsSuffix();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'expected' suffix cannot be empty.").AsPrefix().And
+					.WithParamName("expected")
+					.Because("every subject ends with the empty string, so the expectation says nothing");
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsEmptyAfterTheIndentationIsIgnored_ShouldThrowArgumentException()
+			{
+				string subject = "some text";
+				string expected = "  ";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).AsSuffix().IgnoringIndentation();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'expected' suffix cannot be empty.").AsPrefix().And
+					.WithParamName("expected")
+					.Because("the compared suffix is the normalized one, which every subject ends with");
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				string subject = "some text";
@@ -190,6 +219,20 @@ public sealed partial class ThatString
 
 		public sealed class AsSuffixNegatedTests
 		{
+			[Fact]
+			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
+			{
+				string subject = "some text";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsEqualTo("").AsSuffix());
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'expected' suffix cannot be empty.").AsPrefix().And
+					.WithParamName("expected")
+					.Because("the negated expectation is just as meaningless as the positive one");
+			}
+
 			[Fact]
 			public async Task WhenStringEndsWithExpected_ShouldFail()
 			{

@@ -574,6 +574,20 @@ public sealed partial class ThatEnumerable
 					              """);
 			}
 
+			[Fact]
+			public async Task AsSuffix_WhenExpectedIsEmpty_ShouldThrowArgumentException()
+			{
+				string[] subject = ["foo", "bar", "baz",];
+
+				async Task Act()
+					=> await That(subject).Contains("").AsSuffix();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'expected' suffix cannot be empty.").AsPrefix().And
+					.WithParamName("expected")
+					.Because("every item ends with the empty string, so the expectation says nothing");
+			}
+
 			[Theory]
 			[InlineData("?oo", true)]
 			[InlineData("f??o", false)]
