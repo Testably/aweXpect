@@ -6,6 +6,35 @@ public sealed partial class StringEqualityOptionsTests
 {
 	public sealed class WildcardMatchTypeTests
 	{
+		[Theory]
+		[InlineData("", true)]
+		[InlineData("foo", false)]
+		public async Task AreConsideredEqual_WhenPatternIsEmpty_ShouldMatchOnlyTheEmptyValue(string actual,
+			bool expectMatch)
+		{
+			StringEqualityOptions sut = new();
+			sut.AsWildcard();
+
+			bool result = await sut.AreConsideredEqual(actual, "");
+
+			await That(result).IsEqualTo(expectMatch)
+				.Because("an empty wildcard pattern has the well-defined meaning of the empty string");
+		}
+
+		[Fact]
+		public async Task AreConsideredEqual_WhenPatternIsNull_ShouldThrowArgumentNullException()
+		{
+			StringEqualityOptions sut = new();
+			sut.AsWildcard();
+
+			async Task Act() => await sut.AreConsideredEqual("foo", (string?)null);
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("expected").And
+				.WithMessage("The 'expected' wildcard pattern cannot be null.").AsPrefix()
+				.Because("the pattern is also rejected when the match type was set before it");
+		}
+
 		[Fact]
 		public async Task AsWildcard_ShouldReturnSameInstance()
 		{
@@ -59,6 +88,32 @@ public sealed partial class StringEqualityOptionsTests
 			int result = await sut.CountOccurrences("AxB ayb", "a?b");
 
 			await That(result).IsEqualTo(2);
+		}
+
+		[Fact]
+		public async Task CountOccurrences_WhenPatternIsEmpty_ShouldReturnZero()
+		{
+			StringEqualityOptions sut = new();
+			sut.AsWildcard();
+
+			int result = await sut.CountOccurrences("foo", "");
+
+			await That(result).IsEqualTo(0)
+				.Because("an empty expected value never occurs, but it is still a valid wildcard pattern");
+		}
+
+		[Fact]
+		public async Task CountOccurrences_WhenPatternIsNull_ShouldThrowArgumentNullException()
+		{
+			StringEqualityOptions sut = new();
+			sut.AsWildcard();
+
+			async Task Act() => await sut.CountOccurrences("foo", null!);
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("expected").And
+				.WithMessage("The 'expected' wildcard pattern cannot be null.").AsPrefix()
+				.Because("a missing pattern is also meaningless when the occurrences are counted");
 		}
 
 		[Theory]
@@ -163,35 +218,32 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Fact]
-		public async Task WhenPatternIsNull_ShouldFail()
+		public async Task WhenPatternIsNull_ShouldThrowArgumentNullException()
 		{
 			string sut = "foo";
 
 			async Task Act()
 				=> await That(sut).IsEqualTo(null).AsWildcard();
 
-			await That(Act).Throws<XunitException>()
-				.WithMessage("""
-				             Expected that sut
-				             matches <null>,
-				             but could not compare the <null> wildcard pattern with "foo"
-				             """);
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("expected").And
+				.WithMessage("The 'expected' wildcard pattern cannot be null.").AsPrefix()
+				.Because("a missing pattern cannot express any expectation");
 		}
 
 		[Fact]
-		public async Task WhenSubjectAndPatternAreNull_ShouldFail()
+		public async Task WhenSubjectAndPatternAreNull_ShouldThrowArgumentNullException()
 		{
 			string? sut = null;
 
 			async Task Act()
 				=> await That(sut).IsEqualTo(null).AsWildcard();
 
-			await That(Act).Throws<XunitException>()
-				.WithMessage("""
-				             Expected that sut
-				             matches <null>,
-				             but it was <null>
-				             """);
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("expected").And
+				.WithMessage("The 'expected' wildcard pattern cannot be null.").AsPrefix()
+				.Because("a missing pattern is rejected before the subject is looked at, so that "
+				         + "'is null' is never expressed through a pattern");
 		}
 
 		[Fact]

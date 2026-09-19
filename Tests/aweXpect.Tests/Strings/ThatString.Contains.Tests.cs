@@ -311,6 +311,21 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
+			public async Task WhenPatternIsEmptyAfterTheIndentationIsIgnored_ShouldThrowArgumentException()
+			{
+				string subject = "some text";
+				string expected = " ";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsRegex().IgnoringIndentation();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'expected' regex pattern cannot be empty.").AsPrefix().And
+					.WithParamName("expected")
+					.Because("the pattern that is counted is the normalized one, which matches every subject");
+			}
+
+			[Fact]
 			public async Task WhenPatternMatchesTheEmptyString_ShouldNotCountEmptyMatches()
 			{
 				string subject = "bbb";

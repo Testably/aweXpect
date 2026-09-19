@@ -27,6 +27,39 @@ public sealed partial class ThatString
 					             """);
 			}
 
+			[Theory]
+			[InlineData("", false)]
+			[InlineData("a", true)]
+			[InlineData("\n", true)]
+			public async Task WhenPatternIsEmpty_ShouldOnlyFailForTheEmptySubject(
+				string subject, bool expectSuccess)
+			{
+				async Task Act()
+					=> await That(subject).IsNotEqualTo("").AsWildcard();
+
+				await That(Act).Throws().OnlyIf(!expectSuccess)
+					.WithMessage($"""
+					              Expected that subject
+					              does not match "",
+					              but it was {Formatter.Format(subject)}
+					              """)
+					.Because("an empty wildcard pattern has the well-defined meaning of the empty string");
+			}
+
+			[Fact]
+			public async Task WhenPatternIsNull_ShouldThrowArgumentNullException()
+			{
+				string subject = "some message";
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(null).AsWildcard();
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' wildcard pattern cannot be null.").AsPrefix()
+					.Because("a missing pattern matches no subject, so the negated expectation could never fail");
+			}
+
 			[Fact]
 			public async Task WhenPatternMatchesOnlyOneLineOfTheSubject_ShouldSucceed()
 			{

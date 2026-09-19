@@ -68,7 +68,9 @@ When using `AsWildcard`, the following wildcard specifiers are supported:
 | * (asterisk)       | Zero or more characters |
 | ? (question mark)  | Exactly one character   |
 
-The pattern has to cover the complete subject, including all its lines and a trailing newline.
+The pattern has to cover the complete subject, including all its lines and a trailing newline.  
+An empty pattern therefore matches only an empty subject. A `null` pattern is rejected with an
+`ArgumentNullException`, because it matches no subject at all.
 
 ### Regular expressions
 
@@ -93,6 +95,10 @@ string subject = "some\ntext";
 
 await Expect.That(subject).IsEqualTo("^text$").AsRegex(RegexOptions.Multiline);
 ```
+
+An empty pattern is rejected with an `ArgumentException` and a `null` pattern with an `ArgumentNullException`, because
+an empty pattern matches every subject and a `null` pattern matches no subject, so one of the two expectations could
+never fail.
 
 ### Prefix / Suffix
 

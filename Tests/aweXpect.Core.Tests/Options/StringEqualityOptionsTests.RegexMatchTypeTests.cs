@@ -8,6 +8,34 @@ public sealed partial class StringEqualityOptionsTests
 	public sealed class RegexMatchTypeTests
 	{
 		[Fact]
+		public async Task AreConsideredEqual_WhenPatternIsEmpty_ShouldThrowArgumentException()
+		{
+			StringEqualityOptions sut = new();
+			sut.AsRegex();
+
+			async Task Act() => await sut.AreConsideredEqual("foo", "");
+
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage("The 'expected' regex pattern cannot be empty.").AsPrefix().And
+				.WithParamName("expected")
+				.Because("the pattern is also rejected when the match type was set before it");
+		}
+
+		[Fact]
+		public async Task AreConsideredEqual_WhenPatternIsNull_ShouldThrowArgumentNullException()
+		{
+			StringEqualityOptions sut = new();
+			sut.AsRegex();
+
+			async Task Act() => await sut.AreConsideredEqual("foo", (string?)null);
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("expected").And
+				.WithMessage("The 'expected' regex pattern cannot be null.").AsPrefix()
+				.Because("the pattern is also rejected when the match type was set before it");
+		}
+
+		[Fact]
 		public async Task AsRegex_ShouldReturnSameInstance()
 		{
 			StringEqualityOptions sut = new();
@@ -73,6 +101,20 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Fact]
+		public async Task CountOccurrences_WhenPatternIsEmpty_ShouldThrowArgumentException()
+		{
+			StringEqualityOptions sut = new();
+			sut.AsRegex();
+
+			async Task Act() => await sut.CountOccurrences("foo", "");
+
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage("The 'expected' regex pattern cannot be empty.").AsPrefix().And
+				.WithParamName("expected")
+				.Because("an empty pattern is also meaningless when the occurrences are counted");
+		}
+
+		[Fact]
 		public async Task CountOccurrences_WhenPatternIsInvalid_ShouldThrowArgumentException()
 		{
 			StringEqualityOptions sut = new();
@@ -83,6 +125,20 @@ public sealed partial class StringEqualityOptionsTests
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage("*[*").AsWildcard()
 				.Because("an invalid pattern must still fail immediately, but the message is localized");
+		}
+
+		[Fact]
+		public async Task CountOccurrences_WhenPatternIsNull_ShouldThrowArgumentNullException()
+		{
+			StringEqualityOptions sut = new();
+			sut.AsRegex();
+
+			async Task Act() => await sut.CountOccurrences("foo", null!);
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("expected").And
+				.WithMessage("The 'expected' regex pattern cannot be null.").AsPrefix()
+				.Because("a missing pattern is also meaningless when the occurrences are counted");
 		}
 
 		[Theory]
@@ -198,35 +254,32 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Fact]
-		public async Task WhenPatternIsNull_ShouldFail()
+		public async Task WhenPatternIsNull_ShouldThrowArgumentNullException()
 		{
 			string sut = "foo";
 
 			async Task Act()
 				=> await That(sut).IsEqualTo(null).AsRegex();
 
-			await That(Act).Throws<XunitException>()
-				.WithMessage("""
-				             Expected that sut
-				             matches regex <null>,
-				             but could not compare the <null> regex with "foo"
-				             """);
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("expected").And
+				.WithMessage("The 'expected' regex pattern cannot be null.").AsPrefix()
+				.Because("a missing pattern cannot express any expectation");
 		}
 
 		[Fact]
-		public async Task WhenSubjectAndPatternAreNull_ShouldFail()
+		public async Task WhenSubjectAndPatternAreNull_ShouldThrowArgumentNullException()
 		{
 			string? sut = null;
 
 			async Task Act()
 				=> await That(sut).IsEqualTo(null).AsRegex();
 
-			await That(Act).Throws<XunitException>()
-				.WithMessage("""
-				             Expected that sut
-				             matches regex <null>,
-				             but it was <null>
-				             """);
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("expected").And
+				.WithMessage("The 'expected' regex pattern cannot be null.").AsPrefix()
+				.Because("a missing pattern is rejected before the subject is looked at, so that "
+				         + "'is null' is never expressed through a pattern");
 		}
 
 		[Fact]

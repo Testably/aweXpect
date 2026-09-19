@@ -251,6 +251,58 @@ public sealed partial class ThatString
 					              """)
 					.Because("a case-sensitive match never looked at the culture");
 			}
+
+			[Theory]
+			[InlineData("", true)]
+			[InlineData("a", false)]
+			[InlineData("\n", false)]
+			public async Task WhenPatternIsEmpty_ShouldMatchOnlyTheEmptySubject(
+				string subject, bool expectMatch)
+			{
+				async Task Act()
+					=> await That(subject).IsEqualTo("").AsWildcard();
+
+				await That(Act).Throws().OnlyIf(!expectMatch)
+					.WithMessage($"""
+					              Expected that subject
+					              matches "",
+					              but it did not match:
+					                ↓ (actual)
+					                {Formatter.Format(subject)}
+					                ""
+					                ↑ (wildcard pattern)
+					              """)
+					.Because("an empty wildcard pattern has the well-defined meaning of the empty string");
+			}
+
+			[Fact]
+			public async Task WhenPatternIsNull_ShouldThrowArgumentNullException()
+			{
+				string subject = "some message";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(null).AsWildcard();
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' wildcard pattern cannot be null.").AsPrefix()
+					.Because("a missing pattern cannot express any expectation");
+			}
+
+			[Fact]
+			public async Task WhenPatternIsProvidedAsNullVariable_ShouldThrowArgumentNullException()
+			{
+				string subject = "some message";
+				string? pattern = null;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(pattern).AsWildcard();
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' wildcard pattern cannot be null.").AsPrefix()
+					.Because("a pattern that only becomes null at runtime must be rejected just as a literal one");
+			}
 		}
 	}
 }

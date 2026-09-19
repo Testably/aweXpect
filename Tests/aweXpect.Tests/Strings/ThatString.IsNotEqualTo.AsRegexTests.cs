@@ -38,6 +38,34 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow()
 					.Because("'^' and '$' bind to the complete subject, which is more than the matched line");
 			}
+
+			[Fact]
+			public async Task WhenPatternIsEmpty_ShouldThrowArgumentException()
+			{
+				string subject = "some message";
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo("").AsRegex();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'expected' regex pattern cannot be empty.").AsPrefix().And
+					.WithParamName("expected")
+					.Because("an empty pattern matches every subject, so the expectation could never succeed");
+			}
+
+			[Fact]
+			public async Task WhenPatternIsNull_ShouldThrowArgumentNullException()
+			{
+				string subject = "some message";
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(null).AsRegex();
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' regex pattern cannot be null.").AsPrefix()
+					.Because("a missing pattern matches no subject, so the negated expectation could never fail");
+			}
 		}
 	}
 }
