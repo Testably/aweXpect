@@ -51,7 +51,7 @@ public static partial class ThatNullableTimeSpan
 		{
 			Actual = actual;
 			Outcome = (actual is null && expected is null) ||
-			          IsWithinTolerance(tolerance.Tolerance, actual - expected)
+			          IsWithinTolerance(tolerance.Tolerance, actual, expected)
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;

@@ -24,6 +24,19 @@ public sealed partial class ThatTimeSpan
 			}
 
 			[Fact]
+			public async Task WhenExpectedOnlyContainsAnOverflowingValue_ShouldSucceed()
+			{
+				TimeSpan subject = TimeSpan.MinValue;
+				TimeSpan[] expected = [TimeSpan.MaxValue,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(expected);
+
+				await That(Act).DoesNotThrow()
+					.Because("a difference that exceeds the range of a time span must pass instead of overflow");
+			}
+
+			[Fact]
 			public async Task WhenExpectedOnlyContainsNull_ShouldSucceed()
 			{
 				TimeSpan subject = CurrentTime();
@@ -63,6 +76,24 @@ public sealed partial class ThatTimeSpan
 					              is not one of {Formatter.Format(expected)},
 					              but it was {Formatter.Format(subject)}
 					              """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsContainedAfterAnOverflowingValue_ShouldFail()
+			{
+				TimeSpan subject = TimeSpan.MinValue;
+				TimeSpan[] expected = [TimeSpan.MaxValue, TimeSpan.MinValue,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of {Formatter.Format(expected)},
+					              but it was the minimum time span
+					              """)
+					.Because("an earlier candidate that is far away must not hide a matching later candidate");
 			}
 
 			[Fact]

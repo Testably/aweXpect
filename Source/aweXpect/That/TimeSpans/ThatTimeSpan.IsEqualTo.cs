@@ -50,7 +50,7 @@ public static partial class ThatTimeSpan
 		public ConstraintResult IsMetBy(TimeSpan actual)
 		{
 			Actual = actual;
-			Outcome = expected != null && IsWithinTolerance(tolerance.Tolerance, actual - expected.Value)
+			Outcome = expected != null && IsWithinTolerance(tolerance.Tolerance, actual, expected.Value)
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;

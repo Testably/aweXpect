@@ -123,7 +123,7 @@ public static partial class ThatNullableTimeSpan
 				{
 					hasValues = true;
 					if (value != null &&
-					    IsWithinTolerance(tolerance.Tolerance, actual.Value - value.Value))
+					    IsWithinTolerance(tolerance.Tolerance, actual.Value, value.Value))
 					{
 						Outcome = Outcome.Success;
 						return this;
