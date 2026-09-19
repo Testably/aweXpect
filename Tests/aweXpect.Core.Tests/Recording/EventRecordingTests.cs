@@ -87,7 +87,7 @@ public sealed class EventRecordingTests
 
 		await That(Act).Throws<NotSupportedException>()
 			.WithMessage(
-				"Event Typo was not recorded on sut, only [\"OtherEvent\"] and [\"CustomEvent\"] could not be recorded. When publishing with trimming or Native AOT enabled, ensure that the type is rooted, so that its events are preserved.")
+				"Event Typo was not recorded on sut, only [\"OtherEvent\"]. No handler could be attached to [\"CustomEvent\"]. When publishing with trimming or Native AOT enabled, ensure that the type is rooted, so that its events are preserved.")
 			.Because("a skipped event is missing from the recorded ones for a reason that the message has to name");
 	}
 
@@ -175,7 +175,7 @@ public sealed class EventRecordingTests
 
 		await That(Act).Throws<NotSupportedException>()
 			.WithMessage(
-				"Event Typo was not recorded on sut, [\"CustomEvent\"] could not be recorded. When publishing with trimming or Native AOT enabled, ensure that the type is rooted, so that its events are preserved.")
+				"Event Typo was not recorded on sut, because no event was recorded. No handler could be attached to [\"CustomEvent\"]. When publishing with trimming or Native AOT enabled, ensure that the type is rooted, so that its events are preserved.")
 			.Because("reflection did find an event, so blaming an empty recording on a removed event would mislead");
 	}
 

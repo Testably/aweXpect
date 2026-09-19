@@ -245,20 +245,16 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 				throw new NotSupportedException(unsupported).LogTrace();
 			}
 
-			List<string> found = [];
-			if (_recorders.Count > 0)
-			{
-				found.Add($"only {Formatter.Format(_recorders.Keys)}");
-			}
-
-			if (_skipped.Count > 0)
-			{
-				found.Add($"{Formatter.Format(_skipped.Keys)} could not be recorded");
-			}
-
-			string recorded = found.Count == 0 ? "because no event was found" : string.Join(" and ", found);
+			string recorded = _recorders.Count > 0
+				? $"only {Formatter.Format(_recorders.Keys)}"
+				: _skipped.Count > 0
+					? "because no event was recorded"
+					: "because no event was found";
+			string skipped = _skipped.Count > 0
+				? $". No handler could be attached to {Formatter.Format(_skipped.Keys)}"
+				: "";
 			throw new NotSupportedException(
-					$"Event {eventName} was not recorded on {_subjectExpression}, {recorded}{(_isRegistered ? "" : TrimmingHint)}")
+					$"Event {eventName} was not recorded on {_subjectExpression}, {recorded}{skipped}{(_isRegistered ? "" : TrimmingHint)}")
 				.LogTrace();
 		}
 
