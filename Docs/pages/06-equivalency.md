@@ -101,6 +101,9 @@ await Expect.That(album).IsEquivalentTo(expected, o => o.IgnoringMember("PlayCou
 The match is case-insensitive. For nested members, the path is dot-separated (e.g. `"Artist.Name"`); for collection
 elements, the index is bracketed (e.g. `"Tracks[3]"`).
 
+The name must cover whole segments at the end of the member path, so `"Name"` ignores every member called `Name` at any
+depth, while `"ame"` or `"t.Name"` ignore nothing.
+
 ### Ignoring members by predicate
 
 There are three overloads of `Ignoring`, depending on which information you need:

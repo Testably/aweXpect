@@ -348,6 +348,39 @@ public sealed class EquivalencyComparisonTests
 			.Because("reflection returns both declarations, but only the one on the most derived type is visible");
 	}
 
+	[Theory]
+	[InlineData("ame", false)]
+	[InlineData("d.Name", false)]
+	[InlineData("Name", true)]
+	[InlineData("Child.Name", true)]
+	public async Task WhenMemberToIgnoreIsGiven_ShouldOnlyIgnoreWholePathSegments(string memberToIgnore,
+		bool expectedResult)
+	{
+		var actual = new
+		{
+			Child = new
+			{
+				Name = "cc",
+			},
+		};
+		var expected = new
+		{
+			Child = new
+			{
+				Name = "c",
+			},
+		};
+		EquivalencyOptions options = new()
+		{
+			MembersToIgnore = [new MemberToIgnore.ByName(memberToIgnore),],
+		};
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, new StringBuilder());
+
+		await That(result).IsEqualTo(expectedResult)
+			.Because("only a name that covers whole segments of the member path may exclude Child.Name");
+	}
+
 	[Fact]
 	public async Task WhenMultipleMembersDiffer_ShouldSeparateThemWithAnd()
 	{
