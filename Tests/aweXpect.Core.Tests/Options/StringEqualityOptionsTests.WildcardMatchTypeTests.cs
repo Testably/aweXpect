@@ -17,6 +17,49 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Theory]
+		[InlineData("axxb", "a*b", 1)]
+		[InlineData("axb ayb", "a?b", 2)]
+		[InlineData("axxb ayb", "a*b", 1)]
+		[InlineData("a\nxb", "a*b", 1)]
+		public async Task CountOccurrences_ShouldCountTheMatchesOfThePattern(string actual, string expected,
+			int expectedCount)
+		{
+			StringEqualityOptions sut = new();
+			sut.AsWildcard();
+
+			int result = await sut.CountOccurrences(actual, expected);
+
+			await That(result).IsEqualTo(expectedCount)
+				.Because("the match can be longer or shorter than the pattern and '*' is matched greedily");
+		}
+
+		[Fact]
+		public async Task CountOccurrences_WhenCaseIsIgnored_ShouldIgnoreCase()
+		{
+			StringEqualityOptions sut = new();
+			sut.AsWildcard().IgnoringCase();
+
+			int result = await sut.CountOccurrences("AxB ayb", "a?b");
+
+			await That(result).IsEqualTo(2);
+		}
+
+		[Theory]
+		[InlineData("abc", 1)]
+		[InlineData("", 0)]
+		public async Task CountOccurrences_WhenPatternMatchesTheEmptyString_ShouldIgnoreEmptyMatches(string actual,
+			int expectedCount)
+		{
+			StringEqualityOptions sut = new();
+			sut.AsWildcard();
+
+			int result = await sut.CountOccurrences(actual, "*");
+
+			await That(result).IsEqualTo(expectedCount)
+				.Because("an empty match does not cover any occurrence, just as an empty expected value never occurs");
+		}
+
+		[Theory]
 		[InlineData(false)]
 		[InlineData(true)]
 		public async Task ShouldCompareCaseSensitive(bool ignoreCase)

@@ -73,6 +73,18 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 			return BlockMatchType.CountOccurrences(actual, expected, _comparer ?? UseDefaultComparer(_ignoreCase));
 		}
 
+		// A pattern can match a different number of characters than it is long, so its occurrences cannot be found
+		// with a window of the expected length.
+		if (_matchType is RegexMatchType)
+		{
+			return RegexMatchType.CountOccurrences(actual, expected, _ignoreCase);
+		}
+
+		if (_matchType is WildcardMatchType)
+		{
+			return WildcardMatchType.CountOccurrences(actual, expected, _ignoreCase);
+		}
+
 		int count = 0;
 		int index = 0;
 		while (index < actual.Length)

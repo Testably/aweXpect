@@ -17,6 +17,64 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Theory]
+		[InlineData("axxxb", "a.*b", 1)]
+		[InlineData("abcabc", "[a-c]{3}", 2)]
+		[InlineData("aaaa", "a+", 1)]
+		[InlineData("a1b a22b", "a\\d+b", 2)]
+		[InlineData("aXa", "a", 2)]
+		[InlineData("aaaa", "aa", 2)]
+		public async Task CountOccurrences_ShouldCountTheMatchesOfThePattern(string actual, string expected,
+			int expectedCount)
+		{
+			StringEqualityOptions sut = new();
+			sut.AsRegex();
+
+			int result = await sut.CountOccurrences(actual, expected);
+
+			await That(result).IsEqualTo(expectedCount)
+				.Because("the match can be longer or shorter than the pattern");
+		}
+
+		[Fact]
+		public async Task CountOccurrences_WhenCaseIsIgnored_ShouldIgnoreCase()
+		{
+			StringEqualityOptions sut = new();
+			sut.AsRegex().IgnoringCase();
+
+			int result = await sut.CountOccurrences("AxB ayb", "a.b");
+
+			await That(result).IsEqualTo(2);
+		}
+
+		[Fact]
+		public async Task CountOccurrences_WhenPatternIsInvalid_ShouldThrowArgumentException()
+		{
+			StringEqualityOptions sut = new();
+			sut.AsRegex();
+
+			async Task Act() => await sut.CountOccurrences("foo", "[");
+
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage("*[*").AsWildcard()
+				.Because("an invalid pattern must still fail immediately, but the message is localized");
+		}
+
+		[Theory]
+		[InlineData("bbb", 0)]
+		[InlineData("abab", 2)]
+		public async Task CountOccurrences_WhenPatternMatchesTheEmptyString_ShouldIgnoreEmptyMatches(string actual,
+			int expectedCount)
+		{
+			StringEqualityOptions sut = new();
+			sut.AsRegex();
+
+			int result = await sut.CountOccurrences(actual, "a*");
+
+			await That(result).IsEqualTo(expectedCount)
+				.Because("an empty match does not cover any occurrence, just as an empty expected value never occurs");
+		}
+
+		[Theory]
 		[InlineData(false)]
 		[InlineData(true)]
 		public async Task ShouldCompareCaseSensitive(bool ignoreCase)
