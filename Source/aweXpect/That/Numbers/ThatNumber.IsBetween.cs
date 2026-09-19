@@ -340,15 +340,7 @@ public static partial class ThatNumber
 		float? minimum)
 		=> new(maximum =>
 		{
-			NumberTolerance<float> options = new((a, e) =>
-			{
-				if (float.IsNaN(a) || float.IsNaN(e))
-				{
-					return null;
-				}
-
-				return a > e ? a - e : e - a;
-			});
+			NumberTolerance<float> options = new(CalculateDifference);
 			return new NumberToleranceResult<float, IThat<float>>(
 				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsInRangeConstraint<float>(it, grammars, minimum, maximum, options)),
@@ -364,15 +356,7 @@ public static partial class ThatNumber
 		double? minimum)
 		=> new(maximum =>
 		{
-			NumberTolerance<double> options = new((a, e) =>
-			{
-				if (double.IsNaN(a) || double.IsNaN(e))
-				{
-					return null;
-				}
-
-				return a > e ? a - e : e - a;
-			});
+			NumberTolerance<double> options = new(CalculateDifference);
 			return new NumberToleranceResult<double, IThat<double>>(
 				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsInRangeConstraint<double>(it, grammars, minimum, maximum, options)),
@@ -541,15 +525,7 @@ public static partial class ThatNumber
 		float? minimum)
 		=> new(maximum =>
 		{
-			NumberTolerance<float> options = new((a, e) =>
-			{
-				if (float.IsNaN(a) || float.IsNaN(e))
-				{
-					return null;
-				}
-
-				return a > e ? a - e : e - a;
-			});
+			NumberTolerance<float> options = new(CalculateDifference);
 			return new NullableNumberToleranceResult<float, IThat<float?>>(
 				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsInRangeConstraint<float>(it, grammars, minimum, maximum, options)),
@@ -566,15 +542,7 @@ public static partial class ThatNumber
 		double? minimum)
 		=> new(maximum =>
 		{
-			NumberTolerance<double> options = new((a, e) =>
-			{
-				if (double.IsNaN(a) || double.IsNaN(e))
-				{
-					return null;
-				}
-
-				return a > e ? a - e : e - a;
-			});
+			NumberTolerance<double> options = new(CalculateDifference);
 			return new NullableNumberToleranceResult<double, IThat<double?>>(
 				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsInRangeConstraint<double>(it, grammars, minimum, maximum, options)),
@@ -735,15 +703,7 @@ public static partial class ThatNumber
 		float? minimum)
 		=> new(maximum =>
 		{
-			NumberTolerance<float> options = new((a, e) =>
-			{
-				if (float.IsNaN(a) || float.IsNaN(e))
-				{
-					return null;
-				}
-
-				return a > e ? a - e : e - a;
-			});
+			NumberTolerance<float> options = new(CalculateDifference);
 			return new NumberToleranceResult<float, IThat<float>>(
 				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsInRangeConstraint<float>(it, grammars, minimum, maximum, options).Invert()),
@@ -759,15 +719,7 @@ public static partial class ThatNumber
 		double? minimum)
 		=> new(maximum =>
 		{
-			NumberTolerance<double> options = new((a, e) =>
-			{
-				if (double.IsNaN(a) || double.IsNaN(e))
-				{
-					return null;
-				}
-
-				return a > e ? a - e : e - a;
-			});
+			NumberTolerance<double> options = new(CalculateDifference);
 			return new NumberToleranceResult<double, IThat<double>>(
 				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsInRangeConstraint<double>(it, grammars, minimum, maximum, options).Invert()),
@@ -936,15 +888,7 @@ public static partial class ThatNumber
 		float? minimum)
 		=> new(maximum =>
 		{
-			NumberTolerance<float> options = new((a, e) =>
-			{
-				if (float.IsNaN(a) || float.IsNaN(e))
-				{
-					return null;
-				}
-
-				return a > e ? a - e : e - a;
-			});
+			NumberTolerance<float> options = new(CalculateDifference);
 			return new NullableNumberToleranceResult<float, IThat<float?>>(
 				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsInRangeConstraint<float>(it, grammars, minimum, maximum, options).Invert()),
@@ -961,15 +905,7 @@ public static partial class ThatNumber
 		double? minimum)
 		=> new(maximum =>
 		{
-			NumberTolerance<double> options = new((a, e) =>
-			{
-				if (double.IsNaN(a) || double.IsNaN(e))
-				{
-					return null;
-				}
-
-				return a > e ? a - e : e - a;
-			});
+			NumberTolerance<double> options = new(CalculateDifference);
 			return new NullableNumberToleranceResult<double, IThat<double?>>(
 				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new NullableIsInRangeConstraint<double>(it, grammars, minimum, maximum, options).Invert()),

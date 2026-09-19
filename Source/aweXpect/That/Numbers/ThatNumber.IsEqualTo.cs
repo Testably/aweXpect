@@ -289,8 +289,7 @@ public static partial class ThatNumber
 		this IThat<float> subject,
 		float? expected)
 	{
-		NumberTolerance<float> options =
- new((a, e) => { checked { return float.IsNaN(a) || float.IsNaN(e) ? null : a > e ? a - e : e - a; } });
+		NumberTolerance<float> options = new(CalculateDifference);
 		return new NumberToleranceResult<float, IThat<float>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint<float>(it, grammars, expected, options)),
@@ -305,8 +304,7 @@ public static partial class ThatNumber
 		this IThat<double> subject,
 		double? expected)
 	{
-		NumberTolerance<double> options =
- new((a, e) => { checked { return double.IsNaN(a) || double.IsNaN(e) ? null : a > e ? a - e : e - a; } });
+		NumberTolerance<double> options = new(CalculateDifference);
 		return new NumberToleranceResult<double, IThat<double>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint<double>(it, grammars, expected, options)),
@@ -456,7 +454,7 @@ public static partial class ThatNumber
 		this IThat<float?> subject,
 		float? expected)
 	{
-		NumberTolerance<float> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
+		NumberTolerance<float> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<float, IThat<float?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsEqualToConstraint<float>(it, grammars, expected, options)),
@@ -471,7 +469,7 @@ public static partial class ThatNumber
 		this IThat<double?> subject,
 		double? expected)
 	{
-		NumberTolerance<double> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
+		NumberTolerance<double> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<double, IThat<double?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsEqualToConstraint<double>(it, grammars, expected, options)),
@@ -621,8 +619,7 @@ public static partial class ThatNumber
 		this IThat<float> subject,
 		float? unexpected)
 	{
-		NumberTolerance<float> options =
- new((a, e) => { checked { return float.IsNaN(a) || float.IsNaN(e) ? null : a > e ? a - e : e - a; } });
+		NumberTolerance<float> options = new(CalculateDifference);
 		return new NumberToleranceResult<float, IThat<float>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint<float>(it, grammars, unexpected, options).Invert()),
@@ -637,8 +634,7 @@ public static partial class ThatNumber
 		this IThat<double> subject,
 		double? unexpected)
 	{
-		NumberTolerance<double> options =
- new((a, e) => { checked { return double.IsNaN(a) || double.IsNaN(e) ? null : a > e ? a - e : e - a; } });
+		NumberTolerance<double> options = new(CalculateDifference);
 		return new NumberToleranceResult<double, IThat<double>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsEqualToConstraint<double>(it, grammars, unexpected, options).Invert()),
@@ -788,7 +784,7 @@ public static partial class ThatNumber
 		this IThat<float?> subject,
 		float? unexpected)
 	{
-		NumberTolerance<float> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
+		NumberTolerance<float> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<float, IThat<float?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsEqualToConstraint<float>(it, grammars, unexpected, options).Invert()),
@@ -803,7 +799,7 @@ public static partial class ThatNumber
 		this IThat<double?> subject,
 		double? unexpected)
 	{
-		NumberTolerance<double> options = new((a, e) => { checked { return a > e ? a - e : e - a; } });
+		NumberTolerance<double> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<double, IThat<double?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsEqualToConstraint<double>(it, grammars, unexpected, options).Invert()),
