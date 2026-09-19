@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 
 namespace aweXpect.Tests;
 
@@ -20,6 +20,24 @@ public sealed partial class ThatStream
 					.WithMessage("*The expected length must be greater than or equal to zero*")
 					.AsWildcard().And
 					.WithParamName("expected");
+			}
+
+			[Fact]
+			public async Task WhenReadingTheLengthThrowsAnIOException_ShouldFail()
+			{
+				Stream subject = new UnreadableStream(new IOException("The device is not ready."));
+
+				async Task Act()
+					=> await That(subject).HasLength(3);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has length equal to 3,
+					             but it could not read the length, because it did throw an IOException:
+					               The device is not ready.
+					             """)
+					.Because("a broken stream cannot answer what its length is");
 			}
 
 			[Theory]
@@ -50,6 +68,43 @@ public sealed partial class ThatStream
 					=> await That(subject).HasLength(length);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsDisposed_ShouldFail()
+			{
+				Stream subject = new MemoryStream(new byte[3]);
+				subject.Dispose();
+
+				async Task Act()
+					=> await That(subject).HasLength(3);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has length equal to 3,
+					             but it could not read the length, because it did throw an ObjectDisposedException:
+					               *
+					             """).AsWildcard()
+					.Because("the disposed stream is the production bug the test should report");
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNonSeekable_ShouldFail()
+			{
+				Stream subject = new UnreadableStream(new NotSupportedException("Stream does not support seeking."));
+
+				async Task Act()
+					=> await That(subject).HasLength(3);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has length equal to 3,
+					             but it could not read the length, because it did throw a NotSupportedException:
+					               Stream does not support seeking.
+					             """)
+					.Because("a non-seekable stream does not have a length of 3");
 			}
 
 			[Fact]
@@ -285,6 +340,25 @@ public sealed partial class ThatStream
 					              but it had length 2010
 					              """);
 			}
+
+			[Fact]
+			public async Task WhenSubjectIsDisposed_ShouldFail()
+			{
+				Stream subject = new MemoryStream(new byte[3]);
+				subject.Dispose();
+
+				async Task Act()
+					=> await That(subject).HasLength().GreaterThan(2);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has length greater than 2,
+					             but it could not read the length, because it did throw an ObjectDisposedException:
+					               *
+					             """).AsWildcard()
+					.Because("the chained comparison must report the unreadable length, too");
+			}
 		}
 
 		public sealed class LessThanOrEqualToTests
@@ -489,6 +563,25 @@ public sealed partial class ThatStream
 			}
 
 			[Fact]
+			public async Task WhenSubjectIsDisposed_ShouldFail()
+			{
+				Stream subject = new MemoryStream(new byte[3]);
+				subject.Dispose();
+
+				async Task Act()
+					=> await That(subject).HasLength().NotEqualTo(3);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has length not equal to 3,
+					             but it could not read the length, because it did throw an ObjectDisposedException:
+					               *
+					             """).AsWildcard()
+					.Because("an unreadable length is no proof that the length differs");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Stream? subject = null;
@@ -546,6 +639,25 @@ public sealed partial class ThatStream
 					             does not have length equal to 3,
 					             but it had length 3
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsDisposed_ShouldFail()
+			{
+				Stream subject = new MemoryStream(new byte[3]);
+				subject.Dispose();
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasLength(3));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have length equal to 3,
+					             but it could not read the length, because it did throw an ObjectDisposedException:
+					               *
+					             """).AsWildcard()
+					.Because("negating a question that cannot be answered does not make it true");
 			}
 		}
 	}

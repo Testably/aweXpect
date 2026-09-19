@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 
 namespace aweXpect.Tests;
 
@@ -50,6 +50,43 @@ public sealed partial class ThatStream
 					=> await That(subject).HasPosition(position);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsDisposed_ShouldFail()
+			{
+				Stream subject = new MemoryStream(new byte[3]);
+				subject.Dispose();
+
+				async Task Act()
+					=> await That(subject).HasPosition(0);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has position equal to 0,
+					             but it could not read the position, because it did throw an ObjectDisposedException:
+					               *
+					             """).AsWildcard()
+					.Because("the disposed stream is the production bug the test should report");
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNonSeekable_ShouldFail()
+			{
+				Stream subject = new UnreadableStream(new NotSupportedException("Stream does not support seeking."));
+
+				async Task Act()
+					=> await That(subject).HasPosition(0);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has position equal to 0,
+					             but it could not read the position, because it did throw a NotSupportedException:
+					               Stream does not support seeking.
+					             """)
+					.Because("a non-seekable stream does not have a position of 0");
 			}
 
 			[Fact]
@@ -285,6 +322,25 @@ public sealed partial class ThatStream
 					              but it had position 2010
 					              """);
 			}
+
+			[Fact]
+			public async Task WhenSubjectIsDisposed_ShouldFail()
+			{
+				Stream subject = new MemoryStream(new byte[3]);
+				subject.Dispose();
+
+				async Task Act()
+					=> await That(subject).HasPosition().GreaterThan(2);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has position greater than 2,
+					             but it could not read the position, because it did throw an ObjectDisposedException:
+					               *
+					             """).AsWildcard()
+					.Because("the chained comparison must report the unreadable position, too");
+			}
 		}
 
 		public sealed class LessThanOrEqualToTests
@@ -486,6 +542,25 @@ public sealed partial class ThatStream
 					              has position not equal to {position},
 					              but it had position {position}
 					              """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsDisposed_ShouldFail()
+			{
+				Stream subject = new MemoryStream(new byte[3]);
+				subject.Dispose();
+
+				async Task Act()
+					=> await That(subject).HasPosition().NotEqualTo(0);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has position not equal to 0,
+					             but it could not read the position, because it did throw an ObjectDisposedException:
+					               *
+					             """).AsWildcard()
+					.Because("an unreadable position is no proof that the position differs");
 			}
 
 			[Fact]
