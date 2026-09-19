@@ -609,6 +609,31 @@ public sealed partial class ThatEnumerable
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WithSubsetAfterAbandonedPartialMatch_ShouldFail()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 2, 4, 2, 3,]);
+				int[] expected = [2, 3,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it
+					               contained item 4 at index 2 instead of 3 and
+					               contained item 1 at index 0 that was not expected
+
+					             Collection:
+					             [1, 2, 4, 2, 3]
+
+					             Expected:
+					             [2, 3]
+					             """);
+			}
 		}
 
 		public sealed class InSameOrderIgnoringDuplicatesTests

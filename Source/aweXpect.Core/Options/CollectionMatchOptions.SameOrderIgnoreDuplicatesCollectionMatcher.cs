@@ -192,6 +192,18 @@ public partial class CollectionMatchOptions
 				await VerifyCompleteForSubsetMatch(options);
 			}
 
+			if (_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
+			    _matchIndex >= _expectedDistinctItems.Length)
+			{
+				// A later complete match supersedes the deviations of abandoned partial matches.
+				foreach (KeyValuePair<int, (T Item, T3 Expected)> incorrectItem in _incorrectItems)
+				{
+					_additionalItems.Add(incorrectItem.Key, incorrectItem.Value.Item);
+				}
+
+				_incorrectItems.Clear();
+			}
+
 			List<string> errors = new();
 			errors.AddRange(IncorrectItemsError(_incorrectItems));
 			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains))
