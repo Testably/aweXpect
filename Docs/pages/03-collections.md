@@ -189,6 +189,11 @@ Album[] albums = //...
 await Expect.That(albums).IsInAscendingOrder(x => x.Title);
 ```
 
+A collection of `DateTime` values (or a `DateTime` member) that contains both `DateTimeKind.Utc` and
+`DateTimeKind.Local` values fails the check, in its negated form as well, as the order of such values depends on the
+time zone. Values with `DateTimeKind.Unspecified` are compatible with both kinds. With a custom comparer, the comparer
+decides.
+
 *Note: The same expectation works also for `IAsyncEnumerable<T>`.*
 
 ## Contain

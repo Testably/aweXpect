@@ -1362,11 +1362,13 @@ public static partial class ThatEnumerable
 		Func<TItem, TMember> memberAccessor,
 		SortOrder sortOrder,
 		CollectionOrderOptions<TMember> options,
-		string memberExpression)
+		string memberExpression,
+		Func<Func<TMember, string?>?>? createIncompatibilityCheck = null)
 		: ConstraintResult.WithNotNullValue<IEnumerable<TItem>?>(it, grammars),
 			IContextConstraint<IEnumerable<TItem>?>
 	{
 		private string? _failureText;
+		private bool _hasIncompatibleItems;
 
 		public ConstraintResult IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context)
 		{
@@ -1384,9 +1386,19 @@ public static partial class ThatEnumerable
 			TMember previous = default!;
 			int index = 0;
 			IComparer<TMember> comparer = options.GetComparer();
+			Func<TMember, string?>? incompatibilityCheck = createIncompatibilityCheck?.Invoke();
 			foreach (TItem item in materialized)
 			{
 				TMember current = memberAccessor(item);
+				if (incompatibilityCheck?.Invoke(current) is { } incompatibility)
+				{
+					// The order of incompatible items cannot be verified, so the negated check fails as well.
+					_failureText = $"{It} {incompatibility}";
+					_hasIncompatibleItems = true;
+					Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+					return this;
+				}
+
 				if (index++ == 0)
 				{
 					previous = current;
@@ -1428,7 +1440,16 @@ public static partial class ThatEnumerable
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was", " were"));
+		{
+			if (_hasIncompatibleItems)
+			{
+				stringBuilder.Append(_failureText);
+			}
+			else
+			{
+				stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was", " were"));
+			}
+		}
 	}
 
 	private sealed class IsInOrderForEnumerableConstraint<TEnumerable, TItem, TMember>(
@@ -1438,12 +1459,14 @@ public static partial class ThatEnumerable
 		Func<TItem, TMember> memberAccessor,
 		SortOrder sortOrder,
 		CollectionOrderOptions<TMember> options,
-		string memberExpression)
+		string memberExpression,
+		Func<Func<TMember, string?>?>? createIncompatibilityCheck = null)
 		: ConstraintResult.WithNotNullValue<TEnumerable>(it, grammars),
 			IContextConstraint<TEnumerable>
 		where TEnumerable : IEnumerable?
 	{
 		private string? _failureText;
+		private bool _hasIncompatibleItems;
 
 		public ConstraintResult IsMetBy(TEnumerable actual, IEvaluationContext context)
 		{
@@ -1460,6 +1483,7 @@ public static partial class ThatEnumerable
 			TMember previous = default!;
 			int index = 0;
 			IComparer<TMember> comparer = options.GetComparer();
+			Func<TMember, string?>? incompatibilityCheck = createIncompatibilityCheck?.Invoke();
 			foreach (object? item in materialized)
 			{
 				if (item is not TItem typedItem)
@@ -1468,6 +1492,15 @@ public static partial class ThatEnumerable
 				}
 
 				TMember current = memberAccessor(typedItem);
+				if (incompatibilityCheck?.Invoke(current) is { } incompatibility)
+				{
+					// The order of incompatible items cannot be verified, so the negated check fails as well.
+					_failureText = $"{It} {incompatibility}";
+					_hasIncompatibleItems = true;
+					Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+					return this;
+				}
+
 				if (index++ == 0)
 				{
 					previous = current;
@@ -1509,6 +1542,15 @@ public static partial class ThatEnumerable
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was", " were"));
+		{
+			if (_hasIncompatibleItems)
+			{
+				stringBuilder.Append(_failureText);
+			}
+			else
+			{
+				stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was", " were"));
+			}
+		}
 	}
 }

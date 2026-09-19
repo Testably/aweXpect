@@ -876,11 +876,13 @@ public static partial class ThatAsyncEnumerable
 		Func<TItem, TMember> memberAccessor,
 		SortOrder sortOrder,
 		CollectionOrderOptions<TMember> options,
-		string memberExpression)
+		string memberExpression,
+		Func<Func<TMember, string?>?>? createIncompatibilityCheck = null)
 		: ConstraintResult.WithNotNullValue<IAsyncEnumerable<TItem>?>(it, grammars),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
 		private string? _failureText;
+		private bool _hasIncompatibleItems;
 
 		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
@@ -901,9 +903,17 @@ public static partial class ThatAsyncEnumerable
 			int maximumNumberOfCollectionItems =
 				Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 			IComparer<TMember> comparer = options.GetComparer();
+			Func<TMember, string?>? incompatibilityCheck = createIncompatibilityCheck?.Invoke();
 			await foreach (TItem item in materialized.WithCancellation(cancellationToken))
 			{
 				TMember current = memberAccessor(item);
+				if (_failureText == null && incompatibilityCheck?.Invoke(current) is { } incompatibility)
+				{
+					_failureText = $"{It} {incompatibility}";
+					_hasIncompatibleItems = true;
+					break;
+				}
+
 				if (index++ == 0)
 				{
 					previous = current;
@@ -926,7 +936,16 @@ public static partial class ThatAsyncEnumerable
 				previous = current;
 			}
 
-			Outcome = _failureText != null ? Outcome.Failure : Outcome.Success;
+			if (_hasIncompatibleItems)
+			{
+				// The order of incompatible items cannot be verified, so the negated check fails as well.
+				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+			}
+			else
+			{
+				Outcome = _failureText != null ? Outcome.Failure : Outcome.Success;
+			}
+
 			return this;
 		}
 
@@ -948,7 +967,16 @@ public static partial class ThatAsyncEnumerable
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was", " were"));
+		{
+			if (_hasIncompatibleItems)
+			{
+				stringBuilder.Append(_failureText);
+			}
+			else
+			{
+				stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was", " were"));
+			}
+		}
 	}
 }
 #endif

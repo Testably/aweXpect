@@ -91,6 +91,15 @@ grammar slips were fixed. Tests that assert on the exact text of a failure messa
 `Triggered(…).Never()`, so an event raised later inside the window went unseen. In v3 such an expectation waits out
 the full timeout. This is the one change that can make a passing test fail without touching its code.
 
+## `DateTime` kinds
+
+A `DateTime` with `DateTimeKind.Utc` and one with `DateTimeKind.Local` describe different instants for the same
+ticks. `IsEqualTo` already failed for such a pair; now the ordering expectations (`IsAfter`, `IsBefore`,
+`IsOnOrAfter`, `IsOnOrBefore`, `IsBetween`) fail as well, in their negated form too, `IsOneOf` ignores an expected
+value with the other kind, and `IsInAscendingOrder` / `IsInDescendingOrder` fail for a `DateTime` collection that
+mixes both kinds unless you specify a comparer. `DateTimeKind.Unspecified` is compatible with both kinds. See
+[DateTime / DateTimeOffset](/docs/expectations/common-types/datetime-offset#kind).
+
 ## Equivalency
 
 `IsEquivalentTo` fails when it finds no member to compare, unless all members were excluded explicitly. Only public

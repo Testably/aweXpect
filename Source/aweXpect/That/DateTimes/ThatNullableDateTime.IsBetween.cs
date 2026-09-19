@@ -59,7 +59,7 @@ public static partial class ThatNullableDateTime
 		: ConstraintResult.WithNotNullValue<DateTime?>(it, grammars),
 			IValueConstraint<DateTime?>
 	{
-		private bool _hasKindDifference;
+		private DateTimeKind? _incompatibleKind;
 
 		public ConstraintResult IsMetBy(DateTime? actual)
 		{
@@ -72,11 +72,16 @@ public static partial class ThatNullableDateTime
 			{
 				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
 			}
-			else if (!actual.Value.IsKindCompatibleWith(minimum.Value) ||
-			         !actual.Value.IsKindCompatibleWith(maximum.Value))
+			else if (!EqualityHelpers.AreKindCompatible(actual.Value.Kind, minimum.Value.Kind))
 			{
-				_hasKindDifference = true;
-				Outcome = Outcome.Failure;
+				// Comparing ticks across incompatible kinds proves nothing, so the negated check fails as well.
+				_incompatibleKind = minimum.Value.Kind;
+				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+			}
+			else if (!EqualityHelpers.AreKindCompatible(actual.Value.Kind, maximum.Value.Kind))
+			{
+				_incompatibleKind = maximum.Value.Kind;
+				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
 			}
 			else
 			{
@@ -107,9 +112,10 @@ public static partial class ThatNullableDateTime
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_hasKindDifference)
+			if (_incompatibleKind is not null)
 			{
-				stringBuilder.Append(It).Append(" differed in the Kind property");
+				stringBuilder.Append(It).Append(" had Kind ").Append(Actual?.Kind)
+					.Append(", which cannot be compared with ").Append(_incompatibleKind);
 			}
 			else
 			{

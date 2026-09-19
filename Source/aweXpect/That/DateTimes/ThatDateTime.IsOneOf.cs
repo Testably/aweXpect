@@ -110,7 +110,7 @@ public static partial class ThatDateTime
 		: ConstraintResult.WithValue<DateTime>(it, grammars),
 			IValueConstraint<DateTime>
 	{
-		private bool _hasKindDifference;
+		private DateTimeKind? _incompatibleKind;
 
 		public ConstraintResult IsMetBy(DateTime actual)
 		{
@@ -119,7 +119,7 @@ public static partial class ThatDateTime
 			                         Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
 			bool hasValues = false;
 			bool hasComparableValue = false;
-			bool hasIncomparableValue = false;
+			DateTimeKind? incomparableKind = null;
 			foreach (DateTime? value in expected)
 			{
 				hasValues = true;
@@ -130,7 +130,7 @@ public static partial class ThatDateTime
 
 				if (!actual.IsKindCompatibleWith(value.Value))
 				{
-					hasIncomparableValue = true;
+					incomparableKind = value.Value.Kind;
 					continue;
 				}
 
@@ -148,7 +148,7 @@ public static partial class ThatDateTime
 				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
 			}
 
-			_hasKindDifference = hasIncomparableValue && !hasComparableValue;
+			_incompatibleKind = hasComparableValue ? null : incomparableKind;
 			Outcome = Outcome.Failure;
 			return this;
 		}
@@ -162,9 +162,10 @@ public static partial class ThatDateTime
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_hasKindDifference)
+			if (_incompatibleKind is not null)
 			{
-				stringBuilder.Append(It).Append(" differed in the Kind property");
+				stringBuilder.Append(It).Append(" had Kind ").Append(Actual.Kind)
+					.Append(", which cannot be compared with ").Append(_incompatibleKind);
 			}
 			else
 			{

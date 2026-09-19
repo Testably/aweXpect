@@ -8,6 +8,43 @@ public sealed partial class ThatDateTime
 		{
 			public sealed class Tests
 			{
+				[Theory]
+				[InlineData(DateTimeKind.Utc, DateTimeKind.Unspecified)]
+				[InlineData(DateTimeKind.Unspecified, DateTimeKind.Utc)]
+				[InlineData(DateTimeKind.Local, DateTimeKind.Unspecified)]
+				[InlineData(DateTimeKind.Unspecified, DateTimeKind.Local)]
+				public async Task WhenKindIsUnspecified_ShouldSucceed(
+					DateTimeKind subjectKind, DateTimeKind unexpectedKind)
+				{
+					DateTime? subject = DateTime.SpecifyKind(EarlierTime()!.Value, subjectKind);
+					DateTime? unexpected = DateTime.SpecifyKind(CurrentTime()!.Value, unexpectedKind);
+
+					async Task Act()
+						=> await That(subject).IsNotOnOrAfter(unexpected);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Theory]
+				[InlineData(DateTimeKind.Utc, DateTimeKind.Local)]
+				[InlineData(DateTimeKind.Local, DateTimeKind.Utc)]
+				public async Task WhenKindsAreIncompatible_ShouldFail(
+					DateTimeKind subjectKind, DateTimeKind unexpectedKind)
+				{
+					DateTime? subject = DateTime.SpecifyKind(EarlierTime()!.Value, subjectKind);
+					DateTime? unexpected = DateTime.SpecifyKind(CurrentTime()!.Value, unexpectedKind);
+
+					async Task Act()
+						=> await That(subject).IsNotOnOrAfter(unexpected);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not on or after {Formatter.Format(unexpected)},
+						              but it had Kind {subjectKind}, which cannot be compared with {unexpectedKind}
+						              """);
+				}
+
 				[Fact]
 				public async Task WhenSubjectAndExpectedAreMaxValue_ShouldFail()
 				{
@@ -91,20 +128,6 @@ public sealed partial class ThatDateTime
 						              is not on or after {Formatter.Format(unexpected)},
 						              but it was {Formatter.Format(subject)}
 						              """);
-				}
-
-				[Fact]
-				public async Task WhenSubjectOnlyDiffersInKind_ShouldSucceed()
-				{
-					DateTime? subject = LaterTime(1, DateTimeKind.Utc);
-					DateTime? unexpected = CurrentTime(DateTimeKind.Local);
-
-					async Task Act()
-						=> await That(subject).IsNotOnOrAfter(unexpected);
-
-					await That(Act).DoesNotThrow()
-						.Because(
-							"a Local and a Utc value cannot be ordered, so the subject is not on or after the unexpected one");
 				}
 
 				[Fact]

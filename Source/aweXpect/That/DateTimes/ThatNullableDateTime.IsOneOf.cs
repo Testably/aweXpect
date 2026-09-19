@@ -110,7 +110,7 @@ public static partial class ThatNullableDateTime
 		: ConstraintResult.WithValue<DateTime?>(it, grammars),
 			IValueConstraint<DateTime?>
 	{
-		private bool _hasKindDifference;
+		private DateTimeKind? _incompatibleKind;
 
 		public ConstraintResult IsMetBy(DateTime? actual)
 		{
@@ -118,10 +118,12 @@ public static partial class ThatNullableDateTime
 			if (actual is null)
 			{
 				Outcome = expected.Any(x => x is null) ? Outcome.Success : Outcome.Failure;
-				return this;
+			}
+			else
+			{
+				Outcome = GetOutcomeFor(actual.Value);
 			}
 
-			Outcome = GetOutcomeFor(actual.Value);
 			return this;
 		}
 
@@ -131,7 +133,7 @@ public static partial class ThatNullableDateTime
 			                         Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
 			bool hasValues = false;
 			bool hasComparableValue = false;
-			bool hasIncomparableValue = false;
+			DateTimeKind? incomparableKind = null;
 			foreach (DateTime? value in expected)
 			{
 				hasValues = true;
@@ -142,7 +144,7 @@ public static partial class ThatNullableDateTime
 
 				if (!actual.IsKindCompatibleWith(value.Value))
 				{
-					hasIncomparableValue = true;
+					incomparableKind = value.Value.Kind;
 					continue;
 				}
 
@@ -159,7 +161,7 @@ public static partial class ThatNullableDateTime
 				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
 			}
 
-			_hasKindDifference = hasIncomparableValue && !hasComparableValue;
+			_incompatibleKind = hasComparableValue ? null : incomparableKind;
 			return Outcome.Failure;
 		}
 
@@ -172,9 +174,10 @@ public static partial class ThatNullableDateTime
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_hasKindDifference)
+			if (_incompatibleKind is not null)
 			{
-				stringBuilder.Append(It).Append(" differed in the Kind property");
+				stringBuilder.Append(It).Append(" had Kind ").Append(Actual?.Kind)
+					.Append(", which cannot be compared with ").Append(_incompatibleKind);
 			}
 			else
 			{
