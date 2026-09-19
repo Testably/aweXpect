@@ -68,6 +68,8 @@ When using `AsWildcard`, the following wildcard specifiers are supported:
 | * (asterisk)       | Zero or more characters |
 | ? (question mark)  | Exactly one character   |
 
+The pattern has to cover the complete subject, including all its lines and a trailing newline.
+
 ### Regular expressions
 
 You can also compare strings
@@ -79,11 +81,17 @@ string subject = "some text";
 await Expect.That(subject).IsEqualTo("(.*)xt").AsRegex();
 ```
 
-The regex comparison uses the following [
-`options`](https://learn.microsoft.com/en-us/dotnet/api/system.text.regularexpressions.regexoptions?view=net-8.0#fields):
+The pattern is matched like `Regex.IsMatch(subject, pattern)`, so `^` and `$` bind to the start and the end of the
+complete subject and not to every line. `IgnoreCase` is added when the `IgnoringCase` method is also used, every
+other [
+`option`](https://learn.microsoft.com/en-us/dotnet/api/system.text.regularexpressions.regexoptions?view=net-8.0#fields)
+is opt-in:
 
-- `Multiline` (always)
-- `IgnoreCase` (if the `IgnoringCase` method is also used)
+```csharp
+string subject = "some\ntext";
+
+await Expect.That(subject).IsEqualTo("^text$").AsRegex(RegexOptions.Multiline);
+```
 
 ### Prefix / Suffix
 
