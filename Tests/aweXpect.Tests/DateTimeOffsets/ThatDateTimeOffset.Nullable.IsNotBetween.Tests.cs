@@ -213,7 +213,7 @@ public sealed partial class ThatDateTimeOffset
 				{
 					DateTimeOffset? subject = CurrentTime();
 					DateTimeOffset minimum = DateTimeOffset.MinValue;
-					DateTimeOffset? maximum = LaterTime(2);
+					DateTimeOffset maximum = LaterTime(2)!.Value;
 
 					async Task Act()
 						=> await That(subject).IsNotBetween(minimum).And(maximum)
@@ -226,7 +226,7 @@ public sealed partial class ThatDateTimeOffset
 				public async Task WhenMinimumValueIsOutsideTheTolerance_ShouldSucceed()
 				{
 					DateTimeOffset? subject = CurrentTime();
-					DateTimeOffset? minimum = EarlierTime(2);
+					DateTimeOffset minimum = EarlierTime(2)!.Value;
 					DateTimeOffset maximum = DateTimeOffset.MaxValue;
 
 					async Task Act()

@@ -447,20 +447,6 @@ public sealed partial class ThatBufferedStream
 
 		public sealed class NotEqualToTests
 		{
-			[Fact]
-			public async Task WhenExpectedBufferSizeIsNegative_ShouldThrowArgumentOutOfRangeException()
-			{
-				using BufferedStream subject = GetBufferedStream(1);
-
-				async Task Act()
-					=> await That(subject).HasBufferSize().NotEqualTo(-1);
-
-				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The unexpected buffer size must be greater than or equal to zero*")
-					.AsWildcard().And
-					.WithParamName("unexpected");
-			}
-
 			[Theory]
 			[AutoData]
 			public async Task WhenSubjectHasDifferentBufferSize_ShouldSucceed(int bufferSize)

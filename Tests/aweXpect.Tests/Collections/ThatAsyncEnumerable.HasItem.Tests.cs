@@ -547,6 +547,31 @@ public sealed partial class ThatAsyncEnumerable
 			[Theory]
 			[InlineData(true)]
 			[InlineData(false)]
+			public async Task ShouldSupportIgnoringIndentation(bool ignoreIndentation)
+			{
+				IAsyncEnumerable<string?> subject = ToAsyncEnumerable(["a\n  b", "c\n  d", "e\n  f",]);
+
+				async Task Act()
+					=> await That(subject).HasItem("c\nd").IgnoringIndentation(ignoreIndentation).AtIndex(1);
+
+				await That(Act).Throws<XunitException>().OnlyIf(!ignoreIndentation)
+					.WithMessage("""
+					             Expected that subject
+					             has item equal to "c\nd" at index 1,
+					             but it had item "c\n  d" at index 1
+
+					             Collection:
+					             [
+					               "a\n  b",
+					               "c\n  d",
+					               "e\n  f"
+					             ]
+					             """);
+			}
+
+			[Theory]
+			[InlineData(true)]
+			[InlineData(false)]
 			public async Task ShouldSupportIgnoringLeadingWhiteSpace(bool ignoreLeadingWhiteSpace)
 			{
 				IAsyncEnumerable<string?> subject = ToAsyncEnumerable([" foo", "\tbar", "baz",]);

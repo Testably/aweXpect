@@ -72,6 +72,22 @@ public sealed partial class ThatDelegate
 			}
 
 			[Fact]
+			public async Task WhenInnerExceptionIsNotPresent_WithExpectations_ShouldFail()
+			{
+				Action action = () => throw new OuterException();
+
+				async Task Act()
+					=> await That(action).Throws().WithInnerException(x => x.HasMessage("foo"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that action
+					             throws an exception with an inner exception whose Message is equal to "foo",
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenInnerExceptionIsPresent_ShouldSucceed()
 			{
 				Action action = () => throw new OuterException(innerException: new Exception());
@@ -80,22 +96,6 @@ public sealed partial class ThatDelegate
 					=> await That(action).Throws().WithInnerException();
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenNoInnerExceptionIsPresent_ShouldFail()
-			{
-				Action action = () => throw new OuterException();
-
-				async Task Act()
-					=> await That(action).Throws().WithInnerException();
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that action
-					             throws an exception with an inner exception,
-					             but it was <null>
-					             """);
 			}
 		}
 	}

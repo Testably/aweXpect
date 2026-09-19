@@ -236,31 +236,6 @@ public sealed partial class ThatDelegate
 				}
 
 				[Fact]
-				public async Task WhenInnerExceptionDoesNotMatchCriteria_ShouldFail()
-				{
-					string message = "bar";
-					Action action = ()
-						=> throw new OuterException(innerException: new CustomException(message));
-
-					async Task Act()
-						=> await That(action).Throws().WithInner<Exception>(x => x.HasMessage("foo"));
-
-					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that action
-						             throws an exception with an inner exception whose Message is equal to "foo",
-						             but it was "bar" which differs at index 0:
-						                ↓ (actual)
-						               "bar"
-						               "foo"
-						                ↑ (expected)
-
-						             Message:
-						             bar
-						             """);
-				}
-
-				[Fact]
 				public async Task WhenInnerExceptionDoesNotMatchType_ShouldFail()
 				{
 					Action action = ()
@@ -489,32 +464,6 @@ public sealed partial class ThatDelegate
 
 				[Fact]
 				public async Task Exception_WhenInnerExceptionDoesNotMatchCriteria_ShouldFail()
-				{
-					string message = "bar";
-					Action action = ()
-						=> throw new OuterException(innerException: new CustomException(message));
-
-					async Task Act()
-						=> await That(action).Throws()
-							.WithInner(typeof(Exception), x => x.HasMessage("foo"));
-
-					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that action
-						             throws an exception with an inner exception whose Message is equal to "foo",
-						             but it was "bar" which differs at index 0:
-						                ↓ (actual)
-						               "bar"
-						               "foo"
-						                ↑ (expected)
-
-						             Message:
-						             bar
-						             """);
-				}
-
-				[Fact]
-				public async Task WhenInnerExceptionDoesNotMatchCriteria_ShouldFail()
 				{
 					string message = "bar";
 					Action action = ()

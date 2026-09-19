@@ -12,39 +12,6 @@ public sealed partial class ThatEnumerable
 		public sealed class ImmutableItemsTests
 		{
 			[Fact]
-			public async Task WhenArrayContainsSufficientlyFewEqualItems_ShouldSucceed()
-			{
-				ImmutableArray<int> subject = [1, 1, 1, 1, 2, 2, 3,];
-
-				async Task Act()
-					=> await That(subject).AtMost(3).AreEqualTo(2);
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenArrayContainsTooManyEqualItems_ShouldFail()
-			{
-				ImmutableArray<int> subject = [1, 1, 1, 1, 2, 2, 3,];
-
-				async Task Act()
-					=> await That(subject).AtMost(3).AreEqualTo(1);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is equal to 1 for at most 3 items,
-					             but 4 of 7 were
-
-					             Matching items:
-					             [1, 1, 1, 1]
-
-					             Collection:
-					             [1, 1, 1, 1, 2, 2, 3]
-					             """);
-			}
-
-			[Fact]
 			public async Task WhenEnumerableContainsSufficientlyFewEqualItems_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [1, 1, 1, 1, 2, 2, 3,];

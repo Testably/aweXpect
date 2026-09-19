@@ -213,7 +213,7 @@ public sealed partial class ThatTimeSpan
 				{
 					TimeSpan? subject = CurrentTime();
 					TimeSpan minimum = TimeSpan.MinValue;
-					TimeSpan? maximum = LaterTime(2);
+					TimeSpan maximum = LaterTime(2)!.Value;
 
 					async Task Act()
 						=> await That(subject).IsNotBetween(minimum).And(maximum)
@@ -226,7 +226,7 @@ public sealed partial class ThatTimeSpan
 				public async Task WhenMinimumValueIsOutsideTheTolerance_ShouldSucceed()
 				{
 					TimeSpan? subject = CurrentTime();
-					TimeSpan? minimum = EarlierTime(2);
+					TimeSpan minimum = EarlierTime(2)!.Value;
 					TimeSpan maximum = TimeSpan.MaxValue;
 
 					async Task Act()

@@ -94,16 +94,19 @@ public sealed partial class ThatAsyncEnumerable
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 1, 1, 1, 2, 2, 3);
 
 				async Task Act()
-					=> await That(subject).AtLeast(5).AreEqualTo(1);
+					=> await That(subject).AtLeast(5).AreEquivalentTo(1);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equal to 1 for at least 5 items,
+					             is equivalent to 1 for at least 5 items,
 					             but only 4 of 7 were
 
 					             Collection:
 					             [1, 1, 1, 1, 2, 2, 3]
+
+					             Equivalency options:
+					              - include public fields and properties
 					             """);
 			}
 
