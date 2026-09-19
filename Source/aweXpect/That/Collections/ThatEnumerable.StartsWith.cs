@@ -649,7 +649,8 @@ public static partial class ThatEnumerable
 			foreach (object? item in materializedEnumerable)
 			{
 				object? expectedItem = _expected[_index++];
-				if (item is not TMatch matchedItem || !await _options.AreConsideredEqual(matchedItem, expectedItem))
+				if (!TryCastItem(item, out TMatch matchedItem) ||
+				    !await _options.AreConsideredEqual(matchedItem, expectedItem))
 				{
 					_firstMismatchItem = item;
 					_foundMismatch = true;

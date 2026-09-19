@@ -141,6 +141,77 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenItemsHaveADifferentType_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable([1, 2,]);
+				long[] expected = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).IsContainedIn(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is contained in collection expected in order,
+					             but it
+					               contained item 1 at index 0 that was not expected and
+					               contained item 2 at index 1 that was not expected
+
+					             Collection:
+					             [1, 2]
+
+					             Expected:
+					             [1, 2, 3]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenItemsHaveMixedTypes_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable<object>(1, "a");
+				int[] expected = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).IsContainedIn(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is contained in collection expected in order,
+					             but it contained item "a" at index 1 that was not expected
+
+					             Collection:
+					             [1, "a"]
+
+					             Expected:
+					             [1, 2, 3]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNullItemIsComparedToValueType_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable<object?>(1, null);
+				int[] expected = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).IsContainedIn(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is contained in collection expected in order,
+					             but it contained item <null> at index 1 that was not expected
+
+					             Collection:
+					             [1, <null>]
+
+					             Expected:
+					             [1, 2, 3]
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEnumerable? subject = null;

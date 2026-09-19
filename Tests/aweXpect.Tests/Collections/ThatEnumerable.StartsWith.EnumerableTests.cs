@@ -135,6 +135,18 @@ public sealed partial class ThatEnumerable
 					             but it was <null>
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenSubjectStartsWithNull_ShouldSucceed()
+			{
+				IEnumerable subject = ToEnumerable<string?>(null, "a");
+				string?[] expected = [null,];
+
+				async Task Act()
+					=> await That(subject).StartsWith(expected);
+
+				await That(Act).DoesNotThrow();
+			}
 		}
 	}
 }

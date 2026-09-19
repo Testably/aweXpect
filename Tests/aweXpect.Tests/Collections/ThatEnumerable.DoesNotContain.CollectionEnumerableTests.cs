@@ -63,6 +63,47 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenItemsHaveADifferentType_ShouldSucceed()
+			{
+				IEnumerable subject = ToEnumerable([1, 2,]);
+				long[] unexpected = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).DoesNotContain(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenOtherItemsHaveADifferentTypeOrAreNull_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable<object?>("a", null, 1, 2, "b");
+				int[] unexpected = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).DoesNotContain(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain collection unexpected in order and contiguous,
+					             but it did
+
+					             Collection:
+					             [
+					               "a",
+					               <null>,
+					               1,
+					               2,
+					               "b"
+					             ]
+
+					             Expected:
+					             [1, 2]
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEnumerable? subject = null;

@@ -210,6 +210,108 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenItemsAreOfASubtype_ShouldSucceed()
+			{
+				ArgumentException item1 = new("a");
+				ArgumentException item2 = new("b");
+				IEnumerable subject = ToEnumerable(item1, item2);
+				Exception[] expected = [item1, item2,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenItemsHaveADifferentType_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable([1, 2,]);
+				long[] expected = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it
+					               contained item 1 at index 0 that was not expected and
+					               contained item 2 at index 1 that was not expected and
+					               lacked all 2 expected items
+
+					             Collection:
+					             [1, 2]
+
+					             Expected:
+					             [1, 2]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenItemsHaveMixedTypes_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable<object>(1, "a");
+				int[] expected = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it
+					               contained item "a" at index 1 instead of 2 and
+					               lacked 1 of 2 expected items: 2
+
+					             Collection:
+					             [1, "a"]
+
+					             Expected:
+					             [1, 2]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenNullItemIsComparedToNullableValueType_ShouldSucceed()
+			{
+				IEnumerable subject = ToEnumerable<object?>(1, null);
+				int?[] expected = [1, null,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenNullItemIsComparedToValueType_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable<object?>(1, null);
+				int[] expected = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it
+					               contained item <null> at index 1 instead of 2 and
+					               lacked 1 of 2 expected items: 2
+
+					             Collection:
+					             [1, <null>]
+
+					             Expected:
+					             [1, 2]
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectAndExpectedIsNull_ShouldSucceed()
 			{
 				IEnumerable? subject = null;
@@ -975,6 +1077,31 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WithItemOfADifferentType_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable<object>(1, 1, "a", 2);
+				int[] expected = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).IgnoringDuplicates();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order ignoring duplicates,
+					             but it
+					               contained item "a" at index 1 instead of 2 and
+					               lacked 1 of 2 expected items: 2
+
+					             Collection:
+					             [1, 1, "a", 2]
+
+					             Expected:
+					             [1, 2]
+					             """);
+			}
+
+			[Fact]
 			public async Task WithMissingItem_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -1470,6 +1597,29 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WithItemOfADifferentType_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable<object>(2, "a", 1);
+				int[] expected = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).InAnyOrder();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in any order,
+					             but it contained item "a" at index 1 that was not expected
+
+					             Collection:
+					             [2, "a", 1]
+
+					             Expected:
+					             [1, 2]
+					             """);
+			}
+
+			[Fact]
 			public async Task WithMissingItem_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -1913,6 +2063,29 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).IsEqualTo(expected).InAnyOrder().IgnoringDuplicates();
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithItemOfADifferentType_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable<object>(2, "a", 1, 2);
+				int[] expected = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).InAnyOrder().IgnoringDuplicates();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in any order ignoring duplicates,
+					             but it contained item "a" at index 1 that was not expected
+
+					             Collection:
+					             [2, "a", 1, 2]
+
+					             Expected:
+					             [1, 2]
+					             """);
 			}
 
 			[Fact]

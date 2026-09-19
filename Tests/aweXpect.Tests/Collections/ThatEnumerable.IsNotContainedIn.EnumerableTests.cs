@@ -78,6 +78,30 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenItemsHaveADifferentType_ShouldSucceed()
+			{
+				IEnumerable subject = ToEnumerable([1, 2,]);
+				long[] unexpected = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).IsNotContainedIn(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenItemsHaveMixedTypes_ShouldSucceed()
+			{
+				IEnumerable subject = ToEnumerable<object>(1, "a");
+				int[] unexpected = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).IsNotContainedIn(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEnumerable? subject = null;

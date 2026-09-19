@@ -90,6 +90,25 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenSubjectEndsWithNull_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable<string?>("a", null);
+				string?[] unexpected = [null,];
+
+				async Task Act()
+					=> await That(subject).DoesNotEndWith(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not end with [<null>],
+					             but it did end with [
+					               <null>
+					             ]
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectEndsWithUnexpectedValues_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["foo", "bar", "baz",]);
