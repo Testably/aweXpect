@@ -593,7 +593,7 @@ public static partial class ThatEnumerable
 			}
 
 			_totalCount = _matchingCount + _notMatchingCount;
-			Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
+			Outcome = _quantifier.GetOutcomeForCollection(actual, _matchingCount, _notMatchingCount, _totalCount);
 			AppendContexts(false);
 			_expectationBuilder.AddCollectionContext(materialized);
 			return Task.FromResult<ConstraintResult>(this);
@@ -749,7 +749,7 @@ public static partial class ThatEnumerable
 			}
 
 			_totalCount = _matchingCount + _notMatchingCount;
-			Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
+			Outcome = _quantifier.GetOutcomeForCollection(actual, _matchingCount, _notMatchingCount, _totalCount);
 			AppendContexts(false);
 			_expectationBuilder.AddCollectionContext(materialized);
 			return this;

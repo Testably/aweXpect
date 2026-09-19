@@ -110,14 +110,60 @@ public sealed partial class ThatDelegate
 			}
 
 			[Fact]
-			public async Task WhenNoInnerExceptionIsPresent_ShouldNotFailDirectly()
+			public async Task WhenNoInnerExceptionIsPresent_ForAll_ShouldFail()
 			{
 				Action action = () => throw new OuterException();
 
 				async Task Act()
-					=> await That(action).Throws().WithRecursiveInnerExceptions(e => e.All().Satisfy(_ => false));
+					=> await That(action).Throws().WithRecursiveInnerExceptions(e => e.All().Satisfy(_ => true));
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that action
+					             throws an exception with recursive inner exceptions of which all satisfy _ => true,
+					             but none of 0 did
+
+					             Collection:
+					             []
+					             """)
+					.Because("an expectation on all inner exceptions requires at least one of them");
+			}
+
+			[Fact]
+			public async Task WhenNoInnerExceptionIsPresent_ForAtMost_ShouldSucceed()
+			{
+				Action action = () => throw new OuterException();
+
+				async Task Act()
+					=> await That(action).Throws().WithRecursiveInnerExceptions(e => e.AtMost(2).Satisfy(_ => true));
+
+				await That(Act).DoesNotThrow()
+					.Because("at most 2 inner exceptions is what an exception without any inner exception has");
+			}
+
+			[Fact]
+			public async Task WhenNoInnerExceptionIsPresent_ForNone_ShouldSucceed()
+			{
+				Action action = () => throw new OuterException();
+
+				async Task Act()
+					=> await That(action).Throws().WithRecursiveInnerExceptions(e => e.None().Satisfy(_ => true));
+
+				await That(Act).DoesNotThrow()
+					.Because("no inner exception matches when there is no inner exception");
+			}
+
+			[Fact]
+			public async Task WhenNoInnerExceptionIsPresent_WhenExpectingInnerExceptionsToBeEmpty_ShouldSucceed()
+			{
+				Action action = () => throw new OuterException();
+
+				async Task Act()
+					=> await That(action).Throws()
+						.WithRecursiveInnerExceptions(innerExceptions => innerExceptions.IsEmpty());
+
+				await That(Act).DoesNotThrow()
+					.Because("an expectation that is only about the absence of items stays satisfiable");
 			}
 		}
 	}

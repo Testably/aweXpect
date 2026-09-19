@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -41,6 +42,9 @@ internal static class ExceptionHelpers
 	}
 
 	public static IEnumerable<Exception> GetInnerExceptions(this Exception? actual)
+		=> new RecursiveInnerExceptions(EnumerateInnerExceptions(actual));
+
+	private static IEnumerable<Exception> EnumerateInnerExceptions(Exception? actual)
 	{
 		switch (actual)
 		{
@@ -49,7 +53,7 @@ internal static class ExceptionHelpers
 					foreach (Exception innerException in aggregateException.InnerExceptions)
 					{
 						yield return innerException;
-						foreach (Exception inner in GetInnerExceptions(innerException))
+						foreach (Exception inner in EnumerateInnerExceptions(innerException))
 						{
 							yield return inner;
 						}
@@ -62,7 +66,7 @@ internal static class ExceptionHelpers
 					if (actual?.InnerException is not null)
 					{
 						yield return actual.InnerException;
-						foreach (Exception inner in GetInnerExceptions(actual.InnerException))
+						foreach (Exception inner in EnumerateInnerExceptions(actual.InnerException))
 						{
 							yield return inner;
 						}
@@ -71,5 +75,17 @@ internal static class ExceptionHelpers
 					break;
 				}
 		}
+	}
+
+	/// <remarks>
+	///     An exception without any inner exception must not satisfy an expectation on its inner exceptions
+	///     just by having none, so the collection is marked as <see cref="IRejectVacuousSuccess" />.
+	/// </remarks>
+	private sealed class RecursiveInnerExceptions(IEnumerable<Exception> innerExceptions)
+		: IEnumerable<Exception>, IRejectVacuousSuccess
+	{
+		public IEnumerator<Exception> GetEnumerator() => innerExceptions.GetEnumerator();
+
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
 }
