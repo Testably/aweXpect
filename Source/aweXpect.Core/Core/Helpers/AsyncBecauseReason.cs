@@ -18,6 +18,14 @@ internal struct AsyncBecauseReason(Task<string?> reason) : IBecauseReason
 			: $", {message}";
 	}
 
+	/// <summary>
+	///     Marks a faulted <paramref name="task" /> as observed, so that a reason that is never awaited cannot surface
+	///     later as an <see cref="TaskScheduler.UnobservedTaskException" />.
+	/// </summary>
+	private static void ObserveExceptions(Task<string?> task)
+		=> task.ContinueWith(static t => _ = t.Exception,
+			TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously);
+
 #if NET8_0_OR_GREATER
 	public async ValueTask<ConstraintResult>
 #else
@@ -27,7 +35,23 @@ internal struct AsyncBecauseReason(Task<string?> reason) : IBecauseReason
 	{
 		if (_message is null)
 		{
-			string? resolvedReason = await reason.ConfigureAwait(false);
+			// The reason is only needed for a failure message, so a broken reason provider must not fail a met expectation.
+			if (result.Outcome == Outcome.Success)
+			{
+				ObserveExceptions(reason);
+				return result;
+			}
+
+			string? resolvedReason;
+			try
+			{
+				resolvedReason = await reason.ConfigureAwait(false);
+			}
+			catch (Exception exception)
+			{
+				resolvedReason = $"the reason could not be determined: {Formatter.Format(exception)}";
+			}
+
 			if (string.IsNullOrEmpty(resolvedReason))
 			{
 				return result;

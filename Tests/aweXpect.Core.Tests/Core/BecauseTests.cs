@@ -67,6 +67,25 @@ public class BecauseTests
 	}
 
 	[Fact]
+	public async Task ASpecifiedAsyncBecauseReason_ShouldBeIncludedInMessage()
+	{
+		Task<string?> becauseTask = Task.FromResult<string?>("I want to test an async 'because'");
+		bool subject = true;
+
+		async Task Act()
+		{
+			await That(subject).IsFalse().Because(becauseTask);
+		}
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that subject
+			             is False, because I want to test an async 'because',
+			             but it was True
+			             """);
+	}
+
+	[Fact]
 	public async Task ASpecifiedBecauseReason_ShouldBeIncludedInMessage()
 	{
 		string because = "I want to test 'because'";
@@ -142,6 +161,26 @@ public class BecauseTests
 		await That(Act).Throws().WithMessage($"*{because1}*").AsWildcard();
 	}
 
+	[Fact]
+	public async Task WhenAsyncReasonIsCancelled_ShouldStillReportTheAssertionFailure()
+	{
+		TaskCompletionSource<string?> becauseSource = new();
+		becauseSource.SetCanceled();
+		bool subject = true;
+
+		async Task Act()
+		{
+			await That(subject).IsFalse().Because(becauseSource.Task);
+		}
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that subject
+			             is False, because the reason could not be determined: TaskCanceledException*,
+			             but it was True
+			             """).AsWildcard();
+	}
+
 	[Theory]
 	[InlineData(null)]
 	[InlineData("")]
@@ -161,6 +200,54 @@ public class BecauseTests
 			             is False,
 			             but it was True
 			             """);
+	}
+
+	[Fact]
+	public async Task WhenAsyncReasonIsSlow_WhenExpectationIsMet_ShouldNotAwaitTheReason()
+	{
+		bool reasonWasResolved = false;
+		Task<string?> becauseTask = Task.Delay(500).ContinueWith(_ =>
+		{
+			reasonWasResolved = true;
+			return (string?)"of reasons";
+		});
+
+		await That(1).IsEqualTo(1).Because(becauseTask);
+
+		await That(reasonWasResolved).IsFalse()
+			.Because("a met expectation never builds a failure message, so it must not wait for the reason");
+	}
+
+	[Fact]
+	public async Task WhenAsyncReasonThrows_WhenExpectationFails_ShouldStillReportTheAssertionFailure()
+	{
+		Task<string?> becauseTask = Task.FromException<string?>(new MyException("the reason provider is broken"));
+		bool subject = true;
+
+		async Task Act()
+		{
+			await That(subject).IsFalse().Because(becauseTask);
+		}
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that subject
+			             is False, because the reason could not be determined: MyException: the reason provider is broken,
+			             but it was True
+			             """);
+	}
+
+	[Fact]
+	public async Task WhenAsyncReasonThrows_WhenExpectationIsMet_ShouldNotThrow()
+	{
+		Task<string?> becauseTask = Task.FromException<string?>(new MyException("the reason provider is broken"));
+
+		async Task Act()
+		{
+			await That(1).IsEqualTo(1).Because(becauseTask);
+		}
+
+		await That(Act).DoesNotThrow();
 	}
 
 	[Fact]
