@@ -1046,6 +1046,66 @@ public sealed partial class ThatObject
 					               """);
 			}
 
+			[Fact]
+			public async Task WhenActualIsAnAnonymousObject_ShouldMatchItsPropertyAgainstTheExpectedField()
+			{
+				var subject = new
+				{
+					MyProperty = false,
+					PublicValue = 1,
+				};
+				MyClass expected = new(1, 2, 3);
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).DoesNotThrow()
+					.Because("an anonymous object can only have properties, so the expected field has to match the property of that name");
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsAnAnonymousObject_ShouldMatchItsPropertyAgainstTheActualField()
+			{
+				MyClass subject = new(1, 2, 3);
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(new
+					{
+						MyProperty = false,
+						PublicValue = 1,
+					});
+
+				await That(Act).DoesNotThrow()
+					.Because("comparing a class with public fields against an anonymous object is a common pattern that must not depend on how the class stores its state");
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsAnAnonymousObject_WhenTheFieldDiffers_ShouldReportItAsAProperty()
+			{
+				MyClass subject = new(1, 2, 3);
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(new
+					{
+						MyProperty = false,
+						PublicValue = 2,
+					});
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to { MyProperty = False, PublicValue = 2 },
+					             but it was not:
+					               Property PublicValue differed:
+					                    Found: 1
+					                 Expected: 2
+
+					             Equivalency options:
+					              - include public fields and properties
+					             """)
+					.Because("the compared members come from the expected object, so its kind names the difference");
+			}
+
 			[Theory]
 			[InlineData(0, 0, 0, true)]
 			[InlineData(0, 0, 1, true)]

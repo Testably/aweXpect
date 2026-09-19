@@ -67,6 +67,11 @@ await Expect.That(tracks).All().AreEqualTo(expected).Equivalent(o => o.IgnoringC
 By default, equivalency:
 
 - Compares **public fields** and **public properties**.
+- Matches a member of the expected object against the member of the same name on the actual object, preferring the
+  same kind and falling back to the other one, so a class with public fields can be compared against an anonymous
+  object, which can only have properties. The failure names the kind of the *expected* member, and the fallback only
+  reaches a kind that is included, so `IncludingFields(IncludeMembers.None)` also stops an expected property from
+  matching a field.
 - Fails when a member of the expected object does not exist on the actual object, reporting it as missing instead of
   comparing it against `null`.
 - Recurses into nested objects.

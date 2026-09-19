@@ -248,6 +248,15 @@ public static partial class EquivalencyComparison
 		}
 	}
 
+	/// <remarks>
+	///     The members to compare come from the expected object, and each one is looked up on the actual type by its
+	///     own kind first. Whether the actual type stores a member as a field or as a property is an implementation
+	///     detail of that type - a DTO with public fields is routinely compared against an anonymous object, which can
+	///     only have properties - so a member the actual type does not have as that kind falls back to the other kind
+	///     of the same name. The fallback uses the visibility requested for the kind it reaches, so a kind the caller
+	///     excluded is never reached through the other one, and the failure keeps the kind of the expected member,
+	///     which is also the kind a scoped ignore rule applies to.
+	/// </remarks>
 #if NET8_0_OR_GREATER
 	private static async ValueTask<bool>
 #else
@@ -274,7 +283,8 @@ public static partial class EquivalencyComparison
 				}
 
 				Func<object, object?>? actualFieldAccessor =
-					EquivalencyMembers.FindField(actual.GetType(), field.Name, typeOptions.Fields);
+					EquivalencyMembers.FindField(actual.GetType(), field.Name, typeOptions.Fields) ??
+					EquivalencyMembers.FindProperty(actual.GetType(), field.Name, typeOptions.Properties);
 				if (actualFieldAccessor is null)
 				{
 					AppendMissingMember(failureBuilder, MemberType.Field, fieldMemberPath);
@@ -309,7 +319,8 @@ public static partial class EquivalencyComparison
 				}
 
 				Func<object, object?>? actualPropertyAccessor =
-					EquivalencyMembers.FindProperty(actual.GetType(), property.Name, typeOptions.Properties);
+					EquivalencyMembers.FindProperty(actual.GetType(), property.Name, typeOptions.Properties) ??
+					EquivalencyMembers.FindField(actual.GetType(), property.Name, typeOptions.Fields);
 				if (actualPropertyAccessor is null)
 				{
 					AppendMissingMember(failureBuilder, MemberType.Property, propertyMemberPath);
