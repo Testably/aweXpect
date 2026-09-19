@@ -32,7 +32,7 @@ public abstract class Expectation
 	/// </remarks>
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public override bool Equals(object? obj)
-		=> throw new NotSupportedException("Equals is not supported. Did you mean Is() instead?");
+		=> throw Tracing.WriteException(new NotSupportedException("Equals is not supported. Did you mean Is() instead?"));
 #pragma warning restore S3877
 
 #pragma warning disable S3877 // Exceptions should not be thrown from unexpected methods
@@ -45,7 +45,7 @@ public abstract class Expectation
 	/// </remarks>
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public override int GetHashCode()
-		=> throw new NotSupportedException("GetHashCode is not supported.");
+		=> throw Tracing.WriteException(new NotSupportedException("GetHashCode is not supported."));
 #pragma warning restore S3877
 
 	/// <summary>

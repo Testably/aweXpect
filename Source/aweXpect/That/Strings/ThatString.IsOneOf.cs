@@ -97,7 +97,7 @@ public static partial class ThatString
 
 			if (!hasValues)
 			{
-				throw ThrowHelper.EmptyCollection();
+				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
 			}
 
 			Outcome = Outcome.Failure;

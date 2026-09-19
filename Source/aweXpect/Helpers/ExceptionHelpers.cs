@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using aweXpect.Core;
 
 namespace aweXpect.Helpers;
 
@@ -13,7 +14,7 @@ internal static class ExceptionHelpers
 		if (parameter is null)
 		{
 			// ReSharper disable once LocalizableElement
-			throw new ArgumentNullException(paramName, $"The {paramName} cannot be null.");
+			throw Tracing.WriteException(new ArgumentNullException(paramName, $"The {paramName} cannot be null."));
 		}
 	}
 
@@ -24,7 +25,7 @@ internal static class ExceptionHelpers
 		if (!parameter!.Any())
 		{
 			// ReSharper disable once LocalizableElement
-			throw new ArgumentException($"The '{paramName}' collection cannot be empty.", paramName);
+			throw Tracing.WriteException(new ArgumentException($"The '{paramName}' collection cannot be empty.", paramName));
 		}
 	}
 

@@ -132,7 +132,7 @@ public static partial class ThatNullableTimeSpan
 
 				if (!hasValues)
 				{
-					throw ThrowHelper.EmptyCollection();
+					throw Tracing.WriteException(ThrowHelper.EmptyCollection());
 				}
 
 				Outcome = Outcome.Failure;

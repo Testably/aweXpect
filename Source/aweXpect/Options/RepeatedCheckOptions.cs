@@ -1,4 +1,5 @@
 ﻿using System;
+using aweXpect.Core;
 using aweXpect.Customization;
 using aweXpect.Results;
 
@@ -41,7 +42,7 @@ public class RepeatedCheckOptions
 	{
 		if (timeout < TimeSpan.Zero)
 		{
-			throw new ArgumentOutOfRangeException(nameof(timeout), "The timeout must not be negative.");
+			throw Tracing.WriteException(new ArgumentOutOfRangeException(nameof(timeout), "The timeout must not be negative."));
 		}
 
 		Timeout = timeout;
@@ -57,7 +58,7 @@ public class RepeatedCheckOptions
 	{
 		if (interval <= TimeSpan.Zero)
 		{
-			throw new ArgumentOutOfRangeException(nameof(interval), "The interval must be positive.");
+			throw Tracing.WriteException(new ArgumentOutOfRangeException(nameof(interval), "The interval must be positive."));
 		}
 
 		Interval = new FixedCheckInterval(interval);

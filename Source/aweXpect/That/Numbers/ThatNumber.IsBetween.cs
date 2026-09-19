@@ -96,8 +96,9 @@ public static partial class ThatNumber
 			if (maximum < minimum)
 			{
 				// ReSharper disable once LocalizableElement
-				throw new ArgumentOutOfRangeException(nameof(maximum),
-					"The maximum must be greater than or equal to the minimum.");
+				throw Tracing.WriteException(
+					new ArgumentOutOfRangeException(nameof(maximum),
+						"The maximum must be greater than or equal to the minimum."));
 			}
 
 			_it = it;
@@ -160,8 +161,9 @@ public static partial class ThatNumber
 			if (maximum < minimum)
 			{
 				// ReSharper disable once LocalizableElement
-				throw new ArgumentOutOfRangeException(nameof(maximum),
-					"The maximum must be greater than or equal to the minimum.");
+				throw Tracing.WriteException(
+					new ArgumentOutOfRangeException(nameof(maximum),
+						"The maximum must be greater than or equal to the minimum."));
 			}
 
 			_minimum = minimum;
@@ -1015,8 +1017,9 @@ public static partial class ThatNumber
 			    maximum.Value.CompareTo(minimum.Value) < 0)
 			{
 				// ReSharper disable once LocalizableElement
-				throw new ArgumentOutOfRangeException(nameof(maximum),
-					"The maximum must be greater than or equal to the minimum.");
+				throw Tracing.WriteException(
+					new ArgumentOutOfRangeException(nameof(maximum),
+						"The maximum must be greater than or equal to the minimum."));
 			}
 
 			_it = it;
@@ -1080,8 +1083,9 @@ public static partial class ThatNumber
 			    maximum.Value.CompareTo(minimum.Value) < 0)
 			{
 				// ReSharper disable once LocalizableElement
-				throw new ArgumentOutOfRangeException(nameof(maximum),
-					"The maximum must be greater than or equal to the minimum.");
+				throw Tracing.WriteException(
+					new ArgumentOutOfRangeException(nameof(maximum),
+						"The maximum must be greater than or equal to the minimum."));
 			}
 
 			_minimum = minimum;

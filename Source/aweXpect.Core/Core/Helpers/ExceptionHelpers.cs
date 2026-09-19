@@ -11,7 +11,7 @@ internal static class ExceptionHelpers
 		if (parameter is null)
 		{
 			// ReSharper disable once LocalizableElement
-			throw new ArgumentNullException(paramName, $"The {paramName} cannot be null.");
+			throw Tracing.WriteException(new ArgumentNullException(paramName, $"The {paramName} cannot be null."));
 		}
 	}
 

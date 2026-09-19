@@ -54,8 +54,9 @@ internal class DelegateSource : IValueSource<DelegateValue>
 		if (method is not null &&
 		    Attribute.IsDefined(method, typeof(AsyncStateMachineAttribute), true))
 		{
-			throw new InvalidOperationException(
-				$"Cannot use aweXpect on an async void method: Use {replaceType} instead.");
+			throw Tracing.WriteException(
+				new InvalidOperationException(
+					$"Cannot use aweXpect on an async void method: Use {replaceType} instead."));
 		}
 	}
 }

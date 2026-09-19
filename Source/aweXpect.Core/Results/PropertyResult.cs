@@ -621,7 +621,7 @@ public static class PropertyResult
 			if (value.Length == 0)
 			{
 				// ReSharper disable once LocalizableElement
-				throw new ArgumentException($"The '{paramName}' string cannot be empty.", paramName);
+				throw Tracing.WriteException(new ArgumentException($"The '{paramName}' string cannot be empty.", paramName));
 			}
 		}
 

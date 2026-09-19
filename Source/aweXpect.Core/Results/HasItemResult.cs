@@ -40,7 +40,8 @@ public class HasItemResult<TCollection>(
 		{
 			if (index < 0)
 			{
-				throw new ArgumentOutOfRangeException(nameof(index), "The index must be greater than or equal to 0.");
+				throw Tracing.WriteException(
+					new ArgumentOutOfRangeException(nameof(index), "The index must be greater than or equal to 0."));
 			}
 
 			_index = index;
