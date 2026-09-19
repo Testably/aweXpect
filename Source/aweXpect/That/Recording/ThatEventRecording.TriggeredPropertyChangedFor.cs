@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Reflection;
 using aweXpect.Core;
+using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Recording;
@@ -73,7 +74,6 @@ public static partial class ThatEventRecording
 		where TSubject : INotifyPropertyChanged
 	{
 		Quantifier quantifier = new();
-		quantifier.Exactly(0);
 		TriggerEventFilter filter = new();
 		RepeatedCheckOptions options = new();
 		filter.AddPredicate(
@@ -84,7 +84,7 @@ public static partial class ThatEventRecording
 				=> new HaveTriggeredConstraint<TSubject>(it, grammars, nameof(INotifyPropertyChanged.PropertyChanged),
 					filter,
 					quantifier,
-					options)),
+					options).Invert()),
 			subject,
 			filter,
 			quantifier,

@@ -53,7 +53,7 @@ public static partial class ThatEventRecording
 				_stoppedEarly = quantifier.Check(eventCount, false) != null;
 			}
 
-			Outcome = quantifier.Check(eventCount, true) == true ? Outcome.Success : Outcome.Failure;
+			Outcome = quantifier.Check(eventCount, true) ?? quantifier.IsNegated ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
