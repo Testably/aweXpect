@@ -277,6 +277,37 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WithGapInExpected_ShouldFail()
+			{
+				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "c",]);
+				string[] expected = ["a", "b", "c",];
+
+				async Task Act()
+					=> await That(subject).IsNotContainedIn(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not contained in collection expected in order,
+					             but it did
+
+					             Collection:
+					             [
+					               "a",
+					               "c"
+					             ]
+
+					             Expected:
+					             [
+					               "a",
+					               "b",
+					               "c"
+					             ]
+					             """)
+					.Because("in order means a subsequence, so skipping expected items is allowed");
+			}
+
+			[Fact]
 			public async Task WithMissingItem_ShouldFail()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "b", "c",]);
@@ -343,6 +374,32 @@ public sealed partial class ThatAsyncEnumerable
 
 
 			[Fact]
+			public async Task WithMoreDuplicatesThanExpected_ShouldSucceed()
+			{
+				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "a",]);
+				string[] expected = ["a", "b",];
+
+				async Task Act()
+					=> await That(subject).IsNotContainedIn(expected);
+
+				await That(Act).DoesNotThrow()
+					.Because("the expected collection only provides one \"a\"");
+			}
+
+			[Fact]
+			public async Task WithReversedCollection_ShouldSucceed()
+			{
+				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["c", "b", "a",]);
+				string[] expected = ["a", "b", "c",];
+
+				async Task Act()
+					=> await That(subject).IsNotContainedIn(expected);
+
+				await That(Act).DoesNotThrow()
+					.Because("a permutation is only contained in the expected collection in any order");
+			}
+
+			[Fact]
 			public async Task WithSameCollection_ShouldFail()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "b", "c",]);
@@ -371,6 +428,49 @@ public sealed partial class ThatAsyncEnumerable
 					               "c"
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WithSeparatedDuplicates_ShouldFail()
+			{
+				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "a",]);
+				string[] expected = ["a", "b", "a",];
+
+				async Task Act()
+					=> await That(subject).IsNotContainedIn(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not contained in collection expected in order,
+					             but it did
+
+					             Collection:
+					             [
+					               "a",
+					               "a"
+					             ]
+
+					             Expected:
+					             [
+					               "a",
+					               "b",
+					               "a"
+					             ]
+					             """)
+					.Because("both occurrences are matched by a distinct expected item");
+			}
+
+			[Fact]
+			public async Task WithSwappedPair_ShouldSucceed()
+			{
+				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["b", "a",]);
+				string[] expected = ["a", "b",];
+
+				async Task Act()
+					=> await That(subject).IsNotContainedIn(expected);
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 
@@ -538,7 +638,7 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
-			public async Task WithDuplicatesAtBeginOfSubject_ShouldFail()
+			public async Task WithDuplicatesAtBeginOfSubject_ShouldSucceed()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["c", "a", "b", "c",]);
 				string[] expected = ["a", "b", "c",];
@@ -546,27 +646,8 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).IsNotContainedIn(expected).IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not contained in collection expected in order ignoring duplicates,
-					             but it did
-
-					             Collection:
-					             [
-					               "c",
-					               "a",
-					               "b",
-					               "c"
-					             ]
-
-					             Expected:
-					             [
-					               "a",
-					               "b",
-					               "c"
-					             ]
-					             """);
+				await That(Act).DoesNotThrow()
+					.Because("ignoring duplicates must only relax duplicates, not the order of the remaining items");
 			}
 
 			[Fact]
@@ -1114,6 +1195,38 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
+
+			[Fact]
+			public async Task WithReversedCollection_ShouldFail()
+			{
+				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["c", "b", "a",]);
+				string[] expected = ["a", "b", "c",];
+
+				async Task Act()
+					=> await That(subject).IsNotContainedIn(expected).InAnyOrder();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not contained in collection expected in any order,
+					             but it did
+
+					             Collection:
+					             [
+					               "c",
+					               "b",
+					               "a"
+					             ]
+
+					             Expected:
+					             [
+					               "a",
+					               "b",
+					               "c"
+					             ]
+					             """)
+					.Because("in any order keeps the set-based meaning");
+			}
 
 			[Fact]
 			public async Task WithSameCollection_ShouldFail()

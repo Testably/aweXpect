@@ -284,6 +284,9 @@ await Expect.That(values).IsContainedIn([1, 1, 2, 2, 3, 3, 4, 4]).IgnoringDuplic
 await Expect.That(values).IsContainedIn([4, 4, 3, 3, 2, 2, 1, 1]).InAnyOrder().IgnoringDuplicates();
 ```
 
+*Note: Without `InAnyOrder` the values must appear in the expected collection in the same relative order, but gaps are
+allowed, so `[1, 3]` is contained in `[1, 2, 3]`, while `[3, 1]` is not.*
+
 *Note: You can also negate this expectation with `IsNotContainedIn`.*
 
 *Note: The same expectation works also for `IAsyncEnumerable<T>`.*
