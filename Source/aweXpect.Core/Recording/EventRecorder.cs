@@ -52,7 +52,11 @@ internal sealed class EventRecorder(string eventName) : IDisposable
 		_onDispose = () => @event.RemoveHandler(subject, handler);
 	}
 
-	public void Attach(object subject, EventInfo eventInfo)
+	/// <summary>
+	///     Attaches to an event that is bound reflectively and returns the reason why it cannot be recorded, or
+	///     <see langword="null" /> when the handler was attached.
+	/// </summary>
+	public string? TryAttach(object subject, EventInfo eventInfo)
 	{
 		// Unreachable, because the events are only ever found by the guarded reflection, but the analyzer does not
 		// follow guards across methods.
@@ -64,17 +68,15 @@ internal sealed class EventRecorder(string eventName) : IDisposable
 		MethodInfo handlerType = eventInfo.EventHandlerType!.GetMethod("Invoke")!;
 		if (handlerType.ReturnType != typeof(void))
 		{
-			throw new NotSupportedException(
-					$"The {eventName} event cannot be recorded, because its handler returns {Formatter.Format(handlerType.ReturnType)}")
-				.LogTrace();
+			return
+				$"The {eventName} event cannot be recorded, because its handler returns {Formatter.Format(handlerType.ReturnType)}";
 		}
 
 		ParameterInfo? byReference = handlerType.GetParameters().FirstOrDefault(x => x.ParameterType.IsByRef);
 		if (byReference is not null)
 		{
-			throw new NotSupportedException(
-					$"The {eventName} event cannot be recorded, because its handler takes the parameter {byReference.Name} by reference")
-				.LogTrace();
+			return
+				$"The {eventName} event cannot be recorded, because its handler takes the parameter {byReference.Name} by reference";
 		}
 
 		Delegate? handler = null;
@@ -97,9 +99,8 @@ internal sealed class EventRecorder(string eventName) : IDisposable
 
 		if (handler == null)
 		{
-			throw new NotSupportedException(
-					$"The {eventName} event contains too many parameters ({handlerType.GetParameters().Length}): {Formatter.Format(handlerType.GetParameters().Select(x => x.ParameterType))}")
-				.LogTrace();
+			return
+				$"The {eventName} event contains too many parameters ({handlerType.GetParameters().Length}): {Formatter.Format(handlerType.GetParameters().Select(x => x.ParameterType))}";
 		}
 
 		eventInfo.AddEventHandler(subject, handler);
@@ -107,6 +108,7 @@ internal sealed class EventRecorder(string eventName) : IDisposable
 		// The subject is held on purpose: its event already holds the handler and thereby this recorder, so nothing
 		// leaks, whereas a static event would otherwise keep the handler after the subject was collected.
 		_onDispose = () => eventInfo.RemoveEventHandler(subject, handler);
+		return null;
 	}
 
 	public void RecordEvent()

@@ -25,6 +25,14 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 
 	private readonly bool _isRegistered;
 	private readonly Dictionary<string, EventRecorder> _recorders = new();
+
+	/// <remarks>
+	///     An event that the reflective fallback cannot bind a handler to must not cost the recording of all the other
+	///     events of the subject, so it is skipped with its reason, which the expectation that asks for it reports
+	///     instead of letting it look like an event that was never triggered.
+	/// </remarks>
+	private readonly Dictionary<string, string> _skipped = new();
+
 	private readonly string _subjectExpression;
 
 	/// <summary>
@@ -40,15 +48,14 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 			events = Reflect(subject.GetType());
 		}
 
-		if (eventNames.Length == 0)
+		bool recordAllEvents = eventNames.Length == 0;
+		if (recordAllEvents)
 		{
 			eventNames = events.Select(x => x.Name).ToArray();
 		}
 
 		foreach (string? eventName in eventNames)
 		{
-			EventRecorder recorder = new(eventName);
-			_recorders.Add(eventName, recorder);
 			RecordableEvent? @event = events.FirstOrDefault(x => x.Name == eventName);
 			if (@event == null)
 			{
@@ -57,7 +64,21 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 					.LogTrace();
 			}
 
-			@event.Attach(recorder, subject);
+			EventRecorder recorder = new(eventName);
+			string? unsupported = @event.Attach(recorder, subject);
+			if (unsupported is null)
+			{
+				_recorders.Add(eventName, recorder);
+			}
+			else if (recordAllEvents)
+			{
+				_skipped.Add(eventName, unsupported);
+			}
+			else
+			{
+				// An event that was asked for by name is what the recording is about, so it fails right away.
+				throw new NotSupportedException(unsupported).LogTrace();
+			}
 		}
 	}
 
@@ -72,7 +93,11 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 		{
 			events = metadata.Events.Values
 				.OrderBy(x => x.Order)
-				.Select(x => new RecordableEvent(x.Name, (recorder, subject) => recorder.Attach(subject, x)))
+				.Select(x => new RecordableEvent(x.Name, (recorder, subject) =>
+				{
+					recorder.Attach(subject, x);
+					return null;
+				}))
 				.ToList();
 			return true;
 		}
@@ -85,15 +110,19 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 		=> ReflectionFallback.IsSupported
 			? type.GetEvents()
 				.Select(x => new RecordableEvent(x.Name,
-					(recorder, subject) => recorder.Attach(subject, x)))
+					(recorder, subject) => recorder.TryAttach(subject, x)))
 				.ToList()
 			: throw ReflectionFallback.NotSupported(type, "events").LogTrace();
 
-	private sealed class RecordableEvent(string name, Action<EventRecorder, object> attach)
+	private sealed class RecordableEvent(string name, Func<EventRecorder, object, string?> attach)
 	{
 		public string Name { get; } = name;
 
-		public void Attach(EventRecorder recorder, object subject) => attach(recorder, subject);
+		/// <summary>
+		///     Attaches the <paramref name="recorder" /> to the event and returns the reason why the event cannot be
+		///     recorded, or <see langword="null" /> when the handler was attached.
+		/// </summary>
+		public string? Attach(EventRecorder recorder, object subject) => attach(recorder, subject);
 	}
 
 #if NET8_0_OR_GREATER
@@ -211,6 +240,11 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 	{
 		if (!_recorders.TryGetValue(eventName, out EventRecorder? recorder))
 		{
+			if (_skipped.TryGetValue(eventName, out string? unsupported))
+			{
+				throw new NotSupportedException(unsupported).LogTrace();
+			}
+
 			string recorded = _recorders.Count == 0
 				? "because no event was found"
 				: $"only {Formatter.Format(_recorders.Keys)}";
