@@ -71,7 +71,9 @@ public static partial class ThatNullableTimeOnly
 					timeTolerance = timeTolerance.Negate();
 				}
 
-				Outcome = actual.Value.Add(timeTolerance) <= expected ? Outcome.Success : Outcome.Failure;
+				Outcome = expected.Value.Ticks - actual.Value.Ticks >= timeTolerance.Ticks
+					? Outcome.Success
+					: Outcome.Failure;
 			}
 
 			return this;

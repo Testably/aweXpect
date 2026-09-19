@@ -68,7 +68,7 @@ public static partial class ThatTimeOnly
 					timeTolerance = timeTolerance.Negate();
 				}
 
-				Outcome = actual.Add(timeTolerance) >= minimum && actual.Add(timeTolerance.Negate()) <= maximum
+				Outcome = actual.IsOnArc(minimum.Value, maximum.Value, timeTolerance)
 					? Outcome.Success
 					: Outcome.Failure;
 			}

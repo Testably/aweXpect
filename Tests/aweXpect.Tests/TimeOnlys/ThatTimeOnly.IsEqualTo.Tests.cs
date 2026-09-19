@@ -53,6 +53,53 @@ public sealed partial class ThatTimeOnly
 				await That(Act).DoesNotThrow();
 			}
 
+			[Fact]
+			public async Task Within_WhenToleranceExceedsTwelveHours_ShouldSucceedForOppositeTimes()
+			{
+				TimeOnly subject = new(6, 0);
+				TimeOnly expected = new(18, 0);
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected)
+						.Within(13.Hours());
+
+				await That(Act).DoesNotThrow()
+					.Because("the circular distance saturates at 12 hours, so a larger tolerance accepts every time");
+			}
+
+			[Fact]
+			public async Task Within_WhenToleranceIsJustBelowTwelveHours_ShouldFailForOppositeTimes()
+			{
+				TimeOnly subject = new(6, 0);
+				TimeOnly expected = new(18, 0);
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected)
+						.Within(11.Hours() + 59.Minutes());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to 18:00:00.0000000 ± 11:59:00,
+					             but it was 06:00:00.0000000
+					             """)
+					.Because("opposite times are exactly 12 hours apart on the clock face");
+			}
+
+			[Fact]
+			public async Task Within_WhenToleranceIsTwelveHours_ShouldSucceedForOppositeTimes()
+			{
+				TimeOnly subject = new(6, 0);
+				TimeOnly expected = new(18, 0);
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected)
+						.Within(12.Hours());
+
+				await That(Act).DoesNotThrow()
+					.Because("12 hours is the largest possible circular distance, so it accepts every time");
+			}
+
 			[Theory]
 			[InlineData(3, 2, true)]
 			[InlineData(5, 3, true)]
@@ -77,6 +124,34 @@ public sealed partial class ThatTimeOnly
 					              is equal to {Formatter.Format(expected)} ± {Formatter.Format(tolerance)}, because we want to test the failure,
 					              but it was {Formatter.Format(subject)}
 					              """);
+			}
+
+			[Fact]
+			public async Task Within_WhenValuesWrapAroundMidnight_ShouldSucceed()
+			{
+				TimeOnly subject = TimeOnly.MinValue;
+				TimeOnly expected = new(23, 59);
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected)
+						.Within(1.Minutes());
+
+				await That(Act).DoesNotThrow()
+					.Because("equality uses the shortest distance around the clock face");
+			}
+
+			[Fact]
+			public async Task Within_WhenValuesWrapAroundMidnightInReverse_ShouldSucceed()
+			{
+				TimeOnly subject = new(23, 59);
+				TimeOnly expected = TimeOnly.MinValue;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected)
+						.Within(1.Minutes());
+
+				await That(Act).DoesNotThrow()
+					.Because("the circular distance is symmetric");
 			}
 		}
 	}

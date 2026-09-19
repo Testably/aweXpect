@@ -121,7 +121,7 @@ public static partial class ThatTimeOnly
 			{
 				hasValues = true;
 				if (value != null &&
-				    Math.Abs(actual.Ticks - value.Value.Ticks) <= timeTolerance.Ticks)
+				    actual.CircularDistanceTicks(value.Value) <= timeTolerance.Ticks)
 				{
 					Outcome = Outcome.Success;
 					return this;

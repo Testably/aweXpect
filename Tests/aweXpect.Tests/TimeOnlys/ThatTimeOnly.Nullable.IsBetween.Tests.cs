@@ -46,6 +46,18 @@ public sealed partial class ThatTimeOnly
 				}
 
 				[Fact]
+				public async Task WhenRangeCrossesMidnightAndSubjectIsInside_ShouldSucceed()
+				{
+					TimeOnly? subject = TimeOnly.MinValue;
+
+					async Task Act()
+						=> await That(subject).IsBetween(new TimeOnly(23, 0)).And(new TimeOnly(1, 0));
+
+					await That(Act).DoesNotThrow()
+						.Because("a range runs clockwise from the minimum to the maximum, across midnight if needed");
+				}
+
+				[Fact]
 				public async Task WhenSubjectAndMaximumAreMaxValue_ShouldSucceed()
 				{
 					TimeOnly? subject = TimeOnly.MaxValue;
@@ -223,6 +235,21 @@ public sealed partial class ThatTimeOnly
 						              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 0:03,
 						              but it was {Formatter.Format(subject)}
 						              """);
+				}
+
+				[Fact]
+				public async Task WhenToleranceWouldWrapAroundMidnight_ShouldSucceed()
+				{
+					TimeOnly? subject = new TimeOnly(0, 30);
+					TimeOnly? minimum = TimeOnly.MinValue;
+					TimeOnly? maximum = new TimeOnly(1, 0);
+
+					async Task Act()
+						=> await That(subject).IsBetween(minimum).And(maximum)
+							.Within(1.Hours());
+
+					await That(Act).DoesNotThrow()
+						.Because("a tolerance must never make an expectation fail that passes without it");
 				}
 
 				[Fact]

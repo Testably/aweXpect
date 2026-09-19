@@ -74,8 +74,7 @@ public static partial class ThatNullableTimeOnly
 					timeTolerance = timeTolerance.Negate();
 				}
 
-				Outcome = actual.Value.Add(timeTolerance) >= minimum &&
-				          actual.Value.Add(timeTolerance.Negate()) <= maximum
+				Outcome = actual.Value.IsOnArc(minimum.Value, maximum.Value, timeTolerance)
 					? Outcome.Success
 					: Outcome.Failure;
 			}
