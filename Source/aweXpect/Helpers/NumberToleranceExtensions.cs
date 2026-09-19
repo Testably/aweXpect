@@ -132,6 +132,7 @@ internal static class NumberToleranceExtensions
 	}
 
 	public static void ThrowIfNaN<TNumber>(this TNumber? value,
+		string? description = null,
 		[CallerArgumentExpression(nameof(value))] string? paramName = null)
 #if NET8_0_OR_GREATER
 		where TNumber : struct, INumber<TNumber>
@@ -142,7 +143,8 @@ internal static class NumberToleranceExtensions
 		if (IsNaN(value))
 		{
 			// ReSharper disable once LocalizableElement
-			throw Tracing.WriteException(new ArgumentOutOfRangeException(paramName, $"The {paramName} must not be NaN."));
+			throw Tracing.WriteException(
+				new ArgumentOutOfRangeException(paramName, $"The {description ?? paramName} must not be NaN."));
 		}
 	}
 

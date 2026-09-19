@@ -104,6 +104,21 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
+			[Fact]
+			public async Task ForDouble_WhenExpectedIsNaN_ShouldThrowArgumentOutOfRangeException()
+			{
+				double subject = 2.0;
+				double expected = double.NaN;
+
+				async Task Act()
+					=> await That(subject).IsGreaterThan(expected);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("expected").And
+					.WithMessage("The expected value must not be NaN.").AsPrefix()
+					.Because("an ordering comparison against NaN can never pass, so it is a programming mistake");
+			}
+
 			[Theory]
 			[AutoData]
 			public async Task ForDouble_WhenExpectedIsNull_ShouldFail(double subject)
@@ -132,6 +147,23 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
+			[Fact]
+			public async Task ForDouble_WhenSubjectIsNaN_ShouldFail()
+			{
+				double subject = double.NaN;
+				double expected = 0.0;
+
+				async Task Act() => await That(subject).IsGreaterThan(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is greater than {Formatter.Format(expected)},
+					              but it was {Formatter.Format(subject)}
+					              """)
+					.Because("a NaN subject is a failing value, not a programming mistake");
+			}
+
 			[Theory]
 			[InlineData(5.0, double.NegativeInfinity)]
 			[InlineData(double.PositiveInfinity, 1.0)]
@@ -142,22 +174,6 @@ public sealed partial class ThatNumber
 				async Task Act() => await That(subject).IsGreaterThan(expected);
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Theory]
-			[InlineData(double.NaN, 0.0)]
-			[InlineData(0.0, double.NaN)]
-			public async Task ForDouble_WhenSubjectOrExpectedIsNaN_ShouldFail(
-				double subject, double expected)
-			{
-				async Task Act() => await That(subject).IsGreaterThan(expected);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage($"""
-					              Expected that subject
-					              is greater than {Formatter.Format(expected)},
-					              but it was {Formatter.Format(subject)}
-					              """);
 			}
 
 			[Theory]
@@ -189,6 +205,21 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
+			[Fact]
+			public async Task ForFloat_WhenExpectedIsNaN_ShouldThrowArgumentOutOfRangeException()
+			{
+				float subject = 2.0f;
+				float expected = float.NaN;
+
+				async Task Act()
+					=> await That(subject).IsGreaterThan(expected);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("expected").And
+					.WithMessage("The expected value must not be NaN.").AsPrefix()
+					.Because("an ordering comparison against NaN can never pass, so it is a programming mistake");
+			}
+
 			[Theory]
 			[AutoData]
 			public async Task ForFloat_WhenExpectedIsNull_ShouldFail(float subject)
@@ -206,12 +237,12 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData(float.NaN, 0.0)]
-			[InlineData(0.0, float.NaN)]
-			public async Task ForFloat_WhenSubjectOrExpectedIsNaN_ShouldFail(
-				float subject, float expected)
+			[Fact]
+			public async Task ForFloat_WhenSubjectIsNaN_ShouldFail()
 			{
+				float subject = float.NaN;
+				float expected = 0.0f;
+
 				async Task Act() => await That(subject).IsGreaterThan(expected);
 
 				await That(Act).Throws<XunitException>()
@@ -219,7 +250,8 @@ public sealed partial class ThatNumber
 					              Expected that subject
 					              is greater than {Formatter.Format(expected)},
 					              but it was {Formatter.Format(subject)}
-					              """);
+					              """)
+					.Because("a NaN subject is a failing value, not a programming mistake");
 			}
 
 			[Theory]
@@ -250,6 +282,23 @@ public sealed partial class ThatNumber
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task ForHalf_WhenExpectedIsNaN_ShouldThrowArgumentOutOfRangeException()
+			{
+				Half subject = (Half)2.0f;
+				Half expected = Half.NaN;
+
+				async Task Act()
+					=> await That(subject).IsGreaterThan(expected);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("expected").And
+					.WithMessage("The expected value must not be NaN.").AsPrefix()
+					.Because("an ordering comparison against NaN can never pass, so it is a programming mistake");
+			}
+#endif
 
 			[Theory]
 			[AutoData]
@@ -509,6 +558,21 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
+			[Fact]
+			public async Task ForNullableDouble_WhenExpectedIsNaN_ShouldThrowArgumentOutOfRangeException()
+			{
+				double? subject = 2.0;
+				double? expected = double.NaN;
+
+				async Task Act()
+					=> await That(subject).IsGreaterThan(expected);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("expected").And
+					.WithMessage("The expected value must not be NaN.").AsPrefix()
+					.Because("an ordering comparison against NaN can never pass, so it is a programming mistake");
+			}
+
 			[Theory]
 			[AutoData]
 			public async Task ForNullableDouble_WhenExpectedIsNull_ShouldFail(double? subject)
@@ -524,6 +588,21 @@ public sealed partial class ThatNumber
 					              is greater than <null>,
 					              but it was {Formatter.Format(subject)}
 					              """);
+			}
+
+			[Fact]
+			public async Task ForNullableDouble_WhenSubjectIsNullAndExpectedIsNaN_ShouldThrowArgumentOutOfRangeException()
+			{
+				double? subject = null;
+				double? expected = double.NaN;
+
+				async Task Act()
+					=> await That(subject).IsGreaterThan(expected);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("expected").And
+					.WithMessage("The expected value must not be NaN.").AsPrefix()
+					.Because("the NaN expected value is rejected before the subject is considered");
 			}
 
 			[Theory]
@@ -553,6 +632,21 @@ public sealed partial class ThatNumber
 					              is greater than {Formatter.Format(expected)},
 					              but it was {Formatter.Format(subject)}
 					              """);
+			}
+
+			[Fact]
+			public async Task ForNullableFloat_WhenExpectedIsNaN_ShouldThrowArgumentOutOfRangeException()
+			{
+				float? subject = 2.0f;
+				float? expected = float.NaN;
+
+				async Task Act()
+					=> await That(subject).IsGreaterThan(expected);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("expected").And
+					.WithMessage("The expected value must not be NaN.").AsPrefix()
+					.Because("an ordering comparison against NaN can never pass, so it is a programming mistake");
 			}
 
 			[Theory]
@@ -600,6 +694,23 @@ public sealed partial class ThatNumber
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task ForNullableHalf_WhenExpectedIsNaN_ShouldThrowArgumentOutOfRangeException()
+			{
+				Half? subject = (Half)2.0f;
+				Half? expected = Half.NaN;
+
+				async Task Act()
+					=> await That(subject).IsGreaterThan(expected);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("expected").And
+					.WithMessage("The expected value must not be NaN.").AsPrefix()
+					.Because("an ordering comparison against NaN can never pass, so it is a programming mistake");
+			}
+#endif
 
 			[Theory]
 			[InlineData(2, 1)]
@@ -1214,6 +1325,22 @@ public sealed partial class ThatNumber
 
 		public sealed class NegatedTests
 		{
+			[Fact]
+			public async Task ForDouble_WhenExpectedIsNaN_ShouldThrowArgumentOutOfRangeException()
+			{
+				double subject = 2.0;
+				double expected = double.NaN;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it
+						=> it.IsGreaterThan(expected));
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("expected").And
+					.WithMessage("The expected value must not be NaN.").AsPrefix()
+					.Because("negating the expectation cannot make a NaN expected value meaningful");
+			}
+
 			[Theory]
 			[AutoData]
 			public async Task ForInt_WhenExpectedIsNull_ShouldSucceed(

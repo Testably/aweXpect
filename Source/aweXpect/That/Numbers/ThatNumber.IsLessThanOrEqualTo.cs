@@ -19,6 +19,7 @@ public static partial class ThatNumber
 		this IThat<TNumber> subject, TNumber? expected)
 		where TNumber : struct, INumber<TNumber>
 	{
+		expected.ThrowIfNaN("expected value");
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -35,6 +36,7 @@ public static partial class ThatNumber
 		this IThat<TNumber?> subject, TNumber? expected)
 		where TNumber : struct, INumber<TNumber>
 	{
+		expected.ThrowIfNaN("expected value");
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -250,6 +252,7 @@ public static partial class ThatNumber
 		this IThat<float> subject,
 		float? expected)
 	{
+		expected.ThrowIfNaN("expected value");
 		NumberTolerance<float> options = new(CalculateDifference);
 		return new NumberToleranceResult<float, IThat<float>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -265,6 +268,7 @@ public static partial class ThatNumber
 		this IThat<double> subject,
 		double? expected)
 	{
+		expected.ThrowIfNaN("expected value");
 		NumberTolerance<double> options = new(CalculateDifference);
 		return new NumberToleranceResult<double, IThat<double>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -424,6 +428,7 @@ public static partial class ThatNumber
 		this IThat<float?> subject,
 		float? expected)
 	{
+		expected.ThrowIfNaN("expected value");
 		NumberTolerance<float> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<float, IThat<float?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -440,6 +445,7 @@ public static partial class ThatNumber
 		this IThat<double?> subject,
 		double? expected)
 	{
+		expected.ThrowIfNaN("expected value");
 		NumberTolerance<double> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<double, IThat<double?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
