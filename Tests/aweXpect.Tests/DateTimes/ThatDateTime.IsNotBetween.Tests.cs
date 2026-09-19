@@ -187,6 +187,20 @@ public sealed partial class ThatDateTime
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
+
+			[Fact]
+			public async Task WhenSubjectOnlyDiffersInKind_ShouldSucceed()
+			{
+				DateTime subject = CurrentTime(DateTimeKind.Utc);
+				DateTime minimum = EarlierTime(1, DateTimeKind.Local);
+				DateTime maximum = LaterTime(1, DateTimeKind.Local);
+
+				async Task Act()
+					=> await That(subject).IsNotBetween(minimum).And(maximum);
+
+				await That(Act).DoesNotThrow()
+					.Because("a subject that cannot be compared to the bounds is not between them");
+			}
 		}
 
 		public sealed class WithinTests
