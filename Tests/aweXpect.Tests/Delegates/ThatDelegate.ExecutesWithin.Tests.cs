@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Threading;
+﻿using System.Threading;
 
 namespace aweXpect.Tests;
 
@@ -605,7 +604,7 @@ public sealed partial class ThatDelegate
 			[Fact]
 			public async Task WithoutReturnValue_WhenDelegateExceedsTheDuration_ShouldCancelTheCancellationToken()
 			{
-				Func<CancellationToken, Task> @delegate = token => Task.Delay(6.Seconds(), token);
+				Func<CancellationToken, Task> @delegate = token => Task.Delay(30.Seconds(), token);
 
 				async Task Act()
 					=> await That(@delegate).ExecutesWithin(50.Milliseconds());
@@ -624,7 +623,7 @@ public sealed partial class ThatDelegate
 			{
 				Func<CancellationToken, Task<int>> @delegate = async token =>
 				{
-					await Task.Delay(6.Seconds(), token);
+					await Task.Delay(30.Seconds(), token);
 					return 1;
 				};
 
@@ -646,17 +645,17 @@ public sealed partial class ThatDelegate
 			[Fact]
 			public async Task WithoutReturnValue_WhenTimeoutIsApplied_ShouldCancelTheCancellationToken()
 			{
-				Func<CancellationToken, Task> @delegate = token => Task.Delay(6.Seconds(), token);
-				Stopwatch sw = new();
+				Func<CancellationToken, Task> @delegate = token => Task.Delay(30.Seconds(), token);
 
 				async Task Act()
 					=> await That(@delegate).ExecutesWithin(50.Milliseconds()).WithTimeout(50.Milliseconds());
 
-				sw.Start();
-				await That(Act).Throws<XunitException>();
-				sw.Stop();
-
-				await That(sw.Elapsed).IsLessThan(5.Seconds());
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             executes within 0:00.050,
+					             but it was canceled after 0:*
+					             """).AsWildcard();
 			}
 
 			[Fact]
@@ -664,19 +663,19 @@ public sealed partial class ThatDelegate
 			{
 				Func<CancellationToken, Task<int>> @delegate = async token =>
 				{
-					await Task.Delay(6.Seconds(), token);
+					await Task.Delay(30.Seconds(), token);
 					return 1;
 				};
-				Stopwatch sw = new();
 
 				async Task Act()
 					=> await That(@delegate).ExecutesWithin(50.Milliseconds()).WithTimeout(50.Milliseconds());
 
-				sw.Start();
-				await That(Act).Throws<XunitException>();
-				sw.Stop();
-
-				await That(sw.Elapsed).IsLessThan(5.Seconds());
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             executes within 0:00.050,
+					             but it was canceled after 0:*
+					             """).AsWildcard();
 			}
 		}
 
@@ -685,18 +684,18 @@ public sealed partial class ThatDelegate
 			[Fact]
 			public async Task WithoutReturnValue_WhenTimeoutIsApplied_ShouldCancelTheCancellationToken()
 			{
-				Func<CancellationToken, Task> @delegate = token => Task.Delay(6.Seconds(), token);
+				Func<CancellationToken, Task> @delegate = token => Task.Delay(30.Seconds(), token);
 				CancellationToken cancelledToken = new(true);
-				Stopwatch sw = new();
 
 				async Task Act()
 					=> await That(@delegate).ExecutesWithin(50.Milliseconds()).WithCancellation(cancelledToken);
 
-				sw.Start();
-				await That(Act).Throws<XunitException>();
-				sw.Stop();
-
-				await That(sw.Elapsed).IsLessThan(5.Seconds());
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             executes within 0:00.050,
+					             but it was canceled after 0:*
+					             """).AsWildcard();
 			}
 
 			[Fact]
@@ -704,20 +703,20 @@ public sealed partial class ThatDelegate
 			{
 				Func<CancellationToken, Task<int>> @delegate = async token =>
 				{
-					await Task.Delay(6.Seconds(), token);
+					await Task.Delay(30.Seconds(), token);
 					return 1;
 				};
 				CancellationToken cancelledToken = new(true);
-				Stopwatch sw = new();
 
 				async Task Act()
 					=> await That(@delegate).ExecutesWithin(50.Milliseconds()).WithCancellation(cancelledToken);
 
-				sw.Start();
-				await That(Act).Throws<XunitException>();
-				sw.Stop();
-
-				await That(sw.Elapsed).IsLessThan(5.Seconds());
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             executes within 0:00.050,
+					             but it was canceled after 0:*
+					             """).AsWildcard();
 			}
 		}
 	}

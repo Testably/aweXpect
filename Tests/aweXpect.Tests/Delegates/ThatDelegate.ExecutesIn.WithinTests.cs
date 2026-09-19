@@ -12,12 +12,12 @@ public sealed partial class ThatDelegate
 				Action @delegate = () => Task.Delay(5.Milliseconds()).Wait();
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn(5000.Milliseconds()).Within(1123.Milliseconds());
+					=> await That(@delegate).ExecutesIn(10000.Milliseconds()).Within(1123.Milliseconds());
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that @delegate
-					             executes in approximately 0:05 ± 0:01.123,
+					             executes in approximately 0:10 ± 0:01.123,
 					             but it took only 0:*
 					             """).AsWildcard();
 			}
