@@ -59,6 +59,8 @@ public static partial class ThatNullableDateTime
 		: ConstraintResult.WithNotNullValue<DateTime?>(it, grammars),
 			IValueConstraint<DateTime?>
 	{
+		private bool _hasKindDifference;
+
 		public ConstraintResult IsMetBy(DateTime? actual)
 		{
 			Actual = actual;
@@ -69,6 +71,12 @@ public static partial class ThatNullableDateTime
 			else if (actual is null || minimum is null || maximum is null)
 			{
 				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+			}
+			else if (!actual.Value.IsKindCompatibleWith(minimum.Value) ||
+			         !actual.Value.IsKindCompatibleWith(maximum.Value))
+			{
+				_hasKindDifference = true;
+				Outcome = Outcome.Failure;
 			}
 			else
 			{
@@ -99,8 +107,15 @@ public static partial class ThatNullableDateTime
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
-			Formatter.Format(stringBuilder, Actual);
+			if (_hasKindDifference)
+			{
+				stringBuilder.Append(It).Append(" differed in the Kind property");
+			}
+			else
+			{
+				stringBuilder.Append(It).Append(" was ");
+				Formatter.Format(stringBuilder, Actual);
+			}
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

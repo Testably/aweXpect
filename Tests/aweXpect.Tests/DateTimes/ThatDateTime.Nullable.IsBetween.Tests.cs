@@ -8,6 +8,27 @@ public sealed partial class ThatDateTime
 		{
 			public sealed class Tests
 			{
+				[Theory]
+				[InlineData(DateTimeKind.Unspecified, DateTimeKind.Local)]
+				[InlineData(DateTimeKind.Unspecified, DateTimeKind.Utc)]
+				[InlineData(DateTimeKind.Unspecified, DateTimeKind.Unspecified)]
+				[InlineData(DateTimeKind.Local, DateTimeKind.Unspecified)]
+				[InlineData(DateTimeKind.Utc, DateTimeKind.Unspecified)]
+				[InlineData(DateTimeKind.Local, DateTimeKind.Local)]
+				[InlineData(DateTimeKind.Utc, DateTimeKind.Utc)]
+				public async Task WhenKindsAreCompatible_ShouldSucceed(DateTimeKind subjectKind, DateTimeKind boundKind)
+				{
+					DateTime? subject = CurrentTime(subjectKind);
+					DateTime? minimum = EarlierTime(1, boundKind);
+					DateTime? maximum = LaterTime(1, boundKind);
+
+					async Task Act()
+						=> await That(subject).IsBetween(minimum).And(maximum)
+							.Because("an Unspecified Kind matches any other Kind and equal Kinds are comparable");
+
+					await That(Act).DoesNotThrow();
+				}
+
 				[Fact]
 				public async Task WhenMaximumIsNull_ShouldFail()
 				{
@@ -40,6 +61,25 @@ public sealed partial class ThatDateTime
 				}
 
 				[Fact]
+				public async Task WhenMaximumOnlyDiffersInKind_ShouldFail()
+				{
+					DateTime? subject = CurrentTime(DateTimeKind.Local);
+					DateTime? minimum = EarlierTime(1, DateTimeKind.Local);
+					DateTime? maximum = LaterTime(1, DateTimeKind.Utc);
+
+					async Task Act()
+						=> await That(subject).IsBetween(minimum).And(maximum)
+							.Because("the subject must be comparable to both bounds");
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)}, because the subject must be comparable to both bounds,
+						              but it differed in the Kind property
+						              """);
+				}
+
+				[Fact]
 				public async Task WhenMinimumAndMaximumAreEqual_ShouldSucceed()
 				{
 					DateTime? subject = CurrentTime();
@@ -66,6 +106,25 @@ public sealed partial class ThatDateTime
 						              Expected that subject
 						              is between <null> and {Formatter.Format(maximum)},
 						              but it was {Formatter.Format(subject)}
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenMinimumOnlyDiffersInKind_ShouldFail()
+				{
+					DateTime? subject = CurrentTime(DateTimeKind.Local);
+					DateTime? minimum = EarlierTime(1, DateTimeKind.Utc);
+					DateTime? maximum = LaterTime(1, DateTimeKind.Local);
+
+					async Task Act()
+						=> await That(subject).IsBetween(minimum).And(maximum)
+							.Because("the subject must be comparable to both bounds");
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)}, because the subject must be comparable to both bounds,
+						              but it differed in the Kind property
 						              """);
 				}
 
@@ -183,6 +242,20 @@ public sealed partial class ThatDateTime
 
 					await That(Act).DoesNotThrow();
 				}
+
+				[Fact]
+				public async Task WhenSubjectKindIsUnspecifiedAndTheBoundsDifferInKind_ShouldSucceed()
+				{
+					DateTime? subject = CurrentTime(DateTimeKind.Unspecified);
+					DateTime? minimum = EarlierTime(1, DateTimeKind.Local);
+					DateTime? maximum = LaterTime(1, DateTimeKind.Utc);
+
+					async Task Act()
+						=> await That(subject).IsBetween(minimum).And(maximum);
+
+					await That(Act).DoesNotThrow()
+						.Because("only the subject is compared against each bound, and Unspecified matches anything");
+				}
 			}
 
 			public sealed class WithinTests
@@ -275,6 +348,26 @@ public sealed partial class ThatDateTime
 						              Expected that subject
 						              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 0:03,
 						              but it was {Formatter.Format(subject)}
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenSubjectOnlyDiffersInKind_ShouldFail()
+				{
+					DateTime? subject = CurrentTime(DateTimeKind.Local);
+					DateTime? minimum = EarlierTime(1, DateTimeKind.Utc);
+					DateTime? maximum = LaterTime(1, DateTimeKind.Utc);
+
+					async Task Act()
+						=> await That(subject).IsBetween(minimum).And(maximum)
+							.Within(3.Seconds())
+							.Because("a tolerance cannot bridge incompatible Kinds");
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 0:03, because a tolerance cannot bridge incompatible Kinds,
+						              but it differed in the Kind property
 						              """);
 				}
 

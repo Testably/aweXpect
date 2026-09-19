@@ -152,6 +152,14 @@ internal static class EqualityHelpers
 		return !hasKindDifference && difference <= tolerance && difference >= tolerance.Negate();
 	}
 
+	/// <summary>
+	///     Checks whether <paramref name="actual" /> and <paramref name="other" /> can be compared at all: a
+	///     <see cref="DateTimeKind.Local" /> and a <see cref="DateTimeKind.Utc" /> value denote different instants for
+	///     the same ticks, so any comparison between them would have to guess the local offset.
+	/// </summary>
+	public static bool IsKindCompatibleWith(this DateTime actual, DateTime other)
+		=> AreKindCompatible(actual.Kind, other.Kind);
+
 	private static bool AreKindCompatible(DateTimeKind? actualKind, DateTimeKind? expectedKind)
 	{
 		if (actualKind == DateTimeKind.Unspecified || expectedKind == DateTimeKind.Unspecified)

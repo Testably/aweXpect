@@ -2,6 +2,25 @@
 
 Describes the possible expectations for `DateTime` and `DateTimeOffset`.
 
+## The `Kind` of a `DateTime`
+
+A `DateTimeKind.Local` and a `DateTimeKind.Utc` value denote different points in time even when their date and time
+components are identical, so aweXpect refuses to compare them: the expectation fails and reports that the subject
+differed in the `Kind` property. A `DateTimeKind.Unspecified` value is compatible with both.
+
+```csharp
+DateTime subject = new DateTime(2024, 12, 24, 0, 0, 0, DateTimeKind.Local);
+
+await Expect.That(subject).IsNotEqualTo(new DateTime(2024, 12, 24, 0, 0, 0, DateTimeKind.Utc));
+await Expect.That(subject).IsEqualTo(new DateTime(2024, 12, 24, 0, 0, 0, DateTimeKind.Unspecified));
+```
+
+This applies to all comparisons: `IsEqualTo`, `IsOneOf`, `IsAfter`, `IsBefore`, `IsOnOrAfter`, `IsOnOrBefore` and
+`IsBetween`, as well as to their negated counterparts, which succeed for such a pair. For `IsBetween` the subject must
+be comparable to both bounds; for `IsOneOf` an alternative with an incompatible `Kind` can never be the match, but the
+remaining alternatives are still considered. `DateTimeOffset` carries an explicit offset instead of a `Kind` and is
+therefore always comparable.
+
 ## Equality
 
 You can verify that the `DateTime` or `DateTimeOffset` is equal to another one or not:

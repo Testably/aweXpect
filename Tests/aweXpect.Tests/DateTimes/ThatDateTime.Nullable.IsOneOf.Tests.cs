@@ -42,6 +42,27 @@ public sealed partial class ThatDateTime
 						              """);
 				}
 
+				[Theory]
+				[InlineData(DateTimeKind.Unspecified, DateTimeKind.Local)]
+				[InlineData(DateTimeKind.Unspecified, DateTimeKind.Utc)]
+				[InlineData(DateTimeKind.Unspecified, DateTimeKind.Unspecified)]
+				[InlineData(DateTimeKind.Local, DateTimeKind.Unspecified)]
+				[InlineData(DateTimeKind.Utc, DateTimeKind.Unspecified)]
+				[InlineData(DateTimeKind.Local, DateTimeKind.Local)]
+				[InlineData(DateTimeKind.Utc, DateTimeKind.Utc)]
+				public async Task WhenKindsAreCompatible_ShouldSucceed(DateTimeKind subjectKind,
+					DateTimeKind expectedKind)
+				{
+					DateTime? subject = CurrentTime(subjectKind);
+					DateTime?[] expected = [EarlierTime(1, expectedKind), CurrentTime(expectedKind),];
+
+					async Task Act()
+						=> await That(subject).IsOneOf(expected)
+							.Because("an Unspecified Kind matches any other Kind and equal Kinds are comparable");
+
+					await That(Act).DoesNotThrow();
+				}
+
 				[Fact]
 				public async Task WhenNullableExpectedIsEmpty_ShouldThrowArgumentException()
 				{
@@ -111,6 +132,75 @@ public sealed partial class ThatDateTime
 						=> await That(subject).IsOneOf(expected);
 
 					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenSubjectOnlyDiffersInKindFromAllValues_ShouldFail()
+				{
+					DateTime? subject = CurrentTime(DateTimeKind.Utc);
+					DateTime?[] expected = [EarlierTime(1, DateTimeKind.Local), CurrentTime(DateTimeKind.Local),];
+
+					async Task Act()
+						=> await That(subject).IsOneOf(expected)
+							.Because("no alternative can be compared to the subject");
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is one of {Formatter.Format(expected)}, because no alternative can be compared to the subject,
+						              but it differed in the Kind property
+						              """);
+				}
+
+				[Fact]
+				public async Task WhenSubjectOnlyDiffersInKindFromSomeValues_ShouldSucceed()
+				{
+					DateTime? subject = CurrentTime(DateTimeKind.Utc);
+					DateTime?[] expected = [CurrentTime(DateTimeKind.Local), CurrentTime(DateTimeKind.Utc),];
+
+					async Task Act()
+						=> await That(subject).IsOneOf(expected);
+
+					await That(Act).DoesNotThrow()
+						.Because(
+							"an alternative with an incompatible Kind is skipped instead of failing the expectation");
+				}
+
+				[Fact]
+				public async Task WhenSubjectOnlyDiffersInKindFromTheOnlyNonNullValue_ShouldFail()
+				{
+					DateTime? subject = CurrentTime(DateTimeKind.Utc);
+					DateTime?[] expected = [null, CurrentTime(DateTimeKind.Local),];
+
+					async Task Act()
+						=> await That(subject).IsOneOf(expected)
+							.Because("a null alternative is neither comparable nor a Kind mismatch");
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is one of {Formatter.Format(expected)}, because a null alternative is neither comparable nor a Kind mismatch,
+						              but it differed in the Kind property
+						              """);
+				}
+
+				[Fact]
+				public async Task Within_WhenSubjectOnlyDiffersInKind_ShouldFail()
+				{
+					DateTime? subject = CurrentTime(DateTimeKind.Utc);
+					DateTime?[] expected = [CurrentTime(DateTimeKind.Local),];
+
+					async Task Act()
+						=> await That(subject).IsOneOf(expected)
+							.Within(3.Seconds())
+							.Because("a tolerance cannot bridge incompatible Kinds");
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is one of {Formatter.Format(expected)} ± 0:03, because a tolerance cannot bridge incompatible Kinds,
+						              but it differed in the Kind property
+						              """);
 				}
 
 				[Theory]
