@@ -17,6 +17,17 @@ await Expect.That(subject).StartsWith("some").And.EndsWith("text");
 > but it was "something different"
 > ```
 
+`.And` binds tighter than `.Or`, so `A.And.B.Or.C` is evaluated as `(A && B) || C`.
+
+`.Or` short-circuits: as soon as one alternative is met, the following ones are not evaluated anymore, which allows
+using it as a guard, e.g.
+
+```csharp
+await Expect.That(subject).IsNull().Or.Whose(x => x.Length, x => x.IsEqualTo(2));
+```
+
+`.And` does not short-circuit: all expectations are evaluated, so that the failure message can report all of them.
+
 ## On different properties of the same subject
 
 Use the `Whose`-syntax to access different properties of a common subject and combine them again with `.And` or `.Or`,

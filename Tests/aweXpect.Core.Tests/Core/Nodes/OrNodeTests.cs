@@ -222,6 +222,38 @@ public sealed class OrNodeTests
 		await That(result.FailureCause).IsNull();
 	}
 
+	[Fact]
+	public async Task NegatedExpectation_WhenFirstNodeSucceeds_ShouldIncludeAllExpectationsInMessage()
+	{
+		async Task Act()
+			=> await That(1).DoesNotComplyWith(it => it.IsEqualTo(1).Or.IsEqualTo(2));
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that 1
+			             is not equal to 1 and is not equal to 2,
+			             but it was 1
+			             """);
+	}
+
+	[Fact]
+	public async Task NegatedExpectation_WhenFirstNodeSucceeds_ShouldNotEvaluateSecondNode()
+	{
+		bool isEvaluated = false;
+
+		async Task Act()
+			=> await That(1).DoesNotComplyWith(it => it.IsEqualTo(1).Or.Satisfies(_ => isEvaluated = true));
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that 1
+			             is not equal to 1 and does not satisfy _ => isEvaluated = true,
+			             but it was 1
+			             """);
+		await That(isEvaluated).IsFalse()
+			.Because("the negation of a succeeded branch already fails the combination");
+	}
+
 	[Theory]
 	[InlineData(Outcome.Success, Outcome.Success, Outcome.Failure)]
 	[InlineData(Outcome.Failure, Outcome.Success, Outcome.Failure)]
@@ -315,6 +347,44 @@ public sealed class OrNodeTests
 		await That(sb.ToString()).IsEqualTo("foo my bar");
 	}
 
+	[Fact]
+	public async Task ShouldEvaluateSecondNodeWhenFirstNodeFails()
+	{
+		bool isEvaluated = false;
+
+		async Task Act()
+			=> await That(1).IsEqualTo(2).Or.Satisfies(_ => isEvaluated = true);
+
+		await That(Act).DoesNotThrow();
+		await That(isEvaluated).IsTrue()
+			.Because("the result is still undecided after the first branch failed");
+	}
+
+	[Fact]
+	public async Task ShouldNotAccessMemberOfSecondNodeWhenFirstNodeSucceeds()
+	{
+		int accessCount = 0;
+
+		async Task Act()
+			=> await That(1).IsEqualTo(1).Or.Whose(x =>
+			{
+				accessCount++;
+				return x;
+			}, p => p.IsEqualTo(2));
+
+		await That(Act).DoesNotThrow();
+		await That(accessCount).IsEqualTo(0)
+			.Because("a branch after a successful one must not access its member");
+	}
+
+	[Fact]
+	public async Task ShouldNotEvaluateSecondNodeWhenFirstNodeSucceeds()
+	{
+		async Task Act()
+			=> await That(1).IsEqualTo(1).Or.Satisfies<int>(_ => throw new MyException());
+
+		await That(Act).DoesNotThrow();
+	}
 
 	[Fact]
 	public async Task TryGetValue_WhenLeftHasValue_ShouldReturnLeftValue()

@@ -8,7 +8,8 @@ namespace aweXpect.Core.EvaluationContext;
 /// </summary>
 /// <remarks>
 ///     Used when the value for the expectations is not available (e.g. a <see langword="null" /> subject or a throwing
-///     member), so that constraints which cannot handle a <see langword="default" /> value are never invoked.
+///     member), so that constraints which cannot handle a <see langword="default" /> value are never invoked, or when
+///     it must not be evaluated anymore (e.g. the branches of an <c>Or</c> after one of them was met).
 /// </remarks>
 internal sealed class ExpectationTextEvaluationContext : IEvaluationContext
 {

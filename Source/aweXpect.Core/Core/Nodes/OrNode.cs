@@ -73,14 +73,22 @@ internal class OrNode : Node
 		CancellationToken cancellationToken) where TValue : default
 	{
 		ConstraintResult? combinedResult = null;
+		IEvaluationContext currentContext = context;
 		foreach ((string separator, Node node) in GetNodes())
 		{
-			ConstraintResult result = await node.IsMetBy(value, context, cancellationToken);
+			ConstraintResult result = await node.IsMetBy(value, currentContext, cancellationToken);
 			combinedResult = CombineResults(combinedResult, result, separator,
 				combinedResult?.FurtherProcessingStrategy);
 			if (result.FurtherProcessingStrategy == FurtherProcessingStrategy.IgnoreCompletely)
 			{
 				return combinedResult;
+			}
+
+			if (combinedResult.Outcome == Outcome.Success)
+			{
+				// Short-circuit: the remaining nodes only contribute their expectation text, so that neither their
+				// constraints nor their member accessors are evaluated, but the expectation still names them all.
+				currentContext = ExpectationTextEvaluationContext.For(currentContext);
 			}
 		}
 
