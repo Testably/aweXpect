@@ -461,9 +461,7 @@ public static partial class ThatEnumerable
 		return new ObjectCountResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AsyncContainConstraint<TItem>(expectationBuilder, it, grammars,
-					(q, g) => q.IsNever
-						? $"{g.Verb("does not contain", "do not contain")} {Formatter.Format(unexpected)}{options}"
-						: $"{g.Verb("does not contain", "do not contain")} {Formatter.Format(unexpected)}{options} {q.ToNegatedString()}",
+					(q, g) => q.ToDoesNotContainExpectation(g, $"{Formatter.Format(unexpected)}{options}"),
 					a => options.AreConsideredEqual(a, unexpected),
 					quantifier).Invert()),
 			subject,
@@ -486,9 +484,7 @@ public static partial class ThatEnumerable
 		return new StringEqualityTypeCountResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AsyncContainConstraint<string?>(expectationBuilder, it, grammars,
-					(q, g) => q.IsNever
-						? $"{g.Verb("does not contain", "do not contain")} {Formatter.Format(unexpected)}{options}"
-						: $"{g.Verb("does not contain", "do not contain")} {Formatter.Format(unexpected)}{options} {q.ToNegatedString()}",
+					(q, g) => q.ToDoesNotContainExpectation(g, $"{Formatter.Format(unexpected)}{options}"),
 					a => options.AreConsideredEqual(a, unexpected),
 					quantifier).Invert()),
 			subject,
@@ -513,9 +509,7 @@ public static partial class ThatEnumerable
 		return new CountResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new ContainConstraint<TItem>(expectationBuilder, it, grammars,
-					(q, g) => q.IsNever
-						? $"{g.Verb("does not contain", "do not contain")} item matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}"
-						: $"{g.Verb("does not contain", "do not contain")} item matching {doNotPopulateThisValue.TrimCommonWhiteSpace()} {q.ToNegatedString()}",
+					(q, g) => q.ToDoesNotContainExpectation(g, $"item matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}"),
 					predicate,
 					quantifier).Invert()),
 			subject,
@@ -540,9 +534,7 @@ public static partial class ThatEnumerable
 				new AsyncContainForEnumerableConstraint<IEnumerable, object?>(
 					expectationBuilder,
 					it, grammars,
-					(q, g) => q.IsNever
-						? $"{g.Verb("does not contain", "do not contain")} {Formatter.Format(unexpected)}{options}"
-						: $"{g.Verb("does not contain", "do not contain")} {Formatter.Format(unexpected)}{options} {q.ToNegatedString()}",
+					(q, g) => q.ToDoesNotContainExpectation(g, $"{Formatter.Format(unexpected)}{options}"),
 					a => options.AreConsideredEqual(a, unexpected),
 					quantifier).Invert()),
 			subject,
@@ -568,9 +560,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new ContainForEnumerableConstraint<IEnumerable, object?>(
 					expectationBuilder, it, grammars,
-					(q, g) => q.IsNever
-						? $"{g.Verb("does not contain", "do not contain")} item matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}"
-						: $"{g.Verb("does not contain", "do not contain")} item matching {doNotPopulateThisValue.TrimCommonWhiteSpace()} {q.ToNegatedString()}",
+					(q, g) => q.ToDoesNotContainExpectation(g, $"item matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}"),
 					predicate,
 					quantifier).Invert()),
 			subject,
@@ -594,9 +584,7 @@ public static partial class ThatEnumerable
 				new AsyncContainForEnumerableConstraint<ImmutableArray<TItem>, TItem>(
 					expectationBuilder,
 					it, grammars,
-					(q, g) => q.IsNever
-						? $"{g.Verb("does not contain", "do not contain")} {Formatter.Format(unexpected)}{options}"
-						: $"{g.Verb("does not contain", "do not contain")} {Formatter.Format(unexpected)}{options} {q.ToNegatedString()}",
+					(q, g) => q.ToDoesNotContainExpectation(g, $"{Formatter.Format(unexpected)}{options}"),
 					a => options.AreConsideredEqual(a, unexpected),
 					quantifier).Invert()),
 			subject,
@@ -620,9 +608,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AsyncContainForEnumerableConstraint<ImmutableArray<string?>, string?>(
 					expectationBuilder, it, grammars,
-					(q, g) => q.IsNever
-						? $"{g.Verb("does not contain", "do not contain")} {Formatter.Format(unexpected)}{options}"
-						: $"{g.Verb("does not contain", "do not contain")} {Formatter.Format(unexpected)}{options} {q.ToNegatedString()}",
+					(q, g) => q.ToDoesNotContainExpectation(g, $"{Formatter.Format(unexpected)}{options}"),
 					a => options.AreConsideredEqual(a, unexpected),
 					quantifier).Invert()),
 			subject,
@@ -649,9 +635,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new ContainForEnumerableConstraint<ImmutableArray<TItem>, TItem>(
 					expectationBuilder, it, grammars,
-					(q, g) => q.IsNever
-						? $"{g.Verb("does not contain", "do not contain")} item matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}"
-						: $"{g.Verb("does not contain", "do not contain")} item matching {doNotPopulateThisValue.TrimCommonWhiteSpace()} {q.ToNegatedString()}",
+					(q, g) => q.ToDoesNotContainExpectation(g, $"item matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}"),
 					predicate,
 					quantifier).Invert()),
 			subject,
@@ -902,6 +886,7 @@ public static partial class ThatEnumerable
 			_materializedEnumerable =
 				context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
 			_count = 0;
+			_isFinished = false;
 			foreach (TItem _ in _materializedEnumerable.Where(predicate))
 			{
 				_count++;
@@ -919,13 +904,13 @@ public static partial class ThatEnumerable
 			}
 
 			expectationBuilder.AddCollectionContext(_materializedEnumerable);
+			_isFinished = true;
 			if (quantifier.Check(_count, true) ?? _isNegated)
 			{
 				Outcome = Outcome.Success;
 				return this;
 			}
 
-			_isFinished = true;
 			Outcome = Outcome.Failure;
 			return this;
 		}
@@ -1043,6 +1028,7 @@ public static partial class ThatEnumerable
 			_materializedEnumerable =
 				context.UseMaterializedEnumerable<TItem, IEnumerable<TItem>>(actual);
 			_count = 0;
+			_isFinished = false;
 			foreach (TItem item in _materializedEnumerable)
 			{
 				if (!await predicate(item))
@@ -1065,13 +1051,13 @@ public static partial class ThatEnumerable
 			}
 
 			expectationBuilder.AddCollectionContext(_materializedEnumerable);
+			_isFinished = true;
 			if (quantifier.Check(_count, true) ?? _isNegated)
 			{
 				Outcome = Outcome.Success;
 				return this;
 			}
 
-			_isFinished = true;
 			Outcome = Outcome.Failure;
 			return this;
 		}
@@ -1184,6 +1170,7 @@ public static partial class ThatEnumerable
 
 			_materializedEnumerable = context.UseMaterializedEnumerable(actual);
 			_count = 0;
+			_isFinished = false;
 			foreach (object? item in _materializedEnumerable)
 			{
 				if (item is TItem typedItem && predicate(typedItem))
@@ -1204,13 +1191,13 @@ public static partial class ThatEnumerable
 			}
 
 			expectationBuilder.AddCollectionContext(_materializedEnumerable);
+			_isFinished = true;
 			if (quantifier.Check(_count, true) ?? _isNegated)
 			{
 				Outcome = Outcome.Success;
 				return this;
 			}
 
-			_isFinished = true;
 			Outcome = Outcome.Failure;
 			return this;
 		}
@@ -1328,6 +1315,7 @@ public static partial class ThatEnumerable
 
 			_materializedEnumerable = context.UseMaterializedEnumerable(actual);
 			_count = 0;
+			_isFinished = false;
 			foreach (object? item in _materializedEnumerable)
 			{
 				if (item is TItem typedItem && await predicate(typedItem))
@@ -1348,13 +1336,13 @@ public static partial class ThatEnumerable
 			}
 
 			expectationBuilder.AddCollectionContext(_materializedEnumerable);
+			_isFinished = true;
 			if (quantifier.Check(_count, true) ?? _isNegated)
 			{
 				Outcome = Outcome.Success;
 				return this;
 			}
 
-			_isFinished = true;
 			Outcome = Outcome.Failure;
 			return this;
 		}

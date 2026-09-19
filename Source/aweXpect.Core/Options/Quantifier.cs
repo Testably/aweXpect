@@ -15,6 +15,11 @@ public class Quantifier
 	private int? _minimum = 1;
 
 	/// <summary>
+	///     Flag indicating if the <see cref="Quantifier" /> is negated.
+	/// </summary>
+	public bool IsNegated => _isNegated;
+
+	/// <summary>
 	///     Flag indicating if the <see cref="Quantifier" /> is equivalent to never.
 	/// </summary>
 	public bool IsNever => _isNegated switch

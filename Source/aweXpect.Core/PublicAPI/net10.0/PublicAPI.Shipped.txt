@@ -516,6 +516,7 @@ aweXpect.Options.Quantifier.Between(int minimum, int maximum) -> void
 aweXpect.Options.Quantifier.Check(int amount, bool isLast) -> bool?
 aweXpect.Options.Quantifier.DeterminableAmount.get -> int
 aweXpect.Options.Quantifier.Exactly(int expected) -> void
+aweXpect.Options.Quantifier.IsNegated.get -> bool
 aweXpect.Options.Quantifier.IsNever.get -> bool
 aweXpect.Options.Quantifier.LessThan(int maximum) -> void
 aweXpect.Options.Quantifier.MoreThan(int minimum) -> void
