@@ -91,6 +91,8 @@ await Expect.That(recording).DidNotTrigger(nameof(MyClass.ThresholdReached));
 ```
 
 This is equivalent to `.Triggered(nameof(MyClass.ThresholdReached)).Never()`.
+A count negates the expectation, so `DidNotTrigger(nameof(MyClass.ThresholdReached)).AtLeast(2.Times())` expects the
+event to be triggered less than twice.
 
 ## Filtering
 

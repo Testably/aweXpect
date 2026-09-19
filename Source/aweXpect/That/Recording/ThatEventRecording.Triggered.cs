@@ -1,4 +1,5 @@
 ﻿using aweXpect.Core;
+using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Recording;
@@ -45,12 +46,11 @@ public static partial class ThatEventRecording
 		where TSubject : notnull
 	{
 		Quantifier quantifier = new();
-		quantifier.Exactly(0);
 		TriggerEventFilter filter = new();
 		RepeatedCheckOptions options = new();
 		return new EventTriggerResult<TSubject>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new HaveTriggeredConstraint<TSubject>(it, grammars, eventName, filter, quantifier, options)),
+				=> new HaveTriggeredConstraint<TSubject>(it, grammars, eventName, filter, quantifier, options).Invert()),
 			subject,
 			filter,
 			quantifier,
