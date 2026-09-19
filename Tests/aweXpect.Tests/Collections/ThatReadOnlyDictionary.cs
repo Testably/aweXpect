@@ -1,9 +1,34 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace aweXpect.Tests;
 
 public partial class ThatReadOnlyDictionary
 {
+	/// <summary>
+	///     A dictionary that implements only <see cref="IReadOnlyDictionary{TKey,TValue}" />, so that an expectation
+	///     cannot reach a key through <see cref="IDictionary{TKey,TValue}" />.
+	/// </summary>
+	public sealed class ReadOnlyOnlyDictionary<TKey, TValue>(IDictionary<TKey, TValue> inner)
+		: IReadOnlyDictionary<TKey, TValue>
+	{
+		public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => inner.GetEnumerator();
+
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+		public int Count => inner.Count;
+
+		public bool ContainsKey(TKey key) => inner.ContainsKey(key);
+
+		public bool TryGetValue(TKey key, out TValue value) => inner.TryGetValue(key, out value!);
+
+		public TValue this[TKey key] => inner[key];
+
+		public IEnumerable<TKey> Keys => inner.Keys;
+
+		public IEnumerable<TValue> Values => inner.Values;
+	}
+
 	public static IReadOnlyDictionary<TKey, TValue> ToDictionary<TKey, TValue>(TKey[] keys, TValue[] values)
 		where TKey : notnull
 	{
