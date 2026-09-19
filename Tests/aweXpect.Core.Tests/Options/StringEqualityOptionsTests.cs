@@ -124,10 +124,10 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new();
 			sut.AsRegex().IgnoringIndentation();
 
-			// The window "  ab" would only match once it is de-indented a second time.
 			int result = await sut.CountOccurrences("x  abz", "^ab$");
 
-			await That(result).IsEqualTo(0);
+			await That(result).IsEqualTo(0)
+				.Because("the indentation is removed once from the whole string, not a second time from each occurrence");
 		}
 
 		[Fact]

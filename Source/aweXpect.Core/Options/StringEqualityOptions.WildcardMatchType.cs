@@ -22,13 +22,20 @@ public partial class StringEqualityOptions
 
 	private sealed class WildcardMatchType : IStringMatchType
 	{
+		/// <summary>
+		///     Counts the non-overlapping matches of the <paramref name="expected" /> wildcard pattern in the
+		///     <paramref name="actual" /> value.
+		/// </summary>
+		public static int CountOccurrences(string actual, string expected, bool ignoreCase)
+			=> RegexMatchType.CountOccurrences(actual, WildcardToUnanchoredRegularExpression(expected), ignoreCase);
+
 		private static string WildcardToRegularExpression(string value)
-		{
-			string regex = Regex.Escape(value)
+			=> $"^{WildcardToUnanchoredRegularExpression(value)}$";
+
+		private static string WildcardToUnanchoredRegularExpression(string value)
+			=> Regex.Escape(value)
 				.Replace("\\?", ".")
 				.Replace("\\*", "(.|\\n)*");
-			return $"^{regex}$";
-		}
 
 		#region IStringMatchType Members
 

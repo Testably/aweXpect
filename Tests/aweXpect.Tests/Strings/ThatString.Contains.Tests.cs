@@ -224,6 +224,243 @@ public sealed partial class ThatString
 			}
 		}
 
+		public sealed class AsRegexTests
+		{
+			[Fact]
+			public async Task ShouldIncludeSettingInExpectationText()
+			{
+				string subject = "foo";
+				string expected = "b.r";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsRegex();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains "b.r" at least once as regex,
+					             but it did not contain "b.r" in "foo"
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenCombinedWithIgnoringCase_ShouldIgnoreCase()
+			{
+				string subject = "AXXXB";
+				string expected = "a.*b";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsRegex().IgnoringCase();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenMatchIsLongerThanThePattern_ShouldSucceed()
+			{
+				string subject = "axxxb";
+				string expected = "a.*b";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsRegex();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenPatternMatchesTheEmptyString_ShouldNotCountEmptyMatches()
+			{
+				string subject = "bbb";
+				string expected = "a*";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsRegex();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains "a*" at least once as regex,
+					             but it did not contain "a*" in "bbb"
+					             """)
+					.Because("an empty match does not cover any occurrence");
+			}
+
+			[Fact]
+			public async Task WhenUsedWithAtLeast_ShouldCountAllMatches()
+			{
+				string subject = "abcabc";
+				string expected = "[a-c]{3}";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsRegex().AtLeast(2);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenUsedWithAtMost_ShouldCountAllMatches()
+			{
+				string subject = "abcabc";
+				string expected = "[a-c]{3}";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsRegex().AtMost(2);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenUsedWithExactly_ShouldCountAGreedyMatchOnce()
+			{
+				string subject = "aaaa";
+				string expected = "a+";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsRegex().Exactly(1);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenUsedWithExactly_ShouldCountNonOverlappingMatches()
+			{
+				string subject = "abcabc";
+				string expected = "[a-c]{3}";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsRegex().Exactly(2);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenUsedWithNever_ShouldSucceedWhenPatternDoesNotMatch()
+			{
+				string subject = "xyz";
+				string expected = "a.*b";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsRegex().Never();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenUsedWithOnce_ShouldCountTheSingleMatch()
+			{
+				string subject = "axxxb";
+				string expected = "a.*b";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsRegex().Once();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenUsedWithTwice_ShouldFailWithTheRealCount()
+			{
+				string subject = "axxxb";
+				string expected = "a.*b";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsRegex().Twice();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains "a.*b" exactly twice as regex,
+					             but it contained "a.*b" once in "axxxb"
+					             """);
+			}
+		}
+
+		public sealed class AsWildcardTests
+		{
+			[Fact]
+			public async Task ShouldIncludeSettingInExpectationText()
+			{
+				string subject = "foo";
+				string expected = "b?r";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsWildcard();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains "b?r" at least once as wildcard,
+					             but it did not contain "b?r" in "foo"
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenCombinedWithIgnoringCase_ShouldIgnoreCase()
+			{
+				string subject = "AXXB";
+				string expected = "a*b";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsWildcard().IgnoringCase();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenMatchIsLongerThanThePattern_ShouldSucceed()
+			{
+				string subject = "axxb";
+				string expected = "a*b";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsWildcard();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenPatternMatchesTheEmptyString_ShouldNotCountEmptyMatches()
+			{
+				string subject = "";
+				string expected = "*";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsWildcard();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains "*" at least once as wildcard,
+					             but it did not contain "*" in ""
+					             """)
+					.Because("an empty match does not cover any occurrence");
+			}
+
+			[Fact]
+			public async Task WhenUsedWithOnce_ShouldCountAGreedyMatchOnce()
+			{
+				string subject = "axxb ayb";
+				string expected = "a*b";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsWildcard().Once();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenUsedWithTwice_ShouldCountAllMatches()
+			{
+				string subject = "axb ayb";
+				string expected = "a?b";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsWildcard().Twice();
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
 		public sealed class IgnoringCaseTests
 		{
 			[Fact]

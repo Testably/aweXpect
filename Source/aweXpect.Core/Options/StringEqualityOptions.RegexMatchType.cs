@@ -21,6 +21,34 @@ public partial class StringEqualityOptions
 
 	private sealed class RegexMatchType : IStringMatchType
 	{
+		/// <summary>
+		///     Counts the non-overlapping matches of the <paramref name="expected" /> pattern in the
+		///     <paramref name="actual" /> value.
+		/// </summary>
+		/// <remarks>
+		///     Empty matches are not counted, because they do not cover anything in the <paramref name="actual" /> value,
+		///     consistent with an empty expected value which never occurs.
+		/// </remarks>
+		public static int CountOccurrences(string actual, string expected, bool ignoreCase)
+		{
+			RegexOptions options = RegexOptions.Multiline;
+			if (ignoreCase)
+			{
+				options |= RegexOptions.IgnoreCase;
+			}
+
+			int count = 0;
+			foreach (Match match in Regex.Matches(actual, expected, options, RegexTimeout))
+			{
+				if (match.Length > 0)
+				{
+					count++;
+				}
+			}
+
+			return count;
+		}
+
 		#region IMatchType Members
 
 		/// <inheritdoc
