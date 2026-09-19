@@ -21,6 +21,77 @@ public sealed class EventRecordingTests
 	}
 
 	[Fact]
+	public async Task WhenAnEventCannotBeAttached_ShouldRecordTheOtherEvents()
+	{
+		ManyParametersClass subject = new();
+
+		IEventRecording<ManyParametersClass> recording = subject.Record().Events();
+		subject.NotifyOtherEvent();
+		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+
+		await That(result.GetEventCount(nameof(ManyParametersClass.OtherEvent))).IsEqualTo(1)
+			.Because("an event the reflective fallback cannot bind a handler to must not cost the recording of all the other events");
+	}
+
+	[Fact]
+	public async Task WhenAnEventCannotBeAttached_ShouldThrowNotSupportedExceptionWhenItIsAsserted()
+	{
+		ManyParametersClass sut = new();
+		IEventRecording<ManyParametersClass> recording = sut.Record().Events();
+		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+
+		void Act()
+			=> result.GetEventCount(nameof(ManyParametersClass.CustomEvent));
+
+		await That(Act).Throws<NotSupportedException>()
+			.WithMessage("The CustomEvent event contains too many parameters (5): [int, int, int, int, int]")
+			.Because("a skipped event has to name its reason instead of looking like an event that was never triggered");
+	}
+
+	[Fact]
+	public async Task WhenAnEventCannotBeAttached_WhenAnotherEventIsRequestedByName_ShouldRecordIt()
+	{
+		ManyParametersClass subject = new();
+
+		IEventRecording<ManyParametersClass> recording =
+			subject.Record().Events(nameof(ManyParametersClass.OtherEvent));
+		subject.NotifyOtherEvent();
+		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+
+		await That(result.GetEventCount(nameof(ManyParametersClass.OtherEvent))).IsEqualTo(1)
+			.Because("only the requested events are attached, so an unattachable event of the same type is never touched");
+	}
+
+	[Fact]
+	public async Task WhenAnEventCannotBeAttached_WhenRequestedByName_ShouldThrowNotSupportedException()
+	{
+		ManyParametersClass sut = new();
+
+		void Act()
+			=> sut.Record().Events(nameof(ManyParametersClass.CustomEvent));
+
+		await That(Act).Throws<NotSupportedException>()
+			.WithMessage("The CustomEvent event contains too many parameters (5): [int, int, int, int, int]")
+			.Because("an event that was asked for by name is what the recording is about, so it has to fail right away");
+	}
+
+	[Fact]
+	public async Task WhenAnEventCannotBeAttached_WithUnrecordedEventName_ShouldNameTheSkippedEvent()
+	{
+		ManyParametersClass sut = new();
+		IEventRecording<ManyParametersClass> recording = sut.Record().Events();
+		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+
+		void Act()
+			=> result.GetEventCount("Typo");
+
+		await That(Act).Throws<NotSupportedException>()
+			.WithMessage(
+				"Event Typo was not recorded on sut, only [\"OtherEvent\"]. No handler could be attached to [\"CustomEvent\"]. When publishing with trimming or Native AOT enabled, ensure that the type is rooted, so that its events are preserved.")
+			.Because("a skipped event is missing from the recorded ones for a reason that the message has to name");
+	}
+
+	[Fact]
 	public async Task WhenEventWasNotRecorded_ShouldThrowNotSupportedException()
 	{
 		CustomEventClass sut = new();
@@ -42,11 +113,26 @@ public sealed class EventRecordingTests
 		ReturningHandlerClass sut = new();
 
 		void Act()
-			=> sut.Record().Events();
+			=> sut.Record().Events(nameof(ReturningHandlerClass.CustomEvent));
 
 		await That(Act).Throws<NotSupportedException>()
 			.WithMessage("The CustomEvent event cannot be recorded, because its handler returns int")
 			.Because("the recorder cannot supply a return value, so the reason has to be named instead of a binding error");
+	}
+
+	[Fact]
+	public async Task WhenHandlerReturnsAValue_WhenRecordingAllEvents_ShouldSkipTheEvent()
+	{
+		ReturningHandlerClass sut = new();
+		IEventRecording<ReturningHandlerClass> recording = sut.Record().Events();
+		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+
+		void Act()
+			=> result.GetEventCount(nameof(ReturningHandlerClass.CustomEvent));
+
+		await That(Act).Throws<NotSupportedException>()
+			.WithMessage("The CustomEvent event cannot be recorded, because its handler returns int")
+			.Because("the reason is kept until the event is asked for, so that the other events can still be recorded");
 	}
 
 	[Fact]
@@ -55,11 +141,42 @@ public sealed class EventRecordingTests
 		ByReferenceHandlerClass sut = new();
 
 		void Act()
-			=> sut.Record().Events();
+			=> sut.Record().Events(nameof(ByReferenceHandlerClass.CustomEvent));
 
 		await That(Act).Throws<NotSupportedException>()
 			.WithMessage("The CustomEvent event cannot be recorded, because its handler takes the parameter value by reference")
 			.Because("a by-reference parameter cannot be boxed into the recorded arguments");
+	}
+
+	[Fact]
+	public async Task WhenHandlerTakesAParameterByReference_WhenRecordingAllEvents_ShouldSkipTheEvent()
+	{
+		ByReferenceHandlerClass sut = new();
+		IEventRecording<ByReferenceHandlerClass> recording = sut.Record().Events();
+		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+
+		void Act()
+			=> result.GetEventCount(nameof(ByReferenceHandlerClass.CustomEvent));
+
+		await That(Act).Throws<NotSupportedException>()
+			.WithMessage("The CustomEvent event cannot be recorded, because its handler takes the parameter value by reference")
+			.Because("the reason is kept until the event is asked for, so that the other events can still be recorded");
+	}
+
+	[Fact]
+	public async Task WhenNoEventCanBeAttached_WithUnrecordedEventName_ShouldNotClaimThatNoEventWasFound()
+	{
+		OnlyUnrecordableClass sut = new();
+		IEventRecording<OnlyUnrecordableClass> recording = sut.Record().Events();
+		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+
+		void Act()
+			=> result.GetEventCount("Typo");
+
+		await That(Act).Throws<NotSupportedException>()
+			.WithMessage(
+				"Event Typo was not recorded on sut, because no event was recorded. No handler could be attached to [\"CustomEvent\"]. When publishing with trimming or Native AOT enabled, ensure that the type is rooted, so that its events are preserved.")
+			.Because("reflection did find an event, so blaming an empty recording on a removed event would mislead");
 	}
 
 	[Fact]
@@ -277,6 +394,28 @@ public sealed class EventRecordingTests
 	private sealed class ByReferenceHandlerClass
 	{
 		public delegate void CustomEventDelegate(ref int value);
+
+#pragma warning disable CS0067 // Event is never used
+		public event CustomEventDelegate? CustomEvent;
+#pragma warning restore CS0067 // Event is never used
+	}
+
+	private sealed class ManyParametersClass
+	{
+		public delegate void CustomEventDelegate(int arg1, int arg2, int arg3, int arg4, int arg5);
+
+#pragma warning disable CS0067 // Event is never used
+		public event CustomEventDelegate? CustomEvent;
+#pragma warning restore CS0067 // Event is never used
+
+		public event EventHandler? OtherEvent;
+
+		public void NotifyOtherEvent() => OtherEvent?.Invoke(this, EventArgs.Empty);
+	}
+
+	private sealed class OnlyUnrecordableClass
+	{
+		public delegate void CustomEventDelegate(int arg1, int arg2, int arg3, int arg4, int arg5);
 
 #pragma warning disable CS0067 // Event is never used
 		public event CustomEventDelegate? CustomEvent;

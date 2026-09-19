@@ -105,16 +105,21 @@ public sealed partial class ThatEventRecording
 			}
 
 			[Fact]
-			public async Task WhenUsingEventWith5Parameters_ShouldThrowNotSupportedException()
+			public async Task WhenUsingEventWith5Parameters_ShouldFailWithTheReasonItWasNotRecorded()
 			{
 				CustomEventWithParametersClass<string, int?, bool, DateTime, int> sut = new();
-
-				void Act() =>
+				IEventRecording<CustomEventWithParametersClass<string, int?, bool, DateTime, int>> recording =
 					sut.Record().Events();
 
-				await That(Act).Throws<NotSupportedException>()
+				async Task Act() =>
+					await That(recording).Triggered(
+						nameof(CustomEventWithParametersClass<string, int?, bool, DateTime, int>.CustomEvent));
+
+				await That(Act).Throws<InvalidOperationException>()
 					.WithMessage(
-						"The CustomEvent event contains too many parameters (5): [string, int?, bool, DateTime, int]");
+						"*The CustomEvent event contains too many parameters (5): [string, int?, bool, DateTime, int]")
+					.AsWildcard()
+					.Because("the recording skips an event it cannot attach to, so the reason surfaces on the expectation that asks for it");
 			}
 		}
 
