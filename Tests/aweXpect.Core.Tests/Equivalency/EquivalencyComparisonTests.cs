@@ -193,6 +193,37 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenCollectionElementsFormatIdentically_ShouldAppendTheRuntimeType()
+	{
+		var actual = new
+		{
+			Values = new object[]
+			{
+				1,
+			},
+		};
+		var expected = new
+		{
+			Values = new object[]
+			{
+				1L,
+			},
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element Values[0] differed:
+		                                                       Found: 1 (int)
+		                                                    Expected: 1 (long)
+		                                                """).IgnoringNewlineStyle()
+			.Because("two elements that format identically are only told apart by their type");
+	}
+
+	[Fact]
 	public async Task WhenComparedByValue_ShouldReportTheDifferenceInsteadOfThrowing()
 	{
 		ValueLikeWithoutMembers actual = new(1);
@@ -304,6 +335,31 @@ public sealed class EquivalencyComparisonTests
 		                                                       Found: 2
 		                                                    Expected: 3
 		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenEnumMembersOfDifferentTypesFormatIdentically_ShouldAppendTheRuntimeType()
+	{
+		var actual = new
+		{
+			Value = (object)EnumWithFoo.Foo,
+		};
+		var expected = new
+		{
+			Value = (object)OtherEnumWithFoo.Foo,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                       Found: Foo (EquivalencyComparisonTests.EnumWithFoo)
+		                                                    Expected: Foo (EquivalencyComparisonTests.OtherEnumWithFoo)
+		                                                """).IgnoringNewlineStyle()
+			.Because("the rule is about values that cannot be told apart, not about numeric types");
 	}
 
 	[Fact]
@@ -833,6 +889,79 @@ public sealed class EquivalencyComparisonTests
 			.Because("reflection returns both declarations, but only the one on the most derived type is visible");
 	}
 
+	[Fact]
+	public async Task WhenMembersFormatIdentically_ShouldAppendTheRuntimeType()
+	{
+		var actual = new
+		{
+			Value = 1,
+		};
+		var expected = new
+		{
+			Value = 1L,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                       Found: 1 (int)
+		                                                    Expected: 1 (long)
+		                                                """).IgnoringNewlineStyle()
+			.Because("an int member and a long member are a real difference that the formatted values do not show");
+	}
+
+	[Fact]
+	public async Task WhenMembersFormatIdenticallyWithTheSameType_ShouldNotAppendTheRuntimeType()
+	{
+		ValueLikeWithConstantText actual = new(1);
+		ValueLikeWithConstantText expected = new(2);
+		StringBuilder failureBuilder = new();
+		EquivalencyOptions options = new()
+		{
+			ComparisonType = EquivalencyComparisonType.ByValue,
+		};
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  It differed:
+		                                                       Found: ValueLikeWithConstantText
+		                                                    Expected: ValueLikeWithConstantText
+		                                                """).IgnoringNewlineStyle()
+			.Because("one and the same type on both sides tells the two values apart just as little as the values do");
+	}
+
+	[Fact]
+	public async Task WhenMembersOfDifferentTypesFormatDifferently_ShouldNotAppendTheRuntimeType()
+	{
+		var actual = new
+		{
+			Value = 1,
+		};
+		var expected = new
+		{
+			Value = 2L,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                       Found: 1
+		                                                    Expected: 2
+		                                                """).IgnoringNewlineStyle()
+			.Because("the type would be noise where the values already differ");
+	}
+
 	[Theory]
 	[InlineData("ame", false)]
 	[InlineData("d.Name", false)]
@@ -1053,6 +1182,37 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenNestedMembersFormatIdentically_ShouldAppendTheRuntimeType()
+	{
+		var actual = new
+		{
+			Inner = new
+			{
+				Value = 1,
+			},
+		};
+		var expected = new
+		{
+			Inner = new
+			{
+				Value = 1L,
+			},
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Inner.Value differed:
+		                                                       Found: 1 (int)
+		                                                    Expected: 1 (long)
+		                                                """).IgnoringNewlineStyle()
+			.Because("the member path does not tell the values apart either");
+	}
+
+	[Fact]
 	public async Task WhenNoMembersCanBeCompared_ShouldThrowInvalidOperationException()
 	{
 		ClassWithOnlyPrivateState actual = new(1);
@@ -1065,6 +1225,31 @@ public sealed class EquivalencyComparisonTests
 			.WithMessage(
 				"It has no members that could be compared on EquivalencyComparisonTests.ClassWithOnlyPrivateState, which would make the equivalency comparison succeed without verifying anything.*")
 			.AsWildcard();
+	}
+
+	[Fact]
+	public async Task WhenOneMemberIsNull_ShouldNotAppendTheRuntimeType()
+	{
+		var actual = new
+		{
+			Value = (object?)null,
+		};
+		var expected = new
+		{
+			Value = (object?)1L,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                       Found: <null>
+		                                                    Expected: 1
+		                                                """).IgnoringNewlineStyle()
+			.Because("a missing value has no runtime type, and it is already distinguishable without one");
 	}
 
 	[Fact]
@@ -1362,6 +1547,11 @@ public sealed class EquivalencyComparisonTests
 		public int Additional { get; } = additional;
 	}
 
+	private enum EnumWithFoo
+	{
+		Foo,
+	}
+
 	private sealed class FieldHidingProperty(int property, int field) : WithProperty(property)
 	{
 		public new int Value = field;
@@ -1382,6 +1572,11 @@ public sealed class EquivalencyComparisonTests
 		public override string ToString() => $"{nameof(OtherClassWithOnlyPrivateState)}({_value})";
 	}
 
+	private enum OtherEnumWithFoo
+	{
+		Foo,
+	}
+
 	private sealed class PropertyHidingProperty(int property, string text) : WithProperty(property)
 	{
 		public new string Value { get; } = text;
@@ -1397,6 +1592,18 @@ public sealed class EquivalencyComparisonTests
 		public int Visible { get; set; }
 
 		public int PhantomValue() => phantom;
+	}
+
+	private sealed class ValueLikeWithConstantText(int value)
+	{
+		private readonly int _value = value;
+
+		public override bool Equals(object? obj)
+			=> obj is ValueLikeWithConstantText other && other._value == _value;
+
+		public override int GetHashCode() => _value;
+
+		public override string ToString() => nameof(ValueLikeWithConstantText);
 	}
 
 	private sealed class ValueLikeWithoutMembers(int value)

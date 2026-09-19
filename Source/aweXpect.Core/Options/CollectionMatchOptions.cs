@@ -227,8 +227,9 @@ public partial class CollectionMatchOptions(
 		{
 			foreach (KeyValuePair<int, (T Item, TExpected Expected)> incorrectItem in incorrectItems)
 			{
-				yield return
-					$"contained item {Formatter.Format(incorrectItem.Value.Item)} at index {incorrectItem.Key} instead of {Formatter.Format(incorrectItem.Value.Expected)}";
+				(string item, string expected) =
+					ValuePairFormatter.Format(incorrectItem.Value.Item, incorrectItem.Value.Expected);
+				yield return $"contained item {item} at index {incorrectItem.Key} instead of {expected}";
 			}
 		}
 	}
