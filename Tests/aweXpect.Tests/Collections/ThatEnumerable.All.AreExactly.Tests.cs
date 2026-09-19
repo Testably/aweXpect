@@ -321,6 +321,48 @@ public sealed partial class ThatEnumerable
 				}
 			}
 
+			public sealed class NegatedTests
+			{
+				[Fact]
+				public async Task WhenAllItemsMatchTypeExactly_ShouldFail()
+				{
+					IEnumerable<MyBaseClass> subject = [new MyClass { Foo = 1, }, new MyClass { Foo = 2, },];
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.All().AreExactly<MyClass>());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is exactly of type ThatEnumerable.All.AreExactly.MyClass for not all items,
+						             but all 2 were
+
+						             Collection:
+						             [
+						               ThatEnumerable.All.AreExactly.MyClass {
+						                 Bar = 0,
+						                 Foo = 1
+						               },
+						               ThatEnumerable.All.AreExactly.MyClass {
+						                 Bar = 0,
+						                 Foo = 2
+						               }
+						             ]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenOneItemIsOfDerivedType_ShouldSucceed()
+				{
+					IEnumerable<MyBaseClass> subject = [new MyClass { Foo = 1, }, new MyBaseClass { Foo = 2, },];
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.All().AreExactly<MyBaseClass>());
+
+					await That(Act).DoesNotThrow();
+				}
+			}
+
 			public class MyClass : MyBaseClass
 			{
 				public int Bar { get; set; }

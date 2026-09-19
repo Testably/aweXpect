@@ -268,6 +268,50 @@ public sealed partial class ThatAsyncEnumerable
 				}
 			}
 
+			public sealed class NegatedTests
+			{
+				[Fact]
+				public async Task WhenAllItemsMatchType_ShouldFail()
+				{
+					IAsyncEnumerable<MyBaseClass> subject =
+						ToAsyncEnumerable<MyBaseClass>(new MyClass { Foo = 1, }, new MyClass { Foo = 2, });
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.All().Are<MyClass>());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is of type ThatAsyncEnumerable.All.Are.MyClass for not all items,
+						             but all 2 were
+
+						             Collection:
+						             [
+						               ThatAsyncEnumerable.All.Are.MyClass {
+						                 Bar = 0,
+						                 Foo = 1
+						               },
+						               ThatAsyncEnumerable.All.Are.MyClass {
+						                 Bar = 0,
+						                 Foo = 2
+						               }
+						             ]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenOneItemDoesNotMatchType_ShouldSucceed()
+				{
+					IAsyncEnumerable<MyBaseClass> subject =
+						ToAsyncEnumerable<MyBaseClass>(new MyClass { Foo = 1, }, new MyBaseClass { Foo = 2, });
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.All().Are<MyClass>());
+
+					await That(Act).DoesNotThrow();
+				}
+			}
+
 			public class MyClass : MyBaseClass
 			{
 				public int Bar { get; set; }
