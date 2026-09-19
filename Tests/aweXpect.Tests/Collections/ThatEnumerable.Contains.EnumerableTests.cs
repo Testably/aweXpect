@@ -358,6 +358,37 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenExpectedIsNullLiteral_ShouldMatchTheNullItem()
+			{
+				IEnumerable subject = new ArrayList { 1, "a", null, };
+
+				async Task Act()
+					=> await That(subject).Contains(null).Once();
+
+				await That(Act).DoesNotThrow()
+					.Because("a `null` literal is a value, not a predicate");
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsNullLiteral_WithoutANullItem_ShouldFail()
+			{
+				ArrayList subject = new() { 1, "a", };
+
+				async Task Act()
+					=> await That(subject).Contains(null);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains <null> at least once,
+					             but it did not contain it
+
+					             Collection:
+					             [1, "a"]
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				int expected = 42;
@@ -691,7 +722,7 @@ public sealed partial class ThatEnumerable
 				IEnumerable subject = Factory.GetFibonacciNumbers();
 
 				async Task Act()
-					=> await That(subject).Contains(null!);
+					=> await That(subject).Contains(predicate: null!);
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("predicate").And

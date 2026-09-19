@@ -310,6 +310,26 @@ public sealed partial class ThatEnumerable
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenUnexpectedIsNullLiteral_ShouldMatchTheNullItem()
+			{
+				ImmutableArray<int?> subject = [1, null, 3,];
+
+				async Task Act()
+					=> await That(subject).DoesNotContain(null);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain <null>,
+					             but it contained it at least once
+
+					             Collection:
+					             [1, <null>, 3]
+					             """)
+					.Because("a null item is an ordinary value for a nullable element type");
+			}
 		}
 
 		public sealed class ImmutableStringItemTests
@@ -525,6 +545,29 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).DoesNotContain("foo");
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenUnexpectedIsNullLiteral_ShouldMatchTheNullItem()
+			{
+				ImmutableArray<string?> subject = ["FOO", null,];
+
+				async Task Act()
+					=> await That(subject).DoesNotContain(null);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain <null>,
+					             but it contained it at least once
+
+					             Collection:
+					             [
+					               "FOO",
+					               <null>
+					             ]
+					             """)
+					.Because("a null item is an ordinary value for a nullable element type");
 			}
 		}
 

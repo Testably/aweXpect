@@ -348,6 +348,42 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WithCollectionExpression_ShouldCompareTheItems()
+			{
+				ImmutableArray<int> subject = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo([3, 2, 1,]).InAnyOrder();
+
+				await That(Act).DoesNotThrow()
+					.Because("a collection expression must compare the items and not the immutable arrays");
+			}
+
+			[Fact]
+			public async Task WithCollectionExpression_WithDifferentItems_ShouldFail()
+			{
+				ImmutableArray<int> subject = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo([1, 2, 4,]);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection [1, 2, 4,] in order,
+					             but it
+					               contained item 3 at index 2 instead of 4 and
+					               lacked 1 of 3 expected items: 4
+
+					             Collection:
+					             [1, 2, 3]
+
+					             Expected:
+					             [1, 2, 4]
+					             """);
+			}
+
+			[Fact]
 			public async Task WithCollectionInDifferentOrder_ShouldFail()
 			{
 				ImmutableArray<string?> subject = ["a", "c", "b",];
@@ -509,6 +545,19 @@ public sealed partial class ThatEnumerable
 					               "c"
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WithImmutableArrayWithSameItems_ShouldSucceed()
+			{
+				ImmutableArray<int> subject = [1, 2, 3,];
+				ImmutableArray<int> expected = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).DoesNotThrow()
+					.Because("the items are compared, although the backing arrays are different instances");
 			}
 
 			[Fact]
@@ -2034,6 +2083,18 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).IsEqualTo(expected).IgnoringTrailingWhiteSpace();
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithCollectionExpression_ShouldCompareTheItemsAsStrings()
+			{
+				ImmutableArray<string?> subject = ["FOO", "BAR",];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(["foo", "bar",]).IgnoringCase();
+
+				await That(Act).DoesNotThrow()
+					.Because("a collection expression must keep the string options of the collection comparison");
 			}
 		}
 	}

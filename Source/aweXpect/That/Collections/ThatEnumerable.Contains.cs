@@ -53,6 +53,10 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection contains the <paramref name="expected" /> value.
 	/// </summary>
+	/// <remarks>
+	///     The priority lets a <see langword="null" /> literal bind to this overload instead of the collection overloads.
+	/// </remarks>
+	[OverloadResolutionPriority(1)]
 	[GuaranteesNotNull]
 	public static StringEqualityTypeCountResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>> Contains(
 		this IThat<IEnumerable<string?>?> subject,
@@ -133,6 +137,11 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection contains an item that satisfies the <paramref name="predicate" />.
 	/// </summary>
+	/// <remarks>
+	///     The priority is below the one of the value overload, so that a <see langword="null" /> literal binds to the value
+	///     overload instead of to this one.
+	/// </remarks>
+	[OverloadResolutionPriority(-2)]
 	[GuaranteesNotNull]
 	public static CountResult<IEnumerable, IThat<IEnumerable?>>
 		Contains(
@@ -512,6 +521,10 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection does not contain the <paramref name="unexpected" /> value.
 	/// </summary>
+	/// <remarks>
+	///     The priority lets a <see langword="null" /> literal bind to this overload instead of the collection overloads.
+	/// </remarks>
+	[OverloadResolutionPriority(1)]
 	[GuaranteesNotNull]
 	public static StringEqualityTypeCountResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 		DoesNotContain(
@@ -585,6 +598,11 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection contains no item that satisfies the <paramref name="predicate" />.
 	/// </summary>
+	/// <remarks>
+	///     The priority is below the one of the value overload, so that a <see langword="null" /> literal binds to the value
+	///     overload instead of to this one.
+	/// </remarks>
+	[OverloadResolutionPriority(-2)]
 	[GuaranteesNotNull]
 	public static CountResult<IEnumerable, IThat<IEnumerable?>>
 		DoesNotContain(
@@ -938,6 +956,25 @@ public static partial class ThatEnumerable
 			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
 
+	/// <summary>
+	///     Casts the <paramref name="item" /> of an untyped enumerable to <typeparamref name="TItem" />.
+	/// </summary>
+	/// <remarks>
+	///     A <see langword="null" /> item is not matched by a type pattern, but is a valid value whenever
+	///     <typeparamref name="TItem" /> admits it.
+	/// </remarks>
+	private static bool TryCastItem<TItem>(object? item, out TItem typedItem)
+	{
+		if (item is TItem typed)
+		{
+			typedItem = typed;
+			return true;
+		}
+
+		typedItem = default!;
+		return item is null && default(TItem) is null;
+	}
+
 	private sealed class ContainConstraint<TItem>(
 		ExpectationBuilder expectationBuilder,
 		string it,
@@ -1253,7 +1290,7 @@ public static partial class ThatEnumerable
 			_isFinished = false;
 			foreach (object? item in _materializedEnumerable)
 			{
-				if (item is TItem typedItem && predicate(typedItem))
+				if (TryCastItem(item, out TItem typedItem) && predicate(typedItem))
 				{
 					_count++;
 					bool? check = quantifier.Check(_count, false);
@@ -1398,7 +1435,7 @@ public static partial class ThatEnumerable
 			_isFinished = false;
 			foreach (object? item in _materializedEnumerable)
 			{
-				if (item is TItem typedItem && await predicate(typedItem))
+				if (TryCastItem(item, out TItem typedItem) && await predicate(typedItem))
 				{
 					_count++;
 					bool? check = quantifier.Check(_count, false);
