@@ -25,6 +25,36 @@ public sealed partial class ThatTimeSpan
 			}
 
 			[Fact]
+			public async Task WhenMaximumIsSmallerThanMinimum_ShouldThrowArgumentOutOfRangeException()
+			{
+				TimeSpan subject = CurrentTime();
+
+				async Task Act()
+					=> await That(subject).IsNotBetween(LaterTime()).And(EarlierTime());
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("maximum").And
+					.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenMinimumAndMaximumAreEqual_ShouldFail()
+			{
+				TimeSpan subject = CurrentTime();
+
+				async Task Act()
+					=> await That(subject).IsNotBetween(subject).And(subject);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not between {Formatter.Format(subject)} and {Formatter.Format(subject)},
+					              but it was {Formatter.Format(subject)}
+					              """)
+					.Because("a range with equal bounds is still a valid range");
+			}
+
+			[Fact]
 			public async Task WhenMinimumIsNull_ShouldFail()
 			{
 				TimeSpan subject = CurrentTime();
@@ -161,6 +191,21 @@ public sealed partial class ThatTimeSpan
 
 		public sealed class WithinTests
 		{
+			[Fact]
+			public async Task WhenMaximumIsSmallerThanMinimum_ShouldThrowArgumentOutOfRangeException()
+			{
+				TimeSpan subject = CurrentTime();
+
+				async Task Act()
+					=> await That(subject).IsNotBetween(LaterTime()).And(EarlierTime())
+						.Within(3.Seconds());
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("maximum").And
+					.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix()
+					.Because("a tolerance must not turn an inverted range into a satisfiable one");
+			}
+
 			[Fact]
 			public async Task WhenMaximumValueIsOutsideTheTolerance_ShouldSucceed()
 			{

@@ -20,12 +20,16 @@ public static partial class ThatNullableDateTimeOffset
 			DateTimeOffset? minimum)
 	{
 		TimeTolerance tolerance = new();
-		return new BetweenResult<TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>, DateTimeOffset?>(maximum
-			=> new TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>(
-				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-					new IsBetweenConstraint(it, grammars, minimum, maximum, tolerance)),
-				subject,
-				tolerance));
+		return new BetweenResult<TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>, DateTimeOffset?>(
+			maximum =>
+			{
+				ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
+				return new TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>(
+					subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+						new IsBetweenConstraint(it, grammars, minimum, maximum, tolerance)),
+					subject,
+					tolerance);
+			});
 	}
 
 	/// <summary>
@@ -38,12 +42,16 @@ public static partial class ThatNullableDateTimeOffset
 			DateTimeOffset? minimum)
 	{
 		TimeTolerance tolerance = new();
-		return new BetweenResult<TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>, DateTimeOffset?>(maximum
-			=> new TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>(
-				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-					new IsBetweenConstraint(it, grammars, minimum, maximum, tolerance).Invert()),
-				subject,
-				tolerance));
+		return new BetweenResult<TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>, DateTimeOffset?>(
+			maximum =>
+			{
+				ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
+				return new TimeToleranceResult<DateTimeOffset?, IThat<DateTimeOffset?>>(
+					subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+						new IsBetweenConstraint(it, grammars, minimum, maximum, tolerance).Invert()),
+					subject,
+					tolerance);
+			});
 	}
 
 	private sealed class IsBetweenConstraint(
