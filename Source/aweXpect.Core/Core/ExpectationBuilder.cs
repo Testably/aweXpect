@@ -693,7 +693,8 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		}
 		catch (Exception exception)
 		{
-			ConstraintResult expectation = await rootNode.IsMetBy(default(TValue), context, cancellationToken);
+			ConstraintResult expectation = await rootNode.IsMetBy(default(TValue),
+				EvaluationContext.ExpectationTextEvaluationContext.For(context), cancellationToken);
 			Customize.aweXpect.TraceWriter.Value?.WriteMessage(
 				$"Checking expectation for {Subject} threw an exception");
 			return new ConstraintResult.FromException(expectation, exception);

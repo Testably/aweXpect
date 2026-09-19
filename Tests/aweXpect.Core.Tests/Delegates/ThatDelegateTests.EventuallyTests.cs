@@ -401,6 +401,44 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Fact]
+		public async Task WhenSubjectAlwaysThrows_AndExpectationThrowsOnDefault_ShouldFailWithTheExceptionAsCause()
+		{
+			static int AlwaysThrows() => throw new MyException("always broken");
+
+			async Task Act()
+				=> await That(() => AlwaysThrows()).Eventually().Satisfies(x => 10 / x > 1)
+					.WithTimeout(VeryLowTimeout);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that () => AlwaysThrows()
+				             satisfies x => 10 / x > 1 within 0:00.050,
+				             but it did throw a ThatDelegateTests.EventuallyTests.MyException:
+				               always broken
+				             """)
+				.And.WithInner<MyException>(inner => inner.HasMessage("always broken"));
+		}
+
+		[Fact]
+		public async Task WhenSubjectAlwaysThrows_AndExpectationIsNegated_ShouldRenderTheNegatedExpectation()
+		{
+			static int AlwaysThrows() => throw new MyException("always broken");
+
+			async Task Act()
+				=> await That(() => AlwaysThrows()).Eventually().DoesNotComplyWith(it => it.IsEqualTo(1))
+					.WithTimeout(VeryLowTimeout);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that () => AlwaysThrows()
+				             is not equal to 1 within 0:00.050,
+				             but it did throw a ThatDelegateTests.EventuallyTests.MyException:
+				               always broken
+				             """)
+				.And.WithInner<MyException>(inner => inner.HasMessage("always broken"));
+		}
+
+		[Fact]
 		public async Task WhenSubjectBecomesValid_ShouldSucceed()
 		{
 			Counter counter = new(2);

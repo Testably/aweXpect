@@ -1,4 +1,5 @@
-﻿using aweXpect.Core.Tests.TestHelpers;
+﻿using System.Diagnostics;
+using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Core.Tests.Core;
 
@@ -84,6 +85,62 @@ public sealed class UnexpectedExceptionTests
 
 		await That(Act).Throws<XunitException>()
 			.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+	}
+
+	[Fact]
+	public async Task Task_WhenFailed_AndExpectationThrowsOnDefault_ShouldFailWithTheException()
+	{
+		Task<int> subject = Task.FromException<int>(new MyException("failure"));
+
+		async Task Act()
+			=> await That(subject).Satisfies(x => 10 / x > 1);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             satisfies x => 10 / x > 1,
+			             but it did throw a MyException:
+			               failure
+			             """)
+			.And.WithInner<MyException>(inner => inner.HasMessage("failure"));
+	}
+
+	[Fact]
+	public async Task Task_WhenFailed_AndExpectationIsNegated_ShouldRenderTheNegatedExpectation()
+	{
+		Task<int> subject = Task.FromException<int>(new MyException("failure"));
+
+		async Task Act()
+			=> await That(subject).DoesNotComplyWith(it => it.IsEqualTo(1));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             is not equal to 1,
+			             but it did throw a MyException:
+			               failure
+			             """)
+			.And.WithInner<MyException>(inner => inner.HasMessage("failure"));
+	}
+
+	[Fact]
+	public async Task Task_WhenFailed_AndExpectationIsRepeated_ShouldFailWithoutRetrying()
+	{
+		Task<int> subject = Task.FromException<int>(new MyException("failure"));
+		Stopwatch stopwatch = Stopwatch.StartNew();
+
+		async Task Act()
+			=> await That(subject).Satisfies(x => x == 1).Within(TimeSpan.FromSeconds(2));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             satisfies x => x == 1 within 0:02,
+			             but it did throw a MyException:
+			               failure
+			             """)
+			.And.WithInner<MyException>(inner => inner.HasMessage("failure"));
+		await That(stopwatch.Elapsed).IsLessThan(TimeSpan.FromSeconds(1));
 	}
 
 	[Fact]
