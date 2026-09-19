@@ -11,3 +11,14 @@ aweXpect.Options.StringEqualityOptions.AsRegex(System.Text.RegularExpressions.Re
 aweXpect.Results.StringEqualityTypeCountResult<TType, TThat>.AsRegex(System.Text.RegularExpressions.RegexOptions regexOptions) -> aweXpect.Results.StringCountResult<TType, TThat>!
 aweXpect.Results.StringEqualityTypeResult<TType, TThat, TSelf>.AsRegex(System.Text.RegularExpressions.RegexOptions regexOptions) -> TSelf!
 aweXpect.Results.StringHasItemResult<TCollection, TSelf>.AsRegex(System.Text.RegularExpressions.RegexOptions regexOptions) -> TSelf!
+aweXpect.Results.PropertyResult.Decimal<TItem>
+aweXpect.Results.PropertyResult.Decimal<TItem>.Decimal(aweXpect.Core.IThat<TItem>! subject, System.Func<TItem, decimal?>! mapper, string! propertyExpression, System.Action<decimal?, string!>? validation = null, System.Func<decimal?, string!>? formatValue = null) -> void
+aweXpect.Results.PropertyResult.Decimal<TValue, TType, TThat>
+aweXpect.Results.PropertyResult.Decimal<TValue, TType, TThat>.Between(decimal? minimum) -> aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TType, TThat>!, decimal?>!
+aweXpect.Results.PropertyResult.Decimal<TValue, TType, TThat>.Decimal(TThat subject, System.Func<TValue, decimal?>! mapper, string! propertyExpression, System.Action<decimal?, string!>? validation = null, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None, System.Func<decimal?, string!>? formatValue = null) -> void
+aweXpect.Results.PropertyResult.Decimal<TValue, TType, TThat>.EqualTo(decimal? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Decimal<TValue, TType, TThat>.GreaterThan(decimal? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Decimal<TValue, TType, TThat>.GreaterThanOrEqualTo(decimal? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Decimal<TValue, TType, TThat>.LessThan(decimal? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Decimal<TValue, TType, TThat>.LessThanOrEqualTo(decimal? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Decimal<TValue, TType, TThat>.NotEqualTo(decimal? unexpected) -> aweXpect.Results.AndOrResult<TType, TThat>!

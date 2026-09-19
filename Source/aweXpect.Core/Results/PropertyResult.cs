@@ -276,6 +276,143 @@ public static class PropertyResult
 	}
 
 	/// <summary>
+	///     Result for a <see langword="decimal" /> property that continues on the <see cref="IThat{TItem}" /> subject.
+	/// </summary>
+	public class Decimal<TItem>(
+		IThat<TItem> subject,
+		Func<TItem, decimal?> mapper,
+		string propertyExpression,
+		Action<decimal?, string>? validation = null,
+		Func<decimal?, string>? formatValue = null)
+		: Decimal<TItem, TItem, IThat<TItem>>(subject, mapper, propertyExpression, validation,
+			ExpectationGrammars.None, formatValue);
+
+	/// <summary>
+	///     Result for a <see langword="decimal" /> property of a <typeparamref name="TValue" /> which continues on
+	///     <typeparamref name="TThat" /> with an underlying value of type <typeparamref name="TType" />.
+	/// </summary>
+	/// <remarks>
+	///     See <see cref="String{TValue, TType, TThat}" /> for the role of the <paramref name="grammars" /> and of the
+	///     split between <typeparamref name="TValue" /> and <typeparamref name="TType" />.
+	///     <para />
+	///     The <paramref name="formatValue" /> renders the value in the failure message. The default spells a
+	///     <see langword="decimal" /> with a fractional digit, which a property that only ever holds whole numbers -
+	///     the underlying value of an enum, say - overrides to read as the integer it is.
+	/// </remarks>
+	public class Decimal<TValue, TType, TThat>(
+		TThat subject,
+		Func<TValue, decimal?> mapper,
+		string propertyExpression,
+		Action<decimal?, string>? validation = null,
+		ExpectationGrammars grammars = ExpectationGrammars.None,
+		Func<decimal?, string>? formatValue = null)
+		where TThat : IThat<TType>
+	{
+		/// <summary>
+		///     …is equal to the <paramref name="expected" /> value.
+		/// </summary>
+		public AndOrResult<TType, TThat> EqualTo(
+			decimal? expected)
+		{
+			validation?.Invoke(expected, nameof(expected));
+			return Add(expected, (a, e) => a?.Equals(e) == true,
+				$"equal to {Format(expected)}");
+		}
+
+		/// <summary>
+		///     …is not equal to the <paramref name="unexpected" /> value.
+		/// </summary>
+		public AndOrResult<TType, TThat> NotEqualTo(
+			decimal? unexpected)
+		{
+			validation?.Invoke(unexpected, nameof(unexpected));
+			return Add(unexpected, (a, u) => a?.Equals(u) != true,
+				$"not equal to {Format(unexpected)}",
+				$"equal to {Format(unexpected)}");
+		}
+
+		/// <summary>
+		///     …is greater than the <paramref name="expected" /> value.
+		/// </summary>
+		public AndOrResult<TType, TThat> GreaterThan(
+			decimal? expected)
+		{
+			validation?.Invoke(expected, nameof(expected));
+			return Add(expected, (a, e) => a > e,
+				$"greater than {Format(expected)}");
+		}
+
+		/// <summary>
+		///     …is greater than or equal to the <paramref name="expected" /> value.
+		/// </summary>
+		public AndOrResult<TType, TThat> GreaterThanOrEqualTo(
+			decimal? expected)
+		{
+			validation?.Invoke(expected, nameof(expected));
+			return Add(expected, (a, e) => a >= e,
+				$"greater than or equal to {Format(expected)}");
+		}
+
+		/// <summary>
+		///     …is less than the <paramref name="expected" /> value.
+		/// </summary>
+		public AndOrResult<TType, TThat> LessThan(
+			decimal? expected)
+		{
+			validation?.Invoke(expected, nameof(expected));
+			return Add(expected, (a, e) => a < e,
+				$"less than {Format(expected)}");
+		}
+
+		/// <summary>
+		///     …is less than or equal to the <paramref name="expected" /> value.
+		/// </summary>
+		public AndOrResult<TType, TThat> LessThanOrEqualTo(
+			decimal? expected)
+		{
+			validation?.Invoke(expected, nameof(expected));
+			return Add(expected, (a, e) => a <= e,
+				$"less than or equal to {Format(expected)}");
+		}
+
+		/// <summary>
+		///     …is between the <paramref name="minimum" />…
+		/// </summary>
+		public BetweenResult<AndOrResult<TType, TThat>, decimal?> Between(
+			decimal? minimum)
+		{
+			validation?.Invoke(minimum, nameof(minimum));
+			return new BetweenResult<AndOrResult<TType, TThat>, decimal?>(maximum =>
+			{
+				validation?.Invoke(maximum, nameof(maximum));
+				return Add(minimum, (a, e) => a >= e && a <= maximum,
+					$"between {Format(minimum)} and {Format(maximum)}");
+			});
+		}
+
+		private string Format(decimal? value)
+			=> formatValue?.Invoke(value) ?? Formatter.Format(value);
+
+		private AndOrResult<TType, TThat> Add(
+			decimal? expected,
+			Func<decimal?, decimal?, bool> condition,
+			string expectation,
+			string? negatedExpectation = null)
+			=> new(subject.Get().ExpectationBuilder
+					.AddConstraint((it, constraintGrammars) =>
+						new StructPropertyConstraint<TValue, decimal>(
+							it, constraintGrammars | grammars,
+							expected,
+							mapper,
+							propertyExpression,
+							condition,
+							expectation,
+							negatedExpectation,
+							formatValue: formatValue)),
+				subject);
+	}
+
+	/// <summary>
 	///     Result for a <see cref="DateTimeKind" /> property that continues on the <see cref="IThat{TItem}" /> subject.
 	/// </summary>
 	public class DateTimeKind<TItem>(
@@ -653,7 +790,8 @@ public static class PropertyResult
 		Func<TProperty?, TProperty?, bool> condition,
 		string expectation,
 		string? negatedExpectation,
-		Func<Exception, bool>? isExpectedPropertyException = null)
+		Func<Exception, bool>? isExpectedPropertyException = null,
+		Func<TProperty?, string>? formatValue = null)
 		: ConstraintResult.WithNotNullValue<TItem>(it, grammars),
 		IValueConstraint<TItem>
 		where TProperty : struct
@@ -702,7 +840,14 @@ public static class PropertyResult
 			}
 
 			stringBuilder.Append(It).Append(" had ").Append(propertyExpression).Append(' ');
-			Formatter.Format(stringBuilder, _value);
+			if (formatValue is null)
+			{
+				Formatter.Format(stringBuilder, _value);
+			}
+			else
+			{
+				stringBuilder.Append(formatValue(_value));
+			}
 		}
 
 		// A comparison that is itself a negation (`not equal to`) is negated by its positive counterpart instead of by

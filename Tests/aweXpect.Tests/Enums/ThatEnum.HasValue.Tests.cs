@@ -17,6 +17,58 @@ public sealed partial class ThatEnum
 				await That(Act).DoesNotThrow();
 			}
 
+			[Fact]
+			public async Task Between_WhenTheRangeSpansTheWholeUInt64Range_ShouldSucceed()
+			{
+				EnumULong subject = EnumULong.UInt64LessOne;
+
+				async Task Act()
+					=> await That(subject).HasValue().Between(long.MaxValue).And(ulong.MaxValue);
+
+				await That(Act).DoesNotThrow()
+					.Because("a range that exceeds long.MaxValue is still a legal range for a ulong-backed enum");
+			}
+
+			[Fact]
+			public async Task GreaterThan_WhenTheValueExceedsInt64MaxValue_ShouldSucceed()
+			{
+				EnumULong subject = EnumULong.UInt64Max;
+
+				async Task Act()
+					=> await That(subject).HasValue().GreaterThan(0);
+
+				await That(Act).DoesNotThrow()
+					.Because("a ulong-backed member above long.MaxValue is a legal enum value and must not overflow");
+			}
+
+			[Fact]
+			public async Task GreaterThan_WhenTheValueIsTheMaximumOfItsBackingType_ShouldFail()
+			{
+				EnumULong subject = EnumULong.UInt64Max;
+
+				async Task Act()
+					=> await That(subject).HasValue().GreaterThan(ulong.MaxValue);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has value greater than 18446744073709551615,
+					             but it had value 18446744073709551615
+					             """);
+			}
+
+			[Fact]
+			public async Task LessThan_WhenTheValueIsInt64MinValue_ShouldSucceed()
+			{
+				EnumLong subject = EnumLong.Int64Min;
+
+				async Task Act()
+					=> await That(subject).HasValue().LessThan(long.MinValue + 1);
+
+				await That(Act).DoesNotThrow()
+					.Because("the lower end of the signed range is represented exactly as well");
+			}
+
 			[Theory]
 			[InlineData(MyNumbers.One, 2L)]
 			[InlineData(MyNumbers.Two, -7L)]
@@ -80,6 +132,23 @@ public sealed partial class ThatEnum
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenExpectedIsNegative_AndTheBackingTypeIsUnsigned_ShouldFail()
+			{
+				EnumULong subject = EnumULong.UInt64Max;
+
+				async Task Act()
+					=> await That(subject).HasValue(-1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has value equal to -1,
+					             but it had value 18446744073709551615
+					             """)
+					.Because("a value no member of the enum can have fails instead of overflowing the conversion");
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				MyColors subject = MyColors.Yellow;
@@ -93,6 +162,33 @@ public sealed partial class ThatEnum
 					              has value equal to <null>,
 					              but it had value {Formatter.Format((long)subject)}
 					              """);
+			}
+
+			[Fact]
+			public async Task WhenNestedInAQuantifier_ShouldRenderAsAPropertyOfTheItems()
+			{
+				MyNumbers[] subject = [MyNumbers.One, MyNumbers.Two,];
+
+				async Task Act()
+					=> await That(subject).All().ComplyWith(it => it.HasValue(1));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has value equal to 1 for all items,
+					             but only 1 of 2 were
+
+					             Not matching items:
+					             [
+					               Two
+					             ]
+
+					             Collection:
+					             [
+					               One,
+					               Two
+					             ]
+					             """);
 			}
 
 			[Theory]
@@ -113,6 +209,22 @@ public sealed partial class ThatEnum
 					              """);
 			}
 
+			[Fact]
+			public async Task WhenSubjectExceedsInt64MaxValue_AndExpectedIsInt64MaxValue_ShouldFail()
+			{
+				EnumULong subject = EnumULong.UInt64Max;
+
+				async Task Act()
+					=> await That(subject).HasValue(long.MaxValue);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has value equal to 9223372036854775807,
+					             but it had value 18446744073709551615
+					             """);
+			}
+
 			[Theory]
 			[InlineData(MyNumbers.One, 1)]
 			[InlineData(MyNumbers.Two, 2)]
@@ -124,6 +236,32 @@ public sealed partial class ThatEnum
 					=> await That(subject).HasValue(expected);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSubjectHasTheExtremeValueOfItsBackingType_ShouldSucceed()
+			{
+				async Task Act()
+				{
+					await That(EnumSByte.Min).HasValue(sbyte.MinValue);
+					await That(EnumSByte.Max).HasValue(sbyte.MaxValue);
+					await That(EnumByte.Min).HasValue(byte.MinValue);
+					await That(EnumByte.Max).HasValue(byte.MaxValue);
+					await That(EnumShort.Min).HasValue(short.MinValue);
+					await That(EnumShort.Max).HasValue(short.MaxValue);
+					await That(EnumUShort.Min).HasValue(ushort.MinValue);
+					await That(EnumUShort.Max).HasValue(ushort.MaxValue);
+					await That(EnumInt.Min).HasValue(int.MinValue);
+					await That(EnumInt.Max).HasValue(int.MaxValue);
+					await That(EnumUInt.Min).HasValue(uint.MinValue);
+					await That(EnumUInt.Max).HasValue(uint.MaxValue);
+					await That(EnumLong.Int64Min).HasValue(long.MinValue);
+					await That(EnumLong.Int64Max).HasValue(long.MaxValue);
+					await That(EnumULong.UInt64Max).HasValue(ulong.MaxValue);
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("every backing type from sbyte to ulong is represented exactly");
 			}
 		}
 
@@ -138,6 +276,22 @@ public sealed partial class ThatEnum
 					=> await That(subject).DoesNotComplyWith(it => it.HasValue((long)subject + 1));
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenValueExceedsInt64MaxValue_AndMatches_ShouldFail()
+			{
+				EnumULong subject = EnumULong.UInt64Max;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasValue(ulong.MaxValue));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have value equal to 18446744073709551615,
+					             but it had value 18446744073709551615
+					             """);
 			}
 
 			[Fact]

@@ -8,6 +8,18 @@ public sealed partial class ThatEnum
 		{
 			public sealed class ContinuationTests
 			{
+				[Fact]
+				public async Task GreaterThan_WhenTheValueExceedsInt64MaxValue_ShouldSucceed()
+				{
+					EnumULong? subject = EnumULong.UInt64Max;
+
+					async Task Act()
+						=> await That(subject).HasValue().GreaterThan(long.MaxValue);
+
+					await That(Act).DoesNotThrow()
+						.Because("a ulong-backed member above long.MaxValue is a legal enum value and must not overflow");
+				}
+
 				[Theory]
 				[InlineData(MyNumbers.One, 2L)]
 				[InlineData(MyNumbers.Two, -7L)]
@@ -137,6 +149,18 @@ public sealed partial class ThatEnum
 						              has value equal to {Formatter.Format(expected)},
 						              but it had value {Formatter.Format((long?)subject)}
 						              """);
+				}
+
+				[Fact]
+				public async Task WhenSubjectExceedsInt64MaxValue_ShouldSucceed()
+				{
+					EnumULong? subject = EnumULong.UInt64Max;
+
+					async Task Act()
+						=> await That(subject).HasValue(ulong.MaxValue);
+
+					await That(Act).DoesNotThrow()
+						.Because("the nullable overload reads the underlying value through the same conversion");
 				}
 
 				[Theory]
