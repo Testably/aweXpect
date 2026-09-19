@@ -54,8 +54,11 @@ public static partial class ThatDelegate
 
 	/// <summary>
 	///     Verifies that the delegate does not finish execution within the given <paramref name="duration" />
-	///     or throws an exception.
+	///     and does not throw an exception.
 	/// </summary>
+	/// <remarks>
+	///     A delegate that throws an exception fails the expectation, however long it did run.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static ExpectationResult<TValue> DoesNotExecuteWithin<TValue>(
 		this IThat<Delegates.ThatDelegate.WithValue<TValue>> subject,
@@ -65,8 +68,11 @@ public static partial class ThatDelegate
 
 	/// <summary>
 	///     Verifies that the delegate does not finish execution within the given <paramref name="duration" />
-	///     or throws an exception.
+	///     and does not throw an exception.
 	/// </summary>
+	/// <remarks>
+	///     A delegate that throws an exception fails the expectation, however long it did run.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static ExpectationResult DoesNotExecuteWithin(
 		this IThat<Delegates.ThatDelegate.WithoutValue> subject,
@@ -94,9 +100,9 @@ public static partial class ThatDelegate
 			}
 			else
 			{
-				Outcome = (actual.Exception is not null || actual.Duration > duration) != _isNegated
-					? Outcome.Failure
-					: Outcome.Success;
+				Outcome = actual.Exception is null && (actual.Duration > duration) == _isNegated
+					? Outcome.Success
+					: Outcome.Failure;
 			}
 
 			return this;
@@ -122,11 +128,6 @@ public static partial class ThatDelegate
 			{
 				stringBuilder.ItWasNull(it);
 			}
-			else if (_isNegated)
-			{
-				stringBuilder.Append(it).Append(" took only ");
-				Formatter.Format(stringBuilder, _actual.Duration);
-			}
 			else if (_actual.Exception is OperationCanceledException)
 			{
 				stringBuilder.Append(it).Append(" was canceled after ");
@@ -136,6 +137,11 @@ public static partial class ThatDelegate
 			{
 				stringBuilder.Append(it).Append(" did throw ");
 				stringBuilder.Append(exception.FormatForMessage(indentation));
+			}
+			else if (_isNegated)
+			{
+				stringBuilder.Append(it).Append(" took only ");
+				Formatter.Format(stringBuilder, _actual.Duration);
 			}
 			else
 			{
@@ -183,9 +189,9 @@ public static partial class ThatDelegate
 			}
 			else
 			{
-				Outcome = (actual.Exception is not null || actual.Duration > duration) != _isNegated
-					? Outcome.Failure
-					: Outcome.Success;
+				Outcome = actual.Exception is null && (actual.Duration > duration) == _isNegated
+					? Outcome.Success
+					: Outcome.Failure;
 			}
 
 			return this;
@@ -211,11 +217,6 @@ public static partial class ThatDelegate
 			{
 				stringBuilder.ItWasNull(it);
 			}
-			else if (_isNegated)
-			{
-				stringBuilder.Append(it).Append(" took only ");
-				Formatter.Format(stringBuilder, _actual.Duration);
-			}
 			else if (_actual.Exception is OperationCanceledException)
 			{
 				stringBuilder.Append(it).Append(" was canceled after ");
@@ -225,6 +226,11 @@ public static partial class ThatDelegate
 			{
 				stringBuilder.Append(it).Append(" did throw ");
 				stringBuilder.Append(exception.FormatForMessage(indentation));
+			}
+			else if (_isNegated)
+			{
+				stringBuilder.Append(it).Append(" took only ");
+				Formatter.Format(stringBuilder, _actual.Duration);
 			}
 			else
 			{

@@ -50,6 +50,28 @@ public sealed partial class ThatDelegate
 			}
 
 			[Fact]
+			public async Task WhenDelegateThrowsAnException_ShouldFail()
+			{
+				Action @delegate = () =>
+				{
+					Task.Delay(500.Milliseconds()).Wait();
+					throw new MyException();
+				};
+
+				async Task Act()
+					=> await That(@delegate).ExecutesIn(500.Milliseconds()).Within(50.Seconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that @delegate
+					              executes in approximately 0:00.500 ± 0:50,
+					              but it did throw a MyException:
+					                {nameof(WhenDelegateThrowsAnException_ShouldFail)}
+					              """)
+					.Because("a crashed delegate must fail even though its duration was inside the tolerance");
+			}
+
+			[Fact]
 			public async Task WhenToleranceIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				Action @delegate = () => { };

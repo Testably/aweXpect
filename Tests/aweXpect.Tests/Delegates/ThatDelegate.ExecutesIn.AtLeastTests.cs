@@ -32,6 +32,28 @@ public sealed partial class ThatDelegate
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenDelegateThrowsAnException_ShouldFail()
+			{
+				Action @delegate = () =>
+				{
+					Task.Delay(500.Milliseconds()).Wait();
+					throw new MyException();
+				};
+
+				async Task Act()
+					=> await That(@delegate).ExecutesIn().AtLeast(5.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that @delegate
+					              executes in at least 0:00.005,
+					              but it did throw a MyException:
+					                {nameof(WhenDelegateThrowsAnException_ShouldFail)}
+					              """)
+					.Because("a crashed delegate must fail even though it ran long enough");
+			}
 		}
 	}
 }

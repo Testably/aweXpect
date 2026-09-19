@@ -1,6 +1,4 @@
-﻿#if NET8_0_OR_GREATER
-using System.Threading;
-#endif
+﻿using System.Threading;
 
 namespace aweXpect.Tests;
 
@@ -27,14 +25,33 @@ public sealed partial class ThatDelegate
 			}
 
 			[Fact]
-			public async Task WhenDelegateThrowsAnException_ShouldSucceed()
+			public async Task WhenDelegateTakesLonger_ShouldSucceed()
+			{
+				Action @delegate = () => Task.Delay(500.Milliseconds()).Wait();
+
+				async Task Act()
+					=> await That(@delegate).DoesNotExecuteWithin(10.Milliseconds());
+
+				await That(Act).DoesNotThrow()
+					.Because("a delegate that runs longer without failing is the only way to meet the expectation");
+			}
+
+			[Fact]
+			public async Task WhenDelegateThrowsAnException_ShouldFail()
 			{
 				Action @delegate = () => throw new MyException();
 
 				async Task Act()
 					=> await That(@delegate).DoesNotExecuteWithin(500.Milliseconds());
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that @delegate
+					              does not execute within 0:00.500,
+					              but it did throw a MyException:
+					                {nameof(WhenDelegateThrowsAnException_ShouldFail)}
+					              """)
+					.Because("a fast crash must not be accepted as green by a timing expectation");
 			}
 
 			[Fact]
@@ -57,6 +74,24 @@ public sealed partial class ThatDelegate
 		public sealed class FuncTaskTests
 		{
 			[Fact]
+			public async Task WhenDelegateIsCanceled_ShouldFail()
+			{
+				CancellationToken canceledToken = new(true);
+				Func<Task> @delegate = () => Task.FromCanceled(canceledToken);
+
+				async Task Act()
+					=> await That(@delegate).DoesNotExecuteWithin(500.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             does not execute within 0:00.500,
+					             but it was canceled after 0:*
+					             """).AsWildcard()
+					.Because("an aborted execution is no proof that the delegate needed longer");
+			}
+
+			[Fact]
 			public async Task WhenDelegateIsFastEnough_ShouldFail()
 			{
 				Func<Task> @delegate = () => Task.CompletedTask;
@@ -73,14 +108,33 @@ public sealed partial class ThatDelegate
 			}
 
 			[Fact]
-			public async Task WhenDelegateThrowsAnException_ShouldSucceed()
+			public async Task WhenDelegateTakesLonger_ShouldSucceed()
+			{
+				Func<Task> @delegate = () => Task.Delay(500.Milliseconds());
+
+				async Task Act()
+					=> await That(@delegate).DoesNotExecuteWithin(10.Milliseconds());
+
+				await That(Act).DoesNotThrow()
+					.Because("a delegate that runs longer without failing is the only way to meet the expectation");
+			}
+
+			[Fact]
+			public async Task WhenDelegateThrowsAnException_ShouldFail()
 			{
 				Func<Task> @delegate = () => Task.FromException(new MyException());
 
 				async Task Act()
 					=> await That(@delegate).DoesNotExecuteWithin(500.Milliseconds());
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that @delegate
+					              does not execute within 0:00.500,
+					              but it did throw a MyException:
+					                {nameof(WhenDelegateThrowsAnException_ShouldFail)}
+					              """)
+					.Because("a fast crash must not be accepted as green by a timing expectation");
 			}
 
 			[Fact]
@@ -119,14 +173,33 @@ public sealed partial class ThatDelegate
 			}
 
 			[Fact]
-			public async Task WhenDelegateThrowsAnException_ShouldSucceed()
+			public async Task WhenDelegateTakesLonger_ShouldSucceed()
+			{
+				Func<Task<int>> @delegate = () => Task.Delay(500.Milliseconds()).ContinueWith(_ => 1);
+
+				async Task Act()
+					=> await That(@delegate).DoesNotExecuteWithin(10.Milliseconds());
+
+				await That(Act).DoesNotThrow()
+					.Because("a delegate that runs longer without failing is the only way to meet the expectation");
+			}
+
+			[Fact]
+			public async Task WhenDelegateThrowsAnException_ShouldFail()
 			{
 				Func<Task<int>> @delegate = () => Task.FromException<int>(new MyException());
 
 				async Task Act()
 					=> await That(@delegate).DoesNotExecuteWithin(500.Milliseconds());
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that @delegate
+					              does not execute within 0:00.500,
+					              but it did throw a MyException:
+					                {nameof(WhenDelegateThrowsAnException_ShouldFail)}
+					              """)
+					.Because("a fast crash must not be accepted as green by a timing expectation");
 			}
 
 			[Fact]
@@ -166,14 +239,33 @@ public sealed partial class ThatDelegate
 			}
 
 			[Fact]
-			public async Task WhenDelegateThrowsAnException_ShouldSucceed()
+			public async Task WhenDelegateTakesLonger_ShouldSucceed()
+			{
+				ValueTask Delegate() => new(Task.Delay(500.Milliseconds()));
+
+				async Task Act()
+					=> await That(Delegate).DoesNotExecuteWithin(10.Milliseconds());
+
+				await That(Act).DoesNotThrow()
+					.Because("a delegate that runs longer without failing is the only way to meet the expectation");
+			}
+
+			[Fact]
+			public async Task WhenDelegateThrowsAnException_ShouldFail()
 			{
 				ValueTask Delegate() => new(Task.FromException(new MyException()));
 
 				async Task Act()
 					=> await That(Delegate).DoesNotExecuteWithin(500.Milliseconds());
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that Delegate
+					              does not execute within 0:00.500,
+					              but it did throw a MyException:
+					                {nameof(WhenDelegateThrowsAnException_ShouldFail)}
+					              """)
+					.Because("a fast crash must not be accepted as green by a timing expectation");
 			}
 
 			[Fact]
@@ -215,7 +307,20 @@ public sealed partial class ThatDelegate
 			}
 
 			[Fact]
-			public async Task WhenDelegateThrowsAnException_ShouldSucceed()
+			public async Task WhenDelegateTakesLonger_ShouldSucceed()
+			{
+				ValueTask Delegate(CancellationToken token)
+					=> new(Task.Delay(500.Milliseconds(), token));
+
+				async Task Act()
+					=> await That(Delegate).DoesNotExecuteWithin(10.Milliseconds());
+
+				await That(Act).DoesNotThrow()
+					.Because("a delegate that runs longer without failing is the only way to meet the expectation");
+			}
+
+			[Fact]
+			public async Task WhenDelegateThrowsAnException_ShouldFail()
 			{
 				ValueTask Delegate(CancellationToken _)
 					=> new(Task.FromException(new MyException()));
@@ -223,7 +328,14 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(Delegate).DoesNotExecuteWithin(500.Milliseconds());
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that Delegate
+					              does not execute within 0:00.500,
+					              but it did throw a MyException:
+					                {nameof(WhenDelegateThrowsAnException_ShouldFail)}
+					              """)
+					.Because("a fast crash must not be accepted as green by a timing expectation");
 			}
 
 			[Fact]
@@ -266,7 +378,20 @@ public sealed partial class ThatDelegate
 			}
 
 			[Fact]
-			public async Task WhenDelegateThrowsAnException_ShouldSucceed()
+			public async Task WhenDelegateTakesLonger_ShouldSucceed()
+			{
+				ValueTask<int> Delegate(CancellationToken token)
+					=> new(Task.Delay(500.Milliseconds(), token).ContinueWith(_ => 1, token));
+
+				async Task Act()
+					=> await That(Delegate).DoesNotExecuteWithin(10.Milliseconds());
+
+				await That(Act).DoesNotThrow()
+					.Because("a delegate that runs longer without failing is the only way to meet the expectation");
+			}
+
+			[Fact]
+			public async Task WhenDelegateThrowsAnException_ShouldFail()
 			{
 				ValueTask<int> Delegate(CancellationToken _)
 					=> new(Task.FromException<int>(new MyException()));
@@ -274,7 +399,14 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(Delegate).DoesNotExecuteWithin(500.Milliseconds());
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that Delegate
+					              does not execute within 0:00.500,
+					              but it did throw a MyException:
+					                {nameof(WhenDelegateThrowsAnException_ShouldFail)}
+					              """)
+					.Because("a fast crash must not be accepted as green by a timing expectation");
 			}
 
 			[Fact]
@@ -316,14 +448,33 @@ public sealed partial class ThatDelegate
 			}
 
 			[Fact]
-			public async Task WhenDelegateThrowsAnException_ShouldSucceed()
+			public async Task WhenDelegateTakesLonger_ShouldSucceed()
+			{
+				ValueTask<int> Delegate() => new(Task.Delay(500.Milliseconds()).ContinueWith(_ => 1));
+
+				async Task Act()
+					=> await That(Delegate).DoesNotExecuteWithin(10.Milliseconds());
+
+				await That(Act).DoesNotThrow()
+					.Because("a delegate that runs longer without failing is the only way to meet the expectation");
+			}
+
+			[Fact]
+			public async Task WhenDelegateThrowsAnException_ShouldFail()
 			{
 				ValueTask<int> Delegate() => new(Task.FromException<int>(new MyException()));
 
 				async Task Act()
 					=> await That(Delegate).DoesNotExecuteWithin(500.Milliseconds());
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that Delegate
+					              does not execute within 0:00.500,
+					              but it did throw a MyException:
+					                {nameof(WhenDelegateThrowsAnException_ShouldFail)}
+					              """)
+					.Because("a fast crash must not be accepted as green by a timing expectation");
 			}
 
 			[Fact]
@@ -363,14 +514,37 @@ public sealed partial class ThatDelegate
 			}
 
 			[Fact]
-			public async Task WhenDelegateThrowsAnException_ShouldSucceed()
+			public async Task WhenDelegateTakesLonger_ShouldSucceed()
+			{
+				Func<int> @delegate = () =>
+				{
+					Task.Delay(500.Milliseconds()).Wait();
+					return 1;
+				};
+
+				async Task Act()
+					=> await That(@delegate).DoesNotExecuteWithin(10.Milliseconds());
+
+				await That(Act).DoesNotThrow()
+					.Because("a delegate that runs longer without failing is the only way to meet the expectation");
+			}
+
+			[Fact]
+			public async Task WhenDelegateThrowsAnException_ShouldFail()
 			{
 				Func<int> @delegate = () => throw new MyException();
 
 				async Task Act()
 					=> await That(@delegate).DoesNotExecuteWithin(500.Milliseconds());
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that @delegate
+					              does not execute within 0:00.500,
+					              but it did throw a MyException:
+					                {nameof(WhenDelegateThrowsAnException_ShouldFail)}
+					              """)
+					.Because("a fast crash must not be accepted as green by a timing expectation");
 			}
 
 			[Fact]

@@ -52,7 +52,7 @@ public class TraceWriterTests
 		TestTraceWriter traceWriter = new();
 		using (traceWriter.Register())
 		{
-			await That(callback).DoesNotExecuteWithin(1500.Milliseconds());
+			await That(callback).Throws<Exception>().WithMessage("foo");
 		}
 
 		await That(traceWriter.Messages).HasCount(2);
@@ -60,7 +60,7 @@ public class TraceWriterTests
 			.IsEqualTo("Checking expectation for callback delegate throwing Exception: foo after ")
 			.AsPrefix();
 		await That(traceWriter.Messages[1])
-			.IsEqualTo("  Successfully verified that callback does not execute within 0:01.500");
+			.IsEqualTo("  Successfully verified that callback throws an exception with Message equal to \"foo\"");
 	}
 
 	[Fact]
@@ -70,7 +70,7 @@ public class TraceWriterTests
 		TestTraceWriter traceWriter = new();
 		using (traceWriter.Register())
 		{
-			await That(callback).DoesNotExecuteWithin(1500.Milliseconds());
+			await That(callback).Throws<Exception>().WithMessage("foo");
 		}
 
 		await That(traceWriter.Messages).HasCount(2);
@@ -78,7 +78,7 @@ public class TraceWriterTests
 			.IsEqualTo("Checking expectation for callback delegate returning int throwing Exception: foo after ")
 			.AsPrefix();
 		await That(traceWriter.Messages[1])
-			.IsEqualTo("  Successfully verified that callback does not execute within 0:01.500");
+			.IsEqualTo("  Successfully verified that callback throws an exception with Message equal to \"foo\"");
 	}
 
 	[Fact]
