@@ -141,6 +141,18 @@ public sealed partial class ThatEnumerable
 					             but it was <null>
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenSubjectEndsWithNull_ShouldSucceed()
+			{
+				IEnumerable subject = ToEnumerable<string?>("a", null);
+				string?[] expected = [null,];
+
+				async Task Act()
+					=> await That(subject).EndsWith(expected);
+
+				await That(Act).DoesNotThrow();
+			}
 		}
 	}
 }

@@ -443,12 +443,14 @@ public static partial class ThatEnumerable
 					})),
 					-2));
 			IEnumerable materializedEnumerable = context.UseMaterializedEnumerable(actual);
-			ICollectionMatcher<TItem, TMatch> matcher = matchOptions.GetCollectionMatcher<TItem, TMatch>(expected);
+			ICollectionMatcher<object?, object?> matcher =
+				matchOptions.GetCollectionMatcher<object?, object?>(expected.Cast<object?>());
+			UntypedOptions untypedOptions = new(options);
 			int maximumNumber = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 
-			foreach (TItem item in materializedEnumerable)
+			foreach (object? item in materializedEnumerable)
 			{
-				var (result, failure) = await matcher.Verify(It, item, options, maximumNumber);
+				var (result, failure) = await matcher.Verify(It, item, untypedOptions, maximumNumber);
 				if (result)
 				{
 					_failure = failure ?? TooManyDeviationsError();
@@ -459,7 +461,7 @@ public static partial class ThatEnumerable
 				}
 			}
 
-			var (completedResult, completedFailure) = await matcher.VerifyComplete(It, options, maximumNumber);
+			var (completedResult, completedFailure) = await matcher.VerifyComplete(It, untypedOptions, maximumNumber);
 			if (completedResult)
 			{
 				_failure = completedFailure ?? TooManyDeviationsError();
@@ -475,6 +477,21 @@ public static partial class ThatEnumerable
 
 		private string TooManyDeviationsError()
 			=> $"{It} had more than {2 * Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get()} deviations";
+
+		/// <summary>
+		///     The subject can contain items of any type, so an item that is not a <typeparamref name="TMatch" /> never
+		///     equals an expected item.
+		/// </summary>
+		private sealed class UntypedOptions(IOptionsEquality<TMatch> options) : IOptionsEquality<object?>
+		{
+#if NET8_0_OR_GREATER
+			public async ValueTask<bool> AreConsideredEqual<TExpected>(object? actual, TExpected expected)
+#else
+			public async Task<bool> AreConsideredEqual<TExpected>(object? actual, TExpected expected)
+#endif
+				=> TryCastItem(actual, out TMatch typedActual)
+				   && await options.AreConsideredEqual(typedActual, (TItem)(object?)expected!);
+		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{

@@ -146,6 +146,78 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenItemOfADifferentTypeIsInBetween_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable<object>(1, "a", 2);
+				int[] expected = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains collection expected in order and contiguous,
+					             but it
+					               contained item "a" at index 1 instead of 2 and
+					               lacked 1 of 2 expected items: 2
+
+					             Collection:
+					             [1, "a", 2]
+
+					             Expected:
+					             [1, 2]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenItemOfADifferentTypeIsInBetweenAndIgnoringInterspersedItems_ShouldSucceed()
+			{
+				IEnumerable subject = ToEnumerable<object>(1, "a", 2);
+				int[] expected = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected).IgnoringInterspersedItems();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenItemsHaveADifferentType_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable([1, 2,]);
+				long[] expected = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains collection expected in order and contiguous,
+					             but it lacked all 2 expected items
+
+					             Collection:
+					             [1, 2]
+
+					             Expected:
+					             [1, 2]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenOtherItemsHaveADifferentTypeOrAreNull_ShouldSucceed()
+			{
+				IEnumerable subject = ToEnumerable<object?>("a", null, 1, 2, "b");
+				int[] expected = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEnumerable? subject = null;

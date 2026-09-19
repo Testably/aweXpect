@@ -114,6 +114,25 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenSubjectStartsWithNull_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable<string?>(null, "a");
+				string?[] unexpected = [null,];
+
+				async Task Act()
+					=> await That(subject).DoesNotStartWith(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not start with [<null>],
+					             but it did start with [
+					               <null>
+					             ]
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenSubjectStartsWithUnexpectedValues_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["foo", "bar", "baz",]);

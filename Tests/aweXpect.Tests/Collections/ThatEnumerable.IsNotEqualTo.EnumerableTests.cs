@@ -72,6 +72,73 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenItemsAreOfASubtype_ShouldFail()
+			{
+				ArgumentException item1 = new("a");
+				ArgumentException item2 = new("b");
+				IEnumerable subject = ToEnumerable(item1, item2);
+				Exception[] unexpected = [item1, item2,];
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not equal to collection unexpected in order,
+					             but it did
+
+					             Collection:
+					             [
+					               ArgumentException: a,
+					               ArgumentException: b
+					             ]
+
+					             Expected:
+					             [
+					               ArgumentException: a,
+					               ArgumentException: b
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenItemsHaveADifferentType_ShouldSucceed()
+			{
+				IEnumerable subject = ToEnumerable([1, 2,]);
+				long[] unexpected = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenItemsHaveMixedTypes_ShouldSucceed()
+			{
+				IEnumerable subject = ToEnumerable<object>(1, "a", 3);
+				int[] unexpected = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenNullItemIsComparedToValueType_ShouldSucceed()
+			{
+				IEnumerable subject = ToEnumerable<object?>(1, null);
+				int[] unexpected = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenSubjectAndExpectedIsNull_ShouldFail()
 			{
 				IEnumerable? subject = null;

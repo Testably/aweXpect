@@ -667,7 +667,8 @@ public static partial class ThatEnumerable
 
 				object? item = items[_index + _offset];
 				TMatch expectedItem = _expected[_index];
-				if (item is not TMatch matchedItem || !await _options.AreConsideredEqual(matchedItem, expectedItem))
+				if (!TryCastItem(item, out TMatch matchedItem) ||
+				    !await _options.AreConsideredEqual(matchedItem, expectedItem))
 				{
 					_firstMismatchItem = item;
 					_foundMismatch = true;
