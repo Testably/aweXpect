@@ -257,8 +257,7 @@ internal class AndNode : Node
 			_isNegated = !_isNegated;
 			_left.Negate();
 			_right.Negate();
-			// Combine the negated operands (De Morgan) instead of flipping the outcome, so that an operand which stays
-			// failed under negation (e.g. an unevaluated member) also keeps the combination failed.
+			// De Morgan, so that an operand which stays failed under negation keeps the combination failed.
 			Outcome = _isNegated
 				? Or(_left.Outcome, _right.Outcome)
 				: And(_left.Outcome, _right.Outcome);

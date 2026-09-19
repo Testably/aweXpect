@@ -227,7 +227,8 @@ public sealed partial class ThatDelegate
 						             throws a ThatDelegate.Throws.Whose.AsyncException whose FaultedAsync() is equal to 1,
 						             but FaultedAsync() did throw an InvalidOperationException:
 						               async member failed
-						             """);
+						             """)
+						.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 				}
 
 #if NET8_0_OR_GREATER
@@ -246,7 +247,8 @@ public sealed partial class ThatDelegate
 						             throws a ThatDelegate.Throws.Whose.AsyncException whose FaultedValueTaskAsync() is equal to 1,
 						             but FaultedValueTaskAsync() did throw an InvalidOperationException:
 						               async member failed
-						             """);
+						             """)
+						.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 				}
 #endif
 			}

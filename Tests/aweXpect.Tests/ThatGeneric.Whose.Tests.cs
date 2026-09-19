@@ -270,20 +270,8 @@ public sealed partial class ThatGeneric
 					             whose FaultedAsync() is equal to 1,
 					             but FaultedAsync() did throw an InvalidOperationException:
 					               async member failed
-					             """);
-			}
-
-			[Fact]
-			public async Task WhenAsyncMemberFaults_ShouldForwardExceptionAsInnerException()
-			{
-				ThrowingClass subject = new();
-
-				async Task Act()
-					=> await That(subject).Whose(o => o.FaultedAsync(), v => v.IsEqualTo(1));
-
-				await That(Act).Throws<XunitException>()
-					.WithInnerException(inner => inner.Is<InvalidOperationException>()
-						.Whose(e => e.Message, m => m.IsEqualTo("async member failed")));
+					             """)
+					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
 
 			[Fact]
@@ -302,7 +290,8 @@ public sealed partial class ThatGeneric
 					             whose FaultedAsync() is equal to 1 or whose Value is equal to 1,
 					             but FaultedAsync() did throw an InvalidOperationException:
 					               async member failed and Value was 0 which differs by -1
-					             """);
+					             """)
+					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
 
 			[Fact]
@@ -333,7 +322,8 @@ public sealed partial class ThatGeneric
 					             whose FaultedAsync() is not equal to 1,
 					             but FaultedAsync() did throw an InvalidOperationException:
 					               async member failed
-					             """);
+					             """)
+					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
 
 			[Fact]
@@ -353,7 +343,8 @@ public sealed partial class ThatGeneric
 					             whose FaultedAsync() is not equal to 1 and whose Value is not equal to 1,
 					             but FaultedAsync() did throw an InvalidOperationException:
 					               async member failed
-					             """);
+					             """)
+					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
 
 			[Fact]
@@ -373,7 +364,8 @@ public sealed partial class ThatGeneric
 					             whose FaultedAsync() is not equal to 1 or whose Value is not equal to 0,
 					             but FaultedAsync() did throw an InvalidOperationException:
 					               async member failed and Value was 0
-					             """);
+					             """)
+					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
 
 			[Fact]
@@ -390,7 +382,8 @@ public sealed partial class ThatGeneric
 					             whose CanceledAsync() is equal to 1,
 					             but CanceledAsync() did throw a TaskCanceledException:
 					               *
-					             """).AsWildcard();
+					             """).AsWildcard()
+					.And.WithInner<TaskCanceledException>();
 			}
 
 			[Fact]
@@ -420,7 +413,8 @@ public sealed partial class ThatGeneric
 					             whose ThrowsBeforeReturningTask() is equal to 1,
 					             but ThrowsBeforeReturningTask() did throw an InvalidOperationException:
 					               thrown before returning the task
-					             """);
+					             """)
+					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("thrown before returning the task"));
 			}
 
 			[Fact]
@@ -437,7 +431,8 @@ public sealed partial class ThatGeneric
 					             whose Throwing is equal to 1,
 					             but Throwing did throw an InvalidOperationException:
 					               member failed
-					             """);
+					             """)
+					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("member failed"));
 			}
 
 #if NET8_0_OR_GREATER
@@ -455,7 +450,8 @@ public sealed partial class ThatGeneric
 					             whose FaultedValueTaskAsync() is equal to 1,
 					             but FaultedValueTaskAsync() did throw an InvalidOperationException:
 					               async member failed
-					             """);
+					             """)
+					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
 #endif
 

@@ -205,7 +205,8 @@ public class AndOrWhoseResultTests
 			             is type AndOrWhoseResultTests.ThrowingClass whose FaultedAsync() is True,
 			             but FaultedAsync() did throw an InvalidOperationException:
 			               async member failed
-			             """);
+			             """)
+			.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 	}
 
 	[Fact]
@@ -223,21 +224,8 @@ public class AndOrWhoseResultTests
 			             is type AndOrWhoseResultTests.ThrowingClass whose Throwing() is True,
 			             but Throwing() did throw an InvalidOperationException:
 			               member failed
-			             """);
-	}
-
-	[Fact]
-	public async Task Whose_WhenAsyncMemberFaults_ShouldForwardExceptionAsInnerException()
-	{
-		ThrowingClass sut = new("async member failed");
-
-		async Task Act()
-			=> await That(sut).Is<ThrowingClass>()
-				.Whose(f => f.FaultedAsync(), f => f.IsTrue());
-
-		await That(Act).Throws()
-			.WithInnerException(inner => inner.Is<InvalidOperationException>()
-				.Whose(e => e.Message, m => m.IsEqualTo("async member failed")));
+			             """)
+			.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("member failed"));
 	}
 
 	[Fact]
@@ -256,7 +244,8 @@ public class AndOrWhoseResultTests
 			             is type AndOrWhoseResultTests.ThrowingClass whose Value is False and whose FaultedAsync() is True,
 			             but FaultedAsync() did throw an InvalidOperationException:
 			               async member failed
-			             """);
+			             """)
+			.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 	}
 
 	private sealed class MyClass

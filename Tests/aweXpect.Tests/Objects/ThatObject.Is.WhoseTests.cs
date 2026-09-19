@@ -189,7 +189,8 @@ public sealed partial class ThatObject
 					             is type ThatObject.Is.WhoseTests.AsyncClass whose FaultedAsync() is equal to 42,
 					             but FaultedAsync() did throw an InvalidOperationException:
 					               async member failed
-					             """);
+					             """)
+					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
 
 			[Fact]
@@ -208,7 +209,8 @@ public sealed partial class ThatObject
 					             is type ThatObject.Is.WhoseTests.AsyncClass whose Value is equal to 0 and whose FaultedAsync() is equal to 42,
 					             but FaultedAsync() did throw an InvalidOperationException:
 					               async member failed
-					             """);
+					             """)
+					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
 
 #if NET8_0_OR_GREATER
@@ -227,7 +229,8 @@ public sealed partial class ThatObject
 					             is type ThatObject.Is.WhoseTests.AsyncClass whose FaultedValueTaskAsync() is equal to 42,
 					             but FaultedValueTaskAsync() did throw an InvalidOperationException:
 					               async member failed
-					             """);
+					             """)
+					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
 #endif
 

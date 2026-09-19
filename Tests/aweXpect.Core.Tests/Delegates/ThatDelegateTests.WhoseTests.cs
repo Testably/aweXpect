@@ -48,7 +48,8 @@ public sealed partial class ThatDelegateTests
 				             throws a ThatDelegateTests.WhoseTests.AsyncException whose FaultedAsync() is equal to 1,
 				             but FaultedAsync() did throw an InvalidOperationException:
 				               async member failed for 1
-				             """);
+				             """)
+				.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed for 1"));
 		}
 
 		private sealed class AsyncException(int value) : Exception

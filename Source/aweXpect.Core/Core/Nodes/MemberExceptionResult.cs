@@ -11,8 +11,8 @@ namespace aweXpect.Core.Nodes;
 ///     The result of a node whose member could not be accessed, because accessing it threw an exception.
 /// </summary>
 /// <remarks>
-///     It fails the expectation and its negation alike, like <see cref="NullSubjectResult" />: the expectations on the
-///     member were never evaluated, so negating them does not make them true.
+///     Like <see cref="NullSubjectResult" />, it fails the expectation and its negation alike, as the member was never
+///     evaluated.
 /// </remarks>
 internal sealed class MemberExceptionResult : ConstraintResult, IUnevaluatedMemberResult
 {
@@ -45,8 +45,7 @@ internal sealed class MemberExceptionResult : ConstraintResult, IUnevaluatedMemb
 		=> new(inner, exception, member, value, typeof(T));
 
 	/// <summary>
-	///     Checks if the <paramref name="exception" /> only signals that the evaluation of the expectation was cancelled,
-	///     which must abort the evaluation instead of failing it.
+	///     Checks if the <paramref name="exception" /> signals the cancellation of the evaluation, which must abort it.
 	/// </summary>
 	public static bool IsCancellationOf(Exception exception, CancellationToken cancellationToken)
 		=> exception is OperationCanceledException && cancellationToken.IsCancellationRequested;
