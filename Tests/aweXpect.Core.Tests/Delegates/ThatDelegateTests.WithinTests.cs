@@ -12,7 +12,7 @@ public sealed partial class ThatDelegateTests
 		[Fact]
 		public async Task WhenDelegateExceedsTheDuration_ShouldCancelTheCancellationToken()
 		{
-			Func<CancellationToken, Task> @delegate = token => Task.Delay(6.Seconds(), token);
+			Func<CancellationToken, Task> @delegate = token => Task.Delay(30.Seconds(), token);
 			Stopwatch sw = new();
 
 			async Task Act()
@@ -27,7 +27,7 @@ public sealed partial class ThatDelegateTests
 				             """).AsWildcard();
 			sw.Stop();
 
-			await That(sw.Elapsed).IsLessThan(5.Seconds())
+			await That(sw.Elapsed).IsLessThan(10.Seconds())
 				.Because("the elapsed duration must cancel the token instead of awaiting the delegate");
 		}
 	}

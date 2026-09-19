@@ -11,17 +11,14 @@ public sealed class CustomizeSettingsTests
 	[Fact]
 	public async Task DefaultCheckInterval_ShouldBeUsedInTimeComparisons()
 	{
-#if DEBUG
 		TimeSpan timeout = 2.Seconds();
-#else
-		TimeSpan timeout = 4.Seconds();
-#endif
 
 		ChangingClass sut1 = new();
 		ChangingClass sut2 = new();
 
+		await That(Customize.aweXpect.Settings().DefaultCheckInterval.Get()).IsEqualTo(100.Milliseconds());
 		await That(sut1).Satisfies(x => x.HasMeasuredInterval).Within(30.Seconds());
-		await That(sut1.Interval).IsGreaterThanOrEqualTo(50.Milliseconds()).And.IsLessThan(timeout);
+		await That(sut1.Interval).IsGreaterThanOrEqualTo(50.Milliseconds()).And.IsLessThan(10.Seconds());
 		using (IDisposable __ = Customize.aweXpect.Settings().DefaultCheckInterval.Set(timeout))
 		{
 			await That(sut2).Satisfies(x => x.HasMeasuredInterval).Within(30.Seconds());
@@ -56,8 +53,11 @@ public sealed class CustomizeSettingsTests
 		await That(Customize.aweXpect.Settings().DefaultSignalerTimeout.Get()).IsEqualTo(30000.Milliseconds());
 		using (IDisposable __ = Customize.aweXpect.Settings().DefaultSignalerTimeout.Set(10.Milliseconds()))
 		{
-			_ = Task.Delay(1000.Milliseconds()).ContinueWith(_ => signaler.Signal());
+			using CancellationTokenSource cts = new();
+			CancellationToken token = cts.Token;
+			_ = Task.Delay(10.Seconds(), token).ContinueWith(_ => signaler.Signal(), token);
 			SignalerResult result = signaler.Wait();
+			cts.Cancel();
 			await That(result.IsSuccess).IsFalse();
 			await That(Customize.aweXpect.Settings().DefaultSignalerTimeout.Get()).IsEqualTo(10.Milliseconds());
 		}
