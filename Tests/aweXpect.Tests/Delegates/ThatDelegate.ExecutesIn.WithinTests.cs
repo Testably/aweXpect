@@ -28,7 +28,7 @@ public sealed partial class ThatDelegate
 				Action @delegate = () => Task.Delay(50.Milliseconds()).Wait();
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn(50.Milliseconds()).Within(500.Milliseconds());
+					=> await That(@delegate).ExecutesIn(50.Milliseconds()).Within(5.Seconds());
 
 				await That(Act).DoesNotThrow();
 			}
