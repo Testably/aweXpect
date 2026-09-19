@@ -138,6 +138,34 @@ public sealed partial class ThatString
 					             """);
 			}
 
+			[Theory]
+			[InlineData("tr-TR", "I", "i", true)]
+			[InlineData("tr-TR", "İ", "i", false)]
+			[InlineData("tr-TR", "ı", "I", false)]
+			[InlineData("", "I", "i", true)]
+			[InlineData("", "İ", "i", false)]
+			[InlineData("", "ı", "I", false)]
+			public async Task WhenIgnoringCase_ShouldIgnoreCaseIndependentOfTheCurrentCulture(
+				string cultureName, string subject, string pattern, bool expectMatch)
+			{
+				using CultureOverride _ = new(cultureName);
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(pattern).AsWildcard().IgnoringCase();
+
+				await That(Act).Throws().OnlyIf(!expectMatch)
+					.WithMessage($"""
+					              Expected that subject
+					              matches {Formatter.Format(pattern)},
+					              but it did not match:
+					                ↓ (actual)
+					                {Formatter.Format(subject)}
+					                {Formatter.Format(pattern)}
+					                ↑ (wildcard pattern)
+					              """)
+					.Because("the dotted and dotless Turkish 'I' must not change which characters are considered equal");
+			}
+
 			[Fact]
 			public async Task WhenIgnoringCase_ShouldStillRequireThePatternToCoverTheCompleteSubject()
 			{
@@ -194,6 +222,34 @@ public sealed partial class ThatString
 					             abc
 					             """).IgnoringNewlineStyle()
 					.Because("normalizing the newline style does not remove the first line from the subject");
+			}
+
+			[Theory]
+			[InlineData("tr-TR", "I", "I", true)]
+			[InlineData("tr-TR", "I", "i", false)]
+			[InlineData("tr-TR", "ı", "I", false)]
+			[InlineData("", "I", "I", true)]
+			[InlineData("", "I", "i", false)]
+			[InlineData("", "ı", "I", false)]
+			public async Task WhenNotIgnoringCase_ShouldMatchCaseSensitiveIndependentOfTheCurrentCulture(
+				string cultureName, string subject, string pattern, bool expectMatch)
+			{
+				using CultureOverride _ = new(cultureName);
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(pattern).AsWildcard();
+
+				await That(Act).Throws().OnlyIf(!expectMatch)
+					.WithMessage($"""
+					              Expected that subject
+					              matches {Formatter.Format(pattern)},
+					              but it did not match:
+					                ↓ (actual)
+					                {Formatter.Format(subject)}
+					                {Formatter.Format(pattern)}
+					                ↑ (wildcard pattern)
+					              """)
+					.Because("a case-sensitive match never looked at the culture");
 			}
 		}
 	}

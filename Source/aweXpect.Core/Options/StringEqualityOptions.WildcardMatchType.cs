@@ -84,7 +84,7 @@ public partial class StringEqualityOptions
 			}
 
 			RegexOptions options = ignoreCase
-				? RegexOptions.Singleline | RegexOptions.IgnoreCase
+				? RegexOptions.Singleline | IgnoreCaseOptions
 				: RegexOptions.Singleline;
 
 #if NET8_0_OR_GREATER

@@ -82,8 +82,9 @@ await Expect.That(subject).IsEqualTo("(.*)xt").AsRegex();
 ```
 
 The pattern is matched like `Regex.IsMatch(subject, pattern)`, so `^` and `$` bind to the start and the end of the
-complete subject and not to every line. `IgnoreCase` is added when the `IgnoringCase` method is also used, every
-other [
+complete subject and not to every line. `IgnoreCase` and `CultureInvariant` are added when the `IgnoringCase` method is
+also used, so that the casing is ignored the same way as for every other expectation and never depends on the current
+culture, every other [
 `option`](https://learn.microsoft.com/en-us/dotnet/api/system.text.regularexpressions.regexoptions?view=net-8.0#fields)
 is opt-in:
 

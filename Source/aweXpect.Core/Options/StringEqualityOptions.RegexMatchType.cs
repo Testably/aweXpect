@@ -8,6 +8,12 @@ namespace aweXpect.Options;
 
 public partial class StringEqualityOptions
 {
+	/// <remarks>
+	///     <see cref="RegexOptions.CultureInvariant" /> keeps the result independent of the current culture, so that
+	///     ignoring the casing means the same for a pattern as for all other match types.
+	/// </remarks>
+	private const RegexOptions IgnoreCaseOptions = RegexOptions.IgnoreCase | RegexOptions.CultureInvariant;
+
 	private static readonly IStringMatchType RegexMatch = new RegexMatchType(RegexOptions.None);
 
 	/// <summary>
@@ -24,7 +30,8 @@ public partial class StringEqualityOptions
 	///     applying the given <paramref name="regexOptions" />.
 	/// </summary>
 	/// <remarks>
-	///     <see cref="RegexOptions.IgnoreCase" /> is added when the casing is ignored via <see cref="IgnoringCase(bool)" />.
+	///     <see cref="RegexOptions.IgnoreCase" /> and <see cref="RegexOptions.CultureInvariant" /> are added when the
+	///     casing is ignored via <see cref="IgnoringCase(bool)" />.
 	/// </remarks>
 	public StringEqualityOptions AsRegex(RegexOptions regexOptions)
 	{
@@ -53,7 +60,7 @@ public partial class StringEqualityOptions
 			RegexOptions options = additionalOptions;
 			if (ignoreCase)
 			{
-				options |= RegexOptions.IgnoreCase;
+				options |= IgnoreCaseOptions;
 			}
 
 			int count = 0;
@@ -108,7 +115,7 @@ public partial class StringEqualityOptions
 			RegexOptions options = Options;
 			if (ignoreCase)
 			{
-				options |= RegexOptions.IgnoreCase;
+				options |= IgnoreCaseOptions;
 			}
 
 #if NET8_0_OR_GREATER
