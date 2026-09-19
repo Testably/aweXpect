@@ -27,9 +27,9 @@ IEventRecording<MyClass> recording = subject.Record().Events(nameof(MyClass.Thre
 ```
 
 Without a registration from the [source generator](#trimming-and-native-aot), the handler is bound reflectively. Such
-a handler takes at most four parameters, returns nothing and takes no parameter by reference. Recording all events
-skips an event whose handler does not fit, so that the other events of the subject are still recorded, and an
-expectation on the skipped event fails with the reason; recording it by name fails right away.
+a handler must take at most four parameters, must return nothing and must take no parameter by reference.
+Recording all events skips an event whose handler does not fit, so that the other events of the subject are still
+recorded, and an expectation on the skipped event fails with the reason; recording it by name fails right away.
 
 ## Triggering
 

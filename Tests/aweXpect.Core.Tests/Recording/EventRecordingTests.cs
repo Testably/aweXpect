@@ -76,6 +76,22 @@ public sealed class EventRecordingTests
 	}
 
 	[Fact]
+	public async Task WhenAnEventCannotBeAttached_WithUnrecordedEventName_ShouldNameTheSkippedEvent()
+	{
+		ManyParametersClass sut = new();
+		IEventRecording<ManyParametersClass> recording = sut.Record().Events();
+		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+
+		void Act()
+			=> result.GetEventCount("Typo");
+
+		await That(Act).Throws<NotSupportedException>()
+			.WithMessage(
+				"Event Typo was not recorded on sut, only [\"OtherEvent\"] and [\"CustomEvent\"] could not be recorded. When publishing with trimming or Native AOT enabled, ensure that the type is rooted, so that its events are preserved.")
+			.Because("a skipped event is missing from the recorded ones for a reason that the message has to name");
+	}
+
+	[Fact]
 	public async Task WhenEventWasNotRecorded_ShouldThrowNotSupportedException()
 	{
 		CustomEventClass sut = new();
@@ -145,6 +161,22 @@ public sealed class EventRecordingTests
 		await That(Act).Throws<NotSupportedException>()
 			.WithMessage("The CustomEvent event cannot be recorded, because its handler takes the parameter value by reference")
 			.Because("the reason is kept until the event is asked for, so that the other events can still be recorded");
+	}
+
+	[Fact]
+	public async Task WhenNoEventCanBeAttached_WithUnrecordedEventName_ShouldNotClaimThatNoEventWasFound()
+	{
+		OnlyUnrecordableClass sut = new();
+		IEventRecording<OnlyUnrecordableClass> recording = sut.Record().Events();
+		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+
+		void Act()
+			=> result.GetEventCount("Typo");
+
+		await That(Act).Throws<NotSupportedException>()
+			.WithMessage(
+				"Event Typo was not recorded on sut, [\"CustomEvent\"] could not be recorded. When publishing with trimming or Native AOT enabled, ensure that the type is rooted, so that its events are preserved.")
+			.Because("reflection did find an event, so blaming an empty recording on a removed event would mislead");
 	}
 
 	[Fact]
@@ -379,6 +411,15 @@ public sealed class EventRecordingTests
 		public event EventHandler? OtherEvent;
 
 		public void NotifyOtherEvent() => OtherEvent?.Invoke(this, EventArgs.Empty);
+	}
+
+	private sealed class OnlyUnrecordableClass
+	{
+		public delegate void CustomEventDelegate(int arg1, int arg2, int arg3, int arg4, int arg5);
+
+#pragma warning disable CS0067 // Event is never used
+		public event CustomEventDelegate? CustomEvent;
+#pragma warning restore CS0067 // Event is never used
 	}
 
 	private sealed class RegisteredClass

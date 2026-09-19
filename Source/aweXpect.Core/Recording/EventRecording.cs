@@ -65,7 +65,7 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 			}
 
 			EventRecorder recorder = new(eventName);
-			string? unsupported = @event.Attach(recorder, subject);
+			string? unsupported = @event.TryAttach(recorder, subject);
 			if (unsupported is null)
 			{
 				_recorders.Add(eventName, recorder);
@@ -122,7 +122,7 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 		///     Attaches the <paramref name="recorder" /> to the event and returns the reason why the event cannot be
 		///     recorded, or <see langword="null" /> when the handler was attached.
 		/// </summary>
-		public string? Attach(EventRecorder recorder, object subject) => attach(recorder, subject);
+		public string? TryAttach(EventRecorder recorder, object subject) => attach(recorder, subject);
 	}
 
 #if NET8_0_OR_GREATER
@@ -245,9 +245,18 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 				throw new NotSupportedException(unsupported).LogTrace();
 			}
 
-			string recorded = _recorders.Count == 0
-				? "because no event was found"
-				: $"only {Formatter.Format(_recorders.Keys)}";
+			List<string> found = [];
+			if (_recorders.Count > 0)
+			{
+				found.Add($"only {Formatter.Format(_recorders.Keys)}");
+			}
+
+			if (_skipped.Count > 0)
+			{
+				found.Add($"{Formatter.Format(_skipped.Keys)} could not be recorded");
+			}
+
+			string recorded = found.Count == 0 ? "because no event was found" : string.Join(" and ", found);
 			throw new NotSupportedException(
 					$"Event {eventName} was not recorded on {_subjectExpression}, {recorded}{(_isRegistered ? "" : TrimmingHint)}")
 				.LogTrace();
