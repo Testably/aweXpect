@@ -60,6 +60,19 @@ public sealed partial class ThatDateTime
 			}
 
 			[Fact]
+			public async Task WhenSubjectOnlyDiffersInKind_ShouldSucceed()
+			{
+				DateTime subject = EarlierTime(1, DateTimeKind.Utc);
+				DateTime unexpected = CurrentTime(DateTimeKind.Local);
+
+				async Task Act()
+					=> await That(subject).IsNotBefore(unexpected);
+
+				await That(Act).DoesNotThrow()
+					.Because("a Local and a Utc value cannot be ordered, so the subject is not before the unexpected one");
+			}
+
+			[Fact]
 			public async Task WhenSubjectsIsLater_ShouldSucceed()
 			{
 				DateTime subject = LaterTime();

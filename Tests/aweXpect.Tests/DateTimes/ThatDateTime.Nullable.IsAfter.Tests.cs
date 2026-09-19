@@ -25,6 +25,27 @@ public sealed partial class ThatDateTime
 						              """);
 				}
 
+				[Theory]
+				[InlineData(DateTimeKind.Unspecified, DateTimeKind.Local)]
+				[InlineData(DateTimeKind.Unspecified, DateTimeKind.Utc)]
+				[InlineData(DateTimeKind.Unspecified, DateTimeKind.Unspecified)]
+				[InlineData(DateTimeKind.Local, DateTimeKind.Unspecified)]
+				[InlineData(DateTimeKind.Utc, DateTimeKind.Unspecified)]
+				[InlineData(DateTimeKind.Local, DateTimeKind.Local)]
+				[InlineData(DateTimeKind.Utc, DateTimeKind.Utc)]
+				public async Task WhenKindsAreCompatible_ShouldSucceed(DateTimeKind subjectKind,
+					DateTimeKind expectedKind)
+				{
+					DateTime? subject = LaterTime(1, subjectKind);
+					DateTime? expected = CurrentTime(expectedKind);
+
+					async Task Act()
+						=> await That(subject).IsAfter(expected)
+							.Because("an Unspecified Kind matches any other Kind and equal Kinds are comparable");
+
+					await That(Act).DoesNotThrow();
+				}
+
 				[Fact]
 				public async Task WhenSubjectAndExpectedAreMaxValue_ShouldFail()
 				{
@@ -112,6 +133,24 @@ public sealed partial class ThatDateTime
 				}
 
 				[Fact]
+				public async Task WhenSubjectOnlyDiffersInKind_ShouldFail()
+				{
+					DateTime? subject = LaterTime(1, DateTimeKind.Utc);
+					DateTime? expected = CurrentTime(DateTimeKind.Local);
+
+					async Task Act()
+						=> await That(subject).IsAfter(expected)
+							.Because("a Local and a Utc value cannot be ordered without guessing the offset");
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is after {Formatter.Format(expected)}, because a Local and a Utc value cannot be ordered without guessing the offset,
+						              but it differed in the Kind property
+						              """);
+				}
+
+				[Fact]
 				public async Task WhenSubjectsIsLater_ShouldSucceed()
 				{
 					DateTime? subject = LaterTime();
@@ -153,6 +192,25 @@ public sealed partial class ThatDateTime
 
 					await That(Act).DoesNotThrow()
 						.Because("a widening tolerance must not make the assertion throw at the type limits");
+				}
+
+				[Fact]
+				public async Task Within_WhenSubjectOnlyDiffersInKind_ShouldFail()
+				{
+					DateTime? subject = LaterTime(1, DateTimeKind.Utc);
+					DateTime? expected = CurrentTime(DateTimeKind.Local);
+
+					async Task Act()
+						=> await That(subject).IsAfter(expected)
+							.Within(3.Seconds())
+							.Because("a tolerance cannot bridge incompatible Kinds");
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is after {Formatter.Format(expected)} ± 0:03, because a tolerance cannot bridge incompatible Kinds,
+						              but it differed in the Kind property
+						              """);
 				}
 
 				[Fact]

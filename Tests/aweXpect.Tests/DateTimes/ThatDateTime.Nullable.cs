@@ -14,10 +14,19 @@ public sealed partial class ThatDateTime
 		private static DateTime? CurrentTime()
 			=> CurrentTimeLazy.Value;
 
+		private static DateTime? CurrentTime(DateTimeKind kind)
+			=> DateTime.SpecifyKind(CurrentTimeLazy.Value, kind);
+
 		private static DateTime? EarlierTime(int seconds = 1)
 			=> CurrentTime()?.AddSeconds(-1 * seconds);
 
+		private static DateTime? EarlierTime(int seconds, DateTimeKind kind)
+			=> DateTime.SpecifyKind(CurrentTimeLazy.Value.AddSeconds(-1 * seconds), kind);
+
 		private static DateTime? LaterTime(int seconds = 1)
 			=> CurrentTime()?.AddSeconds(seconds);
+
+		private static DateTime? LaterTime(int seconds, DateTimeKind kind)
+			=> DateTime.SpecifyKind(CurrentTimeLazy.Value.AddSeconds(seconds), kind);
 	}
 }

@@ -110,17 +110,32 @@ public static partial class ThatDateTime
 		: ConstraintResult.WithValue<DateTime>(it, grammars),
 			IValueConstraint<DateTime>
 	{
+		private bool _hasKindDifference;
+
 		public ConstraintResult IsMetBy(DateTime actual)
 		{
 			Actual = actual;
 			TimeSpan timeTolerance = tolerance.Tolerance ??
 			                         Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
 			bool hasValues = false;
+			bool hasComparableValue = false;
+			bool hasIncomparableValue = false;
 			foreach (DateTime? value in expected)
 			{
 				hasValues = true;
-				if (value != null &&
-				    actual - value.Value <= timeTolerance &&
+				if (value is null)
+				{
+					continue;
+				}
+
+				if (!actual.IsKindCompatibleWith(value.Value))
+				{
+					hasIncomparableValue = true;
+					continue;
+				}
+
+				hasComparableValue = true;
+				if (actual - value.Value <= timeTolerance &&
 				    actual - value.Value >= timeTolerance.Negate())
 				{
 					Outcome = Outcome.Success;
@@ -133,6 +148,7 @@ public static partial class ThatDateTime
 				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
 			}
 
+			_hasKindDifference = hasIncomparableValue && !hasComparableValue;
 			Outcome = Outcome.Failure;
 			return this;
 		}
@@ -146,8 +162,15 @@ public static partial class ThatDateTime
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
-			Formatter.Format(stringBuilder, Actual);
+			if (_hasKindDifference)
+			{
+				stringBuilder.Append(It).Append(" differed in the Kind property");
+			}
+			else
+			{
+				stringBuilder.Append(It).Append(" was ");
+				Formatter.Format(stringBuilder, Actual);
+			}
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
