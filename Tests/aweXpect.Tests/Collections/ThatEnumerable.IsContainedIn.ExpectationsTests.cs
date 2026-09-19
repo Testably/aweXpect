@@ -208,8 +208,8 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is contained in collection expected in order,
 					             but it
-					               contained item "d" at index 3 instead of an item that is equal to "x" and
-					               contained item "e" at index 4 instead of an item that is equal to "y"
+					               contained item "d" at index 3 that was not expected and
+					               contained item "e" at index 4 that was not expected
 
 					             Collection:
 					             [
@@ -347,9 +347,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order,
-					             but it
-					               contained item "c" at index 1 instead of an item that is equal to "b" and
-					               contained item "b" at index 2 instead of an item that is equal to "c"
+					             but it contained item "b" at index 2 in wrong order
 
 					             Collection:
 					             [
@@ -385,7 +383,10 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order,
-					             but it contained item "c" at index 0 that was not expected
+					             but it
+					               contained item "a" at index 1 in wrong order and
+					               contained item "b" at index 2 in wrong order and
+					               contained item "c" at index 3 that was not expected
 
 					             Collection:
 					             [
@@ -495,7 +496,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order,
-					             but it contained item "a" at index 0 that was not expected
+					             but it contained item "a" at index 1 that was not expected
 
 					             Collection:
 					             [
@@ -755,8 +756,8 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is contained in collection expected in order ignoring duplicates,
 					             but it
-					               contained item "d" at index 3 instead of an item that is equal to "x" and
-					               contained item "e" at index 4 instead of an item that is equal to "y"
+					               contained item "d" at index 3 that was not expected and
+					               contained item "e" at index 4 that was not expected
 
 					             Collection:
 					             [
@@ -894,9 +895,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order ignoring duplicates,
-					             but it
-					               contained item "c" at index 1 instead of an item that is equal to "b" and
-					               contained item "b" at index 2 instead of an item that is equal to "c"
+					             but it contained item "b" at index 2 in wrong order
 
 					             Collection:
 					             [
@@ -915,7 +914,7 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
-			public async Task WithDuplicatesAtBeginOfSubject_ShouldSucceed()
+			public async Task WithDuplicatesAtBeginOfSubject_ShouldFail()
 			{
 				IEnumerable<string> subject = ToEnumerable(["c", "a", "b", "c",]);
 				IEnumerable<Action<IThat<string?>>> expected =
@@ -928,7 +927,30 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).IgnoringDuplicates();
 
-				await That(Act).DoesNotThrow();
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is contained in collection expected in order ignoring duplicates,
+					             but it
+					               contained item "a" at index 1 in wrong order and
+					               contained item "b" at index 2 in wrong order
+
+					             Collection:
+					             [
+					               "c",
+					               "a",
+					               "b",
+					               "c"
+					             ]
+
+					             Expected:
+					             [
+					               an item that is equal to "a",
+					               an item that is equal to "b",
+					               an item that is equal to "c"
+					             ]
+					             """)
+					.Because("ignoring duplicates must only relax duplicates, not the order of the remaining items");
 			}
 
 			[Fact]
@@ -2200,8 +2222,8 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is contained in collection expected which has at least one additional item in order,
 					             but it
-					               contained item "d" at index 3 instead of an item that is equal to "x" and
-					               contained item "e" at index 4 instead of an item that is equal to "y"
+					               contained item "d" at index 3 that was not expected and
+					               contained item "e" at index 4 that was not expected
 
 					             Collection:
 					             [
@@ -2342,10 +2364,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected which has at least one additional item in order,
-					             but it
-					               contained item "c" at index 1 instead of an item that is equal to "b" and
-					               contained item "b" at index 2 instead of an item that is equal to "c" and
-					               contained all expected items
+					             but it contained item "b" at index 2 in wrong order
 
 					             Collection:
 					             [
@@ -2382,8 +2401,9 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is contained in collection expected which has at least one additional item in order,
 					             but it
-					               contained item "c" at index 0 that was not expected and
-					               contained all expected items
+					               contained item "a" at index 1 in wrong order and
+					               contained item "b" at index 2 in wrong order and
+					               contained item "c" at index 3 that was not expected
 
 					             Collection:
 					             [
@@ -2496,7 +2516,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is contained in collection expected which has at least one additional item in order,
 					             but it
-					               contained item "a" at index 0 that was not expected and
+					               contained item "a" at index 1 that was not expected and
 					               contained all expected items
 
 					             Collection:
@@ -2776,8 +2796,8 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is contained in collection expected which has at least one additional item in order ignoring duplicates,
 					             but it
-					               contained item "d" at index 3 instead of an item that is equal to "x" and
-					               contained item "e" at index 4 instead of an item that is equal to "y"
+					               contained item "d" at index 3 that was not expected and
+					               contained item "e" at index 4 that was not expected
 
 					             Collection:
 					             [
@@ -2918,10 +2938,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected which has at least one additional item in order ignoring duplicates,
-					             but it
-					               contained item "c" at index 1 instead of an item that is equal to "b" and
-					               contained item "b" at index 2 instead of an item that is equal to "c" and
-					               contained all expected items
+					             but it contained item "b" at index 2 in wrong order
 
 					             Collection:
 					             [
@@ -2957,7 +2974,9 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected which has at least one additional item in order ignoring duplicates,
-					             but it contained all expected items
+					             but it
+					               contained item "a" at index 1 in wrong order and
+					               contained item "b" at index 2 in wrong order
 
 					             Collection:
 					             [

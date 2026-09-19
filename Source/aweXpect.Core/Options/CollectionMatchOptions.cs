@@ -225,6 +225,15 @@ public partial class CollectionMatchOptions(
 		}
 	}
 
+	private static IEnumerable<string> OutOfOrderItemsError<T>(Dictionary<int, T> outOfOrderItems)
+	{
+		foreach (KeyValuePair<int, T> outOfOrderItem in outOfOrderItems)
+		{
+			yield return
+				$"contained item {Formatter.Format(outOfOrderItem.Value)} at index {outOfOrderItem.Key} in wrong order";
+		}
+	}
+
 	private static IEnumerable<string> MissingItemsError<T>(int total, List<T> missingItems,
 		EquivalenceRelations equivalenceRelation, bool ignoringDuplicates)
 	{

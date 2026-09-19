@@ -67,11 +67,11 @@ public partial class CollectionMatchOptions
 		private readonly Dictionary<int, T> _additionalItems = new();
 		private readonly EquivalenceRelations _equivalenceRelations;
 		private readonly T3[] _expectedItems;
-		private readonly List<T> _foundItems = new();
 		private readonly bool _ignoreInterspersedItems;
 		private readonly Dictionary<int, (T Item, T3 Expected)> _incorrectItems = new();
 		private readonly List<(int Index, T Item)> _matchingItems = new();
 		private readonly List<T3> _missingItems = new();
+		private readonly Dictionary<int, T> _outOfOrderItems = new();
 		private readonly int _totalExpectedItems;
 		private int _expectationIndex = -1;
 		private int _index;
@@ -95,9 +95,11 @@ public partial class CollectionMatchOptions
 #endif
 			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{
-			_foundItems.Add(value);
-
-			if (_matchIndex >= _expectedItems.Length)
+			if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
+			{
+				await VerifyTheCurrentValueContinuesTheSubsequence(value, options);
+			}
+			else if (_matchIndex >= _expectedItems.Length)
 			{
 				// All expected items were found -> additional items
 				_additionalItems.Add(_index, value);
@@ -117,7 +119,13 @@ public partial class CollectionMatchOptions
 
 			_index++;
 			int errorThreshold = 2 * maximumNumber;
-			int errorCount = _incorrectItems.Count + _missingItems.Count;
+			int errorCount = _incorrectItems.Count + _outOfOrderItems.Count;
+			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
+			{
+				// Expected items that the subsequence skips over are no deviations.
+				errorCount += _missingItems.Count;
+			}
+
 			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains))
 			{
 				errorCount += _additionalItems.Count;
@@ -135,6 +143,11 @@ public partial class CollectionMatchOptions
 #endif
 			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
+			if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
+			{
+				return VerifyCompleteForSubsequenceMatch(it, maximumNumber);
+			}
+
 			int consideredExpectedItems = Math.Max(_expectationIndex - 1, _maxMatchIndex);
 			if (_expectedItems.Length > consideredExpectedItems)
 			{
@@ -162,12 +175,6 @@ public partial class CollectionMatchOptions
 				}
 			}
 
-			if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn) &&
-			    !_incorrectItems.Any())
-			{
-				await VerifyCompleteForSubsetMatch(options);
-			}
-
 			if (_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
 			    _matchIndex >= _expectedItems.Length)
 			{
@@ -191,11 +198,32 @@ public partial class CollectionMatchOptions
 				errors.Add("did not contain any additional items");
 			}
 
-			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
+			errors.AddRange(MissingItemsError(_totalExpectedItems, _missingItems, _equivalenceRelations, false));
+
+			string? error = ReturnErrorString(it, errors);
+			return (error != null, error);
+		}
+#pragma warning restore S3776
+
+		/// <summary>
+		///     The subject is contained in the expected collection, when its items appear in the expected collection in the
+		///     same relative order; the expected items that are skipped in between are missing items.
+		/// </summary>
+		private (bool, string?) VerifyCompleteForSubsequenceMatch(string it, int maximumNumber)
+		{
+			for (int i = _matchIndex; i < _expectedItems.Length; i++)
 			{
-				errors.AddRange(MissingItemsError(_totalExpectedItems, _missingItems, _equivalenceRelations, false));
+				_missingItems.Add(_expectedItems[i]);
+				if (_additionalItems.Count + _outOfOrderItems.Count + _missingItems.Count > 2 * maximumNumber)
+				{
+					return (true, null);
+				}
 			}
-			else if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedInProperly) && !_missingItems.Any())
+
+			List<string> errors = new();
+			errors.AddRange(OutOfOrderItemsError(_outOfOrderItems));
+			errors.AddRange(AdditionalItemsError(_additionalItems));
+			if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedInProperly) && !_missingItems.Any())
 			{
 				errors.Add("contained all expected items");
 			}
@@ -203,7 +231,6 @@ public partial class CollectionMatchOptions
 			string? error = ReturnErrorString(it, errors);
 			return (error != null, error);
 		}
-#pragma warning restore S3776
 
 #if NET8_0_OR_GREATER
 		private async ValueTask
@@ -212,28 +239,18 @@ public partial class CollectionMatchOptions
 #endif
 			VerifyTheCurrentValueIsDifferentFromTheExpectedValue(T value, IOptionsEquality<T2> options)
 		{
-			bool movedMatch = _equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn) &&
-			                  _matchIndex > 0 &&
-			                  await SearchForMatchInFoundItems(value, options);
-
-			if (!movedMatch)
+			if (_expectationIndex >= 0)
 			{
-				if (_expectationIndex >= 0)
-				{
-					_expectationIndex++;
-				}
-
-				_matchIndex = 0;
+				_expectationIndex++;
 			}
+
+			_matchIndex = 0;
 
 			if (await AreConsideredEqual(value, _expectedItems[_matchIndex], options))
 			{
-				if (!movedMatch)
+				foreach ((int index, T matchingItem) in _matchingItems)
 				{
-					foreach ((int index, T matchingItem) in _matchingItems)
-					{
-						_additionalItems.Add(index, matchingItem);
-					}
+					_additionalItems.Add(index, matchingItem);
 				}
 
 				_matchingItems.Clear();
@@ -242,7 +259,7 @@ public partial class CollectionMatchOptions
 				_expectationIndex = 0;
 				_matchingItems.Add((_index, value));
 			}
-			else if (movedMatch || _expectationIndex < 0 || _expectationIndex >= _expectedItems.Length)
+			else if (_expectationIndex < 0 || _expectationIndex >= _expectedItems.Length)
 			{
 				_additionalItems.Add(_index, value);
 			}
@@ -252,45 +269,40 @@ public partial class CollectionMatchOptions
 			}
 		}
 
-#pragma warning disable S3776 // https://rules.sonarsource.com/csharp/RSPEC-3776
+		/// <summary>
+		///     Consumes the expected items until the <paramref name="value" /> matches, so that gaps in the expected
+		///     collection are allowed, but the subject items must keep their relative order.
+		/// </summary>
 #if NET8_0_OR_GREATER
-		private async ValueTask<bool>
+		private async ValueTask
 #else
-		private async Task<bool>
+		private async Task
 #endif
-			SearchForMatchInFoundItems(T value, IOptionsEquality<T2> options)
+			VerifyTheCurrentValueContinuesTheSubsequence(T value, IOptionsEquality<T2> options)
 		{
-			for (int i = 1; i < _expectedItems.Length - _matchingItems.Count; i++)
+			for (int i = _matchIndex; i < _expectedItems.Length; i++)
 			{
-				T3 expectedItem = _expectedItems[_matchIndex + i];
-				if (await AreConsideredEqual(value, _expectedItems[_matchIndex + i], options))
+				if (await AreConsideredEqual(value, _expectedItems[i], options))
 				{
-					bool couldBeMatch = true;
-					for (int j = 0; j < _matchingItems.Count; j++)
+					for (int j = _matchIndex; j < i; j++)
 					{
-						if (!await AreConsideredEqual(_matchingItems[j].Item, _expectedItems[j + i], options))
-						{
-							couldBeMatch = false;
-						}
+						_missingItems.Add(_expectedItems[j]);
 					}
 
-					if (couldBeMatch)
-					{
-						_matchIndex += i;
-
-						for (int j = 0; j < i; j++)
-						{
-							_missingItems.Add(expectedItem);
-						}
-
-						return true;
-					}
+					_matchIndex = i + 1;
+					return;
 				}
 			}
 
-			return false;
+			if (await Any(_missingItems, m => AreConsideredEqual(value, m, options)))
+			{
+				_outOfOrderItems.Add(_index, value);
+			}
+			else
+			{
+				_additionalItems.Add(_index, value);
+			}
 		}
-#pragma warning restore S3776
 
 		private void VerifyTheCurrentValueIsEqualToTheExpectedValue(T value)
 		{
@@ -298,33 +310,6 @@ public partial class CollectionMatchOptions
 			_maxMatchIndex = Math.Max(_matchIndex, _maxMatchIndex);
 			_expectationIndex++;
 			_matchingItems.Add((_index, value));
-		}
-
-#if NET8_0_OR_GREATER
-		private async ValueTask
-#else
-		private async Task
-#endif
-			VerifyCompleteForSubsetMatch(IOptionsEquality<T2> options)
-		{
-			for (int i = 0; i < _expectedItems.Length - _foundItems.Count; i++)
-			{
-				bool isMatch = true;
-				for (int j = 0; j < _foundItems.Count; j++)
-				{
-					if (!await AreConsideredEqual(_foundItems[j], _expectedItems[i + j], options))
-					{
-						isMatch = false;
-						break;
-					}
-				}
-
-				if (isMatch)
-				{
-					_additionalItems.Clear();
-					break;
-				}
-			}
 		}
 
 #if NET8_0_OR_GREATER

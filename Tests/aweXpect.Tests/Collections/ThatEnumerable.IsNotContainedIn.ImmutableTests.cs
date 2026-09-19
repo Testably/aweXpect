@@ -539,7 +539,7 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
-			public async Task WithDuplicatesAtBeginOfSubject_ShouldFail()
+			public async Task WithDuplicatesAtBeginOfSubject_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["c", "a", "b", "c",];
 				string[] expected = ["a", "b", "c",];
@@ -547,27 +547,8 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotContainedIn(expected).IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not contained in collection expected in order ignoring duplicates,
-					             but it did
-
-					             Collection:
-					             [
-					               "c",
-					               "a",
-					               "b",
-					               "c"
-					             ]
-
-					             Expected:
-					             [
-					               "a",
-					               "b",
-					               "c"
-					             ]
-					             """);
+				await That(Act).DoesNotThrow()
+					.Because("ignoring duplicates must only relax duplicates, not the order of the remaining items");
 			}
 
 			[Fact]

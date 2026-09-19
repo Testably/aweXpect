@@ -220,7 +220,7 @@ public class CollectionMatchOptionsTests
 				             is contained in collection [2, 3,] in order,
 				             but it
 				               contained item 1 at index 0 that was not expected and
-				               contained item 2 at index 1 that was not expected
+				               contained item 2 at index 2 that was not expected
 
 				             Collection:
 				             [1, 2, 2, 3]
