@@ -21,7 +21,20 @@ public static partial class EquivalencyComparison
 		string memberPath,
 		MemberType memberType)
 	{
-		if (!actual.Equals(expected))
+		bool isEqual;
+		try
+		{
+			isEqual = actual.Equals(expected);
+		}
+		catch (Exception exception)
+		{
+			throw Tracing.WriteException(
+				new InvalidOperationException(
+					$"The equals method of {Formatter.Format(actual.GetType())} threw an {Formatter.Format(exception.GetType())}: {exception.Message}",
+					exception));
+		}
+
+		if (!isEqual)
 		{
 			AppendDifference(failureBuilder, memberType, memberPath, actual, expected);
 			return false;
@@ -209,21 +222,6 @@ public static partial class EquivalencyComparison
 				AppendMaxRecursionDepthExceeded(failureBuilder, memberType, memberPath,
 					equivalencyOptions.MaxRecursionDepth);
 				return false;
-			}
-
-			try
-			{
-				if (actual.Equals(expected))
-				{
-					return true;
-				}
-			}
-			catch (Exception exception)
-			{
-				throw Tracing.WriteException(
-					new InvalidOperationException(
-						$"The equals method of {Formatter.Format(actual.GetType())} threw an {Formatter.Format(exception.GetType())}: {exception.Message}",
-						exception));
 			}
 
 			if (actual is IDictionary actualDictionary && expected is IDictionary expectedDictionary)
