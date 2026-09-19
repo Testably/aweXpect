@@ -106,6 +106,38 @@ public class CollectionMatchOptionsTests
 				             ]
 				             """);
 		}
+
+		[Fact]
+		public async Task WhenIncorrectItemFormatsLikeTheExpectedItem_ShouldIncludeTheRuntimeType()
+		{
+			object[] subject = [0, 1,];
+			object[] expected = [0, 1L,];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo(expected).Equivalent();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection expected in order equivalent,
+				             but it
+				               contained item 1 (int) at index 1 instead of 1 (long) and
+				               lacked 1 of 2 expected items: 1
+
+				             Collection:
+				             [
+				               0,
+				               1
+				             ]
+
+				             Expected:
+				             [
+				               0,
+				               1
+				             ]
+				             """)
+				.Because("an item and the expected item that format identically are only told apart by their type");
+		}
 	}
 
 	public class GetExpectationTests

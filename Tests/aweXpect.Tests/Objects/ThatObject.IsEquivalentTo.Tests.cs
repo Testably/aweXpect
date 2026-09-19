@@ -637,6 +637,36 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
+			public async Task WhenNumericMembersOnlyDifferInTheirType_ShouldReportTheRuntimeTypes()
+			{
+				var subject = new
+				{
+					V = 1,
+				};
+				var expected = new
+				{
+					V = 1L,
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to { V = 1 },
+					             but it was not:
+					               Property V differed:
+					                    Found: 1 (int)
+					                 Expected: 1 (long)
+
+					             Equivalency options:
+					              - include public fields and properties
+					             """)
+					.Because("equivalency stays strict about the member type, so the failure has to show which types it compared");
+			}
+
+			[Fact]
 			public async Task WhenTypeMembersDiffer_ShouldNotBeEquivalent()
 			{
 				var subject = new

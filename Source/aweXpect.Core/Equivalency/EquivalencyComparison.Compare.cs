@@ -59,9 +59,9 @@ public static partial class EquivalencyComparison
 		MemberType memberType, string memberPath, TActual actual, TExpected expected)
 	{
 		AppendDifferenceHeader(failureBuilder, memberType, memberPath);
-		Formatter.Format(failureBuilder, actual, FormattingOptions.SingleLine);
-		failureBuilder.AppendLine().Append("    Expected: ");
-		Formatter.Format(failureBuilder, expected, FormattingOptions.SingleLine);
+		(string actualText, string expectedText) =
+			ValuePairFormatter.Format(actual, expected, FormattingOptions.SingleLine);
+		failureBuilder.Append(actualText).AppendLine().Append("    Expected: ").Append(expectedText);
 	}
 
 	private static void AppendDifferenceHeader(StringBuilder failureBuilder, MemberType memberType,
