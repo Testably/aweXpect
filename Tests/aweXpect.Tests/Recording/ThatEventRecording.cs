@@ -82,4 +82,26 @@ public sealed partial class ThatEventRecording
 		public void NotifyPropertyChanged(object? sender, string? propertyName)
 			=> PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(propertyName));
 	}
+
+	/// <remarks>
+	///     Separate from <see cref="PropertyChangedClass" />, so that the additional members do not change
+	///     the formatted output of the events recorded in the other tests.
+	/// </remarks>
+	private sealed class PropertyChangedWithMembersClass : INotifyPropertyChanged
+	{
+		public int MyField = 1;
+
+		public PropertyChangedWithMembersClass? Inner { get; set; }
+
+		public int MyValue { get; set; }
+
+		public int this[int index] => index;
+		public event PropertyChangedEventHandler? PropertyChanged;
+
+		public int GetMyValue()
+			=> MyValue;
+
+		public void NotifyPropertyChanged(string? propertyName)
+			=> PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+	}
 }
