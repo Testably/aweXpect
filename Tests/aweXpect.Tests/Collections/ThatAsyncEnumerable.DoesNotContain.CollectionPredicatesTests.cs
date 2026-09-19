@@ -105,7 +105,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain collection unexpected in order,
+					             does not contain collection unexpected in order and contiguous,
 					             but it was <null>
 					             """);
 			}
@@ -167,7 +167,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain collection expected in order,
+					             does not contain collection expected in order and contiguous,
 					             but it did
 
 					             Collection:
@@ -204,7 +204,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain collection expected in order,
+					             does not contain collection expected in order and contiguous,
 					             but it did
 
 					             Collection:
@@ -259,7 +259,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain collection expected in order,
+					             does not contain collection expected in order and contiguous,
 					             but it did
 
 					             Collection:
@@ -314,7 +314,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain collection expected in order,
+					             does not contain collection expected in order and contiguous,
 					             but it did
 
 					             Collection:
@@ -369,7 +369,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain collection expected in order,
+					             does not contain collection expected in order and contiguous,
 					             but it did
 
 					             Collection:
@@ -445,7 +445,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain collection expected in order,
+					             does not contain collection expected in order and contiguous,
 					             but it did
 
 					             Collection:
@@ -608,7 +608,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain collection expected in order ignoring duplicates,
+					             does not contain collection expected in order and contiguous ignoring duplicates,
 					             but it did
 
 					             Collection:
@@ -645,7 +645,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain collection expected in order ignoring duplicates,
+					             does not contain collection expected in order and contiguous ignoring duplicates,
 					             but it did
 
 					             Collection:
@@ -701,7 +701,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain collection expected in order ignoring duplicates,
+					             does not contain collection expected in order and contiguous ignoring duplicates,
 					             but it did
 
 					             Collection:
@@ -740,7 +740,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain collection expected in order ignoring duplicates,
+					             does not contain collection expected in order and contiguous ignoring duplicates,
 					             but it did
 
 					             Collection:
@@ -778,7 +778,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain collection expected in order ignoring duplicates,
+					             does not contain collection expected in order and contiguous ignoring duplicates,
 					             but it did
 
 					             Collection:
@@ -817,7 +817,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain collection expected in order ignoring duplicates,
+					             does not contain collection expected in order and contiguous ignoring duplicates,
 					             but it did
 
 					             Collection:
@@ -855,7 +855,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain collection expected in order ignoring duplicates,
+					             does not contain collection expected in order and contiguous ignoring duplicates,
 					             but it did
 
 					             Collection:
@@ -929,7 +929,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain collection expected in order ignoring duplicates,
+					             does not contain collection expected in order and contiguous ignoring duplicates,
 					             but it did
 
 					             Collection:
@@ -2019,7 +2019,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain collection expected and at least one additional item in order,
+					             does not contain collection expected and at least one additional item in order and contiguous,
 					             but it did
 
 					             Collection:
@@ -2056,7 +2056,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain collection expected and at least one additional item in order,
+					             does not contain collection expected and at least one additional item in order and contiguous,
 					             but it did
 
 					             Collection:
@@ -2111,7 +2111,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain collection expected and at least one additional item in order,
+					             does not contain collection expected and at least one additional item in order and contiguous,
 					             but it did
 
 					             Collection:
@@ -2166,7 +2166,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain collection expected and at least one additional item in order,
+					             does not contain collection expected and at least one additional item in order and contiguous,
 					             but it did
 
 					             Collection:
@@ -2221,7 +2221,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain collection expected and at least one additional item in order,
+					             does not contain collection expected and at least one additional item in order and contiguous,
 					             but it did
 
 					             Collection:
@@ -2439,7 +2439,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain collection expected and at least one additional item in order ignoring duplicates,
+					             does not contain collection expected and at least one additional item in order and contiguous ignoring duplicates,
 					             but it did
 
 					             Collection:
@@ -2476,7 +2476,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain collection expected and at least one additional item in order ignoring duplicates,
+					             does not contain collection expected and at least one additional item in order and contiguous ignoring duplicates,
 					             but it did
 
 					             Collection:
