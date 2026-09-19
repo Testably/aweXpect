@@ -60,6 +60,7 @@ public static partial class ThatDateOnly
 	{
 		public ConstraintResult IsMetBy(DateOnly actual)
 		{
+			ThrowHelper.ThrowIfToleranceIsNotWholeDays(tolerance.Tolerance);
 			Actual = actual;
 			if (minimum is null || maximum is null)
 			{

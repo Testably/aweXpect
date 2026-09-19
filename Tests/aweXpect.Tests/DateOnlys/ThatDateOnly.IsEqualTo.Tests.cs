@@ -1,4 +1,6 @@
 ﻿#if NET8_0_OR_GREATER
+using aweXpect.Customization;
+
 namespace aweXpect.Tests;
 
 public sealed partial class ThatDateOnly
@@ -51,6 +53,63 @@ public sealed partial class ThatDateOnly
 					=> await That(subject).IsEqualTo(expected);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTheDefaultToleranceIsNotWholeDays_ShouldStillTruncateIt()
+			{
+				DateOnly subject = LaterTime();
+				DateOnly expected = CurrentTime();
+
+				async Task Act()
+				{
+					using IDisposable __ =
+						Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(36.Hours());
+					await That(subject).IsEqualTo(expected);
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("the global default is shared with all the other time types and must not turn every "
+					         + "date expectation into an error");
+			}
+
+			[Theory]
+			[InlineData(0)]
+			[InlineData(24)]
+			[InlineData(48)]
+			public async Task Within_WhenToleranceIsAWholeNumberOfDays_ShouldBeAccepted(int hours)
+			{
+				DateOnly subject = LaterTime(hours / 24);
+				DateOnly expected = CurrentTime();
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected)
+						.Within(hours.Hours());
+
+				await That(Act).DoesNotThrow()
+					.Because("a tolerance that divides into whole days is one a date can honour exactly");
+			}
+
+			[Theory]
+			[InlineData(23, 0)]
+			[InlineData(36, 0)]
+			[InlineData(47, 0)]
+			[InlineData(0, 30)]
+			[InlineData(24, 1)]
+			public async Task Within_WhenToleranceIsNotWholeDays_ShouldThrowArgumentOutOfRangeException(
+				int hours, int minutes)
+			{
+				DateOnly subject = LaterTime();
+				DateOnly expected = CurrentTime();
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected)
+						.Within(hours.Hours() + minutes.Minutes());
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("tolerance").And
+					.WithMessage("Tolerance must be a whole number of days").AsPrefix()
+					.Because("a date has no time of day, so the remainder would be dropped without notice");
 			}
 
 			[Theory]

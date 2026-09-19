@@ -266,6 +266,21 @@ public sealed partial class ThatDateOnly
 				}
 
 				[Fact]
+				public async Task WhenToleranceIsNotWholeDays_ShouldThrowArgumentOutOfRangeException()
+				{
+					DateOnly? subject = CurrentTime();
+
+					async Task Act()
+						=> await That(subject).IsNotBetween(EarlierTime()).And(LaterTime())
+							.Within(23.Hours());
+
+					await That(Act).Throws<ArgumentOutOfRangeException>()
+						.WithParamName("tolerance").And
+						.WithMessage("Tolerance must be a whole number of days").AsPrefix()
+						.Because("a date has no time of day, so the remainder would be dropped without notice");
+				}
+
+				[Fact]
 				public async Task WhenValueIsWithinTheMaximumTolerance_ShouldFail()
 				{
 					DateOnly? subject = EarlierTime(3);

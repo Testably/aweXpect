@@ -62,6 +62,7 @@ public static partial class ThatNullableDateOnly
 	{
 		public ConstraintResult IsMetBy(DateOnly? actual)
 		{
+			ThrowHelper.ThrowIfToleranceIsNotWholeDays(tolerance.Tolerance);
 			Actual = actual;
 			if (actual is null && minimum is null && maximum is null)
 			{

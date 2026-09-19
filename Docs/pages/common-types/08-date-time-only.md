@@ -2,6 +2,12 @@
 
 Describes the possible expectations for `DateOnly` and `TimeOnly`.
 
+:::note[`DateOnly` tolerances are counted in days]
+A `DateOnly` has no time of day, so a tolerance must be a whole number of days. Anything else — for example
+`Within(TimeSpan.FromHours(23))` — throws an `ArgumentOutOfRangeException` instead of silently rounding down to a
+tolerance you did not ask for.
+:::
+
 :::note[`TimeOnly` is a clock face]
 A `TimeOnly` has no date, so midnight is not a boundary for equality and ranges, but it stays one for ordering:
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using aweXpect.Core;
 
 namespace aweXpect.Helpers;
 
@@ -18,6 +19,19 @@ internal static class ThrowHelper
 			// ReSharper disable once LocalizableElement
 			throw new ArgumentOutOfRangeException(nameof(maximum),
 				"The maximum must be greater than or equal to the minimum.");
+		}
+	}
+
+	/// <summary>
+	///     Rejects a tolerance with a sub-day remainder, because a date without a time of day cannot honour it and
+	///     would silently drop it.
+	/// </summary>
+	public static void ThrowIfToleranceIsNotWholeDays(TimeSpan? tolerance)
+	{
+		if (tolerance is not null && tolerance.Value.Ticks % TimeSpan.TicksPerDay != 0)
+		{
+			throw Tracing.WriteException(
+				new ArgumentOutOfRangeException(nameof(tolerance), "Tolerance must be a whole number of days"));
 		}
 	}
 }

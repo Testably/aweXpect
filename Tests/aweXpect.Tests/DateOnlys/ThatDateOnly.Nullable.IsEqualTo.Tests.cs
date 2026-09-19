@@ -113,6 +113,22 @@ public sealed partial class ThatDateOnly
 					await That(Act).DoesNotThrow();
 				}
 
+				[Fact]
+				public async Task Within_WhenToleranceIsNotWholeDays_ShouldThrowArgumentOutOfRangeException()
+				{
+					DateOnly? subject = null;
+					DateOnly? expected = null;
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected)
+							.Within(23.Hours());
+
+					await That(Act).Throws<ArgumentOutOfRangeException>()
+						.WithParamName("tolerance").And
+						.WithMessage("Tolerance must be a whole number of days").AsPrefix()
+						.Because("the expectation is malformed no matter which values it is applied to");
+				}
+
 				[Theory]
 				[InlineData(3, 2, true)]
 				[InlineData(5, 3, true)]
