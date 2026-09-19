@@ -254,6 +254,34 @@ public sealed partial class ThatTimeSpan
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
+
+			[Fact]
+			public async Task Within_WhenSubjectIsMaxValue_ShouldNotOverflow()
+			{
+				TimeSpan subject = TimeSpan.MaxValue;
+				TimeSpan expected = CurrentTime();
+
+				async Task Act()
+					=> await That(subject).IsNotBetween(TimeSpan.MinValue).And(expected)
+						.Within(1.Seconds());
+
+				await That(Act).DoesNotThrow()
+					.Because("a widening tolerance must not make the assertion throw at the type limits");
+			}
+
+			[Fact]
+			public async Task Within_WhenSubjectIsMinValue_ShouldNotOverflow()
+			{
+				TimeSpan subject = TimeSpan.MinValue;
+				TimeSpan expected = CurrentTime();
+
+				async Task Act()
+					=> await That(subject).IsNotBetween(expected).And(TimeSpan.MaxValue)
+						.Within(1.Seconds());
+
+				await That(Act).DoesNotThrow()
+					.Because("a widening tolerance must not make the assertion throw at the type limits");
+			}
 		}
 	}
 }

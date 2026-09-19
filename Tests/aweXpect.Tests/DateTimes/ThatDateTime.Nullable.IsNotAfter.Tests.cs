@@ -109,6 +109,20 @@ public sealed partial class ThatDateTime
 				}
 
 				[Fact]
+				public async Task Within_WhenSubjectIsMinValue_ShouldNotOverflow()
+				{
+					DateTime? subject = DateTime.MinValue;
+					DateTime? expected = CurrentTime();
+
+					async Task Act()
+						=> await That(subject).IsNotAfter(expected)
+							.Within(1.Days());
+
+					await That(Act).DoesNotThrow()
+						.Because("a widening tolerance must not make the assertion throw at the type limits");
+				}
+
+				[Fact]
 				public async Task Within_WhenUnexpectedValueIsOutsideTheTolerance_ShouldFail()
 				{
 					DateTime? subject = CurrentTime();

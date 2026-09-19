@@ -251,6 +251,32 @@ public sealed partial class ThatDateTimeOffset
 
 					await That(Act).DoesNotThrow();
 				}
+
+				[Fact]
+				public async Task Within_WhenSubjectIsMaxValue_ShouldNotOverflow()
+				{
+					DateTimeOffset? subject = DateTimeOffset.MaxValue;
+
+					async Task Act()
+						=> await That(subject).IsBetween(DateTimeOffset.MinValue).And(DateTimeOffset.MaxValue)
+							.Within(1.Days());
+
+					await That(Act).DoesNotThrow()
+						.Because("a widening tolerance must not make the assertion throw at the type limits");
+				}
+
+				[Fact]
+				public async Task Within_WhenSubjectIsMinValue_ShouldNotOverflow()
+				{
+					DateTimeOffset? subject = DateTimeOffset.MinValue;
+
+					async Task Act()
+						=> await That(subject).IsBetween(DateTimeOffset.MinValue).And(DateTimeOffset.MaxValue)
+							.Within(1.Days());
+
+					await That(Act).DoesNotThrow()
+						.Because("a widening tolerance must not make the assertion throw at the type limits");
+				}
 			}
 		}
 	}

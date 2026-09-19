@@ -126,6 +126,20 @@ public sealed partial class ThatDateTimeOffset
 				}
 
 				[Fact]
+				public async Task Within_WhenSubjectIsMaxValue_ShouldNotOverflow()
+				{
+					DateTimeOffset? subject = DateTimeOffset.MaxValue;
+					DateTimeOffset? expected = CurrentTime();
+
+					async Task Act()
+						=> await That(subject).IsOnOrAfter(expected)
+							.Within(1.Days());
+
+					await That(Act).DoesNotThrow()
+						.Because("a widening tolerance must not make the assertion throw at the type limits");
+				}
+
+				[Fact]
 				public async Task Within_WhenValuesAreOutsideTheTolerance_ShouldFail()
 				{
 					DateTimeOffset? subject = EarlierTime(4);

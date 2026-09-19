@@ -70,7 +70,7 @@ public static partial class ThatNullableDateTime
 					timeTolerance = timeTolerance.Negate();
 				}
 
-				Outcome = actual.Value.Add(timeTolerance) > expected ? Outcome.Success : Outcome.Failure;
+				Outcome = expected - actual.Value < timeTolerance ? Outcome.Success : Outcome.Failure;
 			}
 
 			return this;

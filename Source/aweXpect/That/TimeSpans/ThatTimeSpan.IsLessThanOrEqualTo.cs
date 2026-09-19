@@ -64,7 +64,9 @@ public static partial class ThatTimeSpan
 				timeTolerance = timeTolerance.Negate();
 			}
 
-			Outcome = actual - timeTolerance <= expected ? Outcome.Success : Outcome.Failure;
+			Outcome = actual.ShiftedTicks(timeTolerance.Negate()) <= expected.Value.Ticks
+				? Outcome.Success
+				: Outcome.Failure;
 			return this;
 		}
 

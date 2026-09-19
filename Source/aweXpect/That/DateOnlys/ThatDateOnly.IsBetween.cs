@@ -68,8 +68,8 @@ public static partial class ThatDateOnly
 					timeTolerance = timeTolerance.Negate();
 				}
 
-				Outcome = actual.AddDays((int)timeTolerance.TotalDays) >= minimum &&
-				          actual.AddDays((int)timeTolerance.Negate().TotalDays) <= maximum
+				Outcome = minimum.Value.DayNumber - actual.DayNumber <= (int)timeTolerance.TotalDays &&
+				          actual.DayNumber - maximum.Value.DayNumber <= (int)timeTolerance.TotalDays
 					? Outcome.Success
 					: Outcome.Failure;
 			}
