@@ -395,6 +395,19 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
+			public async Task WhenAsteriskSpansNewlines_ShouldCountTheGreedyMatchOnce()
+			{
+				string subject = "a\nxb\nayb";
+				string expected = "a*b";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsWildcard().Once();
+
+				await That(Act).DoesNotThrow()
+					.Because("'*' matches across newlines and is matched greedily");
+			}
+
+			[Fact]
 			public async Task WhenCombinedWithIgnoringCase_ShouldIgnoreCase()
 			{
 				string subject = "AXXB";
@@ -434,6 +447,19 @@ public sealed partial class ThatString
 					             but it did not contain "*" in ""
 					             """)
 					.Because("an empty match does not cover any occurrence");
+			}
+
+			[Fact]
+			public async Task WhenQuestionMarkMatchesANewline_ShouldCountAllMatches()
+			{
+				string subject = "a\nb a\nb";
+				string expected = "a?b";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsWildcard().Twice();
+
+				await That(Act).DoesNotThrow()
+					.Because("'?' matches the newline of each occurrence");
 			}
 
 			[Fact]

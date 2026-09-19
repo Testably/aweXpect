@@ -33,6 +33,23 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("the match can be longer or shorter than the pattern and '*' is matched greedily");
 		}
 
+		[Theory]
+		[InlineData("a\nb a\nb", "a?b", 2)]
+		[InlineData("a\r\nb", "a??b", 1)]
+		[InlineData("a\r\nb", "a?b", 0)]
+		[InlineData("a\nxb\nayb", "a*b", 1)]
+		public async Task CountOccurrences_ShouldTreatNewlinesLikeAnyOtherCharacter(string actual, string expected,
+			int expectedCount)
+		{
+			StringEqualityOptions sut = new();
+			sut.AsWildcard();
+
+			int result = await sut.CountOccurrences(actual, expected);
+
+			await That(result).IsEqualTo(expectedCount)
+				.Because("a newline is a character, so both '*' and '?' have to match it");
+		}
+
 		[Fact]
 		public async Task CountOccurrences_WhenCaseIsIgnored_ShouldIgnoreCase()
 		{

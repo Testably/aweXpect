@@ -29,9 +29,10 @@ public partial class StringEqualityOptions
 		///     Empty matches are not counted, because they do not cover anything in the <paramref name="actual" /> value,
 		///     consistent with an empty expected value which never occurs.
 		/// </remarks>
-		public static int CountOccurrences(string actual, string expected, bool ignoreCase)
+		public static int CountOccurrences(string actual, string expected, bool ignoreCase,
+			RegexOptions additionalOptions = RegexOptions.None)
 		{
-			RegexOptions options = RegexOptions.Multiline;
+			RegexOptions options = RegexOptions.Multiline | additionalOptions;
 			if (ignoreCase)
 			{
 				options |= RegexOptions.IgnoreCase;

@@ -27,15 +27,20 @@ public partial class StringEqualityOptions
 		///     <paramref name="actual" /> value.
 		/// </summary>
 		public static int CountOccurrences(string actual, string expected, bool ignoreCase)
-			=> RegexMatchType.CountOccurrences(actual, WildcardToUnanchoredRegularExpression(expected), ignoreCase);
+			=> RegexMatchType.CountOccurrences(actual, WildcardToUnanchoredRegularExpression(expected), ignoreCase,
+				RegexOptions.Singleline);
 
 		private static string WildcardToRegularExpression(string value)
 			=> $"^{WildcardToUnanchoredRegularExpression(value)}$";
 
+		/// <remarks>
+		///     The resulting pattern requires <see cref="RegexOptions.Singleline" />, so that both wildcards treat a newline
+		///     like any other character.
+		/// </remarks>
 		private static string WildcardToUnanchoredRegularExpression(string value)
 			=> Regex.Escape(value)
 				.Replace("\\?", ".")
-				.Replace("\\*", "(.|\\n)*");
+				.Replace("\\*", ".*");
 
 		#region IStringMatchType Members
 
@@ -75,8 +80,8 @@ public partial class StringEqualityOptions
 			}
 
 			RegexOptions options = ignoreCase
-				? RegexOptions.Multiline | RegexOptions.IgnoreCase
-				: RegexOptions.Multiline;
+				? RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase
+				: RegexOptions.Multiline | RegexOptions.Singleline;
 
 #if NET8_0_OR_GREATER
 			return ValueTask.FromResult(Regex.IsMatch(actual, WildcardToRegularExpression(expected), options,
