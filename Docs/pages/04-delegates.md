@@ -205,6 +205,11 @@ await Expect.That(Task.Delay(200)).DoesNotExecuteWithin(TimeSpan.FromMillisecond
   .Because("it should take at least 200ms");
 ```
 
+The duration of `ExecutesWithin` and of `Throws().Within` is applied as timeout, so that a delegate accepting a
+`CancellationToken` is cancelled once it elapsed. A delegate that does not accept a `CancellationToken` cannot be
+interrupted and is awaited to completion, however long that takes; neither `WithTimeout` nor `WithCancellation`
+changes that.
+
 ## Eventually
 
 Some values only become correct after a short delay, e.g. because a background task is still running.

@@ -14,23 +14,43 @@ public static partial class ThatDelegate
 	///     Verifies that the delegate finishes execution within the given <paramref name="duration" />
 	///     without throwing an exception.
 	/// </summary>
+	/// <remarks>
+	///     The <paramref name="duration" /> is applied as timeout (a subsequent <c>WithTimeout(…)</c> overwrites it),
+	///     so that a delegate accepting a <see cref="System.Threading.CancellationToken" /> is cancelled once it
+	///     elapsed. A delegate without such a parameter cannot be interrupted and is awaited to completion,
+	///     however long that takes.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static ExpectationResult<TValue> ExecutesWithin<TValue>(
 		this IThat<Delegates.ThatDelegate.WithValue<TValue>> subject,
 		TimeSpan duration)
-		=> new(subject.Get().ExpectationBuilder
+	{
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		expectationBuilder.WithTimeout(duration);
+		return new ExpectationResult<TValue>(expectationBuilder
 			.AddConstraint((it, grammars) => new ExecutesWithinConstraint<TValue>(it, grammars, duration)));
+	}
 
 	/// <summary>
 	///     Verifies that the delegate finishes execution within the given <paramref name="duration" />
 	///     without throwing an exception.
 	/// </summary>
+	/// <remarks>
+	///     The <paramref name="duration" /> is applied as timeout (a subsequent <c>WithTimeout(…)</c> overwrites it),
+	///     so that a delegate accepting a <see cref="System.Threading.CancellationToken" /> is cancelled once it
+	///     elapsed. A delegate without such a parameter cannot be interrupted and is awaited to completion,
+	///     however long that takes.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static ExpectationResult ExecutesWithin(
 		this IThat<Delegates.ThatDelegate.WithoutValue> subject,
 		TimeSpan duration)
-		=> new(subject.Get().ExpectationBuilder
+	{
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		expectationBuilder.WithTimeout(duration);
+		return new ExpectationResult(expectationBuilder
 			.AddConstraint((it, grammars) => new ExecutesWithinConstraint(it, grammars, duration)));
+	}
 
 	/// <summary>
 	///     Verifies that the delegate does not finish execution within the given <paramref name="duration" />

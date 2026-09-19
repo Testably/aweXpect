@@ -341,7 +341,7 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that Delegate
 					             executes within 0:00.010,
-					             but it took 0:*
+					             but it was canceled within 0:*
 					             """).AsWildcard();
 			}
 
@@ -493,7 +493,7 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that Delegate
 					             executes within 0:00.010,
-					             but it took 0:*
+					             but it was canceled within 0:*
 					             """).AsWildcard();
 			}
 
@@ -597,6 +597,47 @@ public sealed partial class ThatDelegate
 					             executes within 0:00.500,
 					             but it was <null>
 					             """);
+			}
+		}
+
+		public sealed class CancellationTokenTests
+		{
+			[Fact]
+			public async Task WithoutReturnValue_WhenDelegateExceedsTheDuration_ShouldCancelTheCancellationToken()
+			{
+				Func<CancellationToken, Task> @delegate = token => Task.Delay(6.Seconds(), token);
+
+				async Task Act()
+					=> await That(@delegate).ExecutesWithin(50.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             executes within 0:00.050,
+					             but it was canceled within 0:*
+					             """).AsWildcard()
+					.Because("the elapsed duration must cancel the token instead of awaiting the delegate");
+			}
+
+			[Fact]
+			public async Task WithReturnValue_WhenDelegateExceedsTheDuration_ShouldCancelTheCancellationToken()
+			{
+				Func<CancellationToken, Task<int>> @delegate = async token =>
+				{
+					await Task.Delay(6.Seconds(), token);
+					return 1;
+				};
+
+				async Task Act()
+					=> await That(@delegate).ExecutesWithin(50.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             executes within 0:00.050,
+					             but it was canceled within 0:*
+					             """).AsWildcard()
+					.Because("the elapsed duration must cancel the token instead of awaiting the delegate");
 			}
 		}
 
