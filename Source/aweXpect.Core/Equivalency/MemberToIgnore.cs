@@ -41,11 +41,26 @@ public abstract class MemberToIgnore
 	/// <summary>
 	///     Ignores all members that have the provided <paramref name="memberName" />.
 	/// </summary>
+	/// <remarks>
+	///     The <paramref name="memberName" /> must cover whole segments of the member path, so that it can match a member at
+	///     any depth without an abbreviated or misspelled name silently widening the exclusion.
+	/// </remarks>
 	public class ByName(string memberName) : MemberToIgnore
 	{
 		/// <inheritdoc cref="MemberToIgnore.IgnoreMember(string, Type)" />
 		public override bool IgnoreMember(string memberPath, Type memberType)
-			=> memberPath.EndsWith(memberName, StringComparison.OrdinalIgnoreCase);
+		{
+			if (memberName.Length == 0 ||
+			    !memberPath.EndsWith(memberName, StringComparison.OrdinalIgnoreCase))
+			{
+				return false;
+			}
+
+			int segmentStart = memberPath.Length - memberName.Length;
+			return segmentStart == 0 ||
+			       memberName[0] == '[' ||
+			       memberPath[segmentStart - 1] is '.' or ']';
+		}
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString() => $"\"{memberName}\"";
