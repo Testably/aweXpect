@@ -147,6 +147,17 @@ public class CollectionMatchOptionsTests
 	public class RestartedMatchTests
 	{
 		[Fact]
+		public async Task WhenTheMatchRestartsAfterAnInterruptedPartialMatch_ShouldBeContained()
+		{
+			int[] subject = [1, 2, 4, 2, 3,];
+
+			async Task Act()
+				=> await That(subject).Contains([2, 3,]);
+
+			await That(Act).DoesNotThrow();
+		}
+
+		[Fact]
 		public async Task
 			WhenTheMatchRestartsAfterAnInterruptedPartialMatch_ShouldReportTheAbandonedItemsAtTheirOwnIndex()
 		{
@@ -171,6 +182,17 @@ public class CollectionMatchOptionsTests
 				             Expected:
 				             [2, 3]
 				             """);
+		}
+
+		[Fact]
+		public async Task WhenTheMatchRestartsAfterAnInterruptedPartialMatchIgnoringDuplicates_ShouldBeContained()
+		{
+			int[] subject = [1, 2, 4, 2, 3,];
+
+			async Task Act()
+				=> await That(subject).Contains([2, 3,]).IgnoringDuplicates();
+
+			await That(Act).DoesNotThrow();
 		}
 
 		[Fact]

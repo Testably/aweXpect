@@ -334,6 +334,18 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WithContiguousSubset_ShouldSucceed()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 2, 3, 4,]);
+				int[] expected = [2, 3,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WithDuplicatesAtBeginOfSubject_ShouldSucceed()
 			{
 				IEnumerable<string> subject = ToEnumerable(["c", "a", "b", "c",]);
@@ -543,6 +555,43 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).Contains(expected);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithSubsetAfterAbandonedPartialMatch_ShouldSucceed()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 2, 4, 2, 3,]);
+				int[] expected = [2, 3,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithSubsetMissingAfterAbandonedPartialMatch_ShouldFail()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 2, 4, 5,]);
+				int[] expected = [2, 3,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains collection expected in order,
+					             but it
+					               contained item 4 at index 2 instead of 3 and
+					               lacked 1 of 2 expected items: 3
+
+					             Collection:
+					             [1, 2, 4, 5]
+
+					             Expected:
+					             [2, 3]
+					             """);
 			}
 		}
 
@@ -1018,6 +1067,18 @@ public sealed partial class ThatEnumerable
 			{
 				IEnumerable<string> subject = ToEnumerable(["a", "b", "c",]);
 				string[] expected = ["a", "b", "c",];
+
+				async Task Act()
+					=> await That(subject).Contains(expected).IgnoringDuplicates();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithSubsetAfterAbandonedPartialMatch_ShouldSucceed()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 2, 4, 2, 3,]);
+				int[] expected = [2, 3,];
 
 				async Task Act()
 					=> await That(subject).Contains(expected).IgnoringDuplicates();
@@ -2366,6 +2427,18 @@ public sealed partial class ThatEnumerable
 					               "c"
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WithSubsetAfterAbandonedPartialMatch_ShouldSucceed()
+			{
+				IEnumerable<int> subject = ToEnumerable([2, 4, 2, 3,]);
+				int[] expected = [2, 3,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected).Properly();
+
+				await That(Act).DoesNotThrow();
 			}
 		}
 
@@ -4077,6 +4150,18 @@ public sealed partial class ThatEnumerable
 			{
 				IEnumerable<string> subject = ToEnumerable(["a", "b", "c",]);
 				string[] expected = ["a", "b", "c",];
+
+				async Task Act()
+					=> await That(subject).Contains(expected).IgnoringInterspersedItems();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithSubsetAfterAbandonedPartialMatch_ShouldSucceed()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 2, 4, 2, 3,]);
+				int[] expected = [2, 3,];
 
 				async Task Act()
 					=> await That(subject).Contains(expected).IgnoringInterspersedItems();

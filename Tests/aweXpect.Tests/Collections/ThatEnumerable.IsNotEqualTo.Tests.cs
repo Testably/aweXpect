@@ -270,6 +270,18 @@ public sealed partial class ThatEnumerable
 					             ]
 					             """);
 			}
+
+			[Fact]
+			public async Task WithSubsetAfterAbandonedPartialMatch_ShouldSucceed()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 2, 4, 2, 3,]);
+				int[] unexpected = [2, 3,];
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
 		}
 
 		public sealed class InSameOrderIgnoringDuplicatesTests
