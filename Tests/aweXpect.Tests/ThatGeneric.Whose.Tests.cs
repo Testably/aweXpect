@@ -659,6 +659,44 @@ public sealed partial class ThatGeneric
 				await That(stopwatch.Elapsed).IsLessThan(TimeSpan.FromSeconds(1));
 			}
 
+			[Fact]
+			public async Task WhenAsyncMemberNeverCompletes_ShouldAbortOnCancellation()
+			{
+				ThrowingClass subject = new();
+				using CancellationTokenSource cts = new(TimeSpan.FromMilliseconds(300));
+
+				Task evaluation = Evaluate();
+
+				await Task.WhenAny(evaluation, Task.Delay(TimeSpan.FromSeconds(10)));
+				await That(evaluation.IsCompleted).IsTrue();
+				Func<Task> awaitEvaluation = async () => await evaluation;
+				await That(awaitEvaluation).Throws<OperationCanceledException>();
+
+				async Task Evaluate()
+					=> await That(subject).Whose(o => o.HangAsync(), v => v.IsEqualTo(1))
+						.WithCancellation(cts.Token);
+			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task WhenValueTaskMemberNeverCompletes_ShouldAbortOnCancellation()
+			{
+				ThrowingClass subject = new();
+				using CancellationTokenSource cts = new(TimeSpan.FromMilliseconds(300));
+
+				Task evaluation = Evaluate();
+
+				await Task.WhenAny(evaluation, Task.Delay(TimeSpan.FromSeconds(10)));
+				await That(evaluation.IsCompleted).IsTrue();
+				Func<Task> awaitEvaluation = async () => await evaluation;
+				await That(awaitEvaluation).Throws<OperationCanceledException>();
+
+				async Task Evaluate()
+					=> await That(subject).Whose(o => o.HangValueTaskAsync(), v => v.IsEqualTo(1))
+						.WithCancellation(cts.Token);
+			}
+#endif
+
 			private sealed class CancelingClass(CancellationTokenSource cts)
 			{
 				public Task<int> CancelAsync()
@@ -678,6 +716,14 @@ public sealed partial class ThatGeneric
 
 				public Task<int> CanceledAsync()
 					=> Task.FromCanceled<int>(new CancellationToken(true));
+
+				public Task<int> HangAsync()
+					=> new TaskCompletionSource<int>().Task;
+
+#if NET8_0_OR_GREATER
+				public ValueTask<int> HangValueTaskAsync()
+					=> new(new TaskCompletionSource<int>().Task);
+#endif
 
 				public async Task<int> FaultedAsync()
 				{

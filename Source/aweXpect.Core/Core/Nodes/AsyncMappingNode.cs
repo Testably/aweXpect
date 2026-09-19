@@ -53,7 +53,7 @@ internal class AsyncMappingNode<TSource, TTarget> : ExpectationNode
 			TTarget matchingValue;
 			try
 			{
-				matchingValue = await _memberAccessor.AccessMember(typedValue);
+				matchingValue = await _memberAccessor.AccessMember(typedValue).WaitAsync(cancellationToken);
 			}
 			catch (Exception exception) when (!MemberExceptionResult.IsCancellationOf(exception, cancellationToken))
 			{

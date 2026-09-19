@@ -133,6 +133,22 @@ public class AsyncMappingNodeTests
 	}
 
 	[Fact]
+	public async Task IsMetBy_WhenMemberNeverCompletes_ShouldAbortOnCancellation()
+	{
+		AsyncMappingNode<string, int> node = new(MemberAccessor<string, Task<int>>.FromFunc(
+			_ => new TaskCompletionSource<int>().Task, " length "));
+		node.AddConstraint(new NotEvaluatedConstraint<int>("yeah!", "not yeah!"));
+		using CancellationTokenSource cts = new(TimeSpan.FromMilliseconds(100));
+
+		Task<ConstraintResult> evaluation = node.IsMetBy("foo", null!, cts.Token);
+
+		await Task.WhenAny(evaluation, Task.Delay(TimeSpan.FromSeconds(10)));
+		await That(evaluation.IsCompleted).IsTrue();
+		Func<Task> awaitEvaluation = async () => await evaluation;
+		await That(awaitEvaluation).Throws<OperationCanceledException>();
+	}
+
+	[Fact]
 	public async Task IsMetBy_WithNullDelegate_ShouldReturnNullFailure()
 	{
 		DelegateValue<string?> value = new("foo", null, 10.Milliseconds(), true);
