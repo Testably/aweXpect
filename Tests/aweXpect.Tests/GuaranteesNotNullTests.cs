@@ -108,10 +108,16 @@ public sealed class GuaranteesNotNullTests
 	///     `bool?` expectations exist to cover the null case — making `IsNotTrue()` fail for it would
 	///     leave it identical to `IsFalse()`, with no null-tolerant twin. `Eventually` continues a
 	///     delegate expectation rather than taking a subject, so it has no null-subject behaviour of
-	///     its own.
+	///     its own. `Satisfies` and `CompliesWith` hand the subject to the caller's own predicate or
+	///     expectations, which state themselves how a null is to be treated, so their null-subject
+	///     behaviour is not theirs to decide.
 	/// </summary>
 	private static readonly HashSet<string> Exempt = new(StringComparer.Ordinal)
 	{
+		"CompliesWith",
+		"DoesNotComplyWith",
+		"DoesNotSatisfy",
+		"Satisfies",
 		"Eventually",
 		"IsEqualTo",
 		"IsEquivalentTo",

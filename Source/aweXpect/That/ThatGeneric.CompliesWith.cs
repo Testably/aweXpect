@@ -17,7 +17,10 @@ public static partial class ThatGeneric
 	/// <summary>
 	///     Verifies that the actual value complies with the <paramref name="expectations" />.
 	/// </summary>
-	[GuaranteesNotNull]
+	/// <remarks>
+	///     The <paramref name="expectations" /> decide about a <see langword="null" /> subject as well, so
+	///     <c>CompliesWith(it =&gt; it.IsNull())</c> succeeds.
+	/// </remarks>
 	public static RepeatedCheckResult<T, IThat<T>> CompliesWith<T>(this IThat<T> subject,
 		Action<IThatSubject<T>> expectations)
 	{
@@ -32,7 +35,10 @@ public static partial class ThatGeneric
 	/// <summary>
 	///     Verifies that the actual value does not comply with the <paramref name="expectations" />.
 	/// </summary>
-	[GuaranteesNotNull]
+	/// <remarks>
+	///     The <paramref name="expectations" /> decide about a <see langword="null" /> subject as well, so
+	///     <c>DoesNotComplyWith(it =&gt; it.IsNotNull())</c> succeeds.
+	/// </remarks>
 	public static RepeatedCheckResult<T, IThat<T>> DoesNotComplyWith<T>(this IThat<T> subject,
 		Action<IThatSubject<T>> expectations)
 	{
