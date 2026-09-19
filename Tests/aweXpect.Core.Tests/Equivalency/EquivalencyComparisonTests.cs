@@ -62,9 +62,7 @@ public sealed class EquivalencyComparisonTests
 		await That(result).IsFalse();
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
-		                                                  Property Value differed:
-		                                                       Found: <null>
-		                                                    Expected: 1
+		                                                  Property Value is missing on the actual object
 		                                                """).IgnoringNewlineStyle()
 			.Because("a registration cannot call a non-public getter, so reflection must not read one either");
 	}
@@ -110,6 +108,20 @@ public sealed class EquivalencyComparisonTests
 		                                                     Expected: {expected.Value}
 		                                                 """).IgnoringNewlineStyle()
 			.Because("an assembly only describes what it loaded, so walking it reaches getters that throw instead of state that could be compared");
+	}
+
+	[Fact]
+	public async Task WhenBothMembersAreNull_ShouldSucceed()
+	{
+		WithNullableValue actual = new(null);
+		WithNullableValue expected = new(null);
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("a member that exists on both sides and is null on both sides is equivalent");
+		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
 	[Fact]
@@ -257,6 +269,48 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenExpectedFieldIsMissingOnTheActualType_ShouldReportItAsMissing()
+	{
+		WithPublicValue actual = new(1);
+		WithTwoPublicValues expected = new(1, 2);
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Field Other is missing on the actual object
+		                                                """).IgnoringNewlineStyle()
+			.Because("a field is reported as missing just like a property");
+	}
+
+	[Fact]
+	public async Task WhenExpectedMemberIsMissingOnTheActualType_WhenIgnored_ShouldSucceed()
+	{
+		var actual = new
+		{
+			A = 1,
+		};
+		var expected = new
+		{
+			A = 1,
+			B = 5,
+		};
+		EquivalencyOptions options = new()
+		{
+			MembersToIgnore = [new MemberToIgnore.ByName("B"),],
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("an ignored member is never looked up on the actual object, so it cannot be missing");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
 	public async Task WhenExpectedMemberIsNull_ShouldReportFoundAndExpected()
 	{
 		var actual = new
@@ -278,6 +332,71 @@ public sealed class EquivalencyComparisonTests
 		                                                       Found: 1
 		                                                    Expected: <null>
 		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenExpectedPropertyIsMissingOnTheActualType_ShouldReportItAsMissing()
+	{
+		var actual = new
+		{
+			A = 1,
+		};
+		var expected = new
+		{
+			A = 1,
+			B = 5,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property B is missing on the actual object
+		                                                """).IgnoringNewlineStyle()
+			.Because("the actual object never had the member, so claiming that it was found as <null> would be wrong");
+	}
+
+	[Fact]
+	public async Task WhenExpectedPropertyIsMissingOnTheActualType_WithNullValue_ShouldStillFail()
+	{
+		var actual = new
+		{
+			A = 1,
+		};
+		var expected = new
+		{
+			A = 1,
+			B = (string?)null,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse()
+			.Because("a member the actual object does not have has to fail whatever the expected value is");
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property B is missing on the actual object
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenExpectedTypeIsDerivedFromTheActualType_ShouldReportTheAdditionalMemberAsMissing()
+	{
+		WithProperty actual = new(1);
+		WithProperty expected = new DerivedWithAdditionalProperty(1, 5);
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Additional is missing on the actual object
+		                                                """).IgnoringNewlineStyle()
+			.Because("the members are taken from the runtime type of the expected object, which the actual type does not have");
 	}
 
 	[Theory]
@@ -586,6 +705,39 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenMultipleMembersAreMissingOrDiffer_ShouldSeparateThemWithAnd()
+	{
+		var actual = new
+		{
+			Bee = 1,
+			Dog = 2,
+		};
+		var expected = new
+		{
+			Ant = 3,
+			Bee = 9,
+			Cow = 4,
+			Dog = 2,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Ant is missing on the actual object
+		                                                and
+		                                                  Property Bee differed:
+		                                                       Found: 1
+		                                                    Expected: 9
+		                                                and
+		                                                  Property Cow is missing on the actual object
+		                                                """).IgnoringNewlineStyle()
+			.Because("a missing member has to be separated from the other findings, in either direction");
+	}
+
+	[Fact]
 	public async Task WhenMultipleMembersDiffer_ShouldSeparateThemWithAnd()
 	{
 		var actual = new
@@ -612,6 +764,35 @@ public sealed class EquivalencyComparisonTests
 		                                                  Property Second differed:
 		                                                       Found: <null>
 		                                                    Expected: "Foo"
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenNestedExpectedMemberIsMissing_ShouldReportTheFullMemberPath()
+	{
+		var actual = new
+		{
+			Inner = new
+			{
+				A = 1,
+			},
+		};
+		var expected = new
+		{
+			Inner = new
+			{
+				A = 1,
+				B = 5,
+			},
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Inner.B is missing on the actual object
 		                                                """).IgnoringNewlineStyle();
 	}
 
@@ -961,6 +1142,11 @@ public sealed class EquivalencyComparisonTests
 		public ClassWithOnlyPrivateState Inner { get; } = inner;
 	}
 
+	private sealed class DerivedWithAdditionalProperty(int value, int additional) : WithProperty(value)
+	{
+		public int Additional { get; } = additional;
+	}
+
 	private sealed class FieldHidingProperty(int property, int field) : WithProperty(property)
 	{
 		public new int Value = field;
@@ -1016,6 +1202,11 @@ public sealed class EquivalencyComparisonTests
 		internal int Value = value;
 	}
 
+	private sealed class WithNullableValue(string? value)
+	{
+		public string? Value { get; } = value;
+	}
+
 	private sealed class WithPrivateGetter(int value)
 	{
 		public int Value { private get; set; } = value;
@@ -1043,5 +1234,11 @@ public sealed class EquivalencyComparisonTests
 	private sealed class WithThrowingGetter(string message)
 	{
 		public int Value => throw new InvalidOperationException(message);
+	}
+
+	private sealed class WithTwoPublicValues(int value, int other)
+	{
+		public int Other = other;
+		public int Value = value;
 	}
 }

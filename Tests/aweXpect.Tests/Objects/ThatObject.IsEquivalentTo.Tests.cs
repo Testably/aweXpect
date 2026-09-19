@@ -236,6 +236,54 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
+			public async Task MissingMember_ShouldNotBeEquivalent()
+			{
+				var subject = new
+				{
+					A = 1,
+				};
+				var expected = new
+				{
+					A = 1,
+					B = (string?)null,
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to { A = 1, B =  },
+					             but it was not:
+					               Property B is missing on the actual object
+
+					             Equivalency options:
+					              - include public fields and properties
+					             """)
+					.Because("a member the actual object does not have cannot be equivalent to <null>");
+			}
+
+			[Fact]
+			public async Task MissingMember_WithIgnoreRule_ShouldBeEquivalent()
+			{
+				var subject = new
+				{
+					A = 1,
+				};
+				var expected = new
+				{
+					A = 1,
+					B = "Foo",
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected, o => o.IgnoringMember("B"));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task ObjectsWithNestedEnumerableMatches_ShouldBeEquivalent()
 			{
 				OuterClass subject = new()
