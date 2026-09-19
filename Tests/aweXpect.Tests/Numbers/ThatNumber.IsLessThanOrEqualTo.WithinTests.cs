@@ -85,7 +85,7 @@ public sealed partial class ThatNumber
 			}
 
 			[Fact]
-			public async Task ForDouble_WhenExpectedIsNaN_ShouldFail()
+			public async Task ForDouble_WhenExpectedIsNaN_ShouldThrowArgumentOutOfRangeException()
 			{
 				double subject = 5.0;
 				double expected = double.NaN;
@@ -93,7 +93,10 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsLessThanOrEqualTo(expected).Within(1.0);
 
-				await That(Act).Throws<XunitException>();
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("expected").And
+					.WithMessage("The expected value must not be NaN.").AsPrefix()
+					.Because("no tolerance can bring a value within reach of NaN");
 			}
 
 			[Theory]
