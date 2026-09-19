@@ -81,6 +81,19 @@ public static partial class EquivalencyComparison
 		failureBuilder.Append(maxRecursionDepth);
 	}
 
+	private static void AppendMissingMember(StringBuilder failureBuilder, MemberType memberType, string memberPath)
+	{
+		failureBuilder.AppendLine();
+		if (failureBuilder.Length > 2)
+		{
+			failureBuilder.AppendLine("and");
+		}
+
+		failureBuilder.Append("  ");
+		failureBuilder.Append(GetMemberPath(memberType, memberPath));
+		failureBuilder.Append(" is missing on the actual object");
+	}
+
 	private static string ConcatMemberPath(string memberPath, string memberName)
 	{
 		if (string.IsNullOrEmpty(memberPath))
@@ -260,8 +273,16 @@ public static partial class EquivalencyComparison
 					continue;
 				}
 
-				object? actualFieldValue =
-					EquivalencyMembers.FindField(actual.GetType(), field.Name, typeOptions.Fields)?.Invoke(actual);
+				Func<object, object?>? actualFieldAccessor =
+					EquivalencyMembers.FindField(actual.GetType(), field.Name, typeOptions.Fields);
+				if (actualFieldAccessor is null)
+				{
+					AppendMissingMember(failureBuilder, MemberType.Field, fieldMemberPath);
+					result = false;
+					continue;
+				}
+
+				object? actualFieldValue = actualFieldAccessor.Invoke(actual);
 				object? expectedFieldValue = field.GetValue(expected);
 
 				if (!await Compare(actualFieldValue, expectedFieldValue,
@@ -287,9 +308,16 @@ public static partial class EquivalencyComparison
 					continue;
 				}
 
-				object? actualPropertyValue =
-					EquivalencyMembers.FindProperty(actual.GetType(), property.Name, typeOptions.Properties)
-						?.Invoke(actual);
+				Func<object, object?>? actualPropertyAccessor =
+					EquivalencyMembers.FindProperty(actual.GetType(), property.Name, typeOptions.Properties);
+				if (actualPropertyAccessor is null)
+				{
+					AppendMissingMember(failureBuilder, MemberType.Property, propertyMemberPath);
+					result = false;
+					continue;
+				}
+
+				object? actualPropertyValue = actualPropertyAccessor.Invoke(actual);
 				object? expectedPropertyValue = property.GetValue(expected);
 
 				if (!await Compare(actualPropertyValue, expectedPropertyValue,

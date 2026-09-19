@@ -67,6 +67,8 @@ await Expect.That(tracks).All().AreEqualTo(expected).Equivalent(o => o.IgnoringC
 By default, equivalency:
 
 - Compares **public fields** and **public properties**.
+- Fails when a member of the expected object does not exist on the actual object, reporting it as missing instead of
+  comparing it against `null`.
 - Recurses into nested objects.
 - Treats primitives, `enum`, `string`, `decimal`, `DateTime`, `DateTimeOffset`, `TimeSpan` and `Guid` as
   *value types* and compares them with `Equals`. The same applies to handles that describe something else instead of
