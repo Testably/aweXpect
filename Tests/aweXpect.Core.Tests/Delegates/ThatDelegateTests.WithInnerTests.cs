@@ -201,12 +201,6 @@ public sealed partial class ThatDelegateTests
 				               "inner"
 				               "foo"
 				                ↑ (expected)
-
-				             Actual:
-				             inner
-
-				             Expected:
-				             foo
 				             """);
 		}
 
