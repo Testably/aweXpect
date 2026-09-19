@@ -12,6 +12,6 @@ internal static class ExpectHelpers
 			return expectThat;
 		}
 
-		throw new NotSupportedException("IThat<T> must also implement IExpectThat<T>");
+		throw Tracing.WriteException(new NotSupportedException("IThat<T> must also implement IExpectThat<T>"));
 	}
 }

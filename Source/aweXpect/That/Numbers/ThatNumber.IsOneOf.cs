@@ -230,7 +230,7 @@ public static partial class ThatNumber
 
 			if (!hasValues)
 			{
-				throw ThrowHelper.EmptyCollection();
+				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
 			}
 
 			Outcome = Outcome.Failure;
@@ -286,7 +286,7 @@ public static partial class ThatNumber
 
 			if (!hasValues)
 			{
-				throw ThrowHelper.EmptyCollection();
+				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
 			}
 
 			Outcome = Outcome.Failure;
@@ -342,7 +342,7 @@ public static partial class ThatNumber
 
 			if (!hasValues)
 			{
-				throw ThrowHelper.EmptyCollection();
+				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
 			}
 
 			Outcome = Outcome.Failure;
@@ -398,7 +398,7 @@ public static partial class ThatNumber
 
 			if (!hasValues)
 			{
-				throw ThrowHelper.EmptyCollection();
+				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
 			}
 
 			Outcome = Outcome.Failure;
@@ -2434,7 +2434,7 @@ public static partial class ThatNumber
 
 			if (!hasValues)
 			{
-				throw ThrowHelper.EmptyCollection();
+				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
 			}
 
 			Outcome = Outcome.Failure;
@@ -2490,7 +2490,7 @@ public static partial class ThatNumber
 
 			if (!hasValues)
 			{
-				throw ThrowHelper.EmptyCollection();
+				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
 			}
 
 			Outcome = Outcome.Failure;
@@ -2546,7 +2546,7 @@ public static partial class ThatNumber
 
 			if (!hasValues)
 			{
-				throw ThrowHelper.EmptyCollection();
+				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
 			}
 
 			Outcome = Outcome.Failure;
@@ -2602,7 +2602,7 @@ public static partial class ThatNumber
 
 			if (!hasValues)
 			{
-				throw ThrowHelper.EmptyCollection();
+				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
 			}
 
 			Outcome = Outcome.Failure;

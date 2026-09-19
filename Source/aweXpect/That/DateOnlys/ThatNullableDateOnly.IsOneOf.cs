@@ -136,7 +136,7 @@ public static partial class ThatNullableDateOnly
 
 				if (!hasValues)
 				{
-					throw ThrowHelper.EmptyCollection();
+					throw Tracing.WriteException(ThrowHelper.EmptyCollection());
 				}
 
 				Outcome = Outcome.Failure;

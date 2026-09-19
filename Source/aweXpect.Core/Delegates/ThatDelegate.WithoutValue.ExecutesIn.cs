@@ -114,8 +114,8 @@ public abstract partial class ThatDelegate
 			}
 
 			public override ConstraintResult Negate()
-				=> throw new NotSupportedException($"Negation of {nameof(ExecutesIn)} is not supported.")
-					.LogTrace();
+				=> throw Tracing.WriteException(
+					new NotSupportedException($"Negation of {nameof(ExecutesIn)} is not supported."));
 		}
 	}
 }

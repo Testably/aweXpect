@@ -5,7 +5,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using aweXpect.Core.Adapters;
-using aweXpect.Core.Helpers;
 using aweXpect.Customization;
 
 namespace aweXpect.Core.Initialization;
@@ -75,9 +74,9 @@ internal static class AweXpectInitialization
 			}
 			catch (Exception ex)
 			{
-				throw new InvalidOperationException(
-						$"Could not instantiate test framework '{Formatter.Format(frameworkType)}'!", ex)
-					.LogTrace();
+				throw Tracing.WriteException(
+					new InvalidOperationException(
+						$"Could not instantiate test framework '{Formatter.Format(frameworkType)}'!", ex));
 			}
 		}
 
@@ -157,7 +156,7 @@ internal static class AweXpectInitialization
 			}
 			catch (Exception ex)
 			{
-				ex.LogTrace();
+				Tracing.WriteException(ex);
 				throw;
 			}
 		}
@@ -187,7 +186,7 @@ internal static class AweXpectInitialization
 			}
 			catch (Exception ex)
 			{
-				ex.LogTrace();
+				Tracing.WriteException(ex);
 				throw;
 			}
 		}
@@ -205,7 +204,7 @@ internal static class AweXpectInitialization
 			}
 			catch (Exception ex)
 			{
-				ex.LogTrace();
+				Tracing.WriteException(ex);
 				throw;
 			}
 		}

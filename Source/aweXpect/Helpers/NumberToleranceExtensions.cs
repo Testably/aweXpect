@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
+using aweXpect.Core;
 using aweXpect.Options;
 #if NET8_0_OR_GREATER
 using System.Numerics;
@@ -141,7 +142,7 @@ internal static class NumberToleranceExtensions
 		if (IsNaN(value))
 		{
 			// ReSharper disable once LocalizableElement
-			throw new ArgumentOutOfRangeException(paramName, $"The {paramName} must not be NaN.");
+			throw Tracing.WriteException(new ArgumentOutOfRangeException(paramName, $"The {paramName} must not be NaN."));
 		}
 	}
 

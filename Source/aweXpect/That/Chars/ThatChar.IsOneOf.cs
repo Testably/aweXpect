@@ -83,7 +83,7 @@ public static partial class ThatChar
 
 			if (!hasValues)
 			{
-				throw ThrowHelper.EmptyCollection();
+				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
 			}
 
 			Outcome = Outcome.Failure;

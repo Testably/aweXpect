@@ -40,11 +40,11 @@ public class SpanWrapper<T> : ICollection<T>
 
 	/// <inheritdoc cref="ICollection{T}.Add(T)" />
 	public void Add(T item)
-		=> throw new NotSupportedException("You may not change a SpanWrapper!");
+		=> throw Tracing.WriteException(new NotSupportedException("You may not change a SpanWrapper!"));
 
 	/// <inheritdoc cref="ICollection{T}.Clear()" />
 	public void Clear()
-		=> throw new NotSupportedException("You may not change a SpanWrapper!");
+		=> throw Tracing.WriteException(new NotSupportedException("You may not change a SpanWrapper!"));
 
 	/// <inheritdoc cref="ICollection{T}.Contains(T)" />
 	public bool Contains(T item)
@@ -56,7 +56,7 @@ public class SpanWrapper<T> : ICollection<T>
 
 	/// <inheritdoc cref="ICollection{T}.Remove(T)" />
 	public bool Remove(T item)
-		=> throw new NotSupportedException("You may not change a SpanWrapper!");
+		=> throw Tracing.WriteException(new NotSupportedException("You may not change a SpanWrapper!"));
 
 	/// <inheritdoc cref="ICollection{T}.Count" />
 	public int Count

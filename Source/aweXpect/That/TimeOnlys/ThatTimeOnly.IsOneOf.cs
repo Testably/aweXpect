@@ -130,7 +130,7 @@ public static partial class ThatTimeOnly
 
 			if (!hasValues)
 			{
-				throw ThrowHelper.EmptyCollection();
+				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
 			}
 
 			Outcome = Outcome.Failure;

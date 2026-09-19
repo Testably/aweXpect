@@ -50,7 +50,7 @@ public static class TestFrameworkRegistry
 		{
 			if (testFrameworkAdapter is null)
 			{
-				throw new ArgumentNullException(nameof(testFrameworkAdapter));
+				throw Tracing.WriteException(new ArgumentNullException(nameof(testFrameworkAdapter)));
 			}
 
 			if (!testFrameworkAdapter.IsAvailable)

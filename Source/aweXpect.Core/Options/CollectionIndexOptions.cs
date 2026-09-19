@@ -1,4 +1,5 @@
 using System;
+using aweXpect.Core;
 
 namespace aweXpect.Options;
 
@@ -36,7 +37,7 @@ public class CollectionIndexOptions
 
 		/// <inheritdoc cref="CollectionIndexOptions.IMatchFromBeginning.FromEnd()" />
 		public IMatchFromEnd FromEnd()
-			=> throw new NotSupportedException("You have to specify a dedicated index condition first.");
+			=> throw Tracing.WriteException(new NotSupportedException("You have to specify a dedicated index condition first."));
 	}
 
 	/// <summary>

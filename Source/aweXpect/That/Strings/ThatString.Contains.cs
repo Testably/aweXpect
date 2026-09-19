@@ -24,7 +24,7 @@ public static partial class ThatString
 		if (expected == string.Empty)
 		{
 			// ReSharper disable once LocalizableElement
-			throw new ArgumentException("The 'expected' string cannot be empty.", nameof(expected));
+			throw Tracing.WriteException(new ArgumentException("The 'expected' string cannot be empty.", nameof(expected)));
 		}
 
 		Quantifier quantifier = new();
@@ -49,7 +49,7 @@ public static partial class ThatString
 		if (unexpected == string.Empty)
 		{
 			// ReSharper disable once LocalizableElement
-			throw new ArgumentException("The 'unexpected' string cannot be empty.", nameof(unexpected));
+			throw Tracing.WriteException(new ArgumentException("The 'unexpected' string cannot be empty.", nameof(unexpected)));
 		}
 
 		Quantifier quantifier = new();

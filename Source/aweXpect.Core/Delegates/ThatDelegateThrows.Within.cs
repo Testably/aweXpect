@@ -1,4 +1,5 @@
 ﻿using System;
+using aweXpect.Core;
 using aweXpect.Options;
 
 namespace aweXpect.Delegates;
@@ -18,7 +19,8 @@ public partial class ThatDelegateThrows<TException>
 	{
 		if (duration < TimeSpan.Zero)
 		{
-			throw new ArgumentOutOfRangeException(nameof(duration), "The duration must not be negative.");
+			throw Tracing.WriteException(
+				new ArgumentOutOfRangeException(nameof(duration), "The duration must not be negative."));
 		}
 
 		TimeSpanEqualityOptions options = new();
