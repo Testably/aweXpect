@@ -11,9 +11,14 @@ internal static class EqualityHelpers
 			return false;
 		}
 
-		if (double.IsNaN(actual) || double.IsNaN(expected.Value))
+		if (actual.Equals(expected.Value))
 		{
-			return double.IsNaN(actual) && double.IsNaN(expected.Value);
+			return true;
+		}
+
+		if (!IsFinite(actual) || !IsFinite(expected.Value))
+		{
+			return false;
 		}
 
 		checked
@@ -31,9 +36,14 @@ internal static class EqualityHelpers
 			return actual is null && expected is null;
 		}
 
-		if (double.IsNaN(actual.Value) || double.IsNaN(expected.Value))
+		if (actual.Value.Equals(expected.Value))
 		{
-			return double.IsNaN(actual.Value) && double.IsNaN(expected.Value);
+			return true;
+		}
+
+		if (!IsFinite(actual.Value) || !IsFinite(expected.Value))
+		{
+			return false;
 		}
 
 		checked
@@ -86,9 +96,14 @@ internal static class EqualityHelpers
 			return false;
 		}
 
-		if (float.IsNaN(actual) || float.IsNaN(expected.Value))
+		if (actual.Equals(expected.Value))
 		{
-			return float.IsNaN(actual) && float.IsNaN(expected.Value);
+			return true;
+		}
+
+		if (!IsFinite(actual) || !IsFinite(expected.Value))
+		{
+			return false;
 		}
 
 		checked
@@ -111,9 +126,14 @@ internal static class EqualityHelpers
 			return false;
 		}
 
-		if (float.IsNaN(actual.Value) || float.IsNaN(expected.Value))
+		if (actual.Value.Equals(expected.Value))
 		{
-			return float.IsNaN(actual.Value) && float.IsNaN(expected.Value);
+			return true;
+		}
+
+		if (!IsFinite(actual.Value) || !IsFinite(expected.Value))
+		{
+			return false;
 		}
 
 		checked
@@ -151,6 +171,15 @@ internal static class EqualityHelpers
 		hasKindDifference = !AreKindCompatible(actual?.Kind, expected?.Kind);
 		return !hasKindDifference && difference <= tolerance && difference >= tolerance.Negate();
 	}
+
+	/// <remarks>
+	///     A non-finite value has no distance to any other value, so no tolerance can bridge it, while
+	///     <see cref="double.Equals(double)" /> still lets <c>NaN</c> and each infinity match themselves.
+	/// </remarks>
+	private static bool IsFinite(double value) => !double.IsNaN(value) && !double.IsInfinity(value);
+
+	/// <inheritdoc cref="IsFinite(double)" />
+	private static bool IsFinite(float value) => !float.IsNaN(value) && !float.IsInfinity(value);
 
 	private static bool AreKindCompatible(DateTimeKind? actualKind, DateTimeKind? expectedKind)
 	{
