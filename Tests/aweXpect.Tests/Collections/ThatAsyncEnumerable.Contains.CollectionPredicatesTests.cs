@@ -165,24 +165,38 @@ public sealed partial class ThatAsyncEnumerable
 			[Fact]
 			public async Task WhenExpectedContainsDuplicateButMissingItems_ShouldFail()
 			{
-				int[] collection = [1, 2, 1, 3, 12, 2, 2,];
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 1, 3, 12, 2, 2,]);
+				IEnumerable<Expression<Func<int, bool>>> expected =
+				[
+					a => a == 1,
+					a => a == 2,
+					a => a == 1,
+					a => a == 1,
+					a => a == 2,
+				];
 
 				async Task Act()
-					=> await That(collection).Contains([1, 2, 1, 1, 2,]);
+					=> await That(subject).Contains(expected);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
-					             Expected that collection
-					             contains collection [1, 2, 1, 1, 2,] in order and contiguous,
+					             Expected that subject
+					             contains collection expected in order and contiguous,
 					             but it
-					               contained item 3 at index 3 instead of 1 and
-					               contained item 12 at index 4 instead of 2
+					               contained item 3 at index 3 instead of a => (a == 1) and
+					               contained item 12 at index 4 instead of a => (a == 2)
 
 					             Collection:
 					             [1, 2, 1, 3, 12, 2, 2]
 
 					             Expected:
-					             [1, 2, 1, 1, 2]
+					             [
+					               a => (a == 1),
+					               a => (a == 2),
+					               a => (a == 1),
+					               a => (a == 1),
+					               a => (a == 2)
+					             ]
 					             """);
 			}
 
@@ -530,7 +544,11 @@ public sealed partial class ThatAsyncEnumerable
 			public async Task WithItemsInDifferentOrder_ShouldFail()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "b", "c",]);
-				string[] expected = ["c", "a",];
+				IEnumerable<Expression<Func<string, bool>>> expected =
+				[
+					x => x == "c",
+					x => x == "a",
+				];
 
 				async Task Act()
 					=> await That(subject).Contains(expected);
@@ -539,7 +557,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
-					             but it lacked 1 of 2 expected items: "a"
+					             but it lacked 1 of 2 expected items: x => (x == "a")
 
 					             Collection:
 					             [
@@ -550,8 +568,8 @@ public sealed partial class ThatAsyncEnumerable
 
 					             Expected:
 					             [
-					               "c",
-					               "a"
+					               x => (x == "c"),
+					               x => (x == "a")
 					             ]
 					             """);
 			}
@@ -1121,7 +1139,11 @@ public sealed partial class ThatAsyncEnumerable
 			public async Task WithItemsInDifferentOrder_ShouldFail()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "b", "c",]);
-				string[] expected = ["c", "a",];
+				IEnumerable<Expression<Func<string, bool>>> expected =
+				[
+					x => x == "c",
+					x => x == "a",
+				];
 
 				async Task Act()
 					=> await That(subject).Contains(expected).IgnoringDuplicates();
@@ -1130,7 +1152,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous ignoring duplicates,
-					             but it lacked 1 of 2 expected items: "a"
+					             but it lacked 1 of 2 expected items: x => (x == "a")
 
 					             Collection:
 					             [
@@ -1141,8 +1163,8 @@ public sealed partial class ThatAsyncEnumerable
 
 					             Expected:
 					             [
-					               "c",
-					               "a"
+					               x => (x == "c"),
+					               x => (x == "a")
 					             ]
 					             """);
 			}
@@ -4815,7 +4837,11 @@ public sealed partial class ThatAsyncEnumerable
 			public async Task WithInterspersedItems_ShouldSucceed()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "b", "c",]);
-				string[] expected = ["a", "c",];
+				IEnumerable<Expression<Func<string, bool>>> expected =
+				[
+					x => x == "a",
+					x => x == "c",
+				];
 
 				async Task Act()
 					=> await That(subject).Contains(expected).IgnoringInterspersedItems();
@@ -4827,7 +4853,11 @@ public sealed partial class ThatAsyncEnumerable
 			public async Task WithInterspersedItemsInDifferentOrder_ShouldFail()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "b", "c",]);
-				string[] expected = ["b", "a",];
+				IEnumerable<Expression<Func<string, bool>>> expected =
+				[
+					x => x == "b",
+					x => x == "a",
+				];
 
 				async Task Act()
 					=> await That(subject).Contains(expected).IgnoringInterspersedItems();
@@ -4836,7 +4866,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order ignoring interspersed items,
-					             but it lacked 1 of 2 expected items: "a"
+					             but it lacked 1 of 2 expected items: x => (x == "a")
 
 					             Collection:
 					             [
@@ -4847,8 +4877,8 @@ public sealed partial class ThatAsyncEnumerable
 
 					             Expected:
 					             [
-					               "b",
-					               "a"
+					               x => (x == "b"),
+					               x => (x == "a")
 					             ]
 					             """);
 			}
@@ -4877,7 +4907,11 @@ public sealed partial class ThatAsyncEnumerable
 			public async Task WithInterspersedItems_ShouldSucceed()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "b", "c",]);
-				string[] expected = ["a", "c",];
+				IEnumerable<Expression<Func<string, bool>>> expected =
+				[
+					x => x == "a",
+					x => x == "c",
+				];
 
 				async Task Act()
 					=> await That(subject).Contains(expected).IgnoringDuplicates().IgnoringInterspersedItems();
@@ -4889,7 +4923,11 @@ public sealed partial class ThatAsyncEnumerable
 			public async Task WithInterspersedItemsInDifferentOrder_ShouldFail()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "b", "c",]);
-				string[] expected = ["b", "a",];
+				IEnumerable<Expression<Func<string, bool>>> expected =
+				[
+					x => x == "b",
+					x => x == "a",
+				];
 
 				async Task Act()
 					=> await That(subject).Contains(expected).IgnoringInterspersedItems().IgnoringDuplicates();
@@ -4898,7 +4936,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order ignoring duplicates and interspersed items,
-					             but it lacked 1 of 2 expected items: "a"
+					             but it lacked 1 of 2 expected items: x => (x == "a")
 
 					             Collection:
 					             [
@@ -4909,8 +4947,8 @@ public sealed partial class ThatAsyncEnumerable
 
 					             Expected:
 					             [
-					               "b",
-					               "a"
+					               x => (x == "b"),
+					               x => (x == "a")
 					             ]
 					             """);
 			}
@@ -4939,7 +4977,11 @@ public sealed partial class ThatAsyncEnumerable
 			public async Task WithInterspersedItems_ShouldSucceed()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "b", "c",]);
-				string[] expected = ["a", "c",];
+				IEnumerable<Expression<Func<string, bool>>> expected =
+				[
+					x => x == "a",
+					x => x == "c",
+				];
 
 				async Task Act()
 					=> await That(subject).Contains(expected).Properly().IgnoringInterspersedItems();
@@ -4951,7 +4993,11 @@ public sealed partial class ThatAsyncEnumerable
 			public async Task WithInterspersedItemsInDifferentOrder_ShouldFail()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "b", "c",]);
-				string[] expected = ["b", "a",];
+				IEnumerable<Expression<Func<string, bool>>> expected =
+				[
+					x => x == "b",
+					x => x == "a",
+				];
 
 				async Task Act()
 					=> await That(subject).Contains(expected).Properly().IgnoringInterspersedItems();
@@ -4960,7 +5006,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected and at least one additional item in order ignoring interspersed items,
-					             but it lacked 1 of 2 expected items: "a"
+					             but it lacked 1 of 2 expected items: x => (x == "a")
 
 					             Collection:
 					             [
@@ -4971,8 +5017,8 @@ public sealed partial class ThatAsyncEnumerable
 
 					             Expected:
 					             [
-					               "b",
-					               "a"
+					               x => (x == "b"),
+					               x => (x == "a")
 					             ]
 					             """);
 			}
@@ -5020,7 +5066,11 @@ public sealed partial class ThatAsyncEnumerable
 			public async Task WithInterspersedItems_ShouldSucceed()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "b", "c",]);
-				string[] expected = ["a", "c",];
+				IEnumerable<Expression<Func<string, bool>>> expected =
+				[
+					x => x == "a",
+					x => x == "c",
+				];
 
 				async Task Act()
 					=> await That(subject).Contains(expected).Properly().IgnoringDuplicates()
@@ -5033,7 +5083,11 @@ public sealed partial class ThatAsyncEnumerable
 			public async Task WithInterspersedItemsInDifferentOrder_ShouldFail()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "b", "c",]);
-				string[] expected = ["b", "a",];
+				IEnumerable<Expression<Func<string, bool>>> expected =
+				[
+					x => x == "b",
+					x => x == "a",
+				];
 
 				async Task Act()
 					=> await That(subject).Contains(expected).Properly().IgnoringInterspersedItems()
@@ -5043,7 +5097,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected and at least one additional item in order ignoring duplicates and interspersed items,
-					             but it lacked 1 of 2 expected items: "a"
+					             but it lacked 1 of 2 expected items: x => (x == "a")
 
 					             Collection:
 					             [
@@ -5054,8 +5108,8 @@ public sealed partial class ThatAsyncEnumerable
 
 					             Expected:
 					             [
-					               "b",
-					               "a"
+					               x => (x == "b"),
+					               x => (x == "a")
 					             ]
 					             """);
 			}

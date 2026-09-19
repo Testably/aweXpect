@@ -90,11 +90,11 @@ public sealed partial class ThatObject
 			[Fact]
 			public async Task SubjectToItself_ShouldFail()
 			{
-				MyStruct? subject = new()
+				MyStruct subject = new()
 				{
 					Value = 1,
 				};
-				MyStruct? unexpected = new()
+				MyStruct unexpected = new()
 				{
 					Value = 1,
 				};
@@ -118,11 +118,11 @@ public sealed partial class ThatObject
 			[Fact]
 			public async Task SubjectToSomeOtherValue_ShouldSucceed()
 			{
-				MyStruct? subject = new()
+				MyStruct subject = new()
 				{
 					Value = 1,
 				};
-				MyStruct? unexpected = new()
+				MyStruct unexpected = new()
 				{
 					Value = 2,
 				};

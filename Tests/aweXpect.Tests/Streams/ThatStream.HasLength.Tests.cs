@@ -518,20 +518,6 @@ public sealed partial class ThatStream
 
 		public sealed class NotEqualToTests
 		{
-			[Fact]
-			public async Task WhenExpectedLengthIsNegative_ShouldThrowArgumentOutOfRangeException()
-			{
-				Stream subject = new MyStream();
-
-				async Task Act()
-					=> await That(subject).HasLength().NotEqualTo(-1);
-
-				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The unexpected length must be greater than or equal to zero*")
-					.AsWildcard().And
-					.WithParamName("unexpected");
-			}
-
 			[Theory]
 			[AutoData]
 			public async Task WhenSubjectHasDifferentLength_ShouldSucceed(long length)

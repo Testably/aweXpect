@@ -70,6 +70,35 @@ public sealed partial class ThatNumber
 			}
 
 			[Fact]
+			public async Task ForByte_WithNullableEnumerable_WhenValueIsDifferentToAllUnexpected_ShouldSucceed()
+			{
+				byte subject = 2;
+				IEnumerable<byte?> unexpected = [1, null, 3,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task ForByte_WithNullableEnumerable_WhenValueIsEqualToAnyUnexpected_ShouldFail()
+			{
+				byte subject = 2;
+				IEnumerable<byte?> unexpected = [1, null, 2,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not one of [1, <null>, 2],
+					             but it was 2
+					             """);
+			}
+
+			[Fact]
 			public async Task ForDecimal_ShouldSupportEnumerable()
 			{
 				decimal subject = 2;
@@ -134,6 +163,35 @@ public sealed partial class ThatNumber
 					              is not one of {Formatter.Format(unexpected)},
 					              but it was {Formatter.Format(subject)}
 					              """);
+			}
+
+			[Fact]
+			public async Task ForDecimal_WithNullableEnumerable_WhenValueIsDifferentToAllUnexpected_ShouldSucceed()
+			{
+				decimal subject = 2;
+				IEnumerable<decimal?> unexpected = [1, null, 3,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task ForDecimal_WithNullableEnumerable_WhenValueIsEqualToAnyUnexpected_ShouldFail()
+			{
+				decimal subject = 2;
+				IEnumerable<decimal?> unexpected = [1, null, 2,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not one of [1.0, <null>, 2.0],
+					             but it was 2.0
+					             """);
 			}
 
 			[Fact]
@@ -237,6 +295,35 @@ public sealed partial class ThatNumber
 			}
 
 			[Fact]
+			public async Task ForDouble_WithNullableEnumerable_WhenValueIsDifferentToAllUnexpected_ShouldSucceed()
+			{
+				double subject = 2;
+				IEnumerable<double?> unexpected = [1, null, 3,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task ForDouble_WithNullableEnumerable_WhenValueIsEqualToAnyUnexpected_ShouldFail()
+			{
+				double subject = 2;
+				IEnumerable<double?> unexpected = [1, null, 2,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not one of [1.0, <null>, 2.0],
+					             but it was 2.0
+					             """);
+			}
+
+			[Fact]
 			public async Task ForFloat_ShouldSupportEnumerable()
 			{
 				float subject = 2;
@@ -318,6 +405,35 @@ public sealed partial class ThatNumber
 					              is not one of {Formatter.Format(unexpected)},
 					              but it was {Formatter.Format(subject)}
 					              """);
+			}
+
+			[Fact]
+			public async Task ForFloat_WithNullableEnumerable_WhenValueIsDifferentToAllUnexpected_ShouldSucceed()
+			{
+				float subject = 2F;
+				IEnumerable<float?> unexpected = [1F, null, 3F,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task ForFloat_WithNullableEnumerable_WhenValueIsEqualToAnyUnexpected_ShouldFail()
+			{
+				float subject = 2F;
+				IEnumerable<float?> unexpected = [1F, null, 2F,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not one of [1.0, <null>, 2.0],
+					             but it was 2.0
+					             """);
 			}
 
 			[Fact]
@@ -405,6 +521,35 @@ public sealed partial class ThatNumber
 			}
 
 			[Fact]
+			public async Task ForInt_WithNullableEnumerable_WhenValueIsDifferentToAllUnexpected_ShouldSucceed()
+			{
+				int subject = 2;
+				IEnumerable<int?> unexpected = [1, null, 3,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task ForInt_WithNullableEnumerable_WhenValueIsEqualToAnyUnexpected_ShouldFail()
+			{
+				int subject = 2;
+				IEnumerable<int?> unexpected = [1, null, 2,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not one of [1, <null>, 2],
+					             but it was 2
+					             """);
+			}
+
+			[Fact]
 			public async Task ForLong_ShouldSupportEnumerable()
 			{
 				long subject = 2;
@@ -476,6 +621,35 @@ public sealed partial class ThatNumber
 					              is not one of {Formatter.Format(unexpected)},
 					              but it was {Formatter.Format(subject)}
 					              """);
+			}
+
+			[Fact]
+			public async Task ForLong_WithNullableEnumerable_WhenValueIsDifferentToAllUnexpected_ShouldSucceed()
+			{
+				long subject = 2;
+				IEnumerable<long?> unexpected = [1, null, 3,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task ForLong_WithNullableEnumerable_WhenValueIsEqualToAnyUnexpected_ShouldFail()
+			{
+				long subject = 2;
+				IEnumerable<long?> unexpected = [1, null, 2,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not one of [1, <null>, 2],
+					             but it was 2
+					             """);
 			}
 
 			[Fact]
@@ -1212,6 +1386,35 @@ public sealed partial class ThatNumber
 			}
 
 			[Fact]
+			public async Task ForSbyte_WithNullableEnumerable_WhenValueIsDifferentToAllUnexpected_ShouldSucceed()
+			{
+				sbyte subject = 2;
+				IEnumerable<sbyte?> unexpected = [1, null, 3,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task ForSbyte_WithNullableEnumerable_WhenValueIsEqualToAnyUnexpected_ShouldFail()
+			{
+				sbyte subject = 2;
+				IEnumerable<sbyte?> unexpected = [1, null, 2,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not one of [1, <null>, 2],
+					             but it was 2
+					             """);
+			}
+
+			[Fact]
 			public async Task ForShort_ShouldSupportEnumerable()
 			{
 				short subject = 2;
@@ -1267,6 +1470,35 @@ public sealed partial class ThatNumber
 					              is not one of {Formatter.Format(unexpected)},
 					              but it was {Formatter.Format(subject)}
 					              """);
+			}
+
+			[Fact]
+			public async Task ForShort_WithNullableEnumerable_WhenValueIsDifferentToAllUnexpected_ShouldSucceed()
+			{
+				short subject = 2;
+				IEnumerable<short?> unexpected = [1, null, 3,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task ForShort_WithNullableEnumerable_WhenValueIsEqualToAnyUnexpected_ShouldFail()
+			{
+				short subject = 2;
+				IEnumerable<short?> unexpected = [1, null, 2,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not one of [1, <null>, 2],
+					             but it was 2
+					             """);
 			}
 
 			[Fact]
@@ -1328,6 +1560,35 @@ public sealed partial class ThatNumber
 			}
 
 			[Fact]
+			public async Task ForUint_WithNullableEnumerable_WhenValueIsDifferentToAllUnexpected_ShouldSucceed()
+			{
+				uint subject = 2;
+				IEnumerable<uint?> unexpected = [1, null, 3,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task ForUint_WithNullableEnumerable_WhenValueIsEqualToAnyUnexpected_ShouldFail()
+			{
+				uint subject = 2;
+				IEnumerable<uint?> unexpected = [1, null, 2,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not one of [1, <null>, 2],
+					             but it was 2
+					             """);
+			}
+
+			[Fact]
 			public async Task ForUlong_ShouldSupportEnumerable()
 			{
 				ulong subject = 2;
@@ -1383,6 +1644,35 @@ public sealed partial class ThatNumber
 					              is not one of {Formatter.Format(unexpected)},
 					              but it was {Formatter.Format(subject)}
 					              """);
+			}
+
+			[Fact]
+			public async Task ForUlong_WithNullableEnumerable_WhenValueIsDifferentToAllUnexpected_ShouldSucceed()
+			{
+				ulong subject = 2;
+				IEnumerable<ulong?> unexpected = [1, null, 3,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task ForUlong_WithNullableEnumerable_WhenValueIsEqualToAnyUnexpected_ShouldFail()
+			{
+				ulong subject = 2;
+				IEnumerable<ulong?> unexpected = [1, null, 2,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not one of [1, <null>, 2],
+					             but it was 2
+					             """);
 			}
 
 			[Fact]
@@ -1442,6 +1732,35 @@ public sealed partial class ThatNumber
 					              is not one of {Formatter.Format(unexpected)},
 					              but it was {Formatter.Format(subject)}
 					              """);
+			}
+
+			[Fact]
+			public async Task ForUshort_WithNullableEnumerable_WhenValueIsDifferentToAllUnexpected_ShouldSucceed()
+			{
+				ushort subject = 2;
+				IEnumerable<ushort?> unexpected = [1, null, 3,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task ForUshort_WithNullableEnumerable_WhenValueIsEqualToAnyUnexpected_ShouldFail()
+			{
+				ushort subject = 2;
+				IEnumerable<ushort?> unexpected = [1, null, 2,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not one of [1, <null>, 2],
+					             but it was 2
+					             """);
 			}
 
 			[Fact]

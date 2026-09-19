@@ -214,7 +214,7 @@ public sealed partial class ThatDateOnly
 				{
 					DateOnly? subject = CurrentTime();
 					DateOnly minimum = DateOnly.MinValue;
-					DateOnly? maximum = LaterTime(2);
+					DateOnly maximum = LaterTime(2)!.Value;
 
 					async Task Act()
 						=> await That(subject).IsNotBetween(minimum).And(maximum)
@@ -227,7 +227,7 @@ public sealed partial class ThatDateOnly
 				public async Task WhenMinimumValueIsOutsideTheTolerance_ShouldSucceed()
 				{
 					DateOnly? subject = CurrentTime();
-					DateOnly? minimum = EarlierTime(2);
+					DateOnly minimum = EarlierTime(2)!.Value;
 					DateOnly maximum = DateOnly.MaxValue;
 
 					async Task Act()

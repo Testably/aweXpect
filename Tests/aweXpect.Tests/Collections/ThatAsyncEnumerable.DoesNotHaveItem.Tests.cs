@@ -188,6 +188,31 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
+			[Theory]
+			[InlineData(true)]
+			[InlineData(false)]
+			public async Task ShouldSupportIgnoringIndentation(bool ignoreIndentation)
+			{
+				IAsyncEnumerable<string?> subject = ToAsyncEnumerable("a\n  b", "c\n  d");
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveItem("c\nd").IgnoringIndentation(ignoreIndentation)
+						.AtIndex(1);
+
+				await That(Act).Throws<XunitException>().OnlyIf(ignoreIndentation)
+					.WithMessage("""
+					             Expected that subject
+					             does not have item equal to "c\nd" ignoring indentation at index 1,
+					             but it had item "c\n  d" at index 1
+
+					             Collection:
+					             [
+					               "a\n  b",
+					               "c\n  d"
+					             ]
+					             """);
+			}
+
 			[Fact]
 			public async Task WhenEnumerableContainsOtherItemAtGivenIndex_ShouldSucceed()
 			{
