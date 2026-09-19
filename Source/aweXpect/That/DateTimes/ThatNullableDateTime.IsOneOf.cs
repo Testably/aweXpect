@@ -125,9 +125,7 @@ public static partial class ThatNullableDateTime
 				foreach (DateTime? value in expected)
 				{
 					hasValues = true;
-					if (value != null &&
-					    actual - value.Value <= timeTolerance &&
-					    actual - value.Value >= timeTolerance.Negate())
+					if (actual.Value.IsConsideredEqualTo(value, timeTolerance))
 					{
 						Outcome = Outcome.Success;
 						return this;

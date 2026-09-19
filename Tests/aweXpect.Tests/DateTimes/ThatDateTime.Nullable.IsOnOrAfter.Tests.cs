@@ -25,6 +25,43 @@ public sealed partial class ThatDateTime
 						              """);
 				}
 
+				[Theory]
+				[InlineData(DateTimeKind.Utc, DateTimeKind.Unspecified)]
+				[InlineData(DateTimeKind.Unspecified, DateTimeKind.Utc)]
+				[InlineData(DateTimeKind.Local, DateTimeKind.Unspecified)]
+				[InlineData(DateTimeKind.Unspecified, DateTimeKind.Local)]
+				public async Task WhenKindIsUnspecified_ShouldSucceed(
+					DateTimeKind subjectKind, DateTimeKind expectedKind)
+				{
+					DateTime? subject = DateTime.SpecifyKind(CurrentTime()!.Value, subjectKind);
+					DateTime? expected = DateTime.SpecifyKind(CurrentTime()!.Value, expectedKind);
+
+					async Task Act()
+						=> await That(subject).IsOnOrAfter(expected);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Theory]
+				[InlineData(DateTimeKind.Utc, DateTimeKind.Local)]
+				[InlineData(DateTimeKind.Local, DateTimeKind.Utc)]
+				public async Task WhenKindsAreIncompatible_ShouldFail(
+					DateTimeKind subjectKind, DateTimeKind expectedKind)
+				{
+					DateTime? subject = DateTime.SpecifyKind(CurrentTime()!.Value, subjectKind);
+					DateTime? expected = DateTime.SpecifyKind(CurrentTime()!.Value, expectedKind);
+
+					async Task Act()
+						=> await That(subject).IsOnOrAfter(expected);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is on or after {Formatter.Format(expected)},
+						              but it had Kind {subjectKind}, which cannot be compared with {expectedKind}
+						              """);
+				}
+
 				[Fact]
 				public async Task WhenSubjectAndExpectedAreMaxValue_ShouldSucceed()
 				{

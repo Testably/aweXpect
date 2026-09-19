@@ -48,12 +48,20 @@ public static partial class ThatDateTime
 		: ConstraintResult.WithNotNullValue<DateTime>(it, grammars),
 			IValueConstraint<DateTime>
 	{
+		private DateTimeKind? _incompatibleKind;
+
 		public ConstraintResult IsMetBy(DateTime actual)
 		{
 			Actual = actual;
 			if (expected is null)
 			{
 				Outcome = Outcome.Failure;
+			}
+			else if (!EqualityHelpers.AreKindCompatible(actual.Kind, expected.Value.Kind))
+			{
+				// Comparing ticks across incompatible kinds proves nothing, so the negated check fails as well.
+				_incompatibleKind = expected.Value.Kind;
+				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
 			}
 			else
 			{
@@ -79,8 +87,16 @@ public static partial class ThatDateTime
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
-			Formatter.Format(stringBuilder, Actual);
+			if (_incompatibleKind is not null)
+			{
+				stringBuilder.Append(It).Append(" had Kind ").Append(Actual.Kind)
+					.Append(", which cannot be compared with ").Append(_incompatibleKind);
+			}
+			else
+			{
+				stringBuilder.Append(It).Append(" was ");
+				Formatter.Format(stringBuilder, Actual);
+			}
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

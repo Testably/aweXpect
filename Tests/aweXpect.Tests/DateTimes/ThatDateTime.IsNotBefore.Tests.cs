@@ -6,6 +6,43 @@ public sealed partial class ThatDateTime
 	{
 		public sealed class Tests
 		{
+			[Theory]
+			[InlineData(DateTimeKind.Utc, DateTimeKind.Unspecified)]
+			[InlineData(DateTimeKind.Unspecified, DateTimeKind.Utc)]
+			[InlineData(DateTimeKind.Local, DateTimeKind.Unspecified)]
+			[InlineData(DateTimeKind.Unspecified, DateTimeKind.Local)]
+			public async Task WhenKindIsUnspecified_ShouldSucceed(
+				DateTimeKind subjectKind, DateTimeKind unexpectedKind)
+			{
+				DateTime subject = DateTime.SpecifyKind(LaterTime(), subjectKind);
+				DateTime unexpected = DateTime.SpecifyKind(CurrentTime(), unexpectedKind);
+
+				async Task Act()
+					=> await That(subject).IsNotBefore(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Theory]
+			[InlineData(DateTimeKind.Utc, DateTimeKind.Local)]
+			[InlineData(DateTimeKind.Local, DateTimeKind.Utc)]
+			public async Task WhenKindsAreIncompatible_ShouldFail(
+				DateTimeKind subjectKind, DateTimeKind unexpectedKind)
+			{
+				DateTime subject = DateTime.SpecifyKind(LaterTime(), subjectKind);
+				DateTime unexpected = DateTime.SpecifyKind(CurrentTime(), unexpectedKind);
+
+				async Task Act()
+					=> await That(subject).IsNotBefore(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not before {Formatter.Format(unexpected)},
+					              but it had Kind {subjectKind}, which cannot be compared with {unexpectedKind}
+					              """);
+			}
+
 			[Fact]
 			public async Task WhenSubjectAndExpectedAreMaxValue_ShouldSucceed()
 			{

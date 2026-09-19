@@ -6,6 +6,46 @@ public sealed partial class ThatDateTime
 	{
 		public sealed class Tests
 		{
+			[Theory]
+			[InlineData(DateTimeKind.Utc, DateTimeKind.Unspecified, DateTimeKind.Unspecified)]
+			[InlineData(DateTimeKind.Local, DateTimeKind.Unspecified, DateTimeKind.Local)]
+			[InlineData(DateTimeKind.Unspecified, DateTimeKind.Utc, DateTimeKind.Local)]
+			public async Task WhenKindIsUnspecified_ShouldSucceed(
+				DateTimeKind subjectKind, DateTimeKind minimumKind, DateTimeKind maximumKind)
+			{
+				DateTime subject = DateTime.SpecifyKind(CurrentTime(), subjectKind);
+				DateTime minimum = DateTime.SpecifyKind(EarlierTime(), minimumKind);
+				DateTime maximum = DateTime.SpecifyKind(LaterTime(), maximumKind);
+
+				async Task Act()
+					=> await That(subject).IsBetween(minimum).And(maximum);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Theory]
+			[InlineData(DateTimeKind.Utc, DateTimeKind.Local, DateTimeKind.Unspecified, DateTimeKind.Local)]
+			[InlineData(DateTimeKind.Utc, DateTimeKind.Unspecified, DateTimeKind.Local, DateTimeKind.Local)]
+			[InlineData(DateTimeKind.Local, DateTimeKind.Utc, DateTimeKind.Utc, DateTimeKind.Utc)]
+			public async Task WhenKindsAreIncompatible_ShouldFail(
+				DateTimeKind subjectKind, DateTimeKind minimumKind, DateTimeKind maximumKind,
+				DateTimeKind incompatibleKind)
+			{
+				DateTime subject = DateTime.SpecifyKind(CurrentTime(), subjectKind);
+				DateTime minimum = DateTime.SpecifyKind(EarlierTime(), minimumKind);
+				DateTime maximum = DateTime.SpecifyKind(LaterTime(), maximumKind);
+
+				async Task Act()
+					=> await That(subject).IsBetween(minimum).And(maximum);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it had Kind {subjectKind}, which cannot be compared with {incompatibleKind}
+					              """);
+			}
+
 			[Fact]
 			public async Task WhenMaximumIsNull_ShouldFail()
 			{

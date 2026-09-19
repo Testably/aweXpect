@@ -152,7 +152,7 @@ internal static class EqualityHelpers
 		return !hasKindDifference && difference <= tolerance && difference >= tolerance.Negate();
 	}
 
-	private static bool AreKindCompatible(DateTimeKind? actualKind, DateTimeKind? expectedKind)
+	public static bool AreKindCompatible(DateTimeKind? actualKind, DateTimeKind? expectedKind)
 	{
 		if (actualKind == DateTimeKind.Unspecified || expectedKind == DateTimeKind.Unspecified)
 		{

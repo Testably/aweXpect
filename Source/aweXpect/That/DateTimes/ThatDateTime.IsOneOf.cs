@@ -119,9 +119,7 @@ public static partial class ThatDateTime
 			foreach (DateTime? value in expected)
 			{
 				hasValues = true;
-				if (value != null &&
-				    actual - value.Value <= timeTolerance &&
-				    actual - value.Value >= timeTolerance.Negate())
+				if (actual.IsConsideredEqualTo(value, timeTolerance))
 				{
 					Outcome = Outcome.Success;
 					return this;

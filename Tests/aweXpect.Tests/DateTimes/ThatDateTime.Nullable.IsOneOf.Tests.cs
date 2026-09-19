@@ -43,6 +43,59 @@ public sealed partial class ThatDateTime
 				}
 
 				[Fact]
+				public async Task WhenKindIsIncompatibleButAnotherValueMatches_ShouldSucceed()
+				{
+					DateTime? subject = DateTime.SpecifyKind(CurrentTime()!.Value, DateTimeKind.Utc);
+					DateTime?[] expected =
+					[
+						DateTime.SpecifyKind(CurrentTime()!.Value, DateTimeKind.Local),
+						DateTime.SpecifyKind(CurrentTime()!.Value, DateTimeKind.Utc),
+					];
+
+					async Task Act()
+						=> await That(subject).IsOneOf(expected);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Theory]
+				[InlineData(DateTimeKind.Utc, DateTimeKind.Local)]
+				[InlineData(DateTimeKind.Local, DateTimeKind.Utc)]
+				public async Task WhenKindIsIncompatible_ShouldFail(
+					DateTimeKind subjectKind, DateTimeKind expectedKind)
+				{
+					DateTime? subject = DateTime.SpecifyKind(CurrentTime()!.Value, subjectKind);
+					DateTime?[] expected = [DateTime.SpecifyKind(CurrentTime()!.Value, expectedKind),];
+
+					async Task Act()
+						=> await That(subject).IsOneOf(expected);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is one of {Formatter.Format(expected)},
+						              but it was {Formatter.Format(subject)}
+						              """);
+				}
+
+				[Theory]
+				[InlineData(DateTimeKind.Utc, DateTimeKind.Unspecified)]
+				[InlineData(DateTimeKind.Unspecified, DateTimeKind.Utc)]
+				[InlineData(DateTimeKind.Local, DateTimeKind.Unspecified)]
+				[InlineData(DateTimeKind.Unspecified, DateTimeKind.Local)]
+				public async Task WhenKindIsUnspecified_ShouldSucceed(
+					DateTimeKind subjectKind, DateTimeKind expectedKind)
+				{
+					DateTime? subject = DateTime.SpecifyKind(CurrentTime()!.Value, subjectKind);
+					DateTime?[] expected = [DateTime.SpecifyKind(CurrentTime()!.Value, expectedKind),];
+
+					async Task Act()
+						=> await That(subject).IsOneOf(expected);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
 				public async Task WhenNullableExpectedIsEmpty_ShouldThrowArgumentException()
 				{
 					DateTime? subject = CurrentTime();
