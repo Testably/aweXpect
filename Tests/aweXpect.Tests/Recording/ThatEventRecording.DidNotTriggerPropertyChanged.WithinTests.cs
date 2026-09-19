@@ -1,4 +1,5 @@
-﻿using aweXpect.Recording;
+﻿using System.Threading;
+using aweXpect.Recording;
 
 namespace aweXpect.Tests;
 
@@ -13,15 +14,18 @@ public sealed partial class ThatEventRecording
 			{
 				PropertyChangedClass sut = new();
 				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
+				using CancellationTokenSource cts = new();
+				CancellationToken token = cts.Token;
 
-				_ = Task.Delay(2000.Milliseconds())
-					.ContinueWith(_ => sut.NotifyPropertyChanged(nameof(PropertyChangedClass.MyValue)));
+				_ = Task.Delay(2000.Milliseconds(), token)
+					.ContinueWith(_ => sut.NotifyPropertyChanged(nameof(PropertyChangedClass.MyValue)), token);
 
 				async Task Act() =>
 					await That(recording).DidNotTriggerPropertyChanged()
 						.Within(10.Milliseconds());
 
 				await That(Act).DoesNotThrow();
+				cts.Cancel();
 			}
 
 			[Fact]

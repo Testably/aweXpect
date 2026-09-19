@@ -1,4 +1,5 @@
-﻿using aweXpect.Recording;
+﻿using System.Threading;
+using aweXpect.Recording;
 
 namespace aweXpect.Tests;
 
@@ -78,9 +79,11 @@ public sealed partial class ThatEventRecording
 				CustomEventWithoutParametersClass sut = new();
 				IEventRecording<CustomEventWithoutParametersClass> recording =
 					sut.Record().Events();
+				using CancellationTokenSource cts = new();
+				CancellationToken token = cts.Token;
 
-				_ = Task.Delay(2000.Milliseconds())
-					.ContinueWith(_ => sut.NotifyCustomEvent());
+				_ = Task.Delay(2000.Milliseconds(), token)
+					.ContinueWith(_ => sut.NotifyCustomEvent(), token);
 
 				async Task Act() =>
 					await That(recording)
@@ -89,6 +92,7 @@ public sealed partial class ThatEventRecording
 						.Never();
 
 				await That(Act).DoesNotThrow();
+				cts.Cancel();
 			}
 
 			[Fact]
@@ -149,9 +153,11 @@ public sealed partial class ThatEventRecording
 				CustomEventWithParametersClass<string> sut = new();
 				IEventRecording<CustomEventWithParametersClass<string>> recording =
 					sut.Record().Events();
+				using CancellationTokenSource cts = new();
+				CancellationToken token = cts.Token;
 
-				_ = Task.Delay(2000.Milliseconds())
-					.ContinueWith(_ => sut.NotifyCustomEvent("foo"));
+				_ = Task.Delay(2000.Milliseconds(), token)
+					.ContinueWith(_ => sut.NotifyCustomEvent("foo"), token);
 
 				async Task Act() =>
 					await That(recording)
@@ -164,6 +170,7 @@ public sealed partial class ThatEventRecording
 					             has recorded the CustomEvent event on sut at least once within 0:00.010,
 					             but it was never recorded in [] within 0:*
 					             """).AsWildcard();
+				cts.Cancel();
 			}
 
 			[Fact]
@@ -190,9 +197,11 @@ public sealed partial class ThatEventRecording
 				CustomEventWithParametersClass<string, int> sut = new();
 				IEventRecording<CustomEventWithParametersClass<string, int>> recording =
 					sut.Record().Events();
+				using CancellationTokenSource cts = new();
+				CancellationToken token = cts.Token;
 
-				_ = Task.Delay(2000.Milliseconds())
-					.ContinueWith(_ => sut.NotifyCustomEvent("foo", 1));
+				_ = Task.Delay(2000.Milliseconds(), token)
+					.ContinueWith(_ => sut.NotifyCustomEvent("foo", 1), token);
 
 				async Task Act() =>
 					await That(recording)
@@ -205,6 +214,7 @@ public sealed partial class ThatEventRecording
 					             has recorded the CustomEvent event on sut at least once within 0:00.010,
 					             but it was never recorded in [] within 0:*
 					             """).AsWildcard();
+				cts.Cancel();
 			}
 
 			[Fact]
@@ -231,9 +241,11 @@ public sealed partial class ThatEventRecording
 				CustomEventWithParametersClass<string, int, bool> sut = new();
 				IEventRecording<CustomEventWithParametersClass<string, int, bool>> recording =
 					sut.Record().Events();
+				using CancellationTokenSource cts = new();
+				CancellationToken token = cts.Token;
 
-				_ = Task.Delay(2000.Milliseconds())
-					.ContinueWith(_ => sut.NotifyCustomEvent("foo", 1, true));
+				_ = Task.Delay(2000.Milliseconds(), token)
+					.ContinueWith(_ => sut.NotifyCustomEvent("foo", 1, true), token);
 
 				async Task Act() =>
 					await That(recording)
@@ -246,6 +258,7 @@ public sealed partial class ThatEventRecording
 					             has recorded the CustomEvent event on sut at least once within 0:00.010,
 					             but it was never recorded in [] within 0:*
 					             """).AsWildcard();
+				cts.Cancel();
 			}
 
 			[Fact]
@@ -272,9 +285,11 @@ public sealed partial class ThatEventRecording
 				CustomEventWithParametersClass<string, int, bool, DateTime> sut = new();
 				IEventRecording<CustomEventWithParametersClass<string, int, bool, DateTime>> recording =
 					sut.Record().Events();
+				using CancellationTokenSource cts = new();
+				CancellationToken token = cts.Token;
 
-				_ = Task.Delay(2000.Milliseconds())
-					.ContinueWith(_ => sut.NotifyCustomEvent("foo", 1, true, DateTime.Now));
+				_ = Task.Delay(2000.Milliseconds(), token)
+					.ContinueWith(_ => sut.NotifyCustomEvent("foo", 1, true, DateTime.Now), token);
 
 				async Task Act() =>
 					await That(recording)
@@ -287,6 +302,7 @@ public sealed partial class ThatEventRecording
 					             has recorded the CustomEvent event on sut at least once within 0:00.010,
 					             but it was never recorded in [] within 0:*
 					             """).AsWildcard();
+				cts.Cancel();
 			}
 
 			[Fact]
@@ -313,9 +329,11 @@ public sealed partial class ThatEventRecording
 				CustomEventWithoutParametersClass sut = new();
 				IEventRecording<CustomEventWithoutParametersClass> recording =
 					sut.Record().Events();
+				using CancellationTokenSource cts = new();
+				CancellationToken token = cts.Token;
 
-				_ = Task.Delay(2000.Milliseconds())
-					.ContinueWith(_ => sut.NotifyCustomEvent());
+				_ = Task.Delay(2000.Milliseconds(), token)
+					.ContinueWith(_ => sut.NotifyCustomEvent(), token);
 
 				async Task Act() =>
 					await That(recording)
@@ -328,6 +346,7 @@ public sealed partial class ThatEventRecording
 					             has recorded the CustomEvent event on sut at least once within 0:00.010,
 					             but it was never recorded in [] within 0:*
 					             """).AsWildcard();
+				cts.Cancel();
 			}
 
 			[Fact]
