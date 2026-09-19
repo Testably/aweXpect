@@ -249,6 +249,32 @@ public sealed partial class ThatTimeSpan
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task Within_WhenSubjectIsMaxValue_ShouldNotOverflow()
+			{
+				TimeSpan subject = TimeSpan.MaxValue;
+
+				async Task Act()
+					=> await That(subject).IsBetween(TimeSpan.MinValue).And(TimeSpan.MaxValue)
+						.Within(1.Seconds());
+
+				await That(Act).DoesNotThrow()
+					.Because("a widening tolerance must not make the assertion throw at the type limits");
+			}
+
+			[Fact]
+			public async Task Within_WhenSubjectIsMinValue_ShouldNotOverflow()
+			{
+				TimeSpan subject = TimeSpan.MinValue;
+
+				async Task Act()
+					=> await That(subject).IsBetween(TimeSpan.MinValue).And(TimeSpan.MaxValue)
+						.Within(1.Seconds());
+
+				await That(Act).DoesNotThrow()
+					.Because("a widening tolerance must not make the assertion throw at the type limits");
+			}
 		}
 	}
 }

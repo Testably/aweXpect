@@ -65,7 +65,9 @@ public static partial class ThatDateOnly
 					timeTolerance = timeTolerance.Negate();
 				}
 
-				Outcome = actual.AddDays((int)timeTolerance.TotalDays) <= expected ? Outcome.Success : Outcome.Failure;
+				Outcome = expected.Value.DayNumber - actual.DayNumber >= (int)timeTolerance.TotalDays
+					? Outcome.Success
+					: Outcome.Failure;
 			}
 
 			return this;

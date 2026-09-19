@@ -74,8 +74,8 @@ public static partial class ThatNullableDateOnly
 					timeTolerance = timeTolerance.Negate();
 				}
 
-				Outcome = actual.Value.AddDays((int)timeTolerance.TotalDays) >= minimum &&
-				          actual.Value.AddDays((int)timeTolerance.Negate().TotalDays) <= maximum
+				Outcome = minimum.Value.DayNumber - actual.Value.DayNumber <= (int)timeTolerance.TotalDays &&
+				          actual.Value.DayNumber - maximum.Value.DayNumber <= (int)timeTolerance.TotalDays
 					? Outcome.Success
 					: Outcome.Failure;
 			}

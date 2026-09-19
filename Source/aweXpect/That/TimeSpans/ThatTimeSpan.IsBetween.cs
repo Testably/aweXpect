@@ -67,7 +67,8 @@ public static partial class ThatTimeSpan
 					timeTolerance = timeTolerance.Negate();
 				}
 
-				Outcome = actual.Add(timeTolerance) >= minimum && actual.Add(timeTolerance.Negate()) <= maximum
+				Outcome = actual.ShiftedTicks(timeTolerance) >= minimum.Value.Ticks &&
+				          actual.ShiftedTicks(timeTolerance.Negate()) <= maximum.Value.Ticks
 					? Outcome.Success
 					: Outcome.Failure;
 			}

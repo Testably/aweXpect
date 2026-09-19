@@ -129,6 +129,20 @@ public sealed partial class ThatDateOnly
 				}
 
 				[Fact]
+				public async Task Within_WhenSubjectIsMinValue_ShouldNotOverflow()
+				{
+					DateOnly? subject = DateOnly.MinValue;
+					DateOnly? expected = CurrentTime();
+
+					async Task Act()
+						=> await That(subject).IsNotAfter(expected)
+							.Within(1.Days());
+
+					await That(Act).DoesNotThrow()
+						.Because("a widening tolerance must not make the assertion throw at the type limits");
+				}
+
+				[Fact]
 				public async Task Within_WhenValuesAreOutsideTheTolerance_ShouldFail()
 				{
 					DateOnly? subject = LaterTime(4);

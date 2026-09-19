@@ -73,8 +73,8 @@ public static partial class ThatNullableDateTime
 					timeTolerance = timeTolerance.Negate();
 				}
 
-				Outcome = actual.Value.Add(timeTolerance) >= minimum &&
-				          actual.Value.Add(timeTolerance.Negate()) <= maximum
+				Outcome = minimum - actual.Value <= timeTolerance &&
+				          actual.Value - maximum <= timeTolerance
 					? Outcome.Success
 					: Outcome.Failure;
 			}

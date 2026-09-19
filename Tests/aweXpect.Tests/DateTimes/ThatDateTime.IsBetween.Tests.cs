@@ -249,6 +249,32 @@ public sealed partial class ThatDateTime
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task Within_WhenSubjectIsMaxValue_ShouldNotOverflow()
+			{
+				DateTime subject = DateTime.MaxValue;
+
+				async Task Act()
+					=> await That(subject).IsBetween(DateTime.MinValue).And(DateTime.MaxValue)
+						.Within(1.Days());
+
+				await That(Act).DoesNotThrow()
+					.Because("a widening tolerance must not make the assertion throw at the type limits");
+			}
+
+			[Fact]
+			public async Task Within_WhenSubjectIsMinValue_ShouldNotOverflow()
+			{
+				DateTime subject = DateTime.MinValue;
+
+				async Task Act()
+					=> await That(subject).IsBetween(DateTime.MinValue).And(DateTime.MaxValue)
+						.Within(1.Days());
+
+				await That(Act).DoesNotThrow()
+					.Because("a widening tolerance must not make the assertion throw at the type limits");
+			}
 		}
 	}
 }

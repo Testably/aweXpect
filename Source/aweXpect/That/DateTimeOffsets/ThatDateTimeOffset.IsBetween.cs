@@ -68,7 +68,7 @@ public static partial class ThatDateTimeOffset
 					timeTolerance = timeTolerance.Negate();
 				}
 
-				Outcome = actual.Add(timeTolerance) >= minimum && actual.Add(timeTolerance.Negate()) <= maximum
+				Outcome = minimum - actual <= timeTolerance && actual - maximum <= timeTolerance
 					? Outcome.Success
 					: Outcome.Failure;
 			}

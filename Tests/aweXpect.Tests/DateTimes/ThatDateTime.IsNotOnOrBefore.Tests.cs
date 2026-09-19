@@ -118,6 +118,20 @@ public sealed partial class ThatDateTime
 			}
 
 			[Fact]
+			public async Task Within_WhenSubjectIsMaxValue_ShouldNotOverflow()
+			{
+				DateTime subject = DateTime.MaxValue;
+				DateTime expected = CurrentTime();
+
+				async Task Act()
+					=> await That(subject).IsNotOnOrBefore(expected)
+						.Within(1.Days());
+
+				await That(Act).DoesNotThrow()
+					.Because("a widening tolerance must not make the assertion throw at the type limits");
+			}
+
+			[Fact]
 			public async Task Within_WhenValuesAreOutsideTheTolerance_ShouldFail()
 			{
 				DateTime subject = EarlierTime(3);

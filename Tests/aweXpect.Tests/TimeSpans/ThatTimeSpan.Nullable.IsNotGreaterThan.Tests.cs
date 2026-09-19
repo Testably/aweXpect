@@ -127,6 +127,20 @@ public sealed partial class ThatTimeSpan
 				}
 
 				[Fact]
+				public async Task Within_WhenSubjectIsMinValue_ShouldNotOverflow()
+				{
+					TimeSpan? subject = TimeSpan.MinValue;
+					TimeSpan? expected = CurrentTime();
+
+					async Task Act()
+						=> await That(subject).IsNotGreaterThan(expected)
+							.Within(1.Seconds());
+
+					await That(Act).DoesNotThrow()
+						.Because("a widening tolerance must not make the assertion throw at the type limits");
+				}
+
+				[Fact]
 				public async Task Within_WhenValuesAreOutsideTheTolerance_ShouldFail()
 				{
 					TimeSpan? subject = LaterTime(4);

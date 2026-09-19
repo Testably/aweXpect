@@ -254,6 +254,34 @@ public sealed partial class ThatDateTimeOffset
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
+
+			[Fact]
+			public async Task Within_WhenSubjectIsMaxValue_ShouldNotOverflow()
+			{
+				DateTimeOffset subject = DateTimeOffset.MaxValue;
+				DateTimeOffset expected = CurrentTime();
+
+				async Task Act()
+					=> await That(subject).IsNotBetween(DateTimeOffset.MinValue).And(expected)
+						.Within(1.Days());
+
+				await That(Act).DoesNotThrow()
+					.Because("a widening tolerance must not make the assertion throw at the type limits");
+			}
+
+			[Fact]
+			public async Task Within_WhenSubjectIsMinValue_ShouldNotOverflow()
+			{
+				DateTimeOffset subject = DateTimeOffset.MinValue;
+				DateTimeOffset expected = CurrentTime();
+
+				async Task Act()
+					=> await That(subject).IsNotBetween(expected).And(DateTimeOffset.MaxValue)
+						.Within(1.Days());
+
+				await That(Act).DoesNotThrow()
+					.Because("a widening tolerance must not make the assertion throw at the type limits");
+			}
 		}
 	}
 }
