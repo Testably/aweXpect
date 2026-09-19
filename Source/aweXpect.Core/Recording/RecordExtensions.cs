@@ -1,4 +1,6 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
+using aweXpect.Core;
 using aweXpect.Core.Metadata;
 
 namespace aweXpect.Recording;
@@ -19,4 +21,19 @@ public static class RecordExtensions
 		[CallerArgumentExpression("subject")] string doNotPopulateThisValue = "")
 		where TSubject : notnull
 		=> new(subject, doNotPopulateThisValue);
+
+	/// <summary>
+	///     Keeps the <paramref name="recording" /> recording across multiple expectations until it is disposed.
+	/// </summary>
+	/// <remarks>
+	///     Without it, the recording stops with the first expectation, and a further expectation on it fails instead of
+	///     answering from the events that were recorded until then.
+	/// </remarks>
+	public static IDisposableEventRecording<TSubject> UntilDisposed<TSubject>(this IEventRecording<TSubject> recording)
+		where TSubject : notnull
+		=> recording is EventRecording<TSubject> eventRecording
+			? eventRecording.UntilDisposed()
+			: throw Tracing.WriteException(
+				new NotSupportedException(
+					$"Only a recording created by .Record().Events() supports .UntilDisposed(), but was {Formatter.Format(recording)}"));
 }

@@ -31,6 +31,39 @@ a handler must take at most four parameters, must return nothing and must take n
 Recording all events skips an event whose handler does not fit, so that the other events of the subject are still
 recorded, and an expectation on the skipped event fails with the reason; recording it by name fails right away.
 
+## Stopping
+
+An expectation stops the recording: it detaches the handlers from the subject as soon as it is evaluated. Every
+constraint of that one expectation still sees the recorded events, because `.And` and `.Or` combine into a single
+expectation. A further expectation on the same recording fails, so that it cannot silently answer from the events
+that were recorded until then.
+
+```csharp
+IEventRecording<MyClass> recording = subject.Record().Events();
+
+subject.OnThresholdReached(new ThresholdReachedEventArgs());
+await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached)).Once();
+
+subject.OnThresholdReached(new ThresholdReachedEventArgs());
+// ↓ throws, because the previous expectation already stopped the recording
+await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached)).Twice();
+```
+
+`.UntilDisposed()` keeps the recording running across multiple expectations and hands its lifetime to you:
+
+```csharp
+using IDisposableEventRecording<MyClass> recording = subject.Record().Events().UntilDisposed();
+
+subject.OnThresholdReached(new ThresholdReachedEventArgs());
+await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached)).Once();
+
+subject.OnThresholdReached(new ThresholdReachedEventArgs());
+await Expect.That(recording).Triggered(nameof(MyClass.ThresholdReached)).Twice();
+```
+
+Disposing detaches the handlers, so an event that is triggered afterwards is not recorded any more and an
+expectation on the disposed recording fails as well.
+
 ## Triggering
 
 You can verify that a recording recorded an event:

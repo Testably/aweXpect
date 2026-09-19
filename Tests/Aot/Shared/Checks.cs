@@ -52,9 +52,9 @@ internal static class Checks
 				publisher.RaiseCounted(1);
 				publisher.RaiseCounted(2);
 				publisher.RaiseTicked(7);
-				await That(recording).Triggered(nameof(Publisher.Counted)).Exactly(2.Times());
-				await That(recording).Triggered(nameof(Publisher.Ticked)).Once();
-				await That(recording).DidNotTrigger(nameof(Publisher.Changed));
+				await That(recording).Triggered(nameof(Publisher.Counted)).Exactly(2.Times())
+					.And.Triggered(nameof(Publisher.Ticked)).Once()
+					.And.DidNotTrigger(nameof(Publisher.Changed));
 			})),
 		new("a recorded event that was not raised fails and is named",
 			() => ShouldFail(async () =>

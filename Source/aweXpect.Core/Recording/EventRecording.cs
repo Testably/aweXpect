@@ -11,7 +11,7 @@ using System.Threading.Channels;
 
 namespace aweXpect.Recording;
 
-internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEventRecordingResult
+internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubject>, IEventRecordingResult
 	where TSubject : notnull
 {
 	/// <remarks>
@@ -33,6 +33,10 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 	private readonly Dictionary<string, string> _skipped = new();
 
 	private readonly string _subjectExpression;
+
+	private bool _isStopped;
+	private long _stoppedByEvaluation;
+	private bool _stopsAfterEvaluation = true;
 
 	/// <summary>
 	///     Creates a new recording the given <paramref name="eventNames" /> that are triggered on the
@@ -127,6 +131,7 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 #if NET8_0_OR_GREATER
 	public async Task<IEventRecordingResult> StopWhen(Func<IEventRecordingResult, bool> areFound, TimeSpan timeout)
 	{
+		ThrowIfStopped();
 		try
 		{
 			if (timeout > TimeSpan.Zero && !areFound(this))
@@ -159,10 +164,10 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 		}
 		finally
 		{
-			// A predicate that throws must not leave the handlers attached to the subject.
-			foreach (EventRecorder recorder in _recorders.Values)
+			if (_stopsAfterEvaluation)
 			{
-				recorder.Dispose();
+				// A predicate that throws must not leave the handlers attached to the subject.
+				Stop();
 			}
 		}
 
@@ -171,6 +176,7 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 #else
 	public Task<IEventRecordingResult> StopWhen(Func<IEventRecordingResult, bool> areFound, TimeSpan timeout)
 	{
+		ThrowIfStopped();
 		DateTime now = DateTime.Now;
 		DateTime endTime = now.Add(timeout);
 		try
@@ -204,16 +210,35 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 		}
 		finally
 		{
-			// A predicate that throws must not leave the handlers attached to the subject.
-			foreach (EventRecorder recorder in _recorders.Values)
+			if (_stopsAfterEvaluation)
 			{
-				recorder.Dispose();
+				// A predicate that throws must not leave the handlers attached to the subject.
+				Stop();
 			}
 		}
 
 		return Task.FromResult<IEventRecordingResult>(this);
 	}
 #endif
+
+	/// <inheritdoc cref="IDisposable.Dispose()" />
+	public void Dispose() => Stop();
+
+	/// <summary>
+	///     Keeps recording until <see cref="Dispose" /> instead of stopping with the next evaluation.
+	/// </summary>
+	public EventRecording<TSubject> UntilDisposed()
+	{
+		if (_isStopped)
+		{
+			throw Tracing.WriteException(
+				new InvalidOperationException(
+					"The recording was already stopped and cannot be continued. Call .UntilDisposed() before the first expectation."));
+		}
+
+		_stopsAfterEvaluation = false;
+		return this;
+	}
 
 	/// <summary>
 	///     Gets the number of recorded events for <paramref name="eventName" /> that match the <paramref name="filter" />.
@@ -230,6 +255,35 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 	/// <inheritdoc />
 	public override string ToString()
 		=> _subjectExpression;
+
+	private void Stop()
+	{
+		_isStopped = true;
+		_stoppedByEvaluation = ExpectationBuilder.CurrentEvaluation;
+		foreach (EventRecorder recorder in _recorders.Values)
+		{
+			recorder.Dispose();
+		}
+	}
+
+	/// <remarks>
+	///     A stopped recording is detached from the subject and answers from its frozen queue, so a further expectation
+	///     would silently check stale data and has to fail loudly instead. The constraints of one awaited expectation
+	///     share the evaluation that stopped the recording and all describe that same snapshot, so they are let through.
+	/// </remarks>
+	private void ThrowIfStopped()
+	{
+		if (!_isStopped || (_stoppedByEvaluation != 0 &&
+		                    _stoppedByEvaluation == ExpectationBuilder.CurrentEvaluation))
+		{
+			return;
+		}
+
+		throw Tracing.WriteException(
+			new InvalidOperationException(_stopsAfterEvaluation
+				? "The recording was already stopped. Use .UntilDisposed() to keep recording across multiple expectations."
+				: "The recording was already disposed."));
+	}
 
 	/// <remarks>
 	///     A recording of all events silently records nothing when reflection finds none, which under trimming means
