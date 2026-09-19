@@ -189,6 +189,19 @@ public sealed partial class ThatTimeSpan
 			}
 
 			[Fact]
+			public async Task Within_WhenToleranceIsNotWholeDays_ShouldBeAccepted()
+			{
+				TimeSpan subject = CurrentTime();
+				TimeSpan? expected = LaterTime(3);
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).Within(23.Hours());
+
+				await That(Act).DoesNotThrow()
+					.Because("only a date without a time of day has to reject a sub-day remainder");
+			}
+
+			[Fact]
 			public async Task Within_WhenValuesAreEarlierWithinTheTolerance_ShouldSucceed()
 			{
 				TimeSpan subject = CurrentTime();

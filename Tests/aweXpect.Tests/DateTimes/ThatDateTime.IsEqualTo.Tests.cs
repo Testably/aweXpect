@@ -127,6 +127,19 @@ public sealed partial class ThatDateTime
 			}
 
 			[Fact]
+			public async Task WhenToleranceIsNotWholeDays_ShouldBeAccepted()
+			{
+				DateTime subject = CurrentTime();
+				DateTime? expected = LaterTime(3);
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).Within(23.Hours());
+
+				await That(Act).DoesNotThrow()
+					.Because("only a date without a time of day has to reject a sub-day remainder");
+			}
+
+			[Fact]
 			public async Task WhenValuesAreOutsideTheTolerance_ShouldFail()
 			{
 				DateTime subject = CurrentTime();

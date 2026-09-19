@@ -113,6 +113,7 @@ public static partial class ThatDateOnly
 	{
 		public ConstraintResult IsMetBy(DateOnly actual)
 		{
+			ThrowHelper.ThrowIfToleranceIsNotWholeDays(tolerance.Tolerance);
 			Actual = actual;
 			TimeSpan timeTolerance = tolerance.Tolerance ??
 			                         Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();

@@ -51,6 +51,7 @@ public static partial class ThatDateOnly
 	{
 		public ConstraintResult IsMetBy(DateOnly actual)
 		{
+			ThrowHelper.ThrowIfToleranceIsNotWholeDays(tolerance.Tolerance);
 			Actual = actual;
 			if (expected is null)
 			{
