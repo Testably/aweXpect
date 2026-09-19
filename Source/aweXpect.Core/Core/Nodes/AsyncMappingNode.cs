@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
-using aweXpect.Core.Helpers;
 using aweXpect.Core.Sources;
 
 namespace aweXpect.Core.Nodes;
@@ -65,9 +64,9 @@ internal class AsyncMappingNode<TSource, TTarget> : ExpectationNode
 			return memberResult.UseValue(value);
 		}
 
-		throw new InvalidOperationException(
-				$"The member type for the actual value in the which node did not match.{Environment.NewLine}Expected: {Formatter.Format(typeof(TSource))},{Environment.NewLine}   Found: {Formatter.Format(value.GetType())}")
-			.LogTrace();
+		throw Tracing.WriteException(
+			new InvalidOperationException(
+				$"The member type for the actual value in the which node did not match.{Environment.NewLine}Expected: {Formatter.Format(typeof(TSource))},{Environment.NewLine}   Found: {Formatter.Format(value.GetType())}"));
 	}
 
 	/// <inheritdoc />

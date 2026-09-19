@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
-using aweXpect.Core.Helpers;
 using aweXpect.Core.Metadata;
 #if NET8_0_OR_GREATER
 using System.Threading.Channels;
@@ -59,9 +58,9 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 			RecordableEvent? @event = events.FirstOrDefault(x => x.Name == eventName);
 			if (@event == null)
 			{
-				throw new NotSupportedException(
-						$"Event {eventName} is not supported on {Formatter.Format(subject)}{(_isRegistered ? "" : TrimmingHint)}")
-					.LogTrace();
+				throw Tracing.WriteException(
+					new NotSupportedException(
+						$"Event {eventName} is not supported on {Formatter.Format(subject)}{(_isRegistered ? "" : TrimmingHint)}"));
 			}
 
 			EventRecorder recorder = new(eventName);
@@ -77,7 +76,7 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 			else
 			{
 				// An event that was asked for by name is what the recording is about, so it fails right away.
-				throw new NotSupportedException(unsupported).LogTrace();
+				throw Tracing.WriteException(new NotSupportedException(unsupported));
 			}
 		}
 	}
@@ -112,7 +111,7 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 				.Select(x => new RecordableEvent(x.Name,
 					(recorder, subject) => recorder.TryAttach(subject, x)))
 				.ToList()
-			: throw ReflectionFallback.NotSupported(type, "events").LogTrace();
+			: throw Tracing.WriteException(ReflectionFallback.NotSupported(type, "events"));
 
 	private sealed class RecordableEvent(string name, Func<EventRecorder, object, string?> attach)
 	{
@@ -242,7 +241,7 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 		{
 			if (_skipped.TryGetValue(eventName, out string? unsupported))
 			{
-				throw new NotSupportedException(unsupported).LogTrace();
+				throw Tracing.WriteException(new NotSupportedException(unsupported));
 			}
 
 			string recorded = _recorders.Count > 0
@@ -253,9 +252,9 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 			string skipped = _skipped.Count > 0
 				? $". No handler could be attached to {Formatter.Format(_skipped.Keys)}"
 				: "";
-			throw new NotSupportedException(
-					$"Event {eventName} was not recorded on {_subjectExpression}, {recorded}{skipped}{(_isRegistered ? "" : TrimmingHint)}")
-				.LogTrace();
+			throw Tracing.WriteException(
+				new NotSupportedException(
+					$"Event {eventName} was not recorded on {_subjectExpression}, {recorded}{skipped}{(_isRegistered ? "" : TrimmingHint)}"));
 		}
 
 		return recorder;

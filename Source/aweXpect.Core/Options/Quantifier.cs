@@ -1,5 +1,5 @@
 ﻿using System;
-using aweXpect.Core.Helpers;
+using aweXpect.Core;
 using ArgumentOutOfRangeException = System.ArgumentOutOfRangeException;
 
 namespace aweXpect.Options;
@@ -64,9 +64,9 @@ public class Quantifier
 	{
 		if (minimum < 0)
 		{
-			throw new ArgumentOutOfRangeException(nameof(minimum),
-					"The parameter 'minimum' must be non-negative")
-				.LogTrace();
+			throw Tracing.WriteException(
+				new ArgumentOutOfRangeException(nameof(minimum),
+					"The parameter 'minimum' must be non-negative"));
 		}
 
 		_minimum = minimum;
@@ -81,9 +81,9 @@ public class Quantifier
 	{
 		if (maximum < 0)
 		{
-			throw new ArgumentOutOfRangeException(nameof(maximum),
-					"The parameter 'maximum' must be non-negative")
-				.LogTrace();
+			throw Tracing.WriteException(
+				new ArgumentOutOfRangeException(nameof(maximum),
+					"The parameter 'maximum' must be non-negative"));
 		}
 
 		_minimum = null;
@@ -98,22 +98,22 @@ public class Quantifier
 	{
 		if (minimum < 0)
 		{
-			throw new ArgumentOutOfRangeException(nameof(minimum),
-					"The parameter 'minimum' must be non-negative")
-				.LogTrace();
+			throw Tracing.WriteException(
+				new ArgumentOutOfRangeException(nameof(minimum),
+					"The parameter 'minimum' must be non-negative"));
 		}
 
 		if (maximum < 0)
 		{
-			throw new ArgumentOutOfRangeException(nameof(maximum),
-					"The parameter 'maximum' must be non-negative")
-				.LogTrace();
+			throw Tracing.WriteException(
+				new ArgumentOutOfRangeException(nameof(maximum),
+					"The parameter 'maximum' must be non-negative"));
 		}
 
 		if (minimum > maximum)
 		{
-			throw new ArgumentException("The parameter 'maximum' must be greater than or equal to 'minimum'")
-				.LogTrace();
+			throw Tracing.WriteException(
+				new ArgumentException("The parameter 'maximum' must be greater than or equal to 'minimum'"));
 		}
 
 		_minimum = minimum;
@@ -128,9 +128,9 @@ public class Quantifier
 	{
 		if (maximum < 0)
 		{
-			throw new ArgumentOutOfRangeException(nameof(maximum),
-					"The parameter 'maximum' must be non-negative")
-				.LogTrace();
+			throw Tracing.WriteException(
+				new ArgumentOutOfRangeException(nameof(maximum),
+					"The parameter 'maximum' must be non-negative"));
 		}
 
 		_minimum = null;
@@ -145,9 +145,9 @@ public class Quantifier
 	{
 		if (minimum < 0)
 		{
-			throw new ArgumentOutOfRangeException(nameof(minimum),
-					"The parameter 'minimum' must be non-negative")
-				.LogTrace();
+			throw Tracing.WriteException(
+				new ArgumentOutOfRangeException(nameof(minimum),
+					"The parameter 'minimum' must be non-negative"));
 		}
 
 		_minimum = minimum;
@@ -187,9 +187,9 @@ public class Quantifier
 	{
 		if (expected < 0)
 		{
-			throw new ArgumentOutOfRangeException(nameof(expected),
-					"The parameter 'expected' must be non-negative")
-				.LogTrace();
+			throw Tracing.WriteException(
+				new ArgumentOutOfRangeException(nameof(expected),
+					"The parameter 'expected' must be non-negative"));
 		}
 
 		_minimum = expected;

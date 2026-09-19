@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using aweXpect.Core.Helpers;
+using aweXpect.Core;
 
 namespace aweXpect.Equivalency;
 
@@ -41,9 +41,9 @@ public record EquivalencyOptions : EquivalencyTypeOptions
 		{
 			if (value < 1)
 			{
-				throw new ArgumentOutOfRangeException(nameof(value), value,
-						"The maximum recursion depth must be greater than zero.")
-					.LogTrace();
+				throw Tracing.WriteException(
+					new ArgumentOutOfRangeException(nameof(value), value,
+						"The maximum recursion depth must be greater than zero."));
 			}
 
 			_maxRecursionDepth = value;

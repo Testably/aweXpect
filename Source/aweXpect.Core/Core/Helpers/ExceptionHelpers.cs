@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using aweXpect.Customization;
 
 namespace aweXpect.Core.Helpers;
 
@@ -14,13 +13,6 @@ internal static class ExceptionHelpers
 			// ReSharper disable once LocalizableElement
 			throw new ArgumentNullException(paramName, $"The {paramName} cannot be null.");
 		}
-	}
-
-	public static TException LogTrace<TException>(this TException exception)
-		where TException : Exception
-	{
-		Customize.aweXpect.TraceWriter.Value?.WriteException(exception);
-		return exception;
 	}
 
 	public static bool IsDefault<T>(this T value) where T : struct

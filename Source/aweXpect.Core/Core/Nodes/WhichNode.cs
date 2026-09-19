@@ -101,8 +101,8 @@ internal class WhichNode<TSource, TMember> : Node
 
 		if (_inner == null)
 		{
-			throw new InvalidOperationException("No inner node specified for the which node.")
-				.LogTrace();
+			throw Tracing.WriteException(
+				new InvalidOperationException("No inner node specified for the which node."));
 		}
 
 		if (context is ExpectationTextEvaluationContext)
@@ -141,9 +141,9 @@ internal class WhichNode<TSource, TMember> : Node
 			return directValue;
 		}
 
-		throw new InvalidOperationException(
-				$"The member type for the actual value in the which node did not match.{Environment.NewLine}     Found: {Formatter.Format(value.GetType())}{Environment.NewLine}  Expected: {Formatter.Format(typeof(TSource))}")
-			.LogTrace();
+		throw Tracing.WriteException(
+			new InvalidOperationException(
+				$"The member type for the actual value in the which node did not match.{Environment.NewLine}     Found: {Formatter.Format(value.GetType())}{Environment.NewLine}  Expected: {Formatter.Format(typeof(TSource))}"));
 	}
 
 	private async Task<TMember?> ComputeMatchingValueAsync(TSource? source)

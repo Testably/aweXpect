@@ -313,9 +313,9 @@ public abstract class ExpectationBuilder
 	{
 		if (memberNode is ExpectationNode expectationNode && expectationNode.IsEmpty())
 		{
-			throw new ArgumentException("You must add at least one expectation in the expectations callback.",
-					paramName)
-				.LogTrace();
+			throw Tracing.WriteException(
+				new ArgumentException("You must add at least one expectation in the expectations callback.",
+					paramName));
 		}
 	}
 

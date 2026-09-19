@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text;
-using aweXpect.Core.Helpers;
+using aweXpect.Core;
 
 namespace aweXpect.Options;
 
@@ -64,8 +64,8 @@ public class TimeSpanEqualityOptions
 	{
 		if (tolerance < TimeSpan.Zero)
 		{
-			throw new ArgumentOutOfRangeException(nameof(tolerance), tolerance, "The tolerance must not be negative.")
-				.LogTrace();
+			throw Tracing.WriteException(
+				new ArgumentOutOfRangeException(nameof(tolerance), tolerance, "The tolerance must not be negative."));
 		}
 
 		_limit = new ApproximatelyLimit(expected, tolerance);

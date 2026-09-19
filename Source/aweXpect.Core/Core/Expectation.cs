@@ -95,8 +95,8 @@ public abstract class Expectation
 		{
 			if (expectations.Length == 0)
 			{
-				throw new ArgumentException("You must provide at least one expectation.", nameof(expectations))
-					.LogTrace();
+				throw Tracing.WriteException(
+					new ArgumentException("You must provide at least one expectation.", nameof(expectations)));
 			}
 
 			_expectations = expectations;

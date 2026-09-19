@@ -1,5 +1,5 @@
 ﻿using System;
-using aweXpect.Core.Helpers;
+using aweXpect.Core;
 #if NET8_0_OR_GREATER
 using System.Numerics;
 #endif
@@ -29,16 +29,16 @@ public class NumberTolerance<TNumber>(
 	{
 		if (IsNaN(tolerance))
 		{
-			throw new ArgumentOutOfRangeException(nameof(tolerance),
-					"Tolerance must not be NaN")
-				.LogTrace();
+			throw Tracing.WriteException(
+				new ArgumentOutOfRangeException(nameof(tolerance),
+					"Tolerance must not be NaN"));
 		}
 
 		if (tolerance.CompareTo(default) < 0)
 		{
-			throw new ArgumentOutOfRangeException(nameof(tolerance),
-					"Tolerance must be non-negative")
-				.LogTrace();
+			throw Tracing.WriteException(
+				new ArgumentOutOfRangeException(nameof(tolerance),
+					"Tolerance must be non-negative"));
 		}
 
 		Tolerance = tolerance;

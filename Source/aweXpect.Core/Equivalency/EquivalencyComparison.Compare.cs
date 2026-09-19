@@ -207,10 +207,10 @@ public static partial class EquivalencyComparison
 			}
 			catch (Exception exception)
 			{
-				throw new InvalidOperationException(
+				throw Tracing.WriteException(
+					new InvalidOperationException(
 						$"The equals method of {Formatter.Format(actual.GetType())} threw an {Formatter.Format(exception.GetType())}: {exception.Message}",
-						exception)
-					.LogTrace();
+						exception));
 			}
 
 			if (actual is IDictionary actualDictionary && expected is IDictionary expectedDictionary)
@@ -310,9 +310,9 @@ public static partial class EquivalencyComparison
 			}
 			else if (typeOptions.Fields != IncludeMembers.None || typeOptions.Properties != IncludeMembers.None)
 			{
-				throw new InvalidOperationException(
-						$"{GetMemberPath(memberType, memberPath)} has no members that could be compared on {Formatter.Format(expected.GetType())}, which would make the equivalency comparison succeed without verifying anything. Adjust the equivalency options to include the relevant members or to compare this type by value, or - when publishing with trimming or Native AOT enabled - ensure that the type is rooted, so that its members are preserved.")
-					.LogTrace();
+				throw Tracing.WriteException(
+					new InvalidOperationException(
+						$"{GetMemberPath(memberType, memberPath)} has no members that could be compared on {Formatter.Format(expected.GetType())}, which would make the equivalency comparison succeed without verifying anything. Adjust the equivalency options to include the relevant members or to compare this type by value, or - when publishing with trimming or Native AOT enabled - ensure that the type is rooted, so that its members are preserved."));
 			}
 		}
 

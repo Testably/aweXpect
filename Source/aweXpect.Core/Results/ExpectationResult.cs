@@ -7,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Core.Helpers;
 using aweXpect.Core.TimeSystem;
 using aweXpect.Customization;
 
@@ -299,8 +298,8 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 				break;
 		}
 
-		throw new FailException(
-				$"The value in {Formatter.Format(result.GetType())} did not match expected type {Formatter.Format(typeof(TType))}.")
-			.LogTrace();
+		throw Tracing.WriteException(
+			new FailException(
+				$"The value in {Formatter.Format(result.GetType())} did not match expected type {Formatter.Format(typeof(TType))}."));
 	}
 }

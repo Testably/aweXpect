@@ -9,7 +9,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using aweXpect.Core;
-using aweXpect.Core.Helpers;
 using aweXpect.Core.Metadata;
 
 namespace aweXpect.Recording;
@@ -62,7 +61,7 @@ internal sealed class EventRecorder(string eventName) : IDisposable
 		// follow guards across methods.
 		if (!ReflectionFallback.IsSupported)
 		{
-			throw ReflectionFallback.NotSupported(eventInfo.ReflectedType!, "events").LogTrace();
+			throw Tracing.WriteException(ReflectionFallback.NotSupported(eventInfo.ReflectedType!, "events"));
 		}
 
 		MethodInfo handlerType = eventInfo.EventHandlerType!.GetMethod("Invoke")!;
