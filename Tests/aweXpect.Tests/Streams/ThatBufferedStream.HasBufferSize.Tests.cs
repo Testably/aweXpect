@@ -12,17 +12,20 @@ public sealed partial class ThatBufferedStream
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenExpectedBufferSizeIsNegative_ShouldThrowArgumentOutOfRangeException()
+			public async Task WhenExpectedBufferSizeIsNegative_ShouldFail()
 			{
-				using BufferedStream subject = GetBufferedStream(1);
+				using BufferedStream subject = GetBufferedStream(3);
 
 				async Task Act()
 					=> await That(subject).HasBufferSize(-1);
 
-				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected buffer size must be greater than or equal to zero*")
-					.AsWildcard().And
-					.WithParamName("expected");
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has buffer size equal to -1,
+					             but it had buffer size 3
+					             """)
+					.Because("a negative buffer size is a comparison no stream can satisfy, not an invalid argument");
 			}
 
 			[Theory]
@@ -72,20 +75,70 @@ public sealed partial class ThatBufferedStream
 			}
 		}
 
+		public sealed class BetweenTests
+		{
+			[Fact]
+			public async Task WhenBufferSizeOfSubjectIsInsideTheRange_ShouldSucceed()
+			{
+				using BufferedStream subject = GetBufferedStream(3);
+
+				async Task Act()
+					=> await That(subject).HasBufferSize().Between(-1).And(5);
+
+				await That(Act).DoesNotThrow()
+					.Because("a negative minimum only widens the range below the smallest possible buffer size");
+			}
+
+			[Fact]
+			public async Task WhenBufferSizeOfSubjectIsOutsideTheRange_ShouldFail()
+			{
+				using BufferedStream subject = GetBufferedStream(7);
+
+				async Task Act()
+					=> await That(subject).HasBufferSize().Between(-1).And(5);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has buffer size between -1 and 5,
+					             but it had buffer size 7
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenMaximumIsNegative_ShouldFail()
+			{
+				using BufferedStream subject = GetBufferedStream(3);
+
+				async Task Act()
+					=> await That(subject).HasBufferSize().Between(-3).And(-1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has buffer size between -3 and -1,
+					             but it had buffer size 3
+					             """)
+					.Because("an empty range fails the comparison instead of rejecting the arguments");
+			}
+		}
+
 		public sealed class EqualToTests
 		{
 			[Fact]
-			public async Task WhenExpectedBufferSizeIsNegative_ShouldThrowArgumentOutOfRangeException()
+			public async Task WhenExpectedBufferSizeIsNegative_ShouldFail()
 			{
-				using BufferedStream subject = GetBufferedStream(1);
+				using BufferedStream subject = GetBufferedStream(3);
 
 				async Task Act()
 					=> await That(subject).HasBufferSize().EqualTo(-1);
 
-				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected buffer size must be greater than or equal to zero*")
-					.AsWildcard().And
-					.WithParamName("expected");
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has buffer size equal to -1,
+					             but it had buffer size 3
+					             """);
 			}
 
 			[Theory]
@@ -179,17 +232,15 @@ public sealed partial class ThatBufferedStream
 			}
 
 			[Fact]
-			public async Task WhenExpectedBufferSizeIsNegative_ShouldThrowArgumentOutOfRangeException()
+			public async Task WhenExpectedBufferSizeIsNegative_ShouldSucceed()
 			{
-				using BufferedStream subject = GetBufferedStream(1);
+				using BufferedStream subject = GetBufferedStream(3);
 
 				async Task Act()
 					=> await That(subject).HasBufferSize().GreaterThanOrEqualTo(-1);
 
-				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected buffer size must be greater than or equal to zero*")
-					.AsWildcard().And
-					.WithParamName("expected");
+				await That(Act).DoesNotThrow()
+					.Because("every buffer size is greater than or equal to -1");
 			}
 
 			[Fact]
@@ -259,17 +310,15 @@ public sealed partial class ThatBufferedStream
 			}
 
 			[Fact]
-			public async Task WhenExpectedBufferSizeIsNegative_ShouldThrowArgumentOutOfRangeException()
+			public async Task WhenExpectedBufferSizeIsNegative_ShouldSucceed()
 			{
-				using BufferedStream subject = GetBufferedStream(1);
+				using BufferedStream subject = GetBufferedStream(3);
 
 				async Task Act()
 					=> await That(subject).HasBufferSize().GreaterThan(-1);
 
-				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected buffer size must be greater than or equal to zero*")
-					.AsWildcard().And
-					.WithParamName("expected");
+				await That(Act).DoesNotThrow()
+					.Because("greater than -1 is how a caller asks for any buffer size at all");
 			}
 
 			[Fact]
@@ -334,17 +383,19 @@ public sealed partial class ThatBufferedStream
 			}
 
 			[Fact]
-			public async Task WhenExpectedBufferSizeIsNegative_ShouldThrowArgumentOutOfRangeException()
+			public async Task WhenExpectedBufferSizeIsNegative_ShouldFail()
 			{
-				using BufferedStream subject = GetBufferedStream(1);
+				using BufferedStream subject = GetBufferedStream(3);
 
 				async Task Act()
 					=> await That(subject).HasBufferSize().LessThanOrEqualTo(-1);
 
-				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected buffer size must be greater than or equal to zero*")
-					.AsWildcard().And
-					.WithParamName("expected");
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has buffer size less than or equal to -1,
+					             but it had buffer size 3
+					             """);
 			}
 
 			[Fact]
@@ -414,17 +465,19 @@ public sealed partial class ThatBufferedStream
 			}
 
 			[Fact]
-			public async Task WhenExpectedBufferSizeIsNegative_ShouldThrowArgumentOutOfRangeException()
+			public async Task WhenExpectedBufferSizeIsNegative_ShouldFail()
 			{
-				using BufferedStream subject = GetBufferedStream(1);
+				using BufferedStream subject = GetBufferedStream(3);
 
 				async Task Act()
 					=> await That(subject).HasBufferSize().LessThan(-1);
 
-				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected buffer size must be greater than or equal to zero*")
-					.AsWildcard().And
-					.WithParamName("expected");
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has buffer size less than -1,
+					             but it had buffer size 3
+					             """);
 			}
 
 			[Fact]
@@ -447,20 +500,6 @@ public sealed partial class ThatBufferedStream
 
 		public sealed class NotEqualToTests
 		{
-			[Fact]
-			public async Task WhenExpectedBufferSizeIsNegative_ShouldThrowArgumentOutOfRangeException()
-			{
-				using BufferedStream subject = GetBufferedStream(1);
-
-				async Task Act()
-					=> await That(subject).HasBufferSize().NotEqualTo(-1);
-
-				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The unexpected buffer size must be greater than or equal to zero*")
-					.AsWildcard().And
-					.WithParamName("unexpected");
-			}
-
 			[Theory]
 			[AutoData]
 			public async Task WhenSubjectHasDifferentBufferSize_ShouldSucceed(int bufferSize)
@@ -508,17 +547,15 @@ public sealed partial class ThatBufferedStream
 			}
 
 			[Fact]
-			public async Task WhenUnexpectedBufferSizeIsNegative_ShouldThrowArgumentOutOfRangeException()
+			public async Task WhenUnexpectedBufferSizeIsNegative_ShouldSucceed()
 			{
-				using BufferedStream subject = GetBufferedStream(1);
+				using BufferedStream subject = GetBufferedStream(3);
 
 				async Task Act()
 					=> await That(subject).HasBufferSize().NotEqualTo(-1);
 
-				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The unexpected buffer size must be greater than or equal to zero*")
-					.AsWildcard().And
-					.WithParamName("unexpected");
+				await That(Act).DoesNotThrow()
+					.Because("no buffer size can be -1, so the expectation trivially holds");
 			}
 		}
 
@@ -533,6 +570,18 @@ public sealed partial class ThatBufferedStream
 					=> await That(subject).DoesNotComplyWith(it => it.HasBufferSize(9));
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenBufferSizeIsNegative_ShouldSucceed()
+			{
+				using BufferedStream subject = GetBufferedStream(8);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasBufferSize(-1));
+
+				await That(Act).DoesNotThrow()
+					.Because("the negation of an unreachable buffer size holds instead of throwing");
 			}
 
 			[Fact]

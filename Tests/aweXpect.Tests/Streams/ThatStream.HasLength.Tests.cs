@@ -9,17 +9,20 @@ public sealed partial class ThatStream
 		public sealed class Tests
 		{
 			[Fact]
-			public async Task WhenExpectedLengthIsNegative_ShouldThrowArgumentOutOfRangeException()
+			public async Task WhenExpectedLengthIsNegative_ShouldFail()
 			{
-				Stream subject = new MyStream();
+				Stream subject = new MyStream(length: 3);
 
 				async Task Act()
 					=> await That(subject).HasLength(-1);
 
-				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected length must be greater than or equal to zero*")
-					.AsWildcard().And
-					.WithParamName("expected");
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has length equal to -1,
+					             but it had length 3
+					             """)
+					.Because("a negative length is a comparison no stream can satisfy, not an invalid argument");
 			}
 
 			[Fact]
@@ -124,20 +127,70 @@ public sealed partial class ThatStream
 			}
 		}
 
+		public sealed class BetweenTests
+		{
+			[Fact]
+			public async Task WhenLengthOfSubjectIsInsideTheRange_ShouldSucceed()
+			{
+				Stream subject = new MyStream(length: 3);
+
+				async Task Act()
+					=> await That(subject).HasLength().Between(-1).And(5);
+
+				await That(Act).DoesNotThrow()
+					.Because("a negative minimum only widens the range below the smallest possible length");
+			}
+
+			[Fact]
+			public async Task WhenLengthOfSubjectIsOutsideTheRange_ShouldFail()
+			{
+				Stream subject = new MyStream(length: 7);
+
+				async Task Act()
+					=> await That(subject).HasLength().Between(-1).And(5);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has length between -1 and 5,
+					             but it had length 7
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenMaximumIsNegative_ShouldFail()
+			{
+				Stream subject = new MyStream(length: 3);
+
+				async Task Act()
+					=> await That(subject).HasLength().Between(-3).And(-1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has length between -3 and -1,
+					             but it had length 3
+					             """)
+					.Because("an empty range fails the comparison instead of rejecting the arguments");
+			}
+		}
+
 		public sealed class EqualToTests
 		{
 			[Fact]
-			public async Task WhenExpectedLengthIsNegative_ShouldThrowArgumentOutOfRangeException()
+			public async Task WhenExpectedLengthIsNegative_ShouldFail()
 			{
-				Stream subject = new MyStream();
+				Stream subject = new MyStream(length: 3);
 
 				async Task Act()
 					=> await That(subject).HasLength().EqualTo(-1);
 
-				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected length must be greater than or equal to zero*")
-					.AsWildcard().And
-					.WithParamName("expected");
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has length equal to -1,
+					             but it had length 3
+					             """);
 			}
 
 			[Theory]
@@ -207,17 +260,15 @@ public sealed partial class ThatStream
 			}
 
 			[Fact]
-			public async Task WhenExpectedLengthIsNegative_ShouldThrowArgumentOutOfRangeException()
+			public async Task WhenExpectedLengthIsNegative_ShouldSucceed()
 			{
-				Stream subject = new MyStream();
+				Stream subject = new MyStream(length: 3);
 
 				async Task Act()
 					=> await That(subject).HasLength().GreaterThanOrEqualTo(-1);
 
-				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected length must be greater than or equal to zero*")
-					.AsWildcard().And
-					.WithParamName("expected");
+				await That(Act).DoesNotThrow()
+					.Because("every stream length is greater than or equal to -1");
 			}
 
 			[Fact]
@@ -282,17 +333,15 @@ public sealed partial class ThatStream
 			}
 
 			[Fact]
-			public async Task WhenExpectedLengthIsNegative_ShouldThrowArgumentOutOfRangeException()
+			public async Task WhenExpectedLengthIsNegative_ShouldSucceed()
 			{
-				Stream subject = new MyStream();
+				Stream subject = new MyStream(length: 3);
 
 				async Task Act()
 					=> await That(subject).HasLength().GreaterThan(-1);
 
-				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected length must be greater than or equal to zero*")
-					.AsWildcard().And
-					.WithParamName("expected");
+				await That(Act).DoesNotThrow()
+					.Because("greater than -1 is how a caller asks for any length at all");
 			}
 
 			[Fact]
@@ -381,17 +430,19 @@ public sealed partial class ThatStream
 			}
 
 			[Fact]
-			public async Task WhenExpectedLengthIsNegative_ShouldThrowArgumentOutOfRangeException()
+			public async Task WhenExpectedLengthIsNegative_ShouldFail()
 			{
-				Stream subject = new MyStream();
+				Stream subject = new MyStream(length: 3);
 
 				async Task Act()
 					=> await That(subject).HasLength().LessThanOrEqualTo(-1);
 
-				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected length must be greater than or equal to zero*")
-					.AsWildcard().And
-					.WithParamName("expected");
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has length less than or equal to -1,
+					             but it had length 3
+					             """);
 			}
 
 			[Fact]
@@ -456,17 +507,19 @@ public sealed partial class ThatStream
 			}
 
 			[Fact]
-			public async Task WhenExpectedLengthIsNegative_ShouldThrowArgumentOutOfRangeException()
+			public async Task WhenExpectedLengthIsNegative_ShouldFail()
 			{
-				Stream subject = new MyStream();
+				Stream subject = new MyStream(length: 3);
 
 				async Task Act()
 					=> await That(subject).HasLength().LessThan(-1);
 
-				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected length must be greater than or equal to zero*")
-					.AsWildcard().And
-					.WithParamName("expected");
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has length less than -1,
+					             but it had length 3
+					             """);
 			}
 
 			[Fact]
@@ -518,20 +571,6 @@ public sealed partial class ThatStream
 
 		public sealed class NotEqualToTests
 		{
-			[Fact]
-			public async Task WhenExpectedLengthIsNegative_ShouldThrowArgumentOutOfRangeException()
-			{
-				Stream subject = new MyStream();
-
-				async Task Act()
-					=> await That(subject).HasLength().NotEqualTo(-1);
-
-				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The unexpected length must be greater than or equal to zero*")
-					.AsWildcard().And
-					.WithParamName("unexpected");
-			}
-
 			[Theory]
 			[AutoData]
 			public async Task WhenSubjectHasDifferentLength_ShouldSucceed(long length)
@@ -598,22 +637,32 @@ public sealed partial class ThatStream
 			}
 
 			[Fact]
-			public async Task WhenUnexpectedLengthIsNegative_ShouldThrowArgumentOutOfRangeException()
+			public async Task WhenUnexpectedLengthIsNegative_ShouldSucceed()
 			{
-				Stream subject = new MyStream();
+				Stream subject = new MyStream(length: 3);
 
 				async Task Act()
 					=> await That(subject).HasLength().NotEqualTo(-1);
 
-				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The unexpected length must be greater than or equal to zero*")
-					.AsWildcard().And
-					.WithParamName("unexpected");
+				await That(Act).DoesNotThrow()
+					.Because("no stream length can be -1, so the expectation trivially holds");
 			}
 		}
 
 		public sealed class NegatedTests
 		{
+			[Fact]
+			public async Task WhenExpectedLengthIsNegative_ShouldSucceed()
+			{
+				Stream subject = new MyStream(length: 3);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasLength(-1));
+
+				await That(Act).DoesNotThrow()
+					.Because("the negation of an unreachable length holds instead of throwing");
+			}
+
 			[Fact]
 			public async Task WhenLengthDiffers_ShouldSucceed()
 			{
