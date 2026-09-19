@@ -71,7 +71,8 @@ By default, equivalency:
 - Treats primitives, `enum`, `string`, `decimal`, `DateTime`, `DateTimeOffset`, `TimeSpan` and `Guid` as
   *value types* and compares them with `Equals`. Everything else is compared **by members**.
 - Respects collection **order** when comparing `IEnumerable<T>`.
-- Detects cyclic references so two graphs that reference themselves do not cause infinite recursion.
+- Detects cyclic references so two graphs that reference themselves do not cause infinite recursion. An instance
+  that is referenced more than once is still compared against each of its expected counterparts.
 - Honours `IEqualityComparer` if either side implements it — that comparer wins over the structural walk.
 - Throws an `InvalidOperationException` when a type has no members to compare, instead of succeeding without
   verifying anything. Either include the relevant members, compare the type

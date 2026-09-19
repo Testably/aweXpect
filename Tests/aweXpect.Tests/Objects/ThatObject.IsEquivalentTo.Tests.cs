@@ -1299,6 +1299,171 @@ public sealed partial class ThatObject
 			}
 		}
 
+		public sealed class RecursionTests
+		{
+			[Fact]
+			public async Task WhenCollectionContainsSameInstanceTwice_ShouldCompareBothElements()
+			{
+				InnerClass shared = new()
+				{
+					Value = "Foo",
+				};
+				List<InnerClass> subject = [shared, shared,];
+				List<InnerClass> expected =
+				[
+					new()
+					{
+						Value = "Foo",
+					},
+					new()
+					{
+						Value = "Bar",
+					},
+				];
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to [
+					               ThatObject.InnerClass {
+					                   Collection = <null>,
+					                   Inner = <null>,
+					                   IntValue = 0,
+					                   Value = "Foo"
+					                 },
+					               ThatObject.InnerClass {
+					                   Collection = <null>,
+					                   Inner = <null>,
+					                   IntValue = 0,
+					                   Value = "Bar"
+					                 }
+					             ],
+					             but it was not:
+					               Property [1].Value differed:
+					                    Found: "Foo"
+					                 Expected: "Bar"
+
+					             Equivalency options:
+					              - include public fields and properties
+					             """)
+					.Because("the shared instance must be compared against both of its counterparts");
+			}
+
+			[Fact]
+			public async Task WhenGraphReferencesItself_ShouldNotRecurseInfinitely()
+			{
+				InnerClass subject = new()
+				{
+					Value = "Foo",
+				};
+				subject.Inner = subject;
+				InnerClass expected = new()
+				{
+					Value = "Foo",
+				};
+				expected.Inner = expected;
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenSameInstanceIsReferencedTwice_ShouldCompareBothReferences()
+			{
+				InnerClass shared = new()
+				{
+					Value = "Foo",
+				};
+				PairClass subject = new()
+				{
+					First = shared,
+					Second = shared,
+				};
+				PairClass expected = new()
+				{
+					First = new InnerClass
+					{
+						Value = "Foo",
+					},
+					Second = new InnerClass
+					{
+						Value = "Bar",
+					},
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to ThatObject.IsEquivalentTo.RecursionTests.PairClass {
+					                 First = ThatObject.InnerClass {
+					                   Collection = <null>,
+					                   Inner = <null>,
+					                   IntValue = 0,
+					                   Value = "Foo"
+					                 },
+					                 Second = ThatObject.InnerClass {
+					                   Collection = <null>,
+					                   Inner = <null>,
+					                   IntValue = 0,
+					                   Value = "Bar"
+					                 }
+					               },
+					             but it was not:
+					               Property Second.Value differed:
+					                    Found: "Foo"
+					                 Expected: "Bar"
+
+					             Equivalency options:
+					              - include public fields and properties
+					             """)
+					.Because("the shared instance must be compared against both of its counterparts");
+			}
+
+			[Fact]
+			public async Task WhenSameInstanceIsReferencedTwice_ShouldSucceedWhenBothCounterpartsMatch()
+			{
+				InnerClass shared = new()
+				{
+					Value = "Foo",
+				};
+				PairClass subject = new()
+				{
+					First = shared,
+					Second = shared,
+				};
+				PairClass expected = new()
+				{
+					First = new InnerClass
+					{
+						Value = "Foo",
+					},
+					Second = new InnerClass
+					{
+						Value = "Foo",
+					},
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			private sealed class PairClass
+			{
+				public InnerClass? First { get; set; }
+				public InnerClass? Second { get; set; }
+			}
+		}
+
 		public sealed class NegatedTests
 		{
 			[Fact]
