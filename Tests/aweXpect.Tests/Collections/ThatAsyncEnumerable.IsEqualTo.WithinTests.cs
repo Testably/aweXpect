@@ -134,6 +134,49 @@ public sealed partial class ThatAsyncEnumerable
 						             [1.0, 2.0, 3.0]
 						             """);
 				}
+
+				[Theory]
+				[InlineData(double.PositiveInfinity, 1.0)]
+				[InlineData(double.NegativeInfinity, 1.0)]
+				[InlineData(double.PositiveInfinity, double.PositiveInfinity)]
+				public async Task WhenNonFiniteValuesAreEqual_ShouldSucceed(double value, double tolerance)
+				{
+					IAsyncEnumerable<double> subject = ToAsyncEnumerable(value);
+
+					async Task Act()
+						=> await That(subject).IsEqualTo([value,]).Within(tolerance);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Theory]
+				[InlineData(double.PositiveInfinity, double.NegativeInfinity, 1.0)]
+				[InlineData(double.PositiveInfinity, double.NegativeInfinity, double.PositiveInfinity)]
+				[InlineData(12.5, double.PositiveInfinity, double.PositiveInfinity)]
+				[InlineData(double.PositiveInfinity, 12.5, double.PositiveInfinity)]
+				[InlineData(double.NaN, double.PositiveInfinity, double.PositiveInfinity)]
+				public async Task WhenNonFiniteValuesDiffer_ShouldFail(double value, double expected, double tolerance)
+				{
+					IAsyncEnumerable<double> subject = ToAsyncEnumerable(value);
+
+					async Task Act()
+						=> await That(subject).IsEqualTo([expected,]).Within(tolerance);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is equal to collection [expected,] in order ± {Formatter.Format(tolerance)},
+						              but it
+						                contained item {Formatter.Format(value)} at index 0 that was not expected and
+						                lacked the one expected item
+
+						              Collection:
+						              [{Formatter.Format(value)}]
+
+						              Expected:
+						              [{Formatter.Format(expected)}]
+						              """);
+				}
 			}
 
 			public sealed class NullableDoubleTests
@@ -182,6 +225,49 @@ public sealed partial class ThatAsyncEnumerable
 						             Expected:
 						             [1.0, <null>, 2.0, 3.0]
 						             """);
+				}
+
+				[Theory]
+				[InlineData(double.PositiveInfinity, 1.0)]
+				[InlineData(double.NegativeInfinity, 1.0)]
+				[InlineData(double.PositiveInfinity, double.PositiveInfinity)]
+				public async Task WhenNonFiniteValuesAreEqual_ShouldSucceed(double value, double tolerance)
+				{
+					IAsyncEnumerable<double?> subject = ToAsyncEnumerable<double?>(value);
+
+					async Task Act()
+						=> await That(subject).IsEqualTo([value,]).Within(tolerance);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Theory]
+				[InlineData(double.PositiveInfinity, double.NegativeInfinity, 1.0)]
+				[InlineData(double.PositiveInfinity, double.NegativeInfinity, double.PositiveInfinity)]
+				[InlineData(12.5, double.PositiveInfinity, double.PositiveInfinity)]
+				[InlineData(double.PositiveInfinity, 12.5, double.PositiveInfinity)]
+				[InlineData(double.NaN, double.PositiveInfinity, double.PositiveInfinity)]
+				public async Task WhenNonFiniteValuesDiffer_ShouldFail(double value, double expected, double tolerance)
+				{
+					IAsyncEnumerable<double?> subject = ToAsyncEnumerable<double?>(value);
+
+					async Task Act()
+						=> await That(subject).IsEqualTo([expected,]).Within(tolerance);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is equal to collection [expected,] in order ± {Formatter.Format(tolerance)},
+						              but it
+						                contained item {Formatter.Format(value)} at index 0 that was not expected and
+						                lacked the one expected item
+
+						              Collection:
+						              [{Formatter.Format(value)}]
+
+						              Expected:
+						              [{Formatter.Format(expected)}]
+						              """);
 				}
 			}
 
@@ -232,6 +318,49 @@ public sealed partial class ThatAsyncEnumerable
 						             [1.0, 2.0, 3.0]
 						             """);
 				}
+
+				[Theory]
+				[InlineData(float.PositiveInfinity, 1.0F)]
+				[InlineData(float.NegativeInfinity, 1.0F)]
+				[InlineData(float.PositiveInfinity, float.PositiveInfinity)]
+				public async Task WhenNonFiniteValuesAreEqual_ShouldSucceed(float value, float tolerance)
+				{
+					IAsyncEnumerable<float> subject = ToAsyncEnumerable(value);
+
+					async Task Act()
+						=> await That(subject).IsEqualTo([value,]).Within(tolerance);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Theory]
+				[InlineData(float.PositiveInfinity, float.NegativeInfinity, 1.0F)]
+				[InlineData(float.PositiveInfinity, float.NegativeInfinity, float.PositiveInfinity)]
+				[InlineData(12.5F, float.PositiveInfinity, float.PositiveInfinity)]
+				[InlineData(float.PositiveInfinity, 12.5F, float.PositiveInfinity)]
+				[InlineData(float.NaN, float.PositiveInfinity, float.PositiveInfinity)]
+				public async Task WhenNonFiniteValuesDiffer_ShouldFail(float value, float expected, float tolerance)
+				{
+					IAsyncEnumerable<float> subject = ToAsyncEnumerable(value);
+
+					async Task Act()
+						=> await That(subject).IsEqualTo([expected,]).Within(tolerance);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is equal to collection [expected,] in order ± {Formatter.Format(tolerance)},
+						              but it
+						                contained item {Formatter.Format(value)} at index 0 that was not expected and
+						                lacked the one expected item
+
+						              Collection:
+						              [{Formatter.Format(value)}]
+
+						              Expected:
+						              [{Formatter.Format(expected)}]
+						              """);
+				}
 			}
 
 			public sealed class NullableFloatTests
@@ -280,6 +409,49 @@ public sealed partial class ThatAsyncEnumerable
 						             Expected:
 						             [1.0, <null>, 2.0, 3.0]
 						             """);
+				}
+
+				[Theory]
+				[InlineData(float.PositiveInfinity, 1.0F)]
+				[InlineData(float.NegativeInfinity, 1.0F)]
+				[InlineData(float.PositiveInfinity, float.PositiveInfinity)]
+				public async Task WhenNonFiniteValuesAreEqual_ShouldSucceed(float value, float tolerance)
+				{
+					IAsyncEnumerable<float?> subject = ToAsyncEnumerable<float?>(value);
+
+					async Task Act()
+						=> await That(subject).IsEqualTo([value,]).Within(tolerance);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Theory]
+				[InlineData(float.PositiveInfinity, float.NegativeInfinity, 1.0F)]
+				[InlineData(float.PositiveInfinity, float.NegativeInfinity, float.PositiveInfinity)]
+				[InlineData(12.5F, float.PositiveInfinity, float.PositiveInfinity)]
+				[InlineData(float.PositiveInfinity, 12.5F, float.PositiveInfinity)]
+				[InlineData(float.NaN, float.PositiveInfinity, float.PositiveInfinity)]
+				public async Task WhenNonFiniteValuesDiffer_ShouldFail(float value, float expected, float tolerance)
+				{
+					IAsyncEnumerable<float?> subject = ToAsyncEnumerable<float?>(value);
+
+					async Task Act()
+						=> await That(subject).IsEqualTo([expected,]).Within(tolerance);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is equal to collection [expected,] in order ± {Formatter.Format(tolerance)},
+						              but it
+						                contained item {Formatter.Format(value)} at index 0 that was not expected and
+						                lacked the one expected item
+
+						              Collection:
+						              [{Formatter.Format(value)}]
+
+						              Expected:
+						              [{Formatter.Format(expected)}]
+						              """);
 				}
 			}
 
