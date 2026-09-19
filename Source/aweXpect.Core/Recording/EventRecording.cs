@@ -244,11 +244,12 @@ internal sealed class EventRecording<TSubject> : IEventRecording<TSubject>, IEve
 				throw Tracing.WriteException(new NotSupportedException(unsupported));
 			}
 
+			string nothingRecorded = _skipped.Count > 0
+				? "because no event was recorded"
+				: "because no event was found";
 			string recorded = _recorders.Count > 0
 				? $"only {Formatter.Format(_recorders.Keys)}"
-				: _skipped.Count > 0
-					? "because no event was recorded"
-					: "because no event was found";
+				: nothingRecorded;
 			string skipped = _skipped.Count > 0
 				? $". No handler could be attached to {Formatter.Format(_skipped.Keys)}"
 				: "";
