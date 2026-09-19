@@ -245,6 +245,21 @@ public sealed partial class ThatString
 					             """);
 			}
 
+			[Theory]
+			[InlineData("IxI", 2)]
+			[InlineData("İxİ", 0)]
+			public async Task WhenCombinedWithIgnoringCase_ShouldCountOccurrencesIndependentOfTheCurrentCulture(
+				string subject, int expectedCount)
+			{
+				using CultureOverride _ = new("tr-TR");
+
+				async Task Act()
+					=> await That(subject).Contains("i").AsRegex().IgnoringCase().Exactly(expectedCount);
+
+				await That(Act).DoesNotThrow()
+					.Because("the dotted and dotless Turkish 'I' must not change how often the pattern occurs");
+			}
+
 			[Fact]
 			public async Task WhenCombinedWithIgnoringCase_ShouldIgnoreCase()
 			{
@@ -433,6 +448,21 @@ public sealed partial class ThatString
 
 				await That(Act).DoesNotThrow()
 					.Because("'*' matches across newlines and is matched greedily");
+			}
+
+			[Theory]
+			[InlineData("IxI", 2)]
+			[InlineData("İxİ", 0)]
+			public async Task WhenCombinedWithIgnoringCase_ShouldCountOccurrencesIndependentOfTheCurrentCulture(
+				string subject, int expectedCount)
+			{
+				using CultureOverride _ = new("tr-TR");
+
+				async Task Act()
+					=> await That(subject).Contains("i").AsWildcard().IgnoringCase().Exactly(expectedCount);
+
+				await That(Act).DoesNotThrow()
+					.Because("the dotted and dotless Turkish 'I' must not change how often the pattern occurs");
 			}
 
 			[Fact]

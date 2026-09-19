@@ -81,6 +81,57 @@ public sealed partial class ThatString
 					             """);
 			}
 
+			[Theory]
+			[InlineData("tr-TR", "I", "i", true)]
+			[InlineData("tr-TR", "İ", "i", false)]
+			[InlineData("tr-TR", "ı", "I", false)]
+			[InlineData("", "I", "i", true)]
+			[InlineData("", "İ", "i", false)]
+			[InlineData("", "ı", "I", false)]
+			public async Task WhenIgnoringCase_ShouldIgnoreCaseIndependentOfTheCurrentCulture(
+				string cultureName, string subject, string pattern, bool expectMatch)
+			{
+				using CultureOverride _ = new(cultureName);
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(pattern).AsRegex().IgnoringCase();
+
+				await That(Act).Throws().OnlyIf(!expectMatch)
+					.WithMessage($"""
+					              Expected that subject
+					              matches regex {Formatter.Format(pattern)},
+					              but it did not match:
+					                ↓ (actual)
+					                {Formatter.Format(subject)}
+					                {Formatter.Format(pattern)}
+					                ↑ (regex pattern)
+					              """)
+					.Because("the dotted and dotless Turkish 'I' must not change which characters are considered equal");
+			}
+
+			[Fact]
+			public async Task WhenNotIgnoringCase_ShouldMatchCaseSensitiveIndependentOfTheCurrentCulture()
+			{
+				string subject = "I";
+
+				using CultureOverride _ = new("tr-TR");
+
+				async Task Act()
+					=> await That(subject).IsEqualTo("i").AsRegex();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches regex "i",
+					             but it did not match:
+					               ↓ (actual)
+					               "I"
+					               "i"
+					               ↑ (regex pattern)
+					             """)
+					.Because("a case-sensitive match never looked at the culture");
+			}
+
 			[Fact]
 			public async Task WhenOptionsAreCombinedWithIgnoringCase_ShouldApplyBoth()
 			{
@@ -103,6 +154,53 @@ public sealed partial class ThatString
 
 				await That(Act).DoesNotThrow()
 					.Because("an explicitly given option is never taken away again");
+			}
+
+			[Fact]
+			public async Task WhenOptionsContainIgnoreCase_ShouldIgnoreTheCultureWhenIgnoringCaseIsEnabled()
+			{
+				string subject = "İ";
+
+				using CultureOverride _ = new("tr-TR");
+
+				async Task Act()
+					=> await That(subject).IsEqualTo("i").AsRegex(RegexOptions.IgnoreCase).IgnoringCase();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              matches regex "i",
+					              but it did not match:
+					                ↓ (actual)
+					                {Formatter.Format(subject)}
+					                "i"
+					                ↑ (regex pattern)
+					              """)
+					.Because("asking for the casing to be ignored adds the culture independence to the given options");
+			}
+
+			[Theory]
+			[InlineData("I", "i", false)]
+			[InlineData("İ", "i", true)]
+			public async Task WhenOptionsContainIgnoreCase_ShouldUseTheCurrentCulture(
+				string subject, string pattern, bool expectMatch)
+			{
+				using CultureOverride _ = new("tr-TR");
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(pattern).AsRegex(RegexOptions.IgnoreCase);
+
+				await That(Act).Throws().OnlyIf(!expectMatch)
+					.WithMessage($"""
+					              Expected that subject
+					              matches regex {Formatter.Format(pattern)},
+					              but it did not match:
+					                ↓ (actual)
+					                {Formatter.Format(subject)}
+					                {Formatter.Format(pattern)}
+					                ↑ (regex pattern)
+					              """)
+					.Because("an explicitly given option keeps the behaviour of Regex.IsMatch, which is culture-dependent");
 			}
 
 			[Fact]
