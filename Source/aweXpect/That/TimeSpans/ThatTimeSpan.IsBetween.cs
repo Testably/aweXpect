@@ -18,12 +18,15 @@ public static partial class ThatTimeSpan
 		TimeSpan? minimum)
 	{
 		TimeTolerance tolerance = new();
-		return new BetweenResult<TimeToleranceResult<TimeSpan, IThat<TimeSpan>>, TimeSpan?>(maximum
-			=> new TimeToleranceResult<TimeSpan, IThat<TimeSpan>>(
+		return new BetweenResult<TimeToleranceResult<TimeSpan, IThat<TimeSpan>>, TimeSpan?>(maximum =>
+		{
+			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
+			return new TimeToleranceResult<TimeSpan, IThat<TimeSpan>>(
 				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsBetweenConstraint(it, grammars, minimum, maximum, tolerance)),
 				subject,
-				tolerance));
+				tolerance);
+		});
 	}
 
 	/// <summary>
@@ -34,12 +37,15 @@ public static partial class ThatTimeSpan
 		TimeSpan? minimum)
 	{
 		TimeTolerance tolerance = new();
-		return new BetweenResult<TimeToleranceResult<TimeSpan, IThat<TimeSpan>>, TimeSpan?>(maximum
-			=> new TimeToleranceResult<TimeSpan, IThat<TimeSpan>>(
+		return new BetweenResult<TimeToleranceResult<TimeSpan, IThat<TimeSpan>>, TimeSpan?>(maximum =>
+		{
+			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
+			return new TimeToleranceResult<TimeSpan, IThat<TimeSpan>>(
 				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsBetweenConstraint(it, grammars, minimum, maximum, tolerance).Invert()),
 				subject,
-				tolerance));
+				tolerance);
+		});
 	}
 
 	private sealed class IsBetweenConstraint(

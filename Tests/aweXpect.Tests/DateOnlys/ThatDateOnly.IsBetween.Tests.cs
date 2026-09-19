@@ -26,6 +26,31 @@ public sealed partial class ThatDateOnly
 			}
 
 			[Fact]
+			public async Task WhenMaximumIsSmallerThanMinimum_ShouldThrowArgumentOutOfRangeException()
+			{
+				DateOnly subject = CurrentTime();
+
+				async Task Act()
+					=> await That(subject).IsBetween(LaterTime()).And(EarlierTime());
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("maximum").And
+					.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenMinimumAndMaximumAreEqual_ShouldSucceed()
+			{
+				DateOnly subject = CurrentTime();
+
+				async Task Act()
+					=> await That(subject).IsBetween(subject).And(subject);
+
+				await That(Act).DoesNotThrow()
+					.Because("a range with equal bounds is still a valid range");
+			}
+
+			[Fact]
 			public async Task WhenMinimumIsNull_ShouldFail()
 			{
 				DateOnly subject = CurrentTime();
@@ -147,6 +172,21 @@ public sealed partial class ThatDateOnly
 
 		public sealed class WithinTests
 		{
+			[Fact]
+			public async Task WhenMaximumIsSmallerThanMinimum_ShouldThrowArgumentOutOfRangeException()
+			{
+				DateOnly subject = CurrentTime();
+
+				async Task Act()
+					=> await That(subject).IsBetween(LaterTime()).And(EarlierTime())
+						.Within(3.Days());
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("maximum").And
+					.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix()
+					.Because("a tolerance must not turn an inverted range into a satisfiable one");
+			}
+
 			[Fact]
 			public async Task WhenMaximumValueIsOutsideTheTolerance_ShouldFail()
 			{
