@@ -93,5 +93,117 @@ public static partial class ThatAsyncEnumerable
 			subject,
 			options);
 	}
+
+	/// <summary>
+	///     Verifies that the collection is in ascending order.
+	/// </summary>
+	/// <remarks>
+	///     Fails when the collection contains both <see cref="DateTimeKind.Utc" /> and <see cref="DateTimeKind.Local" />
+	///     values, unless a custom comparer is used.
+	/// </remarks>
+	[GuaranteesNotNull]
+	public static CollectionOrderResult<DateTime, IAsyncEnumerable<DateTime>, IThat<IAsyncEnumerable<DateTime>?>>
+		IsInAscendingOrder(this IThat<IAsyncEnumerable<DateTime>?> subject)
+		=> IsInKindAwareOrder(subject, x => x, SortOrder.Ascending, "", false,
+			DateTimeKindHelpers.CreateIncompatibleKindCheck);
+
+	/// <inheritdoc cref="IsInAscendingOrder(IThat{IAsyncEnumerable{DateTime}?})" />
+	[GuaranteesNotNull]
+	public static CollectionOrderResult<DateTime?, IAsyncEnumerable<DateTime?>, IThat<IAsyncEnumerable<DateTime?>?>>
+		IsInAscendingOrder(this IThat<IAsyncEnumerable<DateTime?>?> subject)
+		=> IsInKindAwareOrder(subject, x => x, SortOrder.Ascending, "", false,
+			DateTimeKindHelpers.CreateIncompatibleKindCheck);
+
+	/// <inheritdoc cref="IsInAscendingOrder(IThat{IAsyncEnumerable{DateTime}?})" />
+	[GuaranteesNotNull]
+	public static CollectionOrderResult<DateTime, IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
+		IsInAscendingOrder<TItem>(
+			this IThat<IAsyncEnumerable<TItem>?> subject,
+			Func<TItem, DateTime> memberAccessor,
+			[CallerArgumentExpression("memberAccessor")]
+			string doNotPopulateThisValue = "")
+		=> IsInKindAwareOrder(subject, memberAccessor, SortOrder.Ascending,
+			$" by {doNotPopulateThisValue.TrimCommonWhiteSpace()}", false,
+			DateTimeKindHelpers.CreateIncompatibleKindCheck);
+
+	/// <inheritdoc cref="IsInAscendingOrder(IThat{IAsyncEnumerable{DateTime}?})" />
+	[GuaranteesNotNull]
+	public static CollectionOrderResult<DateTime?, IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
+		IsInAscendingOrder<TItem>(
+			this IThat<IAsyncEnumerable<TItem>?> subject,
+			Func<TItem, DateTime?> memberAccessor,
+			[CallerArgumentExpression("memberAccessor")]
+			string doNotPopulateThisValue = "")
+		=> IsInKindAwareOrder(subject, memberAccessor, SortOrder.Ascending,
+			$" by {doNotPopulateThisValue.TrimCommonWhiteSpace()}", false,
+			DateTimeKindHelpers.CreateIncompatibleKindCheck);
+
+	/// <summary>
+	///     Verifies that the collection is not in ascending order.
+	/// </summary>
+	/// <remarks>
+	///     Fails when the collection contains both <see cref="DateTimeKind.Utc" /> and <see cref="DateTimeKind.Local" />
+	///     values, unless a custom comparer is used.
+	/// </remarks>
+	[GuaranteesNotNull]
+	public static CollectionOrderResult<DateTime, IAsyncEnumerable<DateTime>, IThat<IAsyncEnumerable<DateTime>?>>
+		IsNotInAscendingOrder(this IThat<IAsyncEnumerable<DateTime>?> subject)
+		=> IsInKindAwareOrder(subject, x => x, SortOrder.Ascending, "", true,
+			DateTimeKindHelpers.CreateIncompatibleKindCheck);
+
+	/// <inheritdoc cref="IsNotInAscendingOrder(IThat{IAsyncEnumerable{DateTime}?})" />
+	[GuaranteesNotNull]
+	public static CollectionOrderResult<DateTime?, IAsyncEnumerable<DateTime?>, IThat<IAsyncEnumerable<DateTime?>?>>
+		IsNotInAscendingOrder(this IThat<IAsyncEnumerable<DateTime?>?> subject)
+		=> IsInKindAwareOrder(subject, x => x, SortOrder.Ascending, "", true,
+			DateTimeKindHelpers.CreateIncompatibleKindCheck);
+
+	/// <inheritdoc cref="IsNotInAscendingOrder(IThat{IAsyncEnumerable{DateTime}?})" />
+	[GuaranteesNotNull]
+	public static CollectionOrderResult<DateTime, IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
+		IsNotInAscendingOrder<TItem>(
+			this IThat<IAsyncEnumerable<TItem>?> subject,
+			Func<TItem, DateTime> memberAccessor,
+			[CallerArgumentExpression("memberAccessor")]
+			string doNotPopulateThisValue = "")
+		=> IsInKindAwareOrder(subject, memberAccessor, SortOrder.Ascending,
+			$" by {doNotPopulateThisValue.TrimCommonWhiteSpace()}", true,
+			DateTimeKindHelpers.CreateIncompatibleKindCheck);
+
+	/// <inheritdoc cref="IsNotInAscendingOrder(IThat{IAsyncEnumerable{DateTime}?})" />
+	[GuaranteesNotNull]
+	public static CollectionOrderResult<DateTime?, IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
+		IsNotInAscendingOrder<TItem>(
+			this IThat<IAsyncEnumerable<TItem>?> subject,
+			Func<TItem, DateTime?> memberAccessor,
+			[CallerArgumentExpression("memberAccessor")]
+			string doNotPopulateThisValue = "")
+		=> IsInKindAwareOrder(subject, memberAccessor, SortOrder.Ascending,
+			$" by {doNotPopulateThisValue.TrimCommonWhiteSpace()}", true,
+			DateTimeKindHelpers.CreateIncompatibleKindCheck);
+
+	private static CollectionOrderResult<TMember, IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
+		IsInKindAwareOrder<TItem, TMember>(
+			IThat<IAsyncEnumerable<TItem>?> subject,
+			Func<TItem, TMember> memberAccessor,
+			SortOrder sortOrder,
+			string memberExpression,
+			bool isNegated,
+			Func<CollectionOrderOptions<TMember>, Func<Func<TMember, string?>?>> createIncompatibilityCheck)
+	{
+		CollectionOrderOptions<TMember> options = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new CollectionOrderResult<TMember, IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
+			expectationBuilder.AddConstraint((it, grammars) =>
+			{
+				IsInOrderConstraint<TItem, TMember> constraint = new(
+					expectationBuilder, it, grammars,
+					memberAccessor, sortOrder, options, memberExpression,
+					createIncompatibilityCheck(options));
+				return isNegated ? constraint.Invert() : constraint;
+			}),
+			subject,
+			options);
+	}
 }
 #endif

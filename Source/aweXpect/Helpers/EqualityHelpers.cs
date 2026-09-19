@@ -189,7 +189,7 @@ internal static class EqualityHelpers
 	/// <inheritdoc cref="IsFinite(double)" />
 	private static bool IsFinite(float value) => !float.IsNaN(value) && !float.IsInfinity(value);
 
-	private static bool AreKindCompatible(DateTimeKind? actualKind, DateTimeKind? expectedKind)
+	public static bool AreKindCompatible(DateTimeKind? actualKind, DateTimeKind? expectedKind)
 	{
 		if (actualKind == DateTimeKind.Unspecified || expectedKind == DateTimeKind.Unspecified)
 		{

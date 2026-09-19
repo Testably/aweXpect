@@ -1,4 +1,4 @@
-﻿namespace aweXpect.Tests;
+namespace aweXpect.Tests;
 
 public sealed partial class ThatDateTime
 {
@@ -24,23 +24,40 @@ public sealed partial class ThatDateTime
 			}
 
 			[Theory]
-			[InlineData(DateTimeKind.Unspecified, DateTimeKind.Local)]
-			[InlineData(DateTimeKind.Unspecified, DateTimeKind.Utc)]
-			[InlineData(DateTimeKind.Unspecified, DateTimeKind.Unspecified)]
-			[InlineData(DateTimeKind.Local, DateTimeKind.Unspecified)]
 			[InlineData(DateTimeKind.Utc, DateTimeKind.Unspecified)]
-			[InlineData(DateTimeKind.Local, DateTimeKind.Local)]
-			[InlineData(DateTimeKind.Utc, DateTimeKind.Utc)]
-			public async Task WhenKindsAreCompatible_ShouldSucceed(DateTimeKind subjectKind, DateTimeKind expectedKind)
+			[InlineData(DateTimeKind.Unspecified, DateTimeKind.Utc)]
+			[InlineData(DateTimeKind.Local, DateTimeKind.Unspecified)]
+			[InlineData(DateTimeKind.Unspecified, DateTimeKind.Local)]
+			public async Task WhenKindIsUnspecified_ShouldSucceed(
+				DateTimeKind subjectKind, DateTimeKind expectedKind)
 			{
-				DateTime subject = EarlierTime(1, subjectKind);
-				DateTime expected = CurrentTime(expectedKind);
+				DateTime subject = DateTime.SpecifyKind(EarlierTime(), subjectKind);
+				DateTime expected = DateTime.SpecifyKind(CurrentTime(), expectedKind);
 
 				async Task Act()
-					=> await That(subject).IsBefore(expected)
-						.Because("an Unspecified Kind matches any other Kind and equal Kinds are comparable");
+					=> await That(subject).IsBefore(expected);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Theory]
+			[InlineData(DateTimeKind.Utc, DateTimeKind.Local)]
+			[InlineData(DateTimeKind.Local, DateTimeKind.Utc)]
+			public async Task WhenKindsAreIncompatible_ShouldFail(
+				DateTimeKind subjectKind, DateTimeKind expectedKind)
+			{
+				DateTime subject = DateTime.SpecifyKind(EarlierTime(), subjectKind);
+				DateTime expected = DateTime.SpecifyKind(CurrentTime(), expectedKind);
+
+				async Task Act()
+					=> await That(subject).IsBefore(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is before {Formatter.Format(expected)},
+					              but it had Kind {subjectKind}, which cannot be compared with {expectedKind}
+					              """);
 			}
 
 			[Fact]
@@ -125,7 +142,7 @@ public sealed partial class ThatDateTime
 					.WithMessage($"""
 					              Expected that subject
 					              is before {Formatter.Format(expected)}, because a Local and a Utc value cannot be ordered without guessing the offset,
-					              but it differed in the Kind property
+					              but it had Kind Utc, which cannot be compared with Local
 					              """);
 			}
 
@@ -188,7 +205,7 @@ public sealed partial class ThatDateTime
 					.WithMessage($"""
 					              Expected that subject
 					              is before {Formatter.Format(expected)} ± 0:03, because a tolerance cannot bridge incompatible Kinds,
-					              but it differed in the Kind property
+					              but it had Kind Utc, which cannot be compared with Local
 					              """);
 			}
 

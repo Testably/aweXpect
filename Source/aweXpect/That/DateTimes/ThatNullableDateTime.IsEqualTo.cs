@@ -48,7 +48,7 @@ public static partial class ThatNullableDateTime
 		: ConstraintResult.WithEqualToValue<DateTime?>(it, grammars, expected is null),
 			IValueConstraint<DateTime?>
 	{
-		private bool _hasKindDifference;
+		private DateTimeKind? _incompatibleKind;
 
 		public ConstraintResult IsMetBy(DateTime? actual)
 		{
@@ -56,9 +56,10 @@ public static partial class ThatNullableDateTime
 
 			TimeSpan timeTolerance =
 				tolerance.Tolerance ?? Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-			Outcome = actual.IsConsideredEqualTo(expected, timeTolerance, out _hasKindDifference)
+			Outcome = actual.IsConsideredEqualTo(expected, timeTolerance, out bool hasKindDifference)
 				? Outcome.Success
 				: Outcome.Failure;
+			_incompatibleKind = hasKindDifference && actual is not null ? expected?.Kind : null;
 
 			return this;
 		}
@@ -72,9 +73,10 @@ public static partial class ThatNullableDateTime
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_hasKindDifference)
+			if (_incompatibleKind is not null)
 			{
-				stringBuilder.Append(It).Append(" differed in the Kind property");
+				stringBuilder.Append(It).Append(" had Kind ").Append(Actual?.Kind)
+					.Append(", which cannot be compared with ").Append(_incompatibleKind);
 			}
 			else
 			{
