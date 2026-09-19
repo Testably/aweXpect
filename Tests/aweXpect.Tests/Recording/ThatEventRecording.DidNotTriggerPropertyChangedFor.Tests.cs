@@ -65,6 +65,23 @@ public sealed partial class ThatEventRecording
 			}
 
 			[Fact]
+			public async Task WhenExpressionIsParameterItself_ShouldThrowArgumentException()
+			{
+				PropertyChangedWithMembersClass sut = new();
+				IEventRecording<PropertyChangedWithMembersClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChanged(null);
+
+				async Task Act() =>
+					await That(recording).DidNotTriggerPropertyChangedFor(x => x);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("propertyExpression").And
+					.WithMessage("The 'propertyExpression' must refer to a property, but was 'x'.").AsPrefix()
+					.Because("it would otherwise be checked against the event raised without a name");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEventRecording<PropertyChangedClass>? subject = null;

@@ -21,13 +21,7 @@ public static partial class ThatEventRecording
 		this IThat<IEventRecording<TSubject>> subject,
 		Expression<Func<TSubject, TProperty>> propertyExpression)
 		where TSubject : INotifyPropertyChanged
-	{
-		MemberInfo? memberInfo =
-			(((propertyExpression.Body as UnaryExpression)?.Operand ?? propertyExpression.Body) as MemberExpression)
-			?.Member;
-		string? propertyName = (memberInfo as PropertyInfo)?.Name;
-		return TriggeredPropertyChangedFor(subject, propertyName);
-	}
+		=> TriggeredPropertyChangedFor(subject, GetPropertyName(propertyExpression));
 
 	/// <summary>
 	///     Verifies that the subject has triggered the <see cref="INotifyPropertyChanged.PropertyChanged" /> event
@@ -66,13 +60,7 @@ public static partial class ThatEventRecording
 		this IThat<IEventRecording<TSubject>> subject,
 		Expression<Func<TSubject, TProperty>> propertyExpression)
 		where TSubject : INotifyPropertyChanged
-	{
-		MemberInfo? memberInfo =
-			(((propertyExpression.Body as UnaryExpression)?.Operand ?? propertyExpression.Body) as MemberExpression)
-			?.Member;
-		string? propertyName = (memberInfo as PropertyInfo)?.Name;
-		return DidNotTriggerPropertyChangedFor(subject, propertyName);
-	}
+		=> DidNotTriggerPropertyChangedFor(subject, GetPropertyName(propertyExpression));
 
 	/// <summary>
 	///     Verifies that the subject has not triggered the <see cref="INotifyPropertyChanged.PropertyChanged" /> event
@@ -101,5 +89,29 @@ public static partial class ThatEventRecording
 			filter,
 			quantifier,
 			options);
+	}
+
+	/// <summary>
+	///     Extracts the property name from the <paramref name="propertyExpression" />.
+	/// </summary>
+	/// <remarks>
+	///     Rejecting anything but a property access keeps an unusable expression from silently becoming the
+	///     <see langword="null" /> property name, which would match events raised without a property name.
+	/// </remarks>
+	private static string GetPropertyName<TSubject, TProperty>(
+		Expression<Func<TSubject, TProperty>> propertyExpression)
+	{
+		MemberInfo? memberInfo =
+			(((propertyExpression.Body as UnaryExpression)?.Operand ?? propertyExpression.Body) as MemberExpression)
+			?.Member;
+		if (memberInfo is not PropertyInfo propertyInfo)
+		{
+			// ReSharper disable once LocalizableElement
+			throw new ArgumentException(
+				$"The 'propertyExpression' must refer to a property, but was '{propertyExpression.Body}'.",
+				nameof(propertyExpression));
+		}
+
+		return propertyInfo.Name;
 	}
 }
