@@ -573,6 +573,55 @@ await Expect.That(values).DoesNotHaveItemThat(it => it.StartsWith("2nd")).AtInde
 
 ## Dictionaries
 
+### Equality
+
+You can verify that a dictionary is equal to another one. The entries are compared by key, so the order in which the
+two dictionaries enumerate them does not matter:
+
+```csharp
+Dictionary<int, string> values = new() { { 42, "foo" }, { 43, "bar" } };
+
+await Expect.That(values).IsEqualTo(new Dictionary<int, string> { { 43, "bar" }, { 42, "foo" } });
+await Expect.That(values).IsNotEqualTo(new Dictionary<int, string> { { 42, "baz" } });
+```
+
+The keys are looked up through the dictionary, so its key comparer decides which keys are the same:
+
+```csharp
+Dictionary<string, int> values = new(StringComparer.OrdinalIgnoreCase) { { "foo", 42 } };
+
+await Expect.That(values).IsEqualTo(new Dictionary<string, int> { { "FOO", 42 } });
+```
+
+*Note: To compare the entries in their enumeration order instead, compare them as a collection of
+`KeyValuePair<TKey, TValue>`:*
+
+```csharp
+SortedDictionary<int, string> values = new() { { 42, "foo" }, { 43, "bar" } };
+
+await Expect.That(values.AsEnumerable())
+    .IsEqualTo([new KeyValuePair<int, string>(42, "foo"), new KeyValuePair<int, string>(43, "bar")]);
+```
+
+### Contain entry
+
+You can verify that a dictionary contains the `expected` entry, which is looked up by its key, too:
+
+```csharp
+Dictionary<int, string> values = new() { { 42, "foo" }, { 43, "bar" } };
+
+await Expect.That(values).Contains(42, "foo");
+await Expect.That(values).DoesNotContain(42, "bar");
+```
+
+The entry can also be given as a `KeyValuePair<TKey, TValue>`:
+
+```csharp
+Dictionary<int, string> values = new() { { 42, "foo" }, { 43, "bar" } };
+
+await Expect.That(values).Contains(new KeyValuePair<int, string>(42, "foo"));
+```
+
 ### Contain key(s)
 
 You can verify that a dictionary contains the `expected` key(s):
