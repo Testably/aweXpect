@@ -97,6 +97,47 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
+			[InlineData(double.PositiveInfinity, double.NegativeInfinity, 1.0)]
+			[InlineData(double.PositiveInfinity, double.NegativeInfinity, double.PositiveInfinity)]
+			[InlineData(double.NaN, double.PositiveInfinity, 1.0)]
+			[InlineData(double.NaN, double.PositiveInfinity, double.PositiveInfinity)]
+			[InlineData(double.PositiveInfinity, double.NaN, 1.0)]
+			[InlineData(double.PositiveInfinity, double.NaN, double.PositiveInfinity)]
+			[InlineData(12.5, double.PositiveInfinity, 1.0)]
+			[InlineData(12.5, double.PositiveInfinity, double.PositiveInfinity)]
+			[InlineData(double.PositiveInfinity, 12.5, 1.0)]
+			[InlineData(double.PositiveInfinity, 12.5, double.PositiveInfinity)]
+			[InlineData(12.5, double.NaN, 1.0)]
+			[InlineData(12.5, double.NaN, double.PositiveInfinity)]
+			[InlineData(double.NaN, 12.5, 1.0)]
+			[InlineData(double.NaN, 12.5, double.PositiveInfinity)]
+			public async Task ForDouble_WhenNonFiniteValuesDiffer_ShouldFail(
+				double subject, double expected, double tolerance)
+			{
+				double? nullableSubject = subject;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).Within(tolerance);
+
+				async Task ActNullable()
+					=> await That(nullableSubject).IsEqualTo(expected).Within(tolerance);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)} ± {Formatter.Format(tolerance)},
+					              but it was {Formatter.Format(subject)}
+					              """)
+					.Because("no tolerance can bridge the distance to a non-finite value");
+				await That(ActNullable).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that nullableSubject
+					              is equal to {Formatter.Format(expected)} ± {Formatter.Format(tolerance)},
+					              but it was {Formatter.Format(subject)}
+					              """);
+			}
+
+			[Theory]
 			[InlineData(12.5, 12.9, "-0.4")]
 			[InlineData(12.5, 12.1, "0.4")]
 			public async Task ForDouble_WhenOutsideTolerance_ShouldFail(
@@ -123,6 +164,29 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsEqualTo(expected).Within(0.1);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Theory]
+			[InlineData(double.PositiveInfinity, 1.0)]
+			[InlineData(double.PositiveInfinity, double.PositiveInfinity)]
+			[InlineData(double.NegativeInfinity, 1.0)]
+			[InlineData(double.NegativeInfinity, double.PositiveInfinity)]
+			[InlineData(double.NaN, 1.0)]
+			[InlineData(double.NaN, double.PositiveInfinity)]
+			public async Task ForDouble_WhenSubjectAndExpectedAreTheSameNonFiniteValue_ShouldSucceed(
+				double value, double tolerance)
+			{
+				double? nullableSubject = value;
+
+				async Task Act()
+					=> await That(value).IsEqualTo(value).Within(tolerance);
+
+				async Task ActNullable()
+					=> await That(nullableSubject).IsEqualTo(value).Within(tolerance);
+
+				await That(Act).DoesNotThrow()
+					.Because("the tolerance must not narrow what plain equality already accepts");
+				await That(ActNullable).DoesNotThrow();
 			}
 
 			[Fact]
@@ -164,6 +228,47 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
+			[InlineData(float.PositiveInfinity, float.NegativeInfinity, 1.0F)]
+			[InlineData(float.PositiveInfinity, float.NegativeInfinity, float.PositiveInfinity)]
+			[InlineData(float.NaN, float.PositiveInfinity, 1.0F)]
+			[InlineData(float.NaN, float.PositiveInfinity, float.PositiveInfinity)]
+			[InlineData(float.PositiveInfinity, float.NaN, 1.0F)]
+			[InlineData(float.PositiveInfinity, float.NaN, float.PositiveInfinity)]
+			[InlineData(12.5F, float.PositiveInfinity, 1.0F)]
+			[InlineData(12.5F, float.PositiveInfinity, float.PositiveInfinity)]
+			[InlineData(float.PositiveInfinity, 12.5F, 1.0F)]
+			[InlineData(float.PositiveInfinity, 12.5F, float.PositiveInfinity)]
+			[InlineData(12.5F, float.NaN, 1.0F)]
+			[InlineData(12.5F, float.NaN, float.PositiveInfinity)]
+			[InlineData(float.NaN, 12.5F, 1.0F)]
+			[InlineData(float.NaN, 12.5F, float.PositiveInfinity)]
+			public async Task ForFloat_WhenNonFiniteValuesDiffer_ShouldFail(
+				float subject, float expected, float tolerance)
+			{
+				float? nullableSubject = subject;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).Within(tolerance);
+
+				async Task ActNullable()
+					=> await That(nullableSubject).IsEqualTo(expected).Within(tolerance);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)} ± {Formatter.Format(tolerance)},
+					              but it was {Formatter.Format(subject)}
+					              """)
+					.Because("no tolerance can bridge the distance to a non-finite value");
+				await That(ActNullable).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that nullableSubject
+					              is equal to {Formatter.Format(expected)} ± {Formatter.Format(tolerance)},
+					              but it was {Formatter.Format(subject)}
+					              """);
+			}
+
+			[Theory]
 			[InlineData(12.5F, 13.0F, "-0.5")]
 			[InlineData(12.5F, 12.0F, "0.5")]
 			public async Task ForFloat_WhenOutsideTolerance_ShouldFail(
@@ -192,6 +297,29 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
+			[Theory]
+			[InlineData(float.PositiveInfinity, 1.0F)]
+			[InlineData(float.PositiveInfinity, float.PositiveInfinity)]
+			[InlineData(float.NegativeInfinity, 1.0F)]
+			[InlineData(float.NegativeInfinity, float.PositiveInfinity)]
+			[InlineData(float.NaN, 1.0F)]
+			[InlineData(float.NaN, float.PositiveInfinity)]
+			public async Task ForFloat_WhenSubjectAndExpectedAreTheSameNonFiniteValue_ShouldSucceed(
+				float value, float tolerance)
+			{
+				float? nullableSubject = value;
+
+				async Task Act()
+					=> await That(value).IsEqualTo(value).Within(tolerance);
+
+				async Task ActNullable()
+					=> await That(nullableSubject).IsEqualTo(value).Within(tolerance);
+
+				await That(Act).DoesNotThrow()
+					.Because("the tolerance must not narrow what plain equality already accepts");
+				await That(ActNullable).DoesNotThrow();
+			}
+
 			[Fact]
 			public async Task ForFloat_WhenToleranceIsNaN_ShouldThrowArgumentOutOfRangeException()
 			{
@@ -217,6 +345,79 @@ public sealed partial class ThatNumber
 					.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
 					.WithParamName("tolerance");
 			}
+
+#if NET8_0_OR_GREATER
+			[Theory]
+			[InlineData(double.PositiveInfinity, double.NegativeInfinity, 1.0)]
+			[InlineData(double.PositiveInfinity, double.NegativeInfinity, double.PositiveInfinity)]
+			[InlineData(double.NaN, double.PositiveInfinity, 1.0)]
+			[InlineData(double.NaN, double.PositiveInfinity, double.PositiveInfinity)]
+			[InlineData(double.PositiveInfinity, double.NaN, 1.0)]
+			[InlineData(double.PositiveInfinity, double.NaN, double.PositiveInfinity)]
+			[InlineData(12.5, double.PositiveInfinity, 1.0)]
+			[InlineData(12.5, double.PositiveInfinity, double.PositiveInfinity)]
+			[InlineData(double.PositiveInfinity, 12.5, 1.0)]
+			[InlineData(double.PositiveInfinity, 12.5, double.PositiveInfinity)]
+			[InlineData(12.5, double.NaN, 1.0)]
+			[InlineData(12.5, double.NaN, double.PositiveInfinity)]
+			[InlineData(double.NaN, 12.5, 1.0)]
+			[InlineData(double.NaN, 12.5, double.PositiveInfinity)]
+			public async Task ForHalf_WhenNonFiniteValuesDiffer_ShouldFail(
+				double subjectValue, double expectedValue, double toleranceValue)
+			{
+				Half subject = (Half)subjectValue;
+				Half expected = (Half)expectedValue;
+				Half tolerance = (Half)toleranceValue;
+				Half? nullableSubject = subject;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).Within(tolerance);
+
+				async Task ActNullable()
+					=> await That(nullableSubject).IsEqualTo(expected).Within(tolerance);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to {Formatter.Format(expected)} ± {Formatter.Format(tolerance)},
+					              but it was {Formatter.Format(subject)}
+					              """)
+					.Because("no tolerance can bridge the distance to a non-finite value");
+				await That(ActNullable).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that nullableSubject
+					              is equal to {Formatter.Format(expected)} ± {Formatter.Format(tolerance)},
+					              but it was {Formatter.Format(subject)}
+					              """);
+			}
+#endif
+
+#if NET8_0_OR_GREATER
+			[Theory]
+			[InlineData(double.PositiveInfinity, 1.0)]
+			[InlineData(double.PositiveInfinity, double.PositiveInfinity)]
+			[InlineData(double.NegativeInfinity, 1.0)]
+			[InlineData(double.NegativeInfinity, double.PositiveInfinity)]
+			[InlineData(double.NaN, 1.0)]
+			[InlineData(double.NaN, double.PositiveInfinity)]
+			public async Task ForHalf_WhenSubjectAndExpectedAreTheSameNonFiniteValue_ShouldSucceed(
+				double value, double toleranceValue)
+			{
+				Half subject = (Half)value;
+				Half tolerance = (Half)toleranceValue;
+				Half? nullableSubject = subject;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(subject).Within(tolerance);
+
+				async Task ActNullable()
+					=> await That(nullableSubject).IsEqualTo(subject).Within(tolerance);
+
+				await That(Act).DoesNotThrow()
+					.Because("the tolerance must not narrow what plain equality already accepts");
+				await That(ActNullable).DoesNotThrow();
+			}
+#endif
 
 #if NET8_0_OR_GREATER
 			[Fact]

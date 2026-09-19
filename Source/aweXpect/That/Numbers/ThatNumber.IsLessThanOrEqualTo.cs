@@ -250,15 +250,7 @@ public static partial class ThatNumber
 		this IThat<float> subject,
 		float? expected)
 	{
-		NumberTolerance<float> options = new((a, e) =>
-		{
-			if (float.IsNaN(a) || float.IsNaN(e))
-			{
-				return null;
-			}
-
-			return a > e ? a - e : e - a;
-		});
+		NumberTolerance<float> options = new(CalculateDifference);
 		return new NumberToleranceResult<float, IThat<float>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsLessThanOrEqualToConstraint<float>(it, grammars, expected, options)),
@@ -273,15 +265,7 @@ public static partial class ThatNumber
 		this IThat<double> subject,
 		double? expected)
 	{
-		NumberTolerance<double> options = new((a, e) =>
-		{
-			if (double.IsNaN(a) || double.IsNaN(e))
-			{
-				return null;
-			}
-
-			return a > e ? a - e : e - a;
-		});
+		NumberTolerance<double> options = new(CalculateDifference);
 		return new NumberToleranceResult<double, IThat<double>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsLessThanOrEqualToConstraint<double>(it, grammars, expected, options)),
@@ -440,15 +424,7 @@ public static partial class ThatNumber
 		this IThat<float?> subject,
 		float? expected)
 	{
-		NumberTolerance<float> options = new((a, e) =>
-		{
-			if (float.IsNaN(a) || float.IsNaN(e))
-			{
-				return null;
-			}
-
-			return a > e ? a - e : e - a;
-		});
+		NumberTolerance<float> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<float, IThat<float?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsLessThanOrEqualToConstraint<float>(it, grammars, expected, options)),
@@ -464,15 +440,7 @@ public static partial class ThatNumber
 		this IThat<double?> subject,
 		double? expected)
 	{
-		NumberTolerance<double> options = new((a, e) =>
-		{
-			if (double.IsNaN(a) || double.IsNaN(e))
-			{
-				return null;
-			}
-
-			return a > e ? a - e : e - a;
-		});
+		NumberTolerance<double> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<double, IThat<double?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new NullableIsLessThanOrEqualToConstraint<double>(it, grammars, expected, options)),
