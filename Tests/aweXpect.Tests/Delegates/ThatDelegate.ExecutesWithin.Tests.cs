@@ -85,7 +85,7 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that @delegate
 					             executes within 0:05,
-					             but it was canceled within 0:*
+					             but it was canceled after 0:*
 					             """).AsWildcard();
 			}
 
@@ -165,7 +165,7 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that @delegate
 					             executes within 0:05,
-					             but it was canceled within 0:*
+					             but it was canceled after 0:*
 					             """).AsWildcard();
 			}
 
@@ -313,7 +313,7 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that Delegate
 					             executes within 0:05,
-					             but it was canceled within 0:*
+					             but it was canceled after 0:*
 					             """).AsWildcard();
 			}
 
@@ -341,7 +341,7 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that Delegate
 					             executes within 0:00.010,
-					             but it was canceled within 0:*
+					             but it was canceled after 0:*
 					             """).AsWildcard();
 			}
 
@@ -464,7 +464,7 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that Delegate
 					             executes within 0:05,
-					             but it was canceled within 0:*
+					             but it was canceled after 0:*
 					             """).AsWildcard();
 			}
 
@@ -493,7 +493,7 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that Delegate
 					             executes within 0:00.010,
-					             but it was canceled within 0:*
+					             but it was canceled after 0:*
 					             """).AsWildcard();
 			}
 
@@ -614,7 +614,7 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that @delegate
 					             executes within 0:00.050,
-					             but it was canceled within 0:*
+					             but it was canceled after 0:*
 					             """).AsWildcard()
 					.Because("the elapsed duration must cancel the token instead of awaiting the delegate");
 			}
@@ -635,7 +635,7 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that @delegate
 					             executes within 0:00.050,
-					             but it was canceled within 0:*
+					             but it was canceled after 0:*
 					             """).AsWildcard()
 					.Because("the elapsed duration must cancel the token instead of awaiting the delegate");
 			}

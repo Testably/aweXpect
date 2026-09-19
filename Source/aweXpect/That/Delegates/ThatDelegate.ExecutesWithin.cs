@@ -129,7 +129,7 @@ public static partial class ThatDelegate
 			}
 			else if (_actual.Exception is OperationCanceledException)
 			{
-				stringBuilder.Append(it).Append(" was canceled within ");
+				stringBuilder.Append(it).Append(" was canceled after ");
 				Formatter.Format(stringBuilder, _actual.Duration);
 			}
 			else if (_actual.Exception is { } exception)
@@ -218,7 +218,7 @@ public static partial class ThatDelegate
 			}
 			else if (_actual.Exception is OperationCanceledException)
 			{
-				stringBuilder.Append(it).Append(" was canceled within ");
+				stringBuilder.Append(it).Append(" was canceled after ");
 				Formatter.Format(stringBuilder, _actual.Duration);
 			}
 			else if (_actual.Exception is { } exception)
