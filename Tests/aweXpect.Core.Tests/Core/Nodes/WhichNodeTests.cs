@@ -418,8 +418,7 @@ public sealed class WhichNodeTests
 	{
 		WhichNode<string, int> whichNode = new(null, s => s.Length);
 		whichNode.AddNode(new ExpectationNode());
-		whichNode.AddConstraint(new DummyConstraint("c2",
-			() => new DummyConstraintResult<int>(Outcome.Failure, 0, "e2")));
+		whichNode.AddConstraint(new NotEvaluatedConstraint<int>("e2", "not e2"));
 		StringBuilder sb = new();
 
 		ConstraintResult result = await whichNode.IsMetBy<string?>(null, null!, CancellationToken.None);
@@ -427,7 +426,7 @@ public sealed class WhichNodeTests
 
 		negated.AppendExpectation(sb);
 		await That(negated.Outcome).IsEqualTo(Outcome.Failure);
-		await That(sb.ToString()).IsEqualTo("e2");
+		await That(sb.ToString()).IsEqualTo("not e2");
 		await That(negated.GetResultText()).IsEqualTo("it was <null>");
 	}
 
@@ -455,7 +454,7 @@ public sealed class WhichNodeTests
 		WhichNode<string, int> whichNode = new(
 			new DummyNode("", () => new NegatableConstraintResult(Outcome.Failure, "1")), s => s.Length, " which ");
 		whichNode.AddNode(new ExpectationNode());
-		whichNode.AddConstraint(new DummyConstraint("", () => new NegatableConstraintResult(Outcome.Success)));
+		whichNode.AddConstraint(new NotEvaluatedConstraint<int>("e2", "not e2"));
 		StringBuilder sb = new();
 
 		ConstraintResult result = await whichNode.IsMetBy<string?>(null, null!, CancellationToken.None);
@@ -493,7 +492,7 @@ public sealed class WhichNodeTests
 			new DummyNode("", () => new DummyConstraintResult(Outcome.Failure, "e1", "it was <null>")), s => s.Length,
 			" which ", true);
 		whichNode.AddNode(new ExpectationNode());
-		whichNode.AddConstraint(new DummyConstraint("", () => new NegatableConstraintResult(Outcome.Success)));
+		whichNode.AddConstraint(new NotEvaluatedConstraint<int>("e2", "not e2"));
 		StringBuilder sb = new();
 
 		ConstraintResult result = await whichNode.IsMetBy<string?>(null, null!, CancellationToken.None);

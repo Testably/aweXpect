@@ -100,13 +100,45 @@ public class AsyncMappingNodeTests
 	}
 
 	[Fact]
+	public async Task IsMetBy_WhenMemberFaults_ShouldFailWithoutEvaluatingMemberConstraints()
+	{
+		NotSupportedException exception = new("foo");
+		AsyncMappingNode<string, int> node =
+			new(MemberAccessor<string, Task<int>>.FromFunc(_ => Task.FromException<int>(exception), " length "));
+		node.AddConstraint(new NotEvaluatedConstraint<int>("yeah!", "not yeah!"));
+		StringBuilder sb = new();
+
+		ConstraintResult result = await node.IsMetBy("foo", null!, CancellationToken.None);
+
+		result.AppendExpectation(sb);
+		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.FailureCause).IsSameAs(exception);
+		await That(sb.ToString()).IsEqualTo("yeah!");
+	}
+
+	[Fact]
+	public async Task IsMetBy_WhenMemberFaults_WhenNegated_ShouldNegateExpectationAndStillFail()
+	{
+		AsyncMappingNode<string, int> node = new(MemberAccessor<string, Task<int>>.FromFunc(
+			_ => Task.FromException<int>(new NotSupportedException("foo")), " length "));
+		node.AddConstraint(new NotEvaluatedConstraint<int>("yeah!", "not yeah!"));
+		StringBuilder sb = new();
+
+		ConstraintResult result = await node.IsMetBy("foo", null!, CancellationToken.None);
+		ConstraintResult negated = result.Negate();
+
+		negated.AppendExpectation(sb);
+		await That(negated.Outcome).IsEqualTo(Outcome.Failure);
+		await That(sb.ToString()).IsEqualTo("not yeah!");
+	}
+
+	[Fact]
 	public async Task IsMetBy_WithNullDelegate_ShouldReturnNullFailure()
 	{
 		DelegateValue<string?> value = new("foo", null, 10.Milliseconds(), true);
 		AsyncMappingNode<string?, int?> node =
 			new(MemberAccessor<string?, Task<int?>>.FromFunc(s => Task.FromResult(s?.Length), " length "));
-		node.AddConstraint(
-			new DummyValueConstraint<int?>(v => new DummyConstraintResult<int?>(Outcome.Success, v, "yeah!")));
+		node.AddConstraint(new NotEvaluatedConstraint<int?>("yeah!", "not yeah!"));
 		StringBuilder sb = new();
 
 		ConstraintResult result = await node.IsMetBy(value, null!, CancellationToken.None);
@@ -122,8 +154,7 @@ public class AsyncMappingNodeTests
 	{
 		AsyncMappingNode<string?, int?> node =
 			new(MemberAccessor<string?, Task<int?>>.FromFunc(s => Task.FromResult(s?.Length), " length "));
-		node.AddConstraint(
-			new DummyValueConstraint<int?>(v => new DummyConstraintResult<int?>(Outcome.Success, v, "yeah!")));
+		node.AddConstraint(new NotEvaluatedConstraint<int?>("yeah!", "not yeah!"));
 		StringBuilder sb = new();
 
 		ConstraintResult result = await node.IsMetBy<string?>(null, null!, CancellationToken.None);
@@ -135,12 +166,11 @@ public class AsyncMappingNodeTests
 	}
 
 	[Fact]
-	public async Task IsMetBy_WithNullValue_WhenNegated_ShouldStillFail()
+	public async Task IsMetBy_WithNullValue_WhenNegated_ShouldNegateExpectationAndStillFail()
 	{
 		AsyncMappingNode<string?, int?> node =
 			new(MemberAccessor<string?, Task<int?>>.FromFunc(s => Task.FromResult(s?.Length), " length "));
-		node.AddConstraint(
-			new DummyValueConstraint<int?>(v => new DummyConstraintResult<int?>(Outcome.Failure, v, "yeah!")));
+		node.AddConstraint(new NotEvaluatedConstraint<int?>("yeah!", "not yeah!"));
 		StringBuilder sb = new();
 
 		ConstraintResult result = await node.IsMetBy<string?>(null, null!, CancellationToken.None);
@@ -148,7 +178,7 @@ public class AsyncMappingNodeTests
 
 		negated.AppendExpectation(sb);
 		await That(negated.Outcome).IsEqualTo(Outcome.Failure);
-		await That(sb.ToString()).IsEqualTo("yeah!");
+		await That(sb.ToString()).IsEqualTo("not yeah!");
 		await That(negated.GetResultText()).IsEqualTo("it was <null>");
 	}
 

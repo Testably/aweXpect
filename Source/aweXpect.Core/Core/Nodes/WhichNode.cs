@@ -105,10 +105,18 @@ internal class WhichNode<TSource, TMember> : Node
 				.LogTrace();
 		}
 
+		if (context is ExpectationTextEvaluationContext)
+		{
+			ConstraintResult expectationResult = await _inner.IsMetBy<TMember>(default, context, cancellationToken);
+			return CombineResults(parentResult, expectationResult, _separator ?? "",
+				FurtherProcessingStrategy.IgnoreResult, default);
+		}
+
 		if (value is null || value is DelegateValue { IsNull: true, })
 		{
 			ConstraintResult nullResult = NullSubjectResult.Create(
-				await _inner.IsMetBy<TMember>(default, context, cancellationToken), default(TMember));
+				await _inner.IsMetBy<TMember>(default, ExpectationTextEvaluationContext.For(context),
+					cancellationToken), default(TMember));
 			return CombineResults(parentResult, nullResult, _separator ?? "",
 				FurtherProcessingStrategy.IgnoreResult, default);
 		}

@@ -234,6 +234,25 @@ public sealed partial class ThatObject
 			}
 #endif
 
+			[Fact]
+			public async Task WhenAsyncMemberFaults_AndMemberExpectationThrowsOnDefault_ShouldFail()
+			{
+				object subject = new AsyncClass();
+
+				async Task Act()
+					=> await That(subject).Is<AsyncClass>()
+						.Whose(it => it.FaultedAsync(), value => value.Satisfies(x => 10 / x > 1));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is type ThatObject.Is.WhoseTests.AsyncClass whose FaultedAsync() satisfies x => 10 / x > 1,
+					             but FaultedAsync() did throw an InvalidOperationException:
+					               async member failed
+					             """)
+					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
+			}
+
 			private sealed class AsyncClass
 			{
 				public int Value { get; set; }

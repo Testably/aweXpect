@@ -253,6 +253,28 @@ public sealed partial class ThatDelegate
 #endif
 			}
 
+			public sealed class MemberExpectationThrowsOnDefaultTests
+			{
+				[Fact]
+				public async Task WhenAsyncMemberFaults_ShouldFail()
+				{
+					void Delegate() => throw new AsyncException(1);
+
+					async Task Act()
+						=> await That(Delegate).Throws<AsyncException>()
+							.Whose(e => e.FaultedAsync(), v => v.Satisfies(x => 10 / x > 1));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that Delegate
+						             throws a ThatDelegate.Throws.Whose.AsyncException whose FaultedAsync() satisfies x => 10 / x > 1,
+						             but FaultedAsync() did throw an InvalidOperationException:
+						               async member failed
+						             """)
+						.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
+				}
+			}
+
 			private sealed class AsyncException(int value) : Exception
 			{
 				public async Task<int> FaultedAsync()

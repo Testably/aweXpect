@@ -37,9 +37,14 @@ internal class MappingNode<TSource, TTarget> : ExpectationNode
 		IEvaluationContext context,
 		CancellationToken cancellationToken) where TValue : default
 	{
+		if (context is ExpectationTextEvaluationContext)
+		{
+			return await GetExpectationResult(context, cancellationToken);
+		}
+
 		if (value is null || value is DelegateValue { IsNull: true, })
 		{
-			ConstraintResult result = await IsMetByMember(default, context, cancellationToken);
+			ConstraintResult result = await GetExpectationResult(context, cancellationToken);
 			return NullSubjectResult.Create(result, value);
 		}
 
@@ -52,7 +57,7 @@ internal class MappingNode<TSource, TTarget> : ExpectationNode
 			}
 			catch (Exception exception) when (!MemberExceptionResult.IsCancellationOf(exception, cancellationToken))
 			{
-				ConstraintResult result = await IsMetByMember(default, context, cancellationToken);
+				ConstraintResult result = await GetExpectationResult(context, cancellationToken);
 				return MemberExceptionResult.Create(result, exception, _memberAccessor.ToString().Trim(), value);
 			}
 
@@ -79,6 +84,13 @@ internal class MappingNode<TSource, TTarget> : ExpectationNode
 		IEvaluationContext context,
 		CancellationToken cancellationToken)
 		=> IsMetByExpectations(value, context, cancellationToken);
+
+	/// <summary>
+	///     Returns the expectations on the member, without evaluating them, for when the member value is not available.
+	/// </summary>
+	private Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,
+		CancellationToken cancellationToken)
+		=> IsMetByMember(default, ExpectationTextEvaluationContext.For(context), cancellationToken);
 
 	/// <summary>
 	///     Verifies, if the <paramref name="value" /> satisfies the expectations of the node, without accessing the member.
