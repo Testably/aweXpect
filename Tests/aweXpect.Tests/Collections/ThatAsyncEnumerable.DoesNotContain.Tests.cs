@@ -901,6 +901,26 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenItemIsMissing_ShouldFailWithThePositiveExpectation()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable([2, 3,]);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.DoesNotContain(1));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains 1 at least once,
+					             but it did not contain it
+					             *
+					             """).AsWildcard();
+			}
+		}
 	}
 }
 #endif

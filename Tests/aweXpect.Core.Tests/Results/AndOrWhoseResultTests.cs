@@ -191,7 +191,7 @@ public class AndOrWhoseResultTests
 	}
 
 	[Fact]
-	public async Task Whose_WhenAsyncMemberFaults_ShouldPropagateException()
+	public async Task Whose_WhenAsyncMemberFaults_ShouldFail()
 	{
 		ThrowingClass sut = new("async member failed");
 
@@ -199,12 +199,37 @@ public class AndOrWhoseResultTests
 			=> await That(sut).Is<ThrowingClass>()
 				.Whose(f => f.FaultedAsync(), f => f.IsTrue());
 
-		await That(Act).ThrowsExactly<InvalidOperationException>()
-			.WithMessage("async member failed");
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that sut
+			             is type AndOrWhoseResultTests.ThrowingClass whose FaultedAsync() is True,
+			             but FaultedAsync() did throw an InvalidOperationException:
+			               async member failed
+			             """)
+			.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 	}
 
 	[Fact]
-	public async Task AndWhose_WhenAsyncMemberFaults_ShouldPropagateException()
+	public async Task Whose_WhenMemberThrows_ShouldFail()
+	{
+		ThrowingClass sut = new("member failed");
+
+		async Task Act()
+			=> await That(sut).Is<ThrowingClass>()
+				.Whose(f => f.Throwing(), f => f.IsTrue());
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that sut
+			             is type AndOrWhoseResultTests.ThrowingClass whose Throwing() is True,
+			             but Throwing() did throw an InvalidOperationException:
+			               member failed
+			             """)
+			.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("member failed"));
+	}
+
+	[Fact]
+	public async Task AndWhose_WhenAsyncMemberFaults_ShouldFail()
 	{
 		ThrowingClass sut = new("async member failed");
 
@@ -213,8 +238,14 @@ public class AndOrWhoseResultTests
 				.Whose(f => f.Value, f => f.IsFalse())
 				.AndWhose(f => f.FaultedAsync(), f => f.IsTrue());
 
-		await That(Act).ThrowsExactly<InvalidOperationException>()
-			.WithMessage("async member failed");
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that sut
+			             is type AndOrWhoseResultTests.ThrowingClass whose Value is False and whose FaultedAsync() is True,
+			             but FaultedAsync() did throw an InvalidOperationException:
+			               async member failed
+			             """)
+			.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 	}
 
 	private sealed class MyClass
@@ -234,5 +265,7 @@ public class AndOrWhoseResultTests
 			await Task.Yield();
 			throw new InvalidOperationException(message);
 		}
+
+		public bool Throwing() => throw new InvalidOperationException(message);
 	}
 }

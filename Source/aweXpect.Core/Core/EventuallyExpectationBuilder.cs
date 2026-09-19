@@ -56,7 +56,8 @@ internal class EventuallyExpectationBuilder<TValue>(
 	{
 		if (subject is null)
 		{
-			ConstraintResult missingSubject = await rootNode.IsMetBy(default(TValue), context, cancellationToken);
+			ConstraintResult missingSubject = await rootNode.IsMetBy(default(TValue),
+				EvaluationContext.ExpectationTextEvaluationContext.For(context), cancellationToken);
 			return missingSubject.Fail("it was <null>", default(TValue));
 		}
 
@@ -137,13 +138,14 @@ internal class EventuallyExpectationBuilder<TValue>(
 			TimeSpan remaining = retryTimeout - Elapsed();
 			if (isLastAttempt || remaining <= TimeSpan.Zero)
 			{
-				result ??= await rootNode.IsMetBy(data, currentContext, System.Threading.CancellationToken.None);
+				result ??= await rootNode.IsMetBy(data, EvaluationContext.ExpectationTextEvaluationContext.For(currentContext),
+					System.Threading.CancellationToken.None);
 				return AppendTimeout(WithFailureCause(result, failure), retryTimeout);
 			}
 
 			if (cancellationToken.IsCancellationRequested)
 			{
-				result ??= await rootNode.IsMetBy(data, currentContext,
+				result ??= await rootNode.IsMetBy(data, EvaluationContext.ExpectationTextEvaluationContext.For(currentContext),
 					System.Threading.CancellationToken.None);
 				return new UndecidedResult(WithFailureCause(result, failure));
 			}

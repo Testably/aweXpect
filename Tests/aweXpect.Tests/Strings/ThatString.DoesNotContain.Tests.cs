@@ -592,5 +592,24 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenUnexpectedStringIsMissing_ShouldFailWithThePositiveExpectation()
+			{
+				string subject = "some text";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.DoesNotContain("foo"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains "foo" at least once,
+					             *
+					             """).AsWildcard();
+			}
+		}
 	}
 }

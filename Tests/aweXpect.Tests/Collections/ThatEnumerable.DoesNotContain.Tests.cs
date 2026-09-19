@@ -939,5 +939,59 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 		}
+
+		public sealed class NegatedTests
+		{
+			[Fact]
+			public async Task WhenItemIsMissing_ShouldFailWithThePositiveExpectation()
+			{
+				int[] subject = [2, 3,];
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.DoesNotContain(1));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains 1 at least once,
+					             but it did not contain it
+					             *
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenItemIsMissing_WithAtLeast_ShouldFailWithThePositiveExpectation()
+			{
+				int[] subject = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.DoesNotContain(1).AtLeast(2));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains 1 at least twice,
+					             but it contained it once
+					             *
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenNoItemMatches_ShouldFailWithThePositiveExpectation()
+			{
+				int[] subject = [2, 3,];
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.DoesNotContain(x => x == 1));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains item matching x => x == 1 at least once,
+					             but it did not contain it
+					             *
+					             """).AsWildcard();
+			}
+		}
 	}
 }

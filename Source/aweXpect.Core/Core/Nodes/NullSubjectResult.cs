@@ -13,7 +13,7 @@ namespace aweXpect.Core.Nodes;
 ///     expectations on the member were never evaluated, so negating them does not make them true. The combined
 ///     results of the nodes check for it, so that their negation does not flip the failure either.
 /// </remarks>
-internal sealed class NullSubjectResult : ConstraintResult
+internal sealed class NullSubjectResult : ConstraintResult, IUnevaluatedMemberResult
 {
 	private readonly ConstraintResult _inner;
 	private readonly object? _value;

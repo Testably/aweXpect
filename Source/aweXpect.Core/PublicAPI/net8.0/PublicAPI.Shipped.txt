@@ -68,6 +68,8 @@ aweXpect.Core.Constraints.IConstraint
 aweXpect.Core.Constraints.IConstraint.AppendExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
 aweXpect.Core.Constraints.IContextConstraint<TValue>
 aweXpect.Core.Constraints.IContextConstraint<TValue>.IsMetBy(TValue actual, aweXpect.Core.EvaluationContext.IEvaluationContext! context) -> aweXpect.Core.Constraints.ConstraintResult!
+aweXpect.Core.Constraints.IExpectationTextConstraint
+aweXpect.Core.Constraints.IExpectationTextConstraint.GetExpectationResult(aweXpect.Core.EvaluationContext.IEvaluationContext! context, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<aweXpect.Core.Constraints.ConstraintResult!>!
 aweXpect.Core.Constraints.IValueConstraint<TValue>
 aweXpect.Core.Constraints.IValueConstraint<TValue>.IsMetBy(TValue actual) -> aweXpect.Core.Constraints.ConstraintResult!
 aweXpect.Core.Constraints.Outcome
@@ -514,6 +516,7 @@ aweXpect.Options.Quantifier.Between(int minimum, int maximum) -> void
 aweXpect.Options.Quantifier.Check(int amount, bool isLast) -> bool?
 aweXpect.Options.Quantifier.DeterminableAmount.get -> int
 aweXpect.Options.Quantifier.Exactly(int expected) -> void
+aweXpect.Options.Quantifier.IsNegated.get -> bool
 aweXpect.Options.Quantifier.IsNever.get -> bool
 aweXpect.Options.Quantifier.LessThan(int maximum) -> void
 aweXpect.Options.Quantifier.MoreThan(int minimum) -> void

@@ -217,9 +217,7 @@ public static partial class ThatAsyncEnumerable
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AsyncContainConstraint<TItem>(
 					expectationBuilder, it, grammars,
-					(q, g) => q.IsNever
-						? $"{g.Verb("does not contain", "do not contain")} {Formatter.Format(unexpected)}{options}"
-						: $"{g.Verb("does not contain", "do not contain")} {Formatter.Format(unexpected)}{options} {q.ToNegatedString()}",
+					(q, g) => q.ToDoesNotContainExpectation(g, $"{Formatter.Format(unexpected)}{options}"),
 					a => options.AreConsideredEqual(a, unexpected),
 					quantifier).Invert()),
 			subject,
@@ -243,9 +241,7 @@ public static partial class ThatAsyncEnumerable
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new AsyncContainConstraint<string?>(
 					expectationBuilder, it, grammars,
-					(q, g) => q.IsNever
-						? $"{g.Verb("does not contain", "do not contain")} {Formatter.Format(unexpected)}{options}"
-						: $"{g.Verb("does not contain", "do not contain")} {Formatter.Format(unexpected)}{options} {q.ToNegatedString()}",
+					(q, g) => q.ToDoesNotContainExpectation(g, $"{Formatter.Format(unexpected)}{options}"),
 					a => options.AreConsideredEqual(a, unexpected),
 					quantifier).Invert()),
 			subject,
@@ -271,9 +267,7 @@ public static partial class ThatAsyncEnumerable
 			expectationBuilder.AddConstraint((it, grammars) =>
 				new ContainConstraint<TItem>(
 					expectationBuilder, it, grammars,
-					(q, g) => q.IsNever
-						? $"{g.Verb("does not contain", "do not contain")} item matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}"
-						: $"{g.Verb("does not contain", "do not contain")} item matching {doNotPopulateThisValue.TrimCommonWhiteSpace()} {q.ToNegatedString()}",
+					(q, g) => q.ToDoesNotContainExpectation(g, $"item matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}"),
 					predicate,
 					quantifier).Invert()),
 			subject,
@@ -413,6 +407,7 @@ public static partial class ThatAsyncEnumerable
 				Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 			LimitedCollection<TItem> items = new(maximumNumberOfCollectionItems + 1);
 			_count = 0;
+			_isFinished = false;
 			bool isFailed = false;
 			await foreach (TItem item in materializedEnumerable.WithCancellation(cancellationToken))
 			{
@@ -446,13 +441,13 @@ public static partial class ThatAsyncEnumerable
 			}
 
 			expectationBuilder.AddCollectionContext(items);
+			_isFinished = true;
 			if (quantifier.Check(_count, true) ?? _isNegated)
 			{
 				Outcome = Outcome.Success;
 				return this;
 			}
 
-			_isFinished = true;
 			Outcome = Outcome.Failure;
 			return this;
 		}
@@ -572,6 +567,7 @@ public static partial class ThatAsyncEnumerable
 				Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 			LimitedCollection<TItem> items = new(maximumNumberOfCollectionItems + 1);
 			_count = 0;
+			_isFinished = false;
 			bool isFailed = false;
 			await foreach (TItem item in materializedEnumerable.WithCancellation(cancellationToken))
 			{
@@ -605,13 +601,13 @@ public static partial class ThatAsyncEnumerable
 			}
 
 			expectationBuilder.AddCollectionContext(items);
+			_isFinished = true;
 			if (quantifier.Check(_count, true) ?? _isNegated)
 			{
 				Outcome = Outcome.Success;
 				return this;
 			}
 
-			_isFinished = true;
 			Outcome = Outcome.Failure;
 			return this;
 		}

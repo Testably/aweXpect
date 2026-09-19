@@ -225,6 +225,9 @@ public abstract class ExpectationBuilder
 				_it = memberAccessor.ToString().Trim();
 			}
 
+			Node? outerWhichNode = _whichNode;
+			_whichNode = null;
+
 			if (expectationGrammar != null)
 			{
 				ExpectationGrammars previousGrammars = ExpectationGrammars;
@@ -237,6 +240,8 @@ public abstract class ExpectationBuilder
 				expectationBuilderCallback.Invoke(this);
 			}
 
+			CompleteWhichNode();
+			_whichNode = outerWhichNode;
 			ThrowIfEmpty(_node, "expectations");
 			mappingNode.AddNode(_node);
 			_node = root;
@@ -274,6 +279,9 @@ public abstract class ExpectationBuilder
 				_it = memberAccessor.ToString().Trim();
 			}
 
+			Node? outerWhichNode = _whichNode;
+			_whichNode = null;
+
 			if (expectationGrammar != null)
 			{
 				ExpectationGrammars previousGrammars = ExpectationGrammars;
@@ -286,6 +294,8 @@ public abstract class ExpectationBuilder
 				expectationBuilderCallback.Invoke(this);
 			}
 
+			CompleteWhichNode();
+			_whichNode = outerWhichNode;
 			ThrowIfEmpty(_node, "expectations");
 			mappingNode.AddNode(_node);
 			_node = root;
@@ -540,6 +550,20 @@ public abstract class ExpectationBuilder
 		return _node;
 	}
 
+	/// <summary>
+	///     Attaches the current node to a pending <see cref="WhichNode{TSource,TMember}" />, so that it is evaluated on
+	///     the projected member.
+	/// </summary>
+	private void CompleteWhichNode()
+	{
+		if (_whichNode != null)
+		{
+			_whichNode.AddNode(_node);
+			_node = _whichNode;
+			_whichNode = null;
+		}
+	}
+
 	internal async Task<ConstraintResult> IsMet()
 	{
 		EvaluationContext.EvaluationContext context = new();
@@ -693,7 +717,8 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		}
 		catch (Exception exception)
 		{
-			ConstraintResult expectation = await rootNode.IsMetBy(default(TValue), context, cancellationToken);
+			ConstraintResult expectation = await rootNode.IsMetBy(default(TValue),
+				EvaluationContext.ExpectationTextEvaluationContext.For(context), cancellationToken);
 			Customize.aweXpect.TraceWriter.Value?.WriteMessage(
 				$"Checking expectation for {Subject} threw an exception");
 			return new ConstraintResult.FromException(expectation, exception);

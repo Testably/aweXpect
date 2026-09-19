@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -115,7 +116,18 @@ internal class ExpectationNode : Node
 		ConstraintResult? result = null;
 		try
 		{
-			if (_constraint is IValueConstraint<TValue?> valueConstraint)
+			if (context is ExpectationTextEvaluationContext)
+			{
+				result = _constraint switch
+				{
+					null => null,
+					IExpectationTextConstraint expectationTextConstraint
+						=> await expectationTextConstraint.GetExpectationResult(context, cancellationToken),
+					ConstraintResult constraintResult => constraintResult,
+					_ => new ConstraintExpectationResult(_constraint),
+				};
+			}
+			else if (_constraint is IValueConstraint<TValue?> valueConstraint)
 			{
 				result = valueConstraint.IsMetBy(value);
 			}
@@ -188,4 +200,27 @@ internal class ExpectationNode : Node
 			+ _inner?.GetHashCode() ?? 0;
 #pragma warning restore S2328
 	// ReSharper restore NonReadonlyMemberInGetHashCode
+
+	/// <summary>
+	///     The expectation of a <paramref name="constraint" /> which is not a <see cref="ConstraintResult" /> itself.
+	/// </summary>
+	private sealed class ConstraintExpectationResult(IConstraint constraint)
+		: ConstraintResult(ExpectationGrammars.None)
+	{
+		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> constraint.AppendExpectation(stringBuilder, indentation);
+
+		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
+		{
+			// The constraint was not evaluated, so there is no result.
+		}
+
+		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+		{
+			value = default;
+			return false;
+		}
+
+		public override ConstraintResult Negate() => this;
+	}
 }

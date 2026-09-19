@@ -241,6 +241,22 @@ public sealed class AndNodeTests
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
 
+	[Theory]
+	[InlineData(Outcome.Success, Outcome.Failure)]
+	[InlineData(Outcome.Failure, Outcome.Success)]
+	public async Task NegatedOutcome_WhenOperandStaysFailedUnderNegation_ShouldOnlySucceedIfOtherOperandSucceeds(
+		Outcome other, Outcome expectedOutcome)
+	{
+		AndNode node = new(new DummyNode("", () => new ConstraintResult.FromException(
+			new DummyConstraintResult(Outcome.Failure), new Exception("foo"))));
+		node.AddNode(new DummyNode("", () => new DummyConstraintResult(other)));
+
+		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
+		result.Negate();
+
+		await That(result.Outcome).IsEqualTo(expectedOutcome);
+	}
+
 	[Fact]
 	public async Task NegatedResult_ShouldUseOrAsSeparator()
 	{

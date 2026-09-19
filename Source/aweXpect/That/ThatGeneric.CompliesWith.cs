@@ -46,7 +46,8 @@ public static partial class ThatGeneric
 
 	private sealed class CompliesWithConstraint<T>
 		: ConstraintResult,
-			IAsyncContextConstraint<T>
+			IAsyncContextConstraint<T>,
+			IExpectationTextConstraint
 	{
 		private readonly ManualExpectationBuilder<T> _itemExpectationBuilder;
 		private readonly RepeatedCheckOptions _options;
@@ -98,6 +99,11 @@ public static partial class ThatGeneric
 
 			return NegateOnceIfNegated(isMatch).AppendExpectationText(sb => sb.Append(_options));
 		}
+
+		public async Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> NegateOnceIfNegated(await _itemExpectationBuilder.IsMetBy(default!, context, cancellationToken))
+				.AppendExpectationText(sb => sb.Append(_options));
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> _itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
