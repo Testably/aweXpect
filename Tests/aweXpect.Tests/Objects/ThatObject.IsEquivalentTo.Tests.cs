@@ -588,6 +588,36 @@ public sealed partial class ThatObject
 					              - include public fields and properties
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenTypeMembersDiffer_ShouldNotBeEquivalent()
+			{
+				var subject = new
+				{
+					T = typeof(int),
+				};
+				var expected = new
+				{
+					T = typeof(long),
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to { T = System.Int64 },
+					             but it was not:
+					               Property T differed:
+					                    Found: int
+					                 Expected: long
+
+					             Equivalency options:
+					              - include public fields and properties
+					             """)
+					.Because("a reflection handle has to fail with the difference it stands for, instead of throwing from a getter that describes a generic parameter");
+			}
 		}
 
 		public sealed class CollectionTests

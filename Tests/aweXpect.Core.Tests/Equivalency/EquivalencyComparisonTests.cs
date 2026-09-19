@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Globalization;
+using System.Reflection;
 using System.Text;
 using aweXpect.Core.Metadata;
 using aweXpect.Equivalency;
@@ -86,6 +88,31 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenAssemblyMemberDiffers_ShouldReportTheDifference()
+	{
+		var actual = new
+		{
+			Value = typeof(EquivalencyComparisonTests).Assembly,
+		};
+		var expected = new
+		{
+			Value = typeof(EquivalencyComparison).Assembly,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo($"""
+
+		                                                   Property Value differed:
+		                                                        Found: {actual.Value}
+		                                                     Expected: {expected.Value}
+		                                                 """).IgnoringNewlineStyle()
+			.Because("an assembly only describes what it loaded, so walking it reaches getters that throw instead of state that could be compared");
+	}
+
+	[Fact]
 	public async Task WhenCollectionElementDiffers_ShouldReportTheElementIndex()
 	{
 		var actual = new
@@ -131,6 +158,76 @@ public sealed class EquivalencyComparisonTests
 		await That(result).IsFalse();
 		await That(failureBuilder.ToString()).Contains("It differed:")
 			.Because("comparing by value is the documented remedy for types without comparable members");
+	}
+
+	[Fact]
+	public async Task WhenCultureInfoMemberDiffers_ShouldReportTheDifference()
+	{
+		var actual = new
+		{
+			Value = new CultureInfo("de-DE"),
+		};
+		var expected = new
+		{
+			Value = new CultureInfo("en-US"),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                       Found: de-DE
+		                                                    Expected: en-US
+		                                                """).IgnoringNewlineStyle()
+			.Because("the culture name is the identity, while its members expand into every format pattern the operating system knows");
+	}
+
+	[Fact]
+	public async Task WhenDelegateMemberDiffers_ShouldReportTheDifference()
+	{
+		var actual = new
+		{
+			Value = (Func<string?, bool>)string.IsNullOrEmpty,
+		};
+		var expected = new
+		{
+			Value = (Func<string?, bool>)string.IsNullOrWhiteSpace,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                       Found: Func<string, bool> { Method = Boolean IsNullOrEmpty(System.String), Target = <null> }
+		                                                    Expected: Func<string, bool> { Method = Boolean IsNullOrWhiteSpace(System.String), Target = <null> }
+		                                                """).IgnoringNewlineStyle()
+			.Because("a delegate is its target and method, so walking it would drag a captured closure into the comparison");
+	}
+
+	[Fact]
+	public async Task WhenDelegatesCaptureEqualValues_ShouldReportTheDifference()
+	{
+		var actual = new
+		{
+			Value = Capture(1),
+		};
+		var expected = new
+		{
+			Value = Capture(1),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse()
+			.Because("two closures over the same value are separate targets, and walking them would compare whatever the lambda captured - up to the whole enclosing object");
+		await That(failureBuilder.ToString()).Contains("Property Value differed:");
 	}
 
 	[Fact]
@@ -232,6 +329,63 @@ public sealed class EquivalencyComparisonTests
 		await That(result).IsTrue()
 			.Because("the cycle detection stops the walk before the depth limit can be reached");
 		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenHandleMembersAreEqual_ShouldSucceed()
+	{
+		var actual = new
+		{
+			Type = typeof(int),
+			Method = typeof(string).GetMethod(nameof(string.Trim), Type.EmptyTypes),
+			Assembly = typeof(EquivalencyComparisonTests).Assembly,
+			Module = typeof(EquivalencyComparisonTests).Module,
+			Delegate = (Func<string?, bool>)string.IsNullOrEmpty,
+			Uri = new Uri("a/b", UriKind.Relative),
+			Culture = new CultureInfo("de-DE"),
+		};
+		var expected = new
+		{
+			Type = typeof(int),
+			Method = typeof(string).GetMethod(nameof(string.Trim), Type.EmptyTypes),
+			Assembly = typeof(EquivalencyComparisonTests).Assembly,
+			Module = typeof(EquivalencyComparisonTests).Module,
+			Delegate = (Func<string?, bool>)string.IsNullOrEmpty,
+			Uri = new Uri("a/b", UriKind.Relative),
+			Culture = new CultureInfo("de-DE"),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("the separate instances are equal handles, and the by-value comparison asks Equals instead of the reference");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenIntPtrMemberDiffers_ShouldReportTheDifference()
+	{
+		var actual = new
+		{
+			Value = (IntPtr)1,
+		};
+		var expected = new
+		{
+			Value = (IntPtr)2,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                       Found: 1
+		                                                    Expected: 2
+		                                                """).IgnoringNewlineStyle()
+			.Because("a native integer is a primitive, so it needs no entry of its own among the by-value defaults");
 	}
 
 	[Fact]
@@ -379,6 +533,56 @@ public sealed class EquivalencyComparisonTests
 
 		await That(result).IsEqualTo(expectedResult)
 			.Because("only a name that covers whole segments of the member path may exclude Child.Name");
+	}
+
+	[Fact]
+	public async Task WhenMethodInfoMemberDiffers_ShouldReportTheDifference()
+	{
+		var actual = new
+		{
+			Value = typeof(string).GetMethod(nameof(string.Trim), Type.EmptyTypes),
+		};
+		var expected = new
+		{
+			Value = typeof(string).GetMethod(nameof(string.ToUpperInvariant), Type.EmptyTypes),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                       Found: System.String Trim()
+		                                                    Expected: System.String ToUpperInvariant()
+		                                                """).IgnoringNewlineStyle()
+			.Because("walking a member descriptor reports metadata tokens and raw runtime handle addresses instead of the method it stands for");
+	}
+
+	[Fact]
+	public async Task WhenModuleMemberDiffers_ShouldReportTheDifference()
+	{
+		var actual = new
+		{
+			Value = typeof(EquivalencyComparisonTests).Module,
+		};
+		var expected = new
+		{
+			Value = typeof(EquivalencyComparison).Module,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                       Found: aweXpect.Core.Tests.dll
+		                                                    Expected: aweXpect.Core.dll
+		                                                """).IgnoringNewlineStyle()
+			.Because("a module describes an emitted file, so walking it reaches getters that throw instead of state that could be compared");
 	}
 
 	[Fact]
@@ -645,6 +849,31 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenTypeMemberDiffers_ShouldReportTheDifference()
+	{
+		var actual = new
+		{
+			Value = typeof(int),
+		};
+		var expected = new
+		{
+			Value = typeof(long),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                       Found: int
+		                                                    Expected: long
+		                                                """).IgnoringNewlineStyle()
+			.Because("GenericParameterPosition throws on a type that is not a generic parameter, so the walk cannot reach a difference at all");
+	}
+
+	[Fact]
 	public async Task WhenTypesDifferWithoutComparableMembers_ShouldReportTheDifferenceInsteadOfThrowing()
 	{
 		ClassWithOnlyPrivateState actual = new(1);
@@ -657,6 +886,65 @@ public sealed class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).Contains("It differed:")
 			.Because("a mismatching type is a difference that can be reported without inspecting members");
 	}
+
+	[Theory]
+	[InlineData("a/b", "a/c", UriKind.Relative)]
+	[InlineData("https://a/b", "https://a/c", UriKind.Absolute)]
+	public async Task WhenUriMemberDiffers_ShouldReportTheDifference(string actualUri, string expectedUri,
+		UriKind uriKind)
+	{
+		var actual = new
+		{
+			Value = new Uri(actualUri, uriKind),
+		};
+		var expected = new
+		{
+			Value = new Uri(expectedUri, uriKind),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo($"""
+
+		                                                   Property Value differed:
+		                                                        Found: {actualUri}
+		                                                     Expected: {expectedUri}
+		                                                 """).IgnoringNewlineStyle()
+			.Because("every component of a relative URI throws, and the components of an absolute one repeat the same difference many times over");
+	}
+
+	[Fact]
+	public async Task WhenVersionMemberDiffers_ShouldStillCompareItByMembers()
+	{
+		var actual = new
+		{
+			Value = new Version(1, 2),
+		};
+		var expected = new
+		{
+			Value = new Version(1, 3),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value.Minor differed:
+		                                                       Found: 2
+		                                                    Expected: 3
+		                                                """).IgnoringNewlineStyle()
+			.Because("an ordinary class carries its state in its members, so naming the differing component stays the better message");
+	}
+
+	/// <remarks>
+	///     Each call captures the <paramref name="value" /> in a closure of its own, so two delegates over the same
+	///     method get separate targets.
+	/// </remarks>
+	private static Func<int> Capture(int value) => () => value;
 
 	private static void RegisterPhantom()
 		=> TypeMetadataRegistry.RegisterProperty<RegisteredProbe, int>("Phantom", x => x.PhantomValue());

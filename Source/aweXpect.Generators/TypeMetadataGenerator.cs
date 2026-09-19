@@ -1092,6 +1092,26 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				   or SpecialType.System_UInt64 or SpecialType.System_IntPtr or SpecialType.System_UIntPtr
 				   or SpecialType.System_Single or SpecialType.System_Double or SpecialType.System_String
 				   or SpecialType.System_Decimal or SpecialType.System_DateTime ||
-			   type.ToDisplayString() is "System.DateTimeOffset" or "System.TimeSpan" or "System.Guid";
+			   type.ToDisplayString() is "System.DateTimeOffset" or "System.TimeSpan" or "System.Guid" ||
+			   IsHandle(type);
+
+		/// <remarks>
+		///     A handle is matched on its bases too, because the type that reaches the comparison is a derived one:
+		///     a <c>RuntimeType</c> is not <c>typeof(Type)</c>.
+		/// </remarks>
+		private static bool IsHandle(INamedTypeSymbol type)
+		{
+			for (INamedTypeSymbol? current = type; current is not null; current = current.BaseType)
+			{
+				if (current.ToDisplayString() is "System.Reflection.MemberInfo" or "System.Reflection.Assembly"
+				    or "System.Reflection.Module" or "System.Delegate" or "System.Uri"
+				    or "System.Globalization.CultureInfo")
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
 	}
 }
