@@ -57,12 +57,19 @@ public static partial class ThatDateTime
 		: ConstraintResult.WithNotNullValue<DateTime>(it, grammars),
 			IValueConstraint<DateTime>
 	{
+		private bool _hasKindDifference;
+
 		public ConstraintResult IsMetBy(DateTime actual)
 		{
 			Actual = actual;
 			if (minimum is null || maximum is null)
 			{
 				Outcome = IsNegated ? Outcome.Success : Outcome.Failure;
+			}
+			else if (!actual.IsKindCompatibleWith(minimum.Value) || !actual.IsKindCompatibleWith(maximum.Value))
+			{
+				_hasKindDifference = true;
+				Outcome = Outcome.Failure;
 			}
 			else
 			{
@@ -92,8 +99,15 @@ public static partial class ThatDateTime
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(It).Append(" was ");
-			Formatter.Format(stringBuilder, Actual);
+			if (_hasKindDifference)
+			{
+				stringBuilder.Append(It).Append(" differed in the Kind property");
+			}
+			else
+			{
+				stringBuilder.Append(It).Append(" was ");
+				Formatter.Format(stringBuilder, Actual);
+			}
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

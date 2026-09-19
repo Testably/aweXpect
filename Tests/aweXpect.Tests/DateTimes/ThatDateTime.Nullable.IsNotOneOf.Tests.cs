@@ -107,6 +107,32 @@ public sealed partial class ThatDateTime
 						              """);
 				}
 
+				[Fact]
+				public async Task WhenSubjectOnlyDiffersInKindFromAllValues_ShouldSucceed()
+				{
+					DateTime? subject = CurrentTime(DateTimeKind.Utc);
+					DateTime?[] unexpected = [EarlierTime(1, DateTimeKind.Local), CurrentTime(DateTimeKind.Local),];
+
+					async Task Act()
+						=> await That(subject).IsNotOneOf(unexpected);
+
+					await That(Act).DoesNotThrow()
+						.Because("a subject that cannot be compared to any alternative is not one of them");
+				}
+
+				[Fact]
+				public async Task WhenSubjectOnlyDiffersInKindFromTheMatchingValue_ShouldSucceed()
+				{
+					DateTime? subject = CurrentTime(DateTimeKind.Utc);
+					DateTime?[] unexpected = [CurrentTime(DateTimeKind.Local), LaterTime(1, DateTimeKind.Utc),];
+
+					async Task Act()
+						=> await That(subject).IsNotOneOf(unexpected);
+
+					await That(Act).DoesNotThrow()
+						.Because("the only alternative with the same ticks has an incompatible Kind");
+				}
+
 				[Theory]
 				[InlineData(3, 2, false)]
 				[InlineData(5, 3, false)]
