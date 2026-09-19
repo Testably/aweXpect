@@ -21,6 +21,10 @@ public abstract class ExpectationBuilder
 {
 	private const string DefaultCurrentSubject = "it";
 
+	private static readonly AsyncLocal<long> Evaluation = new();
+
+	private static long _evaluationCount;
+
 	private ResultContexts? _contexts;
 
 	/// <summary>
@@ -564,8 +568,19 @@ public abstract class ExpectationBuilder
 		}
 	}
 
+	/// <summary>
+	///     Identifies the evaluation that is currently running, or <c>0</c> outside of one.
+	/// </summary>
+	/// <remarks>
+	///     All constraints of one awaited expectation share it, which is what lets a stateful subject tell a further
+	///     constraint of the same expectation from a further expectation. An <c>async</c> method does not flow the
+	///     value back to its caller, so it stays scoped to the one evaluation that set it.
+	/// </remarks>
+	internal static long CurrentEvaluation => Evaluation.Value;
+
 	internal async Task<ConstraintResult> IsMet()
 	{
+		Evaluation.Value = Interlocked.Increment(ref _evaluationCount);
 		EvaluationContext.EvaluationContext context = new();
 		ITimeSystem timeSystem = _timeSystem ?? RealTimeSystem.Instance;
 		TestCancellation? testCancellation = Customize.aweXpect.Settings().TestCancellation.Get();

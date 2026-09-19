@@ -5,3 +5,5 @@ aweXpect.Equivalency.EquivalencyOptions.MaxRecursionDepth.get -> int
 aweXpect.Equivalency.EquivalencyOptions.MaxRecursionDepth.init -> void
 aweXpect.Core.Tracing
 static aweXpect.Core.Tracing.WriteException<TException>(TException! exception) -> TException!
+aweXpect.Recording.IDisposableEventRecording<TSubject>
+static aweXpect.Recording.RecordExtensions.UntilDisposed<TSubject>(this aweXpect.Recording.IEventRecording<TSubject>! recording) -> aweXpect.Recording.IDisposableEventRecording<TSubject>!

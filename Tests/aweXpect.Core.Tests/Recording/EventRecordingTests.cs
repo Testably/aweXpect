@@ -92,6 +92,86 @@ public sealed class EventRecordingTests
 	}
 
 	[Fact]
+	public async Task WhenChainedWithAnd_ShouldCheckEveryConstraint()
+	{
+		CustomEventClass sut = new();
+		IEventRecording<CustomEventClass> recording = sut.Record().Events();
+		sut.NotifyCustomEvent(1);
+		sut.NotifyCustomEvent(2);
+
+		async Task Act()
+			=> await That(recording).Triggered(nameof(CustomEventClass.CustomEvent)).Twice()
+				.And.Triggered(nameof(CustomEventClass.CustomEvent)).AtLeast().Once()
+				.And.Triggered(nameof(CustomEventClass.CustomEvent)).Never();
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("*has never recorded the CustomEvent event*").AsWildcard()
+			.Because("every constraint of one expectation checks the same recording, and only the third one fails");
+	}
+
+	[Fact]
+	public async Task WhenChainedWithAnd_ShouldNotStopTheRecordingForTheNextConstraint()
+	{
+		CustomEventClass sut = new();
+		IEventRecording<CustomEventClass> recording = sut.Record().Events();
+		sut.NotifyCustomEvent(1);
+
+		async Task Act()
+			=> await That(recording).Triggered(nameof(CustomEventClass.CustomEvent)).Once()
+				.And.Triggered(nameof(CustomEventClass.CustomEvent)).Once();
+
+		await That(Act).DoesNotThrow()
+			.Because("the constraints of one awaited expectation share the evaluation that stopped the recording");
+	}
+
+	[Fact]
+	public async Task WhenChainedWithOr_ShouldCheckEveryConstraint()
+	{
+		CustomEventClass sut = new();
+		IEventRecording<CustomEventClass> recording = sut.Record().Events();
+		sut.NotifyCustomEvent(1);
+
+		async Task Act()
+			=> await That(recording).Triggered(nameof(CustomEventClass.CustomEvent)).Never()
+				.Or.Triggered(nameof(CustomEventClass.CustomEvent)).Once();
+
+		await That(Act).DoesNotThrow()
+			.Because("the second constraint is only reached because the first one did not stop the expectation");
+	}
+
+	[Fact]
+	public async Task WhenDisposed_ShouldStopListening()
+	{
+		CustomEventClass subject = new();
+		IDisposableEventRecording<CustomEventClass> recording = subject.Record().Events().UntilDisposed();
+		subject.NotifyCustomEvent(1);
+		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+
+		recording.Dispose();
+		subject.NotifyCustomEvent(2);
+
+		await That(subject.HasSubscribers()).IsFalse()
+			.Because("disposing detaches the handler from the subject");
+		await That(result.GetEventCount(nameof(CustomEventClass.CustomEvent))).IsEqualTo(1)
+			.Because("an event that is triggered after the disposal is not recorded any more");
+	}
+
+	[Fact]
+	public async Task WhenDisposed_WithAFurtherExpectation_ShouldThrowInvalidOperationException()
+	{
+		CustomEventClass sut = new();
+		IDisposableEventRecording<CustomEventClass> recording = sut.Record().Events().UntilDisposed();
+		recording.Dispose();
+
+		async Task Act()
+			=> await That(recording).Triggered(nameof(CustomEventClass.CustomEvent));
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("The recording was already disposed.").AsSuffix()
+			.Because("a disposed recording is detached and would answer from its frozen queue");
+	}
+
+	[Fact]
 	public async Task WhenEventWasNotRecorded_ShouldThrowNotSupportedException()
 	{
 		CustomEventClass sut = new();
@@ -105,6 +185,42 @@ public sealed class EventRecordingTests
 			.WithMessage(
 				"Event OtherEvent was not recorded on sut, only [\"CustomEvent\"]. When publishing with trimming or Native AOT enabled, ensure that the type is rooted, so that its events are preserved.")
 			.Because("a recording of all events records nothing when the trimmer removed them, so the access has to fail loudly");
+	}
+
+	[Fact]
+	public async Task WhenExpectationIsEvaluatedTwice_ShouldThrowInvalidOperationException()
+	{
+		CustomEventClass sut = new();
+		IEventRecording<CustomEventClass> recording = sut.Record().Events();
+		sut.NotifyCustomEvent(1);
+		await That(recording).Triggered(nameof(CustomEventClass.CustomEvent)).Once();
+		sut.NotifyCustomEvent(2);
+
+		async Task Act()
+			=> await That(recording).Triggered(nameof(CustomEventClass.CustomEvent)).Twice();
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage(
+				"The recording was already stopped. Use .UntilDisposed() to keep recording across multiple expectations.")
+			.AsSuffix()
+			.Because("the stopped recording would otherwise answer the second expectation from stale data");
+	}
+
+	[Fact]
+	public async Task WhenExpectationIsFollowedByAStop_ShouldThrowInvalidOperationException()
+	{
+		CustomEventClass sut = new();
+		IEventRecording<CustomEventClass> recording = sut.Record().Events();
+		sut.NotifyCustomEvent(1);
+		await That(recording).Triggered(nameof(CustomEventClass.CustomEvent)).Once();
+
+		async Task Act()
+			=> await recording.StopWhen(_ => false, TimeSpan.Zero);
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage(
+				"The recording was already stopped. Use .UntilDisposed() to keep recording across multiple expectations.")
+			.Because("the evaluation that stopped the recording does not reach beyond the expectation that opened it");
 	}
 
 	[Fact]
@@ -312,14 +428,20 @@ public sealed class EventRecordingTests
 	}
 
 	[Fact]
-	public async Task WhenStopIsCalledTwice_ShouldNotThrowAnyException()
+	public async Task WhenStopIsCalledTwice_ShouldThrowInvalidOperationException()
 	{
-		CustomEventClass subject = new();
+		CustomEventClass sut = new();
 
-		IEventRecording<CustomEventClass> recording = subject.Record().Events();
+		IEventRecording<CustomEventClass> recording = sut.Record().Events();
 		await recording.StopWhen(_ => false, TimeSpan.Zero);
 
-		await That(() => recording.StopWhen(_ => false, TimeSpan.Zero)).DoesNotThrow();
+		async Task Act()
+			=> await recording.StopWhen(_ => false, TimeSpan.Zero);
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage(
+				"The recording was already stopped. Use .UntilDisposed() to keep recording across multiple expectations.")
+			.Because("the detached recording would evaluate the predicate against stale data");
 	}
 
 	[Fact]
@@ -335,6 +457,96 @@ public sealed class EventRecordingTests
 		subject.NotifyCustomEvent(1);
 		await That(subject.HasSubscribers()).IsFalse()
 			.Because("a predicate that throws must not leave the handler attached to the subject");
+	}
+
+	[Fact]
+	public async Task WhenUntilDisposed_OnAnotherImplementation_ShouldThrowNotSupportedException()
+	{
+		ForeignRecording sut = new();
+
+		void Act()
+			=> sut.UntilDisposed();
+
+		await That(Act).Throws<NotSupportedException>()
+			.WithMessage(
+				"Only a recording created by .Record().Events() supports .UntilDisposed(), but was EventRecordingTests.ForeignRecording { }")
+			.Because("only the recording of this library knows when it detaches its handlers");
+	}
+
+	[Fact]
+	public async Task WhenUntilDisposed_ShouldAllowMultipleExpectations()
+	{
+		CustomEventClass sut = new();
+		using IDisposableEventRecording<CustomEventClass> recording = sut.Record().Events().UntilDisposed();
+
+		sut.NotifyCustomEvent(1);
+		await That(recording).Triggered(nameof(CustomEventClass.CustomEvent)).Once();
+		sut.NotifyCustomEvent(2);
+
+		await That(recording).Triggered(nameof(CustomEventClass.CustomEvent)).Twice()
+			.Because("the recording keeps counting until it is disposed");
+	}
+
+	[Fact]
+	public async Task WhenUntilDisposed_WhenCalledTwice_ShouldReturnTheSameRecording()
+	{
+		CustomEventClass sut = new();
+		IEventRecording<CustomEventClass> recording = sut.Record().Events();
+
+		IDisposableEventRecording<CustomEventClass> result = recording.UntilDisposed().UntilDisposed();
+
+		await That(result).IsSameAs(recording)
+			.Because("the opt-in only decides when the recording stops, so repeating it changes nothing");
+	}
+
+	[Fact]
+	public async Task WhenUntilDisposed_WhenStopPredicateThrows_ShouldKeepListeningUntilDisposed()
+	{
+		CustomEventClass subject = new();
+		IDisposableEventRecording<CustomEventClass> recording = subject.Record().Events().UntilDisposed();
+
+		async Task Act()
+			=> await recording.StopWhen(_ => throw new InvalidOperationException("boom"), TimeSpan.FromSeconds(1));
+
+		await That(Act).Throws<InvalidOperationException>().WithMessage("boom");
+		await That(subject.HasSubscribers()).IsTrue()
+			.Because("the caller owns the lifetime of the recording once it opted in");
+
+		recording.Dispose();
+
+		await That(subject.HasSubscribers()).IsFalse()
+			.Because("a predicate that threw must not leave the handler attached beyond the disposal");
+	}
+
+	[Fact]
+	public async Task WhenUntilDisposed_WhenTheRecordingWasStopped_ShouldThrowInvalidOperationException()
+	{
+		CustomEventClass sut = new();
+		IEventRecording<CustomEventClass> recording = sut.Record().Events();
+		await recording.StopWhen(_ => false, TimeSpan.Zero);
+
+		void Act()
+			=> recording.UntilDisposed();
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage(
+				"The recording was already stopped and cannot be continued. Call .UntilDisposed() before the first expectation.")
+			.Because("the handlers are already detached, so nothing could be recorded from then on");
+	}
+
+	[Fact]
+	public async Task WhenUntilDisposed_WithEventName_ShouldAllowMultipleExpectations()
+	{
+		CustomEventClass sut = new();
+		using IDisposableEventRecording<CustomEventClass> recording =
+			sut.Record().Events(nameof(CustomEventClass.CustomEvent)).UntilDisposed();
+
+		sut.NotifyCustomEvent(1);
+		await That(recording).Triggered(nameof(CustomEventClass.CustomEvent)).Once();
+		sut.NotifyCustomEvent(2);
+
+		await That(recording).Triggered(nameof(CustomEventClass.CustomEvent)).Twice()
+			.Because("a recording of a single event keeps counting until it is disposed as well");
 	}
 
 	[MethodImpl(MethodImplOptions.NoInlining)]
@@ -357,6 +569,12 @@ public sealed class EventRecordingTests
 
 		public void NotifyCustomEvent(int arg1)
 			=> CustomEvent?.Invoke(arg1);
+	}
+
+	private sealed class ForeignRecording : IEventRecording<CustomEventClass>
+	{
+		public Task<IEventRecordingResult> StopWhen(Func<IEventRecordingResult, bool> areFound, TimeSpan timeout)
+			=> throw new NotSupportedException();
 	}
 
 	private sealed class MemberRegisteredClass
