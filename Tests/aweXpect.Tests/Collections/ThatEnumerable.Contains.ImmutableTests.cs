@@ -374,6 +374,37 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenExpectedIsNullLiteral_ShouldMatchTheNullItem()
+			{
+				ImmutableArray<int?> subject = [1, null, 3,];
+
+				async Task Act()
+					=> await That(subject).Contains(null).Once();
+
+				await That(Act).DoesNotThrow()
+					.Because("a null item is an ordinary value for a nullable element type");
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsNullLiteral_WithoutANullItem_ShouldFail()
+			{
+				ImmutableArray<int?> subject = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).Contains(null);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains <null> at least once,
+					             but it did not contain it
+
+					             Collection:
+					             [1, 2, 3]
+					             """);
+			}
+
+			[Fact]
 			public async Task WithMultipleFailures_ShouldIncludeCollectionOnlyOnce()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c",];
@@ -676,6 +707,40 @@ public sealed partial class ThatEnumerable
 					               "green",
 					               "blue",
 					               "yellow"
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsNullLiteral_ShouldMatchTheNullItem()
+			{
+				ImmutableArray<string?> subject = ["green", null,];
+
+				async Task Act()
+					=> await That(subject).Contains(null).Once().IgnoringCase();
+
+				await That(Act).DoesNotThrow()
+					.Because("a null item is an ordinary value for a nullable element type");
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsNullLiteral_WithoutANullItem_ShouldFail()
+			{
+				ImmutableArray<string?> subject = ["green", "blue",];
+
+				async Task Act()
+					=> await That(subject).Contains((string?)null);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains <null> at least once,
+					             but it did not contain it
+
+					             Collection:
+					             [
+					               "green",
+					               "blue"
 					             ]
 					             """);
 			}

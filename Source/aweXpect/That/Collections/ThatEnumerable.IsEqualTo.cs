@@ -444,9 +444,70 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection matches the <paramref name="expected" /> collection.
 	/// </summary>
+	/// <remarks>
+	///     Without this overload an <see cref="ImmutableArray{T}" /> or a collection expression would bind to the equality
+	///     expectation for structs, which compares the backing arrays by reference.
+	/// </remarks>
+	public static ObjectCollectionMatchResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
+		IsEqualTo<TItem>(
+			this IThat<ImmutableArray<TItem>> subject,
+			ImmutableArray<TItem> expected,
+			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+	{
+		ObjectEqualityOptions<TItem> options = new();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCollectionMatchResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>(
+			expectationBuilder.AddConstraint((it, grammars) =>
+				new IsEqualToForEnumerableConstraint<ImmutableArray<TItem>, TItem, TItem>(expectationBuilder, it,
+					grammars,
+					doNotPopulateThisValue.TrimCommonWhiteSpace(),
+					expected,
+					options,
+					matchOptions)),
+			subject,
+			options,
+			matchOptions);
+	}
+#endif
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that the collection matches the <paramref name="expected" /> collection.
+	/// </summary>
 	public static StringCollectionMatchResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
 		IsEqualTo(this IThat<ImmutableArray<string?>> subject,
 			IEnumerable<string?> expected,
+			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+	{
+		StringEqualityOptions options = new();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new StringCollectionMatchResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>(
+			expectationBuilder.AddConstraint((it, grammars) =>
+				new IsEqualToForEnumerableConstraint<ImmutableArray<string?>, string?, string?>(expectationBuilder, it,
+					grammars,
+					doNotPopulateThisValue.TrimCommonWhiteSpace(),
+					expected,
+					options,
+					matchOptions)),
+			subject,
+			options,
+			matchOptions);
+	}
+#endif
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that the collection matches the <paramref name="expected" /> collection.
+	/// </summary>
+	/// <remarks>
+	///     Without this overload an <see cref="ImmutableArray{T}" /> or a collection expression would bind to the equality
+	///     expectation for structs, which compares the backing arrays by reference.
+	/// </remarks>
+	public static StringCollectionMatchResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
+		IsEqualTo(this IThat<ImmutableArray<string?>> subject,
+			ImmutableArray<string?> expected,
 			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
 		StringEqualityOptions options = new();
@@ -1289,9 +1350,72 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection.
 	/// </summary>
+	/// <remarks>
+	///     Without this overload an <see cref="ImmutableArray{T}" /> or a collection expression would bind to the equality
+	///     expectation for structs, which compares the backing arrays by reference.
+	/// </remarks>
+	public static ObjectCollectionMatchResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
+		IsNotEqualTo<TItem>(
+			this IThat<ImmutableArray<TItem>> subject,
+			ImmutableArray<TItem> unexpected,
+			[CallerArgumentExpression("unexpected")]
+			string doNotPopulateThisValue = "")
+	{
+		ObjectEqualityOptions<TItem> options = new();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new ObjectCollectionMatchResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>(
+			expectationBuilder.AddConstraint((it, grammars) =>
+				new IsEqualToForEnumerableConstraint<ImmutableArray<TItem>, TItem, TItem>(expectationBuilder, it,
+					grammars,
+					doNotPopulateThisValue.TrimCommonWhiteSpace(),
+					unexpected,
+					options,
+					matchOptions).Invert()),
+			subject,
+			options,
+			matchOptions);
+	}
+#endif
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection.
+	/// </summary>
 	public static StringCollectionMatchResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
 		IsNotEqualTo(this IThat<ImmutableArray<string?>> subject,
 			IEnumerable<string?> unexpected,
+			[CallerArgumentExpression("unexpected")]
+			string doNotPopulateThisValue = "")
+	{
+		StringEqualityOptions options = new();
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new StringCollectionMatchResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>(
+			expectationBuilder.AddConstraint((it, grammars) =>
+				new IsEqualToForEnumerableConstraint<ImmutableArray<string?>, string?, string?>(expectationBuilder, it,
+					grammars,
+					doNotPopulateThisValue.TrimCommonWhiteSpace(),
+					unexpected,
+					options,
+					matchOptions).Invert()),
+			subject,
+			options,
+			matchOptions);
+	}
+#endif
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection.
+	/// </summary>
+	/// <remarks>
+	///     Without this overload an <see cref="ImmutableArray{T}" /> or a collection expression would bind to the equality
+	///     expectation for structs, which compares the backing arrays by reference.
+	/// </remarks>
+	public static StringCollectionMatchResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
+		IsNotEqualTo(this IThat<ImmutableArray<string?>> subject,
+			ImmutableArray<string?> unexpected,
 			[CallerArgumentExpression("unexpected")]
 			string doNotPopulateThisValue = "")
 	{

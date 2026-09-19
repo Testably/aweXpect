@@ -137,6 +137,29 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WithCollectionExpression_WithSameItems_ShouldFail()
+			{
+				ImmutableArray<int> subject = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo([1, 2, 3,]);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not equal to collection [1, 2, 3,] in order,
+					             but it did
+
+					             Collection:
+					             [1, 2, 3]
+
+					             Expected:
+					             [1, 2, 3]
+					             """)
+					.Because("a collection expression must compare the items and not the immutable arrays");
+			}
+
+			[Fact]
 			public async Task WithCollectionInDifferentOrder_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "c", "b",];
@@ -194,6 +217,30 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).IsNotEqualTo(unexpected);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithImmutableArrayWithSameItems_ShouldFail()
+			{
+				ImmutableArray<int> subject = [1, 2, 3,];
+				ImmutableArray<int> unexpected = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not equal to collection unexpected in order,
+					             but it did
+
+					             Collection:
+					             [1, 2, 3]
+
+					             Expected:
+					             [1, 2, 3]
+					             """)
+					.Because("the items are compared, although the backing arrays are different instances");
 			}
 
 			[Fact]

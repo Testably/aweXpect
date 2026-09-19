@@ -638,6 +638,29 @@ public sealed partial class ThatEnumerable
 					             but it was <null>
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenUnexpectedIsNullLiteral_ShouldMatchTheNullItem()
+			{
+				string?[] subject = ["FOO", null,];
+
+				async Task Act()
+					=> await That(subject).DoesNotContain(null).IgnoringCase();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain <null> ignoring case,
+					             but it contained it at least once
+
+					             Collection:
+					             [
+					               "FOO",
+					               <null>
+					             ]
+					             """)
+					.Because("a `null` literal is a value, not a collection of unexpected items");
+			}
 		}
 
 		public sealed class PredicateTests

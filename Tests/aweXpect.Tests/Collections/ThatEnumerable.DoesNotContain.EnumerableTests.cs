@@ -374,6 +374,26 @@ public sealed partial class ThatEnumerable
 					             but it was <null>
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenUnexpectedIsNullLiteral_ShouldMatchTheNullItem()
+			{
+				ArrayList subject = new() { 1, "a", null, };
+
+				async Task Act()
+					=> await That(subject).DoesNotContain(null);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain <null>,
+					             but it contained it at least once
+
+					             Collection:
+					             [1, "a", <null>]
+					             """)
+					.Because("a `null` literal is a value, not a predicate");
+			}
 		}
 
 		public sealed class EnumerablePredicateTests

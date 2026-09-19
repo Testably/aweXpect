@@ -419,6 +419,18 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenExpectedIsNullLiteral_ShouldMatchTheNullItem()
+			{
+				int?[] subject = [1, null, 3,];
+
+				async Task Act()
+					=> await That(subject).Contains(null).Once();
+
+				await That(Act).DoesNotThrow()
+					.Because("a `null` literal is a value, not a collection of expected items");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				int expected = 42;
@@ -814,6 +826,40 @@ public sealed partial class ThatEnumerable
 					               "green",
 					               "blue",
 					               "yellow"
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsNullLiteral_ShouldMatchTheNullItem()
+			{
+				string?[] sut = ["green", null,];
+
+				async Task Act()
+					=> await That(sut).Contains(null).Once().IgnoringCase();
+
+				await That(Act).DoesNotThrow()
+					.Because("a `null` literal is a value, not a collection of expected items");
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsNullLiteral_WithoutANullItem_ShouldFail()
+			{
+				string?[] sut = ["green", "blue",];
+
+				async Task Act()
+					=> await That(sut).Contains(null);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that sut
+					             contains <null> at least once,
+					             but it did not contain it
+
+					             Collection:
+					             [
+					               "green",
+					               "blue"
 					             ]
 					             """);
 			}
