@@ -8,6 +8,19 @@ public sealed partial class ThatEnum
 		{
 			public sealed class ContinuationTests
 			{
+				[Fact]
+				public async Task GreaterThan_WhenTheValueExceedsInt64MaxValue_ShouldSucceed()
+				{
+					EnumULong? subject = EnumULong.UInt64Max;
+
+					async Task Act()
+						=> await That(subject).HasValue().GreaterThan(long.MaxValue);
+
+					await That(Act).DoesNotThrow()
+						.Because(
+							"a ulong-backed member above long.MaxValue is a legal enum value and must not overflow");
+				}
+
 				[Theory]
 				[InlineData(MyNumbers.One, 2L)]
 				[InlineData(MyNumbers.Two, -7L)]
@@ -139,6 +152,18 @@ public sealed partial class ThatEnum
 						              """);
 				}
 
+				[Fact]
+				public async Task WhenSubjectExceedsInt64MaxValue_ShouldSucceed()
+				{
+					EnumULong? subject = EnumULong.UInt64Max;
+
+					async Task Act()
+						=> await That(subject).HasValue(ulong.MaxValue);
+
+					await That(Act).DoesNotThrow()
+						.Because("the nullable overload reads the underlying value through the same conversion");
+				}
+
 				[Theory]
 				[InlineData(MyNumbers.One, 1L)]
 				[InlineData(MyNumbers.Two, 2L)]
@@ -150,6 +175,25 @@ public sealed partial class ThatEnum
 						=> await That(subject).HasValue(expected);
 
 					await That(Act).DoesNotThrow();
+				}
+
+				[Theory]
+				[InlineData(null)]
+				[InlineData(0UL)]
+				[InlineData(ulong.MaxValue)]
+				public async Task WhenSubjectIsNull_AndExpectedIsUnsigned_ShouldFail(ulong? expected)
+				{
+					EnumULong? subject = null;
+
+					async Task Act()
+						=> await That(subject).HasValue(expected);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              has value equal to {Formatter.Format(expected)},
+						              but it was <null>
+						              """);
 				}
 
 				[Theory]

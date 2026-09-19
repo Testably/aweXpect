@@ -47,6 +47,16 @@ The `HasValue()` continuation compares the underlying numeric value and supports
 other properties: `EqualTo`, `NotEqualTo`, `GreaterThan`, `GreaterThanOrEqualTo`, `LessThan`,
 `LessThanOrEqualTo` and `Between`.
 
+Every backing type from `sbyte` to `ulong` is covered. Each comparison takes a `long` or a `ulong`, so a member of
+a `ulong`-backed `enum` above `long.MaxValue` can be named as well:
+
+```csharp
+enum Big : ulong { Max = ulong.MaxValue }
+
+await Expect.That(Big.Max).HasValue(ulong.MaxValue);
+await Expect.That(Big.Max).HasValue().GreaterThan(0);
+```
+
 ## Defined
 
 You can verify that the `enum` has a defined value or not:
