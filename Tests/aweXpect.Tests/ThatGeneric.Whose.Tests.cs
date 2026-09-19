@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 
 namespace aweXpect.Tests;
@@ -812,6 +813,55 @@ public sealed partial class ThatGeneric
 					return Value;
 				}
 #endif
+			}
+
+			[Fact]
+			public async Task WhenMemberExpectationUsesWhich_AndItIsSatisfied_ShouldSucceed()
+			{
+				ItemsClass subject = new(2);
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.Items, v => v.HasSingle().Which.IsEqualTo(2));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenMemberExpectationUsesWhich_AndItIsNotSatisfied_ShouldFail()
+			{
+				ItemsClass subject = new(1);
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.Items, v => v.HasSingle().Which.IsEqualTo(2));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose Items has a single item which is equal to 2,
+					             but Items was 1 which differs by -1
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenMemberExpectationUsesWhich_WithinAnOuterWhich_ShouldApplyBothToTheirOwnSubject()
+			{
+				ItemsClass[] subject = [new(1),];
+
+				async Task Act()
+					=> await That(subject).HasSingle()
+						.Which.Whose(o => o.Items, v => v.HasSingle().Which.IsEqualTo(2));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a single item whose Items has a single item which is equal to 2,
+					             but Items was 1 which differs by -1
+					             """);
+			}
+
+			private sealed class ItemsClass(params int[] items)
+			{
+				public List<int> Items { get; } = [..items,];
 			}
 
 			private sealed class MyCombinationClass
