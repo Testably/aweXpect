@@ -117,7 +117,7 @@ public static partial class ThatTimeSpan
 			{
 				hasValues = true;
 				if (value != null &&
-				    IsWithinTolerance(tolerance.Tolerance, actual - value.Value))
+				    IsWithinTolerance(tolerance.Tolerance, actual, value.Value))
 				{
 					Outcome = Outcome.Success;
 					return this;

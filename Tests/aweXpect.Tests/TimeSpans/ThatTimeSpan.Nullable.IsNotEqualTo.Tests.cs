@@ -74,6 +74,32 @@ public sealed partial class ThatTimeSpan
 				}
 
 				[Fact]
+				public async Task WhenSubjectIsMaxValueAndUnexpectedIsMinValue_ShouldSucceed()
+				{
+					TimeSpan? subject = TimeSpan.MaxValue;
+					TimeSpan unexpected = TimeSpan.MinValue;
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo(unexpected);
+
+					await That(Act).DoesNotThrow()
+						.Because("a difference that exceeds the range of a time span must pass instead of overflow");
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsMinValueAndUnexpectedIsMaxValue_ShouldSucceed()
+				{
+					TimeSpan? subject = TimeSpan.MinValue;
+					TimeSpan unexpected = TimeSpan.MaxValue;
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo(unexpected);
+
+					await That(Act).DoesNotThrow()
+						.Because("a difference that exceeds the range of a time span must pass instead of overflow");
+				}
+
+				[Fact]
 				public async Task WhenSubjectIsNull_ShouldSucceed()
 				{
 					TimeSpan? subject = null;
@@ -114,6 +140,19 @@ public sealed partial class ThatTimeSpan
 					await That(Act).Throws<ArgumentOutOfRangeException>()
 						.WithMessage("*Tolerance must be non-negative*").AsWildcard().And
 						.WithParamName("tolerance");
+				}
+
+				[Fact]
+				public async Task Within_WhenSubjectIsMinValueAndUnexpectedIsMaxValue_ShouldSucceed()
+				{
+					TimeSpan? subject = TimeSpan.MinValue;
+					TimeSpan? unexpected = TimeSpan.MaxValue;
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo(unexpected).Within(TimeSpan.MaxValue);
+
+					await That(Act).DoesNotThrow()
+						.Because("the two values are further apart than the largest possible tolerance");
 				}
 
 				[Fact]
