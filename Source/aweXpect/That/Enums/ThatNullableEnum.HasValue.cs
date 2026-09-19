@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Globalization;
 using aweXpect.Core;
+using aweXpect.Helpers;
 using aweXpect.Results;
 
 namespace aweXpect;
@@ -16,9 +16,9 @@ public static partial class ThatNullableEnum
 	///     of them. Use <c>IsNotNull()</c> to verify only that the subject has a value.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static PropertyResult.Long<TEnum?> HasValue<TEnum>(this IThat<TEnum?> subject)
+	public static EnumValueResult<TEnum?> HasValue<TEnum>(this IThat<TEnum?> subject)
 		where TEnum : struct, Enum
-		=> new(subject, a => a is null ? null : Convert.ToInt64(a.Value, CultureInfo.InvariantCulture), "value");
+		=> new(subject, a => a?.ToUnderlyingValue(), "value");
 
 	/// <summary>
 	///     Verifies that the underlying value of the subject is equal to the <paramref name="expected" /> value.
@@ -27,6 +27,16 @@ public static partial class ThatNullableEnum
 	public static AndOrResult<TEnum?, IThat<TEnum?>> HasValue<TEnum>(
 		this IThat<TEnum?> subject,
 		long? expected)
+		where TEnum : struct, Enum
+		=> subject.HasValue().EqualTo(expected);
+
+	/// <summary>
+	///     Verifies that the underlying value of the subject is equal to the <paramref name="expected" /> value.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<TEnum?, IThat<TEnum?>> HasValue<TEnum>(
+		this IThat<TEnum?> subject,
+		ulong? expected)
 		where TEnum : struct, Enum
 		=> subject.HasValue().EqualTo(expected);
 }
