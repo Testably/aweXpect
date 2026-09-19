@@ -135,6 +135,16 @@ public class StringHasItemResult<TCollection, TSelf>(
 	}
 
 	/// <summary>
+	///     Interprets the expected <see langword="string" /> as <see cref="Regex" /> pattern,
+	///     applying the given <paramref name="regexOptions" />.
+	/// </summary>
+	public TSelf AsRegex(RegexOptions regexOptions)
+	{
+		options.AsRegex(regexOptions);
+		return (TSelf)this;
+	}
+
+	/// <summary>
 	///     Interprets the expected <see langword="string" /> as a suffix, so that the actual value ends with it.
 	/// </summary>
 	public TSelf AsSuffix()

@@ -1,4 +1,5 @@
-﻿using aweXpect.Options;
+﻿using System.Text.RegularExpressions;
+using aweXpect.Options;
 
 namespace aweXpect.Core.Tests.Options;
 
@@ -12,6 +13,16 @@ public sealed partial class StringEqualityOptionsTests
 			StringEqualityOptions sut = new();
 
 			StringEqualityOptions result = sut.AsRegex();
+
+			await That(result).IsSameAs(sut);
+		}
+
+		[Fact]
+		public async Task AsRegex_WithOptions_ShouldReturnSameInstance()
+		{
+			StringEqualityOptions sut = new();
+
+			StringEqualityOptions result = sut.AsRegex(RegexOptions.Multiline);
 
 			await That(result).IsSameAs(sut);
 		}
@@ -44,6 +55,21 @@ public sealed partial class StringEqualityOptionsTests
 			int result = await sut.CountOccurrences("AxB ayb", "a.b");
 
 			await That(result).IsEqualTo(2);
+		}
+
+		[Theory]
+		[InlineData(RegexOptions.None, 1)]
+		[InlineData(RegexOptions.Multiline, 2)]
+		public async Task CountOccurrences_WhenOptionsAreGiven_ShouldApplyThem(RegexOptions regexOptions,
+			int expectedCount)
+		{
+			StringEqualityOptions sut = new();
+			sut.AsRegex(regexOptions);
+
+			int result = await sut.CountOccurrences("b\nb", "^b");
+
+			await That(result).IsEqualTo(expectedCount)
+				.Because("without the multiline option '^' only binds to the start of the complete value");
 		}
 
 		[Fact]

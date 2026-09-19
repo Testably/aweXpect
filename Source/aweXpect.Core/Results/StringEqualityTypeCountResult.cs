@@ -55,6 +55,16 @@ public class StringEqualityTypeCountResult<TType, TThat>(
 	}
 
 	/// <summary>
+	///     Interprets the expected <see langword="string" /> as <see cref="Regex" /> pattern,
+	///     applying the given <paramref name="regexOptions" />.
+	/// </summary>
+	public StringCountResult<TType, TThat> AsRegex(RegexOptions regexOptions)
+	{
+		_options.AsRegex(regexOptions);
+		return this;
+	}
+
+	/// <summary>
 	///     Interprets the expected <see langword="string" /> as a suffix, so that the actual value ends with it.
 	/// </summary>
 	public StringCountResult<TType, TThat> AsSuffix()

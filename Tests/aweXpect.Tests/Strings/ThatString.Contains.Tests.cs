@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Tests;
+﻿using System.Text.RegularExpressions;
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatString
 {
@@ -268,6 +270,32 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
+			public async Task WhenOptionsContainMultiline_ShouldCountTheMatchesPerLine()
+			{
+				string subject = "a\nb\nb";
+				string expected = "^b";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsRegex(RegexOptions.Multiline).Twice();
+
+				await That(Act).DoesNotThrow()
+					.Because("the given options also apply when counting the occurrences");
+			}
+
+			[Fact]
+			public async Task WhenPatternIsAnchoredToALineOfTheSubject_ShouldNotCountIt()
+			{
+				string subject = "a\nb";
+				string expected = "^b";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsRegex().Never();
+
+				await That(Act).DoesNotThrow()
+					.Because("'^' binds to the start of the complete subject, which does not start with 'b'");
+			}
+
+			[Fact]
 			public async Task WhenPatternMatchesTheEmptyString_ShouldNotCountEmptyMatches()
 			{
 				string subject = "bbb";
@@ -460,6 +488,19 @@ public sealed partial class ThatString
 
 				await That(Act).DoesNotThrow()
 					.Because("'?' matches the newline of each occurrence");
+			}
+
+			[Fact]
+			public async Task WhenSubjectHasMoreLinesThanThePattern_ShouldStillCountTheOccurrence()
+			{
+				string subject = "xyz\nabc\nqqq";
+				string expected = "abc";
+
+				async Task Act()
+					=> await That(subject).Contains(expected).AsWildcard().Once();
+
+				await That(Act).DoesNotThrow()
+					.Because("counting searches for the pattern anywhere, unlike the anchored equality check");
 			}
 
 			[Fact]

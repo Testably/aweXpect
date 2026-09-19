@@ -7,3 +7,7 @@ aweXpect.Core.Tracing
 static aweXpect.Core.Tracing.WriteException<TException>(TException! exception) -> TException!
 aweXpect.Recording.IDisposableEventRecording<TSubject>
 static aweXpect.Recording.RecordExtensions.UntilDisposed<TSubject>(this aweXpect.Recording.IEventRecording<TSubject>! recording) -> aweXpect.Recording.IDisposableEventRecording<TSubject>!
+aweXpect.Options.StringEqualityOptions.AsRegex(System.Text.RegularExpressions.RegexOptions regexOptions) -> aweXpect.Options.StringEqualityOptions!
+aweXpect.Results.StringEqualityTypeCountResult<TType, TThat>.AsRegex(System.Text.RegularExpressions.RegexOptions regexOptions) -> aweXpect.Results.StringCountResult<TType, TThat>!
+aweXpect.Results.StringEqualityTypeResult<TType, TThat, TSelf>.AsRegex(System.Text.RegularExpressions.RegexOptions regexOptions) -> TSelf!
+aweXpect.Results.StringHasItemResult<TCollection, TSelf>.AsRegex(System.Text.RegularExpressions.RegexOptions regexOptions) -> TSelf!

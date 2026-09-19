@@ -8,7 +8,7 @@ namespace aweXpect.Options;
 
 public partial class StringEqualityOptions
 {
-	private static readonly IStringMatchType RegexMatch = new RegexMatchType();
+	private static readonly IStringMatchType RegexMatch = new RegexMatchType(RegexOptions.None);
 
 	/// <summary>
 	///     Interprets the expected <see langword="string" /> as <see cref="Regex" /> pattern.
@@ -19,8 +19,26 @@ public partial class StringEqualityOptions
 		return this;
 	}
 
-	private sealed class RegexMatchType : IStringMatchType
+	/// <summary>
+	///     Interprets the expected <see langword="string" /> as <see cref="Regex" /> pattern,
+	///     applying the given <paramref name="regexOptions" />.
+	/// </summary>
+	/// <remarks>
+	///     <see cref="RegexOptions.IgnoreCase" /> is added when the casing is ignored via <see cref="IgnoringCase(bool)" />.
+	/// </remarks>
+	public StringEqualityOptions AsRegex(RegexOptions regexOptions)
 	{
+		_matchType = new RegexMatchType(regexOptions);
+		return this;
+	}
+
+	private sealed class RegexMatchType(RegexOptions regexOptions) : IStringMatchType
+	{
+		/// <summary>
+		///     The <see cref="RegexOptions" /> that the pattern is matched with.
+		/// </summary>
+		public RegexOptions Options { get; } = regexOptions;
+
 		/// <summary>
 		///     Counts the non-overlapping matches of the <paramref name="expected" /> pattern in the
 		///     <paramref name="actual" /> value.
@@ -32,7 +50,7 @@ public partial class StringEqualityOptions
 		public static int CountOccurrences(string actual, string expected, bool ignoreCase,
 			RegexOptions additionalOptions = RegexOptions.None)
 		{
-			RegexOptions options = RegexOptions.Multiline | additionalOptions;
+			RegexOptions options = additionalOptions;
 			if (ignoreCase)
 			{
 				options |= RegexOptions.IgnoreCase;
@@ -87,7 +105,7 @@ public partial class StringEqualityOptions
 #endif
 			}
 
-			RegexOptions options = RegexOptions.Multiline;
+			RegexOptions options = Options;
 			if (ignoreCase)
 			{
 				options |= RegexOptions.IgnoreCase;

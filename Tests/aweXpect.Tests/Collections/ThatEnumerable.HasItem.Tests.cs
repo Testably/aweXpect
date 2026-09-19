@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using aweXpect.Equivalency;
 
 // ReSharper disable PossibleMultipleEnumeration
@@ -450,6 +451,18 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).HasItem("b[aeiou]?r").AsRegex().AtIndex(1);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task AsRegex_WithOptions_ShouldApplyTheOptions()
+			{
+				IEnumerable<string?> subject = ["foo", "x\nbar", "baz",];
+
+				async Task Act()
+					=> await That(subject).HasItem("^bar$").AsRegex(RegexOptions.Multiline).AtIndex(1);
+
+				await That(Act).DoesNotThrow()
+					.Because("the line anchors are opt-in via the explicit options");
 			}
 
 			[Fact]

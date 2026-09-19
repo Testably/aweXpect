@@ -30,8 +30,12 @@ public partial class StringEqualityOptions
 			=> RegexMatchType.CountOccurrences(actual, WildcardToUnanchoredRegularExpression(expected), ignoreCase,
 				RegexOptions.Singleline);
 
+		/// <remarks>
+		///     The pattern is anchored with <c>\A</c> and <c>\z</c>, so that it has to cover the complete value:
+		///     <c>^</c> and <c>$</c> would bind to a line boundary, and <c>$</c> would also allow a trailing newline.
+		/// </remarks>
 		private static string WildcardToRegularExpression(string value)
-			=> $"^{WildcardToUnanchoredRegularExpression(value)}$";
+			=> $@"\A{WildcardToUnanchoredRegularExpression(value)}\z";
 
 		/// <remarks>
 		///     The resulting pattern requires <see cref="RegexOptions.Singleline" />, so that both wildcards treat a newline
@@ -80,8 +84,8 @@ public partial class StringEqualityOptions
 			}
 
 			RegexOptions options = ignoreCase
-				? RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnoreCase
-				: RegexOptions.Multiline | RegexOptions.Singleline;
+				? RegexOptions.Singleline | RegexOptions.IgnoreCase
+				: RegexOptions.Singleline;
 
 #if NET8_0_OR_GREATER
 			return ValueTask.FromResult(Regex.IsMatch(actual, WildcardToRegularExpression(expected), options,

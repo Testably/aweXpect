@@ -26,6 +26,18 @@ public sealed partial class ThatString
 					             but it was "some message"
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenPatternIsAnchoredToALineOfTheSubject_ShouldSucceed()
+			{
+				string subject = "a\nb";
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo("^b$").AsRegex();
+
+				await That(Act).DoesNotThrow()
+					.Because("'^' and '$' bind to the complete subject, which is more than the matched line");
+			}
 		}
 	}
 }

@@ -26,6 +26,18 @@ public sealed partial class ThatString
 					             but it was "some message"
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenPatternMatchesOnlyOneLineOfTheSubject_ShouldSucceed()
+			{
+				string subject = "xyz\nabc";
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo("abc").AsWildcard();
+
+				await That(Act).DoesNotThrow()
+					.Because("the pattern has to cover the complete subject, not one of its lines");
+			}
 		}
 	}
 }

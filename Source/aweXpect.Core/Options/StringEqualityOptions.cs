@@ -75,9 +75,9 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 
 		// A pattern can match a different number of characters than it is long, so its occurrences cannot be found
 		// with a window of the expected length.
-		if (_matchType is RegexMatchType)
+		if (_matchType is RegexMatchType regexMatchType)
 		{
-			return RegexMatchType.CountOccurrences(actual, expected, _ignoreCase);
+			return RegexMatchType.CountOccurrences(actual, expected, _ignoreCase, regexMatchType.Options);
 		}
 
 		if (_matchType is WildcardMatchType)
