@@ -144,6 +144,20 @@ public sealed partial class ThatTimeOnly
 				}
 
 				[Fact]
+				public async Task Within_WhenToleranceWouldWrapAroundMidnight_ShouldSucceed()
+				{
+					TimeOnly? subject = new TimeOnly(0, 30);
+					TimeOnly? unexpected = TimeOnly.MinValue;
+
+					async Task Act()
+						=> await That(subject).IsNotOnOrAfter(unexpected)
+							.Within(1.Hours());
+
+					await That(Act).DoesNotThrow()
+						.Because("a tolerance must never make an expectation fail that passes without it");
+				}
+
+				[Fact]
 				public async Task Within_WhenValuesAreOutsideTheTolerance_ShouldFail()
 				{
 					TimeOnly? subject = LaterTime(3);

@@ -127,7 +127,7 @@ public static partial class ThatNullableTimeOnly
 				{
 					hasValues = true;
 					if (value != null &&
-					    Math.Abs(actual.Value.Ticks - value.Value.Ticks) <= timeTolerance.Ticks)
+					    actual.Value.CircularDistanceTicks(value.Value) <= timeTolerance.Ticks)
 					{
 						Outcome = Outcome.Success;
 						return this;

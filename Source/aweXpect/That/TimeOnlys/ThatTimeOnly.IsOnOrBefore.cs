@@ -65,7 +65,9 @@ public static partial class ThatTimeOnly
 				timeTolerance = timeTolerance.Negate();
 			}
 
-			Outcome = actual.Add(timeTolerance) <= expected ? Outcome.Success : Outcome.Failure;
+			Outcome = expected.Value.Ticks - actual.Ticks >= timeTolerance.Ticks
+				? Outcome.Success
+				: Outcome.Failure;
 			return this;
 		}
 

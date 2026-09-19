@@ -124,6 +124,53 @@ public sealed partial class ThatTimeOnly
 			}
 
 			[Fact]
+			public async Task Within_WhenSubjectAndExpectedAreMinValue_ShouldSucceed()
+			{
+				TimeOnly subject = TimeOnly.MinValue;
+				TimeOnly expected = TimeOnly.MinValue;
+
+				async Task Act()
+					=> await That(subject).IsBefore(expected)
+						.Within(1.Hours());
+
+				await That(Act).DoesNotThrow()
+					.Because("a widening tolerance must never wrap around midnight");
+			}
+
+			[Fact]
+			public async Task Within_WhenSubjectIsBeforeMidnightAndExpectedIsAfter_ShouldFail()
+			{
+				TimeOnly subject = new(23, 0);
+				TimeOnly expected = TimeOnly.MinValue;
+
+				async Task Act()
+					=> await That(subject).IsBefore(expected)
+						.Within(2.Hours());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is before 00:00:00.0000000 ± 2:00:00,
+					             but it was 23:00:00.0000000
+					             """)
+					.Because("ordering is linear, so midnight stays a boundary for is before");
+			}
+
+			[Fact]
+			public async Task Within_WhenToleranceWouldWrapAroundMidnight_ShouldSucceed()
+			{
+				TimeOnly subject = TimeOnly.MinValue;
+				TimeOnly expected = new(0, 30);
+
+				async Task Act()
+					=> await That(subject).IsBefore(expected)
+						.Within(1.Hours());
+
+				await That(Act).DoesNotThrow()
+					.Because("a tolerance must never make an expectation fail that passes without it");
+			}
+
+			[Fact]
 			public async Task Within_WhenValuesAreOutsideTheTolerance_ShouldFail()
 			{
 				TimeOnly subject = LaterTime(3);

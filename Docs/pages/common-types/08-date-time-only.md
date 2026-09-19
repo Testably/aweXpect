@@ -2,6 +2,17 @@
 
 Describes the possible expectations for `DateOnly` and `TimeOnly`.
 
+:::note[`TimeOnly` is a clock face]
+A `TimeOnly` has no date, so midnight is not a boundary for equality and ranges, but it stays one for ordering:
+
+- `IsEqualTo`, `IsNotEqualTo` and `IsOneOf` use the shortest distance around the clock face, so `00:00` and `23:59` are
+  one minute apart. That distance never exceeds 12 hours, so a tolerance of 12 hours or more accepts every time.
+- `IsBetween` runs clockwise from the minimum to the maximum, so a range from `23:00` to `01:00` contains `00:00`.
+- `IsAfter`, `IsOnOrAfter`, `IsBefore` and `IsOnOrBefore` compare the times as they are, so `00:00` is never after
+  `23:00`. Their tolerance only ever widens the accepted range and never wraps around midnight.
+
+:::
+
 ## Equality
 
 You can verify that the `DateOnly` or `TimeOnly` is equal to another one or not:

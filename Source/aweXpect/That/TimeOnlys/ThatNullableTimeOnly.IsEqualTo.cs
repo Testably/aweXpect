@@ -63,7 +63,7 @@ public static partial class ThatNullableTimeOnly
 			{
 				TimeSpan timeTolerance = tolerance.Tolerance ??
 				                         Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-				Outcome = Math.Abs(actual.Value.Ticks - expected.Value.Ticks) <= timeTolerance.Ticks
+				Outcome = actual.Value.CircularDistanceTicks(expected.Value) <= timeTolerance.Ticks
 					? Outcome.Success
 					: Outcome.Failure;
 			}

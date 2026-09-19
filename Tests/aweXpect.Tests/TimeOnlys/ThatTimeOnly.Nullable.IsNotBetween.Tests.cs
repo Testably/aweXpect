@@ -46,6 +46,23 @@ public sealed partial class ThatTimeOnly
 				}
 
 				[Fact]
+				public async Task WhenRangeCrossesMidnightAndSubjectIsInside_ShouldFail()
+				{
+					TimeOnly? subject = TimeOnly.MinValue;
+
+					async Task Act()
+						=> await That(subject).IsNotBetween(new TimeOnly(23, 0)).And(new TimeOnly(1, 0));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not between 23:00:00.0000000 and 01:00:00.0000000,
+						             but it was 00:00:00.0000000
+						             """)
+						.Because("a range runs clockwise from the minimum to the maximum, across midnight if needed");
+				}
+
+				[Fact]
 				public async Task WhenSubjectAndMaximumAreMaxValue_ShouldFail()
 				{
 					TimeOnly? subject = TimeOnly.MaxValue;

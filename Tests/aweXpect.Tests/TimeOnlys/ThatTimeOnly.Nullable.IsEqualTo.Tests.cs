@@ -126,6 +126,20 @@ public sealed partial class ThatTimeOnly
 						              but it was {Formatter.Format(subject)}
 						              """);
 				}
+
+				[Fact]
+				public async Task Within_WhenValuesWrapAroundMidnight_ShouldSucceed()
+				{
+					TimeOnly? subject = TimeOnly.MinValue;
+					TimeOnly? expected = new TimeOnly(23, 59);
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected)
+							.Within(1.Minutes());
+
+					await That(Act).DoesNotThrow()
+						.Because("equality uses the shortest distance around the clock face");
+				}
 			}
 		}
 	}

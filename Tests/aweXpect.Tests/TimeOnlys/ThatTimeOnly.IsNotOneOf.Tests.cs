@@ -102,6 +102,25 @@ public sealed partial class ThatTimeOnly
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
+
+			[Fact]
+			public async Task Within_WhenValuesWrapAroundMidnight_ShouldFail()
+			{
+				TimeOnly subject = TimeOnly.MinValue;
+				TimeOnly[] unexpected = [new(12, 0), new(23, 59),];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected)
+						.Within(1.Minutes());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of {Formatter.Format(unexpected)} ± 1:00,
+					              but it was 00:00:00.0000000
+					              """)
+					.Because("equality uses the shortest distance around the clock face");
+			}
 		}
 	}
 }
