@@ -218,6 +218,15 @@ await Expect.That(recording).DidNotTriggerPropertyChangedFor(x => x.MyProperty)
   .Because("it should not trigger for the 'MyProperty' property name");
 ```
 
+As defined by the `INotifyPropertyChanged`
+[contract](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged.propertychanged?view=net-10.0#remarks),
+an event that was triggered with a `null` or empty property name notifies that *all* properties changed: it
+satisfies `TriggeredPropertyChangedFor` for every property name and lets `DidNotTriggerPropertyChangedFor`
+fail for every property name. A whitespace-only name is a name like any other.  
+Expecting the `null` or the empty property name itself, e.g. `TriggeredPropertyChangedFor((string?)null)`, matches
+only the events that notify that all properties changed, but no named one - and without distinguishing the two
+spellings, which the contract allows interchangeably.
+
 ## Trimming and Native AOT
 
 A recording has to know the events of its subject and attach a handler to each of them. Reflection provides both
