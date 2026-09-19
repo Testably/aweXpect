@@ -124,6 +124,18 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
+			[Fact]
+			public async Task ForDouble_WhenToleranceIsNaN_ShouldThrowArgumentOutOfRangeException()
+			{
+				async Task Act()
+					=> await That(12.5).IsGreaterThanOrEqualTo(12.0).Within(double.NaN);
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithMessage("Tolerance must not be NaN*").AsWildcard().And
+					.WithParamName("tolerance")
+					.Because("NaN is not a negative tolerance, so it needs its own message");
+			}
+
 			[Theory]
 			[InlineData(12.4f, 12.5f)]
 			[InlineData(12.5f, 12.5f)]
