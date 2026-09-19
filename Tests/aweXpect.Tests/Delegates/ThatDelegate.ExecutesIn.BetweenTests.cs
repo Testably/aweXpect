@@ -48,6 +48,28 @@ public sealed partial class ThatDelegate
 					             but it took 0:*
 					             """).AsWildcard();
 			}
+
+			[Fact]
+			public async Task WhenDelegateThrowsAnException_ShouldFail()
+			{
+				Action @delegate = () =>
+				{
+					Task.Delay(500.Milliseconds()).Wait();
+					throw new MyException();
+				};
+
+				async Task Act()
+					=> await That(@delegate).ExecutesIn().Between(5.Milliseconds()).And(50.Seconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that @delegate
+					              executes in between 0:00.005 and 0:50,
+					              but it did throw a MyException:
+					                {nameof(WhenDelegateThrowsAnException_ShouldFail)}
+					              """)
+					.Because("a crashed delegate must fail even though its duration was inside the range");
+			}
 		}
 	}
 }

@@ -17,6 +17,9 @@ public abstract partial class ThatDelegate
 		/// <summary>
 		///     Verifies that the delegate executes in…
 		/// </summary>
+		/// <remarks>
+		///     A delegate that throws an exception fails the expectation, however fast it did so.
+		/// </remarks>
 		[GuaranteesNotNull]
 		public ExecutesInResult<AndResult<WithValue<T>>> ExecutesIn()
 		{
@@ -31,6 +34,9 @@ public abstract partial class ThatDelegate
 		/// <summary>
 		///     Verifies that the delegate executes in approximately the <paramref name="expected" /> time…
 		/// </summary>
+		/// <remarks>
+		///     A delegate that throws an exception fails the expectation, however fast it did so.
+		/// </remarks>
 		[GuaranteesNotNull]
 		public ExecutesInToleranceResult<AndResult<WithValue<T>>> ExecutesIn(TimeSpan expected)
 		{
@@ -52,6 +58,10 @@ public abstract partial class ThatDelegate
 		{
 			private DelegateValue<T>? _actual;
 
+			/// <inheritdoc cref="ConstraintResult.FailureCause" />
+			public override Exception? FailureCause
+				=> Outcome == Outcome.Failure ? _actual?.Exception : null;
+
 			/// <inheritdoc />
 			public ConstraintResult IsMetBy(DelegateValue<T> value)
 			{
@@ -62,7 +72,9 @@ public abstract partial class ThatDelegate
 					return this;
 				}
 
-				Outcome = options.IsWithinLimit(value.Duration) ? Outcome.Success : Outcome.Failure;
+				Outcome = value.Exception is null && options.IsWithinLimit(value.Duration)
+					? Outcome.Success
+					: Outcome.Failure;
 				return this;
 			}
 
@@ -77,6 +89,16 @@ public abstract partial class ThatDelegate
 				if (_actual?.IsNull != false)
 				{
 					stringBuilder.ItWasNull(it);
+				}
+				else if (_actual.Exception is OperationCanceledException)
+				{
+					stringBuilder.Append(it).Append(" was canceled after ");
+					Formatter.Format(stringBuilder, _actual.Duration);
+				}
+				else if (_actual.Exception is { } exception)
+				{
+					stringBuilder.Append(it).Append(" did throw ");
+					stringBuilder.Append(FormatForMessage(exception, indentation));
 				}
 				else
 				{

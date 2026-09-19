@@ -193,6 +193,9 @@ await Expect.That(Task.Delay(200)).ExecutesIn().Between(100.Milliseconds()).And(
   .Because("the delegate should execute slower than 100ms and faster than 300ms");
 ```
 
+A delegate that throws an exception fails these expectations, however fast it did so: a crash is not a measurement
+of execution time.
+
 ### Execute within
 
 There is also a shorthand expectation for a delegate that finishes the execution without throwing an exception
@@ -204,6 +207,9 @@ await Expect.That(Task.Delay(200)).ExecutesWithin(TimeSpan.FromMilliseconds(300)
 await Expect.That(Task.Delay(200)).DoesNotExecuteWithin(TimeSpan.FromMilliseconds(100))
   .Because("it should take at least 200ms");
 ```
+
+`DoesNotExecuteWithin` is only met by a delegate that runs longer than the given duration *and* completes
+successfully; a thrown exception fails it, too.
 
 The duration of `ExecutesWithin` and of `Throws().Within` is applied as timeout, so that a delegate accepting a
 `CancellationToken` is cancelled once it elapsed. A delegate that does not accept a `CancellationToken` cannot be
