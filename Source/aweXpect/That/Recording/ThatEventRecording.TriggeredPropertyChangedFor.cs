@@ -37,7 +37,7 @@ public static partial class ThatEventRecording
 		TriggerEventFilter filter = new();
 		RepeatedCheckOptions options = new();
 		filter.AddPredicate(
-			o => o.Length > 1 && o[1] is PropertyChangedEventArgs m && m.PropertyName == propertyName,
+			MatchesPropertyName(propertyName),
 			$" for property {propertyName}");
 		return new EventTriggerResult<TSubject>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
@@ -77,7 +77,7 @@ public static partial class ThatEventRecording
 		TriggerEventFilter filter = new();
 		RepeatedCheckOptions options = new();
 		filter.AddPredicate(
-			o => o.Length > 1 && o[1] is PropertyChangedEventArgs m && m.PropertyName == propertyName,
+			MatchesPropertyName(propertyName),
 			$" for property {propertyName}");
 		return new EventTriggerResult<TSubject>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
@@ -89,6 +89,27 @@ public static partial class ThatEventRecording
 			filter,
 			quantifier,
 			options);
+	}
+
+	/// <summary>
+	///     Creates the predicate that matches the recorded <see cref="PropertyChangedEventArgs.PropertyName" />
+	///     against the expected <paramref name="propertyName" />.
+	/// </summary>
+	/// <remarks>
+	///     The <see cref="INotifyPropertyChanged" /> contract declares a recorded <see langword="null" /> or empty
+	///     property name as "all properties changed", so it has to satisfy the expectation for any property. Expecting
+	///     such a name itself matches only this notification, but makes no difference between its two spellings, which
+	///     the contract does not distinguish either.
+	/// </remarks>
+	private static Func<object?[], bool> MatchesPropertyName(string? propertyName)
+	{
+		if (string.IsNullOrEmpty(propertyName))
+		{
+			return o => o.Length > 1 && o[1] is PropertyChangedEventArgs m && string.IsNullOrEmpty(m.PropertyName);
+		}
+
+		return o => o.Length > 1 && o[1] is PropertyChangedEventArgs m &&
+		            (m.PropertyName == propertyName || string.IsNullOrEmpty(m.PropertyName));
 	}
 
 	/// <summary>

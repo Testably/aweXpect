@@ -1,4 +1,5 @@
-﻿using aweXpect.Recording;
+﻿using aweXpect.Core;
+using aweXpect.Recording;
 
 namespace aweXpect.Tests;
 
@@ -8,6 +9,143 @@ public sealed partial class ThatEventRecording
 	{
 		public sealed class Tests
 		{
+			[Fact]
+			public async Task WhenBothAllPropertiesAndNamedEventAreRecorded_ShouldCountBothForThatProperty()
+			{
+				PropertyChangedClass sut = new();
+				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChanged(sut, null);
+				sut.NotifyPropertyChanged(nameof(PropertyChangedClass.MyValue));
+				sut.NotifyPropertyChanged("SomeOtherProperty");
+
+				async Task Act() =>
+					await That(recording).TriggeredPropertyChangedFor(x => x.MyValue).Exactly(2.Times());
+
+				await That(Act).DoesNotThrow()
+					.Because("the notification for all properties changed MyValue, too");
+			}
+
+			[Fact]
+			public async Task WhenBothAllPropertiesAndNamedEventAreRecorded_ShouldCountOnlyAllPropertiesForOtherProperty()
+			{
+				PropertyChangedClass sut = new();
+				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChanged(sut, null);
+				sut.NotifyPropertyChanged(nameof(PropertyChangedClass.MyValue));
+
+				async Task Act() =>
+					await That(recording).TriggeredPropertyChangedFor("SomeOtherProperty").Exactly(1.Times());
+
+				await That(Act).DoesNotThrow()
+					.Because("only the notification for all properties changed the other property");
+			}
+
+			[Fact]
+			public async Task WhenEmptyPropertyNameIsExpected_ShouldMatchNullPropertyName()
+			{
+				PropertyChangedClass sut = new();
+				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChanged(sut, null);
+
+				async Task Act() =>
+					await That(recording).TriggeredPropertyChangedFor("");
+
+				await That(Act).DoesNotThrow()
+					.Because("the contract makes no difference between the two spellings of the all-properties notification");
+			}
+
+			[Fact]
+			public async Task WhenEventIsRecordedWithEmptyPropertyName_ShouldMatchExpressionForAnyProperty()
+			{
+				PropertyChangedClass sut = new();
+				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChanged("");
+
+				async Task Act() =>
+					await That(recording).TriggeredPropertyChangedFor(x => x.MyValue);
+
+				await That(Act).DoesNotThrow()
+					.Because("an empty property name notifies that all properties changed");
+			}
+
+			[Fact]
+			public async Task WhenEventIsRecordedWithEmptyPropertyName_ShouldMatchStringNameOfAnyProperty()
+			{
+				PropertyChangedClass sut = new();
+				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChanged("");
+
+				async Task Act() =>
+					await That(recording).TriggeredPropertyChangedFor("SomeArbitraryProperty");
+
+				await That(Act).DoesNotThrow()
+					.Because("an empty property name notifies that all properties changed");
+			}
+
+			[Fact]
+			public async Task WhenEventIsRecordedWithNullPropertyName_ShouldMatchExpressionForAnyProperty()
+			{
+				PropertyChangedClass sut = new();
+				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChanged(sut, null);
+
+				async Task Act() =>
+					await That(recording).TriggeredPropertyChangedFor(x => x.MyValue);
+
+				await That(Act).DoesNotThrow()
+					.Because("a null property name notifies that all properties changed");
+			}
+
+			[Fact]
+			public async Task WhenEventIsRecordedWithNullPropertyName_ShouldMatchStringNameOfAnyProperty()
+			{
+				PropertyChangedClass sut = new();
+				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChanged(sut, null);
+
+				async Task Act() =>
+					await That(recording).TriggeredPropertyChangedFor("SomeArbitraryProperty");
+
+				await That(Act).DoesNotThrow()
+					.Because("a null property name notifies that all properties changed");
+			}
+
+			[Fact]
+			public async Task WhenEventIsRecordedWithWhitespacePropertyName_ShouldNotMatchOtherProperty()
+			{
+				PropertyChangedClass sut = new()
+				{
+					MyValue = 2,
+				};
+				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChanged(" ");
+
+				async Task Act() =>
+					await That(recording).TriggeredPropertyChangedFor(x => x.MyValue);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that recording
+					             has recorded the PropertyChanged event on sut for property MyValue at least once,
+					             but it was never recorded in [
+					               PropertyChanged(ThatEventRecording.PropertyChangedClass {
+					                   MyValue = 2
+					                 }, PropertyChangedEventArgs {
+					                   PropertyName = " "
+					                 })
+					             ]
+					             """)
+					.Because("only a null or empty name notifies that all properties changed");
+			}
+
 			[Fact]
 			public async Task WhenExpressionIsConvertedPropertyAccess_ShouldUsePropertyName()
 			{
@@ -137,6 +275,21 @@ public sealed partial class ThatEventRecording
 			}
 
 			[Fact]
+			public async Task WhenPropertyNameIsNull_ShouldMatchEventWithEmptyPropertyName()
+			{
+				PropertyChangedClass sut = new();
+				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChanged("");
+
+				async Task Act() =>
+					await That(recording).TriggeredPropertyChangedFor((string?)null);
+
+				await That(Act).DoesNotThrow()
+					.Because("the contract makes no difference between the two spellings of the all-properties notification");
+			}
+
+			[Fact]
 			public async Task WhenPropertyNameIsNull_ShouldMatchEventWithoutPropertyName()
 			{
 				PropertyChangedClass sut = new();
@@ -149,6 +302,35 @@ public sealed partial class ThatEventRecording
 
 				await That(Act).DoesNotThrow()
 					.Because("the explicit string overload remains the way to assert the null property name");
+			}
+
+			[Fact]
+			public async Task WhenPropertyNameIsNull_ShouldNotMatchNamedEvent()
+			{
+				PropertyChangedClass sut = new()
+				{
+					MyValue = 5,
+				};
+				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChanged(nameof(PropertyChangedClass.MyValue));
+
+				async Task Act() =>
+					await That(recording).TriggeredPropertyChangedFor((string?)null);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that recording
+					             has recorded the PropertyChanged event on sut for property  at least once,
+					             but it was never recorded in [
+					               PropertyChanged(ThatEventRecording.PropertyChangedClass {
+					                   MyValue = 5
+					                 }, PropertyChangedEventArgs {
+					                   PropertyName = "MyValue"
+					                 })
+					             ]
+					             """)
+					.Because("a notification for a single property is no notification for all properties");
 			}
 
 			[Fact]
@@ -225,6 +407,35 @@ public sealed partial class ThatEventRecording
 					                 })
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenEventIsTriggeredForAllProperties_ShouldFail()
+			{
+				PropertyChangedClass sut = new()
+				{
+					MyValue = 423,
+				};
+				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChanged(sut, null);
+
+				async Task Act() =>
+					await That(recording).DoesNotComplyWith(n => n.TriggeredPropertyChangedFor(x => x.MyValue));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that recording
+					             has never recorded the PropertyChanged event on sut for property MyValue,
+					             but it was recorded once in [
+					               PropertyChanged(ThatEventRecording.PropertyChangedClass {
+					                   MyValue = 423
+					                 }, PropertyChangedEventArgs {
+					                   PropertyName = <null>
+					                 })
+					             ]
+					             """)
+					.Because("the negation has to be the exact complement of the positive expectation");
 			}
 		}
 	}
