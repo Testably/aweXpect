@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using aweXpect.Equivalency;
 
 // ReSharper disable UnusedMember.Local
@@ -1006,6 +1005,357 @@ public sealed partial class ThatObject
 			}
 		}
 
+		public sealed class EqualsOverrideTests
+		{
+			[Fact]
+			public async Task NestedMemberOverridingEquals_WhenItsMembersDiffer_ShouldFail()
+			{
+				ContainerClass subject = new()
+				{
+					Item = new IdOnlyEqualClass
+					{
+						Id = 1,
+						Name = "Foo",
+					},
+				};
+				ContainerClass expected = new()
+				{
+					Item = new IdOnlyEqualClass
+					{
+						Id = 1,
+						Name = "Bar",
+					},
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to ThatObject.IsEquivalentTo.EqualsOverrideTests.ContainerClass {
+					                 Item = ThatObject.IsEquivalentTo.EqualsOverrideTests.IdOnlyEqualClass {
+					                   Id = 1,
+					                   Name = "Bar"
+					                 }
+					               },
+					             but it was not:
+					               Property Item.Name differed:
+					                    Found: "Foo"
+					                 Expected: "Bar"
+
+					             Equivalency options:
+					              - include public fields and properties
+					             """)
+					.Because("a nested member is compared by its members too");
+			}
+
+			[Fact]
+			public async Task SelfReferencingGraph_WhenMembersDiffer_ShouldFailWithoutInfiniteRecursion()
+			{
+				SelfReferencingClass subject = new()
+				{
+					Name = "Foo",
+				};
+				subject.Self = subject;
+				SelfReferencingClass expected = new()
+				{
+					Name = "Bar",
+				};
+				expected.Self = expected;
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to ThatObject.IsEquivalentTo.EqualsOverrideTests.SelfReferencingClass {
+					                 Name = "Bar",
+					                 Self = ThatObject.IsEquivalentTo.EqualsOverrideTests.SelfReferencingClass { *recursive* }
+					               },
+					             but it was not:
+					               Property Name differed:
+					                    Found: "Foo"
+					                 Expected: "Bar"
+
+					             Equivalency options:
+					              - include public fields and properties
+					             """)
+					.Because("the cycle detection still terminates the walk without help from the equals method");
+			}
+
+			[Fact]
+			public async Task WhenComparedByValueGlobally_AndEqualsReturnsFalse_ShouldFail()
+			{
+				NeverEqualClass subject = new()
+				{
+					Value = 1,
+				};
+				NeverEqualClass expected = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected, o => o with
+					{
+						DefaultComparisonTypeSelector = _ => EquivalencyComparisonType.ByValue,
+					});
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to ThatObject.IsEquivalentTo.EqualsOverrideTests.NeverEqualClass {
+					                 Value = 1
+					               },
+					             but it was not:
+					               It differed:
+					                    Found: ThatObject.IsEquivalentTo.EqualsOverrideTests.NeverEqualClass { Value = 1 }
+					                 Expected: ThatObject.IsEquivalentTo.EqualsOverrideTests.NeverEqualClass { Value = 1 }
+
+					             Equivalency options:
+					              - include public fields and properties
+					             """)
+					.Because("by value the equals method decides, so a type that never equals is rejected");
+			}
+
+			[Fact]
+			public async Task WhenComparedWithItself_ShouldSucceed()
+			{
+				NeverEqualClass subject = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(subject);
+
+				await That(Act).DoesNotThrow()
+					.Because("every member of an instance equals itself, whatever its equals method claims");
+			}
+
+			[Fact]
+			public async Task WhenEqualsAlwaysReturnsFalse_AndMembersAreEqual_ShouldSucceed()
+			{
+				NeverEqualClass subject = new()
+				{
+					Value = 1,
+				};
+				NeverEqualClass expected = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).DoesNotThrow()
+					.Because("the equals method is ignored when the type is compared by members");
+			}
+
+			[Fact]
+			public async Task WhenEqualsAlwaysReturnsTrue_AndMembersDiffer_ShouldFail()
+			{
+				AlwaysEqualClass subject = new()
+				{
+					Value = 1,
+				};
+				AlwaysEqualClass expected = new()
+				{
+					Value = 2,
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to ThatObject.IsEquivalentTo.EqualsOverrideTests.AlwaysEqualClass {
+					                 Value = 2
+					               },
+					             but it was not:
+					               Property Value differed:
+					                    Found: 1
+					                 Expected: 2
+
+					             Equivalency options:
+					              - include public fields and properties
+					             """)
+					.Because("a type that claims to be always equal must not overrule its differing members");
+			}
+
+			[Fact]
+			public async Task WhenEqualsComparesTheIdOnly_AndOtherMembersDiffer_ShouldFail()
+			{
+				IdOnlyEqualClass subject = new()
+				{
+					Id = 1,
+					Name = "Foo",
+				};
+				IdOnlyEqualClass expected = new()
+				{
+					Id = 1,
+					Name = "Bar",
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to ThatObject.IsEquivalentTo.EqualsOverrideTests.IdOnlyEqualClass {
+					                 Id = 1,
+					                 Name = "Bar"
+					               },
+					             but it was not:
+					               Property Name differed:
+					                    Found: "Foo"
+					                 Expected: "Bar"
+
+					             Equivalency options:
+					              - include public fields and properties
+					             """)
+					.Because("an identity based equals method no longer hides the differing members");
+			}
+
+			[Fact]
+			public async Task WhenEqualsComparesTheIdOnly_AndTypeIsComparedByValue_ShouldSucceed()
+			{
+				IdOnlyEqualClass subject = new()
+				{
+					Id = 1,
+					Name = "Foo",
+				};
+				IdOnlyEqualClass expected = new()
+				{
+					Id = 1,
+					Name = "Bar",
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected, o => o
+						.For<IdOnlyEqualClass>(x => x with
+						{
+							ComparisonType = EquivalencyComparisonType.ByValue,
+						}));
+
+				await That(Act).DoesNotThrow()
+					.Because("comparing the type by value is the explicit way to ask for its equals semantics");
+			}
+
+			[Fact]
+			public async Task WhenEqualsThrows_AndTypeIsComparedByMembers_ShouldCompareTheMembers()
+			{
+				ThrowingOnEqualsClass subject = new()
+				{
+					Value = 1,
+				};
+				ThrowingOnEqualsClass expected = new()
+				{
+					Value = 2,
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to ThatObject.IsEquivalentTo.EqualsOverrideTests.ThrowingOnEqualsClass {
+					                 Value = 2
+					               },
+					             but it was not:
+					               Property Value differed:
+					                    Found: 1
+					                 Expected: 2
+
+					             Equivalency options:
+					              - include public fields and properties
+					             """)
+					.Because("the equals method is never called when the type is compared by members");
+			}
+
+			[Fact]
+			public async Task WhenEqualsThrows_AndTypeIsComparedByValue_ShouldThrowInvalidOperationException()
+			{
+				ThrowingOnEqualsClass subject = new()
+				{
+					Value = 1,
+				};
+				ThrowingOnEqualsClass expected = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected, o => o
+						.For<ThrowingOnEqualsClass>(x => x with
+						{
+							ComparisonType = EquivalencyComparisonType.ByValue,
+						}));
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage(
+						"*The equals method of ThatObject.IsEquivalentTo.EqualsOverrideTests.ThrowingOnEqualsClass threw an NotSupportedException:*")
+					.AsWildcard();
+			}
+
+			private sealed class AlwaysEqualClass
+			{
+				public int Value { get; set; }
+
+				public override bool Equals(object? obj) => obj is AlwaysEqualClass;
+
+				public override int GetHashCode() => 0;
+			}
+
+			private sealed class ContainerClass
+			{
+				public IdOnlyEqualClass? Item { get; set; }
+			}
+
+			private sealed class IdOnlyEqualClass
+			{
+				public int Id { get; set; }
+				public string? Name { get; set; }
+
+				public override bool Equals(object? obj) => obj is IdOnlyEqualClass other && other.Id == Id;
+
+				public override int GetHashCode() => Id;
+			}
+
+			private sealed class NeverEqualClass
+			{
+				public int Value { get; set; }
+
+				public override bool Equals(object? obj) => false;
+
+				public override int GetHashCode() => 0;
+			}
+
+			private sealed class SelfReferencingClass
+			{
+				public string? Name { get; set; }
+				public SelfReferencingClass? Self { get; set; }
+
+				public override bool Equals(object? obj) => obj is SelfReferencingClass;
+
+				public override int GetHashCode() => 0;
+			}
+
+			private sealed class ThrowingOnEqualsClass
+			{
+				public int Value { get; set; }
+
+				public override bool Equals(object? obj) => throw new NotSupportedException("no equality here");
+
+				public override int GetHashCode() => 0;
+			}
+		}
+
 		public sealed class FieldTests
 		{
 			[Theory]
@@ -1273,22 +1623,6 @@ public sealed partial class ThatObject
 					               """);
 			}
 
-			[Fact]
-			public async Task
-				WhenTypesThrowExceptionDuringEquals_ShouldThrowInvalidOperationExceptionWithCorrespondingMessage()
-			{
-				MyClassThrowingOnEqualsCheck subject = new();
-				MyClassThrowingOnEqualsCheck expected = new();
-
-				async Task Act()
-					=> await That(subject).IsEquivalentTo(expected);
-
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage(
-						"*The equals method of ThatObject.IsEquivalentTo.PropertyTests.MyClassThrowingOnEqualsCheck threw an ArgumentNullException:*")
-					.AsWildcard();
-			}
-
 			[Theory]
 			[InlineData(0, 0, 0, true)]
 			[InlineData(0, 0, 1, true)]
@@ -1414,26 +1748,6 @@ public sealed partial class ThatObject
 				internal int InternalValue { get; set; } = internalValue;
 				private int PrivateValue { get; set; } = privateValue;
 				public int PublicValue { get; set; } = publicValue;
-			}
-
-			private sealed class MyClassThrowingOnEqualsCheck(List<int>? values = null)
-			{
-				public List<int>? Values { get; } = values;
-
-				public override bool Equals(object? obj) => Equals(obj as MyClassThrowingOnEqualsCheck);
-
-				private bool Equals(MyClassThrowingOnEqualsCheck? other)
-				{
-					if (other is null)
-					{
-						return false;
-					}
-
-					// Throws an exception when the Values list is null
-					return Values!.SequenceEqual(other.Values!);
-				}
-
-				public override int GetHashCode() => Values != null ? Values.GetHashCode() : 0;
 			}
 		}
 
