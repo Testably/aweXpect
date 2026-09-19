@@ -79,6 +79,19 @@ public sealed class PrecedenceTests
 		}
 
 		[Fact]
+		public async Task T_and_T_or_X_ShouldNotEvaluateX()
+		{
+			bool isEvaluated = false;
+
+			async Task Act()
+				=> await That(true).IsTrue().And.IsTrue().Or.Satisfies(_ => isEvaluated = true);
+
+			await That(Act).DoesNotThrow();
+			await That(isEvaluated).IsFalse()
+				.Because("`And` binds tighter than `Or`, so the whole left branch already succeeded");
+		}
+
+		[Fact]
 		public async Task T_or_T_and_F_ShouldSucceed()
 		{
 			async Task Act()
