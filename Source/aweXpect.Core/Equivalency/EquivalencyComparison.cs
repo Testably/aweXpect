@@ -49,6 +49,14 @@ public static partial class EquivalencyComparison
 		///     second, independent path is still compared against its own expected counterpart.
 		/// </remarks>
 		public HashSet<ComparedPair> ComparedPairs { get; } = [];
+
+		/// <summary>
+		///     The number of nested comparisons on the current path.
+		/// </summary>
+		/// <remarks>
+		///     Counted per path and not globally, so that two members on the same level are both at the same depth.
+		/// </remarks>
+		public int Depth { get; set; }
 	}
 
 	private readonly struct ComparedPair : IEquatable<ComparedPair>

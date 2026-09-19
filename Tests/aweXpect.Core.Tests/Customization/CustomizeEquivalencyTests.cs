@@ -44,6 +44,42 @@ public sealed class CustomizeEquivalencyTests
 	}
 
 	[Fact]
+	public async Task SetMaxRecursionDepth_ShouldApplyOptionsWithinScope()
+	{
+		NestedNode actual = new(3);
+		NestedNode expected = new(3);
+
+		async Task Act()
+			=> await That(actual).IsEquivalentTo(expected);
+
+		await That(Act).DoesNotThrow();
+
+		using (IDisposable __ = Customize.aweXpect.Equivalency().DefaultEquivalencyOptions.Set(new EquivalencyOptions
+		       {
+			       MaxRecursionDepth = 2,
+		       }))
+		{
+			await That(Act).Throws()
+				.WithMessage("""
+				             Expected that actual
+				             is equivalent to CustomizeEquivalencyTests.NestedNode {
+				                 Inner = CustomizeEquivalencyTests.NestedNode {
+				                   Inner = CustomizeEquivalencyTests.NestedNode {
+				                     Inner = <null>
+				                   }
+				                 }
+				               },
+				             but it was not:
+				               Property Inner.Inner exceeded the maximum recursion depth of 2
+
+				             Equivalency options:
+				              - include public fields and properties
+				              - limit the recursion depth to 2
+				             """);
+		}
+	}
+
+	[Fact]
 	public async Task ShouldChangeIndividualProperties()
 	{
 		await That(Customize.aweXpect.Equivalency().DefaultEquivalencyOptions.Get().IgnoreCollectionOrder)
@@ -60,5 +96,13 @@ public sealed class CustomizeEquivalencyTests
 
 		await That(Customize.aweXpect.Equivalency().DefaultEquivalencyOptions.Get().IgnoreCollectionOrder)
 			.IsFalse();
+	}
+
+	/// <remarks>
+	///     Builds a chain of <paramref name="depth" /> nodes, so a comparison recurses exactly that many levels.
+	/// </remarks>
+	private sealed class NestedNode(int depth)
+	{
+		public NestedNode? Inner { get; } = depth > 1 ? new NestedNode(depth - 1) : null;
 	}
 }

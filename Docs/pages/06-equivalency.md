@@ -73,6 +73,8 @@ By default, equivalency:
 - Respects collection **order** when comparing `IEnumerable<T>`.
 - Detects cyclic references so two graphs that reference themselves do not cause infinite recursion. An instance
   that is referenced more than once is still compared against each of its expected counterparts.
+- Stops at a recursion depth of 100 nested objects and fails the comparison, instead of overflowing the stack (see
+  [Limiting the recursion depth](#limiting-the-recursion-depth)).
 - Honours `IEqualityComparer` if either side implements it — that comparer wins over the structural walk.
 - Throws an `InvalidOperationException` when a type has no members to compare, instead of succeeding without
   verifying anything. Either include the relevant members, compare the type
@@ -188,6 +190,31 @@ await Expect.That(album).IsEquivalentTo(expected, o => o with
     : EquivalencyDefaults.DefaultComparisonType(type),
 });
 ```
+
+### Limiting the recursion depth
+
+Equivalency walks nested objects recursively, so a graph that is deep enough would overflow the stack and take the
+whole test process with it. The comparison therefore stops after 100 nested objects on a single path and reports the
+member path at which the limit was hit — shown here with the limit lowered to 3:
+
+```
+Expected that subject
+is equivalent to Node { … },
+but it was not:
+  Property Next.Next.Next exceeded the maximum recursion depth of 3
+```
+
+The depth is counted per path, so two members on the same level are both at the same depth, and members that are
+compared [by value](#comparing-by-value-or-by-members) do not add to it. A cyclic reference is caught by the cycle
+detection and never reaches the limit.
+
+Set `MaxRecursionDepth` to raise or lower the limit:
+
+```csharp
+await Expect.That(album).IsEquivalentTo(expected, o => o with { MaxRecursionDepth = 500 });
+```
+
+A limit other than the default is listed in the failure message under `Equivalency options:`.
 
 ### Customizing the global defaults
 

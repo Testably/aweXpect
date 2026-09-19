@@ -66,6 +66,21 @@ public static partial class EquivalencyComparison
 		failureBuilder.Append("       Found: ");
 	}
 
+	private static void AppendMaxRecursionDepthExceeded(StringBuilder failureBuilder, MemberType memberType,
+		string memberPath, int maxRecursionDepth)
+	{
+		failureBuilder.AppendLine();
+		if (failureBuilder.Length > 2)
+		{
+			failureBuilder.AppendLine("and");
+		}
+
+		failureBuilder.Append("  ");
+		failureBuilder.Append(GetMemberPath(memberType, memberPath));
+		failureBuilder.Append(" exceeded the maximum recursion depth of ");
+		failureBuilder.Append(maxRecursionDepth);
+	}
+
 	private static string ConcatMemberPath(string memberPath, string memberName)
 	{
 		if (string.IsNullOrEmpty(memberPath))
@@ -173,8 +188,16 @@ public static partial class EquivalencyComparison
 			return true;
 		}
 
+		context.Depth++;
 		try
 		{
+			if (context.Depth > equivalencyOptions.MaxRecursionDepth)
+			{
+				AppendMaxRecursionDepthExceeded(failureBuilder, memberType, memberPath,
+					equivalencyOptions.MaxRecursionDepth);
+				return false;
+			}
+
 			try
 			{
 				if (actual.Equals(expected))
@@ -207,6 +230,7 @@ public static partial class EquivalencyComparison
 		}
 		finally
 		{
+			context.Depth--;
 			context.ComparedPairs.Remove(comparedPair);
 		}
 	}

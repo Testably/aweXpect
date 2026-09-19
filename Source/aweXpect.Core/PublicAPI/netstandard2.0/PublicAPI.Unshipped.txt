@@ -1,3 +1,5 @@
 #nullable enable
 aweXpect.Core.ReflectionFallback
 static aweXpect.Core.ReflectionFallback.IsSupported.get -> bool
+aweXpect.Equivalency.EquivalencyOptions.MaxRecursionDepth.get -> int
+aweXpect.Equivalency.EquivalencyOptions.MaxRecursionDepth.init -> void
