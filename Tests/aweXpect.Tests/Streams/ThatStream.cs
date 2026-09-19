@@ -50,4 +50,49 @@ public sealed partial class ThatStream
 		public override void Write(byte[] buffer, int offset, int count)
 			=> throw new NotSupportedException();
 	}
+
+	/// <summary>
+	///     A <see cref="Stream" /> which cannot tell its length or position, like a non-seekable or a broken stream.
+	/// </summary>
+	public sealed class UnreadableStream(Exception exception) : Stream
+	{
+		/// <inheritdoc />
+		public override bool CanRead => false;
+
+		/// <inheritdoc />
+		public override bool CanSeek => false;
+
+		/// <inheritdoc />
+		public override bool CanWrite => false;
+
+		/// <inheritdoc />
+		public override long Length => throw exception;
+
+		/// <inheritdoc />
+		public override long Position
+		{
+			get => throw exception;
+			set => throw exception;
+		}
+
+		/// <inheritdoc />
+		public override void Flush()
+			=> throw new NotSupportedException();
+
+		/// <inheritdoc />
+		public override int Read(byte[] buffer, int offset, int count)
+			=> throw new NotSupportedException();
+
+		/// <inheritdoc />
+		public override long Seek(long offset, SeekOrigin origin)
+			=> throw new NotSupportedException();
+
+		/// <inheritdoc />
+		public override void SetLength(long value)
+			=> throw new NotSupportedException();
+
+		/// <inheritdoc />
+		public override void Write(byte[] buffer, int offset, int count)
+			=> throw new NotSupportedException();
+	}
 }

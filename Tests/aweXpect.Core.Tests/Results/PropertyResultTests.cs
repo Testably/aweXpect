@@ -143,6 +143,21 @@ public sealed partial class PropertyResultTests
 			ExpectationGrammars grammars)
 			=> new(source, a => a?.LongValue, "long value", grammars: grammars);
 
+		/// <summary>
+		///     The mapper throws the <paramref name="exception" />, which is the shape of a property that cannot be read,
+		///     e.g. the length of a disposed stream.
+		/// </summary>
+		public static PropertyResult.Long<MyClass?> HasThrowingLongValue(Exception exception,
+			Func<Exception, bool>? isExpectedPropertyException = null)
+		{
+			MyClass subject = new();
+#pragma warning disable aweXpect0001
+			IThat<MyClass> source = That(subject);
+#pragma warning restore aweXpect0001
+			return new PropertyResult.Long<MyClass?>(source, _ => throw exception, "long value", null,
+				isExpectedPropertyException);
+		}
+
 		public static StringProperty HasStringValue(string stringValue,
 			ExpectationGrammars grammars = ExpectationGrammars.None)
 		{

@@ -86,6 +86,39 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Fact]
+		public async Task EqualTo_WhenReadingThePropertyThrowsAnExpectedException_ShouldFail()
+		{
+			PropertyResult.Long<MyClass?> sut =
+				MyClass.HasThrowingLongValue(new InvalidOperationException("foo"), _ => true);
+
+			async Task Act()
+				=> await sut.EqualTo(42L);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has long value equal to 42,
+				             but it could not read the long value, because it did throw an InvalidOperationException:
+				               foo
+				             """)
+				.Because("a property that the caller declared unreadable fails the expectation");
+		}
+
+		[Fact]
+		public async Task EqualTo_WhenReadingThePropertyThrowsAnUnexpectedException_ShouldThrowTheWrappedException()
+		{
+			PropertyResult.Long<MyClass?> sut =
+				MyClass.HasThrowingLongValue(new InvalidOperationException("foo"), _ => false);
+
+			async Task Act()
+				=> await sut.EqualTo(42L);
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("Error evaluating*constraint with value*foo").AsWildcard()
+				.Because("an undeclared exception remains a defect");
+		}
+
+		[Fact]
 		public async Task GreaterThan_ShouldTriggerValidation()
 		{
 			Signaler<long?> signal = new();
@@ -203,6 +236,25 @@ public sealed partial class PropertyResultTests
 			MyClass? result = await sut.NotEqualTo(41L);
 
 			await That(result?.LongValue).IsEqualTo(42L);
+		}
+
+		[Fact]
+		public async Task NotEqualTo_WhenReadingThePropertyThrowsAnExpectedException_ShouldFail()
+		{
+			PropertyResult.Long<MyClass?> sut =
+				MyClass.HasThrowingLongValue(new InvalidOperationException("foo"), _ => true);
+
+			async Task Act()
+				=> await sut.NotEqualTo(42L);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has long value not equal to 42,
+				             but it could not read the long value, because it did throw an InvalidOperationException:
+				               foo
+				             """)
+				.Because("a property that was never read cannot prove inequality either");
 		}
 
 		public sealed class GrammarTests
