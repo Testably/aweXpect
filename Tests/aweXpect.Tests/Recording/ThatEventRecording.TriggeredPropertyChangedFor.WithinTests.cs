@@ -1,4 +1,5 @@
-﻿using aweXpect.Core;
+﻿using System.Threading;
+using aweXpect.Core;
 using aweXpect.Recording;
 
 namespace aweXpect.Tests;
@@ -15,14 +16,16 @@ public sealed partial class ThatEventRecording
 				PropertyChangedClass sut = new();
 
 				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
+				using CancellationTokenSource cts = new();
+				CancellationToken token = cts.Token;
 
-				_ = Task.Delay(2000.Milliseconds())
+				_ = Task.Delay(2000.Milliseconds(), token)
 					.ContinueWith(_ =>
 					{
 						sut.NotifyPropertyChanged(nameof(PropertyChangedClass.MyValue));
 						sut.NotifyPropertyChanged(nameof(PropertyChangedClass.MyValue));
 						sut.NotifyPropertyChanged(nameof(PropertyChangedClass.MyValue));
-					});
+					}, token);
 
 				async Task Act() =>
 					await That(recording).TriggeredPropertyChangedFor(x => x.MyValue)
@@ -35,6 +38,7 @@ public sealed partial class ThatEventRecording
 					             has recorded the PropertyChanged event on sut for property MyValue at least 3 times within 0:00.010,
 					             but it was never recorded in [] within 0:*
 					             """).AsWildcard();
+				cts.Cancel();
 			}
 
 			[Fact]

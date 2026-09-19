@@ -1,4 +1,5 @@
-﻿using aweXpect.Recording;
+﻿using System.Threading;
+using aweXpect.Recording;
 
 namespace aweXpect.Tests;
 
@@ -13,15 +14,18 @@ public sealed partial class ThatEventRecording
 			{
 				CustomEventWithoutParametersClass sut = new();
 				IEventRecording<CustomEventWithoutParametersClass> recording = sut.Record().Events();
+				using CancellationTokenSource cts = new();
+				CancellationToken token = cts.Token;
 
-				_ = Task.Delay(2000.Milliseconds())
-					.ContinueWith(_ => sut.NotifyCustomEvent());
+				_ = Task.Delay(2000.Milliseconds(), token)
+					.ContinueWith(_ => sut.NotifyCustomEvent(), token);
 
 				async Task Act() =>
 					await That(recording).DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent))
 						.Within(10.Milliseconds());
 
 				await That(Act).DoesNotThrow();
+				cts.Cancel();
 			}
 
 			[Fact]

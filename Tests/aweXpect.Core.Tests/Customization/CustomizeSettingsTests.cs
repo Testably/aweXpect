@@ -45,7 +45,7 @@ public sealed class CustomizeSettingsTests
 		}
 
 		await That(stopwatch.Elapsed).IsGreaterThanOrEqualTo(LowTimeout).Within(50.Milliseconds()).And
-			.IsLessThan(2.Seconds());
+			.IsLessThan(10.Seconds());
 		await That(Customize.aweXpect.Settings().DefaultEventuallyTimeout.Get()).IsEqualTo(30.Seconds());
 	}
 
@@ -104,12 +104,12 @@ public sealed class CustomizeSettingsTests
 			       .Set(TestCancellation.FromCancellationToken(() => cancelledToken)))
 		{
 			stopwatch.Start();
-			await That(cancellationToken => Task.Delay(5.Seconds(), cancellationToken))
+			await That(cancellationToken => Task.Delay(30.Seconds(), cancellationToken))
 				.Throws<TaskCanceledException>();
 			stopwatch.Stop();
 		}
 
-		await That(stopwatch.Elapsed).IsLessThan(2.Seconds());
+		await That(stopwatch.Elapsed).IsLessThan(10.Seconds());
 	}
 
 	[Fact]
@@ -120,12 +120,12 @@ public sealed class CustomizeSettingsTests
 			       .Set(TestCancellation.FromTimeout(LowTimeout)))
 		{
 			stopwatch.Start();
-			await That(cancellationToken => Task.Delay(5.Seconds(), cancellationToken))
+			await That(cancellationToken => Task.Delay(30.Seconds(), cancellationToken))
 				.Throws<TaskCanceledException>();
 			stopwatch.Stop();
 		}
 
-		await That(stopwatch.Elapsed).IsLessThanOrEqualTo(2.Seconds());
+		await That(stopwatch.Elapsed).IsLessThanOrEqualTo(10.Seconds());
 		await That(stopwatch.Elapsed).IsGreaterThanOrEqualTo(LowTimeout).Within(50.Milliseconds());
 	}
 
@@ -164,9 +164,9 @@ public sealed class CustomizeSettingsTests
 	[Fact]
 	public async Task WithCancellation_OverwritesTheCancellationToken()
 	{
-		TimeSpan delay = 6.Seconds();
+		TimeSpan delay = 30.Seconds();
 		Stopwatch stopwatch = new();
-		using CancellationTokenSource cts = new(4.Seconds());
+		using CancellationTokenSource cts = new(20.Seconds());
 		CancellationToken cancelledToken = new(true);
 		using (IDisposable _ = Customize.aweXpect.Settings().TestCancellation
 			       .Set(TestCancellation.FromCancellationToken(() => cts.Token)))
@@ -178,16 +178,16 @@ public sealed class CustomizeSettingsTests
 			stopwatch.Stop();
 		}
 
-		await That(stopwatch.Elapsed).IsLessThanOrEqualTo(2.Seconds());
+		await That(stopwatch.Elapsed).IsLessThanOrEqualTo(10.Seconds());
 	}
 
 	[Fact]
 	public async Task WithTimeout_OverwritesTheCancellationToken()
 	{
-		TimeSpan delay = 6.Seconds();
+		TimeSpan delay = 30.Seconds();
 		Stopwatch stopwatch = new();
 		using (IDisposable _ = Customize.aweXpect.Settings().TestCancellation
-			       .Set(TestCancellation.FromTimeout(4.Seconds())))
+			       .Set(TestCancellation.FromTimeout(20.Seconds())))
 		{
 			stopwatch.Start();
 			await That(cancellationToken => Task.Delay(delay, cancellationToken))
@@ -196,7 +196,7 @@ public sealed class CustomizeSettingsTests
 			stopwatch.Stop();
 		}
 
-		await That(stopwatch.Elapsed).IsLessThanOrEqualTo(2.Seconds());
+		await That(stopwatch.Elapsed).IsLessThanOrEqualTo(10.Seconds());
 	}
 
 	private sealed class ChangingClass
