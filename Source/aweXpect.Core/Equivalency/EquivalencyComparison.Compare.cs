@@ -167,35 +167,48 @@ public static partial class EquivalencyComparison
 			return CompareByValue(actual, expected, failureBuilder, memberPath, memberType);
 		}
 
+		ComparedPair comparedPair = new(actual, expected);
+		if (!context.ComparedPairs.Add(comparedPair))
+		{
+			return true;
+		}
+
 		try
 		{
-			if (!context.ComparedObjects.Add(actual) || actual.Equals(expected))
+			try
 			{
-				return true;
+				if (actual.Equals(expected))
+				{
+					return true;
+				}
 			}
-		}
-		catch (Exception exception)
-		{
-			throw new InvalidOperationException(
-					$"The equals method of {Formatter.Format(actual.GetType())} threw an {Formatter.Format(exception.GetType())}: {exception.Message}",
-					exception)
-				.LogTrace();
-		}
+			catch (Exception exception)
+			{
+				throw new InvalidOperationException(
+						$"The equals method of {Formatter.Format(actual.GetType())} threw an {Formatter.Format(exception.GetType())}: {exception.Message}",
+						exception)
+					.LogTrace();
+			}
 
-		if (actual is IDictionary actualDictionary && expected is IDictionary expectedDictionary)
-		{
-			return await CompareDictionaries(actualDictionary, expectedDictionary, failureBuilder, memberPath,
+			if (actual is IDictionary actualDictionary && expected is IDictionary expectedDictionary)
+			{
+				return await CompareDictionaries(actualDictionary, expectedDictionary, failureBuilder, memberPath,
+					equivalencyOptions, typeOptions, context);
+			}
+
+			if (actual is IEnumerable actualEnumerable && expected is IEnumerable expectedEnumerable)
+			{
+				return await CompareEnumerables(actualEnumerable, expectedEnumerable, failureBuilder, memberPath,
+					equivalencyOptions, typeOptions, context);
+			}
+
+			return await CompareObjects(actual, expected, failureBuilder, memberType, memberPath,
 				equivalencyOptions, typeOptions, context);
 		}
-
-		if (actual is IEnumerable actualEnumerable && expected is IEnumerable expectedEnumerable)
+		finally
 		{
-			return await CompareEnumerables(actualEnumerable, expectedEnumerable, failureBuilder, memberPath,
-				equivalencyOptions, typeOptions, context);
+			context.ComparedPairs.Remove(comparedPair);
 		}
-
-		return await CompareObjects(actual, expected, failureBuilder, memberType, memberPath,
-			equivalencyOptions, typeOptions, context);
 	}
 
 #if NET8_0_OR_GREATER
