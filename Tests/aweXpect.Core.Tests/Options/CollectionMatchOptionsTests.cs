@@ -144,6 +144,140 @@ public class CollectionMatchOptionsTests
 		}
 	}
 
+	public class RestartedMatchTests
+	{
+		[Fact]
+		public async Task
+			WhenTheMatchRestartsAfterAnInterruptedPartialMatch_ShouldReportTheAbandonedItemsAtTheirOwnIndex()
+		{
+			int[] subject = [1, 2, 5, 2, 2, 3,];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo([2, 3,]);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection [2, 3,] in order,
+				             but it
+				               contained item 5 at index 2 instead of 3 and
+				               contained item 1 at index 0 that was not expected and
+				               contained item 2 at index 1 that was not expected and
+				               contained item 2 at index 3 that was not expected
+
+				             Collection:
+				             [1, 2, 5, 2, 2, 3]
+
+				             Expected:
+				             [2, 3]
+				             """);
+		}
+
+		[Fact]
+		public async Task WhenTheMatchRestartsAfterAPartialMatch_ShouldBeContained()
+		{
+			int[] subject = [1, 2, 2, 3,];
+
+			async Task Act()
+				=> await That(subject).Contains([2, 3,]);
+
+			await That(Act).DoesNotThrow();
+		}
+
+		[Fact]
+		public async Task WhenTheMatchRestartsAfterAPartialMatch_ShouldNotBeContainedIn()
+		{
+			int[] subject = [1, 2, 2, 3,];
+
+			async Task Act()
+				=> await That(subject).IsContainedIn([2, 3,]);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is contained in collection [2, 3,] in order,
+				             but it
+				               contained item 1 at index 0 that was not expected and
+				               contained item 2 at index 1 that was not expected
+
+				             Collection:
+				             [1, 2, 2, 3]
+
+				             Expected:
+				             [2, 3]
+				             """);
+		}
+
+		[Fact]
+		public async Task WhenTheMatchRestartsAfterAPartialMatch_ShouldNotBeEqual()
+		{
+			int[] subject = [1, 2, 2, 3,];
+
+			async Task Act()
+				=> await That(subject).IsNotEqualTo([2, 3,]);
+
+			await That(Act).DoesNotThrow();
+		}
+
+		[Fact]
+		public async Task WhenTheMatchRestartsAfterAPartialMatch_ShouldReportTheAbandonedItemsAsAdditional()
+		{
+			int[] subject = [1, 2, 2, 3,];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo([2, 3,]);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection [2, 3,] in order,
+				             but it
+				               contained item 1 at index 0 that was not expected and
+				               contained item 2 at index 1 that was not expected
+
+				             Collection:
+				             [1, 2, 2, 3]
+
+				             Expected:
+				             [2, 3]
+				             """);
+		}
+
+		[Fact]
+		public async Task
+			WhenTheMatchRestartsAfterAPartialMatchIgnoringDuplicates_ShouldReportTheAbandonedItemsAsAdditional()
+		{
+			string[] subject = ["x", "a", "A", "b",];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo(["a", "b",]).IgnoringDuplicates().IgnoringCase();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection ["a", "b",] in order ignoring duplicates ignoring case,
+				             but it
+				               contained item "x" at index 0 that was not expected and
+				               contained item "a" at index 1 that was not expected
+
+				             Collection:
+				             [
+				               "x",
+				               "a",
+				               "A",
+				               "b"
+				             ]
+
+				             Expected:
+				             [
+				               "a",
+				               "b"
+				             ]
+				             """);
+		}
+	}
+
+
 	public class EquivalenceRelationsTests
 	{
 		[Fact]
