@@ -16,6 +16,10 @@ public static partial class ThatDelegateThrows
 	/// <remarks>
 	///     Recursively applies the expectations on the <see cref="Exception.InnerException" /> (if not <see langword="null" />
 	///     and for <see cref="AggregateException" /> also on the <see cref="AggregateException.InnerExceptions" />.
+	///     <para />
+	///     An exception without any inner exception fails a quantifier that an empty collection satisfies without
+	///     stating anything (<c>All()</c>), but still satisfies the quantifiers that state an upper bound
+	///     (e.g. <c>None()</c> or <c>AtMost(2)</c>).
 	/// </remarks>
 	public static AndOrResult<TException?, ThatDelegateThrows<TException>> WithRecursiveInnerExceptions<TException>(
 		this ThatDelegateThrows<TException> subject,
