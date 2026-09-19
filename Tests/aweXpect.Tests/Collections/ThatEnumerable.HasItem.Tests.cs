@@ -386,6 +386,20 @@ public sealed partial class ThatEnumerable
 		public sealed class StringItemTests
 		{
 			[Fact]
+			public async Task AsPrefix_WhenExpectedIsEmpty_ShouldThrowArgumentException()
+			{
+				IEnumerable<string?> subject = ["foo", "bar", "baz",];
+
+				async Task Act()
+					=> await That(subject).HasItem("").AsPrefix().AtIndex(1);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'expected' prefix cannot be empty.").AsPrefix().And
+					.WithParamName("expected")
+					.Because("every item starts with the empty string, so the expectation says nothing");
+			}
+
+			[Fact]
 			public async Task AsPrefix_WhenItemDoesNotStartWithExpected_ShouldFail()
 			{
 				IEnumerable<string?> subject = ["foo", "bar", "baz",];

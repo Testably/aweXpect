@@ -36,6 +36,35 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
+			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
+			{
+				string subject = "some text";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo("").AsPrefix();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'expected' prefix cannot be empty.").AsPrefix().And
+					.WithParamName("expected")
+					.Because("every subject starts with the empty string, so the expectation says nothing");
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsEmptyAfterTheLeadingWhiteSpaceIsIgnored_ShouldThrowArgumentException()
+			{
+				string subject = "some text";
+				string expected = " \t ";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).AsPrefix().IgnoringLeadingWhiteSpace();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'expected' prefix cannot be empty.").AsPrefix().And
+					.WithParamName("expected")
+					.Because("the compared prefix is the normalized one, which every subject starts with");
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				string subject = "some text";
@@ -182,6 +211,20 @@ public sealed partial class ThatString
 
 		public sealed class AsPrefixNegatedTests
 		{
+			[Fact]
+			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
+			{
+				string subject = "some text";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsEqualTo("").AsPrefix());
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'expected' prefix cannot be empty.").AsPrefix().And
+					.WithParamName("expected")
+					.Because("the negated expectation is just as meaningless as the positive one");
+			}
+
 			[Fact]
 			public async Task WhenStringEndsWithExpected_ShouldFail()
 			{
