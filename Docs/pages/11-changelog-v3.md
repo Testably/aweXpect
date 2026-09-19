@@ -97,7 +97,9 @@ A `DateTime` with `DateTimeKind.Utc` and one with `DateTimeKind.Local` describe 
 ticks. `IsEqualTo` already failed for such a pair; now the ordering expectations (`IsAfter`, `IsBefore`,
 `IsOnOrAfter`, `IsOnOrBefore`, `IsBetween`) fail as well, in their negated form too, `IsOneOf` ignores an expected
 value with the other kind, and `IsInAscendingOrder` / `IsInDescendingOrder` fail for a `DateTime` collection that
-mixes both kinds unless you specify a comparer. `DateTimeKind.Unspecified` is compatible with both kinds. See
+mixes both kinds unless you specify a comparer. Comparing a `DateTime` as a value honours the kind as well, so a
+collection expectation such as `IsEqualTo` or `Contains`, and `IsEquivalentTo` for a `DateTime` member, no longer
+match two values that differ only in their kind. `DateTimeKind.Unspecified` is compatible with both kinds. See
 [DateTime / DateTimeOffset](/docs/expectations/common-types/datetime-offset#kind).
 
 ## Equivalency

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Core.Helpers;
 #if NET8_0_OR_GREATER
 using System.Numerics;
 #else
@@ -35,6 +36,11 @@ internal static class ObjectEqualityOptions
 				return ValueTask.FromResult(false);
 			}
 
+			if (DateTimeKindComparison.AreKindsIncompatible(actual, expected))
+			{
+				return ValueTask.FromResult(false);
+			}
+
 			if (expected is TActual castedExpected &&
 			    EqualityComparer<TActual>.Default.Equals(actual, castedExpected))
 			{
@@ -58,6 +64,11 @@ internal static class ObjectEqualityOptions
 			}
 
 			if (actual is null || expected is null)
+			{
+				return Task.FromResult(false);
+			}
+
+			if (DateTimeKindComparison.AreKindsIncompatible(actual, expected))
 			{
 				return Task.FromResult(false);
 			}

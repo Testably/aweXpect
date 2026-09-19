@@ -21,6 +21,12 @@ public static partial class EquivalencyComparison
 		string memberPath,
 		MemberType memberType)
 	{
+		if (DateTimeKindComparison.AreKindsIncompatible(actual, expected))
+		{
+			AppendDifference(failureBuilder, memberType, memberPath, actual, expected);
+			return false;
+		}
+
 		bool isEqual;
 		try
 		{

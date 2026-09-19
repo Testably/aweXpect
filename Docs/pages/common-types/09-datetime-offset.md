@@ -184,6 +184,17 @@ await Expect.That(subject).IsBefore(new DateTime(2024, 12, 25, 0, 0, 0, DateTime
 `IsOneOf` ignores an expected value with the other kind. A value with `DateTimeKind.Unspecified` is compatible with
 both kinds. `DateTimeOffset` values are always comparable.
 
+The same rule applies wherever a `DateTime` is compared as a value: collection expectations such as `IsEqualTo` or
+`Contains`, and `IsEquivalentTo` for a `DateTime` member. Two values that differ only in their kind never match
+there either:
+
+```csharp
+DateTime[] subject = [new DateTime(2024, 12, 24, 0, 0, 0, DateTimeKind.Utc)];
+
+// fails, because the expected value denotes a different instant
+await Expect.That(subject).Contains(new DateTime(2024, 12, 24, 0, 0, 0, DateTimeKind.Local));
+```
+
 ## Properties
 
 You can verify, the properties of `DateTime` or `DateTimeOffset`:
