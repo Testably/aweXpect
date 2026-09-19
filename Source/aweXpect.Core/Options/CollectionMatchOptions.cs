@@ -139,13 +139,21 @@ public partial class CollectionMatchOptions(
 			                   " in any order ignoring duplicates",
 			(true, false, _) => GetString(_equivalenceRelations, expectedExpression, grammars) + " in any order",
 			(false, true, false) => GetString(_equivalenceRelations, expectedExpression, grammars) +
-			                        " in order ignoring duplicates",
-			(false, false, false) => GetString(_equivalenceRelations, expectedExpression, grammars) + " in order",
+			                        " in order" + ContiguousSuffix() + " ignoring duplicates",
+			(false, false, false) => GetString(_equivalenceRelations, expectedExpression, grammars) + " in order" +
+			                         ContiguousSuffix(),
 			(false, true, true) => GetString(_equivalenceRelations, expectedExpression, grammars) +
 			                       " in order ignoring duplicates and interspersed items",
 			(false, false, true) => GetString(_equivalenceRelations, expectedExpression, grammars) +
 			                        " in order ignoring interspersed items",
 		};
+
+	/// <summary>
+	///     Only the contains relation requires the expected items to appear without other items in between; the subsequence
+	///     of <see cref="EquivalenceRelations.IsContainedIn" /> allows gaps and equality implies contiguity anyway.
+	/// </summary>
+	private string ContiguousSuffix()
+		=> _equivalenceRelations.HasFlag(EquivalenceRelations.Contains) ? " and contiguous" : "";
 
 	private static string GetString(EquivalenceRelations equivalenceRelation, string expectedExpression,
 		ExpectationGrammars grammars)

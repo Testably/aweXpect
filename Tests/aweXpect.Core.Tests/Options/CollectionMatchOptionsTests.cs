@@ -17,7 +17,7 @@ public class CollectionMatchOptionsTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             contains collection [3,] in order,
+				             contains collection [3,] in order and contiguous,
 				             but it lacked the one expected item
 
 				             Collection:
@@ -39,7 +39,7 @@ public class CollectionMatchOptionsTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             contains collection [3, 3,] in order ignoring duplicates,
+				             contains collection [3, 3,] in order and contiguous ignoring duplicates,
 				             but it lacked the one unique expected item
 
 				             Collection:
@@ -61,7 +61,7 @@ public class CollectionMatchOptionsTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             contains collection [3, 4,] in order,
+				             contains collection [3, 4,] in order and contiguous,
 				             but it lacked all 2 expected items
 
 				             Collection:
@@ -88,7 +88,7 @@ public class CollectionMatchOptionsTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             contains collection expected in order,
+				             contains collection expected in order and contiguous,
 				             but it
 				               contained item "b" at index 1 instead of an item that is equal to "c" and
 				               lacked 1 of 2 expected items: an item that is equal to "c"
@@ -120,11 +120,12 @@ public class CollectionMatchOptionsTests
 		[InlineData(CollectionMatchOptions.EquivalenceRelations.Equivalent,
 			ExpectationGrammars.Plural | ExpectationGrammars.Negated, "are not equal to collection [1] in order")]
 		[InlineData(CollectionMatchOptions.EquivalenceRelations.Contains,
-			ExpectationGrammars.None, "contains collection [1] in order")]
+			ExpectationGrammars.None, "contains collection [1] in order and contiguous")]
 		[InlineData(CollectionMatchOptions.EquivalenceRelations.Contains,
-			ExpectationGrammars.Plural, "contain collection [1] in order")]
+			ExpectationGrammars.Plural, "contain collection [1] in order and contiguous")]
 		[InlineData(CollectionMatchOptions.EquivalenceRelations.Contains,
-			ExpectationGrammars.Plural | ExpectationGrammars.Negated, "do not contain collection [1] in order")]
+			ExpectationGrammars.Plural | ExpectationGrammars.Negated,
+			"do not contain collection [1] in order and contiguous")]
 		[InlineData(CollectionMatchOptions.EquivalenceRelations.IsContainedIn,
 			ExpectationGrammars.None, "is contained in collection [1] in order")]
 		[InlineData(CollectionMatchOptions.EquivalenceRelations.IsContainedIn,
@@ -141,6 +142,64 @@ public class CollectionMatchOptionsTests
 			string result = sut.GetExpectation("[1]", grammars);
 
 			await That(result).IsEqualTo(expected);
+		}
+
+		[Theory]
+		[InlineData(false, false, false, "contains collection [1] in order and contiguous")]
+		[InlineData(false, false, true, "contains collection [1] in order ignoring interspersed items")]
+		[InlineData(false, true, false, "contains collection [1] in order and contiguous ignoring duplicates")]
+		[InlineData(false, true, true, "contains collection [1] in order ignoring duplicates and interspersed items")]
+		[InlineData(true, false, false, "contains collection [1] in any order")]
+		[InlineData(true, true, false, "contains collection [1] in any order ignoring duplicates")]
+		public async Task ShouldClaimContiguityDependingOnTheOptions(
+			bool inAnyOrder,
+			bool ignoringDuplicates,
+			bool ignoringInterspersedItems,
+			string expected)
+		{
+			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
+			if (inAnyOrder)
+			{
+				sut.InAnyOrder();
+			}
+
+			if (ignoringDuplicates)
+			{
+				sut.IgnoringDuplicates();
+			}
+
+			if (ignoringInterspersedItems)
+			{
+				sut.IgnoringInterspersedItems();
+			}
+
+			string result = sut.GetExpectation("[1]", ExpectationGrammars.None);
+
+			await That(result).IsEqualTo(expected)
+				.Because("contiguity may only be claimed while interspersed items are not ignored");
+		}
+
+		[Theory]
+		[InlineData(CollectionMatchOptions.EquivalenceRelations.Equivalent,
+			"is equal to collection [1] in order")]
+		[InlineData(CollectionMatchOptions.EquivalenceRelations.Contains,
+			"contains collection [1] in order and contiguous")]
+		[InlineData(CollectionMatchOptions.EquivalenceRelations.ContainsProperly,
+			"contains collection [1] and at least one additional item in order and contiguous")]
+		[InlineData(CollectionMatchOptions.EquivalenceRelations.IsContainedIn,
+			"is contained in collection [1] in order")]
+		[InlineData(CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly,
+			"is contained in collection [1] which has at least one additional item in order")]
+		public async Task ShouldOnlyClaimContiguityForTheContainsRelation(
+			CollectionMatchOptions.EquivalenceRelations equivalenceRelations,
+			string expected)
+		{
+			CollectionMatchOptions sut = new(equivalenceRelations);
+
+			string result = sut.GetExpectation("[1]", ExpectationGrammars.None);
+
+			await That(result).IsEqualTo(expected)
+				.Because("only the contains relation forbids other items in between");
 		}
 	}
 

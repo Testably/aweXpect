@@ -102,6 +102,11 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection contains the provided <paramref name="expected" /> collection.
 	/// </summary>
+	/// <remarks>
+	///     The expected items must appear in the same order and contiguous, i.e. without other items in between. Use
+	///     <c>IgnoringInterspersedItems()</c> to allow other items in between or <c>InAnyOrder()</c> to also ignore the
+	///     order.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static ObjectProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		Contains<TItem>(
@@ -128,6 +133,11 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection contains the provided <paramref name="expected" /> collection.
 	/// </summary>
+	/// <remarks>
+	///     The expected items must appear in the same order and contiguous, i.e. without other items in between. Use
+	///     <c>IgnoringInterspersedItems()</c> to allow other items in between or <c>InAnyOrder()</c> to also ignore the
+	///     order.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static StringProperCollectionMatchResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
 		Contains(
@@ -154,6 +164,11 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection contains the provided <paramref name="expected" /> collection of predicates.
 	/// </summary>
+	/// <remarks>
+	///     The expected predicates must be satisfied in the same order and contiguous, i.e. without other items in
+	///     between. Use <c>IgnoringInterspersedItems()</c> to allow other items in between or <c>InAnyOrder()</c> to also
+	///     ignore the order.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		Contains<TItem>(
@@ -179,6 +194,11 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection contains the provided <paramref name="expected" /> collection of expectations.
 	/// </summary>
+	/// <remarks>
+	///     The expectations must be satisfied in the same order and contiguous, i.e. without other items in between. Use
+	///     <c>IgnoringInterspersedItems()</c> to allow other items in between or <c>InAnyOrder()</c> to also ignore the
+	///     order.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		Contains<TItem>(
@@ -277,6 +297,11 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection.
 	/// </summary>
+	/// <remarks>
+	///     The unexpected items are only considered contained when they appear in the same order and contiguous, i.e.
+	///     without other items in between. Use <c>IgnoringInterspersedItems()</c> to also consider them contained with
+	///     other items in between or <c>InAnyOrder()</c> to also ignore the order.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static ObjectProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		DoesNotContain<TItem>(
@@ -303,6 +328,11 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection.
 	/// </summary>
+	/// <remarks>
+	///     The unexpected items are only considered contained when they appear in the same order and contiguous, i.e.
+	///     without other items in between. Use <c>IgnoringInterspersedItems()</c> to also consider them contained with
+	///     other items in between or <c>InAnyOrder()</c> to also ignore the order.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static StringProperCollectionMatchResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
 		DoesNotContain(
@@ -329,6 +359,11 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection of predicates.
 	/// </summary>
+	/// <remarks>
+	///     The unexpected predicates are only considered contained when they are satisfied in the same order and
+	///     contiguous, i.e. without other items in between. Use <c>IgnoringInterspersedItems()</c> to also consider them
+	///     contained with other items in between or <c>InAnyOrder()</c> to also ignore the order.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		DoesNotContain<TItem>(
@@ -354,6 +389,11 @@ public static partial class ThatAsyncEnumerable
 	/// <summary>
 	///     Verifies that the collection does not contain the provided <paramref name="unexpected" /> collection of expectations.
 	/// </summary>
+	/// <remarks>
+	///     The unexpected expectations are only considered contained when they are satisfied in the same order and
+	///     contiguous, i.e. without other items in between. Use <c>IgnoringInterspersedItems()</c> to also consider them
+	///     contained with other items in between or <c>InAnyOrder()</c> to also ignore the order.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		DoesNotContain<TItem>(

@@ -263,7 +263,11 @@ await Expect.That(values).Contains([1, 2]);
 await Expect.That(values).Contains([3, 2]).InAnyOrder();
 await Expect.That(values).Contains([1, 1, 2, 2]).IgnoringDuplicates();
 await Expect.That(values).Contains([3, 3, 1, 1]).InAnyOrder().IgnoringDuplicates();
+await Expect.That(values).Contains([1, 3]).IgnoringInterspersedItems();
 ```
+
+*Note: Without `InAnyOrder` the values must appear in the subject in the same order and contiguous, i.e. without other
+items in between, so `[1, 3]` is not contained in `[1, 2, 3]` unless `IgnoringInterspersedItems` is used.*
 
 *Note: You can also negate this expectation with `DoesNotContain`.*
 
