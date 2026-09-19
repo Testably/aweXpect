@@ -215,6 +215,26 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenGraphReferencesItself_ShouldNotExceedTheRecursionLimit()
+	{
+		NestedNode actual = new(1);
+		actual.Inner = actual;
+		NestedNode expected = new(1);
+		expected.Inner = expected;
+		EquivalencyOptions options = new()
+		{
+			MaxRecursionDepth = 1,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("the cycle detection stops the walk before the depth limit can be reached");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
 	public async Task WhenItIsMemberDoesNotMatch_ShouldReportTheExpectationAsExpected()
 	{
 		var actual = new
@@ -418,6 +438,79 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenOptionsAreScopedToAnExpectedType_ShouldKeepTheRecursionLimit()
+	{
+		NestedNode actual = new(4);
+		NestedNode expected = new(4);
+		EquivalencyOptions<NestedNode> options = new(new EquivalencyOptions
+		{
+			MaxRecursionDepth = 3,
+		});
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse()
+			.Because("the type-scoped options have to carry over the limit of the options they were created from");
+		await That(failureBuilder.ToString()).Contains("exceeded the maximum recursion depth of 3");
+	}
+
+	[Fact]
+	public async Task WhenRecursionDepthExceedsTheLimit_ShouldReportTheMemberPath()
+	{
+		NestedNode actual = new(4);
+		NestedNode expected = new(4);
+		EquivalencyOptions options = new()
+		{
+			MaxRecursionDepth = 3,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse()
+			.Because("a graph that is deeper than the limit has to fail instead of overflowing the stack");
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Inner.Inner.Inner exceeded the maximum recursion depth of 3
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenRecursionDepthIsWithinTheLimit_ShouldCompareTheWholeGraph()
+	{
+		NestedNode actual = new(50);
+		NestedNode expected = new(50);
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("a graph below the default limit of 100 levels is compared as before");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenRecursionLimitIsRaised_ShouldCompareTheDeeperLevels()
+	{
+		NestedNode actual = new(150);
+		NestedNode expected = new(150);
+		EquivalencyOptions options = new()
+		{
+			MaxRecursionDepth = 200,
+		};
+
+		bool withDefaultLimit =
+			await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), new StringBuilder());
+		bool withRaisedLimit = await EquivalencyComparison.Compare(actual, expected, options, new StringBuilder());
+
+		await That(withDefaultLimit).IsFalse()
+			.Because("150 levels exceed the default limit of 100");
+		await That(withRaisedLimit).IsTrue()
+			.Because("the configured limit replaces the default");
+	}
+
+	[Fact]
 	public async Task WhenStringMemberIsLong_ShouldTruncateIt()
 	{
 		var actual = new
@@ -550,6 +643,14 @@ public sealed class EquivalencyComparisonTests
 	private sealed class FieldHidingProperty(int property, int field) : WithProperty(property)
 	{
 		public new int Value = field;
+	}
+
+	/// <remarks>
+	///     Builds a chain of <paramref name="depth" /> nodes, so a comparison recurses exactly that many levels.
+	/// </remarks>
+	private sealed class NestedNode(int depth)
+	{
+		public NestedNode? Inner { get; set; } = depth > 1 ? new NestedNode(depth - 1) : null;
 	}
 
 	private sealed class OtherClassWithOnlyPrivateState(int value)

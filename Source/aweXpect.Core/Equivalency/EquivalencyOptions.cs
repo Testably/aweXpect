@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Equivalency;
 
@@ -9,7 +10,11 @@ namespace aweXpect.Equivalency;
 /// </summary>
 public record EquivalencyOptions : EquivalencyTypeOptions
 {
+	private const int DefaultMaxRecursionDepth = 100;
+
 	private readonly Func<Type, EquivalencyComparisonType>? _defaultComparisonTypeSelector;
+
+	private readonly int _maxRecursionDepth = DefaultMaxRecursionDepth;
 
 	/// <summary>
 	///     Specifies the selector how types should be compared, if not overwritten in the <see cref="CustomOptions" />.
@@ -21,6 +26,28 @@ public record EquivalencyOptions : EquivalencyTypeOptions
 	{
 		get => _defaultComparisonTypeSelector ?? EquivalencyDefaults.DefaultComparisonType;
 		init => _defaultComparisonTypeSelector = value;
+	}
+
+	/// <summary>
+	///     The maximum number of nested objects that are compared on a single path.
+	/// </summary>
+	/// <remarks>
+	///     Defaults to 100. A graph that is deeper fails the comparison instead of overflowing the stack.
+	/// </remarks>
+	public int MaxRecursionDepth
+	{
+		get => _maxRecursionDepth;
+		init
+		{
+			if (value < 1)
+			{
+				throw new ArgumentOutOfRangeException(nameof(value), value,
+						"The maximum recursion depth must be greater than zero.")
+					.LogTrace();
+			}
+
+			_maxRecursionDepth = value;
+		}
 	}
 
 	/// <summary>
@@ -44,6 +71,11 @@ public record EquivalencyOptions : EquivalencyTypeOptions
 	{
 		StringBuilder? sb = new();
 		AppendOptions(sb);
+		if (MaxRecursionDepth != DefaultMaxRecursionDepth)
+		{
+			sb.Append(" - limit the recursion depth to ").Append(MaxRecursionDepth).AppendLine();
+		}
+
 		foreach (KeyValuePair<Type, EquivalencyTypeOptions> customOption in CustomOptions)
 		{
 			sb.Append(" - for ");
@@ -69,6 +101,7 @@ public record EquivalencyOptions<TExpected> : EquivalencyOptions
 		MembersToIgnore = inner.MembersToIgnore;
 		IgnoreCollectionOrder = inner.IgnoreCollectionOrder;
 		DefaultComparisonTypeSelector = inner.DefaultComparisonTypeSelector;
+		MaxRecursionDepth = inner.MaxRecursionDepth;
 	}
 
 	/// <summary>
