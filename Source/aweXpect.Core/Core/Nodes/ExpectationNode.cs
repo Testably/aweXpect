@@ -121,6 +121,8 @@ internal class ExpectationNode : Node
 				result = _constraint switch
 				{
 					null => null,
+					IExpectationTextConstraint expectationTextConstraint
+						=> await expectationTextConstraint.GetExpectationResult(context, cancellationToken),
 					ConstraintResult constraintResult => constraintResult,
 					_ => new ConstraintExpectationResult(_constraint),
 				};

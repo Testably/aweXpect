@@ -125,6 +125,22 @@ public class MappingNodeTests
 	}
 
 	[Fact]
+	public async Task IsMetBy_WhenMemberThrows_ShouldUseTheExpectationResultOfExpectationTextConstraints()
+	{
+		MappingNode<string, int> node = new(
+			MemberAccessor<string, int>.FromFunc(_ => throw new NotSupportedException("foo"), " length "));
+		node.AddConstraint(new ExpectationTextConstraint<int>("yeah!", "not yeah!"));
+		StringBuilder sb = new();
+
+		ConstraintResult result = await node.IsMetBy("foo", null!, CancellationToken.None);
+		ConstraintResult negated = result.Negate();
+
+		negated.AppendExpectation(sb);
+		await That(negated.Outcome).IsEqualTo(Outcome.Failure);
+		await That(sb.ToString()).IsEqualTo("not yeah!");
+	}
+
+	[Fact]
 	public async Task IsMetBy_WithNullDelegate_ShouldReturnNullFailure()
 	{
 		DelegateValue<string?> value = new("foo", null, 10.Milliseconds(), true);

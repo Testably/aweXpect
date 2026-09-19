@@ -512,6 +512,58 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
+			public async Task WhenMemberThrows_AndMemberExpectationIsNegatedComplyWith_ShouldRenderNegatedExpectation()
+			{
+				ThrowingClass subject = new();
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.Throwing, v => v.DoesNotComplyWith(x => x.IsEqualTo(1)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose Throwing is not equal to 1,
+					             but Throwing did throw an InvalidOperationException:
+					               member failed
+					             """)
+					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("member failed"));
+			}
+
+			[Fact]
+			public async Task WhenStringMemberThrows_AndMemberExpectationIsNegatedComplyWith_ShouldRenderNegatedExpectation()
+			{
+				ThrowingClass subject = new();
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.Name, n => n.DoesNotComplyWith(x => x.StartsWith("a")));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose Name does not start with "a",
+					             but Name did throw a NotSupportedException:
+					               name failed
+					             """)
+					.And.WithInner<NotSupportedException>(inner => inner.HasMessage("name failed"));
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_AndMemberExpectationIsNegatedComplyWith_ShouldRenderNegatedExpectation()
+			{
+				ThrowingClass? subject = null;
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.Value, v => v.DoesNotComplyWith(x => x.IsEqualTo(1)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose Value is not equal to 1,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenAsyncMemberFaults_AndMemberExpectationThrowsOnDefault_ShouldFail()
 			{
 				ThrowingClass subject = new();
