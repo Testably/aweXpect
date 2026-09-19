@@ -68,6 +68,44 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenActualTypeHasAFieldAndAPropertyOfTheSameName_WithAnExpectedField_ShouldUseTheField()
+	{
+		FieldHidingProperty actual = new(99, 1);
+		WithPublicValue expected = new(2);
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Field Value differed:
+		                                                       Found: 1
+		                                                    Expected: 2
+		                                                """).IgnoringNewlineStyle()
+			.Because("the member of the same kind takes precedence, so the fallback to the property never applies");
+	}
+
+	[Fact]
+	public async Task WhenActualTypeHasAFieldAndAPropertyOfTheSameName_WithAnExpectedProperty_ShouldUseTheProperty()
+	{
+		FieldHidingProperty actual = new(1, 99);
+		WithProperty expected = new(2);
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                       Found: 1
+		                                                    Expected: 2
+		                                                """).IgnoringNewlineStyle()
+			.Because("the member of the same kind takes precedence, so the fallback to the field never applies");
+	}
+
+	[Fact]
 	public async Task WhenAllMembersAreExcludedExplicitly_ShouldNotThrow()
 	{
 		ClassWithOnlyPrivateState actual = new(1);
@@ -286,6 +324,60 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenExpectedFieldMatchesAnActualProperty_ShouldCompareThem()
+	{
+		WithProperty actual = new(1);
+		WithPublicValue expected = new(1);
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("whether the actual type stores the member as a field or as a property is an implementation detail of that type");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenExpectedFieldMatchesAnActualProperty_WhenPropertiesAreExcluded_ShouldReportItAsMissing()
+	{
+		WithProperty actual = new(1);
+		WithPublicValue expected = new(1);
+		EquivalencyOptions options = new()
+		{
+			Properties = IncludeMembers.None,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Field Value is missing on the actual object
+		                                                """).IgnoringNewlineStyle()
+			.Because("the fallback may only reach a kind that the caller included");
+	}
+
+	[Fact]
+	public async Task WhenExpectedFieldMatchesAnActualProperty_WhenTheyDiffer_ShouldReportItAsAField()
+	{
+		WithProperty actual = new(1);
+		WithPublicValue expected = new(2);
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Field Value differed:
+		                                                       Found: 1
+		                                                    Expected: 2
+		                                                """).IgnoringNewlineStyle()
+			.Because("the compared members come from the expected object, so its kind names the difference and agrees with the kind a scoped ignore rule applies to");
+	}
+
+	[Fact]
 	public async Task WhenExpectedMemberIsMissingOnTheActualType_WhenIgnored_ShouldSucceed()
 	{
 		var actual = new
@@ -380,6 +472,126 @@ public sealed class EquivalencyComparisonTests
 
 		                                                  Property B is missing on the actual object
 		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenExpectedPropertyMatchesAnActualField_AtANestedPath_ShouldReportTheFullMemberPath()
+	{
+		var actual = new
+		{
+			Inner = new WithPublicValue(1),
+		};
+		var expected = new
+		{
+			Inner = new WithProperty(2),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Inner.Value differed:
+		                                                       Found: 1
+		                                                    Expected: 2
+		                                                """).IgnoringNewlineStyle()
+			.Because("the fallback applies at every level of the graph, and the path stays the one of the expected member");
+	}
+
+	[Fact]
+	public async Task WhenExpectedPropertyMatchesAnActualField_ShouldCompareThem()
+	{
+		WithPublicValue actual = new(1);
+		WithProperty expected = new(1);
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("a DTO with public fields is routinely compared against an anonymous object, which can only have properties");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenExpectedPropertyMatchesAnActualField_WhenFieldsAreExcluded_ShouldReportItAsMissing()
+	{
+		WithPublicValue actual = new(1);
+		WithProperty expected = new(1);
+		EquivalencyOptions options = new()
+		{
+			Fields = IncludeMembers.None,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value is missing on the actual object
+		                                                """).IgnoringNewlineStyle()
+			.Because("the fallback may only reach a kind that the caller included");
+	}
+
+	[Fact]
+	public async Task WhenExpectedPropertyMatchesAnActualField_WhenIgnored_ShouldSucceed()
+	{
+		WithPublicValue actual = new(1);
+		WithProperty expected = new(2);
+		EquivalencyOptions options = new()
+		{
+			MembersToIgnore = [new MemberToIgnore.ByName("Value"),],
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("an ignored member is never looked up on the actual object, so the fallback cannot revive it");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenExpectedPropertyMatchesAnActualField_WhenTheyDiffer_ShouldReportItAsAProperty()
+	{
+		WithPublicValue actual = new(1);
+		WithProperty expected = new(2);
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                       Found: 1
+		                                                    Expected: 2
+		                                                """).IgnoringNewlineStyle()
+			.Because("the compared members come from the expected object, so its kind names the difference and agrees with the kind a scoped ignore rule applies to");
+	}
+
+	[Fact]
+	public async Task WhenExpectedPropertyMatchesARegisteredField_ShouldCompareThem()
+	{
+		RegisterPhantomField();
+		RegisteredFieldProbe actual = new(1);
+		var expected = new
+		{
+			Phantom = 2,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Phantom differed:
+		                                                       Found: 1
+		                                                    Expected: 2
+		                                                """).IgnoringNewlineStyle()
+			.Because("a registration keeps the kind of the member, so the fallback has to cross it in the registry as well");
 	}
 
 	[Fact]
@@ -1130,6 +1342,9 @@ public sealed class EquivalencyComparisonTests
 	private static void RegisterPhantom()
 		=> TypeMetadataRegistry.RegisterProperty<RegisteredProbe, int>("Phantom", x => x.PhantomValue());
 
+	private static void RegisterPhantomField()
+		=> TypeMetadataRegistry.RegisterField<RegisteredFieldProbe, int>("Phantom", x => x.PhantomValue());
+
 	private sealed class ClassWithOnlyPrivateState(int value)
 	{
 		private readonly int _value = value;
@@ -1170,6 +1385,11 @@ public sealed class EquivalencyComparisonTests
 	private sealed class PropertyHidingProperty(int property, string text) : WithProperty(property)
 	{
 		public new string Value { get; } = text;
+	}
+
+	private sealed class RegisteredFieldProbe(int phantom)
+	{
+		public int PhantomValue() => phantom;
 	}
 
 	private sealed class RegisteredProbe(int phantom)

@@ -66,7 +66,9 @@ internal static class IncludeMembersExtensions
 	///     <paramref name="includeMembers" /> does, without requiring the field itself to have a requested visibility.
 	/// </summary>
 	public static FieldInfo? FindField(this Type type, string name, IncludeMembers includeMembers)
-		=> GetAllFields(type, includeMembers).FirstOrDefault(field => field.Name == name);
+		=> includeMembers == IncludeMembers.None
+			? null
+			: GetAllFields(type, includeMembers).FirstOrDefault(field => field.Name == name);
 
 	/// <summary>
 	///     Finds the property <paramref name="name" /> the way a lookup with the binding flags of
@@ -78,9 +80,11 @@ internal static class IncludeMembersExtensions
 	///     non-public getter and the two paths have to agree.
 	/// </remarks>
 	public static PropertyInfo? FindProperty(this Type type, string name, IncludeMembers includeMembers)
-		=> GetAllProperties(type, includeMembers).FirstOrDefault(property
-			=> property.Name == name &&
-			   (includeMembers != IncludeMembers.Public || property.GetGetMethod(true)!.IsPublic));
+		=> includeMembers == IncludeMembers.None
+			? null
+			: GetAllProperties(type, includeMembers).FirstOrDefault(property
+				=> property.Name == name &&
+				   (includeMembers != IncludeMembers.Public || property.GetGetMethod(true)!.IsPublic));
 
 	private static FieldInfo[] GetAllFields(Type type, IncludeMembers includeMembers)
 		=> AllFields.GetOrAdd((type, GetBindingFlags(includeMembers)), static key
