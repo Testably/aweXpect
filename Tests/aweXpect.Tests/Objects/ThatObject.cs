@@ -35,4 +35,10 @@ public sealed partial class ThatObject
 	{
 		public int Value { get; set; }
 	}
+
+	private class MyGenericBaseClass : List<int>;
+
+	private sealed class MyGenericDerivedClass : MyGenericBaseClass;
+
+	private sealed class MyDictionaryClass : Dictionary<string, int>;
 }

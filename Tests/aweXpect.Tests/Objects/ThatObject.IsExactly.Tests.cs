@@ -334,6 +334,26 @@ public sealed partial class ThatObject
 					             []
 					             """);
 			}
+
+			[Fact]
+			public async Task WithOpenGenericBaseType_ShouldFail()
+			{
+				object subject = new MyGenericBaseClass();
+
+				async Task Act()
+					=> await That(subject).IsExactly(typeof(List<>))
+						.Because("exactly means the type itself, so the base type chain is not walked");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is exactly type List<>, because exactly means the type itself, so the base type chain is not walked,
+					             but it was ThatObject.MyGenericBaseClass
+
+					             Actual:
+					             []
+					             """);
+			}
 		}
 	}
 }

@@ -70,33 +70,39 @@ public static partial class ThatObject
 			}
 
 			Type? actualType = actual?.GetType();
-			if (type.IsGenericTypeDefinition && actualType?.IsGenericType == true)
+			if (!type.IsGenericTypeDefinition || actualType is null)
 			{
-				Type actualGenericType = actualType.GetGenericTypeDefinition();
-				if (!type.IsInterface)
-				{
-					return type.IsAssignableFrom(actualGenericType);
-				}
-
-				if (!ReflectionFallback.IsSupported)
-				{
-					throw new NotSupportedException(
-						$"The interfaces of {Formatter.Format(actualType)} cannot be found by reflection, which is switched off when publishing with trimming or Native AOT enabled. Check against a constructed interface instead of its generic definition. Alternatively, set the runtime switch 'aweXpect.ReflectionFallback.IsSupported' to true to reflect anyway.");
-				}
-
-				Type[] interfaces = actualGenericType.GetInterfaces();
-				return interfaces
-					.Any(childInterface =>
-					{
-						Type currentInterface = childInterface.IsGenericType
-							? childInterface.GetGenericTypeDefinition()
-							: childInterface;
-
-						return currentInterface == type;
-					});
+				return false;
 			}
 
-			return false;
+			if (!type.IsInterface)
+			{
+				for (Type? baseType = actualType; baseType is not null; baseType = baseType.BaseType)
+				{
+					if (baseType.IsGenericType && baseType.GetGenericTypeDefinition() == type)
+					{
+						return true;
+					}
+				}
+
+				return false;
+			}
+
+			if (!ReflectionFallback.IsSupported)
+			{
+				throw new NotSupportedException(
+					$"The interfaces of {Formatter.Format(actualType)} cannot be found by reflection, which is switched off when publishing with trimming or Native AOT enabled. Check against a constructed interface instead of its generic definition. Alternatively, set the runtime switch 'aweXpect.ReflectionFallback.IsSupported' to true to reflect anyway.");
+			}
+
+			return actualType.GetInterfaces()
+				.Any(childInterface =>
+				{
+					Type currentInterface = childInterface.IsGenericType
+						? childInterface.GetGenericTypeDefinition()
+						: childInterface;
+
+					return currentInterface == type;
+				});
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

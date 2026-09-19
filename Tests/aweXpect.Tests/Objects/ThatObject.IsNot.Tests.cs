@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Tests;
+﻿using System.Collections.Generic;
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatObject
 {
@@ -252,6 +254,37 @@ public sealed partial class ThatObject
 					                 Value = {{value}}
 					               }
 					               """);
+			}
+
+			[Fact]
+			public async Task WithMatchingOpenGenericBaseType_ShouldFail()
+			{
+				object subject = new MyGenericDerivedClass();
+
+				async Task Act()
+					=> await That(subject).IsNot(typeof(List<>));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not type List<>,
+					             but it was ThatObject.MyGenericDerivedClass
+
+					             Actual:
+					             []
+					             """);
+			}
+
+			[Fact]
+			public async Task WithNotMatchingOpenGenericBaseType_ShouldSucceed()
+			{
+				object subject = new MyGenericDerivedClass();
+
+				async Task Act()
+					=> await That(subject).IsNot(typeof(Dictionary<,>));
+
+				await That(Act).DoesNotThrow()
+					.Because("the negation stays the exact complement of Is");
 			}
 		}
 	}

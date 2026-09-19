@@ -306,6 +306,42 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
+			public async Task WithMatchingOpenGenericBaseType_ShouldSucceed()
+			{
+				object subject = new MyGenericBaseClass();
+
+				async Task Act()
+					=> await That(subject).Is(typeof(List<>));
+
+				await That(Act).DoesNotThrow()
+					.Because("a subclass of List<int> is assignable to the open generic List<>");
+			}
+
+			[Fact]
+			public async Task WithMatchingOpenGenericGrandBaseType_ShouldSucceed()
+			{
+				object subject = new MyGenericDerivedClass();
+
+				async Task Act()
+					=> await That(subject).Is(typeof(List<>));
+
+				await That(Act).DoesNotThrow()
+					.Because("the whole base type chain is walked, not only the direct base type");
+			}
+
+			[Fact]
+			public async Task WithMatchingOpenGenericInterfaceOfDerivedType_ShouldSucceed()
+			{
+				object subject = new MyGenericDerivedClass();
+
+				async Task Act()
+					=> await That(subject).Is(typeof(IEnumerable<>));
+
+				await That(Act).DoesNotThrow()
+					.Because("the generic interfaces are inherited from the generic base type");
+			}
+
+			[Fact]
 			public async Task WithMatchingOpenGenericInterfaceType_ShouldSucceed()
 			{
 				List<string> subject = new();
@@ -317,6 +353,18 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
+			public async Task WithMatchingOpenGenericTwoParameterBaseType_ShouldSucceed()
+			{
+				object subject = new MyDictionaryClass();
+
+				async Task Act()
+					=> await That(subject).Is(typeof(Dictionary<,>));
+
+				await That(Act).DoesNotThrow()
+					.Because("a subclass of a closed generic base type matches its generic definition");
+			}
+
+			[Fact]
 			public async Task WithMatchingOpenGenericType_ShouldSucceed()
 			{
 				List<string> subject = new();
@@ -325,6 +373,38 @@ public sealed partial class ThatObject
 					=> await That(subject).Is(typeof(List<>));
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithMatchingOpenGenericValueType_ShouldSucceed()
+			{
+				object subject = new KeyValuePair<string, int>("foo", 1);
+
+				async Task Act()
+					=> await That(subject).Is(typeof(KeyValuePair<,>));
+
+				await That(Act).DoesNotThrow()
+					.Because("a boxed value type matches its own generic definition although its base types are not generic");
+			}
+
+			[Fact]
+			public async Task WithNotMatchingOpenGenericBaseType_ShouldFail()
+			{
+				object subject = new MyGenericDerivedClass();
+
+				async Task Act()
+					=> await That(subject).Is(typeof(Dictionary<,>))
+						.Because("an unrelated open generic type is not in the base type chain");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is type Dictionary<, >, because an unrelated open generic type is not in the base type chain,
+					             but it was ThatObject.MyGenericDerivedClass
+
+					             Actual:
+					             []
+					             """);
 			}
 
 			[Fact]
