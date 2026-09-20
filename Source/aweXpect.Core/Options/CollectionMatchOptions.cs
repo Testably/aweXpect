@@ -75,7 +75,7 @@ public partial class CollectionMatchOptions(
 	public void IgnoringDuplicates() => _ignoringDuplicates = true;
 
 	/// <summary>
-	///     Ignores interspersed items in the actual collection.
+	///     Ignores items that appear in between the matched items.
 	/// </summary>
 	public void IgnoringInterspersedItems() => _ignoringInterspersedItems = true;
 
@@ -149,11 +149,14 @@ public partial class CollectionMatchOptions(
 		};
 
 	/// <summary>
-	///     Only the contains relation requires the expected items to appear without other items in between; the subsequence
-	///     of <see cref="EquivalenceRelations.IsContainedIn" /> allows gaps and equality implies contiguity anyway.
+	///     Only the containment relations require the items to appear without other items in between; equality implies
+	///     contiguity anyway.
 	/// </summary>
 	private string ContiguousSuffix()
-		=> _equivalenceRelations.HasFlag(EquivalenceRelations.Contains) ? " and contiguous" : "";
+		=> _equivalenceRelations.HasFlag(EquivalenceRelations.Contains) ||
+		   _equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn)
+			? " and contiguous"
+			: "";
 
 	private static string GetString(EquivalenceRelations equivalenceRelation, string expectedExpression,
 		ExpectationGrammars grammars)

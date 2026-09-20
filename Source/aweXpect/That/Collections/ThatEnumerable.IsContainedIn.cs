@@ -19,6 +19,11 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is contained in the provided <paramref name="expected" /> collection.
 	/// </summary>
+	/// <remarks>
+	///     The subject items must appear in the expected collection in the same order and contiguous, i.e. without
+	///     other items in between. Use <c>IgnoringInterspersedItems()</c> to allow other items in between or
+	///     <c>InAnyOrder()</c> to also ignore the order.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static ObjectProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		IsContainedIn<TItem>(
@@ -46,6 +51,11 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is contained in the provided <paramref name="expected" /> collection.
 	/// </summary>
+	/// <remarks>
+	///     The subject items must appear in the expected collection in the same order and contiguous, i.e. without
+	///     other items in between. Use <c>IgnoringInterspersedItems()</c> to allow other items in between or
+	///     <c>InAnyOrder()</c> to also ignore the order.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static StringProperCollectionMatchResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 		IsContainedIn(this IThat<IEnumerable<string?>?> subject,
@@ -72,6 +82,11 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is contained in the provided <paramref name="expected" /> collection.
 	/// </summary>
+	/// <remarks>
+	///     The subject items must appear in the expected collection in the same order and contiguous, i.e. without
+	///     other items in between. Use <c>IgnoringInterspersedItems()</c> to allow other items in between or
+	///     <c>InAnyOrder()</c> to also ignore the order.
+	/// </remarks>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
 	public static ObjectProperCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, TItem>
@@ -101,6 +116,11 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is contained in the provided <paramref name="expected" /> collection.
 	/// </summary>
+	/// <remarks>
+	///     The subject items must appear in the expected collection in the same order and contiguous, i.e. without
+	///     other items in between. Use <c>IgnoringInterspersedItems()</c> to allow other items in between or
+	///     <c>InAnyOrder()</c> to also ignore the order.
+	/// </remarks>
 	public static ObjectProperCollectionMatchResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
 		IsContainedIn<TItem>(
 			this IThat<ImmutableArray<TItem>> subject,
@@ -130,6 +150,11 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is contained in the provided <paramref name="expected" /> collection.
 	/// </summary>
+	/// <remarks>
+	///     The subject items must appear in the expected collection in the same order and contiguous, i.e. without
+	///     other items in between. Use <c>IgnoringInterspersedItems()</c> to allow other items in between or
+	///     <c>InAnyOrder()</c> to also ignore the order.
+	/// </remarks>
 	public static StringProperCollectionMatchResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
 		IsContainedIn(this IThat<ImmutableArray<string?>> subject,
 			IEnumerable<string?> expected,
@@ -157,6 +182,11 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is contained in the provided <paramref name="expected" /> collection of predicates.
 	/// </summary>
+	/// <remarks>
+	///     The subject items must satisfy the expected predicates in the same order and contiguous, i.e. without other
+	///     predicates in between. Use <c>IgnoringInterspersedItems()</c> to allow other predicates in between or
+	///     <c>InAnyOrder()</c> to also ignore the order.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		IsContainedIn<TItem>(
@@ -181,6 +211,11 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is contained in the provided <paramref name="expected" /> collection of expectations.
 	/// </summary>
+	/// <remarks>
+	///     The subject items must satisfy the expectations in the same order and contiguous, i.e. without other
+	///     expectations in between. Use <c>IgnoringInterspersedItems()</c> to allow other expectations in between or
+	///     <c>InAnyOrder()</c> to also ignore the order.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		IsContainedIn<TItem>(
@@ -205,6 +240,11 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is not contained in the provided <paramref name="unexpected" /> collection.
 	/// </summary>
+	/// <remarks>
+	///     The subject is only considered contained when its items appear in the unexpected collection in the same order
+	///     and contiguous, i.e. without other items in between. Use <c>IgnoringInterspersedItems()</c> to also consider it
+	///     contained with other items in between or <c>InAnyOrder()</c> to also ignore the order.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static ObjectProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		IsNotContainedIn<TItem>(
@@ -233,6 +273,11 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is not contained in the provided <paramref name="unexpected" /> collection.
 	/// </summary>
+	/// <remarks>
+	///     The subject is only considered contained when its items appear in the unexpected collection in the same order
+	///     and contiguous, i.e. without other items in between. Use <c>IgnoringInterspersedItems()</c> to also consider it
+	///     contained with other items in between or <c>InAnyOrder()</c> to also ignore the order.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static StringProperCollectionMatchResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 		IsNotContainedIn(this IThat<IEnumerable<string?>?> subject,
@@ -260,6 +305,11 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is not contained in the provided <paramref name="unexpected" /> collection.
 	/// </summary>
+	/// <remarks>
+	///     The subject is only considered contained when its items appear in the unexpected collection in the same order
+	///     and contiguous, i.e. without other items in between. Use <c>IgnoringInterspersedItems()</c> to also consider it
+	///     contained with other items in between or <c>InAnyOrder()</c> to also ignore the order.
+	/// </remarks>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
 	public static ObjectProperCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, TItem>
@@ -290,6 +340,11 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is not contained in the provided <paramref name="unexpected" /> collection.
 	/// </summary>
+	/// <remarks>
+	///     The subject is only considered contained when its items appear in the unexpected collection in the same order
+	///     and contiguous, i.e. without other items in between. Use <c>IgnoringInterspersedItems()</c> to also consider it
+	///     contained with other items in between or <c>InAnyOrder()</c> to also ignore the order.
+	/// </remarks>
 	public static ObjectProperCollectionMatchResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
 		IsNotContainedIn<TItem>(
 			this IThat<ImmutableArray<TItem>> subject,
@@ -320,6 +375,11 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is not contained in the provided <paramref name="unexpected" /> collection.
 	/// </summary>
+	/// <remarks>
+	///     The subject is only considered contained when its items appear in the unexpected collection in the same order
+	///     and contiguous, i.e. without other items in between. Use <c>IgnoringInterspersedItems()</c> to also consider it
+	///     contained with other items in between or <c>InAnyOrder()</c> to also ignore the order.
+	/// </remarks>
 	public static StringProperCollectionMatchResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
 		IsNotContainedIn(this IThat<ImmutableArray<string?>> subject,
 			IEnumerable<string?> unexpected,
@@ -348,6 +408,11 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is not contained in the provided <paramref name="expected" /> collection of predicates.
 	/// </summary>
+	/// <remarks>
+	///     The subject is only considered contained when its items satisfy the expected predicates in the same order and
+	///     contiguous, i.e. without other predicates in between. Use <c>IgnoringInterspersedItems()</c> to also consider it
+	///     contained with other predicates in between or <c>InAnyOrder()</c> to also ignore the order.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		IsNotContainedIn<TItem>(
@@ -372,6 +437,11 @@ public static partial class ThatEnumerable
 	/// <summary>
 	///     Verifies that the collection is not contained in the provided <paramref name="expected" /> collection of expectations.
 	/// </summary>
+	/// <remarks>
+	///     The subject is only considered contained when its items satisfy the expectations in the same order and
+	///     contiguous, i.e. without other expectations in between. Use <c>IgnoringInterspersedItems()</c> to also consider
+	///     it contained with other expectations in between or <c>InAnyOrder()</c> to also ignore the order.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		IsNotContainedIn<TItem>(

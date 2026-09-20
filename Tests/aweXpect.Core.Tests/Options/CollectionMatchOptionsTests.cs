@@ -159,11 +159,12 @@ public class CollectionMatchOptionsTests
 			ExpectationGrammars.Plural | ExpectationGrammars.Negated,
 			"do not contain collection [1] in order and contiguous")]
 		[InlineData(CollectionMatchOptions.EquivalenceRelations.IsContainedIn,
-			ExpectationGrammars.None, "is contained in collection [1] in order")]
+			ExpectationGrammars.None, "is contained in collection [1] in order and contiguous")]
 		[InlineData(CollectionMatchOptions.EquivalenceRelations.IsContainedIn,
-			ExpectationGrammars.Plural, "are contained in collection [1] in order")]
+			ExpectationGrammars.Plural, "are contained in collection [1] in order and contiguous")]
 		[InlineData(CollectionMatchOptions.EquivalenceRelations.IsContainedIn,
-			ExpectationGrammars.Plural | ExpectationGrammars.Negated, "are not contained in collection [1] in order")]
+			ExpectationGrammars.Plural | ExpectationGrammars.Negated,
+			"are not contained in collection [1] in order and contiguous")]
 		public async Task ShouldAgreeWithTheNumberOfTheSubject(
 			CollectionMatchOptions.EquivalenceRelations equivalenceRelations,
 			ExpectationGrammars grammars,
@@ -219,10 +220,10 @@ public class CollectionMatchOptionsTests
 		[InlineData(CollectionMatchOptions.EquivalenceRelations.ContainsProperly,
 			"contains collection [1] and at least one additional item in order and contiguous")]
 		[InlineData(CollectionMatchOptions.EquivalenceRelations.IsContainedIn,
-			"is contained in collection [1] in order")]
+			"is contained in collection [1] in order and contiguous")]
 		[InlineData(CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly,
-			"is contained in collection [1] which has at least one additional item in order")]
-		public async Task ShouldOnlyClaimContiguityForTheContainsRelation(
+			"is contained in collection [1] which has at least one additional item in order and contiguous")]
+		public async Task ShouldOnlyClaimContiguityForTheContainmentRelations(
 			CollectionMatchOptions.EquivalenceRelations equivalenceRelations,
 			string expected)
 		{
@@ -231,7 +232,7 @@ public class CollectionMatchOptionsTests
 			string result = sut.GetExpectation("[1]", ExpectationGrammars.None);
 
 			await That(result).IsEqualTo(expected)
-				.Because("only the contains relation forbids other items in between");
+				.Because("only the containment relations forbid other items in between");
 		}
 	}
 
@@ -308,10 +309,12 @@ public class CollectionMatchOptionsTests
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             is contained in collection [2, 3,] in order,
+				             is contained in collection [2, 3,] in order and contiguous,
 				             but it
-				               contained item 1 at index 0 that was not expected and
-				               contained item 2 at index 2 that was not expected
+				               contained item 1 at index 0 instead of 2 and
+				               contained item 2 at index 1 instead of 3 and
+				               contained item 2 at index 2 that was not expected and
+				               contained item 3 at index 3 that was not expected
 
 				             Collection:
 				             [1, 2, 2, 3]

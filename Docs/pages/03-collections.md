@@ -291,10 +291,11 @@ await Expect.That(values).IsContainedIn([1, 2, 3, 4]);
 await Expect.That(values).IsContainedIn([4, 3, 2, 1]).InAnyOrder();
 await Expect.That(values).IsContainedIn([1, 1, 2, 2, 3, 3, 4, 4]).IgnoringDuplicates();
 await Expect.That(values).IsContainedIn([4, 4, 3, 3, 2, 2, 1, 1]).InAnyOrder().IgnoringDuplicates();
+await Expect.That(values).IsContainedIn([1, 4, 2, 3]).IgnoringInterspersedItems();
 ```
 
-*Note: Without `InAnyOrder` the values must appear in the expected collection in the same relative order, but gaps are
-allowed, so `[1, 3]` is contained in `[1, 2, 3]`, while `[3, 1]` is not.*
+*Note: Without `InAnyOrder` the values must appear in the expected collection in the same order and contiguous, i.e.
+without other items in between, so `[1, 3]` is not contained in `[1, 2, 3]` unless `IgnoringInterspersedItems` is used.*
 
 *Note: You can also negate this expectation with `IsNotContainedIn`.*
 
