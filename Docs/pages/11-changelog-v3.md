@@ -95,8 +95,7 @@ and `Equivalent(…)`. A type check does not compare values, so neither option e
 expectation chain and the awaited result keep the subject type instead of widening it to `object`.
 `ContainsKeys(…).WhoseValues` applied the `All()` quantifier implicitly, which left no way to check the values as a
 whole. It is now an ordinary collection subject, so `IsEqualTo(…)`, `Contains(…)`, `HasCount(…)` and the other
-quantifiers such as `None()` are available as well. The `IsNotContainedIn` overloads taking predicates or
-expectations name their parameter `unexpected` like every other overload, which only matters if you pass it by name.
+quantifiers such as `None()` are available as well.
 
 ## Failure messages
 
