@@ -12,6 +12,13 @@
 *REMOVED*aweXpect.ThatEnumerable.ElementsForStructEnumerable<TEnumerable, TItem>.AreExactly(System.Type! type) -> aweXpect.Results.ObjectEqualityResult<TEnumerable, aweXpect.Core.IThat<TEnumerable>!, TItem>!
 *REMOVED*aweXpect.ThatEnumerable.ElementsForStructEnumerable<TEnumerable, TItem>.AreExactly<TType>() -> aweXpect.Results.ObjectEqualityResult<TEnumerable, aweXpect.Core.IThat<TEnumerable>!, TItem>!
 *REMOVED*aweXpect.Results.ContainsKeysResult<TCollection, TThat, TKey, TValue>.WhoseValues.get -> aweXpect.ThatEnumerable.Elements<TValue>!
+*REMOVED*aweXpect.Results.SignalTimeoutResult
+*REMOVED*aweXpect.Results.SignalTimeoutResult.SignalTimeoutResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<aweXpect.Signaling.Signaler!>! returnValue, aweXpect.Options.SignalerOptions! options) -> void
+*REMOVED*aweXpect.Results.SignalTimeoutResult.Within(System.TimeSpan timeout) -> aweXpect.Results.SignalTimeoutResult!
+*REMOVED*aweXpect.Results.SignalTimeoutResult<TParameter>
+*REMOVED*aweXpect.Results.SignalTimeoutResult<TParameter>.SignalTimeoutResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>!>! returnValue, aweXpect.Options.SignalerOptions<TParameter>! options) -> void
+*REMOVED*aweXpect.Results.SignalTimeoutResult<TParameter>.With(System.Func<TParameter, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.SignalTimeoutResult<TParameter>!
+*REMOVED*aweXpect.Results.SignalTimeoutResult<TParameter>.Within(System.TimeSpan timeout) -> aweXpect.Results.SignalTimeoutResult<TParameter>!
 *REMOVED*static aweXpect.ThatDelegate.DoesNotExecuteWithin(this aweXpect.Core.IThat<aweXpect.Delegates.ThatDelegate.WithoutValue!>! subject, System.TimeSpan duration) -> aweXpect.Results.ExpectationResult!
 *REMOVED*static aweXpect.ThatDelegate.DoesNotExecuteWithin<TValue>(this aweXpect.Core.IThat<aweXpect.Delegates.ThatDelegate.WithValue<TValue>!>! subject, System.TimeSpan duration) -> aweXpect.Results.ExpectationResult<TValue>!
 *REMOVED*static aweXpect.ThatEnum.HasValue<TEnum>(this aweXpect.Core.IThat<TEnum>! subject) -> aweXpect.Results.PropertyResult.Long<TEnum>!
@@ -20,7 +27,18 @@
 *REMOVED*static aweXpect.ThatNullableEnum.HasValue<TEnum>(this aweXpect.Core.IThat<TEnum?>! subject) -> aweXpect.Results.PropertyResult.Long<TEnum?>!
 *REMOVED*static aweXpect.ThatObject.IsExactly(this aweXpect.Core.IThat<object?>! subject, System.Type! type) -> aweXpect.Results.AndOrResult<object?, aweXpect.Core.IThat<object?>!>!
 *REMOVED*static aweXpect.ThatObject.IsNotExactly(this aweXpect.Core.IThat<object?>! subject, System.Type! type) -> aweXpect.Results.AndOrResult<object?, aweXpect.Core.IThat<object?>!>!
+*REMOVED*static aweXpect.ThatSignaler.DidNotSignal(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler!>! subject) -> aweXpect.Results.SignalTimeoutResult!
+*REMOVED*static aweXpect.ThatSignaler.DidNotSignal(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler!>! subject, aweXpect.Core.Times times) -> aweXpect.Results.SignalTimeoutResult!
+*REMOVED*static aweXpect.ThatSignaler.DidNotSignal<TParameter>(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>!>! subject) -> aweXpect.Results.SignalTimeoutResult<TParameter>!
+*REMOVED*static aweXpect.ThatSignaler.DidNotSignal<TParameter>(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>!>! subject, aweXpect.Core.Times times) -> aweXpect.Results.SignalTimeoutResult<TParameter>!
 aweXpect.Results.ContainsKeysResult<TCollection, TThat, TKey, TValue>.WhoseValues.get -> aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TValue>!>!
+aweXpect.Results.DidNotSignalResult
+aweXpect.Results.DidNotSignalResult.DidNotSignalResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<aweXpect.Signaling.Signaler!>! returnValue, aweXpect.Options.SignalerOptions! options) -> void
+aweXpect.Results.DidNotSignalResult.Within(System.TimeSpan timeout) -> aweXpect.Results.DidNotSignalResult!
+aweXpect.Results.DidNotSignalResult<TParameter>
+aweXpect.Results.DidNotSignalResult<TParameter>.DidNotSignalResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>!>! returnValue, aweXpect.Options.SignalerOptions<TParameter>! options) -> void
+aweXpect.Results.DidNotSignalResult<TParameter>.With(System.Func<TParameter, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.DidNotSignalResult<TParameter>!
+aweXpect.Results.DidNotSignalResult<TParameter>.Within(System.TimeSpan timeout) -> aweXpect.Results.DidNotSignalResult<TParameter>!
 aweXpect.Results.EnumValueResult<TItem>
 aweXpect.Results.EnumValueResult<TItem>.Between(long? minimum) -> aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!, long?>!
 aweXpect.Results.EnumValueResult<TItem>.Between(ulong? minimum) -> aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!, ulong?>!
@@ -100,3 +118,7 @@ static aweXpect.ThatNullableEnum.HasValue<TEnum>(this aweXpect.Core.IThat<TEnum?
 static aweXpect.ThatNullableEnum.HasValue<TEnum>(this aweXpect.Core.IThat<TEnum?>! subject, ulong? expected) -> aweXpect.Results.AndOrResult<TEnum?, aweXpect.Core.IThat<TEnum?>!>!
 static aweXpect.ThatObject.IsExactly<T>(this aweXpect.Core.IThat<T?>! subject, System.Type! type) -> aweXpect.Results.AndOrResult<T?, aweXpect.Core.IThat<T?>!>!
 static aweXpect.ThatObject.IsNotExactly<T>(this aweXpect.Core.IThat<T?>! subject, System.Type! type) -> aweXpect.Results.AndOrResult<T?, aweXpect.Core.IThat<T?>!>!
+static aweXpect.ThatSignaler.DidNotSignal(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler!>! subject) -> aweXpect.Results.DidNotSignalResult!
+static aweXpect.ThatSignaler.DidNotSignal(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler!>! subject, aweXpect.Core.Times times) -> aweXpect.Results.DidNotSignalResult!
+static aweXpect.ThatSignaler.DidNotSignal<TParameter>(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>!>! subject) -> aweXpect.Results.DidNotSignalResult<TParameter>!
+static aweXpect.ThatSignaler.DidNotSignal<TParameter>(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>!>! subject, aweXpect.Core.Times times) -> aweXpect.Results.DidNotSignalResult<TParameter>!

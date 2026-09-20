@@ -142,6 +142,9 @@ they do, names the receiver parameter of every expectation `subject`, and moves 
 namespaces. The new `[GuaranteesNotNull]` attribute marks an expectation that a `null` subject can never satisfy, and
 the [null rule](/docs/expectations/write-extension#constraints) that an extension has to follow is documented.
 
+`DidNotSignal()` returns a `DidNotSignalResult`. Its previous name `SignalTimeoutResult`, which only ever existed in
+the v3 pre-releases, read like a timeout failure although it is the result of an absent signal.
+
 ## New expectations
 
 - **Dictionaries** navigate to their `Keys` and `Values` with the full collection vocabulary (needs C# 14).

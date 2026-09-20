@@ -14,7 +14,7 @@ namespace aweXpect.Results;
 ///     Absence is not an occurrence, so this result intentionally carries no quantifiers: use
 ///     <see cref="SignalCountResult" /> to count how often a callback was signaled.
 /// </remarks>
-public class SignalTimeoutResult(
+public class DidNotSignalResult(
 	ExpectationBuilder expectationBuilder,
 	IThat<Signaler> returnValue,
 	SignalerOptions options)
@@ -27,7 +27,7 @@ public class SignalTimeoutResult(
 	/// <summary>
 	///     Specifies a timeout for waiting on the callback.
 	/// </summary>
-	public SignalTimeoutResult Within(TimeSpan timeout)
+	public DidNotSignalResult Within(TimeSpan timeout)
 	{
 		options.Timeout = timeout;
 		return this;
@@ -42,7 +42,7 @@ public class SignalTimeoutResult(
 ///     Absence is not an occurrence, so this result intentionally carries no quantifiers: use
 ///     <see cref="SignalCountWhoseResult{TParameter}" /> to count how often a callback was signaled.
 /// </remarks>
-public class SignalTimeoutResult<TParameter>(
+public class DidNotSignalResult<TParameter>(
 	ExpectationBuilder expectationBuilder,
 	IThat<Signaler<TParameter>> returnValue,
 	SignalerOptions<TParameter> options)
@@ -55,7 +55,7 @@ public class SignalTimeoutResult<TParameter>(
 	/// <summary>
 	///     Specifies a timeout for waiting on the callback.
 	/// </summary>
-	public SignalTimeoutResult<TParameter> Within(TimeSpan timeout)
+	public DidNotSignalResult<TParameter> Within(TimeSpan timeout)
 	{
 		options.Timeout = timeout;
 		return this;
@@ -64,7 +64,7 @@ public class SignalTimeoutResult<TParameter>(
 	/// <summary>
 	///     Specifies a predicate to filter for signals with a matching parameter.
 	/// </summary>
-	public SignalTimeoutResult<TParameter> With(
+	public DidNotSignalResult<TParameter> With(
 		Func<TParameter, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")

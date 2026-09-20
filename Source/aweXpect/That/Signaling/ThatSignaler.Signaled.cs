@@ -90,12 +90,12 @@ public static partial class ThatSignaler
 	///     Verifies that the expected callback was not signaled.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static SignalTimeoutResult DidNotSignal(
+	public static DidNotSignalResult DidNotSignal(
 		this IThat<Signaler> subject)
 	{
 		Quantifier quantifier = new();
 		SignalerOptions options = new();
-		return new SignalTimeoutResult(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new DidNotSignalResult(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new SignaledConstraint(it, grammars, quantifier, options).Invert()),
 			subject,
 			options);
@@ -105,12 +105,12 @@ public static partial class ThatSignaler
 	///     Verifies that the expected callback with <typeparamref name="TParameter" /> was not signaled.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static SignalTimeoutResult<TParameter> DidNotSignal<TParameter>(
+	public static DidNotSignalResult<TParameter> DidNotSignal<TParameter>(
 		this IThat<Signaler<TParameter>> subject)
 	{
 		Quantifier quantifier = new();
 		SignalerOptions<TParameter> options = new();
-		return new SignalTimeoutResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new DidNotSignalResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new SignaledConstraint<TParameter>(it, grammars, quantifier, options).Invert()),
 			subject,
 			options);
@@ -121,14 +121,14 @@ public static partial class ThatSignaler
 	///     at least the given number of <paramref name="times" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static SignalTimeoutResult DidNotSignal(
+	public static DidNotSignalResult DidNotSignal(
 		this IThat<Signaler> subject,
 		Times times)
 	{
 		Quantifier quantifier = new();
 		quantifier.AtLeast(times.Value);
 		SignalerOptions options = new();
-		return new SignalTimeoutResult(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new DidNotSignalResult(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new SignaledConstraint(it, grammars, quantifier, options).Invert()),
 			subject,
 			options);
@@ -139,14 +139,14 @@ public static partial class ThatSignaler
 	///     at least the given number of <paramref name="times" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static SignalTimeoutResult<TParameter> DidNotSignal<TParameter>(
+	public static DidNotSignalResult<TParameter> DidNotSignal<TParameter>(
 		this IThat<Signaler<TParameter>> subject,
 		Times times)
 	{
 		Quantifier quantifier = new();
 		quantifier.AtLeast(times.Value);
 		SignalerOptions<TParameter> options = new();
-		return new SignalTimeoutResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new DidNotSignalResult<TParameter>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new SignaledConstraint<TParameter>(it, grammars, quantifier, options).Invert()),
 			subject,
 			options);
