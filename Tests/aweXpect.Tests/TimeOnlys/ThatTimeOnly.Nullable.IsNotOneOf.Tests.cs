@@ -14,6 +14,25 @@ public sealed partial class ThatTimeOnly
 			public sealed class Tests
 			{
 				[Fact]
+				public async Task WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
+				{
+					TimeOnly? subject = CurrentTime();
+					TimeOnly?[] values = [LaterTime(), subject, EarlierTime(),];
+					IEnumerable<TimeOnly?> expected = Factory.GetSingleUseEnumerable(values);
+
+					async Task Act()
+						=> await That(subject).IsNotOneOf(expected);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not one of {Formatter.Format(values)},
+						              but it was {Formatter.Format(subject)}
+						              """)
+						.Because("the empty check must not consume the values needed for the comparison and the message");
+				}
+
+				[Fact]
 				public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 				{
 					TimeOnly? subject = CurrentTime();
@@ -117,6 +136,25 @@ public sealed partial class ThatTimeOnly
 					await That(Act).Throws<ArgumentException>()
 						.WithMessage("You have to provide at least one expected value!")
 						.Because("missing expected values are an argument error, independent of the subject");
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsNullAndUnexpectedCanOnlyBeEnumeratedOnce_ShouldFail()
+				{
+					TimeOnly? subject = null;
+					TimeOnly?[] values = [CurrentTime(), null,];
+					IEnumerable<TimeOnly?> expected = Factory.GetSingleUseEnumerable(values);
+
+					async Task Act()
+						=> await That(subject).IsNotOneOf(expected);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not one of {Formatter.Format(values)},
+						              but it was <null>
+						              """)
+						.Because("the empty check must not consume the values needed for the comparison and the message");
 				}
 
 				[Fact]

@@ -111,29 +111,26 @@ public static partial class ThatNullableTimeOnly
 		: ConstraintResult.WithValue<TimeOnly?>(it, grammars),
 			IValueConstraint<TimeOnly?>
 	{
+		private IEnumerable<TimeOnly?> _expected = expected;
+
 		public ConstraintResult IsMetBy(TimeOnly? actual)
 		{
-			ThrowHelper.ThrowIfEmpty(expected);
+			IReadOnlyList<TimeOnly?> expectedValues = ThrowHelper.EnsureNotEmpty(_expected);
+			_expected = expectedValues;
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = expected.Any(x => x is null) ? Outcome.Success : Outcome.Failure;
+				Outcome = expectedValues.Any(x => x is null) ? Outcome.Success : Outcome.Failure;
 			}
 			else
 			{
 				TimeSpan timeTolerance = tolerance.Tolerance ??
 				                         Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-				foreach (TimeOnly? value in expected)
-				{
-					if (value != null &&
-					    actual.Value.CircularDistanceTicks(value.Value) <= timeTolerance.Ticks)
-					{
-						Outcome = Outcome.Success;
-						return this;
-					}
-				}
-
-				Outcome = Outcome.Failure;
+				Outcome = expectedValues.Any(value => value != null &&
+				                                      actual.Value.CircularDistanceTicks(value.Value) <=
+				                                      timeTolerance.Ticks)
+					? Outcome.Success
+					: Outcome.Failure;
 			}
 
 			return this;
@@ -142,7 +139,7 @@ public static partial class ThatNullableTimeOnly
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("is one of ");
-			Formatter.Format(stringBuilder, expected);
+			Formatter.Format(stringBuilder, _expected);
 			stringBuilder.Append(tolerance);
 		}
 
@@ -155,7 +152,7 @@ public static partial class ThatNullableTimeOnly
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("is not one of ");
-			Formatter.Format(stringBuilder, expected);
+			Formatter.Format(stringBuilder, _expected);
 			stringBuilder.Append(tolerance);
 		}
 

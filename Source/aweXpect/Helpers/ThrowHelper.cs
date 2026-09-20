@@ -11,15 +11,18 @@ internal static class ThrowHelper
 		=> new("You have to provide at least one expected value!");
 
 	/// <summary>
-	///     Rejects an empty set of expected values before the subject is looked at, so that the guard cannot depend on
-	///     runtime data.
+	///     Rejects an empty set of expected <paramref name="values" /> and returns them materialized, so that a
+	///     sequence which can only be enumerated once survives both the guard and the subsequent comparison.
 	/// </summary>
-	public static void ThrowIfEmpty<T>(IEnumerable<T> values)
+	public static IReadOnlyList<T> EnsureNotEmpty<T>(IEnumerable<T> values)
 	{
-		if (!values.Any())
+		IReadOnlyList<T> materializedValues = values as IReadOnlyList<T> ?? values.ToList();
+		if (materializedValues.Count == 0)
 		{
 			throw Tracing.WriteException(EmptyCollection());
 		}
+
+		return materializedValues;
 	}
 
 	/// <summary>

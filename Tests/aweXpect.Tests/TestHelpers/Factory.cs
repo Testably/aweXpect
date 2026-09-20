@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
 
@@ -123,6 +124,18 @@ internal static class Factory
 	}
 
 	/// <summary>
+	///     Returns an <see cref="IEnumerable{T}" /> of <paramref name="values" /> that throws when it is enumerated
+	///     a second time.
+	/// </summary>
+	/// <remarks>
+	///     Mimics sequences that are backed by a single reader (e.g. a database cursor or a channel), so that an
+	///     expectation which enumerates its expected values more than once fails the test instead of silently
+	///     dropping already consumed values.
+	/// </remarks>
+	public static IEnumerable<T> GetSingleUseEnumerable<T>(params T[] values)
+		=> new SingleUseEnumerable<T>(values);
+
+	/// <summary>
 	///     Throws when the consumer is about to enumerate beyond the <see cref="SafetyLimit" /> of an otherwise
 	///     unbounded sequence.
 	/// </summary>
@@ -133,5 +146,23 @@ internal static class Factory
 			throw new InvalidOperationException(
 				$"The expectation enumerated more than {SafetyLimit} items instead of stopping early.");
 		}
+	}
+
+	private sealed class SingleUseEnumerable<T>(IEnumerable<T> values) : IEnumerable<T>
+	{
+		private bool _isEnumerated;
+
+		public IEnumerator<T> GetEnumerator()
+		{
+			if (_isEnumerated)
+			{
+				throw new InvalidOperationException("The expectation enumerated the values more than once.");
+			}
+
+			_isEnumerated = true;
+			return values.GetEnumerator();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
 }

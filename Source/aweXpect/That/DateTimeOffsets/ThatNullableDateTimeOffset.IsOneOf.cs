@@ -110,30 +110,26 @@ public static partial class ThatNullableDateTimeOffset
 		: ConstraintResult.WithValue<DateTimeOffset?>(it, grammars),
 			IValueConstraint<DateTimeOffset?>
 	{
+		private IEnumerable<DateTimeOffset?> _expected = expected;
+
 		public ConstraintResult IsMetBy(DateTimeOffset? actual)
 		{
-			ThrowHelper.ThrowIfEmpty(expected);
+			IReadOnlyList<DateTimeOffset?> expectedValues = ThrowHelper.EnsureNotEmpty(_expected);
+			_expected = expectedValues;
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = expected.Any(x => x is null) ? Outcome.Success : Outcome.Failure;
+				Outcome = expectedValues.Any(x => x is null) ? Outcome.Success : Outcome.Failure;
 			}
 			else
 			{
 				TimeSpan timeTolerance = tolerance.Tolerance ??
 				                         Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-				foreach (DateTimeOffset? value in expected)
-				{
-					if (value != null &&
-					    actual - value.Value <= timeTolerance &&
-					    actual - value.Value >= timeTolerance.Negate())
-					{
-						Outcome = Outcome.Success;
-						return this;
-					}
-				}
-
-				Outcome = Outcome.Failure;
+				Outcome = expectedValues.Any(value => value != null &&
+				                                      actual - value.Value <= timeTolerance &&
+				                                      actual - value.Value >= timeTolerance.Negate())
+					? Outcome.Success
+					: Outcome.Failure;
 			}
 
 			return this;
@@ -142,7 +138,7 @@ public static partial class ThatNullableDateTimeOffset
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("is one of ");
-			Formatter.Format(stringBuilder, expected);
+			Formatter.Format(stringBuilder, _expected);
 			stringBuilder.Append(tolerance);
 		}
 
@@ -155,7 +151,7 @@ public static partial class ThatNullableDateTimeOffset
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("is not one of ");
-			Formatter.Format(stringBuilder, expected);
+			Formatter.Format(stringBuilder, _expected);
 			stringBuilder.Append(tolerance);
 		}
 
