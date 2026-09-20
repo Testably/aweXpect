@@ -599,6 +599,65 @@ public sealed partial class ThatDelegate
 			}
 		}
 
+		public sealed class TaskTests
+		{
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				Task? subject = null;
+
+				async Task Act()
+					=> await That(subject!).ExecutesWithin(500.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             executes within 0:00.500,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenTaskIsFastEnough_ShouldSucceed()
+			{
+				Task subject = Task.CompletedTask;
+
+				async Task Act()
+					=> await That(subject).ExecutesWithin(5000.Milliseconds());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTaskTakesLonger_ShouldFail()
+			{
+				Task subject = Task.Delay(50.Milliseconds());
+
+				async Task Act()
+					=> await That(subject).ExecutesWithin(10.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             executes within 0:00.010,
+					             but it took 0:*
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenTaskWasAlreadyCompleted_ShouldOnlyMeasureTheRemainingDuration()
+			{
+				Task subject = Task.Delay(200.Milliseconds());
+				await subject;
+
+				async Task Act()
+					=> await That(subject).ExecutesWithin(100.Milliseconds());
+
+				await That(Act).DoesNotThrow()
+					.Because("the task is already running, so only the duration that remains is measured");
+			}
+		}
+
 		public sealed class CancellationTokenTests
 		{
 			[Fact]

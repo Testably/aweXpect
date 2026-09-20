@@ -113,6 +113,15 @@ on the exact text of a failure message may need an update.
 `Triggered(…).Never()`, so an event raised later inside the window went unseen. In v3 such an expectation waits out
 the full timeout. This is the one change that can make a passing test fail without touching its code.
 
+## `Task` and `ValueTask` subjects
+
+`Expect.That` awaited a `Task<T>` and used its result as the subject, but a non-generic `Task` or `ValueTask` became
+the subject itself, so `Expect.That(DoAsync()).IsNotNull()` passed without ever observing a failed operation. Both
+now bind to a delegate subject that awaits the task, which makes `DoesNotThrow()`, `Throws<TException>()` and the
+execution time expectations available. Every expectation on the task object is a compile error afterwards; where you
+really mean the object, name the type explicitly with `Expect.That<Task>(subject)`. See
+[Delegates](/docs/expectations/delegates).
+
 ## `DateTime` kinds
 
 A `DateTime` with `DateTimeKind.Utc` and one with `DateTimeKind.Local` describe different instants for the same
