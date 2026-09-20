@@ -58,7 +58,7 @@ public class StringCollectionMatchResult<TType, TThat, TSelf>(
 	}
 
 	/// <summary>
-	///     Ignores interspersed items in the actual collection.
+	///     Ignores items that appear in between the matched items.
 	/// </summary>
 	/// <remarks>
 	///     This option has no effect when <see cref="InAnyOrder()" /> is used.

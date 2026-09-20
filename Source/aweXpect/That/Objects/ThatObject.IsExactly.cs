@@ -12,13 +12,14 @@ public static partial class ThatObject
 	///     Verifies that the subject is exactly of type <paramref name="type" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<object?, IThat<object?>> IsExactly(
-		this IThat<object?> subject,
+	public static AndOrResult<T?, IThat<T?>> IsExactly<T>(
+		this IThat<T?> subject,
 		Type type)
+		where T : class
 	{
 		type.ThrowIfNull();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new AndOrResult<object?, IThat<object?>>(expectationBuilder.AddConstraint((it, grammars)
+		return new AndOrResult<T?, IThat<T?>>(expectationBuilder.AddConstraint((it, grammars)
 				=> new IsExactlyOfTypeConstraint(expectationBuilder, it, grammars, type)),
 			subject);
 	}
@@ -27,13 +28,14 @@ public static partial class ThatObject
 	///     Verifies that the subject is not exactly of type <paramref name="type" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<object?, IThat<object?>> IsNotExactly(
-		this IThat<object?> subject,
+	public static AndOrResult<T?, IThat<T?>> IsNotExactly<T>(
+		this IThat<T?> subject,
 		Type type)
+		where T : class
 	{
 		type.ThrowIfNull();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new AndOrResult<object?, IThat<object?>>(expectationBuilder.AddConstraint((it, grammars)
+		return new AndOrResult<T?, IThat<T?>>(expectationBuilder.AddConstraint((it, grammars)
 				=> new IsExactlyOfTypeConstraint(expectationBuilder, it, grammars, type).Invert()),
 			subject);
 	}

@@ -28,6 +28,14 @@ void Act() => {};
 await Expect.That(Act).DoesNotThrow();
 ```
 
+For a delegate with a return value, `WhoseResult` continues with the returned value as subject:
+
+```csharp
+int Act() => 3;
+
+await Expect.That(Act).DoesNotThrow().WhoseResult.IsEqualTo(3);
+```
+
 ## Throw exception
 
 You can verify that the delegate throws an exception:
@@ -109,7 +117,7 @@ You can verify the inner exception of the thrown exception;
 ```csharp
 void Act() => throw new CustomException("outer", new CustomException("inner"));
 
-await Expect.That(Act).Throws().WithInnerException();
+await Expect.That(Act).Throws().WithInner();
 await Expect.That(Act).Throws().WithInner<CustomException>();
 ```
 
@@ -165,8 +173,8 @@ await Expect.That(Act).Throws<ArgumentNullException>().WithParamName().EndingWit
 ### `With…` after `Throws`, `Has…` on the exception
 
 Directly after `Throws`, an expectation continues the sentence "throws a `CustomException`", so it uses the
-`With…` vocabulary (`WithMessage`, `WithInnerException`, `WithHResult`, …). The same checks exist as `Has…`
-(`HasMessage`, `HasInnerException`, `HasHResult`, …) for an exception that is the subject itself, because there
+`With…` vocabulary (`WithMessage`, `WithInner`, `WithHResult`, …). The same checks exist as `Has…`
+(`HasMessage`, `HasInner`, `HasHResult`, …) for an exception that is the subject itself, because there
 they start a new sentence. After `.Which` the thrown exception becomes the subject, so `Has…` applies again:
 
 ```csharp

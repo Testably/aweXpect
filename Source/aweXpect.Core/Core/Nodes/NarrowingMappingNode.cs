@@ -35,7 +35,7 @@ internal sealed class NarrowingMappingNode<TSource, TTarget, TNarrowed>(
 			return IsMetByExpectations<TNarrowed>(default, context, cancellationToken);
 		}
 
-		return Task.FromResult<ConstraintResult>(new NotApplicableConstraintResult(this));
+		return Task.FromResult<ConstraintResult>(new NotApplicableConstraintResult(AppendMemberExpectation));
 	}
 }
 
@@ -68,6 +68,6 @@ internal sealed class NarrowingAsyncMappingNode<TSource, TTarget, TNarrowed>(
 			return IsMetByExpectations<TNarrowed>(default, context, cancellationToken);
 		}
 
-		return Task.FromResult<ConstraintResult>(new NotApplicableConstraintResult(this));
+		return Task.FromResult<ConstraintResult>(new NotApplicableConstraintResult(AppendMemberExpectation));
 	}
 }

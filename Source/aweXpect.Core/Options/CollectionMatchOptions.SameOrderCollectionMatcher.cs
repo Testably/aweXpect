@@ -73,10 +73,13 @@ public partial class CollectionMatchOptions
 		private readonly List<T3> _missingItems = new();
 		private readonly Dictionary<int, T> _outOfOrderItems = new();
 		private readonly int _totalExpectedItems;
+		private int _alignment;
+		private List<int> _candidateOffsets = new();
 		private int _expectationIndex = -1;
 		private int _index;
 		private int _matchIndex;
 		private int _maxMatchIndex;
+		private bool _runIsBroken;
 
 		protected SameOrderCollectionMatcherBase(EquivalenceRelations equivalenceRelation,
 			IEnumerable<T3> expected,
@@ -97,7 +100,14 @@ public partial class CollectionMatchOptions
 		{
 			if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
 			{
-				await VerifyTheCurrentValueContinuesTheSubsequence(value, options);
+				if (_ignoreInterspersedItems)
+				{
+					await VerifyTheCurrentValueContinuesTheSubsequence(value, options);
+				}
+				else
+				{
+					await VerifyTheCurrentValueContinuesTheContiguousRun(value, options);
+				}
 			}
 			else if (_matchIndex >= _expectedItems.Length)
 			{
@@ -122,7 +132,7 @@ public partial class CollectionMatchOptions
 			int errorCount = _incorrectItems.Count + _outOfOrderItems.Count;
 			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
 			{
-				// Expected items that the subsequence skips over are no deviations.
+				// Expected items outside the matched run are no deviations.
 				errorCount += _missingItems.Count;
 			}
 
@@ -145,7 +155,9 @@ public partial class CollectionMatchOptions
 		{
 			if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
 			{
-				return VerifyCompleteForSubsequenceMatch(it, maximumNumber);
+				return _ignoreInterspersedItems
+					? VerifyCompleteForSubsequenceMatch(it, maximumNumber)
+					: VerifyCompleteForContiguousMatch(it);
 			}
 
 			int consideredExpectedItems = Math.Max(_expectationIndex - 1, _maxMatchIndex);
@@ -204,6 +216,26 @@ public partial class CollectionMatchOptions
 			return (error != null, error);
 		}
 #pragma warning restore S3776
+
+		/// <summary>
+		///     The subject is contained in the expected collection, when its items appear there as an uninterrupted run;
+		///     once no run is left, the remaining items are compared against the abandoned run.
+		/// </summary>
+		private (bool, string?) VerifyCompleteForContiguousMatch(string it)
+		{
+			List<string> errors = new();
+			errors.AddRange(IncorrectItemsError(_incorrectItems));
+			errors.AddRange(AdditionalItemsError(_additionalItems));
+			if (errors.Count == 0 &&
+			    _equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedInProperly) &&
+			    _index >= _expectedItems.Length)
+			{
+				errors.Add("contained all expected items");
+			}
+
+			string? error = ReturnErrorString(it, errors);
+			return (error != null, error);
+		}
 
 		/// <summary>
 		///     The subject is contained in the expected collection, when its items appear in the expected collection in the
@@ -266,6 +298,64 @@ public partial class CollectionMatchOptions
 			else
 			{
 				_incorrectItems.Add(_index, (value, _expectedItems[_expectationIndex]));
+			}
+		}
+
+		/// <summary>
+		///     Keeps all offsets in the expected collection at which the subject could still start an uninterrupted run;
+		///     when the last one is abandoned, the <paramref name="value" /> and all later items are reported against the
+		///     first abandoned offset.
+		/// </summary>
+#if NET8_0_OR_GREATER
+		private async ValueTask
+#else
+		private async Task
+#endif
+			VerifyTheCurrentValueContinuesTheContiguousRun(T value, IOptionsEquality<T2> options)
+		{
+			if (!_runIsBroken)
+			{
+				List<int> candidateOffsets = new();
+				if (_index == 0)
+				{
+					for (int offset = 0; offset < _expectedItems.Length; offset++)
+					{
+						if (await AreConsideredEqual(value, _expectedItems[offset], options))
+						{
+							candidateOffsets.Add(offset);
+						}
+					}
+				}
+				else
+				{
+					foreach (int offset in _candidateOffsets)
+					{
+						if (offset + _index < _expectedItems.Length &&
+						    await AreConsideredEqual(value, _expectedItems[offset + _index], options))
+						{
+							candidateOffsets.Add(offset);
+						}
+					}
+				}
+
+				if (candidateOffsets.Count > 0)
+				{
+					_candidateOffsets = candidateOffsets;
+					return;
+				}
+
+				_alignment = _candidateOffsets.Count > 0 ? _candidateOffsets[0] : 0;
+				_runIsBroken = true;
+			}
+
+			int expectedIndex = _alignment + _index;
+			if (expectedIndex < _expectedItems.Length)
+			{
+				_incorrectItems.Add(_index, (value, _expectedItems[expectedIndex]));
+			}
+			else
+			{
+				_additionalItems.Add(_index, value);
 			}
 		}
 

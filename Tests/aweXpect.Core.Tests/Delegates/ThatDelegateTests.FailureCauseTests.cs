@@ -8,19 +8,6 @@ public sealed partial class ThatDelegateTests
 	public sealed class FailureCauseTests
 	{
 		[Fact]
-		public async Task DoesNotThrow_AndWhoseResult_WhenDelegateThrows_ShouldForwardExceptionAsInnerException()
-		{
-			Exception exception = new MyException();
-			Func<int> @delegate = () => throw exception;
-
-			async Task Act()
-				=> await That(@delegate).DoesNotThrow().AndWhoseResult.IsEqualTo(1);
-
-			await That(Act).Throws()
-				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
-		}
-
-		[Fact]
 		public async Task DoesNotThrow_WhenDelegateThrows_ShouldForwardExceptionAsInnerException()
 		{
 			Exception exception = new MyException();
@@ -28,6 +15,19 @@ public sealed partial class ThatDelegateTests
 
 			async Task Act()
 				=> await That(@delegate).DoesNotThrow();
+
+			await That(Act).Throws()
+				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+		}
+
+		[Fact]
+		public async Task DoesNotThrow_WhoseResult_WhenDelegateThrows_ShouldForwardExceptionAsInnerException()
+		{
+			Exception exception = new MyException();
+			Func<int> @delegate = () => throw exception;
+
+			async Task Act()
+				=> await That(@delegate).DoesNotThrow().WhoseResult.IsEqualTo(1);
 
 			await That(Act).Throws()
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));

@@ -291,10 +291,11 @@ await Expect.That(values).IsContainedIn([1, 2, 3, 4]);
 await Expect.That(values).IsContainedIn([4, 3, 2, 1]).InAnyOrder();
 await Expect.That(values).IsContainedIn([1, 1, 2, 2, 3, 3, 4, 4]).IgnoringDuplicates();
 await Expect.That(values).IsContainedIn([4, 4, 3, 3, 2, 2, 1, 1]).InAnyOrder().IgnoringDuplicates();
+await Expect.That(values).IsContainedIn([1, 4, 2, 3]).IgnoringInterspersedItems();
 ```
 
-*Note: Without `InAnyOrder` the values must appear in the expected collection in the same relative order, but gaps are
-allowed, so `[1, 3]` is contained in `[1, 2, 3]`, while `[3, 1]` is not.*
+*Note: Without `InAnyOrder` the values must appear in the expected collection in the same order and contiguous, i.e.
+without other items in between, so `[1, 3]` is not contained in `[1, 2, 3]` unless `IgnoringInterspersedItems` is used.*
 
 *Note: You can also negate this expectation with `IsNotContainedIn`.*
 
@@ -640,13 +641,16 @@ await Expect.That(values).DoesNotContainKey(44);
 await Expect.That(values).DoesNotContainKeys(44, 45, 46);
 ```
 
-You can add additional expectations on the corresponding value(s):
+You can add additional expectations on the corresponding value(s). `WhoseValues` is a collection of the values
+for the expected keys, so all collection expectations are available:
 
 ```csharp
 Dictionary<int, string> values = new() { { 42, "foo" }, { 43, "bar" }, { 44, "baz" } };
 
 await Expect.That(values).ContainsKey(42).WhoseValue.IsEqualTo("foo");
-await Expect.That(values).ContainsKeys(43, 44).WhoseValues.ComplyWith(v => v.StartsWith("ba"));
+await Expect.That(values).ContainsKeys(43, 44).WhoseValues.IsEqualTo(["bar", "baz"]);
+await Expect.That(values).ContainsKeys(43, 44).WhoseValues.Contains("bar");
+await Expect.That(values).ContainsKeys(43, 44).WhoseValues.All().ComplyWith(v => v.StartsWith("ba"));
 ```
 
 ### Contain value(s)

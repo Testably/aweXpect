@@ -186,6 +186,38 @@ public sealed partial class ThatObject
 
 			[Theory]
 			[AutoData]
+			public async Task WhenSubjectIsTyped_ShouldAllowChainingOnTheSubjectType(int value)
+			{
+				MyClass subject = new()
+				{
+					Value = value,
+				};
+
+				async Task Act()
+					=> await That(subject).IsExactly(typeof(MyClass))
+						.And.Whose(x => x.Value, x => x.IsEqualTo(value));
+
+				await That(Act).DoesNotThrow()
+					.Because("the chain must continue with the subject type instead of widening it to object");
+			}
+
+			[Theory]
+			[AutoData]
+			public async Task WhenSubjectIsTyped_ShouldReturnTheSubjectType(int value)
+			{
+				MyClass subject = new()
+				{
+					Value = value,
+				};
+
+				MyClass? result = await That(subject).IsExactly(typeof(MyClass));
+
+				await That(result).IsSameAs(subject)
+					.Because("the awaited result must keep the subject type instead of widening it to object");
+			}
+
+			[Theory]
+			[AutoData]
 			public async Task WhenTypeDoesNotMatch_ShouldFail(int value)
 			{
 				object subject = new MyClass
