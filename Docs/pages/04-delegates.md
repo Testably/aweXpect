@@ -210,9 +210,6 @@ await Expect.That(Task.Delay(200)).ExecutesWithin(TimeSpan.FromMilliseconds(300)
   .Because("it should only take about 200ms");
 ```
 
-There is no negated shorthand: use `ExecutesIn().AtLeast(TimeSpan.FromMilliseconds(100))` to require a minimum
-duration.
-
 The duration of `ExecutesWithin` and of `Throws().Within` is applied as timeout, so that a delegate accepting a
 `CancellationToken` is cancelled once it elapsed. A delegate that does not accept a `CancellationToken` cannot be
 interrupted and is awaited to completion, however long that takes; neither `WithTimeout` nor `WithCancellation`
