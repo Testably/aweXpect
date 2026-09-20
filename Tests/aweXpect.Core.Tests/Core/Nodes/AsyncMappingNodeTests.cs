@@ -12,6 +12,30 @@ namespace aweXpect.Core.Tests.Core.Nodes;
 
 public class AsyncMappingNodeTests
 {
+	[Theory]
+	[InlineData(" which ", "whose bar", "foo whose bar")]
+	[InlineData(" which ", "is bar", "foo which is bar")]
+	[InlineData(" whose value ", "whose bar", "foo whose value whose bar")]
+	public async Task AppendExpectation_WhenMemberTextEndsWithWhich_ShouldOnlyDropItBeforeWhose(
+		string memberText, string memberExpectation, string expectedExpectation)
+	{
+		ExpectationNode node = new();
+		node.AddConstraint(new DummyConstraint<string?>(_ => true, "foo"));
+		Node mappingNode = node.AddAsyncMapping(
+			MemberAccessor<string, Task<int>>.FromFunc(s => Task.FromResult(s.Length), " length "),
+			(_, expectation) => expectation.Append(memberText));
+		mappingNode.AddNode(new DummyNode(memberExpectation,
+			() => new DummyConstraintResult(Outcome.Success, memberExpectation)));
+		StringBuilder sb = new();
+
+		node.AppendExpectation(sb);
+
+		ConstraintResult result = await node.IsMetBy("foobar", null!, CancellationToken.None);
+		await That(sb.ToString()).IsEqualTo(expectedExpectation);
+		await That(result.GetExpectationText()).IsEqualTo(expectedExpectation)
+			.Because("the result path has to apply the same which/whose rule as the node path");
+	}
+
 	[Fact]
 	public async Task Equals_IfMemberAccessorsAreDifferent_ShouldBeFalse()
 	{
