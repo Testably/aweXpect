@@ -8,7 +8,7 @@ namespace aweXpect.Results;
 /// </summary>
 public class ExecutesInToleranceResult<TResult>(
 	TResult returnValue,
-	TimeSpanEqualityOptions options,
+	ExecutionTimeOptions options,
 	TimeSpan expected)
 {
 	/// <summary>

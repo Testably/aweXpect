@@ -1,4 +1,16 @@
 #nullable enable
+*REMOVED*aweXpect.Delegates.ThatDelegate.ThrowsOption.ExecutionTimeOptions.get -> aweXpect.Options.TimeSpanEqualityOptions?
+*REMOVED*aweXpect.Options.TimeSpanEqualityOptions
+*REMOVED*aweXpect.Options.TimeSpanEqualityOptions.AppendFailureResult(System.Text.StringBuilder! stringBuilder, System.TimeSpan actual) -> void
+*REMOVED*aweXpect.Options.TimeSpanEqualityOptions.AppendTo(System.Text.StringBuilder! stringBuilder, string! prefix) -> void
+*REMOVED*aweXpect.Options.TimeSpanEqualityOptions.AtLeast(System.TimeSpan minimum) -> void
+*REMOVED*aweXpect.Options.TimeSpanEqualityOptions.AtMost(System.TimeSpan maximum) -> void
+*REMOVED*aweXpect.Options.TimeSpanEqualityOptions.Between(System.TimeSpan minimum, System.TimeSpan maximum) -> void
+*REMOVED*aweXpect.Options.TimeSpanEqualityOptions.IsWithinLimit(System.TimeSpan? actual) -> bool
+*REMOVED*aweXpect.Options.TimeSpanEqualityOptions.TimeSpanEqualityOptions() -> void
+*REMOVED*aweXpect.Options.TimeSpanEqualityOptions.Within(System.TimeSpan duration) -> void
+*REMOVED*aweXpect.Results.ExecutesInResult<TResult>.ExecutesInResult(TResult returnValue, aweXpect.Options.TimeSpanEqualityOptions! options) -> void
+*REMOVED*aweXpect.Results.ExecutesInToleranceResult<TResult>.ExecutesInToleranceResult(TResult returnValue, aweXpect.Options.TimeSpanEqualityOptions! options, System.TimeSpan expected) -> void
 aweXpect.Core.ReflectionFallback
 static aweXpect.Core.ReflectionFallback.IsSupported.get -> bool
 aweXpect.Equivalency.EquivalencyOptions.MaxRecursionDepth.get -> int
@@ -14,3 +26,15 @@ aweXpect.Results.StringHasItemResult<TCollection, TSelf>.AsRegex(System.Text.Reg
 aweXpect.Options.StringEqualityOptions.InspectsSubject.get -> bool
 aweXpect.Results.ExecutesInResult<TResult>.AllowingExceptions() -> aweXpect.Results.ExecutesInResult<TResult>!
 aweXpect.Results.ExecutesInToleranceResult<TResult>.AllowingExceptions() -> aweXpect.Results.ExecutesInToleranceResult<TResult>!
+aweXpect.Delegates.ThatDelegate.ThrowsOption.ExecutionTimeOptions.get -> aweXpect.Options.ExecutionTimeOptions?
+aweXpect.Options.ExecutionTimeOptions
+aweXpect.Options.ExecutionTimeOptions.AppendFailureResult(System.Text.StringBuilder! stringBuilder, System.TimeSpan actual) -> void
+aweXpect.Options.ExecutionTimeOptions.AppendTo(System.Text.StringBuilder! stringBuilder, string! prefix) -> void
+aweXpect.Options.ExecutionTimeOptions.AtLeast(System.TimeSpan minimum) -> void
+aweXpect.Options.ExecutionTimeOptions.AtMost(System.TimeSpan maximum) -> void
+aweXpect.Options.ExecutionTimeOptions.Between(System.TimeSpan minimum, System.TimeSpan maximum) -> void
+aweXpect.Options.ExecutionTimeOptions.IsWithinLimit(System.TimeSpan? actual) -> bool
+aweXpect.Options.ExecutionTimeOptions.ExecutionTimeOptions() -> void
+aweXpect.Options.ExecutionTimeOptions.Within(System.TimeSpan duration) -> void
+aweXpect.Results.ExecutesInResult<TResult>.ExecutesInResult(TResult returnValue, aweXpect.Options.ExecutionTimeOptions! options) -> void
+aweXpect.Results.ExecutesInToleranceResult<TResult>.ExecutesInToleranceResult(TResult returnValue, aweXpect.Options.ExecutionTimeOptions! options, System.TimeSpan expected) -> void

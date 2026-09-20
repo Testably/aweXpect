@@ -108,6 +108,6 @@ public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder
 		/// <summary>
 		///     Options on the execution time to allow specifying a timeout.
 		/// </summary>
-		public TimeSpanEqualityOptions? ExecutionTimeOptions { get; set; }
+		public ExecutionTimeOptions? ExecutionTimeOptions { get; set; }
 	}
 }

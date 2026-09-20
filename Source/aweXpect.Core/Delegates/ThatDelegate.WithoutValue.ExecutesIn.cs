@@ -24,7 +24,7 @@ public abstract partial class ThatDelegate
 		[GuaranteesNotNull]
 		public ExecutesInResult<AndResult<WithoutValue>> ExecutesIn()
 		{
-			TimeSpanEqualityOptions options = new();
+			ExecutionTimeOptions options = new();
 			return new ExecutesInResult<AndResult<WithoutValue>>(
 				new AndResult<WithoutValue>(ExpectationBuilder.AddConstraint((it, grammars)
 						=> new ExecutesInConstraint(it, grammars, options)),
@@ -42,7 +42,7 @@ public abstract partial class ThatDelegate
 		[GuaranteesNotNull]
 		public ExecutesInToleranceResult<AndResult<WithoutValue>> ExecutesIn(TimeSpan expected)
 		{
-			TimeSpanEqualityOptions options = new();
+			ExecutionTimeOptions options = new();
 			return new ExecutesInToleranceResult<AndResult<WithoutValue>>(
 				new AndResult<WithoutValue>(ExpectationBuilder.AddConstraint((it, grammars)
 						=> new ExecutesInConstraint(it, grammars, options)),
@@ -54,7 +54,7 @@ public abstract partial class ThatDelegate
 		private sealed class ExecutesInConstraint(
 			string it,
 			ExpectationGrammars grammars,
-			TimeSpanEqualityOptions options)
+			ExecutionTimeOptions options)
 			: ConstraintResult(grammars),
 				IValueConstraint<DelegateValue>
 		{

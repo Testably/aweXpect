@@ -6,15 +6,15 @@ namespace aweXpect.Core.Tests.Results;
 public sealed class ExecutesInResultTests
 {
 	[Fact]
-	public async Task ShouldBeOptionsProvider_ForTimeSpanEqualityOptions()
+	public async Task ShouldBeOptionsProvider_ForExecutionTimeOptions()
 	{
-		TimeSpanEqualityOptions options = new();
+		ExecutionTimeOptions options = new();
 		ExecutesInResult<int[]> sut = CreateSut(Array.Empty<int>(), options);
 
-		await That(sut).Is<IOptionsProvider<TimeSpanEqualityOptions>>()
+		await That(sut).Is<IOptionsProvider<ExecutionTimeOptions>>()
 			.Whose(x => x.Options, it => it.IsSameAs(options));
 	}
 
-	private static ExecutesInResult<T> CreateSut<T>(T subject, TimeSpanEqualityOptions options)
+	private static ExecutesInResult<T> CreateSut<T>(T subject, ExecutionTimeOptions options)
 		=> new(subject, options);
 }

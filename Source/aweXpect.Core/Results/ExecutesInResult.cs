@@ -9,11 +9,11 @@ namespace aweXpect.Results;
 /// </summary>
 public class ExecutesInResult<TResult>(
 	TResult returnValue,
-	TimeSpanEqualityOptions options)
-	: IOptionsProvider<TimeSpanEqualityOptions>
+	ExecutionTimeOptions options)
+	: IOptionsProvider<ExecutionTimeOptions>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	TimeSpanEqualityOptions IOptionsProvider<TimeSpanEqualityOptions>.Options => options;
+	ExecutionTimeOptions IOptionsProvider<ExecutionTimeOptions>.Options => options;
 
 	/// <summary>
 	///     …allowing the delegate to throw an exception, measuring the duration until it did so…

@@ -5,9 +5,9 @@ using aweXpect.Core;
 namespace aweXpect.Options;
 
 /// <summary>
-///     Equality options for <see langword="TimeSpan" />s.
+///     Options for the execution time of a delegate.
 /// </summary>
-public class TimeSpanEqualityOptions
+public class ExecutionTimeOptions
 {
 	private Limit? _limit;
 
