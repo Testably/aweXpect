@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using aweXpect.Core;
 
 namespace aweXpect.Helpers;
@@ -7,6 +9,21 @@ internal static class ThrowHelper
 {
 	public static ArgumentException EmptyCollection()
 		=> new("You have to provide at least one expected value!");
+
+	/// <summary>
+	///     Rejects an empty set of expected <paramref name="values" /> and returns them materialized, so that a
+	///     sequence which can only be enumerated once survives both the guard and the subsequent comparison.
+	/// </summary>
+	public static IReadOnlyList<T> EnsureNotEmpty<T>(IEnumerable<T> values)
+	{
+		IReadOnlyList<T> materializedValues = values as IReadOnlyList<T> ?? values.ToList();
+		if (materializedValues.Count == 0)
+		{
+			throw Tracing.WriteException(EmptyCollection());
+		}
+
+		return materializedValues;
+	}
 
 	/// <summary>
 	///     Rejects an inverted range, so that a tolerance cannot silently turn it into a satisfiable one.

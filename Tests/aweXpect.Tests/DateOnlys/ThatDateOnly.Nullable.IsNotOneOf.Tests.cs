@@ -14,6 +14,25 @@ public sealed partial class ThatDateOnly
 			public sealed class Tests
 			{
 				[Fact]
+				public async Task WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
+				{
+					DateOnly? subject = CurrentTime();
+					DateOnly?[] values = [LaterTime(), subject, EarlierTime(),];
+					IEnumerable<DateOnly?> expected = Factory.GetSingleUseEnumerable(values);
+
+					async Task Act()
+						=> await That(subject).IsNotOneOf(expected);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not one of {Formatter.Format(values)},
+						              but it was {Formatter.Format(subject)}
+						              """)
+						.Because("the empty check must not consume the values needed for the comparison and the message");
+				}
+
+				[Fact]
 				public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 				{
 					DateOnly? subject = CurrentTime();
@@ -89,6 +108,53 @@ public sealed partial class ThatDateOnly
 						=> await That(subject).IsNotOneOf(CurrentTime(), LaterTime());
 
 					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsNullAndExpectedIsEmpty_ShouldThrowArgumentException()
+				{
+					DateOnly? subject = null;
+					DateOnly[] expected = [];
+
+					async Task Act()
+						=> await That(subject).IsNotOneOf(expected);
+
+					await That(Act).Throws<ArgumentException>()
+						.WithMessage("You have to provide at least one expected value!")
+						.Because("missing expected values are an argument error, independent of the subject");
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsNullAndNullableExpectedIsEmpty_ShouldThrowArgumentException()
+				{
+					DateOnly? subject = null;
+					DateOnly?[] expected = [];
+
+					async Task Act()
+						=> await That(subject).IsNotOneOf(expected);
+
+					await That(Act).Throws<ArgumentException>()
+						.WithMessage("You have to provide at least one expected value!")
+						.Because("missing expected values are an argument error, independent of the subject");
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsNullAndUnexpectedCanOnlyBeEnumeratedOnce_ShouldFail()
+				{
+					DateOnly? subject = null;
+					DateOnly?[] values = [CurrentTime(), null,];
+					IEnumerable<DateOnly?> expected = Factory.GetSingleUseEnumerable(values);
+
+					async Task Act()
+						=> await That(subject).IsNotOneOf(expected);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is not one of {Formatter.Format(values)},
+						              but it was <null>
+						              """)
+						.Because("the empty check must not consume the values needed for the comparison and the message");
 				}
 
 				[Fact]

@@ -109,33 +109,23 @@ public static partial class ThatNullableTimeSpan
 		: ConstraintResult.WithValue<TimeSpan?>(it, grammars),
 			IValueConstraint<TimeSpan?>
 	{
+		private IEnumerable<TimeSpan?> _expected = expected;
+
 		public ConstraintResult IsMetBy(TimeSpan? actual)
 		{
+			IReadOnlyList<TimeSpan?> expectedValues = ThrowHelper.EnsureNotEmpty(_expected);
+			_expected = expectedValues;
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = expected.Any(x => x is null) ? Outcome.Success : Outcome.Failure;
+				Outcome = expectedValues.Any(x => x is null) ? Outcome.Success : Outcome.Failure;
 			}
 			else
 			{
-				bool hasValues = false;
-				foreach (TimeSpan? value in expected)
-				{
-					hasValues = true;
-					if (value != null &&
-					    IsWithinTolerance(tolerance.Tolerance, actual.Value, value.Value))
-					{
-						Outcome = Outcome.Success;
-						return this;
-					}
-				}
-
-				if (!hasValues)
-				{
-					throw Tracing.WriteException(ThrowHelper.EmptyCollection());
-				}
-
-				Outcome = Outcome.Failure;
+				Outcome = expectedValues.Any(value => value != null &&
+				                                      IsWithinTolerance(tolerance.Tolerance, actual.Value, value.Value))
+					? Outcome.Success
+					: Outcome.Failure;
 			}
 
 			return this;
@@ -144,7 +134,7 @@ public static partial class ThatNullableTimeSpan
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("is one of ");
-			Formatter.Format(stringBuilder, expected);
+			Formatter.Format(stringBuilder, _expected);
 			stringBuilder.Append(tolerance);
 		}
 
@@ -157,7 +147,7 @@ public static partial class ThatNullableTimeSpan
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("is not one of ");
-			Formatter.Format(stringBuilder, expected);
+			Formatter.Format(stringBuilder, _expected);
 			stringBuilder.Append(tolerance);
 		}
 

@@ -13,6 +13,25 @@ public sealed partial class ThatDateTime
 			public sealed class Tests
 			{
 				[Fact]
+				public async Task WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
+				{
+					DateTime? subject = CurrentTime();
+					DateTime?[] values = [LaterTime(), EarlierTime(),];
+					IEnumerable<DateTime?> expected = Factory.GetSingleUseEnumerable(values);
+
+					async Task Act()
+						=> await That(subject).IsOneOf(expected);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is one of {Formatter.Format(values)},
+						              but it was {Formatter.Format(subject)}
+						              """)
+						.Because("the empty check must not consume the values needed for the comparison and the message");
+				}
+
+				[Fact]
 				public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 				{
 					DateTime? subject = CurrentTime();
@@ -176,6 +195,19 @@ public sealed partial class ThatDateTime
 				}
 
 				[Fact]
+				public async Task WhenSubjectIsNullAndExpectedCanOnlyBeEnumeratedOnce_ShouldSucceed()
+				{
+					DateTime? subject = null;
+					IEnumerable<DateTime?> expected = Factory.GetSingleUseEnumerable<DateTime?>(CurrentTime(), null);
+
+					async Task Act()
+						=> await That(subject).IsOneOf(expected);
+
+					await That(Act).DoesNotThrow()
+						.Because("the empty check must not consume the value needed for the comparison");
+				}
+
+				[Fact]
 				public async Task WhenSubjectIsNullAndExpectedContainsNull_ShouldSucceed()
 				{
 					DateTime? subject = null;
@@ -185,6 +217,34 @@ public sealed partial class ThatDateTime
 						=> await That(subject).IsOneOf(expected);
 
 					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsNullAndExpectedIsEmpty_ShouldThrowArgumentException()
+				{
+					DateTime? subject = null;
+					DateTime[] expected = [];
+
+					async Task Act()
+						=> await That(subject).IsOneOf(expected);
+
+					await That(Act).Throws<ArgumentException>()
+						.WithMessage("You have to provide at least one expected value!")
+						.Because("missing expected values are an argument error, independent of the subject");
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsNullAndNullableExpectedIsEmpty_ShouldThrowArgumentException()
+				{
+					DateTime? subject = null;
+					DateTime?[] expected = [];
+
+					async Task Act()
+						=> await That(subject).IsOneOf(expected);
+
+					await That(Act).Throws<ArgumentException>()
+						.WithMessage("You have to provide at least one expected value!")
+						.Because("missing expected values are an argument error, independent of the subject");
 				}
 
 				[Fact]

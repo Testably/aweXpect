@@ -110,33 +110,34 @@ public static partial class ThatNullableDateTime
 		: ConstraintResult.WithValue<DateTime?>(it, grammars),
 			IValueConstraint<DateTime?>
 	{
+		private IEnumerable<DateTime?> _expected = expected;
 		private DateTimeKind? _incompatibleKind;
 
 		public ConstraintResult IsMetBy(DateTime? actual)
 		{
+			IReadOnlyList<DateTime?> expectedValues = ThrowHelper.EnsureNotEmpty(_expected);
+			_expected = expectedValues;
 			Actual = actual;
 			if (actual is null)
 			{
-				Outcome = expected.Any(x => x is null) ? Outcome.Success : Outcome.Failure;
+				Outcome = expectedValues.Any(x => x is null) ? Outcome.Success : Outcome.Failure;
 			}
 			else
 			{
-				Outcome = GetOutcomeFor(actual.Value);
+				Outcome = GetOutcomeFor(actual.Value, expectedValues);
 			}
 
 			return this;
 		}
 
-		private Outcome GetOutcomeFor(DateTime actual)
+		private Outcome GetOutcomeFor(DateTime actual, IReadOnlyList<DateTime?> expectedValues)
 		{
 			TimeSpan timeTolerance = tolerance.Tolerance ??
 			                         Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-			bool hasValues = false;
 			bool hasComparableValue = false;
 			DateTimeKind? incomparableKind = null;
-			foreach (DateTime? value in expected)
+			foreach (DateTime? value in expectedValues)
 			{
-				hasValues = true;
 				if (value is null)
 				{
 					continue;
@@ -156,11 +157,6 @@ public static partial class ThatNullableDateTime
 				}
 			}
 
-			if (!hasValues)
-			{
-				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
-			}
-
 			_incompatibleKind = hasComparableValue ? null : incomparableKind;
 			return Outcome.Failure;
 		}
@@ -168,7 +164,7 @@ public static partial class ThatNullableDateTime
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("is one of ");
-			Formatter.Format(stringBuilder, expected);
+			Formatter.Format(stringBuilder, _expected);
 			stringBuilder.Append(tolerance);
 		}
 
@@ -189,7 +185,7 @@ public static partial class ThatNullableDateTime
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append("is not one of ");
-			Formatter.Format(stringBuilder, expected);
+			Formatter.Format(stringBuilder, _expected);
 			stringBuilder.Append(tolerance);
 		}
 
