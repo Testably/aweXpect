@@ -3,6 +3,8 @@
 *REMOVED*static aweXpect.ThatDelegate.DoesNotExecuteWithin<TValue>(this aweXpect.Core.IThat<aweXpect.Delegates.ThatDelegate.WithValue<TValue>!>! subject, System.TimeSpan duration) -> aweXpect.Results.ExpectationResult<TValue>!
 *REMOVED*static aweXpect.ThatEnum.HasValue<TEnum>(this aweXpect.Core.IThat<TEnum>! subject) -> aweXpect.Results.PropertyResult.Long<TEnum>!
 *REMOVED*static aweXpect.ThatNullableEnum.HasValue<TEnum>(this aweXpect.Core.IThat<TEnum?>! subject) -> aweXpect.Results.PropertyResult.Long<TEnum?>!
+*REMOVED*static aweXpect.ThatObject.IsExactly(this aweXpect.Core.IThat<object?>! subject, System.Type! type) -> aweXpect.Results.AndOrResult<object?, aweXpect.Core.IThat<object?>!>!
+*REMOVED*static aweXpect.ThatObject.IsNotExactly(this aweXpect.Core.IThat<object?>! subject, System.Type! type) -> aweXpect.Results.AndOrResult<object?, aweXpect.Core.IThat<object?>!>!
 aweXpect.Results.EnumValueResult<TItem>
 aweXpect.Results.EnumValueResult<TItem>.Between(long? minimum) -> aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!, long?>!
 aweXpect.Results.EnumValueResult<TItem>.Between(ulong? minimum) -> aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TItem, aweXpect.Core.IThat<TItem>!>!, ulong?>!
@@ -66,3 +68,5 @@ static aweXpect.ThatEnumerable.IsNotInDescendingOrder<TItem>(this aweXpect.Core.
 static aweXpect.ThatEnumerable.IsNotInDescendingOrder<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>! subject, System.Func<TItem, System.DateTime?>! memberAccessor, string! doNotPopulateThisValue = "") -> aweXpect.Results.CollectionOrderResult<System.DateTime?, System.Collections.Generic.IEnumerable<TItem>!, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>!>!
 static aweXpect.ThatNullableEnum.HasValue<TEnum>(this aweXpect.Core.IThat<TEnum?>! subject) -> aweXpect.Results.EnumValueResult<TEnum?>!
 static aweXpect.ThatNullableEnum.HasValue<TEnum>(this aweXpect.Core.IThat<TEnum?>! subject, ulong? expected) -> aweXpect.Results.AndOrResult<TEnum?, aweXpect.Core.IThat<TEnum?>!>!
+static aweXpect.ThatObject.IsExactly<T>(this aweXpect.Core.IThat<T?>! subject, System.Type! type) -> aweXpect.Results.AndOrResult<T?, aweXpect.Core.IThat<T?>!>!
+static aweXpect.ThatObject.IsNotExactly<T>(this aweXpect.Core.IThat<T?>! subject, System.Type! type) -> aweXpect.Results.AndOrResult<T?, aweXpect.Core.IThat<T?>!>!
