@@ -288,6 +288,25 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenCollectionOrderIsIgnored_AndAnElementIsIgnored_ShouldIgnoreItInBothCollections()
+	{
+		int[] actual = [1, 2, 3,];
+		int[] expected = [3, 99, 1,];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+			MembersToIgnore = [new MemberToIgnore.ByPredicate((path, _) => path == "[1]", "index 1"),],
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("an ignored element has no counterpart it could be skipped in once the order is ignored, so neither the actual 2 has to be matched nor the expected 99 has to be found");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
 	public async Task WhenCollectionOrderIsIgnored_AndBothCollectionsAreEmpty_ShouldSucceed()
 	{
 		int[] actual = [];

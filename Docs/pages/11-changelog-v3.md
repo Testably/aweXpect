@@ -110,8 +110,8 @@ unavailable under trimming.
 
 `IgnoringCollectionOrder()` no longer requires the elements to be comparable, so it now works for the collections it
 exists for, such as a collection of DTOs: each expected element is matched against an element that is equivalent to
-it. Every element can be matched only once, so `[1, 1, 2]` is still not equivalent to `[1, 2, 2]`, and a failure names
-the elements that were left over on either side instead of pairing them by position.
+it. Every element can be matched only once, so `[1, 1, 2]` is still not equivalent to `[1, 2, 2]`, and a failure
+reports only the elements that were left over, instead of every element that the sorting happened to pair up.
 
 ## Extensions and aweXpect.Core
 
