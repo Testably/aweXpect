@@ -16,6 +16,18 @@ public class ExecutesInResult<TResult>(
 	TimeSpanEqualityOptions IOptionsProvider<TimeSpanEqualityOptions>.Options => options;
 
 	/// <summary>
+	///     …allowing the delegate to throw an exception, measuring the duration until it did so…
+	/// </summary>
+	/// <remarks>
+	///     A cancellation still fails the expectation, because it aborts the execution instead of timing it.
+	/// </remarks>
+	public ExecutesInResult<TResult> AllowingExceptions()
+	{
+		options.AllowExceptions();
+		return this;
+	}
+
+	/// <summary>
 	///     …at most <paramref name="maximum" /> time.
 	/// </summary>
 	public TResult AtMost(TimeSpan maximum)
