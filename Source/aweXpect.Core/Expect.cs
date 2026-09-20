@@ -102,6 +102,19 @@ public static class Expect
 		=> new(new ExpectationBuilder<DelegateValue>(
 			new DelegateAsyncSource(@delegate), doNotPopulateThisValue));
 
+	/// <summary>
+	///     Specify expectations for the current <see cref="Task" /> <paramref name="subject" />.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="subject" /> is already running, so an expectation on its execution time only measures the
+	///     time that remains when the expectation is verified.
+	/// </remarks>
+	public static ThatDelegate.WithoutValue That(Task subject,
+		[CallerArgumentExpression("subject")] string doNotPopulateThisValue = "")
+		=> new(new ExpectationBuilder<DelegateValue>(
+			// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+			new DelegateAsyncSource(subject is null ? null : _ => subject), doNotPopulateThisValue));
+
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Specify expectations for the current <see cref="Func{ValueTask}" /> <paramref name="delegate" />.
@@ -124,6 +137,20 @@ public static class Expect
 			// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
 			new DelegateAsyncSource(@delegate is null ? null : token => @delegate(token).AsTask()),
 			doNotPopulateThisValue));
+#endif
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Specify expectations for the current <see cref="ValueTask" /> <paramref name="subject" />.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="subject" /> is already running, so an expectation on its execution time only measures the
+	///     time that remains when the expectation is verified.<br />
+	///     It is consumed here, because a <see cref="ValueTask" /> may only be awaited once.
+	/// </remarks>
+	public static ThatDelegate.WithoutValue That(ValueTask subject,
+		[CallerArgumentExpression("subject")] string doNotPopulateThisValue = "")
+		=> That(subject.AsTask(), doNotPopulateThisValue);
 #endif
 
 	/// <summary>

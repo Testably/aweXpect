@@ -91,6 +91,8 @@ delegate that is expected to throw, add
 
 The element type checks `Are<T>()`, `Are(type)`, `AreExactly<T>()` and `AreExactly(type)` no longer offer `Using(…)`
 and `Equivalent(…)`. A type check does not compare values, so neither option ever had an effect; remove such a call.
+`ComplyWith(…)` on the elements of an `IEnumerable` drops the same two options: the nested expectations bring their
+own, so an option set on the outer result never reached them.
 `IsExactly(type)` and `IsNotExactly(type)` are generic over the subject like `Is(type)` and `IsNot(type)`, so the
 expectation chain and the awaited result keep the subject type instead of widening it to `object`.
 `ContainsKeys(…).WhoseValues` applied the `All()` quantifier implicitly, which left no way to check the values as a
@@ -112,6 +114,15 @@ on the exact text of a failure message may need an update.
 `Within(…)` used to be ignored on event expectations with an upper bound, such as `DidNotTrigger(…)` or
 `Triggered(…).Never()`, so an event raised later inside the window went unseen. In v3 such an expectation waits out
 the full timeout. This is the one change that can make a passing test fail without touching its code.
+
+## `Task` and `ValueTask` subjects
+
+`Expect.That` awaited a `Task<T>` and used its result as the subject, but a non-generic `Task` or `ValueTask` became
+the subject itself, so `Expect.That(DoAsync()).IsNotNull()` passed without ever observing a failed operation. Both
+now bind to a delegate subject that awaits the task, which makes `DoesNotThrow()`, `Throws<TException>()` and the
+execution time expectations available. Every expectation on the task object is a compile error afterwards; where you
+really mean the object, name the type explicitly with `Expect.That<Task>(subject)`. See
+[Delegates](/docs/expectations/delegates).
 
 ## `DateTime` kinds
 
