@@ -36,7 +36,7 @@ public sealed partial class ThatDelegateTests
 			void Delegate() => throw new MyException(innerException: new ArgumentException());
 
 			async Task Act()
-				=> await That(Delegate).Throws<MyException>().WithInnerException(_ => { });
+				=> await That(Delegate).Throws<MyException>().WithInner(_ => { });
 
 			await That(Act).Throws<ArgumentException>()
 				.WithMessage("You must add at least one expectation in the expectations callback.*").AsWildcard()
@@ -49,7 +49,7 @@ public sealed partial class ThatDelegateTests
 			void Delegate() => throw new MyException();
 
 			async Task Act()
-				=> await That(Delegate).Throws<MyException>().WithInnerException(e => e.IsNull());
+				=> await That(Delegate).Throws<MyException>().WithInner(e => e.IsNull());
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
@@ -246,13 +246,13 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Fact]
-		public async Task WithInnerException_WithMemberExpectation_ShouldUseWhose()
+		public async Task WithInner_WithMemberExpectation_ShouldUseWhose()
 		{
 			void Delegate() => throw new MyException("outer", new MyException("inner"));
 
 			async Task Act()
 				=> await That(Delegate).Throws<MyException>()
-					.WithInnerException(e => e.HasMessage("foo"));
+					.WithInner(e => e.HasMessage("foo"));
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
@@ -270,13 +270,13 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Fact]
-		public async Task WithInnerException_WithOtherExpectation_ShouldUseWhich()
+		public async Task WithInner_WithOtherExpectation_ShouldUseWhich()
 		{
 			void Delegate() => throw new MyException("outer", new MyException("inner"));
 
 			async Task Act()
 				=> await That(Delegate).Throws<MyException>()
-					.WithInnerException(e => e.Satisfies(i => i?.Message == "foo"));
+					.WithInner(e => e.Satisfies(i => i?.Message == "foo"));
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""

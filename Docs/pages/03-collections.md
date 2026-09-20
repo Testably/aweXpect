@@ -640,13 +640,16 @@ await Expect.That(values).DoesNotContainKey(44);
 await Expect.That(values).DoesNotContainKeys(44, 45, 46);
 ```
 
-You can add additional expectations on the corresponding value(s):
+You can add additional expectations on the corresponding value(s). `WhoseValues` is a collection of the values
+for the expected keys, so all collection expectations are available:
 
 ```csharp
 Dictionary<int, string> values = new() { { 42, "foo" }, { 43, "bar" }, { 44, "baz" } };
 
 await Expect.That(values).ContainsKey(42).WhoseValue.IsEqualTo("foo");
-await Expect.That(values).ContainsKeys(43, 44).WhoseValues.ComplyWith(v => v.StartsWith("ba"));
+await Expect.That(values).ContainsKeys(43, 44).WhoseValues.IsEqualTo(["bar", "baz"]);
+await Expect.That(values).ContainsKeys(43, 44).WhoseValues.Contains("bar");
+await Expect.That(values).ContainsKeys(43, 44).WhoseValues.All().ComplyWith(v => v.StartsWith("ba"));
 ```
 
 ### Contain value(s)

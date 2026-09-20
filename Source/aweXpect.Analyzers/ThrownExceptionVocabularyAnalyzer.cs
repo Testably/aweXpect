@@ -31,7 +31,6 @@ public class ThrownExceptionVocabularyAnalyzer : DiagnosticAnalyzer
 			["HasParamName"] = "WithParamName",
 			["HasHResult"] = "WithHResult",
 			["HasInner"] = "WithInner",
-			["HasInnerException"] = "WithInnerException",
 			["HasRecursiveInnerExceptions"] = "WithRecursiveInnerExceptions",
 		}.ToImmutableDictionary();
 
