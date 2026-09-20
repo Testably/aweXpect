@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
@@ -100,6 +101,20 @@ public static partial class EquivalencyComparison
 		failureBuilder.Append(maxRecursionDepth);
 	}
 
+	private static void AppendMissingElement(StringBuilder failureBuilder, string memberPath, object? expected)
+	{
+		failureBuilder.AppendLine();
+		if (failureBuilder.Length > 2)
+		{
+			failureBuilder.AppendLine("and");
+		}
+
+		failureBuilder.Append("  ");
+		failureBuilder.Append(GetMemberPath(MemberType.Element, memberPath));
+		failureBuilder.Append(" was missing ");
+		Formatter.Format(failureBuilder, expected, FormattingOptions.SingleLine);
+	}
+
 	private static void AppendMissingMember(StringBuilder failureBuilder, MemberType memberType, string memberPath)
 	{
 		failureBuilder.AppendLine();
@@ -111,6 +126,20 @@ public static partial class EquivalencyComparison
 		failureBuilder.Append("  ");
 		failureBuilder.Append(GetMemberPath(memberType, memberPath));
 		failureBuilder.Append(" is missing on the actual object");
+	}
+
+	private static void AppendSuperfluousElement(StringBuilder failureBuilder, string memberPath, object? actual)
+	{
+		failureBuilder.AppendLine();
+		if (failureBuilder.Length > 2)
+		{
+			failureBuilder.AppendLine("and");
+		}
+
+		failureBuilder.Append("  ");
+		failureBuilder.Append(GetMemberPath(MemberType.Element, memberPath));
+		failureBuilder.Append(" had superfluous ");
+		Formatter.Format(failureBuilder, actual, FormattingOptions.SingleLine);
 	}
 
 	private static string ConcatMemberPath(string memberPath, string memberName)
@@ -464,22 +493,15 @@ public static partial class EquivalencyComparison
 		object?[] actualObjects = actual.Cast<object?>().ToArray();
 		object?[] expectedObjects = expected.Cast<object?>().ToArray();
 
-		int[]? keys = null;
 		if (typeOptions.IgnoreCollectionOrder)
 		{
-			keys = new int[actualObjects.Length];
-			for (int i = 0; i < actualObjects.Length; i++)
-			{
-				keys[i] = i;
-			}
-
-			Array.Sort(actualObjects, keys);
-			Array.Sort(expectedObjects);
+			return await CompareInAnyOrder(actualObjects, expectedObjects, failureBuilder, memberPath, options,
+				typeOptions, context);
 		}
 
 		for (int i = 0; i < Math.Min(actualObjects.Length, expectedObjects.Length); i++)
 		{
-			string elementMemberPath = $"{memberPath}[{(keys is null ? i : keys[i])}]";
+			string elementMemberPath = $"{memberPath}[{i}]";
 			object? actualObject = actualObjects.ElementAtOrDefault(i);
 			if (typeOptions.MembersToIgnore.Any(memberToIgnore
 				    => AppliesTo(memberToIgnore, MemberType.Element) &&
@@ -511,16 +533,7 @@ public static partial class EquivalencyComparison
 					continue;
 				}
 
-				failureBuilder.AppendLine();
-				if (failureBuilder.Length > 2)
-				{
-					failureBuilder.AppendLine("and");
-				}
-
-				failureBuilder.Append("  ");
-				failureBuilder.Append(GetMemberPath(MemberType.Element, elementMemberPath));
-				failureBuilder.Append(" was missing ");
-				Formatter.Format(failureBuilder, expectedObject, FormattingOptions.SingleLine);
+				AppendMissingElement(failureBuilder, elementMemberPath, expectedObject);
 				result = false;
 			}
 		}
@@ -529,7 +542,7 @@ public static partial class EquivalencyComparison
 		{
 			for (int i = expectedObjects.Length; i < actualObjects.Length; i++)
 			{
-				string elementMemberPath = $"{memberPath}[{(keys is null ? i : keys[i])}]";
+				string elementMemberPath = $"{memberPath}[{i}]";
 				object? actualObject = actualObjects.ElementAtOrDefault(i);
 				if (typeOptions.MembersToIgnore.Any(memberToIgnore
 					    => AppliesTo(memberToIgnore, MemberType.Element) &&
@@ -538,21 +551,232 @@ public static partial class EquivalencyComparison
 					continue;
 				}
 
-				failureBuilder.AppendLine();
-				if (failureBuilder.Length > 2)
-				{
-					failureBuilder.AppendLine("and");
-				}
-
-				failureBuilder.Append("  ");
-				failureBuilder.Append(GetMemberPath(MemberType.Element, elementMemberPath));
-				failureBuilder.Append(" had superfluous ");
-				Formatter.Format(failureBuilder, actualObject, FormattingOptions.SingleLine);
+				AppendSuperfluousElement(failureBuilder, elementMemberPath, actualObject);
 				result = false;
 			}
 		}
 
 		return result;
+	}
+
+	/// <remarks>
+	///     The elements are paired by the equivalency comparison itself instead of being sorted, because sorting
+	///     requires them to be comparable, which the objects that structural equivalency exists for usually are not.
+	///     The pairing is a maximum matching and not a greedy first match, because an actual element that is equivalent
+	///     to more than one expected element would otherwise be able to consume the only candidate of another expected
+	///     element and report a difference that does not exist. Maximality also means that no leftover actual element
+	///     is equivalent to an unmatched expected one, so any two of them can be reported against each other: they
+	///     really differ.
+	/// </remarks>
+#if NET8_0_OR_GREATER
+	private static async ValueTask<bool>
+#else
+	private static async Task<bool>
+#endif
+		CompareInAnyOrder(
+			object?[] actualObjects,
+			object?[] expectedObjects,
+			StringBuilder failureBuilder,
+			string memberPath,
+			EquivalencyOptions options,
+			EquivalencyTypeOptions typeOptions,
+			EquivalencyContext context)
+	{
+		int[] actualIndices = GetIndicesToCompare(actualObjects, memberPath, typeOptions);
+		int[] expectedIndices = GetIndicesToCompare(expectedObjects, memberPath, typeOptions);
+		ElementMatcher matcher = new(actualObjects, actualIndices, expectedObjects, expectedIndices, memberPath,
+			options, typeOptions, context);
+		int[] unmatchedExpected = await matcher.MatchAll();
+		int[] unmatchedActual = matcher.GetUnmatchedActual();
+		if (unmatchedExpected.Length == 0 && unmatchedActual.Length == 0)
+		{
+			return true;
+		}
+
+		int differingCount = Math.Min(unmatchedExpected.Length, unmatchedActual.Length);
+		for (int i = 0; i < differingCount; i++)
+		{
+			object? actualObject = actualObjects[unmatchedActual[i]];
+			await Compare(actualObject, expectedObjects[unmatchedExpected[i]],
+				options, options.GetTypeOptions(actualObject?.GetType(), typeOptions),
+				failureBuilder, $"{memberPath}[{unmatchedActual[i]}]", MemberType.Element, context);
+		}
+
+		for (int i = differingCount; i < unmatchedExpected.Length; i++)
+		{
+			AppendMissingElement(failureBuilder, $"{memberPath}[{unmatchedExpected[i]}]",
+				expectedObjects[unmatchedExpected[i]]);
+		}
+
+		for (int i = differingCount; i < unmatchedActual.Length; i++)
+		{
+			AppendSuperfluousElement(failureBuilder, $"{memberPath}[{unmatchedActual[i]}]",
+				actualObjects[unmatchedActual[i]]);
+		}
+
+		return false;
+	}
+
+	/// <remarks>
+	///     Returns the indices of the elements that take part in the comparison. An ignored element has no pair it
+	///     could be skipped in once the order is ignored, so it is left out of the matching on both sides: it neither
+	///     has to find a counterpart nor can it be reported as superfluous.
+	/// </remarks>
+	private static int[] GetIndicesToCompare(object?[] objects, string memberPath,
+		EquivalencyTypeOptions typeOptions)
+	{
+		List<int> indices = new(objects.Length);
+		for (int i = 0; i < objects.Length; i++)
+		{
+			object? element = objects[i];
+			string elementMemberPath = $"{memberPath}[{i}]";
+			if (!typeOptions.MembersToIgnore.Any(memberToIgnore
+				    => AppliesTo(memberToIgnore, MemberType.Element) &&
+				       memberToIgnore.IgnoreMember(elementMemberPath, element?.GetType() ?? typeof(object))))
+			{
+				indices.Add(i);
+			}
+		}
+
+		return indices.ToArray();
+	}
+
+	/// <summary>
+	///     Matches the elements of two collections whose order is ignored against each other, using Kuhn's algorithm.
+	/// </summary>
+	private sealed class ElementMatcher
+	{
+		private readonly int[] _actualIndices;
+		private readonly object?[] _actualObjects;
+		private readonly EquivalencyContext _context;
+		private readonly int[] _expectedIndices;
+		private readonly object?[] _expectedObjects;
+
+		/// <summary>
+		///     The expected element each actual element is matched to, or <c>-1</c> while it is still free.
+		/// </summary>
+		private readonly int[] _matchedTo;
+
+		private readonly string _memberPath;
+		private readonly EquivalencyOptions _options;
+
+		/// <summary>
+		///     Caches every pairwise comparison, because the search for augmenting paths revisits pairs and a single
+		///     comparison walks a whole object graph.
+		/// </summary>
+		private readonly bool?[,] _results;
+
+		private readonly EquivalencyTypeOptions _typeOptions;
+
+		public ElementMatcher(object?[] actualObjects, int[] actualIndices, object?[] expectedObjects,
+			int[] expectedIndices, string memberPath, EquivalencyOptions options,
+			EquivalencyTypeOptions typeOptions, EquivalencyContext context)
+		{
+			_actualObjects = actualObjects;
+			_actualIndices = actualIndices;
+			_expectedObjects = expectedObjects;
+			_expectedIndices = expectedIndices;
+			_memberPath = memberPath;
+			_options = options;
+			_typeOptions = typeOptions;
+			_context = context;
+			_results = new bool?[actualIndices.Length, expectedIndices.Length];
+			_matchedTo = new int[actualIndices.Length];
+			for (int i = 0; i < _matchedTo.Length; i++)
+			{
+				_matchedTo[i] = -1;
+			}
+		}
+
+		/// <summary>
+		///     Matches as many expected elements as possible and returns the indices of those that are left over.
+		/// </summary>
+#if NET8_0_OR_GREATER
+		public async ValueTask<int[]>
+#else
+		public async Task<int[]>
+#endif
+			MatchAll()
+		{
+			List<int> unmatched = new();
+			for (int i = 0; i < _expectedIndices.Length; i++)
+			{
+				if (!await TryMatch(i, new bool[_actualIndices.Length]))
+				{
+					unmatched.Add(_expectedIndices[i]);
+				}
+			}
+
+			return unmatched.ToArray();
+		}
+
+		/// <summary>
+		///     Returns the indices of the actual elements that no expected element was matched to.
+		/// </summary>
+		public int[] GetUnmatchedActual()
+		{
+			List<int> unmatched = new();
+			for (int i = 0; i < _matchedTo.Length; i++)
+			{
+				if (_matchedTo[i] < 0)
+				{
+					unmatched.Add(_actualIndices[i]);
+				}
+			}
+
+			return unmatched.ToArray();
+		}
+
+#if NET8_0_OR_GREATER
+		private async ValueTask<bool>
+#else
+		private async Task<bool>
+#endif
+			TryMatch(int expectedIndex, bool[] visited)
+		{
+			for (int offset = 0; offset < _actualIndices.Length; offset++)
+			{
+				// Starting at the same position pairs collections that are already in order without any search.
+				int actualIndex = (expectedIndex + offset) % _actualIndices.Length;
+				if (visited[actualIndex] || !await IsEquivalent(actualIndex, expectedIndex))
+				{
+					continue;
+				}
+
+				visited[actualIndex] = true;
+				if (_matchedTo[actualIndex] < 0 || await TryMatch(_matchedTo[actualIndex], visited))
+				{
+					_matchedTo[actualIndex] = expectedIndex;
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		/// <remarks>
+		///     The comparison writes into a throwaway builder, because only the differences that survive the matching
+		///     belong in the failure message.
+		/// </remarks>
+#if NET8_0_OR_GREATER
+		private async ValueTask<bool>
+#else
+		private async Task<bool>
+#endif
+			IsEquivalent(int actualIndex, int expectedIndex)
+		{
+			if (_results[actualIndex, expectedIndex] is { } cachedResult)
+			{
+				return cachedResult;
+			}
+
+			object? actualObject = _actualObjects[_actualIndices[actualIndex]];
+			bool result = await Compare(actualObject, _expectedObjects[_expectedIndices[expectedIndex]],
+				_options, _options.GetTypeOptions(actualObject?.GetType(), _typeOptions),
+				new StringBuilder(), $"{_memberPath}[{_actualIndices[actualIndex]}]", MemberType.Element, _context);
+			_results[actualIndex, expectedIndex] = result;
+			return result;
+		}
 	}
 #pragma warning restore S107
 #pragma warning restore S3776

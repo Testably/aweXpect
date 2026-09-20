@@ -171,6 +171,10 @@ await Expect.That(subject).IsEquivalentTo(expected, o => o.IgnoringCollectionOrd
 
 Pass `false` to re-enable ordered comparison if it was disabled globally.
 
+The elements do not have to be comparable: each expected element is matched against an element that is equivalent to
+it, and every element can be matched only once, so `[1, 1, 2]` is not equivalent to `[1, 2, 2]`. When no such matching
+covers both collections, the failure names the elements that were left over on either side.
+
 ### Per-type options with `For<T>`
 
 You can apply options to a specific member type only. Type-specific options override the top-level options for members

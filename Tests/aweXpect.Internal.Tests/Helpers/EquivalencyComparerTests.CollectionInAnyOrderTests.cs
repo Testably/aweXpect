@@ -45,8 +45,9 @@ public sealed partial class EquivalencyComparerTests
 			await That(result).IsFalse();
 			await That(failure).IsEqualTo("""
 			                              it was not:
-			                                Element [4] was missing 5
-			                              """);
+			                                Element [1] was missing 5
+			                              """)
+				.Because("the index is the position of the missing value in the expected collection");
 		}
 
 		[Fact]

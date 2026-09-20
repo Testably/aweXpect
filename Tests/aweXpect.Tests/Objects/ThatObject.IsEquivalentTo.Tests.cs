@@ -719,20 +719,13 @@ public sealed partial class ThatObject
 					             but it was not:
 					               Element [0] differed:
 					                    Found: 1
-					                 Expected: 2
-					             and
-					               Element [1] differed:
-					                    Found: 2
-					                 Expected: 3
-					             and
-					               Element [2] differed:
-					                    Found: 3
 					                 Expected: 4
 
 					             Equivalency options:
 					              - include public fields and properties
 					              - ignore collection order
-					             """);
+					             """)
+					.Because("3 and 2 are matched in any order, so only the element that has no counterpart is reported");
 			}
 
 			[Fact]
