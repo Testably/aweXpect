@@ -89,6 +89,8 @@ it includes a duration of exactly `d`, where `DoesNotExecuteWithin(d)` required 
 delegate that is expected to throw, add
 [`AllowingExceptions()`](/docs/expectations/delegates#allowing-exceptions) to let the duration decide alone.
 
+The element type checks `Are<T>()`, `Are(type)`, `AreExactly<T>()` and `AreExactly(type)` no longer offer `Using(…)`
+and `Equivalent(…)`. A type check does not compare values, so neither option ever had an effect; remove such a call.
 `IsExactly(type)` and `IsNotExactly(type)` are generic over the subject like `Is(type)` and `IsNot(type)`, so the
 expectation chain and the awaited result keep the subject type instead of widening it to `object`.
 `ContainsKeys(…).WhoseValues` applied the `All()` quantifier implicitly, which left no way to check the values as a
