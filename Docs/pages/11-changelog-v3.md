@@ -70,6 +70,7 @@ None of the renames has an `[Obsolete]` forwarder; each is a compile error that 
 | `DoesNotHaveCount(n)`                                  | `HasCount().NotEqualTo(n)`                                   |
 | `DoesNotHaveValue(n)` on an enum                       | `HasValue().NotEqualTo(n)`                                   |
 | `ExecutesIn().Approximately(expected, tolerance)`      | `ExecutesIn(expected).Within(tolerance)`                     |
+| `DoesNotExecuteWithin(d)`                              | `ExecutesIn().AtLeast(d)`                                    |
 | `AreAllUnique()` on a collection                       | `All().AreUnique()`                                          |
 | `AreAllUnique()` on a dictionary                       | `Values.All().AreUnique()`                                   |
 | `HasMessageContaining(…)` / `WithMessageContaining(…)` | `HasMessage().Containing(…)` / `WithMessage().Containing(…)` |
@@ -78,6 +79,10 @@ None of the renames has an `[Obsolete]` forwarder; each is a compile error that 
 | `Contains(…).Exactly()` (the parameterless match type) | removed, it restated the default                             |
 
 `HasMessage().Containing(x)` is a literal substring match; use `HasMessage("*x*").AsWildcard()` for a wildcard.
+
+`DoesNotExecuteWithin` read like the negation of `ExecutesWithin`, but both required the delegate to complete without
+throwing, so neither was the complement of the other. `ExecutesIn().AtLeast(d)` says the same thing without that trap;
+it includes a duration of exactly `d`, where `DoesNotExecuteWithin(d)` required strictly more.
 
 ## Failure messages
 
