@@ -224,6 +224,382 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenCollectionOrderIsIgnored_AndActualHasFewerElements_ShouldReportTheMissingElement()
+	{
+		int[] actual = [1, 2,];
+		int[] expected = [1, 2, 3,];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [2] was missing 3
+		                                                """).IgnoringNewlineStyle()
+			.Because("the index of a missing element is its position in the expected collection");
+	}
+
+	[Fact]
+	public async Task WhenCollectionOrderIsIgnored_AndActualHasMoreElements_ShouldReportTheSuperfluousElement()
+	{
+		int[] actual = [1, 2, 3,];
+		int[] expected = [1, 2,];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [2] had superfluous 3
+		                                                """).IgnoringNewlineStyle()
+			.Because("the index of a superfluous element is its position in the actual collection");
+	}
+
+	[Fact]
+	public async Task WhenCollectionOrderIsIgnored_AndActualIsEmpty_ShouldReportEveryMissingElement()
+	{
+		int[] actual = [];
+		int[] expected = [1, 2,];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [0] was missing 1
+		                                                and
+		                                                  Element [1] was missing 2
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenCollectionOrderIsIgnored_AndAnElementIsIgnored_ShouldIgnoreItInBothCollections()
+	{
+		int[] actual = [1, 2, 3,];
+		int[] expected = [3, 99, 1,];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+			MembersToIgnore = [new MemberToIgnore.ByPredicate((path, _) => path == "[1]", "index 1"),],
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("an ignored element has no counterpart it could be skipped in once the order is ignored, so neither the actual 2 has to be matched nor the expected 99 has to be found");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenCollectionOrderIsIgnored_AndBothCollectionsAreEmpty_ShouldSucceed()
+	{
+		int[] actual = [];
+		int[] expected = [];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsTrue();
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task
+		WhenCollectionOrderIsIgnored_AndElementIsEquivalentToMultipleExpectedElements_ShouldStillMatchEveryElement()
+	{
+		object[] actual = [new WithTwoPublicValues(1, 2), new WithTwoPublicValues(1, 3),];
+		object[] expected =
+		[
+			new
+			{
+				Value = 1,
+			},
+			new
+			{
+				Value = 1,
+				Other = 2,
+			},
+		];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("the first actual element is equivalent to both expected ones, so a greedy match would claim it for the first expected element and then report the second one as missing, although the second actual element is a counterpart for it");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenCollectionOrderIsIgnored_AndElementReferencesItself_ShouldNotExceedTheRecursionLimit()
+	{
+		NestedNode actualNode = new(1);
+		actualNode.Inner = actualNode;
+		NestedNode expectedNode = new(1);
+		expectedNode.Inner = expectedNode;
+		NestedNode[] actual = [actualNode,];
+		NestedNode[] expected = [expectedNode,];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+			MaxRecursionDepth = 2,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("the cycle detection stops the walk before the depth limit can be reached, also while elements are matched");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenCollectionOrderIsIgnored_AndElementsAreCollections_ShouldMatchThemInAnyOrder()
+	{
+		int[][] actual = [[1, 2,], [3, 4,],];
+		int[][] expected = [[3, 4,], [1, 2,],];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsTrue();
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenCollectionOrderIsIgnored_AndElementsAreNotComparable_ShouldMatchThemInAnyOrder()
+	{
+		WithProperty[] actual = [new(1), new(2),];
+		WithProperty[] expected = [new(2), new(1),];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("the elements are matched by the equivalency comparison, which a type that is not comparable also supports");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenCollectionOrderIsIgnored_AndElementsAreNotComparable_WhenInTheSameOrder_ShouldSucceed()
+	{
+		WithProperty[] actual = [new(1), new(2),];
+		WithProperty[] expected = [new(1), new(2),];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("ignoring the order must not make a collection that is already in order fail");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenCollectionOrderIsIgnored_AndElementsHaveDifferentTypes_ShouldMatchThemInAnyOrder()
+	{
+		object[] actual = [1, "a",];
+		object[] expected = ["a", 1,];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("elements of unrelated types cannot be sorted against each other, but they can be compared");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenCollectionOrderIsIgnored_AndExpectedIsEmpty_ShouldReportEverySuperfluousElement()
+	{
+		int[] actual = [1, 2,];
+		int[] expected = [];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [0] had superfluous 1
+		                                                and
+		                                                  Element [1] had superfluous 2
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenCollectionOrderIsIgnored_AndMultiplicityDiffers_ShouldReportTheDifference()
+	{
+		int[] actual = [1, 1, 2,];
+		int[] expected = [1, 2, 2,];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse()
+			.Because("each expected element needs an element of its own, so the same value cannot be matched twice");
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [1] differed:
+		                                                       Found: 1
+		                                                    Expected: 2
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenCollectionOrderIsIgnored_AndNestedCollectionsAreInAnyOrder_ShouldSucceed()
+	{
+		int[][] actual = [[1, 2,], [3, 4,],];
+		int[][] expected = [[4, 3,], [2, 1,],];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("the option applies to the nested collections as well");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenCollectionOrderIsIgnored_AndRecursionDepthExceedsTheLimit_ShouldReportTheMemberPath()
+	{
+		NestedNode[] actual = [new(4),];
+		NestedNode[] expected = [new(4),];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+			MaxRecursionDepth = 3,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property [0].Inner.Inner exceeded the maximum recursion depth of 3
+		                                                """).IgnoringNewlineStyle()
+			.Because("an element that could not be matched is reported with the reason it could not be matched for");
+	}
+
+	[Fact]
+	public async Task WhenCollectionOrderIsIgnored_AndTheCollectionContainsItself_ShouldSucceed()
+	{
+		List<object> actual = [1,];
+		actual.Add(actual);
+		List<object> expected = [1,];
+		expected.Add(expected);
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("the cycle detection also terminates the matching of a collection that is one of its own elements");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenCollectionOrderIsIgnored_AndTheOptionIsScopedToAType_ShouldOnlyApplyToThatType()
+	{
+		var actual = new
+		{
+			Ordered = new[]
+			{
+				1, 2,
+			},
+			Unordered = new List<int>
+			{
+				1, 2,
+			},
+		};
+		var expected = new
+		{
+			Ordered = new[]
+			{
+				2, 1,
+			},
+			Unordered = new List<int>
+			{
+				2, 1,
+			},
+		};
+		EquivalencyOptions options = new EquivalencyOptions().For<List<int>>(x => x with
+		{
+			IgnoreCollectionOrder = true,
+		});
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse()
+			.Because("only the members of the scoped type may ignore their order");
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element Ordered[0] differed:
+		                                                       Found: 1
+		                                                    Expected: 2
+		                                                and
+		                                                  Element Ordered[1] differed:
+		                                                       Found: 2
+		                                                    Expected: 1
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
 	public async Task WhenComparedByValue_ShouldReportTheDifferenceInsteadOfThrowing()
 	{
 		ValueLikeWithoutMembers actual = new(1);
