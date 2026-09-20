@@ -73,6 +73,7 @@ None of the renames has an `[Obsolete]` forwarder; each is a compile error that 
 | `DoesNotExecuteWithin(d)`                              | `ExecutesIn().AtLeast(d)`                                    |
 | `AreAllUnique()` on a collection                       | `All().AreUnique()`                                          |
 | `AreAllUnique()` on a dictionary                       | `Values.All().AreUnique()`                                   |
+| `ContainsKeys(…).WhoseValues.ComplyWith(…)`            | `ContainsKeys(…).WhoseValues.All().ComplyWith(…)`            |
 | `HasMessageContaining(…)` / `WithMessageContaining(…)` | `HasMessage().Containing(…)` / `WithMessage().Containing(…)` |
 | `DoesNotHaveMessage(…)` / `WithoutMessage(…)`          | `HasMessage().NotEqualTo(…)` / `WithMessage().NotEqualTo(…)` |
 | `HasParamNameContaining(…)` and the other variants     | `HasParamName().Containing(…)` and so on                     |
@@ -85,6 +86,10 @@ throwing, so neither was the complement of the other. `ExecutesIn().AtLeast(d)` 
 it includes a duration of exactly `d`, where `DoesNotExecuteWithin(d)` required strictly more. If you measured a
 delegate that is expected to throw, add
 [`AllowingExceptions()`](/docs/expectations/delegates#allowing-exceptions) to let the duration decide alone.
+
+`ContainsKeys(…).WhoseValues` applied the `All()` quantifier implicitly, which left no way to check the values as a
+whole. It is now an ordinary collection subject, so `IsEqualTo(…)`, `Contains(…)`, `HasCount(…)` and the other
+quantifiers such as `None()` are available as well.
 
 ## Failure messages
 
