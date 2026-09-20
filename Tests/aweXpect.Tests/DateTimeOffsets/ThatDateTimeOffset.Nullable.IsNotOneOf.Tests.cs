@@ -91,6 +91,34 @@ public sealed partial class ThatDateTimeOffset
 				}
 
 				[Fact]
+				public async Task WhenSubjectIsNullAndExpectedIsEmpty_ShouldThrowArgumentException()
+				{
+					DateTimeOffset? subject = null;
+					DateTimeOffset[] expected = [];
+
+					async Task Act()
+						=> await That(subject).IsNotOneOf(expected);
+
+					await That(Act).Throws<ArgumentException>()
+						.WithMessage("You have to provide at least one expected value!")
+						.Because("missing expected values are an argument error, independent of the subject");
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsNullAndNullableExpectedIsEmpty_ShouldThrowArgumentException()
+				{
+					DateTimeOffset? subject = null;
+					DateTimeOffset?[] expected = [];
+
+					async Task Act()
+						=> await That(subject).IsNotOneOf(expected);
+
+					await That(Act).Throws<ArgumentException>()
+						.WithMessage("You have to provide at least one expected value!")
+						.Because("missing expected values are an argument error, independent of the subject");
+				}
+
+				[Fact]
 				public async Task WhenSubjectIsNullAndUnexpectedContainsNull_ShouldFail()
 				{
 					DateTimeOffset? subject = null;

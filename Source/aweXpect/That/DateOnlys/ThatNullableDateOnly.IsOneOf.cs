@@ -114,6 +114,7 @@ public static partial class ThatNullableDateOnly
 		public ConstraintResult IsMetBy(DateOnly? actual)
 		{
 			ThrowHelper.ThrowIfToleranceIsNotWholeDays(tolerance.Tolerance);
+			ThrowHelper.ThrowIfEmpty(expected);
 			Actual = actual;
 			if (actual is null)
 			{
@@ -123,21 +124,14 @@ public static partial class ThatNullableDateOnly
 			{
 				TimeSpan timeTolerance = tolerance.Tolerance ??
 				                         Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-				bool hasValues = false;
 				foreach (DateOnly? value in expected)
 				{
-					hasValues = true;
 					if (value != null &&
 					    Math.Abs(actual.Value.DayNumber - value.Value.DayNumber) <= (int)timeTolerance.TotalDays)
 					{
 						Outcome = Outcome.Success;
 						return this;
 					}
-				}
-
-				if (!hasValues)
-				{
-					throw Tracing.WriteException(ThrowHelper.EmptyCollection());
 				}
 
 				Outcome = Outcome.Failure;

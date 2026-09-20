@@ -122,6 +122,34 @@ public sealed partial class ThatTimeSpan
 				}
 
 				[Fact]
+				public async Task WhenSubjectIsNullAndExpectedIsEmpty_ShouldThrowArgumentException()
+				{
+					TimeSpan? subject = null;
+					TimeSpan[] expected = [];
+
+					async Task Act()
+						=> await That(subject).IsNotOneOf(expected);
+
+					await That(Act).Throws<ArgumentException>()
+						.WithMessage("You have to provide at least one expected value!")
+						.Because("missing expected values are an argument error, independent of the subject");
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsNullAndNullableExpectedIsEmpty_ShouldThrowArgumentException()
+				{
+					TimeSpan? subject = null;
+					TimeSpan?[] expected = [];
+
+					async Task Act()
+						=> await That(subject).IsNotOneOf(expected);
+
+					await That(Act).Throws<ArgumentException>()
+						.WithMessage("You have to provide at least one expected value!")
+						.Because("missing expected values are an argument error, independent of the subject");
+				}
+
+				[Fact]
 				public async Task WhenSubjectIsNullAndUnexpectedContainsNull_ShouldFail()
 				{
 					TimeSpan? subject = null;

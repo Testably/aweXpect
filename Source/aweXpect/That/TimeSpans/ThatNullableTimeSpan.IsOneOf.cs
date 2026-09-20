@@ -111,6 +111,7 @@ public static partial class ThatNullableTimeSpan
 	{
 		public ConstraintResult IsMetBy(TimeSpan? actual)
 		{
+			ThrowHelper.ThrowIfEmpty(expected);
 			Actual = actual;
 			if (actual is null)
 			{
@@ -118,21 +119,14 @@ public static partial class ThatNullableTimeSpan
 			}
 			else
 			{
-				bool hasValues = false;
 				foreach (TimeSpan? value in expected)
 				{
-					hasValues = true;
 					if (value != null &&
 					    IsWithinTolerance(tolerance.Tolerance, actual.Value, value.Value))
 					{
 						Outcome = Outcome.Success;
 						return this;
 					}
-				}
-
-				if (!hasValues)
-				{
-					throw Tracing.WriteException(ThrowHelper.EmptyCollection());
 				}
 
 				Outcome = Outcome.Failure;

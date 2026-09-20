@@ -92,6 +92,34 @@ public sealed partial class ThatDateOnly
 				}
 
 				[Fact]
+				public async Task WhenSubjectIsNullAndExpectedIsEmpty_ShouldThrowArgumentException()
+				{
+					DateOnly? subject = null;
+					DateOnly[] expected = [];
+
+					async Task Act()
+						=> await That(subject).IsNotOneOf(expected);
+
+					await That(Act).Throws<ArgumentException>()
+						.WithMessage("You have to provide at least one expected value!")
+						.Because("missing expected values are an argument error, independent of the subject");
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsNullAndNullableExpectedIsEmpty_ShouldThrowArgumentException()
+				{
+					DateOnly? subject = null;
+					DateOnly?[] expected = [];
+
+					async Task Act()
+						=> await That(subject).IsNotOneOf(expected);
+
+					await That(Act).Throws<ArgumentException>()
+						.WithMessage("You have to provide at least one expected value!")
+						.Because("missing expected values are an argument error, independent of the subject");
+				}
+
+				[Fact]
 				public async Task WhenSubjectIsNullAndUnexpectedContainsNull_ShouldFail()
 				{
 					DateOnly? subject = null;

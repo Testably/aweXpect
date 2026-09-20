@@ -114,6 +114,7 @@ public static partial class ThatNullableDateTime
 
 		public ConstraintResult IsMetBy(DateTime? actual)
 		{
+			ThrowHelper.ThrowIfEmpty(expected);
 			Actual = actual;
 			if (actual is null)
 			{
@@ -131,12 +132,10 @@ public static partial class ThatNullableDateTime
 		{
 			TimeSpan timeTolerance = tolerance.Tolerance ??
 			                         Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-			bool hasValues = false;
 			bool hasComparableValue = false;
 			DateTimeKind? incomparableKind = null;
 			foreach (DateTime? value in expected)
 			{
-				hasValues = true;
 				if (value is null)
 				{
 					continue;
@@ -154,11 +153,6 @@ public static partial class ThatNullableDateTime
 				{
 					return Outcome.Success;
 				}
-			}
-
-			if (!hasValues)
-			{
-				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
 			}
 
 			_incompatibleKind = hasComparableValue ? null : incomparableKind;

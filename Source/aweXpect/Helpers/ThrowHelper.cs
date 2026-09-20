@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using aweXpect.Core;
 
 namespace aweXpect.Helpers;
@@ -7,6 +9,18 @@ internal static class ThrowHelper
 {
 	public static ArgumentException EmptyCollection()
 		=> new("You have to provide at least one expected value!");
+
+	/// <summary>
+	///     Rejects an empty set of expected values before the subject is looked at, so that the guard cannot depend on
+	///     runtime data.
+	/// </summary>
+	public static void ThrowIfEmpty<T>(IEnumerable<T> values)
+	{
+		if (!values.Any())
+		{
+			throw Tracing.WriteException(EmptyCollection());
+		}
+	}
 
 	/// <summary>
 	///     Rejects an inverted range, so that a tolerance cannot silently turn it into a satisfiable one.

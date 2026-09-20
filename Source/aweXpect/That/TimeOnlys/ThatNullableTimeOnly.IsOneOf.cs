@@ -113,6 +113,7 @@ public static partial class ThatNullableTimeOnly
 	{
 		public ConstraintResult IsMetBy(TimeOnly? actual)
 		{
+			ThrowHelper.ThrowIfEmpty(expected);
 			Actual = actual;
 			if (actual is null)
 			{
@@ -122,21 +123,14 @@ public static partial class ThatNullableTimeOnly
 			{
 				TimeSpan timeTolerance = tolerance.Tolerance ??
 				                         Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-				bool hasValues = false;
 				foreach (TimeOnly? value in expected)
 				{
-					hasValues = true;
 					if (value != null &&
 					    actual.Value.CircularDistanceTicks(value.Value) <= timeTolerance.Ticks)
 					{
 						Outcome = Outcome.Success;
 						return this;
 					}
-				}
-
-				if (!hasValues)
-				{
-					throw Tracing.WriteException(ThrowHelper.EmptyCollection());
 				}
 
 				Outcome = Outcome.Failure;

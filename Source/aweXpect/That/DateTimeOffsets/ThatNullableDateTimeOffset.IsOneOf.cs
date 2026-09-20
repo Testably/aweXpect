@@ -112,6 +112,7 @@ public static partial class ThatNullableDateTimeOffset
 	{
 		public ConstraintResult IsMetBy(DateTimeOffset? actual)
 		{
+			ThrowHelper.ThrowIfEmpty(expected);
 			Actual = actual;
 			if (actual is null)
 			{
@@ -121,10 +122,8 @@ public static partial class ThatNullableDateTimeOffset
 			{
 				TimeSpan timeTolerance = tolerance.Tolerance ??
 				                         Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
-				bool hasValues = false;
 				foreach (DateTimeOffset? value in expected)
 				{
-					hasValues = true;
 					if (value != null &&
 					    actual - value.Value <= timeTolerance &&
 					    actual - value.Value >= timeTolerance.Negate())
@@ -132,11 +131,6 @@ public static partial class ThatNullableDateTimeOffset
 						Outcome = Outcome.Success;
 						return this;
 					}
-				}
-
-				if (!hasValues)
-				{
-					throw Tracing.WriteException(ThrowHelper.EmptyCollection());
 				}
 
 				Outcome = Outcome.Failure;
