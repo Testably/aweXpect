@@ -49,6 +49,20 @@ public static partial class ThatString
 		: ConstraintResult.WithEqualToValue<string?>(it, grammars, expected is null),
 			IAsyncConstraint<string?>
 	{
+		/// <inheritdoc cref="ConstraintResult.Outcome" />
+		/// <remarks>
+		///     A match type other than the exact one inspects the content of the subject, which a <see langword="null" />
+		///     does not have, so it fails in both polarities. A <see langword="null" /> pattern inspects nothing and
+		///     degenerates to a plain equality check, for which <see langword="null" /> is a legitimate answer.
+		/// </remarks>
+		public override Outcome Outcome
+		{
+			get => Actual is null && expected is not null && options.InspectsSubject
+				? Outcome.Failure
+				: base.Outcome;
+			protected set => base.Outcome = value;
+		}
+
 		public async Task<ConstraintResult> IsMetBy(string? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;

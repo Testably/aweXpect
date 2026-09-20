@@ -11,3 +11,4 @@ aweXpect.Options.StringEqualityOptions.AsRegex(System.Text.RegularExpressions.Re
 aweXpect.Results.StringEqualityTypeCountResult<TType, TThat>.AsRegex(System.Text.RegularExpressions.RegexOptions regexOptions) -> aweXpect.Results.StringCountResult<TType, TThat>!
 aweXpect.Results.StringEqualityTypeResult<TType, TThat, TSelf>.AsRegex(System.Text.RegularExpressions.RegexOptions regexOptions) -> TSelf!
 aweXpect.Results.StringHasItemResult<TCollection, TSelf>.AsRegex(System.Text.RegularExpressions.RegexOptions regexOptions) -> TSelf!
+aweXpect.Options.StringEqualityOptions.InspectsSubject.get -> bool

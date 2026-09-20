@@ -303,6 +303,22 @@ public sealed partial class ThatString
 					.WithMessage("The 'expected' wildcard pattern cannot be null.").AsPrefix()
 					.Because("a pattern that only becomes null at runtime must be rejected just as a literal one");
 			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				string? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo("p").AsWildcard();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches "p",
+					             but it was <null>
+					             """);
+			}
 		}
 	}
 }

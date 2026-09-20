@@ -524,6 +524,29 @@ public sealed partial class ThatEnumerable
 					              """);
 			}
 
+			[Fact]
+			public async Task AsPrefix_WhenAllItemsAreNull_ShouldFail()
+			{
+				IEnumerable<string?> subject = [null, null,];
+
+				async Task Act()
+					=> await That(subject).Contains("b").AsPrefix();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains "b" as prefix at least once,
+					             but it did not contain it
+
+					             Collection:
+					             [
+					               <null>,
+					               <null>
+					             ]
+					             """)
+					.Because("the null philosophy applies to the subject, so a null item is simply no match");
+			}
+
 			[Theory]
 			[InlineData("[a-f]{1}[o]*", true)]
 			[InlineData("[g-h]{1}[o]*", false)]

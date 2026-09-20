@@ -114,6 +114,24 @@ await Expect.That(subject).IsEqualTo("Road").AsSuffix();
 An empty prefix or suffix is rejected with an `ArgumentException`, because every subject starts and ends with the empty
 string, so such an expectation says nothing about the subject.
 
+### A `null` subject
+
+The plain comparison treats `null` as an ordinary value, so `IsNotEqualTo("Abbey Road")` succeeds for a `null` subject.
+A wildcard, regular expression, prefix or suffix instead asks a question about the content of the subject, which a
+`null` does not have, so it fails for a `null` subject in both directions, exactly like `StartsWith` and
+`DoesNotStartWith` do:
+
+```csharp
+string? subject = null;
+
+await Expect.That(subject).IsNotEqualTo("Abbey Road");
+// fails, because there is nothing to match the pattern against
+await Expect.That(subject).IsNotEqualTo("Abbey*").AsWildcard();
+```
+
+A `null` pattern is the exception, as it expresses that the subject is `null` rather than a pattern to match, so
+`IsEqualTo(null).AsPrefix()` still succeeds for a `null` subject.
+
 ## One of
 
 You can verify that the `string` is one of many alternatives.  

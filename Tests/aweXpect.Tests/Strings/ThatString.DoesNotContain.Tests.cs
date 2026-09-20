@@ -44,6 +44,22 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				string? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotContain("p").AsPrefix();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain "p" as prefix,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenUnexpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				string subject = "some text";

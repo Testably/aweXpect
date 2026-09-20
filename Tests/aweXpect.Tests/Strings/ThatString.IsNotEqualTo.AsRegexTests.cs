@@ -54,6 +54,20 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
+			public async Task WhenPatternIsNullAndSubjectIsNull_ShouldThrowArgumentNullException()
+			{
+				string? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(null).AsRegex();
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' regex pattern cannot be null.").AsPrefix()
+					.Because("the missing pattern is a setup error that outranks the null subject");
+			}
+
+			[Fact]
 			public async Task WhenPatternIsNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "some message";
@@ -65,6 +79,23 @@ public sealed partial class ThatString
 					.WithParamName("expected").And
 					.WithMessage("The 'expected' regex pattern cannot be null.").AsPrefix()
 					.Because("a missing pattern matches no subject, so the negated expectation could never fail");
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				string? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(".*").AsRegex();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not match regex ".*",
+					             but it was <null>
+					             """)
+					.Because("a null has no content to inspect, just as for the dedicated negated expectations");
 			}
 		}
 	}

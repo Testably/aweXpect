@@ -423,6 +423,30 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task AsPrefix_WhenItemIsNull_ShouldFail()
+			{
+				IEnumerable<string?> subject = ["foo", null, "baz",];
+
+				async Task Act()
+					=> await That(subject).HasItem("b").AsPrefix().AtIndex(1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has item starting with "b" at index 1,
+					             but it had item <null> at index 1
+
+					             Collection:
+					             [
+					               "foo",
+					               <null>,
+					               "baz"
+					             ]
+					             """)
+					.Because("the null philosophy applies to the subject, so a null item is simply no match");
+			}
+
+			[Fact]
 			public async Task AsPrefix_WhenItemStartsWithExpected_ShouldSucceed()
 			{
 				IEnumerable<string?> subject = ["foo", "bar", "baz",];
