@@ -79,6 +79,20 @@ public static partial class ThatString
 		: ConstraintResult.WithValue<string?>(it, grammars),
 			IAsyncConstraint<string?>
 	{
+		private bool _hasNothingToInspect;
+
+		/// <inheritdoc cref="ConstraintResult.Outcome" />
+		/// <remarks>
+		///     A match type other than the exact one inspects the content of the subject, which a <see langword="null" />
+		///     does not have, so it fails in both polarities. A <see langword="null" /> value inspects nothing and still
+		///     matches a <see langword="null" /> subject as a plain equality check.
+		/// </remarks>
+		public override Outcome Outcome
+		{
+			get => _hasNothingToInspect ? Outcome.Failure : base.Outcome;
+			protected set => base.Outcome = value;
+		}
+
 		public async Task<ConstraintResult> IsMetBy(string? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
@@ -100,6 +114,7 @@ public static partial class ThatString
 				throw Tracing.WriteException(ThrowHelper.EmptyCollection());
 			}
 
+			_hasNothingToInspect = actual is null && options.InspectsSubject;
 			Outcome = Outcome.Failure;
 			return this;
 		}

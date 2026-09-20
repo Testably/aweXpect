@@ -269,6 +269,22 @@ public sealed partial class ThatString
 					.WithMessage("The 'expected' regex pattern cannot be null.").AsPrefix()
 					.Because("a pattern that only becomes null at runtime must be rejected just as a literal one");
 			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				string? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(".*").AsRegex();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches regex ".*",
+					             but it was <null>
+					             """);
+			}
 		}
 	}
 }

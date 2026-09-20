@@ -114,6 +114,12 @@ await Expect.That(subject).IsEqualTo("Road").AsSuffix();
 An empty prefix or suffix is rejected with an `ArgumentException`, because every subject starts and ends with the empty
 string, so such an expectation says nothing about the subject.
 
+:::note[A `null` subject has no content to match]
+Every match type except the plain comparison asks about the content of the subject, so it fails for a `null` subject in
+both directions, exactly like `StartsWith` and `DoesNotStartWith` do. Only a `null` pattern stays a plain equality
+check, so `IsEqualTo(null).AsPrefix()` still succeeds.
+:::
+
 ## One of
 
 You can verify that the `string` is one of many alternatives.  

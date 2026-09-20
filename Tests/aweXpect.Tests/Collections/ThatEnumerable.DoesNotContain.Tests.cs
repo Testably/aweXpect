@@ -379,6 +379,18 @@ public sealed partial class ThatEnumerable
 		public sealed class StringItemTests
 		{
 			[Fact]
+			public async Task AsPrefix_WhenAllItemsAreNull_ShouldSucceed()
+			{
+				IEnumerable<string?> subject = [null, null,];
+
+				async Task Act()
+					=> await That(subject).DoesNotContain("b").AsPrefix();
+
+				await That(Act).DoesNotThrow()
+					.Because("the null philosophy applies to the subject, so a null item is simply no match");
+			}
+
+			[Fact]
 			public async Task DoesNotMaterializeEnumerable()
 			{
 				IEnumerable<string> subject = Factory.GetFibonacciNumbers(x => $"item-{x}");

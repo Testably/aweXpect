@@ -36,6 +36,38 @@ public sealed partial class ThatString
 					             but it contained "investigator" once in "In this text in between the word an investigator should find the word 'IN' multiple times."
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				string? subject = null;
+
+				async Task Act()
+					=> await That(subject).Contains("p").Never();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain "p",
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNullAndPatternIsAWildcard_ShouldFail()
+			{
+				string? subject = null;
+
+				async Task Act()
+					=> await That(subject).Contains("p*").AsWildcard().Never();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain "p*" as wildcard,
+					             but it was <null>
+					             """);
+			}
 		}
 	}
 }

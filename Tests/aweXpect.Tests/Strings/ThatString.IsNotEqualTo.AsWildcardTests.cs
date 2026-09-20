@@ -47,6 +47,20 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
+			public async Task WhenPatternIsNullAndSubjectIsNull_ShouldThrowArgumentNullException()
+			{
+				string? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(null).AsWildcard();
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' wildcard pattern cannot be null.").AsPrefix()
+					.Because("the missing pattern is a setup error that outranks the null subject");
+			}
+
+			[Fact]
 			public async Task WhenPatternIsNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "some message";
@@ -70,6 +84,23 @@ public sealed partial class ThatString
 
 				await That(Act).DoesNotThrow()
 					.Because("the pattern has to cover the complete subject, not one of its lines");
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_ShouldFail()
+			{
+				string? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo("p").AsWildcard();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not match "p",
+					             but it was <null>
+					             """)
+					.Because("a null has no content to inspect, just as for the dedicated negated expectations");
 			}
 		}
 	}

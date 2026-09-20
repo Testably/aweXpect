@@ -24,6 +24,15 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	private bool _ignoreTrailingWhiteSpace;
 	private IStringMatchType _matchType = ExactMatch;
 
+	/// <summary>
+	///     Indicates whether the current match type inspects the content of the subject instead of comparing it as a value.
+	/// </summary>
+	/// <remarks>
+	///     A <see langword="null" /> subject has no content to inspect, so an inspecting match type must fail for it in both
+	///     polarities, exactly like the dedicated <c>StartsWith</c> / <c>DoesNotStartWith</c> expectations do.
+	/// </remarks>
+	public bool InspectsSubject => _matchType is not ExactMatchType;
+
 	/// <inheritdoc />
 #if NET8_0_OR_GREATER
 	public async ValueTask<bool> AreConsideredEqual<TExpected>(string? actual, TExpected expected)

@@ -353,6 +353,18 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task AsPrefix_WhenItemIsNull_ShouldSucceed()
+			{
+				IEnumerable<string?> subject = ["foo", null, "baz",];
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveItem("b").AsPrefix().AtIndex(1);
+
+				await That(Act).DoesNotThrow()
+					.Because("the null philosophy applies to the subject, so a null item is simply no match");
+			}
+
+			[Fact]
 			public async Task AsPrefix_WhenItemStartsWithUnexpected_ShouldFail()
 			{
 				IEnumerable<string?> subject = ["foo", "bar", "baz",];
