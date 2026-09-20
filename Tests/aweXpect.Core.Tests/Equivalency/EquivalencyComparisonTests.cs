@@ -470,6 +470,33 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenCollectionOrderIsIgnored_AndLeftoversDiffer_ShouldPairThemByTheFewestDifferences()
+	{
+		WithTwoPublicValues[] actual = [new(1, 10), new(2, 20),];
+		WithTwoPublicValues[] expected = [new(2, 99), new(1, 88),];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Field [0].Other differed:
+		                                                       Found: 10
+		                                                    Expected: 88
+		                                                and
+		                                                  Field [1].Other differed:
+		                                                       Found: 20
+		                                                    Expected: 99
+		                                                """).IgnoringNewlineStyle()
+			.Because("pairing each element with the one that shares its Value reports the one member that differs, while pairing them by position would report both members of both elements");
+	}
+
+	[Fact]
 	public async Task WhenCollectionOrderIsIgnored_AndMultiplicityDiffers_ShouldReportTheDifference()
 	{
 		int[] actual = [1, 1, 2,];
