@@ -141,7 +141,7 @@ public sealed partial class ThatDelegate
 				}
 
 				[Fact]
-				public async Task WithInnerException_AllowsNestedIs()
+				public async Task WithInner_AllowsNestedIs()
 				{
 					void Throwing()
 						=> throw new InvalidOperationException(
@@ -150,7 +150,7 @@ public sealed partial class ThatDelegate
 
 					async Task Act()
 						=> await That(Throwing).Throws<InvalidOperationException>()
-							.WithInnerException(it => it.Is<InvalidCastException>()
+							.WithInner(it => it.Is<InvalidCastException>()
 								.Whose(e => e!.Message, it => it.IsEqualTo("inner")));
 
 					await That(Act).DoesNotThrow();

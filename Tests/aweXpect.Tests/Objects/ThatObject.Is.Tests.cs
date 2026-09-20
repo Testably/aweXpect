@@ -58,12 +58,12 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
-			public async Task WhenNestedInHasInnerException_ShouldFail()
+			public async Task WhenNestedInHasInner_ShouldFail()
 			{
 				Exception subject = new("outer", new ArgumentException("inner"));
 
 				async Task Act()
-					=> await That(subject).HasInnerException(it => it.Is<InvalidCastException>());
+					=> await That(subject).HasInner(it => it.Is<InvalidCastException>());
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

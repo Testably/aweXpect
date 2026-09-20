@@ -129,14 +129,14 @@ public sealed class ThatSubjectTests
 	}
 
 	[Fact]
-	public async Task WithInnerException_WhenTypeDoesNotMatch_ShouldIncludeTheActualTypeAndValue()
+	public async Task WithInner_WhenTypeDoesNotMatch_ShouldIncludeTheActualTypeAndValue()
 	{
 		void Throwing()
 			=> throw new InvalidOperationException("outer", new ArgumentException("inner"));
 
 		async Task Act()
 			=> await That(Throwing).Throws<InvalidOperationException>()
-				.WithInnerException(it => it.Is<InvalidCastException>());
+				.WithInner(it => it.Is<InvalidCastException>());
 
 		await That(Act).Throws<XunitException>()
 			.WithMessage("""

@@ -599,7 +599,7 @@ public sealed class DelegateTests
 		void Act() => throw exception;
 
 		CustomException result = await That(Act).Throws<CustomException>()
-			.WithInnerException(e1 => e1
+			.WithInner(e1 => e1
 				.HasMessage(innerMessage).And
 				.HasInner<ArgumentException>(e2 => e2
 					.HasParamName(nameof(innermostMessage)).And.HasMessage($"{innermostMessage}*")

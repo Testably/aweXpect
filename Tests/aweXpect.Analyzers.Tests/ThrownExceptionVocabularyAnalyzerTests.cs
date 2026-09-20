@@ -68,7 +68,7 @@ public class ThrownExceptionVocabularyAnalyzerTests
 		);
 
 	[Fact]
-	public async Task WhenUsingHasMessageInsideWithInnerException_ShouldNotBeFlagged() => await Verifier
+	public async Task WhenUsingHasMessageInsideWithInner_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
 			using System;
@@ -82,7 +82,7 @@ public class ThrownExceptionVocabularyAnalyzerTests
 			        void Act() => throw new Exception("foo", new Exception("bar"));
 
 			        await Expect.That(Act).Throws<Exception>()
-			            .WithInnerException(inner => inner.HasMessage("bar"));
+			            .WithInner(inner => inner.HasMessage("bar"));
 			    }
 			}
 			"""
@@ -109,6 +109,29 @@ public class ThrownExceptionVocabularyAnalyzerTests
 			Verifier.Diagnostic(Rules.ThrownExceptionVocabularyRule)
 				.WithLocation(0)
 				.WithArguments("HasMessage", "WithMessage")
+		);
+
+	[Fact]
+	public async Task WhenUsingHasInnerOnThrows_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        void Act() => throw new Exception("foo", new ArgumentException("bar"));
+
+			        await Expect.That(Act).Throws().{|#0:HasInner|}();
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.ThrownExceptionVocabularyRule)
+				.WithLocation(0)
+				.WithArguments("HasInner", "WithInner")
 		);
 
 	[Fact]

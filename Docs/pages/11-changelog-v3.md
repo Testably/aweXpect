@@ -77,6 +77,7 @@ None of the renames has an `[Obsolete]` forwarder; each is a compile error that 
 | `HasMessageContaining(…)` / `WithMessageContaining(…)` | `HasMessage().Containing(…)` / `WithMessage().Containing(…)` |
 | `DoesNotHaveMessage(…)` / `WithoutMessage(…)`          | `HasMessage().NotEqualTo(…)` / `WithMessage().NotEqualTo(…)` |
 | `HasParamNameContaining(…)` and the other variants     | `HasParamName().Containing(…)` and so on                     |
+| `HasInnerException()` / `WithInnerException()`         | `HasInner()` / `WithInner()`                                 |
 | `Contains(…).Exactly()` (the parameterless match type) | removed, it restated the default                             |
 
 `HasMessage().Containing(x)` is a literal substring match; use `HasMessage("*x*").AsWildcard()` for a wildcard.
