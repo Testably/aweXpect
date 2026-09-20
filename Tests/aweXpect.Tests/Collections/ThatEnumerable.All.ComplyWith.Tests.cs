@@ -244,6 +244,143 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
+				public async Task WhenItemsUseNestedWhose_ShouldIncludeAllMembersInExpectation()
+				{
+					MyClass[] subject = [new(1, "foo"),];
+
+					async Task Act()
+						=> await That(subject).All()
+							.ComplyWith(x => x.Whose(o => o.StringValue, s => s.Whose(v => v.Length, l => l.IsEqualTo(5))));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             whose StringValue whose Length is equal to 5 for all items,
+						             but none of 1 were
+
+						             Not matching items:
+						             [
+						               MyClass {
+						                 StringValue = "foo",
+						                 Value = 1
+						               }
+						             ]
+
+						             Collection:
+						             [
+						               MyClass {
+						                 StringValue = "foo",
+						                 Value = 1
+						               }
+						             ]
+						             """)
+						.Because("the nested member text must survive the node tree rendering");
+				}
+
+				[Fact]
+				public async Task WhenItemsUseWhose_ShouldIncludeMemberInExpectation()
+				{
+					MyClass[] subject = [new(1), new(2),];
+
+					async Task Act()
+						=> await That(subject).All().ComplyWith(x => x.Whose(o => o.Value, v => v.IsEqualTo(5)));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             whose Value is equal to 5 for all items,
+						             but none of 2 were
+
+						             Not matching items:
+						             [
+						               MyClass {
+						                 StringValue = "",
+						                 Value = 1
+						               },
+						               MyClass {
+						                 StringValue = "",
+						                 Value = 2
+						               }
+						             ]
+
+						             Collection:
+						             [
+						               MyClass {
+						                 StringValue = "",
+						                 Value = 1
+						               },
+						               MyClass {
+						                 StringValue = "",
+						                 Value = 2
+						               }
+						             ]
+						             """)
+						.Because("the member text must survive the node tree rendering");
+				}
+
+				[Fact]
+				public async Task WhenItemsUseWhoseAfterAWhichMember_ShouldNotRenderWhichWhose()
+				{
+					Exception[] subject = [new("a", new InvalidOperationException("b")),];
+
+					async Task Act()
+						=> await That(subject).All().ComplyWith(x
+							=> x.HasInner<InvalidOperationException>(i => i.Whose(e => e.Message, m => m.IsEqualTo("x"))));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             has an inner InvalidOperationException whose Message is equal to "x" for all items,
+						             but none of 1 were
+
+						             Not matching items:
+						             [
+						               Exception: a
+						             ]
+
+						             Collection:
+						             [
+						               Exception: a
+						             ]
+						             """)
+						.Because("a member separated by \"which\" must drop it before a nested \"whose\"");
+				}
+
+				[Fact]
+				public async Task WhenItemsUseWhoseWithAsyncMember_ShouldIncludeMemberInExpectation()
+				{
+					MyClass[] subject = [new(1),];
+
+					async Task Act()
+						=> await That(subject).All()
+							.ComplyWith(x => x.Whose(o => Task.FromResult(o.Value), v => v.IsEqualTo(5)));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             whose Task.FromResult(o.Value) is equal to 5 for all items,
+						             but none of 1 were
+
+						             Not matching items:
+						             [
+						               MyClass {
+						                 StringValue = "",
+						                 Value = 1
+						               }
+						             ]
+
+						             Collection:
+						             [
+						               MyClass {
+						                 StringValue = "",
+						                 Value = 1
+						               }
+						             ]
+						             """)
+						.Because("the async member text must survive the node tree rendering");
+				}
+
+				[Fact]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IEnumerable<int>? subject = null;

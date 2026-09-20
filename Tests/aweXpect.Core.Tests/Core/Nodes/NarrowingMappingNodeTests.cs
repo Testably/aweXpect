@@ -97,7 +97,7 @@ public class NarrowingMappingNodeTests
 	[Fact]
 	public async Task NotApplicableResult_Negate_ShouldStayUndecided()
 	{
-		NotApplicableConstraintResult result = new(new DummyNode("foo"));
+		NotApplicableConstraintResult result = new((sb, _) => sb.Append("foo"));
 
 		ConstraintResult negatedResult = result.Negate();
 
@@ -107,7 +107,7 @@ public class NarrowingMappingNodeTests
 	[Fact]
 	public async Task NotApplicableResult_TryGetValue_ShouldReturnFalse()
 	{
-		NotApplicableConstraintResult constraintResult = new(new DummyNode("foo"));
+		NotApplicableConstraintResult constraintResult = new((sb, _) => sb.Append("foo"));
 
 		bool result = constraintResult.TryGetValue(out object? value);
 

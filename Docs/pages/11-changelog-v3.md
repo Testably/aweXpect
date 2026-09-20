@@ -96,7 +96,9 @@ quantifiers such as `None()` are available as well.
 
 Failure messages were reviewed as a whole. Options with several spellings now render the same way everywhere (for
 example a tolerance always reads `± x`), negated expectations name what they found instead of `but it did`, and many
-grammar slips were fixed. Tests that assert on the exact text of a failure message may need an update.
+grammar slips were fixed. A `Whose(…)` nested inside a collection expectation such as `All().ComplyWith(…)` or
+`HasItemThat(…)` now names the member it inspects, instead of reporting only the expectation on it. Tests that assert
+on the exact text of a failure message may need an update.
 
 ## Timeouts on negative event expectations
 

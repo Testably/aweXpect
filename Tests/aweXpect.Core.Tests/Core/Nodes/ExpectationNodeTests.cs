@@ -172,7 +172,7 @@ public class ExpectationNodeTests
 		node.AddConstraint(new DummyConstraint("bar"));
 
 		node.AppendExpectation(sb);
-		await That(sb.ToString()).IsEqualTo("foobar");
+		await That(sb.ToString()).IsEqualTo("foo with length bar");
 	}
 
 
@@ -188,7 +188,7 @@ public class ExpectationNodeTests
 		node.AddConstraint(new DummyConstraint("bar"));
 
 		node.AppendExpectation(sb);
-		await That(sb.ToString()).IsEqualTo("foobar");
+		await That(sb.ToString()).IsEqualTo("foo with length bar");
 	}
 
 	[Fact]
@@ -202,7 +202,7 @@ public class ExpectationNodeTests
 		node.AddConstraint(new DummyConstraint("bar"));
 
 		node.AppendExpectation(sb);
-		await That(sb.ToString()).IsEqualTo("foobar");
+		await That(sb.ToString()).IsEqualTo("foo with length bar");
 	}
 
 	[Fact]
@@ -217,7 +217,7 @@ public class ExpectationNodeTests
 		node.AddConstraint(new DummyConstraint("bar"));
 
 		node.AppendExpectation(sb);
-		await That(sb.ToString()).IsEqualTo("foobar");
+		await That(sb.ToString()).IsEqualTo("foo with length bar");
 	}
 
 	[Theory]
@@ -422,7 +422,7 @@ public class ExpectationNodeTests
 
 		node.AppendExpectation(sb);
 
-		await That(sb.ToString()).IsEqualTo("foo");
+		await That(sb.ToString()).IsEqualTo("foowith length: ");
 	}
 
 	[Fact]
@@ -436,7 +436,7 @@ public class ExpectationNodeTests
 
 		node.AppendExpectation(sb);
 
-		await That(sb.ToString()).IsEqualTo("");
+		await That(sb.ToString()).IsEqualTo("with length: ");
 	}
 
 	[Fact]
@@ -463,7 +463,7 @@ public class ExpectationNodeTests
 
 		node.AppendExpectation(sb);
 
-		await That(sb.ToString()).IsEqualTo("foo");
+		await That(sb.ToString()).IsEqualTo("foowith length: ");
 	}
 
 	[Fact]
@@ -476,7 +476,7 @@ public class ExpectationNodeTests
 
 		node.AppendExpectation(sb);
 
-		await That(sb.ToString()).IsEqualTo("");
+		await That(sb.ToString()).IsEqualTo("with length: ");
 	}
 
 	[Fact]
