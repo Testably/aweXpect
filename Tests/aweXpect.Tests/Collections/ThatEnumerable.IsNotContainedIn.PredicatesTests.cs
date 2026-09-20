@@ -97,14 +97,14 @@ public sealed partial class ThatEnumerable
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				IEnumerable<int> subject = Enumerable.Range(1, 11);
-				IEnumerable<Expression<Func<int, bool>>>? expected = null;
+				IEnumerable<Expression<Func<int, bool>>>? unexpected = null;
 
 				async Task Act()
-					=> await That(subject).IsNotContainedIn(expected!);
+					=> await That(subject).IsNotContainedIn(unexpected!);
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithParamName("expected").And
-					.WithMessage("The expected cannot be null.").AsPrefix();
+					.WithParamName("unexpected").And
+					.WithMessage("The unexpected cannot be null.").AsPrefix();
 			}
 
 			[Fact]
