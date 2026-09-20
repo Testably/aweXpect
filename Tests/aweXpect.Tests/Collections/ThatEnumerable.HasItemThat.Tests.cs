@@ -124,6 +124,34 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenItemsUseWhose_ShouldIncludeMemberInExpectation()
+			{
+				MyClass[] subject = [new(1),];
+
+				async Task Act()
+					=> await That(subject).HasItemThat(it => it.Whose(o => o.Value, v => v.IsEqualTo(5)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has item that whose Value is equal to 5,
+					             but it had item MyClass {
+					               StringValue = "",
+					               Value = 1
+					             }
+
+					             Collection:
+					             [
+					               MyClass {
+					                 StringValue = "",
+					                 Value = 1
+					               }
+					             ]
+					             """)
+					.Because("the member text must survive the node tree rendering");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEnumerable<int>? subject = null;

@@ -18,6 +18,35 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenItemsUseWhose_ShouldIncludeMemberInExpectation()
+			{
+				MyClass[] subject = [new(1), new(2),];
+
+				async Task Act()
+					=> await That(subject).AtLeast(2).ComplyWith(x => x.Whose(o => o.Value, v => v.IsEqualTo(1)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose Value is equal to 1 for at least 2 items,
+					             but only 1 of 2 were
+
+					             Collection:
+					             [
+					               MyClass {
+					                 StringValue = "",
+					                 Value = 1
+					               },
+					               MyClass {
+					                 StringValue = "",
+					                 Value = 2
+					               }
+					             ]
+					             """)
+					.Because("the member text must survive the node tree rendering");
+			}
+
+			[Fact]
 			public async Task WhenNoItemsMatch_ShouldFail()
 			{
 				int[] subject = [1, 2, 3, 4, 5,];
