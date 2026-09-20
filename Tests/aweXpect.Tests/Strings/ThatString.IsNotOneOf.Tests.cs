@@ -11,6 +11,60 @@ public sealed partial class ThatString
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task AsPrefix_WhenSubjectIsNull_ShouldFail()
+			{
+				string? subject = null;
+				IEnumerable<string?> unexpected = ["foo", "bar",];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected).AsPrefix();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of {Formatter.Format(unexpected)} as prefix,
+					              but it was <null>
+					              """)
+					.Because("a null has no content to inspect, just as for DoesNotStartWith");
+			}
+
+			[Fact]
+			public async Task AsPrefix_WhenUnexpectedContainsNull_ShouldFail()
+			{
+				string? subject = null;
+				IEnumerable<string?> unexpected = ["foo", null,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected).AsPrefix();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of {Formatter.Format(unexpected)} as prefix,
+					              but it was <null>
+					              """)
+					.Because("a null value inspects nothing, so it remains a plain equality check");
+			}
+
+			[Fact]
+			public async Task AsWildcard_WhenSubjectIsNull_ShouldFail()
+			{
+				string? subject = null;
+				IEnumerable<string?> unexpected = ["fo*", "ba*",];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected).AsWildcard();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of {Formatter.Format(unexpected)} as wildcard,
+					              but it was <null>
+					              """)
+					.Because("a null has no content to match the pattern against");
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				string subject = "foo";

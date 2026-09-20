@@ -11,6 +11,24 @@ public sealed partial class ThatString
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task AsPrefix_WhenSubjectIsNull_ShouldFail()
+			{
+				string? subject = null;
+				IEnumerable<string?> expected = ["foo", "bar",];
+
+				async Task Act()
+					=> await That(subject).IsOneOf(expected).AsPrefix();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is one of {Formatter.Format(expected)} as prefix,
+					              but it was <null>
+					              """)
+					.Because("a null has no content to inspect, just as for StartsWith");
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				string subject = "foo";
