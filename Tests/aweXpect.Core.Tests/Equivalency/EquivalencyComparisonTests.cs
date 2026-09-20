@@ -538,6 +538,35 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenCollectionOrderIsIgnored_AndOnlySomeLeftoversCanBePaired_ShouldReportThePairsBeforeTheSurplus()
+	{
+		int[] actual = [1, 2,];
+		int[] expected = [3, 4, 5,];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [0] differed:
+		                                                       Found: 1
+		                                                    Expected: 3
+		                                                and
+		                                                  Element [1] differed:
+		                                                       Found: 2
+		                                                    Expected: 4
+		                                                and
+		                                                  Element [2] was missing 5
+		                                                """).IgnoringNewlineStyle()
+			.Because("the expected elements that a leftover could be paired with are reported as differences in the order of the actual elements, and only the surplus that no actual element is left for is reported as missing");
+	}
+
+	[Fact]
 	public async Task WhenCollectionOrderIsIgnored_AndRecursionDepthExceedsTheLimit_ShouldReportTheMemberPath()
 	{
 		NestedNode[] actual = [new(4),];

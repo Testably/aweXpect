@@ -619,6 +619,16 @@ public static partial class EquivalencyComparison
 		private readonly int[] _actualIndices;
 		private readonly object?[] _actualObjects;
 		private readonly EquivalencyContext _context;
+
+		/// <summary>
+		///     The number of differences of every pairwise comparison that <see cref="_results" /> holds a result for.
+		/// </summary>
+		/// <remarks>
+		///     Kept apart from the result, because the search for augmenting paths reads the result of every pair it
+		///     considers while only the leftovers need the count, and a wider cell would slow that search down.
+		/// </remarks>
+		private readonly int[,] _differenceCounts;
+
 		private readonly int[] _expectedIndices;
 		private readonly object?[] _expectedObjects;
 
@@ -634,11 +644,7 @@ public static partial class EquivalencyComparison
 		///     Caches every pairwise comparison, because the search for augmenting paths revisits pairs and a single
 		///     comparison walks a whole object graph.
 		/// </summary>
-		/// <remarks>
-		///     The number of differences is cached next to the result, so that pairing the leftovers by the fewest
-		///     differences can reuse what the matching already compared.
-		/// </remarks>
-		private readonly (bool IsEquivalent, int DifferenceCount)?[,] _results;
+		private readonly bool?[,] _results;
 
 		private readonly EquivalencyTypeOptions _typeOptions;
 
@@ -659,7 +665,8 @@ public static partial class EquivalencyComparison
 			_options = options;
 			_typeOptions = typeOptions;
 			_context = context;
-			_results = new (bool, int)?[actualIndices.Length, expectedIndices.Length];
+			_results = new bool?[actualIndices.Length, expectedIndices.Length];
+			_differenceCounts = new int[actualIndices.Length, expectedIndices.Length];
 			_matchedTo = new int[actualIndices.Length];
 			for (int i = 0; i < _matchedTo.Length; i++)
 			{
@@ -763,7 +770,7 @@ public static partial class EquivalencyComparison
 			{
 				// Starting at the same position pairs collections that are already in order without any search.
 				int actualIndex = (expectedIndex + offset) % _actualIndices.Length;
-				if (visited[actualIndex] || !await IsEquivalent(actualIndex, expectedIndex))
+				if (visited[actualIndex] || !(await GetResult(actualIndex, expectedIndex)).IsEquivalent)
 				{
 					continue;
 				}
@@ -779,14 +786,6 @@ public static partial class EquivalencyComparison
 			return false;
 		}
 
-#if NET8_0_OR_GREATER
-		private async ValueTask<bool>
-#else
-		private async Task<bool>
-#endif
-			IsEquivalent(int actualIndex, int expectedIndex)
-			=> (await GetResult(actualIndex, expectedIndex)).IsEquivalent;
-
 		/// <remarks>
 		///     The comparison writes into a throwaway builder, because only the differences that survive the matching
 		///     belong in the failure message. Its differences are counted nonetheless, so the count is taken from the
@@ -801,7 +800,7 @@ public static partial class EquivalencyComparison
 		{
 			if (_results[actualIndex, expectedIndex] is { } cachedResult)
 			{
-				return cachedResult;
+				return (cachedResult, _differenceCounts[actualIndex, expectedIndex]);
 			}
 
 			object? actualObject = _actualObjects[_actualIndices[actualIndex]];
@@ -809,11 +808,10 @@ public static partial class EquivalencyComparison
 			bool isEquivalent = await Compare(actualObject, _expectedObjects[_expectedIndices[expectedIndex]],
 				_options, _options.GetTypeOptions(actualObject?.GetType(), _typeOptions),
 				new StringBuilder(), $"{_memberPath}[{_actualIndices[actualIndex]}]", MemberType.Element, _context);
-			(bool IsEquivalent, int DifferenceCount) result =
-				(isEquivalent, _context.DifferenceCount - differenceCount);
+			_results[actualIndex, expectedIndex] = isEquivalent;
+			_differenceCounts[actualIndex, expectedIndex] = _context.DifferenceCount - differenceCount;
 			_context.DifferenceCount = differenceCount;
-			_results[actualIndex, expectedIndex] = result;
-			return result;
+			return (isEquivalent, _differenceCounts[actualIndex, expectedIndex]);
 		}
 	}
 #pragma warning restore S107
