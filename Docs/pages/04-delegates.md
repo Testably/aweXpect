@@ -17,6 +17,26 @@ A delegate can be any of the following:
 - `Func<ValueTask<T>>` or `Func<CancellationToken, ValueTask<T>>`  
   an asynchronous method using `ValueTask` with return value `T` (optionally accepting a `CancellationToken` for
   timeout)
+- `Task` or `ValueTask`  
+  an asynchronous operation without return value that is already running
+
+```csharp
+await Expect.That(DoAsync()).DoesNotThrow();
+await Expect.That(DoAsync()).Throws<InvalidOperationException>();
+```
+
+A `Task` or `ValueTask` is already running when the expectation receives it, so an expectation on the execution time
+only measures the duration that remains, and it cannot be interrupted by a timeout. Pass the method itself
+(`Expect.That(DoAsync)`) to measure the whole execution. A `ValueTask` is consumed by `Expect.That`, so it must not
+be awaited anywhere else.
+
+To make an expectation about the task object rather than about what it does, state the type explicitly:
+
+```csharp
+await Expect.That<Task>(task).IsNotNull();
+```
+
+Note that `Task<T>` and `ValueTask<T>` behave differently: they are awaited and their **result** becomes the subject.
 
 ## Not throw
 
