@@ -86,6 +86,9 @@ it includes a duration of exactly `d`, where `DoesNotExecuteWithin(d)` required 
 delegate that is expected to throw, add
 [`AllowingExceptions()`](/docs/expectations/delegates#allowing-exceptions) to let the duration decide alone.
 
+The element type checks `Are<T>()`, `Are(type)`, `AreExactly<T>()` and `AreExactly(type)` no longer offer `Using(…)`
+and `Equivalent(…)`. A type check does not compare values, so neither option ever had an effect; remove such a call.
+
 ## Failure messages
 
 Failure messages were reviewed as a whole. Options with several spellings now render the same way everywhere (for

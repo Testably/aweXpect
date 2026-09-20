@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using aweXpect.Core;
 using aweXpect.Helpers;
-using aweXpect.Options;
 using aweXpect.Results;
 
 namespace aweXpect;
@@ -15,12 +14,11 @@ public static partial class ThatAsyncEnumerable
 		/// <summary>
 		///     …are of type <typeparamref name="TType" />.
 		/// </summary>
-		public ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
+		public AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
 			Are<TType>()
 		{
-			ObjectEqualityOptions<TItem> options = new();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
-			return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
+			return new AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionConstraint<TItem>(
 						expectationBuilder,
@@ -29,20 +27,18 @@ public static partial class ThatAsyncEnumerable
 						g => ElementExpectations.IsOfType(g, Formatter.Format(typeof(TType))),
 						a => typeof(TType).IsAssignableFrom(a?.GetType()),
 						"were")),
-				_subject,
-				options);
+				_subject);
 		}
 
 		/// <summary>
 		///     …are of type <paramref name="type" />.
 		/// </summary>
-		public ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
+		public AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
 			Are(Type type)
 		{
 			type.ThrowIfNull();
-			ObjectEqualityOptions<TItem> options = new();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
-			return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
+			return new AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionConstraint<TItem>(
 						expectationBuilder,
@@ -51,8 +47,7 @@ public static partial class ThatAsyncEnumerable
 						g => ElementExpectations.IsOfType(g, Formatter.Format(type)),
 						a => type.IsAssignableFrom(a?.GetType()),
 						"were")),
-				_subject,
-				options);
+				_subject);
 		}
 	}
 }

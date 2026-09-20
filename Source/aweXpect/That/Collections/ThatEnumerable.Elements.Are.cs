@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using aweXpect.Core;
 using aweXpect.Helpers;
-using aweXpect.Options;
 using aweXpect.Results;
 
 namespace aweXpect;
@@ -14,12 +13,11 @@ public static partial class ThatEnumerable
 		/// <summary>
 		///     …are of type <typeparamref name="TType" />.
 		/// </summary>
-		public ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
+		public AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
 			Are<TType>()
 		{
-			ObjectEqualityOptions<TItem> options = new();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
-			return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
+			return new AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionConstraint<TItem>(
 						expectationBuilder, it, grammars,
@@ -27,20 +25,18 @@ public static partial class ThatEnumerable
 						g => ElementExpectations.IsOfType(g, Formatter.Format(typeof(TType))),
 						a => a is TType,
 						"were")),
-				_subject,
-				options);
+				_subject);
 		}
 
 		/// <summary>
 		///     …are of type <paramref name="type" />.
 		/// </summary>
-		public ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
+		public AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
 			Are(Type type)
 		{
 			type.ThrowIfNull();
-			ObjectEqualityOptions<TItem> options = new();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
-			return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
+			return new AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionConstraint<TItem>(
 						expectationBuilder, it, grammars,
@@ -48,8 +44,7 @@ public static partial class ThatEnumerable
 						g => ElementExpectations.IsOfType(g, Formatter.Format(type)),
 						a => type.IsInstanceOfType(a),
 						"were")),
-				_subject,
-				options);
+				_subject);
 		}
 	}
 
@@ -58,12 +53,11 @@ public static partial class ThatEnumerable
 		/// <summary>
 		///     …are of type <typeparamref name="TType" />.
 		/// </summary>
-		public ObjectEqualityResult<TEnumerable, IThat<TEnumerable?>, object?>
+		public AndOrResult<TEnumerable, IThat<TEnumerable>>
 			Are<TType>()
 		{
-			ObjectEqualityOptions<object?> options = new();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
-			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable?>, object?>(
+			return new AndOrResult<TEnumerable, IThat<TEnumerable>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionForEnumerableConstraint<TEnumerable>(
 						expectationBuilder, it, grammars,
@@ -71,20 +65,18 @@ public static partial class ThatEnumerable
 						g => ElementExpectations.IsOfType(g, Formatter.Format(typeof(TType))),
 						a => a is TType,
 						"were")),
-				_subject,
-				options);
+				_subject);
 		}
 
 		/// <summary>
 		///     …are of type <paramref name="type" />.
 		/// </summary>
-		public ObjectEqualityResult<TEnumerable, IThat<TEnumerable?>, object?>
+		public AndOrResult<TEnumerable, IThat<TEnumerable>>
 			Are(Type type)
 		{
 			type.ThrowIfNull();
-			ObjectEqualityOptions<object?> options = new();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
-			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable?>, object?>(
+			return new AndOrResult<TEnumerable, IThat<TEnumerable>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionForEnumerableConstraint<TEnumerable>(
 						expectationBuilder, it, grammars,
@@ -92,8 +84,7 @@ public static partial class ThatEnumerable
 						g => ElementExpectations.IsOfType(g, Formatter.Format(type)),
 						a => type.IsInstanceOfType(a),
 						"were")),
-				_subject,
-				options);
+				_subject);
 		}
 	}
 
@@ -102,12 +93,11 @@ public static partial class ThatEnumerable
 		/// <summary>
 		///     …are of type <typeparamref name="TType" />.
 		/// </summary>
-		public ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, TItem>
+		public AndOrResult<TEnumerable, IThat<TEnumerable>>
 			Are<TType>()
 		{
-			ObjectEqualityOptions<TItem> options = new();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
-			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, TItem>(
+			return new AndOrResult<TEnumerable, IThat<TEnumerable>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionForEnumerableConstraint<TEnumerable>(
 						expectationBuilder, it, grammars,
@@ -115,20 +105,18 @@ public static partial class ThatEnumerable
 						g => ElementExpectations.IsOfType(g, Formatter.Format(typeof(TType))),
 						a => a is TType,
 						"were")),
-				_subject,
-				options);
+				_subject);
 		}
 
 		/// <summary>
 		///     …are of type <paramref name="type" />.
 		/// </summary>
-		public ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, TItem>
+		public AndOrResult<TEnumerable, IThat<TEnumerable>>
 			Are(Type type)
 		{
 			type.ThrowIfNull();
-			ObjectEqualityOptions<TItem> options = new();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
-			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, TItem>(
+			return new AndOrResult<TEnumerable, IThat<TEnumerable>>(
 				expectationBuilder.AddConstraint((it, grammars)
 					=> new CollectionForEnumerableConstraint<TEnumerable>(
 						expectationBuilder, it, grammars,
@@ -136,8 +124,7 @@ public static partial class ThatEnumerable
 						g => ElementExpectations.IsOfType(g, Formatter.Format(type)),
 						a => type.IsInstanceOfType(a),
 						"were")),
-				_subject,
-				options);
+				_subject);
 		}
 	}
 }
