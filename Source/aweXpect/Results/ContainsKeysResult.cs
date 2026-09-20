@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using aweXpect.Core;
-using aweXpect.Options;
 
 namespace aweXpect.Results;
 
@@ -33,10 +32,8 @@ public class ContainsKeysResult<TCollection, TThat, TKey, TValue>
 	/// <summary>
 	///     Further expectations on the selected values of the dictionary.
 	/// </summary>
-	public ThatEnumerable.Elements<TValue> WhoseValues
-		=> new(
-			new ThatSubject<IEnumerable<TValue>>(_expectationBuilder
-				.ForWhich(_memberAccessor, " whose values ", $"values {Formatter.Format(_keys)}",
-					grammars => grammars | ExpectationGrammars.Plural)),
-			EnumerableQuantifier.All(_expectationBuilder.ExpectationGrammars));
+	public IThat<IEnumerable<TValue>> WhoseValues
+		=> new ThatSubject<IEnumerable<TValue>>(_expectationBuilder
+			.ForWhich(_memberAccessor, " whose values ", $"values {Formatter.Format(_keys)}",
+				grammars => grammars | ExpectationGrammars.Plural));
 }
