@@ -406,7 +406,7 @@ public static partial class ThatEnumerable
 #endif
 
 	/// <summary>
-	///     Verifies that the collection is not contained in the provided <paramref name="expected" /> collection of predicates.
+	///     Verifies that the collection is not contained in the provided <paramref name="unexpected" /> collection of predicates.
 	/// </summary>
 	/// <remarks>
 	///     The subject is only considered contained when its items satisfy the expected predicates in the same order and
@@ -417,17 +417,18 @@ public static partial class ThatEnumerable
 	public static ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		IsNotContainedIn<TItem>(
 			this IThat<IEnumerable<TItem>?> subject,
-			IEnumerable<Expression<Func<TItem, bool>>> expected,
-			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+			IEnumerable<Expression<Func<TItem, bool>>> unexpected,
+			[CallerArgumentExpression("unexpected")]
+			string doNotPopulateThisValue = "")
 	{
-		expected.ThrowIfNull();
+		unexpected.ThrowIfNull();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToFromPredicateConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					expected,
+					unexpected,
 					matchOptions, failsForNullSubject: true).Invert()),
 			subject,
 			matchOptions,
@@ -435,7 +436,7 @@ public static partial class ThatEnumerable
 	}
 
 	/// <summary>
-	///     Verifies that the collection is not contained in the provided <paramref name="expected" /> collection of expectations.
+	///     Verifies that the collection is not contained in the provided <paramref name="unexpected" /> collection of expectations.
 	/// </summary>
 	/// <remarks>
 	///     The subject is only considered contained when its items satisfy the expectations in the same order and
@@ -446,17 +447,18 @@ public static partial class ThatEnumerable
 	public static ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
 		IsNotContainedIn<TItem>(
 			this IThat<IEnumerable<TItem>?> subject,
-			IEnumerable<Action<IThatSubject<TItem?>>> expected,
-			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+			IEnumerable<Action<IThatSubject<TItem?>>> unexpected,
+			[CallerArgumentExpression("unexpected")]
+			string doNotPopulateThisValue = "")
 	{
-		expected.ThrowIfNull();
+		unexpected.ThrowIfNull();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new IsEqualToFromExpectationsConstraint<TItem, TItem>(expectationBuilder, it, grammars,
 					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					expected,
+					unexpected,
 					matchOptions, failsForNullSubject: true).Invert()),
 			subject,
 			matchOptions,
