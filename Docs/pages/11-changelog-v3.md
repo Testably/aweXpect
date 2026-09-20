@@ -104,6 +104,8 @@ example a tolerance always reads `± x`), negated expectations name what they fo
 grammar slips were fixed. A `Whose(…)` nested inside a collection expectation such as `All().ComplyWith(…)` or
 `HasItemThat(…)` now names the member it inspects, instead of reporting only the expectation on it. The same
 expectations also keep the expectation they continue from, so `HasSingle().Which.Whose(…)` reads
+`has a single item whose … for all items` instead of starting at the dangling connector. Tests that assert
+on the exact text of a failure message may need an update.
 
 ## Timeouts on negative event expectations
 
