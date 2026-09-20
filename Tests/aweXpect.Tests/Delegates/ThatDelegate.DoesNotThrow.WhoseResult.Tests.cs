@@ -4,7 +4,7 @@ public sealed partial class ThatDelegate
 {
 	public sealed partial class DoesNotThrow
 	{
-		public sealed class AndWhoseResult
+		public sealed class WhoseResult
 		{
 			public sealed class Tests
 			{
@@ -13,7 +13,7 @@ public sealed partial class ThatDelegate
 				{
 					Func<int> @delegate = () => throw new CustomException();
 
-					async Task Act() => await That(@delegate).DoesNotThrow().AndWhoseResult.IsGreaterThan(5);
+					async Task Act() => await That(@delegate).DoesNotThrow().WhoseResult.IsGreaterThan(5);
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -30,7 +30,7 @@ public sealed partial class ThatDelegate
 				{
 					Func<int> @delegate = () => value;
 
-					async Task Act() => await That(@delegate).DoesNotThrow().AndWhoseResult.IsLessThan(value);
+					async Task Act() => await That(@delegate).DoesNotThrow().WhoseResult.IsLessThan(value);
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage($"""
@@ -46,7 +46,7 @@ public sealed partial class ThatDelegate
 				{
 					Func<int> @delegate = () => value;
 
-					await That(@delegate).DoesNotThrow().AndWhoseResult.IsEqualTo(value);
+					await That(@delegate).DoesNotThrow().WhoseResult.IsEqualTo(value);
 				}
 			}
 
@@ -58,7 +58,7 @@ public sealed partial class ThatDelegate
 					Func<int> @delegate = () => throw new CustomException();
 
 					async Task Act()
-						=> await That(@delegate).DoesNotThrow<CustomException>().AndWhoseResult.IsEqualTo(5);
+						=> await That(@delegate).DoesNotThrow<CustomException>().WhoseResult.IsEqualTo(5);
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -75,7 +75,7 @@ public sealed partial class ThatDelegate
 					Func<int> @delegate = () => throw new CustomException();
 
 					async Task Act()
-						=> await That(@delegate).DoesNotThrow<OtherException>().AndWhoseResult.IsEqualTo(5);
+						=> await That(@delegate).DoesNotThrow<OtherException>().WhoseResult.IsEqualTo(5);
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -92,7 +92,7 @@ public sealed partial class ThatDelegate
 				{
 					Func<int> @delegate = () => value;
 
-					async Task Act() => await That(@delegate).DoesNotThrow<CustomException>().AndWhoseResult
+					async Task Act() => await That(@delegate).DoesNotThrow<CustomException>().WhoseResult
 						.IsEqualTo(value + 1);
 
 					await That(Act).Throws<XunitException>()
@@ -109,7 +109,7 @@ public sealed partial class ThatDelegate
 				{
 					Func<int> @delegate = () => value;
 
-					await That(@delegate).DoesNotThrow<CustomException>().AndWhoseResult.IsEqualTo(value);
+					await That(@delegate).DoesNotThrow<CustomException>().WhoseResult.IsEqualTo(value);
 				}
 			}
 
@@ -121,7 +121,7 @@ public sealed partial class ThatDelegate
 					Func<int> @delegate = () => throw new CustomException();
 
 					async Task Act()
-						=> await That(@delegate).DoesNotThrow(typeof(CustomException)).AndWhoseResult.IsEqualTo(5);
+						=> await That(@delegate).DoesNotThrow(typeof(CustomException)).WhoseResult.IsEqualTo(5);
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -138,7 +138,7 @@ public sealed partial class ThatDelegate
 					Func<int> @delegate = () => throw new CustomException();
 
 					async Task Act()
-						=> await That(@delegate).DoesNotThrow(typeof(OtherException)).AndWhoseResult.IsEqualTo(5);
+						=> await That(@delegate).DoesNotThrow(typeof(OtherException)).WhoseResult.IsEqualTo(5);
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
@@ -155,7 +155,7 @@ public sealed partial class ThatDelegate
 				{
 					Func<int> @delegate = () => value;
 
-					async Task Act() => await That(@delegate).DoesNotThrow(typeof(CustomException)).AndWhoseResult
+					async Task Act() => await That(@delegate).DoesNotThrow(typeof(CustomException)).WhoseResult
 						.IsEqualTo(value + 1);
 
 					await That(Act).Throws<XunitException>()
@@ -172,7 +172,7 @@ public sealed partial class ThatDelegate
 				{
 					Func<int> @delegate = () => value;
 
-					await That(@delegate).DoesNotThrow(typeof(CustomException)).AndWhoseResult.IsEqualTo(value);
+					await That(@delegate).DoesNotThrow(typeof(CustomException)).WhoseResult.IsEqualTo(value);
 				}
 			}
 		}

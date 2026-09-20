@@ -247,7 +247,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(() => subject)
 						.DoesNotThrow()
-						.AndWhoseResult.IsNotNull()
+						.WhoseResult.IsNotNull()
 						.And.Whose(o => o.GetValueAsync(), v => v.IsEqualTo(2));
 
 				await That(Act).Throws<XunitException>()

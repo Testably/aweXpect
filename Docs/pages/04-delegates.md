@@ -28,6 +28,14 @@ void Act() => {};
 await Expect.That(Act).DoesNotThrow();
 ```
 
+For a delegate with a return value, `WhoseResult` continues with the returned value as subject:
+
+```csharp
+int Act() => 3;
+
+await Expect.That(Act).DoesNotThrow().WhoseResult.IsEqualTo(3);
+```
+
 ## Throw exception
 
 You can verify that the delegate throws an exception:
