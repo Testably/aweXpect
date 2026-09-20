@@ -57,6 +57,15 @@ public static partial class EquivalencyComparison
 		///     Counted per path and not globally, so that two members on the same level are both at the same depth.
 		/// </remarks>
 		public int Depth { get; set; }
+
+		/// <summary>
+		///     The number of differences that were appended to a failure message so far.
+		/// </summary>
+		/// <remarks>
+		///     Counted globally, so that a caller which is only interested in one comparison reads it before and after
+		///     that comparison and restores it afterwards when the differences were written into a throwaway builder.
+		/// </remarks>
+		public int DifferenceCount { get; set; }
 	}
 
 	private readonly struct ComparedPair : IEquatable<ComparedPair>
