@@ -32,4 +32,14 @@ public enum ExpectationGrammars
 	///     The expectation should be negated.
 	/// </summary>
 	Negated = 1 << 4,
+
+	/// <summary>
+	///     The subject of the expectation was already introduced by a connector that cannot be dropped, e.g. the
+	///     <c>that</c> of <c>has item that</c>.
+	/// </summary>
+	/// <remarks>
+	///     A member expectation must then not start another relative clause, because <c>has item that whose Value …</c>
+	///     is not grammatical.
+	/// </remarks>
+	Introduced = 1 << 5,
 }

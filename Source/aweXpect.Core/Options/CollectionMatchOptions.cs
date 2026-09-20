@@ -401,7 +401,8 @@ public partial class CollectionMatchOptions(
 		{
 			_context = context;
 			_cancellationToken = cancellationToken;
-			ItemExpectationBuilder = new ManualExpectationBuilder<TItem>(null, grammars & ~ExpectationGrammars.Plural);
+			ItemExpectationBuilder = new ManualExpectationBuilder<TItem>(null,
+				(grammars & ~ExpectationGrammars.Plural) | ExpectationGrammars.Introduced);
 			expectation.Invoke(new ThatSubject<TItem?>(ItemExpectationBuilder));
 		}
 

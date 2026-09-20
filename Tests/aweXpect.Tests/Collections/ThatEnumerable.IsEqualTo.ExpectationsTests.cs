@@ -589,6 +589,39 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WithMemberExpectation_ShouldNotRepeatWhose()
+			{
+				IEnumerable<string> subject = ToEnumerable(["a",]);
+				IEnumerable<Action<IThat<string?>>> expected =
+				[
+					x => x.Whose(s => s!.Length, l => l.IsEqualTo(2)),
+				];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it
+					               contained item "a" at index 0 that was not expected and
+					               lacked the one expected item
+
+					             Collection:
+					             [
+					               "a"
+					             ]
+
+					             Expected:
+					             [
+					               an item that has s!.Length which is equal to 2
+					             ]
+					             """)
+					.Because("the connector of an expected item already introduced its subject");
+			}
+
+			[Fact]
 			public async Task WithMissingItem_ShouldFail()
 			{
 				IEnumerable<string> subject = ToEnumerable(["a", "b", "c",]);

@@ -101,7 +101,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has item that whose Value is equal to 5,
+					             has item that has Value which is equal to 5,
 					             but it did not match at any index
 
 					             Collection:

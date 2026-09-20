@@ -44,4 +44,5 @@ aweXpect.Results.DelegateWithValueResult<T>.WhoseResult.get -> aweXpect.Core.ITh
 *REMOVED*aweXpect.Delegates.ThatDelegateThrows<TException>.WithInnerException(System.Action<aweXpect.Core.IThatSubject<System.Exception?>!>! expectations) -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
 aweXpect.Delegates.ThatDelegateThrows<TException>.WithInner() -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
 aweXpect.Delegates.ThatDelegateThrows<TException>.WithInner(System.Action<aweXpect.Core.IThatSubject<System.Exception?>!>! expectations) -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
+aweXpect.Core.ExpectationGrammars.Introduced = 32 -> aweXpect.Core.ExpectationGrammars
 static aweXpect.Expect.That(System.Threading.Tasks.Task! subject, string! doNotPopulateThisValue = "") -> aweXpect.Delegates.ThatDelegate.WithoutValue!

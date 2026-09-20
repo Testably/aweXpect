@@ -30,6 +30,10 @@ public static class ConstraintResultExtensions
 	///     Creates a new <see cref="ConstraintResult" /> where the expectation is prepended with the
 	///     <paramref name="prefix" />
 	/// </summary>
+	/// <remarks>
+	///     The <paramref name="prefix" /> is treated as a separator, so a trailing <c>which</c> is dropped when the
+	///     expectation of <paramref name="inner" /> starts with its own <c>whose</c>.
+	/// </remarks>
 	public static ConstraintResult PrependExpectationText(this ConstraintResult inner, Action<StringBuilder>? prefix)
 		=> new ConstraintResultExpectationWrapper(inner, prefix);
 
@@ -171,10 +175,16 @@ public static class ConstraintResultExtensions
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			_prefix?.Invoke(stringBuilder);
+			StringBuilder prefix = new();
+			_prefix?.Invoke(prefix);
 			if (_includeInnerExpectation)
 			{
-				_inner.AppendExpectation(stringBuilder, indentation);
+				stringBuilder.AppendSeparatedExpectation(prefix.ToString(),
+					sb => _inner.AppendExpectation(sb, indentation));
+			}
+			else
+			{
+				stringBuilder.Append(prefix);
 			}
 
 			_suffix?.Invoke(stringBuilder);

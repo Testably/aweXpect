@@ -816,6 +816,72 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
+			public async Task WhenMemberIsNested_AndIsNegated_ShouldNotRepeatWhose()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it
+						=> it.Whose(o => o.Value, v => v.Whose(i => i.ToString(), s => s.IsEqualTo("1"))));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose Value has ToString() which is not equal to "1",
+					             but ToString() was "1"
+					             """)
+					.Because("the negation reaches the innermost expectation and leaves the member text alone");
+			}
+
+			[Fact]
+			public async Task WhenMemberIsNested_ShouldNotRepeatWhose()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.Value, v => v.Whose(i => i.ToString(), s => s.IsEqualTo("2")));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose Value has ToString() which is equal to "2",
+					             but ToString() was "1" which differs at index 0:
+					                ↓ (actual)
+					               "1"
+					               "2"
+					                ↑ (expected)
+					             """)
+					.Because("the outer member already introduced the subject of the inner one");
+			}
+
+			[Fact]
+			public async Task WhenMemberIsNestedTwice_ShouldAlternateBetweenTheForms()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.Value,
+						v => v.Whose(i => i.ToString(), s => s.Whose(t => t!.Length, l => l.IsEqualTo(2))));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose Value has ToString() whose t!.Length is equal to 2,
+					             but t!.Length was 1 which differs by -1
+					             """)
+					.Because("each member introduces its own subject again for the next one");
+			}
+
+			[Fact]
 			public async Task WhenMemberExpectationUsesWhich_AndItIsSatisfied_ShouldSucceed()
 			{
 				ItemsClass subject = new(2);
