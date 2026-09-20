@@ -2,7 +2,7 @@
 
 public sealed partial class ThatException
 {
-	public sealed class HasInnerException
+	public sealed partial class HasInner
 	{
 		public sealed class Tests
 		{
@@ -14,7 +14,7 @@ public sealed partial class ThatException
 					new InvalidCastException("inner"));
 
 				async Task Act()
-					=> await That(subject).HasInnerException(it => it.Is<InvalidCastException>()
+					=> await That(subject).HasInner(it => it.Is<InvalidCastException>()
 						.Whose(e => e.Message, it => it.IsEqualTo("inner")));
 
 				await That(Act).DoesNotThrow();
@@ -27,7 +27,7 @@ public sealed partial class ThatException
 					new CustomException("inner"));
 
 				async Task Act()
-					=> await That(subject).HasInnerException(e => e.HasMessage("inner"));
+					=> await That(subject).HasInner(e => e.HasMessage("inner"));
 
 				await That(Act).DoesNotThrow();
 			}
@@ -39,7 +39,7 @@ public sealed partial class ThatException
 					new Exception("inner"));
 
 				async Task Act()
-					=> await That(subject).HasInnerException(e => e.HasMessage("some other message"));
+					=> await That(subject).HasInner(e => e.HasMessage("some other message"));
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -62,7 +62,7 @@ public sealed partial class ThatException
 				Exception subject = new("outer");
 
 				async Task Act()
-					=> await That(subject).HasInnerException();
+					=> await That(subject).HasInner();
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -79,7 +79,7 @@ public sealed partial class ThatException
 					new Exception("inner"));
 
 				async Task Act()
-					=> await That(subject).HasInnerException();
+					=> await That(subject).HasInner();
 
 				await That(Act).DoesNotThrow();
 			}
@@ -90,7 +90,7 @@ public sealed partial class ThatException
 				Exception? subject = null;
 
 				async Task Act()
-					=> await That(subject).HasInnerException();
+					=> await That(subject).HasInner();
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -109,7 +109,7 @@ public sealed partial class ThatException
 				Exception subject = new("outer");
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.HasInnerException());
+					=> await That(subject).DoesNotComplyWith(it => it.HasInner());
 
 				await That(Act).DoesNotThrow();
 			}
@@ -121,7 +121,7 @@ public sealed partial class ThatException
 					new InvalidOperationException("inner"));
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.HasInnerException());
+					=> await That(subject).DoesNotComplyWith(it => it.HasInner());
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -139,7 +139,7 @@ public sealed partial class ThatException
 					new InvalidOperationException("inner"));
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.HasInnerException(e => e.HasMessage("inner")));
+					=> await That(subject).DoesNotComplyWith(it => it.HasInner(e => e.HasMessage("inner")));
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

@@ -45,7 +45,7 @@ public sealed partial class ThatException
 				Exception subject = new("outer", new HResultException(hResult));
 
 				async Task Act()
-					=> await That(subject).HasInnerException(e => e.HasHResult(expectedHResult));
+					=> await That(subject).HasInner(e => e.HasHResult(expectedHResult));
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
