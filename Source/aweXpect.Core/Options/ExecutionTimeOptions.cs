@@ -5,11 +5,30 @@ using aweXpect.Core;
 namespace aweXpect.Options;
 
 /// <summary>
-///     Equality options for <see langword="TimeSpan" />s.
+///     Options for the execution time of a delegate.
 /// </summary>
-public class TimeSpanEqualityOptions
+public class ExecutionTimeOptions
 {
 	private Limit? _limit;
+
+	/// <summary>
+	///     Flag, indicating if a thrown exception leaves the outcome to the measured duration.
+	/// </summary>
+	internal bool AreExceptionsAllowed { get; private set; }
+
+	/// <summary>
+	///     Allows the delegate to throw an exception without failing the expectation.
+	/// </summary>
+	internal void AllowExceptions() => AreExceptionsAllowed = true;
+
+	/// <summary>
+	///     Verifies if the <paramref name="exception" /> leaves the outcome to the measured duration.
+	/// </summary>
+	/// <remarks>
+	///     A cancellation is never allowed, because it aborts the execution instead of timing it.
+	/// </remarks>
+	internal bool AllowsException(Exception? exception)
+		=> exception is null || (AreExceptionsAllowed && exception is not OperationCanceledException);
 
 	/// <summary>
 	///     Verifies if the <paramref name="actual" /> value is within the required limit.

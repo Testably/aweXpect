@@ -18,12 +18,13 @@ public abstract partial class ThatDelegate
 		///     Verifies that the delegate executes in…
 		/// </summary>
 		/// <remarks>
-		///     A delegate that throws an exception fails the expectation, however fast it did so.
+		///     A delegate that throws an exception fails the expectation, however fast it did so,
+		///     unless <c>AllowingExceptions()</c> is specified.
 		/// </remarks>
 		[GuaranteesNotNull]
 		public ExecutesInResult<AndResult<WithoutValue>> ExecutesIn()
 		{
-			TimeSpanEqualityOptions options = new();
+			ExecutionTimeOptions options = new();
 			return new ExecutesInResult<AndResult<WithoutValue>>(
 				new AndResult<WithoutValue>(ExpectationBuilder.AddConstraint((it, grammars)
 						=> new ExecutesInConstraint(it, grammars, options)),
@@ -35,12 +36,13 @@ public abstract partial class ThatDelegate
 		///     Verifies that the delegate executes in approximately the <paramref name="expected" /> time…
 		/// </summary>
 		/// <remarks>
-		///     A delegate that throws an exception fails the expectation, however fast it did so.
+		///     A delegate that throws an exception fails the expectation, however fast it did so,
+		///     unless <c>AllowingExceptions()</c> is specified.
 		/// </remarks>
 		[GuaranteesNotNull]
 		public ExecutesInToleranceResult<AndResult<WithoutValue>> ExecutesIn(TimeSpan expected)
 		{
-			TimeSpanEqualityOptions options = new();
+			ExecutionTimeOptions options = new();
 			return new ExecutesInToleranceResult<AndResult<WithoutValue>>(
 				new AndResult<WithoutValue>(ExpectationBuilder.AddConstraint((it, grammars)
 						=> new ExecutesInConstraint(it, grammars, options)),
@@ -52,7 +54,7 @@ public abstract partial class ThatDelegate
 		private sealed class ExecutesInConstraint(
 			string it,
 			ExpectationGrammars grammars,
-			TimeSpanEqualityOptions options)
+			ExecutionTimeOptions options)
 			: ConstraintResult(grammars),
 				IValueConstraint<DelegateValue>
 		{
@@ -60,7 +62,9 @@ public abstract partial class ThatDelegate
 
 			/// <inheritdoc cref="ConstraintResult.FailureCause" />
 			public override Exception? FailureCause
-				=> Outcome == Outcome.Failure ? _actual?.Exception : null;
+				=> Outcome == Outcome.Failure && !options.AllowsException(_actual?.Exception)
+					? _actual?.Exception
+					: null;
 
 			/// <inheritdoc />
 			public ConstraintResult IsMetBy(DelegateValue value)
@@ -72,7 +76,7 @@ public abstract partial class ThatDelegate
 					return this;
 				}
 
-				Outcome = value.Exception is null && options.IsWithinLimit(value.Duration)
+				Outcome = options.AllowsException(value.Exception) && options.IsWithinLimit(value.Duration)
 					? Outcome.Success
 					: Outcome.Failure;
 				return this;
@@ -82,6 +86,10 @@ public abstract partial class ThatDelegate
 			{
 				stringBuilder.Append("executes ");
 				options.AppendTo(stringBuilder, "in ");
+				if (options.AreExceptionsAllowed)
+				{
+					stringBuilder.Append(" allowing exceptions");
+				}
 			}
 
 			public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
@@ -95,7 +103,7 @@ public abstract partial class ThatDelegate
 					stringBuilder.Append(it).Append(" was canceled after ");
 					Formatter.Format(stringBuilder, _actual.Duration);
 				}
-				else if (_actual.Exception is { } exception)
+				else if (_actual.Exception is { } exception && !options.AreExceptionsAllowed)
 				{
 					stringBuilder.Append(it).Append(" did throw ");
 					stringBuilder.Append(FormatForMessage(exception, indentation));
@@ -104,6 +112,11 @@ public abstract partial class ThatDelegate
 				{
 					stringBuilder.Append(it).Append(" took ");
 					options.AppendFailureResult(stringBuilder, _actual.Duration);
+					if (_actual.Exception is { } allowedException)
+					{
+						stringBuilder.Append(" and did throw ");
+						stringBuilder.Append(FormatForMessage(allowedException, indentation));
+					}
 				}
 			}
 

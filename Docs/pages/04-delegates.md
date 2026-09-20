@@ -200,6 +200,29 @@ await Expect.That(Task.Delay(200)).ExecutesIn().Between(100.Milliseconds()).And(
 A delegate that throws an exception fails these expectations, however fast it did so: a crash is not a measurement
 of execution time.
 
+### Allowing exceptions
+
+When you want to measure how long a delegate ran *before* it failed, for example a retry that exhausts its attempts,
+a circuit breaker that trips, or an operation that runs into its own timeout, `AllowingExceptions()` lets the
+measured duration decide alone:
+
+```csharp
+await Expect.That(() => retryPolicy.Execute(alwaysFailing)).ExecutesIn().AllowingExceptions()
+  .AtLeast(300.Milliseconds())
+  .Because("three attempts with a 100ms backoff must have been made before giving up");
+```
+
+The duration is measured up to the throw, and the exception is still shown in the failure message when the delegate
+misses the expected time. A cancellation is never allowed: it aborts the execution instead of timing it, so
+`WithTimeout` and `WithCancellation` keep failing the expectation.
+
+:::warning[`AllowingExceptions()` with `AtMost(…)` accepts an immediate crash]
+A delegate that throws in microseconds satisfies an upper bound, which is the point of the option, but it means the
+expectation no longer says anything about the delegate completing. Consider whether you also want an expectation on
+what was thrown: for an upper bound on a delegate that is *expected* to throw, `Throws<TException>().Within(…)`
+states both at once.
+:::
+
 ### Execute within
 
 There is also a shorthand expectation for a delegate that finishes the execution without throwing an exception

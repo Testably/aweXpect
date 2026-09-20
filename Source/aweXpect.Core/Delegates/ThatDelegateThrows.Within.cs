@@ -23,7 +23,7 @@ public partial class ThatDelegateThrows<TException>
 				new ArgumentOutOfRangeException(nameof(duration), "The duration must not be negative."));
 		}
 
-		TimeSpanEqualityOptions options = new();
+		ExecutionTimeOptions options = new();
 		options.Within(duration);
 		ThrowOptions.ExecutionTimeOptions = options;
 		ExpectationBuilder.WithTimeout(duration);
