@@ -76,6 +76,22 @@ internal class AsyncMappingNode<TSource, TTarget> : ExpectationNode
 	/// </remarks>
 	public override void AddNode(Node node, string? separator = null) => SetInnerNode(node);
 
+	/// <inheritdoc />
+	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+	{
+		_expectationTextGenerator(_memberAccessor, stringBuilder);
+		AppendMemberExpectation(stringBuilder, indentation);
+	}
+
+	/// <summary>
+	///     Appends the expectations on the member, without the text for the member itself.
+	/// </summary>
+	/// <remarks>
+	///     Results flowing through <see cref="CombineResults" /> already get the member text prepended there.
+	/// </remarks>
+	protected void AppendMemberExpectation(StringBuilder stringBuilder, string? indentation)
+		=> base.AppendExpectation(stringBuilder, indentation);
+
 	/// <summary>
 	///     Verifies, if the <paramref name="value" /> of the member satisfies the expectations of the node.
 	/// </summary>

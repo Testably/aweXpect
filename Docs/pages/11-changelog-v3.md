@@ -74,9 +74,11 @@ None of the renames has an `[Obsolete]` forwarder; each is a compile error that 
 | `DoesNotThrow().AndWhoseResult`                        | `DoesNotThrow().WhoseResult`                                 |
 | `AreAllUnique()` on a collection                       | `All().AreUnique()`                                          |
 | `AreAllUnique()` on a dictionary                       | `Values.All().AreUnique()`                                   |
+| `ContainsKeys(…).WhoseValues.ComplyWith(…)`            | `ContainsKeys(…).WhoseValues.All().ComplyWith(…)`            |
 | `HasMessageContaining(…)` / `WithMessageContaining(…)` | `HasMessage().Containing(…)` / `WithMessage().Containing(…)` |
 | `DoesNotHaveMessage(…)` / `WithoutMessage(…)`          | `HasMessage().NotEqualTo(…)` / `WithMessage().NotEqualTo(…)` |
 | `HasParamNameContaining(…)` and the other variants     | `HasParamName().Containing(…)` and so on                     |
+| `HasInnerException()` / `WithInnerException()`         | `HasInner()` / `WithInner()`                                 |
 | `Contains(…).Exactly()` (the parameterless match type) | removed, it restated the default                             |
 
 `HasMessage().Containing(x)` is a literal substring match; use `HasMessage("*x*").AsWildcard()` for a wildcard.
@@ -87,11 +89,17 @@ it includes a duration of exactly `d`, where `DoesNotExecuteWithin(d)` required 
 delegate that is expected to throw, add
 [`AllowingExceptions()`](/docs/expectations/delegates#allowing-exceptions) to let the duration decide alone.
 
+`ContainsKeys(…).WhoseValues` applied the `All()` quantifier implicitly, which left no way to check the values as a
+whole. It is now an ordinary collection subject, so `IsEqualTo(…)`, `Contains(…)`, `HasCount(…)` and the other
+quantifiers such as `None()` are available as well.
+
 ## Failure messages
 
 Failure messages were reviewed as a whole. Options with several spellings now render the same way everywhere (for
 example a tolerance always reads `± x`), negated expectations name what they found instead of `but it did`, and many
-grammar slips were fixed. Tests that assert on the exact text of a failure message may need an update.
+grammar slips were fixed. A `Whose(…)` nested inside a collection expectation such as `All().ComplyWith(…)` or
+`HasItemThat(…)` now names the member it inspects, instead of reporting only the expectation on it. Tests that assert
+on the exact text of a failure message may need an update.
 
 ## Timeouts on negative event expectations
 

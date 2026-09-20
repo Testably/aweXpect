@@ -4,7 +4,7 @@ public sealed partial class ThatDelegate
 {
 	public sealed partial class Throws
 	{
-		public sealed class WithInner
+		public sealed partial class WithInner
 		{
 			public sealed class GenericTests
 			{

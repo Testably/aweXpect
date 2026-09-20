@@ -182,6 +182,47 @@ public sealed partial class ThatAsyncEnumerable
 				}
 
 				[Fact]
+				public async Task WhenItemsUseWhose_ShouldIncludeMemberInExpectation()
+				{
+					IAsyncEnumerable<MyClass> subject = ToAsyncEnumerable(new MyClass(1), new MyClass(2));
+
+					async Task Act()
+						=> await That(subject).All().ComplyWith(x => x.Whose(o => o.Value, v => v.IsEqualTo(5)));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             whose Value is equal to 5 for all items,
+						             but none of 2 were
+
+						             Not matching items:
+						             [
+						               MyClass {
+						                 StringValue = "",
+						                 Value = 1
+						               },
+						               MyClass {
+						                 StringValue = "",
+						                 Value = 2
+						               }
+						             ]
+
+						             Collection:
+						             [
+						               MyClass {
+						                 StringValue = "",
+						                 Value = 1
+						               },
+						               MyClass {
+						                 StringValue = "",
+						                 Value = 2
+						               }
+						             ]
+						             """)
+						.Because("the member text must survive the node tree rendering");
+				}
+
+				[Fact]
 				public async Task WhenSubjectIsNull_NegatedShouldFail()
 				{
 					IAsyncEnumerable<int>? subject = null;

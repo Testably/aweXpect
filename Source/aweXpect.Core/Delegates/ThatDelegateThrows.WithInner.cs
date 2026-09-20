@@ -10,6 +10,34 @@ namespace aweXpect.Delegates;
 public partial class ThatDelegateThrows<TException>
 {
 	/// <summary>
+	///     Verifies that the thrown exception has an inner exception which
+	///     satisfies the <paramref name="expectations" />.
+	/// </summary>
+	public AndOrResult<TException, ThatDelegateThrows<TException>> WithInner(
+		Action<IThatSubject<Exception?>> expectations)
+		=> new(ExpectationBuilder
+				.ForMember(
+					MemberAccessor<Exception?, Exception?>.FromFunc(
+						e => e?.InnerException,
+						"the inner exception"),
+					(_, s) => s.Append(" which "),
+					false)
+				.Validate((it, grammars)
+					=> new HasInnerExceptionValueConstraint(typeof(Exception), it, grammars))
+				.AddExpectations(e => expectations(new ThatSubject<Exception?>(e)),
+					grammars => grammars | ExpectationGrammars.Nested),
+			this);
+
+	/// <summary>
+	///     Verifies that the thrown exception has an inner exception.
+	/// </summary>
+	public AndOrResult<TException, ThatDelegateThrows<TException>> WithInner()
+		=> new(ExpectationBuilder
+				.AddConstraint((it, grammars) =>
+					new HasInnerExceptionValueConstraint(typeof(Exception), it, grammars)),
+			this);
+
+	/// <summary>
 	///     Verifies that the thrown exception has an inner exception of type <typeparamref name="TInnerException" /> which
 	///     satisfies the <paramref name="expectations" />.
 	/// </summary>
