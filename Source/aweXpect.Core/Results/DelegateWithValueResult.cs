@@ -19,7 +19,7 @@ public class DelegateWithValueResult<T>(ExpectationBuilder expectationBuilder)
 	/// <summary>
 	///     Returns the result returned from the delegate.
 	/// </summary>
-	public IThat<T> AndWhoseResult
+	public IThat<T> WhoseResult
 	{
 		get
 		{

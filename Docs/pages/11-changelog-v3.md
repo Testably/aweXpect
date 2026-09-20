@@ -71,6 +71,7 @@ None of the renames has an `[Obsolete]` forwarder; each is a compile error that 
 | `DoesNotHaveValue(n)` on an enum                       | `HasValue().NotEqualTo(n)`                                   |
 | `ExecutesIn().Approximately(expected, tolerance)`      | `ExecutesIn(expected).Within(tolerance)`                     |
 | `DoesNotExecuteWithin(d)`                              | `ExecutesIn().AtLeast(d)`                                    |
+| `DoesNotThrow().AndWhoseResult`                        | `DoesNotThrow().WhoseResult`                                 |
 | `AreAllUnique()` on a collection                       | `All().AreUnique()`                                          |
 | `AreAllUnique()` on a dictionary                       | `Values.All().AreUnique()`                                   |
 | `ContainsKeys(…).WhoseValues.ComplyWith(…)`            | `ContainsKeys(…).WhoseValues.All().ComplyWith(…)`            |

@@ -4,7 +4,7 @@ namespace aweXpect.Core.Tests.Delegates;
 
 public sealed partial class ThatDelegateTests
 {
-	public sealed class AndWhoseResultTests
+	public sealed class WhoseResultTests
 	{
 		[Fact]
 		public async Task DoesNotThrow_WhenResultDiffers_ShouldIntroduceTheResult()
@@ -12,7 +12,7 @@ public sealed partial class ThatDelegateTests
 			Func<int> @delegate = () => 4;
 
 			async Task Act()
-				=> await That(@delegate).DoesNotThrow().AndWhoseResult.IsEqualTo(5);
+				=> await That(@delegate).DoesNotThrow().WhoseResult.IsEqualTo(5);
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
@@ -28,7 +28,7 @@ public sealed partial class ThatDelegateTests
 			Func<int> @delegate = () => 4;
 
 			async Task Act()
-				=> await That(@delegate).DoesNotThrow<MyException>().AndWhoseResult.IsEqualTo(5);
+				=> await That(@delegate).DoesNotThrow<MyException>().WhoseResult.IsEqualTo(5);
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
