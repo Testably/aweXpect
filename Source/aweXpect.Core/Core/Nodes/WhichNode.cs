@@ -187,14 +187,20 @@ internal class WhichNode<TSource, TMember> : Node
 	}
 
 	/// <inheritdoc />
+	/// <remarks>
+	///     Without a parent the separator has no left side to attach to, which is why the combined result drops it too.
+	/// </remarks>
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{
-		if (_separator != null)
+		if (_parent == null)
 		{
-			stringBuilder.Append(_separator);
+			_inner?.AppendExpectation(stringBuilder, indentation);
+			return;
 		}
 
-		_inner?.AppendExpectation(stringBuilder, indentation);
+		_parent.AppendExpectation(stringBuilder, indentation);
+		stringBuilder.AppendSeparatedExpectation(_separator ?? "",
+			sb => _inner?.AppendExpectation(sb, indentation));
 	}
 
 	private sealed class WhichConstraintResult : ConstraintResult

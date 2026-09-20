@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Helpers;
 using aweXpect.Core.Sources;
 
 namespace aweXpect.Core.Nodes;
@@ -79,8 +80,9 @@ internal class AsyncMappingNode<TSource, TTarget> : ExpectationNode
 	/// <inheritdoc />
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{
-		_expectationTextGenerator(_memberAccessor, stringBuilder);
-		AppendMemberExpectation(stringBuilder, indentation);
+		StringBuilder separator = new();
+		_expectationTextGenerator(_memberAccessor, separator);
+		stringBuilder.AppendSeparatedExpectation(separator.ToString(), sb => AppendMemberExpectation(sb, indentation));
 	}
 
 	/// <summary>
@@ -174,12 +176,9 @@ internal class AsyncMappingNode<TSource, TTarget> : ExpectationNode
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			_left.AppendExpectation(stringBuilder);
-			if (_expectationTextGenerator is not null)
-			{
-				_expectationTextGenerator(_memberAccessor, stringBuilder);
-			}
-
-			_right.AppendExpectation(stringBuilder);
+			StringBuilder separator = new();
+			_expectationTextGenerator?.Invoke(_memberAccessor, separator);
+			stringBuilder.AppendSeparatedExpectation(separator.ToString(), _right);
 		}
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)

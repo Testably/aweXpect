@@ -75,8 +75,40 @@ public sealed class WhichNodeTests
 		await That(Act).DoesNotThrow();
 	}
 
+	[Theory]
+	[InlineData(" which ", "whose bar", "foo whose bar")]
+	[InlineData(" which ", "is bar", "foo which is bar")]
+	[InlineData(" whose value ", "whose bar", "foo whose value whose bar")]
+	public async Task AppendExpectation_WithParent_ShouldMatchTheResultExpectation(
+		string separator, string rightExpectation, string expectedExpectation)
+	{
+		WhichNode<string, int> whichNode = new(new DummyNode("foo",
+			() => new DummyConstraintResult(Outcome.Failure, "foo")), _ => 3, separator);
+		whichNode.AddNode(new DummyNode(rightExpectation,
+			() => new DummyConstraintResult(Outcome.Failure, rightExpectation)));
+		StringBuilder sb = new();
+
+		whichNode.AppendExpectation(sb);
+
+		ConstraintResult result = await whichNode.IsMetBy("", null!, CancellationToken.None);
+		await That(sb.ToString()).IsEqualTo(expectedExpectation);
+		await That(sb.ToString()).IsEqualTo(result.GetExpectationText())
+			.Because("a manual evaluation renders the expectation through the node and has to read the same");
+	}
+
 	[Fact]
-	public async Task AppendExpectation_WithInnerNode_ShouldAppendSeparatorAndInnerExpectation()
+	public async Task AppendExpectation_WithoutInnerNode_ShouldAppendParentAndSeparator()
+	{
+		WhichNode<string, int> whichNode = new(new DummyNode("foo"), s => s.Length, " foo-separator ");
+		StringBuilder sb = new();
+
+		whichNode.AppendExpectation(sb);
+
+		await That(sb.ToString()).IsEqualTo("foo foo-separator ");
+	}
+
+	[Fact]
+	public async Task AppendExpectation_WithoutParent_ShouldOmitTheSeparator()
 	{
 		DummyNode innerNode = new("inner-node", () => new DummyConstraintResult<string?>(Outcome.Success, "inner", ""));
 		WhichNode<string, int> whichNode = new(null, s => s.Length, "foo-separator ");
@@ -85,18 +117,8 @@ public sealed class WhichNodeTests
 
 		whichNode.AppendExpectation(sb);
 
-		await That(sb.ToString()).IsEqualTo("foo-separator inner-node");
-	}
-
-	[Fact]
-	public async Task AppendExpectation_WithoutInnerNode_ShouldAppendSeparator()
-	{
-		WhichNode<string, int> whichNode = new(null, s => s.Length, "foo-separator");
-		StringBuilder sb = new();
-
-		whichNode.AppendExpectation(sb);
-
-		await That(sb.ToString()).IsEqualTo("foo-separator");
+		await That(sb.ToString()).IsEqualTo("inner-node")
+			.Because("without a parent the result is the inner result alone, which carries no separator either");
 	}
 
 	[Fact]
@@ -720,6 +742,37 @@ public sealed class WhichNodeTests
 			               "foo"
 			               "bar"
 			                ↑ (expected)
+			             """);
+	}
+
+	[Fact]
+	public async Task WhichWithWhose_InManualEvaluation_ShouldReadLikeTheSingleValueExpectation()
+	{
+		string[][] subject = [["foo",],];
+
+		async Task Act()
+			=> await That(subject).All()
+				.ComplyWith(x => x.HasSingle().Which.Whose(s => s.Length, l => l.IsEqualTo(4)));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             has a single item whose Length is equal to 4 for all items,
+			             but none of 1 were
+
+			             Not matching items:
+			             [
+			               [
+			                 "foo"
+			               ]
+			             ]
+
+			             Collection:
+			             [
+			               [
+			                 "foo"
+			               ]
+			             ]
 			             """);
 	}
 
