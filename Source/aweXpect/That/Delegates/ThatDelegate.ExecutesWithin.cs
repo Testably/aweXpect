@@ -52,40 +52,11 @@ public static partial class ThatDelegate
 			.AddConstraint((it, grammars) => new ExecutesWithinConstraint(it, grammars, duration)));
 	}
 
-	/// <summary>
-	///     Verifies that the delegate does not finish execution within the given <paramref name="duration" />
-	///     and does not throw an exception.
-	/// </summary>
-	/// <remarks>
-	///     A delegate that throws an exception fails the expectation, however long it did run.
-	/// </remarks>
-	[GuaranteesNotNull]
-	public static ExpectationResult<TValue> DoesNotExecuteWithin<TValue>(
-		this IThat<Delegates.ThatDelegate.WithValue<TValue>> subject,
-		TimeSpan duration)
-		=> new(subject.Get().ExpectationBuilder
-			.AddConstraint((it, grammars) => new ExecutesWithinConstraint<TValue>(it, grammars, duration).Invert()));
-
-	/// <summary>
-	///     Verifies that the delegate does not finish execution within the given <paramref name="duration" />
-	///     and does not throw an exception.
-	/// </summary>
-	/// <remarks>
-	///     A delegate that throws an exception fails the expectation, however long it did run.
-	/// </remarks>
-	[GuaranteesNotNull]
-	public static ExpectationResult DoesNotExecuteWithin(
-		this IThat<Delegates.ThatDelegate.WithoutValue> subject,
-		TimeSpan duration)
-		=> new(subject.Get().ExpectationBuilder
-			.AddConstraint((it, grammars) => new ExecutesWithinConstraint(it, grammars, duration).Invert()));
-
 	private sealed class ExecutesWithinConstraint<T>(string it, ExpectationGrammars grammars, TimeSpan duration)
 		: ConstraintResult(grammars),
 			IValueConstraint<DelegateValue<T>>
 	{
 		private DelegateValue<T>? _actual;
-		private bool _isNegated;
 
 		/// <inheritdoc cref="ConstraintResult.FailureCause" />
 		public override Exception? FailureCause
@@ -100,7 +71,7 @@ public static partial class ThatDelegate
 			}
 			else
 			{
-				Outcome = actual.Exception is null && (actual.Duration > duration) == _isNegated
+				Outcome = actual.Exception is null && actual.Duration <= duration
 					? Outcome.Success
 					: Outcome.Failure;
 			}
@@ -110,15 +81,7 @@ public static partial class ThatDelegate
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_isNegated)
-			{
-				stringBuilder.Append("does not execute within ");
-			}
-			else
-			{
-				stringBuilder.Append("executes within ");
-			}
-
+			stringBuilder.Append("executes within ");
 			Formatter.Format(stringBuilder, duration);
 		}
 
@@ -138,11 +101,6 @@ public static partial class ThatDelegate
 				stringBuilder.Append(it).Append(" did throw ");
 				stringBuilder.Append(exception.FormatForMessage(indentation));
 			}
-			else if (_isNegated)
-			{
-				stringBuilder.Append(it).Append(" took only ");
-				Formatter.Format(stringBuilder, _actual.Duration);
-			}
 			else
 			{
 				stringBuilder.Append(it).Append(" took ");
@@ -151,10 +109,8 @@ public static partial class ThatDelegate
 		}
 
 		public override ConstraintResult Negate()
-		{
-			_isNegated = !_isNegated;
-			return this;
-		}
+			=> throw Tracing.WriteException(
+				new NotSupportedException($"Negation of {nameof(ExecutesWithin)} is not supported."));
 
 		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
 		{
@@ -174,7 +130,6 @@ public static partial class ThatDelegate
 			IValueConstraint<DelegateValue>
 	{
 		private DelegateValue? _actual;
-		private bool _isNegated;
 
 		/// <inheritdoc cref="ConstraintResult.FailureCause" />
 		public override Exception? FailureCause
@@ -189,7 +144,7 @@ public static partial class ThatDelegate
 			}
 			else
 			{
-				Outcome = actual.Exception is null && (actual.Duration > duration) == _isNegated
+				Outcome = actual.Exception is null && actual.Duration <= duration
 					? Outcome.Success
 					: Outcome.Failure;
 			}
@@ -199,15 +154,7 @@ public static partial class ThatDelegate
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (_isNegated)
-			{
-				stringBuilder.Append("does not execute within ");
-			}
-			else
-			{
-				stringBuilder.Append("executes within ");
-			}
-
+			stringBuilder.Append("executes within ");
 			Formatter.Format(stringBuilder, duration);
 		}
 
@@ -227,11 +174,6 @@ public static partial class ThatDelegate
 				stringBuilder.Append(it).Append(" did throw ");
 				stringBuilder.Append(exception.FormatForMessage(indentation));
 			}
-			else if (_isNegated)
-			{
-				stringBuilder.Append(it).Append(" took only ");
-				Formatter.Format(stringBuilder, _actual.Duration);
-			}
 			else
 			{
 				stringBuilder.Append(it).Append(" took ");
@@ -240,10 +182,8 @@ public static partial class ThatDelegate
 		}
 
 		public override ConstraintResult Negate()
-		{
-			_isNegated = !_isNegated;
-			return this;
-		}
+			=> throw Tracing.WriteException(
+				new NotSupportedException($"Negation of {nameof(ExecutesWithin)} is not supported."));
 
 		public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
 		{

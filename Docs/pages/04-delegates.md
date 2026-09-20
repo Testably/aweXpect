@@ -208,12 +208,10 @@ in (at most) a given time:
 ```csharp
 await Expect.That(Task.Delay(200)).ExecutesWithin(TimeSpan.FromMilliseconds(300))
   .Because("it should only take about 200ms");
-await Expect.That(Task.Delay(200)).DoesNotExecuteWithin(TimeSpan.FromMilliseconds(100))
-  .Because("it should take at least 200ms");
 ```
 
-`DoesNotExecuteWithin` is only met by a delegate that runs longer than the given duration *and* completes
-successfully; a thrown exception fails it, too.
+There is no negated shorthand: use `ExecutesIn().AtLeast(TimeSpan.FromMilliseconds(100))` to require a minimum
+duration.
 
 The duration of `ExecutesWithin` and of `Throws().Within` is applied as timeout, so that a delegate accepting a
 `CancellationToken` is cancelled once it elapsed. A delegate that does not accept a `CancellationToken` cannot be
