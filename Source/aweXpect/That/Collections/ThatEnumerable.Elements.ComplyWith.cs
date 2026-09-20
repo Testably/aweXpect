@@ -22,16 +22,12 @@ public static partial class ThatEnumerable
 		/// <summary>
 		///     …comply with the <paramref name="expectations" />.
 		/// </summary>
-		public ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
+		public AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
 			ComplyWith(Action<IThatSubject<TItem>> expectations)
-		{
-			ObjectEqualityOptions<TItem> options = new();
-			return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
+			=> new(
 				_subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars)
 					=> new ComplyWithConstraint(expectationBuilder, it, grammars, _quantifier, expectations)),
-				_subject,
-				options);
-		}
+				_subject);
 
 		private sealed class ComplyWithConstraint
 			: ConstraintResult.WithNotNullValue<IEnumerable<TItem>?>,
@@ -166,16 +162,12 @@ public static partial class ThatEnumerable
 		/// <summary>
 		///     …comply with the <paramref name="expectations" />.
 		/// </summary>
-		public ObjectEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>, string?>
+		public AndOrResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
 			ComplyWith(Action<IThatSubject<string?>> expectations)
-		{
-			ObjectEqualityOptions<string?> options = new();
-			return new ObjectEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>, string?>(
+			=> new(
 				_subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars)
 					=> new ComplyWithConstraint(expectationBuilder, it, grammars, _quantifier, expectations)),
-				_subject,
-				options);
-		}
+				_subject);
 
 		private sealed class ComplyWithConstraint
 			: ConstraintResult.WithNotNullValue<IEnumerable<string?>?>,
@@ -253,7 +245,7 @@ public static partial class ThatEnumerable
 				}
 
 				_totalCount = _matchingCount + _notMatchingCount;
-				Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
+				Outcome = _quantifier.GetOutcomeForCollection(actual, _matchingCount, _notMatchingCount, _totalCount);
 				AppendContexts(false);
 				_expectationBuilder.AddCollectionContext(materialized);
 				return this;
@@ -310,16 +302,12 @@ public static partial class ThatEnumerable
 		/// <summary>
 		///     …comply with the <paramref name="expectations" />.
 		/// </summary>
-		public ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, object?>
+		public AndOrResult<TEnumerable, IThat<TEnumerable>>
 			ComplyWith(Action<IThatSubject<object?>> expectations)
-		{
-			ObjectEqualityOptions<object?> options = new();
-			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, object?>(
+			=> new(
 				_subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars)
 					=> new ComplyWithConstraint(expectationBuilder, it, grammars, _quantifier, expectations)),
-				_subject,
-				options);
-		}
+				_subject);
 
 		private sealed class ComplyWithConstraint
 			: ConstraintResult.WithNotNullValue<TEnumerable?>,
@@ -464,16 +452,12 @@ public static partial class ThatEnumerable
 		/// <summary>
 		///     …comply with the <paramref name="expectations" />.
 		/// </summary>
-		public ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, TItem>
+		public AndOrResult<TEnumerable, IThat<TEnumerable>>
 			ComplyWith(Action<IThatSubject<TItem>> expectations)
-		{
-			ObjectEqualityOptions<TItem> options = new();
-			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, TItem>(
+			=> new(
 				_subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars)
 					=> new ComplyWithConstraint(expectationBuilder, it, grammars, _quantifier, expectations)),
-				_subject,
-				options);
-		}
+				_subject);
 
 		private sealed class ComplyWithConstraint
 			: ConstraintResult.WithNotNullValue<TEnumerable>,
@@ -606,7 +590,7 @@ public static partial class ThatEnumerable
 		/// <summary>
 		///     …comply with the <paramref name="expectations" />.
 		/// </summary>
-		public ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, string?>
+		public AndOrResult<TEnumerable, IThat<TEnumerable>>
 			ComplyWith(Action<IThatSubject<string?>> expectations)
 			=> new ElementsForStructEnumerable<TEnumerable, string?>(_subject, _quantifier).ComplyWith(expectations);
 	}
