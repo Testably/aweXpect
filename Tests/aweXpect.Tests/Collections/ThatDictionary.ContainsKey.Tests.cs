@@ -89,6 +89,28 @@ public sealed partial class ThatDictionary
 			}
 
 			[Fact]
+			public async Task WhenKeyExists_WithNestedWhose_ShouldKeepValueConnector()
+			{
+				IDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
+
+				async Task Act()
+					=> await That(subject).ContainsKey(2).WhoseValue
+						.Whose(x => x?.Length, l => l.Whose(v => v.ToString(), s => s.IsEqualTo("4")));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains key 2 whose value has Length whose ToString() is equal to "4",
+					             but ToString() was "3" which differs at index 0:
+					                ↓ (actual)
+					               "3"
+					               "4"
+					                ↑ (expected)
+					             """)
+					.Because("the member introduces its own subject again, so the nested member reverts to \"whose\"");
+			}
+
+			[Fact]
 			public async Task WhenKeyExists_WithWhose_ShouldKeepValueConnector()
 			{
 				IDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
@@ -99,9 +121,10 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains key 2 whose value whose Length is equal to 4,
+					             contains key 2 whose value has Length which is equal to 4,
 					             but Length was 3 which differs by -1
-					             """);
+					             """)
+					.Because("the value connector already introduced the subject, so the member must not repeat \"whose\"");
 			}
 
 			[Fact]

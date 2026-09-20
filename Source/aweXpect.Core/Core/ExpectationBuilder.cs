@@ -232,17 +232,11 @@ public abstract class ExpectationBuilder
 			Node? outerWhichNode = _whichNode;
 			_whichNode = null;
 
-			if (expectationGrammar != null)
-			{
-				ExpectationGrammars previousGrammars = ExpectationGrammars;
-				ExpectationGrammars = expectationGrammar(ExpectationGrammars);
-				expectationBuilderCallback.Invoke(this);
-				ExpectationGrammars = previousGrammars;
-			}
-			else
-			{
-				expectationBuilderCallback.Invoke(this);
-			}
+			ExpectationGrammars previousGrammars = ExpectationGrammars;
+			ExpectationGrammars memberGrammars = ExpectationGrammars & ~ExpectationGrammars.Introduced;
+			ExpectationGrammars = expectationGrammar?.Invoke(memberGrammars) ?? memberGrammars;
+			expectationBuilderCallback.Invoke(this);
+			ExpectationGrammars = previousGrammars;
 
 			CompleteWhichNode();
 			_whichNode = outerWhichNode;
@@ -286,17 +280,11 @@ public abstract class ExpectationBuilder
 			Node? outerWhichNode = _whichNode;
 			_whichNode = null;
 
-			if (expectationGrammar != null)
-			{
-				ExpectationGrammars previousGrammars = ExpectationGrammars;
-				ExpectationGrammars = expectationGrammar(ExpectationGrammars);
-				expectationBuilderCallback.Invoke(this);
-				ExpectationGrammars = previousGrammars;
-			}
-			else
-			{
-				expectationBuilderCallback.Invoke(this);
-			}
+			ExpectationGrammars previousGrammars = ExpectationGrammars;
+			ExpectationGrammars memberGrammars = ExpectationGrammars & ~ExpectationGrammars.Introduced;
+			ExpectationGrammars = expectationGrammar?.Invoke(memberGrammars) ?? memberGrammars;
+			expectationBuilderCallback.Invoke(this);
+			ExpectationGrammars = previousGrammars;
 
 			CompleteWhichNode();
 			_whichNode = outerWhichNode;
@@ -427,10 +415,8 @@ public abstract class ExpectationBuilder
 			_it = replaceIt;
 		}
 
-		if (expectationGrammar != null)
-		{
-			ExpectationGrammars = expectationGrammar(ExpectationGrammars);
-		}
+		ExpectationGrammars memberGrammars = ExpectationGrammars & ~ExpectationGrammars.Introduced;
+		ExpectationGrammars = expectationGrammar?.Invoke(memberGrammars) ?? memberGrammars;
 
 		_whichNode = new WhichNode<TSource, TTarget>(parentNode, memberAccessor, separator, negateMemberOnly);
 		return this;
@@ -457,6 +443,7 @@ public abstract class ExpectationBuilder
 			_node = new ExpectationNode();
 		}
 
+		ExpectationGrammars &= ~ExpectationGrammars.Introduced;
 		_whichNode = new WhichNode<TSource, TTarget>(parentNode, asyncMemberAccessor, separator);
 		return this;
 	}

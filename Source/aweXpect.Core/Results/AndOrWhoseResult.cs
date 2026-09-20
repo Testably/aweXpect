@@ -48,7 +48,8 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 				.ForMember(
 					MemberAccessor<TType, TMember?>.FromFuncAsMemberAccessor(memberSelector, doNotPopulateThisValue),
 					(member, stringBuilder) => stringBuilder.Append(" whose ").Append(member))
-				.AddExpectations(e => expectations(new ThatSubject<TMember?>(e))),
+				.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
+					grammars => grammars | ExpectationGrammars.Introduced),
 			_returnValue);
 
 	/// <summary>
@@ -68,7 +69,8 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 					MemberAccessor<TType, Task<TMember>>.FromFuncAsMemberAccessor(memberSelector,
 						doNotPopulateThisValue),
 					(member, stringBuilder) => stringBuilder.Append(" whose ").Append(member))
-				.AddExpectations(e => expectations(new ThatSubject<TMember?>(e))),
+				.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
+					grammars => grammars | ExpectationGrammars.Introduced),
 			_returnValue);
 
 #if NET8_0_OR_GREATER
@@ -118,8 +120,9 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 						MemberAccessor<TType, TMember?>.FromFuncAsMemberAccessor(memberSelector,
 							doNotPopulateThisValue),
 						(member, stringBuilder) => stringBuilder.Append(" whose ").Append(member))
-					.AddExpectations(e
-						=> expectations(new ThatSubject<TMember?>(e))),
+					.AddExpectations(
+						e => expectations(new ThatSubject<TMember?>(e)),
+						grammars => grammars | ExpectationGrammars.Introduced),
 				_returnValue);
 		}
 
@@ -142,8 +145,9 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 						MemberAccessor<TType, Task<TMember>>.FromFuncAsMemberAccessor(memberSelector,
 							doNotPopulateThisValue),
 						(member, stringBuilder) => stringBuilder.Append(" whose ").Append(member))
-					.AddExpectations(e
-						=> expectations(new ThatSubject<TMember?>(e))),
+					.AddExpectations(
+						e => expectations(new ThatSubject<TMember?>(e)),
+						grammars => grammars | ExpectationGrammars.Introduced),
 				_returnValue);
 		}
 

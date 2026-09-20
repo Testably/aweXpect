@@ -255,7 +255,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             whose StringValue whose Length is equal to 5 for all items,
+						             whose StringValue has Length which is equal to 5 for all items,
 						             but none of 1 were
 
 						             Not matching items:

@@ -124,6 +124,35 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenItemsUseNestedWhose_ShouldRevertToWhoseForTheInnerMember()
+			{
+				MyClass[] subject = [new(1, "foo"),];
+
+				async Task Act()
+					=> await That(subject).HasItemThat(it
+						=> it.Whose(o => o.StringValue, s => s.Whose(v => v.Length, l => l.IsEqualTo(5))));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has item that has StringValue whose Length is equal to 5,
+					             but it had item MyClass {
+					               StringValue = "foo",
+					               Value = 1
+					             }
+
+					             Collection:
+					             [
+					               MyClass {
+					                 StringValue = "foo",
+					                 Value = 1
+					               }
+					             ]
+					             """)
+					.Because("the outer member introduces its own subject again");
+			}
+
+			[Fact]
 			public async Task WhenItemsUseWhose_ShouldIncludeMemberInExpectation()
 			{
 				MyClass[] subject = [new(1),];
@@ -134,7 +163,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has item that whose Value is equal to 5,
+					             has item that has Value which is equal to 5,
 					             but it had item MyClass {
 					               StringValue = "",
 					               Value = 1
@@ -149,6 +178,58 @@ public sealed partial class ThatEnumerable
 					             ]
 					             """)
 					.Because("the member text must survive the node tree rendering");
+			}
+
+			[Fact]
+			public async Task WhenItemsUseWhoseAfterAWhichMember_ShouldKeepWhose()
+			{
+				Exception[] subject = [new("a", new InvalidOperationException("b")),];
+
+				async Task Act()
+					=> await That(subject).HasItemThat(it
+						=> it.HasInner<InvalidOperationException>(i => i.Whose(e => e.Message, m => m.IsEqualTo("x"))));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has item that has an inner InvalidOperationException whose Message is equal to "x",
+					             but it had item Exception: a
+
+					             Collection:
+					             [
+					               Exception: a
+					             ]
+					             """)
+					.Because("a member separated by \"which\" introduces the subject again and can drop the \"which\"");
+			}
+
+			[Fact]
+			public async Task WhenItemsUseWhoseWithAsyncMember_ShouldIncludeMemberInExpectation()
+			{
+				MyClass[] subject = [new(1),];
+
+				async Task Act()
+					=> await That(subject)
+						.HasItemThat(it => it.Whose(o => Task.FromResult(o.Value), v => v.IsEqualTo(5)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has item that has Task.FromResult(o.Value) which is equal to 5,
+					             but it had item MyClass {
+					               StringValue = "",
+					               Value = 1
+					             }
+
+					             Collection:
+					             [
+					               MyClass {
+					                 StringValue = "",
+					                 Value = 1
+					               }
+					             ]
+					             """)
+					.Because("an async member follows the same rule as a synchronous one");
 			}
 
 			[Fact]
@@ -378,6 +459,35 @@ public sealed partial class ThatEnumerable
 					             Collection:
 					             [0, 1, 2]
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenItemsUseWhose_ShouldIncludeMemberInExpectation()
+			{
+				MyClass[] subject = [new(1),];
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it
+						.HasItemThat(x => x.Whose(o => o.Value, v => v.IsEqualTo(1))));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have item that has Value which is equal to 1,
+					             but it had item MyClass {
+					               StringValue = "",
+					               Value = 1
+					             }
+
+					             Collection:
+					             [
+					               MyClass {
+					                 StringValue = "",
+					                 Value = 1
+					               }
+					             ]
+					             """)
+					.Because("the negation belongs to the quantifier, so the member keeps its positive form");
 			}
 
 			[Fact]

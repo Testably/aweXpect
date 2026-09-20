@@ -20,7 +20,8 @@ public partial class ThatDelegateThrows<TException>
 					MemberAccessor<TException, TMember?>.FromFuncAsMemberAccessor(memberSelector,
 						doNotPopulateThisValue),
 					(member, expectation) => expectation.Append("whose ").Append(member))
-				.AddExpectations(e => expectations(new ThatSubject<TMember?>(e))),
+				.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
+					grammars => grammars | ExpectationGrammars.Introduced),
 			this);
 
 	/// <summary>
@@ -37,7 +38,8 @@ public partial class ThatDelegateThrows<TException>
 					MemberAccessor<TException, Task<TMember>>.FromFuncAsMemberAccessor(memberSelector,
 						doNotPopulateThisValue),
 					(member, expectation) => expectation.Append("whose ").Append(member))
-				.AddExpectations(e => expectations(new ThatSubject<TMember?>(e))),
+				.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
+					grammars => grammars | ExpectationGrammars.Introduced),
 			this);
 
 #if NET8_0_OR_GREATER

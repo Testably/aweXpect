@@ -208,6 +208,42 @@ public sealed partial class ThatDictionary
 			}
 
 			[Fact]
+			public async Task WhenKeysExist_ButValueMembersDoNotComply_ShouldFail()
+			{
+				IDictionary<int, string> subject = ToDictionary([1, 2,], ["foo", "bar",]);
+
+				async Task Act()
+					=> await That(subject).ContainsKeys(1, 2).WhoseValues.All()
+						.ComplyWith(v => v.Whose(s => s.Length, l => l.IsEqualTo(4)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains keys [1, 2] whose values has Length which is equal to 4 for all items,
+					             but none of 2 were
+
+					             Not matching items:
+					             [
+					               [1] = "foo",
+					               [2] = "bar"
+					             ]
+
+					             Collection:
+					             [
+					               [1] = "foo",
+					               [2] = "bar"
+					             ]
+
+					             Dictionary:
+					             {
+					               [1] = "foo",
+					               [2] = "bar"
+					             }
+					             """)
+					.Because("the connector already introduced the values, so the member must not start a second \"whose\"");
+			}
+
+			[Fact]
 			public async Task WhenKeysExist_ButValuesAreNotEqualToExpected_ShouldFail()
 			{
 				IDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);

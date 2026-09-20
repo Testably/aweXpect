@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Helpers;
@@ -21,11 +22,13 @@ public static partial class ThatGeneric
 		string doNotPopulateThisValue = "")
 	{
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		ExpectationGrammars grammars = expectationBuilder.ExpectationGrammars;
 		expectationBuilder
 			.ForMember(
 				MemberAccessor<T, TMember?>.FromFuncAsMemberAccessor(memberSelector, doNotPopulateThisValue),
-				(member, stringBuilder) => stringBuilder.Append("whose ").Append(member))
-			.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)));
+				(member, stringBuilder) => AppendMember(stringBuilder, grammars, member))
+			.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
+				memberGrammars => MemberGrammars(memberGrammars, grammars));
 		return new AndOrResult<T?, IThat<T?>>(expectationBuilder, subject);
 	}
 
@@ -43,11 +46,13 @@ public static partial class ThatGeneric
 		string doNotPopulateThisValue = "")
 	{
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		ExpectationGrammars grammars = expectationBuilder.ExpectationGrammars;
 		expectationBuilder
 			.ForAsyncMember(
 				MemberAccessor<T, Task<TMember>>.FromFuncAsMemberAccessor(memberSelector, doNotPopulateThisValue),
-				(member, stringBuilder) => stringBuilder.Append("whose ").Append(member))
-			.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)));
+				(member, stringBuilder) => AppendMember(stringBuilder, grammars, member))
+			.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
+				memberGrammars => MemberGrammars(memberGrammars, grammars));
 		return new AndOrResult<T?, IThat<T?>>(expectationBuilder, subject);
 	}
 
@@ -66,4 +71,38 @@ public static partial class ThatGeneric
 		string doNotPopulateThisValue = "")
 		=> subject.Whose(x => memberSelector(x).AsTask(), expectations, doNotPopulateThisValue);
 #endif
+
+	/// <summary>
+	///     Appends the text for the <paramref name="member" /> in the form the enclosing
+	///     <paramref name="grammars" /> allow.
+	/// </summary>
+	/// <remarks>
+	///     A connector that already introduced the subject cannot be followed by a second relative pronoun, so the
+	///     member becomes the object of the connector's clause and its expectations are attached with <c>which</c>.
+	/// </remarks>
+	private static void AppendMember(StringBuilder stringBuilder, ExpectationGrammars grammars, MemberAccessor member)
+	{
+		if (grammars.HasFlag(ExpectationGrammars.Introduced))
+		{
+			stringBuilder.Append(grammars.Verb("has ", "have ")).Append(member).Append("which ");
+		}
+		else
+		{
+			stringBuilder.Append("whose ").Append(member);
+		}
+	}
+
+	/// <summary>
+	///     The <paramref name="memberGrammars" /> for the expectations on a member written in the form the
+	///     <paramref name="enclosingGrammars" /> required.
+	/// </summary>
+	/// <remarks>
+	///     <c>whose Member </c> introduces the member as the subject of the expectations, while the <c>which</c> of the
+	///     other form is dropped again before a nested <c>whose</c>.
+	/// </remarks>
+	private static ExpectationGrammars MemberGrammars(ExpectationGrammars memberGrammars,
+		ExpectationGrammars enclosingGrammars)
+		=> enclosingGrammars.HasFlag(ExpectationGrammars.Introduced)
+			? memberGrammars
+			: memberGrammars | ExpectationGrammars.Introduced;
 }

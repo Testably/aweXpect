@@ -146,7 +146,8 @@ public static partial class ThatEnumerable
 			_it = it;
 			_options = options;
 
-			_itemExpectationBuilder = new ManualExpectationBuilder<TItem>(null, Grammars & ~ExpectationGrammars.Plural);
+			_itemExpectationBuilder = new ManualExpectationBuilder<TItem>(null,
+				(Grammars & ~ExpectationGrammars.Plural) | ExpectationGrammars.Introduced);
 			expectations.Invoke(new ThatSubject<TItem>(_itemExpectationBuilder));
 		}
 
@@ -262,7 +263,8 @@ public static partial class ThatEnumerable
 			_it = it;
 			_options = options;
 
-			_itemExpectationBuilder = new ManualExpectationBuilder<TItem>(null, Grammars & ~ExpectationGrammars.Plural);
+			_itemExpectationBuilder = new ManualExpectationBuilder<TItem>(null,
+				(Grammars & ~ExpectationGrammars.Plural) | ExpectationGrammars.Introduced);
 			expectations.Invoke(new ThatSubject<TItem>(_itemExpectationBuilder));
 		}
 
