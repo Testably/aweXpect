@@ -70,7 +70,9 @@ public static partial class ThatAsyncEnumerable
 			_expectationBuilder = expectationBuilder;
 			_grammars = grammars;
 			_quantifier = quantifier;
-			_itemExpectationBuilder = new ManualExpectationBuilder<TItem>(null, grammars & ~ExpectationGrammars.Plural);
+			// The quantifier names no subject of its own, so the item expectations keep the number of the
+			// subject that a connector such as "whose values" introduced.
+			_itemExpectationBuilder = new ManualExpectationBuilder<TItem>(null, grammars);
 			expectations.Invoke(new ThatSubject<TItem>(_itemExpectationBuilder));
 		}
 

@@ -219,7 +219,7 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains keys [1, 2] whose values has Length which is equal to 4 for all items,
+					             contains keys [1, 2] whose values have Length which is equal to 4 for all items,
 					             but none of 2 were
 
 					             Not matching items:

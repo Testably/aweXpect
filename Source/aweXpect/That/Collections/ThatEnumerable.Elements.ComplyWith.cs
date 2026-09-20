@@ -49,7 +49,9 @@ public static partial class ThatEnumerable
 			{
 				_expectationBuilder = expectationBuilder;
 				_quantifier = quantifier;
-				_itemExpectationBuilder = new ManualExpectationBuilder<TItem>(null, grammars & ~ExpectationGrammars.Plural);
+				// The quantifier names no subject of its own, so the item expectations keep the number of the
+				// subject that a connector such as "whose values" introduced.
+				_itemExpectationBuilder = new ManualExpectationBuilder<TItem>(null, grammars);
 				expectations.Invoke(new ThatSubject<TItem>(_itemExpectationBuilder));
 			}
 
@@ -189,7 +191,7 @@ public static partial class ThatEnumerable
 			{
 				_expectationBuilder = expectationBuilder;
 				_quantifier = quantifier;
-				_itemExpectationBuilder = new ManualExpectationBuilder<string?>(null, grammars & ~ExpectationGrammars.Plural);
+				_itemExpectationBuilder = new ManualExpectationBuilder<string?>(null, grammars);
 				expectations.Invoke(new ThatSubject<string?>(_itemExpectationBuilder));
 			}
 
@@ -330,7 +332,7 @@ public static partial class ThatEnumerable
 			{
 				_expectationBuilder = expectationBuilder;
 				_quantifier = quantifier;
-				_itemExpectationBuilder = new ManualExpectationBuilder<object?>(null, grammars & ~ExpectationGrammars.Plural);
+				_itemExpectationBuilder = new ManualExpectationBuilder<object?>(null, grammars);
 				expectations.Invoke(new ThatSubject<object?>(_itemExpectationBuilder));
 			}
 
@@ -479,7 +481,7 @@ public static partial class ThatEnumerable
 			{
 				_expectationBuilder = expectationBuilder;
 				_quantifier = quantifier;
-				_itemExpectationBuilder = new ManualExpectationBuilder<TItem>(null, grammars & ~ExpectationGrammars.Plural);
+				_itemExpectationBuilder = new ManualExpectationBuilder<TItem>(null, grammars);
 				expectations.Invoke(new ThatSubject<TItem>(_itemExpectationBuilder));
 			}
 
