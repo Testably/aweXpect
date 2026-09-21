@@ -1,5 +1,6 @@
 ﻿using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Helpers;
 
 namespace aweXpect.Options;
 
@@ -10,7 +11,10 @@ public abstract partial class EnumerableQuantifier
 	/// </summary>
 	public static EnumerableQuantifier Exactly(int expected,
 		ExpectationGrammars expectationGrammars = ExpectationGrammars.None)
-		=> new ExactlyQuantifier(expected);
+	{
+		ThrowHelper.ThrowIfCountIsNegative(expected);
+		return new ExactlyQuantifier(expected);
+	}
 
 	private sealed class ExactlyQuantifier(int expected) : EnumerableQuantifier
 	{

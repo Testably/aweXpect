@@ -1,5 +1,6 @@
 ﻿using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Helpers;
 
 namespace aweXpect.Options;
 
@@ -10,7 +11,10 @@ public abstract partial class EnumerableQuantifier
 	/// </summary>
 	public static EnumerableQuantifier AtMost(int maximum,
 		ExpectationGrammars expectationGrammars = ExpectationGrammars.None)
-		=> new AtMostQuantifier(maximum);
+	{
+		ThrowHelper.ThrowIfCountIsNegative(maximum);
+		return new AtMostQuantifier(maximum);
+	}
 
 	private sealed class AtMostQuantifier(int maximum) : EnumerableQuantifier
 	{

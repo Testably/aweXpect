@@ -53,6 +53,7 @@ public abstract partial class ThatDelegate
 		[GuaranteesNotNull]
 		public ExecutesInToleranceResult<AndResult<WithValue<T>>> ExecutesIn(TimeSpan expected)
 		{
+			ThrowHelper.ThrowIfDurationIsNegative(expected, "expected duration");
 			ExecutionTimeOptions options = new();
 			options.OnUpperBound(ExpectationBuilder.WithTimeout);
 			return new ExecutesInToleranceResult<AndResult<WithValue<T>>>(

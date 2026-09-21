@@ -62,6 +62,19 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Fact]
+		public async Task Between_WhenMaximumIsBelowMinimum_ShouldThrowArgumentOutOfRangeException()
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValue(42L);
+
+			async Task Act()
+				=> await sut.Between(44L).And(43L);
+
+			await That(Act).Throws<ArgumentOutOfRangeException>()
+				.WithParamName("maximum").And
+				.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix();
+		}
+
+		[Fact]
 		public async Task EqualTo_ShouldTriggerValidation()
 		{
 			Signaler<long?> signal = new();

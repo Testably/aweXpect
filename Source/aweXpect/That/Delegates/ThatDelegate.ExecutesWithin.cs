@@ -25,6 +25,7 @@ public static partial class ThatDelegate
 		this IThat<Delegates.ThatDelegate.WithValue<TValue>> subject,
 		TimeSpan duration)
 	{
+		ThrowHelper.ThrowIfDurationIsNegative(duration);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		expectationBuilder.WithTimeout(duration);
 		return new ExpectationResult<TValue>(expectationBuilder
@@ -46,6 +47,7 @@ public static partial class ThatDelegate
 		this IThat<Delegates.ThatDelegate.WithoutValue> subject,
 		TimeSpan duration)
 	{
+		ThrowHelper.ThrowIfDurationIsNegative(duration);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		expectationBuilder.WithTimeout(duration);
 		return new ExpectationResult(expectationBuilder

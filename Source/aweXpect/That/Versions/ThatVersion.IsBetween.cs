@@ -15,11 +15,14 @@ public static partial class ThatVersion
 	public static BetweenResult<AndOrResult<Version?, IThat<Version?>>, Version?> IsBetween(
 		this IThat<Version?> subject,
 		Version? minimum)
-		=> new(maximum
-			=> new AndOrResult<Version?, IThat<Version?>>(
+		=> new(maximum =>
+		{
+			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
+			return new AndOrResult<Version?, IThat<Version?>>(
 				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsBetweenConstraint(it, grammars, minimum, maximum)),
-				subject));
+				subject);
+		});
 
 	/// <summary>
 	///     Verifies that the subject is not between the <paramref name="minimum" />…
@@ -28,11 +31,14 @@ public static partial class ThatVersion
 	public static BetweenResult<AndOrResult<Version?, IThat<Version?>>, Version?> IsNotBetween(
 		this IThat<Version?> subject,
 		Version? minimum)
-		=> new(maximum
-			=> new AndOrResult<Version?, IThat<Version?>>(
+		=> new(maximum =>
+		{
+			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
+			return new AndOrResult<Version?, IThat<Version?>>(
 				subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 					new IsBetweenConstraint(it, grammars, minimum, maximum).Invert()),
-				subject));
+				subject);
+		});
 
 	private sealed class IsBetweenConstraint(
 		string it,

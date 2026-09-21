@@ -87,6 +87,17 @@ public sealed class CustomizeSettingsTests
 	}
 
 	[Fact]
+	public async Task DefaultTimeComparisonTolerance_WhenNegative_ShouldThrowArgumentOutOfRangeException()
+	{
+		void Act() => Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(-1.Milliseconds());
+
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithParamName("value").And
+			.WithMessage("Tolerance must be non-negative").AsPrefix()
+			.Because("a negative default tolerance tightens every time comparison instead of widening it");
+	}
+
+	[Fact]
 	public async Task Settings_ShouldReturnSameInstance()
 	{
 		AwexpectCustomization.SettingsCustomization settings1 = Customize.aweXpect.Settings();
