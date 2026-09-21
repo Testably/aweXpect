@@ -36,8 +36,17 @@ internal static class CollectionExpectationSources
 			/// </summary>
 			public Type? Factory { get; set; }
 
-			/// <summary>The expected parameter type, when it differs from the helper's second parameter.</summary>
+			/// <summary>
+			/// The expected parameter type, when it differs from the helper's second parameter. <c>{subject}</c>
+			/// stands for the subject collection type and <c>{item}</c> for its element.
+			/// </summary>
 			public string? ExpectedType { get; set; }
+
+			/// <summary>
+			/// Emit this family once per collection type listed in <c>[CollectionSubjects]</c> on the containing
+			/// class, substituting the helper's <c>TCollection</c>.
+			/// </summary>
+			public bool PerSubject { get; set; }
 
 			/// <summary>The <c>OverloadResolutionPriority</c>, or <c>0</c> for none.</summary>
 			public int Priority { get; set; }
@@ -46,6 +55,24 @@ internal static class CollectionExpectationSources
 			public string? NegatedSummary { get; set; }
 			public string? Remarks { get; set; }
 			public string? NegatedRemarks { get; set; }
+		}
+
+		/// <summary>
+		/// The collection types of this class that cannot reach an expectation through the covariance of
+		/// <c>IThat&lt;out T&gt;</c> - value types such as <c>ImmutableArray&lt;T&gt;</c> - and therefore need their
+		/// own overloads. Adding one here adds it to every <c>PerSubject</c> family of the class; a type that does
+		/// not exist in the current compilation is skipped.
+		/// </summary>
+		[System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = true)]
+		internal class CollectionSubjectsAttribute : System.Attribute
+		{
+			/// <param name="collectionTypes">The collection types, where <c>{item}</c> marks the element.</param>
+			public CollectionSubjectsAttribute(params string[] collectionTypes)
+			{
+				CollectionTypes = collectionTypes;
+			}
+
+			public string[] CollectionTypes { get; }
 		}
 		#nullable disable
 		""";

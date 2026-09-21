@@ -9,12 +9,10 @@ using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
 using aweXpect.SourceGenerators;
-#if NET8_0_OR_GREATER
-using System.Collections.Immutable;
-#endif
 
 namespace aweXpect;
 
+[CollectionSubjects("System.Collections.Immutable.ImmutableArray<{item}>")]
 public static partial class ThatEnumerable
 {
 	private const string Matches =
@@ -203,24 +201,26 @@ public static partial class ThatEnumerable
 			matchOptions);
 	}
 
-#if NET8_0_OR_GREATER
-	[CreateCollectionExpectation("Is{Not}EqualTo", Summary = Matches, NegatedSummary = DoesNotMatch)]
-	[CreateCollectionExpectation("Is{Not}EqualTo", Summary = Matches, NegatedSummary = DoesNotMatch,
-		ExpectedType = "System.Collections.Immutable.ImmutableArray<TItem>", Remarks = SameCollectionTypeRemarks)]
-	internal static ObjectCollectionMatchResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
-		IsEqualToForStructCore<TItem>(
-			IThat<ImmutableArray<TItem>> subject,
+
+	[CreateCollectionExpectation("Is{Not}EqualTo", PerSubject = true,
+		Summary = Matches, NegatedSummary = DoesNotMatch)]
+	[CreateCollectionExpectation("Is{Not}EqualTo", PerSubject = true, ExpectedType = "{subject}",
+		Summary = Matches, NegatedSummary = DoesNotMatch, Remarks = SameCollectionTypeRemarks)]
+	internal static ObjectCollectionMatchResult<TCollection, IThat<TCollection>, TItem>
+		IsEqualToForCollectionCore<TCollection, TItem>(
+			IThat<TCollection> subject,
 			IEnumerable<TItem> expected,
 			string expectedExpression,
 			bool negated)
+		where TCollection : IEnumerable
 	{
 		ObjectEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectCollectionMatchResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>(
-			expectationBuilder.AddConstraint<ImmutableArray<TItem>>((it, grammars) =>
+		return new ObjectCollectionMatchResult<TCollection, IThat<TCollection>, TItem>(
+			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
 			{
-				IsEqualToForEnumerableConstraint<ImmutableArray<TItem>, TItem, TItem> constraint = new(
+				IsEqualToForEnumerableConstraint<TCollection, TItem, TItem> constraint = new(
 					expectationBuilder, it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions);
 				return negated ? constraint.Invert() : constraint;
@@ -230,23 +230,25 @@ public static partial class ThatEnumerable
 			matchOptions);
 	}
 
-	[CreateCollectionExpectation("Is{Not}EqualTo", Summary = Matches, NegatedSummary = DoesNotMatch)]
-	[CreateCollectionExpectation("Is{Not}EqualTo", Summary = Matches, NegatedSummary = DoesNotMatch,
-		ExpectedType = "System.Collections.Immutable.ImmutableArray<string?>", Remarks = SameCollectionTypeRemarks)]
-	internal static StringCollectionMatchResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
-		IsEqualToForStructStringsCore(
-			IThat<ImmutableArray<string?>> subject,
+	[CreateCollectionExpectation("Is{Not}EqualTo", PerSubject = true,
+		Summary = Matches, NegatedSummary = DoesNotMatch)]
+	[CreateCollectionExpectation("Is{Not}EqualTo", PerSubject = true, ExpectedType = "{subject}",
+		Summary = Matches, NegatedSummary = DoesNotMatch, Remarks = SameCollectionTypeRemarks)]
+	internal static StringCollectionMatchResult<TCollection, IThat<TCollection>>
+		IsEqualToForCollectionStringsCore<TCollection>(
+			IThat<TCollection> subject,
 			IEnumerable<string?> expected,
 			string expectedExpression,
 			bool negated)
+		where TCollection : IEnumerable
 	{
 		StringEqualityOptions options = new();
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new StringCollectionMatchResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>(
-			expectationBuilder.AddConstraint<ImmutableArray<string?>>((it, grammars) =>
+		return new StringCollectionMatchResult<TCollection, IThat<TCollection>>(
+			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
 			{
-				IsEqualToForEnumerableConstraint<ImmutableArray<string?>, string?, string?> constraint = new(
+				IsEqualToForEnumerableConstraint<TCollection, string?, string?> constraint = new(
 					expectationBuilder, it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions);
 				return negated ? constraint.Invert() : constraint;
@@ -256,24 +258,24 @@ public static partial class ThatEnumerable
 			matchOptions);
 	}
 
-	[CreateCollectionExpectation("Is{Not}EqualTo", Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+	[CreateCollectionExpectation("Is{Not}EqualTo", PerSubject = true,
+		Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = Matches, NegatedSummary = DoesNotMatch)]
-	internal static ObjectCollectionMatchWithToleranceResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>,
-			TItem, TTolerance>
-		IsEqualToWithToleranceForStructCore<TItem, TTolerance>(
-			IThat<ImmutableArray<TItem>> subject,
+	internal static ObjectCollectionMatchWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>
+		IsEqualToWithToleranceForCollectionCore<TCollection, TItem, TTolerance>(
+			IThat<TCollection> subject,
 			IEnumerable<TItem> expected,
 			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
 			string expectedExpression,
 			bool negated)
+		where TCollection : IEnumerable
 	{
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectCollectionMatchWithToleranceResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>,
-			TItem, TTolerance>(
-			expectationBuilder.AddConstraint<ImmutableArray<TItem>>((it, grammars) =>
+		return new ObjectCollectionMatchWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>(
+			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
 			{
-				IsEqualToForEnumerableConstraint<ImmutableArray<TItem>, TItem, TItem> constraint = new(
+				IsEqualToForEnumerableConstraint<TCollection, TItem, TItem> constraint = new(
 					expectationBuilder, it, grammars,
 					expectedExpression, expected, options, matchOptions);
 				return negated ? constraint.Invert() : constraint;
@@ -282,5 +284,4 @@ public static partial class ThatEnumerable
 			options,
 			matchOptions);
 	}
-#endif
 }
