@@ -24,6 +24,7 @@
     "ExecutableTarget": {
       "type": "string",
       "enum": [
+        "AotSmokeTests",
         "BenchmarkComment",
         "BenchmarkDotNet",
         "BenchmarkReport",
@@ -142,6 +143,10 @@
         "GithubToken": {
           "type": "string",
           "description": "Github Token"
+        },
+        "MutationSlice": {
+          "type": "string",
+          "description": "The slice of the source to mutate - when unset, the whole project is mutated"
         },
         "Solution": {
           "type": "string",

@@ -79,6 +79,18 @@ internal static class Checks
 				other.Id = 2;
 				await That(CreateOrder()).IsEqualTo(other);
 			}, "Id = 1", "Name = \"Alice\"", "City = \"Vienna\"")),
+		// An anonymous type is rendered member-wise instead of through its own `ToString()`, so its members have to
+		// reach the formatter the same way a named type's do.
+		new("a failure message renders the members of an anonymous object",
+			() => ShouldFail(async () => await That(new
+			{
+				Id = 1,
+				Name = "Alice",
+			}).IsEqualTo(new
+			{
+				Id = 2,
+				Name = "Alice",
+			}), "Id = 1", "Name = \"Alice\"")),
 		// The pair type is registered because the walk from the orders above follows `Order.Tags`.
 		new("a failure message renders a dictionary and a boxed pair",
 			() => ShouldFail(async () =>
