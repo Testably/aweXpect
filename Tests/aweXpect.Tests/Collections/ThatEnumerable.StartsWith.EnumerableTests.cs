@@ -100,6 +100,84 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenExpectedIsAList_ShouldUseItsItemsAsExpectedSequence()
+			{
+				IEnumerable subject = ToEnumerable([1, 2, 3,]);
+				List<int> expected = [1, 3,];
+
+				async Task Act()
+					=> await That(subject).StartsWith(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             starts with [1, 3],
+					             but it contained 2 at index 1 instead of 3
+
+					             Collection:
+					             [1, 2, 3]
+					             """)
+					.Because("a collection argument is the expected sequence and not a single expected item");
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsAnArray_ShouldUseItsItemsAsExpectedSequence()
+			{
+				IEnumerable subject = ToEnumerable([1, 2, 3,]);
+				int[] expected = [1, 3,];
+
+				async Task Act()
+					=> await That(subject).StartsWith(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             starts with [1, 3],
+					             but it contained 2 at index 1 instead of 3
+
+					             Collection:
+					             [1, 2, 3]
+					             """)
+					.Because("a collection argument is the expected sequence and not a single expected item");
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsAString_ShouldUseItAsSingleExpectedItem()
+			{
+				IEnumerable subject = ToEnumerable(["bar", "baz",]);
+
+				async Task Act()
+					=> await That(subject).StartsWith("foo");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             starts with ["foo"],
+					             but it contained "bar" at index 0 instead of "foo"
+
+					             Collection:
+					             [
+					               "bar",
+					               "baz"
+					             ]
+					             """)
+					.Because("a string argument is a single expected item and not a sequence of characters");
+			}
+
+			[Fact]
+			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
+			{
+				IEnumerable subject = ToEnumerable([1, 2,]);
+
+				async Task Act()
+					=> await That(subject).StartsWith(Array.Empty<int>());
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' collection cannot be empty.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenSubjectHasOnlyOneItemAndMissesOne_ShouldUseSingular()
 			{
 				IEnumerable subject = ToEnumerable([1,]);

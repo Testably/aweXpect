@@ -164,6 +164,46 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenUnexpectedIsAList_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable([1, 2, 3,]);
+				List<int> unexpected = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).DoesNotStartWith(unexpected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not start with [1, 2],
+					             but it did start with [
+					               1,
+					               2
+					             ]
+					             """)
+					.Because("treating the collection as a single unexpected item would let the expectation pass vacuously");
+			}
+
+			[Fact]
+			public async Task WhenUnexpectedIsAString_ShouldFail()
+			{
+				IEnumerable subject = ToEnumerable(["foo", "bar",]);
+
+				async Task Act()
+					=> await That(subject).DoesNotStartWith("foo");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not start with ["foo"],
+					             but it did start with [
+					               "foo"
+					             ]
+					             """)
+					.Because("treating the string as a sequence of characters would let the expectation pass vacuously");
+			}
+
+			[Fact]
 			public async Task WhenUnexpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				IEnumerable subject = ToEnumerable([1, 2,]);
