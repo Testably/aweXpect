@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "98a01e4d3d1a29831f17f990649af69889ca26c7",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 10:28:16 2026 \u002B0200",
-        "message": "feat: measure the \u0060aweXpect.Core\u0060 mutation score on \u0060main\u0060"
-      },
-      {
         "sha": "d095969d41598b44698cada0db60e3e27e32981f",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 11:05:13 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 19 00:29:46 2026 \u002B0200",
         "message": "fix: omit the Actual and Expected sections when the message shows the value completely (#1207)"
+      },
+      {
+        "sha": "c1f4659cb6efc8aef732184492e2f7356b429496",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 21 15:52:50 2026 \u002B0200",
+        "message": "test: probe what the interface walk sees under Native AOT"
       }
     ],
     "labels": [
-      "98a01e4d",
       "d095969d",
       "af336624",
       "d22cf29f",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "592eda32",
       "969656cf",
       "b3903651",
-      "6dc5c037"
+      "6dc5c037",
+      "c1f4659c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          282.25110816955566,
           240.25693119366963,
           187.42290679613748,
           239.29671038114108,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           231.47678319613138,
           329.0090421267918,
           219.59215790430704,
-          280.34887494359697
+          280.34887494359697,
+          238.78921401500702
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -460,7 +460,6 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
-          696,
           840,
           840,
           840,
@@ -469,7 +468,8 @@ window.BENCHMARK_DATA = {
           840,
           840,
           840,
-          840
+          840,
+          936
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          257.1469643456595,
           251.3275227546692,
           193.04728918809158,
           247.2769733575674,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           198.7654082775116,
           254.24044408798218,
           198.509849357605,
-          247.91028543881006
+          247.91028543881006,
+          189.38803609779902
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "98a01e4d3d1a29831f17f990649af69889ca26c7",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 10:28:16 2026 \u002B0200",
-        "message": "feat: measure the \u0060aweXpect.Core\u0060 mutation score on \u0060main\u0060"
-      },
-      {
         "sha": "d095969d41598b44698cada0db60e3e27e32981f",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 11:05:13 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 19 00:29:46 2026 \u002B0200",
         "message": "fix: omit the Actual and Expected sections when the message shows the value completely (#1207)"
+      },
+      {
+        "sha": "c1f4659cb6efc8aef732184492e2f7356b429496",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 21 15:52:50 2026 \u002B0200",
+        "message": "test: probe what the interface walk sees under Native AOT"
       }
     ],
     "labels": [
-      "98a01e4d",
       "d095969d",
       "af336624",
       "d22cf29f",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "592eda32",
       "969656cf",
       "b3903651",
-      "6dc5c037"
+      "6dc5c037",
+      "c1f4659c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          401135.9821777344,
           367072.13548177085,
           278294.9004882813,
           362708.42550223216,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           252500.36003766741,
           316448.8670572917,
           243099.75709635418,
-          297940.5680454799
+          297940.5680454799,
+          294747.300016276
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          542085,
           542084,
           542085,
           542084,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           618120,
           618120,
           618120,
-          618120
+          618120,
+          628408
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2769117.538802083,
           2294237.7859375,
           1874052.9045572917,
           2317601.6453125,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           1906932.693638393,
           2675879.283072917,
           1805507.6053185095,
-          2265258.637920673
+          2265258.637920673,
+          1743936.891826923
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841647,
           4841648,
           4841651,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841647,
           4841651,
           4841648,
-          4841651
+          4841651,
+          4841648
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "98a01e4d3d1a29831f17f990649af69889ca26c7",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 10:28:16 2026 \u002B0200",
-        "message": "feat: measure the \u0060aweXpect.Core\u0060 mutation score on \u0060main\u0060"
-      },
       {
         "sha": "d095969d41598b44698cada0db60e3e27e32981f",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 19 00:29:46 2026 \u002B0200",
         "message": "fix: omit the Actual and Expected sections when the message shows the value completely (#1207)"
+      },
+      {
+        "sha": "c1f4659cb6efc8aef732184492e2f7356b429496",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 21 15:52:50 2026 \u002B0200",
+        "message": "test: probe what the interface walk sees under Native AOT"
       }
     ],
     "labels": [
-      "98a01e4d",
       "d095969d",
       "af336624",
       "d22cf29f",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "592eda32",
       "969656cf",
       "b3903651",
-      "6dc5c037"
+      "6dc5c037",
+      "c1f4659c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          497.25142247336254,
           447.7724458694458,
           347.0769005775452,
           461.40208435058594,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           399.44025967915854,
           619.8084933417184,
           399.77437041600547,
-          502.5646817525228
+          502.5646817525228,
+          420.1216122422899
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1649,7 +1649,6 @@ window.BENCHMARK_DATA = {
           1360,
           1360,
           1360,
-          1360,
           1368,
           1368,
           1368,
@@ -1685,7 +1684,8 @@ window.BENCHMARK_DATA = {
           1512,
           1512,
           1512,
-          1512
+          1512,
+          1608
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          507.8180557659694,
           509.60990585599626,
           377.06740255355834,
           480.8352996281215,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           405.4112504209791,
           495.2215061187744,
           375.07692857889026,
-          504.80152123769125
+          504.80152123769125,
+          377.02383837333093
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "98a01e4d3d1a29831f17f990649af69889ca26c7",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 10:28:16 2026 \u002B0200",
-        "message": "feat: measure the \u0060aweXpect.Core\u0060 mutation score on \u0060main\u0060"
-      },
-      {
         "sha": "d095969d41598b44698cada0db60e3e27e32981f",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 11:05:13 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 19 00:29:46 2026 \u002B0200",
         "message": "fix: omit the Actual and Expected sections when the message shows the value completely (#1207)"
+      },
+      {
+        "sha": "c1f4659cb6efc8aef732184492e2f7356b429496",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 21 15:52:50 2026 \u002B0200",
+        "message": "test: probe what the interface walk sees under Native AOT"
       }
     ],
     "labels": [
-      "98a01e4d",
       "d095969d",
       "af336624",
       "d22cf29f",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "592eda32",
       "969656cf",
       "b3903651",
-      "6dc5c037"
+      "6dc5c037",
+      "c1f4659c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          276.3372493426005,
           251.45580520629883,
           193.5445455823626,
           253.960641009467,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           251.0540198326111,
           315.9520732334682,
           277.8195514996847,
-          310.0526204109192
+          310.0526204109192,
+          269.7979778221675
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2284,7 +2284,6 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
-          864,
           1008,
           1008,
           1008,
@@ -2293,7 +2292,8 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
-          1008
+          1008,
+          1104
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          271.7574294635228,
           247.3370247909001,
           190.3003691037496,
           242.3548962275187,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           188.4669912815094,
           250.61726773579915,
           184.86165196555,
-          264.69958817164104
+          264.69958817164104,
+          189.80770015716553
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "98a01e4d3d1a29831f17f990649af69889ca26c7",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 10:28:16 2026 \u002B0200",
-        "message": "feat: measure the \u0060aweXpect.Core\u0060 mutation score on \u0060main\u0060"
-      },
-      {
         "sha": "d095969d41598b44698cada0db60e3e27e32981f",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 11:05:13 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 19 00:29:46 2026 \u002B0200",
         "message": "fix: omit the Actual and Expected sections when the message shows the value completely (#1207)"
+      },
+      {
+        "sha": "c1f4659cb6efc8aef732184492e2f7356b429496",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 21 15:52:50 2026 \u002B0200",
+        "message": "test: probe what the interface walk sees under Native AOT"
       }
     ],
     "labels": [
-      "98a01e4d",
       "d095969d",
       "af336624",
       "d22cf29f",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "592eda32",
       "969656cf",
       "b3903651",
-      "6dc5c037"
+      "6dc5c037",
+      "c1f4659c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          471.88618322781156,
           467.48165338379994,
           358.1299643834432,
           461.53673432423517,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           447.68320550918577,
           610.8395245869955,
           447.3989498615265,
-          577.2993154525757
+          577.2993154525757,
+          455.15144981656755
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2865,7 +2865,6 @@ window.BENCHMARK_DATA = {
           1128,
           1128,
           1128,
-          1128,
           1256,
           1256,
           1256,
@@ -2901,7 +2900,8 @@ window.BENCHMARK_DATA = {
           1400,
           1400,
           1400,
-          1496
+          1496,
+          1592
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1268.4050240834554,
           1136.2323797666108,
           873.9648835842426,
           1133.339914004008,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           944.0233445485433,
           1314.844744873047,
           870.425428537222,
-          1091.1853406270345
+          1091.1853406270345,
+          877.5661626815796
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "98a01e4d3d1a29831f17f990649af69889ca26c7",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 10:28:16 2026 \u002B0200",
-        "message": "feat: measure the \u0060aweXpect.Core\u0060 mutation score on \u0060main\u0060"
-      },
-      {
         "sha": "d095969d41598b44698cada0db60e3e27e32981f",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 11:05:13 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 19 00:29:46 2026 \u002B0200",
         "message": "fix: omit the Actual and Expected sections when the message shows the value completely (#1207)"
+      },
+      {
+        "sha": "c1f4659cb6efc8aef732184492e2f7356b429496",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 21 15:52:50 2026 \u002B0200",
+        "message": "test: probe what the interface walk sees under Native AOT"
       }
     ],
     "labels": [
-      "98a01e4d",
       "d095969d",
       "af336624",
       "d22cf29f",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "592eda32",
       "969656cf",
       "b3903651",
-      "6dc5c037"
+      "6dc5c037",
+      "c1f4659c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1971.4030593872071,
           1829.5400713407075,
           1402.0262065614972,
           1831.0748758951822,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1734.0955317361015,
           2129.4109537942068,
           1600.9962807973227,
-          2008.913465499878
+          2008.913465499878,
+          1783.2437505086264
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3473,7 +3473,6 @@ window.BENCHMARK_DATA = {
           2624,
           2624,
           2624,
-          2624,
           2752,
           2752,
           2752,
@@ -3509,7 +3508,8 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
-          3104
+          3104,
+          3488
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1491.9525361742292,
           1364.1942037582398,
           998.0545776912144,
           1313.8069371541342,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1095.7212844576154,
           1342.2186517079672,
           998.9218976338705,
-          1259.1583348682948
+          1259.1583348682948,
+          999.36361517225
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "98a01e4d3d1a29831f17f990649af69889ca26c7",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 10:28:16 2026 \u002B0200",
-        "message": "feat: measure the \u0060aweXpect.Core\u0060 mutation score on \u0060main\u0060"
-      },
-      {
         "sha": "d095969d41598b44698cada0db60e3e27e32981f",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 11:05:13 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Sep 19 00:29:46 2026 \u002B0200",
         "message": "fix: omit the Actual and Expected sections when the message shows the value completely (#1207)"
+      },
+      {
+        "sha": "c1f4659cb6efc8aef732184492e2f7356b429496",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 21 15:52:50 2026 \u002B0200",
+        "message": "test: probe what the interface walk sees under Native AOT"
       }
     ],
     "labels": [
-      "98a01e4d",
       "d095969d",
       "af336624",
       "d22cf29f",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "592eda32",
       "969656cf",
       "b3903651",
-      "6dc5c037"
+      "6dc5c037",
+      "c1f4659c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2663.2380771636963,
           2401.1907946268716,
           1900.321192932129,
           2493.6360699971515,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2213.5933113098145,
           2740.8627700805664,
           2065.619392101581,
-          2617.9306003863994
+          2617.9306003863994,
+          2147.1017136206992
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4081,7 +4081,6 @@ window.BENCHMARK_DATA = {
           2816,
           2816,
           2816,
-          2816,
           2944,
           2944,
           2944,
@@ -4117,7 +4116,8 @@ window.BENCHMARK_DATA = {
           3296,
           3296,
           3296,
-          3296
+          3296,
+          3488
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27891.504345233625,
           19789.662180582684,
           15674.699180094402,
           19911.246940104167,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           16602.52258504232,
           26567.815239539512,
           15144.957088216146,
-          19340.236243111747
+          19340.236243111747,
+          15097.249215262276
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4198,7 +4198,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4234,6 +4233,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
