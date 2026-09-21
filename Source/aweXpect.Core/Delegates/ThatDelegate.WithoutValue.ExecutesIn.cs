@@ -20,11 +20,17 @@ public abstract partial class ThatDelegate
 		/// <remarks>
 		///     A delegate that throws an exception fails the expectation, however fast it did so,
 		///     unless <c>AllowingExceptions()</c> is specified.
+		///     <para />
+		///     An upper bound is applied as timeout (a subsequent <c>WithTimeout(…)</c> overwrites it),
+		///     so that a delegate accepting a <see cref="System.Threading.CancellationToken" /> is cancelled once it
+		///     elapsed. A delegate without such a parameter cannot be interrupted and is awaited to completion,
+		///     however long that takes.
 		/// </remarks>
 		[GuaranteesNotNull]
 		public ExecutesInResult<AndResult<WithoutValue>> ExecutesIn()
 		{
 			ExecutionTimeOptions options = new();
+			options.OnUpperBound(ExpectationBuilder.WithTimeout);
 			return new ExecutesInResult<AndResult<WithoutValue>>(
 				new AndResult<WithoutValue>(ExpectationBuilder.AddConstraint((it, grammars)
 						=> new ExecutesInConstraint(it, grammars, options)),
@@ -38,11 +44,17 @@ public abstract partial class ThatDelegate
 		/// <remarks>
 		///     A delegate that throws an exception fails the expectation, however fast it did so,
 		///     unless <c>AllowingExceptions()</c> is specified.
+		///     <para />
+		///     The <paramref name="expected" /> time plus the tolerance is applied as timeout (a subsequent
+		///     <c>WithTimeout(…)</c> overwrites it), so that a delegate accepting a
+		///     <see cref="System.Threading.CancellationToken" /> is cancelled once it elapsed. A delegate without such a
+		///     parameter cannot be interrupted and is awaited to completion, however long that takes.
 		/// </remarks>
 		[GuaranteesNotNull]
 		public ExecutesInToleranceResult<AndResult<WithoutValue>> ExecutesIn(TimeSpan expected)
 		{
 			ExecutionTimeOptions options = new();
+			options.OnUpperBound(ExpectationBuilder.WithTimeout);
 			return new ExecutesInToleranceResult<AndResult<WithoutValue>>(
 				new AndResult<WithoutValue>(ExpectationBuilder.AddConstraint((it, grammars)
 						=> new ExecutesInConstraint(it, grammars, options)),

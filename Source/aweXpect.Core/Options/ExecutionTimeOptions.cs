@@ -10,11 +10,21 @@ namespace aweXpect.Options;
 public class ExecutionTimeOptions
 {
 	private Limit? _limit;
+	private Action<TimeSpan>? _onUpperBound;
 
 	/// <summary>
 	///     Flag, indicating if a thrown exception leaves the outcome to the measured duration.
 	/// </summary>
 	internal bool AreExceptionsAllowed { get; private set; }
+
+	/// <summary>
+	///     Registers a <paramref name="callback" /> that receives the upper bound of the limit.
+	/// </summary>
+	/// <remarks>
+	///     The limit is only known after the constraint was created, so an upper bound that should become the
+	///     timeout of the expectation has to be reported back once it is set.
+	/// </remarks>
+	internal void OnUpperBound(Action<TimeSpan> callback) => _onUpperBound = callback;
 
 	/// <summary>
 	///     Allows the delegate to throw an exception without failing the expectation.
@@ -61,13 +71,19 @@ public class ExecutionTimeOptions
 	///     Verifies that the value is within the given <paramref name="duration" />.
 	/// </summary>
 	public void Within(TimeSpan duration)
-		=> _limit = new MaximumLimit(duration, true);
+	{
+		_limit = new MaximumLimit(duration, true);
+		_onUpperBound?.Invoke(duration);
+	}
 
 	/// <summary>
 	///     Verifies that the value is at most <paramref name="maximum" />.
 	/// </summary>
 	public void AtMost(TimeSpan maximum)
-		=> _limit = new MaximumLimit(maximum);
+	{
+		_limit = new MaximumLimit(maximum);
+		_onUpperBound?.Invoke(maximum);
+	}
 
 	/// <summary>
 	///     Verifies that the value is at least <paramref name="minimum" />.
@@ -88,13 +104,17 @@ public class ExecutionTimeOptions
 		}
 
 		_limit = new ApproximatelyLimit(expected, tolerance);
+		_onUpperBound?.Invoke(expected + tolerance);
 	}
 
 	/// <summary>
 	///     Verifies that the value is between <paramref name="minimum" /> and <paramref name="maximum" />.
 	/// </summary>
 	public void Between(TimeSpan minimum, TimeSpan maximum)
-		=> _limit = new BetweenLimit(minimum, maximum);
+	{
+		_limit = new BetweenLimit(minimum, maximum);
+		_onUpperBound?.Invoke(maximum);
+	}
 
 	private abstract record Limit
 	{

@@ -338,7 +338,7 @@ public sealed partial class ThatDelegate
 			[Fact]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				ValueTask Delegate(CancellationToken token) => new(Task.Delay(50.Milliseconds(), token));
+				ValueTask Delegate(CancellationToken token) => new(Task.Delay(30.Seconds(), token));
 
 				async Task Act()
 					=> await That(Delegate).ExecutesIn().AtMost(10.Milliseconds());
@@ -347,8 +347,9 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that Delegate
 					             executes in at most 0:00.010,
-					             but it took 0:*
-					             """).AsWildcard();
+					             but it was canceled after 0:*
+					             """).AsWildcard()
+					.Because("the maximum is applied as timeout, so the token is cancelled once it elapsed");
 			}
 
 			[Fact]
@@ -493,7 +494,7 @@ public sealed partial class ThatDelegate
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
 				ValueTask<int> Delegate(CancellationToken token)
-					=> new(Task.Delay(50.Milliseconds(), token).ContinueWith(_ => 1, token));
+					=> new(Task.Delay(30.Seconds(), token).ContinueWith(_ => 1, token));
 
 				async Task Act()
 					=> await That(Delegate).ExecutesIn().AtMost(10.Milliseconds());
@@ -502,8 +503,9 @@ public sealed partial class ThatDelegate
 					.WithMessage("""
 					             Expected that Delegate
 					             executes in at most 0:00.010,
-					             but it took 0:*
-					             """).AsWildcard();
+					             but it was canceled after 0:*
+					             """).AsWildcard()
+					.Because("the maximum is applied as timeout, so the token is cancelled once it elapsed");
 			}
 
 			[Fact]
@@ -611,8 +613,200 @@ public sealed partial class ThatDelegate
 			}
 		}
 
+		public sealed class CancellationTokenTests
+		{
+			[Fact]
+			public async Task AtLeast_WhenDelegateExceedsTheMinimum_ShouldNotCancelTheCancellationToken()
+			{
+				Func<CancellationToken, Task> @delegate = token => Task.Delay(200.Milliseconds(), token);
+
+				async Task Act()
+					=> await That(@delegate).ExecutesIn().AtLeast(50.Milliseconds());
+
+				await That(Act).DoesNotThrow()
+					.Because("a minimum is no upper bound, so nothing may interrupt the delegate");
+			}
+
+			[Fact]
+			public async Task AtMost_WithoutReturnValue_WhenDelegateExceedsTheMaximum_ShouldCancelTheCancellationToken()
+			{
+				Func<CancellationToken, Task> @delegate = token => Task.Delay(30.Seconds(), token);
+
+				async Task Act()
+					=> await That(@delegate).ExecutesIn().AtMost(50.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             executes in at most 0:00.050,
+					             but it was canceled after 0:*
+					             """).AsWildcard()
+					.Because("the maximum must cancel the token instead of awaiting the delegate");
+			}
+
+			[Fact]
+			public async Task AtMost_WithReturnValue_WhenDelegateExceedsTheMaximum_ShouldCancelTheCancellationToken()
+			{
+				Func<CancellationToken, Task<int>> @delegate = async token =>
+				{
+					await Task.Delay(30.Seconds(), token);
+					return 1;
+				};
+
+				async Task Act()
+					=> await That(@delegate).ExecutesIn().AtMost(50.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             executes in at most 0:00.050,
+					             but it was canceled after 0:*
+					             """).AsWildcard()
+					.Because("the maximum must cancel the token instead of awaiting the delegate");
+			}
+
+			[Fact]
+			public async Task Between_WithoutReturnValue_WhenDelegateExceedsTheMaximum_ShouldCancelTheCancellationToken()
+			{
+				Func<CancellationToken, Task> @delegate = token => Task.Delay(30.Seconds(), token);
+
+				async Task Act()
+					=> await That(@delegate).ExecutesIn().Between(10.Milliseconds()).And(50.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             executes in between 0:00.010 and 0:00.050,
+					             but it was canceled after 0:*
+					             """).AsWildcard()
+					.Because("the maximum of the range must cancel the token instead of awaiting the delegate");
+			}
+
+			[Fact]
+			public async Task Between_WithReturnValue_WhenDelegateExceedsTheMaximum_ShouldCancelTheCancellationToken()
+			{
+				Func<CancellationToken, Task<int>> @delegate = async token =>
+				{
+					await Task.Delay(30.Seconds(), token);
+					return 1;
+				};
+
+				async Task Act()
+					=> await That(@delegate).ExecutesIn().Between(10.Milliseconds()).And(50.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             executes in between 0:00.010 and 0:00.050,
+					             but it was canceled after 0:*
+					             """).AsWildcard()
+					.Because("the maximum of the range must cancel the token instead of awaiting the delegate");
+			}
+
+			[Fact]
+			public async Task Within_WithoutReturnValue_WhenDelegateExceedsTheTolerance_ShouldCancelTheCancellationToken()
+			{
+				Func<CancellationToken, Task> @delegate = token => Task.Delay(30.Seconds(), token);
+
+				async Task Act()
+					=> await That(@delegate).ExecutesIn(10.Milliseconds()).Within(40.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             executes in approximately 0:00.010 ± 0:00.040,
+					             but it was canceled after 0:*
+					             """).AsWildcard()
+					.Because("the expected time plus the tolerance must cancel the token");
+			}
+
+			[Fact]
+			public async Task Within_WithReturnValue_WhenDelegateExceedsTheTolerance_ShouldCancelTheCancellationToken()
+			{
+				Func<CancellationToken, Task<int>> @delegate = async token =>
+				{
+					await Task.Delay(30.Seconds(), token);
+					return 1;
+				};
+
+				async Task Act()
+					=> await That(@delegate).ExecutesIn(10.Milliseconds()).Within(40.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             executes in approximately 0:00.010 ± 0:00.040,
+					             but it was canceled after 0:*
+					             """).AsWildcard()
+					.Because("the expected time plus the tolerance must cancel the token");
+			}
+
+			[Fact]
+			public async Task WithoutCancellationToken_WhenAsyncDelegateExceedsTheMaximum_ShouldAwaitItToCompletion()
+			{
+				bool didComplete = false;
+				Func<Task> @delegate = async () =>
+				{
+					await Task.Delay(100.Milliseconds());
+					didComplete = true;
+				};
+
+				async Task Act()
+					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             executes in at most 0:00.010,
+					             but it took 0:*
+					             """).AsWildcard();
+				await That(didComplete).IsTrue()
+					.Because("a delegate that cannot be interrupted is awaited instead of being abandoned");
+			}
+
+			[Fact]
+			public async Task WithoutCancellationToken_WhenSyncDelegateExceedsTheMaximum_ShouldAwaitItToCompletion()
+			{
+				bool didComplete = false;
+				Action @delegate = () =>
+				{
+					Task.Delay(100.Milliseconds()).Wait();
+					didComplete = true;
+				};
+
+				async Task Act()
+					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             executes in at most 0:00.010,
+					             but it took 0:*
+					             """).AsWildcard();
+				await That(didComplete).IsTrue()
+					.Because("a delegate that cannot be interrupted is awaited instead of being abandoned");
+			}
+		}
+
 		public sealed class WithTimeoutTests
 		{
+			[Fact]
+			public async Task WhenLaterTimeoutIsLonger_ShouldOverwriteTheUpperBound()
+			{
+				Func<CancellationToken, Task> @delegate = token => Task.Delay(500.Milliseconds(), token);
+
+				async Task Act()
+					=> await That(@delegate).ExecutesIn().AtMost(50.Milliseconds()).WithTimeout(30.Seconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             executes in at most 0:00.050,
+					             but it took 0:*
+					             """).AsWildcard()
+					.Because("a subsequent timeout replaces the one from the upper bound");
+			}
+
 			[Fact]
 			public async Task WithoutReturnValue_WhenTimeoutIsApplied_ShouldCancelTheCancellationToken()
 			{

@@ -117,6 +117,17 @@ second relative clause but reads `has Value which is equal to 5`, and it agrees 
 `Triggered(…).Never()`, so an event raised later inside the window went unseen. In v3 such an expectation waits out
 the full timeout. This is the one change that can make a passing test fail without touching its code.
 
+## Execution time as timeout
+
+An execution time expectation used to await the delegate to completion, so a delegate that never returns hung the
+test run instead of failing at the bound. The upper bound of `ExecutesWithin(d)`, `Throws().Within(d)`,
+`ExecutesIn().AtMost(d)`, `ExecutesIn().Between(a).And(b)` and `ExecutesIn(x).Within(t)` is now applied as timeout,
+so a delegate accepting a `CancellationToken` is cancelled once it elapsed and the expectation fails with
+"was canceled after …". `ExecutesIn().AtLeast(d)` has no upper bound and stays untimed. A delegate that does not
+accept a `CancellationToken` still cannot be interrupted and is awaited to completion. A cancellation fails the
+expectation even with `AllowingExceptions()`, because it aborts the execution instead of timing it. See
+[Delegates](/docs/expectations/delegates#execution-time).
+
 ## `Task` and `ValueTask` subjects
 
 `Expect.That` awaited a `Task<T>` and used its result as the subject, but a non-generic `Task` or `ValueTask` became

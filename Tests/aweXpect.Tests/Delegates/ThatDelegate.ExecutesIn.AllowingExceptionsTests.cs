@@ -145,6 +145,23 @@ public sealed partial class ThatDelegate
 			}
 
 			[Fact]
+			public async Task WhenTheUpperBoundCancelsTheDelegate_ShouldFail()
+			{
+				Func<CancellationToken, Task> @delegate = token => Task.Delay(30.Seconds(), token);
+
+				async Task Act()
+					=> await That(@delegate).ExecutesIn().AllowingExceptions().AtMost(50.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             executes in at most 0:00.050 allowing exceptions,
+					             but it was canceled after 0:*
+					             """).AsWildcard()
+					.Because("allowing exceptions must not let a delegate pass by being cancelled at the maximum");
+			}
+
+			[Fact]
 			public async Task WhenToleranceIsGivenAndDelegateThrowsWithinIt_ShouldSucceed()
 			{
 				Action @delegate = () =>

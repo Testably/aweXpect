@@ -228,6 +228,13 @@ await Expect.That(Task.Delay(200)).ExecutesIn().Between(100.Milliseconds()).And(
 A delegate that throws an exception fails these expectations, however fast it did so: a crash is not a measurement
 of execution time.
 
+The upper bound — the maximum of `AtMost`, the end of the `Between` range, or the expected time plus the tolerance —
+is applied as timeout (a subsequent `WithTimeout(…)` overwrites it), so that a delegate accepting a
+`CancellationToken` is cancelled once it elapsed and the expectation fails with "was canceled after …" instead of
+hanging. `AtLeast` has no upper bound and therefore applies no timeout. A delegate that does not accept a
+`CancellationToken` cannot be interrupted and is awaited to completion, however long that takes; neither
+`WithTimeout` nor `WithCancellation` changes that.
+
 ### Allowing exceptions
 
 When you want to measure how long a delegate ran *before* it failed, for example a retry that exhausts its attempts,
@@ -242,7 +249,7 @@ await Expect.That(() => retryPolicy.Execute(alwaysFailing)).ExecutesIn().Allowin
 
 The duration is measured up to the throw, and the exception is still shown in the failure message when the delegate
 misses the expected time. A cancellation is never allowed: it aborts the execution instead of timing it, so
-`WithTimeout` and `WithCancellation` keep failing the expectation.
+`WithTimeout`, `WithCancellation` and the timeout from the upper bound keep failing the expectation.
 
 :::warning[`AllowingExceptions()` with `AtMost(…)` accepts an immediate crash]
 A delegate that throws in microseconds satisfies an upper bound, which is the point of the option, but it means the
