@@ -122,9 +122,6 @@ elements, the index is bracketed (e.g. `"Tracks[3]"`).
 The name must cover whole segments at the end of the member path, so `"Name"` ignores every member called `Name` at any
 depth, while `"ame"` or `"t.Name"` ignore nothing.
 
-A dictionary key belongs to its bracketed segment, so a `.` or `[` inside the key does not start a new segment: for the
-key `a[b` only `"[a[b]"` ignores that entry, not `"[b]"`.
-
 ### Ignoring members by predicate
 
 There are three overloads of `Ignoring`, depending on which information you need:
