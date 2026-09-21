@@ -40,6 +40,20 @@ internal static class ThrowHelper
 	}
 
 	/// <summary>
+	///     Rejects a recursion depth below one at the call site, so that the exception names the caller's parameter
+	///     instead of the option that is set from it.
+	/// </summary>
+	public static void ThrowIfRecursionDepthIsNotPositive(int maximumRecursionDepth)
+	{
+		if (maximumRecursionDepth < 1)
+		{
+			throw Tracing.WriteException(
+				new ArgumentOutOfRangeException(nameof(maximumRecursionDepth), maximumRecursionDepth,
+					"The maximum recursion depth must be greater than zero."));
+		}
+	}
+
+	/// <summary>
 	///     Rejects a tolerance with a sub-day remainder, because a date without a time of day cannot honour it and
 	///     would silently drop it.
 	/// </summary>
