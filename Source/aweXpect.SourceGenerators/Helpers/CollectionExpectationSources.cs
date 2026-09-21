@@ -48,6 +48,9 @@ internal static class CollectionExpectationSources
 			/// </summary>
 			public bool PerSubject { get; set; }
 
+			/// <summary>Mark the overloads with <c>[GuaranteesNotNull]</c>.</summary>
+			public bool GuaranteesNotNull { get; set; }
+
 			/// <summary>The <c>OverloadResolutionPriority</c>, or <c>0</c> for none.</summary>
 			public int Priority { get; set; }
 

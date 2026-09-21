@@ -209,6 +209,11 @@ internal sealed class CollectionExpectationFamily
 			header += $"\n\t/// <remarks>\n\t///     {remarks!.Replace("\n", "\n\t///     ")}\n\t/// </remarks>";
 		}
 
+		if (declaration.GuaranteesNotNull)
+		{
+			header += "\n\t[global::aweXpect.Core.GuaranteesNotNull]";
+		}
+
 		if (declaration.Priority != 0)
 		{
 			header +=
@@ -270,6 +275,7 @@ internal sealed class CollectionExpectationFamily
 		public string? Factory { get; private set; }
 		public string? ExpectedType { get; private set; }
 		public bool PerSubject { get; private set; }
+		public bool GuaranteesNotNull { get; private set; }
 		public int Priority { get; private set; }
 		public string Summary { get; private set; } = "";
 		public string NegatedSummary { get; private set; } = "";
@@ -288,6 +294,9 @@ internal sealed class CollectionExpectationFamily
 					break;
 				case "PerSubject":
 					PerSubject = value.Value as bool? ?? false;
+					break;
+				case "GuaranteesNotNull":
+					GuaranteesNotNull = value.Value as bool? ?? false;
 					break;
 				case "Priority":
 					Priority = value.Value as int? ?? 0;
