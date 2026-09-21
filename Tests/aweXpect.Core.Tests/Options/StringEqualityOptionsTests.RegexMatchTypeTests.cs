@@ -8,6 +8,22 @@ public sealed partial class StringEqualityOptionsTests
 	public sealed class RegexMatchTypeTests
 	{
 		[Fact]
+		public async Task AreConsideredEqual_WhenPatternDoesNotCompleteInTime_ShouldThrowArgumentException()
+		{
+			StringEqualityOptions sut = new();
+			sut.AsRegex();
+
+			async Task Act() => await sut.AreConsideredEqual(new string('a', 30) + "!", "(a+)+$");
+
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage(
+					"""The regex "(a+)+$" did not complete within 0:01. Simplify the pattern to avoid catastrophic backtracking.""")
+				.AsPrefix().And
+				.WithParamName("expected")
+				.Because("the timeout must name the pattern instead of surfacing as a generic evaluation error");
+		}
+
+		[Fact]
 		public async Task AreConsideredEqual_WhenPatternIsEmpty_ShouldThrowArgumentException()
 		{
 			StringEqualityOptions sut = new();
@@ -98,6 +114,22 @@ public sealed partial class StringEqualityOptionsTests
 
 			await That(result).IsEqualTo(expectedCount)
 				.Because("without the multiline option '^' only binds to the start of the complete value");
+		}
+
+		[Fact]
+		public async Task CountOccurrences_WhenPatternDoesNotCompleteInTime_ShouldThrowArgumentException()
+		{
+			StringEqualityOptions sut = new();
+			sut.AsRegex();
+
+			async Task Act() => await sut.CountOccurrences(new string('a', 30) + "!", "(a+)+$");
+
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage(
+					"""The regex "(a+)+$" did not complete within 0:01. Simplify the pattern to avoid catastrophic backtracking.""")
+				.AsPrefix().And
+				.WithParamName("expected")
+				.Because("counting the occurrences runs the same pattern and must fail the same way");
 		}
 
 		[Fact]

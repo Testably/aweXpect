@@ -1,4 +1,5 @@
-﻿using aweXpect.Options;
+﻿using System.Text.RegularExpressions;
+using aweXpect.Options;
 
 namespace aweXpect.Core.Tests.Options;
 
@@ -17,6 +18,18 @@ public sealed partial class StringEqualityOptionsTests
 			bool result = await sut.AreConsideredEqual(null, "foo");
 
 			await That(result).IsFalse();
+		}
+
+		[Fact]
+		public async Task AreConsideredEqual_WhenAComparerIsUsed_ShouldStillApplyTheWhiteSpaceOptions()
+		{
+			StringEqualityOptions sut = new();
+			sut.Using(StringComparer.Ordinal).IgnoringLeadingWhiteSpace();
+
+			bool result = await sut.AreConsideredEqual("  foo", "foo");
+
+			await That(result).IsTrue()
+				.Because("both values are normalized before the comparer sees them, so neither option is dropped");
 		}
 
 		[Fact]
@@ -58,6 +71,42 @@ public sealed partial class StringEqualityOptionsTests
 			bool result = await sut.AreConsideredEqual("foo  \nbar", "foo\nbar");
 
 			await That(result).IsFalse();
+		}
+
+		[Fact]
+		public async Task AsRegex_WhenAComparerIsUsed_ShouldThrowInvalidOperationException()
+		{
+			StringEqualityOptions sut = new();
+			sut.Using(StringComparer.Ordinal);
+
+			void Act() => sut.AsRegex();
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("A custom comparer is not supported for regex or wildcard matching.");
+		}
+
+		[Fact]
+		public async Task AsRegex_WithOptions_WhenAComparerIsUsed_ShouldThrowInvalidOperationException()
+		{
+			StringEqualityOptions sut = new();
+			sut.Using(StringComparer.Ordinal);
+
+			void Act() => sut.AsRegex(RegexOptions.Multiline);
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("A custom comparer is not supported for regex or wildcard matching.");
+		}
+
+		[Fact]
+		public async Task AsWildcard_WhenAComparerIsUsed_ShouldThrowInvalidOperationException()
+		{
+			StringEqualityOptions sut = new();
+			sut.Using(StringComparer.Ordinal);
+
+			void Act() => sut.AsWildcard();
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("A custom comparer is not supported for regex or wildcard matching.");
 		}
 
 		[Fact]
@@ -232,6 +281,31 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Fact]
+		public async Task IgnoringCase_WhenAComparerIsUsed_ShouldThrowInvalidOperationException()
+		{
+			StringEqualityOptions sut = new();
+			sut.Using(StringComparer.Ordinal);
+
+			void Act() => sut.IgnoringCase();
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage(
+					"IgnoringCase cannot be combined with a custom comparer; use a case-insensitive comparer instead.");
+		}
+
+		[Fact]
+		public async Task IgnoringCase_WithFalse_WhenAComparerIsUsed_ShouldNotThrow()
+		{
+			StringEqualityOptions sut = new();
+			sut.Using(StringComparer.Ordinal);
+
+			void Act() => sut.IgnoringCase(false);
+
+			await That(Act).DoesNotThrow()
+				.Because("resetting the flag keeps the comparer as the only relevant option");
+		}
+
+		[Fact]
 		public async Task ToString_WhenCaseAndIndentationIsIgnored_ShouldIncludeOptions()
 		{
 			StringEqualityOptions sut = new();
@@ -325,6 +399,91 @@ public sealed partial class StringEqualityOptionsTests
 			string result = sut.ToString();
 
 			await That(result).IsEqualTo(" ignoring white-space and newline style");
+		}
+
+		[Fact]
+		public async Task Using_WhenCaseIsExplicitlyNotIgnored_ShouldNotThrow()
+		{
+			StringEqualityOptions sut = new();
+			sut.IgnoringCase(false);
+
+			void Act() => sut.Using(StringComparer.Ordinal);
+
+			await That(Act).DoesNotThrow()
+				.Because("the reset flag does not compete with the comparer");
+		}
+
+		[Fact]
+		public async Task Using_WhenCaseIsIgnored_ShouldThrowInvalidOperationException()
+		{
+			StringEqualityOptions sut = new();
+			sut.IgnoringCase();
+
+			void Act() => sut.Using(StringComparer.Ordinal);
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage(
+					"IgnoringCase cannot be combined with a custom comparer; use a case-insensitive comparer instead.");
+		}
+
+		[Fact]
+		public async Task Using_WhenMatchingAsRegex_ShouldThrowInvalidOperationException()
+		{
+			StringEqualityOptions sut = new();
+			sut.AsRegex();
+
+			void Act() => sut.Using(StringComparer.Ordinal);
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("A custom comparer is not supported for regex or wildcard matching.");
+		}
+
+		[Fact]
+		public async Task Using_WhenMatchingAsWildcard_ShouldThrowInvalidOperationException()
+		{
+			StringEqualityOptions sut = new();
+			sut.AsWildcard();
+
+			void Act() => sut.Using(StringComparer.Ordinal);
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("A custom comparer is not supported for regex or wildcard matching.");
+		}
+
+		[Fact]
+		public async Task Using_WithNull_ShouldResetTheComparer()
+		{
+			StringEqualityOptions sut = new();
+			sut.Using(StringComparer.Ordinal).Using(null);
+
+			void Act() => sut.AsRegex().IgnoringCase();
+
+			await That(Act).DoesNotThrow()
+				.Because("without a comparer neither combination conflicts anymore");
+		}
+
+		[Fact]
+		public async Task Using_WithNull_WhenCaseIsIgnored_ShouldNotThrow()
+		{
+			StringEqualityOptions sut = new();
+			sut.IgnoringCase();
+
+			void Act() => sut.Using(null);
+
+			await That(Act).DoesNotThrow()
+				.Because("no comparer is set that could compete with the casing option");
+		}
+
+		[Fact]
+		public async Task Using_WithNull_WhenMatchingAsRegex_ShouldNotThrow()
+		{
+			StringEqualityOptions sut = new();
+			sut.AsRegex();
+
+			void Act() => sut.Using(null);
+
+			await That(Act).DoesNotThrow()
+				.Because("no comparer is set that the regex engine could not honour");
 		}
 	}
 }

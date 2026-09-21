@@ -19,8 +19,16 @@ public partial class StringEqualityOptions
 	/// <summary>
 	///     Interprets the expected <see langword="string" /> as <see cref="Regex" /> pattern.
 	/// </summary>
+	/// <exception cref="System.InvalidOperationException">
+	///     A custom comparer is already set, which the regex engine cannot honour.
+	/// </exception>
 	public StringEqualityOptions AsRegex()
 	{
+		if (_comparer is not null)
+		{
+			throw ComparerAndPatternConflict();
+		}
+
 		_matchType = RegexMatch;
 		return this;
 	}
@@ -33,8 +41,16 @@ public partial class StringEqualityOptions
 	///     <see cref="RegexOptions.IgnoreCase" /> and <see cref="RegexOptions.CultureInvariant" /> are added when the
 	///     casing is ignored via <see cref="IgnoringCase(bool)" />.
 	/// </remarks>
+	/// <exception cref="System.InvalidOperationException">
+	///     A custom comparer is already set, which the regex engine cannot honour.
+	/// </exception>
 	public StringEqualityOptions AsRegex(RegexOptions regexOptions)
 	{
+		if (_comparer is not null)
+		{
+			throw ComparerAndPatternConflict();
+		}
+
 		_matchType = new RegexMatchType(regexOptions);
 		return this;
 	}

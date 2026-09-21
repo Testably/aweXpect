@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Helpers;
@@ -51,8 +52,16 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 
 		expectedString = Normalize(expectedString);
 		ValidatePattern(expectedString);
-		result = await _matchType.AreConsideredEqual(Normalize(actual), expectedString, _ignoreCase,
-			_comparer);
+		try
+		{
+			result = await _matchType.AreConsideredEqual(Normalize(actual), expectedString, _ignoreCase,
+				_comparer);
+		}
+		catch (RegexMatchTimeoutException exception)
+		{
+			throw CreateTimeoutException(expectedString, exception);
+		}
+
 		return result;
 	}
 
@@ -64,12 +73,14 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     Both strings are normalized once before the comparison, so that the options which change the length of the
 	///     strings are applied to the complete strings and not to the individual substrings that are compared.<br />
 	///     Returns <c>0</c> when the <paramref name="expected" /> <see langword="string" /> is empty after the
-	///     normalization.
+	///     normalization.<br />
+	///     The pattern is validated outside the asynchronous part, so that an unusable pattern throws at the call
+	///     instead of only when the returned task is awaited.
 	/// </remarks>
 #if NET8_0_OR_GREATER
-	public async ValueTask<int> CountOccurrences(string actual, string expected)
+	public ValueTask<int> CountOccurrences(string actual, string expected)
 #else
-	public async Task<int> CountOccurrences(string actual, string expected)
+	public Task<int> CountOccurrences(string actual, string expected)
 #endif
 	{
 		actual = Normalize(actual);
@@ -77,25 +88,48 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		ValidatePattern(expected);
 		if (expected.Length == 0)
 		{
-			return 0;
+#if NET8_0_OR_GREATER
+			return ValueTask.FromResult(0);
+#else
+			return Task.FromResult(0);
+#endif
 		}
 
+		return CountNormalizedOccurrences(actual, expected);
+	}
+
+	/// <summary>
+	///     Counts the occurrences of the already normalized and validated <paramref name="expected" /> pattern.
+	/// </summary>
+#if NET8_0_OR_GREATER
+	private async ValueTask<int> CountNormalizedOccurrences(string actual, string expected)
+#else
+	private async Task<int> CountNormalizedOccurrences(string actual, string expected)
+#endif
+	{
 		// A block spans whole lines, so its occurrences cannot be found with a window of the expected length.
 		if (_matchType is BlockMatchType)
 		{
 			return BlockMatchType.CountOccurrences(actual, expected, _comparer ?? UseDefaultComparer(_ignoreCase));
 		}
 
-		// A pattern can match a different number of characters than it is long, so its occurrences cannot be found
-		// with a window of the expected length.
-		if (_matchType is RegexMatchType regexMatchType)
+		try
 		{
-			return RegexMatchType.CountOccurrences(actual, expected, _ignoreCase, regexMatchType.Options);
-		}
+			// A pattern can match a different number of characters than it is long, so its occurrences cannot be found
+			// with a window of the expected length.
+			if (_matchType is RegexMatchType regexMatchType)
+			{
+				return RegexMatchType.CountOccurrences(actual, expected, _ignoreCase, regexMatchType.Options);
+			}
 
-		if (_matchType is WildcardMatchType)
+			if (_matchType is WildcardMatchType)
+			{
+				return WildcardMatchType.CountOccurrences(actual, expected, _ignoreCase);
+			}
+		}
+		catch (RegexMatchTimeoutException exception)
 		{
-			return WildcardMatchType.CountOccurrences(actual, expected, _ignoreCase);
+			throw CreateTimeoutException(expected, exception);
 		}
 
 		int count = 0;
@@ -164,8 +198,16 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	/// <summary>
 	///     Ignores casing when comparing the <see langword="string" />s.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">
+	///     A custom comparer is already set via <see cref="Using(IEqualityComparer{string})" />.
+	/// </exception>
 	public StringEqualityOptions IgnoringCase(bool ignoreCase = true)
 	{
+		if (ignoreCase && _comparer is not null)
+		{
+			throw CaseAndComparerConflict();
+		}
+
 		_ignoreCase = ignoreCase;
 		return this;
 	}
@@ -235,11 +277,66 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     If set to <see langword="null" /> (default), uses the <see cref="StringComparer.Ordinal" /> or
 	///     <see cref="StringComparer.OrdinalIgnoreCase" /> depending on whether the casing is ignored.
 	/// </remarks>
+	/// <exception cref="InvalidOperationException">
+	///     The casing is already ignored via <see cref="IgnoringCase(bool)" />, or the expected value is matched as a
+	///     regex or wildcard pattern.
+	/// </exception>
 	public StringEqualityOptions Using(IEqualityComparer<string>? comparer)
 	{
+		if (comparer is not null)
+		{
+			if (_ignoreCase)
+			{
+				throw CaseAndComparerConflict();
+			}
+
+			if (_matchType is RegexMatchType or WildcardMatchType)
+			{
+				throw ComparerAndPatternConflict();
+			}
+		}
+
 		_comparer = comparer;
 		return this;
 	}
+
+	/// <summary>
+	///     Creates the exception for a custom comparer that is combined with <see cref="IgnoringCase(bool)" />.
+	/// </summary>
+	/// <remarks>
+	///     Only one of the two can be honoured, so the combination is rejected instead of silently dropping the
+	///     casing option, which would also disappear from the expectation text.
+	/// </remarks>
+	private static InvalidOperationException CaseAndComparerConflict()
+		// ReSharper disable once LocalizableElement
+		=> Tracing.WriteException(new InvalidOperationException(
+			"IgnoringCase cannot be combined with a custom comparer; use a case-insensitive comparer instead."));
+
+	/// <summary>
+	///     Creates the exception for a custom comparer that is combined with a regex or wildcard pattern.
+	/// </summary>
+	/// <remarks>
+	///     A pattern is matched by the regex engine, which has no way to consult a comparer, so the combination is
+	///     rejected instead of silently ignoring the comparer.
+	/// </remarks>
+	private static InvalidOperationException ComparerAndPatternConflict()
+		// ReSharper disable once LocalizableElement
+		=> Tracing.WriteException(new InvalidOperationException(
+			"A custom comparer is not supported for regex or wildcard matching."));
+
+	/// <summary>
+	///     Creates the exception for an <paramref name="expected" /> pattern that did not finish matching within the
+	///     timeout.
+	/// </summary>
+	/// <remarks>
+	///     An <see cref="ArgumentException" /> is not wrapped by the expectation node, so that the pattern which has
+	///     to be simplified stays visible instead of being hidden behind a generic evaluation error.
+	/// </remarks>
+	private ArgumentException CreateTimeoutException(string expected, RegexMatchTimeoutException innerException)
+		// ReSharper disable once LocalizableElement
+		=> Tracing.WriteException(new ArgumentException(
+			$"The {(_matchType is RegexMatchType ? "regex" : "wildcard pattern")} {Formatter.Format(expected)} did not complete within {Formatter.Format(RegexTimeout)}. Simplify the pattern to avoid catastrophic backtracking.",
+			nameof(expected), innerException));
 
 	private static StringComparer UseDefaultComparer(bool ignoreCase)
 		=> ignoreCase ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal;

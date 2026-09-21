@@ -56,6 +56,19 @@ public sealed partial class ThatString
 					         + "trailing newline, but never at an inner line boundary");
 			}
 
+			[Fact]
+			public async Task WhenACustomComparerIsUsed_ShouldThrowInvalidOperationException()
+			{
+				string subject = "some message";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(".*").AsRegex().Using(StringComparer.Ordinal);
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("A custom comparer is not supported for regex or wildcard matching.")
+					.Because("the regex engine cannot consult a comparer, so it used to be ignored silently");
+			}
+
 			[Theory]
 			[InlineData(true)]
 			[InlineData(false)]
@@ -213,6 +226,22 @@ public sealed partial class ThatString
 
 				await That(Act).DoesNotThrow()
 					.Because("the line anchors are opt-in via the explicit options");
+			}
+
+			[Fact]
+			public async Task WhenPatternDoesNotCompleteInTime_ShouldThrowArgumentException()
+			{
+				string subject = new('a', 30);
+
+				async Task Act()
+					=> await That(subject + "!").IsEqualTo("(a+)+$").AsRegex();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage(
+						"""The regex "(a+)+$" did not complete within 0:01. Simplify the pattern to avoid catastrophic backtracking.""")
+					.AsPrefix().And
+					.WithParamName("expected")
+					.Because("the timeout used to escape as a generic evaluation error without naming the pattern");
 			}
 
 			[Fact]

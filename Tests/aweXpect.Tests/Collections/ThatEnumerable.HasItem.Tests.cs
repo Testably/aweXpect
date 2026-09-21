@@ -457,6 +457,31 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
+			[Theory]
+			[InlineData(false)]
+			[InlineData(true)]
+			public async Task AsRegex_WhenACustomComparerIsUsed_ShouldThrowInvalidOperationException(
+				bool comparerFirst)
+			{
+				IEnumerable<string?> subject = ["foo", "bar", "baz",];
+
+				async Task Act()
+				{
+					if (comparerFirst)
+					{
+						await That(subject).HasItem("b.r").Using(StringComparer.Ordinal).AsRegex();
+					}
+					else
+					{
+						await That(subject).HasItem("b.r").AsRegex().Using(StringComparer.Ordinal);
+					}
+				}
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("A custom comparer is not supported for regex or wildcard matching.")
+					.Because("the guard has to reach every consumer of the string equality options");
+			}
+
 			[Fact]
 			public async Task AsRegex_WhenItemDoesNotMatch_ShouldFail()
 			{
@@ -489,6 +514,22 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).HasItem("b[aeiou]?r").AsRegex().AtIndex(1);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task AsRegex_WhenPatternDoesNotCompleteInTime_ShouldThrowArgumentException()
+			{
+				IEnumerable<string?> subject = [new string('a', 30) + "!",];
+
+				async Task Act()
+					=> await That(subject).HasItem("(a+)+$").AsRegex();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage(
+						"""The regex "(a+)+$" did not complete within 0:01. Simplify the pattern to avoid catastrophic backtracking.""")
+					.AsPrefix().And
+					.WithParamName("expected")
+					.Because("the timeout has to be reported the same way for every consumer");
 			}
 
 			[Fact]

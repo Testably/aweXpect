@@ -6,6 +6,28 @@ public sealed partial class StringEqualityOptionsTests
 {
 	public sealed class WildcardMatchTypeTests
 	{
+		/// <remarks>
+		///     Each <c>*a</c> group can consume any number of the leading <c>a</c>s, and the trailing <c>b</c> never
+		///     matches, so the engine has to try every split before it can give up.
+		/// </remarks>
+		private const string CatastrophicPattern = "*a*a*a*a*a*a*a*a*a*ab";
+
+		[Fact]
+		public async Task AreConsideredEqual_WhenPatternDoesNotCompleteInTime_ShouldThrowArgumentException()
+		{
+			StringEqualityOptions sut = new();
+			sut.AsWildcard();
+
+			async Task Act() => await sut.AreConsideredEqual(new string('a', 100), CatastrophicPattern);
+
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage(
+					$"""The wildcard pattern "{CatastrophicPattern}" did not complete within 0:01. Simplify the pattern to avoid catastrophic backtracking.""")
+				.AsPrefix().And
+				.WithParamName("expected")
+				.Because("the timeout must name the wildcard pattern the user wrote, not the translated regex");
+		}
+
 		[Theory]
 		[InlineData("", true)]
 		[InlineData("foo", false)]
@@ -88,6 +110,22 @@ public sealed partial class StringEqualityOptionsTests
 			int result = await sut.CountOccurrences("AxB ayb", "a?b");
 
 			await That(result).IsEqualTo(2);
+		}
+
+		[Fact]
+		public async Task CountOccurrences_WhenPatternDoesNotCompleteInTime_ShouldThrowArgumentException()
+		{
+			StringEqualityOptions sut = new();
+			sut.AsWildcard();
+
+			async Task Act() => await sut.CountOccurrences(new string('a', 100), CatastrophicPattern);
+
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage(
+					$"""The wildcard pattern "{CatastrophicPattern}" did not complete within 0:01. Simplify the pattern to avoid catastrophic backtracking.""")
+				.AsPrefix().And
+				.WithParamName("expected")
+				.Because("counting the occurrences runs the same pattern and must fail the same way");
 		}
 
 		[Fact]

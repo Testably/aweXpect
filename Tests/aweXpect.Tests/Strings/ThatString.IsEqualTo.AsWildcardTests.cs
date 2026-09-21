@@ -113,6 +113,19 @@ public sealed partial class ThatString
 					.Because("a newline is a character, so both '*' and '?' have to match it");
 			}
 
+			[Fact]
+			public async Task WhenACustomComparerIsUsed_ShouldThrowInvalidOperationException()
+			{
+				string subject = "some message";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo("*").AsWildcard().Using(StringComparer.Ordinal);
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("A custom comparer is not supported for regex or wildcard matching.")
+					.Because("the wildcard is translated into a regex, which cannot consult a comparer");
+			}
+
 			[Theory]
 			[InlineData(true)]
 			[InlineData(false)]
@@ -250,6 +263,23 @@ public sealed partial class ThatString
 					                ↑ (wildcard pattern)
 					              """)
 					.Because("a case-sensitive match never looked at the culture");
+			}
+
+			[Fact]
+			public async Task WhenPatternDoesNotCompleteInTime_ShouldThrowArgumentException()
+			{
+				string subject = new('a', 100);
+				string pattern = "*a*a*a*a*a*a*a*a*a*ab";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(pattern).AsWildcard();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage(
+						$"""The wildcard pattern "{pattern}" did not complete within 0:01. Simplify the pattern to avoid catastrophic backtracking.""")
+					.AsPrefix().And
+					.WithParamName("expected")
+					.Because("the message must name the wildcard pattern, not the regex it is translated into");
 			}
 
 			[Theory]
