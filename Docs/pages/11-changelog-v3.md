@@ -177,6 +177,11 @@ collection still compares by position.
 the stack overflows, so a graph that is legitimately deeper needs the limit raised: see
 [Limiting the recursion depth](/docs/expectations/equivalency#limiting-the-recursion-depth).
 
+A default set with `Customize.aweXpect.Equivalency()` also applies to an expectation that passes an options callback
+of its own. The options handed to such a callback dropped the included fields and properties, the comparison type and
+every `For<T>` registration of that default, so a global customization silently had no effect on
+`IsEquivalentTo(expected, o => …)`. A registration in the callback replaces one for the same type in the default.
+
 ## Extensions and aweXpect.Core
 
 Besides the initialization changes above, v3 renames several result and option types so that their names follow what
