@@ -231,11 +231,14 @@ The depth is counted per path, so two members on the same level are both at the 
 compared [by value](#comparing-by-value-or-by-members) do not add to it. A cyclic reference is caught by the cycle
 detection and never reaches the limit.
 
-Set `MaxRecursionDepth` to raise or lower the limit:
+Use `LimitingRecursionDepth` to raise or lower the limit:
 
 ```csharp
-await Expect.That(album).IsEquivalentTo(expected, o => o with { MaxRecursionDepth = 500 });
+await Expect.That(album).IsEquivalentTo(expected, o => o.LimitingRecursionDepth(500));
 ```
+
+It is equivalent to setting `MaxRecursionDepth` directly. A depth below one, which could not even compare the root,
+throws an `ArgumentOutOfRangeException`.
 
 A limit other than the default is listed in the failure message under `Equivalency options:`.
 

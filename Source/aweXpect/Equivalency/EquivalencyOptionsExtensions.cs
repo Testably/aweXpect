@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using aweXpect.Customization;
+using aweXpect.Helpers;
 
 namespace aweXpect.Equivalency;
 
@@ -158,6 +159,24 @@ public static class EquivalencyOptionsExtensions
 		{
 			IgnoreCollectionOrder = ignoreCollectionOrder,
 		};
+
+	/// <summary>
+	///     Limits the comparison to <paramref name="maximumRecursionDepth" /> nested objects on a single path.
+	/// </summary>
+	/// <remarks>
+	///     Defaults to 100. A graph that is deeper fails the comparison instead of overflowing the stack.
+	/// </remarks>
+	public static TEquivalencyOptions LimitingRecursionDepth<TEquivalencyOptions>(
+		this TEquivalencyOptions options,
+		int maximumRecursionDepth)
+		where TEquivalencyOptions : EquivalencyOptions
+	{
+		ThrowHelper.ThrowIfRecursionDepthIsNotPositive(maximumRecursionDepth);
+		return options with
+		{
+			MaxRecursionDepth = maximumRecursionDepth,
+		};
+	}
 
 	/// <summary>
 	///     Creates a new <see cref="EquivalencyOptions" /> instance from the provided <paramref name="callback" />.
