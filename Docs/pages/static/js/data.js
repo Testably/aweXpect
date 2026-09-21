@@ -4032,6 +4032,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 21 15:52:50 2026 \u002B0200",
         "message": "test: probe what the interface walk sees under Native AOT"
+      },
+      {
+        "sha": "4272ae0fbad3042fa060e013ff26804fe7ae898c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 21 15:55:21 2026 \u002B0200",
+        "message": "chore: restore the default build scope after the 3.0.0-pre.6 release (#1310)"
       }
     ],
     "labels": [
@@ -4706,7 +4712,8 @@ window.BENCHMARK_DATA = {
       "969656cf",
       "b3903651",
       "6dc5c037",
-      "c1f4659c"
+      "c1f4659c",
+      "4272ae0f"
     ],
     "datasets": [
       {
@@ -5384,7 +5391,8 @@ window.BENCHMARK_DATA = {
           329.0090421267918,
           219.59215790430704,
           280.34887494359697,
-          238.78921401500702
+          238.78921401500702,
+          368.4129589966365
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6067,6 +6075,7 @@ window.BENCHMARK_DATA = {
           840,
           840,
           840,
+          936,
           936
         ],
         "borderColor": "#63A2AC",
@@ -6753,7 +6762,8 @@ window.BENCHMARK_DATA = {
           254.24044408798218,
           198.509849357605,
           247.91028543881006,
-          189.38803609779902
+          189.38803609779902,
+          267.5783852577209
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6946,6 +6956,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -11020,6 +11031,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 21 15:52:50 2026 \u002B0200",
         "message": "test: probe what the interface walk sees under Native AOT"
+      },
+      {
+        "sha": "4272ae0fbad3042fa060e013ff26804fe7ae898c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 21 15:55:21 2026 \u002B0200",
+        "message": "chore: restore the default build scope after the 3.0.0-pre.6 release (#1310)"
       }
     ],
     "labels": [
@@ -11617,7 +11634,8 @@ window.BENCHMARK_DATA = {
       "969656cf",
       "b3903651",
       "6dc5c037",
-      "c1f4659c"
+      "c1f4659c",
+      "4272ae0f"
     ],
     "datasets": [
       {
@@ -12218,7 +12236,8 @@ window.BENCHMARK_DATA = {
           316448.8670572917,
           243099.75709635418,
           297940.5680454799,
-          294747.300016276
+          294747.300016276,
+          424315.381766183
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12824,6 +12843,7 @@ window.BENCHMARK_DATA = {
           618120,
           618120,
           618120,
+          628408,
           628408
         ],
         "borderColor": "#63A2AC",
@@ -13433,7 +13453,8 @@ window.BENCHMARK_DATA = {
           2675879.283072917,
           1805507.6053185095,
           2265258.637920673,
-          1743936.891826923
+          1743936.891826923,
+          2780040.244140625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14039,7 +14060,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841648,
           4841651,
-          4841648
+          4841648,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18085,6 +18107,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 21 15:52:50 2026 \u002B0200",
         "message": "test: probe what the interface walk sees under Native AOT"
+      },
+      {
+        "sha": "4272ae0fbad3042fa060e013ff26804fe7ae898c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 21 15:55:21 2026 \u002B0200",
+        "message": "chore: restore the default build scope after the 3.0.0-pre.6 release (#1310)"
       }
     ],
     "labels": [
@@ -18759,7 +18787,8 @@ window.BENCHMARK_DATA = {
       "969656cf",
       "b3903651",
       "6dc5c037",
-      "c1f4659c"
+      "c1f4659c",
+      "4272ae0f"
     ],
     "datasets": [
       {
@@ -19437,7 +19466,8 @@ window.BENCHMARK_DATA = {
           619.8084933417184,
           399.77437041600547,
           502.5646817525228,
-          420.1216122422899
+          420.1216122422899,
+          602.0566573460897
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20120,6 +20150,7 @@ window.BENCHMARK_DATA = {
           1512,
           1512,
           1512,
+          1608,
           1608
         ],
         "borderColor": "#63A2AC",
@@ -20806,7 +20837,8 @@ window.BENCHMARK_DATA = {
           495.2215061187744,
           375.07692857889026,
           504.80152123769125,
-          377.02383837333093
+          377.02383837333093,
+          521.689395904541
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20999,6 +21031,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -25535,6 +25568,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 21 15:52:50 2026 \u002B0200",
         "message": "test: probe what the interface walk sees under Native AOT"
+      },
+      {
+        "sha": "4272ae0fbad3042fa060e013ff26804fe7ae898c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 21 15:55:21 2026 \u002B0200",
+        "message": "chore: restore the default build scope after the 3.0.0-pre.6 release (#1310)"
       }
     ],
     "labels": [
@@ -26209,7 +26248,8 @@ window.BENCHMARK_DATA = {
       "969656cf",
       "b3903651",
       "6dc5c037",
-      "c1f4659c"
+      "c1f4659c",
+      "4272ae0f"
     ],
     "datasets": [
       {
@@ -26887,7 +26927,8 @@ window.BENCHMARK_DATA = {
           315.9520732334682,
           277.8195514996847,
           310.0526204109192,
-          269.7979778221675
+          269.7979778221675,
+          389.3644967812758
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -27570,6 +27611,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          1104,
           1104
         ],
         "borderColor": "#63A2AC",
@@ -28256,7 +28298,8 @@ window.BENCHMARK_DATA = {
           250.61726773579915,
           184.86165196555,
           264.69958817164104,
-          189.80770015716553
+          189.80770015716553,
+          272.830256430308
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -28449,6 +28492,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -32985,6 +33029,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 21 15:52:50 2026 \u002B0200",
         "message": "test: probe what the interface walk sees under Native AOT"
+      },
+      {
+        "sha": "4272ae0fbad3042fa060e013ff26804fe7ae898c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 21 15:55:21 2026 \u002B0200",
+        "message": "chore: restore the default build scope after the 3.0.0-pre.6 release (#1310)"
       }
     ],
     "labels": [
@@ -33659,7 +33709,8 @@ window.BENCHMARK_DATA = {
       "969656cf",
       "b3903651",
       "6dc5c037",
-      "c1f4659c"
+      "c1f4659c",
+      "4272ae0f"
     ],
     "datasets": [
       {
@@ -34337,7 +34388,8 @@ window.BENCHMARK_DATA = {
           610.8395245869955,
           447.3989498615265,
           577.2993154525757,
-          455.15144981656755
+          455.15144981656755,
+          652.5879485448202
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35020,6 +35072,7 @@ window.BENCHMARK_DATA = {
           1400,
           1400,
           1496,
+          1592,
           1592
         ],
         "borderColor": "#63A2AC",
@@ -35706,7 +35759,8 @@ window.BENCHMARK_DATA = {
           1314.844744873047,
           870.425428537222,
           1091.1853406270345,
-          877.5661626815796
+          877.5661626815796,
+          1269.5300566809517
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36135,6 +36189,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -40435,6 +40490,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 21 15:52:50 2026 \u002B0200",
         "message": "test: probe what the interface walk sees under Native AOT"
+      },
+      {
+        "sha": "4272ae0fbad3042fa060e013ff26804fe7ae898c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 21 15:55:21 2026 \u002B0200",
+        "message": "chore: restore the default build scope after the 3.0.0-pre.6 release (#1310)"
       }
     ],
     "labels": [
@@ -41109,7 +41170,8 @@ window.BENCHMARK_DATA = {
       "969656cf",
       "b3903651",
       "6dc5c037",
-      "c1f4659c"
+      "c1f4659c",
+      "4272ae0f"
     ],
     "datasets": [
       {
@@ -41787,7 +41849,8 @@ window.BENCHMARK_DATA = {
           2129.4109537942068,
           1600.9962807973227,
           2008.913465499878,
-          1783.2437505086264
+          1783.2437505086264,
+          2495.8874727884927
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -42470,6 +42533,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3488,
           3488
         ],
         "borderColor": "#63A2AC",
@@ -43156,7 +43220,8 @@ window.BENCHMARK_DATA = {
           1342.2186517079672,
           998.9218976338705,
           1259.1583348682948,
-          999.36361517225
+          999.36361517225,
+          1387.0839973177228
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -43349,6 +43414,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -47885,6 +47951,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 21 15:52:50 2026 \u002B0200",
         "message": "test: probe what the interface walk sees under Native AOT"
+      },
+      {
+        "sha": "4272ae0fbad3042fa060e013ff26804fe7ae898c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 21 15:55:21 2026 \u002B0200",
+        "message": "chore: restore the default build scope after the 3.0.0-pre.6 release (#1310)"
       }
     ],
     "labels": [
@@ -48559,7 +48631,8 @@ window.BENCHMARK_DATA = {
       "969656cf",
       "b3903651",
       "6dc5c037",
-      "c1f4659c"
+      "c1f4659c",
+      "4272ae0f"
     ],
     "datasets": [
       {
@@ -49237,7 +49310,8 @@ window.BENCHMARK_DATA = {
           2740.8627700805664,
           2065.619392101581,
           2617.9306003863994,
-          2147.1017136206992
+          2147.1017136206992,
+          3027.6792368570964
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -49920,6 +49994,7 @@ window.BENCHMARK_DATA = {
           3296,
           3296,
           3296,
+          3488,
           3488
         ],
         "borderColor": "#63A2AC",
@@ -50606,7 +50681,8 @@ window.BENCHMARK_DATA = {
           26567.815239539512,
           15144.957088216146,
           19340.236243111747,
-          15097.249215262276
+          15097.249215262276,
+          27810.89567871094
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -51280,6 +51356,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
