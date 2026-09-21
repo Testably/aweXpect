@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "d095969d41598b44698cada0db60e3e27e32981f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 11:05:13 2026 \u002B0200",
-        "message": "refactor!: name the collection result types after what they do (#1121)"
-      },
-      {
         "sha": "af336624738f9fca6493ea1f4abe4200a8c70430",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 11:47:33 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 21 15:52:50 2026 \u002B0200",
         "message": "test: probe what the interface walk sees under Native AOT"
+      },
+      {
+        "sha": "4272ae0fbad3042fa060e013ff26804fe7ae898c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 21 15:55:21 2026 \u002B0200",
+        "message": "chore: restore the default build scope after the 3.0.0-pre.6 release (#1310)"
       }
     ],
     "labels": [
-      "d095969d",
       "af336624",
       "d22cf29f",
       "93e2fd51",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "969656cf",
       "b3903651",
       "6dc5c037",
-      "c1f4659c"
+      "c1f4659c",
+      "4272ae0f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          240.25693119366963,
           187.42290679613748,
           239.29671038114108,
           192.54164187724774,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           329.0090421267918,
           219.59215790430704,
           280.34887494359697,
-          238.78921401500702
+          238.78921401500702,
+          368.4129589966365
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -459,7 +459,6 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
-          696,
           840,
           840,
           840,
@@ -469,6 +468,7 @@ window.BENCHMARK_DATA = {
           840,
           840,
           840,
+          936,
           936
         ],
         "borderColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          251.3275227546692,
           193.04728918809158,
           247.2769733575674,
           189.80345698992411,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           254.24044408798218,
           198.509849357605,
           247.91028543881006,
-          189.38803609779902
+          189.38803609779902,
+          267.5783852577209
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "d095969d41598b44698cada0db60e3e27e32981f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 11:05:13 2026 \u002B0200",
-        "message": "refactor!: name the collection result types after what they do (#1121)"
-      },
-      {
         "sha": "af336624738f9fca6493ea1f4abe4200a8c70430",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 11:47:33 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 21 15:52:50 2026 \u002B0200",
         "message": "test: probe what the interface walk sees under Native AOT"
+      },
+      {
+        "sha": "4272ae0fbad3042fa060e013ff26804fe7ae898c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 21 15:55:21 2026 \u002B0200",
+        "message": "chore: restore the default build scope after the 3.0.0-pre.6 release (#1310)"
       }
     ],
     "labels": [
-      "d095969d",
       "af336624",
       "d22cf29f",
       "93e2fd51",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "969656cf",
       "b3903651",
       "6dc5c037",
-      "c1f4659c"
+      "c1f4659c",
+      "4272ae0f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          367072.13548177085,
           278294.9004882813,
           362708.42550223216,
           282105.42115885415,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           316448.8670572917,
           243099.75709635418,
           297940.5680454799,
-          294747.300016276
+          294747.300016276,
+          424315.381766183
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          542084,
           542085,
           542084,
           542084,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           618120,
           618120,
           618120,
+          628408,
           628408
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2294237.7859375,
           1874052.9045572917,
           2317601.6453125,
           1821061.6046875,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2675879.283072917,
           1805507.6053185095,
           2265258.637920673,
-          1743936.891826923
+          1743936.891826923,
+          2780040.244140625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841647,
           4841648,
           4841651,
           4841647,
@@ -1202,7 +1201,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841648,
           4841651,
-          4841648
+          4841648,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "d095969d41598b44698cada0db60e3e27e32981f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 11:05:13 2026 \u002B0200",
-        "message": "refactor!: name the collection result types after what they do (#1121)"
-      },
       {
         "sha": "af336624738f9fca6493ea1f4abe4200a8c70430",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 21 15:52:50 2026 \u002B0200",
         "message": "test: probe what the interface walk sees under Native AOT"
+      },
+      {
+        "sha": "4272ae0fbad3042fa060e013ff26804fe7ae898c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 21 15:55:21 2026 \u002B0200",
+        "message": "chore: restore the default build scope after the 3.0.0-pre.6 release (#1310)"
       }
     ],
     "labels": [
-      "d095969d",
       "af336624",
       "d22cf29f",
       "93e2fd51",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "969656cf",
       "b3903651",
       "6dc5c037",
-      "c1f4659c"
+      "c1f4659c",
+      "4272ae0f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          447.7724458694458,
           347.0769005775452,
           461.40208435058594,
           346.67944114548817,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           619.8084933417184,
           399.77437041600547,
           502.5646817525228,
-          420.1216122422899
+          420.1216122422899,
+          602.0566573460897
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1648,7 +1648,6 @@ window.BENCHMARK_DATA = {
           1360,
           1360,
           1360,
-          1360,
           1368,
           1368,
           1368,
@@ -1685,6 +1684,7 @@ window.BENCHMARK_DATA = {
           1512,
           1512,
           1512,
+          1608,
           1608
         ],
         "borderColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          509.60990585599626,
           377.06740255355834,
           480.8352996281215,
           369.44302238736833,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           495.2215061187744,
           375.07692857889026,
           504.80152123769125,
-          377.02383837333093
+          377.02383837333093,
+          521.689395904541
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "d095969d41598b44698cada0db60e3e27e32981f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 11:05:13 2026 \u002B0200",
-        "message": "refactor!: name the collection result types after what they do (#1121)"
-      },
-      {
         "sha": "af336624738f9fca6493ea1f4abe4200a8c70430",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 11:47:33 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 21 15:52:50 2026 \u002B0200",
         "message": "test: probe what the interface walk sees under Native AOT"
+      },
+      {
+        "sha": "4272ae0fbad3042fa060e013ff26804fe7ae898c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 21 15:55:21 2026 \u002B0200",
+        "message": "chore: restore the default build scope after the 3.0.0-pre.6 release (#1310)"
       }
     ],
     "labels": [
-      "d095969d",
       "af336624",
       "d22cf29f",
       "93e2fd51",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "969656cf",
       "b3903651",
       "6dc5c037",
-      "c1f4659c"
+      "c1f4659c",
+      "4272ae0f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          251.45580520629883,
           193.5445455823626,
           253.960641009467,
           198.33121064503987,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           315.9520732334682,
           277.8195514996847,
           310.0526204109192,
-          269.7979778221675
+          269.7979778221675,
+          389.3644967812758
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2283,7 +2283,6 @@ window.BENCHMARK_DATA = {
           864,
           864,
           864,
-          864,
           1008,
           1008,
           1008,
@@ -2293,6 +2292,7 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
+          1104,
           1104
         ],
         "borderColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          247.3370247909001,
           190.3003691037496,
           242.3548962275187,
           191.97776057720185,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           250.61726773579915,
           184.86165196555,
           264.69958817164104,
-          189.80770015716553
+          189.80770015716553,
+          272.830256430308
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "d095969d41598b44698cada0db60e3e27e32981f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 11:05:13 2026 \u002B0200",
-        "message": "refactor!: name the collection result types after what they do (#1121)"
-      },
-      {
         "sha": "af336624738f9fca6493ea1f4abe4200a8c70430",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 11:47:33 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 21 15:52:50 2026 \u002B0200",
         "message": "test: probe what the interface walk sees under Native AOT"
+      },
+      {
+        "sha": "4272ae0fbad3042fa060e013ff26804fe7ae898c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 21 15:55:21 2026 \u002B0200",
+        "message": "chore: restore the default build scope after the 3.0.0-pre.6 release (#1310)"
       }
     ],
     "labels": [
-      "d095969d",
       "af336624",
       "d22cf29f",
       "93e2fd51",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "969656cf",
       "b3903651",
       "6dc5c037",
-      "c1f4659c"
+      "c1f4659c",
+      "4272ae0f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          467.48165338379994,
           358.1299643834432,
           461.53673432423517,
           343.7824761072795,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           610.8395245869955,
           447.3989498615265,
           577.2993154525757,
-          455.15144981656755
+          455.15144981656755,
+          652.5879485448202
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2852,7 +2852,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1128,
           1128,
           1128,
           1128,
@@ -2901,6 +2900,7 @@ window.BENCHMARK_DATA = {
           1400,
           1400,
           1496,
+          1592,
           1592
         ],
         "borderColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1136.2323797666108,
           873.9648835842426,
           1133.339914004008,
           895.6350174585979,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1314.844744873047,
           870.425428537222,
           1091.1853406270345,
-          877.5661626815796
+          877.5661626815796,
+          1269.5300566809517
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "d095969d41598b44698cada0db60e3e27e32981f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 11:05:13 2026 \u002B0200",
-        "message": "refactor!: name the collection result types after what they do (#1121)"
-      },
-      {
         "sha": "af336624738f9fca6493ea1f4abe4200a8c70430",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 11:47:33 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 21 15:52:50 2026 \u002B0200",
         "message": "test: probe what the interface walk sees under Native AOT"
+      },
+      {
+        "sha": "4272ae0fbad3042fa060e013ff26804fe7ae898c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 21 15:55:21 2026 \u002B0200",
+        "message": "chore: restore the default build scope after the 3.0.0-pre.6 release (#1310)"
       }
     ],
     "labels": [
-      "d095969d",
       "af336624",
       "d22cf29f",
       "93e2fd51",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "969656cf",
       "b3903651",
       "6dc5c037",
-      "c1f4659c"
+      "c1f4659c",
+      "4272ae0f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1829.5400713407075,
           1402.0262065614972,
           1831.0748758951822,
           1476.4722430365425,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2129.4109537942068,
           1600.9962807973227,
           2008.913465499878,
-          1783.2437505086264
+          1783.2437505086264,
+          2495.8874727884927
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3472,7 +3472,6 @@ window.BENCHMARK_DATA = {
           2624,
           2624,
           2624,
-          2624,
           2752,
           2752,
           2752,
@@ -3509,6 +3508,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3488,
           3488
         ],
         "borderColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1364.1942037582398,
           998.0545776912144,
           1313.8069371541342,
           1003.9631337385911,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1342.2186517079672,
           998.9218976338705,
           1259.1583348682948,
-          999.36361517225
+          999.36361517225,
+          1387.0839973177228
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "d095969d41598b44698cada0db60e3e27e32981f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Sep 15 11:05:13 2026 \u002B0200",
-        "message": "refactor!: name the collection result types after what they do (#1121)"
-      },
-      {
         "sha": "af336624738f9fca6493ea1f4abe4200a8c70430",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Sep 15 11:47:33 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 21 15:52:50 2026 \u002B0200",
         "message": "test: probe what the interface walk sees under Native AOT"
+      },
+      {
+        "sha": "4272ae0fbad3042fa060e013ff26804fe7ae898c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Sep 21 15:55:21 2026 \u002B0200",
+        "message": "chore: restore the default build scope after the 3.0.0-pre.6 release (#1310)"
       }
     ],
     "labels": [
-      "d095969d",
       "af336624",
       "d22cf29f",
       "93e2fd51",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "969656cf",
       "b3903651",
       "6dc5c037",
-      "c1f4659c"
+      "c1f4659c",
+      "4272ae0f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2401.1907946268716,
           1900.321192932129,
           2493.6360699971515,
           1884.5005330403646,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2740.8627700805664,
           2065.619392101581,
           2617.9306003863994,
-          2147.1017136206992
+          2147.1017136206992,
+          3027.6792368570964
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4080,7 +4080,6 @@ window.BENCHMARK_DATA = {
           2816,
           2816,
           2816,
-          2816,
           2944,
           2944,
           2944,
@@ -4117,6 +4116,7 @@ window.BENCHMARK_DATA = {
           3296,
           3296,
           3296,
+          3488,
           3488
         ],
         "borderColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          19789.662180582684,
           15674.699180094402,
           19911.246940104167,
           15499.583459472657,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           26567.815239539512,
           15144.957088216146,
           19340.236243111747,
-          15097.249215262276
+          15097.249215262276,
+          27810.89567871094
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4197,7 +4197,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4233,6 +4232,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
