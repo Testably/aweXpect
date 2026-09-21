@@ -111,7 +111,9 @@ public sealed partial class ThatGeneric
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is not equivalent to { HasWaitedEnough = False } within 0:30,
+					             is not equivalent to {
+					                 HasWaitedEnough = False
+					               } within 0:30,
 					             but it was considered equivalent for ThatGeneric.DoesNotComplyWith.WithinTests.MyChangingClass {
 					                 HasWaitedEnough = False
 					               }
@@ -186,7 +188,9 @@ public sealed partial class ThatGeneric
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is not equivalent to { HasWaitedEnough = False } within 0:00.050,
+					             is not equivalent to {
+					                 HasWaitedEnough = False
+					               } within 0:00.050,
 					             but it was considered equivalent for ThatGeneric.DoesNotComplyWith.WithinTests.MyChangingClass {
 					                 HasWaitedEnough = False
 					               }
