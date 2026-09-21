@@ -19,6 +19,7 @@ public static partial class ThatDateTime
 		this IThat<DateTime> subject,
 		params DateTime?[] expected)
 	{
+		expected.ThrowIfNull();
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateTime, IThat<DateTime>>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars) =>
@@ -34,6 +35,7 @@ public static partial class ThatDateTime
 		this IThat<DateTime> subject,
 		IEnumerable<DateTime> expected)
 	{
+		expected.ThrowIfNull();
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateTime, IThat<DateTime>>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars) =>
@@ -49,6 +51,7 @@ public static partial class ThatDateTime
 		this IThat<DateTime> subject,
 		IEnumerable<DateTime?> expected)
 	{
+		expected.ThrowIfNull();
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateTime, IThat<DateTime>>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars) =>
@@ -64,6 +67,7 @@ public static partial class ThatDateTime
 		this IThat<DateTime> subject,
 		params DateTime?[] unexpected)
 	{
+		unexpected.ThrowIfNull();
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateTime, IThat<DateTime>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -79,6 +83,7 @@ public static partial class ThatDateTime
 		this IThat<DateTime> subject,
 		IEnumerable<DateTime> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateTime, IThat<DateTime>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -94,6 +99,7 @@ public static partial class ThatDateTime
 		this IThat<DateTime> subject,
 		IEnumerable<DateTime?> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateTime, IThat<DateTime>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>

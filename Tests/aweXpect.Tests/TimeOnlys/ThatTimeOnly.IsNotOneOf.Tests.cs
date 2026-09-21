@@ -25,6 +25,20 @@ public sealed partial class ThatTimeOnly
 			}
 
 			[Fact]
+			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				TimeOnly subject = CurrentTime();
+				TimeOnly[]? expected = null;
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(expected!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The unexpected cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenExpectedOnlyContainsNull_ShouldSucceed()
 			{
 				TimeOnly subject = CurrentTime();
@@ -47,6 +61,20 @@ public sealed partial class ThatTimeOnly
 
 				await That(Act).Throws<ArgumentException>()
 					.WithMessage("You have to provide at least one expected value!");
+			}
+
+			[Fact]
+			public async Task WhenNullableExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				TimeOnly subject = CurrentTime();
+				TimeOnly?[]? expected = null;
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(expected!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The unexpected cannot be null.").AsPrefix();
 			}
 
 			[Fact]

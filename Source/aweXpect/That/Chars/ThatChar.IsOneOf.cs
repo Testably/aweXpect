@@ -14,54 +14,72 @@ public static partial class ThatChar
 	/// </summary>
 	public static AndOrResult<char, IThat<char>> IsOneOf(this IThat<char> subject,
 		params char?[] expected)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	{
+		expected.ThrowIfNull();
+		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint(it, grammars, expected)),
 			subject);
+	}
 
 	/// <summary>
 	///     Verifies that the subject is one of the <paramref name="expected" /> values.
 	/// </summary>
 	public static AndOrResult<char, IThat<char>> IsOneOf(this IThat<char> subject,
 		IEnumerable<char?> expected)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	{
+		expected.ThrowIfNull();
+		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint(it, grammars, expected)),
 			subject);
+	}
 
 	/// <summary>
 	///     Verifies that the subject is one of the <paramref name="expected" /> values.
 	/// </summary>
 	public static AndOrResult<char, IThat<char>> IsOneOf(this IThat<char> subject,
 		IEnumerable<char> expected)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	{
+		expected.ThrowIfNull();
+		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint(it, grammars, expected.Cast<char?>())),
 			subject);
+	}
 
 	/// <summary>
 	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
 	/// </summary>
 	public static AndOrResult<char, IThat<char>> IsNotOneOf(this IThat<char> subject,
 		params char?[] unexpected)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	{
+		unexpected.ThrowIfNull();
+		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint(it, grammars, unexpected).Invert()),
 			subject);
+	}
 
 	/// <summary>
 	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
 	/// </summary>
 	public static AndOrResult<char, IThat<char>> IsNotOneOf(this IThat<char> subject,
 		IEnumerable<char?> unexpected)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	{
+		unexpected.ThrowIfNull();
+		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint(it, grammars, unexpected).Invert()),
 			subject);
+	}
 
 	/// <summary>
 	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
 	/// </summary>
 	public static AndOrResult<char, IThat<char>> IsNotOneOf(this IThat<char> subject,
 		IEnumerable<char> unexpected)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	{
+		unexpected.ThrowIfNull();
+		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint(it, grammars, unexpected.Cast<char?>()).Invert()),
 			subject);
+	}
 
 	private sealed class IsOneOfConstraint(string it, ExpectationGrammars grammars, IEnumerable<char?> expected)
 		: ConstraintResult.WithNotNullValue<char>(it, grammars),

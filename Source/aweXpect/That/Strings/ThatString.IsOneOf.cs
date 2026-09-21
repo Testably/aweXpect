@@ -18,6 +18,7 @@ public static partial class ThatString
 		this IThat<string?> subject,
 		params string?[] expected)
 	{
+		expected.ThrowIfNull();
 		StringEqualityOptions options = new();
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
@@ -33,6 +34,7 @@ public static partial class ThatString
 		this IThat<string?> subject,
 		IEnumerable<string?> expected)
 	{
+		expected.ThrowIfNull();
 		StringEqualityOptions options = new();
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
@@ -48,6 +50,7 @@ public static partial class ThatString
 		this IThat<string?> subject,
 		params string?[] unexpected)
 	{
+		unexpected.ThrowIfNull();
 		StringEqualityOptions options = new();
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
@@ -63,6 +66,7 @@ public static partial class ThatString
 		this IThat<string?> subject,
 		IEnumerable<string?> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		StringEqualityOptions options = new();
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)

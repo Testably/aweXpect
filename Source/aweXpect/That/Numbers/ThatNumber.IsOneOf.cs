@@ -21,6 +21,7 @@ public static partial class ThatNumber
 		params TNumber?[] expected)
 		where TNumber : struct, INumber<TNumber>
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -37,6 +38,7 @@ public static partial class ThatNumber
 		params TNumber?[] expected)
 		where TNumber : struct, INumber<TNumber>
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -53,6 +55,7 @@ public static partial class ThatNumber
 		IEnumerable<TNumber> expected)
 		where TNumber : struct, INumber<TNumber>
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -69,6 +72,7 @@ public static partial class ThatNumber
 		IEnumerable<TNumber> expected)
 		where TNumber : struct, INumber<TNumber>
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -85,6 +89,7 @@ public static partial class ThatNumber
 		IEnumerable<TNumber?> expected)
 		where TNumber : struct, INumber<TNumber>
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -101,6 +106,7 @@ public static partial class ThatNumber
 		IEnumerable<TNumber?> expected)
 		where TNumber : struct, INumber<TNumber>
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -117,6 +123,7 @@ public static partial class ThatNumber
 		params TNumber?[] unexpected)
 		where TNumber : struct, INumber<TNumber>
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -133,6 +140,7 @@ public static partial class ThatNumber
 		params TNumber?[] unexpected)
 		where TNumber : struct, INumber<TNumber>
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -149,6 +157,7 @@ public static partial class ThatNumber
 		IEnumerable<TNumber> unexpected)
 		where TNumber : struct, INumber<TNumber>
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -165,6 +174,7 @@ public static partial class ThatNumber
 		IEnumerable<TNumber> unexpected)
 		where TNumber : struct, INumber<TNumber>
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -181,6 +191,7 @@ public static partial class ThatNumber
 		IEnumerable<TNumber?> unexpected)
 		where TNumber : struct, INumber<TNumber>
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -197,6 +208,7 @@ public static partial class ThatNumber
 		IEnumerable<TNumber?> unexpected)
 		where TNumber : struct, INumber<TNumber>
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -436,6 +448,7 @@ public static partial class ThatNumber
 		this IThat<byte> subject,
 		params byte?[] expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<byte> options = new((a, e) => (byte)Math.Abs(a - e));
 		return new NumberToleranceResult<byte, IThat<byte>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -451,6 +464,7 @@ public static partial class ThatNumber
 		this IThat<byte> subject,
 		IEnumerable<byte?> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<byte> options = new((a, e) => (byte)Math.Abs(a - e));
 		return new NumberToleranceResult<byte, IThat<byte>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -466,6 +480,7 @@ public static partial class ThatNumber
 		this IThat<byte> subject,
 		IEnumerable<byte> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<byte> options = new((a, e) => (byte)Math.Abs(a - e));
 		return new NumberToleranceResult<byte, IThat<byte>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -481,6 +496,7 @@ public static partial class ThatNumber
 		this IThat<sbyte> subject,
 		params sbyte?[] expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<sbyte> options = new((a, e) => (sbyte)Math.Abs(a - e));
 		return new NumberToleranceResult<sbyte, IThat<sbyte>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -496,6 +512,7 @@ public static partial class ThatNumber
 		this IThat<sbyte> subject,
 		IEnumerable<sbyte?> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<sbyte> options = new((a, e) => (sbyte)Math.Abs(a - e));
 		return new NumberToleranceResult<sbyte, IThat<sbyte>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -511,6 +528,7 @@ public static partial class ThatNumber
 		this IThat<sbyte> subject,
 		IEnumerable<sbyte> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<sbyte> options = new((a, e) => (sbyte)Math.Abs(a - e));
 		return new NumberToleranceResult<sbyte, IThat<sbyte>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -526,6 +544,7 @@ public static partial class ThatNumber
 		this IThat<short> subject,
 		params short?[] expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<short> options = new((a, e) => (short)Math.Abs(a - e));
 		return new NumberToleranceResult<short, IThat<short>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -541,6 +560,7 @@ public static partial class ThatNumber
 		this IThat<short> subject,
 		IEnumerable<short?> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<short> options = new((a, e) => (short)Math.Abs(a - e));
 		return new NumberToleranceResult<short, IThat<short>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -556,6 +576,7 @@ public static partial class ThatNumber
 		this IThat<short> subject,
 		IEnumerable<short> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<short> options = new((a, e) => (short)Math.Abs(a - e));
 		return new NumberToleranceResult<short, IThat<short>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -571,6 +592,7 @@ public static partial class ThatNumber
 		this IThat<ushort> subject,
 		params ushort?[] expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<ushort> options = new((a, e) => (ushort)Math.Abs(a - e));
 		return new NumberToleranceResult<ushort, IThat<ushort>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -586,6 +608,7 @@ public static partial class ThatNumber
 		this IThat<ushort> subject,
 		IEnumerable<ushort?> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<ushort> options = new((a, e) => (ushort)Math.Abs(a - e));
 		return new NumberToleranceResult<ushort, IThat<ushort>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -601,6 +624,7 @@ public static partial class ThatNumber
 		this IThat<ushort> subject,
 		IEnumerable<ushort> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<ushort> options = new((a, e) => (ushort)Math.Abs(a - e));
 		return new NumberToleranceResult<ushort, IThat<ushort>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -616,6 +640,7 @@ public static partial class ThatNumber
 		this IThat<int> subject,
 		params int?[] expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<int> options = new((a, e) => Math.Abs(a - e));
 		return new NumberToleranceResult<int, IThat<int>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -631,6 +656,7 @@ public static partial class ThatNumber
 		this IThat<int> subject,
 		IEnumerable<int?> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<int> options = new((a, e) => Math.Abs(a - e));
 		return new NumberToleranceResult<int, IThat<int>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -646,6 +672,7 @@ public static partial class ThatNumber
 		this IThat<int> subject,
 		IEnumerable<int> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<int> options = new((a, e) => Math.Abs(a - e));
 		return new NumberToleranceResult<int, IThat<int>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -661,6 +688,7 @@ public static partial class ThatNumber
 		this IThat<uint> subject,
 		params uint?[] expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<uint> options = new((a, e) => a > e ? a - e : e - a);
 		return new NumberToleranceResult<uint, IThat<uint>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -676,6 +704,7 @@ public static partial class ThatNumber
 		this IThat<uint> subject,
 		IEnumerable<uint?> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<uint> options = new((a, e) => a > e ? a - e : e - a);
 		return new NumberToleranceResult<uint, IThat<uint>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -691,6 +720,7 @@ public static partial class ThatNumber
 		this IThat<uint> subject,
 		IEnumerable<uint> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<uint> options = new((a, e) => a > e ? a - e : e - a);
 		return new NumberToleranceResult<uint, IThat<uint>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -706,6 +736,7 @@ public static partial class ThatNumber
 		this IThat<long> subject,
 		params long?[] expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<long> options = new((a, e) => Math.Abs(a - e));
 		return new NumberToleranceResult<long, IThat<long>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -721,6 +752,7 @@ public static partial class ThatNumber
 		this IThat<long> subject,
 		IEnumerable<long?> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<long> options = new((a, e) => Math.Abs(a - e));
 		return new NumberToleranceResult<long, IThat<long>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -736,6 +768,7 @@ public static partial class ThatNumber
 		this IThat<long> subject,
 		IEnumerable<long> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<long> options = new((a, e) => Math.Abs(a - e));
 		return new NumberToleranceResult<long, IThat<long>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -751,6 +784,7 @@ public static partial class ThatNumber
 		this IThat<ulong> subject,
 		params ulong?[] expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<ulong> options = new((a, e) => a > e ? a - e : e - a);
 		return new NumberToleranceResult<ulong, IThat<ulong>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -766,6 +800,7 @@ public static partial class ThatNumber
 		this IThat<ulong> subject,
 		IEnumerable<ulong?> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<ulong> options = new((a, e) => a > e ? a - e : e - a);
 		return new NumberToleranceResult<ulong, IThat<ulong>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -781,6 +816,7 @@ public static partial class ThatNumber
 		this IThat<ulong> subject,
 		IEnumerable<ulong> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<ulong> options = new((a, e) => a > e ? a - e : e - a);
 		return new NumberToleranceResult<ulong, IThat<ulong>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -796,6 +832,7 @@ public static partial class ThatNumber
 		this IThat<float> subject,
 		params float?[] expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<float> options = new(CalculateDifference);
 		return new NumberToleranceResult<float, IThat<float>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -811,6 +848,7 @@ public static partial class ThatNumber
 		this IThat<float> subject,
 		IEnumerable<float?> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<float> options = new(CalculateDifference);
 		return new NumberToleranceResult<float, IThat<float>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -826,6 +864,7 @@ public static partial class ThatNumber
 		this IThat<float> subject,
 		IEnumerable<float> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<float> options = new(CalculateDifference);
 		return new NumberToleranceResult<float, IThat<float>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -841,6 +880,7 @@ public static partial class ThatNumber
 		this IThat<double> subject,
 		params double?[] expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<double> options = new(CalculateDifference);
 		return new NumberToleranceResult<double, IThat<double>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -856,6 +896,7 @@ public static partial class ThatNumber
 		this IThat<double> subject,
 		IEnumerable<double?> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<double> options = new(CalculateDifference);
 		return new NumberToleranceResult<double, IThat<double>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -871,6 +912,7 @@ public static partial class ThatNumber
 		this IThat<double> subject,
 		IEnumerable<double> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<double> options = new(CalculateDifference);
 		return new NumberToleranceResult<double, IThat<double>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -886,6 +928,7 @@ public static partial class ThatNumber
 		this IThat<decimal> subject,
 		params decimal?[] expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<decimal> options = new((a, e) => Math.Abs(a - e));
 		return new NumberToleranceResult<decimal, IThat<decimal>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -901,6 +944,7 @@ public static partial class ThatNumber
 		this IThat<decimal> subject,
 		IEnumerable<decimal?> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<decimal> options = new((a, e) => Math.Abs(a - e));
 		return new NumberToleranceResult<decimal, IThat<decimal>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -916,6 +960,7 @@ public static partial class ThatNumber
 		this IThat<decimal> subject,
 		IEnumerable<decimal> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<decimal> options = new((a, e) => Math.Abs(a - e));
 		return new NumberToleranceResult<decimal, IThat<decimal>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -931,6 +976,7 @@ public static partial class ThatNumber
 		this IThat<byte?> subject,
 		params byte?[] expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<byte> options = new((a, e) => (byte)Math.Abs(a - e));
 		return new NullableNumberToleranceResult<byte, IThat<byte?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -946,6 +992,7 @@ public static partial class ThatNumber
 		this IThat<byte?> subject,
 		IEnumerable<byte?> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<byte> options = new((a, e) => (byte)Math.Abs(a - e));
 		return new NullableNumberToleranceResult<byte, IThat<byte?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -961,6 +1008,7 @@ public static partial class ThatNumber
 		this IThat<byte?> subject,
 		IEnumerable<byte> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<byte> options = new((a, e) => (byte)Math.Abs(a - e));
 		return new NullableNumberToleranceResult<byte, IThat<byte?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -976,6 +1024,7 @@ public static partial class ThatNumber
 		this IThat<sbyte?> subject,
 		params sbyte?[] expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<sbyte> options = new((a, e) => (sbyte)Math.Abs(a - e));
 		return new NullableNumberToleranceResult<sbyte, IThat<sbyte?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -991,6 +1040,7 @@ public static partial class ThatNumber
 		this IThat<sbyte?> subject,
 		IEnumerable<sbyte?> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<sbyte> options = new((a, e) => (sbyte)Math.Abs(a - e));
 		return new NullableNumberToleranceResult<sbyte, IThat<sbyte?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1006,6 +1056,7 @@ public static partial class ThatNumber
 		this IThat<sbyte?> subject,
 		IEnumerable<sbyte> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<sbyte> options = new((a, e) => (sbyte)Math.Abs(a - e));
 		return new NullableNumberToleranceResult<sbyte, IThat<sbyte?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1021,6 +1072,7 @@ public static partial class ThatNumber
 		this IThat<short?> subject,
 		params short?[] expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<short> options = new((a, e) => (short)Math.Abs(a - e));
 		return new NullableNumberToleranceResult<short, IThat<short?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1036,6 +1088,7 @@ public static partial class ThatNumber
 		this IThat<short?> subject,
 		IEnumerable<short?> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<short> options = new((a, e) => (short)Math.Abs(a - e));
 		return new NullableNumberToleranceResult<short, IThat<short?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1051,6 +1104,7 @@ public static partial class ThatNumber
 		this IThat<short?> subject,
 		IEnumerable<short> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<short> options = new((a, e) => (short)Math.Abs(a - e));
 		return new NullableNumberToleranceResult<short, IThat<short?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1066,6 +1120,7 @@ public static partial class ThatNumber
 		this IThat<ushort?> subject,
 		params ushort?[] expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<ushort> options = new((a, e) => (ushort)Math.Abs(a - e));
 		return new NullableNumberToleranceResult<ushort, IThat<ushort?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1081,6 +1136,7 @@ public static partial class ThatNumber
 		this IThat<ushort?> subject,
 		IEnumerable<ushort?> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<ushort> options = new((a, e) => (ushort)Math.Abs(a - e));
 		return new NullableNumberToleranceResult<ushort, IThat<ushort?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1096,6 +1152,7 @@ public static partial class ThatNumber
 		this IThat<ushort?> subject,
 		IEnumerable<ushort> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<ushort> options = new((a, e) => (ushort)Math.Abs(a - e));
 		return new NullableNumberToleranceResult<ushort, IThat<ushort?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1111,6 +1168,7 @@ public static partial class ThatNumber
 		this IThat<int?> subject,
 		params int?[] expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<int> options = new((a, e) => Math.Abs(a - e));
 		return new NullableNumberToleranceResult<int, IThat<int?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1126,6 +1184,7 @@ public static partial class ThatNumber
 		this IThat<int?> subject,
 		IEnumerable<int?> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<int> options = new((a, e) => Math.Abs(a - e));
 		return new NullableNumberToleranceResult<int, IThat<int?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1141,6 +1200,7 @@ public static partial class ThatNumber
 		this IThat<int?> subject,
 		IEnumerable<int> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<int> options = new((a, e) => Math.Abs(a - e));
 		return new NullableNumberToleranceResult<int, IThat<int?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1156,6 +1216,7 @@ public static partial class ThatNumber
 		this IThat<uint?> subject,
 		params uint?[] expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<uint> options = new((a, e) => a > e ? a - e : e - a);
 		return new NullableNumberToleranceResult<uint, IThat<uint?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1171,6 +1232,7 @@ public static partial class ThatNumber
 		this IThat<uint?> subject,
 		IEnumerable<uint?> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<uint> options = new((a, e) => a > e ? a - e : e - a);
 		return new NullableNumberToleranceResult<uint, IThat<uint?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1186,6 +1248,7 @@ public static partial class ThatNumber
 		this IThat<uint?> subject,
 		IEnumerable<uint> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<uint> options = new((a, e) => a > e ? a - e : e - a);
 		return new NullableNumberToleranceResult<uint, IThat<uint?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1201,6 +1264,7 @@ public static partial class ThatNumber
 		this IThat<long?> subject,
 		params long?[] expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<long> options = new((a, e) => Math.Abs(a - e));
 		return new NullableNumberToleranceResult<long, IThat<long?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1216,6 +1280,7 @@ public static partial class ThatNumber
 		this IThat<long?> subject,
 		IEnumerable<long?> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<long> options = new((a, e) => Math.Abs(a - e));
 		return new NullableNumberToleranceResult<long, IThat<long?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1231,6 +1296,7 @@ public static partial class ThatNumber
 		this IThat<long?> subject,
 		IEnumerable<long> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<long> options = new((a, e) => Math.Abs(a - e));
 		return new NullableNumberToleranceResult<long, IThat<long?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1246,6 +1312,7 @@ public static partial class ThatNumber
 		this IThat<ulong?> subject,
 		params ulong?[] expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<ulong> options = new((a, e) => a > e ? a - e : e - a);
 		return new NullableNumberToleranceResult<ulong, IThat<ulong?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1261,6 +1328,7 @@ public static partial class ThatNumber
 		this IThat<ulong?> subject,
 		IEnumerable<ulong?> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<ulong> options = new((a, e) => a > e ? a - e : e - a);
 		return new NullableNumberToleranceResult<ulong, IThat<ulong?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1276,6 +1344,7 @@ public static partial class ThatNumber
 		this IThat<ulong?> subject,
 		IEnumerable<ulong> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<ulong> options = new((a, e) => a > e ? a - e : e - a);
 		return new NullableNumberToleranceResult<ulong, IThat<ulong?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1291,6 +1360,7 @@ public static partial class ThatNumber
 		this IThat<float?> subject,
 		params float?[] expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<float> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<float, IThat<float?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1306,6 +1376,7 @@ public static partial class ThatNumber
 		this IThat<float?> subject,
 		IEnumerable<float?> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<float> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<float, IThat<float?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1321,6 +1392,7 @@ public static partial class ThatNumber
 		this IThat<float?> subject,
 		IEnumerable<float> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<float> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<float, IThat<float?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1336,6 +1408,7 @@ public static partial class ThatNumber
 		this IThat<double?> subject,
 		params double?[] expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<double> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<double, IThat<double?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1351,6 +1424,7 @@ public static partial class ThatNumber
 		this IThat<double?> subject,
 		IEnumerable<double?> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<double> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<double, IThat<double?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1366,6 +1440,7 @@ public static partial class ThatNumber
 		this IThat<double?> subject,
 		IEnumerable<double> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<double> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<double, IThat<double?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1381,6 +1456,7 @@ public static partial class ThatNumber
 		this IThat<decimal?> subject,
 		params decimal?[] expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<decimal> options = new((a, e) => Math.Abs(a - e));
 		return new NullableNumberToleranceResult<decimal, IThat<decimal?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1396,6 +1472,7 @@ public static partial class ThatNumber
 		this IThat<decimal?> subject,
 		IEnumerable<decimal?> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<decimal> options = new((a, e) => Math.Abs(a - e));
 		return new NullableNumberToleranceResult<decimal, IThat<decimal?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1411,6 +1488,7 @@ public static partial class ThatNumber
 		this IThat<decimal?> subject,
 		IEnumerable<decimal> expected)
 	{
+		expected.ThrowIfNull();
 		NumberTolerance<decimal> options = new((a, e) => Math.Abs(a - e));
 		return new NullableNumberToleranceResult<decimal, IThat<decimal?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1426,6 +1504,7 @@ public static partial class ThatNumber
 		this IThat<byte> subject,
 		params byte?[] unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<byte> options = new((a, e) => (byte)Math.Abs(a - e));
 		return new NumberToleranceResult<byte, IThat<byte>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1441,6 +1520,7 @@ public static partial class ThatNumber
 		this IThat<byte> subject,
 		IEnumerable<byte?> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<byte> options = new((a, e) => (byte)Math.Abs(a - e));
 		return new NumberToleranceResult<byte, IThat<byte>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1456,6 +1536,7 @@ public static partial class ThatNumber
 		this IThat<byte> subject,
 		IEnumerable<byte> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<byte> options = new((a, e) => (byte)Math.Abs(a - e));
 		return new NumberToleranceResult<byte, IThat<byte>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1471,6 +1552,7 @@ public static partial class ThatNumber
 		this IThat<sbyte> subject,
 		params sbyte?[] unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<sbyte> options = new((a, e) => (sbyte)Math.Abs(a - e));
 		return new NumberToleranceResult<sbyte, IThat<sbyte>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1486,6 +1568,7 @@ public static partial class ThatNumber
 		this IThat<sbyte> subject,
 		IEnumerable<sbyte?> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<sbyte> options = new((a, e) => (sbyte)Math.Abs(a - e));
 		return new NumberToleranceResult<sbyte, IThat<sbyte>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1501,6 +1584,7 @@ public static partial class ThatNumber
 		this IThat<sbyte> subject,
 		IEnumerable<sbyte> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<sbyte> options = new((a, e) => (sbyte)Math.Abs(a - e));
 		return new NumberToleranceResult<sbyte, IThat<sbyte>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1516,6 +1600,7 @@ public static partial class ThatNumber
 		this IThat<short> subject,
 		params short?[] unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<short> options = new((a, e) => (short)Math.Abs(a - e));
 		return new NumberToleranceResult<short, IThat<short>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1531,6 +1616,7 @@ public static partial class ThatNumber
 		this IThat<short> subject,
 		IEnumerable<short?> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<short> options = new((a, e) => (short)Math.Abs(a - e));
 		return new NumberToleranceResult<short, IThat<short>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1546,6 +1632,7 @@ public static partial class ThatNumber
 		this IThat<short> subject,
 		IEnumerable<short> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<short> options = new((a, e) => (short)Math.Abs(a - e));
 		return new NumberToleranceResult<short, IThat<short>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1561,6 +1648,7 @@ public static partial class ThatNumber
 		this IThat<ushort> subject,
 		params ushort?[] unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<ushort> options = new((a, e) => (ushort)Math.Abs(a - e));
 		return new NumberToleranceResult<ushort, IThat<ushort>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1576,6 +1664,7 @@ public static partial class ThatNumber
 		this IThat<ushort> subject,
 		IEnumerable<ushort?> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<ushort> options = new((a, e) => (ushort)Math.Abs(a - e));
 		return new NumberToleranceResult<ushort, IThat<ushort>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1591,6 +1680,7 @@ public static partial class ThatNumber
 		this IThat<ushort> subject,
 		IEnumerable<ushort> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<ushort> options = new((a, e) => (ushort)Math.Abs(a - e));
 		return new NumberToleranceResult<ushort, IThat<ushort>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1606,6 +1696,7 @@ public static partial class ThatNumber
 		this IThat<int> subject,
 		params int?[] unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<int> options = new((a, e) => Math.Abs(a - e));
 		return new NumberToleranceResult<int, IThat<int>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1621,6 +1712,7 @@ public static partial class ThatNumber
 		this IThat<int> subject,
 		IEnumerable<int?> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<int> options = new((a, e) => Math.Abs(a - e));
 		return new NumberToleranceResult<int, IThat<int>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1636,6 +1728,7 @@ public static partial class ThatNumber
 		this IThat<int> subject,
 		IEnumerable<int> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<int> options = new((a, e) => Math.Abs(a - e));
 		return new NumberToleranceResult<int, IThat<int>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1651,6 +1744,7 @@ public static partial class ThatNumber
 		this IThat<uint> subject,
 		params uint?[] unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<uint> options = new((a, e) => a > e ? a - e : e - a);
 		return new NumberToleranceResult<uint, IThat<uint>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1666,6 +1760,7 @@ public static partial class ThatNumber
 		this IThat<uint> subject,
 		IEnumerable<uint?> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<uint> options = new((a, e) => a > e ? a - e : e - a);
 		return new NumberToleranceResult<uint, IThat<uint>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1681,6 +1776,7 @@ public static partial class ThatNumber
 		this IThat<uint> subject,
 		IEnumerable<uint> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<uint> options = new((a, e) => a > e ? a - e : e - a);
 		return new NumberToleranceResult<uint, IThat<uint>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1696,6 +1792,7 @@ public static partial class ThatNumber
 		this IThat<long> subject,
 		params long?[] unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<long> options = new((a, e) => Math.Abs(a - e));
 		return new NumberToleranceResult<long, IThat<long>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1711,6 +1808,7 @@ public static partial class ThatNumber
 		this IThat<long> subject,
 		IEnumerable<long?> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<long> options = new((a, e) => Math.Abs(a - e));
 		return new NumberToleranceResult<long, IThat<long>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1726,6 +1824,7 @@ public static partial class ThatNumber
 		this IThat<long> subject,
 		IEnumerable<long> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<long> options = new((a, e) => Math.Abs(a - e));
 		return new NumberToleranceResult<long, IThat<long>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1741,6 +1840,7 @@ public static partial class ThatNumber
 		this IThat<ulong> subject,
 		params ulong?[] unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<ulong> options = new((a, e) => a > e ? a - e : e - a);
 		return new NumberToleranceResult<ulong, IThat<ulong>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1756,6 +1856,7 @@ public static partial class ThatNumber
 		this IThat<ulong> subject,
 		IEnumerable<ulong?> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<ulong> options = new((a, e) => a > e ? a - e : e - a);
 		return new NumberToleranceResult<ulong, IThat<ulong>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1771,6 +1872,7 @@ public static partial class ThatNumber
 		this IThat<ulong> subject,
 		IEnumerable<ulong> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<ulong> options = new((a, e) => a > e ? a - e : e - a);
 		return new NumberToleranceResult<ulong, IThat<ulong>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1786,6 +1888,7 @@ public static partial class ThatNumber
 		this IThat<float> subject,
 		params float?[] unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<float> options = new(CalculateDifference);
 		return new NumberToleranceResult<float, IThat<float>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1801,6 +1904,7 @@ public static partial class ThatNumber
 		this IThat<float> subject,
 		IEnumerable<float?> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<float> options = new(CalculateDifference);
 		return new NumberToleranceResult<float, IThat<float>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1816,6 +1920,7 @@ public static partial class ThatNumber
 		this IThat<float> subject,
 		IEnumerable<float> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<float> options = new(CalculateDifference);
 		return new NumberToleranceResult<float, IThat<float>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1831,6 +1936,7 @@ public static partial class ThatNumber
 		this IThat<double> subject,
 		params double?[] unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<double> options = new(CalculateDifference);
 		return new NumberToleranceResult<double, IThat<double>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1846,6 +1952,7 @@ public static partial class ThatNumber
 		this IThat<double> subject,
 		IEnumerable<double?> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<double> options = new(CalculateDifference);
 		return new NumberToleranceResult<double, IThat<double>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1861,6 +1968,7 @@ public static partial class ThatNumber
 		this IThat<double> subject,
 		IEnumerable<double> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<double> options = new(CalculateDifference);
 		return new NumberToleranceResult<double, IThat<double>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1876,6 +1984,7 @@ public static partial class ThatNumber
 		this IThat<decimal> subject,
 		params decimal?[] unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<decimal> options = new((a, e) => Math.Abs(a - e));
 		return new NumberToleranceResult<decimal, IThat<decimal>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1891,6 +2000,7 @@ public static partial class ThatNumber
 		this IThat<decimal> subject,
 		IEnumerable<decimal?> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<decimal> options = new((a, e) => Math.Abs(a - e));
 		return new NumberToleranceResult<decimal, IThat<decimal>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1906,6 +2016,7 @@ public static partial class ThatNumber
 		this IThat<decimal> subject,
 		IEnumerable<decimal> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<decimal> options = new((a, e) => Math.Abs(a - e));
 		return new NumberToleranceResult<decimal, IThat<decimal>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1921,6 +2032,7 @@ public static partial class ThatNumber
 		this IThat<byte?> subject,
 		params byte?[] unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<byte> options = new((a, e) => (byte)Math.Abs(a - e));
 		return new NullableNumberToleranceResult<byte, IThat<byte?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1936,6 +2048,7 @@ public static partial class ThatNumber
 		this IThat<byte?> subject,
 		IEnumerable<byte?> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<byte> options = new((a, e) => (byte)Math.Abs(a - e));
 		return new NullableNumberToleranceResult<byte, IThat<byte?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1951,6 +2064,7 @@ public static partial class ThatNumber
 		this IThat<byte?> subject,
 		IEnumerable<byte> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<byte> options = new((a, e) => (byte)Math.Abs(a - e));
 		return new NullableNumberToleranceResult<byte, IThat<byte?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1966,6 +2080,7 @@ public static partial class ThatNumber
 		this IThat<sbyte?> subject,
 		params sbyte?[] unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<sbyte> options = new((a, e) => (sbyte)Math.Abs(a - e));
 		return new NullableNumberToleranceResult<sbyte, IThat<sbyte?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1981,6 +2096,7 @@ public static partial class ThatNumber
 		this IThat<sbyte?> subject,
 		IEnumerable<sbyte?> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<sbyte> options = new((a, e) => (sbyte)Math.Abs(a - e));
 		return new NullableNumberToleranceResult<sbyte, IThat<sbyte?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -1996,6 +2112,7 @@ public static partial class ThatNumber
 		this IThat<sbyte?> subject,
 		IEnumerable<sbyte> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<sbyte> options = new((a, e) => (sbyte)Math.Abs(a - e));
 		return new NullableNumberToleranceResult<sbyte, IThat<sbyte?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -2011,6 +2128,7 @@ public static partial class ThatNumber
 		this IThat<short?> subject,
 		params short?[] unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<short> options = new((a, e) => (short)Math.Abs(a - e));
 		return new NullableNumberToleranceResult<short, IThat<short?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -2026,6 +2144,7 @@ public static partial class ThatNumber
 		this IThat<short?> subject,
 		IEnumerable<short?> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<short> options = new((a, e) => (short)Math.Abs(a - e));
 		return new NullableNumberToleranceResult<short, IThat<short?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -2041,6 +2160,7 @@ public static partial class ThatNumber
 		this IThat<short?> subject,
 		IEnumerable<short> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<short> options = new((a, e) => (short)Math.Abs(a - e));
 		return new NullableNumberToleranceResult<short, IThat<short?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -2056,6 +2176,7 @@ public static partial class ThatNumber
 		this IThat<ushort?> subject,
 		params ushort?[] unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<ushort> options = new((a, e) => (ushort)Math.Abs(a - e));
 		return new NullableNumberToleranceResult<ushort, IThat<ushort?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -2071,6 +2192,7 @@ public static partial class ThatNumber
 		this IThat<ushort?> subject,
 		IEnumerable<ushort?> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<ushort> options = new((a, e) => (ushort)Math.Abs(a - e));
 		return new NullableNumberToleranceResult<ushort, IThat<ushort?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -2086,6 +2208,7 @@ public static partial class ThatNumber
 		this IThat<ushort?> subject,
 		IEnumerable<ushort> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<ushort> options = new((a, e) => (ushort)Math.Abs(a - e));
 		return new NullableNumberToleranceResult<ushort, IThat<ushort?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -2101,6 +2224,7 @@ public static partial class ThatNumber
 		this IThat<int?> subject,
 		params int?[] unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<int> options = new((a, e) => Math.Abs(a - e));
 		return new NullableNumberToleranceResult<int, IThat<int?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -2116,6 +2240,7 @@ public static partial class ThatNumber
 		this IThat<int?> subject,
 		IEnumerable<int?> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<int> options = new((a, e) => Math.Abs(a - e));
 		return new NullableNumberToleranceResult<int, IThat<int?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -2131,6 +2256,7 @@ public static partial class ThatNumber
 		this IThat<int?> subject,
 		IEnumerable<int> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<int> options = new((a, e) => Math.Abs(a - e));
 		return new NullableNumberToleranceResult<int, IThat<int?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -2146,6 +2272,7 @@ public static partial class ThatNumber
 		this IThat<uint?> subject,
 		params uint?[] unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<uint> options = new((a, e) => a > e ? a - e : e - a);
 		return new NullableNumberToleranceResult<uint, IThat<uint?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -2161,6 +2288,7 @@ public static partial class ThatNumber
 		this IThat<uint?> subject,
 		IEnumerable<uint?> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<uint> options = new((a, e) => a > e ? a - e : e - a);
 		return new NullableNumberToleranceResult<uint, IThat<uint?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -2176,6 +2304,7 @@ public static partial class ThatNumber
 		this IThat<uint?> subject,
 		IEnumerable<uint> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<uint> options = new((a, e) => a > e ? a - e : e - a);
 		return new NullableNumberToleranceResult<uint, IThat<uint?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -2191,6 +2320,7 @@ public static partial class ThatNumber
 		this IThat<long?> subject,
 		params long?[] unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<long> options = new((a, e) => Math.Abs(a - e));
 		return new NullableNumberToleranceResult<long, IThat<long?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -2206,6 +2336,7 @@ public static partial class ThatNumber
 		this IThat<long?> subject,
 		IEnumerable<long?> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<long> options = new((a, e) => Math.Abs(a - e));
 		return new NullableNumberToleranceResult<long, IThat<long?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -2221,6 +2352,7 @@ public static partial class ThatNumber
 		this IThat<long?> subject,
 		IEnumerable<long> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<long> options = new((a, e) => Math.Abs(a - e));
 		return new NullableNumberToleranceResult<long, IThat<long?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -2236,6 +2368,7 @@ public static partial class ThatNumber
 		this IThat<ulong?> subject,
 		params ulong?[] unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<ulong> options = new((a, e) => a > e ? a - e : e - a);
 		return new NullableNumberToleranceResult<ulong, IThat<ulong?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -2251,6 +2384,7 @@ public static partial class ThatNumber
 		this IThat<ulong?> subject,
 		IEnumerable<ulong?> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<ulong> options = new((a, e) => a > e ? a - e : e - a);
 		return new NullableNumberToleranceResult<ulong, IThat<ulong?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -2266,6 +2400,7 @@ public static partial class ThatNumber
 		this IThat<ulong?> subject,
 		IEnumerable<ulong> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<ulong> options = new((a, e) => a > e ? a - e : e - a);
 		return new NullableNumberToleranceResult<ulong, IThat<ulong?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -2281,6 +2416,7 @@ public static partial class ThatNumber
 		this IThat<float?> subject,
 		params float?[] unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<float> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<float, IThat<float?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -2296,6 +2432,7 @@ public static partial class ThatNumber
 		this IThat<float?> subject,
 		IEnumerable<float?> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<float> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<float, IThat<float?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -2311,6 +2448,7 @@ public static partial class ThatNumber
 		this IThat<float?> subject,
 		IEnumerable<float> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<float> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<float, IThat<float?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -2326,6 +2464,7 @@ public static partial class ThatNumber
 		this IThat<double?> subject,
 		params double?[] unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<double> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<double, IThat<double?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -2341,6 +2480,7 @@ public static partial class ThatNumber
 		this IThat<double?> subject,
 		IEnumerable<double?> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<double> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<double, IThat<double?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -2356,6 +2496,7 @@ public static partial class ThatNumber
 		this IThat<double?> subject,
 		IEnumerable<double> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<double> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<double, IThat<double?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -2371,6 +2512,7 @@ public static partial class ThatNumber
 		this IThat<decimal?> subject,
 		params decimal?[] unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<decimal> options = new((a, e) => Math.Abs(a - e));
 		return new NullableNumberToleranceResult<decimal, IThat<decimal?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -2386,6 +2528,7 @@ public static partial class ThatNumber
 		this IThat<decimal?> subject,
 		IEnumerable<decimal?> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<decimal> options = new((a, e) => Math.Abs(a - e));
 		return new NullableNumberToleranceResult<decimal, IThat<decimal?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -2401,6 +2544,7 @@ public static partial class ThatNumber
 		this IThat<decimal?> subject,
 		IEnumerable<decimal> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		NumberTolerance<decimal> options = new((a, e) => Math.Abs(a - e));
 		return new NullableNumberToleranceResult<decimal, IThat<decimal?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>

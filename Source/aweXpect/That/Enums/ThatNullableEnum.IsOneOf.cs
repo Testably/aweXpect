@@ -16,9 +16,12 @@ public static partial class ThatNullableEnum
 	public static AndOrResult<TEnum?, IThat<TEnum?>> IsOneOf<TEnum>(this IThat<TEnum?> subject,
 		params TEnum?[] expected)
 		where TEnum : struct, Enum
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	{
+		expected.ThrowIfNull();
+		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint<TEnum>(it, grammars, expected)),
 			subject);
+	}
 
 	/// <summary>
 	///     Verifies that the subject is one of the <paramref name="expected" /> values.
@@ -26,9 +29,12 @@ public static partial class ThatNullableEnum
 	public static AndOrResult<TEnum?, IThat<TEnum?>> IsOneOf<TEnum>(this IThat<TEnum?> subject,
 		IEnumerable<TEnum?> expected)
 		where TEnum : struct, Enum
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	{
+		expected.ThrowIfNull();
+		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint<TEnum>(it, grammars, expected)),
 			subject);
+	}
 
 	/// <summary>
 	///     Verifies that the subject is one of the <paramref name="expected" /> values.
@@ -36,9 +42,12 @@ public static partial class ThatNullableEnum
 	public static AndOrResult<TEnum?, IThat<TEnum?>> IsOneOf<TEnum>(this IThat<TEnum?> subject,
 		IEnumerable<TEnum> expected)
 		where TEnum : struct, Enum
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	{
+		expected.ThrowIfNull();
+		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint<TEnum>(it, grammars, expected.Cast<TEnum?>())),
 			subject);
+	}
 
 	/// <summary>
 	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
@@ -46,9 +55,12 @@ public static partial class ThatNullableEnum
 	public static AndOrResult<TEnum?, IThat<TEnum?>> IsNotOneOf<TEnum>(this IThat<TEnum?> subject,
 		params TEnum?[] unexpected)
 		where TEnum : struct, Enum
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	{
+		unexpected.ThrowIfNull();
+		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint<TEnum>(it, grammars, unexpected).Invert()),
 			subject);
+	}
 
 	/// <summary>
 	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
@@ -56,9 +68,12 @@ public static partial class ThatNullableEnum
 	public static AndOrResult<TEnum?, IThat<TEnum?>> IsNotOneOf<TEnum>(this IThat<TEnum?> subject,
 		IEnumerable<TEnum?> unexpected)
 		where TEnum : struct, Enum
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	{
+		unexpected.ThrowIfNull();
+		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint<TEnum>(it, grammars, unexpected).Invert()),
 			subject);
+	}
 
 	/// <summary>
 	///     Verifies that the subject is not one of the <paramref name="unexpected" /> values.
@@ -66,9 +81,12 @@ public static partial class ThatNullableEnum
 	public static AndOrResult<TEnum?, IThat<TEnum?>> IsNotOneOf<TEnum>(this IThat<TEnum?> subject,
 		IEnumerable<TEnum> unexpected)
 		where TEnum : struct, Enum
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
+	{
+		unexpected.ThrowIfNull();
+		return new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsOneOfConstraint<TEnum>(it, grammars, unexpected.Cast<TEnum?>()).Invert()),
 			subject);
+	}
 
 	private sealed class IsOneOfConstraint<TEnum>(string it, ExpectationGrammars grammars, IEnumerable<TEnum?> expected)
 		: ConstraintResult.WithValue<TEnum?>(it, grammars),

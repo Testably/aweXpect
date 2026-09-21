@@ -20,6 +20,7 @@ public static partial class ThatDateOnly
 		this IThat<DateOnly> subject,
 		params DateOnly?[] expected)
 	{
+		expected.ThrowIfNull();
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateOnly, IThat<DateOnly>>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars) =>
@@ -35,6 +36,7 @@ public static partial class ThatDateOnly
 		this IThat<DateOnly> subject,
 		IEnumerable<DateOnly> expected)
 	{
+		expected.ThrowIfNull();
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateOnly, IThat<DateOnly>>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars) =>
@@ -50,6 +52,7 @@ public static partial class ThatDateOnly
 		this IThat<DateOnly> subject,
 		IEnumerable<DateOnly?> expected)
 	{
+		expected.ThrowIfNull();
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateOnly, IThat<DateOnly>>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars) =>
@@ -65,6 +68,7 @@ public static partial class ThatDateOnly
 		this IThat<DateOnly> subject,
 		params DateOnly?[] unexpected)
 	{
+		unexpected.ThrowIfNull();
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateOnly, IThat<DateOnly>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -80,6 +84,7 @@ public static partial class ThatDateOnly
 		this IThat<DateOnly> subject,
 		IEnumerable<DateOnly> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateOnly, IThat<DateOnly>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -95,6 +100,7 @@ public static partial class ThatDateOnly
 		this IThat<DateOnly> subject,
 		IEnumerable<DateOnly?> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateOnly, IThat<DateOnly>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>

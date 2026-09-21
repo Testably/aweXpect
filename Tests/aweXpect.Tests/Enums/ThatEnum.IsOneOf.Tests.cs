@@ -23,6 +23,20 @@ public sealed partial class ThatEnum
 					.WithMessage("You have to provide at least one expected value!");
 			}
 
+			[Fact]
+			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				MyColors subject = MyColors.Blue;
+				MyColors[]? expected = null;
+
+				async Task Act()
+					=> await That(subject).IsOneOf(expected!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The expected cannot be null.").AsPrefix();
+			}
+
 			[Theory]
 			[InlineData(MyColors.Blue)]
 			[InlineData(MyColors.Green)]
@@ -52,6 +66,20 @@ public sealed partial class ThatEnum
 
 				await That(Act).Throws<ArgumentException>()
 					.WithMessage("You have to provide at least one expected value!");
+			}
+
+			[Fact]
+			public async Task WhenNullableExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				MyColors subject = MyColors.Blue;
+				MyColors?[]? expected = null;
+
+				async Task Act()
+					=> await That(subject).IsOneOf(expected!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The expected cannot be null.").AsPrefix();
 			}
 
 			[Theory]

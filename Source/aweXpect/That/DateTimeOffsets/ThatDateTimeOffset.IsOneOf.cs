@@ -19,6 +19,7 @@ public static partial class ThatDateTimeOffset
 		this IThat<DateTimeOffset> subject,
 		params DateTimeOffset?[] expected)
 	{
+		expected.ThrowIfNull();
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateTimeOffset, IThat<DateTimeOffset>>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars) =>
@@ -34,6 +35,7 @@ public static partial class ThatDateTimeOffset
 		this IThat<DateTimeOffset> subject,
 		IEnumerable<DateTimeOffset> expected)
 	{
+		expected.ThrowIfNull();
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateTimeOffset, IThat<DateTimeOffset>>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars) =>
@@ -49,6 +51,7 @@ public static partial class ThatDateTimeOffset
 		this IThat<DateTimeOffset> subject,
 		IEnumerable<DateTimeOffset?> expected)
 	{
+		expected.ThrowIfNull();
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateTimeOffset, IThat<DateTimeOffset>>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars) =>
@@ -64,6 +67,7 @@ public static partial class ThatDateTimeOffset
 		this IThat<DateTimeOffset> subject,
 		params DateTimeOffset?[] unexpected)
 	{
+		unexpected.ThrowIfNull();
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateTimeOffset, IThat<DateTimeOffset>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -79,6 +83,7 @@ public static partial class ThatDateTimeOffset
 		this IThat<DateTimeOffset> subject,
 		IEnumerable<DateTimeOffset> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateTimeOffset, IThat<DateTimeOffset>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -94,6 +99,7 @@ public static partial class ThatDateTimeOffset
 		this IThat<DateTimeOffset> subject,
 		IEnumerable<DateTimeOffset?> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<DateTimeOffset, IThat<DateTimeOffset>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>

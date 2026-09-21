@@ -467,6 +467,20 @@ public sealed partial class ThatNumber
 			}
 
 			[Fact]
+			public async Task ForInt_WhenExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				int subject = 1;
+				int[]? expected = null;
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(expected!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The unexpected cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task ForInt_WhenNullableExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				int subject = 1;
@@ -477,6 +491,20 @@ public sealed partial class ThatNumber
 
 				await That(Act).Throws<ArgumentException>()
 					.WithMessage("You have to provide at least one expected value!");
+			}
+
+			[Fact]
+			public async Task ForInt_WhenNullableExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				int subject = 1;
+				int?[]? expected = null;
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(expected!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The unexpected cannot be null.").AsPrefix();
 			}
 
 			[Theory]
@@ -926,6 +954,20 @@ public sealed partial class ThatNumber
 			}
 
 			[Fact]
+			public async Task ForNullableInt_WhenExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				int? subject = 1;
+				int[]? expected = null;
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(expected!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The unexpected cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task ForNullableInt_WhenNullableExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				int? subject = 1;
@@ -936,6 +978,20 @@ public sealed partial class ThatNumber
 
 				await That(Act).Throws<ArgumentException>()
 					.WithMessage("You have to provide at least one expected value!");
+			}
+
+			[Fact]
+			public async Task ForNullableInt_WhenNullableExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				int? subject = 1;
+				int?[]? expected = null;
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(expected!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The unexpected cannot be null.").AsPrefix();
 			}
 
 			[Theory]
