@@ -24,7 +24,7 @@ internal sealed class IsExactlyOfTypeConstraint<TActual, TType>(
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{
-		stringBuilder.Append("is exactly type ");
+		stringBuilder.Append("is exactly of type ");
 		Formatter.Format(stringBuilder, typeof(TType));
 	}
 
@@ -36,7 +36,7 @@ internal sealed class IsExactlyOfTypeConstraint<TActual, TType>(
 
 	protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{
-		stringBuilder.Append("is not exactly type ");
+		stringBuilder.Append("is not exactly of type ");
 		Formatter.Format(stringBuilder, typeof(TType));
 	}
 

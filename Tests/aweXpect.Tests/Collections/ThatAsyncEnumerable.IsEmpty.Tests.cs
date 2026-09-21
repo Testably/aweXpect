@@ -27,7 +27,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is empty,
-					             but it could not be verified, because it was already cancelled
+					             but it could not be verified, because it was already canceled
 					             """);
 			}
 
@@ -81,7 +81,7 @@ public sealed partial class ThatAsyncEnumerable
 					               7,
 					               8,
 					               9,
-					               …
+					               (… and maybe more)
 					             ]
 					             """);
 			}

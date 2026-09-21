@@ -91,7 +91,7 @@ public sealed partial class ThatEnumerable
 						             but only 2 of at least 3 were
 
 						             Not matching items:
-						             [2, (… and maybe others)]
+						             [2, (… and maybe more)]
 
 						             Collection:
 						             [
@@ -105,7 +105,7 @@ public sealed partial class ThatEnumerable
 						               21,
 						               34,
 						               55,
-						               (… and maybe others)
+						               (… and maybe more)
 						             ]
 						             """);
 				}
@@ -158,7 +158,7 @@ public sealed partial class ThatEnumerable
 						               34,
 						               55,
 						               89,
-						               …
+						               (… and 9 more)
 						             ]
 
 						             Collection:
@@ -227,7 +227,7 @@ public sealed partial class ThatEnumerable
 						             Not matching items:
 						             [
 						               "item-2",
-						               (… and maybe others)
+						               (… and maybe more)
 						             ]
 
 						             Collection:
@@ -242,7 +242,7 @@ public sealed partial class ThatEnumerable
 						               "item-21",
 						               "item-34",
 						               "item-55",
-						               (… and maybe others)
+						               (… and maybe more)
 						             ]
 						             """);
 				}
@@ -327,7 +327,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is equal to "foo" ignoring case, white-space and newline style for all items,
+						             is equal to "foo" ignoring case, whitespace and newline style for all items,
 						             but none of 1 were
 
 						             Not matching items:
@@ -379,7 +379,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is equal to "foo" ignoring leading white-space for all items,
+						             is equal to "foo" ignoring leading whitespace for all items,
 						             but none of 1 were
 
 						             Not matching items:
@@ -431,7 +431,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is equal to "foo" ignoring trailing white-space for all items,
+						             is equal to "foo" ignoring trailing whitespace for all items,
 						             but none of 1 were
 
 						             Not matching items:

@@ -175,11 +175,12 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
-		public async Task ShouldSupportOpenGenericTypeWithMultipleParametersDefinitions()
+		[Theory]
+		[InlineData(typeof(IDictionary<,>), "IDictionary<,>")]
+		[InlineData(typeof(Func<,,>), "Func<,,>")]
+		public async Task ShouldSupportOpenGenericTypeWithMultipleParametersDefinitions(
+			Type value, string expectedResult)
 		{
-			Type value = typeof(IDictionary<,>);
-			string expectedResult = "IDictionary<, >";
 			StringBuilder sb = new();
 
 			string result = Formatter.Format(value);

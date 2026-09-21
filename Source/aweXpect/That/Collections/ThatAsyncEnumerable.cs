@@ -108,7 +108,7 @@ public static partial class ThatAsyncEnumerable
 			_totalCount = _matchingCount + _notMatchingCount;
 			Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
 			AppendContexts(false);
-			_expectationBuilder.AddCollectionContext(items);
+			_expectationBuilder.AddCollectionContext(items, totalCount: _totalCount);
 			return this;
 		}
 
@@ -158,7 +158,7 @@ public static partial class ThatAsyncEnumerable
 			{
 				_expectationBuilder.AddContext(new ResultContext.SyncCallback("Matching items",
 						() => Formatter.Format(_matchingItems,
-								typeof(TItem).GetFormattingOption(_matchingItems?.Count))
+								typeof(TItem).GetFormattingOption(_matchingItems?.Count, _matchingCount))
 							.AppendIsIncomplete(isIncomplete),
 						int.MaxValue));
 			}
@@ -168,7 +168,7 @@ public static partial class ThatAsyncEnumerable
 			{
 				_expectationBuilder.AddContext(new ResultContext.SyncCallback("Not matching items",
 						() => Formatter.Format(_notMatchingItems,
-								typeof(TItem).GetFormattingOption(_notMatchingItems?.Count))
+								typeof(TItem).GetFormattingOption(_notMatchingItems?.Count, _notMatchingCount))
 							.AppendIsIncomplete(isIncomplete),
 						int.MaxValue));
 			}
@@ -272,7 +272,7 @@ public static partial class ThatAsyncEnumerable
 			_totalCount = _matchingCount + _notMatchingCount;
 			Outcome = _quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
 			AppendContexts(false);
-			_expectationBuilder.AddCollectionContext(items);
+			_expectationBuilder.AddCollectionContext(items, totalCount: _totalCount);
 			return this;
 		}
 
@@ -324,7 +324,7 @@ public static partial class ThatAsyncEnumerable
 			{
 				_expectationBuilder.AddContext(new ResultContext.SyncCallback("Matching items",
 						() => Formatter.Format(_matchingItems,
-								typeof(TItem).GetFormattingOption(_matchingItems?.Count))
+								typeof(TItem).GetFormattingOption(_matchingItems?.Count, _matchingCount))
 							.AppendIsIncomplete(isIncomplete),
 						int.MaxValue));
 			}
@@ -334,7 +334,7 @@ public static partial class ThatAsyncEnumerable
 			{
 				_expectationBuilder.AddContext(new ResultContext.SyncCallback("Not matching items",
 						() => Formatter.Format(_notMatchingItems,
-								typeof(TItem).GetFormattingOption(_notMatchingItems?.Count))
+								typeof(TItem).GetFormattingOption(_notMatchingItems?.Count, _notMatchingCount))
 							.AppendIsIncomplete(isIncomplete),
 						int.MaxValue));
 			}

@@ -338,7 +338,7 @@ public sealed partial class StringEqualityOptionsTests
 
 			string result = sut.ToString();
 
-			await That(result).IsEqualTo(" ignoring case, white-space, newline style and indentation");
+			await That(result).IsEqualTo(" ignoring case, whitespace, newline style and indentation");
 		}
 
 		[Fact]
@@ -351,7 +351,7 @@ public sealed partial class StringEqualityOptionsTests
 
 			string result = sut.ToString();
 
-			await That(result).IsEqualTo(" ignoring case, white-space and newline style");
+			await That(result).IsEqualTo(" ignoring case, whitespace and newline style");
 		}
 
 		[Fact]
@@ -398,7 +398,7 @@ public sealed partial class StringEqualityOptionsTests
 
 			string result = sut.ToString();
 
-			await That(result).IsEqualTo(" ignoring white-space and newline style");
+			await That(result).IsEqualTo(" ignoring whitespace and newline style");
 		}
 
 		[Fact]

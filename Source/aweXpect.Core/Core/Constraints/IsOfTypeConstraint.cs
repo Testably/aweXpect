@@ -24,7 +24,7 @@ internal sealed class IsOfTypeConstraint<TActual, TType>(
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{
-		stringBuilder.Append("is type ");
+		stringBuilder.Append("is of type ");
 		Formatter.Format(stringBuilder, typeof(TType));
 	}
 
@@ -36,7 +36,7 @@ internal sealed class IsOfTypeConstraint<TActual, TType>(
 
 	protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{
-		stringBuilder.Append("is not type ");
+		stringBuilder.Append("is not of type ");
 		Formatter.Format(stringBuilder, typeof(TType));
 	}
 

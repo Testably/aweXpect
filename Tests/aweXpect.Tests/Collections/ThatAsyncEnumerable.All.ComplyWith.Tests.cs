@@ -28,10 +28,10 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is less than 6 for all items,
-						             but it could not be verified, because it was already cancelled
+						             but it could not be verified, because it was already canceled
 
 						             Collection:
-						             [0, 1, 2, 3, 4, (… and maybe others)]
+						             [0, 1, 2, 3, 4, (… and maybe more)]
 						             """);
 				}
 
@@ -50,7 +50,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             whose Items is less than 6 for all items,
-						             but Items could not be verified, because it was already cancelled
+						             but Items could not be verified, because it was already canceled
 						             *
 						             """).AsWildcard();
 				}
@@ -82,7 +82,7 @@ public sealed partial class ThatAsyncEnumerable
 						             but only 2 of at least 11 were
 
 						             Not matching items:
-						             [2, 3, 5, 8, 13, 21, 34, 55, 89, (… and maybe others)]
+						             [2, 3, 5, 8, 13, 21, 34, 55, 89, (… and maybe more)]
 
 						             Collection:
 						             [
@@ -96,7 +96,7 @@ public sealed partial class ThatAsyncEnumerable
 						               21,
 						               34,
 						               55,
-						               (… and maybe others)
+						               (… and maybe more)
 						             ]
 						             """);
 				}

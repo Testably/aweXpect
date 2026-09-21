@@ -13,9 +13,8 @@ The customization options are applied in an [async context](https://learn.micros
 Under `Customize.aweXpect.Formatting()` you have:
 - **MaximumNumberOfCollectionItems**  
   The maximum number of displayed items in a collection.
-  The remaining items are summarized at the end of the list: `(… and 7 more)` when the size of the collection is
-  known without enumerating it, `…` for a lazy sequence, and `(… and maybe others)` when the expectation stopped
-  enumerating early.
+  The remaining items are summarized at the end of the list: `(… and 7 more)` when the total number of items is known,
+  and `(… and maybe more)` when it is not, e.g. for a lazy sequence or when the expectation stopped enumerating early.
 
 - **MinimumNumberOfCharactersAfterStringDifference**  
   The minimum number of characters included after the first mismatch in the string difference.

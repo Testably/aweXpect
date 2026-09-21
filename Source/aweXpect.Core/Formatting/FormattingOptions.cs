@@ -46,6 +46,16 @@ public record FormattingOptions
 	public string Indentation { get; init; } = "";
 
 	/// <summary>
+	///     The total number of items in the formatted collection, when the caller knows it but the collection does not
+	///     report it.
+	/// </summary>
+	/// <remarks>
+	///     A truncated collection can only name the number of remaining items when the total is known; otherwise it says
+	///     that more items may follow.
+	/// </remarks>
+	public int? TotalItemCount { get; init; }
+
+	/// <summary>
 	///     Format the objects on multiple lines with the given <paramref name="indentation" />.
 	/// </summary>
 	/// <remarks>

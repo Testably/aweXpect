@@ -40,7 +40,7 @@ public sealed partial class ThatAsyncEnumerable
 						             but only 2 of at least 11 were
 
 						             Not matching items:
-						             [2, 3, 5, 8, 13, 21, 34, 55, 89, (… and maybe others)]
+						             [2, 3, 5, 8, 13, 21, 34, 55, 89, (… and maybe more)]
 
 						             Collection:
 						             [
@@ -54,7 +54,7 @@ public sealed partial class ThatAsyncEnumerable
 						               21,
 						               34,
 						               55,
-						               (… and maybe others)
+						               (… and maybe more)
 						             ]
 						             """);
 				}
@@ -107,7 +107,7 @@ public sealed partial class ThatAsyncEnumerable
 						               34,
 						               55,
 						               89,
-						               (… and maybe others)
+						               (… and maybe more)
 						             ]
 
 						             Collection:
@@ -122,7 +122,7 @@ public sealed partial class ThatAsyncEnumerable
 						               21,
 						               34,
 						               55,
-						               (… and maybe others)
+						               (… and maybe more)
 						             ]
 						             """);
 				}
@@ -200,7 +200,7 @@ public sealed partial class ThatAsyncEnumerable
 						               "item-34",
 						               "item-55",
 						               "item-89",
-						               (… and maybe others)
+						               (… and maybe more)
 						             ]
 
 						             Collection:
@@ -215,7 +215,7 @@ public sealed partial class ThatAsyncEnumerable
 						               "item-21",
 						               "item-34",
 						               "item-55",
-						               (… and maybe others)
+						               (… and maybe more)
 						             ]
 						             """);
 				}

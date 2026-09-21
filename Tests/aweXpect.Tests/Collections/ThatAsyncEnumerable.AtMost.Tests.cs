@@ -28,10 +28,10 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             satisfies y => y < 6 for at most 8 items,
-					             but it could not be verified, because it was already cancelled
+					             but it could not be verified, because it was already canceled
 
 					             Collection:
-					             [0, 1, 2, 3, 4, 5, (… and maybe others)]
+					             [0, 1, 2, 3, 4, 5, (… and maybe more)]
 					             """);
 			}
 
@@ -62,7 +62,7 @@ public sealed partial class ThatAsyncEnumerable
 					             but at least 2 of at least 11 were
 
 					             Matching items:
-					             [1, 1, (… and maybe others)]
+					             [1, 1, (… and maybe more)]
 
 					             Collection:
 					             [
@@ -76,7 +76,7 @@ public sealed partial class ThatAsyncEnumerable
 					               21,
 					               34,
 					               55,
-					               (… and maybe others)
+					               (… and maybe more)
 					             ]
 					             """);
 			}

@@ -38,7 +38,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               (… and maybe others)
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -74,7 +74,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -204,7 +204,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -722,7 +722,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               (… and maybe others)
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -757,7 +757,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -1211,7 +1211,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               (… and maybe others)
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1246,7 +1246,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -1730,7 +1730,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               (… and maybe others)
+					               (… and maybe more)
 					             ]
 
 					             Expected:
@@ -1766,7 +1766,7 @@ public sealed partial class ThatEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:

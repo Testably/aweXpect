@@ -28,7 +28,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has more than 6 items,
-						             but it could not be verified, because it was already cancelled
+						             but it could not be verified, because it was already canceled
 
 						             Collection:
 						             [
@@ -42,7 +42,7 @@ public sealed partial class ThatEnumerable
 						               7,
 						               8,
 						               9,
-						               (… and maybe others)
+						               (… and maybe more)
 						             ]
 						             """);
 				}

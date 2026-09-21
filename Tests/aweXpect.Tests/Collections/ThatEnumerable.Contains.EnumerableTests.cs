@@ -65,7 +65,7 @@ public sealed partial class ThatEnumerable
 					                21,
 					                34,
 					                55,
-					                …
+					                (… and 10 more)
 					              ]
 					              """);
 			}
@@ -99,7 +99,7 @@ public sealed partial class ThatEnumerable
 					               21,
 					               34,
 					               55,
-					               …
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -133,7 +133,7 @@ public sealed partial class ThatEnumerable
 					                21,
 					                34,
 					                55,
-					                …
+					                (… and 10 more)
 					              ]
 					              """);
 			}
@@ -179,7 +179,7 @@ public sealed partial class ThatEnumerable
 					                21,
 					                34,
 					                55,
-					                …
+					                {(times == 1 ? "(… and maybe more)" : "(… and 10 more)")}
 					              ]
 					              """);
 			}
@@ -212,7 +212,7 @@ public sealed partial class ThatEnumerable
 					               21,
 					               34,
 					               55,
-					               …
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -246,7 +246,7 @@ public sealed partial class ThatEnumerable
 					                21,
 					                34,
 					                55,
-					                …
+					                (… and 10 more)
 					              ]
 					              """);
 			}
@@ -277,7 +277,7 @@ public sealed partial class ThatEnumerable
 					               21,
 					               34,
 					               55,
-					               …
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -308,7 +308,7 @@ public sealed partial class ThatEnumerable
 					               21,
 					               34,
 					               55,
-					               …
+					               (… and 10 more)
 					             ]
 					             """);
 			}
@@ -479,7 +479,7 @@ public sealed partial class ThatEnumerable
 					                21,
 					                34,
 					                55,
-					                …
+					                (… and 10 more)
 					              ]
 					              """);
 			}
@@ -513,7 +513,7 @@ public sealed partial class ThatEnumerable
 					               21,
 					               34,
 					               55,
-					               …
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -547,7 +547,7 @@ public sealed partial class ThatEnumerable
 					                21,
 					                34,
 					                55,
-					                …
+					                (… and 10 more)
 					              ]
 					              """);
 			}
@@ -581,7 +581,7 @@ public sealed partial class ThatEnumerable
 					                21,
 					                34,
 					                55,
-					                …
+					                {(times == 1 ? "(… and maybe more)" : "(… and 10 more)")}
 					              ]
 					              """);
 			}
@@ -614,7 +614,7 @@ public sealed partial class ThatEnumerable
 					               21,
 					               34,
 					               55,
-					               …
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -648,7 +648,7 @@ public sealed partial class ThatEnumerable
 					                21,
 					                34,
 					                55,
-					                …
+					                (… and 10 more)
 					              ]
 					              """);
 			}
@@ -679,7 +679,7 @@ public sealed partial class ThatEnumerable
 					               21,
 					               34,
 					               55,
-					               …
+					               (… and maybe more)
 					             ]
 					             """);
 			}

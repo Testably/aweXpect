@@ -35,7 +35,7 @@ public sealed partial class ThatEnumerable
 						               ThatEnumerable.All.AreExactly.MyBaseClass {
 						                 Foo = 1
 						               },
-						               (… and maybe others)
+						               (… and maybe more)
 						             ]
 
 						             Collection:
@@ -97,7 +97,7 @@ public sealed partial class ThatEnumerable
 						                 Bar = 0,
 						                 Foo = 1
 						               },
-						               (… and maybe others)
+						               (… and maybe more)
 						             ]
 
 						             Collection:
@@ -185,7 +185,7 @@ public sealed partial class ThatEnumerable
 						               ThatEnumerable.All.AreExactly.MyBaseClass {
 						                 Foo = 1
 						               },
-						               (… and maybe others)
+						               (… and maybe more)
 						             ]
 
 						             Collection:
@@ -260,7 +260,7 @@ public sealed partial class ThatEnumerable
 						                 Bar = 0,
 						                 Foo = 1
 						               },
-						               (… and maybe others)
+						               (… and maybe more)
 						             ]
 
 						             Collection:

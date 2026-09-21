@@ -23,7 +23,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is type ThatObject.MyClass whose Value is less than 42,
+					             is of type ThatObject.MyClass whose Value is less than 42,
 					             but Value was 42
 					             """);
 			}
@@ -90,7 +90,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is type ThatObject.Is.WhoseTests.AsyncClass whose GetValueAsync() is less than 42,
+					             is of type ThatObject.Is.WhoseTests.AsyncClass whose GetValueAsync() is less than 42,
 					             but GetValueAsync() was 42
 					             """);
 			}
@@ -126,7 +126,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is type ThatObject.Is.WhoseTests.AsyncClass whose Value is equal to 42 and whose GetValueAsync() is less than 42,
+					             is of type ThatObject.Is.WhoseTests.AsyncClass whose Value is equal to 42 and whose GetValueAsync() is less than 42,
 					             but GetValueAsync() was 42
 					             """);
 			}
@@ -147,7 +147,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is type ThatObject.Is.WhoseTests.AsyncClass whose GetValueAsValueTaskAsync() is less than 42,
+					             is of type ThatObject.Is.WhoseTests.AsyncClass whose GetValueAsValueTaskAsync() is less than 42,
 					             but GetValueAsValueTaskAsync() was 42
 					             """);
 			}
@@ -168,7 +168,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is type ThatObject.Is.WhoseTests.AsyncClass whose Value is equal to 42 and whose GetValueAsValueTaskAsync() is less than 42,
+					             is of type ThatObject.Is.WhoseTests.AsyncClass whose Value is equal to 42 and whose GetValueAsValueTaskAsync() is less than 42,
 					             but GetValueAsValueTaskAsync() was 42
 					             """);
 			}
@@ -186,7 +186,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is type ThatObject.Is.WhoseTests.AsyncClass whose FaultedAsync() is equal to 42,
+					             is of type ThatObject.Is.WhoseTests.AsyncClass whose FaultedAsync() is equal to 42,
 					             but FaultedAsync() did throw an InvalidOperationException:
 					               async member failed
 					             """)
@@ -206,7 +206,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is type ThatObject.Is.WhoseTests.AsyncClass whose Value is equal to 0 and whose FaultedAsync() is equal to 42,
+					             is of type ThatObject.Is.WhoseTests.AsyncClass whose Value is equal to 0 and whose FaultedAsync() is equal to 42,
 					             but FaultedAsync() did throw an InvalidOperationException:
 					               async member failed
 					             """)
@@ -226,7 +226,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is type ThatObject.Is.WhoseTests.AsyncClass whose FaultedValueTaskAsync() is equal to 42,
+					             is of type ThatObject.Is.WhoseTests.AsyncClass whose FaultedValueTaskAsync() is equal to 42,
 					             but FaultedValueTaskAsync() did throw an InvalidOperationException:
 					               async member failed
 					             """)
@@ -246,7 +246,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is type ThatObject.Is.WhoseTests.AsyncClass whose FaultedAsync() satisfies x => 10 / x > 1,
+					             is of type ThatObject.Is.WhoseTests.AsyncClass whose FaultedAsync() satisfies x => 10 / x > 1,
 					             but FaultedAsync() did throw an InvalidOperationException:
 					               async member failed
 					             """)
@@ -329,7 +329,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is type ThatObject.Is.AndWhoseTests.TwoCollections whose First is equal to collection [1, 2,] in order and whose Second is equal to collection [1, 2,] in order,
+					             is of type ThatObject.Is.AndWhoseTests.TwoCollections whose First is equal to collection [1, 2,] in order and whose Second is equal to collection [1, 2,] in order,
 					             but Second
 					               contained item 3 at index 1 instead of 2 and
 					               lacked 1 of 2 expected items: 2

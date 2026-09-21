@@ -112,7 +112,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("""
 				             Expected that Subject
 				             is equal to 1,
-				             but it could not be verified, because it was already cancelled
+				             but it could not be verified, because it was already canceled
 				             """);
 			await That(isCancellationRequested).IsTrue();
 		}
@@ -139,7 +139,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("""
 				             Expected that Subject
 				             is equal to 1,
-				             but it could not be verified, because it was already cancelled
+				             but it could not be verified, because it was already canceled
 				             """);
 			await That(isCancellationRequested).IsTrue();
 		}
@@ -293,7 +293,7 @@ public sealed partial class ThatDelegateTests
 					.WithMessage("""
 					             Expected that () => counter.Value
 					             is equal to 1,
-					             but it could not be verified, because it was already cancelled
+					             but it could not be verified, because it was already canceled
 					             """);
 			}
 		}
@@ -316,7 +316,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("""
 				             Expected that () => counter.Value
 				             is equal to 1,
-				             but it could not be verified, because it was already cancelled
+				             but it could not be verified, because it was already canceled
 				             """);
 			stopwatch.Stop();
 
@@ -340,7 +340,7 @@ public sealed partial class ThatDelegateTests
 					.WithMessage("""
 					             Expected that () => counter.Value
 					             is equal to 1,
-					             but it could not be verified, because it was already cancelled
+					             but it could not be verified, because it was already canceled
 					             """)
 					.Because("an interval that `Task.Delay` cannot represent must not escape as an exception, " +
 					         "especially when the retry budget does not limit it either");
@@ -543,7 +543,7 @@ public sealed partial class ThatDelegateTests
 					.WithMessage("""
 					             Expected that () => counter.Value
 					             is equal to 1,
-					             but it could not be verified, because it was already cancelled
+					             but it could not be verified, because it was already canceled
 					             """);
 				stopwatch.Stop();
 			}

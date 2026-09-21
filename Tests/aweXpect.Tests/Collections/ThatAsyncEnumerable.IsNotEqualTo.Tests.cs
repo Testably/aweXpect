@@ -1198,7 +1198,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is not equal to collection unexpected in order ignoring leading white-space,
+					             is not equal to collection unexpected in order ignoring leading whitespace,
 					             but it did
 
 					             Collection:
@@ -1230,7 +1230,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is not equal to collection unexpected in order ignoring trailing white-space,
+					             is not equal to collection unexpected in order ignoring trailing whitespace,
 					             but it did
 
 					             Collection:

@@ -68,7 +68,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has an inner exception which is type InvalidCastException,
+					             has an inner exception which is of type InvalidCastException,
 					             but it was ArgumentException
 
 					             Actual:
@@ -87,7 +87,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is type ThatObject.MyClass,
+					             is of type ThatObject.MyClass,
 					             but it was <null>
 					             """);
 			}
@@ -108,7 +108,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage($$"""
 					               Expected that subject
-					               is type ThatObject.OtherClass, because we want to test the failure,
+					               is of type ThatObject.OtherClass, because we want to test the failure,
 					               but it was ThatObject.MyClass
 
 					               Actual:
@@ -145,7 +145,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage($$"""
 					               Expected that subject
-					               is type ThatObject.MyClass, because {{reason}},
+					               is of type ThatObject.MyClass, because {{reason}},
 					               but it was ThatObject.MyBaseClass
 
 					               Actual:
@@ -194,7 +194,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a single item which is type IDictionary<, >,
+					             has a single item which is of type IDictionary<,>,
 					             but it was List<int>
 
 					             Actual:
@@ -213,7 +213,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is type ThatObject.MyClass,
+					             is of type ThatObject.MyClass,
 					             but it was <null>
 					             """);
 			}
@@ -234,7 +234,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage($$"""
 					               Expected that subject
-					               is type ThatObject.OtherClass, because we want to test the failure,
+					               is of type ThatObject.OtherClass, because we want to test the failure,
 					               but it was ThatObject.MyClass
 
 					               Actual:
@@ -284,7 +284,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage($$"""
 					               Expected that subject
-					               is type ThatObject.MyClass, because {{reason}},
+					               is of type ThatObject.MyClass, because {{reason}},
 					               but it was ThatObject.MyBaseClass
 
 					               Actual:
@@ -399,7 +399,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is type Dictionary<, >, because an unrelated open generic type is not in the base type chain,
+					             is of type Dictionary<,>, because an unrelated open generic type is not in the base type chain,
 					             but it was ThatObject.MyGenericDerivedClass
 
 					             Actual:
@@ -418,7 +418,7 @@ public sealed partial class ThatObject
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is type IDictionary<, >,
+					             is of type IDictionary<,>,
 					             but it was List<string>
 
 					             Actual:

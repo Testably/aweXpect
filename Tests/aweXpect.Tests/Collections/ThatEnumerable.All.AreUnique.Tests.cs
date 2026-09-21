@@ -113,7 +113,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is unique for all items,
-						             but it could not be verified, because it was already cancelled
+						             but it could not be verified, because it was already canceled
 						             *
 						             """).AsWildcard();
 				}
@@ -133,7 +133,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             whose Items is unique for all items,
-						             but Items could not be verified, because it was already cancelled
+						             but Items could not be verified, because it was already canceled
 						             *
 						             """).AsWildcard();
 				}
@@ -349,7 +349,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is unique by x => x * 2 for all items,
-						             but it could not be verified, because it was already cancelled
+						             but it could not be verified, because it was already canceled
 						             *
 						             """).AsWildcard();
 				}

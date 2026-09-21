@@ -26,7 +26,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             satisfies y => y < 6 for at most 8 items,
-					             but it could not be verified, because it was already cancelled
+					             but it could not be verified, because it was already canceled
 
 					             Collection:
 					             [
@@ -40,7 +40,7 @@ public sealed partial class ThatEnumerable
 					               7,
 					               8,
 					               9,
-					               (… and maybe others)
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -72,7 +72,7 @@ public sealed partial class ThatEnumerable
 					             but at least 2 of at least 2 were
 
 					             Matching items:
-					             [1, 1, (… and maybe others)]
+					             [1, 1, (… and maybe more)]
 
 					             Collection:
 					             [
@@ -86,7 +86,7 @@ public sealed partial class ThatEnumerable
 					               21,
 					               34,
 					               55,
-					               (… and maybe others)
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -150,7 +150,7 @@ public sealed partial class ThatEnumerable
 					             but at least 4 of at least 4 were
 
 					             Matching items:
-					             [1, 1, 1, 1, (… and maybe others)]
+					             [1, 1, 1, 1, (… and maybe more)]
 
 					             Collection:
 					             [1, 1, 1, 1, 2, 2, 3]
@@ -194,7 +194,7 @@ public sealed partial class ThatEnumerable
 					             [
 					               "foo",
 					               "FOO",
-					               (… and maybe others)
+					               (… and maybe more)
 					             ]
 
 					             Collection:
@@ -235,7 +235,7 @@ public sealed partial class ThatEnumerable
 					             [
 					               "foo",
 					               "foo",
-					               (… and maybe others)
+					               (… and maybe more)
 					             ]
 
 					             Collection:

@@ -162,7 +162,7 @@ public sealed partial class ThatException
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             has an inner exception which is type ThatException.CustomException,
+						             has an inner exception which is of type ThatException.CustomException,
 						             but it was Exception
 
 						             Actual:

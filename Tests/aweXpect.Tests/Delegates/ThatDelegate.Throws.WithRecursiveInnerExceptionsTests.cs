@@ -99,7 +99,7 @@ public sealed partial class ThatDelegate
 					             Not matching items:
 					             [
 					               ThatDelegate.CustomException: WhenInnerExceptionDoesNotMatch_ShouldFail,
-					               (… and maybe others)
+					               (… and maybe more)
 					             ]
 
 					             Collection:

@@ -190,7 +190,7 @@ public sealed partial class ThatException
 					             Not matching items:
 					             [
 					               Exception: inner3A,
-					               (… and maybe others)
+					               (… and maybe more)
 					             ]
 					             
 					             Collection:
@@ -225,7 +225,7 @@ public sealed partial class ThatException
 					             Matching items:
 					             [
 					               Exception: inner1*,
-					               (… and maybe others)
+					               (… and maybe more)
 					             ]
 					             
 					             Collection:

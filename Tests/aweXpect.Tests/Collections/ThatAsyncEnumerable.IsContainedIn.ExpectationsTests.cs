@@ -64,7 +64,7 @@ public sealed partial class ThatAsyncEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -641,7 +641,7 @@ public sealed partial class ThatAsyncEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -1150,7 +1150,7 @@ public sealed partial class ThatAsyncEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -1659,7 +1659,7 @@ public sealed partial class ThatAsyncEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -2137,7 +2137,7 @@ public sealed partial class ThatAsyncEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -2703,7 +2703,7 @@ public sealed partial class ThatAsyncEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -3310,7 +3310,7 @@ public sealed partial class ThatAsyncEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:
@@ -3867,7 +3867,7 @@ public sealed partial class ThatAsyncEnumerable
 					               8,
 					               9,
 					               10,
-					               …
+					               (… and 1 more)
 					             ]
 
 					             Expected:

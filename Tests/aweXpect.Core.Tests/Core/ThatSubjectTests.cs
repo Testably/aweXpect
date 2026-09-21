@@ -15,7 +15,7 @@ public sealed class ThatSubjectTests
 		await That(Act).Throws<XunitException>()
 			.WithMessage("""
 			             Expected that subject
-			             is type string,
+			             is of type string,
 			             but it was <null>
 			             """);
 	}
@@ -35,7 +35,7 @@ public sealed class ThatSubjectTests
 		await That(Act).Throws<XunitException>()
 			.WithMessage("""
 			             Expected that subject
-			             is type IDictionary<int, string>,
+			             is of type IDictionary<int, string>,
 			             but it was List<int>
 
 			             Actual:
@@ -55,7 +55,7 @@ public sealed class ThatSubjectTests
 		await That(Act).Throws<XunitException>()
 			.WithMessage("""
 			             Expected that value
-			             is type string,
+			             is of type string,
 			             but it was int
 
 			             Actual:
@@ -80,7 +80,7 @@ public sealed class ThatSubjectTests
 		await That(Act).Throws<XunitException>()
 			.WithMessage("""
 			             Expected that subject
-			             is exactly type ThatSubjectTests.Outer<string>.Base,
+			             is exactly of type ThatSubjectTests.Outer<string>.Base,
 			             but it was ThatSubjectTests.Outer<string>.Derived
 
 			             Actual:
@@ -101,7 +101,7 @@ public sealed class ThatSubjectTests
 		await That(Act).Throws<XunitException>()
 			.WithMessage("""
 			             Expected that subject
-			             is not type int,
+			             is not of type int,
 			             but it was int
 
 			             Actual:
@@ -120,7 +120,7 @@ public sealed class ThatSubjectTests
 		await That(Act).Throws<XunitException>()
 			.WithMessage("""
 			             Expected that subject
-			             is not exactly type string,
+			             is not exactly of type string,
 			             but it was string
 
 			             Actual:
@@ -141,7 +141,7 @@ public sealed class ThatSubjectTests
 		await That(Act).Throws<XunitException>()
 			.WithMessage("""
 			             Expected that Throwing
-			             throws an InvalidOperationException with an inner exception which is type InvalidCastException,
+			             throws an InvalidOperationException with an inner exception which is of type InvalidCastException,
 			             but it was ArgumentException
 
 			             Actual:

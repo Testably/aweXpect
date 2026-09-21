@@ -108,7 +108,7 @@ public static partial class ThatObject
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is type ");
+			stringBuilder.Append("is of type ");
 			Formatter.Format(stringBuilder, type);
 		}
 
@@ -120,7 +120,7 @@ public static partial class ThatObject
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append("is not type ");
+			stringBuilder.Append("is not of type ");
 			Formatter.Format(stringBuilder, type);
 		}
 

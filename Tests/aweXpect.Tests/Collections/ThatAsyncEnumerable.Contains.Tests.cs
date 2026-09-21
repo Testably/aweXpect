@@ -65,7 +65,7 @@ public sealed partial class ThatAsyncEnumerable
 					                21,
 					                34,
 					                55,
-					                …
+					                (… and 10 more)
 					              ]
 					              """);
 			}
@@ -99,7 +99,7 @@ public sealed partial class ThatAsyncEnumerable
 					               21,
 					               34,
 					               55,
-					               (… and maybe others)
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -133,7 +133,7 @@ public sealed partial class ThatAsyncEnumerable
 					                21,
 					                34,
 					                55,
-					                …
+					                (… and 10 more)
 					              ]
 					              """);
 			}
@@ -179,7 +179,7 @@ public sealed partial class ThatAsyncEnumerable
 					                21,
 					                34,
 					                55,
-					                {(times == 1 ? "(… and maybe others)" : "…")}
+					                {(times == 1 ? "(… and maybe more)" : "(… and 10 more)")}
 					              ]
 					              """);
 			}
@@ -212,7 +212,7 @@ public sealed partial class ThatAsyncEnumerable
 					               21,
 					               34,
 					               55,
-					               (… and maybe others)
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -246,7 +246,7 @@ public sealed partial class ThatAsyncEnumerable
 					                21,
 					                34,
 					                55,
-					                …
+					                (… and 10 more)
 					              ]
 					              """);
 			}
@@ -277,7 +277,7 @@ public sealed partial class ThatAsyncEnumerable
 					               21,
 					               34,
 					               55,
-					               (… and maybe others)
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -766,7 +766,7 @@ public sealed partial class ThatAsyncEnumerable
 					                21,
 					                34,
 					                55,
-					                …
+					                (… and 10 more)
 					              ]
 					              """);
 			}
@@ -800,7 +800,7 @@ public sealed partial class ThatAsyncEnumerable
 					               21,
 					               34,
 					               55,
-					               (… and maybe others)
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -834,7 +834,7 @@ public sealed partial class ThatAsyncEnumerable
 					                21,
 					                34,
 					                55,
-					                …
+					                (… and 10 more)
 					              ]
 					              """);
 			}
@@ -868,7 +868,7 @@ public sealed partial class ThatAsyncEnumerable
 					                21,
 					                34,
 					                55,
-					                {(times == 1 ? "(… and maybe others)" : "…")}
+					                {(times == 1 ? "(… and maybe more)" : "(… and 10 more)")}
 					              ]
 					              """);
 			}
@@ -901,7 +901,7 @@ public sealed partial class ThatAsyncEnumerable
 					               21,
 					               34,
 					               55,
-					               (… and maybe others)
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -935,7 +935,7 @@ public sealed partial class ThatAsyncEnumerable
 					                21,
 					                34,
 					                55,
-					                …
+					                (… and 10 more)
 					              ]
 					              """);
 			}
@@ -966,7 +966,7 @@ public sealed partial class ThatAsyncEnumerable
 					               21,
 					               34,
 					               55,
-					               (… and maybe others)
+					               (… and maybe more)
 					             ]
 					             """);
 			}

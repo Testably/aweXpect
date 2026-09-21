@@ -459,8 +459,10 @@ public static partial class ThatAsyncEnumerable
 			_count = 0;
 			_isFinished = false;
 			bool isFailed = false;
+			int totalCount = 0;
 			await foreach (TItem item in materializedEnumerable.WithCancellation(cancellationToken))
 			{
+				totalCount++;
 				if (items.Count <= maximumNumberOfCollectionItems)
 				{
 					items.Add(item);
@@ -490,7 +492,7 @@ public static partial class ThatAsyncEnumerable
 				}
 			}
 
-			expectationBuilder.AddCollectionContext(items);
+			expectationBuilder.AddCollectionContext(items, totalCount: totalCount);
 			_isFinished = true;
 			if (quantifier.Check(_count, true) ?? _isNegated)
 			{
@@ -619,8 +621,10 @@ public static partial class ThatAsyncEnumerable
 			_count = 0;
 			_isFinished = false;
 			bool isFailed = false;
+			int totalCount = 0;
 			await foreach (TItem item in materializedEnumerable.WithCancellation(cancellationToken))
 			{
+				totalCount++;
 				if (items.Count <= maximumNumberOfCollectionItems)
 				{
 					items.Add(item);
@@ -650,7 +654,7 @@ public static partial class ThatAsyncEnumerable
 				}
 			}
 
-			expectationBuilder.AddCollectionContext(items);
+			expectationBuilder.AddCollectionContext(items, totalCount: totalCount);
 			_isFinished = true;
 			if (quantifier.Check(_count, true) ?? _isNegated)
 			{

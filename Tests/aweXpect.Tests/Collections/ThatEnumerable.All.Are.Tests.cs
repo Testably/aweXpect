@@ -35,7 +35,7 @@ public sealed partial class ThatEnumerable
 						               ThatEnumerable.All.Are.MyBaseClass {
 						                 Foo = 1
 						               },
-						               (… and maybe others)
+						               (… and maybe more)
 						             ]
 
 						             Collection:
@@ -127,7 +127,7 @@ public sealed partial class ThatEnumerable
 						               ThatEnumerable.All.Are.MyBaseClass {
 						                 Foo = 1
 						               },
-						               (… and maybe others)
+						               (… and maybe more)
 						             ]
 
 						             Collection:

@@ -166,7 +166,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not equal to "{unexpected.DisplayWhitespace()}" ignoring leading white-space,
+					              is not equal to "{unexpected.DisplayWhitespace()}" ignoring leading whitespace,
 					              but it was "{subject.DisplayWhitespace()}"
 					              """);
 			}
@@ -213,7 +213,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not equal to "{unexpected.DisplayWhitespace()}" ignoring trailing white-space,
+					              is not equal to "{unexpected.DisplayWhitespace()}" ignoring trailing whitespace,
 					              but it was "{subject.DisplayWhitespace()}"
 					              """);
 			}

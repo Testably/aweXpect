@@ -41,7 +41,7 @@ public sealed partial class ThatEnumerable
 						             but only 2 of at least 3 were
 
 						             Not matching items:
-						             [2, (… and maybe others)]
+						             [2, (… and maybe more)]
 
 						             Collection:
 						             [
@@ -55,7 +55,7 @@ public sealed partial class ThatEnumerable
 						               21,
 						               34,
 						               55,
-						               (… and maybe others)
+						               (… and maybe more)
 						             ]
 
 						             Equivalency options:
@@ -100,7 +100,7 @@ public sealed partial class ThatEnumerable
 						               34,
 						               55,
 						               89,
-						               …
+						               (… and 9 more)
 						             ]
 
 						             Collection:
