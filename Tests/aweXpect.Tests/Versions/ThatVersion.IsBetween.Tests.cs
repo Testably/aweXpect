@@ -24,19 +24,16 @@ public sealed partial class ThatVersion
 			}
 
 			[Fact]
-			public async Task WhenMinimumIsGreaterThanMaximum_ShouldFail()
+			public async Task WhenMinimumIsGreaterThanMaximum_ShouldThrowArgumentOutOfRangeException()
 			{
 				Version? subject = new(1, 5);
 
 				async Task Act()
 					=> await That(subject).IsBetween(new Version(2, 0)).And(new Version(1, 2));
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is between 2.0 and 1.2,
-					             but it was 1.5
-					             """)
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("maximum").And
+					.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix()
 					.Because("an inverted range can never be satisfied");
 			}
 

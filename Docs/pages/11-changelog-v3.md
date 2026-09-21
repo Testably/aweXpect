@@ -52,6 +52,26 @@ An empty or `null` value to search for, such as `Contains("")` or `ContainsKeys(
 expectation that could never fail. Such calls now throw at the call site: `ArgumentNullException` for `null`,
 `ArgumentException` for an empty value.
 
+Ranges, counts and tolerances are validated the same way, when the expectation is built rather than when it is
+evaluated, and every one of them throws an `ArgumentOutOfRangeException`:
+
+- a maximum below the minimum in `Between(…).And(…)` on a collection quantifier, on `HasCount()`, on `HasLength()`
+  and on the other scalar `Has…()` continuations, in `ExecutesIn().Between(…).And(…)` and in `Version.IsBetween(…)`
+  and `IsNotBetween(…)`,
+- a negative count in `AtLeast`, `AtMost`, `Exactly`, `LessThan`, `MoreThan` and `Between` on a collection, and in
+  `HasCount(…)`,
+- a negative duration in `ExecutesWithin(…)` and in the `ExecutesIn()` family, of which only `Throws().Within(…)`
+  used to reject one,
+- a negative or `NaN` tolerance in `IsEqualTo(…).Within(…)` on a collection, and a negative
+  `DefaultTimeComparisonTolerance`.
+
+The negated forms are worth a second look: a reversed range such as `IsNotBetween(3).And(1)` used to pass for every
+subject, and a negative count such as `HasCount().NotEqualTo(-1)` used to hold for every collection. Both now throw.
+A reversed range on a `TimeOnly` is unaffected, because there it describes a range across midnight.
+
+`Between(…).And(…)` on an occurrence count, as in `Contains("a").Between(4).And(3)`, already threw for a reversed
+range; it now throws an `ArgumentOutOfRangeException` instead of a plain `ArgumentException`.
+
 ## Conflicting string options
 
 `IgnoringCase()` and `Using(comparer)` could be combined although only one of them ever took effect, and a comparer

@@ -118,6 +118,7 @@ public static class PropertyResult
 			return new BetweenResult<AndOrResult<TType, TThat>, int?>(maximum =>
 			{
 				validation?.Invoke(maximum, nameof(maximum));
+				ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
 				return Add(minimum, (a, e) => a >= e && a <= maximum,
 					$"between {Formatter.Format(minimum)} and {Formatter.Format(maximum)}");
 			});
@@ -251,6 +252,7 @@ public static class PropertyResult
 			return new BetweenResult<AndOrResult<TType, TThat>, long?>(maximum =>
 			{
 				validation?.Invoke(maximum, nameof(maximum));
+				ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
 				return Add(minimum, (a, e) => a >= e && a <= maximum,
 					$"between {Formatter.Format(minimum)} and {Formatter.Format(maximum)}");
 			});
@@ -437,6 +439,7 @@ public static class PropertyResult
 			return new BetweenResult<AndOrResult<TType, TThat>, TimeSpan?>(maximum =>
 			{
 				validation?.Invoke(maximum, nameof(maximum));
+				ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
 				return Add(minimum, (a, e) => a >= e && a <= maximum,
 					$"between {Formatter.Format(minimum)} and {Formatter.Format(maximum)}");
 			});

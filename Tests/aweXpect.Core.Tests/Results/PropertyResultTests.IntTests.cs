@@ -62,6 +62,19 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Fact]
+		public async Task Between_WhenMaximumIsBelowMinimum_ShouldThrowArgumentOutOfRangeException()
+		{
+			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
+
+			async Task Act()
+				=> await sut.Between(44).And(43);
+
+			await That(Act).Throws<ArgumentOutOfRangeException>()
+				.WithParamName("maximum").And
+				.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix();
+		}
+
+		[Fact]
 		public async Task Between_WhenSubjectIsNull_ShouldFail()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValueOfNullSubject();

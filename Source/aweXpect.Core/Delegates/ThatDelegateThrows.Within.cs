@@ -1,5 +1,4 @@
 ﻿using System;
-using aweXpect.Core;
 using aweXpect.Options;
 
 namespace aweXpect.Delegates;
@@ -17,12 +16,6 @@ public partial class ThatDelegateThrows<TException>
 	/// </remarks>
 	public ThatDelegateThrows<TException> Within(TimeSpan duration)
 	{
-		if (duration < TimeSpan.Zero)
-		{
-			throw Tracing.WriteException(
-				new ArgumentOutOfRangeException(nameof(duration), "The duration must not be negative."));
-		}
-
 		ExecutionTimeOptions options = new();
 		options.Within(duration);
 		ThrowOptions.ExecutionTimeOptions = options;

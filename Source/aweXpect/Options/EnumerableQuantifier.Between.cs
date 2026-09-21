@@ -1,5 +1,6 @@
 ﻿using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Helpers;
 
 namespace aweXpect.Options;
 
@@ -10,7 +11,12 @@ public abstract partial class EnumerableQuantifier
 	/// </summary>
 	public static EnumerableQuantifier Between(int minimum, int maximum,
 		ExpectationGrammars expectationGrammars = ExpectationGrammars.None)
-		=> new BetweenQuantifier(minimum, maximum);
+	{
+		ThrowHelper.ThrowIfCountIsNegative(minimum);
+		ThrowHelper.ThrowIfCountIsNegative(maximum);
+		ThrowHelper.ThrowIfMaximumIsBelowMinimum<int>(minimum, maximum);
+		return new BetweenQuantifier(minimum, maximum);
+	}
 
 	private sealed class BetweenQuantifier(int minimum, int maximum)
 		: EnumerableQuantifier

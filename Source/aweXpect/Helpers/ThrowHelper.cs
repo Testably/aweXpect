@@ -61,12 +61,54 @@ internal static class ThrowHelper
 	}
 
 	/// <summary>
+	///     Rejects a negative count, because an occurrence count is never below zero.
+	/// </summary>
+	public static void ThrowIfCountIsNegative(int count,
+		[CallerArgumentExpression(nameof(count))] string? paramName = null)
+	{
+		if (count < 0)
+		{
+			// ReSharper disable once LocalizableElement
+			throw Tracing.WriteException(new ArgumentOutOfRangeException(paramName,
+				$"The parameter '{paramName}' must be non-negative"));
+		}
+	}
+
+	/// <summary>
+	///     Rejects a negative duration, because an elapsed time is never below zero.
+	/// </summary>
+	public static void ThrowIfDurationIsNegative(TimeSpan duration,
+		[CallerArgumentExpression(nameof(duration))] string? paramName = null)
+	{
+		if (duration < TimeSpan.Zero)
+		{
+			// ReSharper disable once LocalizableElement
+			throw Tracing.WriteException(new ArgumentOutOfRangeException(paramName,
+				$"The {paramName} must not be negative."));
+		}
+	}
+
+	/// <summary>
 	///     Rejects an inverted range, so that a tolerance cannot silently turn it into a satisfiable one.
 	/// </summary>
 	public static void ThrowIfMaximumIsBelowMinimum<T>(T? minimum, T? maximum)
 		where T : struct, IComparable<T>
 	{
 		if (minimum is not null && maximum is not null && maximum.Value.CompareTo(minimum.Value) < 0)
+		{
+			// ReSharper disable once LocalizableElement
+			throw new ArgumentOutOfRangeException(nameof(maximum),
+				"The maximum must be greater than or equal to the minimum.");
+		}
+	}
+
+	/// <summary>
+	///     Rejects an inverted range of a reference type, so that a negated expectation cannot silently succeed.
+	/// </summary>
+	public static void ThrowIfMaximumIsBelowMinimum<T>(T? minimum, T? maximum)
+		where T : class, IComparable<T>
+	{
+		if (minimum is not null && maximum is not null && maximum.CompareTo(minimum) < 0)
 		{
 			// ReSharper disable once LocalizableElement
 			throw new ArgumentOutOfRangeException(nameof(maximum),

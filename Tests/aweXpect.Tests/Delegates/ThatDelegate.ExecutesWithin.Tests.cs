@@ -53,6 +53,20 @@ public sealed partial class ThatDelegate
 			}
 
 			[Fact]
+			public async Task WhenDurationIsNegative_ShouldThrowArgumentOutOfRangeException()
+			{
+				Action @delegate = () => { };
+
+				async Task Act()
+					=> await That(@delegate).ExecutesWithin(-1.Seconds());
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("duration").And
+					.WithMessage("The duration must not be negative.").AsPrefix()
+					.Because("an execution can never take less than no time at all");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Action? subject = null;
@@ -580,6 +594,20 @@ public sealed partial class ThatDelegate
 					              but it did throw a MyException:
 					                {nameof(WhenDelegateThrowsAnException_ShouldFailWithDescriptiveMessage)}
 					              """);
+			}
+
+			[Fact]
+			public async Task WhenDurationIsNegative_ShouldThrowArgumentOutOfRangeException()
+			{
+				Func<int> @delegate = () => 1;
+
+				async Task Act()
+					=> await That(@delegate).ExecutesWithin(-1.Seconds());
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("duration").And
+					.WithMessage("The duration must not be negative.").AsPrefix()
+					.Because("an execution can never take less than no time at all");
 			}
 
 			[Fact]

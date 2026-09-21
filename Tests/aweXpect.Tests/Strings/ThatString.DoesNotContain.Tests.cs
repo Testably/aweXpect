@@ -326,7 +326,7 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
-			public async Task WhenMinimumIsGreaterThanMaximum_ShouldThrowArgumentException()
+			public async Task WhenMinimumIsGreaterThanMaximum_ShouldThrowArgumentOutOfRangeException()
 			{
 				string subject =
 					"In this text in between the word an investigator should find the word 'IN' multiple times.";
@@ -335,7 +335,8 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotContain(unexpected).Between(4).And(3);
 
-				await That(Act).ThrowsExactly<ArgumentException>()
+				await That(Act).ThrowsExactly<ArgumentOutOfRangeException>()
+					.WithParamName("maximum").And
 					.WithMessage("*'maximum'*greater*'minimum'*").AsWildcard();
 			}
 

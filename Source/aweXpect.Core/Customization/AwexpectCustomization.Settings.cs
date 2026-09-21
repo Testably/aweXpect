@@ -1,4 +1,5 @@
 using System;
+using aweXpect.Core;
 using aweXpect.Signaling;
 
 namespace aweXpect.Customization;
@@ -47,10 +48,20 @@ public partial class AwexpectCustomization
 				}));
 			DefaultTimeComparisonTolerance = new CustomizationValue<TimeSpan>(
 				() => Get().DefaultTimeComparisonTolerance,
-				v => Update(p => p with
+				value =>
 				{
-					DefaultTimeComparisonTolerance = v,
-				}));
+					if (value < TimeSpan.Zero)
+					{
+						// ReSharper disable once LocalizableElement
+						throw Tracing.WriteException(
+							new ArgumentOutOfRangeException(nameof(value), "Tolerance must be non-negative"));
+					}
+
+					return Update(p => p with
+					{
+						DefaultTimeComparisonTolerance = value,
+					});
+				});
 			TestCancellation = new CustomizationValue<TestCancellation?>(
 				() => Get().TestCancellation,
 				v => Update(p => p with

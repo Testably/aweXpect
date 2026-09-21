@@ -38,14 +38,15 @@ public class QuantifierTests
 	[InlineData(2, 1, true)]
 	[InlineData(1, 1, false)]
 	[InlineData(1, 2, false)]
-	public async Task Between_WhenMaximumIsLessThanMinimum_ShouldThrowArgumentException(
+	public async Task Between_WhenMaximumIsLessThanMinimum_ShouldThrowArgumentOutOfRangeException(
 		int minimum, int maximum, bool expectThrow)
 	{
 		Quantifier sut = new();
 
 		void Act() => sut.Between(minimum, maximum);
 
-		await That(Act).Throws<ArgumentException>().OnlyIf(expectThrow)
+		await That(Act).Throws<ArgumentOutOfRangeException>().OnlyIf(expectThrow)
+			.WithParamName("maximum").And
 			.WithMessage("*The parameter 'maximum' must be greater than or equal to 'minimum'*").AsWildcard();
 	}
 

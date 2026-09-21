@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using aweXpect.Core;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Options;
 
@@ -72,6 +73,7 @@ public class ExecutionTimeOptions
 	/// </summary>
 	public void Within(TimeSpan duration)
 	{
+		ThrowHelper.ThrowIfDurationIsNegative(duration);
 		_limit = new MaximumLimit(duration, true);
 		_onUpperBound?.Invoke(duration);
 	}
@@ -81,6 +83,7 @@ public class ExecutionTimeOptions
 	/// </summary>
 	public void AtMost(TimeSpan maximum)
 	{
+		ThrowHelper.ThrowIfDurationIsNegative(maximum);
 		_limit = new MaximumLimit(maximum);
 		_onUpperBound?.Invoke(maximum);
 	}
@@ -89,7 +92,10 @@ public class ExecutionTimeOptions
 	///     Verifies that the value is at least <paramref name="minimum" />.
 	/// </summary>
 	public void AtLeast(TimeSpan minimum)
-		=> _limit = new MinimumLimit(minimum);
+	{
+		ThrowHelper.ThrowIfDurationIsNegative(minimum);
+		_limit = new MinimumLimit(minimum);
+	}
 
 	/// <summary>
 	///     Verifies that the value is approximately <paramref name="expected" />,
@@ -112,6 +118,9 @@ public class ExecutionTimeOptions
 	/// </summary>
 	public void Between(TimeSpan minimum, TimeSpan maximum)
 	{
+		ThrowHelper.ThrowIfDurationIsNegative(minimum);
+		ThrowHelper.ThrowIfDurationIsNegative(maximum);
+		ThrowHelper.ThrowIfMaximumIsBelowMinimum<TimeSpan>(minimum, maximum);
 		_limit = new BetweenLimit(minimum, maximum);
 		_onUpperBound?.Invoke(maximum);
 	}

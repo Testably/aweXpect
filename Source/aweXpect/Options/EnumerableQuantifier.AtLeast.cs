@@ -1,5 +1,6 @@
 ﻿using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Helpers;
 
 namespace aweXpect.Options;
 
@@ -10,7 +11,10 @@ public abstract partial class EnumerableQuantifier
 	/// </summary>
 	public static EnumerableQuantifier AtLeast(int minimum,
 		ExpectationGrammars expectationGrammars = ExpectationGrammars.None)
-		=> new AtLeastQuantifier(minimum);
+	{
+		ThrowHelper.ThrowIfCountIsNegative(minimum);
+		return new AtLeastQuantifier(minimum);
+	}
 
 	private sealed class AtLeastQuantifier(int minimum) : EnumerableQuantifier
 	{

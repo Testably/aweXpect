@@ -113,7 +113,8 @@ public class Quantifier
 		if (minimum > maximum)
 		{
 			throw Tracing.WriteException(
-				new ArgumentException("The parameter 'maximum' must be greater than or equal to 'minimum'"));
+				new ArgumentOutOfRangeException(nameof(maximum),
+					"The parameter 'maximum' must be greater than or equal to 'minimum'"));
 		}
 
 		_minimum = minimum;
