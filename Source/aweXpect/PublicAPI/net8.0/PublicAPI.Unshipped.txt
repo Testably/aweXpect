@@ -1,4 +1,12 @@
 #nullable enable
+*REMOVED*aweXpect.Results.ContainsKeysResult<TCollection, TThat, TKey, TValue>.WhoseValues.get -> aweXpect.ThatEnumerable.Elements<TValue>!
+*REMOVED*aweXpect.Results.SignalTimeoutResult
+*REMOVED*aweXpect.Results.SignalTimeoutResult.SignalTimeoutResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<aweXpect.Signaling.Signaler!>! returnValue, aweXpect.Options.SignalerOptions! options) -> void
+*REMOVED*aweXpect.Results.SignalTimeoutResult.Within(System.TimeSpan timeout) -> aweXpect.Results.SignalTimeoutResult!
+*REMOVED*aweXpect.Results.SignalTimeoutResult<TParameter>
+*REMOVED*aweXpect.Results.SignalTimeoutResult<TParameter>.SignalTimeoutResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>!>! returnValue, aweXpect.Options.SignalerOptions<TParameter>! options) -> void
+*REMOVED*aweXpect.Results.SignalTimeoutResult<TParameter>.With(System.Func<TParameter, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.SignalTimeoutResult<TParameter>!
+*REMOVED*aweXpect.Results.SignalTimeoutResult<TParameter>.Within(System.TimeSpan timeout) -> aweXpect.Results.SignalTimeoutResult<TParameter>!
 *REMOVED*aweXpect.ThatAsyncEnumerable.Elements.ComplyWith(System.Action<aweXpect.Core.IThatSubject<string?>!>! expectations) -> aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IAsyncEnumerable<string?>!, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<string?>?>!, string?>!
 *REMOVED*aweXpect.ThatAsyncEnumerable.Elements<TItem>.Are(System.Type! type) -> aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IAsyncEnumerable<TItem>!, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TItem>?>!, TItem>!
 *REMOVED*aweXpect.ThatAsyncEnumerable.Elements<TItem>.Are<TType>() -> aweXpect.Results.ObjectEqualityResult<System.Collections.Generic.IAsyncEnumerable<TItem>!, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TItem>?>!, TItem>!
@@ -21,14 +29,6 @@
 *REMOVED*aweXpect.ThatEnumerable.ElementsForStructEnumerable<TEnumerable, TItem>.AreExactly(System.Type! type) -> aweXpect.Results.ObjectEqualityResult<TEnumerable, aweXpect.Core.IThat<TEnumerable>!, TItem>!
 *REMOVED*aweXpect.ThatEnumerable.ElementsForStructEnumerable<TEnumerable, TItem>.AreExactly<TType>() -> aweXpect.Results.ObjectEqualityResult<TEnumerable, aweXpect.Core.IThat<TEnumerable>!, TItem>!
 *REMOVED*aweXpect.ThatEnumerable.ElementsForStructEnumerable<TEnumerable, TItem>.ComplyWith(System.Action<aweXpect.Core.IThatSubject<TItem>!>! expectations) -> aweXpect.Results.ObjectEqualityResult<TEnumerable, aweXpect.Core.IThat<TEnumerable>!, TItem>!
-*REMOVED*aweXpect.Results.ContainsKeysResult<TCollection, TThat, TKey, TValue>.WhoseValues.get -> aweXpect.ThatEnumerable.Elements<TValue>!
-*REMOVED*aweXpect.Results.SignalTimeoutResult
-*REMOVED*aweXpect.Results.SignalTimeoutResult.SignalTimeoutResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<aweXpect.Signaling.Signaler!>! returnValue, aweXpect.Options.SignalerOptions! options) -> void
-*REMOVED*aweXpect.Results.SignalTimeoutResult.Within(System.TimeSpan timeout) -> aweXpect.Results.SignalTimeoutResult!
-*REMOVED*aweXpect.Results.SignalTimeoutResult<TParameter>
-*REMOVED*aweXpect.Results.SignalTimeoutResult<TParameter>.SignalTimeoutResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>!>! returnValue, aweXpect.Options.SignalerOptions<TParameter>! options) -> void
-*REMOVED*aweXpect.Results.SignalTimeoutResult<TParameter>.With(System.Func<TParameter, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.SignalTimeoutResult<TParameter>!
-*REMOVED*aweXpect.Results.SignalTimeoutResult<TParameter>.Within(System.TimeSpan timeout) -> aweXpect.Results.SignalTimeoutResult<TParameter>!
 *REMOVED*aweXpect.ThatReadOnlyDictionary
 *REMOVED*aweXpect.ThatReadOnlyDictionary.extension<TKey, TValue>(aweXpect.Core.IThat<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>?>!)
 *REMOVED*aweXpect.ThatReadOnlyDictionary.extension<TKey, TValue>(aweXpect.Core.IThat<System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>?>!).Keys.get -> aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TKey>?>!
