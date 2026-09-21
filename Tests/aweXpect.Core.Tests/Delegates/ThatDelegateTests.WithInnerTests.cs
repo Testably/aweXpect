@@ -131,7 +131,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("""
 				             Expected that Delegate
 				             throws a MyException with an inner MyException whose Message is equal to "foo",
-				             but it was "inner" which differs at index 0:
+				             but Message was "inner" which differs at index 0:
 				                ↓ (actual)
 				               "inner"
 				               "foo"
@@ -155,7 +155,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("""
 				             Expected that Delegate
 				             throws a MyException with an inner MyException which satisfies i => i?.Message == "foo" and whose Message is equal to "foo",
-				             but it was MyException: inner and it was "inner" which differs at index 0:
+				             but it was MyException: inner and Message was "inner" which differs at index 0:
 				                ↓ (actual)
 				               "inner"
 				               "foo"
@@ -217,7 +217,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("""
 				             Expected that Delegate
 				             throws a MyException with an inner MyException whose Message is equal to "foo",
-				             but it was "inner" which differs at index 0:
+				             but Message was "inner" which differs at index 0:
 				                ↓ (actual)
 				               "inner"
 				               "foo"
@@ -258,7 +258,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("""
 				             Expected that Delegate
 				             throws a MyException with an inner exception whose Message is equal to "foo",
-				             but it was "inner" which differs at index 0:
+				             but Message was "inner" which differs at index 0:
 				                ↓ (actual)
 				               "inner"
 				               "foo"

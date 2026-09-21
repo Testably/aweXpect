@@ -39,7 +39,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that Delegate
 						             throws an exception with Message containing "foo",
-						             but it was "FOO"
+						             but Message was "FOO"
 
 						             Message:
 						             FOO
@@ -91,7 +91,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that Delegate
 						             throws a ThatDelegate.CustomException with Message containing "foo",
-						             but it was "FOO"
+						             but Message was "FOO"
 
 						             Message:
 						             FOO
@@ -126,7 +126,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with Message containing "expected other text",
-						             but it was "expected actual text"
+						             but Message was "expected actual text"
 
 						             Message:
 						             expected actual text
@@ -148,7 +148,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with Message ending with "foo",
-						             but it was "foo and some other text"*
+						             but Message was "foo and some other text"*
 
 						             Message:
 						             foo and some other text
@@ -202,7 +202,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with Message equal to "expected other text",
-						             but it was "actual text" which differs at index 0:
+						             but Message was "actual text" which differs at index 0:
 						                ↓ (actual)
 						               "actual text"
 						               "expected other text"
@@ -233,7 +233,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that Delegate
 						             throws an exception with Message not containing "foo" ignoring case,
-						             but it was "_FOO_BAR"
+						             but Message was "_FOO_BAR"
 
 						             Message:
 						             _FOO_BAR
@@ -298,7 +298,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that Delegate
 						             throws an exception with Message not containing "foo",
-						             but it was "some text before foo"
+						             but Message was "some text before foo"
 
 						             Message:
 						             some text before foo
@@ -320,7 +320,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with Message not ending with "foo",
-						             but it was "some text before foo"
+						             but Message was "some text before foo"
 
 						             Message:
 						             some text before foo
@@ -346,7 +346,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that Delegate
 						             throws an exception with Message not equal to "foo" ignoring case,
-						             but it was "FOO"
+						             but Message was "FOO"
 
 						             Message:
 						             FOO
@@ -369,7 +369,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that Delegate
 						             throws an exception with Message not matching "foo*",
-						             but it was "foo-bar"
+						             but Message was "foo-bar"
 
 						             Message:
 						             foo-bar
@@ -433,7 +433,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with Message not starting with "foo",
-						             but it was "foo and some other text"
+						             but Message was "foo and some other text"
 
 						             Message:
 						             foo and some other text
@@ -455,7 +455,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with Message starting with "foo",
-						             but it was "some text before foo"*
+						             but Message was "some text before foo"*
 
 						             Message:
 						             some text before foo
@@ -511,7 +511,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that Delegate
 						             throws an exception with Message equal to "foo",
-						             but it was "FOO" which differs at index 0:
+						             but Message was "FOO" which differs at index 0:
 						                ↓ (actual)
 						               "FOO"
 						               "foo"
@@ -537,7 +537,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that Delegate
 						             throws a ThatDelegate.CustomException with Message equal to "foo",
-						             but it was "FOO" which differs at index 0:
+						             but Message was "FOO" which differs at index 0:
 						                ↓ (actual)
 						               "FOO"
 						               "foo"
@@ -576,7 +576,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with Message equal to "expected other text",
-						             but it was "actual text" which differs at index 0:
+						             but Message was "actual text" which differs at index 0:
 						                ↓ (actual)
 						               "actual text"
 						               "expected other text"

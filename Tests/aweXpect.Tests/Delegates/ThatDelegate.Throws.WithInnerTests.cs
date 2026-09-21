@@ -130,7 +130,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner ThatDelegate.CustomException whose Message is equal to "foo",
-						             but it was "bar" which differs at index 0:
+						             but Message was "bar" which differs at index 0:
 						                ↓ (actual)
 						               "bar"
 						               "foo"
@@ -155,7 +155,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner exception whose Message is equal to "foo",
-						             but it was "bar" which differs at index 0:
+						             but Message was "bar" which differs at index 0:
 						                ↓ (actual)
 						               "bar"
 						               "foo"
@@ -194,7 +194,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner ThatDelegate.CustomException whose Message is equal to "bar" and whose Message is equal to "foo",
-						             but it was "bar" which differs at index 0:
+						             but Message was "bar" which differs at index 0:
 						                ↓ (actual)
 						               "bar"
 						               "foo"
@@ -451,7 +451,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner ThatDelegate.CustomException whose Message is equal to "foo",
-						             but it was "bar" which differs at index 0:
+						             but Message was "bar" which differs at index 0:
 						                ↓ (actual)
 						               "bar"
 						               "foo"
@@ -477,7 +477,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner exception whose Message is equal to "foo",
-						             but it was "bar" which differs at index 0:
+						             but Message was "bar" which differs at index 0:
 						                ↓ (actual)
 						               "bar"
 						               "foo"

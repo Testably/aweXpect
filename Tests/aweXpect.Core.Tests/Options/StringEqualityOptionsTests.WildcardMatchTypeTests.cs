@@ -206,7 +206,7 @@ public sealed partial class StringEqualityOptionsTests
 				.WithMessage("""
 				             Expected that () => Task.FromException(exception)
 				             throws an exception with Message matching "bar",
-				             but it did not match:
+				             but Message did not match:
 				               ↓ (actual)
 				               "foo"
 				               "bar"

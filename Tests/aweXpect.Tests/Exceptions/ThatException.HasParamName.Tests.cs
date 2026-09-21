@@ -31,7 +31,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has ParamName containing "somethingElse",
-					             but it was "message" with a length of 7 which is shorter than the expected length of 13
+					             but ParamName was "message" with a length of 7 which is shorter than the expected length of 13
 					             """);
 			}
 		}
@@ -51,7 +51,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has ParamName equal to "somethingElse",
-					             but it was "message" which differs at index 0:
+					             but ParamName was "message" which differs at index 0:
 					                ↓ (actual)
 					               "message"
 					               "somethingElse"
@@ -97,7 +97,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has ParamName equal to "message",
-					             but it was <null>
+					             but ParamName was <null>
 					             """);
 			}
 
@@ -134,7 +134,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has ParamName not equal to <null>,
-					             but it was <null>
+					             but ParamName was <null>
 					             """);
 			}
 
@@ -179,7 +179,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has ParamName not equal to "message",
-					             but it was "message"
+					             but ParamName was "message"
 					             """);
 			}
 
@@ -216,7 +216,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has ParamName not containing "essag",
-					             but it was "message"
+					             but ParamName was "message"
 					             """);
 			}
 
@@ -260,7 +260,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has ParamName not equal to "message",
-					             but it was "message"
+					             but ParamName was "message"
 					             """);
 			}
 		}
@@ -293,7 +293,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has ParamName equal to <null>,
-					             but it was "message"
+					             but ParamName was "message"
 					             """)
 					.Because("the shorthand compares a null argument as null instead of skipping the check");
 			}
@@ -311,7 +311,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has ParamName equal to "somethingElse",
-					             but it was "message" which differs at index 0:
+					             but ParamName was "message" which differs at index 0:
 					                ↓ (actual)
 					               "message"
 					               "somethingElse"
