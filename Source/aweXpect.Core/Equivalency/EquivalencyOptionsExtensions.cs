@@ -10,12 +10,22 @@ internal static class EquivalencyOptionsExtensions
 	/// <summary>
 	///     Returns type-specific <see cref="EquivalencyTypeOptions" />.
 	/// </summary>
+	/// <remarks>
+	///     The lookup walks the base types, most derived first: the <paramref name="type" /> is the runtime type of a
+	///     value, which can never be an abstract type the user registered options for. A <see cref="Type" /> member is
+	///     a <c>RuntimeType</c> at runtime, a type that cannot even be named, so an exact match alone would make
+	///     <see cref="EquivalencyOptions.For{TMember}" /> unreachable for it. Interfaces are not considered, because
+	///     several of them can match without an order that decides between them.
+	/// </remarks>
 	internal static EquivalencyTypeOptions GetTypeOptions(this EquivalencyOptions @this, Type? type,
 		EquivalencyTypeOptions defaultValue)
 	{
-		if (type != null && @this.CustomOptions.TryGetValue(type, out EquivalencyTypeOptions? customOptions))
+		for (Type? candidate = type; candidate != null; candidate = candidate.BaseType)
 		{
-			return customOptions;
+			if (@this.CustomOptions.TryGetValue(candidate, out EquivalencyTypeOptions? customOptions))
+			{
+				return customOptions;
+			}
 		}
 
 		return defaultValue;

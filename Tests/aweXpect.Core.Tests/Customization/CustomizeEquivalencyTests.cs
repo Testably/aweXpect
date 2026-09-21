@@ -44,6 +44,25 @@ public sealed class CustomizeEquivalencyTests
 	}
 
 	[Fact]
+	public async Task SetDefaultEquivalencyOptions_ShouldAlsoApplyWhenOptionsArePassedPerCall()
+	{
+		ClassWithField actual = new(1, "foo");
+		ClassWithField expected = new(2, "foo");
+
+		async Task Act()
+			=> await That(actual).IsEquivalentTo(expected, o => o);
+
+		using (IDisposable __ = Customize.aweXpect.Equivalency().DefaultEquivalencyOptions.Set(new EquivalencyOptions
+		       {
+			       Fields = IncludeMembers.None,
+		       }))
+		{
+			await That(Act).DoesNotThrow()
+				.Because("the customized default must not be dropped when a callback creates the typed options");
+		}
+	}
+
+	[Fact]
 	public async Task SetMaxRecursionDepth_ShouldApplyOptionsWithinScope()
 	{
 		NestedNode actual = new(3);
@@ -96,6 +115,13 @@ public sealed class CustomizeEquivalencyTests
 
 		await That(Customize.aweXpect.Equivalency().DefaultEquivalencyOptions.Get().IgnoreCollectionOrder)
 			.IsFalse();
+	}
+
+	private sealed class ClassWithField(int value, string name)
+	{
+		public readonly int Value = value;
+
+		public string Name { get; } = name;
 	}
 
 	/// <remarks>

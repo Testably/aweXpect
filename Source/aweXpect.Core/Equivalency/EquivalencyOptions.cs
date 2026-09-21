@@ -58,11 +58,15 @@ public record EquivalencyOptions : EquivalencyTypeOptions
 	/// <summary>
 	///     Specifies the <paramref name="options" /> for members of type <typeparamref name="TMember" />.
 	/// </summary>
+	/// <remarks>
+	///     The last registration for a type wins, so that a single expectation can override what the customized
+	///     default already specifies for that type.
+	/// </remarks>
 	public EquivalencyOptions For<TMember>(
 		Func<EquivalencyTypeOptions, EquivalencyTypeOptions> options)
 	{
 		EquivalencyTypeOptions typeOptions = options(this);
-		CustomOptions.Add(typeof(TMember), typeOptions);
+		CustomOptions[typeof(TMember)] = typeOptions;
 		return this;
 	}
 
@@ -96,13 +100,14 @@ public record EquivalencyOptions<TExpected> : EquivalencyOptions
 	/// <summary>
 	///     Initializes the values with the <paramref name="inner" /> equivalency options.
 	/// </summary>
-	public EquivalencyOptions(EquivalencyOptions inner)
-	{
-		MembersToIgnore = inner.MembersToIgnore;
-		IgnoreCollectionOrder = inner.IgnoreCollectionOrder;
-		DefaultComparisonTypeSelector = inner.DefaultComparisonTypeSelector;
-		MaxRecursionDepth = inner.MaxRecursionDepth;
-	}
+	/// <remarks>
+	///     Delegates to the copy constructor of the record, so that a member added later is copied as well instead of
+	///     being dropped silently. Only <see cref="EquivalencyOptions.CustomOptions" /> needs a copy of its own,
+	///     because <see cref="For{TMember}" /> mutates the dictionary in place and must not write into the
+	///     <paramref name="inner" /> options, which are the customized default shared by every expectation.
+	/// </remarks>
+	public EquivalencyOptions(EquivalencyOptions inner) : base(inner)
+		=> CustomOptions = new Dictionary<Type, EquivalencyTypeOptions>(inner.CustomOptions);
 
 	/// <summary>
 	///     Specifies the <paramref name="options" /> for members of type <typeparamref name="TMember" />.

@@ -10,6 +10,30 @@ public sealed partial class EquivalencyComparerTests
 	public sealed class CustomTypeTests
 	{
 		[Fact]
+		public async Task WhenCustomOptionsAreRegisteredForABaseType_ShouldApplyThemToADerivedValue()
+		{
+			SomeWrapper actual = new(new SomeDerivedRecord([1, 2,]));
+			SomeWrapper expected = new(new SomeDerivedRecord([2, 1,]));
+			EquivalencyComparer sut = new(new EquivalencyOptions
+			{
+				CustomOptions =
+				{
+					{
+						typeof(SomeBaseRecord), new EquivalencyTypeOptions
+						{
+							IgnoreCollectionOrder = true,
+						}
+					},
+				},
+			});
+
+			bool result = await sut.AreConsideredEqual(actual, expected);
+
+			await That(result).IsTrue()
+				.Because("a member of an abstract type is always an instance of a derived type");
+		}
+
+		[Fact]
 		public async Task WhenPropertiesDiffer_IgnoreCollectionOrderOnlySetForOneProperty_ShouldFailForOtherProperty()
 		{
 			SomeRecord actual = new(new SomeCustomRecord([1, 2,]), new SomeOtherRecord([1, 2,]));
@@ -94,5 +118,11 @@ public sealed partial class EquivalencyComparerTests
 		private record SomeCustomRecord(int[] Values);
 
 		private record SomeOtherRecord(int[] Values);
+
+		private record SomeWrapper(SomeBaseRecord Value);
+
+		private abstract record SomeBaseRecord(int[] Values);
+
+		private sealed record SomeDerivedRecord(int[] Values) : SomeBaseRecord(Values);
 	}
 }

@@ -184,7 +184,9 @@ differs from the least.
 ### Per-type options with `For<T>`
 
 You can apply options to a specific member type only. Type-specific options override the top-level options for members
-of that type.
+of that type. They also apply to a member whose runtime type derives from `T`, because an instance of an abstract type
+is always an instance of a derived type, and the runtime type of a `Type` member is the internal `RuntimeType` rather
+than `Type` itself. When several registrations match, the most derived one wins.
 
 ```csharp
 await Expect.That(album).IsEquivalentTo(expected, o => o
@@ -194,7 +196,9 @@ await Expect.That(album).IsEquivalentTo(expected, o => o
 
 Unlike the other fluent methods, `For<T>` mutates `CustomOptions` on the options it was called on rather than returning
 a copy. That is fine inside a single callback, but means an `EquivalencyOptions` instance you have already configured
-with `For<T>` should not be reused across separate assertions.
+with `For<T>` should not be reused across separate assertions. The options of a single expectation start from a copy of
+the customized default, so a registration in the callback replaces one for the same type in that default without
+changing the default itself.
 
 ### Comparing by value or by members
 
