@@ -517,6 +517,22 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task AsRegex_WhenPatternDoesNotCompleteInTime_ShouldThrowArgumentException()
+			{
+				IEnumerable<string?> subject = [new string('a', 30) + "!",];
+
+				async Task Act()
+					=> await That(subject).HasItem("(a+)+$").AsRegex();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage(
+						"""The regex "(a+)+$" did not complete within 0:01. Simplify the pattern to avoid catastrophic backtracking.""")
+					.AsPrefix().And
+					.WithParamName("expected")
+					.Because("the timeout has to be reported the same way for every consumer");
+			}
+
+			[Fact]
 			public async Task AsRegex_WithOptions_ShouldApplyTheOptions()
 			{
 				IEnumerable<string?> subject = ["foo", "x\nbar", "baz",];

@@ -229,6 +229,22 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
+			public async Task WhenPatternDoesNotCompleteInTime_ShouldThrowArgumentException()
+			{
+				string subject = new('a', 30);
+
+				async Task Act()
+					=> await That(subject + "!").IsEqualTo("(a+)+$").AsRegex();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage(
+						"""The regex "(a+)+$" did not complete within 0:01. Simplify the pattern to avoid catastrophic backtracking.""")
+					.AsPrefix().And
+					.WithParamName("expected")
+					.Because("the timeout used to escape as a generic evaluation error without naming the pattern");
+			}
+
+			[Fact]
 			public async Task WhenPatternEnablesMultilineInline_ShouldBindTheAnchorsToLineBoundaries()
 			{
 				string subject = "a\nb";

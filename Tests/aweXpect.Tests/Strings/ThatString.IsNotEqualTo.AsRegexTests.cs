@@ -28,6 +28,22 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
+			public async Task WhenPatternDoesNotCompleteInTime_ShouldThrowArgumentException()
+			{
+				string subject = new('a', 30);
+
+				async Task Act()
+					=> await That(subject + "!").IsNotEqualTo("(a+)+$").AsRegex();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage(
+						"""The regex "(a+)+$" did not complete within 0:01. Simplify the pattern to avoid catastrophic backtracking.""")
+					.AsPrefix().And
+					.WithParamName("expected")
+					.Because("a pattern that cannot be evaluated says nothing about the subject in either polarity");
+			}
+
+			[Fact]
 			public async Task WhenPatternIsAnchoredToALineOfTheSubject_ShouldSucceed()
 			{
 				string subject = "a\nb";

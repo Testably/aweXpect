@@ -265,6 +265,23 @@ public sealed partial class ThatString
 					.Because("a case-sensitive match never looked at the culture");
 			}
 
+			[Fact]
+			public async Task WhenPatternDoesNotCompleteInTime_ShouldThrowArgumentException()
+			{
+				string subject = new('a', 100);
+				string pattern = "*a*a*a*a*a*a*a*a*a*ab";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(pattern).AsWildcard();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage(
+						$"""The wildcard pattern "{pattern}" did not complete within 0:01. Simplify the pattern to avoid catastrophic backtracking.""")
+					.AsPrefix().And
+					.WithParamName("expected")
+					.Because("the message must name the wildcard pattern, not the regex it is translated into");
+			}
+
 			[Theory]
 			[InlineData("", true)]
 			[InlineData("a", false)]

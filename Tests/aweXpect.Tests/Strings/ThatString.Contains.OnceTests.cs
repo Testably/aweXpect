@@ -54,6 +54,22 @@ public sealed partial class ThatString
 					             but it contained "word" twice in "In this text in between the word an investigator should find the word 'IN' multiple times."
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenPatternDoesNotCompleteInTime_ShouldThrowArgumentException()
+			{
+				string subject = new('a', 30);
+
+				async Task Act()
+					=> await That(subject + "!").Contains("(a+)+$").AsRegex().Once();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage(
+						"""The regex "(a+)+$" did not complete within 0:01. Simplify the pattern to avoid catastrophic backtracking.""")
+					.AsPrefix().And
+					.WithParamName("expected")
+					.Because("counting the occurrences must report the timeout just as a plain match does");
+			}
 		}
 	}
 }

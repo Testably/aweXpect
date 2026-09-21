@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Helpers;
@@ -51,8 +52,16 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 
 		expectedString = Normalize(expectedString);
 		ValidatePattern(expectedString);
-		result = await _matchType.AreConsideredEqual(Normalize(actual), expectedString, _ignoreCase,
-			_comparer);
+		try
+		{
+			result = await _matchType.AreConsideredEqual(Normalize(actual), expectedString, _ignoreCase,
+				_comparer);
+		}
+		catch (RegexMatchTimeoutException exception)
+		{
+			throw CreateTimeoutException(expectedString, exception);
+		}
+
 		return result;
 	}
 
@@ -86,16 +95,23 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 			return BlockMatchType.CountOccurrences(actual, expected, _comparer ?? UseDefaultComparer(_ignoreCase));
 		}
 
-		// A pattern can match a different number of characters than it is long, so its occurrences cannot be found
-		// with a window of the expected length.
-		if (_matchType is RegexMatchType regexMatchType)
+		try
 		{
-			return RegexMatchType.CountOccurrences(actual, expected, _ignoreCase, regexMatchType.Options);
-		}
+			// A pattern can match a different number of characters than it is long, so its occurrences cannot be found
+			// with a window of the expected length.
+			if (_matchType is RegexMatchType regexMatchType)
+			{
+				return RegexMatchType.CountOccurrences(actual, expected, _ignoreCase, regexMatchType.Options);
+			}
 
-		if (_matchType is WildcardMatchType)
+			if (_matchType is WildcardMatchType)
+			{
+				return WildcardMatchType.CountOccurrences(actual, expected, _ignoreCase);
+			}
+		}
+		catch (RegexMatchTimeoutException exception)
 		{
-			return WildcardMatchType.CountOccurrences(actual, expected, _ignoreCase);
+			throw CreateTimeoutException(expected, exception);
 		}
 
 		int count = 0;
@@ -289,6 +305,20 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		// ReSharper disable once LocalizableElement
 		=> Tracing.WriteException(new InvalidOperationException(
 			"A custom comparer is not supported for regex or wildcard matching."));
+
+	/// <summary>
+	///     Creates the exception for an <paramref name="expected" /> pattern that did not finish matching within the
+	///     timeout.
+	/// </summary>
+	/// <remarks>
+	///     An <see cref="ArgumentException" /> is not wrapped by the expectation node, so that the pattern which has
+	///     to be simplified stays visible instead of being hidden behind a generic evaluation error.
+	/// </remarks>
+	private ArgumentException CreateTimeoutException(string expected, RegexMatchTimeoutException innerException)
+		// ReSharper disable once LocalizableElement
+		=> Tracing.WriteException(new ArgumentException(
+			$"The {(_matchType is RegexMatchType ? "regex" : "wildcard pattern")} {Formatter.Format(expected)} did not complete within {Formatter.Format(RegexTimeout)}. Simplify the pattern to avoid catastrophic backtracking.",
+			nameof(expected), innerException));
 
 	private static StringComparer UseDefaultComparer(bool ignoreCase)
 		=> ignoreCase ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal;
