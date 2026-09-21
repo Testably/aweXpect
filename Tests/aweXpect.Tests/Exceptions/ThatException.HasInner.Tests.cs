@@ -68,7 +68,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has an inner exception,
-					             but it was <null>
+					             but it had no inner exception
 					             """);
 			}
 

@@ -55,7 +55,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("""
 				             Expected that Delegate
 				             throws a MyException with an inner exception which is null,
-				             but it was <null>
+				             but it had no inner exception
 				             """);
 		}
 

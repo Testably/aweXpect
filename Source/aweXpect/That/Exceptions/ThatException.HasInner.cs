@@ -19,7 +19,7 @@ public static partial class ThatException
 					" which ",
 					false)
 				.Validate((it, grammars)
-					=> new HasInnerExceptionValueConstraint(typeof(Exception), it, grammars))
+					=> new HasInnerExceptionValueConstraint(typeof(Exception), it, grammars, true))
 				.AddExpectations(e => expectations(new ThatSubject<Exception?>(e)),
 					grammars => grammars | ExpectationGrammars.Nested),
 			subject);
@@ -48,7 +48,7 @@ public static partial class ThatException
 					" which ",
 					false)
 				.Validate((it, grammars)
-					=> new HasInnerExceptionValueConstraint(typeof(TInnerException), it, grammars))
+					=> new HasInnerExceptionValueConstraint(typeof(TInnerException), it, grammars, true))
 				.AddExpectations<TInnerException?>(e => expectations(new ThatSubject<TInnerException?>(e)),
 					grammars => grammars | ExpectationGrammars.Nested),
 			subject);
@@ -78,7 +78,7 @@ public static partial class ThatException
 					" which ",
 					false)
 				.Validate((it, grammars)
-					=> new HasInnerExceptionValueConstraint(type, it, grammars))
+					=> new HasInnerExceptionValueConstraint(type, it, grammars, true))
 				.AddExpectations(e => expectations(new ThatSubject<Exception?>(e)),
 					grammars => grammars | ExpectationGrammars.Nested),
 			subject);

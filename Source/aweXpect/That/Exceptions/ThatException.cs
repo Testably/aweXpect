@@ -13,7 +13,8 @@ public static partial class ThatException
 	private sealed class HasInnerExceptionValueConstraint(
 		Type innerExceptionType,
 		string it,
-		ExpectationGrammars grammars)
+		ExpectationGrammars grammars,
+		bool hasMemberExpectations = false)
 		: ConstraintResult.WithNotNullValue<Exception>(it, grammars),
 			IValueConstraint<Exception?>
 	{
@@ -21,6 +22,12 @@ public static partial class ThatException
 		public ConstraintResult IsMetBy(Exception? actual)
 		{
 			Actual = actual;
+			if (hasMemberExpectations && actual?.InnerException is null)
+			{
+				// Expectations on a missing inner exception could only repeat that there is nothing to inspect.
+				FurtherProcessingStrategy = FurtherProcessingStrategy.IgnoreResult;
+			}
+
 			Outcome = innerExceptionType.IsAssignableFrom(actual?.InnerException?.GetType())
 				? Outcome.Success
 				: Outcome.Failure;
@@ -42,13 +49,13 @@ public static partial class ThatException
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual?.InnerException is null)
+			if (Actual!.InnerException is null)
 			{
-				stringBuilder.ItWasNull(It);
+				stringBuilder.Append(It).Append(" had no inner exception");
 			}
 			else
 			{
-				stringBuilder.Append(It).Append(" was ");
+				stringBuilder.Append(It).Append(" had ");
 				stringBuilder.Append(Actual.InnerException.FormatForMessage(indentation, "inner "));
 			}
 		}

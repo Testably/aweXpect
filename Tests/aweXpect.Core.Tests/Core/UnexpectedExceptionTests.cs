@@ -51,7 +51,7 @@ public sealed class UnexpectedExceptionTests
 			.WithMessage("""
 			             Expected that subject
 			             throws a MyException with an inner InvalidOperationException,
-			             but it was an inner ArgumentException:
+			             but it had an inner ArgumentException:
 			               inner
 			             """);
 	}
