@@ -11,6 +11,36 @@ public sealed partial class ThatReadOnlyDictionary
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenExpectedContainsADuplicateKeyWithADifferentValue_ShouldThrowArgumentException()
+			{
+				IReadOnlyDictionary<string, int> subject = ToDictionary(["a",], [1,]);
+				List<KeyValuePair<string, int>> expected = [new("a", 1), new("a", 2),];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("expected").And
+					.WithMessage("The key \"a\" must not occur more than once.").AsPrefix()
+					.Because("a dictionary holds one value per key, so no subject could ever satisfy both entries");
+			}
+
+			[Fact]
+			public async Task WhenExpectedContainsADuplicateKeyWithTheSameValue_ShouldThrowArgumentException()
+			{
+				IReadOnlyDictionary<string, int> subject = ToDictionary(["a",], [1,]);
+				List<KeyValuePair<string, int>> expected = [new("a", 1), new("a", 1),];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("expected").And
+					.WithMessage("The key \"a\" must not occur more than once.").AsPrefix()
+					.Because("repeating an entry says nothing that the first one did not already say");
+			}
+
+			[Fact]
 			public async Task WhenSubjectHasTheSamePairsInADifferentOrder_ShouldSucceed()
 			{
 				IReadOnlyDictionary<string, int> subject = ToDictionary(["a", "b",], [1, 2,]);

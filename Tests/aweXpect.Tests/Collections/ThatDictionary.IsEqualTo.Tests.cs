@@ -25,6 +25,66 @@ public sealed partial class ThatDictionary
 			}
 
 			[Fact]
+			public async Task WhenExpectedCanOnlyBeEnumeratedOnce_ShouldStillCompareTheEntries()
+			{
+				IDictionary<string, int> subject = ToDictionary(["a", "b",], [1, 2,]);
+				IEnumerable<KeyValuePair<string, int>> expected =
+					Factory.GetSingleUseEnumerable<KeyValuePair<string, int>>(new("a", 1), new("b", 2));
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).DoesNotThrow()
+					.Because("the duplicate guard must not consume the only enumeration of the expected entries");
+			}
+
+			[Fact]
+			public async Task WhenExpectedContainsADuplicateKeyWithADifferentValue_ShouldThrowArgumentException()
+			{
+				IDictionary<string, int> subject = ToDictionary(["a",], [1,]);
+				List<KeyValuePair<string, int>> expected = [new("a", 1), new("a", 2),];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("expected").And
+					.WithMessage("The key \"a\" must not occur more than once.").AsPrefix()
+					.Because("a dictionary holds one value per key, so no subject could ever satisfy both entries");
+			}
+
+			[Fact]
+			public async Task WhenExpectedContainsADuplicateKeyWithTheSameValue_ShouldThrowArgumentException()
+			{
+				IDictionary<string, int> subject = ToDictionary(["a",], [1,]);
+				List<KeyValuePair<string, int>> expected = [new("a", 1), new("a", 1),];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("expected").And
+					.WithMessage("The key \"a\" must not occur more than once.").AsPrefix()
+					.Because("repeating an entry says nothing that the first one did not already say");
+			}
+
+			[Fact]
+			public async Task WhenExpectedContainsTwoDuplicateKeys_ShouldNameTheOneThatAppearsFirst()
+			{
+				IDictionary<string, int> subject = ToDictionary(["a", "b",], [1, 2,]);
+				List<KeyValuePair<string, int>> expected =
+					[new("b", 2), new("a", 1), new("a", 3), new("b", 4),];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("expected").And
+					.WithMessage("The key \"b\" must not occur more than once.").AsPrefix()
+					.Because("the first key that is written twice is the one to point at");
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				IDictionary<string, int> subject = ToDictionary(["a",], [1,]);
@@ -95,6 +155,21 @@ public sealed partial class ThatDictionary
 					             Dictionary:
 					             {["a"] = 1, ["b"] = 2, ["c"] = 3}
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsNull_AndExpectedContainsADuplicateKey_ShouldThrowArgumentException()
+			{
+				IDictionary<string, int>? subject = null;
+				List<KeyValuePair<string, int>> expected = [new("a", 1), new("a", 2),];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("expected").And
+					.WithMessage("The key \"a\" must not occur more than once.").AsPrefix()
+					.Because("the expectation is rejected when it is written, so no subject can make it valid");
 			}
 
 			[Fact]
@@ -233,6 +308,21 @@ public sealed partial class ThatDictionary
 					             """)
 					.Because("naming the additional keys would overshoot when the comparer is coarser than the default");
 			}
+
+			[Fact]
+			public async Task WhenSubjectUsesACaseInsensitiveComparer_WithTwoKeysThatOnlyItUnifies_ShouldNotReject()
+			{
+				IDictionary<string, int> subject =
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, };
+				List<KeyValuePair<string, int>> expected = [new("a", 1), new("A", 1),];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("*is equal to dictionary expected*").AsWildcard()
+					.Because("the duplicate guard uses the default key equality, not the comparer of the subject");
+			}
 		}
 
 		public sealed class ValueComparerTests
@@ -299,6 +389,19 @@ public sealed partial class ThatDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("*is equal to collection expected in order*").AsWildcard()
 					.Because("a collection of pairs that is no dictionary is still compared in order");
+			}
+
+			[Fact]
+			public async Task ForAListOfPairsWithADuplicateKey_ShouldStillCompareInOrder()
+			{
+				List<KeyValuePair<string, int>> subject = [new("a", 1), new("a", 2),];
+				List<KeyValuePair<string, int>> expected = [new("a", 1), new("a", 2),];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).DoesNotThrow()
+					.Because("a repeated key is a legitimate sequence entry as long as no dictionary is involved");
 			}
 
 			[Fact]

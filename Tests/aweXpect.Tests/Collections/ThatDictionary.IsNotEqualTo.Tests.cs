@@ -83,6 +83,36 @@ public sealed partial class ThatDictionary
 				await That(Act).DoesNotThrow()
 					.Because("a null dictionary is not equal to a dictionary that is there");
 			}
+
+			[Fact]
+			public async Task WhenUnexpectedContainsADuplicateKeyWithADifferentValue_ShouldThrowArgumentException()
+			{
+				IDictionary<string, int> subject = ToDictionary(["a",], [1,]);
+				List<KeyValuePair<string, int>> unexpected = [new("a", 1), new("a", 2),];
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The key \"a\" must not occur more than once.").AsPrefix()
+					.Because("no dictionary can hold both entries, so the expectation would pass for every subject");
+			}
+
+			[Fact]
+			public async Task WhenUnexpectedContainsADuplicateKeyWithTheSameValue_ShouldThrowArgumentException()
+			{
+				IDictionary<string, int> subject = ToDictionary(["a",], [1,]);
+				List<KeyValuePair<string, int>> unexpected = [new("a", 1), new("a", 1),];
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The key \"a\" must not occur more than once.").AsPrefix()
+					.Because("repeating an entry says nothing that the first one did not already say");
+			}
 		}
 	}
 }
