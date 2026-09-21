@@ -11,54 +11,15 @@ using aweXpect.SourceGenerators;
 
 namespace aweXpect;
 
-[CreateCollectionExpectation("Is{Not}EqualTo", nameof(ThatAsyncEnumerable.IsEqualToCore),
-	"System.Collections.Generic.IAsyncEnumerable<{item}>",
-	TypeParameters = ["TItem",], ConditionalOn = Net8,
-	Summary = CollectionMatches, NegatedSummary = CollectionDoesNotMatch)]
-[CreateCollectionExpectation("Is{Not}EqualTo", nameof(ThatAsyncEnumerable.IsEqualToForStringsCore),
-	"System.Collections.Generic.IAsyncEnumerable<{item}>",
-	ElementType = "string?", ConditionalOn = Net8,
-	Summary = CollectionMatches, NegatedSummary = CollectionDoesNotMatch)]
-[CreateCollectionExpectation("Is{Not}EqualTo", nameof(ThatAsyncEnumerable.IsEqualToFromPredicatesCore),
-	"System.Collections.Generic.IAsyncEnumerable<{item}>",
-	TypeParameters = ["TItem",], ConditionalOn = Net8,
-	ExpectedType =
-		"System.Collections.Generic.IEnumerable<System.Linq.Expressions.Expression<System.Func<{item}, bool>>>",
-	Summary = CollectionMatchesPredicates, NegatedSummary = CollectionDoesNotMatchPredicates)]
-[CreateCollectionExpectation("Is{Not}EqualTo", nameof(ThatAsyncEnumerable.IsEqualToFromExpectationsCore),
-	"System.Collections.Generic.IAsyncEnumerable<{item}>",
-	TypeParameters = ["TItem",], ConditionalOn = Net8,
-	ExpectedType = "System.Collections.Generic.IEnumerable<System.Action<aweXpect.Core.IThatSubject<{item}?>>>",
-	Summary = CollectionMatchesExpectations, NegatedSummary = CollectionDoesNotMatchExpectations)]
-[CreateCollectionExpectation("Is{Not}EqualTo", nameof(ThatAsyncEnumerable.IsEqualToWithToleranceCore),
-	"System.Collections.Generic.IAsyncEnumerable<{item}>",
-	Factory = typeof(ObjectEqualityWithToleranceOptionsFactory), ConditionalOn = Net8,
-	Summary = CollectionMatches, NegatedSummary = CollectionDoesNotMatch)]
 public static partial class ThatAsyncEnumerable
 {
-	private const string Net8 = "NET8_0_OR_GREATER";
-
-	private const string CollectionMatches =
+	private const string Matches =
 		"Verifies that the collection matches the <paramref name=\"expected\" /> collection.";
 
-	private const string CollectionDoesNotMatch =
+	private const string DoesNotMatch =
 		"Verifies that the collection does not match the <paramref name=\"unexpected\" /> collection.";
 
-	private const string CollectionMatchesPredicates =
-		"Verifies that the collection matches the <paramref name=\"expected\" /> collection of predicates.";
-
-	private const string CollectionDoesNotMatchPredicates =
-		"Verifies that the collection does not match the <paramref name=\"unexpected\" /> collection of predicates.";
-
-	private const string CollectionMatchesExpectations =
-		"Verifies that the collection matches the <paramref name=\"expected\" /> collection of expectations.";
-
-	private const string CollectionDoesNotMatchExpectations =
-		"Verifies that the collection does not match the <paramref name=\"unexpected\" /> collection of expectations.";
-
-	/// <remarks>
-	///     Shared body of the value overloads.
-	/// </remarks>
+	[CreateCollectionExpectation("Is{Not}EqualTo", Summary = Matches, NegatedSummary = DoesNotMatch)]
 	internal static ObjectCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
 		IsEqualToCore<TItem>(
 			IThat<IAsyncEnumerable<TItem>?> subject,
@@ -81,10 +42,7 @@ public static partial class ThatAsyncEnumerable
 			matchOptions);
 	}
 
-	/// <remarks>
-	///     Counterpart of <see cref="IsEqualToCore{TItem}" /> for a collection of strings, which carries the string
-	///     equality options instead.
-	/// </remarks>
+	[CreateCollectionExpectation("Is{Not}EqualTo", Summary = Matches, NegatedSummary = DoesNotMatch)]
 	internal static StringCollectionMatchResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
 		IsEqualToForStringsCore(
 			IThat<IAsyncEnumerable<string?>?> subject,
@@ -107,57 +65,8 @@ public static partial class ThatAsyncEnumerable
 			matchOptions);
 	}
 
-	/// <remarks>
-	///     Shared body of the overloads whose expected collection is a collection of predicates, which carry no
-	///     equality options.
-	/// </remarks>
-	internal static CollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
-		IsEqualToFromPredicatesCore<TItem>(
-			IThat<IAsyncEnumerable<TItem>?> subject,
-			IEnumerable<Expression<Func<TItem, bool>>> expected,
-			string expectedExpression,
-			bool negated)
-	{
-		CollectionMatchOptions matchOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new CollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint<IAsyncEnumerable<TItem>?>((it, grammars) =>
-			{
-				IsEqualToFromPredicateConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions);
-				return negated ? constraint.Invert() : constraint;
-			}),
-			subject,
-			matchOptions);
-	}
-
-	/// <remarks>
-	///     Counterpart of <see cref="IsEqualToFromPredicatesCore{TItem}" /> for a collection of expectations.
-	/// </remarks>
-	internal static CollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
-		IsEqualToFromExpectationsCore<TItem>(
-			IThat<IAsyncEnumerable<TItem>?> subject,
-			IEnumerable<Action<IThatSubject<TItem?>>> expected,
-			string expectedExpression,
-			bool negated)
-	{
-		CollectionMatchOptions matchOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new CollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint<IAsyncEnumerable<TItem>?>((it, grammars) =>
-			{
-				IsEqualToFromExpectationsConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions);
-				return negated ? constraint.Invert() : constraint;
-			}),
-			subject,
-			matchOptions);
-	}
-
-	/// <remarks>
-	///     Shared body of the tolerance overloads. The generated overloads supply the concrete types and the options
-	///     instance.
-	/// </remarks>
+	[CreateCollectionExpectation("Is{Not}EqualTo", Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
+		Summary = Matches, NegatedSummary = DoesNotMatch)]
 	internal static ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<TItem>,
 			IThat<IAsyncEnumerable<TItem>?>, TItem, TTolerance>
 		IsEqualToWithToleranceCore<TItem, TTolerance>(
@@ -179,6 +88,54 @@ public static partial class ThatAsyncEnumerable
 			}),
 			subject,
 			options,
+			matchOptions);
+	}
+
+	[CreateCollectionExpectation("Is{Not}EqualTo",
+		Summary = "Verifies that the collection matches the <paramref name=\"expected\" /> collection of predicates.",
+		NegatedSummary =
+			"Verifies that the collection does not match the <paramref name=\"unexpected\" /> collection of predicates.")]
+	internal static CollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
+		IsEqualToFromPredicatesCore<TItem>(
+			IThat<IAsyncEnumerable<TItem>?> subject,
+			IEnumerable<Expression<Func<TItem, bool>>> expected,
+			string expectedExpression,
+			bool negated)
+	{
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new CollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
+			expectationBuilder.AddConstraint<IAsyncEnumerable<TItem>?>((it, grammars) =>
+			{
+				IsEqualToFromPredicateConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
+					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions);
+				return negated ? constraint.Invert() : constraint;
+			}),
+			subject,
+			matchOptions);
+	}
+
+	[CreateCollectionExpectation("Is{Not}EqualTo",
+		Summary = "Verifies that the collection matches the <paramref name=\"expected\" /> collection of expectations.",
+		NegatedSummary =
+			"Verifies that the collection does not match the <paramref name=\"unexpected\" /> collection of expectations.")]
+	internal static CollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
+		IsEqualToFromExpectationsCore<TItem>(
+			IThat<IAsyncEnumerable<TItem>?> subject,
+			IEnumerable<Action<IThatSubject<TItem?>>> expected,
+			string expectedExpression,
+			bool negated)
+	{
+		CollectionMatchOptions matchOptions = new();
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new CollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
+			expectationBuilder.AddConstraint<IAsyncEnumerable<TItem>?>((it, grammars) =>
+			{
+				IsEqualToFromExpectationsConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
+					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions);
+				return negated ? constraint.Invert() : constraint;
+			}),
+			subject,
 			matchOptions);
 	}
 }

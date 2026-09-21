@@ -12,24 +12,23 @@ internal static class CollectionExpectationSources
 
 		#nullable enable
 		/// <summary>
-		/// Create the overloads of a collection expectation that delegate to a shared internal helper.
+		/// Create the overloads of a collection expectation from the annotated helper, which holds the body.
 		/// </summary>
-		[System.AttributeUsage(System.AttributeTargets.Class, AllowMultiple = true)]
+		/// <remarks>
+		/// The helper's signature is the declaration: its return type, its subject and expected parameters and its
+		/// type parameters are emitted verbatim, and a helper behind an <c>#if</c> generates nothing where it does
+		/// not exist. Only what the signature cannot state belongs here.
+		/// </remarks>
+		[System.AttributeUsage(System.AttributeTargets.Method, AllowMultiple = true)]
 		internal class CreateCollectionExpectationAttribute : System.Attribute
 		{
 			/// <param name="name">The expectation name, where <c>{Not}</c> marks the negated variant.</param>
-			/// <param name="helper">The internal method of the same class that holds the body.</param>
-			/// <param name="collectionType">The subject collection type, where <c>{item}</c> marks the element.</param>
-			public CreateCollectionExpectationAttribute(string name, string helper, string collectionType)
+			public CreateCollectionExpectationAttribute(string name)
 			{
 				Name = name;
-				Helper = helper;
-				CollectionType = collectionType;
 			}
 
 			public string Name { get; }
-			public string Helper { get; }
-			public string CollectionType { get; }
 
 			/// <summary>
 			/// The class whose parameterless <c>Create*</c> methods define the supported element types. Each nullable
@@ -37,19 +36,12 @@ internal static class CollectionExpectationSources
 			/// </summary>
 			public Type? Factory { get; set; }
 
-			/// <summary>The fixed element type, when the overload is not generic and has no factory.</summary>
-			public string? ElementType { get; set; }
-
-			/// <summary>The type parameters of the generated method; the first one is used as the element type.</summary>
-			public string[]? TypeParameters { get; set; }
-
-			/// <summary>The expected parameter type, where <c>{item}</c> marks the element.</summary>
+			/// <summary>The expected parameter type, when it differs from the helper's second parameter.</summary>
 			public string? ExpectedType { get; set; }
 
 			/// <summary>The <c>OverloadResolutionPriority</c>, or <c>0</c> for none.</summary>
 			public int Priority { get; set; }
 
-			public string? ConditionalOn { get; set; }
 			public string? Summary { get; set; }
 			public string? NegatedSummary { get; set; }
 			public string? Remarks { get; set; }
@@ -69,18 +61,7 @@ internal static class CollectionExpectationSources
 		builder.AppendLine("#pragma warning disable RS0026");
 		builder.Append("public static partial class ").AppendLine(first.ClassName);
 		builder.AppendLine("{");
-		bool isFirst = true;
-		foreach (string method in families.SelectMany(x => x.Methods))
-		{
-			if (!isFirst && !method.StartsWith("#endif"))
-			{
-				builder.AppendLine();
-			}
-
-			isFirst = false;
-			builder.AppendLine(method);
-		}
-
+		builder.AppendLine(string.Join("\n\n", families.SelectMany(x => x.Methods)));
 		builder.AppendLine("}");
 		builder.AppendLine("#nullable disable");
 		return builder.ToString();

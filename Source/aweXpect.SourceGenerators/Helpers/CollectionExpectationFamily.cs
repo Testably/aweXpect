@@ -7,13 +7,13 @@ namespace aweXpect.SourceGenerators.Helpers;
 ///     One <c>[CreateCollectionExpectation]</c> declaration, resolved into the rendered overloads.
 /// </summary>
 /// <remarks>
-///     Everything is reduced to strings here so that no symbol is held across the generator pipeline.
+///     The helper's own signature is the declaration: its return type, its subject and expected parameters and its
+///     type parameters are emitted verbatim. Only what the signature cannot state - the name, the element types of a
+///     tolerance family, the overload priority and the documentation - comes from the attribute. Everything is
+///     reduced to strings here so that no symbol is held across the generator pipeline.
 /// </remarks>
 internal sealed class CollectionExpectationFamily
 {
-	private const string ItemPlaceholder = "{item}";
-	private const string DefaultExpectedType = "System.Collections.Generic.IEnumerable<{item}>";
-
 	private static readonly SymbolDisplayFormat TypeFormat = SymbolDisplayFormat.FullyQualifiedFormat
 		.WithMiscellaneousOptions(
 			SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier |
@@ -32,32 +32,20 @@ internal sealed class CollectionExpectationFamily
 	public string Name { get; }
 	public List<string> Methods { get; }
 
-	public static CollectionExpectationFamily? Create(INamedTypeSymbol classSymbol, AttributeData attributeData,
+	public static CollectionExpectationFamily? Create(IMethodSymbol helper, AttributeData attributeData,
 		Compilation compilation)
 	{
-		if (attributeData.ConstructorArguments.Length != 3)
+		if (attributeData.ConstructorArguments.Length != 1 ||
+		    attributeData.ConstructorArguments[0].Value?.ToString() is not { } name ||
+		    helper.Parameters.Length < 2)
 		{
 			return null;
 		}
 
-		string? name = attributeData.ConstructorArguments[0].Value?.ToString();
-		string? helperName = attributeData.ConstructorArguments[1].Value?.ToString();
-		string? collectionType = attributeData.ConstructorArguments[2].Value?.ToString();
-		if (name == null || helperName == null || collectionType == null)
-		{
-			return null;
-		}
-
-		Declaration declaration = new(collectionType);
+		Declaration declaration = new();
 		foreach (KeyValuePair<string, TypedConstant> namedArgument in attributeData.NamedArguments)
 		{
 			declaration.Apply(namedArgument.Key, namedArgument.Value);
-		}
-
-		IMethodSymbol? helper = classSymbol.GetMembers(helperName).OfType<IMethodSymbol>().FirstOrDefault();
-		if (helper == null)
-		{
-			return null;
 		}
 
 		string positiveName = name.Replace("{Not}", "");
@@ -76,27 +64,20 @@ internal sealed class CollectionExpectationFamily
 			return null;
 		}
 
-		if (declaration.ConditionalOn != null)
-		{
-			methods.Insert(0, $"#if {declaration.ConditionalOn}");
-			methods.Add("#endif");
-		}
-
-		return new CollectionExpectationFamily(classSymbol.ContainingNamespace.ToString(), classSymbol.Name,
-			positiveName, methods);
+		return new CollectionExpectationFamily(helper.ContainingType.ContainingNamespace.ToString(),
+			helper.ContainingType.Name, positiveName, methods);
 	}
 
 	/// <remarks>
 	///     A factory expands into one instantiation per <c>Create*</c> method, and a nullable element additionally
-	///     accepts a non-nullable expected collection, which is cast up. Without a factory the element is either a
-	///     fixed type or the generated method's own type parameter, which yields a single instantiation.
+	///     accepts a non-nullable expected collection, which is cast up. Without a factory the helper is emitted once,
+	///     with its own type parameters carried over to the generated method.
 	/// </remarks>
 	private static IEnumerable<Instantiation> Instantiate(Declaration declaration, Compilation compilation)
 	{
 		if (declaration.Factory == null)
 		{
-			string item = declaration.ElementType ?? declaration.TypeParameters.FirstOrDefault() ?? "object?";
-			yield return new Instantiation(item, item, null);
+			yield return new Instantiation(null, null, null);
 			yield break;
 		}
 
@@ -137,32 +118,37 @@ internal sealed class CollectionExpectationFamily
 	private static string Render(IMethodSymbol helper, Declaration declaration, Instantiation instantiation,
 		string methodName, string parameterName, string summary, string? remarks, bool negated)
 	{
-		string collection = declaration.CollectionType.Replace(ItemPlaceholder, instantiation.Item);
-		Dictionary<string, string> substitutions = new()
-		{
-			["TCollection"] = collection,
-			["TItem"] = instantiation.Item,
-			["TTolerance"] = instantiation.Tolerance ?? "",
-		};
+		Dictionary<string, string> substitutions = instantiation.Item == null
+			? []
+			: new Dictionary<string, string>
+			{
+				["TItem"] = instantiation.Item,
+				["TTolerance"] = instantiation.Tolerance ?? "",
+			};
 
-		string expectedType = (declaration.ExpectedType ?? DefaultExpectedType)
-			.Replace(ItemPlaceholder, instantiation.ExpectedItem);
+		// The expected parameter may take the non-nullable element while the subject keeps the nullable one.
+		Dictionary<string, string> expectedSubstitutions = instantiation.ExpectedItem == null
+			? substitutions
+			: new Dictionary<string, string>(substitutions) { ["TItem"] = instantiation.ExpectedItem, };
+
+		string expectedType = declaration.ExpectedType == null
+			? Substitute(helper.Parameters[1].Type, expectedSubstitutions)
+			: Qualify(declaration.ExpectedType);
 		string argument = instantiation.ExpectedItem == instantiation.Item
 			? parameterName
 			: $"global::System.Linq.Enumerable.Cast<{instantiation.Item}>({parameterName})";
 
 		List<string> arguments = ["subject", argument,];
-		foreach (IParameterSymbol parameter in helper.Parameters.Skip(2))
-		{
-			arguments.Add(ArgumentFor(parameter, instantiation, negated));
-		}
+		arguments.AddRange(helper.Parameters.Skip(2).Select(x => ArgumentFor(x, instantiation, negated)));
 
-		string typeParameters = declaration.TypeParameters.Length == 0
-			? ""
-			: $"<{string.Join(", ", declaration.TypeParameters)}>";
+		// A type parameter the factory binds is consumed by the instantiation; the rest stay on the overload.
+		string[] ownTypeParameters = helper.TypeParameters
+			.Select(x => x.Name).Where(x => !substitutions.ContainsKey(x)).ToArray();
+		string typeParameters = ownTypeParameters.Length == 0 ? "" : $"<{string.Join(", ", ownTypeParameters)}>";
 		string typeArguments = helper.TypeParameters.Length == 0
 			? ""
-			: $"<{string.Join(", ", helper.TypeParameters.Select(x => substitutions[x.Name]))}>";
+			: $"<{string.Join(", ", helper.TypeParameters.Select(x
+				=> substitutions.TryGetValue(x.Name, out string? v) ? v : x.Name))}>";
 
 		string header = $"""
 		                 	/// <summary>
@@ -185,7 +171,7 @@ internal sealed class CollectionExpectationFamily
 		         	public static {{Substitute(helper.ReturnType, substitutions)}}
 		         		{{methodName}}{{typeParameters}}(
 		         			this {{Substitute(helper.Parameters[0].Type, substitutions)}} subject,
-		         			{{Qualify(expectedType)}} {{parameterName}},
+		         			{{expectedType}} {{parameterName}},
 		         			[global::System.Runtime.CompilerServices.CallerArgumentExpression("{{parameterName}}")]
 		         			string doNotPopulateThisValue = "")
 		         		=> {{helper.Name}}{{typeArguments}}(
@@ -208,8 +194,8 @@ internal sealed class CollectionExpectationFamily
 	}
 
 	/// <remarks>
-	///     The helper is rendered unconstructed and its type parameters are replaced by name, because an instantiation
-	///     may substitute the generated method's own type parameter, which has no symbol to construct with.
+	///     The helper is rendered unconstructed and the type parameters a factory binds are replaced by name, because
+	///     an instantiation cannot construct a method that still carries the overload's own type parameters.
 	/// </remarks>
 	private static string Substitute(ITypeSymbol type, Dictionary<string, string> substitutions)
 	{
@@ -225,15 +211,11 @@ internal sealed class CollectionExpectationFamily
 	private static string Qualify(string type)
 		=> Regex.Replace(type, @"(?<!global::)\bSystem\.", "global::System.");
 
-	private sealed class Declaration(string collectionType)
+	private sealed class Declaration
 	{
-		public string CollectionType { get; } = collectionType;
 		public string? Factory { get; private set; }
-		public string? ElementType { get; private set; }
-		public string[] TypeParameters { get; private set; } = [];
 		public string? ExpectedType { get; private set; }
 		public int Priority { get; private set; }
-		public string? ConditionalOn { get; private set; }
 		public string Summary { get; private set; } = "";
 		public string NegatedSummary { get; private set; } = "";
 		public string? Remarks { get; private set; }
@@ -246,20 +228,11 @@ internal sealed class CollectionExpectationFamily
 				case "Factory":
 					Factory = (value.Value as INamedTypeSymbol)?.ToDisplayString();
 					break;
-				case "ElementType":
-					ElementType = value.Value?.ToString();
-					break;
-				case "TypeParameters":
-					TypeParameters = value.Values.Select(x => x.Value?.ToString() ?? "").ToArray();
-					break;
 				case "ExpectedType":
 					ExpectedType = value.Value?.ToString();
 					break;
 				case "Priority":
 					Priority = value.Value as int? ?? 0;
-					break;
-				case "ConditionalOn":
-					ConditionalOn = value.Value?.ToString();
 					break;
 				case "Summary":
 					Summary = value.Value?.ToString() ?? "";
@@ -277,10 +250,10 @@ internal sealed class CollectionExpectationFamily
 		}
 	}
 
-	private sealed class Instantiation(string item, string expectedItem, string? tolerance)
+	private sealed class Instantiation(string? item, string? expectedItem, string? tolerance)
 	{
-		public string Item { get; } = item;
-		public string ExpectedItem { get; } = expectedItem;
+		public string? Item { get; } = item;
+		public string? ExpectedItem { get; } = expectedItem;
 		public string? Tolerance { get; } = tolerance;
 		public string? FactoryCall { get; init; }
 	}

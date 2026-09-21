@@ -11,10 +11,8 @@ namespace aweXpect.SourceGenerators;
 ///     The <see cref="IIncrementalGenerator" /> for the overloads of collection expectations.
 /// </summary>
 /// <remarks>
-///     The declaration only names the family, the helper that holds the body and the collection type. The result
-///     type, the parameter types and the element types are read back off that helper and off the optional tolerance
-///     factory, so a new element type is added by adding a factory method and a new subject kind by adding one
-///     attribute.
+///     The overloads are generated from the signature of the annotated helper that holds their body, so a new subject
+///     kind costs one helper and a new element type of a tolerance family costs one factory method.
 /// </remarks>
 [Generator]
 public class CollectionExpectationGenerator : IIncrementalGenerator
@@ -30,7 +28,7 @@ public class CollectionExpectationGenerator : IIncrementalGenerator
 		IncrementalValuesProvider<CollectionExpectationFamily> families = context.SyntaxProvider
 			.ForAttributeWithMetadataName(
 				AttributeName,
-				static (node, _) => node is ClassDeclarationSyntax,
+				static (node, _) => node is MethodDeclarationSyntax,
 				static (ctx, _) => GetFamilies(ctx))
 			.SelectMany(static (x, _) => x);
 
@@ -39,7 +37,7 @@ public class CollectionExpectationGenerator : IIncrementalGenerator
 
 	private static ImmutableArray<CollectionExpectationFamily> GetFamilies(GeneratorAttributeSyntaxContext context)
 	{
-		if (context.TargetSymbol is not INamedTypeSymbol classSymbol)
+		if (context.TargetSymbol is not IMethodSymbol helper)
 		{
 			return ImmutableArray<CollectionExpectationFamily>.Empty;
 		}
@@ -49,7 +47,7 @@ public class CollectionExpectationGenerator : IIncrementalGenerator
 		foreach (AttributeData attributeData in context.Attributes)
 		{
 			CollectionExpectationFamily? family =
-				CollectionExpectationFamily.Create(classSymbol, attributeData, context.SemanticModel.Compilation);
+				CollectionExpectationFamily.Create(helper, attributeData, context.SemanticModel.Compilation);
 			if (family != null)
 			{
 				builder.Add(family);
