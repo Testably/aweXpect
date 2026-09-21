@@ -167,38 +167,6 @@ internal static class CollectionHelpers
 		});
 	}
 
-	/// <summary>
-	///     A <see cref="LimitedCollection{T}" /> keeps only the first items, so its count drives the layout but must not
-	///     be rendered as the total from which the number of remaining items is derived.
-	/// </summary>
-	private static string FormatCollection<TItem>(IEnumerable<TItem> value, int? totalCount)
-	{
-		if (value is IKeyedCollection keyed)
-		{
-			return keyed.Format();
-		}
-
-		totalCount ??= value switch
-		{
-			ICollection<TItem> coll => coll.Count,
-			ICountable countable => countable.Count,
-			_ => null,
-		};
-		return Formatter.Format(value, typeof(TItem).GetFormattingOption(
-			value is LimitedCollection<TItem> limited ? limited.Count : totalCount, totalCount));
-	}
-
-	private static string FormatCollection(IEnumerable value, Type itemType)
-	{
-		int? totalCount = value switch
-		{
-			ICollection coll => coll.Count,
-			ICountable countable => countable.Count,
-			_ => null,
-		};
-		return Formatter.Format(value, itemType.GetFormattingOption(totalCount, totalCount));
-	}
-
 	internal static ExpectationBuilder AddCollectionContext(this ExpectationBuilder expectationBuilder,
 		IEnumerable? value, bool isIncomplete = false)
 	{
@@ -300,6 +268,38 @@ internal static class CollectionHelpers
 						-2));
 			}
 		});
+	}
+
+	/// <summary>
+	///     A <see cref="LimitedCollection{T}" /> keeps only the first items, so its count drives the layout but must not
+	///     be rendered as the total from which the number of remaining items is derived.
+	/// </summary>
+	private static string FormatCollection<TItem>(IEnumerable<TItem> value, int? totalCount)
+	{
+		if (value is IKeyedCollection keyed)
+		{
+			return keyed.Format();
+		}
+
+		totalCount ??= value switch
+		{
+			ICollection<TItem> coll => coll.Count,
+			ICountable countable => countable.Count,
+			_ => null,
+		};
+		return Formatter.Format(value, typeof(TItem).GetFormattingOption(
+			value is LimitedCollection<TItem> limited ? limited.Count : totalCount, totalCount));
+	}
+
+	private static string FormatCollection(IEnumerable value, Type itemType)
+	{
+		int? totalCount = value switch
+		{
+			ICollection coll => coll.Count,
+			ICountable countable => countable.Count,
+			_ => null,
+		};
+		return Formatter.Format(value, itemType.GetFormattingOption(totalCount, totalCount));
 	}
 
 	/// <summary>
