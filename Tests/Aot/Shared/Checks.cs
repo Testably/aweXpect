@@ -31,6 +31,29 @@ internal static class Checks
 				expected.Items[1].Price = 99;
 				await That(CreateOrder()).IsEquivalentTo(expected);
 			}, "Items[1].Price differed")),
+		// The interfaces that select the set and the dictionary comparison are found through reflection, so a
+		// comparison that silently degrades into a positional one is only visible from its result.
+		new("a set is compared without its order",
+			() => ShouldPass(async () =>
+			{
+				HashSet<string> actual = ["a", "b", "c",];
+				List<string> expected = [..actual,];
+				expected.Reverse();
+				await That(actual).IsEquivalentTo(expected);
+			})),
+		new("a dictionary that is only a generic one is compared by key",
+			() => ShouldFail(async () =>
+			{
+				ReadOnlyTags actual = new(new Dictionary<string, int>
+				{
+					["vip"] = 1,
+				});
+				ReadOnlyTags expected = new(new Dictionary<string, int>
+				{
+					["vip"] = 2,
+				});
+				await That(actual).IsEquivalentTo(expected);
+			}, "[vip]")),
 		new("a subject the generator did not see fails loudly",
 			() => ShouldFailOrFailLoudly(async () =>
 			{
@@ -79,6 +102,18 @@ internal static class Checks
 				other.Id = 2;
 				await That(CreateOrder()).IsEqualTo(other);
 			}, "Id = 1", "Name = \"Alice\"", "City = \"Vienna\"")),
+		// An anonymous type is rendered member-wise instead of through its own `ToString()`, so its members have to
+		// reach the formatter the same way a named type's do.
+		new("a failure message renders the members of an anonymous object",
+			() => ShouldFail(async () => await That(new
+			{
+				Id = 1,
+				Name = "Alice",
+			}).IsEqualTo(new
+			{
+				Id = 2,
+				Name = "Alice",
+			}), "Id = 1", "Name = \"Alice\"")),
 		// The pair type is registered because the walk from the orders above follows `Order.Tags`.
 		new("a failure message renders a dictionary and a boxed pair",
 			() => ShouldFail(async () =>

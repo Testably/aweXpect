@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace aweXpect.Aot;
@@ -36,6 +37,29 @@ public sealed class Item
 public sealed class Hidden
 {
 	public string Secret { get; set; } = "";
+}
+
+/// <summary>
+///     Implements <see cref="IReadOnlyDictionary{TKey,TValue}" /> without <see cref="IDictionary" />, so a comparison
+///     only recognizes it as a dictionary through the reflective interface walk.
+/// </summary>
+public sealed class ReadOnlyTags(Dictionary<string, int> entries) : IReadOnlyDictionary<string, int>
+{
+	public int this[string key] => entries[key];
+
+	public IEnumerable<string> Keys => entries.Keys;
+
+	public IEnumerable<int> Values => entries.Values;
+
+	public int Count => entries.Count;
+
+	public bool ContainsKey(string key) => entries.ContainsKey(key);
+
+	public bool TryGetValue(string key, out int value) => entries.TryGetValue(key, out value);
+
+	public IEnumerator<KeyValuePair<string, int>> GetEnumerator() => entries.GetEnumerator();
+
+	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
 
 public sealed class Publisher
