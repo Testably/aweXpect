@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
@@ -744,6 +745,76 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenDictionaryOnlyImplementsTheGenericInterface_AndEntriesAreInDifferentOrder_ShouldSucceed()
+	{
+		ReadOnlyDictionaryOnly<string, int> actual = new(new Dictionary<string, int>
+		{
+			["A"] = 1,
+			["B"] = 2,
+		});
+		ReadOnlyDictionaryOnly<string, int> expected = new(new Dictionary<string, int>
+		{
+			["B"] = 2,
+			["A"] = 1,
+		});
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("a dictionary is a keyed lookup, so the order in which it enumerates its entries is not part of its content");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenDictionaryOnlyImplementsTheGenericInterface_AndExpectedIsANonGenericOne_ShouldCompareByKey()
+	{
+		ReadOnlyDictionaryOnly<string, int> actual = new(new Dictionary<string, int>
+		{
+			["A"] = 1,
+			["B"] = 2,
+		});
+		Dictionary<string, int> expected = new()
+		{
+			["B"] = 2,
+			["A"] = 1,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("both sides offer a lookup by key, whichever dictionary interface they implement");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenDictionaryOnlyImplementsTheGenericInterface_AndValueDiffers_ShouldReportTheKey()
+	{
+		ReadOnlyDictionaryOnly<string, int> actual = new(new Dictionary<string, int>
+		{
+			["A"] = 1,
+			["B"] = 2,
+		});
+		ReadOnlyDictionaryOnly<string, int> expected = new(new Dictionary<string, int>
+		{
+			["A"] = 1,
+			["B"] = 3,
+		});
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [B] differed:
+		                                                       Found: 2
+		                                                    Expected: 3
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
 	public async Task WhenDictionaryValueDiffers_ShouldReportTheKey()
 	{
 		Dictionary<string, int> actual = new()
@@ -1305,6 +1376,29 @@ public sealed class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
+	[Fact]
+	public async Task WhenListElementsAreInDifferentOrder_ShouldReportTheDifference()
+	{
+		List<int> actual = [1, 2, 3,];
+		List<int> expected = [3, 2, 1,];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse()
+			.Because("a list has an order that is part of its content, so only a set or a dictionary is compared without it");
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [0] differed:
+		                                                       Found: 1
+		                                                    Expected: 3
+		                                                and
+		                                                  Element [2] differed:
+		                                                       Found: 3
+		                                                    Expected: 1
+		                                                """).IgnoringNewlineStyle();
+	}
+
 	[Theory]
 	[InlineData("foo", "foo", true)]
 	[InlineData("foo", "bar", false)]
@@ -1758,6 +1852,143 @@ public sealed class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenSetElementsAreInDifferentOrder_ShouldSucceed()
+	{
+		var actual = new
+		{
+			Values = new HashSet<int>
+			{
+				1, 2, 3,
+			},
+		};
+		var expected = new
+		{
+			Values = new HashSet<int>
+			{
+				3, 2, 1,
+			},
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("a set has no order, so comparing two of them by position would only report how they happen to be stored");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenSetElementsAreObjects_AndAreInDifferentOrder_ShouldSucceed()
+	{
+		HashSet<WithProperty> actual = [new(1), new(2),];
+		HashSet<WithProperty> expected = [new(2), new(1),];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("the elements of a set are matched by the equivalency comparison, which does not need them to be equal");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenSetElementsDiffer_ShouldReportTheDifference()
+	{
+		HashSet<int> actual = [1, 2,];
+		HashSet<int> expected = [1, 3,];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [1] differed:
+		                                                       Found: 2
+		                                                    Expected: 3
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenSetIsComparedAgainstACollectionWithDuplicates_ShouldReportTheDifference()
+	{
+		HashSet<int> actual = [1, 2,];
+		int[] expected = [1, 1,];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse()
+			.Because("every element can be matched only once, so a set of two distinct values cannot cover the same value twice");
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [1] differed:
+		                                                       Found: 2
+		                                                    Expected: 1
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenSetIsComparedAgainstAnOrderedCollection_ShouldIgnoreTheOrder()
+	{
+		HashSet<int> actual = [1, 2, 3,];
+		int[] expected = [3, 2, 1,];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("one side being a set leaves no order the other side could be compared against");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenSetIsNested_AndAnElementDiffers_ShouldReportTheMemberPath()
+	{
+		var actual = new
+		{
+			Values = new HashSet<int>
+			{
+				1, 2,
+			},
+		};
+		var expected = new
+		{
+			Values = new HashSet<int>
+			{
+				1, 3,
+			},
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element Values[1] differed:
+		                                                       Found: 2
+		                                                    Expected: 3
+		                                                """).IgnoringNewlineStyle();
+	}
+
+#if NET8_0_OR_GREATER
+	[Fact]
+	public async Task WhenSetOnlyImplementsTheReadOnlyInterface_AndElementsAreInDifferentOrder_ShouldSucceed()
+	{
+		ReadOnlySetOnly<int> actual = new([1, 2, 3,]);
+		ReadOnlySetOnly<int> expected = new([3, 2, 1,]);
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("a set that can only be read has no order either");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+#endif
+
+	[Fact]
 	public async Task WhenStringMemberIsLong_ShouldTruncateIt()
 	{
 		var actual = new
@@ -2013,6 +2244,44 @@ public sealed class EquivalencyComparisonTests
 	{
 		public new string Value { get; } = text;
 	}
+
+	/// <remarks>
+	///     Implements no dictionary interface besides <see cref="IReadOnlyDictionary{TKey,TValue}" />, so that the
+	///     comparison cannot reach the non-generic <see cref="IDictionary" /> instead.
+	/// </remarks>
+	private sealed class ReadOnlyDictionaryOnly<TKey, TValue>(Dictionary<TKey, TValue> entries)
+		: IReadOnlyDictionary<TKey, TValue>
+		where TKey : notnull
+	{
+		public int Count => entries.Count;
+		public IEnumerable<TKey> Keys => entries.Keys;
+		public IEnumerable<TValue> Values => entries.Values;
+		public TValue this[TKey key] => entries[key];
+		public bool ContainsKey(TKey key) => entries.ContainsKey(key);
+		public bool TryGetValue(TKey key, out TValue value) => entries.TryGetValue(key, out value!);
+		public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => entries.GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+	}
+
+#if NET8_0_OR_GREATER
+	/// <remarks>
+	///     Implements no set interface besides <see cref="IReadOnlySet{T}" />, so that the comparison cannot reach
+	///     <see cref="ISet{T}" /> instead.
+	/// </remarks>
+	private sealed class ReadOnlySetOnly<T>(HashSet<T> items) : IReadOnlySet<T>
+	{
+		public int Count => items.Count;
+		public bool Contains(T item) => items.Contains(item);
+		public bool IsProperSubsetOf(IEnumerable<T> other) => items.IsProperSubsetOf(other);
+		public bool IsProperSupersetOf(IEnumerable<T> other) => items.IsProperSupersetOf(other);
+		public bool IsSubsetOf(IEnumerable<T> other) => items.IsSubsetOf(other);
+		public bool IsSupersetOf(IEnumerable<T> other) => items.IsSupersetOf(other);
+		public bool Overlaps(IEnumerable<T> other) => items.Overlaps(other);
+		public bool SetEquals(IEnumerable<T> other) => items.SetEquals(other);
+		public IEnumerator<T> GetEnumerator() => items.GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+	}
+#endif
 
 	private sealed class RegisteredFieldProbe(int phantom)
 	{

@@ -148,6 +148,13 @@ exists for, such as a collection of DTOs: each expected element is matched again
 it. Every element can be matched only once, so `[1, 1, 2]` is still not equivalent to `[1, 2, 2]`, and a failure
 reports only the elements that were left over, each against the leftover element it differs from the least.
 
+A **set** and a **dictionary** are no longer compared by the order in which they enumerate: a set is matched element
+by element like a collection whose order is ignored, and a dictionary is compared by key. This applies to `ISet<T>`
+and `IReadOnlySet<T>`, and to `IDictionary<TKey, TValue>` and `IReadOnlyDictionary<TKey, TValue>`. v2 only
+recognized the non-generic `IDictionary`, so a `HashSet<T>` or a type that only implements
+`IReadOnlyDictionary<TKey, TValue>` failed when both sides held the same content in a different order. Every other
+collection still compares by position.
+
 ## Extensions and aweXpect.Core
 
 Besides the initialization changes above, v3 renames several result and option types so that their names follow what

@@ -246,7 +246,8 @@ public static partial class EquivalencyComparison
 				return false;
 			}
 
-			if (actual is IDictionary actualDictionary && expected is IDictionary expectedDictionary)
+			if (TryGetDictionary(actual, out IDictionary? actualDictionary) &&
+			    TryGetDictionary(expected, out IDictionary? expectedDictionary))
 			{
 				return await CompareDictionaries(actualDictionary, expectedDictionary, failureBuilder, memberPath,
 					equivalencyOptions, typeOptions, context);
@@ -377,6 +378,89 @@ public static partial class EquivalencyComparison
 
 		return result;
 	}
+
+	/// <remarks>
+	///     A dictionary is a keyed lookup and not a sequence, so it is compared by key, whatever order it enumerates
+	///     its entries in. The non-generic <see cref="IDictionary" /> offers that lookup directly, while a type that
+	///     only implements <see cref="IReadOnlyDictionary{TKey,TValue}" /> or <see cref="IDictionary{TKey,TValue}" />
+	///     cannot be asked for a key without its type arguments, so its entries are copied into one. The copy
+	///     compares its keys with their own <see cref="object.Equals(object)" />, because the comparer of the
+	///     original dictionary is out of reach as well. Anything the copy cannot represent - an entry that is not a
+	///     <see cref="KeyValuePair{TKey,TValue}" /> the members of which are readable, or a <see langword="null" />
+	///     key - keeps the comparison as a sequence instead of failing.
+	/// </remarks>
+	private static bool TryGetDictionary(object value, [NotNullWhen(true)] out IDictionary? dictionary)
+	{
+		if (value is IDictionary nonGenericDictionary)
+		{
+			dictionary = nonGenericDictionary;
+			return true;
+		}
+
+		dictionary = null;
+		if (!ImplementsGenericInterface(value,
+			    definition => definition == typeof(IReadOnlyDictionary<,>) || definition == typeof(IDictionary<,>)))
+		{
+			return false;
+		}
+
+		Dictionary<object, object?> entries = new();
+		Func<object, object?>? getKey = null;
+		Func<object, object?>? getValue = null;
+		foreach (object? entry in (IEnumerable)value)
+		{
+			if (entry is null)
+			{
+				return false;
+			}
+
+			getKey ??= EquivalencyMembers.FindProperty(entry.GetType(),
+				nameof(KeyValuePair<object, object>.Key), IncludeMembers.Public);
+			getValue ??= EquivalencyMembers.FindProperty(entry.GetType(),
+				nameof(KeyValuePair<object, object>.Value), IncludeMembers.Public);
+			if (getKey is null || getValue is null || getKey(entry) is not { } key)
+			{
+				return false;
+			}
+
+			entries[key] = getValue(entry);
+		}
+
+		dictionary = entries;
+		return true;
+	}
+
+	/// <remarks>
+	///     A set has no order, so comparing two of them by position would report a difference that says nothing about
+	///     their content. One side being a set is enough: the other side has nothing left to be compared against in
+	///     order.
+	/// </remarks>
+	private static bool IsSet(object value) => ImplementsGenericInterface(value, IsSetInterface);
+
+	/// <remarks>
+	///     netstandard2.0 has no <c>IReadOnlySet&lt;T&gt;</c>, but is served to runtimes that have it, so it is
+	///     matched by name there.
+	/// </remarks>
+	private static bool IsSetInterface(Type definition)
+#if NET8_0_OR_GREATER
+		=> definition == typeof(ISet<>) || definition == typeof(IReadOnlySet<>);
+#else
+		=> definition == typeof(ISet<>) ||
+		   definition.FullName == "System.Collections.Generic.IReadOnlySet`1";
+#endif
+
+	/// <remarks>
+	///     The trimmer keeps the implementations of an interface it keeps, and every generic definition this is
+	///     matched against is referenced here, so the interfaces that decide the comparison survive trimming.
+	/// </remarks>
+#if NET8_0_OR_GREATER
+	[UnconditionalSuppressMessage("Trimming", "IL2075",
+		Justification = "The matched interfaces are referenced, so they are not trimmed away.")]
+#endif
+	private static bool ImplementsGenericInterface(object value, Func<Type, bool> matchesDefinition)
+		=> value.GetType().GetInterfaces()
+			.Any(interfaceType => interfaceType.IsGenericType &&
+			                      matchesDefinition(interfaceType.GetGenericTypeDefinition()));
 #if NET8_0_OR_GREATER
 	private static async ValueTask<bool>
 #else
@@ -462,7 +546,7 @@ public static partial class EquivalencyComparison
 		object?[] actualObjects = actual.Cast<object?>().ToArray();
 		object?[] expectedObjects = expected.Cast<object?>().ToArray();
 
-		if (typeOptions.IgnoreCollectionOrder)
+		if (typeOptions.IgnoreCollectionOrder || IsSet(actual) || IsSet(expected))
 		{
 			return await CompareInAnyOrder(actualObjects, expectedObjects, failureBuilder, memberPath, options,
 				typeOptions, context);
