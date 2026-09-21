@@ -382,6 +382,7 @@ public sealed partial class ThatEnumerable
 					             but it
 					               contained item "c" at index 1 instead of "b" and
 					               contained item "b" at index 2 instead of "c"
+					             (but the items match in a different order)
 
 					             Collection:
 					             [
@@ -397,6 +398,30 @@ public sealed partial class ThatEnumerable
 					               "c"
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WithDeviationFollowedByMatchingItems_ShouldOnlyReportTheDeviation()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 4, 3,]);
+				int[] expected = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it contained item 4 at index 1 instead of 2
+
+					             Collection:
+					             [1, 4, 3]
+
+					             Expected:
+					             [1, 2, 3]
+					             """)
+					.Because("the item after the deviation still matches the expectation it is aligned with");
 			}
 
 			[Fact]
@@ -597,6 +622,39 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
+			[Fact]
+			public async Task WithMoreItemsInADifferentOrder_ShouldFail()
+			{
+				IEnumerable<string> subject = ToEnumerable(["a", "c", "b",]);
+				string[] expected = ["a", "b",];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it
+					               contained item "c" at index 1 instead of "b" and
+					               lacked 1 of 2 expected items: "b"
+
+					             Collection:
+					             [
+					               "a",
+					               "c",
+					               "b"
+					             ]
+
+					             Expected:
+					             [
+					               "a",
+					               "b"
+					             ]
+					             """)
+					.Because("the additional item makes the collections differ in any order, too");
+			}
+
 
 			[Fact]
 			public async Task WithSameCollection_ShouldSucceed()
@@ -608,6 +666,32 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).IsEqualTo(expected);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WithSetInADifferentOrder_ShouldFail()
+			{
+				SortedSet<int> subject = [3, 2, 1,];
+				int[] expected = [3, 2, 1,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it lacked 2 of 3 expected items:
+					               2,
+					               1
+					             (but the items match in a different order)
+
+					             Collection:
+					             [1, 2, 3]
+
+					             Expected:
+					             [3, 2, 1]
+					             """);
 			}
 
 			[Fact]
@@ -954,6 +1038,7 @@ public sealed partial class ThatEnumerable
 					             but it
 					               contained item "c" at index 1 instead of "b" and
 					               contained item "b" at index 2 instead of "c"
+					             (but the items match in a different order)
 
 					             Collection:
 					             [
@@ -969,6 +1054,32 @@ public sealed partial class ThatEnumerable
 					               "c"
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WithDuplicateBeforeADeviation_ShouldReportTheIndexInTheSubject()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 1, 4, 2,]);
+				int[] expected = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).IgnoringDuplicates();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order ignoring duplicates,
+					             but it
+					               contained item 4 at index 2 instead of 2 and
+					               lacked 1 of 2 expected items: 2
+
+					             Collection:
+					             [1, 1, 4, 2]
+
+					             Expected:
+					             [1, 2]
+					             """)
+					.Because("the index counts the position in the subject, not the distinct items");
 			}
 
 			[Fact]

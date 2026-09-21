@@ -346,6 +346,30 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WithDeviationFollowedByMatchingItems_ShouldOnlyReportTheDeviation()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 4, 3,]);
+				int[] expected = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains collection expected in order and contiguous,
+					             but it contained item 4 at index 1 instead of 2
+
+					             Collection:
+					             [1, 4, 3]
+
+					             Expected:
+					             [1, 2, 3]
+					             """)
+					.Because("the item after the deviation still matches the expectation it is aligned with");
+			}
+
+			[Fact]
 			public async Task WithDuplicatesAtBeginOfSubject_ShouldSucceed()
 			{
 				IEnumerable<string> subject = ToEnumerable(["c", "a", "b", "c",]);
@@ -929,6 +953,32 @@ public sealed partial class ThatEnumerable
 					               "c"
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WithDuplicateBeforeADeviation_ShouldReportTheIndexInTheSubject()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 1, 4, 2,]);
+				int[] expected = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected).IgnoringDuplicates();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains collection expected in order and contiguous ignoring duplicates,
+					             but it
+					               contained item 4 at index 2 instead of 2 and
+					               lacked 1 of 2 expected items: 2
+
+					             Collection:
+					             [1, 1, 4, 2]
+
+					             Expected:
+					             [1, 2]
+					             """)
+					.Because("the index counts the position in the subject, not the distinct items");
 			}
 
 			[Fact]

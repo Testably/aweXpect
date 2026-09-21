@@ -419,7 +419,8 @@ public sealed partial class ThatAsyncEnumerable
 					             but it
 					               contained item "c" at index 1 instead of an item that is equal to "b" and
 					               contained item "b" at index 2 instead of an item that is equal to "c"
-					             
+					             (but the items match in a different order)
+
 					             Collection:
 					             [
 					               "a",
@@ -1064,7 +1065,8 @@ public sealed partial class ThatAsyncEnumerable
 					             but it
 					               contained item "c" at index 1 instead of an item that is equal to "b" and
 					               contained item "b" at index 2 instead of an item that is equal to "c"
-					             
+					             (but the items match in a different order)
+
 					             Collection:
 					             [
 					               "a",

@@ -318,6 +318,30 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WithDeviationFollowedByMatchingItems_ShouldOnlyReportTheDeviation()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 4, 3,]);
+				int[] expected = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).IsContainedIn(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is contained in collection expected in order and contiguous,
+					             but it contained item 4 at index 1 instead of 2
+
+					             Collection:
+					             [1, 4, 3]
+
+					             Expected:
+					             [1, 2, 3]
+					             """)
+					.Because("the item after the deviation still matches the expectation it is aligned with");
+			}
+
+			[Fact]
 			public async Task WithDuplicatesAtBeginOfSubject_ShouldFail()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["c", "a", "b", "c",]);
@@ -3859,6 +3883,19 @@ public sealed partial class ThatAsyncEnumerable
 
 		public sealed class InSameOrderIgnoringInterspersedItemsTests
 		{
+			[Fact]
+			public async Task WithEmptySubjectAndManyExpectedItems_ShouldSucceed()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Array.Empty<int>());
+				int[] expected = Enumerable.Range(1, 25).ToArray();
+
+				async Task Act()
+					=> await That(subject).IsContainedIn(expected).IgnoringInterspersedItems();
+
+				await That(Act).DoesNotThrow()
+					.Because("expected items that the subject never consumes are no deviations for this relation");
+			}
+
 			[Fact]
 			public async Task WithInterspersedItems_ShouldSucceed()
 			{

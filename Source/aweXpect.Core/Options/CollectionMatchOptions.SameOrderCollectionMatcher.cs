@@ -156,7 +156,7 @@ public partial class CollectionMatchOptions
 			if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
 			{
 				return _ignoreInterspersedItems
-					? VerifyCompleteForSubsequenceMatch(it, maximumNumber)
+					? VerifyCompleteForSubsequenceMatch(it)
 					: VerifyCompleteForContiguousMatch(it);
 			}
 
@@ -241,15 +241,11 @@ public partial class CollectionMatchOptions
 		///     The subject is contained in the expected collection, when its items appear in the expected collection in the
 		///     same relative order; the expected items that are skipped in between are missing items.
 		/// </summary>
-		private (bool, string?) VerifyCompleteForSubsequenceMatch(string it, int maximumNumber)
+		private (bool, string?) VerifyCompleteForSubsequenceMatch(string it)
 		{
 			for (int i = _matchIndex; i < _expectedItems.Length; i++)
 			{
 				_missingItems.Add(_expectedItems[i]);
-				if (_additionalItems.Count + _outOfOrderItems.Count + _missingItems.Count > 2 * maximumNumber)
-				{
-					return (true, null);
-				}
 			}
 
 			List<string> errors = new();
@@ -295,6 +291,12 @@ public partial class CollectionMatchOptions
 			{
 				_additionalItems.Add(_index, value);
 			}
+			else if (await AreConsideredEqual(value, _expectedItems[_expectationIndex], options))
+			{
+				// The value still matches the expected item it is aligned with, so it is no deviation,
+				// although the run that could have matched was abandoned.
+				_maxMatchIndex = Math.Max(_expectationIndex + 1, _maxMatchIndex);
+			}
 			else
 			{
 				_incorrectItems.Add(_index, (value, _expectedItems[_expectationIndex]));
@@ -304,7 +306,7 @@ public partial class CollectionMatchOptions
 		/// <summary>
 		///     Keeps all offsets in the expected collection at which the subject could still start an uninterrupted run;
 		///     when the last one is abandoned, the <paramref name="value" /> and all later items are reported against the
-		///     first abandoned offset.
+		///     first abandoned offset, unless they still match the item at that offset.
 		/// </summary>
 #if NET8_0_OR_GREATER
 		private async ValueTask
@@ -315,29 +317,7 @@ public partial class CollectionMatchOptions
 		{
 			if (!_runIsBroken)
 			{
-				List<int> candidateOffsets = new();
-				if (_index == 0)
-				{
-					for (int offset = 0; offset < _expectedItems.Length; offset++)
-					{
-						if (await AreConsideredEqual(value, _expectedItems[offset], options))
-						{
-							candidateOffsets.Add(offset);
-						}
-					}
-				}
-				else
-				{
-					foreach (int offset in _candidateOffsets)
-					{
-						if (offset + _index < _expectedItems.Length &&
-						    await AreConsideredEqual(value, _expectedItems[offset + _index], options))
-						{
-							candidateOffsets.Add(offset);
-						}
-					}
-				}
-
+				List<int> candidateOffsets = await FindTheRemainingCandidateOffsets(value, options);
 				if (candidateOffsets.Count > 0)
 				{
 					_candidateOffsets = candidateOffsets;
@@ -349,14 +329,52 @@ public partial class CollectionMatchOptions
 			}
 
 			int expectedIndex = _alignment + _index;
-			if (expectedIndex < _expectedItems.Length)
-			{
-				_incorrectItems.Add(_index, (value, _expectedItems[expectedIndex]));
-			}
-			else
+			if (expectedIndex >= _expectedItems.Length)
 			{
 				_additionalItems.Add(_index, value);
 			}
+			else if (!await AreConsideredEqual(value, _expectedItems[expectedIndex], options))
+			{
+				_incorrectItems.Add(_index, (value, _expectedItems[expectedIndex]));
+			}
+		}
+
+		/// <summary>
+		///     The first item opens a candidate at every offset it matches, each later item keeps the candidates whose
+		///     next expected item it matches.
+		/// </summary>
+		/// <returns>The offsets at which the run can still continue with the <paramref name="value" />.</returns>
+#if NET8_0_OR_GREATER
+		private async ValueTask<List<int>>
+#else
+		private async Task<List<int>>
+#endif
+			FindTheRemainingCandidateOffsets(T value, IOptionsEquality<T2> options)
+		{
+			List<int> candidateOffsets = new();
+			if (_index == 0)
+			{
+				for (int offset = 0; offset < _expectedItems.Length; offset++)
+				{
+					if (await AreConsideredEqual(value, _expectedItems[offset], options))
+					{
+						candidateOffsets.Add(offset);
+					}
+				}
+			}
+			else
+			{
+				foreach (int offset in _candidateOffsets)
+				{
+					if (offset + _index < _expectedItems.Length &&
+					    await AreConsideredEqual(value, _expectedItems[offset + _index], options))
+					{
+						candidateOffsets.Add(offset);
+					}
+				}
+			}
+
+			return candidateOffsets;
 		}
 
 		/// <summary>

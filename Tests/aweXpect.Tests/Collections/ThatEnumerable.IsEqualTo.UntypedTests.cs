@@ -162,6 +162,7 @@ public sealed partial class ThatEnumerable
 					             but it
 					               contained item 3 at index 1 instead of 2 and
 					               contained item 2 at index 2 instead of 3
+					             (but the items match in a different order)
 
 					             Collection:
 					             [1, 3, 2]
