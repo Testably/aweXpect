@@ -25,7 +25,18 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection Array.Empty<Action<IThat<int>>>() in order,
-					             but it had more than 20 deviations
+					             but it had more than 20 deviations:
+					               contained item 1 at index 0 that was not expected,
+					               contained item 2 at index 1 that was not expected,
+					               contained item 3 at index 2 that was not expected,
+					               contained item 4 at index 3 that was not expected,
+					               contained item 5 at index 4 that was not expected,
+					               contained item 6 at index 5 that was not expected,
+					               contained item 7 at index 6 that was not expected,
+					               contained item 8 at index 7 that was not expected,
+					               contained item 9 at index 8 that was not expected,
+					               contained item 10 at index 9 that was not expected,
+					               (… and maybe more)
 
 					             Collection:
 					             [
@@ -74,7 +85,18 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in order,
-					             but it had more than 20 deviations
+					             but it had more than 20 deviations:
+					               contained item 1 at index 0 that was not expected,
+					               contained item 2 at index 1 that was not expected,
+					               contained item 3 at index 2 that was not expected,
+					               contained item 4 at index 3 that was not expected,
+					               contained item 5 at index 4 that was not expected,
+					               contained item 6 at index 5 that was not expected,
+					               contained item 7 at index 6 that was not expected,
+					               contained item 8 at index 7 that was not expected,
+					               contained item 9 at index 8 that was not expected,
+					               contained item 10 at index 9 that was not expected,
+					               (… and maybe more)
 
 					             Collection:
 					             [
@@ -703,7 +725,18 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection Array.Empty<Action<IThat<int>>>() in order ignoring duplicates,
-					             but it had more than 20 deviations
+					             but it had more than 20 deviations:
+					               contained item 1 at index 0 that was not expected,
+					               contained item 2 at index 1 that was not expected,
+					               contained item 3 at index 2 that was not expected,
+					               contained item 4 at index 3 that was not expected,
+					               contained item 5 at index 4 that was not expected,
+					               contained item 6 at index 5 that was not expected,
+					               contained item 7 at index 6 that was not expected,
+					               contained item 8 at index 7 that was not expected,
+					               contained item 9 at index 8 that was not expected,
+					               contained item 10 at index 9 that was not expected,
+					               (… and maybe more)
 
 					             Collection:
 					             [
@@ -751,7 +784,18 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in order ignoring duplicates,
-					             but it had more than 20 deviations
+					             but it had more than 20 deviations:
+					               contained item 1 at index 0 that was not expected,
+					               contained item 2 at index 1 that was not expected,
+					               contained item 3 at index 2 that was not expected,
+					               contained item 4 at index 3 that was not expected,
+					               contained item 5 at index 4 that was not expected,
+					               contained item 6 at index 5 that was not expected,
+					               contained item 7 at index 6 that was not expected,
+					               contained item 8 at index 7 that was not expected,
+					               contained item 9 at index 8 that was not expected,
+					               contained item 10 at index 9 that was not expected,
+					               (… and maybe more)
 
 					             Collection:
 					             [
@@ -1265,7 +1309,18 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection Array.Empty<Action<IThat<int>>>() in any order,
-					             but it had more than 20 deviations
+					             but it had more than 20 deviations:
+					               contained item 1 at index 0 that was not expected,
+					               contained item 2 at index 1 that was not expected,
+					               contained item 3 at index 2 that was not expected,
+					               contained item 4 at index 3 that was not expected,
+					               contained item 5 at index 4 that was not expected,
+					               contained item 6 at index 5 that was not expected,
+					               contained item 7 at index 6 that was not expected,
+					               contained item 8 at index 7 that was not expected,
+					               contained item 9 at index 8 that was not expected,
+					               contained item 10 at index 9 that was not expected,
+					               (… and maybe more)
 
 					             Collection:
 					             [
@@ -1313,7 +1368,18 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in any order,
-					             but it had more than 20 deviations
+					             but it had more than 20 deviations:
+					               contained item 1 at index 0 that was not expected,
+					               contained item 2 at index 1 that was not expected,
+					               contained item 3 at index 2 that was not expected,
+					               contained item 4 at index 3 that was not expected,
+					               contained item 5 at index 4 that was not expected,
+					               contained item 6 at index 5 that was not expected,
+					               contained item 7 at index 6 that was not expected,
+					               contained item 8 at index 7 that was not expected,
+					               contained item 9 at index 8 that was not expected,
+					               contained item 10 at index 9 that was not expected,
+					               (… and maybe more)
 
 					             Collection:
 					             [
@@ -1855,7 +1921,18 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection Array.Empty<Action<IThat<int>>>() in any order ignoring duplicates,
-					             but it had more than 20 deviations
+					             but it had more than 20 deviations:
+					               contained item 1 at index 0 that was not expected,
+					               contained item 2 at index 1 that was not expected,
+					               contained item 3 at index 2 that was not expected,
+					               contained item 4 at index 3 that was not expected,
+					               contained item 5 at index 4 that was not expected,
+					               contained item 6 at index 5 that was not expected,
+					               contained item 7 at index 6 that was not expected,
+					               contained item 8 at index 7 that was not expected,
+					               contained item 9 at index 8 that was not expected,
+					               contained item 10 at index 9 that was not expected,
+					               (… and maybe more)
 
 					             Collection:
 					             [
@@ -1904,7 +1981,18 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in any order ignoring duplicates,
-					             but it had more than 20 deviations
+					             but it had more than 20 deviations:
+					               contained item 1 at index 0 that was not expected,
+					               contained item 2 at index 1 that was not expected,
+					               contained item 3 at index 2 that was not expected,
+					               contained item 4 at index 3 that was not expected,
+					               contained item 5 at index 4 that was not expected,
+					               contained item 6 at index 5 that was not expected,
+					               contained item 7 at index 6 that was not expected,
+					               contained item 8 at index 7 that was not expected,
+					               contained item 9 at index 8 that was not expected,
+					               contained item 10 at index 9 that was not expected,
+					               (… and maybe more)
 
 					             Collection:
 					             [

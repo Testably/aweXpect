@@ -28,6 +28,9 @@ internal static class ValuePairFormatter
 		return (AppendRuntimeType(actualText, actual), AppendRuntimeType(expectedText, expected));
 	}
 
-	private static string AppendRuntimeType(string text, object? value)
+	/// <summary>
+	///     Appends the runtime type of the <paramref name="value" /> to its formatted <paramref name="text" />.
+	/// </summary>
+	public static string AppendRuntimeType(string text, object? value)
 		=> value is null ? text : $"{text} ({Formatter.Format(value.GetType())})";
 }

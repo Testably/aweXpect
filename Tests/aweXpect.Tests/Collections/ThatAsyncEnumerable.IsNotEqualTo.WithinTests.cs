@@ -25,7 +25,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to collection [1.0m, 2.0m, 3.0m,] in any order ± 0.2,
-						             but it did
+						             but it was
 
 						             Collection:
 						             [1.1, 2.1, 3.1]
@@ -61,7 +61,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to collection [1.0m, null, 2.0m, 3.0m,] in order ± 0.2,
-						             but it did
+						             but it was
 
 						             Collection:
 						             [1.1, <null>, 2.1, 3.1]
@@ -97,7 +97,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to collection [1.0, double.NaN, 2.0, 3.0,] in any order ± 0.2,
-						             but it did
+						             but it was
 
 						             Collection:
 						             [1.1, NaN, 2.1, 3.1]
@@ -119,7 +119,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to collection [1.0, 2.0, 3.0,] in order ± 0.2,
-						             but it did
+						             but it was
 
 						             Collection:
 						             [1.1, 2.1, 3.1]
@@ -155,7 +155,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is not equal to collection [value,] in order ± {Formatter.Format(tolerance)},
-						              but it did
+						              but it was
 
 						              Collection:
 						              [{Formatter.Format(value)}]
@@ -196,7 +196,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to collection [1.0, double.NaN, 2.0, 3.0,] in any order ± 0.2,
-						             but it did
+						             but it was
 
 						             Collection:
 						             [1.1, NaN, 2.1, 3.1]
@@ -218,7 +218,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to collection [1.0, null, 2.0, 3.0,] in any order ± 0.2,
-						             but it did
+						             but it was
 
 						             Collection:
 						             [1.1, <null>, 2.1, 3.1]
@@ -254,7 +254,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is not equal to collection [value,] in order ± {Formatter.Format(tolerance)},
-						              but it did
+						              but it was
 
 						              Collection:
 						              [{Formatter.Format(value)}]
@@ -295,7 +295,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to collection [1.0F, float.NaN, 2.0F, 3.0F,] in any order ± 0.2,
-						             but it did
+						             but it was
 
 						             Collection:
 						             [1.1, NaN, 2.1, 3.1]
@@ -317,7 +317,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to collection [1.0F, 2.0F, 3.0F,] in any order ± 0.2,
-						             but it did
+						             but it was
 
 						             Collection:
 						             [1.1, 2.1, 3.1]
@@ -353,7 +353,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is not equal to collection [value,] in order ± {Formatter.Format(tolerance)},
-						              but it did
+						              but it was
 
 						              Collection:
 						              [{Formatter.Format(value)}]
@@ -394,7 +394,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to collection [1.0F, float.NaN, 2.0F, 3.0F,] in any order ± 0.2,
-						             but it did
+						             but it was
 
 						             Collection:
 						             [1.1, NaN, 2.1, 3.1]
@@ -416,7 +416,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to collection [1.0F, null, 2.0F, 3.0F,] in any order ± 0.2,
-						             but it did
+						             but it was
 
 						             Collection:
 						             [1.1, <null>, 2.1, 3.1]
@@ -452,7 +452,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is not equal to collection [value,] in order ± {Formatter.Format(tolerance)},
-						              but it did
+						              but it was
 
 						              Collection:
 						              [{Formatter.Format(value)}]
@@ -497,7 +497,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is not equal to collection expected in any order ± 1:00,
-						              but it did
+						              but it was
 
 						              Collection:
 						              [
@@ -545,7 +545,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage($"""
 						              Expected that subject
 						              is not equal to collection expected in any order ± 1:00,
-						              but it did
+						              but it was
 
 						              Collection:
 						              [

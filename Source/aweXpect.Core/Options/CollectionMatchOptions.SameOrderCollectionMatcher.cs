@@ -141,7 +141,21 @@ public partial class CollectionMatchOptions
 				errorCount += _additionalItems.Count;
 			}
 
-			return (errorCount > errorThreshold, null);
+			return errorCount > errorThreshold
+				? (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()))
+				: (false, null);
+		}
+
+		/// <summary>
+		///     Additional items are no deviation for the containment relation, so they are left out.
+		/// </summary>
+		private IEnumerable<string> GetDeviations()
+		{
+			IEnumerable<string> deviations = IncorrectItemsError(_incorrectItems)
+				.Concat(OutOfOrderItemsError(_outOfOrderItems));
+			return _equivalenceRelations.HasFlag(EquivalenceRelations.Contains)
+				? deviations
+				: deviations.Concat(AdditionalItemsError(_additionalItems, CreateItemFormatter()));
 		}
 
 #pragma warning disable S3776 // https://rules.sonarsource.com/csharp/RSPEC-3776
@@ -182,7 +196,7 @@ public partial class CollectionMatchOptions
 					if (_additionalItems.Count + _incorrectItems.Count + _missingItems.Count >
 					    2 * maximumNumber)
 					{
-						return (true, null);
+						return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()));
 					}
 				}
 			}
@@ -199,18 +213,19 @@ public partial class CollectionMatchOptions
 				_incorrectItems.Clear();
 			}
 
+			Func<object?, string> formatItem = CreateItemFormatter();
 			List<string> errors = new();
 			errors.AddRange(IncorrectItemsError(_incorrectItems));
 			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains))
 			{
-				errors.AddRange(AdditionalItemsError(_additionalItems));
+				errors.AddRange(AdditionalItemsError(_additionalItems, formatItem));
 			}
 			else if (_equivalenceRelations.HasFlag(EquivalenceRelations.ContainsProperly) && !_additionalItems.Any())
 			{
 				errors.Add("did not contain any additional items");
 			}
 
-			errors.AddRange(MissingItemsError(_totalExpectedItems, _missingItems, _equivalenceRelations, false));
+			errors.AddRange(MissingItemsError(_totalExpectedItems, _missingItems, _equivalenceRelations, false, formatItem));
 
 			string? error = ReturnErrorString(it, errors);
 			return (error != null, error);
@@ -225,7 +240,7 @@ public partial class CollectionMatchOptions
 		{
 			List<string> errors = new();
 			errors.AddRange(IncorrectItemsError(_incorrectItems));
-			errors.AddRange(AdditionalItemsError(_additionalItems));
+			errors.AddRange(AdditionalItemsError(_additionalItems, CreateItemFormatter()));
 			if (errors.Count == 0 &&
 			    _equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedInProperly) &&
 			    _index >= _expectedItems.Length)
@@ -250,7 +265,7 @@ public partial class CollectionMatchOptions
 
 			List<string> errors = new();
 			errors.AddRange(OutOfOrderItemsError(_outOfOrderItems));
-			errors.AddRange(AdditionalItemsError(_additionalItems));
+			errors.AddRange(AdditionalItemsError(_additionalItems, CreateItemFormatter()));
 			if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedInProperly) && !_missingItems.Any())
 			{
 				errors.Add("contained all expected items");
@@ -419,6 +434,12 @@ public partial class CollectionMatchOptions
 			_expectationIndex++;
 			_matchingItems.Add((_index, value));
 		}
+
+		/// <summary>
+		///     An unexpected and a missing item that format equally differ only in their runtime type.
+		/// </summary>
+		private Func<object?, string> CreateItemFormatter()
+			=> GetItemFormatter(_additionalItems.Values.Cast<object?>(), _missingItems.Cast<object?>());
 
 #if NET8_0_OR_GREATER
 		protected abstract ValueTask<bool>

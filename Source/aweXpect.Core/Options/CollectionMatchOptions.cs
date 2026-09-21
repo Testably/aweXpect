@@ -179,6 +179,19 @@ public partial class CollectionMatchOptions(
 		};
 
 	/// <summary>
+	///     Specifies the verb of the negated result, so that it agrees with the negated expectation built by
+	///     <see cref="GetExpectation" />.
+	/// </summary>
+	/// <remarks>
+	///     Only the containment relation reads "does not contain", which is answered with "did"; the other relations
+	///     read "is not" and are answered with "was".
+	/// </remarks>
+	public string GetNegatedResultVerb(string it, ExpectationGrammars grammars)
+		=> _equivalenceRelations.HasFlag(EquivalenceRelations.Contains)
+			? " did"
+			: grammars.SubjectVerb(it, " was", " were");
+
+	/// <summary>
 	///     Only the containment relations require the items to appear without other items in between; equality implies
 	///     contiguity anyway.
 	/// </summary>
@@ -239,7 +252,65 @@ public partial class CollectionMatchOptions(
 		return null;
 	}
 
-	private static IEnumerable<string> AdditionalItemsError<T>(Dictionary<int, T> additionalItems)
+	/// <summary>
+	///     An unexpected item and a missing item that format identically differ only in their runtime type, which the
+	///     reader cannot see unless it is named, so both sides are formatted through the returned formatter.
+	/// </summary>
+	private static Func<object?, string> GetItemFormatter(IEnumerable<object?> unexpectedItems,
+		IEnumerable<object?> missingItems)
+	{
+		List<(string Text, Type? Type)> unexpected = unexpectedItems
+			.Select(item => (Formatter.Format(item), item?.GetType()))
+			.ToList();
+		HashSet<string> ambiguousTexts = new(StringComparer.Ordinal);
+		foreach (object? missingItem in missingItems)
+		{
+			string text = Formatter.Format(missingItem);
+			Type? type = missingItem?.GetType();
+			if (unexpected.Any(item => item.Type != type &&
+			                           string.Equals(item.Text, text, StringComparison.Ordinal)))
+			{
+				ambiguousTexts.Add(text);
+			}
+		}
+
+		return value =>
+		{
+			string text = Formatter.Format(value);
+			return ambiguousTexts.Contains(text) ? ValuePairFormatter.AppendRuntimeType(text, value) : text;
+		};
+	}
+
+	/// <summary>
+	///     Aborting the run leaves the total number of deviations unknown, so the listed ones end with the truncation
+	///     marker for an unknown total.
+	/// </summary>
+	/// <remarks>
+	///     Only the deviations of the subject items that were inspected are listed, because the expected items are not
+	///     accounted for completely while the run is aborted.
+	/// </remarks>
+	private static string TooManyDeviationsError(string it, int maximumNumber, IEnumerable<string> deviations)
+	{
+		StringBuilder sb = new();
+		sb.Append(it).Append(" had more than ").Append(2 * maximumNumber).Append(" deviations");
+		List<string> listedDeviations = deviations.Take(maximumNumber).ToList();
+		if (listedDeviations.Count == 0)
+		{
+			return sb.ToString();
+		}
+
+		sb.Append(':');
+		foreach (string deviation in listedDeviations)
+		{
+			sb.AppendLine().Append(deviation.Indent()).Append(',');
+		}
+
+		sb.AppendLine().Append("  (… and maybe more)");
+		return sb.ToString();
+	}
+
+	private static IEnumerable<string> AdditionalItemsError<T>(Dictionary<int, T> additionalItems,
+		Func<object?, string> formatItem)
 	{
 		bool hasAdditionalItems = additionalItems.Any();
 		if (hasAdditionalItems)
@@ -247,7 +318,7 @@ public partial class CollectionMatchOptions(
 			foreach (KeyValuePair<int, T> additionalItem in additionalItems)
 			{
 				yield return
-					$"contained item {Formatter.Format(additionalItem.Value)} at index {additionalItem.Key} that was not expected";
+					$"contained item {formatItem(additionalItem.Value)} at index {additionalItem.Key} that was not expected";
 			}
 		}
 	}
@@ -277,7 +348,7 @@ public partial class CollectionMatchOptions(
 	}
 
 	private static IEnumerable<string> MissingItemsError<T>(int total, List<T> missingItems,
-		EquivalenceRelations equivalenceRelation, bool ignoringDuplicates)
+		EquivalenceRelations equivalenceRelation, bool ignoringDuplicates, Func<object?, string> formatItem)
 	{
 		if (total == 0)
 		{
@@ -302,7 +373,7 @@ public partial class CollectionMatchOptions(
 			if (missingItems.Count == 1)
 			{
 				yield return
-					$"lacked {missingItems.Count} of {total} expected items: {Formatter.Format(missingItems[0])}";
+					$"lacked {missingItems.Count} of {total} expected items: {formatItem(missingItems[0])}";
 				yield break;
 			}
 
@@ -312,7 +383,7 @@ public partial class CollectionMatchOptions(
 			foreach (T missingItem in missingItems)
 			{
 				sb.AppendLine().Append("  ");
-				Formatter.Format(sb, missingItem);
+				sb.Append(formatItem(missingItem));
 				sb.Append(',');
 			}
 

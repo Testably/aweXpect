@@ -55,7 +55,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in order and contiguous,
-					             but it did
+					             but it was
 
 					             Collection:
 					             []
@@ -164,7 +164,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in order and contiguous,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -273,7 +273,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in order and contiguous,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -328,7 +328,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in order and contiguous,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -383,7 +383,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in order and contiguous,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -422,7 +422,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in order and contiguous,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -461,7 +461,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in order and contiguous,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -525,7 +525,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in order and contiguous ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             []
@@ -557,7 +557,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in order and contiguous ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             []
@@ -636,7 +636,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in order and contiguous ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -746,7 +746,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in order and contiguous ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -783,7 +783,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in order and contiguous ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -821,7 +821,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in order and contiguous ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -858,7 +858,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in order and contiguous ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -896,7 +896,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in order and contiguous ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -935,7 +935,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in order and contiguous ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -973,7 +973,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in order and contiguous ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1037,7 +1037,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in any order,
-					             but it did
+					             but it was
 
 					             Collection:
 					             []
@@ -1116,7 +1116,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in any order,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1190,7 +1190,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in any order,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1244,7 +1244,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in any order,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1299,7 +1299,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in any order,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1354,7 +1354,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in any order,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1393,7 +1393,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in any order,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1432,7 +1432,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in any order,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1498,7 +1498,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             []
@@ -1532,7 +1532,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             []
@@ -1611,7 +1611,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1685,7 +1685,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1721,7 +1721,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1759,7 +1759,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1796,7 +1796,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1834,7 +1834,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1871,7 +1871,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1909,7 +1909,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1948,7 +1948,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -1986,7 +1986,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -2050,7 +2050,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected which has at least one additional item in order and contiguous,
-					             but it did
+					             but it was
 
 					             Collection:
 					             []
@@ -2129,7 +2129,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected which has at least one additional item in order and contiguous,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -2238,7 +2238,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected which has at least one additional item in order and contiguous,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -2293,7 +2293,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected which has at least one additional item in order and contiguous,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -2348,7 +2348,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected which has at least one additional item in order and contiguous,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -2387,7 +2387,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected which has at least one additional item in order and contiguous,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -2471,7 +2471,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected which has at least one additional item in order and contiguous ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             []
@@ -2503,7 +2503,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected which has at least one additional item in order and contiguous ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             []
@@ -2582,7 +2582,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected which has at least one additional item in order and contiguous ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -2761,7 +2761,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected which has at least one additional item in order and contiguous ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -2800,7 +2800,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected which has at least one additional item in order and contiguous ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -2883,7 +2883,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected which has at least one additional item in any order,
-					             but it did
+					             but it was
 
 					             Collection:
 					             []
@@ -2962,7 +2962,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected which has at least one additional item in any order,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -3071,7 +3071,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected which has at least one additional item in any order,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -3126,7 +3126,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected which has at least one additional item in any order,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -3181,7 +3181,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected which has at least one additional item in any order,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -3220,7 +3220,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected which has at least one additional item in any order,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -3306,7 +3306,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected which has at least one additional item in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             []
@@ -3340,7 +3340,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected which has at least one additional item in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             []
@@ -3419,7 +3419,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected which has at least one additional item in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -3598,7 +3598,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected which has at least one additional item in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
@@ -3637,7 +3637,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             is not contained in collection expected which has at least one additional item in any order ignoring duplicates,
-					             but it did
+					             but it was
 
 					             Collection:
 					             [
