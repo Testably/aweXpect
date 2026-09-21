@@ -57,13 +57,36 @@ public abstract class MemberToIgnore
 			}
 
 			int segmentStart = memberPath.Length - memberName.Length;
-			return segmentStart == 0 ||
-			       memberName[0] == '[' ||
-			       memberPath[segmentStart - 1] is '.' or ']';
+			return (segmentStart == 0 ||
+			        memberName[0] == '[' ||
+			        memberPath[segmentStart - 1] is '.' or ']') &&
+			       !IsInsideElementKey(memberPath, segmentStart);
 		}
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString() => $"\"{memberName}\"";
+
+		/// <summary>
+		///     A dictionary key is written verbatim between the brackets of its path segment, so a '.' or '[' within the key
+		///     would otherwise open a segment that the user never wrote.
+		/// </summary>
+		private static bool IsInsideElementKey(string memberPath, int index)
+		{
+			for (int i = index - 1; i >= 0; i--)
+			{
+				if (memberPath[i] == ']')
+				{
+					return false;
+				}
+
+				if (memberPath[i] == '[')
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
 	}
 }
 #pragma warning restore S1694 // Convert this abstract class to an interface

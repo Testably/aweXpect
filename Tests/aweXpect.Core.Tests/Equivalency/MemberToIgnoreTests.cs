@@ -13,6 +13,12 @@ public sealed class MemberToIgnoreTests
 	[InlineData("Items[3]", "Root.Items[3]")]
 	[InlineData("[3]", "Items[3]")]
 	[InlineData("[3]", "Items[0][3]")]
+	[InlineData("[a.b]", "Root[a.b]")]
+	[InlineData("[a[b]", "Root[a[b]")]
+	[InlineData("[c]", "Root[a.b][c]")]
+	[InlineData("[c]", "Root[a[b][c]")]
+	[InlineData("Name", "Root[a.b].Name")]
+	[InlineData("Name", "Root[a[b].Name")]
 	public async Task ByName_WhenTheNameCoversWholePathSegments_ShouldIgnoreTheMember(
 		string memberName, string memberPath)
 	{
@@ -31,6 +37,9 @@ public sealed class MemberToIgnoreTests
 	[InlineData("hild.Name", "Child.Name")]
 	[InlineData("3]", "Items[3]")]
 	[InlineData("Name", "Items[Name]")]
+	[InlineData("b]", "Root[a.b]")]
+	[InlineData("[b]", "Root[a[b]")]
+	[InlineData("Items[3]", "Root[x.Items[3]")]
 	[InlineData("", "Name")]
 	public async Task ByName_WhenTheNameDoesNotCoverWholePathSegments_ShouldNotIgnoreTheMember(
 		string memberName, string memberPath)
@@ -40,6 +49,6 @@ public sealed class MemberToIgnoreTests
 		bool result = sut.IgnoreMember(memberPath, typeof(string));
 
 		await That(result).IsFalse()
-			.Because("an abbreviated or misspelled name must not silently widen the exclusion");
+			.Because("neither an abbreviated or misspelled name nor a separator inside a dictionary key must silently widen the exclusion");
 	}
 }
