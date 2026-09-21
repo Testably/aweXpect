@@ -2,655 +2,183 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
+using aweXpect.SourceGenerators;
 
 namespace aweXpect;
 
+[CreateCollectionExpectation("Is{Not}EqualTo", nameof(ThatAsyncEnumerable.IsEqualToCore),
+	"System.Collections.Generic.IAsyncEnumerable<{item}>",
+	TypeParameters = ["TItem",], ConditionalOn = Net8,
+	Summary = CollectionMatches, NegatedSummary = CollectionDoesNotMatch)]
+[CreateCollectionExpectation("Is{Not}EqualTo", nameof(ThatAsyncEnumerable.IsEqualToForStringsCore),
+	"System.Collections.Generic.IAsyncEnumerable<{item}>",
+	ElementType = "string?", ConditionalOn = Net8,
+	Summary = CollectionMatches, NegatedSummary = CollectionDoesNotMatch)]
+[CreateCollectionExpectation("Is{Not}EqualTo", nameof(ThatAsyncEnumerable.IsEqualToFromPredicatesCore),
+	"System.Collections.Generic.IAsyncEnumerable<{item}>",
+	TypeParameters = ["TItem",], ConditionalOn = Net8,
+	ExpectedType =
+		"System.Collections.Generic.IEnumerable<System.Linq.Expressions.Expression<System.Func<{item}, bool>>>",
+	Summary = CollectionMatchesPredicates, NegatedSummary = CollectionDoesNotMatchPredicates)]
+[CreateCollectionExpectation("Is{Not}EqualTo", nameof(ThatAsyncEnumerable.IsEqualToFromExpectationsCore),
+	"System.Collections.Generic.IAsyncEnumerable<{item}>",
+	TypeParameters = ["TItem",], ConditionalOn = Net8,
+	ExpectedType = "System.Collections.Generic.IEnumerable<System.Action<aweXpect.Core.IThatSubject<{item}?>>>",
+	Summary = CollectionMatchesExpectations, NegatedSummary = CollectionDoesNotMatchExpectations)]
+[CreateCollectionExpectation("Is{Not}EqualTo", nameof(ThatAsyncEnumerable.IsEqualToWithToleranceCore),
+	"System.Collections.Generic.IAsyncEnumerable<{item}>",
+	Factory = typeof(ObjectEqualityWithToleranceOptionsFactory), ConditionalOn = Net8,
+	Summary = CollectionMatches, NegatedSummary = CollectionDoesNotMatch)]
 public static partial class ThatAsyncEnumerable
 {
-	/// <summary>
-	///     Verifies that the collection matches the <paramref name="expected" /> collection.
-	/// </summary>
-	public static ObjectCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
-		IsEqualTo<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> subject,
+	private const string Net8 = "NET8_0_OR_GREATER";
+
+	private const string CollectionMatches =
+		"Verifies that the collection matches the <paramref name=\"expected\" /> collection.";
+
+	private const string CollectionDoesNotMatch =
+		"Verifies that the collection does not match the <paramref name=\"unexpected\" /> collection.";
+
+	private const string CollectionMatchesPredicates =
+		"Verifies that the collection matches the <paramref name=\"expected\" /> collection of predicates.";
+
+	private const string CollectionDoesNotMatchPredicates =
+		"Verifies that the collection does not match the <paramref name=\"unexpected\" /> collection of predicates.";
+
+	private const string CollectionMatchesExpectations =
+		"Verifies that the collection matches the <paramref name=\"expected\" /> collection of expectations.";
+
+	private const string CollectionDoesNotMatchExpectations =
+		"Verifies that the collection does not match the <paramref name=\"unexpected\" /> collection of expectations.";
+
+	/// <remarks>
+	///     Shared body of the value overloads.
+	/// </remarks>
+	internal static ObjectCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
+		IsEqualToCore<TItem>(
+			IThat<IAsyncEnumerable<TItem>?> subject,
 			IEnumerable<TItem> expected,
-			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+			string expectedExpression,
+			bool negated)
 	{
 		ObjectEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint<TItem, TItem>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					expected,
-					options,
-					matchOptions)),
+			expectationBuilder.AddConstraint<IAsyncEnumerable<TItem>?>((it, grammars) =>
+			{
+				IsEqualToConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
+					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions);
+				return negated ? constraint.Invert() : constraint;
+			}),
 			subject,
 			options,
 			matchOptions);
 	}
 
-	/// <summary>
-	///     Verifies that the collection matches the <paramref name="expected" /> collection.
-	/// </summary>
-	public static ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<double>, IThat<IAsyncEnumerable<double>?>,
-			double, double>
-		IsEqualTo(
-			this IThat<IAsyncEnumerable<double>?> subject,
-			IEnumerable<double> expected,
-			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
-	{
-		ObjectEqualityWithToleranceOptions<double, double> options =
-			ObjectEqualityWithToleranceOptionsFactory.CreateDouble();
-		CollectionMatchOptions matchOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<double>, IThat<IAsyncEnumerable<double>?>,
-			double, double>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<double, double>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue,
-					expected,
-					options,
-					matchOptions)),
-			subject,
-			options,
-			matchOptions);
-	}
-
-	/// <summary>
-	///     Verifies that the collection matches the <paramref name="expected" /> collection.
-	/// </summary>
-	public static ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<double?>, IThat<IAsyncEnumerable<double?>?>,
-			double?, double>
-		IsEqualTo(
-			this IThat<IAsyncEnumerable<double?>?> subject,
-			IEnumerable<double?> expected,
-			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
-	{
-		ObjectEqualityWithToleranceOptions<double?, double> options =
-			ObjectEqualityWithToleranceOptionsFactory.CreateNullableDouble();
-		CollectionMatchOptions matchOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<double?>,
-			IThat<IAsyncEnumerable<double?>?>, double?, double>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<double?, double?>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue,
-					expected,
-					options,
-					matchOptions)),
-			subject,
-			options,
-			matchOptions);
-	}
-
-	/// <summary>
-	///     Verifies that the collection matches the <paramref name="expected" /> collection.
-	/// </summary>
-	public static ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<decimal>, IThat<IAsyncEnumerable<decimal>?>,
-			decimal, decimal>
-		IsEqualTo(
-			this IThat<IAsyncEnumerable<decimal>?> subject,
-			IEnumerable<decimal> expected,
-			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
-	{
-		ObjectEqualityWithToleranceOptions<decimal, decimal> options =
-			ObjectEqualityWithToleranceOptionsFactory.CreateDecimal();
-		CollectionMatchOptions matchOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<decimal>, IThat<IAsyncEnumerable<decimal>?>
-			,
-			decimal, decimal>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<decimal, decimal>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue,
-					expected,
-					options,
-					matchOptions)),
-			subject,
-			options,
-			matchOptions);
-	}
-
-	/// <summary>
-	///     Verifies that the collection matches the <paramref name="expected" /> collection.
-	/// </summary>
-	public static ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<decimal?>,
-			IThat<IAsyncEnumerable<decimal?>?>,
-			decimal?, decimal>
-		IsEqualTo(
-			this IThat<IAsyncEnumerable<decimal?>?> subject,
-			IEnumerable<decimal?> expected,
-			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
-	{
-		ObjectEqualityWithToleranceOptions<decimal?, decimal> options =
-			ObjectEqualityWithToleranceOptionsFactory.CreateNullableDecimal();
-		CollectionMatchOptions matchOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<decimal?>,
-			IThat<IAsyncEnumerable<decimal?>?>,
-			decimal?, decimal>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<decimal?, decimal?>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue,
-					expected,
-					options,
-					matchOptions)),
-			subject,
-			options,
-			matchOptions);
-	}
-
-	/// <summary>
-	///     Verifies that the collection matches the <paramref name="expected" /> collection.
-	/// </summary>
-	public static ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<float>, IThat<IAsyncEnumerable<float>?>,
-			float, float>
-		IsEqualTo(
-			this IThat<IAsyncEnumerable<float>?> subject,
-			IEnumerable<float> expected,
-			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
-	{
-		ObjectEqualityWithToleranceOptions<float, float> options =
-			ObjectEqualityWithToleranceOptionsFactory.CreateFloat();
-		CollectionMatchOptions matchOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<float>, IThat<IAsyncEnumerable<float>?>,
-			float, float>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<float, float>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue,
-					expected,
-					options,
-					matchOptions)),
-			subject,
-			options,
-			matchOptions);
-	}
-
-	/// <summary>
-	///     Verifies that the collection matches the <paramref name="expected" /> collection.
-	/// </summary>
-	public static ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<float?>, IThat<IAsyncEnumerable<float?>?>,
-			float?, float>
-		IsEqualTo(
-			this IThat<IAsyncEnumerable<float?>?> subject,
-			IEnumerable<float?> expected,
-			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
-	{
-		ObjectEqualityWithToleranceOptions<float?, float> options =
-			ObjectEqualityWithToleranceOptionsFactory.CreateNullableFloat();
-		CollectionMatchOptions matchOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<float?>, IThat<IAsyncEnumerable<float?>?>,
-			float?, float>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<float?, float?>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue,
-					expected,
-					options,
-					matchOptions)),
-			subject,
-			options,
-			matchOptions);
-	}
-
-	/// <summary>
-	///     Verifies that the collection matches the <paramref name="expected" /> collection.
-	/// </summary>
-	public static ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<DateTime>,
-			IThat<IAsyncEnumerable<DateTime>?>,
-			DateTime, TimeSpan>
-		IsEqualTo(
-			this IThat<IAsyncEnumerable<DateTime>?> subject,
-			IEnumerable<DateTime> expected,
-			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
-	{
-		ObjectEqualityWithToleranceOptions<DateTime, TimeSpan> options =
-			ObjectEqualityWithToleranceOptionsFactory.CreateDateTime();
-		CollectionMatchOptions matchOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<DateTime>,
-			IThat<IAsyncEnumerable<DateTime>?>,
-			DateTime, TimeSpan>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<DateTime, DateTime>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue,
-					expected,
-					options,
-					matchOptions)),
-			subject,
-			options,
-			matchOptions);
-	}
-
-	/// <summary>
-	///     Verifies that the collection matches the <paramref name="expected" /> collection.
-	/// </summary>
-	public static ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<DateTime?>,
-			IThat<IAsyncEnumerable<DateTime?>?>,
-			DateTime?, TimeSpan>
-		IsEqualTo(
-			this IThat<IAsyncEnumerable<DateTime?>?> subject,
-			IEnumerable<DateTime?> expected,
-			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
-	{
-		ObjectEqualityWithToleranceOptions<DateTime?, TimeSpan> options =
-			ObjectEqualityWithToleranceOptionsFactory.CreateNullableDateTime();
-		CollectionMatchOptions matchOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<DateTime?>,
-			IThat<IAsyncEnumerable<DateTime?>?>,
-			DateTime?, TimeSpan>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<DateTime?, DateTime?>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue,
-					expected,
-					options,
-					matchOptions)),
-			subject,
-			options,
-			matchOptions);
-	}
-
-	/// <summary>
-	///     Verifies that the collection matches the <paramref name="expected" /> collection.
-	/// </summary>
-	public static StringCollectionMatchResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
-		IsEqualTo(
-			this IThat<IAsyncEnumerable<string?>?> subject,
+	/// <remarks>
+	///     Counterpart of <see cref="IsEqualToCore{TItem}" /> for a collection of strings, which carries the string
+	///     equality options instead.
+	/// </remarks>
+	internal static StringCollectionMatchResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
+		IsEqualToForStringsCore(
+			IThat<IAsyncEnumerable<string?>?> subject,
 			IEnumerable<string?> expected,
-			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+			string expectedExpression,
+			bool negated)
 	{
 		StringEqualityOptions options = new();
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringCollectionMatchResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint<string?, string?>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					expected,
-					options,
-					matchOptions)),
+			expectationBuilder.AddConstraint<IAsyncEnumerable<string?>?>((it, grammars) =>
+			{
+				IsEqualToConstraint<string?, string?> constraint = new(expectationBuilder, it, grammars,
+					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions);
+				return negated ? constraint.Invert() : constraint;
+			}),
 			subject,
 			options,
 			matchOptions);
 	}
 
-	/// <summary>
-	///     Verifies that the collection matches the <paramref name="expected" /> collection of predicates.
-	/// </summary>
-	public static CollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
-		IsEqualTo<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> subject,
+	/// <remarks>
+	///     Shared body of the overloads whose expected collection is a collection of predicates, which carry no
+	///     equality options.
+	/// </remarks>
+	internal static CollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
+		IsEqualToFromPredicatesCore<TItem>(
+			IThat<IAsyncEnumerable<TItem>?> subject,
 			IEnumerable<Expression<Func<TItem, bool>>> expected,
-			[CallerArgumentExpression("expected")]
-			string doNotPopulateThisValue = "")
+			string expectedExpression,
+			bool negated)
 	{
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToFromPredicateConstraint<TItem, TItem>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					expected,
-					matchOptions)),
+			expectationBuilder.AddConstraint<IAsyncEnumerable<TItem>?>((it, grammars) =>
+			{
+				IsEqualToFromPredicateConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
+					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions);
+				return negated ? constraint.Invert() : constraint;
+			}),
 			subject,
 			matchOptions);
 	}
 
-	/// <summary>
-	///     Verifies that the collection matches the <paramref name="expected" /> collection of expectations.
-	/// </summary>
-	public static CollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
-		IsEqualTo<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> subject,
+	/// <remarks>
+	///     Counterpart of <see cref="IsEqualToFromPredicatesCore{TItem}" /> for a collection of expectations.
+	/// </remarks>
+	internal static CollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
+		IsEqualToFromExpectationsCore<TItem>(
+			IThat<IAsyncEnumerable<TItem>?> subject,
 			IEnumerable<Action<IThatSubject<TItem?>>> expected,
-			[CallerArgumentExpression("expected")]
-			string doNotPopulateThisValue = "")
+			string expectedExpression,
+			bool negated)
 	{
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToFromExpectationsConstraint<TItem, TItem>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					expected,
-					matchOptions)),
+			expectationBuilder.AddConstraint<IAsyncEnumerable<TItem>?>((it, grammars) =>
+			{
+				IsEqualToFromExpectationsConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
+					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions);
+				return negated ? constraint.Invert() : constraint;
+			}),
 			subject,
 			matchOptions);
 	}
 
-	/// <summary>
-	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection.
-	/// </summary>
-	public static ObjectCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
-		IsNotEqualTo<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> subject,
-			IEnumerable<TItem> unexpected,
-			[CallerArgumentExpression("unexpected")]
-			string doNotPopulateThisValue = "")
+	/// <remarks>
+	///     Shared body of the tolerance overloads. The generated overloads supply the concrete types and the options
+	///     instance.
+	/// </remarks>
+	internal static ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<TItem>,
+			IThat<IAsyncEnumerable<TItem>?>, TItem, TTolerance>
+		IsEqualToWithToleranceCore<TItem, TTolerance>(
+			IThat<IAsyncEnumerable<TItem>?> subject,
+			IEnumerable<TItem> expected,
+			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
+			string expectedExpression,
+			bool negated)
 	{
-		ObjectEqualityOptions<TItem> options = new();
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint<TItem, TItem>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					unexpected,
-					options,
-					matchOptions).Invert()),
+		return new ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>,
+			TItem, TTolerance>(
+			expectationBuilder.AddConstraint<IAsyncEnumerable<TItem>?>((it, grammars) =>
+			{
+				IsEqualToConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
+					expectedExpression, expected, options, matchOptions);
+				return negated ? constraint.Invert() : constraint;
+			}),
 			subject,
 			options,
-			matchOptions);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection.
-	/// </summary>
-	public static ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<double>, IThat<IAsyncEnumerable<double>?>,
-			double, double>
-		IsNotEqualTo(
-			this IThat<IAsyncEnumerable<double>?> subject,
-			IEnumerable<double> unexpected,
-			[CallerArgumentExpression("unexpected")]
-			string doNotPopulateThisValue = "")
-	{
-		ObjectEqualityWithToleranceOptions<double, double> options =
-			ObjectEqualityWithToleranceOptionsFactory.CreateDouble();
-		CollectionMatchOptions matchOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<double>, IThat<IAsyncEnumerable<double>?>,
-			double, double>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<double, double>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue,
-					unexpected,
-					options,
-					matchOptions).Invert()),
-			subject,
-			options,
-			matchOptions);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection.
-	/// </summary>
-	public static ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<double?>, IThat<IAsyncEnumerable<double?>?>,
-			double?, double>
-		IsNotEqualTo(
-			this IThat<IAsyncEnumerable<double?>?> subject,
-			IEnumerable<double?> unexpected,
-			[CallerArgumentExpression("unexpected")]
-			string doNotPopulateThisValue = "")
-	{
-		ObjectEqualityWithToleranceOptions<double?, double> options =
-			ObjectEqualityWithToleranceOptionsFactory.CreateNullableDouble();
-		CollectionMatchOptions matchOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<double?>, IThat<IAsyncEnumerable<double?>?>
-			,
-			double?, double>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<double?, double?>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue,
-					unexpected,
-					options,
-					matchOptions).Invert()),
-			subject,
-			options,
-			matchOptions);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection.
-	/// </summary>
-	public static ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<decimal>, IThat<IAsyncEnumerable<decimal>?>,
-			decimal, decimal>
-		IsNotEqualTo(
-			this IThat<IAsyncEnumerable<decimal>?> subject,
-			IEnumerable<decimal> unexpected,
-			[CallerArgumentExpression("unexpected")]
-			string doNotPopulateThisValue = "")
-	{
-		ObjectEqualityWithToleranceOptions<decimal, decimal> options =
-			ObjectEqualityWithToleranceOptionsFactory.CreateDecimal();
-		CollectionMatchOptions matchOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<decimal>, IThat<IAsyncEnumerable<decimal>?>
-			,
-			decimal, decimal>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<decimal, decimal>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue,
-					unexpected,
-					options,
-					matchOptions).Invert()),
-			subject,
-			options,
-			matchOptions);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection.
-	/// </summary>
-	public static ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<decimal?>,
-			IThat<IAsyncEnumerable<decimal?>?>,
-			decimal?, decimal>
-		IsNotEqualTo(
-			this IThat<IAsyncEnumerable<decimal?>?> subject,
-			IEnumerable<decimal?> unexpected,
-			[CallerArgumentExpression("unexpected")]
-			string doNotPopulateThisValue = "")
-	{
-		ObjectEqualityWithToleranceOptions<decimal?, decimal> options =
-			ObjectEqualityWithToleranceOptionsFactory.CreateNullableDecimal();
-		CollectionMatchOptions matchOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<decimal?>,
-			IThat<IAsyncEnumerable<decimal?>?>,
-			decimal?, decimal>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<decimal?, decimal?>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue,
-					unexpected,
-					options,
-					matchOptions).Invert()),
-			subject,
-			options,
-			matchOptions);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection.
-	/// </summary>
-	public static ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<float>, IThat<IAsyncEnumerable<float>?>,
-			float, float>
-		IsNotEqualTo(
-			this IThat<IAsyncEnumerable<float>?> subject,
-			IEnumerable<float> unexpected,
-			[CallerArgumentExpression("unexpected")]
-			string doNotPopulateThisValue = "")
-	{
-		ObjectEqualityWithToleranceOptions<float, float> options =
-			ObjectEqualityWithToleranceOptionsFactory.CreateFloat();
-		CollectionMatchOptions matchOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<float>, IThat<IAsyncEnumerable<float>?>,
-			float, float>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<float, float>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue,
-					unexpected,
-					options,
-					matchOptions).Invert()),
-			subject,
-			options,
-			matchOptions);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection.
-	/// </summary>
-	public static ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<float?>, IThat<IAsyncEnumerable<float?>?>,
-			float?, float>
-		IsNotEqualTo(
-			this IThat<IAsyncEnumerable<float?>?> subject,
-			IEnumerable<float?> unexpected,
-			[CallerArgumentExpression("unexpected")]
-			string doNotPopulateThisValue = "")
-	{
-		ObjectEqualityWithToleranceOptions<float?, float> options =
-			ObjectEqualityWithToleranceOptionsFactory.CreateNullableFloat();
-		CollectionMatchOptions matchOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<float?>, IThat<IAsyncEnumerable<float?>?>,
-			float?, float>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<float?, float?>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue,
-					unexpected,
-					options,
-					matchOptions).Invert()),
-			subject,
-			options,
-			matchOptions);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection.
-	/// </summary>
-	public static ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<DateTime>,
-			IThat<IAsyncEnumerable<DateTime>?>,
-			DateTime, TimeSpan>
-		IsNotEqualTo(
-			this IThat<IAsyncEnumerable<DateTime>?> subject,
-			IEnumerable<DateTime> unexpected,
-			[CallerArgumentExpression("unexpected")]
-			string doNotPopulateThisValue = "")
-	{
-		ObjectEqualityWithToleranceOptions<DateTime, TimeSpan> options =
-			ObjectEqualityWithToleranceOptionsFactory.CreateDateTime();
-		CollectionMatchOptions matchOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<DateTime>,
-			IThat<IAsyncEnumerable<DateTime>?>,
-			DateTime, TimeSpan>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<DateTime, DateTime>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue,
-					unexpected,
-					options,
-					matchOptions).Invert()),
-			subject,
-			options,
-			matchOptions);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection.
-	/// </summary>
-	public static ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<DateTime?>,
-			IThat<IAsyncEnumerable<DateTime?>?>,
-			DateTime?, TimeSpan>
-		IsNotEqualTo(
-			this IThat<IAsyncEnumerable<DateTime?>?> subject,
-			IEnumerable<DateTime?> unexpected,
-			[CallerArgumentExpression("unexpected")]
-			string doNotPopulateThisValue = "")
-	{
-		ObjectEqualityWithToleranceOptions<DateTime?, TimeSpan> options =
-			ObjectEqualityWithToleranceOptionsFactory.CreateNullableDateTime();
-		CollectionMatchOptions matchOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<DateTime?>,
-			IThat<IAsyncEnumerable<DateTime?>?>,
-			DateTime?, TimeSpan>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<DateTime?, DateTime?>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue,
-					unexpected,
-					options,
-					matchOptions).Invert()),
-			subject,
-			options,
-			matchOptions);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection.
-	/// </summary>
-	public static StringCollectionMatchResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
-		IsNotEqualTo(
-			this IThat<IAsyncEnumerable<string?>?> subject,
-			IEnumerable<string?> unexpected,
-			[CallerArgumentExpression("unexpected")]
-			string doNotPopulateThisValue = "")
-	{
-		StringEqualityOptions options = new();
-		CollectionMatchOptions matchOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new StringCollectionMatchResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
-			expectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint<string?, string?>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					unexpected,
-					options,
-					matchOptions).Invert()),
-			subject,
-			options,
-			matchOptions);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection of predicates.
-	/// </summary>
-	public static CollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
-		IsNotEqualTo<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> subject,
-			IEnumerable<Expression<Func<TItem, bool>>> unexpected,
-			[CallerArgumentExpression("unexpected")]
-			string doNotPopulateThisValue = "")
-	{
-		CollectionMatchOptions matchOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new CollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToFromPredicateConstraint<TItem, TItem>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					unexpected,
-					matchOptions).Invert()),
-			subject,
-			matchOptions);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not match the <paramref name="unexpected" /> collection of expectations.
-	/// </summary>
-	public static CollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>
-		IsNotEqualTo<TItem>(
-			this IThat<IAsyncEnumerable<TItem>?> subject,
-			IEnumerable<Action<IThatSubject<TItem?>>> unexpected,
-			[CallerArgumentExpression("unexpected")]
-			string doNotPopulateThisValue = "")
-	{
-		CollectionMatchOptions matchOptions = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new CollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToFromExpectationsConstraint<TItem, TItem>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					unexpected,
-					matchOptions).Invert()),
-			subject,
 			matchOptions);
 	}
 }

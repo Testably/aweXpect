@@ -266,7 +266,9 @@ public sealed partial class ThatAsyncEnumerable
 						              [{Formatter.Format(value)}]
 
 						              Expected:
-						              [{Formatter.Format(expected)}]
+						              [
+						                {Formatter.Format(expected)}
+						              ]
 						              """);
 				}
 			}
@@ -450,7 +452,9 @@ public sealed partial class ThatAsyncEnumerable
 						              [{Formatter.Format(value)}]
 
 						              Expected:
-						              [{Formatter.Format(expected)}]
+						              [
+						                {Formatter.Format(expected)}
+						              ]
 						              """);
 				}
 			}
