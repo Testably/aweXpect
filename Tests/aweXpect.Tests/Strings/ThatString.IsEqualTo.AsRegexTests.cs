@@ -56,6 +56,19 @@ public sealed partial class ThatString
 					         + "trailing newline, but never at an inner line boundary");
 			}
 
+			[Fact]
+			public async Task WhenACustomComparerIsUsed_ShouldThrowInvalidOperationException()
+			{
+				string subject = "some message";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(".*").AsRegex().Using(StringComparer.Ordinal);
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("A custom comparer is not supported for regex or wildcard matching.")
+					.Because("the regex engine cannot consult a comparer, so it used to be ignored silently");
+			}
+
 			[Theory]
 			[InlineData(true)]
 			[InlineData(false)]

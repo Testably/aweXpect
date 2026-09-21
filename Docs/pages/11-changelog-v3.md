@@ -52,6 +52,14 @@ An empty or `null` value to search for, such as `Contains("")` or `ContainsKeys(
 expectation that could never fail. Such calls now throw at the call site: `ArgumentNullException` for `null`,
 `ArgumentException` for an empty value.
 
+## Conflicting string options
+
+`IgnoringCase()` and `Using(comparer)` could be combined although only one of them ever took effect, and a comparer
+set together with `AsRegex()` or `AsWildcard()` was ignored altogether, in both cases without a trace in the failure
+message. Such a combination now throws an `InvalidOperationException` at the call that creates it, in either order.
+Pass a case-insensitive comparer instead of combining it with `IgnoringCase()`, and express the casing of a pattern
+with `IgnoringCase()` alone.
+
 ## Consistent vocabulary
 
 A continuation on a **value** compares (`EqualTo`, `GreaterThan`, `LessThanOrEqualTo`, `Between`, …) and a

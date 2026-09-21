@@ -164,8 +164,16 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	/// <summary>
 	///     Ignores casing when comparing the <see langword="string" />s.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">
+	///     A custom comparer is already set via <see cref="Using(IEqualityComparer{string})" />.
+	/// </exception>
 	public StringEqualityOptions IgnoringCase(bool ignoreCase = true)
 	{
+		if (ignoreCase && _comparer is not null)
+		{
+			throw CaseAndComparerConflict();
+		}
+
 		_ignoreCase = ignoreCase;
 		return this;
 	}
@@ -235,11 +243,52 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     If set to <see langword="null" /> (default), uses the <see cref="StringComparer.Ordinal" /> or
 	///     <see cref="StringComparer.OrdinalIgnoreCase" /> depending on whether the casing is ignored.
 	/// </remarks>
+	/// <exception cref="InvalidOperationException">
+	///     The casing is already ignored via <see cref="IgnoringCase(bool)" />, or the expected value is matched as a
+	///     regex or wildcard pattern.
+	/// </exception>
 	public StringEqualityOptions Using(IEqualityComparer<string>? comparer)
 	{
+		if (comparer is not null)
+		{
+			if (_ignoreCase)
+			{
+				throw CaseAndComparerConflict();
+			}
+
+			if (_matchType is RegexMatchType or WildcardMatchType)
+			{
+				throw ComparerAndPatternConflict();
+			}
+		}
+
 		_comparer = comparer;
 		return this;
 	}
+
+	/// <summary>
+	///     Creates the exception for a custom comparer that is combined with <see cref="IgnoringCase(bool)" />.
+	/// </summary>
+	/// <remarks>
+	///     Only one of the two can be honoured, so the combination is rejected instead of silently dropping the
+	///     casing option, which would also disappear from the expectation text.
+	/// </remarks>
+	private static InvalidOperationException CaseAndComparerConflict()
+		// ReSharper disable once LocalizableElement
+		=> Tracing.WriteException(new InvalidOperationException(
+			"IgnoringCase cannot be combined with a custom comparer; use a case-insensitive comparer instead."));
+
+	/// <summary>
+	///     Creates the exception for a custom comparer that is combined with a regex or wildcard pattern.
+	/// </summary>
+	/// <remarks>
+	///     A pattern is matched by the regex engine, which has no way to consult a comparer, so the combination is
+	///     rejected instead of silently ignoring the comparer.
+	/// </remarks>
+	private static InvalidOperationException ComparerAndPatternConflict()
+		// ReSharper disable once LocalizableElement
+		=> Tracing.WriteException(new InvalidOperationException(
+			"A custom comparer is not supported for regex or wildcard matching."));
 
 	private static StringComparer UseDefaultComparer(bool ignoreCase)
 		=> ignoreCase ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal;

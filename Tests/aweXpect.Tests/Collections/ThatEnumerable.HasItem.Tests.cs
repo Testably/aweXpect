@@ -457,6 +457,31 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
+			[Theory]
+			[InlineData(false)]
+			[InlineData(true)]
+			public async Task AsRegex_WhenACustomComparerIsUsed_ShouldThrowInvalidOperationException(
+				bool comparerFirst)
+			{
+				IEnumerable<string?> subject = ["foo", "bar", "baz",];
+
+				async Task Act()
+				{
+					if (comparerFirst)
+					{
+						await That(subject).HasItem("b.r").Using(StringComparer.Ordinal).AsRegex();
+					}
+					else
+					{
+						await That(subject).HasItem("b.r").AsRegex().Using(StringComparer.Ordinal);
+					}
+				}
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("A custom comparer is not supported for regex or wildcard matching.")
+					.Because("the guard has to reach every consumer of the string equality options");
+			}
+
 			[Fact]
 			public async Task AsRegex_WhenItemDoesNotMatch_ShouldFail()
 			{

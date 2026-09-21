@@ -37,6 +37,32 @@ public sealed partial class ThatString
 					             """);
 			}
 
+			[Theory]
+			[InlineData(false)]
+			[InlineData(true)]
+			public async Task WhenCombiningIgnoringCaseWithAComparer_ShouldThrowInvalidOperationException(
+				bool comparerFirst)
+			{
+				string subject = "ABC";
+
+				async Task Act()
+				{
+					if (comparerFirst)
+					{
+						await That(subject).IsEqualTo("abc").Using(StringComparer.Ordinal).IgnoringCase();
+					}
+					else
+					{
+						await That(subject).IsEqualTo("abc").IgnoringCase().Using(StringComparer.Ordinal);
+					}
+				}
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage(
+						"IgnoringCase cannot be combined with a custom comparer; use a case-insensitive comparer instead.")
+					.Because("the comparer used to win silently, which also removed the casing from the message");
+			}
+
 			[Fact]
 			public async Task WhenExpectedIsEmpty_ShouldFail()
 			{

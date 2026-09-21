@@ -113,6 +113,19 @@ public sealed partial class ThatString
 					.Because("a newline is a character, so both '*' and '?' have to match it");
 			}
 
+			[Fact]
+			public async Task WhenACustomComparerIsUsed_ShouldThrowInvalidOperationException()
+			{
+				string subject = "some message";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo("*").AsWildcard().Using(StringComparer.Ordinal);
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("A custom comparer is not supported for regex or wildcard matching.")
+					.Because("the wildcard is translated into a regex, which cannot consult a comparer");
+			}
+
 			[Theory]
 			[InlineData(true)]
 			[InlineData(false)]

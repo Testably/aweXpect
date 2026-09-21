@@ -14,8 +14,16 @@ public partial class StringEqualityOptions
 	///     Interprets the expected <see langword="string" /> as wildcard pattern.<br />
 	///     Supports * to match zero or more characters and ? to match exactly one character.
 	/// </summary>
+	/// <exception cref="System.InvalidOperationException">
+	///     A custom comparer is already set, which the regex engine cannot honour.
+	/// </exception>
 	public StringEqualityOptions AsWildcard()
 	{
+		if (_comparer is not null)
+		{
+			throw ComparerAndPatternConflict();
+		}
+
 		_matchType = WildcardMatch;
 		return this;
 	}
