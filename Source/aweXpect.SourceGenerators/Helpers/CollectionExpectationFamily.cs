@@ -52,7 +52,7 @@ internal sealed class CollectionExpectationFamily
 		}
 
 		string positiveName = name.Replace("{Not}", "");
-		string negatedName = name.Replace("{Not}", "Not");
+		string negatedName = declaration.NegatedName ?? name.Replace("{Not}", "Not");
 		List<string> methods = [];
 		foreach (string? subject in Subjects(helper, declaration, compilation))
 		{
@@ -183,12 +183,18 @@ internal sealed class CollectionExpectationFamily
 			: Qualify(declaration.ExpectedType
 				.Replace(SubjectPlaceholder, instantiation.Subject ?? "")
 				.Replace(ItemPlaceholder, instantiation.ExpectedItem ?? item));
+		if (declaration.Params)
+		{
+			// A params array has no single caller expression, so the helper formats the value instead.
+			expectedType = $"params {(declaration.ExpectedType == null ? item : Qualify(declaration.ExpectedType))}[]";
+		}
+
 		string argument = instantiation.ExpectedItem == instantiation.Item
 			? parameterName
 			: $"global::System.Linq.Enumerable.Cast<{item}>({parameterName})";
 
 		List<string> arguments = ["subject", argument,];
-		arguments.AddRange(helper.Parameters.Skip(2).Select(x => ArgumentFor(x, instantiation, negated)));
+		arguments.AddRange(helper.Parameters.Skip(2).Select(x => ArgumentFor(x, declaration, instantiation, negated)));
 
 		// A type parameter bound by the factory or by the subject kind is consumed by the instantiation.
 		string[] ownTypeParameters = helper.TypeParameters
@@ -220,20 +226,30 @@ internal sealed class CollectionExpectationFamily
 				$"\n\t[global::System.Runtime.CompilerServices.OverloadResolutionPriority({declaration.Priority})]";
 		}
 
+		// Only a helper that takes the expression can echo one, and a params array has none to echo.
+		bool takesExpression = helper.Parameters.Skip(2)
+			.Any(x => x.Type.SpecialType == SpecialType.System_String);
+		string expectedParameter = declaration.Params || !takesExpression
+			? $"{expectedType} {parameterName})"
+			: $"""
+			   {expectedType} {parameterName},
+			   			[global::System.Runtime.CompilerServices.CallerArgumentExpression("{parameterName}")]
+			   			string doNotPopulateThisValue = "")
+			   """;
+
 		return $$"""
 		         {{header}}
 		         	public static {{Substitute(helper.ReturnType, substitutions)}}
 		         		{{methodName}}{{typeParameters}}(
 		         			this {{Substitute(helper.Parameters[0].Type, substitutions)}} subject,
-		         			{{expectedType}} {{parameterName}},
-		         			[global::System.Runtime.CompilerServices.CallerArgumentExpression("{{parameterName}}")]
-		         			string doNotPopulateThisValue = "")
+		         			{{expectedParameter}}
 		         		=> {{helper.Name}}{{typeArguments}}(
 		         {{string.Join(",\n", arguments.Select(x => "\t\t\t" + x))}});
 		         """;
 	}
 
-	private static string ArgumentFor(IParameterSymbol parameter, Instantiation instantiation, bool negated)
+	private static string ArgumentFor(IParameterSymbol parameter, Declaration declaration, Instantiation instantiation,
+		bool negated)
 	{
 		if (parameter.Type.Name == "ObjectEqualityWithToleranceOptions")
 		{
@@ -243,6 +259,7 @@ internal sealed class CollectionExpectationFamily
 		return parameter.Type.SpecialType switch
 		{
 			SpecialType.System_Boolean => negated ? "true" : "false",
+			SpecialType.System_String when declaration.Params => "null",
 			_ => "doNotPopulateThisValue",
 		};
 	}
@@ -276,6 +293,8 @@ internal sealed class CollectionExpectationFamily
 		public string? ExpectedType { get; private set; }
 		public bool PerSubject { get; private set; }
 		public bool GuaranteesNotNull { get; private set; }
+		public bool Params { get; private set; }
+		public string? NegatedName { get; private set; }
 		public int Priority { get; private set; }
 		public string Summary { get; private set; } = "";
 		public string NegatedSummary { get; private set; } = "";
@@ -297,6 +316,12 @@ internal sealed class CollectionExpectationFamily
 					break;
 				case "GuaranteesNotNull":
 					GuaranteesNotNull = value.Value as bool? ?? false;
+					break;
+				case "Params":
+					Params = value.Value as bool? ?? false;
+					break;
+				case "NegatedName":
+					NegatedName = value.Value?.ToString();
 					break;
 				case "Priority":
 					Priority = value.Value as int? ?? 0;

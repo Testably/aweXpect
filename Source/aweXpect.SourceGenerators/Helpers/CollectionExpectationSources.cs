@@ -51,6 +51,16 @@ internal static class CollectionExpectationSources
 			/// <summary>Mark the overloads with <c>[GuaranteesNotNull]</c>.</summary>
 			public bool GuaranteesNotNull { get; set; }
 
+			/// <summary>
+			/// Emit the expected parameter as a <c>params</c> array of <c>ExpectedType</c>, or of the helper's element
+			/// type. Such an overload has no single caller expression, so the helper is passed <c>null</c> for it and
+			/// formats the value itself.
+			/// </summary>
+			public bool Params { get; set; }
+
+			/// <summary>The negated name, when it is not the <c>{Not}</c> form of <c>Name</c>.</summary>
+			public string? NegatedName { get; set; }
+
 			/// <summary>The <c>OverloadResolutionPriority</c>, or <c>0</c> for none.</summary>
 			public int Priority { get; set; }
 

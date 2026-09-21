@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
@@ -10,9 +9,7 @@ using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
-#if NET8_0_OR_GREATER
-using System.Collections.Immutable;
-#endif
+using aweXpect.SourceGenerators;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -20,530 +17,181 @@ namespace aweXpect;
 
 public static partial class ThatEnumerable
 {
-	/// <summary>
-	///     Verifies that the collection starts with the provided <paramref name="expected" /> collection.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
-		StartsWith<TItem>(
-			this IThat<IEnumerable<TItem>?> subject,
+	private const string StartsWithSummary =
+		"Verifies that the collection starts with the provided <paramref name=\"expected\" /> collection.";
+
+	private const string DoesNotStartWithSummary =
+		"Verifies that the collection does not start with the provided <paramref name=\"unexpected\" /> collection.";
+
+	private const string SingleValueRemarks =
+		"Without this overload a <see cref=\"string\" /> argument would bind to the collection overload and be\n" +
+		"expected as a sequence of characters.";
+
+	private const string LowerPriorityRemarks =
+		"The priority is below the one of the collection overload, so that a collection argument binds as the\n" +
+		"expected sequence instead of as a single expected item.";
+
+	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
+	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+		Params = true, Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
+	internal static ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
+		StartsWithCore<TItem>(
+			IThat<IEnumerable<TItem>?> subject,
 			IEnumerable<TItem> expected,
-			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+			string? expectedExpression,
+			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty();
+		expected.ThrowIfNullOrEmpty(negated ? "unexpected" : "expected");
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new StartsWithConstraint<TItem, TItem>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					expected.ToArray(),
-					options)),
+			expectationBuilder.AddConstraint<IEnumerable<TItem>?>((it, grammars) =>
+			{
+				StartsWithConstraint<TItem, TItem> constraint = new(expectationBuilder, it, grammars,
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
+					expected.ToArray(), options);
+				return negated ? constraint.Invert() : constraint;
+			}),
 			subject,
 			options);
 	}
 
-	/// <summary>
-	///     Verifies that the collection starts with the provided <paramref name="expected" /> collection.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
-		StartsWith<TItem>(
-			this IThat<IEnumerable<TItem>?> subject,
-			params TItem[] expected)
-	{
-		expected.ThrowIfNullOrEmpty();
-		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new StartsWithConstraint<TItem, TItem>(expectationBuilder, it, grammars,
-					Formatter.Format(expected),
-					expected,
-					options)),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection starts with the provided <paramref name="expected" /> collection.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
-		StartsWith(
-			this IThat<IEnumerable<string?>?> subject,
+	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
+	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+		Params = true, ExpectedType = "string",
+		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
+	internal static StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
+		StartsWithForStringsCore(
+			IThat<IEnumerable<string?>?> subject,
 			IEnumerable<string?> expected,
-			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+			string? expectedExpression,
+			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty();
+		expected.ThrowIfNullOrEmpty(negated ? "unexpected" : "expected");
 		StringEqualityOptions options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new StartsWithConstraint<string?, string?>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					expected.ToArray(),
-					options)),
+			expectationBuilder.AddConstraint<IEnumerable<string?>?>((it, grammars) =>
+			{
+				StartsWithConstraint<string?, string?> constraint = new(expectationBuilder, it, grammars,
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
+					expected.ToArray(), options);
+				return negated ? constraint.Invert() : constraint;
+			}),
 			subject,
 			options);
 	}
 
-	/// <summary>
-	///     Verifies that the collection starts with the provided <paramref name="expected" /> collection.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
-		StartsWith(
-			this IThat<IEnumerable<string?>?> subject,
-			params string[] expected)
+	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+		Priority = -1, Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
+	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+		Params = true, Priority = -2, Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary,
+		Remarks = LowerPriorityRemarks)]
+	internal static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>
+		StartsWithForEnumerableCore<TItem>(
+			IThat<IEnumerable?> subject,
+			IEnumerable<TItem> expected,
+			bool negated)
 	{
-		expected.ThrowIfNullOrEmpty();
-		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new StartsWithConstraint<string, string>(expectationBuilder, it, grammars,
-					Formatter.Format(expected),
-					expected,
-					options)),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection starts with the provided <paramref name="expected" /> collection.
-	/// </summary>
-	[OverloadResolutionPriority(-1)]
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>
-		StartsWith<TItem>(
-			this IThat<IEnumerable?> subject,
-			IEnumerable<TItem> expected)
-	{
-		expected.ThrowIfNullOrEmpty();
+		expected.ThrowIfNullOrEmpty(negated ? "unexpected" : "expected");
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new StartsWithForEnumerableConstraint<IEnumerable, TItem>(expectationBuilder, it, grammars,
-					Formatter.Format(expected),
-					expected.ToArray(),
-					options)),
+			expectationBuilder.AddConstraint<IEnumerable?>((it, grammars) =>
+			{
+				StartsWithForEnumerableConstraint<IEnumerable, TItem> constraint = new(
+					expectationBuilder, it, grammars,
+					Formatter.Format(expected), expected.ToArray(), options);
+				return negated ? constraint.Invert() : constraint;
+			}),
 			subject,
 			options);
 	}
 
-	/// <summary>
-	///     Verifies that the collection starts with the provided <paramref name="expected" /> value.
-	/// </summary>
-	/// <remarks>
-	///     Without this overload a <see cref="string" /> argument would bind to the collection overload and be expected as a
-	///     sequence of characters.
-	/// </remarks>
-	[OverloadResolutionPriority(-1)]
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, string?>
-		StartsWith(
-			this IThat<IEnumerable?> subject,
-			string? expected)
+	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
+		Priority = -1, ExpectedType = "string?",
+		Summary = "Verifies that the collection starts with the provided <paramref name=\"expected\" /> value.",
+		NegatedSummary =
+			"Verifies that the collection does not start with the provided <paramref name=\"unexpected\" /> value.",
+		Remarks = SingleValueRemarks)]
+	internal static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, string?>
+		StartsWithSingleStringCore(
+			IThat<IEnumerable?> subject,
+			string? expected,
+			bool negated)
 	{
 		string?[] expectedItems = [expected,];
 		ObjectEqualityOptions<string?> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, string?>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new StartsWithForEnumerableConstraint<IEnumerable, string?>(expectationBuilder, it, grammars,
-					Formatter.Format(expectedItems),
-					expectedItems,
-					options)),
+			expectationBuilder.AddConstraint<IEnumerable?>((it, grammars) =>
+			{
+				StartsWithForEnumerableConstraint<IEnumerable, string?> constraint = new(
+					expectationBuilder, it, grammars,
+					Formatter.Format(expectedItems), expectedItems, options);
+				return negated ? constraint.Invert() : constraint;
+			}),
 			subject,
 			options);
 	}
 
-	/// <summary>
-	///     Verifies that the collection starts with the provided <paramref name="expected" /> collection.
-	/// </summary>
-	/// <remarks>
-	///     The priority is below the one of the collection overload, so that a collection argument binds as the expected
-	///     sequence instead of as a single expected item.
-	/// </remarks>
-	[OverloadResolutionPriority(-2)]
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>
-		StartsWith<TItem>(
-			this IThat<IEnumerable?> subject,
-			params TItem[] expected)
-	{
-		expected.ThrowIfNullOrEmpty();
-		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new StartsWithForEnumerableConstraint<IEnumerable, TItem>(expectationBuilder, it, grammars,
-					Formatter.Format(expected),
-					expected,
-					options)),
-			subject,
-			options);
-	}
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that the collection starts with the provided <paramref name="expected" /> collection.
-	/// </summary>
-	public static ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
-		StartsWith<TItem>(
-			this IThat<ImmutableArray<TItem>> subject,
+	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", PerSubject = true,
+		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
+	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", PerSubject = true, Params = true,
+		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
+	internal static ObjectEqualityResult<TCollection, IThat<TCollection>, TItem>
+		StartsWithForCollectionCore<TCollection, TItem>(
+			IThat<TCollection> subject,
 			IEnumerable<TItem> expected,
-			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
+			string? expectedExpression,
+			bool negated)
+		where TCollection : IEnumerable
 	{
-		expected.ThrowIfNullOrEmpty();
+		expected.ThrowIfNullOrEmpty(negated ? "unexpected" : "expected");
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new StartsWithForEnumerableConstraint<ImmutableArray<TItem>, TItem>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					expected.ToArray(),
-					options)),
+		return new ObjectEqualityResult<TCollection, IThat<TCollection>, TItem>(
+			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
+			{
+				StartsWithForEnumerableConstraint<TCollection, TItem> constraint = new(
+					expectationBuilder, it, grammars,
+					expectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(expected),
+					expected.ToArray(), options);
+				return negated ? constraint.Invert() : constraint;
+			}),
 			subject,
 			options);
 	}
-#endif
 
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that the collection starts with the provided <paramref name="expected" /> collection.
-	/// </summary>
-	public static ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
-		StartsWith<TItem>(
-			this IThat<ImmutableArray<TItem>> subject,
-			params TItem[] expected)
+	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", PerSubject = true,
+		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
+	[CreateCollectionExpectation("StartsWith", NegatedName = "DoesNotStartWith", PerSubject = true, Params = true,
+		ExpectedType = "string",
+		Summary = StartsWithSummary, NegatedSummary = DoesNotStartWithSummary)]
+	internal static StringEqualityResult<TCollection, IThat<TCollection>>
+		StartsWithForCollectionStringsCore<TCollection>(
+			IThat<TCollection> subject,
+			IEnumerable<string?> expected,
+			bool negated)
+		where TCollection : IEnumerable
 	{
-		expected.ThrowIfNullOrEmpty();
-		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new StartsWithForEnumerableConstraint<ImmutableArray<TItem>, TItem>(expectationBuilder, it, grammars,
-					Formatter.Format(expected),
-					expected,
-					options)),
-			subject,
-			options);
-	}
-#endif
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that the collection starts with the provided <paramref name="expected" /> collection.
-	/// </summary>
-	public static StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
-		StartsWith(
-			this IThat<ImmutableArray<string?>> subject,
-			IEnumerable<string?> expected)
-	{
+		expected.ThrowIfNullOrEmpty(negated ? "unexpected" : "expected");
 		StringEqualityOptions options = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new StartsWithForEnumerableConstraint<ImmutableArray<string?>, string?>(expectationBuilder, it,
-					grammars,
-					Formatter.Format(expected),
-					expected.ToArray(),
-					options)),
-			subject,
-			options);
-	}
-#endif
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that the collection starts with the provided <paramref name="expected" /> collection.
-	/// </summary>
-	public static StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
-		StartsWith(
-			this IThat<ImmutableArray<string?>> subject,
-			params string[] expected)
-	{
-		expected.ThrowIfNullOrEmpty();
-		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new StartsWithForEnumerableConstraint<ImmutableArray<string?>, string>(expectationBuilder, it,
-					grammars,
-					Formatter.Format(expected),
-					expected,
-					options)),
-			subject,
-			options);
-	}
-#endif
-
-	/// <summary>
-	///     Verifies that the collection does not start with the provided <paramref name="unexpected" /> collection.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
-		DoesNotStartWith<TItem>(
-			this IThat<IEnumerable<TItem>?> subject,
-			IEnumerable<TItem> unexpected,
-			[CallerArgumentExpression("unexpected")]
-			string doNotPopulateThisValue = "")
-	{
-		unexpected.ThrowIfNullOrEmpty();
-		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new StartsWithConstraint<TItem, TItem>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					unexpected.ToArray(),
-					options).Invert()),
+		return new StringEqualityResult<TCollection, IThat<TCollection>>(
+			expectationBuilder.AddConstraint<TCollection?>((it, grammars) =>
+			{
+				StartsWithForEnumerableConstraint<TCollection, string?> constraint = new(
+					expectationBuilder, it, grammars,
+					Formatter.Format(expected), expected.ToArray(), options);
+				return negated ? constraint.Invert() : constraint;
+			}),
 			subject,
 			options);
 	}
 
-	/// <summary>
-	///     Verifies that the collection does not start with the provided <paramref name="unexpected" /> collection.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>
-		DoesNotStartWith<TItem>(
-			this IThat<IEnumerable<TItem>?> subject,
-			params TItem[] unexpected)
-	{
-		unexpected.ThrowIfNullOrEmpty();
-		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new StartsWithConstraint<TItem, TItem>(expectationBuilder, it, grammars,
-					Formatter.Format(unexpected),
-					unexpected,
-					options).Invert()),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not start with the provided <paramref name="unexpected" /> collection.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
-		DoesNotStartWith(
-			this IThat<IEnumerable<string?>?> subject,
-			IEnumerable<string?> unexpected,
-			[CallerArgumentExpression("unexpected")]
-			string doNotPopulateThisValue = "")
-	{
-		unexpected.ThrowIfNullOrEmpty();
-		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new StartsWithConstraint<string?, string?>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					unexpected.ToArray(),
-					options).Invert()),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not start with the provided <paramref name="unexpected" /> collection.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
-		DoesNotStartWith(
-			this IThat<IEnumerable<string?>?> subject,
-			params string[] unexpected)
-	{
-		unexpected.ThrowIfNullOrEmpty();
-		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new StringEqualityResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new StartsWithConstraint<string, string>(expectationBuilder, it, grammars,
-					Formatter.Format(unexpected),
-					unexpected,
-					options).Invert()),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not start with the provided <paramref name="unexpected" /> collection.
-	/// </summary>
-	[OverloadResolutionPriority(-1)]
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>
-		DoesNotStartWith<TItem>(
-			this IThat<IEnumerable?> subject,
-			IEnumerable<TItem> unexpected)
-	{
-		unexpected.ThrowIfNullOrEmpty();
-		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new StartsWithForEnumerableConstraint<IEnumerable, TItem>(expectationBuilder, it, grammars,
-					Formatter.Format(unexpected),
-					unexpected.ToArray(),
-					options).Invert()),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not start with the provided <paramref name="unexpected" /> value.
-	/// </summary>
-	/// <remarks>
-	///     Without this overload a <see cref="string" /> argument would bind to the collection overload and be expected as a
-	///     sequence of characters.
-	/// </remarks>
-	[OverloadResolutionPriority(-1)]
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, string?>
-		DoesNotStartWith(
-			this IThat<IEnumerable?> subject,
-			string? unexpected)
-	{
-		string?[] unexpectedItems = [unexpected,];
-		ObjectEqualityOptions<string?> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, string?>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new StartsWithForEnumerableConstraint<IEnumerable, string?>(expectationBuilder, it, grammars,
-					Formatter.Format(unexpectedItems),
-					unexpectedItems,
-					options).Invert()),
-			subject,
-			options);
-	}
-
-	/// <summary>
-	///     Verifies that the collection does not start with the provided <paramref name="unexpected" /> collection.
-	/// </summary>
-	/// <remarks>
-	///     The priority is below the one of the collection overload, so that a collection argument binds as the unexpected
-	///     sequence instead of as a single unexpected item.
-	/// </remarks>
-	[OverloadResolutionPriority(-2)]
-	[GuaranteesNotNull]
-	public static ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>
-		DoesNotStartWith<TItem>(
-			this IThat<IEnumerable?> subject,
-			params TItem[] unexpected)
-	{
-		unexpected.ThrowIfNullOrEmpty();
-		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new StartsWithForEnumerableConstraint<IEnumerable, TItem>(expectationBuilder, it, grammars,
-					Formatter.Format(unexpected),
-					unexpected,
-					options).Invert()),
-			subject,
-			options);
-	}
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that the collection does not start with the provided <paramref name="unexpected" /> collection.
-	/// </summary>
-	public static ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
-		DoesNotStartWith<TItem>(
-			this IThat<ImmutableArray<TItem>> subject,
-			IEnumerable<TItem> unexpected,
-			[CallerArgumentExpression("unexpected")]
-			string doNotPopulateThisValue = "")
-	{
-		unexpected.ThrowIfNullOrEmpty();
-		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new StartsWithForEnumerableConstraint<ImmutableArray<TItem>, TItem>(expectationBuilder, it, grammars,
-					doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					unexpected.ToArray(),
-					options).Invert()),
-			subject,
-			options);
-	}
-#endif
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that the collection does not start with the provided <paramref name="unexpected" /> collection.
-	/// </summary>
-	public static ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>
-		DoesNotStartWith<TItem>(
-			this IThat<ImmutableArray<TItem>> subject,
-			params TItem[] unexpected)
-	{
-		unexpected.ThrowIfNullOrEmpty();
-		ObjectEqualityOptions<TItem> options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new ObjectEqualityResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new StartsWithForEnumerableConstraint<ImmutableArray<TItem>, TItem>(expectationBuilder, it, grammars,
-					Formatter.Format(unexpected),
-					unexpected,
-					options).Invert()),
-			subject,
-			options);
-	}
-#endif
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that the collection does not start with the provided <paramref name="unexpected" /> collection.
-	/// </summary>
-	public static StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
-		DoesNotStartWith(
-			this IThat<ImmutableArray<string?>> subject,
-			IEnumerable<string?> unexpected)
-	{
-		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new StartsWithForEnumerableConstraint<ImmutableArray<string?>, string?>(expectationBuilder, it,
-					grammars,
-					Formatter.Format(unexpected),
-					unexpected.ToArray(),
-					options).Invert()),
-			subject,
-			options);
-	}
-#endif
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that the collection does not start with the provided <paramref name="unexpected" /> collection.
-	/// </summary>
-	public static StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>
-		DoesNotStartWith(
-			this IThat<ImmutableArray<string?>> subject,
-			params string[] unexpected)
-	{
-		unexpected.ThrowIfNullOrEmpty();
-		StringEqualityOptions options = new();
-		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new StringEqualityResult<ImmutableArray<string?>, IThat<ImmutableArray<string?>>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new StartsWithForEnumerableConstraint<ImmutableArray<string?>, string>(expectationBuilder, it,
-					grammars,
-					Formatter.Format(unexpected),
-					unexpected,
-					options).Invert()),
-			subject,
-			options);
-	}
-#endif
 
 	private sealed class StartsWithConstraint<TItem, TMatch>
 		: ConstraintResult.WithNotNullValue<IEnumerable<TItem>?>,
