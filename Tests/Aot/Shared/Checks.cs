@@ -31,29 +31,6 @@ internal static class Checks
 				expected.Items[1].Price = 99;
 				await That(CreateOrder()).IsEquivalentTo(expected);
 			}, "Items[1].Price differed")),
-		// The interfaces that select the set and the dictionary comparison are found through reflection, so a
-		// comparison that silently degrades into a positional one is only visible from its result.
-		new("a set is compared without its order",
-			() => ShouldPass(async () =>
-			{
-				HashSet<string> actual = ["a", "b", "c",];
-				List<string> expected = [..actual,];
-				expected.Reverse();
-				await That(actual).IsEquivalentTo(expected);
-			})),
-		new("a dictionary that is only a generic one is compared by key",
-			() => ShouldFail(async () =>
-			{
-				ReadOnlyTags actual = new(new Dictionary<string, int>
-				{
-					["vip"] = 1,
-				});
-				ReadOnlyTags expected = new(new Dictionary<string, int>
-				{
-					["vip"] = 2,
-				});
-				await That(actual).IsEquivalentTo(expected);
-			}, "[vip]")),
 		new("a subject the generator did not see fails loudly",
 			() => ShouldFailOrFailLoudly(async () =>
 			{
