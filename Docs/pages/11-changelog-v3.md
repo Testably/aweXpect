@@ -156,6 +156,16 @@ collection expectation such as `IsEqualTo` or `Contains`, and `IsEquivalentTo` f
 match two values that differ only in their kind. `DateTimeKind.Unspecified` is compatible with both kinds. See
 [DateTime / DateTimeOffset](/docs/expectations/common-types/datetime-offset#kind).
 
+## Dictionary subjects
+
+`ContainsKey`, `ContainsKeys`, `ContainsValue`, `ContainsValues`, `Keys`, `Values` and their negated forms were
+declared once for `IDictionary<TKey, TValue>` and once for `IReadOnlyDictionary<TKey, TValue>` in two different
+classes, so a subject that implements both interfaces, such as `SortedDictionary<TKey, TValue>` or
+`ImmutableDictionary<TKey, TValue>`, did not compile. They are now declared together on `ThatDictionary` and such a
+subject resolves to the `IDictionary<TKey, TValue>` overload. No call needs an edit, but the class
+`aweXpect.ThatReadOnlyDictionary` is gone, so name `aweXpect.ThatDictionary` where you called one of these
+expectations as a static method.
+
 ## Equivalency
 
 `IsEquivalentTo` fails when it finds no member to compare, unless all members were excluded explicitly. Only public

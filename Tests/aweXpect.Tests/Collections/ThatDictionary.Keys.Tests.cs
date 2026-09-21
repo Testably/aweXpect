@@ -131,5 +131,20 @@ public sealed partial class ThatDictionary
 					             """);
 			}
 		}
+
+		public sealed class OverloadTests
+		{
+			[Fact]
+			public async Task ForASortedDictionary_ShouldNotBeAmbiguous()
+			{
+				SortedDictionary<string, int> subject = new() { { "a", 1 }, };
+
+				async Task Act()
+					=> await That(subject).Keys.Contains("a");
+
+				await That(Act).DoesNotThrow()
+					.Because("a type that implements both dictionary interfaces must not become ambiguous");
+			}
+		}
 	}
 }
