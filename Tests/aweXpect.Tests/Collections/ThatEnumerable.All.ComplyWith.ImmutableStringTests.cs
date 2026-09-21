@@ -45,7 +45,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             starts with "a" for all items,
-						             but only 2 of 3 were
+						             but only 2 of 3 did
 
 						             Not matching items:
 						             [
@@ -76,7 +76,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             does not start with "a" for all items,
-						             but none of 2 were
+						             but none of 2 did
 
 						             Not matching items:
 						             [

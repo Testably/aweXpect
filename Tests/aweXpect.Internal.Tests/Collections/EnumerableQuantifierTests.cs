@@ -22,7 +22,7 @@ public sealed class EnumerableQuantifierTests
 
 			Outcome result = sut.GetOutcome(matchingCount, notMatchingCount, totalCount);
 
-			sut.AppendResult(sb, ExpectationGrammars.None, matchingCount, notMatchingCount, totalCount, "were");
+			sut.AppendResult(sb, ExpectationGrammars.None, "it", matchingCount, notMatchingCount, totalCount, "were");
 			await That(result).IsEqualTo(Outcome.Failure);
 			await That(sb.ToString()).IsEqualTo($"only {matchingCount} of {totalCount} were");
 		}
@@ -82,9 +82,23 @@ public sealed class EnumerableQuantifierTests
 
 			Outcome result = sut.GetOutcome(matchingCount, notMatchingCount, totalCount);
 
-			sut.AppendResult(sb, ExpectationGrammars.None, matchingCount, notMatchingCount, totalCount, "were");
+			sut.AppendResult(sb, ExpectationGrammars.None, "it", matchingCount, notMatchingCount, totalCount, "were");
 			await That(result).IsEqualTo(Outcome.Failure);
 			await That(sb.ToString()).IsEqualTo("only 2 of 8 were");
+		}
+
+		[Theory]
+		[InlineData(1, " for no items")]
+		[InlineData(2, " for fewer than 2 items")]
+		public async Task WhenNegated_ShouldAppendTheComplement(int minimum, string expected)
+		{
+			EnumerableQuantifier sut = EnumerableQuantifier.AtLeast(minimum);
+			StringBuilder sb = new();
+
+			sut.AppendNegated(sb);
+
+			await That(sb.ToString()).IsEqualTo(expected)
+				.Because("the negation of a quantifier is its complement, not a prefixed 'not'");
 		}
 
 		[Fact]
@@ -129,9 +143,24 @@ public sealed class EnumerableQuantifierTests
 
 			Outcome result = sut.GetOutcome(matchingCount, notMatchingCount, totalCount);
 
-			sut.AppendResult(sb, ExpectationGrammars.None, matchingCount, notMatchingCount, totalCount, "were");
+			sut.AppendResult(sb, ExpectationGrammars.None, "it", matchingCount, notMatchingCount, totalCount, "were");
 			await That(result).IsEqualTo(Outcome.Failure);
 			await That(sb.ToString()).IsEqualTo("5 of 8 were");
+		}
+
+		[Theory]
+		[InlineData(0, " for at least one item")]
+		[InlineData(1, " for more than one item")]
+		[InlineData(4, " for more than 4 items")]
+		public async Task WhenNegated_ShouldAppendTheComplement(int maximum, string expected)
+		{
+			EnumerableQuantifier sut = EnumerableQuantifier.AtMost(maximum);
+			StringBuilder sb = new();
+
+			sut.AppendNegated(sb);
+
+			await That(sb.ToString()).IsEqualTo(expected)
+				.Because("the negation of a quantifier is its complement, not a prefixed 'not'");
 		}
 
 		[Fact]
@@ -177,7 +206,7 @@ public sealed class EnumerableQuantifierTests
 
 			Outcome result = sut.GetOutcome(matchingCount, notMatchingCount, totalCount);
 
-			sut.AppendResult(sb, ExpectationGrammars.None, matchingCount, notMatchingCount, totalCount, "were");
+			sut.AppendResult(sb, ExpectationGrammars.None, "it", matchingCount, notMatchingCount, totalCount, "were");
 			await That(result).IsEqualTo(Outcome.Failure);
 			await That(sb.ToString()).IsEqualTo("only 2 of 7 were");
 		}
@@ -193,7 +222,7 @@ public sealed class EnumerableQuantifierTests
 
 			Outcome result = sut.GetOutcome(matchingCount, notMatchingCount, totalCount);
 
-			sut.AppendResult(sb, ExpectationGrammars.None, matchingCount, notMatchingCount, totalCount, "were");
+			sut.AppendResult(sb, ExpectationGrammars.None, "it", matchingCount, notMatchingCount, totalCount, "were");
 			await That(result).IsEqualTo(Outcome.Failure);
 			await That(sb.ToString()).IsEqualTo("6 of 8 were");
 		}
@@ -240,7 +269,7 @@ public sealed class EnumerableQuantifierTests
 
 			Outcome result = sut.GetOutcome(matchingCount, notMatchingCount, totalCount);
 
-			sut.AppendResult(sb, ExpectationGrammars.None, matchingCount, notMatchingCount, totalCount, "were");
+			sut.AppendResult(sb, ExpectationGrammars.None, "it", matchingCount, notMatchingCount, totalCount, "were");
 			await That(result).IsEqualTo(Outcome.Failure);
 			await That(sb.ToString()).IsEqualTo($"only {foundItems} of 8 were");
 		}
@@ -258,7 +287,7 @@ public sealed class EnumerableQuantifierTests
 
 			Outcome result = sut.GetOutcome(matchingCount, notMatchingCount, totalCount);
 
-			sut.AppendResult(sb, ExpectationGrammars.None, matchingCount, notMatchingCount, totalCount, "were");
+			sut.AppendResult(sb, ExpectationGrammars.None, "it", matchingCount, notMatchingCount, totalCount, "were");
 			await That(result).IsEqualTo(Outcome.Failure);
 			await That(sb.ToString()).IsEqualTo($"{foundItems} of 8 were");
 		}
@@ -274,6 +303,41 @@ public sealed class EnumerableQuantifierTests
 			Outcome result = sut.GetOutcome(matchingCount, notMatchingCount, totalCount);
 
 			await That(result).IsEqualTo(Outcome.Undecided);
+		}
+	}
+
+	public sealed class LessThanTests
+	{
+		[Theory]
+		[InlineData(1, " for at least one item")]
+		[InlineData(4, " for at least 4 items")]
+		public async Task WhenNegated_ShouldAppendTheComplement(int maximum, string expected)
+		{
+			EnumerableQuantifier sut = EnumerableQuantifier.LessThan(maximum);
+			StringBuilder sb = new();
+
+			sut.AppendNegated(sb);
+
+			await That(sb.ToString()).IsEqualTo(expected)
+				.Because("the negation of a quantifier is its complement, not a prefixed 'not'");
+		}
+	}
+
+	public sealed class MoreThanTests
+	{
+		[Theory]
+		[InlineData(0, " for no items")]
+		[InlineData(1, " for at most one item")]
+		[InlineData(4, " for at most 4 items")]
+		public async Task WhenNegated_ShouldAppendTheComplement(int minimum, string expected)
+		{
+			EnumerableQuantifier sut = EnumerableQuantifier.MoreThan(minimum);
+			StringBuilder sb = new();
+
+			sut.AppendNegated(sb);
+
+			await That(sb.ToString()).IsEqualTo(expected)
+				.Because("the negation of a quantifier is its complement, not a prefixed 'not'");
 		}
 	}
 
@@ -302,7 +366,7 @@ public sealed class EnumerableQuantifierTests
 
 			Outcome result = sut.GetOutcome(matchingCount, notMatchingCount, totalCount);
 
-			sut.AppendResult(sb, ExpectationGrammars.None, matchingCount, notMatchingCount, totalCount, "were");
+			sut.AppendResult(sb, ExpectationGrammars.None, "it", matchingCount, notMatchingCount, totalCount, "were");
 			await That(result).IsEqualTo(Outcome.Failure);
 			await That(sb.ToString()).IsEqualTo("1 of 4 were");
 		}

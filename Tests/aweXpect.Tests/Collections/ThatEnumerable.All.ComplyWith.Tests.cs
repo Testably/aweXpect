@@ -206,7 +206,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has item 2 for all items,
-						             but only 1 of at least 2 were
+						             but only 1 of at least 2 did
 
 						             Not matching items:
 						             [
@@ -256,7 +256,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             whose StringValue has Length which is equal to 5 for all items,
-						             but none of 1 were
+						             but none of 1 did
 
 						             Not matching items:
 						             [
@@ -289,7 +289,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             whose Value is equal to 5 for all items,
-						             but none of 2 were
+						             but none of 2 did
 
 						             Not matching items:
 						             [
@@ -331,7 +331,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has an inner InvalidOperationException whose Message is equal to "x" for all items,
-						             but none of 1 were
+						             but none of 1 did
 
 						             Not matching items:
 						             [
@@ -359,7 +359,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             whose Task.FromResult(o.Value) is equal to 5 for all items,
-						             but none of 1 were
+						             but none of 1 did
 
 						             Not matching items:
 						             [
@@ -433,7 +433,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is greater than 0 for not all items,
+						             is greater than 0 not for all items,
 						             but all 5 were
 
 						             Collection:

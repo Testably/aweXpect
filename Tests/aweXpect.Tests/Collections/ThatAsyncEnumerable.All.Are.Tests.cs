@@ -282,7 +282,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is of type ThatAsyncEnumerable.All.Are.MyClass for not all items,
+						             is of type ThatAsyncEnumerable.All.Are.MyClass not for all items,
 						             but all 2 were
 
 						             Collection:

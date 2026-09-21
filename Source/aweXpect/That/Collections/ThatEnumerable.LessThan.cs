@@ -13,7 +13,7 @@ namespace aweXpect;
 public static partial class ThatEnumerable
 {
 	/// <summary>
-	///     Verifies that in the collection less than <paramref name="maximum" /> items…
+	///     Verifies that in the collection fewer than <paramref name="maximum" /> items…
 	/// </summary>
 	[GuaranteesNotNull]
 	public static Elements<TItem> LessThan<TItem>(
@@ -22,7 +22,7 @@ public static partial class ThatEnumerable
 		=> new(subject, EnumerableQuantifier.LessThan(maximum, subject.Get().ExpectationBuilder.ExpectationGrammars));
 
 	/// <summary>
-	///     Verifies that in the collection less than <paramref name="maximum" /> items…
+	///     Verifies that in the collection fewer than <paramref name="maximum" /> items…
 	/// </summary>
 	[GuaranteesNotNull]
 	public static Elements LessThan(
@@ -31,7 +31,7 @@ public static partial class ThatEnumerable
 		=> new(subject, EnumerableQuantifier.LessThan(maximum, subject.Get().ExpectationBuilder.ExpectationGrammars));
 
 	/// <summary>
-	///     Verifies that in the collection less than <paramref name="maximum" /> items…
+	///     Verifies that in the collection fewer than <paramref name="maximum" /> items…
 	/// </summary>
 	[OverloadResolutionPriority(-1)]
 	[GuaranteesNotNull]
@@ -42,7 +42,7 @@ public static partial class ThatEnumerable
 
 #if NET8_0_OR_GREATER
 	/// <summary>
-	///     Verifies that in the collection less than <paramref name="maximum" /> items…
+	///     Verifies that in the collection fewer than <paramref name="maximum" /> items…
 	/// </summary>
 	public static ElementsForStructEnumerable<ImmutableArray<TItem>, TItem> LessThan<TItem>(
 		this IThat<ImmutableArray<TItem>> subject,
@@ -52,7 +52,7 @@ public static partial class ThatEnumerable
 
 #if NET8_0_OR_GREATER
 	/// <summary>
-	///     Verifies that in the collection less than <paramref name="maximum" /> items…
+	///     Verifies that in the collection fewer than <paramref name="maximum" /> items…
 	/// </summary>
 	public static ElementsForStructEnumerable<ImmutableArray<string?>> LessThan(
 		this IThat<ImmutableArray<string?>> subject,

@@ -758,7 +758,7 @@ public sealed class WhichNodeTests
 			.WithMessage("""
 			             Expected that subject
 			             has a single item whose Length is equal to 4 for all items,
-			             but none of 1 were
+			             but none of 1 did
 
 			             Not matching items:
 			             [

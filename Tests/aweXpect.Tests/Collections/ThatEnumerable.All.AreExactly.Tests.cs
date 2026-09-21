@@ -334,7 +334,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is exactly of type ThatEnumerable.All.AreExactly.MyClass for not all items,
+						             is exactly of type ThatEnumerable.All.AreExactly.MyClass not for all items,
 						             but all 2 were
 
 						             Collection:

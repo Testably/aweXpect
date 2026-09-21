@@ -53,11 +53,12 @@ public abstract partial class EnumerableQuantifier
 		/// <inheritdoc />
 		public override void AppendResult(StringBuilder stringBuilder,
 			ExpectationGrammars grammars,
+			string it,
 			int matchingCount,
 			int notMatchingCount,
 			int? totalCount,
 			string? verb = null)
-			=> AppendCounts(stringBuilder, matchingCount, notMatchingCount, totalCount, verb,
+			=> AppendCounts(stringBuilder, it, matchingCount, notMatchingCount, totalCount, verb,
 				matchingCount < expected && !grammars.IsNegated());
 	}
 }

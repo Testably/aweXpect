@@ -1,4 +1,5 @@
 #nullable enable
+aweXpect.Core.ManualExpectationBuilder<TValue>.GetResultVerb() -> string!
 aweXpect.Formatting.FormattingOptions.TotalItemCount.get -> int?
 aweXpect.Formatting.FormattingOptions.TotalItemCount.init -> void
 aweXpect.Options.CollectionMatchOptions.GetNegatedResultVerb(string! it, aweXpect.Core.ExpectationGrammars grammars) -> string!

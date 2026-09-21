@@ -435,7 +435,7 @@ await Expect.That(values).AtMost(1).Satisfy(i => i < 2);
 
 ### Less than
 
-You can verify that less than `maximum` items in the collection satisfy an expectation:
+You can verify that fewer than `maximum` items in the collection satisfy an expectation:
 
 ```csharp
 IEnumerable<int> values = Enumerable.Range(1, 20);

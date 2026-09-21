@@ -59,7 +59,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has more than 3 items,
-						             but found only 3
+						             but it had only 3 items
 
 						             Collection:
 						             [1, 2, 3]
@@ -78,7 +78,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has more than 4 items,
-						             but found only 3
+						             but it had only 3 items
 
 						             Collection:
 						             [1, 2, 3]
@@ -108,7 +108,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has more than 3 items,
-						             but found only 3
+						             but it had only 3 items
 
 						             Collection:
 						             [1, 2, 3]
@@ -127,7 +127,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has more than 4 items,
-						             but found only 3
+						             but it had only 3 items
 
 						             Collection:
 						             [1, 2, 3]
@@ -201,7 +201,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             does not have more than 2 items,
-						             but found 3
+						             but it had 3 items
 
 						             Collection:
 						             [1, 2, 3]
@@ -245,7 +245,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             does not have more than 2 items,
-						             but found at least 3
+						             but it had at least 3 items
 
 						             Collection:
 						             [

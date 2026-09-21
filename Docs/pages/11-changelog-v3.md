@@ -138,8 +138,11 @@ expectations also keep the expectation they continue from, so `HasSingle().Which
 introduced the subject, as in `has item that …` or `contains key 2 whose value …`, the member no longer starts a
 second relative clause but reads `has Value which is equal to 5`, and it agrees with a plural connector
 (`whose values have Length which …`). `IgnoringCase()` is now also named in the expectation when the value is matched
-as a regex or wildcard pattern, where it took effect but stayed invisible. Tests that assert on the exact text of a
-failure message may need an update.
+as a regex or wildcard pattern, where it took effect but stayed invisible. A quantified collection expectation refers
+back to its own verb, so `All().ComplyWith(it => it.StartsWith("a"))` reports `but only 1 of 3 did` instead of
+`but only 1 of 3 were`, a negated quantifier names its complement (`for no items` instead of
+`for not at least one item`), and `HasCount` names its subject (`but it had only 3 items` instead of
+`but found only 3`). Tests that assert on the exact text of a failure message may need an update.
 
 ## Timeouts on negative event expectations
 
@@ -227,6 +230,9 @@ the [null rule](/docs/expectations/write-extension#constraints) that an extensio
 
 `DidNotSignal()` returns a `DidNotSignalResult`. Its previous name `SignalTimeoutResult`, which only ever existed in
 the v3 pre-releases, read like a timeout failure although it is the result of an absent signal.
+
+`EnumerableQuantifier.AppendResult` takes the `it` of the expectation, so that a result about the items themselves can
+name the subject that had them. A custom quantifier has to add the parameter.
 
 ## New expectations
 

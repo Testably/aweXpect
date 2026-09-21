@@ -81,7 +81,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has at most 2 items,
-						             but found 3
+						             but it had 3 items
 
 						             Collection:
 						             [1, 2, 3]
@@ -122,7 +122,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has at most 2 items,
-						             but found at least 3
+						             but it had at least 3 items
 
 						             Collection:
 						             [1, 2, 3]

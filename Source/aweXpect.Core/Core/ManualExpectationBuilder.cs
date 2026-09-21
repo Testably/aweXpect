@@ -26,6 +26,34 @@ public class ManualExpectationBuilder<TValue>(
 		=> GetRootNode().AppendExpectation(stringBuilder, indentation);
 
 	/// <summary>
+	///     Returns the pro-verb which stands in for the expectations when a result refers back to them, e.g. <c>did</c> in
+	///     <c>starts with "a" for all items, but only 1 of 3 did</c>.
+	/// </summary>
+	/// <remarks>
+	///     English requires do-support for every verb but <c>be</c>, so the pro-verb is <c>were</c> exactly when the
+	///     expectation text is headed by a form of <c>be</c> (<c>is equal to 1</c>) and <c>did</c> otherwise. Deriving it
+	///     from the whole expectation text rather than from the innermost constraint keeps a mapped expectation
+	///     (<c>has length which is equal to 3</c>) tied to the verb the reader actually sees. An expectation without a
+	///     text of its own falls back to <c>were</c>.
+	/// </remarks>
+	public string GetResultVerb()
+	{
+		StringBuilder stringBuilder = new();
+		AppendExpectation(stringBuilder);
+		int headLength = 0;
+		while (headLength < stringBuilder.Length && stringBuilder[headLength] != ' ')
+		{
+			headLength++;
+		}
+
+		return stringBuilder.ToString(0, headLength) switch
+		{
+			"" or "is" or "are" or "was" or "were" => "were",
+			_ => "did",
+		};
+	}
+
+	/// <summary>
 	///     Evaluate if the expectations are met by the <paramref name="value" />.
 	/// </summary>
 	public async Task<ConstraintResult> IsMetBy(

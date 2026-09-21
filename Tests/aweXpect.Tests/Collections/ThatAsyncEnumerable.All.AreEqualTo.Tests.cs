@@ -150,7 +150,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is equal to 42 for not all items,
+						             is equal to 42 not for all items,
 						             but it was <null>
 						             """);
 				}
@@ -357,7 +357,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             is equal to 1 for not all items,
+						             is equal to 1 not for all items,
 						             but all 3 were
 
 						             Collection:

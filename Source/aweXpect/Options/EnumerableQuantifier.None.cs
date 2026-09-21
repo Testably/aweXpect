@@ -48,15 +48,16 @@ public abstract partial class EnumerableQuantifier
 		///     <c>not no items</c> is not grammatical, so this renders the exact complement.
 		/// </remarks>
 		internal override void AppendNegated(StringBuilder stringBuilder)
-			=> stringBuilder.Append("at least one item");
+			=> stringBuilder.Append(" for at least one item");
 
 		/// <inheritdoc />
 		public override void AppendResult(StringBuilder stringBuilder,
 			ExpectationGrammars grammars,
+			string it,
 			int matchingCount,
 			int notMatchingCount,
 			int? totalCount,
 			string? verb = null)
-			=> AppendCounts(stringBuilder, matchingCount, notMatchingCount, totalCount, verb, false);
+			=> AppendCounts(stringBuilder, it, matchingCount, notMatchingCount, totalCount, verb, false);
 	}
 }

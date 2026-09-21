@@ -53,12 +53,22 @@ public abstract partial class EnumerableQuantifier
 			=> QuantifierContexts.MatchingItems;
 
 		/// <inheritdoc />
+		internal override void AppendNegated(StringBuilder stringBuilder)
+			=> stringBuilder.Append(maximum switch
+			{
+				0 => " for at least one item",
+				1 => " for more than one item",
+				_ => $" for more than {maximum} items",
+			});
+
+		/// <inheritdoc />
 		public override void AppendResult(StringBuilder stringBuilder,
 			ExpectationGrammars grammars,
+			string it,
 			int matchingCount,
 			int notMatchingCount,
 			int? totalCount,
 			string? verb = null)
-			=> AppendCounts(stringBuilder, matchingCount, notMatchingCount, totalCount, verb, false);
+			=> AppendCounts(stringBuilder, it, matchingCount, notMatchingCount, totalCount, verb, false);
 	}
 }

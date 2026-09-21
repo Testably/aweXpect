@@ -154,7 +154,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [1, 2] whose values do not start with "f" for all items,
-					             but only 1 of 2 were
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
@@ -189,7 +189,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [1, 2] whose values start with "f" for no items,
-					             but 1 of 2 were
+					             but 1 of 2 did
 
 					             Matching items:
 					             [
@@ -258,7 +258,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [1, 2] whose values have Length which is equal to 4 for all items,
-					             but none of 2 were
+					             but none of 2 did
 
 					             Not matching items:
 					             [
@@ -366,7 +366,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [1, 2] whose values start with "f" for all items,
-					             but only 1 of 2 were
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
@@ -496,7 +496,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [1, 2] whose values have exactly 3 items,
-					             but found only 2
+					             but values [1, 2] had only 2 items
 
 					             Collection:
 					             [

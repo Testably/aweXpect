@@ -219,9 +219,11 @@ public static partial class ThatDictionary
 				(true, 1) => $"contained additional key {Formatter.Format(additionalKeys[0])}",
 				(true, _) =>
 					$"contained {additionalKeys.Count} additional keys: {Formatter.Format(additionalKeys, FormattingOptions.SingleLine)}",
-				_ => $"contained {count} keys instead of {matchedCount}",
+				_ => $"contained {count} {KeyNoun(count)} and matched {matchedCount} expected {KeyNoun(matchedCount)}",
 			};
 		}
+
+		private static string KeyNoun(int count) => count == 1 ? "key" : "keys";
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{

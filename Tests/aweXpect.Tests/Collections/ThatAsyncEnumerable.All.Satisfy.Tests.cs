@@ -256,7 +256,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             satisfies x => x == constantValue for not all items,
+						             satisfies x => x == constantValue not for all items,
 						             but all 20 did
 
 						             Collection:
@@ -302,7 +302,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             satisfies _ => true for not all items,
+						             satisfies _ => true not for all items,
 						             but it was <null>
 						             """);
 				}
@@ -334,8 +334,8 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             satisfies x => x == "" for not all items,
-						             but all 0 did
+						             satisfies x => x == "" not for all items,
+						             but it was empty
 
 						             Collection:
 						             []
@@ -354,7 +354,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             satisfies x => x?.Length == 3 for not all items,
+						             satisfies x => x?.Length == 3 not for all items,
 						             but all 3 did
 
 						             Collection:
@@ -392,7 +392,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             satisfies x => x == "" for not all items,
+						             satisfies x => x == "" not for all items,
 						             but it was <null>
 						             """);
 				}

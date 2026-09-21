@@ -25,7 +25,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<InconclusiveException>()
 					.WithMessage("""
 					             Expected that subject
-					             satisfies y => (int?)y < 6 for less than 8 items,
+					             satisfies y => (int?)y < 6 for fewer than 8 items,
 					             but it could not be verified, because it was already canceled
 
 					             Collection:
@@ -68,7 +68,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equal to 1 for less than 2 items,
+					             is equal to 1 for fewer than 2 items,
 					             but at least 2 of at least 2 were
 
 					             Matching items:
@@ -119,7 +119,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equal to 1 for less than 3 items,
+					             is equal to 1 for fewer than 3 items,
 					             but 4 of 7 were
 
 					             Matching items:
@@ -152,7 +152,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equal to 1 for less than 4 items,
+					             is equal to 1 for fewer than 4 items,
 					             but at least 4 of at least 4 were
 
 					             Matching items:
@@ -174,7 +174,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equal to 0 for less than one item,
+					             is equal to 0 for fewer than one item,
 					             but it was <null>
 					             """);
 			}
