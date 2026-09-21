@@ -201,6 +201,73 @@ public sealed partial class StringEqualityOptionsTests
 			await That(result).IsEqualTo(2);
 		}
 
+		[Theory]
+		[InlineData("AsBlock", ExpectationGrammars.Active, "matches \"foo\" as block")]
+		[InlineData("AsBlock", ExpectationGrammars.Active | ExpectationGrammars.Plural, "match \"foo\" as block")]
+		[InlineData("AsBlock", ExpectationGrammars.Active | ExpectationGrammars.Negated,
+			"does not match \"foo\" as block")]
+		[InlineData("AsBlock", ExpectationGrammars.Active | ExpectationGrammars.Plural | ExpectationGrammars.Negated,
+			"do not match \"foo\" as block")]
+		[InlineData("AsPrefix", ExpectationGrammars.Active, "starts with \"foo\"")]
+		[InlineData("AsPrefix", ExpectationGrammars.Active | ExpectationGrammars.Plural, "start with \"foo\"")]
+		[InlineData("AsPrefix", ExpectationGrammars.Active | ExpectationGrammars.Negated, "does not start with \"foo\"")]
+		[InlineData("AsPrefix", ExpectationGrammars.Active | ExpectationGrammars.Plural | ExpectationGrammars.Negated,
+			"do not start with \"foo\"")]
+		[InlineData("AsRegex", ExpectationGrammars.Active, "matches regex \"foo\"")]
+		[InlineData("AsRegex", ExpectationGrammars.Active | ExpectationGrammars.Plural, "match regex \"foo\"")]
+		[InlineData("AsRegex", ExpectationGrammars.Active | ExpectationGrammars.Negated,
+			"does not match regex \"foo\"")]
+		[InlineData("AsRegex", ExpectationGrammars.Active | ExpectationGrammars.Plural | ExpectationGrammars.Negated,
+			"do not match regex \"foo\"")]
+		[InlineData("AsSuffix", ExpectationGrammars.Active, "ends with \"foo\"")]
+		[InlineData("AsSuffix", ExpectationGrammars.Active | ExpectationGrammars.Plural, "end with \"foo\"")]
+		[InlineData("AsSuffix", ExpectationGrammars.Active | ExpectationGrammars.Negated, "does not end with \"foo\"")]
+		[InlineData("AsSuffix", ExpectationGrammars.Active | ExpectationGrammars.Plural | ExpectationGrammars.Negated,
+			"do not end with \"foo\"")]
+		[InlineData("AsWildcard", ExpectationGrammars.Active, "matches \"foo\"")]
+		[InlineData("AsWildcard", ExpectationGrammars.Active | ExpectationGrammars.Plural, "match \"foo\"")]
+		[InlineData("AsWildcard", ExpectationGrammars.Active | ExpectationGrammars.Negated, "does not match \"foo\"")]
+		[InlineData("AsWildcard", ExpectationGrammars.Active | ExpectationGrammars.Plural | ExpectationGrammars.Negated,
+			"do not match \"foo\"")]
+		[InlineData("Containing", ExpectationGrammars.Active, "contains \"foo\"")]
+		[InlineData("Containing", ExpectationGrammars.Active | ExpectationGrammars.Plural, "contain \"foo\"")]
+		[InlineData("Containing", ExpectationGrammars.Active | ExpectationGrammars.Negated, "does not contain \"foo\"")]
+		[InlineData("Containing", ExpectationGrammars.Active | ExpectationGrammars.Plural | ExpectationGrammars.Negated,
+			"do not contain \"foo\"")]
+		[InlineData("Exact", ExpectationGrammars.Active, "is equal to \"foo\"")]
+		[InlineData("Exact", ExpectationGrammars.Active | ExpectationGrammars.Plural, "are equal to \"foo\"")]
+		[InlineData("Exact", ExpectationGrammars.Active | ExpectationGrammars.Negated, "is not equal to \"foo\"")]
+		[InlineData("Exact", ExpectationGrammars.Active | ExpectationGrammars.Plural | ExpectationGrammars.Negated,
+			"are not equal to \"foo\"")]
+		public async Task GetExpectation_ShouldAgreeWithTheNumberOfTheSubject(
+			string matchType, ExpectationGrammars grammars, string expected)
+		{
+			StringEqualityOptions sut = WithMatchType(matchType);
+
+			string result = sut.GetExpectation("foo", grammars);
+
+			await That(result).IsEqualTo(expected);
+		}
+
+		[Theory]
+		[InlineData("AsBlock", "matching \"foo\" as block")]
+		[InlineData("AsPrefix", "starting with \"foo\"")]
+		[InlineData("AsRegex", "matching regex \"foo\"")]
+		[InlineData("AsSuffix", "ending with \"foo\"")]
+		[InlineData("AsWildcard", "matching \"foo\"")]
+		[InlineData("Containing", "containing \"foo\"")]
+		[InlineData("Exact", "equal to \"foo\"")]
+		public async Task GetExpectation_WhenPassive_ShouldIgnoreTheNumberOfTheSubject(
+			string matchType, string expected)
+		{
+			StringEqualityOptions sut = WithMatchType(matchType);
+
+			string result = sut.GetExpectation("foo", ExpectationGrammars.Plural);
+
+			await That(result).IsEqualTo(expected)
+				.Because("a participle has no number that it could agree with");
+		}
+
 		[Fact]
 		public async Task GetExtendedFailure_Null_ShouldReturnItWasNull()
 		{
@@ -484,6 +551,37 @@ public sealed partial class StringEqualityOptionsTests
 
 			await That(Act).DoesNotThrow()
 				.Because("no comparer is set that the regex engine could not honour");
+		}
+
+		/// <remarks>
+		///     The exact match type is the default, so it is selected by naming no method at all.
+		/// </remarks>
+		private static StringEqualityOptions WithMatchType(string matchType)
+		{
+			StringEqualityOptions options = new();
+			switch (matchType)
+			{
+				case "AsBlock":
+					options.AsBlock();
+					break;
+				case "AsPrefix":
+					options.AsPrefix();
+					break;
+				case "AsRegex":
+					options.AsRegex();
+					break;
+				case "AsSuffix":
+					options.AsSuffix();
+					break;
+				case "AsWildcard":
+					options.AsWildcard();
+					break;
+				case "Containing":
+					options.Containing();
+					break;
+			}
+
+			return options;
 		}
 	}
 }

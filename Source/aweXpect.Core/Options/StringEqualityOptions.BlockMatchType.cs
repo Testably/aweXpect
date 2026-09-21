@@ -171,11 +171,11 @@ public partial class StringEqualityOptions
 			=> (grammars.HasFlag(ExpectationGrammars.Active), grammars.HasFlag(ExpectationGrammars.Negated)) switch
 			{
 				(true, false) =>
-					$"matches {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())} as block",
+					$"{grammars.Verb("matches", "match")} {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())} as block",
 				(false, false) =>
 					$"matching {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())} as block",
 				(true, true) =>
-					$"does not match {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())} as block",
+					$"{grammars.Verb("does not match", "do not match")} {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())} as block",
 				(false, true) =>
 					$"not matching {Formatter.Format(expected.TruncateWithEllipsisOnWord(DefaultMaxLength).ToSingleLine())} as block",
 			};

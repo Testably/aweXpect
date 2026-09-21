@@ -189,6 +189,20 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Theory]
+		[InlineData(false, "matches regex \"foo\"")]
+		[InlineData(true, "matches regex \"foo\" ignoring case")]
+		public async Task GetExpectation_ShouldRenderTheIgnoreCaseOption(bool ignoreCase, string expected)
+		{
+			StringEqualityOptions sut = new();
+			sut.AsRegex().IgnoringCase(ignoreCase);
+
+			string result = sut.GetExpectation("foo", ExpectationGrammars.Active);
+
+			await That(result).IsEqualTo(expected)
+				.Because("an option that decides the outcome must not be invisible in the expectation");
+		}
+
+		[Theory]
 		[InlineData(false)]
 		[InlineData(true)]
 		public async Task ShouldCompareCaseSensitive(bool ignoreCase)

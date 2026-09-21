@@ -775,7 +775,8 @@ public static class PropertyResult
 			else if (Grammars.HasFlag(ExpectationGrammars.Nested))
 			{
 				stringBuilder.Append("whose ").Append(propertyExpression).Append(' ');
-				equalityGrammars |= ExpectationGrammars.Active;
+				// The member becomes the subject of the clause, so the number of the enclosing subject no longer applies.
+				equalityGrammars = (equalityGrammars | ExpectationGrammars.Active) & ~ExpectationGrammars.Plural;
 			}
 			else
 			{

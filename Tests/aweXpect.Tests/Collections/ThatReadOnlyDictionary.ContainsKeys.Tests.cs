@@ -151,7 +151,7 @@ public sealed partial class ThatReadOnlyDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains keys [1, 2] whose values starts with "f" for no items,
+					             contains keys [1, 2] whose values start with "f" for no items,
 					             but 1 of 2 were
 
 					             Matching items:
@@ -292,7 +292,7 @@ public sealed partial class ThatReadOnlyDictionary
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             contains keys [1, 2] whose values starts with "f" for all items,
+					             contains keys [1, 2] whose values start with "f" for all items,
 					             but only 1 of 2 were
 
 					             Not matching items:
