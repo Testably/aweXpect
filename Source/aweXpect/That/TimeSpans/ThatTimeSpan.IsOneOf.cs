@@ -18,6 +18,7 @@ public static partial class ThatTimeSpan
 		this IThat<TimeSpan> subject,
 		params TimeSpan?[] expected)
 	{
+		expected.ThrowIfNull();
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<TimeSpan, IThat<TimeSpan>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -33,6 +34,7 @@ public static partial class ThatTimeSpan
 		this IThat<TimeSpan> subject,
 		IEnumerable<TimeSpan> expected)
 	{
+		expected.ThrowIfNull();
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<TimeSpan, IThat<TimeSpan>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -48,6 +50,7 @@ public static partial class ThatTimeSpan
 		this IThat<TimeSpan> subject,
 		IEnumerable<TimeSpan?> expected)
 	{
+		expected.ThrowIfNull();
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<TimeSpan, IThat<TimeSpan>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -63,6 +66,7 @@ public static partial class ThatTimeSpan
 		this IThat<TimeSpan> subject,
 		params TimeSpan?[] unexpected)
 	{
+		unexpected.ThrowIfNull();
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<TimeSpan, IThat<TimeSpan>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -78,6 +82,7 @@ public static partial class ThatTimeSpan
 		this IThat<TimeSpan> subject,
 		IEnumerable<TimeSpan> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<TimeSpan, IThat<TimeSpan>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
@@ -93,6 +98,7 @@ public static partial class ThatTimeSpan
 		this IThat<TimeSpan> subject,
 		IEnumerable<TimeSpan?> unexpected)
 	{
+		unexpected.ThrowIfNull();
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<TimeSpan, IThat<TimeSpan>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>

@@ -78,6 +78,20 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
+			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				string subject = "foo";
+				string[]? expected = null;
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(expected!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The unexpected cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenNullableExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				string subject = "foo";
@@ -88,6 +102,20 @@ public sealed partial class ThatString
 
 				await That(Act).Throws<ArgumentException>()
 					.WithMessage("You have to provide at least one expected value!");
+			}
+
+			[Fact]
+			public async Task WhenNullableExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				string subject = "foo";
+				string?[]? expected = null;
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(expected!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The unexpected cannot be null.").AsPrefix();
 			}
 
 			[Fact]

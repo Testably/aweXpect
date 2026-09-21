@@ -24,6 +24,20 @@ public sealed partial class ThatGuid
 			}
 
 			[Fact]
+			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				Guid subject = FixedGuid();
+				Guid[]? unexpected = null;
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The unexpected cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenExpectedOnlyContainsNull_ShouldSucceed()
 			{
 				Guid subject = FixedGuid();
@@ -46,6 +60,20 @@ public sealed partial class ThatGuid
 
 				await That(Act).Throws<ArgumentException>()
 					.WithMessage("You have to provide at least one expected value!");
+			}
+
+			[Fact]
+			public async Task WhenNullableExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				Guid subject = FixedGuid();
+				Guid?[]? unexpected = null;
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The unexpected cannot be null.").AsPrefix();
 			}
 
 			[Fact]

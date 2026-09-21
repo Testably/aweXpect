@@ -25,6 +25,20 @@ public sealed partial class ThatDateOnly
 			}
 
 			[Fact]
+			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				DateOnly subject = CurrentTime();
+				DateOnly[]? expected = null;
+
+				async Task Act()
+					=> await That(subject).IsOneOf(expected!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The expected cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenExpectedOnlyContainsNull_ShouldFail()
 			{
 				DateOnly subject = CurrentTime();
@@ -52,6 +66,20 @@ public sealed partial class ThatDateOnly
 
 				await That(Act).Throws<ArgumentException>()
 					.WithMessage("You have to provide at least one expected value!");
+			}
+
+			[Fact]
+			public async Task WhenNullableExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				DateOnly subject = CurrentTime();
+				DateOnly?[]? expected = null;
+
+				async Task Act()
+					=> await That(subject).IsOneOf(expected!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The expected cannot be null.").AsPrefix();
 			}
 
 			[Fact]

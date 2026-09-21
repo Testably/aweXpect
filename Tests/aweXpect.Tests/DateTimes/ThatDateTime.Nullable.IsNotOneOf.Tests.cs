@@ -45,6 +45,20 @@ public sealed partial class ThatDateTime
 				}
 
 				[Fact]
+				public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
+				{
+					DateTime? subject = CurrentTime();
+					DateTime[]? expected = null;
+
+					async Task Act()
+						=> await That(subject).IsNotOneOf(expected!);
+
+					await That(Act).Throws<ArgumentNullException>()
+						.WithParamName("unexpected").And
+						.WithMessage("The unexpected cannot be null.").AsPrefix();
+				}
+
+				[Fact]
 				public async Task WhenExpectedOnlyContainsNull_ShouldSucceed()
 				{
 					DateTime? subject = CurrentTime();
@@ -128,6 +142,20 @@ public sealed partial class ThatDateTime
 				}
 
 				[Fact]
+				public async Task WhenNullableExpectedIsNull_ShouldThrowArgumentNullException()
+				{
+					DateTime? subject = CurrentTime();
+					DateTime?[]? expected = null;
+
+					async Task Act()
+						=> await That(subject).IsNotOneOf(expected!);
+
+					await That(Act).Throws<ArgumentNullException>()
+						.WithParamName("unexpected").And
+						.WithMessage("The unexpected cannot be null.").AsPrefix();
+				}
+
+				[Fact]
 				public async Task WhenSubjectIsContained_ShouldFail()
 				{
 					DateTime? subject = CurrentTime();
@@ -182,6 +210,21 @@ public sealed partial class ThatDateTime
 				}
 
 				[Fact]
+				public async Task WhenSubjectIsNullAndExpectedIsNull_ShouldThrowArgumentNullException()
+				{
+					DateTime? subject = null;
+					DateTime[]? expected = null;
+
+					async Task Act()
+						=> await That(subject).IsNotOneOf(expected!);
+
+					await That(Act).Throws<ArgumentNullException>()
+						.WithParamName("unexpected").And
+						.WithMessage("The unexpected cannot be null.").AsPrefix()
+						.Because("a null list of expected values is an argument error, independent of the subject");
+				}
+
+				[Fact]
 				public async Task WhenSubjectIsNullAndNullableExpectedIsEmpty_ShouldThrowArgumentException()
 				{
 					DateTime? subject = null;
@@ -193,6 +236,21 @@ public sealed partial class ThatDateTime
 					await That(Act).Throws<ArgumentException>()
 						.WithMessage("You have to provide at least one expected value!")
 						.Because("missing expected values are an argument error, independent of the subject");
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsNullAndNullableExpectedIsNull_ShouldThrowArgumentNullException()
+				{
+					DateTime? subject = null;
+					DateTime?[]? expected = null;
+
+					async Task Act()
+						=> await That(subject).IsNotOneOf(expected!);
+
+					await That(Act).Throws<ArgumentNullException>()
+						.WithParamName("unexpected").And
+						.WithMessage("The unexpected cannot be null.").AsPrefix()
+						.Because("a null list of expected values is an argument error, independent of the subject");
 				}
 
 				[Fact]

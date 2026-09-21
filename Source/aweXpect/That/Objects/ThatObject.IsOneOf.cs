@@ -19,6 +19,7 @@ public static partial class ThatObject
 		this IThat<object?> subject,
 		params object?[] expected)
 	{
+		expected.ThrowIfNull();
 		ObjectEqualityOptions<object?> options = new();
 		return new ObjectEqualityResult<object?, IThat<object?>, object?>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
@@ -35,6 +36,7 @@ public static partial class ThatObject
 		IEnumerable<object?> expected,
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
+		expected.ThrowIfNull();
 		ObjectEqualityOptions<object?> options = new();
 		return new ObjectEqualityResult<object?, IThat<object?>, object?>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
@@ -50,6 +52,7 @@ public static partial class ThatObject
 		this IThat<object?> subject,
 		params object?[] unexpected)
 	{
+		unexpected.ThrowIfNull();
 		ObjectEqualityOptions<object?> options = new();
 		return new ObjectEqualityResult<object?, IThat<object?>, object?>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
@@ -68,6 +71,7 @@ public static partial class ThatObject
 		[CallerArgumentExpression("unexpected")]
 		string doNotPopulateThisValue = "")
 	{
+		unexpected.ThrowIfNull();
 		ObjectEqualityOptions<object?> options = new();
 		return new ObjectEqualityResult<object?, IThat<object?>, object?>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
