@@ -63,6 +63,19 @@
 		<value>Insert ".Which"</value>
 		<comment>The title of the code fix that inserts .Which before the expectation.</comment>
 	</data>
+	<data name="aweXpect0004Description" xml:space="preserve">
+		<value>A delegate subject is wrapped, so an expectation that is written for an object binds to the wrapper instead of to what the delegate does: it silently passes, fails with a message about the delegate, or throws at runtime. Continue with "DoesNotThrow().WhoseResult" to make the expectation about the returned value, or await the delegate expectation to obtain that value. A delegate without a return value has nothing to compare, so state what it should do with "DoesNotThrow", "Throws" or "ExecutesIn"; to make an expectation about a "Task" object itself, name its type explicitly as in "Expect.That&lt;Task&gt;(task)".</value>
+	</data>
+	<data name="aweXpect0004MessageFormat" xml:space="preserve">
+		<value>"{0}" is applied to the delegate itself instead of to its execution</value>
+	</data>
+	<data name="aweXpect0004Title" xml:space="preserve">
+		<value>Expectations for an object must not be applied to a delegate subject</value>
+	</data>
+	<data name="aweXpect0004CodeFixTitle" xml:space="preserve">
+		<value>Insert ".DoesNotThrow().WhoseResult"</value>
+		<comment>The title of the code fix that continues with the value returned by the delegate.</comment>
+	</data>
 	<data name="aweXpect0005Description" xml:space="preserve">
 		<value>An async lambda that is converted to a void-returning delegate returns before the expectation is evaluated, so a failing expectation is thrown on an unrelated thread after the test has completed instead of failing the test. Pass a delegate that returns a task, or await the expectation in the test method itself.</value>
 	</data>
