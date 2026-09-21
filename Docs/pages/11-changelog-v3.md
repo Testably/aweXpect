@@ -154,6 +154,9 @@ and `IReadOnlySet<T>`, and to `IDictionary<TKey, TValue>` and `IReadOnlyDictiona
 recognized the non-generic `IDictionary`, so a `HashSet<T>` or a type that only implements
 `IReadOnlyDictionary<TKey, TValue>` failed when both sides held the same content in a different order. Every other
 collection still compares by position.
+`IsEquivalentTo` stops at 100 nested objects on a single path and fails naming that path instead of recursing until
+the stack overflows, so a graph that is legitimately deeper needs the limit raised: see
+[Limiting the recursion depth](/docs/expectations/equivalency#limiting-the-recursion-depth).
 
 ## Extensions and aweXpect.Core
 

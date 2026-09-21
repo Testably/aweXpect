@@ -1828,6 +1828,20 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
+			public async Task WhenGraphIsDeeperThanTheDefaultLimit_ShouldFail()
+			{
+				ChainClass subject = ChainClass.WithDepth(150);
+				ChainClass expected = ChainClass.WithDepth(150);
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("*exceeded the maximum recursion depth of 100*").AsWildcard()
+					.Because("without an explicit limit the default of 100 turns the stack overflow into a failure");
+			}
+
+			[Fact]
 			public async Task WhenGraphReferencesItself_ShouldNotRecurseInfinitely()
 			{
 				InnerClass subject = new()
@@ -1845,6 +1859,91 @@ public sealed partial class ThatObject
 					=> await That(subject).IsEquivalentTo(expected);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenLimitingRecursionDepth_AndGraphIsDeeper_ShouldReportTheMemberPath()
+			{
+				ChainClass subject = ChainClass.WithDepth(4);
+				ChainClass expected = ChainClass.WithDepth(4);
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected, o => o.LimitingRecursionDepth(2));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             *but it was not:
+					               Property Next.Next exceeded the maximum recursion depth of 2
+
+					             Equivalency options:
+					              - include public fields and properties
+					              - limit the recursion depth to 2
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenLimitingRecursionDepth_AndGraphIsWithinTheLimit_ShouldSucceed()
+			{
+				ChainClass subject = ChainClass.WithDepth(3);
+				ChainClass expected = ChainClass.WithDepth(3);
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected, o => o.LimitingRecursionDepth(3));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenLimitingRecursionDepth_ChainedWithOtherOptions_ShouldKeepAllOptions()
+			{
+				ChainClass subject = ChainClass.WithDepth(4);
+				ChainClass expected = ChainClass.WithDepth(4);
+
+				async Task ActBefore()
+					=> await That(subject).IsEquivalentTo(expected, o => o
+						.LimitingRecursionDepth(2)
+						.IgnoringCollectionOrder());
+
+				async Task ActAfter()
+					=> await That(subject).IsEquivalentTo(expected, o => o
+						.IgnoringCollectionOrder()
+						.LimitingRecursionDepth(2));
+
+				await That(ActBefore).Throws<XunitException>()
+					.WithMessage("""
+					             *Equivalency options:
+					              - include public fields and properties
+					              - ignore collection order
+					              - limit the recursion depth to 2
+					             """).AsWildcard()
+					.Because("the options have to compose in any order");
+				await That(ActAfter).Throws<XunitException>()
+					.WithMessage("""
+					             *Equivalency options:
+					              - include public fields and properties
+					              - ignore collection order
+					              - limit the recursion depth to 2
+					             """).AsWildcard()
+					.Because("the options have to compose in any order");
+			}
+
+			[Theory]
+			[InlineData(0)]
+			[InlineData(-1)]
+			public async Task WhenLimitingRecursionDepth_ToANonPositiveValue_ShouldThrowArgumentOutOfRangeException(
+				int maximumRecursionDepth)
+			{
+				ChainClass subject = ChainClass.WithDepth(2);
+				ChainClass expected = ChainClass.WithDepth(2);
+
+				async Task Act()
+					=> await That(subject)
+						.IsEquivalentTo(expected, o => o.LimitingRecursionDepth(maximumRecursionDepth));
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("maximumRecursionDepth").And
+					.WithMessage("The maximum recursion depth must be greater than zero*").AsWildcard()
+					.Because("a depth below one could not even compare the root and is rejected at the call site");
 			}
 
 			[Fact]
@@ -1930,6 +2029,28 @@ public sealed partial class ThatObject
 					=> await That(subject).IsEquivalentTo(expected);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			private sealed class ChainClass
+			{
+				public ChainClass? Next { get; set; }
+
+				/// <remarks>
+				///     A chain of <paramref name="depth" /> instances, so that the innermost one sits at that recursion depth.
+				/// </remarks>
+				public static ChainClass WithDepth(int depth)
+				{
+					ChainClass result = new();
+					for (int i = 1; i < depth; i++)
+					{
+						result = new ChainClass
+						{
+							Next = result,
+						};
+					}
+
+					return result;
+				}
 			}
 
 			private sealed class PairClass

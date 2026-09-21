@@ -7,6 +7,21 @@ namespace aweXpect.Core.Tests.Recording;
 public sealed class EventRecordingTests
 {
 	[Fact]
+	public async Task MissingEventName_ShouldDetachTheAlreadyAttachedEvents()
+	{
+		CustomEventClass sut = new();
+
+		void Act()
+			=> sut.Record().Events(nameof(CustomEventClass.CustomEvent), "someMissingEventName");
+
+		await That(Act).Throws<NotSupportedException>()
+			.WithMessage(
+				"Event someMissingEventName is not supported on EventRecordingTests.CustomEventClass { }. When publishing with trimming or Native AOT enabled, ensure that the type is rooted, so that its events are preserved.");
+		await That(sut.HasSubscribers()).IsFalse()
+			.Because("a recording that never completed leaves nothing behind that could ever detach the handler");
+	}
+
+	[Fact]
 	public async Task MissingEventName_ShouldThrowNotSupportedException()
 	{
 		CustomEventClass sut = new();
@@ -60,6 +75,20 @@ public sealed class EventRecordingTests
 
 		await That(result.GetEventCount(nameof(ManyParametersClass.OtherEvent))).IsEqualTo(1)
 			.Because("only the requested events are attached, so an unattachable event of the same type is never touched");
+	}
+
+	[Fact]
+	public async Task WhenAnEventCannotBeAttached_WhenRequestedByName_ShouldDetachTheAlreadyAttachedEvents()
+	{
+		ManyParametersClass sut = new();
+
+		void Act()
+			=> sut.Record().Events(nameof(ManyParametersClass.OtherEvent), nameof(ManyParametersClass.CustomEvent));
+
+		await That(Act).Throws<NotSupportedException>()
+			.WithMessage("The CustomEvent event contains too many parameters (5): [int, int, int, int, int]");
+		await That(sut.HasOtherEventSubscribers()).IsFalse()
+			.Because("a recording that never completed leaves nothing behind that could ever detach the handler");
 	}
 
 	[Fact]
@@ -627,6 +656,8 @@ public sealed class EventRecordingTests
 #pragma warning restore CS0067 // Event is never used
 
 		public event EventHandler? OtherEvent;
+
+		public bool HasOtherEventSubscribers() => OtherEvent is not null;
 
 		public void NotifyOtherEvent() => OtherEvent?.Invoke(this, EventArgs.Empty);
 	}

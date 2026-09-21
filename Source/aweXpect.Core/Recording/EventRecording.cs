@@ -57,31 +57,41 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 			eventNames = events.Select(x => x.Name).ToArray();
 		}
 
-		foreach (string? eventName in eventNames)
+		try
 		{
-			RecordableEvent? @event = events.FirstOrDefault(x => x.Name == eventName);
-			if (@event == null)
+			foreach (string? eventName in eventNames)
 			{
-				throw Tracing.WriteException(
-					new NotSupportedException(
-						$"Event {eventName} is not supported on {Formatter.Format(subject)}{(_isRegistered ? "" : TrimmingHint)}"));
-			}
+				RecordableEvent? @event = events.FirstOrDefault(x => x.Name == eventName);
+				if (@event == null)
+				{
+					throw Tracing.WriteException(
+						new NotSupportedException(
+							$"Event {eventName} is not supported on {Formatter.Format(subject)}{(_isRegistered ? "" : TrimmingHint)}"));
+				}
 
-			EventRecorder recorder = new(eventName);
-			string? unsupported = @event.TryAttach(recorder, subject);
-			if (unsupported is null)
-			{
-				_recorders.Add(eventName, recorder);
+				EventRecorder recorder = new(eventName);
+				string? unsupported = @event.TryAttach(recorder, subject);
+				if (unsupported is null)
+				{
+					_recorders.Add(eventName, recorder);
+				}
+				else if (recordAllEvents)
+				{
+					_skipped.Add(eventName, unsupported);
+				}
+				else
+				{
+					// An event that was asked for by name is what the recording is about, so it fails right away.
+					throw Tracing.WriteException(new NotSupportedException(unsupported));
+				}
 			}
-			else if (recordAllEvents)
-			{
-				_skipped.Add(eventName, unsupported);
-			}
-			else
-			{
-				// An event that was asked for by name is what the recording is about, so it fails right away.
-				throw Tracing.WriteException(new NotSupportedException(unsupported));
-			}
+		}
+		catch
+		{
+			// Nobody ever receives a recording whose construction threw, so the handlers it already attached would
+			// stay on the subject for its lifetime with nothing left that could detach them.
+			Stop();
+			throw;
 		}
 	}
 
