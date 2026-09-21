@@ -48,13 +48,21 @@ void Act() => {};
 await Expect.That(Act).DoesNotThrow();
 ```
 
-For a delegate with a return value, `WhoseResult` continues with the returned value as subject:
+For a delegate with a return value, `WhoseResult` continues with the returned value as subject, and awaiting the
+expectation returns it:
 
 ```csharp
 int Act() => 3;
 
 await Expect.That(Act).DoesNotThrow().WhoseResult.IsEqualTo(3);
+int result = await Expect.That(Act).DoesNotThrow();
 ```
+
+:::warning[An expectation must not be applied to the delegate itself]
+`Expect.That(Act).IsEqualTo(3)` compiles, but checks the delegate instead of what it returns, so it silently passes
+or fails with a message about the delegate. The analyzer rule `aweXpect0004` reports it and offers to insert
+`.DoesNotThrow().WhoseResult`. A delegate without a return value has nothing to compare at all.
+:::
 
 ## Throw exception
 

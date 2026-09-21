@@ -168,6 +168,42 @@ namespace aweXpect.Analyzers {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Insert &quot;.DoesNotThrow().WhoseResult&quot;.
+        /// </summary>
+        internal static string aweXpect0004CodeFixTitle {
+            get {
+                return ResourceManager.GetString("aweXpect0004CodeFixTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to A delegate subject is wrapped, so an expectation that is written for an object binds to the wrapper instead of to what the delegate does: it silently passes, fails with a message about the delegate, or throws at runtime. Continue with &quot;DoesNotThrow().WhoseResult&quot; to make the expectation about the returned value, or await the delegate expectation to obtain that value. A delegate without a return value has nothing to compare, so state what it should do with &quot;DoesNotThrow&quot;, &quot;Throws&quot; or &quot;ExecutesIn&quot;; to make an [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string aweXpect0004Description {
+            get {
+                return ResourceManager.GetString("aweXpect0004Description", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;{0}&quot; is applied to the delegate itself instead of to its execution.
+        /// </summary>
+        internal static string aweXpect0004MessageFormat {
+            get {
+                return ResourceManager.GetString("aweXpect0004MessageFormat", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Expectations for an object must not be applied to a delegate subject.
+        /// </summary>
+        internal static string aweXpect0004Title {
+            get {
+                return ResourceManager.GetString("aweXpect0004Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to The subject was verified to be not null by a preceding expectation..
         /// </summary>
         internal static string IsNotNullSuppressionJustification {

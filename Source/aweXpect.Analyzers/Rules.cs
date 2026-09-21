@@ -16,6 +16,9 @@ internal static class Rules
 	public static readonly DiagnosticDescriptor ThrownExceptionVocabularyRule =
 		CreateDescriptor("aweXpect0003", UsageCategory, DiagnosticSeverity.Warning);
 
+	public static readonly DiagnosticDescriptor DelegateSubjectRule =
+		CreateDescriptor("aweXpect0004", UsageCategory, DiagnosticSeverity.Error);
+
 	public static readonly DiagnosticDescriptor AsyncVoidExpectationRule =
 		CreateDescriptor("aweXpect0005", UsageCategory, DiagnosticSeverity.Warning);
 
