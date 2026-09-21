@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using aweXpect.Core;
+using aweXpect.Results;
 
 namespace aweXpect.Tests;
 
@@ -95,6 +97,22 @@ public sealed partial class ThatDictionary
 					=> await That(subject).DoesNotComplyWith(d => d.DoesNotContainKeys(42, 2));
 
 				await That(Act).DoesNotThrow();
+			}
+		}
+
+		public sealed class OverloadTests
+		{
+			[Fact]
+			public async Task ForASortedDictionary_ShouldBindToTheDictionaryOverload()
+			{
+				SortedDictionary<string, int> subject = new() { { "a", 1 }, };
+
+				async Task Act()
+					=> await (AndOrResult<IDictionary<string, int>, IThat<IDictionary<string, int>?>>)
+						That(subject).DoesNotContainKeys("b");
+
+				await That(Act).DoesNotThrow()
+					.Because("a type that implements both dictionary interfaces must not become ambiguous");
 			}
 		}
 	}

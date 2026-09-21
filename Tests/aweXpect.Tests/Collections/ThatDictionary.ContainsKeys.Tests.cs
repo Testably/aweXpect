@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using aweXpect.Core;
+using aweXpect.Results;
 
 namespace aweXpect.Tests;
 
@@ -537,6 +539,22 @@ public sealed partial class ThatDictionary
 					             contains keys ["foo"] whose values are equal to "" for all items,
 					             but it was <null>
 					             """);
+			}
+		}
+
+		public sealed class OverloadTests
+		{
+			[Fact]
+			public async Task ForASortedDictionary_ShouldBindToTheDictionaryOverload()
+			{
+				SortedDictionary<string, int> subject = new() { { "a", 1 }, };
+
+				async Task Act()
+					=> await (ContainsKeysResult<IDictionary<string, int>, IThat<IDictionary<string, int>?>, string, int>)
+						That(subject).ContainsKeys("a");
+
+				await That(Act).DoesNotThrow()
+					.Because("a type that implements both dictionary interfaces must not become ambiguous");
 			}
 		}
 	}
