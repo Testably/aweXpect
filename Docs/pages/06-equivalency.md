@@ -237,8 +237,8 @@ Use `LimitingRecursionDepth` to raise or lower the limit:
 await Expect.That(album).IsEquivalentTo(expected, o => o.LimitingRecursionDepth(500));
 ```
 
-It is equivalent to setting `MaxRecursionDepth` directly, and a depth below one — which could not even compare the
-root — throws an `ArgumentOutOfRangeException`.
+It is equivalent to setting `MaxRecursionDepth` directly. A depth below one, which could not even compare the root,
+throws an `ArgumentOutOfRangeException`.
 
 A limit other than the default is listed in the failure message under `Equivalency options:`.
 

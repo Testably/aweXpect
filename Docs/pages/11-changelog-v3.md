@@ -148,8 +148,8 @@ exists for, such as a collection of DTOs: each expected element is matched again
 it. Every element can be matched only once, so `[1, 1, 2]` is still not equivalent to `[1, 2, 2]`, and a failure
 reports only the elements that were left over, each against the leftover element it differs from the least.
 
-A graph that is deeper than 100 nested objects on a single path fails the comparison naming that path, instead of
-overflowing the stack and killing the test process. `LimitingRecursionDepth(…)` raises or lowers the limit. See
+`IsEquivalentTo` stops at 100 nested objects on a single path and fails naming that path instead of recursing until
+the stack overflows, so a graph that is legitimately deeper needs the limit raised: see
 [Limiting the recursion depth](/docs/expectations/equivalency#limiting-the-recursion-depth).
 
 ## Extensions and aweXpect.Core
