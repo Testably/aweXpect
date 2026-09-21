@@ -339,7 +339,7 @@ public class BecauseTests
 			.WithMessage("""
 			             Expected that subject
 			             throws a MyException with Message equal to "bar", because of reasons,
-			             but it was "foo" which differs at index 0:
+			             but Message was "foo" which differs at index 0:
 			                ↓ (actual)
 			               "foo"
 			               "bar"

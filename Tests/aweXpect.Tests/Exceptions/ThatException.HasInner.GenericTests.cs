@@ -21,7 +21,7 @@ public sealed partial class ThatException
 						.WithMessage("""
 						             Expected that subject
 						             has an inner ThatException.CustomException whose Message is equal to "inner" and whose Message is equal to "other",
-						             but it was "inner" which differs at index 0:
+						             but Message was "inner" which differs at index 0:
 						                ↓ (actual)
 						               "inner"
 						               "other"
@@ -82,7 +82,7 @@ public sealed partial class ThatException
 						.WithMessage("""
 						             Expected that subject
 						             has an inner ThatException.CustomException whose Message is equal to "inner",
-						             but it was an inner Exception:
+						             but it had an inner Exception:
 						               inner
 						             """);
 				}
@@ -112,7 +112,7 @@ public sealed partial class ThatException
 						.WithMessage("""
 						             Expected that subject
 						             has an inner ThatException.CustomException whose Message is equal to "some other message",
-						             but it was "inner" which differs at index 0:
+						             but Message was "inner" which differs at index 0:
 						                ↓ (actual)
 						               "inner"
 						               "some other message"
@@ -181,7 +181,7 @@ public sealed partial class ThatException
 						.WithMessage("""
 						             Expected that subject
 						             has an inner ThatException.CustomException which satisfies i => i?.Message == "inner",
-						             but it was <null>
+						             but it had no inner exception
 						             """);
 				}
 
@@ -197,7 +197,7 @@ public sealed partial class ThatException
 						.WithMessage("""
 						             Expected that subject
 						             has an inner ThatException.CustomException whose Message is equal to "inner",
-						             but it was an inner Exception:
+						             but it had an inner Exception:
 						               other
 						             """);
 				}
@@ -216,7 +216,7 @@ public sealed partial class ThatException
 						.WithMessage("""
 						             Expected that subject
 						             has an inner ThatException.CustomException which satisfies i => i?.Message == "inner",
-						             but it was an inner Exception:
+						             but it had an inner Exception:
 						               inner
 						             """);
 				}
@@ -254,7 +254,7 @@ public sealed partial class ThatException
 						.WithMessage("""
 						             Expected that subject
 						             has an inner ThatException.CustomException,
-						             but it was an inner Exception:
+						             but it had an inner Exception:
 						               inner
 						             """);
 				}

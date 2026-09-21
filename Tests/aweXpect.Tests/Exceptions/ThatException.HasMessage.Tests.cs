@@ -31,7 +31,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that exception
 					             has Message containing "foo",
-					             but it was "FOO"
+					             but Message was "FOO"
 
 					             Message:
 					             FOO
@@ -119,7 +119,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that exception
 					             has Message ending with "foo",
-					             but it was "foo and some other text"*
+					             but Message was "foo and some other text"*
 
 					             Message:
 					             foo and some other text
@@ -177,7 +177,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has Message equal to "expected other text",
-					             but it was "actual text" which differs at index 0:
+					             but Message was "actual text" which differs at index 0:
 					                ↓ (actual)
 					               "actual text"
 					               "expected other text"
@@ -204,7 +204,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has Message not containing "foo",
-					             but it was "foo and bar"
+					             but Message was "foo and bar"
 
 					             Message:
 					             foo and bar
@@ -224,7 +224,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has Message containing "foo",
-					             but it was "actual text"
+					             but Message was "actual text"
 
 					             Message:
 					             actual text
@@ -245,7 +245,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has Message not equal to "my text",
-					             but it was "my text"
+					             but Message was "my text"
 
 					             Message:
 					             my text
@@ -348,7 +348,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that exception
 					             has Message not containing "foo",
-					             but it was "foo and some other text"
+					             but Message was "foo and some other text"
 
 					             Message:
 					             foo and some other text
@@ -368,7 +368,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that exception
 					             has Message not containing "foo",
-					             but it was "some text before foo"
+					             but Message was "some text before foo"
 
 					             Message:
 					             some text before foo
@@ -401,7 +401,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that exception
 					             has Message not ending with "foo",
-					             but it was "some text before foo"
+					             but Message was "some text before foo"
 
 					             Message:
 					             some text before foo
@@ -424,7 +424,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has Message not equal to "my text",
-					             but it was "my text"
+					             but Message was "my text"
 
 					             Message:
 					             my text
@@ -486,7 +486,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that exception
 					             has Message not starting with "foo",
-					             but it was "foo and some other text"
+					             but Message was "foo and some other text"
 
 					             Message:
 					             foo and some other text
@@ -508,7 +508,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that exception
 					             has Message starting with "foo",
-					             but it was "some text before foo"*
+					             but Message was "some text before foo"*
 
 					             Message:
 					             some text before foo
@@ -555,7 +555,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has Message equal to "expected other text",
-					             but it was "actual text" which differs at index 0:
+					             but Message was "actual text" which differs at index 0:
 					                ↓ (actual)
 					               "actual text"
 					               "expected other text"

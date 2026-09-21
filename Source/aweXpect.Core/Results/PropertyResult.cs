@@ -782,8 +782,12 @@ public static class PropertyResult
 			stringBuilder.Append(options.GetExpectation(expected, equalityGrammars));
 		}
 
+		/// <remarks>
+		///     The property is named instead of <c>it</c>, because a chain of member expectations leaves ambiguous
+		///     which member <c>it</c> refers to.
+		/// </remarks>
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, _value, expected));
+			=> stringBuilder.Append(options.GetExtendedFailure(propertyExpression, Grammars, _value, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalExpectation(stringBuilder, indentation);

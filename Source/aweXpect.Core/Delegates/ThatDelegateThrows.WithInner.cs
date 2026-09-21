@@ -2,7 +2,6 @@
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Core.Helpers;
 using aweXpect.Results;
 
 namespace aweXpect.Delegates;
@@ -23,7 +22,7 @@ public partial class ThatDelegateThrows<TException>
 					(_, s) => s.Append(" which "),
 					false)
 				.Validate((it, grammars)
-					=> new HasInnerExceptionValueConstraint(typeof(Exception), it, grammars))
+					=> new HasInnerExceptionValueConstraint(typeof(Exception), it, grammars, true))
 				.AddExpectations(e => expectations(new ThatSubject<Exception?>(e)),
 					grammars => grammars | ExpectationGrammars.Nested),
 			this);
@@ -51,7 +50,7 @@ public partial class ThatDelegateThrows<TException>
 					false)
 				.Validate((it, grammars)
 					=> new HasInnerExceptionValueConstraint(typeof(TInnerException), it,
-						grammars | ExpectationGrammars.Nested))
+						grammars | ExpectationGrammars.Nested, true))
 				.AddExpectations<TInnerException?>(e => expectations(new ThatSubject<TInnerException?>(e)),
 					grammars => grammars | ExpectationGrammars.Nested),
 			this);
@@ -79,7 +78,7 @@ public partial class ThatDelegateThrows<TException>
 					" which ",
 					false)
 				.Validate((it, grammars)
-					=> new HasInnerExceptionValueConstraint(type, it, grammars))
+					=> new HasInnerExceptionValueConstraint(type, it, grammars, true))
 				.AddExpectations(e => expectations(new ThatSubject<Exception?>(e)),
 					grammars => grammars | ExpectationGrammars.Nested),
 			this);
@@ -98,7 +97,8 @@ public partial class ThatDelegateThrows<TException>
 	private sealed class HasInnerExceptionValueConstraint(
 		Type innerExceptionType,
 		string it,
-		ExpectationGrammars grammars)
+		ExpectationGrammars grammars,
+		bool hasMemberExpectations = false)
 		: ConstraintResult.WithNotNullValue<Exception>(it, grammars),
 			IValueConstraint<Exception?>
 	{
@@ -106,6 +106,12 @@ public partial class ThatDelegateThrows<TException>
 		public ConstraintResult IsMetBy(Exception? actual)
 		{
 			Actual = actual;
+			if (hasMemberExpectations && actual?.InnerException is null)
+			{
+				// Expectations on a missing inner exception could only repeat that there is nothing to inspect.
+				FurtherProcessingStrategy = FurtherProcessingStrategy.IgnoreResult;
+			}
+
 			Outcome = innerExceptionType.IsAssignableFrom(actual?.InnerException?.GetType())
 				? Outcome.Success
 				: Outcome.Failure;
@@ -127,13 +133,13 @@ public partial class ThatDelegateThrows<TException>
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual?.InnerException is null)
+			if (Actual!.InnerException is null)
 			{
-				stringBuilder.ItWasNull(It);
+				stringBuilder.Append(It).Append(" had no inner exception");
 			}
 			else
 			{
-				stringBuilder.Append(It).Append(" was ");
+				stringBuilder.Append(It).Append(" had ");
 				stringBuilder.Append(ThatDelegate.FormatForMessage(Actual.InnerException, indentation, "inner "));
 			}
 		}

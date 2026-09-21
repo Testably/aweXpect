@@ -45,7 +45,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has an inner exception whose Message is equal to "some other message",
-					             but it was "inner" which differs at index 0:
+					             but Message was "inner" which differs at index 0:
 					                ↓ (actual)
 					               "inner"
 					               "some other message"
@@ -68,7 +68,7 @@ public sealed partial class ThatException
 					.WithMessage("""
 					             Expected that subject
 					             has an inner exception,
-					             but it was <null>
+					             but it had no inner exception
 					             """);
 			}
 

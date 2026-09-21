@@ -22,7 +22,7 @@ public sealed partial class PropertyResultTests
 				.WithMessage($"""
 				              Expected that subject
 				              has string value containing "{expected}",
-				              but it was "{actual}"*
+				              but string value was "{actual}"*
 				              """).AsWildcard();
 		}
 
@@ -41,7 +41,7 @@ public sealed partial class PropertyResultTests
 				.WithMessage("""
 				             Expected that subject
 				             has string value containing "FOO",
-				             but it was "something with foo in it"
+				             but string value was "something with foo in it"
 				             """);
 		}
 
@@ -128,7 +128,7 @@ public sealed partial class PropertyResultTests
 				.WithMessage($"""
 				              Expected that subject
 				              has string value ending with "{expected}",
-				              but it was "{actual}"*
+				              but string value was "{actual}"*
 				              """).AsWildcard();
 		}
 
@@ -202,7 +202,7 @@ public sealed partial class PropertyResultTests
 				.WithMessage($"""
 				              Expected that subject
 				              has string value equal to "{expected}",
-				              but it was "{actual}"*
+				              but string value was "{actual}"*
 				              """).AsWildcard();
 		}
 
@@ -221,7 +221,7 @@ public sealed partial class PropertyResultTests
 				.WithMessage("""
 				             Expected that subject
 				             has string value equal to "FOO",
-				             but it was "foo" which differs at index 0:
+				             but string value was "foo" which differs at index 0:
 				                ↓ (actual)
 				               "foo"
 				               "FOO"
@@ -294,7 +294,7 @@ public sealed partial class PropertyResultTests
 				.WithMessage($"""
 				              Expected that subject
 				              has string value not containing "{expected}",
-				              but it was "{actual}"
+				              but string value was "{actual}"
 				              """);
 		}
 
@@ -313,7 +313,7 @@ public sealed partial class PropertyResultTests
 				.WithMessage("""
 				             Expected that subject
 				             has string value not containing "FOO" ignoring case,
-				             but it was "something with foo in it"
+				             but string value was "something with foo in it"
 				             """);
 		}
 
@@ -384,7 +384,7 @@ public sealed partial class PropertyResultTests
 				.WithMessage($"""
 				              Expected that subject
 				              has string value not ending with "{unexpected}",
-				              but it was "{actual}"
+				              but string value was "{actual}"
 				              """);
 		}
 
@@ -453,7 +453,7 @@ public sealed partial class PropertyResultTests
 				.WithMessage("""
 				             Expected that subject
 				             has string value not equal to "foo",
-				             but it was "foo"
+				             but string value was "foo"
 				             """);
 		}
 
@@ -472,7 +472,7 @@ public sealed partial class PropertyResultTests
 				.WithMessage("""
 				             Expected that subject
 				             has string value not equal to "FOO" ignoring case,
-				             but it was "foo"
+				             but string value was "foo"
 				             """);
 		}
 
@@ -553,7 +553,7 @@ public sealed partial class PropertyResultTests
 				.WithMessage($"""
 				              Expected that subject
 				              has string value not starting with "{unexpected}",
-				              but it was "{actual}"
+				              but string value was "{actual}"
 				              """);
 		}
 
@@ -626,7 +626,7 @@ public sealed partial class PropertyResultTests
 				.WithMessage($"""
 				              Expected that subject
 				              has string value starting with "{expected}",
-				              but it was "{actual}"*
+				              but string value was "{actual}"*
 				              """).AsWildcard();
 		}
 
@@ -697,7 +697,7 @@ public sealed partial class PropertyResultTests
 					.WithMessage("""
 					             Expected that subject
 					             has string value containing "foo" and has string value containing "baz",
-					             but it was "foo-bar"
+					             but string value was "foo-bar"
 
 					             string value:
 					             foo-bar
@@ -717,7 +717,7 @@ public sealed partial class PropertyResultTests
 					.WithMessage("""
 					             Expected that subject
 					             has string value equal to "bar",
-					             but it was "foo"*
+					             but string value was "foo"*
 
 					             string value:
 					             foo
@@ -736,7 +736,7 @@ public sealed partial class PropertyResultTests
 					.WithMessage("""
 					             Expected that subject
 					             has string value equal to "bar",
-					             but it was "foo" which differs at index 0:
+					             but string value was "foo" which differs at index 0:
 					                ↓ (actual)
 					               "foo"
 					               "bar"
@@ -757,7 +757,7 @@ public sealed partial class PropertyResultTests
 					.WithMessage("""
 					             Expected that subject
 					             has string value equal to "bar",
-					             but it was "" with a length of 0 which is shorter than the expected length of 3 and misses:
+					             but string value was "" with a length of 0 which is shorter than the expected length of 3 and misses:
 					               "bar"
 					             """)
 					.Because("an empty value would only add an empty block");
@@ -779,7 +779,7 @@ public sealed partial class PropertyResultTests
 					.WithMessage("""
 					             Expected that subject
 					             with string value equal to "bar",
-					             but it was "foo"*
+					             but string value was "foo"*
 					             """).AsWildcard();
 			}
 
@@ -796,7 +796,7 @@ public sealed partial class PropertyResultTests
 					.WithMessage("""
 					             Expected that subject
 					             whose string value is equal to "bar",
-					             but it was "foo"*
+					             but string value was "foo"*
 					             """).AsWildcard();
 			}
 
@@ -811,7 +811,7 @@ public sealed partial class PropertyResultTests
 					.WithMessage("""
 					             Expected that subject
 					             has string value not equal to "foo",
-					             but it was "foo"
+					             but string value was "foo"
 					             """);
 			}
 
@@ -828,7 +828,7 @@ public sealed partial class PropertyResultTests
 					.WithMessage("""
 					             Expected that subject
 					             have string value equal to "bar",
-					             but it was "foo"*
+					             but string value was "foo"*
 					             """).AsWildcard();
 			}
 		}
@@ -845,7 +845,7 @@ public sealed partial class PropertyResultTests
 					.WithMessage("""
 					             Expected that subject
 					             has string value equal to "bar",
-					             but it was "foo"*
+					             but string value was "foo"*
 					             """).AsWildcard()
 					.Because("a constraint typed at the narrowed type would silently never be matched");
 			}

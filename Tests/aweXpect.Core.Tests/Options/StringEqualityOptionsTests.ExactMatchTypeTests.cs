@@ -78,7 +78,7 @@ public sealed partial class StringEqualityOptionsTests
 				.WithMessage("""
 				             Expected that () => Task.FromException(exception)
 				             throws an exception with Message equal to "bar",
-				             but it was "foo" which differs at index 0:
+				             but Message was "foo" which differs at index 0:
 				                ↓ (actual)
 				               "foo"
 				               "bar"
