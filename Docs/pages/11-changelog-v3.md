@@ -182,6 +182,10 @@ of its own. The options handed to such a callback dropped the included fields an
 every `For<T>` registration of that default, so a global customization silently had no effect on
 `IsEquivalentTo(expected, o => …)`. A registration in the callback replaces one for the same type in the default.
 
+`For<T>()` applies to a member whose runtime type derives from `T` as well, and the most derived registration wins.
+It used to require the runtime type to match exactly, which no instance of an abstract type ever does, and which made
+`For<Type>()` unreachable because the runtime type of a `Type` is the internal `RuntimeType`.
+
 ## Extensions and aweXpect.Core
 
 Besides the initialization changes above, v3 renames several result and option types so that their names follow what

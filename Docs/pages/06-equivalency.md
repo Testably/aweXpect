@@ -184,7 +184,9 @@ differs from the least.
 ### Per-type options with `For<T>`
 
 You can apply options to a specific member type only. Type-specific options override the top-level options for members
-of that type.
+of that type. They also apply to a member whose runtime type derives from `T`, because an instance of an abstract type
+is always an instance of a derived type, and the runtime type of a `Type` member is the internal `RuntimeType` rather
+than `Type` itself. When several registrations match, the most derived one wins.
 
 ```csharp
 await Expect.That(album).IsEquivalentTo(expected, o => o
